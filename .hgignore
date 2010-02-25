@@ -1,0 +1,12 @@
+# use glob syntax
+syntax: glob
+
+# Ignore built files
+*.csproj.user
+[Oo]bj
+[Bb]in
+*.ncb
+*.suo
+*.orig
+ILMerge.exe
+Build/*
