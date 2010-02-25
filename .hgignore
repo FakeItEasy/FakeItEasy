@@ -10,3 +10,4 @@ syntax: glob
 *.orig
 ILMerge.exe
 Build/*
+*.diff
