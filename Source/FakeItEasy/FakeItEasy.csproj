@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{80721425-68E5-48DC-87EA-41D63D0B45FA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FakeItEasy</RootNamespace>
+    <AssemblyName>FakeItEasy</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\FakeItEasy.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\FakeItEasy.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\DynamicProxy\net-3.5\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\DynamicProxy\net-3.5\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>VersionAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="A.cs" />
+    <Compile Include="Any.cs" />
+    <Compile Include="Api\DelegateFakeObjectContainer.cs" />
+    <Compile Include="Api\ICallCollectionAndCallMatcherAccessor.cs" />
+    <Compile Include="Api\ICallMatcher.cs" />
+    <Compile Include="ArgumentValidationsExtensions.cs" />
+    <Compile Include="Configuration\AnyCallCallRule.cs" />
+    <Compile Include="Configuration\AnyCallConfiguration.cs" />
+    <Compile Include="Configuration\ConfigurationModule.cs" />
+    <Compile Include="Configuration\FakeConfigurationException.cs" />
+    <Compile Include="Configuration\FakeConfigurationManager.cs" />
+    <Compile Include="Configuration\IAssertConfiguration.cs" />
+    <Compile Include="Configuration\IConfigurationFactory.cs" />
+    <Compile Include="Configuration\IFakeConfigurationManager.cs" />
+    <Compile Include="Configuration\IStartConfigurationFactory.cs" />
+    <Compile Include="Configuration\StartConfiguration.cs" />
+    <Compile Include="Expressions\ArgumentValidatorExtensions.cs" />
+    <Compile Include="Expressions\ArgumentValidatorScope.cs" />
+    <Compile Include="Expressions\ArgumentValidator.cs" />
+    <Compile Include="Expressions\ExpressionParser.cs" />
+    <Compile Include="Expressions\IExpressionParser.cs" />
+    <Compile Include="Expressions\NotArgumentValidatorScope.cs" />
+    <Compile Include="Expressions\RootValidations.cs" />
+    <Compile Include="FakeObjectBuilder.cs" />
+    <Compile Include="Happened.cs" />
+    <Compile Include="IFakeBuilderOptionsBuilder.cs" />
+    <Compile Include="IFakeBuilderOptionsBuilderForWrappers.cs" />
+    <Compile Include="IFakeObjectBuilder.cs" />
+    <Compile Include="IFakeObjectGenerator.cs" />
+    <Compile Include="IFakeObjectGeneratorFactory.cs" />
+    <Compile Include="LowerBoundHappened.cs" />
+    <Compile Include="Recorders.cs" />
+    <Compile Include="SelfInitializedFakes\FileStorage.cs" />
+    <Compile Include="IFileSystem.cs" />
+    <Compile Include="SelfInitializedFakes\ISelfInitializingFakeRecorder.cs" />
+    <Compile Include="SelfInitializedFakes\RecordingException.cs" />
+    <Compile Include="SelfInitializedFakes\SelfInitializationRule.cs" />
+    <Compile Include="Api\CallWriter.cs" />
+    <Compile Include="Assertion\FakeAsserter.cs" />
+    <Compile Include="Assertion\IFakeAssertionsFactory.cs" />
+    <Compile Include="Api\CallInterceptedEventArgs.cs" />
+    <Compile Include="SelfInitializedFakes\CallData.cs" />
+    <Compile Include="Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs" />
+    <Compile Include="Configuration\IArgumentValidationConfiguration.cs" />
+    <Compile Include="Configuration\IOutAndRefParametersConfiguration.cs" />
+    <Compile Include="Configuration\IReturnValueArgumentValidationConfiguration.cs" />
+    <Compile Include="Configuration\IVoidArgumentValidationConfiguration.cs" />
+    <Compile Include="DynamicProxy\DynamicProxyProxyGenerator.cs" />
+    <Compile Include="DynamicProxy\ICanInterceptObjectMembers.cs" />
+    <Compile Include="Expressions\ArgumentValidators\EqualityArgumentValidator.cs" />
+    <Compile Include="Api\MethodInfoManager.cs" />
+    <Compile Include="SelfInitializedFakes\ICallStorage.cs" />
+    <Compile Include="IoC\DictionaryContainer.cs" />
+    <Compile Include="Expressions\ArgumentValidatorFactory.cs" />
+    <Compile Include="Api\CallRuleMetadata.cs" />
+    <Compile Include="Expressions\ExpressionCallMatcher.cs" />
+    <Compile Include="Api\IFakeObjectContainer.cs" />
+    <Compile Include="Api\NullFakeObjectContainer.cs" />
+    <Compile Include="Api\FakeObject.EventRule.cs">
+      <DependentUpon>FakeObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Api\FakeObject.AutoFakePropertyRule.cs">
+      <DependentUpon>FakeObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Api\DefaultReturnValueRule.cs" />
+    <Compile Include="Api\FakeObject.ObjectMemberRule.cs">
+      <DependentUpon>FakeObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Api\FakeObject.PropertyBehaviorRule.cs">
+      <DependentUpon>FakeObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Api\FakeObject.PropertySetterRule.cs">
+      <DependentUpon>FakeObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Api\Helpers.cs" />
+    <Compile Include="Api\ICompletedFakeObjectCall.cs" />
+    <Compile Include="DynamicProxy\InvocationCallAdapter.cs" />
+    <Compile Include="Api\IWritableFakeObjectCall.cs" />
+    <Compile Include="Api\WrappedObjectRule.cs" />
+    <Compile Include="Configuration\BuildableCallRule.cs" />
+    <Compile Include="Configuration\IAfterCallSpecifiedConfiguration.cs" />
+    <Compile Include="Configuration\ICallBackConfiguration.cs" />
+    <Compile Include="Configuration\ICallBaseConfiguration.cs" />
+    <Compile Include="Configuration\IExceptionThrowerConfiguration.cs" />
+    <Compile Include="Configuration\IRepeatConfiguration.cs" />
+    <Compile Include="Configuration\IReturnValueConfiguration.cs" />
+    <Compile Include="Configuration\IVoidConfiguration.cs" />
+    <Compile Include="ExpectationException.cs" />
+    <Compile Include="Expressions\ExpressionCallRule.cs" />
+    <Compile Include="Configuration\RuleBuilder.cs" />
+    <Compile Include="Configuration\IStartConfiguration.cs" />
+    <Compile Include="Configuration\IHideObjectMembers.cs" />
+    <Compile Include="ExtensionSyntax\Full\FullExtensionSyntax.cs" />
+    <Compile Include="ExtensionSyntax\Syntax.cs" />
+    <Compile Include="Assertion\FakeAssertions.cs" />
+    <Compile Include="FakeExtensions.cs" />
+    <Compile Include="ExceptionMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Api\ArgumentCollection.cs" />
+    <Compile Include="ArgumentValidationException.cs" />
+    <Compile Include="Expressions\ExpressionManager.cs" />
+    <Compile Include="Api\IArgumentValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Api\FakeScope.cs" />
+    <Compile Include="FakeObjectFactory.cs" />
+    <Compile Include="Guard.cs" />
+    <Compile Include="Assertion\IFakeAssertions.cs" />
+    <Compile Include="Api\IFakedProxy.cs" />
+    <Compile Include="Api\IFakeObjectCall.cs" />
+    <Compile Include="Api\IFakeObjectCallRule.cs" />
+    <Compile Include="Api\IEventRaiserArguments.cs" />
+    <Compile Include="IoC\Module.cs" />
+    <Compile Include="Api\IProxyGenerator.cs" />
+    <Compile Include="Api\FakeObject.cs">
+    </Compile>
+    <Compile Include="Fake.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Api\ProxyResult.cs" />
+    <Compile Include="Raise.cs" />
+    <Compile Include="RootModule.cs" />
+    <Compile Include="ServiceLocator.cs" />
+    <Compile Include="CommonExtensions.cs" />
+    <Compile Include="Tuple.cs" />
+    <Compile Include="VisualBasic\IRecordingCallRuleFactory.cs" />
+    <Compile Include="VisualBasic\IVisualBasicConfiguration.cs" />
+    <Compile Include="VisualBasic\RecordedCallRule.cs" />
+    <Compile Include="VisualBasic\RecordingCallRule.cs" />
+    <Compile Include="VisualBasic\ThisCall.cs" />
+    <Compile Include="VisualBasic\VisualBasicHelpers.cs" />
+    <Compile Include="SelfInitializedFakes\RecordingManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExceptionMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Api\ApiDiagram.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

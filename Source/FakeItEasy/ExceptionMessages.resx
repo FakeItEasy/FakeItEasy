@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ApplicatorNotSetExceptionMessage" xml:space="preserve">
+    <value>The Apply method of the ExpressionInterceptor may no be called before the Applicator property has been set.</value>
+  </data>
+  <data name="ArgumentNameDoesNotExist" xml:space="preserve">
+    <value>The specified argument name does not exist in the ArgumentList.</value>
+  </data>
+  <data name="ArgumentsForConstructorOnInterfaceType" xml:space="preserve">
+    <value>Arguments for constructor was specified when generating proxy of interface type.</value>
+  </data>
+  <data name="ArgumentValidationDefaultMessage" xml:space="preserve">
+    <value>An argument validation was not configured correctly.</value>
+  </data>
+  <data name="ArgumentValidatorConstructorSignatureDoesntMatchValidationMethod" xml:space="preserve">
+    <value>The validator type '{0}' specified in the ArgumentValidatorAttribute does not have a constructor with a signature that matches the argument validation extension method, the signature of the constructor needs to be {1}.</value>
+  </data>
+  <data name="ArgumentValidatorTypeArgumentsDoesntMatchValidationMethod" xml:space="preserve">
+    <value>The number of generic arguments to the validation extension method was {0} but the number of generic arguments to the argument validator type specified in the ArgumentValidatorAttribute was {1}.</value>
+  </data>
+  <data name="CalledTooFewTimesMessage" xml:space="preserve">
+    <value>The method '{0}' was called too few times, expected #{1} times but was called #{2} times.</value>
+  </data>
+  <data name="CalledTooManyTimesMessage" xml:space="preserve">
+    <value>The method '{0}' was called too many times, expected #{1} times but was called #{2} times.</value>
+  </data>
+  <data name="CanNotGenerateFakeMessage" xml:space="preserve">
+    <value>Can not create fake of the type '{0}', it's not registered in the current container and the current IProxyGenerator can not generate the fake.</value>
+  </data>
+  <data name="ConfiguringNonFakeObjectExceptionMessage" xml:space="preserve">
+    <value>Error when accessing FakeObject, the specified argument is of the type '{0}' which is not faked.</value>
+  </data>
+  <data name="CreatingExpressionCallMatcherWithNonMethodOrPropertyExpression" xml:space="preserve">
+    <value>An ExpressionCallMatcher can only be created for expressions that represents a method call or a property getter.</value>
+  </data>
+  <data name="FakingNonAbstractClassWithArgumentsForConstructor" xml:space="preserve">
+    <value>Only abstract classes can be faked using the A.Fake-method that takes an enumerable of objects as arguments for constructor, use the overload that takes an expression instead.</value>
+  </data>
+  <data name="MemberAccessorNotCorrectExpressionType" xml:space="preserve">
+    <value>The member accessor expression must be a lambda expression with a MethodCallExpression or MemberAccessExpression as its body.</value>
+  </data>
+  <data name="NoConstructorMatchingArguments" xml:space="preserve">
+    <value>No constructor matching the specified arguments was found on the type {0}.</value>
+  </data>
+  <data name="NoDefaultConstructorMessage" xml:space="preserve">
+    <value>Can not generate fake object for the class since no default constructor was found, specify a constructor call.</value>
+  </data>
+  <data name="NonArgumentValidatorTypeExceptionMessage" xml:space="preserve">
+    <value>The validator type specified in the ArgumentValidatorAttribute must be a type that implements the IArgumentValidator-interface, the specified type '{0}' does not implement the interface.</value>
+  </data>
+  <data name="NonConstructorExpressionMessage" xml:space="preserve">
+    <value>Only expression of the type ExpressionType.New (constructor calls) are accepted.</value>
+  </data>
+  <data name="NowCalledDirectly" xml:space="preserve">
+    <value>The Now-method on the event raise is not meant to be called directly, only use it to register to an event on a fake object that you want to be raised.</value>
+  </data>
+  <data name="NumberOfOutAndRefParametersDoesNotMatchCall" xml:space="preserve">
+    <value>The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call.</value>
+  </data>
+  <data name="TypeCanNotBeProxied" xml:space="preserve">
+    <value>The current fake proxy generator can not create proxies of the type {0}.</value>
+  </data>
+  <data name="WasCalledWrongNumberOfTimes" xml:space="preserve">
+    <value>Expected to find call {0} the number of times specified by the predicate '{1}' but found it {2} times among the calls:</value>
+  </data>
+  <data name="WrongNumberOfArgumentNamesMessage" xml:space="preserve">
+    <value>The number of argument names does not match the number of arguments.</value>
+  </data>
+  <data name="MethodMissmatchWhenPlayingBackRecording" xml:space="preserve">
+    <value>The method of the call did not match the method of the recorded call, the recorded sequence is no longer valid.</value>
+  </data>
+  <data name="NoMoreRecordedCalls" xml:space="preserve">
+    <value>All the recorded calls has been applied, the recorded sequence is no longer valid.</value>
+  </data>
+  <data name="MemberCanNotBeIntercepted" xml:space="preserve">
+    <value>The specified method can not be configured since it can not be intercepted by the current IProxyGenerator.</value>
+  </data>
+</root>

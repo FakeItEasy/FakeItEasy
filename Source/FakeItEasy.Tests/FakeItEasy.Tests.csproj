@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0E26272D-045A-47C2-8928-BD9B980115D5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FakeItEasy.Tests</RootNamespace>
+    <AssemblyName>FakeItEasy.Tests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>0</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\DynamicProxy\net-3.5\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\DynamicProxy\net-3.5\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>VersionAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AnyTests.cs" />
+    <Compile Include="Api\CallInterceptedEventArgsTests.cs" />
+    <Compile Include="Api\DefaultReturnValueRuleTests.cs" />
+    <Compile Include="Api\DelegateFakeObjectContainerTests.cs" />
+    <Compile Include="Api\FakeObjectBuilderTests.cs" />
+    <Compile Include="Api\FakeObjectFactoryTests.cs" />
+    <Compile Include="Api\ProxyResultTests.cs" />
+    <Compile Include="ArgumentValidationExtensions\IsInstanceOfTests.cs" />
+    <Compile Include="ArgumentValidationExtensions\IsNullTests.cs" />
+    <Compile Include="ArgumentValidationExtensions\StringContainsTests.cs" />
+    <Compile Include="Configuration\AnyCallCallRuleTests.cs" />
+    <Compile Include="Configuration\AnyCallConfigurationTests.cs" />
+    <Compile Include="Configuration\FakeConfigurationExceptionTests.cs" />
+    <Compile Include="Configuration\FakeConfigurationManagerTests.cs" />
+    <Compile Include="Configuration\StartConfigurationTests.cs" />
+    <Compile Include="DummyExceptionContractTests.cs" />
+    <Compile Include="ExceptionContractTests.cs" />
+    <Compile Include="Expressions\ArgumentValidatorExtensionsTests.cs" />
+    <Compile Include="Expressions\ArgumentValidatorScopeTests.cs" />
+    <Compile Include="Expressions\ArgumentValidatorTests.cs" />
+    <Compile Include="Expressions\ExpressionParserTests.cs" />
+    <Compile Include="Expressions\NotArgumentValidatorScopeTests.cs" />
+    <Compile Include="Expressions\RootValidationsTests.cs" />
+    <Compile Include="Foo.cs" />
+    <Compile Include="LowerBoundHappenedTests.cs" />
+    <Compile Include="HappenedTests.cs" />
+    <Compile Include="RecordersTests.cs" />
+    <Compile Include="SelfInitializedFakes\CallDataTests.cs" />
+    <Compile Include="SelfInitializedFakes\FileStorageTests.cs" />
+    <Compile Include="SelfInitializedFakes\RecordingExceptionTests.cs" />
+    <Compile Include="SelfInitializedFakes\SelfInitializationRuleTests.cs" />
+    <Compile Include="Api\CallWriterTests.cs" />
+    <Compile Include="Assertion\FakeAssertionsTests.cs" />
+    <Compile Include="CommonExtensionsTests.cs" />
+    <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
+    <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
+    <Compile Include="Expressions\ArgumentValidatorFactoryTests.cs" />
+    <Compile Include="ArgumentValidatorTestBase.cs" />
+    <Compile Include="Expressions\ArgumentValidators\EqualityArgumentValidatorTests.cs" />
+    <Compile Include="Expressions\ExpressionCallRuleTests.cs" />
+    <Compile Include="Expressions\ExpressionCallMatcherTests.cs" />
+    <Compile Include="Api\MethodInfoManagerTests.cs" />
+    <Compile Include="IoC\DictionaryContainerTests.cs" />
+    <Compile Include="TestHelpers\ExpressionHelper.cs" />
+    <Compile Include="Api\FakeObjectTests.cs" />
+    <Compile Include="Api\HelpersTests.cs" />
+    <Compile Include="Api\NullFakeObjectContainerTests.cs" />
+    <Compile Include="CustomArgumentValidators.cs" />
+    <Compile Include="DynamicProxy\InvocationCallAdapterTests.cs" />
+    <Compile Include="Api\WrappedObjectRuleTests.cs" />
+    <Compile Include="ArgumentCollectionTests.cs" />
+    <Compile Include="ArgumentValidationExceptionTests.cs" />
+    <Compile Include="ATests.cs" />
+    <Compile Include="Configuration\BuildableCallRuleTests.cs" />
+    <Compile Include="Configuration\RuleBuilderTests.cs" />
+    <Compile Include="ExtensionSyntax\Full\FullExtensionSyntaxTests.cs" />
+    <Compile Include="FakeConstraints\WrappingFakeConstraint.cs" />
+    <Compile Include="ExpectationExceptionTests.cs" />
+    <Compile Include="ExtensionSyntax\ExtensionSyntaxTests.cs" />
+    <Compile Include="Assertion\FakeAsserterTests.cs" />
+    <Compile Include="Fake%28T%29Tests.cs" />
+    <Compile Include="FakeCall.cs" />
+    <Compile Include="FakeCallRule.cs" />
+    <Compile Include="FakeExtensionsTests.cs" />
+    <Compile Include="Api\FakeScopeTests.cs" />
+    <Compile Include="FakeTests.cs" />
+    <Compile Include="NullGuardedConstraintTests.cs" />
+    <Compile Include="IFoo.cs" />
+    <Compile Include="NullGuardedConstraint.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RaiseTests.cs" />
+    <Compile Include="ServiceLocatorTests.cs" />
+    <Compile Include="SyntaxTests.cs" />
+    <Compile Include="TestHelpers\ReflectionHelper.cs" />
+    <Compile Include="TestHelpers\TestableProxyResult.cs" />
+    <Compile Include="VisualBasic\RecordingCallRuleTests.cs" />
+    <Compile Include="VisualBasic\ThisCallTests.cs" />
+    <Compile Include="VisualBasic\VisualBasicHelpersTests.cs" />
+    <Compile Include="SelfInitializedFakes\RecordingManagerTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj">
+      <Project>{0EFB697E-09B6-493D-83CE-2135C814EE80}</Project>
+      <Name>FakeItEasy.BackwardsCompatibility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FakeItEasy.Mef\FakeItEasy.Mef.csproj">
+      <Project>{797E7789-2647-4E46-AEB6-2050AE63CCA4}</Project>
+      <Name>FakeItEasy.Mef</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj">
+      <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
+      <Name>FakeItEasy</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
