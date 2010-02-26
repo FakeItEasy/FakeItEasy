@@ -112,19 +112,9 @@ namespace FakeItEasy
         /// <returns>A configuration object.</returns>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
         {
-            var enumerator = values.Cast<T>().GetEnumerator();
-            
-            Func<T> factory = () =>
-                {
-                    if (!enumerator.MoveNext())
-                    {
-                        return default(T);
-                    }
+            var queue = new Queue<T>(values);
 
-                    return enumerator.Current;
-                };
-        
-            return configuration.Returns(factory);
+            return configuration.Returns(() => queue.Count != 0 ? queue.Dequeue() : default(T));
         }
     }
 }
