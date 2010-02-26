@@ -22,7 +22,8 @@ namespace FakeItEasy.Tests
         }
 
         protected virtual void OnSetUp()
-        { 
+        {
+            
             
         }
 

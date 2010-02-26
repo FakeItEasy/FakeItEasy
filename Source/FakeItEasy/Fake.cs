@@ -103,7 +103,7 @@ namespace FakeItEasy
         /// <exception cref="ArgumentException">The object passed in is not a faked object.</exception>
         [DebuggerStepThrough]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use the A.CallTo(() => foo.Bar()).Assert(Happened.Once) syntax instead.")]
+        [Obsolete("Use the A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Once) syntax instead.")]
         public static IFakeAssertions<TFake> Assert<TFake>(TFake fakedObject)
         {
             var factory = ServiceLocator.Current.Resolve<IFakeAssertionsFactory>();

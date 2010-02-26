@@ -79,5 +79,52 @@ namespace FakeItEasy
                 where matcher.Matches(call)
                 select call;
         }
+
+        /// <summary>
+        /// Asserts that the specified call must have happened once or more.
+        /// </summary>
+        /// <param name="configuration">The configuration to assert on.</param>
+        public static void MustHaveHappened(this IAssertConfiguration configuration)
+        {
+            Guard.IsNotNull(configuration, "configuration");
+
+            configuration.MustHaveHappened(Repeated.Once);
+        }
+
+        /// <summary>
+        /// Asserts that the specified has not happened.
+        /// </summary>
+        /// <param name="configuration">The configuration to assert on.</param>
+        public static void MustNotHaveHappened(this IAssertConfiguration configuration)
+        {
+            Guard.IsNotNull(configuration, "configuration");
+
+            configuration.MustHaveHappened(Repeated.Never);
+        }
+
+        /// <summary>
+        /// Configures the call to return the next value from the specified sequence each time it's called. Null will
+        /// be returned when all the values in the sequence has been returned.
+        /// </summary>
+        /// <typeparam name="T">The type of return value.</typeparam>
+        /// <param name="configuration">The call configuration to extend.</param>
+        /// <param name="values">The values to return in sequence.</param>
+        /// <returns>A configuration object.</returns>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
+        {
+            var enumerator = values.Cast<T>().GetEnumerator();
+            
+            Func<T> factory = () =>
+                {
+                    if (!enumerator.MoveNext())
+                    {
+                        return default(T);
+                    }
+
+                    return enumerator.Current;
+                };
+        
+            return configuration.Returns(factory);
+        }
     }
 }

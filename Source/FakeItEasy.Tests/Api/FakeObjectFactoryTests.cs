@@ -80,7 +80,7 @@ namespace FakeItEasy.Tests.Api
 
             factory.CreateFake(typeof(IFoo), new object[] { "foo" }, false);
 
-            A.CallTo(() => this.fakeObject.SetProxy(returned)).Assert(Happened.Once);
+            A.CallTo(() => this.fakeObject.SetProxy(returned)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace FakeItEasy.Tests.Api
 
             factory.CreateFake(typeof(IFoo), null, true);
 
-            A.CallTo(() => this.container.ConfigureFake(typeof(IFoo), returned.Proxy)).Assert(Happened.Once);
+            A.CallTo(() => this.container.ConfigureFake(typeof(IFoo), returned.Proxy)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace FakeItEasy.Tests.Api
 
             factory.CreateFake(typeof(IFoo), new object[] { "argument for constructor" }, true);
 
-            A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out Null<object>.Out)).Assert(Happened.Never);
+            A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out Null<object>.Out)).MustHaveHappened(Repeated.Never);
         }
 
         [Test]

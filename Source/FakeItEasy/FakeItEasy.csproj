@@ -86,14 +86,14 @@
     <Compile Include="Expressions\IExpressionParser.cs" />
     <Compile Include="Expressions\NotArgumentValidatorScope.cs" />
     <Compile Include="Expressions\RootValidations.cs" />
+    <Compile Include="Repeated.cs" />
     <Compile Include="FakeObjectBuilder.cs" />
-    <Compile Include="Happened.cs" />
     <Compile Include="IFakeBuilderOptionsBuilder.cs" />
     <Compile Include="IFakeBuilderOptionsBuilderForWrappers.cs" />
     <Compile Include="IFakeObjectBuilder.cs" />
     <Compile Include="IFakeObjectGenerator.cs" />
     <Compile Include="IFakeObjectGeneratorFactory.cs" />
-    <Compile Include="LowerBoundHappened.cs" />
+    <Compile Include="LowerBoundRepeated.cs" />
     <Compile Include="Recorders.cs" />
     <Compile Include="SelfInitializedFakes\FileStorage.cs" />
     <Compile Include="IFileSystem.cs" />

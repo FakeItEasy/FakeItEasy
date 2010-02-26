@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests
 
             repeatConfig.Once();
 
-            A.CallTo(() => repeatConfig.NumberOfTimes(1)).Assert(Happened.Once);
+            A.CallTo(() => repeatConfig.NumberOfTimes(1)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace FakeItEasy.Tests
             
             repeatConfig.Twice();
 
-            A.CallTo(() => repeatConfig.NumberOfTimes(2)).Assert(Happened.Once);
+            A.CallTo(() => repeatConfig.NumberOfTimes(2)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace FakeItEasy.Tests
             var config = A.Fake<IReturnValueConfiguration<string>>();
             config.ReturnsNull();
 
-            A.CallTo(() => config.Returns(A<string>.That.IsNull())).Assert(Happened.Once);
+            A.CallTo(() => config.Returns(A<string>.That.IsNull())).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace FakeItEasy.Tests
             }
 
             // Assert
-            A.CallTo(() => factory.CreateCallMathcer(callSpecification)).Assert(Happened.Once);
+            A.CallTo(() => factory.CreateCallMathcer(callSpecification)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -148,11 +148,120 @@ namespace FakeItEasy.Tests
                 this.StubResolve<IExpressionCallMatcherFactory>(factory);
                 matchingCalls = calls.Matching<IFoo>(x => x.Bar());
             }
-
+            
             // Assert
             Assert.That(matchingCalls.Count(), Is.EqualTo(2));
             Assert.That(matchingCalls.Any(x => x.Method.Name == "Baz"));
             Assert.That(matchingCalls.Any(x => x.Method.Name == "Biz"));
+        }
+
+        [Test]
+        public void MustHaveHappened_should_call_configuration_with_repeat_once()
+        {
+            // Arrange
+            var configuration = A.Fake<IAssertConfiguration>();
+
+            // Act
+            configuration.MustHaveHappened();
+
+            // Assert
+            A.CallTo(() => configuration.MustHaveHappened(A<Repeated>.That.Matches(x => x.Matches(1)))).MustHaveHappened(Repeated.Once);
+        }
+
+        [Test]
+        public void MustHaveHappened_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+            
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                A.Fake<IAssertConfiguration>().MustHaveHappened());
+        }
+
+        [TestCase(0, Result = true)]
+        [TestCase(1, Result = false)]
+        [TestCase(3, Result = false)]
+        public bool MustNotHaveHappened_should_call_configuration_with_repeat_that_validates_correctly(int repeat)
+        {
+            // Arrange
+            Func<int, bool> repeatPredicate;
+            var configuration = A.Fake<IAssertConfiguration>();
+
+            // Act
+            configuration.MustNotHaveHappened();
+
+            // Assert
+            var specifiedRepeat = Fake.GetCalls(configuration).Single().Arguments.Get<Repeated>(0);
+            return specifiedRepeat.Matches(repeat);
+        }
+
+        [Test]
+        public void MustNotHaveHappened_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                A.Fake<IAssertConfiguration>().MustNotHaveHappened());
+        }
+
+        [Test]
+        public void ReturnsNextFromSequence_should_call_returns_with_factory_that_returns_next_from_sequence_for_each_call()
+        {
+            // Arrange
+            var sequence = new[] { 1, 2, 3 };
+            var config = A.Fake<IReturnValueConfiguration<int>>();
+
+            // Act
+            FakeExtensions.ReturnsNextFromSequence(config, sequence);
+
+            // Assert
+            var factoryValidator = A<Func<int>>.That.Matches(x => 
+            {
+                var producedSequence = new[] { x.Invoke(), x.Invoke(), x.Invoke() };
+                return producedSequence.SequenceEqual(sequence);
+            });
+
+            A.CallTo(() => config.Returns(factoryValidator)).MustHaveHappened();
+        }
+
+        [Test]
+        public void ReturnsNextFromSequence_should_return_repeat_config_from_passed_in_configuration()
+        {
+            // Arrange
+            var config = A.Fake<IReturnValueConfiguration<int>>();
+            var returnedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
+
+            A.CallTo(() => config.Returns(A<Func<int>>.Ignored)).Returns(returnedConfig);
+
+            // Act
+
+            // Assert
+            Assert.That(FakeExtensions.ReturnsNextFromSequence(config, 1), Is.SameAs(returnedConfig));
+        }
+
+        [Test]
+        public void ReturnsNextFromSequence_should_return_null_when_all_values_has_been_returned()
+        {
+            // Arrange
+            var sequence = new[] { "" };
+            var config = A.Fake<IReturnValueConfiguration<string>>();
+
+            // Act
+            FakeExtensions.ReturnsNextFromSequence(config, sequence);
+
+            // Assert
+            var factoryValidator = A<Func<string>>.That.Matches(x =>
+            {
+                x.Invoke();
+                return x.Invoke() == null;
+            });
+
+            A.CallTo(() => config.Returns(factoryValidator)).MustHaveHappened();
         }
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)
@@ -161,3 +270,4 @@ namespace FakeItEasy.Tests
         }
     }
 }
+

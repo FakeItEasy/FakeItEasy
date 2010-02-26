@@ -53,7 +53,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             var thrown = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Bar(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).Assert(Happened.Twice));
+                A.CallTo(() => foo.Bar(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.Twice));
 
             Assert.That(thrown.Message, Is.EqualTo(@"
 
@@ -76,7 +76,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             var thrown = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Baz(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).Assert(Happened.Twice));
+                A.CallTo(() => foo.Baz(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.Twice));
 
             Assert.That(thrown.Message, Is.EqualTo(@"
 

@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="CompatibilityExtensions.cs" />
     <Compile Include="ExtensionSyntax\Full\FullExtensionSyntaxCompatibilityExtensions.cs" />
+    <Compile Include="Happened.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

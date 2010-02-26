@@ -27,7 +27,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Act
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).Assert(Happened.Once.Exactly);
+            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once.Exactly);
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             Assert.Throws<ExpectationException>(() => 
-                A.CallTo(() => this.foo.Bar()).Assert(Happened.Once.Exactly));
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once.Exactly));
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => this.foo.Bar()).Assert(Happened.Once.Exactly));
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once.Exactly));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             
             // Assert
             Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => this.foo.Bar()).Assert(Happened.Once));
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Act
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).Assert(Happened.Once);
+            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Act
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).Assert(Happened.Once);
+            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Act
             
             // Assert
-            A.CallTo(() => foo.Bar()).Assert(Happened.Times(3));
+            A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Times(3));
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Act
             
             // Assert
-            A.CallTo(() => this.foo.Bar()).Assert(Happened.Never);
+            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Never);
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => this.foo.Bar()).Assert(Happened.Never));
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Never));
         }
     }
 }

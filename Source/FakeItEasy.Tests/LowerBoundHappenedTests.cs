@@ -12,7 +12,7 @@ namespace FakeItEasy.Tests
         public bool Matches_should_return_correct_value(int specifiedRepeat, int numberOfCallsActuallyMade)
         {
             // Arrange
-            var happened = new LowerBoundHappened(specifiedRepeat);
+            var happened = new LowerBoundRepeated(specifiedRepeat);
 
             // Act
 
@@ -28,7 +28,7 @@ namespace FakeItEasy.Tests
         public string ToString_should_provide_correct_description(int repeat)
         {
             // Arrange
-            var happened = new LowerBoundHappened(repeat);
+            var happened = new LowerBoundRepeated(repeat);
 
             // Act
 
@@ -43,7 +43,7 @@ namespace FakeItEasy.Tests
         public string ToString_should_provide_correct_description_when_or_less_is_specified(int repeat)
         {
             // Arrange
-            var happened = new LowerBoundHappened(repeat);
+            var happened = new LowerBoundRepeated(repeat);
 
             // Act
 
@@ -58,7 +58,7 @@ namespace FakeItEasy.Tests
         public string ToString_should_provide_correct_description_when_exactly_is_specified(int repeat)
         {
             // Arrange
-            var happened = new LowerBoundHappened(repeat);
+            var happened = new LowerBoundRepeated(repeat);
 
             // Act
 
@@ -72,7 +72,7 @@ namespace FakeItEasy.Tests
         public bool Exactly_should_return_Happened_that_matches_on_exact_values(int specifiedRepeat, int numberOfCallsActuallyMade)
         {
             // Arrange
-            var happened = new LowerBoundHappened(specifiedRepeat).Exactly;
+            var happened = new LowerBoundRepeated(specifiedRepeat).Exactly;
 
             // Act
 
@@ -86,7 +86,7 @@ namespace FakeItEasy.Tests
         public bool OrLess_should_return_Happened_that_matches_on_same_value_or_less(int specifiedRepeat, int numberOfCallsActuallyMade)
         {
             // Arrange
-            var happened = new LowerBoundHappened(specifiedRepeat).OrLess;
+            var happened = new LowerBoundRepeated(specifiedRepeat).OrLess;
 
             // Act
 

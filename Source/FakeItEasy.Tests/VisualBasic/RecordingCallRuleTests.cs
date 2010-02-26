@@ -84,7 +84,7 @@ namespace FakeItEasy.Tests.VisualBasic
 
             callPredicate.Invoke(call);
 
-            A.CallTo(() => this.recordedRule.IsApplicableTo(call)).Assert(Happened.Once);
+            A.CallTo(() => this.recordedRule.IsApplicableTo(call)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]

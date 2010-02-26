@@ -52,9 +52,9 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 
             recorder.ApplyNext(call);
 
-            A.CallTo(() => call.SetReturnValue(10)).Assert(Happened.Once);
-            A.CallTo(() => call.SetArgumentValue(2, 10)).Assert(Happened.Once);
-            A.CallTo(() => call.SetArgumentValue(3, "20")).Assert(Happened.Once);
+            A.CallTo(() => call.SetReturnValue(10)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => call.SetArgumentValue(2, 10)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => call.SetArgumentValue(3, "20")).MustHaveHappened(Repeated.Once);
         }
 
         [Test]

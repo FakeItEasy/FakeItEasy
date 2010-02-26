@@ -83,7 +83,7 @@ namespace FakeItEasy.Tests.Assertion
             var expression = ExpressionHelper.CreateExpression<IFoo>(x => x.Bar());
             this.assertions.WasCalled(expression);
 
-            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).Assert(Happened.Once);
+            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace FakeItEasy.Tests.Assertion
             var expression = ExpressionHelper.CreateExpression<IFoo>(x => x.Biz());
             this.assertions.WasCalled(expression);
 
-            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).Assert(Happened.Once);
+            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -213,7 +213,7 @@ namespace FakeItEasy.Tests.Assertion
             var expression = ExpressionHelper.CreateExpression<IFoo>(x => x.Bar());
             this.assertions.WasCalled(expression, repeat => repeat == 10);
 
-            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).Assert(Happened.Once);
+            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -275,7 +275,7 @@ namespace FakeItEasy.Tests.Assertion
             var expression = ExpressionHelper.CreateExpression<IFoo>(x => x.Biz());
             this.assertions.WasCalled(expression, repeat => repeat == 10);
 
-            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).Assert(Happened.Once);
+            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -344,7 +344,7 @@ namespace FakeItEasy.Tests.Assertion
             var expression = ExpressionHelper.CreateExpression<IFoo>(x => x.Bar());
             this.assertions.WasNotCalled(expression);
 
-            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).Assert(Happened.Once);
+            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -409,7 +409,7 @@ namespace FakeItEasy.Tests.Assertion
             var expression = ExpressionHelper.CreateExpression<IFoo>(x => x.Biz());
             this.assertions.WasNotCalled(expression);
 
-            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).Assert(Happened.Once);
+            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(expression)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]

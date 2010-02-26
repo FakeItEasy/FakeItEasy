@@ -1,7 +1,7 @@
 namespace FakeItEasy.Tests.Api
 {
     using NUnit.Framework;
-using FakeItEasy.Api;
+    using FakeItEasy.Api;
     using System;
 
     [TestFixture]
@@ -47,7 +47,7 @@ using FakeItEasy.Api;
             }
             
             // Assert
-            A.CallTo(() => call.SetReturnValue(generatedFake)).Assert(Happened.Once);
+            A.CallTo(() => call.SetReturnValue(generatedFake)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -69,7 +69,7 @@ using FakeItEasy.Api;
 
             // Assert
             A.CallTo(() => this.generatorCommandFactory.CreateGenerationCommand(typeof(int), null, true))
-                .Assert(Happened.Once);
+                .MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -90,7 +90,7 @@ using FakeItEasy.Api;
             }
 
             // Assert
-            A.CallTo(() => call.SetReturnValue(0)).Assert(Happened.Once);
+            A.CallTo(() => call.SetReturnValue(0)).MustHaveHappened(Repeated.Once);
         }
 
         

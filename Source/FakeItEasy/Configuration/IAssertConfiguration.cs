@@ -10,6 +10,6 @@ namespace FakeItEasy.Configuration
     public interface IAssertConfiguration
         : IHideObjectMembers
     {
-        void Assert(Happened repeatConstraint);
+        void MustHaveHappened(Repeated repeatConstraint);
     }
 }

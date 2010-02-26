@@ -44,7 +44,7 @@ namespace FakeItEasy.Tests.Expressions
 
             rule.IsApplicableTo(call);
 
-            A.CallTo(() => this.callMatcher.Matches(call)).Assert(Happened.Once);
+            A.CallTo(() => this.callMatcher.Matches(call)).MustHaveHappened(Repeated.Once);
         }
 
         [TestCase(true)]

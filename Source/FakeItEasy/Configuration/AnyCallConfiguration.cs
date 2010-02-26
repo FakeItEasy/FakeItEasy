@@ -57,9 +57,9 @@ namespace FakeItEasy.Configuration
             return this.VoidConfiguration.AssignsOutAndRefParameters(values);
         }
 
-        public void Assert(Happened repeatConstraint)
+        public void MustHaveHappened(Repeated repeatConstraint)
         {
-            this.VoidConfiguration.Assert(repeatConstraint);
+            this.VoidConfiguration.MustHaveHappened(repeatConstraint);
         }
     }
 }

@@ -115,9 +115,9 @@ namespace FakeItEasy.Configuration
                 get { return this.ParentConfiguration.Matcher; }
             }
 
-            public void Assert(Happened repeatConstraint)
+            public void MustHaveHappened(Repeated repeatConstraint)
             {
-                this.ParentConfiguration.Assert(repeatConstraint);
+                this.ParentConfiguration.MustHaveHappened(repeatConstraint);
             }
         }
 
@@ -177,7 +177,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public void Assert(Happened repeatConstraint)
+        public void MustHaveHappened(Repeated repeatConstraint)
         {
             this.fakeObject.RemoveRule(this.RuleBeingBuilt);
             var asserter = this.asserterFactory.Invoke(this.Calls.Cast<IFakeObjectCall>());

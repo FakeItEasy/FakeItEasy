@@ -66,7 +66,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Bar());
 
             // Assert
-            A.CallTo(() => this.configurationFactory.CreateConfiguration(this.fakeObjectReturnedFromParser, A<BuildableCallRule>.Ignored)).Assert(Happened.Once);
+            A.CallTo(() => this.configurationFactory.CreateConfiguration(this.fakeObjectReturnedFromParser, A<BuildableCallRule>.Ignored)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
@@ -171,7 +171,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Baz());
 
             // Assert
-            A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(A<FakeObject>.Ignored, this.ruleReturnedFromFactory)).Assert(Happened.Once);
+            A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(A<FakeObject>.Ignored, this.ruleReturnedFromFactory)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]
