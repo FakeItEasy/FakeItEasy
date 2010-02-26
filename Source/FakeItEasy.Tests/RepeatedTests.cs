@@ -6,7 +6,7 @@ namespace FakeItEasy.Tests
     using System;
 
     [TestFixture]
-    public class HappenedTests
+    public class RepeatedTests
     {
         [TestCase(1, Result = true)]
         [TestCase(2, Result = true)]
@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests
         public bool Once_should_return_instance_that_matches_one_or_above(int repeat)
         {
             // Arrange
-            var once = Happened.Once;
+            var once = Repeated.Once;
 
             // Act
             
@@ -29,10 +29,10 @@ namespace FakeItEasy.Tests
         public bool Twice_should_return_instance_that_matches_one_or_above(int repeat)
         {
             // Arrange
-            var twice = Happened.Twice;
+            var twice = Repeated.Twice;
 
             // Act
-
+            
             // Assert
             return twice.Matches(repeat);
         }
@@ -44,7 +44,7 @@ namespace FakeItEasy.Tests
         public bool Never_should_return_instance_that_matches_one_or_above(int repeat)
         {
             // Arrange
-            var never = Happened.Never;
+            var never = Repeated.Never;
 
             // Act
 
@@ -60,7 +60,7 @@ namespace FakeItEasy.Tests
         public bool Never_should_return_instance_that_matches_one_or_above(int expectedRepeat, int repeat)
         {
             // Arrange
-            var times = Happened.Times(expectedRepeat);
+            var times = Repeated.Times(expectedRepeat);
 
             // Act
 
@@ -76,20 +76,20 @@ namespace FakeItEasy.Tests
             Expression<Func<int, bool>> repeatPredicate = repeat => repeat == expected;
 
             // Act
-            var happened = Happened.ConvertFromExpression(repeatPredicate);
+            var happened = Repeated.Like(repeatPredicate);
 
             // Assert
             return happened.Matches(actual);
         }
 
         [Test]
-        public void ConvertFromExpression_should_return_instance_that_has_correct_description()
+        public void Like_should_return_instance_that_has_correct_description()
         {
             // Arrange
             Expression<Func<int, bool>> repeatPredicate = repeat => repeat == 1;
 
             // Act
-            var happened = Happened.ConvertFromExpression(repeatPredicate);
+            var happened = Repeated.Like(repeatPredicate);
 
             // Assert
             Assert.That(happened.ToString(), Is.EqualTo("the number of times specified by the predicate 'repeat => (repeat = 1)'"));
