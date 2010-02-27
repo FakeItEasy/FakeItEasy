@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests
             var strings = new List<string>() { "a", "b", "c" };
             var ints = Enumerable.Range(1, int.MaxValue);
 
-            var result = strings.Zip(ints).Select(x => x.First + x.Second.ToString());
+            var result = CommonExtensions.Zip(strings, ints).Select(x => x.First + x.Second.ToString());
 
             Assert.That(result, Is.EquivalentTo(new[] { "a1", "b2", "c3" }));
         }

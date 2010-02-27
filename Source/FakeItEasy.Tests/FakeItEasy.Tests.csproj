@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -31,24 +31,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\DynamicProxy\net-3.5\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\DynamicProxy\net-3.5\Castle.DynamicProxy2.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
@@ -59,14 +56,11 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs">
-      <Link>SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\VersionAssemblyInfo.cs">
-      <Link>VersionAssemblyInfo.cs</Link>
-    </Compile>
+    <Compile Include="..\SharedAssemblyInfo.cs" />
+    <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="AnyTests.cs" />
     <Compile Include="Api\CallInterceptedEventArgsTests.cs" />
     <Compile Include="Api\DefaultReturnValueRuleTests.cs" />
@@ -127,7 +121,6 @@
     <Compile Include="ExpectationExceptionTests.cs" />
     <Compile Include="ExtensionSyntax\ExtensionSyntaxTests.cs" />
     <Compile Include="Assertion\FakeAsserterTests.cs" />
-    <Compile Include="Fake%28T%29Tests.cs" />
     <Compile Include="FakeCall.cs" />
     <Compile Include="FakeCallRule.cs" />
     <Compile Include="FakeExtensionsTests.cs" />
@@ -146,6 +139,7 @@
     <Compile Include="VisualBasic\ThisCallTests.cs" />
     <Compile Include="VisualBasic\VisualBasicHelpersTests.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManagerTests.cs" />
+    <Compile Include="Fake(T)Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj">

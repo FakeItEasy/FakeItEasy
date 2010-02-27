@@ -27,7 +27,7 @@ namespace FakeItEasy.Tests.Api
         {
             var call = FakeCall.Create<object>("GetType");
 
-            Assert.That(call.GetDescription(), Is.EqualTo("System.Object.GetType()"));
+            Assert.That(Helpers.GetDescription(call), Is.EqualTo("System.Object.GetType()"));
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace FakeItEasy.Tests.Api
         {
             var call = CreateFakeCallToFooDotBar("abc", 123);
 
-            Assert.That(call.GetDescription(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(\"abc\", 123)"));
+            Assert.That(Helpers.GetDescription(call), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(\"abc\", 123)"));
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace FakeItEasy.Tests.Api
         {
             var call = CreateFakeCallToFooDotBar(null, 123);
 
-            Assert.That(call.GetDescription(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<NULL>, 123)"));
+            Assert.That(Helpers.GetDescription(call), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<NULL>, 123)"));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace FakeItEasy.Tests.Api
         {
             var call = CreateFakeCallToFooDotBar("", 123);
 
-            Assert.That(call.GetDescription(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<string.Empty>, 123)"));
+            Assert.That(Helpers.GetDescription(call), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<string.Empty>, 123)"));
         }
 
         [Test]

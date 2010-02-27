@@ -1,6 +1,7 @@
 using FakeItEasy.Api;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System;
 using System.Diagnostics;
@@ -122,7 +123,7 @@ namespace FakeItEasy.Tests.Api
 
             foreach (var call in this.calls)
             {
-                A.CallTo(() => call.ToString()).Returns(x => "Fake call {0}".FormatInvariant(Guid.NewGuid()));
+                A.CallTo(() => call.ToString()).Returns(x => string.Format(CultureInfo.InvariantCulture, "Fake call {0}", Guid.NewGuid()));
             }
 
             A.CallTo(() => this.calls[18].ToString()).Returns("Last call");

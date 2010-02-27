@@ -11,6 +11,7 @@ using FakeItEasy.Api;
 using System.Linq.Expressions;
 using FakeItEasy.Expressions;
 using System.Collections;
+using System.Globalization;
 
 namespace FakeItEasy.Tests
 {
@@ -29,7 +30,8 @@ namespace FakeItEasy.Tests
         
         public static ArgumentValidator<Expression> ProducesValue(this ArgumentValidatorScope<Expression> validations, object expectedValue)
         {
-            return ArgumentValidator.Create(validations, x => object.Equals(expectedValue, ExpressionManager.GetValueProducedByExpression(x)), "Expression that produces the value {0}".FormatInvariant(expectedValue));
+            return ArgumentValidator.Create(validations, x => object.Equals(expectedValue, ExpressionManager.GetValueProducedByExpression(x)), 
+			                                string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
         }
 
         public static ArgumentValidator<FakeObject> Fakes(this ArgumentValidatorScope<FakeObject> validations, object fakedObject)

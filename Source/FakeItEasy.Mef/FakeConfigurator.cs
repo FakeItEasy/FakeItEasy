@@ -3,6 +3,7 @@ namespace FakeItEasy.Mef
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
+	using System.Globalization;
 
     /// <summary>
     /// Provides the base implementation for the IFakeConfigurator-interface.
@@ -41,7 +42,7 @@ namespace FakeItEasy.Mef
         {
             if (!(fakeObject is T))
             { 
-                throw new ArgumentException("The {0} can only configure fakes of the type '{1}'.".FormatInvariant(
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The {0} can only configure fakes of the type '{1}'.",
                     this.GetType(), typeof(T)), "fakeObject");
             }
         }

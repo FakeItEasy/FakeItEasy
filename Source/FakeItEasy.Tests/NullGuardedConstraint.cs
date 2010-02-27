@@ -47,7 +47,7 @@ namespace FakeItEasy.Tests
 
         public override void WriteDescriptionTo(MessageWriter writer)
         {
-            writer.WritePredicate("Calls to {0} should be null guarded.".FormatInvariant(this.state.ToString()));
+            writer.WritePredicate(CommonExtensions.FormatInvariant("Calls to {0} should be null guarded.", this.state.ToString()));
         }
 
         public override void WriteActualValueTo(MessageWriter writer)
@@ -312,11 +312,11 @@ namespace FakeItEasy.Tests
                     var argumentNullException = call.Thrown as ArgumentNullException;
                     if (argumentNullException != null)
                     {
-                        description.Append("threw ArgumentNullException with wrong argument name, it should be \"{0}\".".FormatInvariant(call.ArgumentName));
+                        description.Append(CommonExtensions.FormatInvariant("threw ArgumentNullException with wrong argument name, it should be \"{0}\".", call.ArgumentName));
                     }
                     else
                     {
-                        description.Append("threw unexpected {0}.".FormatInvariant(call.Thrown.GetType().FullName));
+                        description.Append(CommonExtensions.FormatInvariant("threw unexpected {0}.", call.Thrown.GetType().FullName));
                     }
                 }
             }
