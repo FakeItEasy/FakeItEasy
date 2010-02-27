@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -47,15 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\FakeItEasy\Configure.cs">
-      <Link>Configure.cs</Link>
-    </Compile>
-    <Compile Include="..\SharedAssemblyInfo.cs">
-      <Link>SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\VersionAssemblyInfo.cs">
-      <Link>VersionAssemblyInfo.cs</Link>
-    </Compile>
+    <Compile Include="..\FakeItEasy\Configure.cs" />
+    <Compile Include="..\SharedAssemblyInfo.cs" />
+    <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="CompatibilityExtensions.cs" />
     <Compile Include="ExtensionSyntax\Full\FullExtensionSyntaxCompatibilityExtensions.cs" />
     <Compile Include="Happened.cs" />
