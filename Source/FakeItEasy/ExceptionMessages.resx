@@ -129,12 +129,6 @@
   <data name="ArgumentValidationDefaultMessage" xml:space="preserve">
     <value>An argument validation was not configured correctly.</value>
   </data>
-  <data name="ArgumentValidatorConstructorSignatureDoesntMatchValidationMethod" xml:space="preserve">
-    <value>The validator type '{0}' specified in the ArgumentValidatorAttribute does not have a constructor with a signature that matches the argument validation extension method, the signature of the constructor needs to be {1}.</value>
-  </data>
-  <data name="ArgumentValidatorTypeArgumentsDoesntMatchValidationMethod" xml:space="preserve">
-    <value>The number of generic arguments to the validation extension method was {0} but the number of generic arguments to the argument validator type specified in the ArgumentValidatorAttribute was {1}.</value>
-  </data>
   <data name="CalledTooFewTimesMessage" xml:space="preserve">
     <value>The method '{0}' was called too few times, expected #{1} times but was called #{2} times.</value>
   </data>
@@ -161,9 +155,6 @@
   </data>
   <data name="NoDefaultConstructorMessage" xml:space="preserve">
     <value>Can not generate fake object for the class since no default constructor was found, specify a constructor call.</value>
-  </data>
-  <data name="NonArgumentValidatorTypeExceptionMessage" xml:space="preserve">
-    <value>The validator type specified in the ArgumentValidatorAttribute must be a type that implements the IArgumentValidator-interface, the specified type '{0}' does not implement the interface.</value>
   </data>
   <data name="NonConstructorExpressionMessage" xml:space="preserve">
     <value>Only expression of the type ExpressionType.New (constructor calls) are accepted.</value>

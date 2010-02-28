@@ -18,7 +18,7 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
-        /// The scope of the validator.
+        /// The scope of the constraint.
         /// </summary>
         internal ArgumentConstraintScope<T> Scope
         {
@@ -27,7 +27,7 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
-        /// A validator for an interface type can not be implicitly converted to the
+        /// A constraint for an interface type can not be implicitly converted to the
         /// argument type, use this property in these cases.
         /// </summary>
         /// <example>
@@ -42,18 +42,18 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
-        /// Produces a new scope to combine the current validator with another validator.
+        /// Produces a new scope to combine the current constraint with another constraint.
         /// </summary>
         public ArgumentConstraintScope<T> And
         {
             get
             {
-                return new AndValidations() { ParentValidator = this };
+                return new AndValidations() { ParentConstraint = this };
             }
         }
 
         /// <summary>
-        /// Gets a description of this validator.
+        /// Gets a description of this constraint.
         /// </summary>
         protected abstract string Description { get; }
 
@@ -64,12 +64,12 @@ namespace FakeItEasy.Expressions
         /// <returns>True if the value is valid.</returns>
         public bool IsValid(T value)
         {
-            return this.Scope.IsValid(value) && this.Scope.ResultOfChildValidatorIsValid(this.Evaluate(value));
+            return this.Scope.IsValid(value) && this.Scope.ResultOfChildConstraintIsValid(this.Evaluate(value));
         }
 
         /// <summary>
-        /// Gets the full description of the validator, together with any parent validations
-        /// and validators descriptions.
+        /// Gets the full description of the constraint, together with any parent validations
+        /// and constraints descriptions.
         /// </summary>
         internal string FullDescription
         {
@@ -89,14 +89,14 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
-        /// Allows you to combine the current validator with another validator, where only
+        /// Allows you to combine the current constraint with another constraint, where only
         /// one of them has to be valid.
         /// </summary>
-        /// <param name="otherValidator">The validator to combine with.</param>
-        /// <returns>A combined validator.</returns>
-        public ArgumentConstraint<T> Or(ArgumentConstraint<T> otherValidator)
+        /// <param name="otherConstraint">The constraint to combine with.</param>
+        /// <returns>A combined constraint.</returns>
+        public ArgumentConstraint<T> Or(ArgumentConstraint<T> otherConstraint)
         {
-            return new OrValidator(this, otherValidator);
+            return new OrConstraint(this, otherConstraint);
         }
 
         /// <summary>
@@ -117,35 +117,35 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
-        /// Gets a formatted description of this validator.
+        /// Gets a formatted description of this constraint.
         /// </summary>
-        /// <returns>A description of this validator.</returns>
+        /// <returns>A description of this constraint.</returns>
         public override string ToString()
         {
             return string.Concat("<", this.FullDescription, ">");
         }
 
         /// <summary>
-        /// Creates a new validator.
+        /// Creates a new constraint.
         /// </summary>
-        /// <param name="validations">The scope of the validator.</param>
+        /// <param name="validations">The scope of the constraint.</param>
         /// <param name="predicate">A predicate that's used to validate arguments.</param>
-        /// <param name="description">A description of the validator.</param>
-        /// <returns>An ArgumentValidator.</returns>
-        [Obsolete("Use the ArgumentValidator.Create-method (on the non generic ArgumentValidator-class) instead.")]
+        /// <param name="description">A description of the constraint.</param>
+        /// <returns>An ArgumentConstraint.</returns>
+        [Obsolete("Use the ArgumentConstraint.Create-method (on the non generic ArgumentConstraint-class) instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static ArgumentConstraint<T> Create<T>(ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)
         {
             return ArgumentConstraint.Create(scope, predicate, description);
         }
 
-        private class OrValidator
+        private class OrConstraint
             : ArgumentConstraint<T>
         {
             private ArgumentConstraint<T> first;
             private ArgumentConstraint<T> second;
 
-            public OrValidator(ArgumentConstraint<T> first, ArgumentConstraint<T> second)
+            public OrConstraint(ArgumentConstraint<T> first, ArgumentConstraint<T> second)
                 : base(new RootValidations<T>())
             {
                 this.first = first;
@@ -166,39 +166,39 @@ namespace FakeItEasy.Expressions
         private class AndValidations
             : ArgumentConstraintScope<T>
         {
-            public ArgumentConstraint<T> ParentValidator;
+            public ArgumentConstraint<T> ParentConstraint;
 
             internal override bool IsValid(T argument)
             {
-                return this.ParentValidator.IsValid(argument);
+                return this.ParentConstraint.IsValid(argument);
             }
 
             public override string ToString()
             {
-                return string.Concat(this.ParentValidator.FullDescription, " and");
+                return string.Concat(this.ParentConstraint.FullDescription, " and");
             }
 
-            internal override bool ResultOfChildValidatorIsValid(bool result)
+            internal override bool ResultOfChildConstraintIsValid(bool result)
             {
                 return result;
             }
         }
 
-        public static implicit operator T(ArgumentConstraint<T> validator)
+        public static implicit operator T(ArgumentConstraint<T> constraint)
         {
-            return validator.Argument;
+            return constraint.Argument;
         }
     }
 
     /// <summary>
-    /// Provides static methods for the ArgumentValidator{T} class.
+    /// Provides static methods for the ArgumentConstraint{T} class.
     /// </summary>
     public static class ArgumentConstraint
     {
-        private class PredicateArgumentValidator<T>
+        private class PredicateArgumentConstraint<T>
            : ArgumentConstraint<T>
         {
-            public PredicateArgumentValidator(ArgumentConstraintScope<T> scope)
+            public PredicateArgumentConstraint(ArgumentConstraintScope<T> scope)
                 : base(scope)
             {
 
@@ -219,19 +219,19 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
-        /// Creates a new validator.
+        /// Creates a new constraint.
         /// </summary>
-        /// <param name="validations">The scope of the validator.</param>
+        /// <param name="validations">The scope of the constraint.</param>
         /// <param name="predicate">A predicate that's used to validate arguments.</param>
-        /// <param name="description">A description of the validator.</param>
-        /// <returns>An ArgumentValidator.</returns>
+        /// <param name="description">A description of the constraint.</param>
+        /// <returns>An ArgumentConstraint.</returns>
         public static ArgumentConstraint<T> Create<T>(ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)
         {
             Guard.IsNotNull(scope, "scope");
             Guard.IsNotNull(predicate, "predicate");
             Guard.IsNotNullOrEmpty(description, "description");
 
-            return new PredicateArgumentValidator<T>(scope) { Validation = predicate, DescriptionField = description };
+            return new PredicateArgumentConstraint<T>(scope) { Validation = predicate, DescriptionField = description };
         }
     }
 }

@@ -194,6 +194,7 @@
   <ItemGroup>
     <EmbeddedResource Include="ExceptionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionMessages1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

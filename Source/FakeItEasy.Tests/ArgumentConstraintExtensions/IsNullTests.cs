@@ -9,12 +9,12 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
     public class IsNullTests
-        : ArgumentValidatorTestBase<string>
+        : ArgumentConstraintTestBase<string>
     {
         [SetUp]
         public void SetUp()
         {
-            this.Validator = A<string>.That.IsNull();
+            this.Constraint = A<string>.That.IsNull();
         }
 
         protected override IEnumerable<object> ValidValues

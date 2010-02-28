@@ -15,7 +15,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
         [SetUp]
         public void SetUp()
         {
-            this.Validator = new EqualityArgumentConstraint(1);
+            this.constraint = new EqualityArgumentConstraint(1);
         }
 
         protected override IEnumerable<object> InvalidValues
@@ -37,9 +37,9 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
         }
 
         [Test]
-        public override void Validator_should_provide_correct_description()
+        public override void Constraint_should_provide_correct_description()
         {
-            Assert.That(this.Validator.ToString(), Is.EqualTo("1"));
+            Assert.That(this.constraint.ToString(), Is.EqualTo("1"));
         }
 
         [Test]

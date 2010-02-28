@@ -7,7 +7,7 @@ namespace FakeItEasy.Tests.Expressions
 
     [TestFixture]
     public class ArgumentConstraintTests
-        : ArgumentValidatorTestBase<int>
+        : ArgumentConstraintTestBase<int>
     {
         private ArgumentConstraintScope<int> validations;
 
@@ -16,10 +16,10 @@ namespace FakeItEasy.Tests.Expressions
         {
             this.validations = A.Fake<ArgumentConstraintScope<int>>();
             A.CallTo(() => this.validations.IsValid(A<int>.Ignored)).Returns(true);
-            A.CallTo(() => this.validations.ResultOfChildValidatorIsValid(true)).Returns(true);
-            A.CallTo(() => this.validations.ResultOfChildValidatorIsValid(false)).Returns(false);
+            A.CallTo(() => this.validations.ResultOfChildConstraintIsValid(true)).Returns(true);
+            A.CallTo(() => this.validations.ResultOfChildConstraintIsValid(false)).Returns(false);
 
-            this.Validator = new TestableValidator(this.validations);
+            this.Constraint = new TestableValidator(this.validations);
         }
 
         private TestableValidator CreateValidator()
@@ -160,7 +160,7 @@ namespace FakeItEasy.Tests.Expressions
             var validator = this.CreateValidator();
             validator.EvaluateReturnValue = true;
 
-            A.CallTo(() => this.validations.ResultOfChildValidatorIsValid(true)).Returns(true);
+            A.CallTo(() => this.validations.ResultOfChildConstraintIsValid(true)).Returns(true);
 
             // Act
             var result = validator.IsValid(10);
@@ -176,7 +176,7 @@ namespace FakeItEasy.Tests.Expressions
             var validator = this.CreateValidator();
             validator.EvaluateReturnValue = true;
 
-            A.CallTo(() => this.validations.ResultOfChildValidatorIsValid(true)).Returns(false);
+            A.CallTo(() => this.validations.ResultOfChildConstraintIsValid(true)).Returns(false);
 
             // Act
             var result = validator.IsValid(10);
@@ -227,7 +227,7 @@ namespace FakeItEasy.Tests.Expressions
             // Act
 
             // Assert
-            return and.ResultOfChildValidatorIsValid(validatorIsValid);
+            return and.ResultOfChildConstraintIsValid(validatorIsValid);
         }
 
         [TestCase("foo and", "bar", Result = "foo and bar")]

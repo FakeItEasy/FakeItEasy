@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests.Expressions
                 return this.IsValidReturnValue;
             }
 
-            internal override bool ResultOfChildValidatorIsValid(bool result)
+            internal override bool ResultOfChildConstraintIsValid(bool result)
             {
                 return result;
             }
@@ -88,7 +88,7 @@ namespace FakeItEasy.Tests.Expressions
             var validations = this.CreateValidations<string>();
 
             // Act
-            var not = validations.Not as NotArgumentValidatorScope<string>;
+            var not = validations.Not as NotArgumentConstraintScope<string>;
 
             // Assert
             Assert.That(not.ParentValidations, Is.SameAs(validations));

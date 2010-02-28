@@ -5,10 +5,10 @@ namespace FakeItEasy.Expressions
     using System;
     using System.Text;
 
-    internal class NotArgumentValidatorScope<T>
+    internal class NotArgumentConstraintScope<T>
         : ArgumentConstraintScope<T>
     {
-        public NotArgumentValidatorScope(ArgumentConstraintScope<T> parentValidations)
+        public NotArgumentConstraintScope(ArgumentConstraintScope<T> parentValidations)
         {
             this.ParentValidations = parentValidations;
         }
@@ -40,7 +40,7 @@ namespace FakeItEasy.Expressions
             return result.ToString();
         }
 
-        internal override bool ResultOfChildValidatorIsValid(bool result)
+        internal override bool ResultOfChildConstraintIsValid(bool result)
         {
             return !result;
         }

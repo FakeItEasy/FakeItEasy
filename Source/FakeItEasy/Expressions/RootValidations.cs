@@ -9,7 +9,7 @@ namespace FakeItEasy.Expressions
             return true;
         }
 
-        internal override bool ResultOfChildValidatorIsValid(bool result)
+        internal override bool ResultOfChildConstraintIsValid(bool result)
         {
             return result;
         }

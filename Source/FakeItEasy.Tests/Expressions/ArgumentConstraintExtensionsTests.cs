@@ -24,7 +24,7 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         [Test]
-        public void Or_should_return_or_validator()
+        public void Or_should_return_or_constraint()
         {
             // Arrange
             

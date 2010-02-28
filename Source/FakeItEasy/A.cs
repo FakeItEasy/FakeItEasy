@@ -141,7 +141,7 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Returns a validator that considers any value of an argument as valid.
+        /// Returns a constraint that considers any value of an argument as valid.
         /// </summary>
         public static ArgumentConstraint<T> Ignored
         {

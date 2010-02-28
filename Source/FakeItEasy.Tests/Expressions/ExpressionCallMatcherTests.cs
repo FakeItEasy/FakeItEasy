@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.Expressions
             this.validatorFactory = A.Fake<ArgumentConstraintFactory>();
             var validator = A.Fake<IArgumentConstraint>();
             Configure.Fake(validator).CallsTo(x => x.IsValid(A<object>.Ignored)).Returns(true);
-            Configure.Fake(validatorFactory).CallsTo(x => x.GetArgumentValidator(A<Expression>.Ignored)).Returns(validator);
+            Configure.Fake(validatorFactory).CallsTo(x => x.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
 
             this.methodInfoManager = A.Fake<MethodInfoManager>();
         }
@@ -112,9 +112,9 @@ namespace FakeItEasy.Tests.Expressions
             this.CreateMatcher<IFoo>(x => x.Bar("foo", 10));
 
             Fake.Assert(this.validatorFactory)
-                .WasCalled(x => x.GetArgumentValidator(A<Expression>.That.ProducesValue("foo")));
+                .WasCalled(x => x.GetArgumentConstraint(A<Expression>.That.ProducesValue("foo")));
             Fake.Assert(this.validatorFactory)
-                .WasCalled(x => x.GetArgumentValidator(A<Expression>.That.ProducesValue(10)));
+                .WasCalled(x => x.GetArgumentConstraint(A<Expression>.That.ProducesValue(10)));
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace FakeItEasy.Tests.Expressions
                 .CallsTo(x => x.IsValid(A<object>.Ignored))
                 .Returns(true);
             Configure.Fake(this.validatorFactory)
-                .CallsTo(x => x.GetArgumentValidator(A<Expression>.Ignored))
+                .CallsTo(x => x.GetArgumentConstraint(A<Expression>.Ignored))
                 .Returns(validator);
             
 
@@ -154,7 +154,7 @@ namespace FakeItEasy.Tests.Expressions
             Configure.Fake(validator).CallsTo(x => x.IsValid(A<object>.Ignored)).Returns(false);
             Configure.Fake(validator).CallsTo(x => x.IsValid(A<object>.Ignored)).Returns(true).Once();
 
-            Configure.Fake(this.validatorFactory).CallsTo(x => x.GetArgumentValidator(A<Expression>.Ignored)).Returns(validator);
+            Configure.Fake(this.validatorFactory).CallsTo(x => x.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
             
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2));
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 3));
@@ -171,14 +171,14 @@ namespace FakeItEasy.Tests.Expressions
                 .Returns("<FOO>");
 
             Configure.Fake(this.validatorFactory)
-                .CallsTo(x => x.GetArgumentValidator(A<Expression>.Ignored))
+                .CallsTo(x => x.GetArgumentConstraint(A<Expression>.Ignored))
                 .Returns(validator);
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 
             Assert.That(matcher.ToString(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<FOO>, <FOO>)"));
             Fake.Assert(this.validatorFactory)
-                .WasCalled(x => x.GetArgumentValidator(A<Expression>.Ignored), repeat => repeat == 2);
+                .WasCalled(x => x.GetArgumentConstraint(A<Expression>.Ignored), repeat => repeat == 2);
         }
 
         [Test]

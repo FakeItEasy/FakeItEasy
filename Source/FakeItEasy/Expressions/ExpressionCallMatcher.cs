@@ -14,21 +14,21 @@
     internal class ExpressionCallMatcher
         : ICallMatcher
     {
-        private IEnumerable<IArgumentConstraint> argumentValidators;
+        private IEnumerable<IArgumentConstraint> argumentConstraints;
         private MethodInfoManager methodInfoManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionCallMatcher"/> class.
         /// </summary>
         /// <param name="callSpecification">The call specification.</param>
-        /// <param name="validatorFactory">The validator factory.</param>
-        public ExpressionCallMatcher(LambdaExpression callSpecification, ArgumentConstraintFactory validatorFactory, MethodInfoManager methodInfoManager)
+        /// <param name="constraintFactory">The constraint factory.</param>
+        public ExpressionCallMatcher(LambdaExpression callSpecification, ArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager)
         {
             this.methodInfoManager = methodInfoManager;
             this.Method = GetMethodInfo(callSpecification);
 
-            this.argumentValidators = GetArgumentValidators(callSpecification, validatorFactory).ToArray();
-            this.argumentsPredicate = this.ArgumentsMatchesArgumentValidators;
+            this.argumentConstraints = GetArgumentConstraints(callSpecification, constraintFactory).ToArray();
+            this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
         }
 
         private MethodInfo Method { get; set; }
@@ -51,14 +51,14 @@
             throw new ArgumentException(ExceptionMessages.CreatingExpressionCallMatcherWithNonMethodOrPropertyExpression);
         }
 
-        private static IEnumerable<IArgumentConstraint> GetArgumentValidators(LambdaExpression callSpecification, ArgumentConstraintFactory validatorFactory)
+        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(LambdaExpression callSpecification, ArgumentConstraintFactory constraintFactory)
         {
             var methodExpression = callSpecification.Body as MethodCallExpression;
             if (methodExpression != null)
             {
                 return
                     (from argument in methodExpression.Arguments
-                     select validatorFactory.GetArgumentValidator(argument));
+                     select constraintFactory.GetArgumentConstraint(argument));
             }
 
             return Enumerable.Empty<IArgumentConstraint>();
@@ -79,8 +79,8 @@
         {
             this.argumentsPredicate = argumentsPredicate;
 
-            var numberOfValdiators = this.argumentValidators.Count();
-            this.argumentValidators = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentValidator(), numberOfValdiators);
+            var numberOfValdiators = this.argumentConstraints.Count();
+            this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValdiators);
         }
 
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
@@ -105,7 +105,7 @@
             result.Append("(");
             bool firstArgument = true;
 
-            foreach (var validator in this.argumentValidators)
+            foreach (var constraint in this.argumentConstraints)
             {
                 if (!firstArgument)
                 {
@@ -116,7 +116,7 @@
                     firstArgument = false;
                 }
 
-                result.Append(validator.ToString());
+                result.Append(constraint.ToString());
             }
 
             result.Append(")");
@@ -129,11 +129,11 @@
             return this.argumentsPredicate(argumentCollection);
         }
 
-        private bool ArgumentsMatchesArgumentValidators(ArgumentCollection argumentCollection)
+        private bool ArgumentsMatchesArgumentConstraints(ArgumentCollection argumentCollection)
         {
-            foreach (var argumentValidatorPair in argumentCollection.AsEnumerable().Zip(this.argumentValidators))
+            foreach (var argumentConstraintPair in argumentCollection.AsEnumerable().Zip(this.argumentConstraints))
             {
-                if (!argumentValidatorPair.Second.IsValid(argumentValidatorPair.First))
+                if (!argumentConstraintPair.Second.IsValid(argumentConstraintPair.First))
                 {
                     return false;
                 }
@@ -142,7 +142,7 @@
             return true;
         }
 
-        private class PredicatedArgumentValidator
+        private class PredicatedArgumentConstraint
             : IArgumentConstraint
         {
             public bool IsValid(object argument)

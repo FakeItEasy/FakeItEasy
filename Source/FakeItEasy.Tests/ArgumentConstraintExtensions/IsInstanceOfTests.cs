@@ -10,12 +10,12 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
     public class IsInstanceOfTests
-        : ArgumentValidatorTestBase<object>
+        : ArgumentConstraintTestBase<object>
     {
         [SetUp]
         public void SetUp()
         {
-            this.Validator = A<object>.That.IsInstanceOf<DateTime>();
+            this.Constraint = A<object>.That.IsInstanceOf<DateTime>();
         }
 
         protected override IEnumerable<object> InvalidValues

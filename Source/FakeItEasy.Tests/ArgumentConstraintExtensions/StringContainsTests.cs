@@ -9,12 +9,12 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
     public class StringContainsTests
-        : ArgumentValidatorTestBase<string>
+        : ArgumentConstraintTestBase<string>
     {
         [SetUp]
         public void SetUp()
         {
-            this.Validator = A<string>.That.Contains("bar");
+            this.Constraint = A<string>.That.Contains("bar");
         }
 
         protected override IEnumerable<object> InvalidValues
@@ -35,12 +35,12 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
     [TestFixture]
     public class StringStartsWithTests
-        : ArgumentValidatorTestBase<string>
+        : ArgumentConstraintTestBase<string>
     {
         [SetUp]
         public void SetUp()
         {
-            this.Validator = A<string>.That.StartsWith("abc");
+            this.Constraint = A<string>.That.StartsWith("abc");
         }
 
         protected override IEnumerable<object> InvalidValues
@@ -61,12 +61,12 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
     [TestFixture]
     public class StringIsNullOrEmptyTests
-        : ArgumentValidatorTestBase<string>
+        : ArgumentConstraintTestBase<string>
     {
         [SetUp]
         public void SetUp()
         {
-            this.Validator = A<string>.That.IsNullOrEmpty();
+            this.Constraint = A<string>.That.IsNullOrEmpty();
         }
 
         protected override IEnumerable<object> InvalidValues
@@ -87,12 +87,12 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
     [TestFixture]
     public class ComparableGreaterThanTests
-        : ArgumentValidatorTestBase<int>
+        : ArgumentConstraintTestBase<int>
     {
         [SetUp]
         public void SetUp()
         {
-            this.Validator = A<int>.That.IsGreaterThan(100);
+            this.Constraint = A<int>.That.IsGreaterThan(100);
         }
 
         protected override IEnumerable<object> InvalidValues

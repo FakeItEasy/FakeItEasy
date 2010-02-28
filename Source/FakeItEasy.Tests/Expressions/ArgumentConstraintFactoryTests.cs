@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.Expressions
 
             // Act
             var factory = this.CreateFactory();
-            var producedValidator = factory.GetArgumentValidator(argument);
+            var producedValidator = factory.GetArgumentConstraint(argument);
 
             // Assert
             Assert.That(producedValidator, Is.SameAs(validator));
@@ -36,7 +36,7 @@ namespace FakeItEasy.Tests.Expressions
             
             // Act
             var factory = this.CreateFactory();
-            var producedValidator = factory.GetArgumentValidator(argument);
+            var producedValidator = factory.GetArgumentConstraint(argument);
 
             // Assert
             Assert.That(producedValidator, Is.SameAs(validator));
@@ -51,7 +51,7 @@ namespace FakeItEasy.Tests.Expressions
 
             // Act
             var factory = this.CreateFactory();
-            var producedValidator = factory.GetArgumentValidator(argument);
+            var producedValidator = factory.GetArgumentConstraint(argument);
 
             // Assert
             Assert.That(producedValidator, Is.SameAs(validator));
@@ -66,7 +66,7 @@ namespace FakeItEasy.Tests.Expressions
 
             // Act
             var factory = this.CreateFactory();
-            var producedValidator = factory.GetArgumentValidator(argument);
+            var producedValidator = factory.GetArgumentConstraint(argument);
 
             // Assert
             Assert.That(producedValidator, Is.SameAs(validator));

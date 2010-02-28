@@ -46,7 +46,7 @@ namespace FakeItEasy.Tests.Expressions
             // Act
 
             // Assert
-            return validations.ResultOfChildValidatorIsValid(validatorIsValid);
+            return validations.ResultOfChildConstraintIsValid(validatorIsValid);
         }
     }
 }

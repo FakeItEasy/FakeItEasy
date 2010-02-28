@@ -16,9 +16,9 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => this.parentValidations.IsValid(A<string>.Ignored)).Returns(true);
         }
 
-        private NotArgumentValidatorScope<string> CreateValidations()
+        private NotArgumentConstraintScope<string> CreateValidations()
         {
-            return new NotArgumentValidatorScope<string>(this.parentValidations);
+            return new NotArgumentConstraintScope<string>(this.parentValidations);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace FakeItEasy.Tests.Expressions
             // Act
 
             // Assert
-            return validations.ResultOfChildValidatorIsValid(validatorIsValid);
+            return validations.ResultOfChildConstraintIsValid(validatorIsValid);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests
 {
     public abstract class ArgumentConstraintTestBase
     {
-        protected IArgumentConstraint Validator;
+        protected IArgumentConstraint constraint;
         protected abstract IEnumerable<object> InvalidValues { get; }
         protected abstract IEnumerable<object> ValidValues { get; }
         protected abstract string ExpectedDescription { get; }
@@ -19,35 +19,35 @@ namespace FakeItEasy.Tests
         [TestCaseSource("InvalidValues")]
         public void IsValid_should_return_false_for_invalid_values(object invalidValue)
         {
-            Assert.That(this.Validator.IsValid(invalidValue), Is.False);
+            Assert.That(this.constraint.IsValid(invalidValue), Is.False);
         }
 
         [Test]
         [TestCaseSource("ValidValues")]
         public void IsValid_should_return_true_for_valid_values(object validValue)
         {
-            Assert.That(this.Validator.IsValid(validValue), Is.True);
+            Assert.That(this.constraint.IsValid(validValue), Is.True);
         }
 
         [Test]
-        public virtual void Validator_should_provide_correct_description()
+        public virtual void Constraint_should_provide_correct_description()
         {
-            Assert.That(this.Validator.ToString(), Is.EqualTo("<" + this.ExpectedDescription + ">"));
+            Assert.That(this.constraint.ToString(), Is.EqualTo("<" + this.ExpectedDescription + ">"));
         }
     }
 
-    public abstract class ArgumentValidatorTestBase<T>
+    public abstract class ArgumentConstraintTestBase<T>
         : ArgumentConstraintTestBase
     {
-        protected new ArgumentConstraint<T> Validator
+        protected new ArgumentConstraint<T> Constraint
         {
             get
             {
-                return (ArgumentConstraint<T>)base.Validator;
+                return (ArgumentConstraint<T>)base.constraint;
             }
             set
             {
-                base.Validator = value;
+                base.constraint = value;
             }
         }
 
@@ -59,7 +59,7 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            Assert.That(this.Validator.FullDescription, Is.EqualTo(this.ExpectedDescription));
+            Assert.That(this.Constraint.FullDescription, Is.EqualTo(this.ExpectedDescription));
         }
 
     }
