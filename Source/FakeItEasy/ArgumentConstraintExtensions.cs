@@ -3,6 +3,8 @@ namespace FakeItEasy
     using System;
     using FakeItEasy.Expressions;
 using System.Collections;
+    using System.Collections.Generic;
+    using FakeItEasy.Expressions.ArgumentConstraints;
 
     /// <summary>
     /// Provides validation extension to the ArgumentValidations{T} class.
@@ -37,13 +39,9 @@ using System.Collections;
         /// <param name="scope">The scope of the constraint.</param>
         /// <param name="value">The value the collection should contain.</param>
         /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<IEnumerable> Contains(this ArgumentConstraintScope<IEnumerable> scope, object value)
+        public static ArgumentConstraint<T> Contains<T>(this ArgumentConstraintScope<T> scope, object value) where T : IEnumerable
         {
-#if DEBUG
-    throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
+            return new EnumerableContainsConstraint<T>(scope, value);
         }
 
         /// <summary>

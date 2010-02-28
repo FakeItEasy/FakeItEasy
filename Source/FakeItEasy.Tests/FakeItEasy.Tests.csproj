@@ -68,6 +68,7 @@
     <Compile Include="Api\FakeObjectBuilderTests.cs" />
     <Compile Include="Api\FakeObjectFactoryTests.cs" />
     <Compile Include="Api\ProxyResultTests.cs" />
+    <Compile Include="ArgumentConstraintExtensionsTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsInstanceOfTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsNullTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\StringContainsTests.cs" />

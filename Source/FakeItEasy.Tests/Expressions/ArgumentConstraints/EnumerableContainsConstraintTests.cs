@@ -17,7 +17,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
         {
             var scope = A<IEnumerable>.That;
             
-            this.constraint = new EnumerableContainsConstraint(scope, 10);
+            this.constraint = new EnumerableContainsConstraint<IEnumerable>(scope, 10);
         }
 
         protected override IEnumerable<object> InvalidValues

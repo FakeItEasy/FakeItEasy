@@ -2,15 +2,15 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
 {
     using FakeItEasy.Api;
     using System;
-using System.Collections;
+    using System.Collections;
     using System.Linq;
 
-    public class EnumerableContainsConstraint
-            : ArgumentConstraint<IEnumerable>
+    public class EnumerableContainsConstraint<T>
+            : ArgumentConstraint<T> where T : IEnumerable
     {
         private object expectedValue;
 
-        public EnumerableContainsConstraint(ArgumentConstraintScope<IEnumerable> scope, object value)
+        public EnumerableContainsConstraint(ArgumentConstraintScope<T> scope, object value)
             : base(scope)
         {
             this.expectedValue = value;
@@ -24,7 +24,7 @@ using System.Collections;
             }
         }
 
-        protected override bool Evaluate(IEnumerable value)
+        protected override bool Evaluate(T value)
         {
             return value != null && value.Cast<object>().Contains(this.expectedValue);
         }
