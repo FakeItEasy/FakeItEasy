@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Api;
-using FakeItEasy.Expressions;
-using System.Diagnostics;
-
 namespace FakeItEasy.IoC
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+
     /// <summary>
     /// A simple implementation of an IoC container.
     /// </summary>
