@@ -3,7 +3,7 @@ namespace FakeItEasy.Api
     /// <summary>
     /// Validates an argument, checks that it's valid in a specific fake call.
     /// </summary>
-    public interface IArgumentValidator
+    public interface IArgumentConstraint
     {
         /// <summary>
         /// Gets whether the argument is valid.

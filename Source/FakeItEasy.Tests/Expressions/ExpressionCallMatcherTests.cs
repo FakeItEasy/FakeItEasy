@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.Expressions
         public void SetUp()
         {
             this.validatorFactory = A.Fake<ArgumentValidatorFactory>();
-            var validator = A.Fake<IArgumentValidator>();
+            var validator = A.Fake<IArgumentConstraint>();
             Configure.Fake(validator).CallsTo(x => x.IsValid(A<object>.Ignored)).Returns(true);
             Configure.Fake(validatorFactory).CallsTo(x => x.GetArgumentValidator(A<Expression>.Ignored)).Returns(validator);
 
@@ -125,7 +125,7 @@ namespace FakeItEasy.Tests.Expressions
             var argument1 = "foo";
             var argument2 = 10;
 
-            var validator = A.Fake<IArgumentValidator>();
+            var validator = A.Fake<IArgumentConstraint>();
             Configure.Fake(validator)
                 .CallsTo(x => x.IsValid(A<object>.Ignored))
                 .Returns(true);
@@ -150,7 +150,7 @@ namespace FakeItEasy.Tests.Expressions
         {
             this.StubMethodInfoManagerToReturn(true);
 
-            var validator = A.Fake<IArgumentValidator>();
+            var validator = A.Fake<IArgumentConstraint>();
             Configure.Fake(validator).CallsTo(x => x.IsValid(A<object>.Ignored)).Returns(false);
             Configure.Fake(validator).CallsTo(x => x.IsValid(A<object>.Ignored)).Returns(true).Once();
 
@@ -165,7 +165,7 @@ namespace FakeItEasy.Tests.Expressions
         [Test]
         public void ToString_should_write_full_method_name_with_type_name_and_arguments_list()
         {
-            var validator = A.Fake<IArgumentValidator>();
+            var validator = A.Fake<IArgumentConstraint>();
             Configure.Fake(validator)
                 .CallsTo(x => x.ToString())
                 .Returns("<FOO>");

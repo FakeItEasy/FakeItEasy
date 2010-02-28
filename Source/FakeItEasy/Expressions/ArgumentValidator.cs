@@ -10,7 +10,7 @@ namespace FakeItEasy.Expressions
     /// </summary>
     /// <typeparam name="T">The type of argument to validate.</typeparam>
     public abstract class ArgumentValidator<T>
-        : IArgumentValidator, IHideObjectMembers
+        : IArgumentConstraint, IHideObjectMembers
     {
         protected ArgumentValidator(ArgumentValidatorScope<T> scope)
         {
@@ -111,7 +111,7 @@ namespace FakeItEasy.Expressions
         /// </summary>
         /// <param name="argument">The argument to validate.</param>
         /// <returns>True if the argument is valid.</returns>
-        bool IArgumentValidator.IsValid(object argument)
+        bool IArgumentConstraint.IsValid(object argument)
         {
             return this.IsValid((T)argument);
         }

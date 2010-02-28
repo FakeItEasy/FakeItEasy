@@ -16,9 +16,9 @@ using System.Reflection;
         /// </summary>
         /// <param name="argument">The argument.</param>
         /// <returns>An IArgumentValidator used to validated arguments in IFakeObjectCalls.</returns>
-        public virtual IArgumentValidator GetArgumentValidator(Expression argument)
+        public virtual IArgumentConstraint GetArgumentValidator(Expression argument)
         {
-            IArgumentValidator result = null;
+            IArgumentConstraint result = null;
             
             if (!TryGetArgumentValidator(argument, out result))
             {
@@ -28,7 +28,7 @@ using System.Reflection;
             return result;
         }
 
-        private static bool TryGetArgumentValidator(Expression argument, out IArgumentValidator result)
+        private static bool TryGetArgumentValidator(Expression argument, out IArgumentConstraint result)
         {
             if (TryGetAbstractValidator(argument, out result))
             {
@@ -39,23 +39,23 @@ using System.Reflection;
             return false;
         }
 
-        private static bool TryGetAbstractValidator(Expression argument, out IArgumentValidator result)
+        private static bool TryGetAbstractValidator(Expression argument, out IArgumentConstraint result)
         {
             var unary = argument as UnaryExpression;
             if (unary != null && IsArgumentValidatorConversionMethod(unary.Method))
             {
-                result = ExpressionManager.GetValueProducedByExpression(unary.Operand) as IArgumentValidator;
+                result = ExpressionManager.GetValueProducedByExpression(unary.Operand) as IArgumentConstraint;
                 return true;
             }
 
             var member = argument as MemberExpression;
             if (member != null && IsArgumentValidatorArgumentProperty(member))
             {
-                result = ExpressionManager.GetValueProducedByExpression(member.Expression) as IArgumentValidator;
+                result = ExpressionManager.GetValueProducedByExpression(member.Expression) as IArgumentConstraint;
                 return true;
             }
 
-            result = ExpressionManager.GetValueProducedByExpression(argument) as IArgumentValidator;
+            result = ExpressionManager.GetValueProducedByExpression(argument) as IArgumentConstraint;
             return result != null;
         }
 

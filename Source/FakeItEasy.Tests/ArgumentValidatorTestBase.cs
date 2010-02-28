@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests
 {
     public abstract class ArgumentValidatorTestBase
     {
-        protected IArgumentValidator Validator;
+        protected IArgumentConstraint Validator;
         protected abstract IEnumerable<object> InvalidValues { get; }
         protected abstract IEnumerable<object> ValidValues { get; }
         protected abstract string ExpectedDescription { get; }

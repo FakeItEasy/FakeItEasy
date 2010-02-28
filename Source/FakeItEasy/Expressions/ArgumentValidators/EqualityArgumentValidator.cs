@@ -3,7 +3,7 @@ namespace FakeItEasy.Expressions
     using FakeItEasy.Api;
 
     public class EqualityArgumentValidator
-        : IArgumentValidator
+        : IArgumentConstraint
     {
         private object expectedValue;
 

@@ -14,7 +14,7 @@
     internal class ExpressionCallMatcher
         : ICallMatcher
     {
-        private IEnumerable<IArgumentValidator> argumentValidators;
+        private IEnumerable<IArgumentConstraint> argumentValidators;
         private MethodInfoManager methodInfoManager;
 
         /// <summary>
@@ -51,7 +51,7 @@
             throw new ArgumentException(ExceptionMessages.CreatingExpressionCallMatcherWithNonMethodOrPropertyExpression);
         }
 
-        private static IEnumerable<IArgumentValidator> GetArgumentValidators(LambdaExpression callSpecification, ArgumentValidatorFactory validatorFactory)
+        private static IEnumerable<IArgumentConstraint> GetArgumentValidators(LambdaExpression callSpecification, ArgumentValidatorFactory validatorFactory)
         {
             var methodExpression = callSpecification.Body as MethodCallExpression;
             if (methodExpression != null)
@@ -61,7 +61,7 @@
                      select validatorFactory.GetArgumentValidator(argument));
             }
 
-            return Enumerable.Empty<IArgumentValidator>();
+            return Enumerable.Empty<IArgumentConstraint>();
         }
 
         /// <summary>
@@ -80,7 +80,7 @@
             this.argumentsPredicate = argumentsPredicate;
 
             var numberOfValdiators = this.argumentValidators.Count();
-            this.argumentValidators = Enumerable.Repeat<IArgumentValidator>(new PredicatedArgumentValidator(), numberOfValdiators);
+            this.argumentValidators = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentValidator(), numberOfValdiators);
         }
 
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
@@ -143,7 +143,7 @@
         }
 
         private class PredicatedArgumentValidator
-            : IArgumentValidator
+            : IArgumentConstraint
         {
             public bool IsValid(object argument)
             {
