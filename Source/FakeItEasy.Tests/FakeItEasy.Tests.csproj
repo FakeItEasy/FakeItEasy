@@ -78,8 +78,8 @@
     <Compile Include="Configuration\StartConfigurationTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
-    <Compile Include="Expressions\ArgumentConstraintExtensionsTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintScopeTests.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraintTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />
     <Compile Include="Expressions\NotArgumentValidatorScopeTests.cs" />

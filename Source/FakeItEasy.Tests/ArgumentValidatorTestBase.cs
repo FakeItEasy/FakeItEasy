@@ -26,7 +26,9 @@ namespace FakeItEasy.Tests
         [TestCaseSource("ValidValues")]
         public void IsValid_should_return_true_for_valid_values(object validValue)
         {
-            Assert.That(this.constraint.IsValid(validValue), Is.True);
+            var result = this.constraint.IsValid(validValue);
+            
+            Assert.That(result, Is.True);
         }
 
         [Test]

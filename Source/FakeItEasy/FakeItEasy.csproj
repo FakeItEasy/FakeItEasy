@@ -64,7 +64,7 @@
     <Compile Include="Api\DelegateFakeObjectContainer.cs" />
     <Compile Include="Api\ICallCollectionAndCallMatcherAccessor.cs" />
     <Compile Include="Api\ICallMatcher.cs" />
-    <Compile Include="ArgumentValidationsExtensions.cs" />
+    <Compile Include="ArgumentConstraintExtensions.cs" />
     <Compile Include="Configuration\AnyCallCallRule.cs" />
     <Compile Include="Configuration\AnyCallConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationModule.cs" />
@@ -75,9 +75,9 @@
     <Compile Include="Configuration\IFakeConfigurationManager.cs" />
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
-    <Compile Include="Expressions\ArgumentConstraintExtensions.cs" />
     <Compile Include="Expressions\ArgumentConstraintScope.cs" />
     <Compile Include="Expressions\ArgumentConstraint.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs" />
     <Compile Include="Expressions\ExpressionParser.cs" />
     <Compile Include="Expressions\IExpressionParser.cs" />
     <Compile Include="Expressions\NotArgumentConstraintScope.cs" />

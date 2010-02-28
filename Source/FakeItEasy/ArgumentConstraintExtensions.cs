@@ -1,11 +1,13 @@
-using FakeItEasy.Expressions;
-using System;
 namespace FakeItEasy
 {
+    using System;
+    using FakeItEasy.Expressions;
+using System.Collections;
+
     /// <summary>
     /// Provides validation extension to the ArgumentValidations{T} class.
     /// </summary>
-    public static class ArgumentValidationsExtensions
+    public static class ArgumentConstraintExtensions
     {
         /// <summary>
         /// Validates that an argument is null.
@@ -27,6 +29,21 @@ namespace FakeItEasy
         public static ArgumentConstraint<string> Contains(this ArgumentConstraintScope<string> scope, string value)
         {
             return scope.CreateConstraint(x => x != null && x.Contains(value), "String that contains \"{0}\"", value);
+        }
+
+        /// <summary>
+        /// Validates that the collection argument contains the specified value.
+        /// </summary>
+        /// <param name="scope">The scope of the constraint.</param>
+        /// <param name="value">The value the collection should contain.</param>
+        /// <returns>An argument constraint.</returns>
+        public static ArgumentConstraint<IEnumerable> Contains(this ArgumentConstraintScope<IEnumerable> scope, object value)
+        {
+#if DEBUG
+    throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
         }
 
         /// <summary>
