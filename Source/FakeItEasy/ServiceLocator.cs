@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Api;
-using FakeItEasy.Expressions;
-using System.Diagnostics;
-using FakeItEasy.IoC;
-using FakeItEasy.Configuration;
-
-namespace FakeItEasy
+﻿namespace FakeItEasy
 {
+    using System;
+    using System.Diagnostics;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.IoC;
+
     internal abstract class ServiceLocator
     {
         static ServiceLocator()
