@@ -1,9 +1,8 @@
 namespace FakeItEasy
 {
     using System;
+    using System.Collections;
     using FakeItEasy.Expressions;
-using System.Collections;
-    using System.Collections.Generic;
     using FakeItEasy.Expressions.ArgumentConstraints;
 
     /// <summary>

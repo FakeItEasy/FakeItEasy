@@ -1,12 +1,10 @@
 namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
 {
-    using System;
-    using System.Collections.Generic;
-    using NUnit.Framework;
-    using FakeItEasy.Expressions.ArgumentConstraints;
-    using System.Linq;
-    using FakeItEasy.Expressions;
     using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using FakeItEasy.Expressions.ArgumentConstraints;
+    using NUnit.Framework;
     
     [TestFixture]
     public class EnumerableContainsConstraintTests

@@ -1,9 +1,8 @@
 namespace FakeItEasy.Tests
 {
-    using NUnit.Framework;
     using System.Collections.Generic;
-    using NUnit.Framework.Constraints;
     using FakeItEasy.Expressions.ArgumentConstraints;
+    using NUnit.Framework;
 
     [TestFixture]
     public class ArgumentConstraintExtensionsTests
