@@ -66,7 +66,7 @@ namespace FakeItEasy.IoC
         {
             var singletonResolver = new SingletonResolver<T>(resolver);
 			
-            Register<T>(singletonResolver.Resolve);
+            this.Register<T>(singletonResolver.Resolve);
         }
 		
 		private class SingletonResolver<T>
@@ -104,12 +104,30 @@ namespace FakeItEasy.IoC
 				{
 					lock (this)
 					{
-						var instance = this.resolveFunction(container);
-						this.resolver.state = new ResolvedState(instance);
-						return instance;
+                        if (this.SingletonHasNotBeenCreated)
+                        {
+                            var instance = this.resolveFunction(container);
+                            this.resolver.state = new ResolvedState(instance);
+                            this.SignalThatSingletonHasBeenCreated();
+                        }
+
+                        return this.resolver.Resolve(container);
 					}
 				}
-			}
+
+                private void SignalThatSingletonHasBeenCreated()
+                {
+                    this.resolveFunction = null;
+                }
+
+                private bool SingletonHasNotBeenCreated
+                {
+                    get
+                    {
+                        return this.resolveFunction != null;
+                    }
+                }
+            }
 			
 			private class ResolvedState
 				: SingletonResolverState

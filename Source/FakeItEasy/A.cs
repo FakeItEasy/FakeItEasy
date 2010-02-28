@@ -75,16 +75,6 @@ namespace FakeItEasy
             return object.ReferenceEquals(objA, objB);
         }
 
-        /// <summary>
-        /// Creates a fake object of the specified type.
-        /// </summary>
-        /// <param name="typeOfFake">The type of fake object to create.</typeparam>
-        /// <returns>A fake object.</returns>
-        internal static object Fake(Type typeOfFake)
-        {
-            return CreateFake(typeOfFake, null);
-        }
-
         private static FakeObjectFactory Factory
         {
             get
