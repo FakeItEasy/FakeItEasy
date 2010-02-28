@@ -4,13 +4,13 @@ namespace FakeItEasy.Tests.Expressions
     using NUnit.Framework;
 
     [TestFixture]
-    public class ArgumentValidatorExtensionsTests
+    public class ArgumentConstraintExtensionsTests
     {
         [Test]
         public void Or_should_pass_root_scope_to_delegate()
         {
             // Arrange
-            ArgumentValidatorScope<string> scopePassedToDelegate = null;
+            ArgumentConstraintScope<string> scopePassedToDelegate = null;
 
             // Act
             A<string>.That.IsNull().Or(x =>

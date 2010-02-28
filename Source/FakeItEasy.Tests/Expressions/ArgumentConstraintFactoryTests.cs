@@ -5,18 +5,18 @@ namespace FakeItEasy.Tests.Expressions
     using NUnit.Framework;
 
     [TestFixture]
-    public class ArgumentValidatorFactoryTests
+    public class ArgumentConstraintFactoryTests
     {
-        private ArgumentValidatorFactory CreateFactory()
+        private ArgumentConstraintFactory CreateFactory()
         {
-            return new ArgumentValidatorFactory();
+            return new ArgumentConstraintFactory();
         }
 
         [Test]
         public void GetArgumentValidator_should_get_validator_produced_by_method()
         {
             // Arrange
-            var validator = A.Fake<ArgumentValidator<int>>();
+            var validator = A.Fake<ArgumentConstraint<int>>();
             var argument = ExpressionHelper.GetArgumentExpression<ITestInterface>(x => x.Foo(GetValidator(validator)), 0);
 
             // Act
@@ -31,7 +31,7 @@ namespace FakeItEasy.Tests.Expressions
         public void GetArgumentValidator_should_get_validator_passed_in_directly()
         {
             // Arrange
-            var validator = A.Fake<ArgumentValidator<int>>();
+            var validator = A.Fake<ArgumentConstraint<int>>();
             var argument = ExpressionHelper.GetArgumentExpression<ITestInterface>(x => x.Foo(validator), 0);
             
             // Act
@@ -46,7 +46,7 @@ namespace FakeItEasy.Tests.Expressions
         public void GetArgumentValidator_should_get_validator_when_Argument_property_has_been_called_on_it()
         {
             // Arrange
-            var validator = A.Fake<ArgumentValidator<int>>();
+            var validator = A.Fake<ArgumentConstraint<int>>();
             var argument = ExpressionHelper.GetArgumentExpression<ITestInterface>(x => x.Foo(validator.Argument), 0);
 
             // Act
@@ -61,7 +61,7 @@ namespace FakeItEasy.Tests.Expressions
         public void GetArgumentValidator_should_get_validator_when_parameter_is_of_type_object()
         {
             // Arrange
-            var validator = A.Fake<ArgumentValidator<object>>();
+            var validator = A.Fake<ArgumentConstraint<object>>();
             var argument = ExpressionHelper.GetArgumentExpression<ITestInterface>(x => x.Bar(GetValidator(validator)), 0);
 
             // Act
@@ -72,7 +72,7 @@ namespace FakeItEasy.Tests.Expressions
             Assert.That(producedValidator, Is.SameAs(validator));
         }
 
-        private static ArgumentValidator<T> GetValidator<T>(ArgumentValidator<T> validator)
+        private static ArgumentConstraint<T> GetValidator<T>(ArgumentConstraint<T> validator)
         {
             return validator;
         }

@@ -2,12 +2,12 @@ namespace FakeItEasy.Expressions
 {
     using FakeItEasy.Api;
 
-    public class EqualityArgumentValidator
+    public class EqualityArgumentConstraint
         : IArgumentConstraint
     {
         private object expectedValue;
 
-        public EqualityArgumentValidator(object expectedValue)
+        public EqualityArgumentConstraint(object expectedValue)
         {
             this.expectedValue = expectedValue;
         }

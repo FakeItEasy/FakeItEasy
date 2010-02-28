@@ -2,7 +2,7 @@ using System;
 namespace FakeItEasy.Expressions
 {
     internal class RootValidations<T>
-        : ArgumentValidatorScope<T>
+        : ArgumentConstraintScope<T>
     {
         internal override bool IsValid(T argument)
         {

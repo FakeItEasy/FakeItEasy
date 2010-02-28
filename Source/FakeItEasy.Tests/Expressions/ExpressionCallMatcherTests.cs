@@ -12,13 +12,13 @@ namespace FakeItEasy.Tests.Expressions
     [TestFixture]
     public class ExpressionCallMatcherTests
     {
-        private ArgumentValidatorFactory validatorFactory;
+        private ArgumentConstraintFactory validatorFactory;
         private MethodInfoManager methodInfoManager;
 
         [SetUp]
         public void SetUp()
         {
-            this.validatorFactory = A.Fake<ArgumentValidatorFactory>();
+            this.validatorFactory = A.Fake<ArgumentConstraintFactory>();
             var validator = A.Fake<IArgumentConstraint>();
             Configure.Fake(validator).CallsTo(x => x.IsValid(A<object>.Ignored)).Returns(true);
             Configure.Fake(validatorFactory).CallsTo(x => x.GetArgumentValidator(A<Expression>.Ignored)).Returns(validator);

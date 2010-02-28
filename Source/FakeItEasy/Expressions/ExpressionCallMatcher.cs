@@ -22,7 +22,7 @@
         /// </summary>
         /// <param name="callSpecification">The call specification.</param>
         /// <param name="validatorFactory">The validator factory.</param>
-        public ExpressionCallMatcher(LambdaExpression callSpecification, ArgumentValidatorFactory validatorFactory, MethodInfoManager methodInfoManager)
+        public ExpressionCallMatcher(LambdaExpression callSpecification, ArgumentConstraintFactory validatorFactory, MethodInfoManager methodInfoManager)
         {
             this.methodInfoManager = methodInfoManager;
             this.Method = GetMethodInfo(callSpecification);
@@ -51,7 +51,7 @@
             throw new ArgumentException(ExceptionMessages.CreatingExpressionCallMatcherWithNonMethodOrPropertyExpression);
         }
 
-        private static IEnumerable<IArgumentConstraint> GetArgumentValidators(LambdaExpression callSpecification, ArgumentValidatorFactory validatorFactory)
+        private static IEnumerable<IArgumentConstraint> GetArgumentValidators(LambdaExpression callSpecification, ArgumentConstraintFactory validatorFactory)
         {
             var methodExpression = callSpecification.Body as MethodCallExpression;
             if (methodExpression != null)

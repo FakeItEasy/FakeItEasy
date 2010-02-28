@@ -132,7 +132,7 @@ namespace FakeItEasy
         /// <summary>
         /// Gets an argument validations object that provides validations for the argument.
         /// </summary>
-        public static ArgumentValidatorScope<T> That
+        public static ArgumentConstraintScope<T> That
         {
             get
             {
@@ -143,11 +143,11 @@ namespace FakeItEasy
         /// <summary>
         /// Returns a validator that considers any value of an argument as valid.
         /// </summary>
-        public static ArgumentValidator<T> Ignored
+        public static ArgumentConstraint<T> Ignored
         {
             get
             {
-                return ArgumentValidator.Create(new RootValidations<T>(), x => true, "Ignored");
+                return ArgumentConstraint.Create(new RootValidations<T>(), x => true, "Ignored");
             }
         }
     }

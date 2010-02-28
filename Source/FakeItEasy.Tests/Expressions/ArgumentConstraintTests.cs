@@ -2,19 +2,19 @@ namespace FakeItEasy.Tests.Expressions
 {
     using NUnit.Framework;
     using FakeItEasy.Expressions;
-    using FakeItEasy.Tests.Expressions.ArgumentValidators;
+    using FakeItEasy.Tests.Expressions.ArgumentConstraints;
     using System;
 
     [TestFixture]
-    public class ArgumentValidatorTests
+    public class ArgumentConstraintTests
         : ArgumentValidatorTestBase<int>
     {
-        private ArgumentValidatorScope<int> validations;
+        private ArgumentConstraintScope<int> validations;
 
         [SetUp]
         public void SetUp()
         {
-            this.validations = A.Fake<ArgumentValidatorScope<int>>();
+            this.validations = A.Fake<ArgumentConstraintScope<int>>();
             A.CallTo(() => this.validations.IsValid(A<int>.Ignored)).Returns(true);
             A.CallTo(() => this.validations.ResultOfChildValidatorIsValid(true)).Returns(true);
             A.CallTo(() => this.validations.ResultOfChildValidatorIsValid(false)).Returns(false);
@@ -39,11 +39,11 @@ namespace FakeItEasy.Tests.Expressions
                     return true;
                 };
 
-            var validations = A.Fake<ArgumentValidatorScope<string>>();
+            var validations = A.Fake<ArgumentConstraintScope<string>>();
             A.CallTo(() => validations.IsValid(A<string>.Ignored)).Returns(true);
             
             // Act
-            var validator = ArgumentValidator.Create(validations, predicate, "foo");
+            var validator = ArgumentConstraint.Create(validations, predicate, "foo");
             validator.IsValid("argument");
 
             // Assert
@@ -58,7 +58,7 @@ namespace FakeItEasy.Tests.Expressions
             Func<int, bool> predicate = x => predicateResponse;
 
             // Act
-            var validator = ArgumentValidator.Create(this.validations, predicate, "foo");
+            var validator = ArgumentConstraint.Create(this.validations, predicate, "foo");
             var isValid = validator.IsValid(1);
 
             // Assert
@@ -69,7 +69,7 @@ namespace FakeItEasy.Tests.Expressions
         public void Create_should_return_validator_that_prints_description_from_ToString()
         {
             // Arrange
-            var validator = ArgumentValidator.Create(this.validations, x => true, "Any Int32");
+            var validator = ArgumentConstraint.Create(this.validations, x => true, "Any Int32");
 
             // Act
             var description = validator.ToString();
@@ -82,10 +82,10 @@ namespace FakeItEasy.Tests.Expressions
         public void Create_should_return_validator_with_the_passed_in_validations_object()
         {
             // Arrange
-            var validations = A.Fake<ArgumentValidatorScope<int>>();
+            var validations = A.Fake<ArgumentConstraintScope<int>>();
             
             // Act
-            var validator = ArgumentValidator.Create(validations, x => true, "foo");
+            var validator = ArgumentConstraint.Create(validations, x => true, "foo");
 
             // Assert
             Assert.That(validator.Scope, Is.SameAs(validations));
@@ -96,7 +96,7 @@ namespace FakeItEasy.Tests.Expressions
         {
             // Assert
             NullGuardedConstraint.Assert(() =>
-                ArgumentValidator.Create(this.validations, x => true, "foo"));
+                ArgumentConstraint.Create(this.validations, x => true, "foo"));
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace FakeItEasy.Tests.Expressions
         {
             // Assert
             Assert.Throws<ArgumentNullException>(() =>
-                ArgumentValidator.Create(this.validations, x => true, string.Empty));
+                ArgumentConstraint.Create(this.validations, x => true, string.Empty));
         }
 
         [Test]
@@ -315,11 +315,11 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         private class TestableValidator
-            : ArgumentValidator<int>
+            : ArgumentConstraint<int>
         {
             public bool EvaluateReturnValue = true;
 
-            public TestableValidator(ArgumentValidatorScope<int> validations) : base(validations) { }
+            public TestableValidator(ArgumentConstraintScope<int> validations) : base(validations) { }
 
             public string DescriptionToUse = "";
 

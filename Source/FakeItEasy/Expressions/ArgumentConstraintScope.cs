@@ -4,7 +4,7 @@ namespace FakeItEasy.Expressions
     using FakeItEasy.Configuration;
     using System;
 
-    public abstract class ArgumentValidatorScope<T>
+    public abstract class ArgumentConstraintScope<T>
         : IHideObjectMembers
     {
         /// <summary>
@@ -28,7 +28,7 @@ namespace FakeItEasy.Expressions
         /// if the validator is valid the result is false and if the validator is not
         /// valid the result is true.
         /// </summary>
-        public ArgumentValidatorScope<T> Not
+        public ArgumentConstraintScope<T> Not
         {
             get
             {
@@ -41,9 +41,9 @@ namespace FakeItEasy.Expressions
         /// </summary>
         /// <param name="predicate">A predicate that validates the argument.</param>
         /// <returns>An ArgumentValidator.</returns>
-        public virtual ArgumentValidator<T> Matches(Func<T, bool> predicate)
+        public virtual ArgumentConstraint<T> Matches(Func<T, bool> predicate)
         {
-            return ArgumentValidator.Create(this, predicate, "Predicate");
+            return ArgumentConstraint.Create(this, predicate, "Predicate");
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace FakeItEasy.Expressions
         /// </summary>
         /// <typeparam name="TType">The type to check for.</typeparam>
         /// <returns>An argument validator.</returns>
-        public virtual ArgumentValidator<T> IsInstanceOf<TType>()
+        public virtual ArgumentConstraint<T> IsInstanceOf<TType>()
         {
-            return ArgumentValidator.Create(this, x => x is TType, "Instance of {0}".FormatInvariant(typeof(TType)));
+            return ArgumentConstraint.Create(this, x => x is TType, "Instance of {0}".FormatInvariant(typeof(TType)));
         }
 
         /// <summary>

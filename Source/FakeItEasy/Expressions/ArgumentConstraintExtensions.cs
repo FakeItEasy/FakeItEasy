@@ -5,7 +5,7 @@ namespace FakeItEasy.Expressions
     /// <summary>
     /// Provides extension methods for the ArgumentValidator(T) class.
     /// </summary>
-    public static class ArgumentValidatorExtensions
+    public static class ArgumentConstraintExtensions
     {
         /// <summary>
         /// Allows you to combine the current validator with another validator, where only
@@ -14,7 +14,7 @@ namespace FakeItEasy.Expressions
         /// <param name="validator">The validator to extend.</param>
         /// <param name="otherValidator">A delegate that returns the validator to combine with.</param>
         /// <returns>A combined validator.</returns>
-        public static ArgumentValidator<T> Or<T>(this ArgumentValidator<T> validator, Func<ArgumentValidatorScope<T>, ArgumentValidator<T>> otherValidator)
+        public static ArgumentConstraint<T> Or<T>(this ArgumentConstraint<T> validator, Func<ArgumentConstraintScope<T>, ArgumentConstraint<T>> otherValidator)
         {
             Guard.IsNotNull(validator, "validator");
             Guard.IsNotNull(otherValidator, "otherValidator");

@@ -6,14 +6,14 @@ namespace FakeItEasy.Expressions
     using System.Text;
 
     internal class NotArgumentValidatorScope<T>
-        : ArgumentValidatorScope<T>
+        : ArgumentConstraintScope<T>
     {
-        public NotArgumentValidatorScope(ArgumentValidatorScope<T> parentValidations)
+        public NotArgumentValidatorScope(ArgumentConstraintScope<T> parentValidations)
         {
             this.ParentValidations = parentValidations;
         }
 
-        internal ArgumentValidatorScope<T> ParentValidations
+        internal ArgumentConstraintScope<T> ParentValidations
         {
             get;
             private set;

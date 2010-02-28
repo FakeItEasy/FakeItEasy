@@ -31,11 +31,11 @@
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c =>
                 new ExpressionCallMatcherFactory { Container = c });
 
-            container.RegisterSingleton<ArgumentValidatorFactory>(c => 
-                new ArgumentValidatorFactory());
+            container.RegisterSingleton<ArgumentConstraintFactory>(c => 
+                new ArgumentConstraintFactory());
 
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ArgumentValidatorFactory>(), c.Resolve<MethodInfoManager>())));
+                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>())));
 
             container.RegisterSingleton<IFakeAssertionsFactory>(c =>
                 new FakeAssertionsFactory { Container = c });
@@ -86,7 +86,7 @@
             {
                 return new ExpressionCallMatcher(
                     callSpecification,
-                    this.Container.Resolve<ArgumentValidatorFactory>(),
+                    this.Container.Resolve<ArgumentConstraintFactory>(),
                     this.Container.Resolve<MethodInfoManager>());
             }
         }

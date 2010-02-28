@@ -5,15 +5,15 @@ namespace FakeItEasy.Tests.Expressions
     using System;
 
     [TestFixture]
-    public class ArgumentValidatorScopeTests
+    public class ArgumentConstraintScopeTests
     {
-        private ArgumentValidatorScope<T> CreateValidations<T>()
+        private ArgumentConstraintScope<T> CreateValidations<T>()
         {
             return new TestableValidations<T>();
         }
 
         private class TestableValidations<T>
-            : ArgumentValidatorScope<T>
+            : ArgumentConstraintScope<T>
         {
             public bool IsValidReturnValue = true;
             

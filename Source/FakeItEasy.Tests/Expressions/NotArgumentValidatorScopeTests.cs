@@ -7,12 +7,12 @@ namespace FakeItEasy.Tests.Expressions
     [TestFixture]
     public class NotArgumentValidatorScopeTests
     {
-        private ArgumentValidatorScope<string> parentValidations;
+        private ArgumentConstraintScope<string> parentValidations;
 
         [SetUp]
         public void SetUp()
         {
-            this.parentValidations = A.Fake<ArgumentValidatorScope<string>>();
+            this.parentValidations = A.Fake<ArgumentConstraintScope<string>>();
             A.CallTo(() => this.parentValidations.IsValid(A<string>.Ignored)).Returns(true);
         }
 

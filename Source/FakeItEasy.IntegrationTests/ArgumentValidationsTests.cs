@@ -62,14 +62,14 @@ namespace FakeItEasy.IntegrationTests
 
     public static class StringArgumentValidations
     {
-        public static ArgumentValidator<string> StartsWith(this ArgumentValidatorScope<string> validations, string beginning)
+        public static ArgumentConstraint<string> StartsWith(this ArgumentConstraintScope<string> validations, string beginning)
         {
-            return ArgumentValidator.Create(validations, x => x.StartsWith(beginning), string.Format("Starts with \"{0}\"", beginning));
+            return ArgumentConstraint.Create(validations, x => x.StartsWith(beginning), string.Format("Starts with \"{0}\"", beginning));
         }
 
-        public static ArgumentValidator<string> Contains(this ArgumentValidatorScope<string> validations, string value)
+        public static ArgumentConstraint<string> Contains(this ArgumentConstraintScope<string> validations, string value)
         {
-            return ArgumentValidator.Create(validations, x => x.Contains(value), string.Format("Contains \"{0}\"", value));
+            return ArgumentConstraint.Create(validations, x => x.Contains(value), string.Format("Contains \"{0}\"", value));
         }
     }
 }

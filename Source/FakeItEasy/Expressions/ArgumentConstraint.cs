@@ -9,10 +9,10 @@ namespace FakeItEasy.Expressions
     /// An object that can determine if an argument of the type T is valid or not.
     /// </summary>
     /// <typeparam name="T">The type of argument to validate.</typeparam>
-    public abstract class ArgumentValidator<T>
+    public abstract class ArgumentConstraint<T>
         : IArgumentConstraint, IHideObjectMembers
     {
-        protected ArgumentValidator(ArgumentValidatorScope<T> scope)
+        protected ArgumentConstraint(ArgumentConstraintScope<T> scope)
         {
             this.Scope = scope;
         }
@@ -20,7 +20,7 @@ namespace FakeItEasy.Expressions
         /// <summary>
         /// The scope of the validator.
         /// </summary>
-        internal ArgumentValidatorScope<T> Scope
+        internal ArgumentConstraintScope<T> Scope
         {
             get;
             private set;
@@ -44,7 +44,7 @@ namespace FakeItEasy.Expressions
         /// <summary>
         /// Produces a new scope to combine the current validator with another validator.
         /// </summary>
-        public ArgumentValidatorScope<T> And
+        public ArgumentConstraintScope<T> And
         {
             get
             {
@@ -94,7 +94,7 @@ namespace FakeItEasy.Expressions
         /// </summary>
         /// <param name="otherValidator">The validator to combine with.</param>
         /// <returns>A combined validator.</returns>
-        public ArgumentValidator<T> Or(ArgumentValidator<T> otherValidator)
+        public ArgumentConstraint<T> Or(ArgumentConstraint<T> otherValidator)
         {
             return new OrValidator(this, otherValidator);
         }
@@ -134,18 +134,18 @@ namespace FakeItEasy.Expressions
         /// <returns>An ArgumentValidator.</returns>
         [Obsolete("Use the ArgumentValidator.Create-method (on the non generic ArgumentValidator-class) instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static ArgumentValidator<T> Create<T>(ArgumentValidatorScope<T> scope, Func<T, bool> predicate, string description)
+        public static ArgumentConstraint<T> Create<T>(ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)
         {
-            return ArgumentValidator.Create(scope, predicate, description);
+            return ArgumentConstraint.Create(scope, predicate, description);
         }
 
         private class OrValidator
-            : ArgumentValidator<T>
+            : ArgumentConstraint<T>
         {
-            private ArgumentValidator<T> first;
-            private ArgumentValidator<T> second;
+            private ArgumentConstraint<T> first;
+            private ArgumentConstraint<T> second;
 
-            public OrValidator(ArgumentValidator<T> first, ArgumentValidator<T> second)
+            public OrValidator(ArgumentConstraint<T> first, ArgumentConstraint<T> second)
                 : base(new RootValidations<T>())
             {
                 this.first = first;
@@ -164,9 +164,9 @@ namespace FakeItEasy.Expressions
         }
 
         private class AndValidations
-            : ArgumentValidatorScope<T>
+            : ArgumentConstraintScope<T>
         {
-            public ArgumentValidator<T> ParentValidator;
+            public ArgumentConstraint<T> ParentValidator;
 
             internal override bool IsValid(T argument)
             {
@@ -184,7 +184,7 @@ namespace FakeItEasy.Expressions
             }
         }
 
-        public static implicit operator T(ArgumentValidator<T> validator)
+        public static implicit operator T(ArgumentConstraint<T> validator)
         {
             return validator.Argument;
         }
@@ -193,12 +193,12 @@ namespace FakeItEasy.Expressions
     /// <summary>
     /// Provides static methods for the ArgumentValidator{T} class.
     /// </summary>
-    public static class ArgumentValidator
+    public static class ArgumentConstraint
     {
         private class PredicateArgumentValidator<T>
-           : ArgumentValidator<T>
+           : ArgumentConstraint<T>
         {
-            public PredicateArgumentValidator(ArgumentValidatorScope<T> scope)
+            public PredicateArgumentValidator(ArgumentConstraintScope<T> scope)
                 : base(scope)
             {
 
@@ -225,7 +225,7 @@ namespace FakeItEasy.Expressions
         /// <param name="predicate">A predicate that's used to validate arguments.</param>
         /// <param name="description">A description of the validator.</param>
         /// <returns>An ArgumentValidator.</returns>
-        public static ArgumentValidator<T> Create<T>(ArgumentValidatorScope<T> scope, Func<T, bool> predicate, string description)
+        public static ArgumentConstraint<T> Create<T>(ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)
         {
             Guard.IsNotNull(scope, "scope");
             Guard.IsNotNull(predicate, "predicate");

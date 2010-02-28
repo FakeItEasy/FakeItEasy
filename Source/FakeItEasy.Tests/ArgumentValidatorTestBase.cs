@@ -8,7 +8,7 @@ using FakeItEasy.Expressions;
 
 namespace FakeItEasy.Tests
 {
-    public abstract class ArgumentValidatorTestBase
+    public abstract class ArgumentConstraintTestBase
     {
         protected IArgumentConstraint Validator;
         protected abstract IEnumerable<object> InvalidValues { get; }
@@ -37,13 +37,13 @@ namespace FakeItEasy.Tests
     }
 
     public abstract class ArgumentValidatorTestBase<T>
-        : ArgumentValidatorTestBase
+        : ArgumentConstraintTestBase
     {
-        protected new ArgumentValidator<T> Validator
+        protected new ArgumentConstraint<T> Validator
         {
             get
             {
-                return (ArgumentValidator<T>)base.Validator;
+                return (ArgumentConstraint<T>)base.Validator;
             }
             set
             {

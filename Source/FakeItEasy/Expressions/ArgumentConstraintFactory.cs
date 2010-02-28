@@ -9,7 +9,7 @@ using System.Reflection;
     /// <summary>
     /// Responsible for creating argument validators from arguments in an expression.
     /// </summary>
-    public class ArgumentValidatorFactory
+    public class ArgumentConstraintFactory
     {
         /// <summary>
         /// Gets an argument validator for the argument represented by the expression.
@@ -22,7 +22,7 @@ using System.Reflection;
             
             if (!TryGetArgumentValidator(argument, out result))
             {
-                result = new EqualityArgumentValidator(ExpressionManager.GetValueProducedByExpression(argument));
+                result = new EqualityArgumentConstraint(ExpressionManager.GetValueProducedByExpression(argument));
             }
 
             return result;
@@ -63,7 +63,7 @@ using System.Reflection;
         {
             return
                 member.Member.Name == "Argument"
-                && member.Member.DeclaringType.GetGenericTypeDefinition().Equals(typeof(ArgumentValidator<>));
+                && member.Member.DeclaringType.GetGenericTypeDefinition().Equals(typeof(ArgumentConstraint<>));
         }
 
         private static bool IsArgumentValidatorConversionMethod(MethodInfo method)
@@ -71,7 +71,7 @@ using System.Reflection;
             return
                 method != null
                 && method.Name.Equals("op_Implicit")
-                && method.DeclaringType.GetGenericTypeDefinition().Equals(typeof(ArgumentValidator<>));
+                && method.DeclaringType.GetGenericTypeDefinition().Equals(typeof(ArgumentConstraint<>));
         }
     }
 }

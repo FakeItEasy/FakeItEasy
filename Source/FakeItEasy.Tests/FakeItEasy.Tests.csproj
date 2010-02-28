@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -68,9 +68,9 @@
     <Compile Include="Api\FakeObjectBuilderTests.cs" />
     <Compile Include="Api\FakeObjectFactoryTests.cs" />
     <Compile Include="Api\ProxyResultTests.cs" />
-    <Compile Include="ArgumentValidationExtensions\IsInstanceOfTests.cs" />
-    <Compile Include="ArgumentValidationExtensions\IsNullTests.cs" />
-    <Compile Include="ArgumentValidationExtensions\StringContainsTests.cs" />
+    <Compile Include="ArgumentConstraintExtensions\IsInstanceOfTests.cs" />
+    <Compile Include="ArgumentConstraintExtensions\IsNullTests.cs" />
+    <Compile Include="ArgumentConstraintExtensions\StringContainsTests.cs" />
     <Compile Include="Configuration\AnyCallCallRuleTests.cs" />
     <Compile Include="Configuration\AnyCallConfigurationTests.cs" />
     <Compile Include="Configuration\FakeConfigurationExceptionTests.cs" />
@@ -78,9 +78,9 @@
     <Compile Include="Configuration\StartConfigurationTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
-    <Compile Include="Expressions\ArgumentValidatorExtensionsTests.cs" />
-    <Compile Include="Expressions\ArgumentValidatorScopeTests.cs" />
-    <Compile Include="Expressions\ArgumentValidatorTests.cs" />
+    <Compile Include="Expressions\ArgumentConstraintExtensionsTests.cs" />
+    <Compile Include="Expressions\ArgumentConstraintScopeTests.cs" />
+    <Compile Include="Expressions\ArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />
     <Compile Include="Expressions\NotArgumentValidatorScopeTests.cs" />
     <Compile Include="Expressions\RootValidationsTests.cs" />
@@ -97,9 +97,9 @@
     <Compile Include="CommonExtensionsTests.cs" />
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
     <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
-    <Compile Include="Expressions\ArgumentValidatorFactoryTests.cs" />
+    <Compile Include="Expressions\ArgumentConstraintFactoryTests.cs" />
     <Compile Include="ArgumentValidatorTestBase.cs" />
-    <Compile Include="Expressions\ArgumentValidators\EqualityArgumentValidatorTests.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentValidatorTests.cs" />
     <Compile Include="Expressions\ExpressionCallRuleTests.cs" />
     <Compile Include="Expressions\ExpressionCallMatcherTests.cs" />
     <Compile Include="Api\MethodInfoManagerTests.cs" />

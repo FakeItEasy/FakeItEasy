@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FakeItEasy.Tests.Expressions.ArgumentValidators;
+using FakeItEasy.Tests.Expressions.ArgumentConstraints;
 using NUnit.Framework;
 using FakeItEasy.Expressions;
 

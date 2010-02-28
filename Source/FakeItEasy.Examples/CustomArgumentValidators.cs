@@ -5,9 +5,9 @@ namespace FakeItEasy.Examples
 
     public static class CustomArgumentValidators
     {
-        public static ArgumentValidator<string> IsLongerThan(this ArgumentValidatorScope<string> validations, int length)
+        public static ArgumentConstraint<string> IsLongerThan(this ArgumentConstraintScope<string> validations, int length)
         {
-            return ArgumentValidator.Create(validations, x => x.Length > length, string.Format(CultureInfo.InvariantCulture, "Longer than {0}", length));
+            return ArgumentConstraint.Create(validations, x => x.Length > length, string.Format(CultureInfo.InvariantCulture, "Longer than {0}", length));
         }
     }
 }

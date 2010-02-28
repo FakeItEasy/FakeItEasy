@@ -36,7 +36,7 @@ namespace FakeItEasy.Tests.Assertion
             this.matcher = A.Fake<ExpressionCallMatcher>(x => x.WithArgumentsForConstructor(() =>
                 new ExpressionCallMatcher(
                     ExpressionHelper.CreateExpression<IFoo>(_ => Console.WriteLine("")),
-                    ServiceLocator.Current.Resolve<ArgumentValidatorFactory>(),
+                    ServiceLocator.Current.Resolve<ArgumentConstraintFactory>(),
                     ServiceLocator.Current.Resolve<MethodInfoManager>())));
 
             this.callMatcherFactory = A.Fake<IExpressionCallMatcherFactory>();
