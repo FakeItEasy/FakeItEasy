@@ -108,7 +108,7 @@
     <Compile Include="Api\FakeObjectTests.cs" />
     <Compile Include="Api\HelpersTests.cs" />
     <Compile Include="Api\NullFakeObjectContainerTests.cs" />
-    <Compile Include="CustomArgumentValidators.cs" />
+    <Compile Include="CustomArgumentConstraints.cs" />
     <Compile Include="DynamicProxy\InvocationCallAdapterTests.cs" />
     <Compile Include="Api\WrappedObjectRuleTests.cs" />
     <Compile Include="ArgumentCollectionTests.cs" />
