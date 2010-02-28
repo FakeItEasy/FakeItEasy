@@ -73,15 +73,15 @@ namespace FakeItEasy
         /// <returns>A Repeated-instance.</returns>
         public static Repeated Like(Expression<Func<int, bool>> repeatValidation)
         {
-            return new ExpressionHappened(repeatValidation);
+            return new ExpressionRepeated(repeatValidation);
         }
 
-        private class ExpressionHappened
+        private class ExpressionRepeated
             : Repeated
         {
             private Expression<Func<int, bool>> repeatValidation;
 
-            public ExpressionHappened(Expression<Func<int, bool>> repeatValidation)
+            public ExpressionRepeated(Expression<Func<int, bool>> repeatValidation)
             {
                 this.repeatValidation = repeatValidation;
             }
