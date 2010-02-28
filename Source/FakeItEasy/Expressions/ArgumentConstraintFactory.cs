@@ -1,10 +1,9 @@
 namespace FakeItEasy.Expressions
 {
-    using System;
     using System.Linq.Expressions;
+    using System.Reflection;
     using FakeItEasy.Api;
-    using System.Linq;
-using System.Reflection;
+    using FakeItEasy.Expressions.ArgumentConstraints;
 
     /// <summary>
     /// Responsible for creating argument constraints from arguments in an expression.

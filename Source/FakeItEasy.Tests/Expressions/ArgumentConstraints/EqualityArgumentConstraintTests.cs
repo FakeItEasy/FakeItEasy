@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Api;
-using FakeItEasy.Expressions;
-
-namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
+﻿namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
 {
+    using System;
+    using System.Collections.Generic;
+    using FakeItEasy.Expressions.ArgumentConstraints;
+    using NUnit.Framework;
+
     [TestFixture]
-    public class EqualityArgumentValidatorTests
+    public class EqualityArgumentConstraintTests
         : ArgumentConstraintTestBase
     {
         [SetUp]

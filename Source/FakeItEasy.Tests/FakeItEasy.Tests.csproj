@@ -99,7 +99,7 @@
     <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintFactoryTests.cs" />
     <Compile Include="ArgumentValidatorTestBase.cs" />
-    <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentValidatorTests.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ExpressionCallRuleTests.cs" />
     <Compile Include="Expressions\ExpressionCallMatcherTests.cs" />
     <Compile Include="Api\MethodInfoManagerTests.cs" />
