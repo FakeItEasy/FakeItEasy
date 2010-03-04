@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FullExtensionSyntax = FakeItEasy.ExtensionSyntax.Full.FullExtensionSyntaxCompatibilityExtensions;
-using FakeItEasy.Tests;
-using FakeItEasy.Assertion;
-using FakeItEasy.Configuration;
-using FakeItEasy.Api;
-
-namespace FakeItEasy.BackwardsCompatibility.Tests.ExtensionSyntax.Full
+﻿namespace FakeItEasy.BackwardsCompatibility.Tests.ExtensionSyntax.Full
 {
+    using FakeItEasy.Api;
+    using FakeItEasy.Assertion;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Tests;
+    using NUnit.Framework;
+    using FullExtensionSyntax = FakeItEasy.ExtensionSyntax.Full.FullExtensionSyntaxCompatibilityExtensions;
+
     [TestFixture]
     public class FullExtensionSyntaxCompatibilityTests
         : ConfigurableServiceLocatorTestBase
