@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Api;
-using FakeItEasy.Expressions;
-
 namespace FakeItEasy.Tests
 {
+    using System.Collections.Generic;
+    using FakeItEasy.Api;
+    using FakeItEasy.Expressions;
+    using NUnit.Framework;
+
     public abstract class ArgumentConstraintTestBase
     {
         protected IArgumentConstraint constraint;

@@ -159,7 +159,6 @@
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Api\ArgumentCollection.cs" />
-    <Compile Include="ArgumentValidationException.cs" />
     <Compile Include="Expressions\ExpressionManager.cs" />
     <Compile Include="Api\IArgumentConstraint.cs">
       <SubType>Code</SubType>

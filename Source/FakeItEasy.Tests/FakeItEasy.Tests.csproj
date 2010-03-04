@@ -99,7 +99,7 @@
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
     <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintFactoryTests.cs" />
-    <Compile Include="ArgumentValidatorTestBase.cs" />
+    <Compile Include="ArgumentConstraintTestBase.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ExpressionCallRuleTests.cs" />
     <Compile Include="Expressions\ExpressionCallMatcherTests.cs" />
@@ -113,7 +113,6 @@
     <Compile Include="DynamicProxy\InvocationCallAdapterTests.cs" />
     <Compile Include="Api\WrappedObjectRuleTests.cs" />
     <Compile Include="ArgumentCollectionTests.cs" />
-    <Compile Include="ArgumentValidationExceptionTests.cs" />
     <Compile Include="ATests.cs" />
     <Compile Include="Configuration\BuildableCallRuleTests.cs" />
     <Compile Include="Configuration\RuleBuilderTests.cs" />
