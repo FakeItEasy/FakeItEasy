@@ -67,7 +67,7 @@
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
     <Compile Include="Core\FakeObjectBuilderTests.cs" />
     <Compile Include="Core\FakeObjectFactoryTests.cs" />
-    <Compile Include="Core\ProxyResultTests.cs" />
+    <Compile Include="Core\Generation\ProxyResultTests.cs" />
     <Compile Include="ArgumentConstraintExtensionsTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsInstanceOfTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsNullTests.cs" />
