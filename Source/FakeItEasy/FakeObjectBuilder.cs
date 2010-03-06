@@ -150,6 +150,12 @@ namespace FakeItEasy.Api
 
                 return constructorArguments;
             }
+
+
+            public IFakeBuilderOptionsBuilder<T> Implements(Type interfaceType)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private class FakeGenerationOptions

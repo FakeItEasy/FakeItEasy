@@ -35,5 +35,15 @@ namespace FakeItEasy.Api
         /// <param name="wrappedInstance">The object to delegate calls to.</param>
         /// <returns>Options object.</returns>
         IFakeBuilderOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance);
+        
+        /// <summary>
+        /// Sets up the fake to implement the specified interface in addition to the
+        /// originally faked class.
+        /// </summary>
+        /// <param name="interfaceType">The type of interface to implement.</param>
+        /// <returns>Options object.</returns>
+        /// <exception cref="ArgumentException">The specified type is not an interface.</exception>
+        /// <exception cref="ArgumentNullException">The specified type is null.</exception>
+        IFakeBuilderOptionsBuilder<T> Implements(Type interfaceType);
     }
 }

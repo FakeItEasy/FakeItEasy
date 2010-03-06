@@ -150,6 +150,25 @@ namespace FakeItEasy.IntegrationTests
             Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
         }
 
+        [Test]
+        public void Should_be_able_to_generate_class_fake_that_implements_additional_interface()
+        {
+            // Arrange
+            var fake = A.Fake<FakeableClass>(x => x.Implements(typeof(IFoo)));
+
+            // Act
+
+            // Assert
+            Assert.That(fake, Is.InstanceOf<IFoo>());
+            Assert.That(fake, Is.InstanceOf<FakeableClass>());
+        }
+
+        public class FakeableClass
+        {
+            public virtual void Foo()
+            { }
+        }
+
         public class TypeWithNonConfigurableMethod
         {
             public void NonVirtualVoidMethod(string argument, int otherArgument)
