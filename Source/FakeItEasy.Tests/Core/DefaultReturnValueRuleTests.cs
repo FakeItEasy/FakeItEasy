@@ -1,4 +1,4 @@
-namespace FakeItEasy.Tests.Api
+namespace FakeItEasy.Tests.Core
 {
     using NUnit.Framework;
     using FakeItEasy.Core;

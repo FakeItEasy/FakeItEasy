@@ -1,4 +1,4 @@
-namespace FakeItEasy.Tests.Api
+namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Collections.Generic;

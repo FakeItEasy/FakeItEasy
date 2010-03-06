@@ -11,7 +11,7 @@ using System.Reflection;
 using FakeItEasy.Configuration;
 using FakeItEasy.Tests.TestHelpers;
 
-namespace FakeItEasy.Tests.Api
+namespace FakeItEasy.Tests.Core
 {
     [TestFixture]
     public class HelpersTests

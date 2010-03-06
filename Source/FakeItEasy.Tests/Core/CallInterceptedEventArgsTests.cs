@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using FakeItEasy.Core;
 
-namespace FakeItEasy.Tests.Api
+namespace FakeItEasy.Tests.Core
 {
     [TestFixture]
     public class CallInterceptedEventArgsTests

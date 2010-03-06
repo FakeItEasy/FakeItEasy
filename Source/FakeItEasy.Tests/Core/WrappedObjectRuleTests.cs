@@ -8,7 +8,7 @@ using FakeItEasy.Core;
 using FakeItEasy.Configuration;
 using FakeItEasy.Assertion;
 
-namespace FakeItEasy.Tests.Api
+namespace FakeItEasy.Tests.Core
 {
     [TestFixture]
     public class WrappedObjectRuleTests
