@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.ExtensionSyntax;
-using FakeItEasy.Api;
-using FakeItEasy.Configuration;
-using FakeItEasy.Assertion;
-using FakeItEasy.Tests.TestHelpers;
-
 namespace FakeItEasy.Tests.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using FakeItEasy.Api;
+    using FakeItEasy.Tests.TestHelpers;
+    using NUnit.Framework;
+
     [TestFixture]
     public class FakeObjectFactoryTests
     {
