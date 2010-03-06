@@ -154,13 +154,28 @@ namespace FakeItEasy.IntegrationTests
         public void Should_be_able_to_generate_class_fake_that_implements_additional_interface()
         {
             // Arrange
-            var fake = A.Fake<FakeableClass>(x => x.Implements(typeof(IFoo)));
+            var fake = A.Fake<FakeableClass>(x => x.Implements(typeof(IFoo)).Implements(typeof(IFormattable)));
 
             // Act
 
             // Assert
             Assert.That(fake, Is.InstanceOf<IFoo>());
+            Assert.That(fake, Is.InstanceOf<IFormattable>());
             Assert.That(fake, Is.InstanceOf<FakeableClass>());
+        }
+
+        [Test]
+        public void Should_be_able_to_generate_interface_fake_that_implements_additional_interface()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>(x => x.Implements(typeof(IFormatProvider)).Implements(typeof(IFormattable)));
+
+            // Act
+
+            // Assert
+            Assert.That(fake, Is.InstanceOf<IFoo>());
+            Assert.That(fake, Is.InstanceOf<IFormattable>());
+            Assert.That(fake, Is.InstanceOf<IFormatProvider>());
         }
 
         public class FakeableClass
