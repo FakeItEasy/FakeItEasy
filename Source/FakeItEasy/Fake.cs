@@ -129,7 +129,7 @@ namespace FakeItEasy
         /// </summary>
         public Fake()
         {
-            this.FakedObject = CreateFake<T>(null);
+            this.FakedObject = CreateFake(null);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace FakeItEasy
                 from argument in ((NewExpression)constructorCall.Body).Arguments
                 select ExpressionManager.GetValueProducedByExpression(argument);
 
-            this.FakedObject = CreateFake<T>(constructorArguments);
+            this.FakedObject = CreateFake(constructorArguments);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace FakeItEasy
                 throw new InvalidOperationException(ExceptionMessages.FakingNonAbstractClassWithArgumentsForConstructor);
             }
 
-            this.FakedObject = CreateFake<T>(argumentsForConstructor);
+            this.FakedObject = CreateFake(argumentsForConstructor);
         }
         #endregion
 
@@ -295,7 +295,7 @@ namespace FakeItEasy
             return this.StartConfiguration.AnyCall();
         }
 
-        private static T CreateFake<T>(IEnumerable<object> argumentsForConstructor)
+        private static T CreateFake(IEnumerable<object> argumentsForConstructor)
         {
             return (T)Fake.CreateFactory().CreateFake(typeof(T), argumentsForConstructor, false);
         }

@@ -32,6 +32,8 @@
         /// Initializes a new instance of the <see cref="FakeAsserter&lt;TFake&gt;"/> class.
         /// </summary>
         /// <param name="fake">The fake.</param>
+        /// <param name="callMatcherFactory">The call matcher factory.</param>
+        /// <param name="fakeAsserterFactory">The fake asserter factory.</param>
         public FakeAssertions(FakeObject fake, IExpressionCallMatcherFactory callMatcherFactory, FakeAsserter.Factory fakeAsserterFactory)
         {
             Guard.IsNotNull(fake, "fake");

@@ -2,7 +2,6 @@ namespace FakeItEasy.Expressions
 {
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
-    using FakeItEasy.Expressions;
     using FakeItEasy.Core;
 
     /// <summary>

@@ -1,9 +1,9 @@
 namespace FakeItEasy.SelfInitializedFakes
 {
-    using System.Collections.Generic;
-    using System.Reflection;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// DTO for recorded calls.

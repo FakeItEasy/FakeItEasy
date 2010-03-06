@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Configuration;
-using FakeItEasy.Core;
-using System.Reflection;
-using FakeItEasy.Assertion;
-
 namespace FakeItEasy.VisualBasic
 {
+    using System.Linq;
+    using FakeItEasy.Assertion;
+    using FakeItEasy.Core;
+
     /// <summary>
     /// A call rule that "sits and waits" for the next call, when
     /// that call occurs the recorded rule is added for that call.

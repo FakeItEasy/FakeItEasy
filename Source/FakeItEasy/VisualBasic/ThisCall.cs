@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Configuration;
-using FakeItEasy.Core;
-using System.Reflection;
-
-namespace FakeItEasy.VisualBasic
+﻿namespace FakeItEasy.VisualBasic
 {
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+
     /// <summary>
     /// Lets you specify options for the next call to a fake object.
     /// </summary>

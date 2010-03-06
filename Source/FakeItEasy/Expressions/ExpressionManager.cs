@@ -1,7 +1,6 @@
 namespace FakeItEasy.Expressions
 {
     using System.Linq.Expressions;
-using FakeItEasy.Core;
 
     /// <summary>
     /// Handles operations on expressions.

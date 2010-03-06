@@ -187,7 +187,6 @@
     <Compile Include="VisualBasic\RecordedCallRule.cs" />
     <Compile Include="VisualBasic\RecordingCallRule.cs" />
     <Compile Include="VisualBasic\ThisCall.cs" />
-    <Compile Include="VisualBasic\VisualBasicHelpers.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManager.cs" />
   </ItemGroup>
   <ItemGroup>

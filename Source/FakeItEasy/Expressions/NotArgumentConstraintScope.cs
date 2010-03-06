@@ -1,8 +1,5 @@
 namespace FakeItEasy.Expressions
 {
-    using System.Linq.Expressions;
-    using FakeItEasy.Configuration;
-    using System;
     using System.Text;
 
     internal class NotArgumentConstraintScope<T>

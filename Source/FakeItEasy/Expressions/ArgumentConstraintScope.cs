@@ -1,8 +1,7 @@
 namespace FakeItEasy.Expressions
 {
-    using System.Linq.Expressions;
-    using FakeItEasy.Configuration;
     using System;
+    using FakeItEasy.Configuration;
 
     public abstract class ArgumentConstraintScope<T>
         : IHideObjectMembers

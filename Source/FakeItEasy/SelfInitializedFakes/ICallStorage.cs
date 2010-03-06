@@ -1,6 +1,5 @@
 namespace FakeItEasy.SelfInitializedFakes
 {
-    using System;
     using System.Collections.Generic;
     
     /// <summary>

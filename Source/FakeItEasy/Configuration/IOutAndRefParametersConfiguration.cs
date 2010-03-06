@@ -3,7 +3,6 @@ namespace FakeItEasy.Configuration
     /// <summary>
     /// Lets the developer configure output values of out and ref parameters.
     /// </summary>
-    /// <typeparam name="TFake">The type of fake.</typeparam>
     public interface IOutAndRefParametersConfiguration
     {
         /// <summary>

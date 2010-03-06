@@ -1,10 +1,8 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using System.Diagnostics;
     using System.Reflection;
     using FakeItEasy.Configuration;
-    using FakeItEasy.Expressions;
 
     /// <summary>
     /// A call rule that has been recorded.
