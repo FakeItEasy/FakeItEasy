@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Core;
-using System.Linq.Expressions;
-using System.Reflection;
-using FakeItEasy.Expressions;
-
 namespace FakeItEasy.Tests.TestHelpers
 {
+    using System;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Generation;
+
     internal class TestableProxyResult
-               : ProxyResult
+        : ProxyResult
     {
         public TestableProxyResult(Type type, IFakedProxy proxy)
             : base(type)

@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Core;
-
 namespace FakeItEasy.Tests.Api
 {
+    using System;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Generation;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ProxyResultTests
     {

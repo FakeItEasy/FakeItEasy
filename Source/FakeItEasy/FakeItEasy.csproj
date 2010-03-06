@@ -176,7 +176,7 @@
     <Compile Include="Core\FakeObject.cs" />
     <Compile Include="Fake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\ProxyResult.cs" />
+    <Compile Include="Core\Generation\ProxyResult.cs" />
     <Compile Include="Raise.cs" />
     <Compile Include="RootModule.cs" />
     <Compile Include="ServiceLocator.cs" />

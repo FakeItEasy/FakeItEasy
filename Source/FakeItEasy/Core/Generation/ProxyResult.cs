@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy.Core.Generation
 {
     using System;
     using System.Diagnostics;
