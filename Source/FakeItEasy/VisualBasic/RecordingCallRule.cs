@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FakeItEasy.Configuration;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using System.Reflection;
 using FakeItEasy.Assertion;
 

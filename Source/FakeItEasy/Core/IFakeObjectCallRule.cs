@@ -1,4 +1,4 @@
-namespace FakeItEasy.Api
+namespace FakeItEasy.Core
 {
     /// <summary>
     /// Allows for intercepting call to a fake object and

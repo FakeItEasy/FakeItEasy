@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Configuration;
 
     /// <summary>

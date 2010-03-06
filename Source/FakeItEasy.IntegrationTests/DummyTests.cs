@@ -1,5 +1,5 @@
 using System;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using FakeItEasy.Tests;
 using NUnit.Framework;
 

@@ -4,7 +4,7 @@ namespace FakeItEasy.Configuration
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FakeItEasy.Expressions;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 
     internal class FakeConfigurationManager
             : IFakeConfigurationManager

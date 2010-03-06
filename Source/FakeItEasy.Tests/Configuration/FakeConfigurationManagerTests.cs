@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using FakeItEasy.Configuration;
 using FakeItEasy.Expressions;
 using FakeItEasy.Tests.TestHelpers;

@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 
 namespace FakeItEasy.Tests.Api
 {

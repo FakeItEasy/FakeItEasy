@@ -6,7 +6,7 @@
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Text;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Handles the matching of fake object calls to expressions.

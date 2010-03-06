@@ -8,7 +8,7 @@ using FakeItEasy.ExtensionSyntax;
 using FakeItEasy.VisualBasic;
 using System.IO;
 using System.Web.UI;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using FakeItEasy.Configuration;
 
 namespace FakeItEasy.IntegrationTests

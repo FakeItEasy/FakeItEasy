@@ -499,7 +499,7 @@
          </Type>
          <Type Name="ICallCollectionFactory">
           <Members>
-           <Member Name="#CreateCallCollection`1(FakeItEasy.Api.FakeObject)">
+           <Member Name="#CreateCallCollection`1(FakeItEasy.Core.FakeObject)">
             <Messages>
              <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2009-12-25 00:06:38Z">
               <Issue>
@@ -549,7 +549,7 @@
          </Type>
         </Types>
        </Namespace>
-       <Namespace Name="FakeItEasy.Api">
+       <Namespace Name="FakeItEasy.Core">
         <Types>
          <Type Name="ArgumentCollection">
           <Messages>
@@ -585,7 +585,7 @@
          </Type>
          <Type Name="CallWriter">
           <Members>
-           <Member Name="#AppendCallList(System.String,System.Collections.Generic.IEnumerable`1&lt;FakeItEasy.Api.IFakeObjectCall&gt;,System.IO.TextWriter)">
+           <Member Name="#AppendCallList(System.String,System.Collections.Generic.IEnumerable`1&lt;FakeItEasy.Core.IFakeObjectCall&gt;,System.IO.TextWriter)">
             <Messages>
              <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-12-25 00:06:38Z" FixCategory="NonBreaking">
               <Issue>
@@ -614,7 +614,7 @@
          </Type>
          <Type Name="FakeObject">
           <Members>
-           <Member Name="#ApplyRule(FakeItEasy.Api.CallRuleMetadata,FakeItEasy.Api.IWritableFakeObjectCall)">
+           <Member Name="#ApplyRule(FakeItEasy.Core.CallRuleMetadata,FakeItEasy.Core.IWritableFakeObjectCall)">
             <Messages>
              <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-12-25 00:06:38Z" FixCategory="NonBreaking">
               <Issue>
@@ -683,7 +683,7 @@
          </Type>
          <Type Name="ICallMatcher">
           <Members>
-           <Member Name="#Matches(FakeItEasy.Api.IFakeObjectCall)">
+           <Member Name="#Matches(FakeItEasy.Core.IFakeObjectCall)">
             <Messages>
              <Message Id="Call" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2009-12-25 00:06:38Z">
               <Issue Name="MemberParameter">
@@ -879,7 +879,7 @@
          </Type>
          <Type Name="IFakeAssertionsFactory">
           <Members>
-           <Member Name="#CreateAsserter`1(FakeItEasy.Api.FakeObject)">
+           <Member Name="#CreateAsserter`1(FakeItEasy.Core.FakeObject)">
             <Messages>
              <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2009-12-25 00:06:38Z">
               <Issue>
@@ -994,7 +994,7 @@
         <Types>
          <Type Name="DynamicProxyProxyGenerator">
           <Members>
-           <Member Name="#TryGenerateProxy(System.Type,FakeItEasy.Api.FakeObject,FakeItEasy.Api.IFakeObjectContainer,FakeItEasy.Api.ProxyResult&amp;)">
+           <Member Name="#TryGenerateProxy(System.Type,FakeItEasy.Core.FakeObject,FakeItEasy.Core.IFakeObjectContainer,FakeItEasy.Core.ProxyResult&amp;)">
             <Messages>
              <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-12-25 00:06:38Z" FixCategory="NonBreaking">
               <Issue>
@@ -1003,7 +1003,7 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#TryGenerateProxy(System.Type,FakeItEasy.Api.FakeObject,System.Collections.Generic.IEnumerable`1&lt;System.Object&gt;,FakeItEasy.Api.ProxyResult&amp;)">
+           <Member Name="#TryGenerateProxy(System.Type,FakeItEasy.Core.FakeObject,System.Collections.Generic.IEnumerable`1&lt;System.Object&gt;,FakeItEasy.Core.ProxyResult&amp;)">
             <Messages>
              <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-12-25 00:06:38Z" FixCategory="NonBreaking">
               <Issue>
@@ -1016,7 +1016,7 @@
          </Type>
          <Type Name="DynamicProxyProxyGenerator+ConstructorResolvingProxyGenerationRequest">
           <Members>
-           <Member Name="#TryCreateProxiedArgument(System.Type,FakeItEasy.Api.IFakeObjectContainer,System.Object&amp;)">
+           <Member Name="#TryCreateProxiedArgument(System.Type,FakeItEasy.Core.IFakeObjectContainer,System.Object&amp;)">
             <Messages>
              <Message Id="container" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2009-12-25 00:06:38Z" FixCategory="NonBreaking">
               <Issue>
@@ -1118,7 +1118,7 @@
         <Types>
          <Type Name="ISelfInitializingFakeRecorder">
           <Members>
-           <Member Name="#ApplyNext(FakeItEasy.Api.IWritableFakeObjectCall)">
+           <Member Name="#ApplyNext(FakeItEasy.Core.IWritableFakeObjectCall)">
             <Messages>
              <Message Id="Call" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2009-12-25 00:06:38Z">
               <Issue Name="MemberParameter">
@@ -1129,7 +1129,7 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#RecordCall(FakeItEasy.Api.ICompletedFakeObjectCall)">
+           <Member Name="#RecordCall(FakeItEasy.Core.ICompletedFakeObjectCall)">
             <Messages>
              <Message Id="Call" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2009-12-25 00:06:38Z">
               <Issue Name="MemberParameter">

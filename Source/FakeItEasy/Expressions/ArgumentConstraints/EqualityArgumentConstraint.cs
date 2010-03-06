@@ -1,6 +1,6 @@
 namespace FakeItEasy.Expressions.ArgumentConstraints
 {
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     public class EqualityArgumentConstraint
         : IArgumentConstraint

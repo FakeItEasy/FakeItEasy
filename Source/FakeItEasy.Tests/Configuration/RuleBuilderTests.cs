@@ -2,7 +2,7 @@
 {
     using System;
     using System.Linq.Expressions;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Configuration;
     using NUnit.Framework;
     using FakeItEasy.Assertion;

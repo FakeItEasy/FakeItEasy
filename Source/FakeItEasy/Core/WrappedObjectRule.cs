@@ -1,4 +1,4 @@
-namespace FakeItEasy.Api
+namespace FakeItEasy.Core
 {
     using System.Linq;
 

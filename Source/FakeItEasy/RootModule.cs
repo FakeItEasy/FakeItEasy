@@ -1,7 +1,7 @@
 ﻿namespace FakeItEasy
 {
     using System.IO;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Assertion;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;

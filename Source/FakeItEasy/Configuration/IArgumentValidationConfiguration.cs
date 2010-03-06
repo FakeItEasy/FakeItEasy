@@ -1,4 +1,4 @@
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using System;
 
 namespace FakeItEasy.Configuration

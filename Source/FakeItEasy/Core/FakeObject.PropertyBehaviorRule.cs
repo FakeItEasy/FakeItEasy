@@ -6,7 +6,7 @@ using FakeItEasy.Configuration;
 using System.Reflection;
 using System.Diagnostics;
 
-namespace FakeItEasy.Api
+namespace FakeItEasy.Core
 {
     public partial class FakeObject
     {

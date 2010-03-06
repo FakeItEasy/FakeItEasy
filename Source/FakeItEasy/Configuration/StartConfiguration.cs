@@ -2,7 +2,7 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Linq.Expressions;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Expressions;
     using System.Reflection;
 

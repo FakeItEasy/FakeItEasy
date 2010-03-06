@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace FakeItEasy.Api
+namespace FakeItEasy.Core
 {
     /// <summary>
     /// Represents a generator that can generate proxies that emits events when calls are intercepted.

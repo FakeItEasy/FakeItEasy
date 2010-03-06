@@ -1,4 +1,4 @@
-namespace FakeItEasy.Api
+namespace FakeItEasy.Core
 {
     /// <summary>
     /// Represents a call to a fake object at interception time.

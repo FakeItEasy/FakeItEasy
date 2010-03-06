@@ -1,6 +1,6 @@
 namespace FakeItEasy.Configuration
 {
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// A factory responsible for creating start configuration for fake objects.

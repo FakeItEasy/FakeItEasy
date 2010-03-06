@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Expressions;
 
     /// <summary>

@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Collections.Generic;
 
-namespace FakeItEasy.Api
+namespace FakeItEasy.Core
 {
     public partial class FakeObject
     {

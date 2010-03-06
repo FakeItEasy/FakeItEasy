@@ -4,7 +4,7 @@ namespace FakeItEasy.DynamicProxy
     using System.Diagnostics;
     using System.Reflection;
     using Castle.Core.Interceptor;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 using System;
 
     /// <summary>

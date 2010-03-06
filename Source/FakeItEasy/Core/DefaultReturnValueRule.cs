@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using System.Collections.Generic;
 
-namespace FakeItEasy.Api
+namespace FakeItEasy.Core
 {
     [Serializable]
     internal class DefaultReturnValueRule

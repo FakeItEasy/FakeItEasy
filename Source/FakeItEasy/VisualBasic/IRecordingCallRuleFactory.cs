@@ -1,6 +1,6 @@
 namespace FakeItEasy.VisualBasic
 {
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// A factory that creates instances of the RecordingCallRuleType.

@@ -3,7 +3,7 @@ namespace FakeItEasy
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Provides syntax for specifying the number of times a call must have been repeated when asserting on 

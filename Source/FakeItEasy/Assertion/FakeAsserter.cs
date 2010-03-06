@@ -4,7 +4,7 @@ namespace FakeItEasy.Assertion
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using System.Globalization;
 
     internal class FakeAsserter

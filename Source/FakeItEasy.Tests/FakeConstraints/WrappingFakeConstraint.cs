@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework.Constraints;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 
 namespace FakeItEasy.Tests.FakeConstraints
 {

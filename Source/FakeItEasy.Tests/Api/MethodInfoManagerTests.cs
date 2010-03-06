@@ -5,7 +5,7 @@ namespace FakeItEasy.Tests.Api
     using System.Reflection;
     using FakeItEasy.Expressions;
     using NUnit.Framework;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     [TestFixture]
     public class MethodInfoManagerTests

@@ -1,47 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="FakeItEasy.Api.FakeObject">
+  <Class Name="FakeItEasy.Core.FakeObject">
     <Position X="4.75" Y="1.25" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <NestedTypes>
-      <Delegate Name="FakeItEasy.Api.FakeObject.Factory" Collapsed="true">
+      <Delegate Name="FakeItEasy.Core.FakeObject.Factory" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>Api\FakeObject.cs</NewMemberFileName>
         </TypeIdentifier>
       </Delegate>
-      <Class Name="FakeItEasy.Api.FakeObject.AutoFakePropertyRule" Collapsed="true">
+      <Class Name="FakeItEasy.Core.FakeObject.AutoFakePropertyRule" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>Api\FakeObject.AutoFakePropertyRule.cs</NewMemberFileName>
         </TypeIdentifier>
         <Lollipop Position="0.2" />
       </Class>
-      <Class Name="FakeItEasy.Api.FakeObject.DefaultReturnValueRule" Collapsed="true">
+      <Class Name="FakeItEasy.Core.FakeObject.DefaultReturnValueRule" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>Api\FakeObject.DefaultReturnValueRule.cs</NewMemberFileName>
         </TypeIdentifier>
         <Lollipop Position="0.2" />
       </Class>
-      <Class Name="FakeItEasy.Api.FakeObject.EventRule" Collapsed="true">
+      <Class Name="FakeItEasy.Core.FakeObject.EventRule" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>Api\FakeObject.EventRule.cs</NewMemberFileName>
         </TypeIdentifier>
         <Lollipop Position="0.2" />
       </Class>
-      <Class Name="FakeItEasy.Api.FakeObject.ObjectMemberRule" Collapsed="true">
+      <Class Name="FakeItEasy.Core.FakeObject.ObjectMemberRule" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>Api\FakeObject.ObjectMemberRule.cs</NewMemberFileName>
         </TypeIdentifier>
         <Lollipop Position="0.2" />
       </Class>
-      <Class Name="FakeItEasy.Api.FakeObject.PropertyBehaviorRule" Collapsed="true">
+      <Class Name="FakeItEasy.Core.FakeObject.PropertyBehaviorRule" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>Api\FakeObject.PropertyBehaviorRule.cs</NewMemberFileName>
         </TypeIdentifier>
         <Lollipop Position="0.2" />
       </Class>
-      <Class Name="FakeItEasy.Api.FakeObject.PropertySetterRule" Collapsed="true">
+      <Class Name="FakeItEasy.Core.FakeObject.PropertySetterRule" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>Api\FakeObject.PropertySetterRule.cs</NewMemberFileName>
         </TypeIdentifier>
@@ -58,42 +58,42 @@
       <Property Name="AllRecordedCalls" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Interface Name="FakeItEasy.Api.IFakedProxy">
+  <Interface Name="FakeItEasy.Core.IFakedProxy">
     <Position X="12.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
       <FileName>Api\IFakedProxy.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FakeItEasy.Api.IWritableFakeObjectCall">
+  <Interface Name="FakeItEasy.Core.IWritableFakeObjectCall">
     <Position X="10.25" Y="2.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgI=</HashCode>
       <FileName>Api\IWritableFakeObjectCall.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FakeItEasy.Api.IFakeObjectCall">
+  <Interface Name="FakeItEasy.Core.IFakeObjectCall">
     <Position X="9.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAACAAgAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Api\IFakeObjectCall.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FakeItEasy.Api.ICompletedFakeObjectCall">
+  <Interface Name="FakeItEasy.Core.ICompletedFakeObjectCall">
     <Position X="8" Y="2.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Api\ICompletedFakeObjectCall.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FakeItEasy.Api.IFakeObjectCallRule">
+  <Interface Name="FakeItEasy.Core.IFakeObjectCallRule">
     <Position X="1.75" Y="2.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Api\IFakeObjectCallRule.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FakeItEasy.Api.IProxyGenerator">
+  <Interface Name="FakeItEasy.Core.IProxyGenerator">
     <Position X="12.75" Y="2" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>

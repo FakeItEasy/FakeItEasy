@@ -1,6 +1,6 @@
 namespace FakeItEasy.Configuration
 {
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     internal interface IConfigurationFactory
     {

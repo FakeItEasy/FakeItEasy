@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using NUnit.Framework.Constraints;
 using System.Linq.Expressions;
 using System.IO;

@@ -1,7 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using NUnit.Framework;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using System.Linq.Expressions;
     using System;
 

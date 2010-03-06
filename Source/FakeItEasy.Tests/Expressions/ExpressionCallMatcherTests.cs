@@ -3,9 +3,9 @@ namespace FakeItEasy.Tests.Expressions
     using System;
     using System.Linq.Expressions;
     using System.Reflection;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Expressions;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 

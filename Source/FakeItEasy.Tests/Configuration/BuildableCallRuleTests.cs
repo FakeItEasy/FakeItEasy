@@ -4,7 +4,7 @@ using NUnit.Framework;
 using System.Linq;
 using System.Linq.Expressions;
 using NUnit.Framework.Constraints;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using System.Collections.Generic;
 using FakeItEasy.Mef;
 

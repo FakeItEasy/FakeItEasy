@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FakeItEasy.Api
+namespace FakeItEasy.Core
 {
     public partial class FakeObject
     {

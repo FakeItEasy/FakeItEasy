@@ -1,7 +1,7 @@
 ﻿namespace FakeItEasy.SelfInitializedFakes
 {
     using System;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// A call rule use for self initializing fakes, delegates call to

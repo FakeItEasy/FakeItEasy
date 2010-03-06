@@ -1,10 +1,10 @@
-namespace FakeItEasy.Api
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using System.Globalization;
 
     public class CallWriter

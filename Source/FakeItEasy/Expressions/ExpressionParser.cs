@@ -2,7 +2,7 @@ namespace FakeItEasy.Expressions
 {
     using System;
     using System.Linq.Expressions;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Manages breaking call specification expression into their various parts.
