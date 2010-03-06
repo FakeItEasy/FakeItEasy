@@ -1,7 +1,8 @@
 ﻿namespace FakeItEasy.Configuration
 {
-    using FakeItEasy.Core;
     using FakeItEasy.Assertion;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Generation;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.VisualBasic;

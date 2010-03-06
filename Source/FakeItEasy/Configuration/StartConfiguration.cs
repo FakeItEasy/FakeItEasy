@@ -2,9 +2,10 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Linq.Expressions;
-    using FakeItEasy.Core;
-    using FakeItEasy.Expressions;
     using System.Reflection;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Generation;
+    using FakeItEasy.Expressions;
 
     internal class StartConfiguration<TFake>
         : IStartConfiguration<TFake>, IHideObjectMembers

@@ -172,7 +172,7 @@
     <Compile Include="Core\IFakeObjectCallRule.cs" />
     <Compile Include="Core\IEventRaiserArguments.cs" />
     <Compile Include="IoC\Module.cs" />
-    <Compile Include="Core\IProxyGenerator.cs" />
+    <Compile Include="Core\Generation\IProxyGenerator.cs" />
     <Compile Include="Core\FakeObject.cs" />
     <Compile Include="Fake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

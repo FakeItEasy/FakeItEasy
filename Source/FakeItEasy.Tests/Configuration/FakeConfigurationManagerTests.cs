@@ -1,11 +1,12 @@
 using System;
 using System.Linq.Expressions;
-using FakeItEasy.Core;
+using System.Reflection;
 using FakeItEasy.Configuration;
+using FakeItEasy.Core;
+using FakeItEasy.Core.Generation;
 using FakeItEasy.Expressions;
 using FakeItEasy.Tests.TestHelpers;
 using NUnit.Framework;
-using System.Reflection;
 
 namespace FakeItEasy.Tests.Configuration
 {

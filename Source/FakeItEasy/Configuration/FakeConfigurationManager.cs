@@ -1,13 +1,12 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
+    using FakeItEasy.Core.Generation;
     using FakeItEasy.Expressions;
-using FakeItEasy.Core;
 
     internal class FakeConfigurationManager
-            : IFakeConfigurationManager
+        : IFakeConfigurationManager
     {
         private IConfigurationFactory configurationFactory;
         private IExpressionParser expressionParser;

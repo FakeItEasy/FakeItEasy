@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.Api
     using System;
     using System.Collections.Generic;
     using FakeItEasy.Core;
+    using FakeItEasy.Core.Generation;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 

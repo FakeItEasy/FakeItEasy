@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using FakeItEasy.Core.Generation;
 
     /// <summary>
     /// Responsible for creating fake objects, can be proxied objects or objects

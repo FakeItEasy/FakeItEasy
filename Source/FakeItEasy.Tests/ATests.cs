@@ -13,6 +13,7 @@ using System.Linq.Expressions;
 using FakeItEasy.Configuration;
 using FakeItEasy.Expressions;
 using FakeItEasy.Tests.TestHelpers;
+using FakeItEasy.Core.Generation;
 
 namespace FakeItEasy.Tests
 {

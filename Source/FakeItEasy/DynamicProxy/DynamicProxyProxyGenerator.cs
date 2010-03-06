@@ -8,6 +8,7 @@ namespace FakeItEasy.DynamicProxy
     using Castle.Core.Interceptor;
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
+    using FakeItEasy.Core.Generation;
 
     /// <summary>
     /// An implementation of the IProxyGenerator interface that uses DynamicProxy2 to
