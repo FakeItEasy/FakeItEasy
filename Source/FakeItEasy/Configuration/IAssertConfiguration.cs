@@ -1,7 +1,3 @@
-using FakeItEasy.Core;
-using System;
-using System.Linq.Expressions;
-
 namespace FakeItEasy.Configuration
 {
     /// <summary>

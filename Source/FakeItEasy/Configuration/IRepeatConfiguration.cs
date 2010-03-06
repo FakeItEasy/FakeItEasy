@@ -5,7 +5,7 @@ namespace FakeItEasy.Configuration
     /// </summary>
     /// <typeparam name="TFake">The type of the faked object.</typeparam>
     public interface IRepeatConfiguration
-            : IHideObjectMembers
+        : IHideObjectMembers
     {
         /// <summary>
         /// Specifies the number of times for the configured event.

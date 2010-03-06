@@ -7,7 +7,7 @@ namespace FakeItEasy.Configuration
     /// </summary>
     /// <typeparam name="TFake">The type of fake.</typeparam>
     public interface ICallBaseConfiguration
-            : IHideObjectMembers
+        : IHideObjectMembers
     {
         /// <summary>
         /// When the configured method or methods are called the call

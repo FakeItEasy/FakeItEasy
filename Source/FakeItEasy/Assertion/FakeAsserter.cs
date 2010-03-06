@@ -2,10 +2,10 @@ namespace FakeItEasy.Assertion
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using FakeItEasy.Core;
-    using System.Globalization;
 
     internal class FakeAsserter
     {

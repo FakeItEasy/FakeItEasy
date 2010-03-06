@@ -1,6 +1,3 @@
-using FakeItEasy.Core;
-using System;
-
 namespace FakeItEasy.Configuration
 {
     /// <summary>
