@@ -1,7 +1,7 @@
 namespace FakeItEasy
 {
-    using FakeItEasy.Configuration;
     using System.ComponentModel;
+    using FakeItEasy.Configuration;
 
     /// <summary>
     /// Provides configuration for any (not a specific) call on a faked object.

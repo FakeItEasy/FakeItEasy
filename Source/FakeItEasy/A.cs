@@ -3,13 +3,10 @@ namespace FakeItEasy
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
     using System.Linq.Expressions;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
-    using FakeItEasy.SelfInitializedFakes;
-    using FakeItEasy.Configuration;
-    using System.Reflection;
 
     /// <summary>
     /// Provides methods for generating fake objects.

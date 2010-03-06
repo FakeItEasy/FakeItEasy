@@ -2,9 +2,8 @@
 {
     using System;
     using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
-    using FakeItEasy.Core;
     using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Allows the developer to raise an event on a faked object.
