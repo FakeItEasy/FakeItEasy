@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Configuration;
-using FakeItEasy.Api;
-using System.Reflection;
-using FakeItEasy.Assertion;
-
 namespace FakeItEasy.VisualBasic
 {
+    using FakeItEasy.Api;
+
     /// <summary>
     /// A factory that creates instances of the RecordingCallRuleType.
     /// </summary>
