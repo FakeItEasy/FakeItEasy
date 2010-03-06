@@ -3,8 +3,8 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Diagnostics;
     using System.Linq;
-    using FakeItEasy.Core;
     using FakeItEasy.Assertion;
+    using FakeItEasy.Core;
     using FakeItEasy.VisualBasic;
 
     internal class RuleBuilder

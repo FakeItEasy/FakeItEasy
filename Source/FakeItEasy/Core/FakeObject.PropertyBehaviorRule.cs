@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Configuration;
-using System.Reflection;
-using System.Diagnostics;
-
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
+    using System.Linq;
+    using System.Reflection;
+
     public partial class FakeObject
     {
         private class PropertyBehaviorRule

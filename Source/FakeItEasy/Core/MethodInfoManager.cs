@@ -5,7 +5,6 @@ namespace FakeItEasy.Core
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-using System.Runtime.Remoting.Contexts;
 
     /// <summary>
     /// Handles comparisons of MethodInfos.

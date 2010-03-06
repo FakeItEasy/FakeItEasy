@@ -2,9 +2,8 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
-    using System.Security.Policy;
     using System.IO;
+    using System.Reflection;
 
     /// <summary>
     /// Represents a scope for fake objects, calls configured within a scope

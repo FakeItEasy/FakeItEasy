@@ -4,8 +4,6 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using FakeItEasy.Core;
-    using System.Globalization;
 
     public class CallWriter
     {

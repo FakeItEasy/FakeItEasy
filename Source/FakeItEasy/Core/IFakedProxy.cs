@@ -1,5 +1,4 @@
-﻿using System;
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     /// <summary>
     /// Interface implemented by generated faked objects in order

@@ -1,7 +1,6 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// A null implementation for the IFakeObjectContainer interface.

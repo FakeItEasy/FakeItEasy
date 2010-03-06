@@ -1,9 +1,7 @@
-﻿using System;
-using System.Runtime.Serialization;
-using System.Collections.Generic;
-
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
+    using System;
+
     [Serializable]
     internal class DefaultReturnValueRule
         : IFakeObjectCallRule

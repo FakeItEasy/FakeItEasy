@@ -1,7 +1,6 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// A container that can create fake objects.
