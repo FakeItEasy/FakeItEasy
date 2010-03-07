@@ -71,7 +71,7 @@
             container.Register<IFakeObjectGeneratorFactory>(c =>
                 c.Resolve<FakeObjectFactory>());
 
-            container.RegisterSingleton<IFakeObjectBuilder>(c =>
+            container.RegisterSingleton<FakeItEasy.Core.IFakeObjectBuilder>(c =>
                 new FakeObjectBuilder(c.Resolve<FakeObjectFactory>()));
 
         }

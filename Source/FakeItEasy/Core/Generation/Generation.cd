@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FakeItEasy.Core.Generation.ProxyResult">
+    <Position X="10.5" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAACKAAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAAAA=</HashCode>
+      <FileName>Core\Generation\ProxyResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FakeItEasy.Core.Generation.FakeObjectBuilderOptions">
+    <Position X="4.75" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Generation\FakeObjectBuilderOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="FakeItEasy.Core.Generation.IFakeAndDummyManager">
+    <Position X="1.25" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Core\Generation\IFakeAndDummyManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FakeItEasy.Core.Generation.IFakeObjectBuilder">
+    <Position X="4.75" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Core\Generation\IFakeObjectBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FakeItEasy.Core.Generation.IProxyGenerator">
+    <Position X="13.25" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Core\Generation\IProxyGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FakeItEasy.Core.IFakeBuilderOptionsBuilder&lt;T&gt;">
+    <Position X="1.25" Y="4.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAIAAAAAAAAAAA=</HashCode>
+      <FileName>IFakeBuilderOptionsBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FakeItEasy.Core.IFakeBuilderOptionsBuilderForWrappers&lt;T&gt;">
+    <Position X="1.25" Y="6.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IFakeBuilderOptionsBuilderForWrappers.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

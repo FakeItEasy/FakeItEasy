@@ -62,6 +62,10 @@
     <Compile Include="A.cs" />
     <Compile Include="Any.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
+    <Compile Include="Core\Generation\DefaultFakeObjectBuilder.cs" />
+    <Compile Include="Core\Generation\IFakeAndDummyManager.cs" />
+    <Compile Include="Core\Generation\IFakeObjectBuilder.cs" />
+    <Compile Include="Core\Generation\IFakeObjectBuilderOptions.cs" />
     <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs" />
     <Compile Include="Core\ICallMatcher.cs" />
     <Compile Include="ArgumentConstraintExtensions.cs" />
