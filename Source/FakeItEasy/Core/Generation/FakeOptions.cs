@@ -4,7 +4,7 @@ namespace FakeItEasy.Core.Generation
     using System.Diagnostics;
     using System.Collections.Generic;
 
-    internal class FakeObjectBuilderOptions
+    internal class FakeOptions
     {
         
     }

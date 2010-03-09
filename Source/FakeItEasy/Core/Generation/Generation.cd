@@ -28,13 +28,6 @@
       <FileName>Core\Generation\IFakeObjectBuilder.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FakeItEasy.Core.Generation.IProxyGenerator">
-    <Position X="13.25" Y="2.5" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
-      <FileName>Core\Generation\IProxyGenerator.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="FakeItEasy.Core.IFakeBuilderOptionsBuilder&lt;T&gt;">
     <Position X="1.25" Y="4.25" Width="3" />
     <TypeIdentifier>
@@ -47,6 +40,20 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IFakeBuilderOptionsBuilderForWrappers.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FakeItEasy.Core.Generation.IProxyGeneratorNew">
+    <Position X="7.75" Y="4" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Core\Generation\IProxyGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FakeItEasy.Core.Generation.IProxyGeneratorFactory">
+    <Position X="7.75" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Generation\IProxyGenerator.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

@@ -6,6 +6,6 @@ namespace FakeItEasy.Core.Generation
 
     internal interface IFakeObjectBuilder
     {
-        object BuildFakeObject(Type typeOfFake, FakeObjectBuilderOptions options);
+        object BuildFakeObject(Type typeOfFake, FakeOptions options);
     }
 }

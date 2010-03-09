@@ -7,7 +7,7 @@ namespace FakeItEasy.Core.Generation
     internal class DefaultFakeObjectBuilder
         : IFakeObjectBuilder
     {
-        public object BuildFakeObject(Type typeOfFake, FakeObjectBuilderOptions options)
+        public object BuildFakeObject(Type typeOfFake, FakeOptions options)
         {
             throw new NotImplementedException();
         }

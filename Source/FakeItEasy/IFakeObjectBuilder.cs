@@ -14,6 +14,6 @@ namespace FakeItEasy.Core
         /// <typeparam name="T">The type of fake to generate.</typeparam>
         /// <param name="options">Options for the generation of the fake object.</param>
         /// <returns>A fake object.</returns>
-        T GenerateFake<T>(Action<IFakeBuilderOptionsBuilder<T>> options);
+        T GenerateFake<T>(Action<IFakeOptionsBuilder<T>> options);
     }
 }

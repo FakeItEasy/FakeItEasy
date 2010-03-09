@@ -62,10 +62,12 @@
     <Compile Include="A.cs" />
     <Compile Include="Any.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
+    <Compile Include="Core\Generation\DefaultFakeAndDummyManager.cs" />
     <Compile Include="Core\Generation\DefaultFakeObjectBuilder.cs" />
     <Compile Include="Core\Generation\IFakeAndDummyManager.cs" />
+    <Compile Include="Core\Generation\IFakeCreator.cs" />
     <Compile Include="Core\Generation\IFakeObjectBuilder.cs" />
-    <Compile Include="Core\Generation\IFakeObjectBuilderOptions.cs" />
+    <Compile Include="Core\Generation\FakeOptions.cs" />
     <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs" />
     <Compile Include="Core\ICallMatcher.cs" />
     <Compile Include="ArgumentConstraintExtensions.cs" />
@@ -88,8 +90,8 @@
     <Compile Include="Expressions\RootValidations.cs" />
     <Compile Include="Repeated.cs" />
     <Compile Include="FakeObjectBuilder.cs" />
-    <Compile Include="IFakeBuilderOptionsBuilder.cs" />
-    <Compile Include="IFakeBuilderOptionsBuilderForWrappers.cs" />
+    <Compile Include="IFakeOptionsBuilder.cs" />
+    <Compile Include="IFakeOptionsBuilderForWrappers.cs" />
     <Compile Include="IFakeObjectBuilder.cs" />
     <Compile Include="IFakeObjectGenerator.cs" />
     <Compile Include="IFakeObjectGeneratorFactory.cs" />
@@ -198,6 +200,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionMessages1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Core\Generation\Generation.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

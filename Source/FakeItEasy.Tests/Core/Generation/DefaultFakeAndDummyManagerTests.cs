@@ -1,31 +1,74 @@
 namespace FakeItEasy.Tests.Core.Generation
 {
     using System;
-    using FakeItEasy.Core.Generation;
-    using NUnit.Framework;
     using FakeItEasy.Core;
+    using FakeItEasy.Core.Generation;
     using FakeItEasy.Tests.TestHelpers;
+    using NUnit.Framework;
+    using IFakeObjectBuilder = FakeItEasy.Core.Generation.IFakeObjectBuilder;
 
     [TestFixture]
-    public class DefaultFakeObjectBuilderTests
+    public class DefaultFakeAndDummyManagerTests
     {
-        private IProxyGeneratorNew proxyGenerator;
+        private IFakeObjectContainer container;
+        private IFakeObjectBuilder builder;
+
+        private DefaultFakeAndDummyManager fakeAndDummyManager;
 
         [SetUp]
         public void SetUp()
         {
-            this.proxyGenerator = A.Fake<IProxyGeneratorNew>();
+           
         }
 
-        private DefaultFakeObjectBuilder CreateBuilder()
-        {
-            return new DefaultFakeObjectBuilder();
-        }
+        //[Test]
+        //public void CreateDummy_should_return_dummy_from_container_when_available()
+        //{
+        //    // Arrange
+        //    var fake = A.Fake<IFoo>();
+
+        //    A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out Null<object>.Out))
+        //        .Returns(true)
+        //        .AssignsOutAndRefParameters(fake);
+
+        //    // Act
+        //    var result = this.fakeAndDummyManager.CreateDummy<IFoo>();
+
+        //    // Assert
+        //    Assert.That(result, Is.SameAs(fake));
+        //}
+
+        //[Test]
+        //public void CreateDummy_should_delegate_to_fake_object_builder_when_container_doesnt_contain_type()
+        //{
+        //    // Arrange
+        //    var fake = A.Fake<IFoo>();
+
+        //    A.CallTo(() => this.container.TryCreateFakeObject(A<Type>.Ignored, out Null<object>.Out)).Returns(false);
+        //    A.CallTo(() => this.builder.BuildFakeObject(A<Type>.Ignored, A<FakeOptions>.Ignored)).Returns(fake);
+
+        //    // Act
+        //    this.fakeAndDummyManager.CreateDummy<IFoo>();
+
+        //    // Assert
+        //    A.CallTo(() => this.builder.BuildFakeObject(typeof(IFoo), A<FakeOptions>.Ignored)).MustHaveHappened();
+        //}
+
+        //[Test]
+        //public void CreateFake_should_return_fake_from_container_when_non_proxyied_objects_are_allowed_and_container_contains_type()
+        //{
+        //    var factory = this.CreateFactory();
+
+        //    object result = null;
+        //    A.CallTo(() => this.container.TryCreateFakeObject(typeof(int), out result)).Returns(true).AssignsOutAndRefParameters(1);
+
+        //    Assert.That(factory.CreateFake(typeof(int), null, true), Is.EqualTo(1));
+        //}
 
         //[Test]
         //public void CreateFake_should_return_fake_from_proxy_generator_when_container_contains_type_but_non_proxied_objects_are_not_allowed()
         //{
-        //    var builder = this.CreateBuilder();
+        //    var factory = this.CreateFactory();
 
         //    var returned = new TestableProxyResult(typeof(IFoo), (IFakedProxy)A.Fake<IFoo>());
 
@@ -38,7 +81,7 @@ namespace FakeItEasy.Tests.Core.Generation
         //[Test]
         //public void CreateFake_should_return_fake_from_proxy_generator_when_container_does_not_contain_type()
         //{
-        //    var builder = this.CreateBuilder();
+        //    var factory = this.CreateFactory();
 
         //    var returned = new TestableProxyResult(typeof(IFoo), (IFakedProxy)A.Fake<IFoo>());
 
@@ -50,7 +93,7 @@ namespace FakeItEasy.Tests.Core.Generation
         //[Test]
         //public void CreateFake_should_set_generated_proxy_to_fake_object()
         //{
-        //    var builder = this.CreateBuilder();
+        //    var factory = this.CreateFactory();
 
         //    var returned = new TestableProxyResult(typeof(IFoo), (IFakedProxy)A.Fake<IFoo>());
 
@@ -64,7 +107,7 @@ namespace FakeItEasy.Tests.Core.Generation
         //[Test]
         //public void CreateFake_should_throw_exception_when_fake_cant_be_resolved_from_container_or_generated()
         //{
-        //    var builder = this.CreateBuilder();
+        //    var factory = this.CreateFactory();
 
         //    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), this.fakeObject, this.container)).Returns(new FailedProxyResult(typeof(IFoo)));
 
@@ -77,7 +120,7 @@ namespace FakeItEasy.Tests.Core.Generation
         //[Test]
         //public void CreateFake_should_pass_created_proxy_to_ConfigureFake_on_container()
         //{
-        //    var builder = this.CreateBuilder();
+        //    var factory = this.CreateFactory();
 
         //    var returned = new TestableProxyResult(typeof(IFoo), (IFakedProxy)A.Fake<IFoo>());
 
@@ -91,7 +134,7 @@ namespace FakeItEasy.Tests.Core.Generation
         //[Test]
         //public void CreateFake_should_return_fake_from_proxy_generator_when_arguments_for_constructor_is_specified_even_though_non_proxied_fakes_are_accepted()
         //{
-        //    var builder = this.CreateBuilder();
+        //    var factory = this.CreateFactory();
 
         //    var returned = new TestableProxyResult(typeof(IFoo), (IFakedProxy)A.Fake<IFoo>());
 
@@ -106,7 +149,7 @@ namespace FakeItEasy.Tests.Core.Generation
         //public void CreateFake_should_throw_when_proxy_generator_can_not_generate_fake_with_arguments_for_constructor()
         //{
         //    // Arrange
-        //    var builder = this.CreateBuilder();
+        //    var factory = this.CreateFactory();
 
         //    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(string), A<FakeObject>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(new FailedProxyResult(typeof(string)));
 
@@ -116,44 +159,5 @@ namespace FakeItEasy.Tests.Core.Generation
         //    Assert.Throws<ArgumentException>(() =>
         //        factory.CreateFake(typeof(string), new object[] { }, false));
         //}
-
-        //private class FailedProxyResult
-        //    : ProxyResult
-        //{
-        //    public FailedProxyResult(Type proxiedType)
-        //        : base(proxiedType)
-        //    {
-        //        this.ProxyWasSuccessfullyCreated = false;
-        //    }
-
-        //    public override event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
-        //}
-
-        //private class SuccessfulProxyResult
-        //    : ProxyResult
-        //{
-        //    public SuccessfulProxyResult(Type proxiedType)
-        //        : base(proxiedType)
-        //    {
-        //        this.ProxyWasSuccessfullyCreated = true;
-        //    }
-
-        //    public override event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
-        //}
-    }
-
-    public class MoveToOtherFixture
-    {
-        //[Test]
-        //public void CreateFake_should_return_fake_from_container_when_non_proxyied_objects_are_allowed_and_container_contains_type()
-        //{
-        //    var builder = this.CreateBuilder();
-
-        //    object result = null;
-        //    A.CallTo(() => this.container.TryCreateFakeObject(typeof(int), out result)).Returns(true).AssignsOutAndRefParameters(1);
-
-        //    Assert.That(factory.CreateFake(typeof(int), null, true), Is.EqualTo(1));
-        //}
-
     }
 }
