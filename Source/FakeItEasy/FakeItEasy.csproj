@@ -63,10 +63,8 @@
     <Compile Include="Any.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
     <Compile Include="Core\Generation\DefaultFakeAndDummyManager.cs" />
-    <Compile Include="Core\Generation\DefaultFakeObjectBuilder.cs" />
     <Compile Include="Core\Generation\IFakeAndDummyManager.cs" />
     <Compile Include="Core\Generation\IFakeCreator.cs" />
-    <Compile Include="Core\Generation\IFakeObjectBuilder.cs" />
     <Compile Include="Core\Generation\FakeOptions.cs" />
     <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs" />
     <Compile Include="Core\ICallMatcher.cs" />
@@ -202,6 +200,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Core\Generation\FakeGeneration.cd" />
     <None Include="Core\Generation\Generation.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

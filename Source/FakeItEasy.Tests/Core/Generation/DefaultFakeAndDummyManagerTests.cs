@@ -1,12 +1,9 @@
 namespace FakeItEasy.Tests.Core.Generation
 {
-    using System;
     using FakeItEasy.Core;
     using FakeItEasy.Core.Generation;
-    using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
-    using IFakeObjectBuilder = FakeItEasy.Core.Generation.IFakeObjectBuilder;
-
+    
     [TestFixture]
     public class DefaultFakeAndDummyManagerTests
     {
@@ -18,7 +15,10 @@ namespace FakeItEasy.Tests.Core.Generation
         [SetUp]
         public void SetUp()
         {
-           
+            this.container = A.Fake<IFakeObjectContainer>();
+            this.builder = A.Fake<IFakeObjectBuilder>();
+
+            this.fakeAndDummyManager = new DefaultFakeAndDummyManager();
         }
 
         //[Test]

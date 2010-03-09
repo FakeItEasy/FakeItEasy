@@ -7,43 +7,36 @@
       <FileName>Core\Generation\ProxyResult.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FakeItEasy.Core.Generation.FakeObjectBuilderOptions">
+  <Class Name="FakeItEasy.Core.Generation.FakeOptions">
     <Position X="4.75" Y="2.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Core\Generation\FakeObjectBuilderOptions.cs</FileName>
+      <FileName>Core\Generation\FakeOptions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="FakeItEasy.Core.Generation.IFakeAndDummyManager">
-    <Position X="1.25" Y="2.5" Width="2.25" />
+    <Position X="1.25" Y="2.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAI=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAABAABAAAAAAAAAAAAAAI=</HashCode>
       <FileName>Core\Generation\IFakeAndDummyManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FakeItEasy.Core.Generation.IFakeObjectBuilder">
-    <Position X="4.75" Y="4.25" Width="2.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
-      <FileName>Core\Generation\IFakeObjectBuilder.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="FakeItEasy.Core.IFakeBuilderOptionsBuilder&lt;T&gt;">
+  <Interface Name="FakeItEasy.Core.IFakeOptionsBuilder&lt;T&gt;">
     <Position X="1.25" Y="4.25" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAIAAAAAAAAAAA=</HashCode>
-      <FileName>IFakeBuilderOptionsBuilder.cs</FileName>
+      <FileName>IFakeOptionsBuilder.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FakeItEasy.Core.IFakeBuilderOptionsBuilderForWrappers&lt;T&gt;">
+  <Interface Name="FakeItEasy.Core.IFakeOptionsBuilderForWrappers&lt;T&gt;">
     <Position X="1.25" Y="6.25" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IFakeBuilderOptionsBuilderForWrappers.cs</FileName>
+      <FileName>IFakeOptionsBuilderForWrappers.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="FakeItEasy.Core.Generation.IProxyGeneratorNew">
-    <Position X="7.75" Y="4" Width="2.5" />
+    <Position X="7.75" Y="4.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
       <FileName>Core\Generation\IProxyGenerator.cs</FileName>
