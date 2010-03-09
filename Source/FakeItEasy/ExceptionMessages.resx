@@ -183,4 +183,7 @@
   <data name="MemberCanNotBeIntercepted" xml:space="preserve">
     <value>The specified method can not be configured since it can not be intercepted by the current IProxyGenerator.</value>
   </data>
+  <data name="FakeCreationExceptionDefaultMessage" xml:space="preserve">
+    <value>Unable to create fake object.</value>
+  </data>
 </root>

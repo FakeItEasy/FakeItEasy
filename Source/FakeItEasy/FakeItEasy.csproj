@@ -62,6 +62,7 @@
     <Compile Include="A.cs" />
     <Compile Include="Any.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
+    <Compile Include="Core\FakeCreationException.cs" />
     <Compile Include="Core\Generation\DefaultFakeAndDummyManager.cs" />
     <Compile Include="Core\Generation\IFakeAndDummyManager.cs" />
     <Compile Include="Core\Generation\IFakeCreator.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Configuration\IFakeConfigurationManager.cs" />
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
+    <Compile Include="ExceptionMessages.Designer.cs" />
     <Compile Include="Expressions\ArgumentConstraintScope.cs" />
     <Compile Include="Expressions\ArgumentConstraint.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs" />
@@ -159,9 +161,6 @@
     <Compile Include="ExtensionSyntax\Syntax.cs" />
     <Compile Include="Assertion\FakeAssertions.cs" />
     <Compile Include="FakeExtensions.cs" />
-    <Compile Include="ExceptionMessages.Designer.cs">
-      <DependentUpon>ExceptionMessages.resx</DependentUpon>
-    </Compile>
     <Compile Include="Core\ArgumentCollection.cs" />
     <Compile Include="Expressions\ExpressionManager.cs" />
     <Compile Include="Core\IArgumentConstraint.cs">
@@ -200,7 +199,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Core\Generation\FakeGeneration.cd" />
     <None Include="Core\Generation\Generation.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

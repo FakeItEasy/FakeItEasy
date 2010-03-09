@@ -1,14 +1,13 @@
-using FakeItEasy.Core;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System;
-using System.Diagnostics;
-using System.Linq;
-
 namespace FakeItEasy.Tests.Core
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
+
     [TestFixture]
     public class CallWriterTests
     {

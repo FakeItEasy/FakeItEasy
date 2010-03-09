@@ -5,13 +5,12 @@ namespace FakeItEasy.Core.Generation
     internal class DefaultFakeAndDummyManager
         : IFakeAndDummyManager
     {
-
-        public bool TryCreateFake(Type typeOfFake, FakeOptions options, out object result)
+        public object CreateDummy(Type typeOfDummy)
         {
             throw new NotImplementedException();
         }
 
-        public object CreateFake(Type typeOfFake, FakeOptions options)
+        public object CreateFake(Type typeOfDummy, FakeOptions options)
         {
             throw new NotImplementedException();
         }
@@ -21,7 +20,7 @@ namespace FakeItEasy.Core.Generation
             throw new NotImplementedException();
         }
 
-        public object CreateDummy()
+        public bool TryCreateFake(Type typeOfFake, FakeOptions options, out object result)
         {
             throw new NotImplementedException();
         }
