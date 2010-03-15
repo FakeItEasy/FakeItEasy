@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core.Generation
+namespace FakeItEasy.Core.Creation
 {
     using System;
     using System.Collections.Generic;
@@ -70,10 +70,5 @@ namespace FakeItEasy.Core.Generation
         /// <param name="member">The member to check.</param>
         /// <returns>True if the member can be intercepted, otherwise false.</returns>
         bool MemberCanBeIntercepted(MemberInfo member);
-    }
-
-    public interface IProxyGeneratorFactory
-    {
-        IProxyGeneratorNew CreateProxyGenerator(IFakeObjectContainer container);
     }
 }

@@ -3,7 +3,7 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using FakeItEasy.Core.Generation;
+    using FakeItEasy.Core.Creation;
 
     /// <summary>
     /// The central point in the API for proxied fake objects handles interception

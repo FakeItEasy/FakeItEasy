@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="FakeItEasy.Core.Generation.ProxyResult">
+  <Class Name="FakeItEasy.Core.Creation.ProxyResult">
     <Position X="10.5" Y="2.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAACKAAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAAAA=</HashCode>
-      <FileName>Core\Generation\ProxyResult.cs</FileName>
+      <FileName>Core\Creation\ProxyResult.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FakeItEasy.Core.Generation.FakeOptions">
+  <Class Name="FakeItEasy.Core.Creation.FakeOptions">
     <Position X="4.75" Y="2.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Core\Generation\FakeOptions.cs</FileName>
+      <FileName>Core\Creation\FakeOptions.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="FakeItEasy.Core.Generation.IFakeAndDummyManager">
-    <Position X="1.25" Y="2.5" Width="3" />
+  <Interface Name="FakeItEasy.Core.Creation.IFakeAndDummyManager">
+    <Position X="4.75" Y="4.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAAAAAAAAAAAAABAABAAAAAAAAAAAAAAI=</HashCode>
-      <FileName>Core\Generation\IFakeAndDummyManager.cs</FileName>
+      <FileName>Core\Creation\IFakeAndDummyManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="FakeItEasy.Core.IFakeOptionsBuilder&lt;T&gt;">
@@ -35,18 +35,25 @@
       <FileName>IFakeOptionsBuilderForWrappers.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FakeItEasy.Core.Generation.IProxyGeneratorNew">
+  <Interface Name="FakeItEasy.Core.Creation.IProxyGeneratorNew">
     <Position X="7.75" Y="4.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
-      <FileName>Core\Generation\IProxyGenerator.cs</FileName>
+      <FileName>Core\Creation\IProxyGenerator.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="FakeItEasy.Core.Generation.IProxyGeneratorFactory">
+  <Interface Name="FakeItEasy.Core.Creation.IFakeCreator">
+    <Position X="1.25" Y="2.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Core\Creation\IFakeCreator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FakeItEasy.Core.Creation.IProxyGeneratorFactory">
     <Position X="7.75" Y="2.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Core\Generation\IProxyGenerator.cs</FileName>
+      <FileName>Core\Creation\IProxyGeneratorFactory.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

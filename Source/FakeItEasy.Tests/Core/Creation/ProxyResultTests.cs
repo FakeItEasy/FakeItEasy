@@ -1,8 +1,8 @@
-namespace FakeItEasy.Tests.Core.Generation
+namespace FakeItEasy.Tests.Core.Creation
 {
     using System;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Generation;
+    using FakeItEasy.Core.Creation;
     using NUnit.Framework;
 
     [TestFixture]

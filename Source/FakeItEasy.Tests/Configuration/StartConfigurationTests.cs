@@ -5,7 +5,7 @@ namespace FakeItEasy.Tests.Configuration
     using System.Reflection;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Generation;
+    using FakeItEasy.Core.Creation;
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;

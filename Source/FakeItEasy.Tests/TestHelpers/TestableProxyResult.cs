@@ -2,7 +2,7 @@ namespace FakeItEasy.Tests.TestHelpers
 {
     using System;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Generation;
+    using FakeItEasy.Core.Creation;
 
     internal class TestableProxyResult
         : ProxyResult

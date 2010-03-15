@@ -3,7 +3,7 @@ namespace FakeItEasy.Tests.Core
     using System;
     using System.Collections.Generic;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Generation;
+    using FakeItEasy.Core.Creation;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 

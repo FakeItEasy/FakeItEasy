@@ -3,7 +3,7 @@
     using System.IO;
     using FakeItEasy.Assertion;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Generation;
+    using FakeItEasy.Core.Creation;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
