@@ -6,6 +6,6 @@ namespace FakeItEasy.Core.Creation
 
     internal class FakeOptions
     {
-        
+        public IEnumerable<object> ArgumentsForConstructor { get; set; }
     }
 }

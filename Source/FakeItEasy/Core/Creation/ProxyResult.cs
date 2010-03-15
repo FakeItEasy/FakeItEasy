@@ -39,7 +39,7 @@ namespace FakeItEasy.Core.Creation
         /// <value>
         /// 	<c>true</c> If proxy was successfully created; otherwise, <c>false</c>.
         /// </value>
-        public bool ProxyWasSuccessfullyCreated
+        public virtual bool ProxyWasSuccessfullyCreated
         {
             get;
             protected set;
@@ -49,7 +49,7 @@ namespace FakeItEasy.Core.Creation
         /// Gets an error message when the proxy was not successfully created. 
         /// </summary>
         /// <value>The error message.</value>
-        public string ErrorMessage
+        public virtual string ErrorMessage
         {
             get;
             protected set;
@@ -59,7 +59,7 @@ namespace FakeItEasy.Core.Creation
         /// Gets the generated proxy when successfully generated.
         /// </summary>
         /// <value>The generated proxy.</value>
-        public IFakedProxy Proxy
+        public virtual IFakedProxy Proxy
         {
             [DebuggerStepThrough]
             get

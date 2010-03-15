@@ -61,6 +61,7 @@
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="A.cs" />
     <Compile Include="Any.cs" />
+    <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\Creation\IProxyGeneratorFactory.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
     <Compile Include="Core\FakeCreationException.cs" />

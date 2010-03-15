@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests.Configuration
 
             // Act
             rule.Apply(A.Fake<IWritableFakeObjectCall>());
-
+            
             // Assert
             Assert.That(firstWasCalled, Is.True);
             Assert.That(secondWasCalled, Is.True);

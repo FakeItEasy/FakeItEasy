@@ -485,7 +485,7 @@
         public void AssignsOutAndRefParameters_should_set_values_to_rule()
         {
             this.builder.AssignsOutAndRefParameters(1, "foo");
-
+            
             Assert.That(this.ruleProducedByFactory.OutAndRefParametersValues, Is.EquivalentTo(new object[] { 1, "foo" }));
         }
 
