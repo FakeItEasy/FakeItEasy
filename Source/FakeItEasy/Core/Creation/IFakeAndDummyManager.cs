@@ -12,7 +12,8 @@ namespace FakeItEasy.Core.Creation
         /// </summary>
         /// <param name="typeOfDummy">The type of dummy to create.</param>
         /// <returns>The created dummy.</returns>
-        /// <exception cref="In"
+        /// <exception cref="FakeCreationException">The current IProxyGenerator is not able to generate a fake of the specified type and
+        /// the current IFakeObjectContainer does not contain the specified type.</exception>
         object CreateDummy(Type typeOfDummy);
 
         /// <summary>
