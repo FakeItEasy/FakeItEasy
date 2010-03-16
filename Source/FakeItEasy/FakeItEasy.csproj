@@ -82,7 +82,7 @@
     <Compile Include="Configuration\IFakeConfigurationManager.cs" />
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
-    <Compile Include="ExceptionMessages1.Designer.cs">
+    <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
