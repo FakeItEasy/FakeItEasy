@@ -27,8 +27,8 @@ namespace FakeItEasy.Tests.Core.Creation
 
             this.fakeAndDummyManager = A.Fake<DefaultFakeAndDummyManager>(x => x.WithArgumentsForConstructor(() =>
                 new DefaultFakeAndDummyManager(this.container, this.proxyGenerator, this.fakeObjectFactory)));
-
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(A<Type>.Ignored, A<IEnumerable<object>>.Ignored.Argument, A<bool>.Ignored)).CallsBaseMethod();
+            
+            Any.CallTo(this.fakeAndDummyManager).CallsBaseMethod();
         }
 
         private static ProxyResult CreateFakeProxyResult()
@@ -155,7 +155,7 @@ with two lines.");
 
             Assert.That(ex.Message, Is.EqualTo(@"
 
-  FakeItEasy failed to create fake object of type FakeItEasy.Tests.IFoo.
+  FakeItEasy failed to create fake object of type ""FakeItEasy.Tests.IFoo"".
   The current IProxyGenerator failed with the following error message:
 
     Error message
