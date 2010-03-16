@@ -182,6 +182,23 @@ with two lines.");
         }
 
         [Test]
+        public void TryCreateDummy_should_assign_dummy_to_out_parameter_when_exists_in_container()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            object result = null;
+
+            A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out result)).Returns(true).AssignsOutAndRefParameters(foo);
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false)).ReturnsNull();
+
+            // Act
+            var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
+
+            // Assert
+            Assert.That(result, Is.SameAs(foo));
+        }
+
+        [Test]
         public void TryCreateDummy_should_return_false_when_create_proxy_returns_null()
         {
             // Arrange
@@ -209,60 +226,75 @@ with two lines.");
             Assert.That(success, Is.True);
         }
 
-        //[Test]
-        //public void CreateFake_should_throw_exception_when_fake_cant_be_resolved_from_container_or_generated()
-        //{
-        //    var factory = this.CreateFactory();
+        [Test]
+        public void TryCreateDummy_should_assign_created_proxy_to_out_parameter_when_successful()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false)).Returns(foo);
+            object result = null;
 
-        //    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), this.fakeObject, this.container)).Returns(new FailedProxyResult(typeof(IFoo)));
+            // Act
+            var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
 
-        //    var thrown = Assert.Throws<ArgumentException>(() =>
-        //        factory.CreateFake(typeof(IFoo), null, true));
+            // Assert
+            Assert.That(result, Is.SameAs(foo));
+        }
 
-        //    Assert.That(thrown.Message, Is.EqualTo("Can not create fake of the type 'FakeItEasy.Tests.IFoo', it's not registered in the current container and the current IProxyGenerator can not generate the fake."));
-        //}
+        [Test]
+        public void TryCreateFake_should_return_false_when_create_proxy_returns_null()
+        {
+            // Arrange
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false)).ReturnsNull();
+            object result = null;
 
-        //[Test]
-        //public void CreateFake_should_pass_created_proxy_to_ConfigureFake_on_container()
-        //{
-        //    var factory = this.CreateFactory();
+            // Act
+            var success = this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), A.Dummy<FakeOptions>(), out result);
 
-        //    var returned = new TestableProxyResult(typeof(IFoo), (IFakedProxy)A.Fake<IFoo>());
+            // Assert
+            Assert.That(success, Is.False);
+        }
 
-        //    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<FakeObject>.Ignored, this.container)).Returns(returned);
+        [Test]
+        public void TryCreateFake_should_return_true_when_create_proxy_returns_result()
+        {
+            // Arrange
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false)).Returns(A.Fake<IFoo>());
+            object result = null;
 
-        //    factory.CreateFake(typeof(IFoo), null, true);
+            // Act
+            var success = this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), A.Dummy<FakeOptions>(), out result);
 
-        //    A.CallTo(() => this.container.ConfigureFake(typeof(IFoo), returned.Proxy)).MustHaveHappened(Repeated.Once);
-        //}
+            // Assert
+            Assert.That(success, Is.True);
+        }
 
-        //[Test]
-        //public void CreateFake_should_return_fake_from_proxy_generator_when_arguments_for_constructor_is_specified_even_though_non_proxied_fakes_are_accepted()
-        //{
-        //    var factory = this.CreateFactory();
+        [Test]
+        public void TryCreateFake_should_assign_created_proxy_to_out_parameter_when_successful()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false)).Returns(foo);
+            object result = null;
 
-        //    var returned = new TestableProxyResult(typeof(IFoo), (IFakedProxy)A.Fake<IFoo>());
+            // Act
+            var success = this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), A.Dummy<FakeOptions>(), out result);
 
-        //    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<FakeObject>.Ignored, A<IEnumerable<object>>.That.IsThisSequence("argument for constructor").Argument)).Returns(returned);
+            // Assert
+            Assert.That(result, Is.SameAs(foo));
+        }
 
-        //    factory.CreateFake(typeof(IFoo), new object[] { "argument for constructor" }, true);
+        [Test]
+        public void TryCreateFake_should_pass_arguments_for_constructor_from_options()
+        {
+            // Arrange
+            var options = new FakeOptions() { ArgumentsForConstructor = new[] { "a", "b" } };
 
-        //    A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out Null<object>.Out)).MustHaveHappened(Repeated.Never);
-        //}
+            // Act
+            this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), options, out Null<object>.Out);
 
-        //[Test]
-        //public void CreateFake_should_throw_when_proxy_generator_can_not_generate_fake_with_arguments_for_constructor()
-        //{
-        //    // Arrange
-        //    var factory = this.CreateFactory();
-
-        //    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(string), A<FakeObject>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(new FailedProxyResult(typeof(string)));
-
-        //    // Act
-
-        //    // Assert
-        //    Assert.Throws<ArgumentException>(() =>
-        //        factory.CreateFake(typeof(string), new object[] { }, false));
-        //}
+            // Assert
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<object>>.That.IsThisSequence("a", "b").Argument, false)).MustHaveHappened();
+        }
     }
 }

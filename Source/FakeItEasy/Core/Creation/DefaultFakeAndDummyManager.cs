@@ -48,7 +48,8 @@ namespace FakeItEasy.Core.Creation
 
         public bool TryCreateFake(Type typeOfFake, FakeOptions options, out object result)
         {
-            throw new NotImplementedException();
+            result = this.CreateProxy(typeOfFake, options.ArgumentsForConstructor, false);
+            return result != null;
         }
 
         internal virtual object CreateProxy(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, bool throwOnFailure)
