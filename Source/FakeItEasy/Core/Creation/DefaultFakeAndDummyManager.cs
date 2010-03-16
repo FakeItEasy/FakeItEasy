@@ -38,7 +38,12 @@ namespace FakeItEasy.Core.Creation
 
         public bool TryCreateDummy(Type typeOfDummy, out object result)
         {
-            throw new NotImplementedException();
+            if (!this.container.TryCreateFakeObject(typeOfDummy, out result))
+            {
+                result = this.CreateProxy(typeOfDummy, null, false);
+            }
+
+            return result != null;
         }
 
         public bool TryCreateFake(Type typeOfFake, FakeOptions options, out object result)

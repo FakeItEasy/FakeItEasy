@@ -164,6 +164,51 @@ with two lines.");
 "));
         }
 
+        [Test]
+        public void TryCreateDummy_should_return_true_when_container_contains_dummy_type()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            object result = null;
+            
+            A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out result)).Returns(true).AssignsOutAndRefParameters(foo);
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false)).ReturnsNull();
+
+            // Act
+            var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
+
+            // Assert
+            Assert.That(success, Is.True);
+        }
+
+        [Test]
+        public void TryCreateDummy_should_return_false_when_create_proxy_returns_null()
+        {
+            // Arrange
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false)).ReturnsNull();
+            object result = null;
+
+            // Act
+            var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
+
+            // Assert
+            Assert.That(success, Is.False);
+        }
+
+        [Test]
+        public void TryCreateDummy_should_return_true_when_create_proxy_returns_result()
+        {
+            // Arrange
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false)).Returns(A.Fake<IFoo>());
+            object result = null;
+
+            // Act
+            var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
+
+            // Assert
+            Assert.That(success, Is.True);
+        }
+
         //[Test]
         //public void CreateFake_should_throw_exception_when_fake_cant_be_resolved_from_container_or_generated()
         //{
