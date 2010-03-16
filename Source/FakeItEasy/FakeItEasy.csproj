@@ -82,7 +82,11 @@
     <Compile Include="Configuration\IFakeConfigurationManager.cs" />
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
-    <Compile Include="ExceptionMessages.Designer.cs" />
+    <Compile Include="ExceptionMessages1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Expressions\ArgumentConstraintScope.cs" />
     <Compile Include="Expressions\ArgumentConstraint.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs" />
@@ -198,6 +202,7 @@
     <EmbeddedResource Include="ExceptionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionMessages1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

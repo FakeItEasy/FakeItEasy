@@ -2,6 +2,8 @@ namespace FakeItEasy.Core.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
 
     internal class DefaultFakeAndDummyManager
         : IFakeAndDummyManager
@@ -44,15 +46,15 @@ namespace FakeItEasy.Core.Creation
             throw new NotImplementedException();
         }
 
-        internal virtual object CreateProxy(Type typeOfDummy, IEnumerable<object> argumentsForConstructor, bool throwOnFailure)
+        internal virtual object CreateProxy(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, bool throwOnFailure)
         {
             var fakeObject = this.CreateNewFakeObject();
             
-            var proxyResult = this.proxyGenerator.GenerateProxy(typeOfDummy, fakeObject, argumentsForConstructor);
+            var proxyResult = this.proxyGenerator.GenerateProxy(typeOfProxy, fakeObject, argumentsForConstructor);
 
             if (throwOnFailure)
             {
-                AssertThatProxyWasSuccessfullyCreated(typeOfDummy, proxyResult);
+                AssertThatProxyWasSuccessfullyCreated(typeOfProxy, proxyResult);
             }
 
             fakeObject.SetProxy(proxyResult);
@@ -60,17 +62,37 @@ namespace FakeItEasy.Core.Creation
             return proxyResult.Proxy;
         }
 
-        private static void AssertThatProxyWasSuccessfullyCreated(Type typeOfDummy, ProxyResult proxyResult)
+        private static void AssertThatProxyWasSuccessfullyCreated(Type typeOfProxy, ProxyResult proxyResult)
         {
             if (!proxyResult.ProxyWasSuccessfullyCreated)
             {
-                throw new FakeCreationException(CommonExtensions.FormatInvariant(ExceptionMessages.FailedToGenerateProxyPattern, typeOfDummy, IndentErrorMessage(proxyResult)));
+                var message = CreateFailedToGenerateProxyErrorMessage(typeOfProxy, proxyResult);
+                throw new FakeCreationException(message);
             }
         }
 
-        private static string IndentErrorMessage(ProxyResult proxyResult)
+        private static string CreateFailedToGenerateProxyErrorMessage(Type typeOfProxy, ProxyResult proxyResult)
         {
-            return proxyResult.ErrorMessage.Replace(Environment.NewLine, Environment.NewLine + "    ");
+            var messageFromProxyGenerator = Indent(proxyResult.ErrorMessage);
+            
+            var writer = new StringWriter();
+
+            writer.WriteLine();
+            writer.WriteLine();
+            writer.WriteLine(CommonExtensions.FormatInvariant(ExceptionMessages.FailedToGenerateProxyPattern, typeOfProxy, messageFromProxyGenerator));
+            writer.WriteLine();
+
+            return Indent(writer.GetStringBuilder().ToString());
+        }
+
+        private static string Indent(string value)
+        { 
+            var lines = value.Split(new [] {Environment.NewLine}, StringSplitOptions.None);
+
+            return string.Join(Environment.NewLine,
+                (from line in lines
+                 select line.Length == 0 ? string.Empty : "  " + line).ToArray());
+
         }
 
         private FakeObject CreateNewFakeObject()

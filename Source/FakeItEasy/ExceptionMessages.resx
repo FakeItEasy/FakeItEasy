@@ -188,8 +188,8 @@
   </data>
   <data name="FailedToGenerateProxyPattern" xml:space="preserve">
     <value>FakeItEasy failed to create fake object of type {0}.
-  The current IProxyGenerator failed with the following error message:
+The current IProxyGenerator failed with the following error message:
 
-    {1}</value>
+{1}</value>
   </data>
 </root>
