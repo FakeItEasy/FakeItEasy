@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.VisualBasic;
-using FakeItEasy.Api;
-using FakeItEasy.Assertion;
-using System.Linq.Expressions;
-using FakeItEasy.Configuration;
-
-namespace FakeItEasy.Tests.VisualBasic
+﻿namespace FakeItEasy.Tests.VisualBasic
 {
+    using FakeItEasy.Api;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.VisualBasic;
+    using NUnit.Framework;
+
     [TestFixture]
-    public class ThisCallTests
+    public class NextCallTests
         : ConfigurableServiceLocatorTestBase
     {
         private IConfigurationFactory builderFactory;
