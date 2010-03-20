@@ -52,24 +52,23 @@ namespace FakeItEasy.Tests.VisualBasic
         public void Apply_should_create_asserter_and_call_it_with_the_recorded_call_when_IsAssertion_is_set_to_true_on_recorded_rule()
         {
             this.recordedRule.IsAssertion = true;
+            this.recordedRule.RepeatConstraint = Repeated.Once;
 
             var rule = this.CreateRule();
 
             var call = A.Fake<IWritableFakeObjectCall>();
-            Configure.Fake(call)
-                .CallsTo(x => x.ToString())
-                .Returns("call description");
+            A.CallTo(() => call.ToString()).Returns("call description");
 
             rule.Apply(call);
 
-            Fake.Assert(this.asserter)
-                .WasCalled(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, "the number of times specified by predicate"));
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, "the number of times specified by predicate"));
         }
 
         [Test]
         public void Apply_should_create_asserter_and_call_it_with_call_predicate_that_invokes_IsApplicableTo_on_the_recorded_rule()
         {
             this.recordedRule.IsAssertion = true;
+            this.recordedRule.RepeatConstraint = Repeated.Once;
 
             var rule = this.CreateRule();
 
