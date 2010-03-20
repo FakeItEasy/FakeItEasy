@@ -1,7 +1,7 @@
 ﻿namespace FakeItEasy.VisualBasic
 {
     using System;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Configuration;
 
     /// <summary>

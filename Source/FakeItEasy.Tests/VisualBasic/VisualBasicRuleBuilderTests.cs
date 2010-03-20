@@ -1,7 +1,7 @@
 namespace FakeItEasy.Tests.VisualBasic
 {
     using System;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Assertion;
     using FakeItEasy.Configuration;
     using FakeItEasy.VisualBasic;

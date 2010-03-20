@@ -20,9 +20,7 @@ namespace FakeItEasy.Tests
             var factory = A.Fake<IStartConfigurationFactory>();
             var config = A.Fake<IStartConfiguration<IFoo>>();
 
-            Configure.Fake(factory)
-                .CallsTo(x => x.CreateConfiguration<IFoo>(A<FakeObject>.Ignored))
-                .Returns(config);
+            A.CallTo(() => factory.CreateConfiguration<IFoo>(A<FakeObject>.Ignored)).Returns(config);
 
             var foo = A.Fake<IFoo>();
 
