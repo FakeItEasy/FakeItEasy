@@ -143,5 +143,51 @@ namespace FakeItEasy.Tests.VisualBasic
             // Assert
             Assert.That(returned, Is.SameAs(config));
         }
+
+        [Test]
+        public void Invokes_should_delegate_to_wrapped_builder()
+        {
+            // Arrange
+            Action<IFakeObjectCall> action = x => { };
+
+            var config = A.Fake<IVoidConfiguration>();
+            A.CallTo(() => this.wrappedBuilder.Invokes(action)).Returns(config);
+
+            // Act
+            var returned = this.builder.Invokes(action);
+
+            // Assert
+            Assert.That(returned, Is.SameAs(config));
+        }
+
+        [Test]
+        public void CallsBaseMethod_should_delegate_to_wrapped_builder()
+        {
+            // Arrange
+            var config = A.Fake<IAfterCallSpecifiedConfiguration>();
+            A.CallTo(() => this.wrappedBuilder.CallsBaseMethod()).Returns(config);
+
+            // Act
+            var returned = this.builder.CallsBaseMethod();
+
+            // Assert
+            Assert.That(returned, Is.SameAs(config));
+        }
+
+        [Test]
+        public void AssignsOutAndRefParameters_delegates_to_wrapped_builder()
+        {
+            // Arrange
+            var arguments = new object[] { "foo", "bar" };
+
+            var config = A.Fake<IAfterCallSpecifiedConfiguration>();
+            A.CallTo(() => this.wrappedBuilder.AssignsOutAndRefParameters(arguments)).Returns(config);
+
+            // Act
+            var returned = this.builder.AssignsOutAndRefParameters(arguments);
+
+            // Assert
+            Assert.That(returned, Is.SameAs(config));
+        }
     }
 }

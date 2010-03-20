@@ -26,17 +26,12 @@
 
             fakeObject.AddRule(recordingRule);
 
-            //return CreateBuilder(recordedRule, fakeObject);
-#if DEBUG
-            throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
+            return CreateBuilder(recordedRule, fakeObject);
         }
 
-        private static RuleBuilder CreateBuilder(RecordedCallRule rule, FakeObject fakeObject)
+        private static VisualBasicRuleBuilder CreateBuilder(RecordedCallRule rule, FakeObject fakeObject)
         {
-            var factory = ServiceLocator.Current.Resolve<RuleBuilder.Factory>();
+            var factory = ServiceLocator.Current.Resolve<VisualBasicRuleBuilder.Factory>();
             return factory.Invoke(rule, fakeObject);
         }
 

@@ -6,6 +6,7 @@
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
+    using FakeItEasy.Configuration;
     
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -72,6 +73,9 @@
 
             container.RegisterSingleton<IFakeObjectBuilder>(c =>
                 new FakeObjectBuilder(c.Resolve<FakeObjectFactory>()));
+
+            container.RegisterSingleton<VisualBasic.VisualBasicRuleBuilder.Factory>(c =>
+                (rule, fakeObject) => new VisualBasic.VisualBasicRuleBuilder(rule, c.Resolve<RuleBuilder.Factory>().Invoke(rule, fakeObject))); 
 
         }
 

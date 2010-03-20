@@ -4,6 +4,7 @@
     using FakeItEasy.Configuration;
     using FakeItEasy.VisualBasic;
     using NUnit.Framework;
+    using FakeItEasy.Assertion;
 
     [TestFixture]
     public class NextCallTests
@@ -38,8 +39,8 @@
             A.CallTo(() => recordingRuleFactory.Create<IFoo>(fake, recordedRule)).Returns(recordingRule);
             this.StubResolve<IRecordingCallRuleFactory>(recordingRuleFactory);
 
-            var builder = new RuleBuilder(A.Fake<BuildableCallRule>(), fake, x => null);
-            this.StubResolve<RuleBuilder.Factory>((r, f) =>
+            var builder = this.CreateFakeVisualBasicRuleBuilder();
+            this.StubResolve<VisualBasicRuleBuilder.Factory>((r, f) =>
                 {
                     return r.Equals(recordedRule) && f.Equals(fake) ? builder : null;
                 });
@@ -50,6 +51,18 @@
             // Assert
             Assert.That(result, Is.SameAs(builder));
             Assert.That(fake.Rules, Has.Some.SameAs(recordingRule));
+        }
+
+        private VisualBasicRuleBuilder CreateFakeVisualBasicRuleBuilder()
+        {
+            var rule = A.Fake<RecordedCallRule>();
+
+            var wrapped = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() =>
+                new RuleBuilder(rule, A.Fake<FakeObject>(), c => A.Fake<FakeAsserter>())));
+            var result = A.Fake<VisualBasicRuleBuilder>(x => x.WithArgumentsForConstructor(() =>
+                new VisualBasicRuleBuilder(rule, wrapped)));
+
+            return result;
         }
     }
 }

@@ -37,7 +37,7 @@ namespace FakeItEasy.Configuration
 
         public BuildableCallRule RuleBeingBuilt { get; private set; }
 
-        public IAfterCallSpecifiedConfiguration Throws(Exception exception)
+        public virtual IAfterCallSpecifiedConfiguration Throws(Exception exception)
         {
             this.RuleBeingBuilt.Applicator = x => { throw exception; };
             return this;
@@ -134,7 +134,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
+        public virtual IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
         {
             Guard.IsNotNull(action, "action");
 
@@ -142,14 +142,14 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public IAfterCallSpecifiedConfiguration CallsBaseMethod()
+        public virtual IAfterCallSpecifiedConfiguration CallsBaseMethod()
         {
             this.RuleBeingBuilt.Applicator = x => { };
             this.RuleBeingBuilt.CallBaseMethod = true;
             return this;
         }
 
-        public IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(params object[] values)
+        public virtual IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(params object[] values)
         {
             Guard.IsNotNull(values, "values");
             

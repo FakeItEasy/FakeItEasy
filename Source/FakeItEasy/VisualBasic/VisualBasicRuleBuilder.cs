@@ -7,6 +7,8 @@ namespace FakeItEasy.VisualBasic
     internal class VisualBasicRuleBuilder
         : IVisualBasicConfigurationWithArgumentValidation
     {
+        public delegate VisualBasicRuleBuilder Factory(RecordedCallRule rule, FakeObject fakeObject);
+
         private RecordedCallRule rule;
         private RuleBuilder wrappedBuilder;
 
@@ -30,17 +32,17 @@ namespace FakeItEasy.VisualBasic
 
         public IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
         {
-            throw new NotImplementedException();
+            return this.wrappedBuilder.Invokes(action);
         }
 
         public IAfterCallSpecifiedConfiguration CallsBaseMethod()
         {
-            throw new NotImplementedException();
+            return this.wrappedBuilder.CallsBaseMethod();
         }
 
         public IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(params object[] values)
         {
-            throw new NotImplementedException();
+            return this.wrappedBuilder.AssignsOutAndRefParameters(values);
         }
 
         public void MustHaveHappened(Repeated repeatConstraint)
