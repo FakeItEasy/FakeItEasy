@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Castle.Core.Interceptor;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using System.Reflection;
 using FakeItEasy.DynamicProxy;
 

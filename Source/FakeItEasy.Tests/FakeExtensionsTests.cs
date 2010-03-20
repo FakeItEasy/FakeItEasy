@@ -2,7 +2,7 @@ using System;
 using FakeItEasy.Configuration;
 using NUnit.Framework;
 using System.Linq;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using System.Linq.Expressions;
 using System.Collections.Generic;
 using FakeItEasy.Tests.TestHelpers;

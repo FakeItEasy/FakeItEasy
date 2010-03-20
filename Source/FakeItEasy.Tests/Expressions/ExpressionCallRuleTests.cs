@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using System.Linq.Expressions;
 using System.Reflection;
 using NUnit.Framework;
 using FakeItEasy.Expressions;
 using FakeItEasy.Tests.TestHelpers;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 
 namespace FakeItEasy.Tests.Expressions
 {

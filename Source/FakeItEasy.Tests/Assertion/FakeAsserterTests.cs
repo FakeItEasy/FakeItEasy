@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using FakeItEasy.Configuration;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using NUnit.Framework.Constraints;
 using System.Linq.Expressions;
 using System.Collections.ObjectModel;

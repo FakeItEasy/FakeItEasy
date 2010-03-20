@@ -1,11 +1,11 @@
 namespace FakeItEasy.DynamicProxy
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Reflection;
     using Castle.Core.Interceptor;
-    using FakeItEasy.Api;
-using System;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// An adapter that adapts an <see cref="IInvocation" /> to a <see cref="IFakeObjectCall" />.

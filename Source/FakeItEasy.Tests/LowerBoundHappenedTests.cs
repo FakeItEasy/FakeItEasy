@@ -1,6 +1,6 @@
 namespace FakeItEasy.Tests
 {
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using NUnit.Framework;
 
     [TestFixture]

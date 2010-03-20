@@ -8,7 +8,7 @@ using FakeItEasy.ExtensionSyntax;
 using FakeItEasy.VisualBasic;
 using System.IO;
 using System.Web.UI;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using FakeItEasy.Configuration;
 
 namespace FakeItEasy.IntegrationTests
@@ -148,6 +148,40 @@ namespace FakeItEasy.IntegrationTests
                 A.CallTo(() => fake.NonVirtualFunction("", 1)).Returns(10));
 
             Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
+        }
+
+        [Test]
+        public void Should_be_able_to_generate_class_fake_that_implements_additional_interface()
+        {
+            // Arrange
+            var fake = A.Fake<FakeableClass>(x => x.Implements(typeof(IFoo)).Implements(typeof(IFormattable)));
+
+            // Act
+
+            // Assert
+            Assert.That(fake, Is.InstanceOf<IFoo>());
+            Assert.That(fake, Is.InstanceOf<IFormattable>());
+            Assert.That(fake, Is.InstanceOf<FakeableClass>());
+        }
+
+        [Test]
+        public void Should_be_able_to_generate_interface_fake_that_implements_additional_interface()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>(x => x.Implements(typeof(IFormatProvider)).Implements(typeof(IFormattable)));
+
+            // Act
+
+            // Assert
+            Assert.That(fake, Is.InstanceOf<IFoo>());
+            Assert.That(fake, Is.InstanceOf<IFormattable>());
+            Assert.That(fake, Is.InstanceOf<IFormatProvider>());
+        }
+
+        public class FakeableClass
+        {
+            public virtual void Foo()
+            { }
         }
 
         public class TypeWithNonConfigurableMethod

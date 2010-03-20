@@ -1,6 +1,6 @@
 ﻿namespace FakeItEasy.BackwardsCompatibility.Tests.ExtensionSyntax.Full
 {
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Assertion;
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests;

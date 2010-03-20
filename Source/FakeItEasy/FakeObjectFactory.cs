@@ -1,7 +1,8 @@
-﻿namespace FakeItEasy.Api
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
+    using FakeItEasy.Core.Creation;
 
     /// <summary>
     /// Responsible for creating fake objects, can be proxied objects or objects

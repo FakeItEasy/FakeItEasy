@@ -1,6 +1,6 @@
 namespace FakeItEasy.Expressions.ArgumentConstraints
 {
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using System;
     using System.Collections;
     using System.Linq;

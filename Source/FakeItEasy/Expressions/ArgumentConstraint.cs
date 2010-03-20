@@ -2,7 +2,7 @@ namespace FakeItEasy.Expressions
 {
     using System;
     using System.ComponentModel;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Configuration;
 
     /// <summary>

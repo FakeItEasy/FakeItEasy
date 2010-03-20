@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using NUnit.Framework;
 
 namespace FakeItEasy.Tests

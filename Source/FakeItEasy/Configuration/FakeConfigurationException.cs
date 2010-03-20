@@ -1,7 +1,7 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using System.Runtime.Serialization;
 
     /// <summary>

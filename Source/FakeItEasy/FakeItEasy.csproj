@@ -61,9 +61,16 @@
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="A.cs" />
     <Compile Include="Any.cs" />
-    <Compile Include="Api\DelegateFakeObjectContainer.cs" />
-    <Compile Include="Api\ICallCollectionAndCallMatcherAccessor.cs" />
-    <Compile Include="Api\ICallMatcher.cs" />
+    <Compile Include="Configuration\IAnyCallConfiguration.cs" />
+    <Compile Include="Core\Creation\IProxyGeneratorFactory.cs" />
+    <Compile Include="Core\DelegateFakeObjectContainer.cs" />
+    <Compile Include="Core\FakeCreationException.cs" />
+    <Compile Include="Core\Creation\DefaultFakeAndDummyManager.cs" />
+    <Compile Include="Core\Creation\IFakeAndDummyManager.cs" />
+    <Compile Include="Core\Creation\IFakeCreator.cs" />
+    <Compile Include="Core\Creation\FakeOptions.cs" />
+    <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs" />
+    <Compile Include="Core\ICallMatcher.cs" />
     <Compile Include="ArgumentConstraintExtensions.cs" />
     <Compile Include="Configuration\AnyCallCallRule.cs" />
     <Compile Include="Configuration\AnyCallConfiguration.cs" />
@@ -75,6 +82,11 @@
     <Compile Include="Configuration\IFakeConfigurationManager.cs" />
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
+    <Compile Include="ExceptionMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Expressions\ArgumentConstraintScope.cs" />
     <Compile Include="Expressions\ArgumentConstraint.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs" />
@@ -84,8 +96,8 @@
     <Compile Include="Expressions\RootValidations.cs" />
     <Compile Include="Repeated.cs" />
     <Compile Include="FakeObjectBuilder.cs" />
-    <Compile Include="IFakeBuilderOptionsBuilder.cs" />
-    <Compile Include="IFakeBuilderOptionsBuilderForWrappers.cs" />
+    <Compile Include="IFakeOptionsBuilder.cs" />
+    <Compile Include="IFakeOptionsBuilderForWrappers.cs" />
     <Compile Include="IFakeObjectBuilder.cs" />
     <Compile Include="IFakeObjectGenerator.cs" />
     <Compile Include="IFakeObjectGeneratorFactory.cs" />
@@ -96,10 +108,10 @@
     <Compile Include="SelfInitializedFakes\ISelfInitializingFakeRecorder.cs" />
     <Compile Include="SelfInitializedFakes\RecordingException.cs" />
     <Compile Include="SelfInitializedFakes\SelfInitializationRule.cs" />
-    <Compile Include="Api\CallWriter.cs" />
+    <Compile Include="Core\CallWriter.cs" />
     <Compile Include="Assertion\FakeAsserter.cs" />
     <Compile Include="Assertion\IFakeAssertionsFactory.cs" />
-    <Compile Include="Api\CallInterceptedEventArgs.cs" />
+    <Compile Include="Core\CallInterceptedEventArgs.cs" />
     <Compile Include="SelfInitializedFakes\CallData.cs" />
     <Compile Include="Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs" />
     <Compile Include="Configuration\IArgumentValidationConfiguration.cs" />
@@ -109,35 +121,35 @@
     <Compile Include="DynamicProxy\DynamicProxyProxyGenerator.cs" />
     <Compile Include="DynamicProxy\ICanInterceptObjectMembers.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs" />
-    <Compile Include="Api\MethodInfoManager.cs" />
+    <Compile Include="Core\MethodInfoManager.cs" />
     <Compile Include="SelfInitializedFakes\ICallStorage.cs" />
     <Compile Include="IoC\DictionaryContainer.cs" />
     <Compile Include="Expressions\ArgumentConstraintFactory.cs" />
-    <Compile Include="Api\CallRuleMetadata.cs" />
+    <Compile Include="Core\CallRuleMetadata.cs" />
     <Compile Include="Expressions\ExpressionCallMatcher.cs" />
-    <Compile Include="Api\IFakeObjectContainer.cs" />
-    <Compile Include="Api\NullFakeObjectContainer.cs" />
-    <Compile Include="Api\FakeObject.EventRule.cs">
+    <Compile Include="Core\IFakeObjectContainer.cs" />
+    <Compile Include="Core\NullFakeObjectContainer.cs" />
+    <Compile Include="Core\FakeObject.EventRule.cs">
       <DependentUpon>FakeObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="Api\FakeObject.AutoFakePropertyRule.cs">
+    <Compile Include="Core\FakeObject.AutoFakePropertyRule.cs">
       <DependentUpon>FakeObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="Api\DefaultReturnValueRule.cs" />
-    <Compile Include="Api\FakeObject.ObjectMemberRule.cs">
+    <Compile Include="Core\DefaultReturnValueRule.cs" />
+    <Compile Include="Core\FakeObject.ObjectMemberRule.cs">
       <DependentUpon>FakeObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="Api\FakeObject.PropertyBehaviorRule.cs">
+    <Compile Include="Core\FakeObject.PropertyBehaviorRule.cs">
       <DependentUpon>FakeObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="Api\FakeObject.PropertySetterRule.cs">
+    <Compile Include="Core\FakeObject.PropertySetterRule.cs">
       <DependentUpon>FakeObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="Api\Helpers.cs" />
-    <Compile Include="Api\ICompletedFakeObjectCall.cs" />
+    <Compile Include="Core\Helpers.cs" />
+    <Compile Include="Core\ICompletedFakeObjectCall.cs" />
     <Compile Include="DynamicProxy\InvocationCallAdapter.cs" />
-    <Compile Include="Api\IWritableFakeObjectCall.cs" />
-    <Compile Include="Api\WrappedObjectRule.cs" />
+    <Compile Include="Core\IWritableFakeObjectCall.cs" />
+    <Compile Include="Core\WrappedObjectRule.cs" />
     <Compile Include="Configuration\BuildableCallRule.cs" />
     <Compile Include="Configuration\IAfterCallSpecifiedConfiguration.cs" />
     <Compile Include="Configuration\ICallBackConfiguration.cs" />
@@ -155,28 +167,25 @@
     <Compile Include="ExtensionSyntax\Syntax.cs" />
     <Compile Include="Assertion\FakeAssertions.cs" />
     <Compile Include="FakeExtensions.cs" />
-    <Compile Include="ExceptionMessages.Designer.cs">
-      <DependentUpon>ExceptionMessages.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Api\ArgumentCollection.cs" />
+    <Compile Include="Core\ArgumentCollection.cs" />
     <Compile Include="Expressions\ExpressionManager.cs" />
-    <Compile Include="Api\IArgumentConstraint.cs">
+    <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Api\FakeScope.cs" />
+    <Compile Include="Core\FakeScope.cs" />
     <Compile Include="FakeObjectFactory.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Assertion\IFakeAssertions.cs" />
-    <Compile Include="Api\IFakedProxy.cs" />
-    <Compile Include="Api\IFakeObjectCall.cs" />
-    <Compile Include="Api\IFakeObjectCallRule.cs" />
-    <Compile Include="Api\IEventRaiserArguments.cs" />
+    <Compile Include="Core\IFakedProxy.cs" />
+    <Compile Include="Core\IFakeObjectCall.cs" />
+    <Compile Include="Core\IFakeObjectCallRule.cs" />
+    <Compile Include="Core\IEventRaiserArguments.cs" />
     <Compile Include="IoC\Module.cs" />
-    <Compile Include="Api\IProxyGenerator.cs" />
-    <Compile Include="Api\FakeObject.cs" />
+    <Compile Include="Core\Creation\IProxyGenerator.cs" />
+    <Compile Include="Core\FakeObject.cs" />
     <Compile Include="Fake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Api\ProxyResult.cs" />
+    <Compile Include="Core\Creation\ProxyResult.cs" />
     <Compile Include="Raise.cs" />
     <Compile Include="RootModule.cs" />
     <Compile Include="ServiceLocator.cs" />
@@ -188,7 +197,6 @@
     <Compile Include="VisualBasic\RecordedCallRule.cs" />
     <Compile Include="VisualBasic\RecordingCallRule.cs" />
     <Compile Include="VisualBasic\NextCall.cs" />
-    <Compile Include="VisualBasic\VisualBasicHelpers.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManager.cs" />
     <Compile Include="VisualBasic\VisualBasicRuleBuilder.cs" />
   </ItemGroup>
@@ -196,10 +204,11 @@
     <EmbeddedResource Include="ExceptionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionMessages1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Api\ApiDiagram.cd" />
+    <None Include="Core\Creation\Creation.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

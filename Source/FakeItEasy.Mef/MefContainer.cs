@@ -7,7 +7,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// A IFakeObjectContainer implementation that uses mef to load IFakeDefinitions and

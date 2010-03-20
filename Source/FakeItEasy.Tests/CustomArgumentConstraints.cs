@@ -4,7 +4,7 @@ namespace FakeItEasy.Tests
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
     using FakeItEasy.Expressions;
 
     public static class CustomArgumentConstraints
@@ -16,7 +16,7 @@ namespace FakeItEasy.Tests
 
         public static ArgumentConstraint<T> IsThisSequence<T>(this ArgumentConstraintScope<T> scope, params object[] collection) where T : IEnumerable
         {
-            return ArgumentConstraint.Create(scope, x => x.Cast<object>().SequenceEqual(collection.Cast<object>()), "Same sequence");
+            return ArgumentConstraint.Create(scope, x => x != null && x.Cast<object>().SequenceEqual(collection.Cast<object>()), "Same sequence");
         }
 
         

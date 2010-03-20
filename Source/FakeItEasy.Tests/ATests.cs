@@ -5,14 +5,15 @@ using System.Text;
 using NUnit.Framework;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using System.Diagnostics;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using FakeItEasy.SelfInitializedFakes;
 using System.Linq.Expressions;
 using FakeItEasy.Configuration;
 using FakeItEasy.Expressions;
 using FakeItEasy.Tests.TestHelpers;
+using FakeItEasy.Core.Creation;
 
 namespace FakeItEasy.Tests
 {

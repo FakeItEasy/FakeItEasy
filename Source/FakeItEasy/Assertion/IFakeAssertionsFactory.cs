@@ -1,6 +1,6 @@
 namespace FakeItEasy.Assertion
 {
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     public interface IFakeAssertionsFactory
     {

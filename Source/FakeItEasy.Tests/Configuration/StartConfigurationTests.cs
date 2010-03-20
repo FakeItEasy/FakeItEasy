@@ -2,12 +2,13 @@ namespace FakeItEasy.Tests.Configuration
 {
     using System;
     using System.Linq.Expressions;
-    using FakeItEasy.Api;
+    using System.Reflection;
     using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Creation;
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
-    using System.Reflection;
 
     [TestFixture]
     public class StartConfigurationTests

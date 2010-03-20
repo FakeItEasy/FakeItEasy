@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using FakeItEasy.Expressions;
+using FakeItEasy.Core.Creation;
 
 namespace FakeItEasy.Tests
 {

@@ -1,7 +1,6 @@
 ﻿namespace FakeItEasy.Configuration
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
 
     /// <summary>
@@ -34,11 +33,5 @@
         /// </summary>
         /// <returns>A configuration object.</returns>
         IAnyCallConfiguration AnyCall();
-    }
-
-    public interface IAnyCallConfiguration
-        : IVoidConfiguration
-    {
-        IReturnValueArgumentValidationConfiguration<TMember> WithReturnType<TMember>();
     }
 }

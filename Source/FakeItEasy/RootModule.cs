@@ -1,8 +1,9 @@
 ﻿namespace FakeItEasy
 {
     using System.IO;
-    using FakeItEasy.Api;
     using FakeItEasy.Assertion;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Creation;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
@@ -71,7 +72,7 @@
             container.Register<IFakeObjectGeneratorFactory>(c =>
                 c.Resolve<FakeObjectFactory>());
 
-            container.RegisterSingleton<IFakeObjectBuilder>(c =>
+            container.RegisterSingleton<FakeItEasy.Core.IFakeObjectBuilder>(c =>
                 new FakeObjectBuilder(c.Resolve<FakeObjectFactory>()));
 
             container.RegisterSingleton<VisualBasic.VisualBasicRuleBuilder.Factory>(c =>

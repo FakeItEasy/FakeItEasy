@@ -1,10 +1,7 @@
 ﻿namespace FakeItEasy.SelfInitializedFakes
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// An interface for recorders that provides stored responses for self initializing fakes.

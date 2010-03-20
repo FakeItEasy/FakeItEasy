@@ -3,13 +3,10 @@ namespace FakeItEasy
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
     using System.Linq.Expressions;
-    using FakeItEasy.Api;
-    using FakeItEasy.Expressions;
-    using FakeItEasy.SelfInitializedFakes;
     using FakeItEasy.Configuration;
-    using System.Reflection;
+    using FakeItEasy.Core;
+    using FakeItEasy.Expressions;
 
     /// <summary>
     /// Provides methods for generating fake objects.
@@ -32,7 +29,7 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of fake object to create.</typeparam>
         /// <param name="options">A lambda where options for the built fake object cna be specified.</param>
         /// <returns>A fake object.</returns>
-        public static T Fake<T>(Action<IFakeBuilderOptionsBuilder<T>> options)
+        public static T Fake<T>(Action<IFakeOptionsBuilder<T>> options)
         {
             var generator = ServiceLocator.Current.Resolve<IFakeObjectBuilder>();
             return generator.GenerateFake<T>(options);

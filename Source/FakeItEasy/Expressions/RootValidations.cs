@@ -1,4 +1,3 @@
-using System;
 namespace FakeItEasy.Expressions
 {
     internal class RootValidations<T>

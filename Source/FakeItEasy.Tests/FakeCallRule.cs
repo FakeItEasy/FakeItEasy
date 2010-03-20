@@ -1,9 +1,9 @@
 using System;
 using NUnit.Framework;
 using System.Linq.Expressions;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using System.Reflection;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 
 namespace FakeItEasy.Tests
 {

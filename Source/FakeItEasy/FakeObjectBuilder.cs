@@ -1,4 +1,4 @@
-namespace FakeItEasy.Api
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace FakeItEasy.Api
         /// <typeparam name="T">The type of fake to generate.</typeparam>
         /// <param name="options">Options for the generation of the fake object.</param>
         /// <returns>A fake object.</returns>
-        public T GenerateFake<T>(Action<IFakeBuilderOptionsBuilder<T>> options)
+        public T GenerateFake<T>(Action<IFakeOptionsBuilder<T>> options)
         {
 
             Guard.IsNotNull(options, "options");
@@ -44,7 +44,7 @@ namespace FakeItEasy.Api
             return result;
         }
 
-        private static FakeGenerationOptions GetOptions<T>(Action<IFakeBuilderOptionsBuilder<T>> options)
+        private static FakeGenerationOptions GetOptions<T>(Action<IFakeOptionsBuilder<T>> options)
         {
             var builder = new OptionBuilder<T>();
 
@@ -93,7 +93,7 @@ namespace FakeItEasy.Api
             return (T)this.fakeObjectFactory.CreateFake(typeof(T), argumentsForConstructor, false);
         }
 
-        private class OptionBuilder<T> : IFakeBuilderOptionsBuilderForWrappers<T>
+        private class OptionBuilder<T> : IFakeOptionsBuilderForWrappers<T>
         {
             public OptionBuilder()
             {
@@ -102,13 +102,13 @@ namespace FakeItEasy.Api
 
             public FakeGenerationOptions Options { get; private set; }
 
-            public IFakeBuilderOptionsBuilder<T> Implementing<TInterface>()
+            public IFakeOptionsBuilder<T> Implementing<TInterface>()
             {
                 this.Options.Interfaces.Add(typeof(T));
                 return this;
             }
 
-            public IFakeBuilderOptionsBuilder<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+            public IFakeOptionsBuilder<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
             {
                 if (!typeof(T).IsAbstract)
                 {
@@ -119,19 +119,19 @@ namespace FakeItEasy.Api
                 return this;
             }
 
-            public IFakeBuilderOptionsBuilder<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
+            public IFakeOptionsBuilder<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
             {
                 this.Options.ArgumentsForConstructor = this.GetConstructorArgumentsFromExpression(constructorCall);
                 return this;
             }
 
-            public IFakeBuilderOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance)
+            public IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance)
             {
                 this.Options.WrappedInstance = wrappedInstance;
                 return this;
             }
 
-            public IFakeBuilderOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
+            public IFakeOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
             {
                 this.Options.Recorder = recorder;
                 return this;
@@ -149,6 +149,12 @@ namespace FakeItEasy.Api
                     select ExpressionManager.GetValueProducedByExpression(argument);
 
                 return constructorArguments;
+            }
+
+
+            public IFakeOptionsBuilder<T> Implements(Type interfaceType)
+            {
+                throw new NotImplementedException();
             }
         }
 

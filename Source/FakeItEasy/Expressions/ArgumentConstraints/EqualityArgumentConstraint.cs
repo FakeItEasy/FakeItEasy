@@ -1,8 +1,8 @@
 namespace FakeItEasy.Expressions.ArgumentConstraints
 {
-    using FakeItEasy.Api;
+    using FakeItEasy.Core;
 
-    public class EqualityArgumentConstraint
+    internal class EqualityArgumentConstraint
         : IArgumentConstraint
     {
         private object expectedValue;

@@ -2,7 +2,6 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Hides standard Object members to make fluent interfaces

@@ -1,7 +1,7 @@
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using NUnit.Framework;
 using System;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using FakeItEasy.Mef;
 
 namespace FakeItEasy.Tests

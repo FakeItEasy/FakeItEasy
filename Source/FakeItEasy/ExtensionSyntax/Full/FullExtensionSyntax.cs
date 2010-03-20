@@ -1,9 +1,7 @@
 ﻿namespace FakeItEasy.ExtensionSyntax.Full
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
-    using FakeItEasy.Assertion;
     using FakeItEasy.Configuration;
 
     /// <summary>

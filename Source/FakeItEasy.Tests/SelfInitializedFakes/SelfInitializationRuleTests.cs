@@ -1,4 +1,4 @@
-﻿using FakeItEasy.Api;
+﻿using FakeItEasy.Core;
 using FakeItEasy.SelfInitializedFakes;
 using NUnit.Framework;
 using System.Reflection;

@@ -4,8 +4,8 @@ namespace FakeItEasy
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using FakeItEasy.Api;
     using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
     using FakeItEasy.Expressions;
 
     /// <summary>

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FakeItEasy.Api;
+using FakeItEasy.Core;
 using System.Diagnostics;
 
 namespace FakeItEasy.Examples
