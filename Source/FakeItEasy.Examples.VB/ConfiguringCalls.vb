@@ -5,7 +5,7 @@ Public Class ConfiguringCalls
     Public Sub Configuring_a_sub_to_throw_an_exception()
         Dim widget = A.Fake(Of IWidget)()
 
-        ThisCall.To(widget).Throws(New NotSupportedException()) : widget.Repair()
+        NextCall.To(widget).Throws(New NotSupportedException()) : widget.Repair()
     End Sub
 
     Public Sub Configuring_a_function_to_return_a_value()

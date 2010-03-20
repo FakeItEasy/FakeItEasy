@@ -136,10 +136,11 @@
     <Compile Include="TestHelpers\ReflectionHelper.cs" />
     <Compile Include="TestHelpers\TestableProxyResult.cs" />
     <Compile Include="VisualBasic\RecordingCallRuleTests.cs" />
-    <Compile Include="VisualBasic\ThisCallTests.cs" />
+    <Compile Include="VisualBasic\NextCallTests.cs" />
     <Compile Include="VisualBasic\VisualBasicHelpersTests.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManagerTests.cs" />
     <Compile Include="Fake(T)Tests.cs" />
+    <Compile Include="VisualBasic\VisualBasicRuleBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj">
