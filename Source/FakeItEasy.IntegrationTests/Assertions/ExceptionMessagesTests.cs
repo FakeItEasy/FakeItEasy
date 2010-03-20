@@ -25,13 +25,13 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.Biz();
 
             var exception = Assert.Throws<ExpectationException>(() =>
-                Fake.Assert(foo).WasCalled(x => x.Bar(""), repeat => repeat > 2));
+                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.Twice));
 
             Assert.That(exception.Message, Is.EqualTo(@"
 
   Assertion failed for the following call:
     'FakeItEasy.Tests.IFoo.Bar("""")'
-  Expected to find it the number of times specified by the lambda repeat => (repeat > 2) but found it #0 times among the calls:
+  Expected to find it twice but found it #0 times among the calls:
     1.  'FakeItEasy.Tests.IFoo.Bar()' repeated 2 times
     ...
     3.  'FakeItEasy.Tests.IFoo.Bar(""test"")'

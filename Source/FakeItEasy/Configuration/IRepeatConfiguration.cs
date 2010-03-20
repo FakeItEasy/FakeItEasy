@@ -3,7 +3,6 @@ namespace FakeItEasy.Configuration
     /// <summary>
     /// Provides configuration for method calls that has a return value.
     /// </summary>
-    /// <typeparam name="TFake">The type of the faked object.</typeparam>
     public interface IRepeatConfiguration
         : IHideObjectMembers
     {

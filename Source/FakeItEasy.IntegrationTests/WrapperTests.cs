@@ -32,10 +32,7 @@ namespace FakeItEasy.IntegrationTests
             fake.Add("foo", "bar");
 
             Assert.That(fake["foo"], Is.EqualTo("bar"));
-            Fake.Assert(fake)
-                .WasCalled(x => x.Add("foo", "bar"));
-
-
+            A.CallTo(() => fake.Add("foo", "bar")).MustHaveHappened();
         }
 
         private bool CanRead(Stream stream)
