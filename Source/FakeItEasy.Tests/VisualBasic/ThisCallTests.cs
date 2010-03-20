@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.VisualBasic
         public void To_should_be_properly_guarded()
         {
             NullGuardedConstraint.Assert(() => 
-                ThisCall.To(A.Fake<IFoo>()));
+                NextCall.To(A.Fake<IFoo>()));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace FakeItEasy.Tests.VisualBasic
                 });
             
             // Act
-            var result = ThisCall.To(foo);
+            var result = NextCall.To(foo);
 
             // Assert
             Assert.That(result, Is.SameAs(builder));

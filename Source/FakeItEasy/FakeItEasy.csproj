@@ -184,11 +184,13 @@
     <Compile Include="Tuple.cs" />
     <Compile Include="VisualBasic\IRecordingCallRuleFactory.cs" />
     <Compile Include="VisualBasic\IVisualBasicConfiguration.cs" />
+    <Compile Include="VisualBasic\IVisualBasicConfigurationWithArgumentValidation.cs" />
     <Compile Include="VisualBasic\RecordedCallRule.cs" />
     <Compile Include="VisualBasic\RecordingCallRule.cs" />
-    <Compile Include="VisualBasic\ThisCall.cs" />
+    <Compile Include="VisualBasic\NextCall.cs" />
     <Compile Include="VisualBasic\VisualBasicHelpers.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManager.cs" />
+    <Compile Include="VisualBasic\VisualBasicRuleBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ExceptionMessages.resx">

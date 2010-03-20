@@ -11,7 +11,6 @@ namespace FakeItEasy.Configuration
         : IVoidArgumentValidationConfiguration,
           IRepeatConfiguration,
           IAfterCallSpecifiedConfiguration,
-          IVisualBasicConfigurationWithArgumentValidation,
           IAfterCallSpecifiedWithOutAndRefParametersConfiguration,
           ICallCollectionAndCallMatcherAccessor
     {
@@ -150,24 +149,6 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public void AssertWasCalled(Func<int, bool> repeatPredicate)
-        {
-            Guard.IsNotNull(repeatPredicate, "repeatPredicate");
-
-            var recordedRule = this.RuleBeingBuilt as RecordedCallRule;
-
-            if (recordedRule == null)
-            {
-                throw new InvalidOperationException("Only RecordedCallRules can be used for assertions.");
-            }
-
-            recordedRule.IsAssertion = true;
-            recordedRule.Applicator = x => { };
-            recordedRule.RepeatPredicate = repeatPredicate;
-            
-        }
-
-
         public IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(params object[] values)
         {
             Guard.IsNotNull(values, "values");
@@ -182,15 +163,6 @@ namespace FakeItEasy.Configuration
             this.fakeObject.RemoveRule(this.RuleBeingBuilt);
             var asserter = this.asserterFactory.Invoke(this.Calls.Cast<IFakeObjectCall>());
             asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.ToString(), repeatConstraint.Matches, repeatConstraint.ToString());
-        }
-
-        IVisualBasicConfiguration IArgumentValidationConfiguration<IVisualBasicConfiguration>.WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
-        {
-            Guard.IsNotNull(argumentsPredicate, "argumentsPredicate");
-
-            this.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
-
-            return this;
         }
 
         public System.Collections.Generic.IEnumerable<ICompletedFakeObjectCall> Calls

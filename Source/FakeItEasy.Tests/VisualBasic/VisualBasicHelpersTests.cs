@@ -15,7 +15,7 @@ namespace FakeItEasy.Tests.VisualBasic
         {
             var fake = A.Fake<IFoo>();
 
-            ThisCall.To(fake).WithAnyArguments().Throws(new ApplicationException());
+            NextCall.To(fake).WithAnyArguments().Throws(new ApplicationException());
             fake.Baz(null, null);
 
             Assert.Throws<ApplicationException>(() =>

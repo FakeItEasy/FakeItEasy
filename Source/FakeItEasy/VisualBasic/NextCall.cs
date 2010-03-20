@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Configuration;
-using FakeItEasy.Api;
-using System.Reflection;
-
-namespace FakeItEasy.VisualBasic
+﻿namespace FakeItEasy.VisualBasic
 {
+    using System;
+    using FakeItEasy.Api;
+    using FakeItEasy.Configuration;
+
     /// <summary>
     /// Lets you specify options for the next call to a fake object.
     /// </summary>
-    public static class ThisCall
+    public static class NextCall
     {
         /// <summary>
         /// Specifies options for the next call to the specified fake object. The next call will
@@ -30,7 +26,12 @@ namespace FakeItEasy.VisualBasic
 
             fakeObject.AddRule(recordingRule);
 
-            return CreateBuilder(recordedRule, fakeObject);
+            //return CreateBuilder(recordedRule, fakeObject);
+#if DEBUG
+            throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
         }
 
         private static RuleBuilder CreateBuilder(RecordedCallRule rule, FakeObject fakeObject)
