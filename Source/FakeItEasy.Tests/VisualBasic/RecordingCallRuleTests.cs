@@ -90,25 +90,26 @@ namespace FakeItEasy.Tests.VisualBasic
         [Test]
         public void Apply_should_call_asserter_with_repeat_predicate_from_recorded_rule()
         {
-            Func<int, bool> repeatPredicate = x => true;
+            var repeat = Repeated.Once;
             this.recordedRule.IsAssertion = true;
-            this.recordedRule.RepeatPredicate = repeatPredicate;
+            this.recordedRule.RepeatConstraint = repeat;
 
             this.recordedRule.IsAssertion = true;
 
             var rule = this.CreateRule();
 
             var call = A.Fake<IWritableFakeObjectCall>();
-            Configure.Fake(call)
-                .CallsTo(x => x.ToString())
-                .Returns("call description");
+            A.CallTo(() => call.ToString()).Returns("call description");
 
             rule.Apply(call);
 
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, "once")).MustHaveHappened();
+            
             var asserterCall = Fake.GetCalls(this.asserter).Matching<FakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, A<string>.Ignored)).Single();
             var repeatPredicatePassedToAsserter = asserterCall.Arguments.Get<Func<int, bool>>("repeatPredicate");
 
-            Assert.That(repeatPredicatePassedToAsserter, Is.SameAs(repeatPredicate));
+            Assert.That(repeatPredicatePassedToAsserter.Invoke(0), Is.False);
+            Assert.That(repeatPredicatePassedToAsserter.Invoke(1), Is.True);
         }
 
         [Test]
@@ -118,7 +119,7 @@ namespace FakeItEasy.Tests.VisualBasic
             this.fakedObject.Baz();
 
             this.recordedRule.IsAssertion = true;
-            this.recordedRule.RepeatPredicate = x => true;
+            this.recordedRule.RepeatConstraint = Repeated.Once;
 
             var rule = this.CreateRule();
 

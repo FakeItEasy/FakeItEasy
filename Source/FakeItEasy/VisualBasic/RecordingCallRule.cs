@@ -55,8 +55,7 @@ namespace FakeItEasy.VisualBasic
         private void DoAssertion(IFakeObjectCall fakeObjectCall)
         {
             var asserter = this.asserterFactory.Invoke(this.fakeObject.RecordedCallsInScope.Cast<IFakeObjectCall>());
-
-            asserter.AssertWasCalled(this.recordedRule.IsApplicableTo, fakeObjectCall.ToString(), this.recordedRule.RepeatPredicate, "the number of times specified by predicate");
+            asserter.AssertWasCalled(this.recordedRule.IsApplicableTo, fakeObjectCall.ToString(), x => this.recordedRule.RepeatConstraint.Matches(x), this.recordedRule.RepeatConstraint.ToString());
         }
 
         private void CreateArgumentsPredicateFromArguments(IFakeObjectCall fakeObjectCall)

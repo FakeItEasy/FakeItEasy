@@ -27,7 +27,7 @@ namespace FakeItEasy.Api
             set;
         }
 
-        public System.Func<int, bool> RepeatPredicate
+        public Repeated RepeatConstraint
         {
             get;
             set;

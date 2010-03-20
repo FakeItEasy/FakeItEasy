@@ -128,7 +128,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public IAfterCallSpecifiedConfiguration DoesNothing()
+        public virtual IAfterCallSpecifiedConfiguration DoesNothing()
         {
             this.RuleBeingBuilt.Applicator = x => { };
             return this;

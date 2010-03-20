@@ -1,10 +1,11 @@
 namespace FakeItEasy.Tests.VisualBasic
 {
-    using NUnit.Framework;
-    using FakeItEasy.VisualBasic;
-    using FakeItEasy.Configuration;
-using FakeItEasy.Api;
+    using System;
+    using FakeItEasy.Api;
     using FakeItEasy.Assertion;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.VisualBasic;
+    using NUnit.Framework;
 
     [TestFixture]
     public class VisualBasicRuleBuilderTests
@@ -19,7 +20,20 @@ using FakeItEasy.Api;
             this.wrappedBuilder = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() => 
                 new RuleBuilder(A.Fake<BuildableCallRule>(), A.Fake<FakeObject>(), c => A.Fake<FakeAsserter>())));
 
-            this.builder = new VisualBasicRuleBuilder();
+            this.rule = A.Fake<RecordedCallRule>();
+
+            this.builder = new VisualBasicRuleBuilder(this.rule, this.wrappedBuilder);
+        }
+
+        [Test]
+        public void IsAssertion_should_not_be_set_when_MustHaveHappened_has_not_been_called()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.That(this.rule.IsAssertion, Is.False);
         }
 
         [Test]
@@ -37,78 +51,97 @@ using FakeItEasy.Api;
         [Test]
         public void MustHaveHappened_should_set_applicator_to_empty_action()
         {
-            //// Arrange
-            //var config = this.CreateBuilder(new RecordedCallRule(A.Fake<MethodInfoManager>()));
-            //config.MustHaveHappened(x => true);
+            // Arrange
+            
 
-            //// Act
+            // Act
+            this.builder.MustHaveHappened(Repeated.Once);
 
-            //// Assert
-            //Assert.That(config.RuleBeingBuilt.Applicator, Is.Not.Null);
+            // Assert
+            Assert.That(this.rule.Applicator, Is.Not.Null);
         }
 
         [Test]
         public void MustHaveHappened_should_set_repeat_predicate_to_the_recorded_rule()
         {
-            //Func<int, bool> repeatPredicate = x => true;
-            //var config = this.CreateBuilder(new RecordedCallRule(A.Fake<MethodInfoManager>()));
-            //config.MustHaveHappened(repeatPredicate);
+            // Arrange
+            var repeatPredicate = Repeated.Once;
 
-            //Assert.That(((RecordedCallRule)config.RuleBeingBuilt).RepeatPredicate, Is.SameAs(repeatPredicate));
-        }
+            // Act
+            this.builder.MustHaveHappened(repeatPredicate);
 
-        [Test]
-        public void MustHaveHappened_should_throw_when_built_rule_is_not_a_RecordedCallRule()
-        {
-            //var ex = Assert.Throws<InvalidOperationException>(() =>
-            //    this.builder.MustHaveHappened(x => true));
-
-            //Assert.That(ex.Message, Is.EqualTo("Only RecordedCallRules can be used for assertions."));
+            // Assert
+            Assert.That(this.rule.RepeatConstraint, Is.SameAs(repeatPredicate));
         }
 
         [Test]
         public void MustHaveHappened_should_be_null_guarded()
         {
-            //NullGuardedConstraint.Assert(() =>
-            //    this.builder.MustHaveHappened(x => true));
+            NullGuardedConstraint.Assert(() =>
+                this.builder.MustHaveHappened(Repeated.Once));
         }
 
         //
         [Test]
-        public void WhenArgumentsMatches_from_VB_should_be_null_guarded()
+        public void WhenArgumentsMatches_from_should_be_null_guarded()
         {
-            //var builtRule = A.Fake<BuildableCallRule>();
-
-            //var config = this.CreateBuilder(builtRule) as FakeItEasy.VisualBasic.IVisualBasicConfigurationWithArgumentValidation;
-
-            //NullGuardedConstraint.Assert(() =>
-            //    config.WhenArgumentsMatch(x => true));
+            NullGuardedConstraint.Assert(() =>
+                this.builder.WhenArgumentsMatch(x => true));
         }
 
         [Test]
-        public void WhenArgumentsMatches_from_VB_should_return_configuration_object()
+        public void WhenArgumentsMatches_from_should_return_configuration_object()
         {
-            //var builtRule = A.Fake<BuildableCallRule>();
+            // Arrange
 
-            //var config = this.CreateBuilder(builtRule) as FakeItEasy.VisualBasic.IVisualBasicConfigurationWithArgumentValidation;
+            // Act
+            var returned = this.builder.WhenArgumentsMatch(x => true);
 
-            //var returned = config.WhenArgumentsMatch(x => true);
-
-            //Assert.That(returned, Is.SameAs(config));
+            // Assert
+            Assert.That(returned, Is.SameAs(this.builder));
         }
 
         [Test]
         public void WhenArgumentsMatches_from_VB_should_set_predicate_to_built_rule()
         {
-            //var builtRule = A.Fake<BuildableCallRule>();
+            // Arrange
+            Func<ArgumentCollection, bool> predicate = x => true;
 
-            //var config = this.CreateBuilder(builtRule) as FakeItEasy.VisualBasic.IVisualBasicConfigurationWithArgumentValidation;
+            // Act
+            this.builder.WhenArgumentsMatch(predicate);
 
-            //Func<ArgumentCollection, bool> predicate = x => true;
+            // Assert
+            A.CallTo(() => this.rule.UsePredicateToValidateArguments(predicate)).MustHaveHappened(Repeated.Once);
+        }
 
-            //config.WhenArgumentsMatch(predicate);
+        [Test]
+        public void DoesNothing_should_delegate_to_wrapped_builder()
+        {
+            // Arrange
+            var config = A.Fake<IAfterCallSpecifiedConfiguration>();
+            A.CallTo(() => this.wrappedBuilder.DoesNothing()).Returns(config);
 
-            //A.CallTo(() => builtRule.UsePredicateToValidateArguments(predicate)).MustHaveHappened(Repeated.Once);
+            // Act
+            var returned = this.builder.DoesNothing();
+
+            // Assert
+            Assert.That(returned, Is.SameAs(config));
+        }
+
+        [Test]
+        public void Throws_should_delegate_to_wrapped_builder()
+        {
+            // Arrange
+            var exception = new Exception();
+
+            var config = A.Fake<IAfterCallSpecifiedConfiguration>();
+            A.CallTo(() => this.wrappedBuilder.Throws(exception)).Returns(config);
+            
+            // Act
+            var returned = this.builder.Throws(exception);
+            
+            // Assert
+            Assert.That(returned, Is.SameAs(config));
         }
     }
 }

@@ -130,7 +130,7 @@ namespace FakeItEasy.Tests.Configuration
         public void CallTo_with_void_call_that_can_not_be_faked_should_throw()
         {
             // Arrange
-            var foo = A.Fake<IFoo>();
+            var foo = A.Fake<Foo>();
 
             Expression<Action> fooMember = () => foo.Bar();
             var methodCall = fooMember.Body as MethodCallExpression;

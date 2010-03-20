@@ -4,38 +4,28 @@ namespace FakeItEasy.VisualBasic
     using FakeItEasy.Api;
     using FakeItEasy.Configuration;
 
-    public class VisualBasicRuleBuilder
+    internal class VisualBasicRuleBuilder
         : IVisualBasicConfigurationWithArgumentValidation
     {
-        public void AssertWasCalled(Func<int, bool> repeatPredicate)
+        private RecordedCallRule rule;
+        private RuleBuilder wrappedBuilder;
+
+        public VisualBasicRuleBuilder(RecordedCallRule rule, RuleBuilder wrappedBuilder)
         {
-            //Guard.IsNotNull(repeatPredicate, "repeatPredicate");
+            this.rule = rule;
+            this.wrappedBuilder = wrappedBuilder;
 
-            //var recordedRule = this.RuleBeingBuilt as RecordedCallRule;
-
-            //if (recordedRule == null)
-            //{
-            //    throw new InvalidOperationException("Only RecordedCallRules can be used for assertions.");
-            //}
-
-            //recordedRule.IsAssertion = true;
-            //recordedRule.Applicator = x => { };
-            //recordedRule.RepeatPredicate = repeatPredicate;
-#if DEBUG
-            throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
+            rule.Applicator = x => { };
         }
 
         public IAfterCallSpecifiedConfiguration DoesNothing()
         {
-            throw new NotImplementedException();
+            return this.wrappedBuilder.DoesNothing();
         }
 
         public IAfterCallSpecifiedConfiguration Throws(Exception exception)
         {
-            throw new NotImplementedException();
+            return this.wrappedBuilder.Throws(exception);
         }
 
         public IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
@@ -55,21 +45,19 @@ namespace FakeItEasy.VisualBasic
 
         public void MustHaveHappened(Repeated repeatConstraint)
         {
-            throw new NotImplementedException();
+            Guard.IsNotNull(repeatConstraint, "repeatConstraint");
+
+            this.rule.RepeatConstraint = repeatConstraint;
+            rule.IsAssertion = true;
         }
 
         public IVisualBasicConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
         {
-            //Guard.IsNotNull(argumentsPredicate, "argumentsPredicate");
+            Guard.IsNotNull(argumentsPredicate, "argumentsPredicate");
 
-            //this.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
+            this.rule.UsePredicateToValidateArguments(argumentsPredicate);
 
-            //return this;
-#if DEBUG
-            throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
+            return this;
         }
     }
 }
