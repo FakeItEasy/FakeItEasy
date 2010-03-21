@@ -233,10 +233,7 @@ namespace FakeItEasy.DynamicProxy
                             result = GenerateClassProxy(typeToProxy, resolvedArguments, fakeObject);
                             return true;
                         }
-                        catch (TargetInvocationException)
-                        {
-
-                        }
+                        catch (TargetInvocationException) { }
                     }
                 }
 

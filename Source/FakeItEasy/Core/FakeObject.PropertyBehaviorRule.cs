@@ -12,8 +12,6 @@
             private MethodInfo propertyGetter;
             private FakeObject fakeObject;
 
-            public object Value;
-
             public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter, FakeObject fakeObject)
             {
                 this.fakeObject = fakeObject;
@@ -23,26 +21,11 @@
                 this.propertyGetter = property.GetGetMethod(true);
             }
 
-            private static PropertyInfo GetProperty(MethodInfo propertyGetterOrSetter)
-            {
-                return
-                    (from property in propertyGetterOrSetter.DeclaringType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                     let getMethod = property.GetGetMethod(true)
-                     let setMethod = property.GetSetMethod(true)
-                     where (getMethod != null && getMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
-                         || (setMethod != null && setMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
-                     select property).Single();
-            }
-
+            public object Value { get; set; }
             
-            private bool IsPropertySetter(IFakeObjectCall fakeObjectCall)
+            public int? NumberOfTimesToCall
             {
-                return this.propertySetter != null && this.propertySetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition());
-            }
-
-            private bool IsPropertyGetter(IFakeObjectCall fakeObjectCall)
-            {
-                return this.propertyGetter != null && this.propertyGetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition());
+                get { return null; }
             }
 
             public static bool IsPropertySetter(MethodInfo method)
@@ -74,9 +57,25 @@
                 this.fakeObject.MoveRuleToFront(this);
             }
 
-            public int? NumberOfTimesToCall
+            private static PropertyInfo GetProperty(MethodInfo propertyGetterOrSetter)
             {
-                get { return null; }
+                return
+                    (from property in propertyGetterOrSetter.DeclaringType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                     let getMethod = property.GetGetMethod(true)
+                     let setMethod = property.GetSetMethod(true)
+                     where (getMethod != null && getMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
+                         || (setMethod != null && setMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
+                     select property).Single();
+            }
+            
+            private bool IsPropertySetter(IFakeObjectCall fakeObjectCall)
+            {
+                return this.propertySetter != null && this.propertySetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition());
+            }
+
+            private bool IsPropertyGetter(IFakeObjectCall fakeObjectCall)
+            {
+                return this.propertyGetter != null && this.propertyGetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition());
             }
         }
     }

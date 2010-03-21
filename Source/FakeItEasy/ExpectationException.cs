@@ -13,9 +13,8 @@ namespace FakeItEasy
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpectationException"/> class.
         /// </summary>
-        public ExpectationException()
-        { 
-        
+        public ExpectationException() 
+        {
         }
 
         /// <summary>
@@ -23,9 +22,8 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="message">The message.</param>
         public ExpectationException(string message)
-            : base(message)
+            : base(message) 
         {
-
         }
 
         /// <summary>
@@ -35,8 +33,7 @@ namespace FakeItEasy
         /// <param name="innerException">The inner exception.</param>
         public ExpectationException(string message, Exception innerException)
             : base(message, innerException)
-        { 
-            
+        {
         }
 
         /// <summary>
@@ -50,6 +47,8 @@ namespace FakeItEasy
         /// <exception cref="T:System.Runtime.Serialization.SerializationException">
         /// The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
         /// </exception>
-        protected ExpectationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        protected ExpectationException(SerializationInfo info, StreamingContext context) : base(info, context) 
+        {
+        }
     }
 }

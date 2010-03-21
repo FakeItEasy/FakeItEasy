@@ -150,7 +150,7 @@ namespace FakeItEasy.Core
 
             public override int GetHashCode()
             {
-                return Type.GetHashCode() ^ MethodInfo.GetHashCode();
+                return this.Type.GetHashCode() ^ MethodInfo.GetHashCode();
             }
 
             public override bool Equals(object obj)
