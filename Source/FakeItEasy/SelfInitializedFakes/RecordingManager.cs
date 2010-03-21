@@ -48,7 +48,6 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="RecordingManager"/> class.
         /// </summary>
-        /// <param name="recordingId">The recording id.</param>
         /// <param name="storage">The storage.</param>
         public RecordingManager(ICallStorage storage)
         {
@@ -63,6 +62,10 @@
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets a value indicating if the recorder is currently recording.
+        /// </summary>
+        /// <value></value>
         public bool IsRecording
         {
             get;

@@ -129,8 +129,8 @@ namespace FakeItEasy.DynamicProxy
         /// <param name="typeToProxy">The type to generate a proxy for.</param>
         /// <param name="fakeObject">The generated proxy must implement the IFakedProxy interface and this is the fake object
         /// that should be returned for the call to GetFakeObject().</param>
+        /// <param name="result">The result of the generation if it was successful.</param>
         /// <param name="container">A fake object container the proxy generator can use to get arguments for constructor.</param>
-        /// <param name="generatedProxy">An object containing the proxy if generation was successful.</param>
         /// <returns>True if the proxy could be generated.</returns>
         /// <exception cref="ArgumentException">The arguments in argumentsForConstructor does not match any constructor
         /// of the proxied type.</exception>
@@ -148,7 +148,7 @@ namespace FakeItEasy.DynamicProxy
         /// <param name="fakeObject">The generated proxy must implement the IFakedProxy interface and this is the fake object
         /// that should be returned for the call to GetFakeObject().</param>
         /// <param name="argumentsForConstructor">Arguments to use for the constructor of the proxied type.</param>
-        /// <param name="generatedProxy">An object containing the proxy if generation was successful.</param>
+        /// <param name="result">The result of the generation if it was successful.</param>
         /// <returns>True if the proxy could be generated.</returns>
         /// <exception cref="ArgumentException">The arguments in argumentsForConstructor does not match any constructor
         /// of the proxied type.</exception>

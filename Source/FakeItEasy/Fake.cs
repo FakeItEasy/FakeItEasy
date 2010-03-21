@@ -16,6 +16,11 @@ namespace FakeItEasy
     /// </summary>
     public static partial class Fake
     {
+        /// <summary>
+        /// Gets the fake object that manages the faked object.
+        /// </summary>
+        /// <param name="fakedObject">The faked object to get the manager object for.</param>
+        /// <returns>The fake object manager.</returns>
         [DebuggerStepThrough]
         public static FakeObject GetFakeObject(object fakedObject)
         {
@@ -245,45 +250,6 @@ namespace FakeItEasy
         private IFakeAssertions<T> Assert()
         {
             return ServiceLocator.Current.Resolve<IFakeAssertionsFactory>().CreateAsserter<T>(Fake.GetFakeObject(this.FakedObject));
-        }
-
-
-        /// <summary>
-        /// Asserts that the specified call was made on the faked object.
-        /// </summary>
-        /// <param name="callSpecification">The call to assert on.</param>
-        public void AssertWasCalled(Expression<Action<T>> callSpecification)
-        {
-            this.Assert().WasCalled(callSpecification);
-        }
-
-        /// <summary>
-        /// Asserts that the specified call was made on the faked object.
-        /// </summary>
-        /// <param name="callSpecification">The call to assert on.</param>
-        public void AssertWasCalled(Expression<Action<T>> callSpecification, Expression<Func<int, bool>> repeatValidation)
-        {
-            this.Assert().WasCalled(callSpecification, repeatValidation);
-        }
-
-        /// <summary>
-        /// Asserts that the specified call was made on the faked object.
-        /// </summary>
-        /// <typeparam name="TMember">The type of the member.</typeparam>
-        /// <param name="callSpecification">The call to assert on.</param>
-        public void AssertWasCalled<TMember>(Expression<Func<T, TMember>> callSpecification)
-        {
-            this.Assert().WasCalled(callSpecification);
-        }
-
-        /// <summary>
-        /// Asserts that the specified call was made on the faked object.
-        /// </summary>
-        /// <typeparam name="TMember">The type of the member.</typeparam>
-        /// <param name="callSpecification">The call to assert on.</param>
-        public void AssertWasCalled<TMember>(Expression<Func<T, TMember>> callSpecification, Expression<Func<int, bool>> repeatValidation)
-        {
-            this.Assert().WasCalled(callSpecification, repeatValidation);
         }
 
         /// <summary>

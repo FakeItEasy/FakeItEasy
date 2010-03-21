@@ -16,11 +16,17 @@
     public class MefContainer
         : IFakeObjectContainer
     {
+        /// <summary>
+        /// The field for the definitions, assigned by MEF.
+        /// </summary>
         [ImportMany(typeof(IFakeDefinition))]
-        private IEnumerable<IFakeDefinition> definitions;
+        public IEnumerable<IFakeDefinition> Definitions;
 
+        /// <summary>
+        /// The field for configurations, assigned by MEF.
+        /// </summary>
         [ImportMany(typeof(IFakeConfigurator))]
-        private IEnumerable<IFakeConfigurator> importedConfigurations;
+        public IEnumerable<IFakeConfigurator> ImportedConfigurations;
 
         private Dictionary<Type, IFakeDefinition> definitionsByType;
         private Dictionary<Type, IFakeConfigurator> configurationsByType;
@@ -31,8 +37,8 @@
         public MefContainer()
         {
             this.InitializeImports();
-            this.definitionsByType = this.definitions.ToDictionary(x => x.ForType, x => x);
-            this.configurationsByType = this.importedConfigurations.ToDictionary(x => x.ForType, x => x);
+            this.definitionsByType = this.Definitions.ToDictionary(x => x.ForType, x => x);
+            this.configurationsByType = this.ImportedConfigurations.ToDictionary(x => x.ForType, x => x);
         }
 
         /// <summary>
@@ -53,7 +59,6 @@
         /// supported by the container, returns a value indicating if it's supported or not.
         /// </summary>
         /// <param name="typeOfFakeObject">The type of fake object to create.</param>
-        /// <param name="arguments">Arguments for the fake object.</param>
         /// <param name="fakeObject">The fake object that was created if the method returns true.</param>
         /// <returns>True if a fake object can be created.</returns>
         public bool TryCreateFakeObject(Type typeOfFakeObject, out object fakeObject)

@@ -22,6 +22,7 @@ namespace FakeItEasy.Core.Creation
         /// <param name="container">The container.</param>
         /// <param name="proxyGenerator">The proxy generator.</param>
         /// <param name="fakeObjectFactory">The fake object factory.</param>
+        /// <param name="wrapperConfigurator">The wrapper configurator to use.</param>
         public DefaultFakeAndDummyManager(IFakeObjectContainer container, IProxyGeneratorNew proxyGenerator, FakeObject.Factory fakeObjectFactory, IFakeWrapperConfigurator wrapperConfigurator)
         {
             this.container = container;

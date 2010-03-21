@@ -16,7 +16,7 @@
         /// </summary>
         /// <typeparam name="TEventArgs">The type of the event args.</typeparam>
         /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The <see cref="TEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         /// <returns>A Raise(TEventArgs)-object that exposes the eventhandler to attatch.</returns>
         public static Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e) where TEventArgs : EventArgs
         {
@@ -28,7 +28,7 @@
         /// to the event that is to be raised.
         /// </summary>
         /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
-        /// <param name="e">The <see cref="TEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         /// <returns>
         /// A Raise(TEventArgs)-object that exposes the eventhandler to attatch.
         /// </returns>

@@ -258,28 +258,4 @@ namespace FakeItEasy.Tests
             if (nullIsNotValid == null) throw new ArgumentNullException("nullIsNotValid");
         }
     }
-
-    public class Example
-    {
-        public static void TraditionalWay()
-        {
-            var foo = A.Fake<IFoo>();
-            Configure.Fake(foo)
-                .CallsTo(x => x.Baz()).Returns(10);
-
-            int value = foo.Baz();
-
-            Fake.Assert(foo).WasCalled(x => x.Baz());
-        }
-
-        public static void TheOtherWay()
-        {
-            var foo = new Fake<IFoo>();
-            foo.CallsTo(x => x.Baz()).Returns(10);
-
-            int value = foo.FakedObject.Baz();
-                       
-            foo.AssertWasCalled(x => x.Baz());
-        }
-    }
 }

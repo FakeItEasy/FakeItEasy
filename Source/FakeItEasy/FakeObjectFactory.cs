@@ -123,6 +123,7 @@
             public IEnumerable<object> ArgumentsForConstructor;
             public bool AllowNonProxiedFakes;
 
+            [Smelly(Description = "Should not rely on exceptions for logic.")]
             public bool GenerateFakeObject()
             {
                 try
@@ -130,7 +131,7 @@
                     this.GeneratedFake = this.Factory.CreateFake(this.TypeOfFake, this.ArgumentsForConstructor, this.AllowNonProxiedFakes);
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }

@@ -129,20 +129,6 @@ namespace FakeItEasy.Expressions
             return string.Concat("<", this.FullDescription, ">");
         }
 
-        /// <summary>
-        /// Creates a new constraint.
-        /// </summary>
-        /// <param name="validations">The scope of the constraint.</param>
-        /// <param name="predicate">A predicate that's used to validate arguments.</param>
-        /// <param name="description">A description of the constraint.</param>
-        /// <returns>An ArgumentConstraint.</returns>
-        [Obsolete("Use the ArgumentConstraint.Create-method (on the non generic ArgumentConstraint-class) instead.")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static ArgumentConstraint<T> Create<T>(ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)
-        {
-            return ArgumentConstraint.Create(scope, predicate, description);
-        }
-
         private class OrConstraint
             : ArgumentConstraint<T>
         {
@@ -188,6 +174,11 @@ namespace FakeItEasy.Expressions
             }
         }
 
+        /// <summary>
+        /// Converst a constraint to the the type of the constrained argument.
+        /// </summary>
+        /// <param name="constraint"></param>
+        /// <returns></returns>
         public static implicit operator T(ArgumentConstraint<T> constraint)
         {
             return constraint.Argument;
@@ -225,7 +216,7 @@ namespace FakeItEasy.Expressions
         /// <summary>
         /// Creates a new constraint.
         /// </summary>
-        /// <param name="validations">The scope of the constraint.</param>
+        /// <param name="scope">The scope of the constraint.</param>
         /// <param name="predicate">A predicate that's used to validate arguments.</param>
         /// <param name="description">A description of the constraint.</param>
         /// <returns>An ArgumentConstraint.</returns>

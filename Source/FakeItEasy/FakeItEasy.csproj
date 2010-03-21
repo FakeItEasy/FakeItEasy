@@ -191,6 +191,7 @@
     <Compile Include="RootModule.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="CommonExtensions.cs" />
+    <Compile Include="SmellyAttribute.cs" />
     <Compile Include="Tuple.cs" />
     <Compile Include="VisualBasic\IRecordingCallRuleFactory.cs" />
     <Compile Include="VisualBasic\IVisualBasicConfiguration.cs" />

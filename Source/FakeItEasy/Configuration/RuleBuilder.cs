@@ -21,7 +21,7 @@ namespace FakeItEasy.Configuration
         /// Represents a delegate that creates a configuration object from
         /// a fake object and the rule to build.
         /// </summary>
-        /// <param name="fake">The fake object the rule is for.</param>
+        /// <param name="fakeObject">The fake object the rule is for.</param>
         /// <param name="ruleBeingBuilt">The rule that's being built.</param>
         /// <returns>A configuration object.</returns>
         internal delegate RuleBuilder Factory(BuildableCallRule ruleBeingBuilt, FakeObject fakeObject);

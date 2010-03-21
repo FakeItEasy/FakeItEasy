@@ -15,6 +15,9 @@
         /// <param name="call">The call to apply to from recording.</param>
         void ApplyNext(IWritableFakeObjectCall call);
 
+        /// <summary>
+        /// Gets a value indicating if the recorder is currently recording.
+        /// </summary>
         bool IsRecording { get; }
         
         /// <summary>

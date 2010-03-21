@@ -80,6 +80,9 @@ namespace FakeItEasy.Core.Creation
             }
         }
 
+        /// <summary>
+        /// Occurs when a call to the proxy was intercepted.
+        /// </summary>
         public abstract event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
     }
 }

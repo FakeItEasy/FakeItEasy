@@ -29,7 +29,7 @@
         private FakeObject fake;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FakeAsserter&lt;TFake&gt;"/> class.
+        /// Initializes a new instance of the <see cref="FakeAssertions&lt;TFake&gt;"/> class.
         /// </summary>
         /// <param name="fake">The fake.</param>
         /// <param name="callMatcherFactory">The call matcher factory.</param>

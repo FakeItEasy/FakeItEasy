@@ -22,6 +22,7 @@
         /// </summary>
         /// <param name="callSpecification">The call specification.</param>
         /// <param name="constraintFactory">The constraint factory.</param>
+        /// <param name="methodInfoManager">The method infor manager to use.</param>
         public ExpressionCallMatcher(LambdaExpression callSpecification, ArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager)
         {
             this.methodInfoManager = methodInfoManager;
