@@ -217,7 +217,7 @@ namespace FakeItEasy.DynamicProxy
                     return true;
                 }
 
-                return TryResolveConstructorAndGenerateProxy(typeToProxy, fakeObject, out result);
+                return this.TryResolveConstructorAndGenerateProxy(typeToProxy, fakeObject, out result);
             }
 
             private bool TryResolveConstructorAndGenerateProxy(Type typeToProxy, FakeObject fakeObject, out ProxyResult result)

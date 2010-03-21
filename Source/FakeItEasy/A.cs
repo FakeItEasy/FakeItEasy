@@ -13,6 +13,22 @@ namespace FakeItEasy
     /// </summary>
     public static class A
     {
+        private static IFakeConfigurationManager ConfigurationManager
+        {
+            get
+            {
+                return ServiceLocator.Current.Resolve<IFakeConfigurationManager>();
+            }
+        }
+        
+        private static FakeObjectFactory Factory
+        {
+            get
+            {
+                return ServiceLocator.Current.Resolve<FakeObjectFactory>();
+            }
+        }
+
         /// <summary>
         /// Creates a fake object of the type T.
         /// </summary>
@@ -72,24 +88,6 @@ namespace FakeItEasy
             return object.ReferenceEquals(objA, objB);
         }
 
-        private static FakeObjectFactory Factory
-        {
-            get
-            {
-                return ServiceLocator.Current.Resolve<FakeObjectFactory>();
-            }
-        }
-
-        private static T CreateFake<T>(IEnumerable<object> argumentsForConstructor)
-        {
-            return (T)CreateFake(typeof(T), argumentsForConstructor);
-        }
-
-        private static object CreateFake(Type typeOfFake, IEnumerable<object> argumentsForConstructor)
-        {
-            return Factory.CreateFake(typeOfFake, argumentsForConstructor, false);
-        }
-
         /// <summary>
         /// Configures a call to a faked object.
         /// </summary>
@@ -111,12 +109,14 @@ namespace FakeItEasy
             return ConfigurationManager.CallTo(callSpecification);
         }
 
-        private static IFakeConfigurationManager ConfigurationManager
+        private static T CreateFake<T>(IEnumerable<object> argumentsForConstructor)
         {
-            get
-            {
-                return ServiceLocator.Current.Resolve<IFakeConfigurationManager>();
-            }
+            return (T)CreateFake(typeof(T), argumentsForConstructor);
+        }
+
+        private static object CreateFake(Type typeOfFake, IEnumerable<object> argumentsForConstructor)
+        {
+            return Factory.CreateFake(typeOfFake, argumentsForConstructor, false);
         }
     }
 
