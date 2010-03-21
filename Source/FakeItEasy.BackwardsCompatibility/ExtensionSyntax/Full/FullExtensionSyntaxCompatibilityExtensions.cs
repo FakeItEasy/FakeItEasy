@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Assertion;
-
-namespace FakeItEasy.ExtensionSyntax.Full
+﻿namespace FakeItEasy.ExtensionSyntax.Full
 {
+    using System;
+    using FakeItEasy.Assertion;
+
     public static class FullExtensionSyntaxCompatibilityExtensions
     {
         /// <summary>

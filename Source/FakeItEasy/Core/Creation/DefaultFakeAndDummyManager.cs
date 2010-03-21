@@ -14,6 +14,7 @@ namespace FakeItEasy.Core.Creation
         private IFakeObjectContainer container;
         private IProxyGeneratorNew proxyGenerator;
         private FakeObject.Factory fakeObjectFactory;
+        private IFakeWrapperConfigurator wrapperConfigurator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultFakeAndDummyManager"/> class.
@@ -21,11 +22,12 @@ namespace FakeItEasy.Core.Creation
         /// <param name="container">The container.</param>
         /// <param name="proxyGenerator">The proxy generator.</param>
         /// <param name="fakeObjectFactory">The fake object factory.</param>
-        public DefaultFakeAndDummyManager(IFakeObjectContainer container, IProxyGeneratorNew proxyGenerator, FakeObject.Factory fakeObjectFactory)
+        public DefaultFakeAndDummyManager(IFakeObjectContainer container, IProxyGeneratorNew proxyGenerator, FakeObject.Factory fakeObjectFactory, IFakeWrapperConfigurator wrapperConfigurator)
         {
             this.container = container;
             this.proxyGenerator = proxyGenerator;
             this.fakeObjectFactory = fakeObjectFactory;
+            this.wrapperConfigurator = wrapperConfigurator;
         }
 
         /// <summary>
@@ -56,7 +58,9 @@ namespace FakeItEasy.Core.Creation
         /// <exception cref="FakeCreationException">The current IProxyGenerator is not able to generate a fake of the specified type.</exception>
         public object CreateFake(Type typeOfFake, FakeOptions options)
         {
-            return this.CreateProxy(typeOfFake, options.ArgumentsForConstructor, true);
+            var result = this.CreateProxy(typeOfFake, options.ArgumentsForConstructor, true);
+            this.ConfigureFakeToWrapWhenAppropriate(options, result);
+            return result;
         }
 
         /// <summary>
@@ -89,6 +93,9 @@ namespace FakeItEasy.Core.Creation
         public bool TryCreateFake(Type typeOfFake, FakeOptions options, out object result)
         {
             result = this.CreateProxy(typeOfFake, options.ArgumentsForConstructor, false);
+
+            this.ConfigureFakeToWrapWhenAppropriate(options, result);
+
             return result != null;
         }
 
@@ -114,6 +121,14 @@ namespace FakeItEasy.Core.Creation
             fakeObject.SetProxy(proxyResult);
 
             return proxyResult.Proxy;
+        }
+
+        private void ConfigureFakeToWrapWhenAppropriate(FakeOptions options, object result)
+        {
+            if (options.WrappedInstance != null)
+            {
+                this.wrapperConfigurator.ConfigureFakeToWrap(result, options.WrappedInstance, options.SelfInitializedFakeRecorder);
+            }
         }
 
         private static void AssertThatProxyWasSuccessfullyCreated(Type typeOfProxy, ProxyResult proxyResult)

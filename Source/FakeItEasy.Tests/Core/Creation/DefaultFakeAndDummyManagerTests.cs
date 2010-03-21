@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Core.Creation
     using FakeItEasy.Core.Creation;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
+    using FakeItEasy.SelfInitializedFakes;
 
     [TestFixture]
     public class DefaultFakeAndDummyManagerTests
@@ -14,6 +15,7 @@ namespace FakeItEasy.Tests.Core.Creation
         private IProxyGeneratorNew proxyGenerator;
         private FakeObject.Factory fakeObjectFactory;
         private FakeObject fakeObject;
+        private IFakeWrapperConfigurator fakeWrapperConfigurator;
 
         private DefaultFakeAndDummyManager fakeAndDummyManager;
 
@@ -24,9 +26,10 @@ namespace FakeItEasy.Tests.Core.Creation
             this.proxyGenerator = A.Fake<IProxyGeneratorNew>();
             this.fakeObject = A.Fake<FakeObject>();
             this.fakeObjectFactory = () => this.fakeObject;
+            this.fakeWrapperConfigurator = A.Fake<IFakeWrapperConfigurator>();
 
             this.fakeAndDummyManager = A.Fake<DefaultFakeAndDummyManager>(x => x.WithArgumentsForConstructor(() =>
-                new DefaultFakeAndDummyManager(this.container, this.proxyGenerator, this.fakeObjectFactory)));
+                new DefaultFakeAndDummyManager(this.container, this.proxyGenerator, this.fakeObjectFactory, this.fakeWrapperConfigurator)));
             
             Any.CallTo(this.fakeAndDummyManager).CallsBaseMethod();
         }
@@ -295,6 +298,92 @@ with two lines.");
 
             // Assert
             A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<object>>.That.IsThisSequence("a", "b").Argument, false)).MustHaveHappened();
+        }
+
+        [Test]
+        public void TryCreateFake_should_pass_created_object_to_wrapper_configurator_when_wrapped_object_is_set()
+        {
+            // Arrange
+            var proxyResult = CreateFakeProxyResult();
+            var wrapped = A.Fake<IFoo>();
+            var recorder = A.Fake<ISelfInitializingFakeRecorder>();
+
+            var options = new FakeOptions()
+            {
+                WrappedInstance = wrapped,
+                SelfInitializedFakeRecorder = recorder
+            };
+
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), this.fakeObject, null)).Returns(proxyResult);
+
+            // Act
+            this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), options, out Null<object>.Out);
+
+            // Assert
+            A.CallTo(() => this.fakeWrapperConfigurator.ConfigureFakeToWrap(proxyResult.Proxy, wrapped, recorder)).MustHaveHappened();
+        }
+
+        [Test]
+        public void TryCreateFake_should_not_call_wrapper_configurator_when_wrapped_object_is_not_set()
+        {
+            // Arrange
+            var options = new FakeOptions()
+            {
+                WrappedInstance = null
+            };
+
+            var proxyResult = CreateFakeProxyResult();
+            
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<FakeObject>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(proxyResult);
+
+            // Act
+            this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), options, out Null<object>.Out);
+
+            // Assert
+            A.CallTo(() => this.fakeWrapperConfigurator.ConfigureFakeToWrap(A<object>.Ignored, A<object>.Ignored, A<ISelfInitializingFakeRecorder>.Ignored.Argument)).MustNotHaveHappened();
+        }
+
+        [Test]
+        public void CreateFake_should_pass_created_object_to_wrapper_configurator_when_wrapped_object_is_set()
+        {
+            // Arrange
+            var proxyResult = CreateFakeProxyResult();
+            var wrapped = A.Fake<IFoo>();
+            var recorder = A.Fake<ISelfInitializingFakeRecorder>();
+
+            var options = new FakeOptions()
+            {
+                WrappedInstance = wrapped,
+                SelfInitializedFakeRecorder = recorder
+            };
+
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), this.fakeObject, null)).Returns(proxyResult);
+
+            // Act
+            this.fakeAndDummyManager.CreateFake(typeof(IFoo), options);
+
+            // Assert
+            A.CallTo(() => this.fakeWrapperConfigurator.ConfigureFakeToWrap(proxyResult.Proxy, wrapped, recorder)).MustHaveHappened();
+        }
+
+        [Test]
+        public void CreateFake_should_not_call_wrapper_configurator_when_wrapped_object_is_not_set()
+        {
+            // Arrange
+            var options = new FakeOptions()
+            {
+                WrappedInstance = null
+            };
+
+            var proxyResult = CreateFakeProxyResult();
+
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<FakeObject>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(proxyResult);
+
+            // Act
+            this.fakeAndDummyManager.CreateFake(typeof(IFoo), options);
+
+            // Assert
+            A.CallTo(() => this.fakeWrapperConfigurator.ConfigureFakeToWrap(A<object>.Ignored, A<object>.Ignored, A<ISelfInitializingFakeRecorder>.Ignored.Argument)).MustNotHaveHappened();
         }
     }
 }
