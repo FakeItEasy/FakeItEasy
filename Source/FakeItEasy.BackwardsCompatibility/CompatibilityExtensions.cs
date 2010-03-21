@@ -24,13 +24,4 @@ namespace FakeItEasy
             configuration.MustHaveHappened(repeatValidation);
         }
     }
-
-    public static class OldFake
-    {
-        public static IFakeAssertions<T> Assert<T>(T fakedObject)
-        {
-            var asserter = new FakeAssertions<T>(Fake.GetFakeObject(fakedObject), ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>(), ServiceLocator.Current.Resolve<FakeAsserter.Factory>());
-            return asserter;
-        }
-    }
 }
