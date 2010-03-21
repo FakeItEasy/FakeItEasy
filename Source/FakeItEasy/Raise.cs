@@ -56,7 +56,7 @@
     /// </summary>
     /// <typeparam name="TEventArgs">The type of the event args.</typeparam>
     public class Raise<TEventArgs>
-        : IEventRaiserArguments, IHideObjectMembers where TEventArgs : EventArgs 
+        : IEventRaiserArguments where TEventArgs : EventArgs 
     {
         #region Properties
         private object sender;

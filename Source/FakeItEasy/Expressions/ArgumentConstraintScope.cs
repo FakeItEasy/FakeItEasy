@@ -9,7 +9,6 @@ namespace FakeItEasy.Expressions
     /// </summary>
     /// <typeparam name="T">The type of argument to constrain.</typeparam>
     public abstract class ArgumentConstraintScope<T>
-        : IHideObjectMembers
     {
         /// <summary>
         /// Gets a value indicating if the argument is valid in the context

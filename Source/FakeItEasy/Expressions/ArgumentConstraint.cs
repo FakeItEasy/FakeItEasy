@@ -10,7 +10,7 @@ namespace FakeItEasy.Expressions
     /// </summary>
     /// <typeparam name="T">The type of argument to validate.</typeparam>
     public abstract class ArgumentConstraint<T>
-        : IArgumentConstraint, IHideObjectMembers
+        : IArgumentConstraint
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ArgumentConstraint&lt;T&gt;"/> class.
