@@ -136,8 +136,7 @@ namespace FakeItEasy.Tests.Assertion
 
             var asserter = this.CreateAsserter();
 
-            Configure.Fake(this.callWriter)
-                .CallsTo(x => x.WriteCalls(4, A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls.Cast<IFakeObjectCall>()).Argument, A<TextWriter>.Ignored))
+            A.CallTo(() => this.callWriter.WriteCalls(4, A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls.Cast<IFakeObjectCall>()).Argument, A<TextWriter>.Ignored))
                 .Invokes(x => x.Arguments.Get<TextWriter>("writer").Write("foo"));
 
             var message = this.GetExceptionMessage(() =>

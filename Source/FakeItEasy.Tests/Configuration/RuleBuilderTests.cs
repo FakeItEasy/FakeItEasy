@@ -200,7 +200,7 @@
             this.builder.DoesNothing();
 
             var call = A.Fake<IWritableFakeObjectCall>();
-            Configure.Fake(call).AnyCall().Throws(new AssertionException("Applicator should do nothing."));
+            Any.CallTo(call).Throws(new AssertionException("Applicator should do nothing."));
             
             this.builder.RuleBeingBuilt.Applicator(call);
         }

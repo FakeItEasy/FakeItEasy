@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests.Core
         public void ConfigureFakeObject_should_do_nothing()
         {
             var fake = A.Fake<IFoo>();
-            Configure.Fake(fake).AnyCall().Throws(new Exception());
+            Any.CallTo(fake).Throws(new Exception());
 
             var container = new NullFakeObjectContainer();
 

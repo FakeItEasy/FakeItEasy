@@ -25,9 +25,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             this.recordedCalls = new List<CallData>();
 
             this.callStorage = A.Fake<ICallStorage>();
-            Configure.Fake(this.callStorage)
-                .CallsTo(x => x.Load())
-                .Returns(this.recordedCalls);
+            A.CallTo(() => this.callStorage.Load()).Returns(this.recordedCalls);
         }
 
         private RecordingManager CreateRecorder()
@@ -41,12 +39,8 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             this.recordedCalls.Add(new CallData(TypeWithOutAndRefFooMethod, new object[] {10, "20" }, 10));
 
             var call = A.Fake<IWritableFakeObjectCall>();
-            Configure.Fake(call)
-                .CallsTo(x => x.Method)
-                .Returns(TypeWithOutAndRefFooMethod);
-            Configure.Fake(call)
-                .CallsTo(x => x.Arguments)
-                .Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, TypeWithOutAndRefFooMethod));
+            A.CallTo(() => call.Method).Returns(TypeWithOutAndRefFooMethod);
+            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, TypeWithOutAndRefFooMethod));
             
             var recorder = this.CreateRecorder();
 
@@ -64,33 +58,24 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             this.recordedCalls.Add(new CallData(TypeWithOutAndRefFooMethod, new object[] { 100, "200" }, 100));
 
             var call = A.Fake<IWritableFakeObjectCall>();
-            Configure.Fake(call)
-                .CallsTo(x => x.Method)
-                .Returns(TypeWithOutAndRefFooMethod);
-            Configure.Fake(call)
-                .CallsTo(x => x.Arguments)
-                .Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, TypeWithOutAndRefFooMethod));
+            A.CallTo(() => call.Method).Returns(TypeWithOutAndRefFooMethod);
+            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, TypeWithOutAndRefFooMethod));
 
             var recorder = this.CreateRecorder();
 
             recorder.ApplyNext(call);
             recorder.ApplyNext(call);
 
-            OldFake.Assert(call)
-                .WasCalled(x => x.SetReturnValue(100), repeat => repeat == 1);
-            OldFake.Assert(call)
-                .WasCalled(x => x.SetArgumentValue(2, 100), repeat => repeat == 1);
-            OldFake.Assert(call)
-                .WasCalled(x => x.SetArgumentValue(3, "200"), repeat => repeat == 1);
+            A.CallTo(() => call.SetReturnValue(100)).MustHaveHappened(Repeated.Once.Exactly);
+            A.CallTo(() => call.SetArgumentValue(2, 100)).MustHaveHappened(Repeated.Once.Exactly);
+            A.CallTo(() => call.SetArgumentValue(3, "200")).MustHaveHappened(Repeated.Once.Exactly);
         }
 
         [Test]
         public void IsRecording_should_return_true_when_storage_returns_null_from_load()
         {
             // Arrange
-            Configure.Fake(this.callStorage)
-                .CallsTo(x => x.Load())
-                .ReturnsNull();
+            A.CallTo(() => this.callStorage.Load()).ReturnsNull();
 
             // Act
             var recorder = this.CreateRecorder();
@@ -103,9 +88,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         public void IsRecording_should_return_false_when_calls_are_loaded_from_storage()
         {
             // Arrange
-            Configure.Fake(this.callStorage)
-                .CallsTo(x => x.Load())
-                .Returns(this.recordedCalls);
+            A.CallTo(() => this.callStorage.Load()).Returns(this.recordedCalls);
 
             // Act
             var recorder = this.CreateRecorder();
@@ -156,47 +139,37 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         public void RecordCall_should_add_call_to_recorded_calls()
         {
             var callToRecord = A.Fake<ICompletedFakeObjectCall>();
-            Configure.Fake(callToRecord)
-                .CallsTo(x => x.Method)
-                .Returns(this.TypeWithOutAndRefFooMethod);
-            Configure.Fake(callToRecord)
-                .CallsTo(X => X.Arguments)
-                .Returns(new ArgumentCollection(new object[] { 1, "2", 3, "4" }, TypeWithOutAndRefFooMethod));
-            Configure.Fake(callToRecord)
-                .CallsTo(x => x.ReturnValue)
-                .Returns(10);
+            A.CallTo(() => callToRecord.Method).Returns(this.TypeWithOutAndRefFooMethod);
+            A.CallTo(() => callToRecord.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", 3, "4" }, TypeWithOutAndRefFooMethod));
+            A.CallTo(() => callToRecord.ReturnValue).Returns(10);
 
             using (var recorder = this.CreateRecorder())
             {
                 recorder.RecordCall(callToRecord);
             }
 
-            OldFake.Assert(this.callStorage)
-                .WasCalled(x => x.Save(A<IEnumerable<CallData>>.That.Matches(c => this.CallDataMatchesCall(c.Single(), callToRecord)).Argument));
+            A.CallTo(() => this.callStorage.Save(A<IEnumerable<CallData>>.That.Matches(c => this.CallDataMatchesCall(c.Single(), callToRecord)).Argument))
+                .MustHaveHappened();
         }
 
         [Test]
         public void Dispose_should_call_save_with_empty_collection_when_no_calls_has_been_recorded_and_no_previous_recording_exists()
         {
-            Configure.Fake(this.callStorage)
-                .CallsTo(x => x.Load())
-                .ReturnsNull();
+            A.CallTo(() => this.callStorage.Load()).ReturnsNull();
 
             using (var recorder = this.CreateRecorder())
             { 
             
             }
 
-            OldFake.Assert(this.callStorage)
-                .WasCalled(x => x.Save(A<IEnumerable<CallData>>.That.IsThisSequence().Argument));
+            A.CallTo(() => this.callStorage.Save(A<IEnumerable<CallData>>.That.IsThisSequence().Argument))
+                .MustHaveHappened();
         }
 
         private IWritableFakeObjectCall CreateFakeCall(MethodInfo method)
         {
             var result = A.Fake<IWritableFakeObjectCall>();
-            Configure.Fake(result)
-                .CallsTo(x => x.Method)
-                .Returns(method);
+            A.CallTo(() => result.Method).Returns(method);
 
             return result;
         }

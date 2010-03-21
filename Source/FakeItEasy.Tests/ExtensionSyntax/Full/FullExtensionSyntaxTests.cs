@@ -23,14 +23,12 @@ namespace FakeItEasy.Tests.ExtensionSyntax.Full
         {
             this.fakeAssertions = A.Fake <IFakeAssertions<IFoo>>();
             this.fakeAssertionsFactory = A.Fake<IFakeAssertionsFactory>();
-            Configure.Fake(this.fakeAssertionsFactory)
-                .CallsTo(x => x.CreateAsserter<IFoo>(A<FakeObject>.Ignored))
+            A.CallTo(() => this.fakeAssertionsFactory.CreateAsserter<IFoo>(A<FakeObject>.Ignored))
                 .Returns(this.fakeAssertions);
 
             this.fakeConfiguration = A.Fake<IStartConfiguration<IFoo>>();
             this.fakeConfigurationFactory = A.Fake<IStartConfigurationFactory>();
-            Configure.Fake(this.fakeConfigurationFactory)
-                .CallsTo(x => x.CreateConfiguration<IFoo>(A<FakeObject>.Ignored))
+            A.CallTo(() => this.fakeConfigurationFactory.CreateConfiguration<IFoo>(A<FakeObject>.Ignored))
                 .Returns(this.fakeConfiguration);       
         }
 
@@ -47,8 +45,7 @@ namespace FakeItEasy.Tests.ExtensionSyntax.Full
             var fake = A.Fake<IFoo>();
 
             var returnConfig = A.Fake<IReturnValueArgumentValidationConfiguration<int>>();
-            Configure.Fake(this.fakeConfiguration)
-                .CallsTo(x => x.CallsTo(A<Expression<Func<IFoo, int>>>.Ignored.Argument))
+            A.CallTo(() => this.fakeConfiguration.CallsTo(A<Expression<Func<IFoo, int>>>.Ignored.Argument))
                 .Invokes(x => Console.WriteLine("test"))
                 .Returns(returnConfig);
             
@@ -74,8 +71,7 @@ namespace FakeItEasy.Tests.ExtensionSyntax.Full
             var fake = A.Fake<IFoo>();
 
             var callConfig = A.Fake<IVoidArgumentValidationConfiguration>();
-            Configure.Fake(this.fakeConfiguration)
-                .CallsTo(x => x.CallsTo(A<Expression<Action<IFoo>>>.Ignored))
+            A.CallTo(() => this.fakeConfiguration.CallsTo(A<Expression<Action<IFoo>>>.Ignored))
                 .Returns(callConfig);
 
             using (Fake.CreateScope())

@@ -18,12 +18,8 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         public void SetUp()
         {
             this.fileSystem = A.Fake<IFileSystem>();
-            Configure.Fake(this.fileSystem)
-                .CallsTo(x => x.FileExists(A<string>.Ignored))
-                .Returns(true);
-            Configure.Fake(this.fileSystem)
-                .CallsTo(x => x.Open(A<string>.Ignored, A<FileMode>.Ignored))
-                .Returns(new MemoryStream());
+            A.CallTo(() => this.fileSystem.FileExists(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => this.fileSystem.Open(A<string>.Ignored, A<FileMode>.Ignored)).Returns(new MemoryStream());
         }
 
         private FileStorage CreateStorage(string fileName)
@@ -43,8 +39,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 
             var serializedCalls = this.SerializeCalls(calls);
 
-            Configure.Fake(this.fileSystem)
-                .CallsTo(x => x.Open("c:\\file.dat", FileMode.Open))
+            A.CallTo(() => this.fileSystem.Open("c:\\file.dat", FileMode.Open))
                 .Returns(x => new MemoryStream(serializedCalls));
 
             // Act
@@ -59,8 +54,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         public void Load_should_return_null_when_file_does_not_exist()
         {
             // Arrange
-            Configure.Fake(this.fileSystem)
-                .CallsTo(x => x.FileExists("c:\\file.dat"))
+            A.CallTo(() => this.fileSystem.FileExists("c:\\file.dat"))
                 .Returns(false);
 
             // Act
@@ -81,8 +75,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
                 from index in Enumerable.Range(1, 2)
                 select this.CreateDummyCallData();
 
-            Configure.Fake(this.fileSystem)
-                .CallsTo(x => x.Open("c:\\file.dat", FileMode.Truncate))
+            A.CallTo(() => this.fileSystem.Open("c:\\file.dat", FileMode.Truncate))
                 .Returns(fileStream);
 
             // Act
@@ -99,8 +92,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         public void Save_should_create_file_when_it_does_not_exist()
         {
             // Arrange
-            Configure.Fake(this.fileSystem)
-                .CallsTo(x => x.FileExists("c:\\file.dat"))
+            A.CallTo(() => this.fileSystem.FileExists("c:\\file.dat"))
                 .Returns(false);
 
             // Act
@@ -108,8 +100,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             storage.Save(Enumerable.Empty<CallData>());
 
             // Assert
-            OldFake.Assert(this.fileSystem)
-                .WasCalled(x => x.Create("c:\\file.dat"));
+            A.CallTo(() => this.fileSystem.Create("c:\\file.dat")).MustHaveHappened();
         }
 
         private byte[] SerializeCalls(IEnumerable<CallData> calls)

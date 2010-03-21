@@ -84,7 +84,7 @@ namespace FakeItEasy.Tests.Core
             {
                 using (Fake.CreateScope())
                 {
-                    Configure.Fake(fake).AnyCall().Throws(new Exception());
+                    Any.CallTo(fake).Throws(new Exception());
                 }
 
                 fake.Bar();

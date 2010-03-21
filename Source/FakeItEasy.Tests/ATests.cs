@@ -50,7 +50,7 @@ namespace FakeItEasy.Tests
         {
             A.Fake<IFoo>();
 
-            OldFake.Assert(this.factory).WasCalled(x => x.CreateFake(typeof(IFoo), null, false));
+            A.CallTo(() => this.factory.CreateFake(typeof(IFoo), null, false)).MustHaveHappened();
         }
 
         [Test]
@@ -60,9 +60,7 @@ namespace FakeItEasy.Tests
 
             using (Fake.CreateScope())
             {
-                Configure.Fake(this.factory)
-                    .CallsTo(x => x.CreateFake(typeof(IFoo), null, false))
-                    .Returns(foo);
+                A.CallTo(() => this.factory.CreateFake(typeof(IFoo), null, false)).Returns(foo);
 
                 var returned = A.Fake<IFoo>();
 
@@ -74,8 +72,7 @@ namespace FakeItEasy.Tests
         [Test]
         public void Dummy_should_return_fake_from_factory()
         {
-            Configure.Fake(this.factory)
-                .CallsTo(x => x.CreateFake(typeof(string), A<IEnumerable<object>>.Ignored.Argument, true))
+            A.CallTo(() => this.factory.CreateFake(typeof(string), A<IEnumerable<object>>.Ignored.Argument, true))
                 .Returns("return this");
 
             var result = A.Dummy<string>();

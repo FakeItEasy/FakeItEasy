@@ -62,8 +62,8 @@ namespace FakeItEasy.Tests
         {
             var config = A.Fake<IReturnValueConfiguration<string>>();
             var returnConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
-            
-            Configure.Fake(config).CallsTo(x => x.Returns(A<string>.Ignored)).Returns(returnConfig);
+
+            A.CallTo(() => config.Returns(A<string>.Ignored)).Returns(returnConfig);
 
             var returned = config.ReturnsNull();
             var f = new Fake<IFoo>();

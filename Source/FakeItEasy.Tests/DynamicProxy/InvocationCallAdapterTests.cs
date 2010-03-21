@@ -32,8 +32,8 @@ namespace FakeItEasy.Tests.DynamicProxy
         public void SetArgumentValue_sets_the_argument_value_of_the_invokation()
         {
             var invocation = A.Fake<IInvocation>();
-            Configure.Fake(invocation).CallsTo(x => x.Arguments).Returns(new object[] { });
-            Configure.Fake(invocation).CallsTo(x => x.Method).Returns(typeof(IFoo).GetMethod("Bar", new Type[] { }));
+            A.CallTo(() => invocation.Arguments).Returns(new object[] { });
+            A.CallTo(() => invocation.Method).Returns(typeof(IFoo).GetMethod("Bar", new Type[] { }));
 
             var adapter = new InvocationCallAdapter(invocation);
 
@@ -63,10 +63,8 @@ namespace FakeItEasy.Tests.DynamicProxy
             [ValueSource("objectMethods")] MethodInfo objectMethod)
         {
             var invocation = A.Fake<IInvocation>();
-            Configure.Fake(invocation)
-                .CallsTo(x => x.Arguments).Returns(interfaceMethod.GetParameters());
-            Configure.Fake(invocation)
-                .CallsTo(x => x.Method).Returns(interfaceMethod);
+            A.CallTo(() => invocation.Arguments).Returns(interfaceMethod.GetParameters());
+            A.CallTo(() => invocation.Method).Returns(interfaceMethod);
 
             var adapter = new InvocationCallAdapter(invocation);
 

@@ -99,9 +99,7 @@ namespace FakeItEasy.Tests.Assertion
         [Test]
         public void WasCalled_should_call_asserter_with_matcher_ToString_as_call_description()
         {
-            Configure.Fake(this.matcher)
-                .CallsTo(x => x.ToString())
-                .Returns("description");
+            A.CallTo(() => this.matcher.ToString()).Returns("description");
 
             this.assertions.WasCalled(x => x.Bar());
 
@@ -164,9 +162,7 @@ namespace FakeItEasy.Tests.Assertion
         [Test]
         public void WasCalled_for_function_call_should_call_asserter_with_matcher_ToString_as_call_description()
         {
-            Configure.Fake(this.matcher)
-                .CallsTo(x => x.ToString())
-                .Returns("description");
+            A.CallTo(() => this.matcher.ToString()).Returns("description");
 
             this.assertions.WasCalled(x => x.Biz());
 
@@ -229,9 +225,7 @@ namespace FakeItEasy.Tests.Assertion
         [Test]
         public void WasCalled_for_void_call_with_repeat_should_call_asserter_with_matcher_ToString_as_call_description()
         {
-            Configure.Fake(this.matcher)
-                .CallsTo(x => x.ToString())
-                .Returns("description");
+            A.CallTo(() => this.matcher.ToString()).Returns("description");
 
             this.assertions.WasCalled(x => x.Bar(), repeat => repeat == 10);
 
@@ -291,9 +285,7 @@ namespace FakeItEasy.Tests.Assertion
         [Test]
         public void WasCalled_for_function_call_with_repeat_should_call_asserter_with_matcher_ToString_as_call_description()
         {
-            Configure.Fake(this.matcher)
-                .CallsTo(x => x.ToString())
-                .Returns("description");
+            A.CallTo(() => this.matcher.ToString()).Returns("description");
 
             this.assertions.WasCalled(x => x.Biz(), repeat => repeat == 10);
 
@@ -360,9 +352,7 @@ namespace FakeItEasy.Tests.Assertion
         [Test]
         public void WasNotCalled_should_call_asserter_with_matcher_ToString_as_call_description()
         {
-            Configure.Fake(this.matcher)
-                .CallsTo(x => x.ToString())
-                .Returns("description");
+            A.CallTo(() => this.matcher.ToString()).Returns("description");
 
             this.assertions.WasNotCalled(x => x.Bar());
 
@@ -425,9 +415,7 @@ namespace FakeItEasy.Tests.Assertion
         [Test]
         public void WasNotCalled_with_function_call_should_call_asserter_with_matcher_ToString_as_call_description()
         {
-            Configure.Fake(this.matcher)
-                .CallsTo(x => x.ToString())
-                .Returns("description");
+            A.CallTo(() => this.matcher.ToString()).Returns("description");
 
             this.assertions.WasNotCalled(x => x.Biz());
 

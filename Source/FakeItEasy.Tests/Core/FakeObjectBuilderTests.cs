@@ -60,8 +60,8 @@ namespace FakeItEasy.Tests.Core
             var wrapped = A.Fake<IFoo>();
             var wrapper = this.fakeObjectBuilder.GenerateFake<IFoo>(x => x.Wrapping(wrapped));
 
-            Configure.Fake(wrapped).CallsTo(x => x.Biz()).Returns("wrapped");
-            Configure.Fake(wrapper).CallsTo(x => x.Biz()).Returns("wrapper");
+            A.CallTo(() => wrapped.Biz()).Returns("wrapped");
+            A.CallTo(() => wrapper.Biz()).Returns("wrapper");
 
             Assert.That(wrapper.Biz(), Is.EqualTo("wrapper"));
         }

@@ -35,9 +35,7 @@ namespace FakeItEasy.Tests
 
         protected void StubResolve<T>(T returnedInstance)
         {
-            Configure.Fake(ServiceLocator.Current)
-                .CallsTo(x => x.Resolve(typeof(T)))
-                .Returns(returnedInstance);
+            A.CallTo(() => ServiceLocator.Current.Resolve(typeof(T))).Returns(returnedInstance);
         }
 
         protected T StubResolveWithFake<T>()

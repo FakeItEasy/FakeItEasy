@@ -43,9 +43,7 @@ namespace FakeItEasy.Tests.Core
             foreach (var call in this.calls)
             {
                 var boundCallNumber = callNumber;
-                Configure.Fake(call)
-                    .CallsTo(x => x.ToString())
-                    .Returns(x => "Fake call " + boundCallNumber.ToString());
+                A.CallTo(() => call.ToString()).Returns(x => "Fake call " + boundCallNumber.ToString());
                 callNumber++;
             }
 

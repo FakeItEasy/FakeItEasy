@@ -53,9 +53,7 @@ namespace FakeItEasy.Tests.Expressions
         {
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar());
 
-            Configure.Fake(this.callMatcher)
-                .CallsTo(x => x.Matches(call))
-                .Returns(callMatcherResult);
+            A.CallTo(() => this.callMatcher.Matches(call)).Returns(callMatcherResult);
 
             var rule = this.CreateRule<IFoo>(x => x.Bar());
 
@@ -98,9 +96,7 @@ namespace FakeItEasy.Tests.Expressions
         [Test]
         public void ToString_should_return_expressionMatcher_ToString()
         {
-            Configure.Fake(this.callMatcher)
-                .CallsTo(x => x.ToString())
-                .Returns("foo");
+            A.CallTo(() => this.callMatcher.ToString()).Returns("foo");
 
             var rule = CreateRule<IFoo>(x => x.Bar());
 

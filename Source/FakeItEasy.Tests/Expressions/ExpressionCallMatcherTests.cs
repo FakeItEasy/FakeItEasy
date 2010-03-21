@@ -20,8 +20,8 @@ namespace FakeItEasy.Tests.Expressions
         {
             this.validatorFactory = A.Fake<ArgumentConstraintFactory>();
             var validator = A.Fake<IArgumentConstraint>();
-            Configure.Fake(validator).CallsTo(x => x.IsValid(A<object>.Ignored)).Returns(true);
-            Configure.Fake(validatorFactory).CallsTo(x => x.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
+            A.CallTo(() => validator.IsValid(A<object>.Ignored)).Returns(true);
+            A.CallTo(() => validatorFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
 
             this.methodInfoManager = A.Fake<MethodInfoManager>();
         }
@@ -43,8 +43,7 @@ namespace FakeItEasy.Tests.Expressions
 
         private void StubMethodInfoManagerToReturn(bool returnValue)
         {
-            Configure.Fake(this.methodInfoManager)
-                .CallsTo(x => x.WillInvokeSameMethodOnTarget(A<Type>.Ignored, A<MethodInfo>.Ignored, A<MethodInfo>.Ignored))
+            A.CallTo(() => this.methodInfoManager.WillInvokeSameMethodOnTarget(A<Type>.Ignored, A<MethodInfo>.Ignored, A<MethodInfo>.Ignored))
                 .Returns(returnValue);
         }
 
@@ -126,11 +125,9 @@ namespace FakeItEasy.Tests.Expressions
             var argument2 = 10;
 
             var validator = A.Fake<IArgumentConstraint>();
-            Configure.Fake(validator)
-                .CallsTo(x => x.IsValid(A<object>.Ignored))
+            A.CallTo(() => validator.IsValid(A<object>.Ignored))
                 .Returns(true);
-            Configure.Fake(this.validatorFactory)
-                .CallsTo(x => x.GetArgumentConstraint(A<Expression>.Ignored))
+            A.CallTo(() => this.validatorFactory.GetArgumentConstraint(A<Expression>.Ignored))
                 .Returns(validator);
             
 
@@ -139,10 +136,8 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.Matches(call);
 
-            OldFake.Assert(validator)
-                .WasCalled(x => x.IsValid(argument1));
-            OldFake.Assert(validator)
-                .WasCalled(x => x.IsValid(argument2));
+            A.CallTo(() => validator.IsValid(argument1)).MustHaveHappened();
+            A.CallTo(() => validator.IsValid(argument2)).MustHaveHappened();
         }
 
         [Test]
@@ -151,10 +146,10 @@ namespace FakeItEasy.Tests.Expressions
             this.StubMethodInfoManagerToReturn(true);
 
             var validator = A.Fake<IArgumentConstraint>();
-            Configure.Fake(validator).CallsTo(x => x.IsValid(A<object>.Ignored)).Returns(false);
-            Configure.Fake(validator).CallsTo(x => x.IsValid(A<object>.Ignored)).Returns(true).Once();
+            A.CallTo(() => validator.IsValid(A<object>.Ignored)).Returns(false);
+            A.CallTo(() => validator.IsValid(A<object>.Ignored)).Returns(true).Once();
 
-            Configure.Fake(this.validatorFactory).CallsTo(x => x.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
+            A.CallTo(() => this.validatorFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
             
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2));
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 3));
@@ -166,13 +161,9 @@ namespace FakeItEasy.Tests.Expressions
         public void ToString_should_write_full_method_name_with_type_name_and_arguments_list()
         {
             var validator = A.Fake<IArgumentConstraint>();
-            Configure.Fake(validator)
-                .CallsTo(x => x.ToString())
-                .Returns("<FOO>");
+            A.CallTo(() => validator.ToString()).Returns("<FOO>");
 
-            Configure.Fake(this.validatorFactory)
-                .CallsTo(x => x.GetArgumentConstraint(A<Expression>.Ignored))
-                .Returns(validator);
+            A.CallTo(() => this.validatorFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 

@@ -262,9 +262,7 @@ namespace FakeItEasy.Tests.Core
         {
             var fake = this.CreateFakeObject<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
-            Configure.Fake(rule)
-                .CallsTo(x => x.IsApplicableTo(A<IFakeObjectCall>.Ignored.Argument))
-                .Returns(true);
+            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>.Ignored.Argument)).Returns(true);
 
             using (Fake.CreateScope())
             {
@@ -291,13 +289,13 @@ namespace FakeItEasy.Tests.Core
         {
             var foo = A.Fake<IFoo>();
 
-            Configure.Fake(foo).CallsTo(x => x.SomeProperty).Returns(2);
+            A.CallTo(() => foo.SomeProperty).Returns(2);
             Assert.That(foo.SomeProperty, Is.EqualTo(2));
 
             foo.SomeProperty = 5;
             Assert.That(foo.SomeProperty, Is.EqualTo(5));
 
-            Configure.Fake(foo).CallsTo(x => x.SomeProperty).Returns(20);
+            A.CallTo(() => foo.SomeProperty).Returns(20);
             Assert.That(foo.SomeProperty, Is.EqualTo(20));
 
             foo.SomeProperty = 10;
@@ -309,9 +307,7 @@ namespace FakeItEasy.Tests.Core
         {
             var foo = A.Fake<IFoo>();
 
-            Configure.Fake(foo.ChildFoo).CallsTo(x => x.Baz()).Returns(10);
-
-            Assert.That(foo.ChildFoo.Baz(), Is.EqualTo(10));
+            Assert.That(foo.ChildFoo, Is.InstanceOf<IFakedProxy>());
         }
 
         [Test]

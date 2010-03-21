@@ -31,8 +31,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             var call = A.Fake<IWritableFakeObjectCall>();
 
-            Configure.Fake(this.wrappedRule)
-                .CallsTo(x => x.IsApplicableTo(call))
+            A.CallTo(() => this.wrappedRule.IsApplicableTo(call))
                 .Returns(wrappedRuleIsApplicable);
 
             var rule = this.CreateRule();
@@ -44,9 +43,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         public void Apply_should_call_apply_next_on_recorder_when_recorder_is_not_recording()
         {
             // Arrange
-            Configure.Fake(this.recorder)
-                .CallsTo(x => x.IsRecording)
-                .Returns(false);
+            A.CallTo(() => this.recorder.IsRecording).Returns(false);
 
             var call = this.CreateFakeCall();
 
@@ -55,17 +52,14 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             rule.Apply(call);
 
             // Assert
-            OldFake.Assert(this.recorder)
-                .WasCalled(x => x.ApplyNext(call));
+            A.CallTo(() => this.recorder.ApplyNext(call)).MustHaveHappened();
         }
 
         [Test]
         public void Apply_should_call_apply_on_rule_when_recorder_is_recording()
         {
             // Arrange
-            Configure.Fake(this.recorder)
-                .CallsTo(x => x.IsRecording)
-                .Returns(true);
+            A.CallTo(() => this.recorder.IsRecording).Returns(true);
             var call = this.CreateFakeCall();
             
             // Act
@@ -73,17 +67,14 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             rule.Apply(call);
 
             // Assert
-            OldFake.Assert(this.wrappedRule)
-                .WasCalled(x => x.Apply(call));
+            A.CallTo(() => this.wrappedRule.Apply(call)).MustHaveHappened();
         }
 
         [Test]
         public void Apply_should_call_record_on_recorder_when_recorder_is_recording()
         {
             // Arrange
-            Configure.Fake(this.recorder)
-                .CallsTo(x => x.IsRecording)
-                .Returns(true);
+            A.CallTo(() => this.recorder.IsRecording).Returns(true);
             
             var call = this.CreateFakeCall();
             var frozenCall = call.AsReadOnly();
@@ -93,8 +84,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             rule.Apply(call);
 
             // Assert
-            OldFake.Assert(this.recorder)
-                .WasCalled(x => x.RecordCall(frozenCall));
+            A.CallTo(() => this.recorder.RecordCall(frozenCall)).MustHaveHappened();
         }
 
         [TestCase(1)]
@@ -103,9 +93,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         [TestCase(100)]
         public void NumberOfTimesToCall_should_return_value_from_wrapped_rule(int? numberOfTimesToCallWrappedRule)
         {
-            Configure.Fake(this.wrappedRule)
-                .CallsTo(x => x.NumberOfTimesToCall)
-                .Returns(numberOfTimesToCallWrappedRule);
+            A.CallTo(() => this.wrappedRule.NumberOfTimesToCall).Returns(numberOfTimesToCallWrappedRule);
 
             var rule = this.CreateRule();
 
@@ -117,12 +105,8 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             var call = A.Fake<IWritableFakeObjectCall>();
             var frozenCall = A.Fake<ICompletedFakeObjectCall>();
 
-            Configure.Fake(this.wrappedRule)
-                .CallsTo(x => x.IsApplicableTo(call))
-                .Returns(true);
-            Configure.Fake(call)
-                .CallsTo(x => x.AsReadOnly())
-                .Returns(frozenCall);
+            A.CallTo(() => this.wrappedRule.IsApplicableTo(call)).Returns(true);
+            A.CallTo(() => call.AsReadOnly()).Returns(frozenCall);
 
             return call;
         }

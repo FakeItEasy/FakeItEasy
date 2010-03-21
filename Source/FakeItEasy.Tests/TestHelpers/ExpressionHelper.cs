@@ -77,28 +77,19 @@ namespace FakeItEasy.Tests.TestHelpers
             var result = A.Fake<IWritableFakeObjectCall>();
             var frozen = A.Fake<ICompletedFakeObjectCall>();
 
-            Configure.Fake(result)
-                .CallsTo(x => x.Method).Returns(GetMethodInfo(callSpecification));
-            Configure.Fake(frozen)
-                .CallsTo(x => x.Method).Returns(GetMethodInfo(callSpecification));
+            A.CallTo(() => result.Method).Returns(GetMethodInfo(callSpecification));
+            A.CallTo(() => frozen.Method).Returns(GetMethodInfo(callSpecification));
 
-            Configure.Fake(result)
-                .CallsTo(x => x.FakedObject).Returns(fakedObject);
-            Configure.Fake(frozen)
-                .CallsTo(x => x.FakedObject).Returns(fakedObject);
+            A.CallTo(() => result.FakedObject).Returns(fakedObject);
+            A.CallTo(() => frozen.FakedObject).Returns(fakedObject);
 
-            Configure.Fake(result)
-                .CallsTo(x => x.Arguments).Returns(CreateArgumentCollection(fakedObject, callSpecification));
-            Configure.Fake(frozen)
-                .CallsTo(x => x.Arguments).Returns(CreateArgumentCollection(fakedObject, callSpecification));
+            A.CallTo(() => result.Arguments).Returns(CreateArgumentCollection(fakedObject, callSpecification));
+            A.CallTo(() => frozen.Arguments).Returns(CreateArgumentCollection(fakedObject, callSpecification));
 
-            Configure.Fake(frozen)
-                .CallsTo(x => x.ReturnValue)
+            A.CallTo(() => frozen.ReturnValue)
                 .Returns(() => Fake.GetCalls(result).Matching<IWritableFakeObjectCall>(x => x.SetReturnValue(A<object>.Ignored)).Last().Arguments[0]);
 
-            Configure.Fake(result)
-                .CallsTo(x => x.AsReadOnly())
-                .Returns(frozen);
+            A.CallTo(() => result.AsReadOnly()).Returns(frozen);
 
             return result;
         }
