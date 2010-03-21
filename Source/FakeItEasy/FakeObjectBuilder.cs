@@ -121,7 +121,7 @@ namespace FakeItEasy.Core
 
             public IFakeOptionsBuilder<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
             {
-                this.Options.ArgumentsForConstructor = this.GetConstructorArgumentsFromExpression(constructorCall);
+                this.Options.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
                 return this;
             }
 
@@ -137,7 +137,7 @@ namespace FakeItEasy.Core
                 return this;
             }
 
-            private IEnumerable<object> GetConstructorArgumentsFromExpression(Expression<Func<T>> constructorCall)
+            private static IEnumerable<object> GetConstructorArgumentsFromExpression(Expression<Func<T>> constructorCall)
             {
                 if (constructorCall.Body.NodeType != ExpressionType.New)
                 {

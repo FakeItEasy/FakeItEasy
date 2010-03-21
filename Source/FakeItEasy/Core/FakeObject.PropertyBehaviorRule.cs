@@ -47,12 +47,12 @@
 
             public static bool IsPropertySetter(MethodInfo method)
             {
-                return method.IsSpecialName && method.Name.StartsWith("set_");
+                return method.IsSpecialName && method.Name.StartsWith("set_", System.StringComparison.Ordinal);
             }
 
             public static bool IsPropertyGetter(MethodInfo method)
             {
-                return method.IsSpecialName && method.Name.StartsWith("get_");
+                return method.IsSpecialName && method.Name.StartsWith("get_", System.StringComparison.Ordinal);
             }
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)

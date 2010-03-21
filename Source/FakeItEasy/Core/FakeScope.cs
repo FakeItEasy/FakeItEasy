@@ -102,12 +102,12 @@ namespace FakeItEasy.Core
 
             public RootScope()
             {
-                this.fakeObjectContainerField = this.ResolveContainer();
+                this.fakeObjectContainerField = ResolveContainer();
             }
 
-            private IFakeObjectContainer ResolveContainer()
+            private static IFakeObjectContainer ResolveContainer()
             {
-                var result = this.TryLoadMefContainer();
+                var result = TryLoadMefContainer();
 
                 if (result == null)
                 {
@@ -117,7 +117,7 @@ namespace FakeItEasy.Core
                 return result;
             }
 
-            private IFakeObjectContainer TryLoadMefContainer()
+            private static IFakeObjectContainer TryLoadMefContainer()
             {
                 try
                 {

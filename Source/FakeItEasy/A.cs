@@ -124,7 +124,7 @@ namespace FakeItEasy
     /// Provides an api entry point for validating arguments of fake object calls.
     /// </summary>
     /// <typeparam name="T">The type of argument to validate.</typeparam>
-    public class A<T>
+    public static class A<T>
     {
         /// <summary>
         /// Gets an argument validations object that provides validations for the argument.

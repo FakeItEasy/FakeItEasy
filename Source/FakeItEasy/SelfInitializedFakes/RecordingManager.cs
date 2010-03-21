@@ -24,7 +24,7 @@
         private class CallDataMetadata
         {
             public CallData RecordedCall;
-            public bool HasBeenApplied = false;
+            public bool HasBeenApplied;
             public override string ToString()
             {
                 return new StringBuilder()

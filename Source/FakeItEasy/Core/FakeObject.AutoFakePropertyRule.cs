@@ -19,7 +19,7 @@
             {
                 var newRule = new CallRuleMetadata
                 {
-                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeObject) { Value = this.Factory.CreateFake(fakeObjectCall.Method.ReturnType, null, true) },
+                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeObject) { Value = Factory.CreateFake(fakeObjectCall.Method.ReturnType, null, true) },
                     CalledNumberOfTimes = 1
                 };
 
@@ -27,7 +27,7 @@
                 newRule.Rule.Apply(fakeObjectCall);
             }
 
-            private FakeObjectFactory Factory
+            private static FakeObjectFactory Factory
             { 
                 get
                 {
@@ -35,9 +35,9 @@
                 }
             }
 
-            private bool TypeIsFakable(Type type)
+            private static bool TypeIsFakable(Type type)
             {
-                var command = this.Factory.CreateGenerationCommand(type, null, true);
+                var command = Factory.CreateGenerationCommand(type, null, true);
                 return command.GenerateFakeObject();
             }
 

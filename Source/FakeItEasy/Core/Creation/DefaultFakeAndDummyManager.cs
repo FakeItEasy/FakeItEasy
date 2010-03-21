@@ -4,6 +4,7 @@ namespace FakeItEasy.Core.Creation
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Globalization;
 
     /// <summary>
     /// The default implementation of the IFakeAndDummyManager interface.
@@ -147,7 +148,7 @@ namespace FakeItEasy.Core.Creation
         {
             var messageFromProxyGenerator = Indent(proxyResult.ErrorMessage);
             
-            var writer = new StringWriter();
+            var writer = new StringWriter(CultureInfo.CurrentCulture);
 
             writer.WriteLine();
             writer.WriteLine();

@@ -35,7 +35,7 @@ namespace FakeItEasy.DynamicProxy
         {
             ProxyResult result = null;
 
-            if (!this.TryGenerateProxy(typeToProxy, fakeObject, argumentsForConstructor, out result))
+            if (!TryGenerateProxy(typeToProxy, fakeObject, argumentsForConstructor, out result))
             {
                 result = new DynamicProxyResult(typeToProxy, string.Empty);
             }
@@ -58,7 +58,7 @@ namespace FakeItEasy.DynamicProxy
         {
             ProxyResult result = null;
 
-            if (!this.TryGenerateProxy(typeToProxy, fakeObject, container, out result))
+            if (!TryGenerateProxy(typeToProxy, fakeObject, container, out result))
             {
                 result = new DynamicProxyResult(typeToProxy, string.Empty);
             }
@@ -134,7 +134,7 @@ namespace FakeItEasy.DynamicProxy
         /// <returns>True if the proxy could be generated.</returns>
         /// <exception cref="ArgumentException">The arguments in argumentsForConstructor does not match any constructor
         /// of the proxied type.</exception>
-        private bool TryGenerateProxy(Type typeToProxy, FakeObject fakeObject, IFakeObjectContainer container, out ProxyResult result)
+        private static bool TryGenerateProxy(Type typeToProxy, FakeObject fakeObject, IFakeObjectContainer container, out ProxyResult result)
         {
             var request = new ConstructorResolvingProxyGenerationRequest(container);
             return request.TryGenerateProxy(typeToProxy, fakeObject, out result);
@@ -152,7 +152,7 @@ namespace FakeItEasy.DynamicProxy
         /// <returns>True if the proxy could be generated.</returns>
         /// <exception cref="ArgumentException">The arguments in argumentsForConstructor does not match any constructor
         /// of the proxied type.</exception>
-        private bool TryGenerateProxy(Type typeToProxy, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor, out ProxyResult result)
+        private static bool TryGenerateProxy(Type typeToProxy, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor, out ProxyResult result)
         {
             if (typeToProxy.IsInterface)
             {
@@ -286,7 +286,7 @@ namespace FakeItEasy.DynamicProxy
                     {
                         arguments.Add(resolvedArgument);
                     }
-                    else if (TryCreateProxiedArgument(argumentType, container, out resolvedArgument))
+                    else if (TryCreateProxiedArgument(argumentType, out resolvedArgument))
                     {
                         arguments.Add(resolvedArgument);
                     }
@@ -310,7 +310,7 @@ namespace FakeItEasy.DynamicProxy
                 return result;
             }
 
-            private bool TryCreateProxiedArgument(Type type, IFakeObjectContainer container, out object argument)
+            private bool TryCreateProxiedArgument(Type type, out object argument)
             {
                 ProxyResult result;
                 if (this.TryGenerateProxy(type, null, out result))

@@ -10,7 +10,7 @@ namespace FakeItEasy.Core
         public virtual void WriteCalls(int indent, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
         {
             var indentString = CreateIndentString(indent);
-            this.AppendCallList(indentString, calls, writer);
+            AppendCallList(indentString, calls, writer);
         }
 
         private static string CreateIndentString(int indent)
@@ -18,7 +18,7 @@ namespace FakeItEasy.Core
             return string.Concat(Enumerable.Repeat(" ", indent).ToArray());
         }
 
-        private void AppendCallList(string indentString, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
+        private static void AppendCallList(string indentString, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
         {
             var callDescriptions = new Queue<string>(calls.Select(x => x.ToString()));
 

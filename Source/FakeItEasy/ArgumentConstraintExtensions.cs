@@ -51,7 +51,7 @@ namespace FakeItEasy
         /// <returns>An argument constraint.</returns>
         public static ArgumentConstraint<string> StartsWith(this ArgumentConstraintScope<string> scope, string value)
         {
-            return scope.CreateConstraint(x => x != null && x.StartsWith(value), "String that starts with \"{0}\"", value);
+            return scope.CreateConstraint(x => x != null && x.StartsWith(value, StringComparison.Ordinal), "String that starts with \"{0}\"", value);
         }
 
         /// <summary>
