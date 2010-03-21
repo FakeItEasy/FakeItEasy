@@ -80,7 +80,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Bar());
 
             // Assert
-            Fake.Assert(this.configurationFactory)
+            OldFake.Assert(this.configurationFactory)
                 .WasCalled(x => x.CreateConfiguration(A<FakeObject>.Ignored, this.ruleReturnedFromFactory));
         }
 
@@ -158,7 +158,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Baz());
 
             // Assert
-            Fake.Assert(this.configurationFactory)
+            OldFake.Assert(this.configurationFactory)
                 .WasCalled(x => x.CreateConfiguration<int>(this.fakeObjectReturnedFromParser, A<BuildableCallRule>.Ignored));
         }
 

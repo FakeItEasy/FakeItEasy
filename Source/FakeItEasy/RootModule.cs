@@ -39,9 +39,6 @@
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
                 callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>())));
 
-            container.RegisterSingleton<IFakeAssertionsFactory>(c =>
-                new FakeAssertionsFactory { Container = c });
-
             container.RegisterSingleton<MethodInfoManager>(c =>
                 new MethodInfoManager());
 
@@ -113,24 +110,6 @@
                 File.Create(fileName).Dispose();
             }
         }
-
-
-        private class FakeAssertionsFactory : IFakeAssertionsFactory
-        {
-            public DictionaryContainer Container;
-
-            public IFakeAssertions<TFake> CreateAsserter<TFake>(FakeObject fake)
-            {
-                return new FakeAssertions<TFake>(
-                    fake, 
-                    this.Container.Resolve<IExpressionCallMatcherFactory>(),
-                    this.Container.Resolve<FakeAsserter.Factory>());
-            }
-        }
-
-       
-
-
         #endregion
     }
 }

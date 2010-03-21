@@ -5,6 +5,8 @@ using System.Text;
 using FakeItEasy.Configuration;
 using System.Linq.Expressions;
 using System.ComponentModel;
+using FakeItEasy.Assertion;
+using FakeItEasy.Expressions;
 
 namespace FakeItEasy
 {
@@ -20,6 +22,15 @@ namespace FakeItEasy
         public static void Assert(this IAssertConfiguration configuration, Repeated repeatValidation)
         {
             configuration.MustHaveHappened(repeatValidation);
+        }
+    }
+
+    public static class OldFake
+    {
+        public static IFakeAssertions<T> Assert<T>(T fakedObject)
+        {
+            var asserter = new FakeAssertions<T>(Fake.GetFakeObject(fakedObject), ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>(), ServiceLocator.Current.Resolve<FakeAsserter.Factory>());
+            return asserter;
         }
     }
 }

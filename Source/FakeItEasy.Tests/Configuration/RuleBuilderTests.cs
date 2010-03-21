@@ -76,8 +76,8 @@
             this.ruleProducedByFactory.Applicator(call);
             this.ruleProducedByFactory.Applicator(call);
 
-            Fake.Assert(call).WasCalled(x => x.SetReturnValue(1));
-            Fake.Assert(call).WasCalled(x => x.SetReturnValue(2));
+            OldFake.Assert(call).WasCalled(x => x.SetReturnValue(1));
+            OldFake.Assert(call).WasCalled(x => x.SetReturnValue(2));
         }
 
         [Test]
@@ -114,7 +114,7 @@
 
             this.ruleProducedByFactory.Applicator(call);
 
-            Fake.Assert(call).WasCalled(x => x.SetReturnValue(2));
+            OldFake.Assert(call).WasCalled(x => x.SetReturnValue(2));
         }
 
         [Test]
@@ -228,7 +228,7 @@
 
             this.builder.Invokes(action);
 
-            Fake.Assert(this.builder.RuleBeingBuilt.Actions)
+            OldFake.Assert(this.builder.RuleBeingBuilt.Actions)
                 .WasCalled(x => x.Add(action));
         }
 
@@ -257,7 +257,7 @@
 
             returnConfig.Invokes(action);
 
-            Fake.Assert(this.builder.RuleBeingBuilt.Actions)
+            OldFake.Assert(this.builder.RuleBeingBuilt.Actions)
                 .WasCalled(x => x.Add(action));
         }
 
@@ -428,7 +428,7 @@
             // Assert
             var repeatMatcher = A<Func<int, bool>>.That.Matches(x => x.Invoke(99) == true);
 
-            Fake.Assert(this.asserter)
+            OldFake.Assert(this.asserter)
                 .WasCalled(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", repeatMatcher, "exactly #99 times"));
         }
 

@@ -88,7 +88,7 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.Matches(call);
 
-            Fake.Assert(this.methodInfoManager)
+            OldFake.Assert(this.methodInfoManager)
                 .WasCalled(x => x.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), call.Method, expressionMethod));
         }
 
@@ -102,7 +102,7 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.Matches(call);
 
-            Fake.Assert(this.methodInfoManager)
+            OldFake.Assert(this.methodInfoManager)
                 .WasCalled(x => x.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), getter, getter));
         }
 
@@ -111,9 +111,9 @@ namespace FakeItEasy.Tests.Expressions
         {
             this.CreateMatcher<IFoo>(x => x.Bar("foo", 10));
 
-            Fake.Assert(this.validatorFactory)
+            OldFake.Assert(this.validatorFactory)
                 .WasCalled(x => x.GetArgumentConstraint(A<Expression>.That.ProducesValue("foo")));
-            Fake.Assert(this.validatorFactory)
+            OldFake.Assert(this.validatorFactory)
                 .WasCalled(x => x.GetArgumentConstraint(A<Expression>.That.ProducesValue(10)));
         }
 
@@ -139,9 +139,9 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.Matches(call);
 
-            Fake.Assert(validator)
+            OldFake.Assert(validator)
                 .WasCalled(x => x.IsValid(argument1));
-            Fake.Assert(validator)
+            OldFake.Assert(validator)
                 .WasCalled(x => x.IsValid(argument2));
         }
 
@@ -177,7 +177,7 @@ namespace FakeItEasy.Tests.Expressions
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 
             Assert.That(matcher.ToString(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<FOO>, <FOO>)"));
-            Fake.Assert(this.validatorFactory)
+            OldFake.Assert(this.validatorFactory)
                 .WasCalled(x => x.GetArgumentConstraint(A<Expression>.Ignored), repeat => repeat == 2);
         }
 
@@ -233,7 +233,7 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.Matches(call);
 
-            Fake.Assert(this.methodInfoManager)
+            OldFake.Assert(this.methodInfoManager)
                 .WasCalled(x => x.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), getter, getter));
         }
     }

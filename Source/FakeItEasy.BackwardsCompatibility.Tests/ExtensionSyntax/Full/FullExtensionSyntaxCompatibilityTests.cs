@@ -33,20 +33,5 @@
             NullGuardedConstraint.Assert(() =>
                 FullExtensionSyntax.Assert(A.Fake<IFoo>()));
         }
-
-        [Test]
-        public void Assert_should_return_fake_assertion_object_from_factory()
-        {
-            var fake = A.Fake<IFoo>();
-
-
-            using (Fake.CreateScope())
-            {
-                this.StubResolve<IFakeAssertionsFactory>(this.fakeAssertionsFactory);
-                var assertions = FullExtensionSyntax.Assert(fake);
-
-                Assert.That(assertions, Is.SameAs(this.fakeAssertions));
-            }
-        }
     }
 }

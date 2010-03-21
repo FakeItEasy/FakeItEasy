@@ -111,7 +111,6 @@
     <Compile Include="SelfInitializedFakes\SelfInitializationRule.cs" />
     <Compile Include="Core\CallWriter.cs" />
     <Compile Include="Assertion\FakeAsserter.cs" />
-    <Compile Include="Assertion\IFakeAssertionsFactory.cs" />
     <Compile Include="Core\CallInterceptedEventArgs.cs" />
     <Compile Include="SelfInitializedFakes\CallData.cs" />
     <Compile Include="Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs" />
@@ -166,7 +165,6 @@
     <Compile Include="Configuration\IHideObjectMembers.cs" />
     <Compile Include="ExtensionSyntax\Full\FullExtensionSyntax.cs" />
     <Compile Include="ExtensionSyntax\Syntax.cs" />
-    <Compile Include="Assertion\FakeAssertions.cs" />
     <Compile Include="FakeExtensions.cs" />
     <Compile Include="Core\ArgumentCollection.cs" />
     <Compile Include="Expressions\ExpressionManager.cs" />
@@ -176,7 +174,6 @@
     <Compile Include="Core\FakeScope.cs" />
     <Compile Include="FakeObjectFactory.cs" />
     <Compile Include="Guard.cs" />
-    <Compile Include="Assertion\IFakeAssertions.cs" />
     <Compile Include="Core\IFakedProxy.cs" />
     <Compile Include="Core\IFakeObjectCall.cs" />
     <Compile Include="Core\IFakeObjectCallRule.cs" />

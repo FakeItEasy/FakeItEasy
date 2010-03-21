@@ -50,6 +50,9 @@
     <Compile Include="..\FakeItEasy\Configure.cs" />
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
+    <Compile Include="Assertion\FakeAssertions.cs" />
+    <Compile Include="Assertion\IFakeAssertions.cs" />
+    <Compile Include="Assertion\IFakeAssertionsFactory.cs" />
     <Compile Include="CompatibilityExtensions.cs" />
     <Compile Include="ExtensionSyntax\Full\FullExtensionSyntaxCompatibilityExtensions.cs" />
     <Compile Include="Happened.cs" />

@@ -99,22 +99,6 @@ namespace FakeItEasy
             return Fake.GetFakeObject(fakedObject).RecordedCallsInScope;
         }
 
-        /// <summary>
-        /// Gets an object that provides assertions for the specified fake object.
-        /// </summary>
-        /// <typeparam name="TFake">The type of the fake object.</typeparam>
-        /// <param name="fakedObject">The fake object to get assertions for.</param>
-        /// <returns>An assertion object.</returns>
-        /// <exception cref="ArgumentException">The object passed in is not a faked object.</exception>
-        [DebuggerStepThrough]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use the A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Once) syntax instead.")]
-        public static IFakeAssertions<TFake> Assert<TFake>(TFake fakedObject)
-        {
-            var factory = ServiceLocator.Current.Resolve<IFakeAssertionsFactory>();
-            return factory.CreateAsserter<TFake>(GetFakeObject(fakedObject));
-        }
-
         internal static FakeObjectFactory CreateFactory()
         {
             return ServiceLocator.Current.Resolve<FakeObjectFactory>();
@@ -241,15 +225,6 @@ namespace FakeItEasy
         public IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(Expression<Func<T, TMember>> callSpecification)
         {
             return this.StartConfiguration.CallsTo(callSpecification);
-        }
-
-        /// <summary>
-        /// Asserts on the faked object.
-        /// </summary>
-        /// <returns>A fake assertions object.</returns>
-        private IFakeAssertions<T> Assert()
-        {
-            return ServiceLocator.Current.Resolve<IFakeAssertionsFactory>().CreateAsserter<T>(Fake.GetFakeObject(this.FakedObject));
         }
 
         /// <summary>

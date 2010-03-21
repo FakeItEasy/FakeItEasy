@@ -116,7 +116,7 @@ namespace FakeItEasy.Tests.Expressions
 
             rule.UsePredicateToValidateArguments(predicate);
 
-            Fake.Assert(this.callMatcher)
+            OldFake.Assert(this.callMatcher)
                 .WasCalled(x => x.UsePredicateToValidateArguments(predicate));
         }
     }

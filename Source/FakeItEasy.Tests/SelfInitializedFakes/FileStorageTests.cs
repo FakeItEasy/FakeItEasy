@@ -108,7 +108,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             storage.Save(Enumerable.Empty<CallData>());
 
             // Assert
-            Fake.Assert(this.fileSystem)
+            OldFake.Assert(this.fileSystem)
                 .WasCalled(x => x.Create("c:\\file.dat"));
         }
 

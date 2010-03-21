@@ -53,7 +53,7 @@ namespace FakeItEasy.Tests.Core
             var rule = this.CreateRule(wrapped);
             rule.Apply(call);
 
-            Fake.Assert(wrapped).WasCalled(x => x.Bar("foo", "bar"));
+            OldFake.Assert(wrapped).WasCalled(x => x.Bar("foo", "bar"));
         }
 
         private WrappedObjectRule CreateRule()

@@ -90,7 +90,7 @@ namespace FakeItEasy.Tests.Core
 
             this.fakeObjectBuilder.GenerateFake<Foo>(x => x.WithArgumentsForConstructor(() => new Foo(serviceProvider)));
 
-            Fake.Assert(this.factory)
+            OldFake.Assert(this.factory)
                 .WasCalled(x => x.CreateFake(typeof(Foo), A<IEnumerable<object>>.That.IsThisSequence(new object[] { serviceProvider }).Argument, false));
         }
 

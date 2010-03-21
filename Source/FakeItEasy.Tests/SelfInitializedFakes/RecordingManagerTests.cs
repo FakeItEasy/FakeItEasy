@@ -76,11 +76,11 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             recorder.ApplyNext(call);
             recorder.ApplyNext(call);
 
-            Fake.Assert(call)
+            OldFake.Assert(call)
                 .WasCalled(x => x.SetReturnValue(100), repeat => repeat == 1);
-            Fake.Assert(call)
+            OldFake.Assert(call)
                 .WasCalled(x => x.SetArgumentValue(2, 100), repeat => repeat == 1);
-            Fake.Assert(call)
+            OldFake.Assert(call)
                 .WasCalled(x => x.SetArgumentValue(3, "200"), repeat => repeat == 1);
         }
 
@@ -171,7 +171,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
                 recorder.RecordCall(callToRecord);
             }
 
-            Fake.Assert(this.callStorage)
+            OldFake.Assert(this.callStorage)
                 .WasCalled(x => x.Save(A<IEnumerable<CallData>>.That.Matches(c => this.CallDataMatchesCall(c.Single(), callToRecord)).Argument));
         }
 
@@ -187,7 +187,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             
             }
 
-            Fake.Assert(this.callStorage)
+            OldFake.Assert(this.callStorage)
                 .WasCalled(x => x.Save(A<IEnumerable<CallData>>.That.IsThisSequence().Argument));
         }
 

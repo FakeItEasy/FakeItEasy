@@ -69,10 +69,10 @@ namespace FakeItEasy.Tests.Core
                     fake.Bar();
                 }
 
-                Fake.Assert(fake).WasCalled(x => x.Bar());
+                OldFake.Assert(fake).WasCalled(x => x.Bar());
             }
 
-            Fake.Assert(fake).WasCalled(x => x.Bar());
+            OldFake.Assert(fake).WasCalled(x => x.Bar());
         }
 
         [Test]

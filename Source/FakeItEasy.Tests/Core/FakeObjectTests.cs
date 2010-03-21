@@ -273,7 +273,7 @@ namespace FakeItEasy.Tests.Core
 
             (fake.Object as IFoo).Bar();
 
-            Fake.Assert(rule).WasNotCalled(x => x.Apply(A<IWritableFakeObjectCall>.Ignored.Argument));
+            OldFake.Assert(rule).WasNotCalled(x => x.Apply(A<IWritableFakeObjectCall>.Ignored.Argument));
         }
 
         [Test]

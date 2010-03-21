@@ -55,7 +55,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             rule.Apply(call);
 
             // Assert
-            Fake.Assert(this.recorder)
+            OldFake.Assert(this.recorder)
                 .WasCalled(x => x.ApplyNext(call));
         }
 
@@ -73,7 +73,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             rule.Apply(call);
 
             // Assert
-            Fake.Assert(this.wrappedRule)
+            OldFake.Assert(this.wrappedRule)
                 .WasCalled(x => x.Apply(call));
         }
 
@@ -93,7 +93,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             rule.Apply(call);
 
             // Assert
-            Fake.Assert(this.recorder)
+            OldFake.Assert(this.recorder)
                 .WasCalled(x => x.RecordCall(frozenCall));
         }
 

@@ -17,7 +17,7 @@
         {
             Guard.IsNotNull(fakedObject, "fakedObject");
 
-            return Fake.Assert(fakedObject);
+            return OldFake.Assert(fakedObject);
         }
     }
 }

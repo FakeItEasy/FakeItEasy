@@ -50,7 +50,7 @@ namespace FakeItEasy.Tests
         {
             A.Fake<IFoo>();
 
-            Fake.Assert(this.factory).WasCalled(x => x.CreateFake(typeof(IFoo), null, false));
+            OldFake.Assert(this.factory).WasCalled(x => x.CreateFake(typeof(IFoo), null, false));
         }
 
         [Test]

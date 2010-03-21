@@ -79,7 +79,7 @@ namespace FakeItEasy.Tests.Core
             Helpers.WriteCalls(calls, writer);
 
 
-            Fake.Assert(callWriter)
+            OldFake.Assert(callWriter)
                 .WasCalled(x => x.WriteCalls(0, calls, writer));
         }
 

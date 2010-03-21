@@ -67,7 +67,7 @@ namespace FakeItEasy.Tests.Configuration
             rule.CallBaseMethod = true;
             rule.Apply(call);
 
-            Fake.Assert(call).WasCalled(x => x.CallBaseMethod());
+            OldFake.Assert(call).WasCalled(x => x.CallBaseMethod());
         }
 
 
@@ -85,9 +85,9 @@ namespace FakeItEasy.Tests.Configuration
 
             rule.Apply(call);
 
-            Fake.Assert(call)
+            OldFake.Assert(call)
                 .WasCalled(_ => _.SetArgumentValue(1, 1));
-            Fake.Assert(call)
+            OldFake.Assert(call)
                 .WasCalled(_ => _.SetArgumentValue(3, "foo"));
         }
 
