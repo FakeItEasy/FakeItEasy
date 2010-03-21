@@ -2,6 +2,7 @@ namespace FakeItEasy
 {
     using System;
     using FakeItEasy.Assertion;
+    using FakeItEasy.Core;
     using FakeItEasy.Expressions;
 
     /// <summary>

@@ -110,7 +110,7 @@
     <Compile Include="SelfInitializedFakes\RecordingException.cs" />
     <Compile Include="SelfInitializedFakes\SelfInitializationRule.cs" />
     <Compile Include="Core\CallWriter.cs" />
-    <Compile Include="Assertion\FakeAsserter.cs" />
+    <Compile Include="Core\FakeAsserter.cs" />
     <Compile Include="Core\CallInterceptedEventArgs.cs" />
     <Compile Include="SelfInitializedFakes\CallData.cs" />
     <Compile Include="Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs" />

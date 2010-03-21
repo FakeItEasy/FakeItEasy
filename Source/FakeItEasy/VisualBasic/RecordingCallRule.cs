@@ -1,7 +1,6 @@
 namespace FakeItEasy.VisualBasic
 {
     using System.Linq;
-    using FakeItEasy.Assertion;
     using FakeItEasy.Core;
 
     /// <summary>

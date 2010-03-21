@@ -3,7 +3,6 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Diagnostics;
     using System.Linq;
-    using FakeItEasy.Assertion;
     using FakeItEasy.Core;
     using FakeItEasy.VisualBasic;
 
