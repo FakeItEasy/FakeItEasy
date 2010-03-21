@@ -17,7 +17,6 @@ namespace FakeItEasy.Core.Creation
         /// <param name="fakeObject">The generated proxy must implement the IFakedProxy interface and this is the fake object
         /// that should be returned for the call to GetFakeObject().</param>
         /// <param name="argumentsForConstructor">Arguments to use for the constructor of the proxied type.</param>
-        /// <param name="generatedProxy">An object containing the proxy if generation was successful.</param>
         /// <returns>True if the proxy could be generated.</returns>
         /// <exception cref="ArgumentException">The arguments in argumentsForConstructor does not match any constructor
         /// of the proxied type.</exception>

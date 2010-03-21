@@ -6,9 +6,8 @@ namespace FakeItEasy.Configuration
     /// Configuration that lets the developer specify that an exception should be
     /// thrown by a fake object call.
     /// </summary>
-    /// <typeparam name="TFake">The type of the fake.</typeparam>
     public interface IExceptionThrowerConfiguration
-            : IHideObjectMembers
+        : IHideObjectMembers
     {
         /// <summary>
         /// Throws the specified exception when the currently configured

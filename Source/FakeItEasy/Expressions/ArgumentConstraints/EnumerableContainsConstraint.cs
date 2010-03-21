@@ -1,12 +1,10 @@
 namespace FakeItEasy.Expressions.ArgumentConstraints
 {
-    using FakeItEasy.Core;
-    using System;
     using System.Collections;
     using System.Linq;
 
-    public class EnumerableContainsConstraint<T>
-            : ArgumentConstraint<T> where T : IEnumerable
+    internal class EnumerableContainsConstraint<T>
+        : ArgumentConstraint<T> where T : IEnumerable
     {
         private object expectedValue;
 

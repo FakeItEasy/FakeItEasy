@@ -3,6 +3,11 @@ namespace FakeItEasy.Expressions
     using System;
     using FakeItEasy.Configuration;
 
+    /// <summary>
+    /// Represents a scope for  arguments constraints when they're chained together, enables the logical operators
+    /// and and not.
+    /// </summary>
+    /// <typeparam name="T">The type of argument to constrain.</typeparam>
     public abstract class ArgumentConstraintScope<T>
         : IHideObjectMembers
     {

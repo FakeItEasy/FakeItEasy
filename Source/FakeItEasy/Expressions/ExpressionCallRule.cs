@@ -19,7 +19,7 @@ namespace FakeItEasy.Expressions
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionCallRule"/> class.
         /// </summary>
-        /// <param name="callSpecification">The call specification.</param>
+        /// <param name="expressionMatcher">The expression matcher to use.</param>
         public ExpressionCallRule(ExpressionCallMatcher expressionMatcher)
         {
             Guard.IsNotNull(expressionMatcher, "expressionMatcher");

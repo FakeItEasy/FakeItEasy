@@ -6,7 +6,6 @@ namespace FakeItEasy.Configuration
     /// <summary>
     /// Configures a call that returns a value.
     /// </summary>
-    /// <typeparam name="TFake">The type of the fake.</typeparam>
     /// <typeparam name="TMember">The type of the member.</typeparam>
     public interface IReturnValueConfiguration<TMember>
         : IExceptionThrowerConfiguration, 

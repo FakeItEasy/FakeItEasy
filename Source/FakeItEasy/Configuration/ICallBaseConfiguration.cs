@@ -5,7 +5,6 @@ namespace FakeItEasy.Configuration
     /// <summary>
     /// Configuration that lets you specify that a fake object call should call it's base method.
     /// </summary>
-    /// <typeparam name="TFake">The type of fake.</typeparam>
     public interface ICallBaseConfiguration
         : IHideObjectMembers
     {

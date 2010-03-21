@@ -59,7 +59,9 @@ namespace FakeItEasy.Core.Creation
         public object CreateFake(Type typeOfFake, FakeOptions options)
         {
             var result = this.CreateProxy(typeOfFake, options.ArgumentsForConstructor, true);
+            
             this.ConfigureFakeToWrapWhenAppropriate(options, result);
+            
             return result;
         }
 

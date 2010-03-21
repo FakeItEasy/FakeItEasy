@@ -12,6 +12,10 @@ namespace FakeItEasy.Expressions
     public abstract class ArgumentConstraint<T>
         : IArgumentConstraint, IHideObjectMembers
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ArgumentConstraint&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="scope">The scope of the constraint.</param>
         protected ArgumentConstraint(ArgumentConstraintScope<T> scope)
         {
             this.Scope = scope;

@@ -10,7 +10,7 @@ namespace FakeItEasy
         private int expectedRepeat;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HappenedNoUpperBound"/> class.
+        /// Initializes a new instance of the <see cref="LowerBoundRepeated"/> class.
         /// </summary>
         /// <param name="expectedRepeat">The expected repeat.</param>
         internal LowerBoundRepeated(int expectedRepeat)

@@ -6,9 +6,6 @@
     internal class DefaultReturnValueRule
         : IFakeObjectCallRule
     {
-        [NonSerialized]
-        private IFakeObjectGeneratorFactory commandFactoryField;
-
         public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
             return true;

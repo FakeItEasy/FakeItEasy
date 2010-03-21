@@ -16,6 +16,8 @@
         /// </summary>
         /// <typeparam name="TMember">The type of the return value of the member.</typeparam>
         /// <param name="callSpecification">An expression that specifies the calls to configure.</param>
+        /// <param name="fakedObject">The faked object to configure.</param>
+        /// <typeparam name="TFake">The type of fake object to configure.</typeparam>
         /// <returns>A configuration object.</returns>
         public static IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TFake, TMember>(this TFake fakedObject, Expression<Func<TFake, TMember>> callSpecification)
         {
@@ -28,6 +30,8 @@
         /// Configures the behavior of the fake object when a call that matches the specified
         /// call happens.
         /// </summary>
+        /// <param name="fakedObject">The faked object to configure.</param>
+        /// <typeparam name="TFake">The type of fake object to configure.</typeparam>
         /// <param name="callSpecification">An expression that specifies the calls to configure.</param>
         /// <returns>A configuration object.</returns>
         public static IVoidArgumentValidationConfiguration CallsTo<TFake>(this TFake fakedObject, Expression<Action<TFake>> callSpecification)

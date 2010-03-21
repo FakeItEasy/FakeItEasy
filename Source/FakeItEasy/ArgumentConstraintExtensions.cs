@@ -6,7 +6,7 @@ namespace FakeItEasy
     using FakeItEasy.Expressions.ArgumentConstraints;
 
     /// <summary>
-    /// Provides validation extension to the ArgumentValidations{T} class.
+    /// Provides validation extension to the Argumentscope{T} class.
     /// </summary>
     public static class ArgumentConstraintExtensions
     {
@@ -14,7 +14,7 @@ namespace FakeItEasy
         /// Validates that an argument is null.
         /// </summary>
         /// <typeparam name="T">The type of the argument.</typeparam>
-        /// <param name="validations">The scope of the constraint.</param>
+        /// <param name="scope">The scope of the constraint.</param>
         /// <returns>An argument constraint.</returns>
         public static ArgumentConstraint<T> IsNull<T>(this ArgumentConstraintScope<T> scope) where T : class
         {
@@ -24,7 +24,7 @@ namespace FakeItEasy
         /// <summary>
         /// Validates that the string argument contains the specified text.
         /// </summary>
-        /// <param name="validations">The scope of the constraint.</param>
+        /// <param name="scope">The scope of the constraint.</param>
         /// <param name="value">The string the argument string should contain.</param>
         /// <returns>An argument constraint.</returns>
         public static ArgumentConstraint<string> Contains(this ArgumentConstraintScope<string> scope, string value)
@@ -46,7 +46,7 @@ namespace FakeItEasy
         /// <summary>
         /// Validates that the string argument starts with the specified text.
         /// </summary>
-        /// <param name="validations">The scope of the constraint.</param>
+        /// <param name="scope">The scope of the constraint.</param>
         /// <param name="value">The string the argument string should start with.</param>
         /// <returns>An argument constraint.</returns>
         public static ArgumentConstraint<string> StartsWith(this ArgumentConstraintScope<string> scope, string value)
@@ -57,7 +57,7 @@ namespace FakeItEasy
         /// <summary>
         /// Validates that the string argument is null or the empty string.
         /// </summary>
-        /// <param name="validations">The scope of the constraint.</param>
+        /// <param name="scope">The scope of the constraint.</param>
         /// <returns>An argument constraint.</returns>
         public static ArgumentConstraint<string> IsNullOrEmpty(this ArgumentConstraintScope<string> scope)
         {

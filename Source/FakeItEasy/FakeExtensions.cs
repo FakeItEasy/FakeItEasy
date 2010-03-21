@@ -16,7 +16,6 @@ namespace FakeItEasy
         /// <summary>
         /// Specifies NumberOfTimes(1) to the IRepeatConfiguration{TFake}.
         /// </summary>
-        /// <typeparam name="TFake">The type of fake object.</typeparam>
         /// <param name="configuration">The configuration to set repeat 1 to.</param>
         public static void Once(this IRepeatConfiguration configuration)
         {
@@ -27,7 +26,6 @@ namespace FakeItEasy
         /// <summary>
         /// Specifies NumberOfTimes(2) to the IRepeatConfiguration{TFake}.
         /// </summary>
-        /// <typeparam name="TFake">The type of fake object.</typeparam>
         /// <param name="configuration">The configuration to set repeat 2 to.</param>
         public static void Twice(this IRepeatConfiguration configuration)
         {
@@ -39,7 +37,6 @@ namespace FakeItEasy
         /// <summary>
         /// Specifies that the configured call/calls should return null when called.
         /// </summary>
-        /// <typeparam name="TFake">The type of the fake.</typeparam>
         /// <typeparam name="TMember">The type of the faked member.</typeparam>
         /// <param name="configuration">The configuration to apply to.</param>
         /// <returns>A configuration object.</returns>
@@ -54,7 +51,6 @@ namespace FakeItEasy
         /// Specifies that a call to the configured call should be applied no matter what arguments
         /// are used in the call to the faked object.
         /// </summary>
-        /// <typeparam name="TFake">The type of the fake.</typeparam>
         /// <param name="configuration">The configuration.</param>
         /// <returns>A configuration object</returns>
         public static TInterface WithAnyArguments<TInterface>(this IArgumentValidationConfiguration<TInterface> configuration)

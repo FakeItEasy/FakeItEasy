@@ -5,7 +5,7 @@ namespace FakeItEasy.Core
     using System.IO;
     using System.Linq;
 
-    public class CallWriter
+    internal class CallWriter
     {
         public virtual void WriteCalls(int indent, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
         {
