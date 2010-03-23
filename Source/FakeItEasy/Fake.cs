@@ -23,7 +23,7 @@ namespace FakeItEasy
         [DebuggerStepThrough]
         public static FakeObject GetFakeObject(object fakedObject)
         {
-            Guard.IsNotNull(fakedObject, "fakedObject");
+            Guard.AgainstNull(fakedObject, "fakedObject");
 
             var accessor = fakedObject as IFakedProxy;
 
@@ -93,7 +93,7 @@ namespace FakeItEasy
         /// <exception cref="ArgumentException">The object passed in is not a faked object.</exception>
         public static IEnumerable<ICompletedFakeObjectCall> GetCalls(object fakedObject)
         {
-            Guard.IsNotNull(fakedObject, "fakedObject");
+            Guard.AgainstNull(fakedObject, "fakedObject");
 
             return Fake.GetFakeObject(fakedObject).RecordedCallsInScope;
         }
@@ -129,7 +129,7 @@ namespace FakeItEasy
         /// <exception cref="ArgumentNullException">The constructor call was null.</exception>
         public Fake(Expression<Func<T>> constructorCall)
         {
-            Guard.IsNotNull(constructorCall, "constructorCall");
+            Guard.AgainstNull(constructorCall, "constructorCall");
 
             if (constructorCall.Body.NodeType != ExpressionType.New)
             {
@@ -150,7 +150,7 @@ namespace FakeItEasy
         /// <exception cref="ArgumentNullException">The wrappedInstance was null.</exception>
         public Fake(T wrappedInstance)
         {
-            Guard.IsNotNull(wrappedInstance, "wrappedInstance");
+            Guard.AgainstNull(wrappedInstance, "wrappedInstance");
 
             this.FakedObject = A.Fake<T>(x => x.Wrapping(wrappedInstance));
         }
@@ -162,7 +162,7 @@ namespace FakeItEasy
         /// <exception cref="ArgumentNullException">The argumentsForConstructor was null.</exception>
         public Fake(IEnumerable<object> argumentsForConstructor)
         {
-            Guard.IsNotNull(argumentsForConstructor, "argumentsForConstructor");
+            Guard.AgainstNull(argumentsForConstructor, "argumentsForConstructor");
 
             if (!typeof(T).IsAbstract)
             {

@@ -18,7 +18,7 @@ namespace FakeItEasy.Core.Creation
         /// <param name="proxiedType">Type of the proxied.</param>
         protected ProxyResult(Type proxiedType)
         {
-            Guard.IsNotNull(proxiedType, "proxiedType");
+            Guard.AgainstNull(proxiedType, "proxiedType");
 
             this.ProxiedType = proxiedType;
         }
@@ -69,7 +69,7 @@ namespace FakeItEasy.Core.Creation
             [DebuggerStepThrough]
             protected set
             {
-                Guard.IsNotNull(value, "value");
+                Guard.AgainstNull(value, "value");
 
                 if (!this.ProxiedType.IsAssignableFrom(value.GetType()))
                 {

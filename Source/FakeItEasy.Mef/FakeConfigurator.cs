@@ -27,7 +27,7 @@ namespace FakeItEasy.Mef
         /// <param name="fakeObject">The fake object to configure.</param>
         void IFakeConfigurator.ConfigureFake(object fakeObject)
         {
-            Guard.IsNotNull(fakeObject, "fakeObject");
+            Guard.AgainstNull(fakeObject, "fakeObject");
 
             this.AssertThatFakeIsOfCorrectType(fakeObject);
 

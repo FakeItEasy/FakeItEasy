@@ -8,7 +8,12 @@
         private class PropertySetterRule
             : IFakeObjectCallRule
         {
-            public FakeObject FakeObject;
+            public FakeObject FakeObject { get; set; }
+            
+            public int? NumberOfTimesToCall
+            {
+                get { return null; }
+            }
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
@@ -25,12 +30,6 @@
 
                 this.FakeObject.allUserRulesField.AddFirst(newRule);
             }
-
-            public int? NumberOfTimesToCall
-            {
-                get { return null; }
-            }
         }
-
     }
 }

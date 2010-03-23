@@ -23,7 +23,7 @@ namespace FakeItEasy.Configuration
 
         public IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
         {
-            Guard.IsNotNull(callSpecification, "callSpecification");
+            Guard.AgainstNull(callSpecification, "callSpecification");
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
@@ -37,7 +37,7 @@ namespace FakeItEasy.Configuration
 
         public IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
-            Guard.IsNotNull(callSpecification, "callSpecification");
+            Guard.AgainstNull(callSpecification, "callSpecification");
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 

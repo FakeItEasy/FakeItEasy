@@ -18,7 +18,7 @@
         /// <returns>A call configuration object.</returns>
         public static IVisualBasicConfigurationWithArgumentValidation To<TFake>(TFake fake)
         {
-            Guard.IsNotNull(fake, "fake");
+            Guard.AgainstNull(fake, "fake");
 
             var recordedRule = CreateRecordedRule();
             var fakeObject = Fake.GetFakeObject(fake);

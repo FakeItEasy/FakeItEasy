@@ -33,7 +33,7 @@ namespace FakeItEasy.Core
         public T GenerateFake<T>(Action<IFakeOptionsBuilder<T>> options)
         {
 
-            Guard.IsNotNull(options, "options");
+            Guard.AgainstNull(options, "options");
 
             var builtOptions = GetOptions<T>(options);
 

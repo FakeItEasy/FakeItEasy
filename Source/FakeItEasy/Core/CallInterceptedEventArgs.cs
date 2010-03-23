@@ -16,7 +16,7 @@ namespace FakeItEasy.Core
         [DebuggerStepThrough]
         public CallInterceptedEventArgs(IWritableFakeObjectCall call)
         {
-            Guard.IsNotNull(call, "call");
+            Guard.AgainstNull(call, "call");
 
             this.Call = call;
         }

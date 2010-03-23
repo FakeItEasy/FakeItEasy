@@ -9,13 +9,13 @@ namespace FakeItEasy
     internal static class Guard
     {
         /// <summary>
-        /// Determines whether the specified argument is null.
+        /// Throws an exception if the specified argument is null.
         /// </summary>
         /// <param name="argument">The argument.</param>
         /// <param name="argumentName">Name of the argument.</param>
         /// <exception cref="ArgumentNullException">The specified argument was null.</exception>
         [DebuggerStepThrough]
-        public static void IsNotNull(object argument, string argumentName)
+        public static void AgainstNull(object argument, string argumentName)
         {
             if (argument == null)
             {
@@ -24,7 +24,7 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Determines whether the specified argument is in the given range.
+        /// Throws an exception if the specified argument is not in the given range.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="argument">The argument.</param>
@@ -47,7 +47,7 @@ namespace FakeItEasy
         /// <param name="value">The value to guard.</param>
         /// <param name="argumentName">Name of the argument.</param>
         [DebuggerStepThrough]
-        internal static void IsNotNullOrEmpty(string value, string argumentName)
+        internal static void AgainstNullOrEmpty(string value, string argumentName)
         {
             if (string.IsNullOrEmpty(value))
             {

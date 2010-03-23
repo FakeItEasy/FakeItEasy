@@ -17,9 +17,9 @@ namespace FakeItEasy.Expressions
         /// <returns>An ArgumentConstraint.</returns>
         public static ArgumentConstraint<T> Create<T>(ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)
         {
-            Guard.IsNotNull(scope, "scope");
-            Guard.IsNotNull(predicate, "predicate");
-            Guard.IsNotNullOrEmpty(description, "description");
+            Guard.AgainstNull(scope, "scope");
+            Guard.AgainstNull(predicate, "predicate");
+            Guard.AgainstNullOrEmpty(description, "description");
 
             return new PredicateArgumentConstraint<T>(scope) { Validation = predicate, DescriptionField = description };
         }
@@ -33,8 +33,8 @@ namespace FakeItEasy.Expressions
         /// <returns>A combined constraint.</returns>
         public static ArgumentConstraint<T> Or<T>(this ArgumentConstraint<T> constraint, Func<ArgumentConstraintScope<T>, ArgumentConstraint<T>> otherConstraint)
         {
-            Guard.IsNotNull(constraint, "constraint");
-            Guard.IsNotNull(otherConstraint, "otherConstraint");
+            Guard.AgainstNull(constraint, "constraint");
+            Guard.AgainstNull(otherConstraint, "otherConstraint");
 
             return constraint.Or(otherConstraint.Invoke(A<T>.That));
         }

@@ -12,14 +12,11 @@ namespace FakeItEasy.Core
     [Serializable]
     public class ArgumentCollection
     {
-        #region Fields
         /// <summary>
         /// The arguments this collection contains.
         /// </summary>
         private readonly object[] arguments;
-        #endregion
-
-        #region Construction
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="ArgumentCollection"/> class.
         /// </summary>
@@ -28,8 +25,8 @@ namespace FakeItEasy.Core
         [DebuggerStepThrough]
         public ArgumentCollection(object[] arguments, IEnumerable<string> argumentNames)
         {
-            Guard.IsNotNull(arguments, "arguments");
-            Guard.IsNotNull(argumentNames, "argumentNames");
+            Guard.AgainstNull(arguments, "arguments");
+            Guard.AgainstNull(argumentNames, "argumentNames");
 
             if (arguments.Length != argumentNames.Count())
             {
@@ -50,9 +47,7 @@ namespace FakeItEasy.Core
             : this(arguments, GetArgumentNames(method)) 
         {
         }
-        #endregion
-
-        #region Properties
+        
         /// <summary>
         /// Gets an empty ArgumentList.
         /// </summary>
@@ -95,9 +90,7 @@ namespace FakeItEasy.Core
                 return this.arguments[argumentIndex];
             }
         }
-        #endregion
 
-        #region Methods
         /// <summary>
         /// Gets the argument at the specified index.
         /// </summary>
@@ -134,7 +127,7 @@ namespace FakeItEasy.Core
         [DebuggerStepThrough]
         private static IEnumerable<string> GetArgumentNames(MethodInfo method)
         {
-            Guard.IsNotNull(method, "method");
+            Guard.AgainstNull(method, "method");
 
             return method.GetParameters().Select(x => x.Name);
         }
@@ -155,6 +148,5 @@ namespace FakeItEasy.Core
 
             throw new ArgumentException(ExceptionMessages.ArgumentNameDoesNotExist, "argumentName");
         }
-        #endregion
     }
 }

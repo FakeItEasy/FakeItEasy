@@ -15,7 +15,7 @@
         [Obsolete]
         public static IFakeAssertions<TFake> Assert<TFake>(this TFake fakedObject) where TFake : class
         {
-            Guard.IsNotNull(fakedObject, "fakedObject");
+            Guard.AgainstNull(fakedObject, "fakedObject");
 
             return OldFake.Assert(fakedObject);
         }

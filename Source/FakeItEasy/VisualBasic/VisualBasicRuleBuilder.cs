@@ -47,7 +47,7 @@ namespace FakeItEasy.VisualBasic
 
         public void MustHaveHappened(Repeated repeatConstraint)
         {
-            Guard.IsNotNull(repeatConstraint, "repeatConstraint");
+            Guard.AgainstNull(repeatConstraint, "repeatConstraint");
 
             this.rule.RepeatConstraint = repeatConstraint;
             rule.IsAssertion = true;
@@ -55,7 +55,7 @@ namespace FakeItEasy.VisualBasic
 
         public IVisualBasicConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
         {
-            Guard.IsNotNull(argumentsPredicate, "argumentsPredicate");
+            Guard.AgainstNull(argumentsPredicate, "argumentsPredicate");
 
             this.rule.UsePredicateToValidateArguments(argumentsPredicate);
 

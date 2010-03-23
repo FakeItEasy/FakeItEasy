@@ -21,7 +21,7 @@ namespace FakeItEasy
         [Obsolete]
         public static IStartConfiguration<TFake> Fake<TFake>(TFake fakedObject)
         {
-            Guard.IsNotNull(fakedObject, "fakedObject");
+            Guard.AgainstNull(fakedObject, "fakedObject");
             
             var factory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
             return factory.CreateConfiguration<TFake>(FakeItEasy.Fake.GetFakeObject(fakedObject));

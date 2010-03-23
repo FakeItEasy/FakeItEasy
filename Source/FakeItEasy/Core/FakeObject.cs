@@ -126,7 +126,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to remove.</param>
         public virtual void RemoveRule(IFakeObjectCallRule rule)
         {
-            Guard.IsNotNull(rule, "rule");
+            Guard.AgainstNull(rule, "rule");
 
             var ruleToRemove = this.AllUserRules.Where(x => x.Rule.Equals(rule)).FirstOrDefault();
             this.AllUserRules.Remove(ruleToRemove);

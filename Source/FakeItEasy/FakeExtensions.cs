@@ -19,7 +19,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to set repeat 1 to.</param>
         public static void Once(this IRepeatConfiguration configuration)
         {
-            Guard.IsNotNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, "configuration");
             configuration.NumberOfTimes(1);
         }
 
@@ -29,7 +29,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to set repeat 2 to.</param>
         public static void Twice(this IRepeatConfiguration configuration)
         {
-            Guard.IsNotNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, "configuration");
 
             configuration.NumberOfTimes(2);
         }
@@ -42,7 +42,7 @@ namespace FakeItEasy
         /// <returns>A configuration object.</returns>
         public static IAfterCallSpecifiedConfiguration ReturnsNull<TMember>(this IReturnValueConfiguration<TMember> configuration) where TMember : class
         {
-            Guard.IsNotNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, "configuration");
 
             return configuration.Returns((TMember)null);
         }
@@ -82,7 +82,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to assert on.</param>
         public static void MustHaveHappened(this IAssertConfiguration configuration)
         {
-            Guard.IsNotNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, "configuration");
 
             configuration.MustHaveHappened(Repeated.Once);
         }
@@ -93,7 +93,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to assert on.</param>
         public static void MustNotHaveHappened(this IAssertConfiguration configuration)
         {
-            Guard.IsNotNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, "configuration");
 
             configuration.MustHaveHappened(Repeated.Never);
         }

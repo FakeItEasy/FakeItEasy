@@ -22,7 +22,7 @@ namespace FakeItEasy.Expressions
         /// <param name="expressionMatcher">The expression matcher to use.</param>
         public ExpressionCallRule(ExpressionCallMatcher expressionMatcher)
         {
-            Guard.IsNotNull(expressionMatcher, "expressionMatcher");
+            Guard.AgainstNull(expressionMatcher, "expressionMatcher");
 
             this.ExpressionMatcher = expressionMatcher;
         } 

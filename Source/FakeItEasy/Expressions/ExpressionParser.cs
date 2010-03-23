@@ -19,7 +19,7 @@ namespace FakeItEasy.Expressions
         /// <exception cref="ArgumentException">The specified expression is not an expression where a call is made to a faked object.</exception>
         public FakeObject GetFakeObjectCallIsMadeOn(LambdaExpression fakeObjectCall)
         {
-            Guard.IsNotNull(fakeObjectCall, "fakeObjectCall");
+            Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
 
             Expression callTargetExpression = null;
 

@@ -62,7 +62,7 @@ namespace FakeItEasy.Configuration
 
             public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(Func<TMember> valueProducer)
             {
-                Guard.IsNotNull(valueProducer, "valueProducer");
+                Guard.AgainstNull(valueProducer, "valueProducer");
 
                 this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(valueProducer.Invoke());
                 return this.ParentConfiguration;
@@ -76,7 +76,7 @@ namespace FakeItEasy.Configuration
 
             public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(Func<IFakeObjectCall, TMember> valueProducer)
             {
-                Guard.IsNotNull(valueProducer, "valueProducer");
+                Guard.AgainstNull(valueProducer, "valueProducer");
 
                 this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(valueProducer(x));
                 return this.ParentConfiguration;
@@ -84,7 +84,7 @@ namespace FakeItEasy.Configuration
 
             public IReturnValueConfiguration<TMember> Invokes(Action<IFakeObjectCall> action)
             {
-                Guard.IsNotNull(action, "action");
+                Guard.AgainstNull(action, "action");
 
                 this.ParentConfiguration.RuleBeingBuilt.Actions.Add(action);
                 return this;
@@ -97,7 +97,7 @@ namespace FakeItEasy.Configuration
 
             public IReturnValueConfiguration<TMember> WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
             {
-                Guard.IsNotNull(argumentsPredicate, "argumentsPredicate");
+                Guard.AgainstNull(argumentsPredicate, "argumentsPredicate");
 
                 this.ParentConfiguration.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
                 return this;
@@ -121,7 +121,7 @@ namespace FakeItEasy.Configuration
 
         public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
         {
-            Guard.IsNotNull(argumentsPredicate, "argumentsPredicate");
+            Guard.AgainstNull(argumentsPredicate, "argumentsPredicate");
 
             this.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
             return this;
@@ -135,7 +135,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
         {
-            Guard.IsNotNull(action, "action");
+            Guard.AgainstNull(action, "action");
 
             this.RuleBeingBuilt.Actions.Add(action);
             return this;
@@ -150,7 +150,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(params object[] values)
         {
-            Guard.IsNotNull(values, "values");
+            Guard.AgainstNull(values, "values");
             
             this.RuleBeingBuilt.OutAndRefParametersValues = values;
 

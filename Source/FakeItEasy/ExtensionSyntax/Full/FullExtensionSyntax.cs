@@ -21,7 +21,7 @@
         /// <returns>A configuration object.</returns>
         public static IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TFake, TMember>(this TFake fakedObject, Expression<Func<TFake, TMember>> callSpecification)
         {
-            Guard.IsNotNull(callSpecification, "callSpecification");
+            Guard.AgainstNull(callSpecification, "callSpecification");
             
             return fakedObject.Configure().CallsTo(callSpecification);
         }
@@ -36,7 +36,7 @@
         /// <returns>A configuration object.</returns>
         public static IVoidArgumentValidationConfiguration CallsTo<TFake>(this TFake fakedObject, Expression<Action<TFake>> callSpecification)
         {
-            Guard.IsNotNull(callSpecification, "callSpecification");
+            Guard.AgainstNull(callSpecification, "callSpecification");
 
             return fakedObject.Configure().CallsTo(callSpecification);
         }

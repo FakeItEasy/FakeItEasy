@@ -36,9 +36,9 @@
         /// <param name="fakeAsserterFactory">The fake asserter factory.</param>
         public FakeAssertions(FakeObject fake, IExpressionCallMatcherFactory callMatcherFactory, FakeAsserter.Factory fakeAsserterFactory)
         {
-            Guard.IsNotNull(fake, "fake");
-            Guard.IsNotNull(callMatcherFactory, "callMatcherFactory");
-            Guard.IsNotNull(fakeAsserterFactory, "fakeAsserterFactory");
+            Guard.AgainstNull(fake, "fake");
+            Guard.AgainstNull(callMatcherFactory, "callMatcherFactory");
+            Guard.AgainstNull(fakeAsserterFactory, "fakeAsserterFactory");
 
             this.callMatcherFactory = callMatcherFactory;
             this.fakeAsserterFactory = fakeAsserterFactory;
