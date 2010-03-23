@@ -2,9 +2,9 @@ namespace FakeItEasy.Core.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Globalization;
 
     /// <summary>
     /// The default implementation of the IFakeAndDummyManager interface.
@@ -127,14 +127,6 @@ namespace FakeItEasy.Core.Creation
             return proxyResult.Proxy;
         }
 
-        private void ConfigureFakeToWrapWhenAppropriate(FakeOptions options, object result)
-        {
-            if (options.WrappedInstance != null)
-            {
-                this.wrapperConfigurator.ConfigureFakeToWrap(result, options.WrappedInstance, options.SelfInitializedFakeRecorder);
-            }
-        }
-
         private static void AssertThatProxyWasSuccessfullyCreated(Type typeOfProxy, ProxyResult proxyResult)
         {
             if (!proxyResult.ProxyWasSuccessfullyCreated)
@@ -147,7 +139,7 @@ namespace FakeItEasy.Core.Creation
         private static string CreateFailedToGenerateProxyErrorMessage(Type typeOfProxy, ProxyResult proxyResult)
         {
             var messageFromProxyGenerator = Indent(proxyResult.ErrorMessage);
-            
+
             var writer = new StringWriter(CultureInfo.CurrentCulture);
 
             writer.WriteLine();
@@ -159,13 +151,20 @@ namespace FakeItEasy.Core.Creation
         }
 
         private static string Indent(string value)
-        { 
-            var lines = value.Split(new [] {Environment.NewLine}, StringSplitOptions.None);
+        {
+            var lines = value.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
-            return string.Join(Environment.NewLine,
-                (from line in lines
-                 select line.Length == 0 ? string.Empty : "  " + line).ToArray());
+            return string.Join(
+                Environment.NewLine,
+                (from line in lines select line.Length == 0 ? string.Empty : "  " + line).ToArray());
+        }
 
+        private void ConfigureFakeToWrapWhenAppropriate(FakeOptions options, object result)
+        {
+            if (options.WrappedInstance != null)
+            {
+                this.wrapperConfigurator.ConfigureFakeToWrap(result, options.WrappedInstance, options.SelfInitializedFakeRecorder);
+            }
         }
 
         private FakeObject CreateNewFakeObject()
