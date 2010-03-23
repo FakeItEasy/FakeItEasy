@@ -82,7 +82,6 @@ namespace FakeItEasy.Core
 
         private static MethodInfo GetMethodOnInterfaceTypeImplementedByMethod(Type type, MethodInfo method)
         {
-
             var allInterfaces =
                 from i in type.GetInterfaces()
                 where TypeImplementsInterface(method.ReflectedType, i)
@@ -150,7 +149,7 @@ namespace FakeItEasy.Core
 
             public override int GetHashCode()
             {
-                return this.Type.GetHashCode() ^ MethodInfo.GetHashCode();
+                return this.Type.GetHashCode() ^ this.MethodInfo.GetHashCode();
             }
 
             public override bool Equals(object obj)

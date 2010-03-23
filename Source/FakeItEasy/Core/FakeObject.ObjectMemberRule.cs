@@ -10,41 +10,59 @@
         private class ObjectMemberRule
             : IFakeObjectCallRule
         {
-            public FakeObject FakeObject;
-
             private static readonly List<MethodInfo> objectMethods = new List<MethodInfo>()
             {
-                typeof(object).GetMethod("Equals", new [] { typeof(object) }),
+                typeof(object).GetMethod("Equals", new[] { typeof(object) }),
                 typeof(object).GetMethod("ToString", new Type[] { }),
                 typeof(object).GetMethod("GetHashCode", new Type[] { })
             };
+
+            public FakeObject FakeObject { get; set; }
+
+            public int? NumberOfTimesToCall
+            {
+                get { return null; }
+            }
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
                 return IsObjetMethod(fakeObjectCall);
             }
 
+            public void Apply(IWritableFakeObjectCall fakeObjectCall)
+            {
+                if (this.TryHandleToString(fakeObjectCall))
+                {
+                    return;
+                }
+
+                if (this.TryHandleGetHashCode(fakeObjectCall))
+                {
+                    return;
+                }
+
+                if (this.TryHandleEquals(fakeObjectCall))
+                {
+                    return;
+                }
+            }
+
             private static bool IsObjetMethod(IFakeObjectCall fakeObjectCall)
             {
                 return objectMethods.Contains(fakeObjectCall.Method);
             }
-
-            public void Apply(IWritableFakeObjectCall fakeObjectCall)
+            
+            private static bool TryHandleGetHashCode(IWritableFakeObjectCall fakeObjectCall)
             {
-                if (TryHandleToString(fakeObjectCall))
+                if (!fakeObjectCall.Method.Equals(objectMethods[2]))
                 {
-                    return;
+                    return false;
                 }
 
-                if (TryHandleGetHashCode(fakeObjectCall))
-                {
-                    return;
-                }
+                var fakeObject = Fake.GetFakeObject(fakeObjectCall.FakedObject);
+                fakeObjectCall.SetReturnValue(fakeObject.GetHashCode());
 
-                if (TryHandleEquals(fakeObjectCall))
-                {
-                    return;
-                }
+                return true;
             }
 
             private bool TryHandleToString(IWritableFakeObjectCall fakeObjectCall)
@@ -55,19 +73,6 @@
                 }
 
                 fakeObjectCall.SetReturnValue("Faked {0}".FormatInvariant(this.FakeObject.FakeObjectType.FullName));
-
-                return true;
-            }
-
-            private static bool TryHandleGetHashCode(IWritableFakeObjectCall fakeObjectCall)
-            {
-                if (!fakeObjectCall.Method.Equals(objectMethods[2]))
-                {
-                    return false;
-                }
-
-                var fakeObject = Fake.GetFakeObject(fakeObjectCall.FakedObject);
-                fakeObjectCall.SetReturnValue(fakeObject.GetHashCode());
 
                 return true;
             }
@@ -90,11 +95,6 @@
                 }
 
                 return true;
-            }
-
-            public int? NumberOfTimesToCall
-            {
-                get { return null; }
             }
         }
     }
