@@ -36,7 +36,7 @@
                     return;
                 }
 
-                if (this.TryHandleGetHashCode(fakeObjectCall))
+                if (TryHandleGetHashCode(fakeObjectCall))
                 {
                     return;
                 }

@@ -35,7 +35,7 @@ namespace FakeItEasy.Core
         /// <param name="wrappedInstance">The object to delegate calls to.</param>
         /// <returns>Options object.</returns>
         IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance);
-        
+
         /// <summary>
         /// Sets up the fake to implement the specified interface in addition to the
         /// originally faked class.

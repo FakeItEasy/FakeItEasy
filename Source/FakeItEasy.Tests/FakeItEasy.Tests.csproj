@@ -63,6 +63,7 @@
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="AnyTests.cs" />
     <Compile Include="Core\CallInterceptedEventArgsTests.cs" />
+    <Compile Include="Core\Creation\DefaultFakeCreatorTests.cs" />
     <Compile Include="Core\DefaultReturnValueRuleTests.cs" />
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Expressions\ExpressionCallMatcherTests.cs" />
     <Compile Include="Core\MethodInfoManagerTests.cs" />
     <Compile Include="IoC\DictionaryContainerTests.cs" />
+    <Compile Include="TestCases.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="Core\FakeObjectTests.cs" />
     <Compile Include="Core\HelpersTests.cs" />
