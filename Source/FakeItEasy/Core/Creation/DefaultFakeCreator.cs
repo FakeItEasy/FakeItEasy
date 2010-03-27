@@ -32,11 +32,11 @@ namespace FakeItEasy.Core.Creation
         /// <exception cref="FakeCreationException">Was unable to generate the fake in the current configuration.</exception>
         public T CreateFake<T>(Action<IFakeOptionsBuilder<T>> options)
         {
+            Guard.AgainstNull(options, "options");
+
             var fakeOptions = BuildFakeOptions<T>(options);
 
-            this.fakeAndDummyManager.CreateFake(typeof(T), fakeOptions);
-
-            return default(T);
+            return (T)this.fakeAndDummyManager.CreateFake(typeof(T), fakeOptions);
         }
 
         /// <summary>

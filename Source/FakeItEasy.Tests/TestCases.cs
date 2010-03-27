@@ -18,6 +18,13 @@ namespace FakeItEasy.Tests
                  select caseProjection(@case)).ToArray();
         }
 
+        public static object[] AsTestCaseSource<T>(this IEnumerable<T> cases, params Func<T, object>[] values)
+        {
+            return
+                (from @case in cases
+                 select values.Select(x => x.Invoke(@case)).ToArray()).ToArray();
+        }
+
         public static object[] AsTestCaseSource<T>(this IEnumerable<T> cases)
         {
             var properties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);

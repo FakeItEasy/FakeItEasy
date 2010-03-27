@@ -1,11 +1,11 @@
 namespace FakeItEasy.Tests.Core.Creation
 {
-    using NUnit.Framework;
-    using FakeItEasy.Core.Creation;
     using System;
     using System.Linq;
-using FakeItEasy.Core;
-using FakeItEasy.SelfInitializedFakes;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Creation;
+    using FakeItEasy.SelfInitializedFakes;
+    using NUnit.Framework;
     
     [TestFixture]
     public class DefaultFakeCreatorTests
@@ -19,6 +19,8 @@ using FakeItEasy.SelfInitializedFakes;
             this.fakeAndDummyManager = A.Fake<IFakeAndDummyManager>();
 
             this.creator = new DefaultFakeCreator(this.fakeAndDummyManager);
+
+            ConfigureDefaultValuesForFakeAndDummyManager();
         }
 
         [Test]
@@ -60,6 +62,20 @@ using FakeItEasy.SelfInitializedFakes;
         }
 
         [Test]
+        public void CreateFake_should_return_instance_from_manager()
+        {
+            // Arrange
+            var instanceFromManager = A.Fake<IFoo>();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.Ignored)).Returns(instanceFromManager);
+
+            // Act
+            var result = this.creator.CreateFake<IFoo>(x => { });
+
+            // Assert
+            Assert.That(result, Is.SameAs(instanceFromManager));
+        }
+
+        [Test]
         public void CreateFake_should_pass_type_to_manager()
         {
             // Arrange
@@ -82,7 +98,7 @@ using FakeItEasy.SelfInitializedFakes;
             x => x.WithArgumentsForConstructor(() => new Foo()),
             x => x.WithArgumentsForConstructor(new object[] { A.Fake<IServiceProvider>() }),
             x => x.Wrapping(A.Fake<Foo>()).RecordedBy(A.Fake<ISelfInitializingFakeRecorder>())
-        ).AsTestCaseSource(x => new object[] { x });
+        ).AsTestCaseSource(x => x);
             
         
         [TestCaseSource("optionBuilderCalls")]
@@ -150,14 +166,13 @@ using FakeItEasy.SelfInitializedFakes;
         //    Assert.That(returned, Is.SameAs(foo));
         //}
 
-
-
-        //[Test]
-        //public void Generate_fake_should_be_null_guarded()
-        //{
-        //    NullGuardedConstraint.Assert(() => this.fakeObjectBuilder.GenerateFake<IFoo>(x => x.Wrapping(A.Fake<IFoo>())));
-        //}
-
+        [Test]
+        public void CreateFake_should_be_null_guarded()
+        {
+            // Arrange, Act, Assert
+            NullGuardedConstraint.Assert(() => 
+                this.creator.CreateFake<IFoo>(x => x.Wrapping(A.Fake<IFoo>())));
+        }
 
         //[Test]
         //public void Fake_with_arguments_for_constructor_should_throw_if_the_fake_type_is_not_abstract()
@@ -226,5 +241,13 @@ using FakeItEasy.SelfInitializedFakes;
 
         //    }
         //}
+
+        private void ConfigureDefaultValuesForFakeAndDummyManager()
+        {
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>.Ignored))
+                .Returns(A.Fake<IFoo>());
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(Foo), A<FakeOptions>.Ignored))
+                .Returns(A.Fake<Foo>());
+        }
     }
 }
