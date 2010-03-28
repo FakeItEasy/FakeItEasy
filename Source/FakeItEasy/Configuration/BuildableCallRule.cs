@@ -15,6 +15,7 @@ namespace FakeItEasy.Configuration
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
+            this.Applicator = x => { };
         }
         #endregion
 
