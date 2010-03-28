@@ -64,6 +64,7 @@
     <Compile Include="AnyTests.cs" />
     <Compile Include="Core\CallInterceptedEventArgsTests.cs" />
     <Compile Include="Core\Creation\DefaultFakeCreatorTests.cs" />
+    <Compile Include="Core\DefaultFakeWrapperConfiguratorTests.cs" />
     <Compile Include="Core\DefaultReturnValueRuleTests.cs" />
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />

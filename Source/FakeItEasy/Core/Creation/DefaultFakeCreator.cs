@@ -49,7 +49,7 @@ namespace FakeItEasy.Core.Creation
         /// no dummy was registered in the container for the specifed type..</exception>
         public T CreateDummy<T>()
         {
-            throw new NotImplementedException();
+            return (T)this.fakeAndDummyManager.CreateDummy(typeof(T));
         }
 
         private static FakeOptions BuildFakeOptions<T>(Action<IFakeOptionsBuilder<T>> options)
@@ -71,6 +71,7 @@ namespace FakeItEasy.Core.Creation
 
             public IFakeOptionsBuilder<T> WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor)
             {
+                this.Options.ArgumentsForConstructor = argumentsForConstructor;
                 return this;
             }
 
