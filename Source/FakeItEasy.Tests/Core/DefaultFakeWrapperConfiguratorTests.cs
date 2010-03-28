@@ -1,49 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FakeItEasy.Tests.Core
+﻿namespace FakeItEasy.Tests.Core
 {
-    class DefaultFakeWrapperConfiguratorTests
+    using System.Linq;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
+    using FakeItEasy.SelfInitializedFakes;
+
+    [TestFixture]
+    public class DefaultFakeWrapperConfiguratorTests
     {
-        //[Test]
-        //public void Fake_with_wrapped_instance_will_override_behavior_of_wrapped_object_on_configured_methods()
-        //{
-        //    var wrapped = A.Fake<IFoo>();
-        //    var wrapper = this.fakeObjectBuilder.GenerateFake<IFoo>(x => x.Wrapping(wrapped));
+        private IFoo faked;
+        private DefaultFakeWrapperConfigurator wrapperConfigurator;
 
-        //    A.CallTo(() => wrapped.Biz()).Returns("wrapped");
-        //    A.CallTo(() => wrapper.Biz()).Returns("wrapper");
+        [SetUp]
+        public void SetUp()
+        {
+            this.faked = A.Fake<IFoo>();
 
-        //    Assert.That(wrapper.Biz(), Is.EqualTo("wrapper"));
-        //}
+            this.wrapperConfigurator = new DefaultFakeWrapperConfigurator();
+        }
 
-        //[Test]
-        //public void Fake_with_wrapped_instance_should_add_WrappedFakeObjectRule_to_fake_object()
-        //{
-        //    var wrapped = A.Fake<IFoo>();
+        [Test]
+        public void ConfigureFakeToWrap_should_add_WrappedFakeObjectRule_to_fake_object()
+        {
+            // Arrange
+            var wrapped = A.Fake<IFoo>();
 
-        //    var foo = this.CreateFakeObject<IFoo>();
-        //    A.CallTo(() => ((IFoo)foo.Object).ToString()).Returns("Tjena");
+            // Act
+            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked, wrapped, null);
 
-        //    A.CallTo(() => this.factory.CreateFake(A<Type>.Ignored, A<IEnumerable<object>>.Ignored.Argument, A<bool>.Ignored)).Returns(foo.Object);
+            // Assert
+            Assert.That(Fake.GetFakeObject(this.faked).Rules.ToArray(), Has.Some.InstanceOf<WrappedObjectRule>());
+        }
 
-        //    this.fakeObjectBuilder.GenerateFake<IFoo>(x => x.Wrapping(wrapped));
+        [Test]
+        public void ConfigureFakeToWrap_should_add_self_initialization_rule_when_recorder_is_specified()
+        {
+            // Arrange
+            var recorder = A.Fake<ISelfInitializingFakeRecorder>();
+            var wrapped = A.Fake<IFoo>();
 
-        //    Assert.That(foo.Rules.ToArray(), Has.Some.InstanceOf<WrappedObjectRule>());
-        //}
+            // Act
+            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked, wrapped, recorder);
 
-        //[Test]
-        //public void Fake_with_wrapped_instance_and_recorder_should_add_SelfInitializationRule_to_fake_object()
-        //{
-        //    var recorder = A.Fake<ISelfInitializingFakeRecorder>();
-        //    var wrapped = A.Fake<IFoo>();
+            // Assert
+            Assert.That(Fake.GetFakeObject(this.faked).Rules.First(), Is.InstanceOf<SelfInitializationRule>());
+        }
 
-        //    var wrapper = this.fakeObjectBuilder.GenerateFake<IFoo>(x => x.Wrapping(wrapped).RecordedBy(recorder));
-        //    var fake = Fake.GetFakeObject(wrapper);
+        [Test]
+        public void ConfigureFakeToWrap_should_not_add_self_initialization_rule_when_recorder_is_not_specified()
+        {
+            // Arrange
+            var wrapped = A.Fake<IFoo>();
 
-        //    Assert.That(fake.Rules.First(), Is.InstanceOf<SelfInitializationRule>());
-        //}
+            // Act
+            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked, wrapped, null);
+
+            // Assert
+            Assert.That(Fake.GetFakeObject(this.faked).Rules, Has.None.InstanceOf<SelfInitializationRule>());
+        }
     }
 }

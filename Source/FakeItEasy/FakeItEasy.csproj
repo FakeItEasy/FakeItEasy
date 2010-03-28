@@ -63,6 +63,7 @@
     <Compile Include="Any.cs" />
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\Creation\DefaultFakeCreator.cs" />
+    <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
     <Compile Include="Core\IFakeWrapperConfigurator.cs" />
     <Compile Include="Core\Creation\IProxyGeneratorFactory.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
