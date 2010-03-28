@@ -82,6 +82,7 @@
     <Compile Include="Configuration\FakeConfigurationManagerTests.cs" />
     <Compile Include="Configuration\StartConfigurationTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
+    <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorNewTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintScopeTests.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraintTests.cs" />

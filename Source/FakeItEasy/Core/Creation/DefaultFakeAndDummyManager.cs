@@ -115,7 +115,7 @@ namespace FakeItEasy.Core.Creation
         {
             var fakeObject = this.CreateNewFakeObject();
             
-            var proxyResult = this.proxyGenerator.GenerateProxy(typeOfProxy, fakeObject, argumentsForConstructor);
+            var proxyResult = this.proxyGenerator.GenerateProxy(typeOfProxy, null, fakeObject, argumentsForConstructor);
 
             if (throwOnFailure)
             {

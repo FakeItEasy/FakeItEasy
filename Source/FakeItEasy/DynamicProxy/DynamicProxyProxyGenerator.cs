@@ -420,4 +420,168 @@ namespace FakeItEasy.DynamicProxy
             }
         }
     }
+
+    /// <summary>
+    /// An implementation of the IProxyGenerator interface that uses DynamicProxy2 to
+    /// generate proxies.
+    /// </summary>
+    internal class DynamicProxyProxyGeneratorNew
+         : IProxyGeneratorNew
+    {
+        private static ProxyGenerator proxyGenerator = new ProxyGenerator();
+        private static Type[] interfacesToImplement = new Type[] { typeof(IFakedProxy), typeof(ICanInterceptObjectMembers) };
+        private IFakeObjectContainer container;
+
+        public DynamicProxyProxyGeneratorNew(IFakeObjectContainer container)
+        {
+            this.container = container;
+        }
+
+        public ProxyResult GenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
+        {
+            if (typeToProxy.IsValueType || typeToProxy.IsSealed)
+            {
+                return new DynamicProxyResult(typeToProxy, "");
+            }
+            
+            AssertThatArgumentsForConstructorAreNotSpecifiedForInterfaceType(typeToProxy, argumentsForConstructor);
+
+            return DoGenerateProxy(typeToProxy, additionalInterfacesToImplement, fakeObject, argumentsForConstructor);
+        }
+
+        private static void AssertThatArgumentsForConstructorAreNotSpecifiedForInterfaceType(Type typeToProxy, IEnumerable<object> argumentsForConstructor)
+        {
+            if (typeToProxy.IsInterface && argumentsForConstructor != null)
+            {
+                throw new ArgumentException(ExceptionMessages.ArgumentsForConstructorOnInterfaceType, "argumentsForConstructor");
+            }
+        }
+
+        private ProxyResult DoGenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
+        {
+            var fakeObjectInterceptor = CreateFakeObjectInterceptor(fakeObject);
+
+            if (typeToProxy.IsInterface)
+            {
+                return CreateInterfaceProxy(typeToProxy, fakeObjectInterceptor);
+            }
+            
+            return this.CreateClassProxy(typeToProxy, fakeObjectInterceptor, argumentsForConstructor);
+        }
+
+        private DynamicProxyResult CreateClassProxy(Type typeToProxy, FakeObjectInterceptor fakeObjectInterceptor, IEnumerable<object> argumentsForConstructor)
+        {
+            var proxyResult = new DynamicProxyResult(typeToProxy);
+
+            if (argumentsForConstructor == null)
+            {
+                argumentsForConstructor = Enumerable.Empty<object>();
+            }
+
+            proxyResult.Proxy = (IFakedProxy)proxyGenerator.CreateClassProxy(
+                typeToProxy,
+                interfacesToImplement,
+                ProxyGenerationOptions.Default,
+                argumentsForConstructor.ToArray(),
+                fakeObjectInterceptor,
+                proxyResult);
+
+            return proxyResult;
+        }
+
+        private static DynamicProxyResult CreateInterfaceProxy(Type typeToProxy, FakeObjectInterceptor fakeObjectInterceptor)
+        {
+            var proxyResult = new DynamicProxyResult(typeToProxy);
+            proxyResult.Proxy = (IFakedProxy)proxyGenerator.CreateInterfaceProxyWithoutTarget(typeToProxy, interfacesToImplement, fakeObjectInterceptor, proxyResult);
+            return proxyResult;
+        }
+
+        public bool MemberCanBeIntercepted(MemberInfo member)
+        {
+            var method = member as MethodInfo;
+
+            if (method != null)
+            {
+                return method.IsVirtual;
+            }
+
+            var property = (PropertyInfo)member;
+            return property.GetAccessors().All(x => x.IsVirtual);
+        }
+
+        private static FakeObjectInterceptor CreateFakeObjectInterceptor(FakeObject fakeObject)
+        {
+            return new FakeObjectInterceptor()
+            {
+                FakeObject = fakeObject
+            };
+        }
+
+        [Serializable]
+        private class FakeObjectInterceptor
+            : IInterceptor
+        {
+            private static readonly MethodInfo getProxyManagerMethod = typeof(IFakedProxy).GetProperty("FakeObject").GetGetMethod();
+
+            public FakeObject FakeObject;
+
+            [DebuggerStepThrough]
+            public void Intercept(IInvocation invocation)
+            {
+                if (invocation.Method.Equals(getProxyManagerMethod))
+                {
+                    invocation.ReturnValue = this.FakeObject;
+                }
+                else
+                {
+                    invocation.Proceed();
+                }
+            }
+        }
+
+        [Serializable]
+        private class DynamicProxyResult
+            : ProxyResult, IInterceptor
+        {
+            public DynamicProxyResult(Type typeOfProxy)
+                : base(typeOfProxy)
+            {
+                this.ProxyWasSuccessfullyCreated = true;
+            }
+
+            public DynamicProxyResult(Type typeToProxy, string errorMessage)
+                : this(typeToProxy)
+            {
+                this.ProxyWasSuccessfullyCreated = false;
+                this.ErrorMessage = errorMessage;
+            }
+
+            public override event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
+
+            [DebuggerStepThrough]
+            public void Intercept(IInvocation invocation)
+            {
+                var handler = this.CallWasIntercepted;
+                if (handler != null)
+                {
+                    var call = new InvocationCallAdapter(invocation);
+                    handler(this.Proxy, new CallInterceptedEventArgs(call));
+                }
+            }
+
+            public new IFakedProxy Proxy
+            {
+                [DebuggerStepThrough]
+                get
+                {
+                    return base.Proxy;
+                }
+                [DebuggerStepThrough]
+                set
+                {
+                    base.Proxy = value;
+                }
+            }
+        }
+    }
 }
