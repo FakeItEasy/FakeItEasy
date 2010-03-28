@@ -58,26 +58,13 @@
     public class Raise<TEventArgs>
         : IEventRaiserArguments where TEventArgs : EventArgs 
     {
-        #region Properties
         private object sender;
         private TEventArgs eventArguments;
-        #endregion
 
-        #region Methods
         internal Raise(object sender, TEventArgs e)
         {
             this.sender = sender;
             this.eventArguments = e;
-        }
-
-        /// <summary>
-        /// Register this event handler to an event on a faked object in order to raise that event.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">Event args for the event.</param>
-        public void Now(object sender, TEventArgs e)
-        {
-            throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
         }
 
         /// <summary>
@@ -88,7 +75,7 @@
         {
             get
             {
-                return new EventHandler<TEventArgs>(Now);
+                return new EventHandler<TEventArgs>(this.Now);
             }
         }
 
@@ -101,6 +88,15 @@
         {
             get { return this.eventArguments; }
         }
-        #endregion
+
+        /// <summary>
+        /// Register this event handler to an event on a faked object in order to raise that event.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">Event args for the event.</param>
+        public void Now(object sender, TEventArgs e)
+        {
+            throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
+        }
     }
 }
