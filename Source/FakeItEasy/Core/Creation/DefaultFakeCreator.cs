@@ -62,9 +62,14 @@ namespace FakeItEasy.Core.Creation
         private class FakeOptionsBuilder<T>
             : IFakeOptionsBuilderForWrappers<T>
         {
+            private List<Type> additionalInterfacesToImpelement;
+
             public FakeOptionsBuilder()
             {
+                this.additionalInterfacesToImpelement = new List<Type>();
+
                 this.Options = new FakeOptions();
+                this.Options.AdditionalInterfacesToImplement = this.additionalInterfacesToImpelement;
             }
 
             public FakeOptions Options { get; private set; }
@@ -89,6 +94,7 @@ namespace FakeItEasy.Core.Creation
 
             public IFakeOptionsBuilder<T> Implements(Type interfaceType)
             {
+                this.additionalInterfacesToImpelement.Add(interfaceType);
                 return this;
             }
 

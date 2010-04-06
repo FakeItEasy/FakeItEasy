@@ -514,7 +514,7 @@ namespace FakeItEasy.DynamicProxy
             var candidateConstructorArguments = this.CreateConstructorArgumentCandidateSets(typeToProxy, argumentsForConstructor);
 
             DynamicProxyResult result = null;
-            if (!this.TryGenerateProxyUsingCandidateArgumentsForConstructor(typeToProxy, fakeObjectInterceptor, candidateConstructorArguments, out result))
+            if (!this.TryGenerateProxyUsingCandidateConstructorArguments(typeToProxy, fakeObjectInterceptor, candidateConstructorArguments, out result))
             {
                 result = new DynamicProxyResult(typeToProxy, "false");
             }
@@ -540,7 +540,7 @@ namespace FakeItEasy.DynamicProxy
             return argumentSetsForConstructor;
         }
 
-        private bool TryGenerateProxyUsingCandidateArgumentsForConstructor(
+        private bool TryGenerateProxyUsingCandidateConstructorArguments(
             Type typeToProxy, 
             FakeObjectInterceptor fakeObjectInterceptor, 
             IEnumerable<IEnumerable<object>> argumentsForConstructor, 

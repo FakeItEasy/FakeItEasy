@@ -1,5 +1,6 @@
 namespace FakeItEasy.Core.Creation
 {
+    using System;
     using System.Collections.Generic;
     using FakeItEasy.SelfInitializedFakes;
 
@@ -10,5 +11,7 @@ namespace FakeItEasy.Core.Creation
         public ISelfInitializingFakeRecorder SelfInitializedFakeRecorder { get; set; }
         
         public IEnumerable<object> ArgumentsForConstructor { get; set; }
+
+        public IEnumerable<Type> AdditionalInterfacesToImplement { get; set; }
     }
 }

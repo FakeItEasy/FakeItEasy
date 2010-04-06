@@ -36,6 +36,21 @@ namespace FakeItEasy.Tests.Core.Creation
             var optionsWithCorrectArguments = A<FakeOptions>.That.Matches(x => x.ArgumentsForConstructor.SequenceEqual(new object[] { serviceProvider }));
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, optionsWithCorrectArguments)).MustHaveHappened();
         }
+        
+        [Test]
+        public void CreateFake_should_pass_all_interfaces_from_implements_to_fake_and_dummy_manager()
+        {
+            // Arrange
+
+            // Act
+            this.creator.CreateFake<IFoo>(x => x.Implements(typeof(IFormatProvider)).Implements(typeof(IFormattable)));
+
+            // Assert
+            var optionsWithAllInterfaces = A<FakeOptions>.That.Matches(x => 
+                x.AdditionalInterfacesToImplement.Contains(typeof(IFormatProvider)) && 
+                x.AdditionalInterfacesToImplement.Contains(typeof(IFormattable)));
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, optionsWithAllInterfaces)).MustHaveHappened();
+        }
 
         [Test]
         public void CreateFake_should_throw_when_arguments_for_constructor_is_set_by_expression_that_is_not_a_constructor_call()
