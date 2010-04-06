@@ -48,8 +48,7 @@ using FakeItEasy.Core.Creation;
         /// <returns>A fake object.</returns>
         public static T Fake<T>(Action<IFakeOptionsBuilder<T>> options)
         {
-            var generator = ServiceLocator.Current.Resolve<IFakeObjectBuilder>();
-            return generator.GenerateFake<T>(options);
+            return FakeCreator.CreateFake<T>(options);
         }
 
         /// <summary>

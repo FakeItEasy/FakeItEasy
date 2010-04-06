@@ -122,10 +122,5 @@ namespace FakeItEasy.Core.Creation
                 }
             }
         }
-
-        T IFakeObjectBuilder.GenerateFake<T>(Action<IFakeOptionsBuilder<T>> options)
-        {
-            return this.CreateFake<T>(options);
-        }
     }
 }

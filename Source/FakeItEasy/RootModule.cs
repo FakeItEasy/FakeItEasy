@@ -74,9 +74,6 @@
 
             container.Register<IFakeWrapperConfigurator>(c =>
                 new DefaultFakeWrapperConfigurator());
-
-            container.Register<IFakeObjectBuilder>(c =>
-                c.Resolve<IFakeCreator>());
         }
 
         #region FactoryImplementations

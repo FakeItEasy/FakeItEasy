@@ -100,7 +100,6 @@
     <Compile Include="Repeated.cs" />
     <Compile Include="IFakeOptionsBuilder.cs" />
     <Compile Include="IFakeOptionsBuilderForWrappers.cs" />
-    <Compile Include="IFakeObjectBuilder.cs" />
     <Compile Include="LowerBoundRepeated.cs" />
     <Compile Include="Recorders.cs" />
     <Compile Include="SelfInitializedFakes\FileStorage.cs" />
