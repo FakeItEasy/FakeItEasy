@@ -11,7 +11,7 @@ using System.Reflection;
 namespace FakeItEasy.Tests.DynamicProxy
 {
     [TestFixture]
-    public class DynamicProxyProxyGeneratorNewTests
+    public class DynamicProxyProxyGeneratorTests
     {
         FakeObject fakeObject;
         IFakeObjectContainer container;
@@ -23,9 +23,9 @@ namespace FakeItEasy.Tests.DynamicProxy
             this.container = A.Fake<IFakeObjectContainer>();
         }
 
-        private DynamicProxyProxyGeneratorNew CreateGenerator()
+        private DynamicProxyProxyGenerator CreateGenerator()
         {
-            return new DynamicProxyProxyGeneratorNew(this.container);
+            return new DynamicProxyProxyGenerator(this.container);
         }
 
         private List<Type> typesThatCanBeProxied = new List<Type>()

@@ -13,9 +13,9 @@ namespace FakeItEasy.Configuration
         private FakeObject fakeObject;
         private ExpressionCallRule.Factory callRuleFactory;
         private IConfigurationFactory configurationFactory;
-        private IProxyGeneratorNew proxyGenerator;
+        private IProxyGenerator proxyGenerator;
 
-        internal StartConfiguration(FakeObject fakeObject, ExpressionCallRule.Factory callRuleFactory, IConfigurationFactory configurationFactory, IProxyGeneratorNew proxyGenerator)
+        internal StartConfiguration(FakeObject fakeObject, ExpressionCallRule.Factory callRuleFactory, IConfigurationFactory configurationFactory, IProxyGenerator proxyGenerator)
         {
             this.fakeObject = fakeObject;
             this.callRuleFactory = callRuleFactory;

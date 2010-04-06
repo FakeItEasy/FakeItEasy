@@ -14,14 +14,14 @@ namespace FakeItEasy.DynamicProxy
     /// An implementation of the IProxyGenerator interface that uses DynamicProxy2 to
     /// generate proxies.
     /// </summary>
-    internal class DynamicProxyProxyGeneratorNew
-         : IProxyGeneratorNew
+    internal class DynamicProxyProxyGenerator
+         : IProxyGenerator
     {
         private static ProxyGenerator proxyGenerator = new ProxyGenerator();
         private static Type[] interfacesToImplement = new Type[] { typeof(IFakedProxy), typeof(ICanInterceptObjectMembers) };
         private IFakeObjectContainer container;
 
-        public DynamicProxyProxyGeneratorNew(IFakeObjectContainer container)
+        public DynamicProxyProxyGenerator(IFakeObjectContainer container)
         {
             this.container = container;
         }
@@ -261,7 +261,7 @@ namespace FakeItEasy.DynamicProxy
 
                 if (typeOfValue.IsInterface)
                 {
-                    dummyValue = DynamicProxyProxyGeneratorNew.proxyGenerator.CreateInterfaceProxyWithoutTarget(typeOfValue);
+                    dummyValue = DynamicProxyProxyGenerator.proxyGenerator.CreateInterfaceProxyWithoutTarget(typeOfValue);
                     this.resolvedValues.Add(typeOfValue, dummyValue);
                     return true;
                 }

@@ -27,7 +27,7 @@
                 (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>()));
 
             container.RegisterSingleton<IFakeConfigurationManager>(c =>
-                new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), c.Resolve<IExpressionParser>(), c.Resolve<ExpressionCallRule.Factory>(), c.Resolve<IProxyGeneratorNew>()));
+                new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), c.Resolve<IExpressionParser>(), c.Resolve<ExpressionCallRule.Factory>(), c.Resolve<IProxyGenerator>()));
         }
 
         private class RecordingCallRuleFactory : IRecordingCallRuleFactory
@@ -78,7 +78,7 @@
 
             public IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeObject fakeObject)
             {
-                return new StartConfiguration<TFake>(fakeObject, this.Container.Resolve<ExpressionCallRule.Factory>(), this.Container.Resolve<IConfigurationFactory>(), this.Container.Resolve<IProxyGeneratorNew>());
+                return new StartConfiguration<TFake>(fakeObject, this.Container.Resolve<ExpressionCallRule.Factory>(), this.Container.Resolve<IConfigurationFactory>(), this.Container.Resolve<IProxyGenerator>());
             }
         }
     }

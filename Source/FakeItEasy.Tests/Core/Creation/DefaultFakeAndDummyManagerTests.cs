@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.Core.Creation
     public class DefaultFakeAndDummyManagerTests
     {
         private IFakeObjectContainer container;
-        private IProxyGeneratorNew proxyGenerator;
+        private IProxyGenerator proxyGenerator;
         private FakeObject.Factory fakeObjectFactory;
         private FakeObject fakeObject;
         private IFakeWrapperConfigurator fakeWrapperConfigurator;
@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.Core.Creation
         public void SetUp()
         {
             this.container = A.Fake<IFakeObjectContainer>();
-            this.proxyGenerator = A.Fake<IProxyGeneratorNew>();
+            this.proxyGenerator = A.Fake<IProxyGenerator>();
             this.fakeObject = A.Fake<FakeObject>();
             this.fakeObjectFactory = () => this.fakeObject;
             this.fakeWrapperConfigurator = A.Fake<IFakeWrapperConfigurator>();

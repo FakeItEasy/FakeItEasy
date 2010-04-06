@@ -10,6 +10,6 @@ namespace FakeItEasy.Core.Creation
         /// </summary>
         /// <param name="container">The IFakeObjectContainer provided by the FakeItEasy framework.</param>
         /// <returns>A new IProxyGenerator.</returns>
-        IProxyGeneratorNew CreateProxyGenerator(IFakeObjectContainer container);
+        IProxyGenerator CreateProxyGenerator(IFakeObjectContainer container);
     }
 }

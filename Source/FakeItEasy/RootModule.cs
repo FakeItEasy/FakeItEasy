@@ -67,10 +67,10 @@
                 new DefaultFakeCreator(c.Resolve<IFakeAndDummyManager>()));
 
             container.Register<IFakeAndDummyManager>(c =>
-                new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IProxyGeneratorNew>(), c.Resolve<FakeObject.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
+                new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IProxyGenerator>(), c.Resolve<FakeObject.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
 
-            container.Register<IProxyGeneratorNew>(c =>
-                new DynamicProxyProxyGeneratorNew(c.Resolve<IFakeObjectContainer>())); //new DynamicProxyProxyGeneratorNew(
+            container.Register<IProxyGenerator>(c =>
+                new DynamicProxyProxyGenerator(c.Resolve<IFakeObjectContainer>())); //new DynamicProxyProxyGeneratorNew(
 
             container.Register<IFakeWrapperConfigurator>(c =>
                 new DefaultFakeWrapperConfigurator());

@@ -7,7 +7,7 @@ namespace FakeItEasy.Core.Creation
     /// <summary>
     /// Represents a generator that can generate proxies that emits events when calls are intercepted.
     /// </summary>
-    public interface IProxyGeneratorNew
+    public interface IProxyGenerator
     {
         /// <summary>
         /// Gets a value indicating if a proxy of the specified type can be generated and sets the generated proxy
