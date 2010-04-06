@@ -27,15 +27,14 @@ namespace FakeItEasy.Tests
         private Type[] SingletonTypes = new Type[]
         {
             typeof(IExpressionCallMatcherFactory),
-            typeof(FakeItEasy.Expressions.ArgumentConstraintFactory),
-            typeof(IProxyGenerator)
+            typeof(FakeItEasy.Expressions.ArgumentConstraintFactory)
         };
 
         private IEnumerable<Type> NonSingletonTypes
         {
             get
             {
-                return Enumerable.Empty<Type>();
+                yield return typeof(IProxyGenerator);
             }
         }
 

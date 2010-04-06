@@ -42,12 +42,12 @@ namespace FakeItEasy.DynamicProxy
         {
             if (typeToProxy.IsValueType || typeToProxy.IsSealed)
             {
-                return new DynamicProxyResult(typeToProxy, "");
+                return new DynamicProxyResult(typeToProxy, string.Empty);
             }
             
             AssertThatArgumentsForConstructorAreNotSpecifiedForInterfaceType(typeToProxy, argumentsForConstructor);
 
-            return DoGenerateProxy(typeToProxy, additionalInterfacesToImplement, fakeObject, argumentsForConstructor);
+            return this.DoGenerateProxy(typeToProxy, additionalInterfacesToImplement, fakeObject, argumentsForConstructor);
         }
 
         /// <summary>
@@ -84,6 +84,24 @@ namespace FakeItEasy.DynamicProxy
             var proxyResult = new DynamicProxyResult(typeToProxy);
             proxyResult.Proxy = (IFakedProxy)proxyGenerator.CreateInterfaceProxyWithoutTarget(typeToProxy, GetAllInterfacesToImplement(additionalInterfacesToImplement), fakeObjectInterceptor, proxyResult);
             return proxyResult;
+        }
+
+        private static Type[] GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
+        {
+            if (additionalInterfacesToImplement == null)
+            {
+                additionalInterfacesToImplement = Enumerable.Empty<Type>();
+            }
+
+            return interfacesToImplement.Concat(additionalInterfacesToImplement).ToArray();
+        }
+
+        private static FakeObjectInterceptor CreateFakeObjectInterceptor(FakeObject fakeObject)
+        {
+            return new FakeObjectInterceptor()
+            {
+                FakeObject = fakeObject
+            };
         }
 
         private ProxyResult DoGenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
@@ -161,28 +179,10 @@ namespace FakeItEasy.DynamicProxy
             return false;
         }
 
-        private static Type[] GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
-        { 
-            if (additionalInterfacesToImplement == null)
-            {
-                additionalInterfacesToImplement = Enumerable.Empty<Type>();
-            }
-
-            return interfacesToImplement.Concat(additionalInterfacesToImplement).ToArray();
-        }
-
         private IEnumerable<ConstructorAndArgumentsInfo> ResolveConstructors(Type typeToProxy)
         {
             var resolver = new ConstructorResolver(typeToProxy, this.container);
             return resolver.ResolveConstructors();
-        }
-
-        private static FakeObjectInterceptor CreateFakeObjectInterceptor(FakeObject fakeObject)
-        {
-            return new FakeObjectInterceptor()
-            {
-                FakeObject = fakeObject
-            };
         }
 
         private class ConstructorAndArgumentsInfo
@@ -217,7 +217,7 @@ namespace FakeItEasy.DynamicProxy
 
             public IEnumerable<ConstructorAndArgumentsInfo> ResolveConstructors()
             { 
-                var constructors = GetConstructorsCallableByProxy();
+                var constructors = this.GetConstructorsCallableByProxy();
                             
                 foreach (var constructor in constructors)
                 {
@@ -282,11 +282,21 @@ namespace FakeItEasy.DynamicProxy
                     {
                         try
                         {
+                            dummyValue = DynamicProxyProxyGenerator.proxyGenerator.CreateClassProxy(typeOfValue);
+                            this.resolvedValues.Add(typeOfValue, dummyValue);
+                            return true;
+                        }
+                        catch (Exception)
+                        {
+                        }
+
+                        try
+                        {
                             dummyValue = Activator.CreateInstance(typeOfValue, constructor.ArgumentsToUse.ToArray());
                             this.resolvedValues.Add(typeOfValue, dummyValue);
                             return true;
                         }
-                        catch (TargetInvocationException)
+                        catch (Exception)
                         {
                         }
                     }
@@ -334,7 +344,7 @@ namespace FakeItEasy.DynamicProxy
         {
             private static readonly MethodInfo getProxyManagerMethod = typeof(IFakedProxy).GetProperty("FakeObject").GetGetMethod();
 
-            public FakeObject FakeObject;
+            public FakeObject FakeObject { get; set; }
 
             [DebuggerStepThrough]
             public void Intercept(IInvocation invocation)
@@ -369,6 +379,21 @@ namespace FakeItEasy.DynamicProxy
 
             public override event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
 
+            public new IFakedProxy Proxy
+            {
+                [DebuggerStepThrough]
+                get
+                {
+                    return base.Proxy;
+                }
+
+                [DebuggerStepThrough]
+                set
+                {
+                    base.Proxy = value;
+                }
+            }
+
             [DebuggerStepThrough]
             public void Intercept(IInvocation invocation)
             {
@@ -377,20 +402,6 @@ namespace FakeItEasy.DynamicProxy
                 {
                     var call = new InvocationCallAdapter(invocation);
                     handler(this.Proxy, new CallInterceptedEventArgs(call));
-                }
-            }
-
-            public new IFakedProxy Proxy
-            {
-                [DebuggerStepThrough]
-                get
-                {
-                    return base.Proxy;
-                }
-                [DebuggerStepThrough]
-                set
-                {
-                    base.Proxy = value;
                 }
             }
         }
