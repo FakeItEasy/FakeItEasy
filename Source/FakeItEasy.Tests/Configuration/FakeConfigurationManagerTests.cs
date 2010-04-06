@@ -20,7 +20,7 @@ namespace FakeItEasy.Tests.Configuration
         private ExpressionCallRule.Factory ruleFactory;
         private ExpressionCallRule ruleReturnedFromFactory;
         private FakeObject fakeObjectReturnedFromParser;
-        private IProxyGenerator proxyGenerator;
+        private IProxyGeneratorNew proxyGenerator;
 
         [SetUp]
         public void SetUp()
@@ -32,7 +32,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             this.configurationFactory = A.Fake<IConfigurationFactory>();
             this.expressionParser = A.Fake<IExpressionParser>();
-            this.proxyGenerator = A.Fake<IProxyGenerator>();
+            this.proxyGenerator = A.Fake<IProxyGeneratorNew>();
             A.CallTo(() => this.proxyGenerator.MemberCanBeIntercepted(A<MemberInfo>.Ignored)).Returns(true);
 
             this.callSpecification = ExpressionHelper.CreateExpression<IFoo>(x => x.Bar());

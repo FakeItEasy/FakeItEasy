@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+using FakeItEasy.Core.Creation;
 
     public partial class FakeObject
     {
@@ -19,7 +20,7 @@
             {
                 var newRule = new CallRuleMetadata
                 {
-                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeObject) { Value = Factory.CreateFake(fakeObjectCall.Method.ReturnType, null, true) },
+                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeObject) { Value = CreateFake(fakeObjectCall.Method.ReturnType) },
                     CalledNumberOfTimes = 1
                 };
 
@@ -27,18 +28,23 @@
                 newRule.Rule.Apply(fakeObjectCall);
             }
 
-            private static FakeObjectFactory Factory
-            { 
+            private static IFakeAndDummyManager FakeManager
+            {
                 get
                 {
-                    return ServiceLocator.Current.Resolve<FakeObjectFactory>();
+                    return ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
                 }
+            }
+
+            private static object CreateFake(Type type)
+            {
+                return FakeManager.CreateFake(type, FakeOptions.Empty);
             }
 
             private static bool TypeIsFakable(Type type)
             {
-                var command = Factory.CreateGenerationCommand(type, null, true);
-                return command.GenerateFakeObject();
+                object result = null;
+                return FakeManager.TryCreateFake(type, FakeOptions.Empty, out result);
             }
 
             public int? NumberOfTimesToCall

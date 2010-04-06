@@ -11,9 +11,9 @@ namespace FakeItEasy.Configuration
         private IConfigurationFactory configurationFactory;
         private IExpressionParser expressionParser;
         private ExpressionCallRule.Factory ruleFactory;
-        private IProxyGenerator proxyGenerator;
+        private IProxyGeneratorNew proxyGenerator;
 
-        public FakeConfigurationManager(IConfigurationFactory configurationFactory, IExpressionParser parser, ExpressionCallRule.Factory callRuleFactory, IProxyGenerator proxyGenerator)
+        public FakeConfigurationManager(IConfigurationFactory configurationFactory, IExpressionParser parser, ExpressionCallRule.Factory callRuleFactory, IProxyGeneratorNew proxyGenerator)
         {
             this.configurationFactory = configurationFactory;
             this.expressionParser = parser;

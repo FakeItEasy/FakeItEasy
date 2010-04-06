@@ -27,9 +27,6 @@
             container.Register<IFakeObjectContainer>(c =>
                 c.Resolve<FakeScope>().FakeObjectContainer);
 
-            container.RegisterSingleton<IProxyGenerator>(c =>
-                new FakeItEasy.DynamicProxy.DynamicProxyProxyGenerator());
-
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c =>
                 new ExpressionCallMatcherFactory { Container = c });
 
@@ -44,9 +41,6 @@
 
             container.RegisterSingleton<FakeAsserter.Factory>(c =>
                 x => new FakeAsserter(x, c.Resolve<CallWriter>()));
-
-            container.Register<FakeObjectFactory>(c =>
-                new FakeObjectFactory(c.Resolve<IFakeObjectContainer>(), c.Resolve<IProxyGenerator>(), c.Resolve<FakeObject.Factory>()));
 
             container.RegisterSingleton<FakeObject.Factory>(c =>
                 () => new FakeObject());
@@ -66,12 +60,6 @@
             container.RegisterSingleton<IExpressionParser>(c =>
                 new ExpressionParser());
 
-            container.Register<IFakeObjectGeneratorFactory>(c =>
-                c.Resolve<FakeObjectFactory>());
-
-            container.RegisterSingleton<FakeItEasy.Core.IFakeObjectBuilder>(c =>
-                new FakeObjectBuilder(c.Resolve<FakeObjectFactory>()));
-
             container.RegisterSingleton<VisualBasic.VisualBasicRuleBuilder.Factory>(c =>
                 (rule, fakeObject) => new VisualBasic.VisualBasicRuleBuilder(rule, c.Resolve<RuleBuilder.Factory>().Invoke(rule, fakeObject)));
 
@@ -86,6 +74,9 @@
 
             container.Register<IFakeWrapperConfigurator>(c =>
                 new DefaultFakeWrapperConfigurator());
+
+            container.Register<IFakeObjectBuilder>(c =>
+                c.Resolve<IFakeCreator>());
         }
 
         #region FactoryImplementations

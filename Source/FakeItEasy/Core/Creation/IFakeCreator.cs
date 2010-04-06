@@ -5,7 +5,7 @@ namespace FakeItEasy.Core.Creation
     /// <summary>
     /// A facade used by the public api for testability.
     /// </summary>
-    internal interface IFakeCreator
+    internal interface IFakeCreator : IFakeObjectBuilder
     {
         /// <summary>
         /// Creates a fake object of the specified type.

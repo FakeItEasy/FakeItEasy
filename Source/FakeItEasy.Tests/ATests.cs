@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using FakeItEasy.Core;
-using System.Diagnostics;
-using FakeItEasy.Core;
-using FakeItEasy.SelfInitializedFakes;
-using System.Linq.Expressions;
-using FakeItEasy.Configuration;
-using FakeItEasy.Expressions;
-using FakeItEasy.Tests.TestHelpers;
-using FakeItEasy.Core.Creation;
-
-namespace FakeItEasy.Tests
+﻿namespace FakeItEasy.Tests
 {
+    using System;
+    using System.Linq.Expressions;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Expressions;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ATests
         : ConfigurableServiceLocatorTestBase

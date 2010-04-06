@@ -29,7 +29,7 @@ namespace FakeItEasy.Tests.Assertion
         [SetUp]
         public void SetUp()
         {
-            this.fake = Fake.GetFakeObject(ServiceLocator.Current.Resolve<FakeObjectFactory>().CreateFake(typeof(IFoo), null, false));
+            this.fake = Fake.GetFakeObject(A.Fake<IFoo>());
             
             this.fakeAsserter = A.Fake<FakeAsserter>();
             

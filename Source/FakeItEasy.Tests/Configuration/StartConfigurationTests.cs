@@ -18,7 +18,7 @@ namespace FakeItEasy.Tests.Configuration
         private ExpressionCallRule.Factory ruleFactory;
         private LambdaExpression argumentToRuleFactory;
         private IConfigurationFactory configurationFactory;
-        private IProxyGenerator proxyGenerator;
+        private IProxyGeneratorNew proxyGenerator;
 
         [SetUp]
         public void SetUp()
@@ -38,7 +38,7 @@ namespace FakeItEasy.Tests.Configuration
 
             this.configurationFactory = A.Fake<IConfigurationFactory>();
 
-            this.proxyGenerator = A.Fake<IProxyGenerator>();
+            this.proxyGenerator = A.Fake<IProxyGeneratorNew>();
             A.CallTo(() => this.proxyGenerator.MemberCanBeIntercepted(A<MemberInfo>.Ignored)).Returns(true);
         }
 

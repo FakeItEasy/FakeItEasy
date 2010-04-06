@@ -68,8 +68,6 @@
     <Compile Include="Core\DefaultReturnValueRuleTests.cs" />
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
-    <Compile Include="Core\FakeObjectBuilderTests.cs" />
-    <Compile Include="Core\FakeObjectFactoryTests.cs" />
     <Compile Include="Core\Creation\DefaultFakeAndDummyManagerTests.cs" />
     <Compile Include="Core\Creation\ProxyResultTests.cs" />
     <Compile Include="ArgumentConstraintExtensionsTests.cs" />
@@ -102,7 +100,6 @@
     <Compile Include="Assertion\FakeAssertionsTests.cs" />
     <Compile Include="CommonExtensionsTests.cs" />
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
-    <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintFactoryTests.cs" />
     <Compile Include="ArgumentConstraintTestBase.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraintTests.cs" />

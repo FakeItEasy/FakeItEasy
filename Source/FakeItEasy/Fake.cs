@@ -98,11 +98,6 @@ using FakeItEasy.Core.Creation;
 
             return Fake.GetFakeObject(fakedObject).RecordedCallsInScope;
         }
-
-        internal static FakeObjectFactory CreateFactory()
-        {
-            return ServiceLocator.Current.Resolve<FakeObjectFactory>();
-        }
     }
 
     /// <summary>

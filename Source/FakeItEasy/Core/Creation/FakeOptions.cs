@@ -13,5 +13,13 @@ namespace FakeItEasy.Core.Creation
         public IEnumerable<object> ArgumentsForConstructor { get; set; }
 
         public IEnumerable<Type> AdditionalInterfacesToImplement { get; set; }
+
+        public static FakeOptions Empty
+        {
+            get
+            {
+                return new FakeOptions();
+            }
+        }
     }
 }

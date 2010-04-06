@@ -28,7 +28,7 @@ namespace FakeItEasy.Tests
         {
             typeof(IExpressionCallMatcherFactory),
             typeof(FakeItEasy.Expressions.ArgumentConstraintFactory),
-            typeof(IProxyGenerator)
+            typeof(IProxyGeneratorNew)
         };
 
         private IEnumerable<Type> NonSingletonTypes

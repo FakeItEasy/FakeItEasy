@@ -20,8 +20,7 @@ namespace FakeItEasy.Tests.Core
 
         private FakeObject CreateFakeObject<T>()
         {
-            var factory = ServiceLocator.Current.Resolve<FakeObjectFactory>();
-            var result = factory.CreateFake(typeof(T), null, false);
+            var result = A.Fake<T>();
 
             return Fake.GetFakeObject(result);
         }

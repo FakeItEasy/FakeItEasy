@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+    using FakeItEasy.Core.Creation;
 
     [Serializable]
     internal class DefaultReturnValueRule
@@ -20,26 +21,21 @@
 
         private static object ResolveReturnValue(IWritableFakeObjectCall fakeObjectCall)
         {
-            var generator = GetFakeObjectGeneratorForCall(fakeObjectCall);
+            object result = null;
 
-            if (!generator.GenerateFakeObject())
+            if (!FakeManager.TryCreateDummy(fakeObjectCall.Method.ReturnType, out result))
             {
-                return Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType);    
+                result = Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType);    
             }
 
-            return generator.GeneratedFake;
+            return result;
         }
 
-        private static IFakeObjectGenerator GetFakeObjectGeneratorForCall(IFakeObjectCall call)
-        {
-            return FakeObjectGeneratorFactory.CreateGenerationCommand(call.Method.ReturnType, null, true);
-        }
-
-        private static IFakeObjectGeneratorFactory FakeObjectGeneratorFactory
+        private static IFakeAndDummyManager FakeManager
         {
             get
             {
-                return ServiceLocator.Current.Resolve<IFakeObjectGeneratorFactory>();
+                return ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
             }
         }
 

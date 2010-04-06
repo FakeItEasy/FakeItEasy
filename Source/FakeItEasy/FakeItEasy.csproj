@@ -98,12 +98,9 @@
     <Compile Include="Expressions\NotArgumentConstraintScope.cs" />
     <Compile Include="Expressions\RootValidations.cs" />
     <Compile Include="Repeated.cs" />
-    <Compile Include="FakeObjectBuilder.cs" />
     <Compile Include="IFakeOptionsBuilder.cs" />
     <Compile Include="IFakeOptionsBuilderForWrappers.cs" />
     <Compile Include="IFakeObjectBuilder.cs" />
-    <Compile Include="IFakeObjectGenerator.cs" />
-    <Compile Include="IFakeObjectGeneratorFactory.cs" />
     <Compile Include="LowerBoundRepeated.cs" />
     <Compile Include="Recorders.cs" />
     <Compile Include="SelfInitializedFakes\FileStorage.cs" />
@@ -174,7 +171,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\FakeScope.cs" />
-    <Compile Include="FakeObjectFactory.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Core\IFakedProxy.cs" />
     <Compile Include="Core\IFakeObjectCall.cs" />
