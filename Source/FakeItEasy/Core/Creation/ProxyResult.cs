@@ -42,7 +42,7 @@ namespace FakeItEasy.Core.Creation
         public virtual bool ProxyWasSuccessfullyCreated
         {
             get;
-            protected set;
+            internal set;
         }
 
         /// <summary>
