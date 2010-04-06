@@ -397,6 +397,20 @@ namespace FakeItEasy.Tests.DynamicProxy
             Assert.That(result.ProxyWasSuccessfullyCreated, Is.True);
         }
 
+        [TestCaseSource("typesThatCanBeProxied")]
+        public void GenerateProxy_should_generate_proxy_that_implements_extra_interfaces_when_provided(Type typeOfProxy)
+        {
+            // Arrange
+            var generator = this.CreateGenerator();
+
+            // Act
+            var result = generator.GenerateProxy(typeOfProxy, new[] { typeof(IFormatProvider), typeof(IFormattable) }, this.fakeObject, null);
+
+            // Assert
+            Assert.That(result.Proxy, Is.InstanceOf<IFormatProvider>());
+            Assert.That(result.Proxy, Is.InstanceOf<IFormattable>());
+        }
+
         public class TypeWithConstructorThatThrows
         {
             public TypeWithConstructorThatThrows(IServiceProvider a)
