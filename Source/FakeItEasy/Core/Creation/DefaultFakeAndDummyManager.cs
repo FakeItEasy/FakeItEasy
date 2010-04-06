@@ -45,7 +45,7 @@ namespace FakeItEasy.Core.Creation
             
             if (!this.container.TryCreateFakeObject(typeOfDummy, out result))
             {
-                return this.CreateProxy(typeOfDummy, null, true, Enumerable.Empty<Type>());
+                return this.CreateProxy(typeOfDummy, Enumerable.Empty<Type>(), null, true);
             }
 
             return result;
@@ -60,7 +60,7 @@ namespace FakeItEasy.Core.Creation
         /// <exception cref="FakeCreationException">The current IProxyGenerator is not able to generate a fake of the specified type.</exception>
         public object CreateFake(Type typeOfFake, FakeOptions options)
         {
-            var result = this.CreateProxy(typeOfFake, options.ArgumentsForConstructor, true, options.AdditionalInterfacesToImplement);
+            var result = this.CreateProxy(typeOfFake, options.AdditionalInterfacesToImplement, options.ArgumentsForConstructor, true);
             
             this.ConfigureFakeToWrapWhenAppropriate(options, result);
             
@@ -79,7 +79,7 @@ namespace FakeItEasy.Core.Creation
         {
             if (!this.container.TryCreateFakeObject(typeOfDummy, out result))
             {
-                result = this.CreateProxy(typeOfDummy, null, false, null);
+                result = this.CreateProxy(typeOfDummy, null, null, false);
             }
 
             return result != null;
@@ -96,7 +96,7 @@ namespace FakeItEasy.Core.Creation
         /// </returns>
         public bool TryCreateFake(Type typeOfFake, FakeOptions options, out object result)
         {
-            result = this.CreateProxy(typeOfFake, options.ArgumentsForConstructor, false, options.AdditionalInterfacesToImplement);
+            result = this.CreateProxy(typeOfFake, options.AdditionalInterfacesToImplement, options.ArgumentsForConstructor, false);
 
             this.ConfigureFakeToWrapWhenAppropriate(options, result);
 
@@ -111,7 +111,7 @@ namespace FakeItEasy.Core.Creation
         /// <param name="throwOnFailure">if set to <c>true</c> an exception is thrown when the proxy generator
         /// can not generate a proxy of the specified type.</param>
         /// <returns>A proxy.</returns>
-        internal virtual object CreateProxy(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, bool throwOnFailure, IEnumerable<Type> additionalInterfacesToImplement)
+        internal virtual object CreateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, bool throwOnFailure)
         {
             var fakeObject = this.CreateNewFakeObject();
             

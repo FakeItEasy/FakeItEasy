@@ -68,7 +68,7 @@ namespace FakeItEasy.Tests.Core.Creation
             // Arrange
             var result = A.Fake<IFoo>();
 
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, true, noAdditionalInterfaces.Argument)).Returns(result);
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), noAdditionalInterfaces.Argument, null, true)).Returns(result);
             
             // Act
             var returned = this.fakeAndDummyManager.CreateDummy(typeof(IFoo));
@@ -83,7 +83,7 @@ namespace FakeItEasy.Tests.Core.Creation
             // Arrange
             
             // Act
-            this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false, Enumerable.Empty<Type>());
+            this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false);
 
             // Assert
             A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), noAdditionalInterfaces.Argument, this.fakeObject, null)).MustHaveHappened();
@@ -98,7 +98,7 @@ namespace FakeItEasy.Tests.Core.Creation
             A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<FakeObject>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(returned);
 
             // Act
-            this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false, null);
+            this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, null, false);
 
             // Assert
             A.CallTo(() => this.fakeObject.SetProxy(returned)).MustHaveHappened();
@@ -110,7 +110,7 @@ namespace FakeItEasy.Tests.Core.Creation
             // Arrange
             
             // Act
-            this.fakeAndDummyManager.CreateProxy(typeof(IFoo), new [] { "constructor", "arguments" }, false, null);
+            this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, new[] { "constructor", "arguments" }, false);
 
             // Assert
             A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored.Argument, A<FakeObject>.Ignored, A<IEnumerable<object>>.That.IsThisSequence("constructor", "arguments").Argument)).MustHaveHappened();
@@ -122,7 +122,7 @@ namespace FakeItEasy.Tests.Core.Creation
             // Arrange
 
             // Act
-            this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<object>(), false, new[] { typeof(IFormatProvider) });
+            this.fakeAndDummyManager.CreateProxy(typeof(IFoo), new[] { typeof(IFormatProvider) }, Enumerable.Empty<object>(), false);
 
             // Assert
             A.CallTo(() => this.proxyGenerator.GenerateProxy(
@@ -138,12 +138,7 @@ namespace FakeItEasy.Tests.Core.Creation
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(
-                typeof(IFoo), 
-                A<IEnumerable<object>>.Ignored.Argument, 
-                A<bool>.Ignored, 
-                A<IEnumerable<Type>>.Ignored.Argument
-            )).Returns(foo);
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<IEnumerable<object>>.Ignored.Argument, A<bool>.Ignored)).Returns(foo);
 
             // Act
             var returned = this.fakeAndDummyManager.CreateFake(typeof(IFoo), A.Dummy<FakeOptions>());
@@ -157,23 +152,13 @@ namespace FakeItEasy.Tests.Core.Creation
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(
-                typeof(IFoo), 
-                A<IEnumerable<object>>.Ignored.Argument, 
-                A<bool>.Ignored,
-                A<IEnumerable<Type>>.Ignored.Argument
-            )).Returns(foo);
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<IEnumerable<object>>.Ignored.Argument, A<bool>.Ignored)).Returns(foo);
 
             // Act
             var returned = this.fakeAndDummyManager.CreateFake(typeof(IFoo), new FakeOptions { ArgumentsForConstructor = new[] { "a", "b" } });
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(
-                typeof(IFoo), 
-                A<IEnumerable<object>>.That.IsThisSequence("a", "b").Argument, 
-                A<bool>.Ignored,
-                A<IEnumerable<Type>>.Ignored.Argument
-            )).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<IEnumerable<object>>.That.IsThisSequence("a", "b").Argument, A<bool>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -181,23 +166,13 @@ namespace FakeItEasy.Tests.Core.Creation
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(
-                typeof(IFoo),
-                A<IEnumerable<object>>.Ignored.Argument,
-                A<bool>.Ignored,
-                A<IEnumerable<Type>>.Ignored.Argument
-            )).Returns(foo);
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<IEnumerable<object>>.Ignored.Argument, A<bool>.Ignored)).Returns(foo);
 
             // Act
             var returned = this.fakeAndDummyManager.CreateFake(typeof(IFoo), new FakeOptions { AdditionalInterfacesToImplement = new[] { typeof(IFormatProvider) } });
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(
-                typeof(IFoo),
-                A<IEnumerable<object>>.Ignored.Argument,
-                A<bool>.Ignored,
-                A<IEnumerable<Type>>.That.IsThisSequence(typeof(IFormatProvider)).Argument
-            )).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.That.IsThisSequence(typeof(IFormatProvider)).Argument, A<IEnumerable<object>>.Ignored.Argument, A<bool>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -216,7 +191,7 @@ with two lines.");
             
             // Assert
             var ex = Assert.Throws<FakeCreationException>(() =>
-                this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, true, Enumerable.Empty<Type>()));
+                this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, true));
 
             Assert.That(ex.Message, Is.EqualTo(@"
 
@@ -237,7 +212,7 @@ with two lines.");
             object result = null;
             
             A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out result)).Returns(true).AssignsOutAndRefParameters(foo);
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false, A<IEnumerable<Type>>.Ignored.Argument)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).ReturnsNull();
 
             // Act
             var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
@@ -254,7 +229,7 @@ with two lines.");
             object result = null;
 
             A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out result)).Returns(true).AssignsOutAndRefParameters(foo);
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false, Enumerable.Empty<Type>())).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false)).ReturnsNull();
 
             // Act
             var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
@@ -267,7 +242,7 @@ with two lines.");
         public void TryCreateDummy_should_return_false_when_create_proxy_returns_null()
         {
             // Arrange
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false, A<IEnumerable<Type>>.Ignored.Argument)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).ReturnsNull();
             object result = null;
 
             // Act
@@ -281,7 +256,7 @@ with two lines.");
         public void TryCreateDummy_should_return_true_when_create_proxy_returns_result()
         {
             // Arrange
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false, Enumerable.Empty<Type>())).Returns(A.Fake<IFoo>());
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false)).Returns(A.Fake<IFoo>());
             object result = null;
 
             // Act
@@ -296,7 +271,7 @@ with two lines.");
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false, A<IEnumerable<Type>>.Ignored.Argument)).Returns(foo);
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).Returns(foo);
             object result = null;
 
             // Act
@@ -310,7 +285,7 @@ with two lines.");
         public void TryCreateFake_should_return_false_when_create_proxy_returns_null()
         {
             // Arrange
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false, A<IEnumerable<Type>>.Ignored.Argument)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).ReturnsNull();
             object result = null;
 
             // Act
@@ -324,7 +299,7 @@ with two lines.");
         public void TryCreateFake_should_return_true_when_create_proxy_returns_result()
         {
             // Arrange
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false, Enumerable.Empty<Type>())).Returns(A.Fake<IFoo>());
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false)).Returns(A.Fake<IFoo>());
             object result = null;
 
             // Act
@@ -339,7 +314,7 @@ with two lines.");
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, false, A<IEnumerable<Type>>.Ignored.Argument)).Returns(foo);
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).Returns(foo);
             object result = null;
 
             // Act
@@ -359,12 +334,7 @@ with two lines.");
             this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), options, out Null<object>.Out);
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(
-                typeof(IFoo), 
-                A<IEnumerable<object>>.That.IsThisSequence("a", "b").Argument, 
-                false,
-                A<IEnumerable<Type>>.Ignored.Argument
-            )).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<IEnumerable<object>>.That.IsThisSequence("a", "b").Argument, false)).MustHaveHappened();
         }
 
         [Test]
@@ -377,12 +347,7 @@ with two lines.");
             this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), options, out Null<object>.Out);
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(
-                typeof(IFoo),
-                A<IEnumerable<object>>.Ignored.Argument,
-                false,
-                A<IEnumerable<Type>>.That.IsThisSequence(typeof(IFormattable)).Argument
-            )).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.That.IsThisSequence(typeof(IFormattable)).Argument, A<IEnumerable<object>>.Ignored.Argument, false)).MustHaveHappened();
         }
 
         [Test]
