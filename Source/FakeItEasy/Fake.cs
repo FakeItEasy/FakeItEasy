@@ -9,6 +9,7 @@ namespace FakeItEasy
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+using FakeItEasy.Core.Creation;
 
     /// <summary>
     /// Provides static methods for accessing fake objects.
@@ -117,59 +118,18 @@ namespace FakeItEasy
         /// </summary>
         public Fake()
         {
-            this.FakedObject = CreateFake(null);
+            this.FakedObject = CreateFake(x => { });
         }
 
         /// <summary>
-        /// Creates a fake object and passes the arguments for the specified constructor call
-        /// to the constructor of the fake object.
+        /// Creates a new fake object using the specified options.
         /// </summary>
-        /// <param name="constructorCall">An expression describing the constructor to be called
-        /// on the faked object.</param>
-        /// <exception cref="ArgumentNullException">The constructor call was null.</exception>
-        public Fake(Expression<Func<T>> constructorCall)
+        /// <param name="options">Options used to create the fake object.</param>
+        public Fake(Action<IFakeOptionsBuilder<T>> options)
         {
-            Guard.AgainstNull(constructorCall, "constructorCall");
+            Guard.AgainstNull(options, "options");
 
-            if (constructorCall.Body.NodeType != ExpressionType.New)
-            {
-                throw new ArgumentException(ExceptionMessages.NonConstructorExpressionMessage);
-            }
-
-            var constructorArguments =
-                from argument in ((NewExpression)constructorCall.Body).Arguments
-                select ExpressionManager.GetValueProducedByExpression(argument);
-
-            this.FakedObject = CreateFake(constructorArguments);
-        }
-
-        /// <summary>
-        /// Creates a fake object that wraps the specified instance.
-        /// </summary>
-        /// <param name="wrappedInstance">The instance to wrap in a fake object wrapper.</param>
-        /// <exception cref="ArgumentNullException">The wrappedInstance was null.</exception>
-        public Fake(T wrappedInstance)
-        {
-            Guard.AgainstNull(wrappedInstance, "wrappedInstance");
-
-            this.FakedObject = A.Fake<T>(x => x.Wrapping(wrappedInstance));
-        }
-
-        /// <summary>
-        /// Creates a fake object and passes the specified arguments to the constructor of the fake.
-        /// </summary>
-        /// <param name="argumentsForConstructor">Arguments to be used when calling the constructor of the faked type.</param>
-        /// <exception cref="ArgumentNullException">The argumentsForConstructor was null.</exception>
-        public Fake(IEnumerable<object> argumentsForConstructor)
-        {
-            Guard.AgainstNull(argumentsForConstructor, "argumentsForConstructor");
-
-            if (!typeof(T).IsAbstract)
-            {
-                throw new InvalidOperationException(ExceptionMessages.FakingNonAbstractClassWithArgumentsForConstructor);
-            }
-
-            this.FakedObject = CreateFake(argumentsForConstructor);
+            this.FakedObject = CreateFake(options);
         }
         #endregion
 
@@ -200,6 +160,14 @@ namespace FakeItEasy
             {
                 var factory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
                 return factory.CreateConfiguration<T>(Fake.GetFakeObject(this.FakedObject));
+            }
+        }
+
+        private static IFakeCreator FakeCreator
+        {
+            get
+            {
+                return ServiceLocator.Current.Resolve<IFakeCreator>();
             }
         }
         #endregion
@@ -235,9 +203,9 @@ namespace FakeItEasy
             return this.StartConfiguration.AnyCall();
         }
 
-        private static T CreateFake(IEnumerable<object> argumentsForConstructor)
+        private static T CreateFake(Action<IFakeOptionsBuilder<T>> options)
         {
-            return (T)Fake.CreateFactory().CreateFake(typeof(T), argumentsForConstructor, false);
+            return FakeCreator.CreateFake<T>(options);
         }
         #endregion
     }

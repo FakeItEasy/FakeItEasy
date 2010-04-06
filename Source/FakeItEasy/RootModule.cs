@@ -7,6 +7,7 @@
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
     using FakeItEasy.Configuration;
+    using FakeItEasy.DynamicProxy;
     
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -72,8 +73,19 @@
                 new FakeObjectBuilder(c.Resolve<FakeObjectFactory>()));
 
             container.RegisterSingleton<VisualBasic.VisualBasicRuleBuilder.Factory>(c =>
-                (rule, fakeObject) => new VisualBasic.VisualBasicRuleBuilder(rule, c.Resolve<RuleBuilder.Factory>().Invoke(rule, fakeObject))); 
+                (rule, fakeObject) => new VisualBasic.VisualBasicRuleBuilder(rule, c.Resolve<RuleBuilder.Factory>().Invoke(rule, fakeObject)));
 
+            container.Register<IFakeCreator>(c =>
+                new DefaultFakeCreator(c.Resolve<IFakeAndDummyManager>()));
+
+            container.Register<IFakeAndDummyManager>(c =>
+                new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IProxyGeneratorNew>(), c.Resolve<FakeObject.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
+
+            container.Register<IProxyGeneratorNew>(c =>
+                new DynamicProxyProxyGeneratorNew(c.Resolve<IFakeObjectContainer>())); //new DynamicProxyProxyGeneratorNew(
+
+            container.Register<IFakeWrapperConfigurator>(c =>
+                new DefaultFakeWrapperConfigurator());
         }
 
         #region FactoryImplementations

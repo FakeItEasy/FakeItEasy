@@ -7,6 +7,7 @@ namespace FakeItEasy
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+using FakeItEasy.Core.Creation;
 
     /// <summary>
     /// Provides methods for generating fake objects.
@@ -20,15 +21,15 @@ namespace FakeItEasy
                 return ServiceLocator.Current.Resolve<IFakeConfigurationManager>();
             }
         }
-        
-        private static FakeObjectFactory Factory
+
+        private static IFakeCreator FakeCreator
         {
             get
             {
-                return ServiceLocator.Current.Resolve<FakeObjectFactory>();
+                return ServiceLocator.Current.Resolve<IFakeCreator>();
             }
         }
-
+        
         /// <summary>
         /// Creates a fake object of the type T.
         /// </summary>
@@ -36,7 +37,7 @@ namespace FakeItEasy
         /// <returns>A fake object.</returns>
         public static T Fake<T>()
         {
-            return CreateFake<T>(null);
+            return FakeCreator.CreateFake<T>(x => { });
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace FakeItEasy
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public static T Dummy<T>()
         {
-            return (T)Factory.CreateFake(typeof(T), null, true);
+            return FakeCreator.CreateDummy<T>();
         }
 
         /// <summary>
@@ -107,16 +108,6 @@ namespace FakeItEasy
         public static IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
-        }
-
-        private static T CreateFake<T>(IEnumerable<object> argumentsForConstructor)
-        {
-            return (T)CreateFake(typeof(T), argumentsForConstructor);
-        }
-
-        private static object CreateFake(Type typeOfFake, IEnumerable<object> argumentsForConstructor)
-        {
-            return Factory.CreateFake(typeOfFake, argumentsForConstructor, false);
         }
     }
 

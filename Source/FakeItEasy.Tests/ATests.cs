@@ -21,14 +21,13 @@ namespace FakeItEasy.Tests
     public class ATests
         : ConfigurableServiceLocatorTestBase
     {
-        private FakeObjectFactory factory;
-        
+        private IFakeCreator fakeCreator;
+
         protected override void OnSetUp()
         {
-            this.factory = A.Fake<FakeObjectFactory>(x => x.Wrapping(
-                new FakeObjectFactory(ServiceLocator.Current.Resolve<IFakeObjectContainer>(), ServiceLocator.Current.Resolve<IProxyGenerator>(), ServiceLocator.Current.Resolve<FakeObject.Factory>())));
+            this.fakeCreator = A.Fake<IFakeCreator>();
 
-            this.StubResolve<FakeObjectFactory>(this.factory);
+            this.StubResolve<IFakeCreator>(this.fakeCreator);
         }
 
         [Test]
@@ -46,53 +45,53 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void Generic_Fake_with_no_arguments_should_call_fake_object_factory_with_correct_arguments()
+        public void Fake_without_arguments_should_call_fake_creator_with_empty_action()
         {
-            A.Fake<IFoo>();
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(A<Action<IFakeOptionsBuilder<IFoo>>>.Ignored)).Returns(fake);
 
-            A.CallTo(() => this.factory.CreateFake(typeof(IFoo), null, false)).MustHaveHappened();
+
+            // Act
+            var result = A.Fake<IFoo>();
+
+            // Assert
+            Assert.That(result, Is.SameAs(fake));
         }
 
         [Test]
-        public void Generic_Fake_with_no_arguments_should_return_fake_from_factory()
+        public void Fake_with_arguments_should_call_fake_creator_with_specified_options()
         {
-            var foo = A.Fake<IFoo>();
+            // Arrange
+            var fake = A.Fake<IFoo>();
 
-            using (Fake.CreateScope())
-            {
-                A.CallTo(() => this.factory.CreateFake(typeof(IFoo), null, false)).Returns(foo);
+            Action<IFakeOptionsBuilder<IFoo>> options = x => { };
+            A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(options)).Returns(fake);
+            
+            // Act
+            var result = A.Fake<IFoo>(options);
 
-                var returned = A.Fake<IFoo>();
-
-                Assert.That(returned, Is.SameAs(foo));
-            }
+            // Assert
+            Assert.That(result, Is.SameAs(fake));
         }
-
 
         [Test]
-        public void Dummy_should_return_fake_from_factory()
+        public void Dummy_should_return_dummy_from_fake_creator()
         {
-            A.CallTo(() => this.factory.CreateFake(typeof(string), A<IEnumerable<object>>.Ignored.Argument, true))
-                .Returns("return this");
+            // Arrange
+            var dummy = A.Fake<IFoo>();
+            A.CallTo(() => this.fakeCreator.CreateDummy<IFoo>()).Returns(dummy);
 
-            var result = A.Dummy<string>();
+            // Act
+            var result = A.Dummy<IFoo>();
 
-            Assert.That(result, Is.EqualTo("return this"));
+            // Assert
+            Assert.That(result, Is.SameAs(dummy));
         }
-
-        private static IFoo CreateFoo()
-        {
-            return null;
-        }
-
-     
-
-
-
     }
 
     [TestFixture]
-    public class CallToTests
+    public class ACallToTests
         : ConfigurableServiceLocatorTestBase
     {
         IFakeConfigurationManager configurationManager;
@@ -139,7 +138,7 @@ namespace FakeItEasy.Tests
     }
 
     [TestFixture]
-    public class AArgumentValidationsTests
+    public class GenericATests
     {
         [Test]
         public void That_should_return_root_validations()

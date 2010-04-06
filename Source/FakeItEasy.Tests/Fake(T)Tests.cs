@@ -1,43 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Core;
-using FakeItEasy.Configuration;
-using FakeItEasy.Assertion;
-using FakeItEasy.Tests.FakeConstraints;
-using FakeItEasy.Core;
-using System.Reflection;
-using FakeItEasy.Expressions;
-using System.Linq.Expressions;
-
-namespace FakeItEasy.Tests
+﻿namespace FakeItEasy.Tests
 {
+    using System;
+    using System.Linq.Expressions;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Creation;
+    using NUnit.Framework;
+
     [TestFixture]
     public class FakeTTests
         : ConfigurableServiceLocatorTestBase
     {
-        private FakeObjectFactory factory;
+        private IFakeCreator fakeCreator;
         private IStartConfigurationFactory startConfigurationFactory;
 
         protected override void OnSetUp()
         {
-            this.factory = A.Fake<FakeObjectFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<FakeObjectFactory>()));
+            this.fakeCreator = A.Fake<IFakeCreator>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeCreator>()));
             this.startConfigurationFactory = A.Fake<IStartConfigurationFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<IStartConfigurationFactory>()));
 
-            this.StubResolve<FakeObjectFactory>(this.factory);
+            this.StubResolve<IFakeCreator>(this.fakeCreator);
             this.StubResolve<IStartConfigurationFactory>(this.startConfigurationFactory);
         }
         
         [Test]
-        public void Constructor_sets_fake_object_returned_from_factory_to_FakedObject_property()
+        public void Constructor_sets_fake_object_returned_from_fake_creator_to_FakedObject_property()
         {
             var foo = A.Fake<IFoo>();
 
             using (Fake.CreateScope())
             {
-                A.CallTo(() => this.factory.CreateFake(typeof(IFoo), null, false)).Returns(foo);
+                A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(A<Action<IFakeOptionsBuilder<IFoo>>>.Ignored)).Returns(foo);
 
                 var fake = new Fake<IFoo>();
 
@@ -46,95 +39,31 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void Constructor_that_takes_constructor_expression_sets_fake_object_returned_from_factory_to_FakedObject_property()
+        public void Constructor_that_takes_options_should_be_null_guarded()
         {
-            var foo = A.Fake<Foo>();
-            var serviceProviderArgument = A.Fake<IServiceProvider>();
-
-            using (Fake.CreateScope())
-            {
-                A.CallTo(() => this.factory.CreateFake(typeof(Foo), A<IEnumerable<object>>.That.IsThisSequence(new object[] { serviceProviderArgument }).Argument, false))
-                    .Returns(foo);
-
-                var fake = new Fake<Foo>(() => new Foo(serviceProviderArgument));
-
-                Assert.That(fake.FakedObject, Is.SameAs(foo));
-            }
-        }
-
-        [Test]
-        public void Constructor_that_takes_constructor_expression_should_be_null_guarded()
-        {
+            Action<IFakeOptionsBuilder<Foo>> options = x => { };
+            
             NullGuardedConstraint.Assert(() =>
-                new Fake<Foo>(() => new Foo(A.Fake<IServiceProvider>())));
+                new Fake<Foo>(options));
         }
 
         [Test]
-        public void Constructor_that_takes_constructor_expression_should_throw_if_the_specified_expression_is_not_a_constructor_call()
-        {
-            Assert.Throws<ArgumentException>(() =>
-                new Fake<Foo>(() => CreateFoo()));
-        }
-
-        private static Foo CreateFoo()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Test]
-        public void Constructor_that_takes_wrapped_instance_should_create_fake_and_set_it_to_the_FakedObject_property()
-        {
-            var foo = A.Fake<IFoo>();
-
-            var fake = new Fake<IFoo>(foo);
-
-            Assert.That(fake.FakedObject, Is.InstanceOfType<IFakedProxy>());
-        }
-
-        [Test]
-        public void Constructor_that_takes_wrapped_instance_should_create_fake_that_is_wrapper()
-        {
-            var fake = new Fake<IFoo>(A.Fake<IFoo>());
-
-            Assert.That(fake.FakedObject, new WrappingFakeConstraint());
-        }
-
-        [Test]
-        public void Constructor_that_takes_wrapped_instance_should_be_null_guarded()
-        {
-            NullGuardedConstraint.Assert(() =>
-                new Fake<IFoo>(A.Fake<IFoo>()));
-        }
-
-        [Test]
-        public void Constructor_that_takes_arguments_for_constructor_should_be_null_guarded()
-        {
-            NullGuardedConstraint.Assert(() =>
-                new Fake<Foo>(new object[] { A.Fake<IServiceProvider>() }));
-        }
-
-        [Test]
-        public void Constructor_that_takes_arguments_for_constructor_should_set_fake_returned_from_factory_to_FakedObject_property()
+        public void Constructor_that_takes_options_should_set_fake_returned_from_factory_to_FakedObject_property()
         {
             var argumentsForConstructor = new object[] { A.Fake<IFoo>() };
             var fakeReturnedFromFactory = A.Fake<AbstractTypeWithNoDefaultConstructor>(x => x.WithArgumentsForConstructor(argumentsForConstructor));
 
+            Action<IFakeOptionsBuilder<AbstractTypeWithNoDefaultConstructor>> options = x => { };
+
             using (Fake.CreateScope())
             {
-                A.CallTo(() => this.factory.CreateFake(typeof(AbstractTypeWithNoDefaultConstructor), A<IEnumerable<object>>.That.IsThisSequence(argumentsForConstructor).Argument, false))
+                A.CallTo(() => this.fakeCreator.CreateFake<AbstractTypeWithNoDefaultConstructor>(options))
                     .Returns(fakeReturnedFromFactory);
 
-                var fake = new Fake<AbstractTypeWithNoDefaultConstructor>(argumentsForConstructor);
+                var fake = new Fake<AbstractTypeWithNoDefaultConstructor>(options);
 
                 Assert.That(fake.FakedObject, Is.SameAs(fakeReturnedFromFactory));
             }
-        }
-
-        [Test]
-        public void Constructor_that_takes_arguments_for_constructor_should_throw_when_faked_type_has_accessible_constructor()
-        {
-            Assert.Throws<InvalidOperationException>(() =>
-                new Fake<Foo>(new object[] { A.Fake<IServiceProvider>() }));
         }
 
         public abstract class AbstractTypeWithNoDefaultConstructor
