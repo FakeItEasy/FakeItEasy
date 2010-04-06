@@ -181,7 +181,7 @@ namespace FakeItEasy.DynamicProxy
 
         private IEnumerable<ConstructorAndArgumentsInfo> ResolveConstructors(Type typeToProxy)
         {
-            var resolver = new ConstructorResolver(typeToProxy, this.container);
+            var resolver = new ConstructorResolver(typeToProxy, this);
             return resolver.ResolveConstructors();
         }
 
@@ -193,24 +193,24 @@ namespace FakeItEasy.DynamicProxy
         private class ConstructorResolver
         {
             private IDictionary<Type, object> resolvedValues;
-            private IFakeObjectContainer container;
             private Type typeToResolvedConstructorFor;
             private ConstructorResolver parent;
+            private DynamicProxyProxyGenerator proxyGenerator;
 
-            public ConstructorResolver(Type typeToResolveConstructorFor, IFakeObjectContainer container)
-                : this(typeToResolveConstructorFor, new Dictionary<Type, object>(), container)
+            public ConstructorResolver(Type typeToResolveConstructorFor, DynamicProxyProxyGenerator proxyGenerator)
+                : this(typeToResolveConstructorFor, new Dictionary<Type, object>(), proxyGenerator)
             {
             }
 
-            private ConstructorResolver(Type typeToResolveConstructorFor, IDictionary<Type, object> resolvedValues, IFakeObjectContainer container)
+            private ConstructorResolver(Type typeToResolveConstructorFor, IDictionary<Type, object> resolvedValues, DynamicProxyProxyGenerator proxyGenerator)
             {
                 this.typeToResolvedConstructorFor = typeToResolveConstructorFor;
                 this.resolvedValues = resolvedValues;
-                this.container = container;
+                this.proxyGenerator = proxyGenerator;
             }
 
             private ConstructorResolver(Type typeToResolveConstructorFor, ConstructorResolver parent)
-                : this(typeToResolveConstructorFor, parent.resolvedValues, parent.container)
+                : this(typeToResolveConstructorFor, parent.resolvedValues, parent.proxyGenerator)
             {
                 this.parent = parent;
             }
@@ -253,7 +253,7 @@ namespace FakeItEasy.DynamicProxy
                     return true;
                 }
 
-                if (this.container.TryCreateFakeObject(typeOfValue, out dummyValue))
+                if (this.proxyGenerator.container.TryCreateFakeObject(typeOfValue, out dummyValue))
                 {
                     this.resolvedValues.Add(typeOfValue, dummyValue);
                     return true;
@@ -261,7 +261,7 @@ namespace FakeItEasy.DynamicProxy
 
                 if (typeOfValue.IsInterface)
                 {
-                    dummyValue = DynamicProxyProxyGenerator.proxyGenerator.CreateInterfaceProxyWithoutTarget(typeOfValue);
+                    dummyValue = this.proxyGenerator.DoGenerateProxy(typeOfValue, Enumerable.Empty<Type>(), null, null).Proxy;
                     this.resolvedValues.Add(typeOfValue, dummyValue);
                     return true;
                 }
@@ -282,7 +282,7 @@ namespace FakeItEasy.DynamicProxy
                     {
                         try
                         {
-                            dummyValue = DynamicProxyProxyGenerator.proxyGenerator.CreateClassProxy(typeOfValue);
+                            dummyValue = this.proxyGenerator.DoGenerateProxy(typeOfValue, Enumerable.Empty<Type>(), null, constructor.ArgumentsToUse).Proxy;
                             this.resolvedValues.Add(typeOfValue, dummyValue);
                             return true;
                         }
