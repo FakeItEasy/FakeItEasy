@@ -45,7 +45,7 @@ namespace FakeItEasy.IntegrationTests
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
                 Assert.Throws<FakeCreationException>(() =>
-                    A.Fake<Uri>());
+                    A.Fake<Guid>());
             }
         }
 
