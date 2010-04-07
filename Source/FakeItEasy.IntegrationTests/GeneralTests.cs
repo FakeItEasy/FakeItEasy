@@ -44,7 +44,7 @@ namespace FakeItEasy.IntegrationTests
         {
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
-                Assert.Throws<ArgumentException>(() =>
+                Assert.Throws<FakeCreationException>(() =>
                     A.Fake<Uri>());
             }
         }
@@ -54,20 +54,20 @@ namespace FakeItEasy.IntegrationTests
         {
             using (Fake.CreateScope())
             {
-                var thrown = Assert.Throws<ArgumentException>(() =>
+                var thrown = Assert.Throws<FakeCreationException>(() =>
                     A.Fake<NonResolvableType>());
 
                 Assert.That(thrown.Message, Is.EqualTo(@"
 
-  Can not create fake of the type 'FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType'.
+  FakeItEasy failed to create fake object of type ""FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType"".
 
   1. The type is not registered in the current IFakeObjectContainer.
   2. The current IProxyGenerator failed to generate a proxy for the following reason:
      
      The type has no default constructor and none of the available constructors listed below can be resolved:
 
-     Constructor: (FakeItEasy.Tests.IFoo, System.String*)
-     Constructor: (System.String*)
+     public     (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
+     protected  (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
 
      * The types marked with with a star (*) can not be faked. Register these types in the current
      IFakeObjectContainer in order to generate this fake.
@@ -79,12 +79,20 @@ namespace FakeItEasy.IntegrationTests
 
         public class NonResolvableType
         {
-            public NonResolvableType(IFoo foo, string bar)
+            public NonResolvableType(IFoo foo, NoInstanceType bar)
             {
 
             }
 
-            public NonResolvableType(string bar)
+            protected NonResolvableType(NoInstanceType bar)
+            {
+
+            }
+        }
+
+        public class NoInstanceType
+        {
+            private NoInstanceType()
             {
 
             }

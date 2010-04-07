@@ -6,6 +6,8 @@ namespace FakeItEasy.Tests.Core.Creation
     using FakeItEasy.Core.Creation;
     using FakeItEasy.SelfInitializedFakes;
     using NUnit.Framework;
+using FakeItEasy.Expressions;
+using System.Collections.Generic;
     
     [TestFixture]
     public class DefaultFakeCreatorTests
@@ -33,8 +35,7 @@ namespace FakeItEasy.Tests.Core.Creation
             this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => new Foo(serviceProvider)));
 
             // Assert
-            var optionsWithCorrectArguments = A<FakeOptions>.That.Matches(x => x.ArgumentsForConstructor.SequenceEqual(new object[] { serviceProvider }));
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, optionsWithCorrectArguments)).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.HasArgumentsForConstructor(new object[] { serviceProvider }))).MustHaveHappened();
         }
         
         [Test]
@@ -72,8 +73,21 @@ namespace FakeItEasy.Tests.Core.Creation
             this.creator.CreateFake<IFoo>(x => x.Wrapping(wrapped));
 
             // Assert
-            var optionsWithWrappedInstance = A<FakeOptions>.That.Matches(x => x.WrappedInstance == wrapped);
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, optionsWithWrappedInstance)).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.Wraps(wrapped))).MustHaveHappened();
+        }
+
+        [Test]
+        public void CreateFake_should_pass_recorder_to_manager()
+        {
+            // Arrange
+            var wrapped = A.Fake<IFoo>();
+            var recorder = A.Fake<ISelfInitializingFakeRecorder>();
+
+            // Act
+            this.creator.CreateFake<IFoo>(x => x.Wrapping(wrapped).RecordedBy(recorder));
+
+            // Assert
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.HasRecorder(recorder))).MustHaveHappened();
         }
 
         [Test]
@@ -161,8 +175,7 @@ namespace FakeItEasy.Tests.Core.Creation
             this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(constructorArguments));
 
             // Assert
-            var optionsWithCorrectArguments = A<FakeOptions>.That.Matches(x => x.ArgumentsForConstructor != null && x.ArgumentsForConstructor.SequenceEqual(constructorArguments));
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, optionsWithCorrectArguments)).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.HasArgumentsForConstructor(constructorArguments))).MustHaveHappened();
         }
 
         private void ConfigureDefaultValuesForFakeAndDummyManager()
@@ -171,6 +184,24 @@ namespace FakeItEasy.Tests.Core.Creation
                 .Returns(A.Fake<IFoo>());
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(Foo), A<FakeOptions>.Ignored))
                 .Returns(A.Fake<Foo>());
+        }
+    }
+
+    public static class FakeOptionsConstraints
+    {
+        internal static ArgumentConstraint<FakeOptions> HasRecorder(this ArgumentConstraintScope<FakeOptions> scope, ISelfInitializingFakeRecorder recorder)
+        {
+            return ArgumentConstraint.Create(scope, x => recorder.Equals(x.SelfInitializedFakeRecorder), "Specified recorder");
+        }
+
+        internal static ArgumentConstraint<FakeOptions> HasArgumentsForConstructor(this ArgumentConstraintScope<FakeOptions> scope, IEnumerable<object> argumentsForConstructor)
+        {
+            return ArgumentConstraint.Create(scope, x => argumentsForConstructor.SequenceEqual(x.ArgumentsForConstructor), "Constructor arguments ({0})".FormatInvariant(string.Join(", ", argumentsForConstructor.Select(x => x.ToString()).ToArray())));
+        }
+
+        internal static ArgumentConstraint<FakeOptions> Wraps(this ArgumentConstraintScope<FakeOptions> scope, object wrappedInstance)
+        {
+            return ArgumentConstraint.Create(scope, x => object.ReferenceEquals(x.WrappedInstance, wrappedInstance), "Wraps {0}".FormatInvariant(wrappedInstance));
         }
     }
 }

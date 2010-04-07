@@ -100,6 +100,7 @@ namespace FakeItEasy.Core.Creation
 
             public IFakeOptionsBuilder<T> RecordedBy(FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder)
             {
+                this.Options.SelfInitializedFakeRecorder = recorder;
                 return this;
             }
 

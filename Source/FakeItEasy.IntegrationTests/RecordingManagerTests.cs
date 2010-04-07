@@ -11,7 +11,7 @@ namespace FakeItEasy.IntegrationTests
     [TestFixture]
     public class RecordingManagerTests
     {
-        [Test]
+        [Test, Explicit]
         public void Second_pass_should_use_recorded_values_from_previous_pass()
         {
             var storage = new Storage();
@@ -47,7 +47,7 @@ namespace FakeItEasy.IntegrationTests
             }
         }
 
-        [Test]
+        [Test, Explicit]
         public void FileRecorder_tests()
         {
             using (var recorder = Recorders.FileRecorder(@"C:\Users\Patrik\Documents\recorded_calls.dat"))
