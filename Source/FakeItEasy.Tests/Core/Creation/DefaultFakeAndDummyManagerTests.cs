@@ -196,7 +196,9 @@ with two lines.");
             Assert.That(ex.Message, Is.EqualTo(@"
 
   FakeItEasy failed to create fake object of type ""FakeItEasy.Tests.IFoo"".
-  The current IProxyGenerator failed with the following error message:
+
+  1. The type is not registered in the current IFakeObjectContainer.
+  2. The current IProxyGenerator failed to generate a proxy for the following reason:
 
     Error message
     with two lines.

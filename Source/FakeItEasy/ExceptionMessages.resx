@@ -190,6 +190,8 @@
     <value>FakeItEasy failed to create fake object of type "{0}".
 
 1. The type is not registered in the current IFakeObjectContainer.
-2. The current IProxyGenerator failed to generate a proxy for the following reason: {1}</value>
+2. The current IProxyGenerator failed to generate a proxy for the following reason:
+
+{1}</value>
   </data>
 </root>
