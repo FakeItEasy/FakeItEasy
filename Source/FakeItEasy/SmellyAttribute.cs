@@ -8,7 +8,7 @@ namespace FakeItEasy
     /// code smell.
     /// </summary>
     [AttributeUsage(AttributeTargets.All)]
-    internal class SmellyAttribute
+    internal sealed class SmellyAttribute
         : Attribute
     {
         /// <summary>

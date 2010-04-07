@@ -121,7 +121,7 @@ namespace FakeItEasy.DynamicProxy
             var candidateConstructorArguments = this.CreateConstructorArgumentCandidateSets(typeToProxy, argumentsForConstructor);
 
             DynamicProxyResult result = null;
-            if (!this.TryGenerateProxyUsingCandidateConstructorArguments(typeToProxy, additionalInterfacesToImplement, fakeObjectInterceptor, candidateConstructorArguments, out result))
+            if (!TryGenerateProxyUsingCandidateConstructorArguments(typeToProxy, additionalInterfacesToImplement, fakeObjectInterceptor, candidateConstructorArguments, out result))
             {
                 result = new DynamicProxyResult(typeToProxy, "false");
             }
@@ -147,7 +147,7 @@ namespace FakeItEasy.DynamicProxy
             return argumentSetsForConstructor;
         }
 
-        private bool TryGenerateProxyUsingCandidateConstructorArguments(
+        private static bool TryGenerateProxyUsingCandidateConstructorArguments(
             Type typeToProxy, 
             IEnumerable<Type> additionalInterfacesToImplement,
             FakeObjectInterceptor fakeObjectInterceptor, 
@@ -280,14 +280,13 @@ namespace FakeItEasy.DynamicProxy
 
                     if (constructor != null)
                     {
-                        try
+                        var proxyResult = this.proxyGenerator.DoGenerateProxy(typeOfValue, Enumerable.Empty<Type>(), null, constructor.ArgumentsToUse);
+
+                        if (proxyResult.ProxyWasSuccessfullyCreated)
                         {
-                            dummyValue = this.proxyGenerator.DoGenerateProxy(typeOfValue, Enumerable.Empty<Type>(), null, constructor.ArgumentsToUse).Proxy;
+                            dummyValue = proxyResult.Proxy;
                             this.resolvedValues.Add(typeOfValue, dummyValue);
                             return true;
-                        }
-                        catch (Exception)
-                        {
                         }
 
                         try

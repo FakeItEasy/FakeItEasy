@@ -101,20 +101,6 @@
  </Rules>
  <FxCopReport Version="1.36">
   <Namespaces>
-   <Namespace Name="FakeItEasy.Core.Creation">
-    <Messages>
-     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2010-03-21 21:15:10Z">
-      <Issue>
-       <Item>FakeItEasy.Core.Creation</Item>
-      </Issue>
-      <Notes>
-       <User Name="Patrik">
-        <Note Id="11" />
-       </User>
-      </Notes>
-     </Message>
-    </Messages>
-   </Namespace>
    <Namespace Name="FakeItEasy.Expressions">
     <Messages>
      <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2010-03-21 21:15:10Z">
@@ -229,16 +215,11 @@
            </Member>
            <Member Name="#Fake`1(System.Action`1&lt;FakeItEasy.Core.IFakeOptionsBuilder`1&lt;!!0&gt;&gt;)">
             <Messages>
-             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-03-21 21:15:10Z">
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue>
                <Item>'A.Fake&lt;T&gt;(Action&lt;IFakeOptionsBuilder&lt;T&gt;&gt;)'</Item>
                <Item>'Action&lt;IFakeOptionsBuilder&lt;T&gt;&gt;'</Item>
               </Issue>
-              <Notes>
-               <User Name="Patrik">
-                <Note Id="13" />
-               </User>
-              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -407,18 +388,13 @@
          </Type>
          <Type Name="Fake`1">
           <Members>
-           <Member Name="#.ctor(System.Linq.Expressions.Expression`1&lt;System.Func`1&lt;!0&gt;&gt;)">
+           <Member Name="#.ctor(System.Action`1&lt;FakeItEasy.Core.IFakeOptionsBuilder`1&lt;!0&gt;&gt;)">
             <Messages>
-             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2009-09-05 10:55:05Z">
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue>
-               <Item>'Fake&lt;T&gt;.Fake(Expression&lt;Func&lt;T&gt;&gt;)'</Item>
-               <Item>'Expression&lt;Func&lt;T&gt;&gt;'</Item>
+               <Item>'Fake&lt;T&gt;.Fake(Action&lt;IFakeOptionsBuilder&lt;T&gt;&gt;)'</Item>
+               <Item>'Action&lt;IFakeOptionsBuilder&lt;T&gt;&gt;'</Item>
               </Issue>
-              <Notes>
-               <User Name="Patrik">
-                <Note Id="7" />
-               </User>
-              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -443,29 +419,19 @@
           <Members>
            <Member Name="#Matching`1(System.Collections.Generic.IEnumerable`1&lt;FakeItEasy.Core.ICompletedFakeObjectCall&gt;,System.Linq.Expressions.Expression`1&lt;System.Action`1&lt;!!0&gt;&gt;)">
             <Messages>
-             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2010-03-21 21:15:10Z">
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue>
                <Item>'callSpecification'</Item>
                <Item>'FakeExtensions.Matching&lt;TFake&gt;(this IEnumerable&lt;ICompletedFakeObjectCall&gt;, Expression&lt;Action&lt;TFake&gt;&gt;)'</Item>
                <Item>'Expression&lt;Action&lt;TFake&gt;&gt;'</Item>
                <Item>'LambdaExpression'</Item>
               </Issue>
-              <Notes>
-               <User Name="Patrik">
-                <Note Id="15" />
-               </User>
-              </Notes>
              </Message>
-             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-03-21 21:15:10Z">
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue>
                <Item>'FakeExtensions.Matching&lt;TFake&gt;(this IEnumerable&lt;ICompletedFakeObjectCall&gt;, Expression&lt;Action&lt;TFake&gt;&gt;)'</Item>
                <Item>'Expression&lt;Action&lt;TFake&gt;&gt;'</Item>
               </Issue>
-              <Notes>
-               <User Name="Patrik">
-                <Note Id="16" />
-               </User>
-              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -525,15 +491,6 @@
             </Messages>
            </Member>
           </Members>
-         </Type>
-         <Type Name="SmellyAttribute">
-          <Messages>
-           <Message TypeName="AvoidUnsealedAttributes" Category="Microsoft.Performance" CheckId="CA1813" Status="Excluded" Created="2010-03-21 21:15:10Z">
-            <Issue>
-             <Item>'SmellyAttribute'</Item>
-            </Issue>
-           </Message>
-          </Messages>
          </Type>
         </Types>
        </Namespace>
@@ -638,7 +595,7 @@
         <Types>
          <Type Name="ArgumentCollection">
           <Messages>
-           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Status="Excluded" Created="2009-12-25 00:06:38Z">
+           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Status="Excluded" Created="2010-04-07 20:12:28Z">
             <Issue Name="TypeNoAlternate">
              <Item>'ArgumentCollection'</Item>
              <Item>Collection</Item>
@@ -648,7 +605,7 @@
           <Members>
            <Member Name="#Get`1(System.Int32)">
             <Messages>
-             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2009-12-25 00:06:38Z">
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue>
                <Item>'ArgumentCollection.Get&lt;T&gt;(int)'</Item>
                <Item>'T'</Item>
@@ -658,7 +615,7 @@
            </Member>
            <Member Name="#Get`1(System.String)">
             <Messages>
-             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2009-12-25 00:06:38Z">
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue>
                <Item>'ArgumentCollection.Get&lt;T&gt;(string)'</Item>
                <Item>'T'</Item>
@@ -668,25 +625,9 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="DelegateFakeObjectContainer">
-          <Members>
-           <Member Name="#ConfigureFake(System.Type,System.Object)">
-            <Messages>
-             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Status="Excluded" Created="2009-12-25 00:06:38Z">
-              <Issue>
-               <Item>'DelegateFakeObjectContainer.ConfigureFake(Type, object)'</Item>
-               <Item>'typeOfFake'</Item>
-               <Item>'typeOfFakeObject'</Item>
-               <Item>'IFakeObjectContainer.ConfigureFake(Type, object)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="FakeObject+EventRule">
           <Messages>
-           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Excluded" Created="2009-12-25 00:06:38Z" FixCategory="NonBreaking">
+           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Excluded" Created="2010-04-07 20:12:28Z" FixCategory="NonBreaking">
             <Issue Name="NonBreaking">
              <Item>'FakeObject.EventRule'</Item>
              <Item>'EventHandlerList'</Item>
@@ -696,49 +637,18 @@
          </Type>
          <Type Name="FakeObject+Factory">
           <Messages>
-           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2009-12-25 00:06:38Z">
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2010-04-07 20:12:28Z">
             <Issue>
              <Item>'FakeObject.Factory'</Item>
             </Issue>
            </Message>
           </Messages>
          </Type>
-         <Type Name="FakeObjectBuilder+FakeGenerationOptions">
-          <Members>
-           <Member Name="#Interfaces">
-            <Accessors>
-             <Accessor Name="#set_Interfaces(System.Collections.Generic.ICollection`1&lt;System.Type&gt;)">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2010-03-21 21:15:10Z">
-                <Issue>
-                 <Item>'FakeObjectBuilder.FakeGenerationOptions.Interfaces.set(ICollection&lt;Type&gt;)'</Item>
-                </Issue>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="FakeObjectFactory+GeneratorCommand">
-          <Members>
-           <Member Name="#GenerateFakeObject()">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2010-03-21 21:15:10Z">
-              <Issue>
-               <Item>'FakeObjectFactory.GeneratorCommand.GenerateFakeObject()'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ICallMatcher">
           <Members>
            <Member Name="#Matches(FakeItEasy.Core.IFakeObjectCall)">
             <Messages>
-             <Message Id="Call" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2009-12-25 00:06:38Z">
+             <Message Id="Call" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue Name="MemberParameter">
                <Item>'ICallMatcher.Matches(IFakeObjectCall)'</Item>
                <Item>'call'</Item>
@@ -753,7 +663,7 @@
           <Members>
            <Member Name="#ConfigureFake(System.Type,System.Object)">
             <Messages>
-             <Message Id="object" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2009-12-25 00:06:38Z">
+             <Message Id="object" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue Name="LanguageIndependentMemberParameter">
                <Item>'IFakeObjectContainer.ConfigureFake(Type, object)'</Item>
                <Item>Object</Item>
@@ -764,7 +674,7 @@
            </Member>
            <Member Name="#TryCreateFakeObject(System.Type,System.Object&amp;)">
             <Messages>
-             <Message TypeName="UseGenericsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1007" Status="Excluded" Created="2009-12-25 00:06:38Z">
+             <Message TypeName="UseGenericsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1007" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue>
                <Item>'IFakeObjectContainer.TryCreateFakeObject(Type, out object)'</Item>
               </Issue>
@@ -777,7 +687,7 @@
           <Members>
            <Member Name="#Implements(System.Type)">
             <Messages>
-             <Message Id="Implements" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2010-03-21 21:15:10Z">
+             <Message Id="Implements" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue Name="Member">
                <Item>'IFakeOptionsBuilder&lt;T&gt;.Implements(Type)'</Item>
                <Item>Implements</Item>
@@ -787,7 +697,7 @@
            </Member>
            <Member Name="#WithArgumentsForConstructor(System.Linq.Expressions.Expression`1&lt;System.Func`1&lt;!0&gt;&gt;)">
             <Messages>
-             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-03-21 21:15:10Z">
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue>
                <Item>'IFakeOptionsBuilder&lt;T&gt;.WithArgumentsForConstructor(Expression&lt;Func&lt;T&gt;&gt;)'</Item>
                <Item>'Expression&lt;Func&lt;T&gt;&gt;'</Item>
@@ -801,7 +711,7 @@
           <Members>
            <Member Name="#Equals(System.Object)">
             <Messages>
-             <Message TypeName="OverloadOperatorEqualsOnOverridingValueTypeEquals" Category="Microsoft.Usage" CheckId="CA2231" Status="Excluded" Created="2009-12-25 00:06:38Z">
+             <Message TypeName="OverloadOperatorEqualsOnOverridingValueTypeEquals" Category="Microsoft.Usage" CheckId="CA2231" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue>
                <Item>'MethodInfoManager.TypeMethodInfoPair'</Item>
               </Issue>
@@ -814,46 +724,26 @@
        </Namespace>
        <Namespace Name="FakeItEasy.Core.Creation">
         <Types>
-         <Type Name="IProxyGeneratorNew">
-          <Messages>
-           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Status="Excluded" Created="2010-03-21 21:15:10Z">
-            <Issue Name="TypeNewerVersion">
-             <Item>New</Item>
-             <Item>'IProxyGeneratorNew'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
          <Type Name="ProxyResult">
           <Members>
            <Member Name="#.ctor(System.Type)">
             <Messages>
-             <Message Id="proxied" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2010-03-21 21:15:10Z">
+             <Message Id="proxied" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue Name="MemberParameter">
                <Item>'ProxyResult.ProxyResult(Type)'</Item>
                <Item>proxied</Item>
                <Item>'proxiedType'</Item>
               </Issue>
-              <Notes>
-               <User Name="Patrik">
-                <Note Id="12" />
-               </User>
-              </Notes>
              </Message>
             </Messages>
            </Member>
            <Member Name="#ProxiedType">
             <Messages>
-             <Message Id="Proxied" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2010-03-21 21:15:10Z">
+             <Message Id="Proxied" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue Name="Member">
                <Item>Proxied</Item>
                <Item>'ProxyResult.ProxiedType'</Item>
               </Issue>
-              <Notes>
-               <User Name="Patrik">
-                <Note Id="12" />
-               </User>
-              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -863,6 +753,44 @@
        </Namespace>
        <Namespace Name="FakeItEasy.DynamicProxy">
         <Types>
+         <Type Name="DynamicProxyProxyGenerator">
+          <Members>
+           <Member Name="#TryGenerateProxyUsingCandidateConstructorArguments(System.Type,System.Collections.Generic.IEnumerable`1&lt;System.Type&gt;,FakeItEasy.DynamicProxy.DynamicProxyProxyGenerator+FakeObjectInterceptor,System.Collections.Generic.IEnumerable`1&lt;System.Collections.Generic.IEnumerable`1&lt;System.Object&gt;&gt;,FakeItEasy.DynamicProxy.DynamicProxyProxyGenerator+DynamicProxyResult&amp;)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2010-04-07 20:12:28Z">
+              <Issue>
+               <Item>'DynamicProxyProxyGenerator.TryGenerateProxyUsingCandidateConstructorArguments(Type, IEnumerable&lt;Type&gt;, DynamicProxyProxyGenerator.FakeObjectInterceptor, IEnumerable&lt;IEnumerable&lt;object&gt;&gt;, out DynamicProxyProxyGenerator.DynamicProxyResult)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Patrik">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="DynamicProxyProxyGenerator+ConstructorResolver">
+          <Members>
+           <Member Name="#TryResolveDummyValueOfType(System.Type,System.Object&amp;)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2010-04-07 20:12:28Z">
+              <Issue>
+               <Item>'DynamicProxyProxyGenerator.ConstructorResolver.TryResolveDummyValueOfType(Type, out object)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Patrik">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="DynamicProxyProxyGenerator+DynamicProxyResult">
           <Members>
            <Member Name="#.ctor(System.Type)">
@@ -984,7 +912,7 @@
           <Members>
            <Member Name="#ApplyNext(FakeItEasy.Core.IWritableFakeObjectCall)">
             <Messages>
-             <Message Id="Call" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2009-12-25 00:06:38Z">
+             <Message Id="Call" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue Name="MemberParameter">
                <Item>'ISelfInitializingFakeRecorder.ApplyNext(IWritableFakeObjectCall)'</Item>
                <Item>'call'</Item>
@@ -995,7 +923,7 @@
            </Member>
            <Member Name="#RecordCall(FakeItEasy.Core.ICompletedFakeObjectCall)">
             <Messages>
-             <Message Id="Call" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2009-12-25 00:06:38Z">
+             <Message Id="Call" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue Name="MemberParameter">
                <Item>'ISelfInitializingFakeRecorder.RecordCall(ICompletedFakeObjectCall)'</Item>
                <Item>'call'</Item>
@@ -1063,18 +991,14 @@
     <Note Id="1" Modified="2009-12-25 00:08:18Z">Uses the same names as the hidden method.</Note>
     <Note Id="2" Modified="2009-12-25 00:08:31Z">Uses the same names as the hidden methods.</Note>
     <Note Id="3" Modified="2009-12-25 00:08:55Z">By design, must be this way in order to use it to raise events.</Note>
+    <Note Id="4" Modified="2010-04-07 20:29:19Z">Appropriate in Try-methods.</Note>
     <Note Id="5" Modified="2009-12-25 00:11:58Z">Means "with out", not "without".</Note>
     <Note Id="6" Modified="2009-12-25 00:12:40Z">By design.</Note>
     <Note Id="7" Modified="2009-12-25 00:12:52Z">By design.</Note>
     <Note Id="8" Modified="2009-12-25 00:13:49Z">By design, this is a special case since the type parameter is used to display the type of the argument.</Note>
     <Note Id="9" Modified="2009-12-25 00:14:20Z">By design.</Note>
     <Note Id="10" Modified="2010-03-21 21:15:39Z">Put in it's own namespace so that it can be used separately as extension methods.</Note>
-    <Note Id="11" Modified="2010-03-21 21:16:45Z">Does contain enough types.</Note>
-    <Note Id="12" Modified="2010-03-21 21:17:12Z">Correct spelling.</Note>
-    <Note Id="13" Modified="2010-03-21 21:18:14Z">By design.</Note>
     <Note Id="14" Modified="2010-03-21 21:18:21Z">By design.</Note>
-    <Note Id="15" Modified="2010-03-21 21:19:42Z">Would make the api unusable.</Note>
-    <Note Id="16" Modified="2010-03-21 21:19:52Z">By design.</Note>
     <Note Id="17" Modified="2010-03-21 21:20:10Z">By design.</Note>
     <Note Id="18" Modified="2010-03-21 21:22:07Z">Acceptable since they're only properties and only virtual for testability.</Note>
     <Note Id="19" Modified="2010-03-21 21:22:28Z">The dispose method is not used to dispose of unmanaged resources in this case.</Note>
@@ -1088,12 +1012,6 @@
    </Rule>
    <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
     <Resolution Name="Default" />
-   </Rule>
-   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
-    <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
-   </Rule>
-   <Rule TypeName="AvoidUnsealedAttributes" Category="Microsoft.Performance" CheckId="CA1813">
-    <Resolution Name="Default">Seal {0}, if possible.</Resolution>
    </Rule>
    <Rule TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816">
     <Resolution Name="NotCalled">Change {0} to call {1}. This will prevent unnecessary finalization of the object once it has been disposed and it has fallen out of scope.</Resolution>
@@ -1129,7 +1047,6 @@
     <Resolution Name="LanguageIndependentMemberParameter">In member {0}, consider replacing the data type identifier '{1}' in parameter name {2} with a more generic term, such as 'value'.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711">
-    <Resolution Name="TypeNewerVersion">Either replace the suffix '{0}' in type name {1} with the suggested numeric alternate '2' or provide a more meaningful suffix that distinguishes it from the type it replaces.</Resolution>
     <Resolution Name="TypeNoAlternate">Rename type name {0} so that it does not end in '{1}'.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716">
@@ -1146,9 +1063,6 @@
    </Rule>
    <Rule TypeName="OverloadOperatorEqualsOnOverridingValueTypeEquals" Category="Microsoft.Usage" CheckId="CA2231">
     <Resolution Name="Default">Because {0} is a value type that overrides ValueType.Equals, it should also overload the equality and inequality operators (== and !=).</Resolution>
-   </Rule>
-   <Rule TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725">
-    <Resolution Name="Default">In member {0}, change parameter name {1} to {2} in order to match the identifier as it has been declared in {3}.</Resolution>
    </Rule>
    <Rule TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109">
     <Resolution Name="Default">Consider making {0} not externally visible.</Resolution>

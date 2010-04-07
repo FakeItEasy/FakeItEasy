@@ -11,16 +11,16 @@
         /// Creates a fake object of the specified type using the specified arguments if it's
         /// supported by the container, returns a value indicating if it's supported or not.
         /// </summary>
-        /// <param name="typeOfFakeObject">The type of fake object to create.</param>
+        /// <param name="typeOfFake">The type of fake object to create.</param>
         /// <param name="fakeObject">The fake object that was created if the method returns true.</param>
         /// <returns>True if a fake object can be created.</returns>
-        bool TryCreateFakeObject(Type typeOfFakeObject, out object fakeObject);
+        bool TryCreateFakeObject(Type typeOfFake, out object fakeObject);
 
         /// <summary>
         /// Applies base configuration to a fake object.
         /// </summary>
-        /// <param name="typeOfFakeObject">The type the fake object represents.</param>
+        /// <param name="typeOfFake">The type the fake object represents.</param>
         /// <param name="fakeObject">The fake object to configure.</param>
-        void ConfigureFake(Type typeOfFakeObject, object fakeObject);
+        void ConfigureFake(Type typeOfFake, object fakeObject);
     }
 }

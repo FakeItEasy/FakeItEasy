@@ -33,7 +33,8 @@ namespace FakeItEasy.Tests.DynamicProxy
 		            typeof(IFoo),
 		            typeof(ClassWithDefaultConstructor),
 		            typeof(AbstractClassWithDefaultConstructor),
-                    typeof(TypeWithAbstractArgumentToConstructor)
+                    typeof(TypeWithAbstractArgumentToConstructor),
+                    typeof(SealedTypeThatTakesClassWithDefaultConstructorInConstructor)
 		        };
 
         private List<Type> typesThatCanNotBeProxied = new List<Type>()
