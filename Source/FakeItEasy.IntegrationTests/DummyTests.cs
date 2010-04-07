@@ -34,7 +34,7 @@ namespace FakeItEasy.IntegrationTests
         {
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
-                Assert.Throws<ArgumentException>(() =>
+                Assert.Throws<FakeCreationException>(() =>
                     A.Dummy<int>());
             }
         }

@@ -1,13 +1,13 @@
 namespace FakeItEasy.Tests.Core.Creation
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
+    using FakeItEasy.Expressions;
     using FakeItEasy.SelfInitializedFakes;
     using NUnit.Framework;
-using FakeItEasy.Expressions;
-using System.Collections.Generic;
     
     [TestFixture]
     public class DefaultFakeCreatorTests
@@ -45,7 +45,7 @@ using System.Collections.Generic;
 
             // Act
             this.creator.CreateFake<IFoo>(x => x.Implements(typeof(IFormatProvider)).Implements(typeof(IFormattable)));
-
+            
             // Assert
             var optionsWithAllInterfaces = A<FakeOptions>.That.Matches(x => 
                 x.AdditionalInterfacesToImplement.Contains(typeof(IFormatProvider)) && 
