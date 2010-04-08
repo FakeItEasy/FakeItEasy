@@ -1,7 +1,6 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-    using FakeItEasy.Core;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -17,7 +16,6 @@ namespace FakeItEasy.Configuration
         /// </summary>
         public FakeConfigurationException()
         {
-
         }
 
         /// <summary>
@@ -27,7 +25,6 @@ namespace FakeItEasy.Configuration
         public FakeConfigurationException(string message)
             : base(message)
         {
-
         }
 
         /// <summary>
@@ -38,7 +35,6 @@ namespace FakeItEasy.Configuration
         public FakeConfigurationException(string message, Exception innerException)
             : base(message, innerException)
         {
-
         }
 
         /// <summary>
@@ -55,7 +51,6 @@ namespace FakeItEasy.Configuration
         protected FakeConfigurationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-
         }
     }
 }

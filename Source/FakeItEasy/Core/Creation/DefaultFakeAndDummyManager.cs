@@ -107,6 +107,7 @@ namespace FakeItEasy.Core.Creation
         /// Creates a proxy of the specified type.
         /// </summary>
         /// <param name="typeOfProxy">The type of proxy.</param>
+        /// <param name="additionalInterfacesToImplement">Any to implement additional to the specified type of proxy.</param>
         /// <param name="argumentsForConstructor">The arguments for constructor.</param>
         /// <param name="throwOnFailure">if set to <c>true</c> an exception is thrown when the proxy generator
         /// can not generate a proxy of the specified type.</param>

@@ -24,7 +24,7 @@ namespace FakeItEasy.Configuration
         /// </summary>
         /// <param name="o">The <see cref="System.Object"/> to compare with this instance.</param>
         /// <returns>
-        /// 	<c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// <>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         bool Equals(object o);

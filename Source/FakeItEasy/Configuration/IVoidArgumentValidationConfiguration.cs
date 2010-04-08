@@ -8,6 +8,5 @@ namespace FakeItEasy.Configuration
         : IVoidConfiguration,
           IArgumentValidationConfiguration<IVoidConfiguration>
     {
-
     }
 }

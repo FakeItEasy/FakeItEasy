@@ -1,10 +1,10 @@
 namespace FakeItEasy.Configuration
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using FakeItEasy.Core;
-    using FakeItEasy.VisualBasic;
 
     internal class RuleBuilder
         : IVoidArgumentValidationConfiguration,
@@ -15,6 +15,13 @@ namespace FakeItEasy.Configuration
     {
         private FakeAsserter.Factory asserterFactory;
         private FakeObject fakeObject;
+        
+        internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeObject fakeObject, FakeAsserter.Factory asserterFactory)
+        {
+            this.RuleBeingBuilt = ruleBeingBuilt;
+            this.fakeObject = fakeObject;
+            this.asserterFactory = asserterFactory;
+        }
 
         /// <summary>
         /// Represents a delegate that creates a configuration object from
@@ -24,17 +31,28 @@ namespace FakeItEasy.Configuration
         /// <param name="ruleBeingBuilt">The rule that's being built.</param>
         /// <returns>A configuration object.</returns>
         internal delegate RuleBuilder Factory(BuildableCallRule ruleBeingBuilt, FakeObject fakeObject);
-        
-        internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeObject fakeObject, FakeAsserter.Factory asserterFactory)
-        {
-            Debug.Assert(fakeObject != null);
 
-            this.RuleBeingBuilt = ruleBeingBuilt;
-            this.fakeObject = fakeObject;
-            this.asserterFactory = asserterFactory;
+        public BuildableCallRule RuleBeingBuilt 
+        {
+            get; 
+            private set; 
         }
 
-        public BuildableCallRule RuleBeingBuilt { get; private set; }
+        public IEnumerable<ICompletedFakeObjectCall> Calls
+        {
+            get
+            {
+                return this.fakeObject.RecordedCallsInScope;
+            }
+        }
+
+        public ICallMatcher Matcher
+        {
+            get
+            {
+                return new RuleMatcher(this);
+            }
+        }
 
         public virtual IAfterCallSpecifiedConfiguration Throws(Exception exception)
         {
@@ -47,76 +65,6 @@ namespace FakeItEasy.Configuration
             Guard.IsInRange(numberOfTimesToRepeat, 1, int.MaxValue, "numberOfTimesToRepeat");
 
             this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimesToRepeat;
-        }
-
-        public class ReturnValueConfiguration<TMember>
-            : IReturnValueArgumentValidationConfiguration<TMember>, ICallCollectionAndCallMatcherAccessor
-        {
-            public RuleBuilder ParentConfiguration;
-
-            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(TMember value)
-            {
-                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(value);
-                return this.ParentConfiguration;
-            }
-
-            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(Func<TMember> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer, "valueProducer");
-
-                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(valueProducer.Invoke());
-                return this.ParentConfiguration;
-            }
-
-            public IAfterCallSpecifiedConfiguration Throws(Exception exception)
-            {
-                return this.ParentConfiguration.Throws(exception);
-            }
-
-
-            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(Func<IFakeObjectCall, TMember> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer, "valueProducer");
-
-                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(valueProducer(x));
-                return this.ParentConfiguration;
-            }
-
-            public IReturnValueConfiguration<TMember> Invokes(Action<IFakeObjectCall> action)
-            {
-                Guard.AgainstNull(action, "action");
-
-                this.ParentConfiguration.RuleBeingBuilt.Actions.Add(action);
-                return this;
-            }
-
-            public IAfterCallSpecifiedConfiguration CallsBaseMethod()
-            {
-                return this.ParentConfiguration.CallsBaseMethod();
-            }
-
-            public IReturnValueConfiguration<TMember> WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
-            {
-                Guard.AgainstNull(argumentsPredicate, "argumentsPredicate");
-
-                this.ParentConfiguration.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
-                return this;
-            }
-
-            public System.Collections.Generic.IEnumerable<ICompletedFakeObjectCall> Calls
-            {
-                get { return this.ParentConfiguration.Calls; }
-            }
-
-            public ICallMatcher Matcher
-            {
-                get { return this.ParentConfiguration.Matcher; }
-            }
-
-            public void MustHaveHappened(Repeated repeatConstraint)
-            {
-                this.ParentConfiguration.MustHaveHappened(repeatConstraint);
-            }
         }
 
         public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
@@ -151,7 +99,7 @@ namespace FakeItEasy.Configuration
         public virtual IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(params object[] values)
         {
             Guard.AgainstNull(values, "values");
-            
+
             this.RuleBeingBuilt.OutAndRefParametersValues = values;
 
             return this;
@@ -164,14 +112,80 @@ namespace FakeItEasy.Configuration
             asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.ToString(), repeatConstraint.Matches, repeatConstraint.ToString());
         }
 
-        public System.Collections.Generic.IEnumerable<ICompletedFakeObjectCall> Calls
+        public class ReturnValueConfiguration<TMember>
+            : IReturnValueArgumentValidationConfiguration<TMember>, ICallCollectionAndCallMatcherAccessor
         {
-            get { return this.fakeObject.RecordedCallsInScope; }
-        }
+            public RuleBuilder ParentConfiguration 
+            {
+                get; 
+                set; 
+            }
 
-        public ICallMatcher Matcher
-        {
-            get { return new RuleMatcher(this); }
+            public ICallMatcher Matcher
+            {
+                get
+                {
+                    return this.ParentConfiguration.Matcher;
+                }
+            }
+
+            public System.Collections.Generic.IEnumerable<ICompletedFakeObjectCall> Calls
+            {
+                get { return this.ParentConfiguration.Calls; }
+            }
+
+            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(TMember value)
+            {
+                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(value);
+                return this.ParentConfiguration;
+            }
+
+            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(Func<TMember> valueProducer)
+            {
+                Guard.AgainstNull(valueProducer, "valueProducer");
+
+                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(valueProducer.Invoke());
+                return this.ParentConfiguration;
+            }
+
+            public IAfterCallSpecifiedConfiguration Throws(Exception exception)
+            {
+                return this.ParentConfiguration.Throws(exception);
+            }
+
+            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(Func<IFakeObjectCall, TMember> valueProducer)
+            {
+                Guard.AgainstNull(valueProducer, "valueProducer");
+
+                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(valueProducer(x));
+                return this.ParentConfiguration;
+            }
+
+            public IReturnValueConfiguration<TMember> Invokes(Action<IFakeObjectCall> action)
+            {
+                Guard.AgainstNull(action, "action");
+
+                this.ParentConfiguration.RuleBeingBuilt.Actions.Add(action);
+                return this;
+            }
+
+            public IAfterCallSpecifiedConfiguration CallsBaseMethod()
+            {
+                return this.ParentConfiguration.CallsBaseMethod();
+            }
+
+            public IReturnValueConfiguration<TMember> WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
+            {
+                Guard.AgainstNull(argumentsPredicate, "argumentsPredicate");
+
+                this.ParentConfiguration.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
+                return this;
+            }
+
+            public void MustHaveHappened(Repeated repeatConstraint)
+            {
+                this.ParentConfiguration.MustHaveHappened(repeatConstraint);
+            }
         }
 
         private class RuleMatcher

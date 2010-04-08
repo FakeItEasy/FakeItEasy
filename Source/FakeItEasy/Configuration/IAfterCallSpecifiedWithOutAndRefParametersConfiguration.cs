@@ -6,5 +6,6 @@ namespace FakeItEasy.Configuration
     /// </summary>
     public interface IAfterCallSpecifiedWithOutAndRefParametersConfiguration
         : IAfterCallSpecifiedConfiguration, IOutAndRefParametersConfiguration
-    { }
+    { 
+    }
 }

@@ -15,13 +15,22 @@
                 () => new RecordedCallRule(c.Resolve<MethodInfoManager>()));
 
             container.RegisterSingleton<IRecordingCallRuleFactory>(c =>
-                new RecordingCallRuleFactory() { Container = c });
+                new RecordingCallRuleFactory() 
+                { 
+                    Container = c 
+                });
 
             container.RegisterSingleton<IConfigurationFactory>(c =>
-                new ConfigurationFactory() { Container = c });
+                new ConfigurationFactory() 
+                {
+                    Container = c 
+                });
 
             container.RegisterSingleton<IStartConfigurationFactory>(c =>
-                new StartConfigurationFactory() { Container = c });
+                new StartConfigurationFactory() 
+                {
+                    Container = c 
+                });
 
             container.RegisterSingleton<RuleBuilder.Factory>(c =>
                 (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>()));
@@ -32,7 +41,7 @@
 
         private class RecordingCallRuleFactory : IRecordingCallRuleFactory
         {
-            public DictionaryContainer Container;
+            public DictionaryContainer Container { get; set; }
 
             public RecordingCallRule<TFake> Create<TFake>(FakeObject fakeObject, RecordedCallRule recordedRule)
             {
@@ -42,7 +51,7 @@
 
         private class ConfigurationFactory : IConfigurationFactory
         {
-            public DictionaryContainer Container;
+            public DictionaryContainer Container { get; set; }
 
             private RuleBuilder.Factory BuilderFactory
             {
@@ -65,7 +74,6 @@
                 return configuration;
             }
 
-
             public IAnyCallConfiguration CreateAnyCallConfiguration(FakeObject fakeObject, AnyCallCallRule callRule)
             {
                 return new AnyCallConfiguration(fakeObject, callRule, this.Container.Resolve<IConfigurationFactory>());
@@ -74,7 +82,7 @@
 
         private class StartConfigurationFactory : IStartConfigurationFactory
         {
-            public DictionaryContainer Container;
+            public DictionaryContainer Container { get; set; }
 
             public IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeObject fakeObject)
             {

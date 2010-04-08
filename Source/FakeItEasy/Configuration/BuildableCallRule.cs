@@ -11,15 +11,12 @@ namespace FakeItEasy.Configuration
     internal abstract class BuildableCallRule
         : IFakeObjectCallRule
     {
-        #region Construction
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
             this.Applicator = x => { };
         }
-        #endregion
-
-        #region Properties
+       
         /// <summary>
         /// An action that is called by the Apply method to apply this
         /// rule to a fake object call.
@@ -49,9 +46,17 @@ namespace FakeItEasy.Configuration
             get; 
             set; 
         }
-        #endregion
 
-        #region Methods
+        /// <summary>
+        /// Gets or sets wether the base mehtod of the fake object call should be
+        /// called when the fake object call is made.
+        /// </summary>
+        public virtual bool CallBaseMethod
+        {
+            get;
+            set;
+        }
+
         public virtual void Apply(IWritableFakeObjectCall fakeObjectCall)
         {
             foreach (var action in this.Actions)
@@ -66,6 +71,36 @@ namespace FakeItEasy.Configuration
             {
                 fakeObjectCall.CallBaseMethod();
             }
+        }
+      
+        /// <summary>
+        /// Gets if this rule is applicable to the specified call.
+        /// </summary>
+        /// <param name="fakeObjectCall">The call to validate.</param>
+        /// <returns>True if the rule applies to the call.</returns>
+        public virtual bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
+        {
+            return this.OnIsApplicableTo(fakeObjectCall);
+        }
+        
+        public abstract void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate);
+
+        protected abstract bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall);
+
+        private static ICollection<int> GetIndexesOfOutAndRefParameters(IWritableFakeObjectCall fakeObjectCall)
+        {
+            var indexes = new List<int>();
+
+            var arguments = fakeObjectCall.Method.GetParameters();
+            for (int i = 0; i < arguments.Length; i++)
+            {
+                if (arguments[i].ParameterType.IsByRef)
+                {
+                    indexes.Add(i);
+                }
+            }
+
+            return indexes;
         }
 
         private void ApplyOutAndRefParametersValues(IWritableFakeObjectCall fakeObjectCall)
@@ -87,45 +122,5 @@ namespace FakeItEasy.Configuration
                 fakeObjectCall.SetArgumentValue(argument.First, argument.Second);
             }
         }
-
-        private static ICollection<int> GetIndexesOfOutAndRefParameters(IWritableFakeObjectCall fakeObjectCall)
-        {
-            var indexes = new List<int>();
-
-            var arguments = fakeObjectCall.Method.GetParameters();
-            for (int i = 0; i < arguments.Length; i++)
-            {
-                if (arguments[i].ParameterType.IsByRef)
-                {
-                    indexes.Add(i);
-                }
-            }
-
-            return indexes;
-        }
-
-        /// <summary>
-        /// Gets or sets wether the base mehtod of the fake object call should be
-        /// called when the fake object call is made.
-        /// </summary>
-        public virtual bool CallBaseMethod
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets if this rule is applicable to the specified call.
-        /// </summary>
-        /// <param name="fakeObjectCall">The call to validate.</param>
-        /// <returns>True if the rule applies to the call.</returns>
-        public virtual bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
-        {
-            return this.OnIsApplicableTo(fakeObjectCall);
-        }
-
-        protected abstract bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall);
-        public abstract void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate);
-        #endregion
     }
 }

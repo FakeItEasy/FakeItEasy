@@ -46,6 +46,13 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration(this.fakeObject, rule);
         }
 
+        public IAnyCallConfiguration AnyCall()
+        {
+            var rule = new AnyCallCallRule();
+            this.fakeObject.AddRule(rule);
+            return this.configurationFactory.CreateAnyCallConfiguration(this.fakeObject, rule);
+        }
+
         private void AssertThatMemberCanBeIntercepted(LambdaExpression callSpecification)
         {
             var methodExpression = callSpecification.Body as MethodCallExpression;
@@ -66,15 +73,8 @@ namespace FakeItEasy.Configuration
         {
             if (!this.proxyGenerator.MemberCanBeIntercepted(member))
             {
-                throw new FakeConfigurationException(ExceptionMessages.MemberCanNotBeIntercepted);            
+                throw new FakeConfigurationException(ExceptionMessages.MemberCanNotBeIntercepted);
             }
-        }
-
-        public IAnyCallConfiguration AnyCall()
-        {
-            var rule = new AnyCallCallRule();
-            this.fakeObject.AddRule(rule);
-            return this.configurationFactory.CreateAnyCallConfiguration(this.fakeObject, rule);
         }
     }
 }

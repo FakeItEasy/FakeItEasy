@@ -10,6 +10,7 @@ namespace FakeItEasy.Configuration
     internal interface IFakeConfigurationManager
     {
         IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification);
+
         IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification);
     }
 }

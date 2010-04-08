@@ -9,6 +9,5 @@ namespace FakeItEasy.Configuration
         : IReturnValueConfiguration<TMember>,
           IArgumentValidationConfiguration<IReturnValueConfiguration<TMember>>
     {
-
     }
 }

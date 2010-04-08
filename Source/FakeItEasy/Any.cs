@@ -28,7 +28,7 @@ namespace FakeItEasy
         /// <param name="objB">The second object to compare.</param>
         /// <returns>True if the two objects are equal.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new static bool Equals(object objA, object objB)
+        public static new bool Equals(object objA, object objB)
         {
             return object.Equals(objA, objB);
         }
@@ -40,7 +40,7 @@ namespace FakeItEasy
         /// <param name="objB">The obj B.</param>
         /// <returns>True if the objects are the same reference.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new static bool ReferenceEquals(object objA, object objB)
+        public static new bool ReferenceEquals(object objA, object objB)
         {
             return object.ReferenceEquals(objA, objB);
         }

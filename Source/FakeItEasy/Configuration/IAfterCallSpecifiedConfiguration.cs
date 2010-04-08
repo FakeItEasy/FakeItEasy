@@ -5,7 +5,6 @@ namespace FakeItEasy.Configuration
     /// </summary>
     public interface IAfterCallSpecifiedConfiguration
         : IRepeatConfiguration
-    {
-        
+    {   
     }
 }
