@@ -61,59 +61,39 @@ namespace FakeItEasy.IoC
         internal void RegisterSingleton<T>(Func<DictionaryContainer, T> resolver)
         {
             var singletonResolver = new SingletonResolver<T>(resolver);
-			
+
             this.Register<T>(singletonResolver.Resolve);
         }
-		
-		private class SingletonResolver<T>
-		{
-			private SingletonResolverState state;
-			
-			public SingletonResolver(Func<DictionaryContainer, T> resolveFunction)
-			{
-				this.state = new UnresolvedState(this, resolveFunction);	
-			}
-			
-			public T Resolve(DictionaryContainer container)
-			{
-				return this.state.Resolve(container);	
-			}
-			
-			private abstract class SingletonResolverState
-			{
-				public abstract T Resolve(DictionaryContainer container);					
-			}
-			
-			private class UnresolvedState
-				: SingletonResolverState
-			{				
-				private Func<DictionaryContainer, T> resolveFunction;
-				private SingletonResolver<T> resolver;
-				
-				public UnresolvedState(SingletonResolver<T> resolver, Func<DictionaryContainer, T> resolveFunction)
-				{
-					this.resolveFunction = resolveFunction;	
-					this.resolver = resolver;
-				}
-				
-				public override T Resolve (DictionaryContainer container)
-				{
-					lock (this)
-					{
-                        if (this.SingletonHasNotBeenCreated)
-                        {
-                            var instance = this.resolveFunction(container);
-                            this.resolver.state = new ResolvedState(instance);
-                            this.SignalThatSingletonHasBeenCreated();
-                        }
 
-                        return this.resolver.Resolve(container);
-					}
-				}
+        private class SingletonResolver<T>
+        {
+            private SingletonResolverState state;
 
-                private void SignalThatSingletonHasBeenCreated()
+            public SingletonResolver(Func<DictionaryContainer, T> resolveFunction)
+            {
+                this.state = new UnresolvedState(this, resolveFunction);
+            }
+
+            public T Resolve(DictionaryContainer container)
+            {
+                return this.state.Resolve(container);
+            }
+
+            private abstract class SingletonResolverState
+            {
+                public abstract T Resolve(DictionaryContainer container);
+            }
+
+            private class UnresolvedState
+                : SingletonResolverState
+            {
+                private Func<DictionaryContainer, T> resolveFunction;
+                private SingletonResolver<T> resolver;
+
+                public UnresolvedState(SingletonResolver<T> resolver, Func<DictionaryContainer, T> resolveFunction)
                 {
-                    this.resolveFunction = null;
+                    this.resolveFunction = resolveFunction;
+                    this.resolver = resolver;
                 }
 
                 private bool SingletonHasNotBeenCreated
@@ -123,23 +103,43 @@ namespace FakeItEasy.IoC
                         return this.resolveFunction != null;
                     }
                 }
+
+                public override T Resolve(DictionaryContainer container)
+                {
+                    lock (this)
+                    {
+                        if (this.SingletonHasNotBeenCreated)
+                        {
+                            var instance = this.resolveFunction(container);
+                            this.resolver.state = new ResolvedState(instance);
+                            this.SignalThatSingletonHasBeenCreated();
+                        }
+
+                        return this.resolver.Resolve(container);
+                    }
+                }
+
+                private void SignalThatSingletonHasBeenCreated()
+                {
+                    this.resolveFunction = null;
+                }
             }
-			
-			private class ResolvedState
-				: SingletonResolverState
-			{
-				private T instance;
-				
-				public ResolvedState(T instance)
-				{
-					this.instance = instance;	
-				}
-				
-				public override T Resolve (DictionaryContainer container)
-				{
-					return this.instance;
-				}
-			}
-		}
+
+            private class ResolvedState
+                : SingletonResolverState
+            {
+                private T instance;
+
+                public ResolvedState(T instance)
+                {
+                    this.instance = instance;
+                }
+
+                public override T Resolve(DictionaryContainer container)
+                {
+                    return this.instance;
+                }
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@
     {
         private IEnumerable<IArgumentConstraint> argumentConstraints;
         private MethodInfoManager methodInfoManager;
+        private Func<ArgumentCollection, bool> argumentsPredicate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionCallMatcher"/> class.
@@ -33,6 +34,41 @@
         }
 
         private MethodInfo Method { get; set; }
+
+        /// <summary>
+        /// Matcheses the specified call against the expression.
+        /// </summary>
+        /// <param name="call">The call to match.</param>
+        /// <returns>True if the call is matched by the expression.</returns>
+        public virtual bool Matches(IFakeObjectCall call)
+        {
+            return this.InvokesSameMethodOnTarget(call.FakedObject.GetType(), call.Method, this.Method)
+                && this.ArgumentsMatches(call.Arguments);
+        }
+
+        /// <summary>
+        /// Gets a description of the call.
+        /// </summary>
+        /// <returns>Description of the call.</returns>
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+
+            result.Append(this.Method.DeclaringType.FullName);
+            result.Append(".");
+            result.Append(this.Method.Name);
+            this.AppendArgumentsListString(result);
+
+            return result.ToString();
+        }
+
+        public virtual void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
+        {
+            this.argumentsPredicate = argumentsPredicate;
+
+            var numberOfValdiators = this.argumentConstraints.Count();
+            this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValdiators);
+        }
 
         private static MethodInfo GetMethodInfo(LambdaExpression callSpecification)
         {
@@ -58,47 +94,16 @@
             if (methodExpression != null)
             {
                 return
-                    (from argument in methodExpression.Arguments
-                     select constraintFactory.GetArgumentConstraint(argument));
+                    from argument in methodExpression.Arguments
+                    select constraintFactory.GetArgumentConstraint(argument);
             }
 
             return Enumerable.Empty<IArgumentConstraint>();
         }
 
-        /// <summary>
-        /// Matcheses the specified call against the expression.
-        /// </summary>
-        /// <param name="call">The call to match.</param>
-        /// <returns>True if the call is matched by the expression.</returns>
-        public virtual bool Matches(IFakeObjectCall call)
-        {
-            return this.InvokesSameMethodOnTarget(call.FakedObject.GetType(), call.Method, this.Method)
-                && this.ArgumentsMatches(call.Arguments);
-        }
-
-        public virtual void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
-        {
-            this.argumentsPredicate = argumentsPredicate;
-
-            var numberOfValdiators = this.argumentConstraints.Count();
-            this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValdiators);
-        }
-
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
         {
             return this.methodInfoManager.WillInvokeSameMethodOnTarget(type, first, second);
-        }
-
-        public override string ToString()
-        {
-            var result = new StringBuilder();
-
-            result.Append(this.Method.DeclaringType.FullName);
-            result.Append(".");
-            result.Append(this.Method.Name);
-            this.AppendArgumentsListString(result);
-
-            return result.ToString();
         }
 
         private void AppendArgumentsListString(StringBuilder result)
@@ -122,8 +127,6 @@
 
             result.Append(")");
         }
-
-        private Func<ArgumentCollection, bool> argumentsPredicate;
 
         private bool ArgumentsMatches(ArgumentCollection argumentCollection)
         {
@@ -156,10 +159,5 @@
                 return "<Predicated>";
             }
         }
-    }
-
-    internal interface IExpressionCallMatcherFactory
-    {
-        ICallMatcher CreateCallMathcer(LambdaExpression callSpecification);
     }
 }

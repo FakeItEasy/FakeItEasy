@@ -45,11 +45,6 @@ namespace FakeItEasy.Expressions
         #endregion
 
         #region Methods
-        protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
-        {
-            return this.ExpressionMatcher.Matches(fakeObjectCall);
-        }
-
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
@@ -64,6 +59,11 @@ namespace FakeItEasy.Expressions
         public override void UsePredicateToValidateArguments(System.Func<ArgumentCollection, bool> argumentsPredicate)
         {
             this.ExpressionMatcher.UsePredicateToValidateArguments(argumentsPredicate);
+        }
+
+        protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
+        {
+            return this.ExpressionMatcher.Matches(fakeObjectCall);
         }
         #endregion
     }

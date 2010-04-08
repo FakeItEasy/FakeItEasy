@@ -9,16 +9,11 @@ namespace FakeItEasy.Expressions
         {
             this.ParentValidations = parentValidations;
         }
-
+        
         internal ArgumentConstraintScope<T> ParentValidations
         {
             get;
             private set;
-        }
-
-        internal override bool IsValid(T argument)
-        {
-            return this.ParentValidations.IsValid(argument);
         }
 
         public override string ToString()
@@ -35,6 +30,11 @@ namespace FakeItEasy.Expressions
             result.Append("not");
 
             return result.ToString();
+        }
+
+        internal override bool IsValid(T argument)
+        {
+            return this.ParentValidations.IsValid(argument);
         }
 
         internal override bool ResultOfChildConstraintIsValid(bool result)

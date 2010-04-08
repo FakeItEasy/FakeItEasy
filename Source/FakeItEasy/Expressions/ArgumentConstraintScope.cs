@@ -11,22 +11,6 @@ namespace FakeItEasy.Expressions
     public abstract class ArgumentConstraintScope<T>
     {
         /// <summary>
-        /// Gets a value indicating if the argument is valid in the context
-        /// of this ArgumentValidations-object.
-        /// </summary>
-        /// <param name="argument">The argument to validate.</param>
-        /// <returns>True if the argument is valid.</returns>
-        internal abstract bool IsValid(T argument);
-
-        /// <summary>
-        /// Gets a value indicating if the result of a child constraints IsValid-call
-        /// is valid in the context of this ArgumentValidations.
-        /// </summary>
-        /// <param name="result">The result of the call to the child constraints IsValid-method.</param>
-        /// <returns>True if the result is valid.</returns>
-        internal abstract bool ResultOfChildConstraintIsValid(bool result);
-
-        /// <summary>
         /// Reverse the is valid of the constraint that comes after the not, so that
         /// if the constraint is valid the result is false and if the constraint is not
         /// valid the result is true.
@@ -68,5 +52,21 @@ namespace FakeItEasy.Expressions
         {
             return string.Empty;
         }
+
+        /// <summary>
+        /// Gets a value indicating if the argument is valid in the context
+        /// of this ArgumentValidations-object.
+        /// </summary>
+        /// <param name="argument">The argument to validate.</param>
+        /// <returns>True if the argument is valid.</returns>
+        internal abstract bool IsValid(T argument);
+
+        /// <summary>
+        /// Gets a value indicating if the result of a child constraints IsValid-call
+        /// is valid in the context of this ArgumentValidations.
+        /// </summary>
+        /// <param name="result">The result of the call to the child constraints IsValid-method.</param>
+        /// <returns>True if the result is valid.</returns>
+        internal abstract bool ResultOfChildConstraintIsValid(bool result);
     }
 }
