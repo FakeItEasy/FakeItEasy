@@ -7,7 +7,9 @@ namespace FakeItEasy.DynamicProxy
     internal interface ICanInterceptObjectMembers
     {
         string ToString();
+
         bool Equals(object o);
+
         int GetHashCode();
     }
 }

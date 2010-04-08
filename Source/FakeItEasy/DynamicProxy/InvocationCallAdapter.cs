@@ -14,14 +14,14 @@ namespace FakeItEasy.DynamicProxy
     internal class InvocationCallAdapter
         : IWritableFakeObjectCall, ICompletedFakeObjectCall
     {
-        private IInvocation Invocation;
-        
         private static readonly Dictionary<MethodInfo, MethodInfo> objectMembersMap = new Dictionary<MethodInfo, MethodInfo>
         {
             { typeof(ICanInterceptObjectMembers).GetMethod("Equals", new[] { typeof(object) }), typeof(object).GetMethod("Equals", new[] { typeof(object) }) },
             { typeof(ICanInterceptObjectMembers).GetMethod("GetHashCode"), typeof(object).GetMethod("GetHashCode") },
             { typeof(ICanInterceptObjectMembers).GetMethod("ToString"), typeof(object).GetMethod("ToString") }
         };
+
+        private IInvocation invocation;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InvocationCallAdapter"/> class.
@@ -30,12 +30,11 @@ namespace FakeItEasy.DynamicProxy
         [DebuggerStepThrough]
         public InvocationCallAdapter(IInvocation invocation)
         {
-            this.Invocation = invocation;
+            this.invocation = invocation;
             this.Method = RewriteMappedMethod(invocation);
 
             this.Arguments = new ArgumentCollection(invocation.Arguments, this.Method);
         }
-
 
         /// <summary>
         /// The method that's called.
@@ -44,16 +43,6 @@ namespace FakeItEasy.DynamicProxy
         {
             get;
             private set;
-        }
-
-        /// <summary>
-        /// Sets the return value of the call.
-        /// </summary>
-        /// <param name="returnValue">The return value.</param>
-        [DebuggerStepThrough]
-        public void SetReturnValue(object returnValue)
-        {
-            this.Invocation.ReturnValue = returnValue;
         }
 
         /// <summary>
@@ -70,18 +59,7 @@ namespace FakeItEasy.DynamicProxy
         /// </summary>
         public object ReturnValue
         {
-            get { return this.Invocation.ReturnValue; }
-        }
-
-        /// <summary>
-        /// Returns a description of the call.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return this.GetDescription();
+            get { return this.invocation.ReturnValue; }
         }
 
         /// <summary>
@@ -90,9 +68,8 @@ namespace FakeItEasy.DynamicProxy
         /// <value></value>
         public object FakedObject
         {
-            get { return this.Invocation.Proxy; }
+            get { return this.invocation.Proxy; }
         }
-
 
         /// <summary>
         /// Freezes the call so that it can no longer be modified.
@@ -108,7 +85,7 @@ namespace FakeItEasy.DynamicProxy
         /// </summary>
         public void CallBaseMethod()
         {
-            this.Invocation.Proceed();
+            this.invocation.Proceed();
         }
 
         /// <summary>
@@ -118,7 +95,28 @@ namespace FakeItEasy.DynamicProxy
         /// <param name="value">The value to set to the argument.</param>
         public void SetArgumentValue(int index, object value)
         {
-            this.Invocation.SetArgumentValue(index, value);
+            this.invocation.SetArgumentValue(index, value);
+        }
+
+        /// <summary>
+        /// Sets the return value of the call.
+        /// </summary>
+        /// <param name="returnValue">The return value.</param>
+        [DebuggerStepThrough]
+        public void SetReturnValue(object returnValue)
+        {
+            this.invocation.ReturnValue = returnValue;
+        }
+
+        /// <summary>
+        /// Returns a description of the call.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.GetDescription();
         }
 
         private static MethodInfo RewriteMappedMethod(IInvocation invocation)

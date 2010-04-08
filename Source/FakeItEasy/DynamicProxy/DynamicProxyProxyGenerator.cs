@@ -104,49 +104,6 @@ namespace FakeItEasy.DynamicProxy
             };
         }
 
-        private ProxyResult DoGenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
-        {
-            var fakeObjectInterceptor = CreateFakeObjectInterceptor(fakeObject);
-
-            if (typeToProxy.IsInterface)
-            {
-                return CreateInterfaceProxy(typeToProxy, additionalInterfacesToImplement, fakeObjectInterceptor);
-            }
-            
-            return this.CreateClassProxy(typeToProxy, additionalInterfacesToImplement, fakeObjectInterceptor, argumentsForConstructor);
-        }
-
-        private DynamicProxyResult CreateClassProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObjectInterceptor fakeObjectInterceptor, IEnumerable<object> argumentsForConstructor)
-        {
-            var candidateConstructorArguments = this.CreateConstructorArgumentCandidateSets(typeToProxy, argumentsForConstructor);
-
-            DynamicProxyResult result = null;
-            if (!TryGenerateProxyUsingCandidateConstructorArguments(typeToProxy, additionalInterfacesToImplement, fakeObjectInterceptor, candidateConstructorArguments, out result))
-            {
-                result = new DynamicProxyResult(typeToProxy, "false");
-            }
-
-            return result;
-        }
-
-        private IEnumerable<IEnumerable<object>> CreateConstructorArgumentCandidateSets(Type typeToProxy, IEnumerable<object> argumentsForConstructor)
-        {
-            IEnumerable<IEnumerable<object>> argumentSetsForConstructor = null;
-
-            if (argumentsForConstructor != null)
-            {
-                argumentSetsForConstructor = new[] { argumentsForConstructor };
-            }
-            else
-            {
-                argumentSetsForConstructor =
-                    from constructor in this.ResolveConstructors(typeToProxy)
-                    select constructor.ArgumentsToUse;
-            }
-
-            return argumentSetsForConstructor;
-        }
-
         private static bool TryGenerateProxyUsingCandidateConstructorArguments(
             Type typeToProxy, 
             IEnumerable<Type> additionalInterfacesToImplement,
@@ -177,6 +134,49 @@ namespace FakeItEasy.DynamicProxy
 
             proxyResult = null;
             return false;
+        }
+
+        private ProxyResult DoGenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
+        {
+            var fakeObjectInterceptor = CreateFakeObjectInterceptor(fakeObject);
+
+            if (typeToProxy.IsInterface)
+            {
+                return CreateInterfaceProxy(typeToProxy, additionalInterfacesToImplement, fakeObjectInterceptor);
+            }
+
+            return this.CreateClassProxy(typeToProxy, additionalInterfacesToImplement, fakeObjectInterceptor, argumentsForConstructor);
+        }
+
+        private DynamicProxyResult CreateClassProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObjectInterceptor fakeObjectInterceptor, IEnumerable<object> argumentsForConstructor)
+        {
+            var candidateConstructorArguments = this.CreateConstructorArgumentCandidateSets(typeToProxy, argumentsForConstructor);
+
+            DynamicProxyResult result = null;
+            if (!TryGenerateProxyUsingCandidateConstructorArguments(typeToProxy, additionalInterfacesToImplement, fakeObjectInterceptor, candidateConstructorArguments, out result))
+            {
+                result = new DynamicProxyResult(typeToProxy, "false");
+            }
+
+            return result;
+        }
+       
+        private IEnumerable<IEnumerable<object>> CreateConstructorArgumentCandidateSets(Type typeToProxy, IEnumerable<object> argumentsForConstructor)
+        {
+            IEnumerable<IEnumerable<object>> argumentSetsForConstructor = null;
+
+            if (argumentsForConstructor != null)
+            {
+                argumentSetsForConstructor = new[] { argumentsForConstructor };
+            }
+            else
+            {
+                argumentSetsForConstructor =
+                    from constructor in this.ResolveConstructors(typeToProxy)
+                    select constructor.ArgumentsToUse;
+            }
+
+            return argumentSetsForConstructor;
         }
 
         private IEnumerable<ConstructorAndArgumentsInfo> ResolveConstructors(Type typeToProxy)
