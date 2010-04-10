@@ -11,7 +11,7 @@
 		<Configuration Condition="$(Configuration)==''">Release</Configuration>
 		<BuildFramework></BuildFramework>
 		<AllowPartiallyTrustedCallers Condition="$(AllowPartiallyTrustedCallers)==''">true</AllowPartiallyTrustedCallers>
-		<VersionNumber>10</VersionNumber>
+		<FxCopCmdPath>C:\Program Files (x86)\Microsoft FxCop 1.36\FxCopCmd.exe</FxCopCmdPath>
 		<!--
 			Derived configuration properties
 		 -->
@@ -122,7 +122,14 @@
 		<Delete Files="@(pdbFiles)" />
 	</Target>
 	
-	<Target Name="Distrib" DependsOnTargets="ReBuild;Copy">
+	<Target Name="CodeAnalysis" DependsOnTargets="ReBuild;Copy">
+		<MakeDir Directories="$(BuildPath)\Artifacts" />
+		<Exec 
+			Command="&quot;$(FxCopCmdPath)&quot; /searchgac /project:Source\FakeItEasy\FakeItEasy.FxCop /out:$(BuildPath)\Artifacts\FxCop.xml" 
+			ContinueOnError="False" />
+	</Target>
+	
+	<Target Name="Distrib" DependsOnTargets="CodeAnalysis">
 		<MakeDir Directories="$(PackageDirectory)" />
 
 		<!-- Archive-->

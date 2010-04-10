@@ -21,7 +21,10 @@
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
  </ProjectOptions>
  <Targets>
-  <Target Name="$(ProjectDir)/bin/Debug/FakeItEasy.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <AssemblyReferenceDirectories>
+   <Directory>$(ProjectDir)/bin/Debug/</Directory>
+  </AssemblyReferenceDirectories>
+  <Target Name="$(ProjectDir)/bin/Release/FakeItEasy.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
  <Rules>
   <RuleFiles>
@@ -140,7 +143,7 @@
    </Namespace>
   </Namespaces>
   <Targets>
-   <Target Name="$(ProjectDir)/bin/Debug/FakeItEasy.dll">
+   <Target Name="$(ProjectDir)/bin/Release/FakeItEasy.dll">
     <Modules>
      <Module Name="fakeiteasy.dll">
       <Messages>
