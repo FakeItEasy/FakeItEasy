@@ -94,6 +94,7 @@
     <Compile Include="Expressions\ArgumentConstraint.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs" />
     <Compile Include="Expressions\ExpressionParser.cs" />
+    <Compile Include="Expressions\IExpressionCallMatcherFactory.cs" />
     <Compile Include="Expressions\IExpressionParser.cs" />
     <Compile Include="Expressions\NotArgumentConstraintScope.cs" />
     <Compile Include="Expressions\RootValidations.cs" />
