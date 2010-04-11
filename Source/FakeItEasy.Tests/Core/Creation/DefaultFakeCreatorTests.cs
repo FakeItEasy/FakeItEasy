@@ -178,6 +178,31 @@ namespace FakeItEasy.Tests.Core.Creation
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.HasArgumentsForConstructor(constructorArguments))).MustHaveHappened();
         }
 
+        [Test]
+        public void CollectionOfFake_should_return_collection_where_all_items_are_fakes()
+        {
+            // Arrange
+
+            // Act
+            var result = this.creator.CollectionOfFake<IFoo>(10);
+
+            // Assert
+            Assert.That(result, Has.All.InstanceOf<IFoo>().And.All.InstanceOf<IFakedProxy>());
+        }
+
+        [TestCase(2)]
+        [TestCase(10)]
+        public void CollectionOfFake_should_return_collection_with_the_number_of_items_specified(int numberOfFakes)
+        {
+            // Arrange
+
+            // Act
+            var result = this.creator.CollectionOfFake<IFoo>(numberOfFakes);
+
+            // Assert
+            Assert.That(result, Has.Count.EqualTo(numberOfFakes));
+        }
+
         private void ConfigureDefaultValuesForFakeAndDummyManager()
         {
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>.Ignored))

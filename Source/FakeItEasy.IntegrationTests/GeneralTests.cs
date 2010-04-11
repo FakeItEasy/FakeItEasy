@@ -187,6 +187,18 @@ namespace FakeItEasy.IntegrationTests
             Assert.That(fake, Is.InstanceOf<IFormatProvider>());
         }
 
+        [Test]
+        public void FakeCollection_should_return_list_where_all_objects_are_fakes()
+        {
+            // Arrange
+            
+            // Act
+            var result = A.CollectionOfFake<IFoo>(10);
+
+            // Assert
+            Assert.That(result, Is.InstanceOf<IList<IFoo>>().And.All.InstanceOf<IFoo>().And.All.InstanceOf<IFakedProxy>());
+        }
+
         public class FakeableClass
         {
             public virtual void Foo()

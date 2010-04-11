@@ -39,6 +39,27 @@ namespace FakeItEasy.Core.Creation
             return (T)this.fakeAndDummyManager.CreateFake(typeof(T), fakeOptions);
         }
 
+
+        /// <summary>
+        /// Creates a collection of fakes of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of fakes to create.</typeparam>
+        /// <param name="numberOfFakes">The number of fakes in the collection.</param>
+        /// <returns>
+        /// A collection of fake objects of the specified type.
+        /// </returns>
+        public IList<T> CollectionOfFake<T>(int numberOfFakes)
+        {
+            var result = new List<T>();
+
+            for (int i = 0; i < numberOfFakes; i++)
+            {
+                result.Add(this.CreateFake<T>(x => { }));
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Creates a dummy object, this can be a fake object or an object resolved
         /// from the current IFakeObjectContainer.

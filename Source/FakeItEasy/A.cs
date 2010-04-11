@@ -52,6 +52,17 @@ using FakeItEasy.Core.Creation;
         }
 
         /// <summary>
+        /// Creates a collection of fakes of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of fakes to create.</typeparam>
+        /// <param name="numberOfFakes">The number of fakes in the collection.</param>
+        /// <returns>A collection of fake objects of the specified type.</returns>
+        public static IList<T> CollectionOfFake<T>(int numberOfFakes)
+        {
+            return FakeCreator.CollectionOfFake<T>(numberOfFakes);
+        }
+
+        /// <summary>
         /// Gets a dummy object of the specified type. The value of a dummy object
         /// should be irrelevant. Dummy objects should not be configured.
         /// </summary>

@@ -7,6 +7,7 @@
     using FakeItEasy.Core.Creation;
     using FakeItEasy.Expressions;
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class ATests
@@ -78,6 +79,22 @@
 
             // Assert
             Assert.That(result, Is.SameAs(dummy));
+        }
+
+        [Test]
+        public void CollectionOfFakes_should_delegate_to_fake_creator()
+        {
+            // Arrange            
+            var returnedFromCreator = new List<IFoo>();
+
+            var creator = this.StubResolveWithFake<IFakeCreator>();
+            A.CallTo(() => creator.CollectionOfFake<IFoo>(10)).Returns(returnedFromCreator);
+
+            // Act
+            var result = A.CollectionOfFake<IFoo>(10);
+
+            // Assert
+            Assert.That(result, Is.SameAs(returnedFromCreator));
         }
     }
 
