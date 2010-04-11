@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy.Core.Creation
 {
     using System;
     using System.Collections.Generic;
