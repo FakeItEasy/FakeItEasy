@@ -180,6 +180,16 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#CollectionOfFake`1(System.Int32)">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2010-04-13 19:24:23Z">
+              <Issue>
+               <Item>'A.CollectionOfFake&lt;T&gt;(int)'</Item>
+               <Item>'T'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#Dummy`1()">
             <Messages>
              <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2009-12-25 00:06:38Z">
@@ -216,9 +226,9 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#Fake`1(System.Action`1&lt;FakeItEasy.Core.IFakeOptionsBuilder`1&lt;!!0&gt;&gt;)">
+           <Member Name="#Fake`1(System.Action`1&lt;FakeItEasy.Core.Creation.IFakeOptionsBuilder`1&lt;!!0&gt;&gt;)">
             <Messages>
-             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-04-07 20:12:28Z">
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-04-13 19:24:23Z">
               <Issue>
                <Item>'A.Fake&lt;T&gt;(Action&lt;IFakeOptionsBuilder&lt;T&gt;&gt;)'</Item>
                <Item>'Action&lt;IFakeOptionsBuilder&lt;T&gt;&gt;'</Item>
@@ -391,9 +401,9 @@
          </Type>
          <Type Name="Fake`1">
           <Members>
-           <Member Name="#.ctor(System.Action`1&lt;FakeItEasy.Core.IFakeOptionsBuilder`1&lt;!0&gt;&gt;)">
+           <Member Name="#.ctor(System.Action`1&lt;FakeItEasy.Core.Creation.IFakeOptionsBuilder`1&lt;!0&gt;&gt;)">
             <Messages>
-             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-04-07 20:12:28Z">
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-04-13 19:24:23Z">
               <Issue>
                <Item>'Fake&lt;T&gt;.Fake(Action&lt;IFakeOptionsBuilder&lt;T&gt;&gt;)'</Item>
                <Item>'Action&lt;IFakeOptionsBuilder&lt;T&gt;&gt;'</Item>
@@ -686,30 +696,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="IFakeOptionsBuilder`1">
-          <Members>
-           <Member Name="#Implements(System.Type)">
-            <Messages>
-             <Message Id="Implements" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2010-04-07 20:12:28Z">
-              <Issue Name="Member">
-               <Item>'IFakeOptionsBuilder&lt;T&gt;.Implements(Type)'</Item>
-               <Item>Implements</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#WithArgumentsForConstructor(System.Linq.Expressions.Expression`1&lt;System.Func`1&lt;!0&gt;&gt;)">
-            <Messages>
-             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-04-07 20:12:28Z">
-              <Issue>
-               <Item>'IFakeOptionsBuilder&lt;T&gt;.WithArgumentsForConstructor(Expression&lt;Func&lt;T&gt;&gt;)'</Item>
-               <Item>'Expression&lt;Func&lt;T&gt;&gt;'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="MethodInfoManager+TypeMethodInfoPair">
           <Members>
            <Member Name="#Equals(System.Object)">
@@ -727,6 +713,30 @@
        </Namespace>
        <Namespace Name="FakeItEasy.Core.Creation">
         <Types>
+         <Type Name="IFakeOptionsBuilder`1">
+          <Members>
+           <Member Name="#Implements(System.Type)">
+            <Messages>
+             <Message Id="Implements" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2010-04-13 19:24:23Z">
+              <Issue Name="Member">
+               <Item>'IFakeOptionsBuilder&lt;T&gt;.Implements(Type)'</Item>
+               <Item>Implements</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#WithArgumentsForConstructor(System.Linq.Expressions.Expression`1&lt;System.Func`1&lt;!0&gt;&gt;)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2010-04-13 19:24:23Z">
+              <Issue>
+               <Item>'IFakeOptionsBuilder&lt;T&gt;.WithArgumentsForConstructor(Expression&lt;Func&lt;T&gt;&gt;)'</Item>
+               <Item>'Expression&lt;Func&lt;T&gt;&gt;'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="ProxyResult">
           <Members>
            <Member Name="#.ctor(System.Type)">
