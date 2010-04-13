@@ -24,7 +24,7 @@
             var fakeObject = Fake.GetFakeObject(fake);
             var recordingRule = CreateRecordingRule<TFake>(recordedRule, fakeObject);
 
-            fakeObject.AddRule(recordingRule);
+            fakeObject.AddRuleFirst(recordingRule);
 
             return CreateBuilder(recordedRule, fakeObject);
         }

@@ -41,7 +41,7 @@ namespace FakeItEasy.VisualBasic
             }
             
             
-            this.fakeObject.AddRule(this.recordedRule);
+            this.fakeObject.AddRuleFirst(this.recordedRule);
 
             fakeObjectCall.SetReturnValue(Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType));
         }

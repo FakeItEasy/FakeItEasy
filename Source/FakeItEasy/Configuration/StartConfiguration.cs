@@ -30,7 +30,7 @@ namespace FakeItEasy.Configuration
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
             var rule = this.callRuleFactory(callSpecification);
-            this.fakeObject.AddRule(rule);
+            this.fakeObject.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration<TMember>(this.fakeObject, rule);
         }
 
@@ -42,14 +42,14 @@ namespace FakeItEasy.Configuration
 
             var rule = this.callRuleFactory(callSpecification);
             rule.Applicator = x => { };
-            this.fakeObject.AddRule(rule);
+            this.fakeObject.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration(this.fakeObject, rule);
         }
 
         public IAnyCallConfiguration AnyCall()
         {
             var rule = new AnyCallCallRule();
-            this.fakeObject.AddRule(rule);
+            this.fakeObject.AddRuleFirst(rule);
             return this.configurationFactory.CreateAnyCallConfiguration(this.fakeObject, rule);
         }
 

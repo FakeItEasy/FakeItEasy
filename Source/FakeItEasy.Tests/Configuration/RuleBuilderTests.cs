@@ -436,7 +436,7 @@
         public void Assert_with_void_call_should_remove_built_rule_from_fake_object()
         {
             // Arrange
-            this.fakeObject.AddRule(this.ruleProducedByFactory);
+            this.fakeObject.AddRuleFirst(this.ruleProducedByFactory);
 
             // Act
             this.builder.MustHaveHappened(Repeated.Once);
@@ -465,7 +465,7 @@
         public void Assert_with_function_call_should_remove_built_rule_from_fake_object()
         {
             // Arrange
-            this.fakeObject.AddRule(this.ruleProducedByFactory);
+            this.fakeObject.AddRuleFirst(this.ruleProducedByFactory);
 
             // Act
             var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };

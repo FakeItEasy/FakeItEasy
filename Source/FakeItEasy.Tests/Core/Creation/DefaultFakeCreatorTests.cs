@@ -33,7 +33,7 @@ namespace FakeItEasy.Tests.Core.Creation
             
             // Act
             this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => new Foo(serviceProvider)));
-
+            
             // Assert
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.HasArgumentsForConstructor(new object[] { serviceProvider }))).MustHaveHappened();
         }
@@ -42,7 +42,7 @@ namespace FakeItEasy.Tests.Core.Creation
         public void CreateFake_should_pass_all_interfaces_from_implements_to_fake_and_dummy_manager()
         {
             // Arrange
-
+            
             // Act
             this.creator.CreateFake<IFoo>(x => x.Implements(typeof(IFormatProvider)).Implements(typeof(IFormattable)));
             

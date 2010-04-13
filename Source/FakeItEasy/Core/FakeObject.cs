@@ -13,18 +13,11 @@ namespace FakeItEasy.Core
     [Serializable]
     public partial class FakeObject
     {
-        /// <summary>
-        /// A delegate responsible for creating FakeObject instances.
-        /// </summary>
-        /// <returns></returns>
-        public delegate FakeObject Factory();
-
         private IEnumerable<CallRuleMetadata> preUserRules;
         private LinkedList<CallRuleMetadata> allUserRulesField;
         private IEnumerable<CallRuleMetadata> postUserRules;
-
         private List<ICompletedFakeObjectCall> recordedCallsField;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeObject"/> class.
         /// </summary>
@@ -45,6 +38,12 @@ namespace FakeItEasy.Core
 
             this.recordedCallsField = new List<ICompletedFakeObjectCall>();
         }
+
+        /// <summary>
+        /// A delegate responsible for creating FakeObject instances.
+        /// </summary>
+        /// <returns></returns>
+        public delegate FakeObject Factory();
 
         /// <summary>
         /// Gets the faked object.
@@ -114,10 +113,20 @@ namespace FakeItEasy.Core
         /// Adds a call rule to the fake object.
         /// </summary>
         /// <param name="rule">The rule to add.</param>
-        public virtual void AddRule(IFakeObjectCallRule rule)
+        public virtual void AddRuleFirst(IFakeObjectCallRule rule)
         {
             var newRule = new CallRuleMetadata { Rule = rule };
-            FakeScope.Current.AddRule(this, newRule);
+            FakeScope.Current.AddRuleFirst(this, newRule);
+        }
+
+        /// <summary>
+        /// Adds a call rule last in the list of user rules, meaning it has the lowest priority possible.
+        /// </summary>
+        /// <param name="rule">The rule to add.</param>
+        public virtual void AddRuleLast(IFakeObjectCallRule rule)
+        {
+            var newRule = new CallRuleMetadata { Rule = rule };
+            FakeScope.Current.AddRuleLast(this, newRule);
         }
 
         /// <summary>
@@ -131,7 +140,20 @@ namespace FakeItEasy.Core
             var ruleToRemove = this.AllUserRules.Where(x => x.Rule.Equals(rule)).FirstOrDefault();
             this.AllUserRules.Remove(ruleToRemove);
         }
+        
+        internal virtual void SetProxy(ProxyResult proxy)
+        {
+            this.Object = proxy.Proxy;
+            this.FakeObjectType = proxy.ProxiedType;
+            proxy.CallWasIntercepted += this.Proxy_CallWasIntercepted;
+        }
 
+        private static void ApplyRule(CallRuleMetadata rule, IWritableFakeObjectCall fakeObjectCall)
+        {
+            rule.CalledNumberOfTimes++;
+            rule.Rule.Apply(fakeObjectCall);
+        }
+        
         private void Intercept(IWritableFakeObjectCall fakeObjectCall)
         {
             var ruleToUse =
@@ -144,12 +166,6 @@ namespace FakeItEasy.Core
             FakeScope.Current.AddInterceptedCall(this, fakeObjectCall.AsReadOnly());
         }
 
-        private static void ApplyRule(CallRuleMetadata rule, IWritableFakeObjectCall fakeObjectCall)
-        {
-            rule.CalledNumberOfTimes++;
-            rule.Rule.Apply(fakeObjectCall);            
-        }
-        
         private void MoveRuleToFront(CallRuleMetadata rule)
         {
             if (this.allUserRulesField.Remove(rule))
@@ -162,13 +178,6 @@ namespace FakeItEasy.Core
         {
             var metadata = this.AllRules.Where(x => x.Rule.Equals(rule)).Single();
             this.MoveRuleToFront(metadata);
-        }
-
-        internal virtual void SetProxy(ProxyResult proxy)
-        {
-            this.Object = proxy.Proxy;
-            this.FakeObjectType = proxy.ProxiedType;
-            proxy.CallWasIntercepted += this.Proxy_CallWasIntercepted;
         }
 
         private void Proxy_CallWasIntercepted(object sender, CallInterceptedEventArgs e)

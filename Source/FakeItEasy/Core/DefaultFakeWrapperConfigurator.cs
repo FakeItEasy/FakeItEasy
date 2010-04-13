@@ -27,14 +27,14 @@ namespace FakeItEasy.Core
         {
             if (recorder != null)
             {
-                fake.AddRule(new SelfInitializationRule(wrapperRule, recorder));
+                fake.AddRuleFirst(new SelfInitializationRule(wrapperRule, recorder));
             }
         }
 
         private static WrappedObjectRule CreateAndAddWrapperRule(object wrappedInstance, FakeObject fake)
         {
             var wrappingRule = new WrappedObjectRule(wrappedInstance);
-            fake.AddRule(wrappingRule);
+            fake.AddRuleFirst(wrappingRule);
             return wrappingRule;
         }
     }

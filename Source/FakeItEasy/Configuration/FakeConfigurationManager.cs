@@ -30,7 +30,7 @@ namespace FakeItEasy.Configuration
             var fake = this.expressionParser.GetFakeObjectCallIsMadeOn(callSpecification);
             var rule = this.ruleFactory.Invoke(callSpecification);
 
-            fake.AddRule(rule);
+            fake.AddRuleFirst(rule);
 
             return this.configurationFactory.CreateConfiguration(fake, rule);
         }
@@ -44,7 +44,7 @@ namespace FakeItEasy.Configuration
             var fake = this.expressionParser.GetFakeObjectCallIsMadeOn(callSpecification);
             var rule = this.ruleFactory.Invoke(callSpecification);
 
-            fake.AddRule(rule);
+            fake.AddRuleFirst(rule);
 
             return this.configurationFactory.CreateConfiguration<T>(fake, rule);
         }

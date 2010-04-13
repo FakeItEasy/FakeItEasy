@@ -79,9 +79,15 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="fakeObject">The fake object.</param>
         /// <param name="rule">The rule to add.</param>
-        internal void AddRule(FakeObject fakeObject, CallRuleMetadata rule)
+        internal void AddRuleFirst(FakeObject fakeObject, CallRuleMetadata rule)
         {
             fakeObject.AllUserRules.AddFirst(rule);
+            this.OnAddRule(fakeObject, rule);
+        }
+
+        internal void AddRuleLast(FakeObject fakeObject, CallRuleMetadata rule)
+        {
+            fakeObject.AllUserRules.AddLast(rule);
             this.OnAddRule(fakeObject, rule);
         }
 

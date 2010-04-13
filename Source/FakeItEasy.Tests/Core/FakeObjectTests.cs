@@ -27,7 +27,7 @@ namespace FakeItEasy.Tests.Core
 
         private static void AddFakeRule<T>(T fakedObject, FakeCallRule rule) where T : class
         {
-            Fake.GetFakeObject(fakedObject).AddRule(rule);
+            Fake.GetFakeObject(fakedObject).AddRuleFirst(rule);
         }
 
         private static void AddFakeRule<T>(T fakedObject, Action<FakeCallRule> ruleConfiguration) where T : class
@@ -59,7 +59,7 @@ namespace FakeItEasy.Tests.Core
 
             using (Fake.CreateScope())
             {
-                fake.AddRule(rule);    
+                fake.AddRuleFirst(rule);    
             }
 
             Assert.That(fake.Rules, Has.None.EqualTo(rule));
@@ -106,7 +106,7 @@ namespace FakeItEasy.Tests.Core
                 IsApplicableTo = x => true
             };
 
-            fake.AddRule(interception);
+            fake.AddRuleFirst(interception);
 
             // Act
             ((IFoo)fake.Object).Bar();
@@ -124,8 +124,8 @@ namespace FakeItEasy.Tests.Core
                 IsApplicableTo = x => true
             };
 
-            fake.AddRule(NonApplicableInterception);
-            fake.AddRule(interception);
+            fake.AddRuleFirst(NonApplicableInterception);
+            fake.AddRuleFirst(interception);
 
             ((IFoo)fake.Object).Bar();
 
@@ -140,8 +140,8 @@ namespace FakeItEasy.Tests.Core
             var firstRule = CreateApplicableInterception();
             var latestRule = CreateApplicableInterception();
 
-            fake.AddRule(firstRule);
-            fake.AddRule(latestRule);
+            fake.AddRuleFirst(firstRule);
+            fake.AddRuleFirst(latestRule);
 
             var foo = (IFoo)fake.Object;
             foo.Bar();
@@ -165,8 +165,8 @@ namespace FakeItEasy.Tests.Core
 
             var nextApplicable = CreateApplicableInterception();
 
-            fake.AddRule(nextApplicable);
-            fake.AddRule(applicableTwice);
+            fake.AddRuleFirst(nextApplicable);
+            fake.AddRuleFirst(applicableTwice);
             
             ((IFoo)fake.Object).Bar();
             ((IFoo)fake.Object).Bar();
@@ -185,7 +185,7 @@ namespace FakeItEasy.Tests.Core
             applicableTwice.NumberOfTimesToCall = 2;
             applicableTwice.Apply = x => x.SetReturnValue(10);
 
-            fake.AddRule(applicableTwice);
+            fake.AddRuleFirst(applicableTwice);
 
             ((IFoo)fake.Object).Baz();
             ((IFoo)fake.Object).Baz();
@@ -203,8 +203,8 @@ namespace FakeItEasy.Tests.Core
             var one = CreateApplicableInterception();
             var two = CreateApplicableInterception();
 
-            fake.AddRule(one);
-            fake.AddRule(two);
+            fake.AddRuleFirst(one);
+            fake.AddRuleFirst(two);
 
             Assert.That(fake.Rules, Is.EquivalentTo(new[] { one, two }));
         }
@@ -265,7 +265,7 @@ namespace FakeItEasy.Tests.Core
 
             using (Fake.CreateScope())
             {
-                fake.AddRule(rule);
+                fake.AddRuleFirst(rule);
             }
 
             (fake.Object as IFoo).Bar();
@@ -416,7 +416,7 @@ namespace FakeItEasy.Tests.Core
                 .CallsTo(x => x.Apply(call))
                 .Invokes(x => wasCalled = true);
             
-            fake.AddRule(rule);
+            fake.AddRuleFirst(rule);
 
             proxy.RaiseCallWasIntercepted(call);
 
@@ -430,7 +430,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var fake = this.CreateFakeObject<IFoo>();
             var rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());
-            fake.AddRule(rule);
+            fake.AddRuleFirst(rule);
 
             // Act
             fake.RemoveRule(rule);
@@ -464,6 +464,35 @@ namespace FakeItEasy.Tests.Core
             // Assert
             NullGuardedConstraint.Assert(() =>
                 fake.RemoveRule(ExpressionHelper.CreateRule<IFoo>(x => x.Bar())));
+        }
+
+        [Test]
+        public void AddRuleLast_should_add_rule()
+        {
+            // Arrange
+            var fake = this.CreateFakeObject<IFoo>();
+            var rule = A.Fake<IFakeObjectCallRule>();
+            
+            // Act
+            fake.AddRuleLast(rule);
+
+            // Assert
+            Assert.That(fake.Rules, Has.Some.SameAs(rule));
+        }
+
+        [Test]
+        public void AddRuleLast_should_add_rule_last_among_the_user_specified_rules()
+        {
+            // Arrange
+            var fake = this.CreateFakeObject<IFoo>();
+            var rule = A.Fake<IFakeObjectCallRule>();
+            A.CallTo(() => rule.ToString()).Returns("rule!");
+            // Act
+            fake.AddRuleFirst(A.Fake<IFakeObjectCallRule>());
+            fake.AddRuleLast(rule);
+
+            // Assert
+            Assert.That(fake.AllUserRules.Last.Value.Rule, Is.SameAs(rule));
         }
 
         public class TypeWithNoDefaultConstructorButAllArgumentsFakeable
