@@ -99,8 +99,8 @@
     <Compile Include="Expressions\NotArgumentConstraintScope.cs" />
     <Compile Include="Expressions\RootValidations.cs" />
     <Compile Include="Repeated.cs" />
-    <Compile Include="IFakeOptionsBuilder.cs" />
-    <Compile Include="IFakeOptionsBuilderForWrappers.cs" />
+    <Compile Include="Core\Creation\IFakeOptionsBuilder.cs" />
+    <Compile Include="Core\Creation\IFakeOptionsBuilderForWrappers.cs" />
     <Compile Include="LowerBoundRepeated.cs" />
     <Compile Include="Recorders.cs" />
     <Compile Include="SelfInitializedFakes\FileStorage.cs" />
