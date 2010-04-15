@@ -27,18 +27,14 @@
         {
             var result = new StringBuilder();
 
-            using (var parameters = fakeObjectCall.Method.GetParameters().Cast<ParameterInfo>().GetEnumerator())
-            using (var arguments = fakeObjectCall.Arguments.AsEnumerable().GetEnumerator())
+            foreach (var argument in fakeObjectCall.Arguments.AsEnumerable())
             {
-                while (parameters.MoveNext() && arguments.MoveNext())
+                if (result.Length > 0)
                 {
-                    if (result.Length > 0)
-                    {
-                        result.Append(", ");
-                    }
-
-                    result.AppendFormat("{0}", GetArgumentAsString(arguments.Current));
+                    result.Append(", ");
                 }
+
+                result.AppendFormat("{0}", GetArgumentAsString(argument));
             }
 
             return result.ToString();
