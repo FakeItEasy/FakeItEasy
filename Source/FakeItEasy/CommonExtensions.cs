@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Text;
 
     /// <summary>
     /// Provides extension methods for the common uses.
@@ -40,6 +41,31 @@
             return new ZipEnumerable<TFirst, TSecond>(firstCollection, secondCollection);
         }
 
+        /// <summary>
+        /// Joins the collection to a string.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the collection.</typeparam>
+        /// <param name="items">The items to join.</param>
+        /// <param name="separator">Separator to insert between each item.</param>
+        /// <param name="stringConverter">A function that converts from an item to a string value.</param>
+        /// <returns>A string representation of the collection.</returns>
+        public static string ToCollectionString<T>(this IEnumerable<T> items, Func<T, string> stringConverter, string separator)
+        {
+            var result = new StringBuilder();
+
+            foreach (var item in items)
+            {
+                if (result.Length > 0)
+                {
+                    result.Append(separator);
+                }
+
+                result.Append(stringConverter(item));
+            }
+
+            return result.ToString();
+        }
+
         private class ZipEnumerable<TFirst, TSecond>
             : IEnumerable<Tuple<TFirst, TSecond>>
         {
@@ -70,7 +96,6 @@
                 private IEnumerator<TFirst> firsts;
                 private IEnumerator<TSecond> seconds;
 
-
                 public ZipEnumerator(IEnumerable<TFirst> firstCollection, IEnumerable<TSecond> secondCollection)
                 {
                     this.firstCollection = firstCollection;
@@ -80,7 +105,12 @@
 
                 public Tuple<TFirst, TSecond> Current
                 {
-                    get { return new Tuple<TFirst, TSecond>(firsts.Current, seconds.Current); }
+                    get { return new Tuple<TFirst, TSecond>(this.firsts.Current, this.seconds.Current); }
+                }
+
+                object System.Collections.IEnumerator.Current
+                {
+                    get { return this.Current; }
                 }
 
                 public void Dispose()
@@ -88,11 +118,6 @@
                     this.firsts.Dispose();
                     this.seconds.Dispose();
                     GC.SuppressFinalize(this);
-                }
-
-                object System.Collections.IEnumerator.Current
-                {
-                    get { return this.Current; }
                 }
 
                 public bool MoveNext()
@@ -105,8 +130,8 @@
 
                 public void Reset()
                 {
-                    this.firsts = firstCollection.GetEnumerator();
-                    this.seconds = secondCollection.GetEnumerator();
+                    this.firsts = this.firstCollection.GetEnumerator();
+                    this.seconds = this.secondCollection.GetEnumerator();
                 }
             }
         }

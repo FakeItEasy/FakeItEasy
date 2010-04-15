@@ -3,6 +3,9 @@
     using System;
     using FakeItEasy.Assertion;
 
+    /// <summary>
+    /// Provides methods for the full extension syntax.
+    /// </summary>
     public static class FullExtensionSyntaxCompatibilityExtensions
     {
         /// <summary>

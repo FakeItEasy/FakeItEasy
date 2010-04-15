@@ -4,9 +4,6 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
 
     internal static class Helpers
     {
@@ -25,19 +22,7 @@
 
         private static string GetParametersString(IFakeObjectCall fakeObjectCall)
         {
-            var result = new StringBuilder();
-
-            foreach (var argument in fakeObjectCall.Arguments.AsEnumerable())
-            {
-                if (result.Length > 0)
-                {
-                    result.Append(", ");
-                }
-
-                result.AppendFormat("{0}", GetArgumentAsString(argument));
-            }
-
-            return result.ToString();
+            return fakeObjectCall.Arguments.AsEnumerable().ToCollectionString(x => GetArgumentAsString(x), ", ");
         }
 
         private static string GetArgumentAsString(object argument)
