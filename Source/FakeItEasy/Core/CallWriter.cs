@@ -24,32 +24,18 @@ namespace FakeItEasy.Core
 
             int callNumber = 0;
             int lineNumber = 1;
+
             while (callDescriptions.Count > 0 && lineNumber < 20)
             {
-                var description = callDescriptions.Dequeue();
                 callNumber++;
-                WriteCallLine(indentString, writer, callNumber, description);
+                
+                var description = callDescriptions.Dequeue();
+                var repeatOfCurrentCall = GetRepeatOfCurrentCallAndMoveToNextCall(callDescriptions, description);
 
-                int repeatOfCurrentCall = 1;
-
-                while (callDescriptions.Count > 0 && string.Equals(description, callDescriptions.Peek(), StringComparison.Ordinal))
-                {
-                    repeatOfCurrentCall++;
-                    callDescriptions.Dequeue();
-                    callNumber++;
-                }
-
-                if (repeatOfCurrentCall > 1)
-                {
-                    writer.WriteLine(" repeated {0} times", repeatOfCurrentCall);
-                    writer.Write(indentString);
-                    writer.WriteLine("...");
-                }
-                else
-                {
-                    writer.WriteLine();
-                }
-
+                WriteCallDescription(indentString, writer, callNumber, description);
+                AppendRepeatAndEndCallDescription(indentString, writer, repeatOfCurrentCall);
+                
+                callNumber += repeatOfCurrentCall - 1;
                 lineNumber++;
             }
 
@@ -61,7 +47,34 @@ namespace FakeItEasy.Core
             }
         }
 
-        private static void WriteCallLine(string indentString, TextWriter writer, int callNumber, string callDescription)
+        private static void AppendRepeatAndEndCallDescription(string indentString, TextWriter writer, int repeatOfCurrentCall)
+        {
+            if (repeatOfCurrentCall > 1)
+            {
+                writer.WriteLine(" repeated {0} times", repeatOfCurrentCall);
+                writer.Write(indentString);
+                writer.WriteLine("...");
+            }
+            else
+            {
+                writer.WriteLine();
+            }
+        }
+
+        private static int GetRepeatOfCurrentCallAndMoveToNextCall(Queue<string> callDescriptions, string description)
+        {
+            int repeatOfCurrentCall = 1;
+
+            while (callDescriptions.Count > 0 && string.Equals(description, callDescriptions.Peek(), StringComparison.Ordinal))
+            {
+                repeatOfCurrentCall++;
+                callDescriptions.Dequeue();
+            }
+
+            return repeatOfCurrentCall;
+        }
+
+        private static void WriteCallDescription(string indentString, TextWriter writer, int callNumber, string callDescription)
         {
             writer.Write(indentString);
 
