@@ -4,9 +4,9 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     
     /// <summary>
-    /// Represents a definition of how fakes of the specified type should be created.
+    /// Represents a definition of how dummies of the specified type should be created.
     /// </summary>
-    public interface IFakeDefinition
+    public interface IDummyDefinition
     {
         /// <summary>
         /// The type of fake object the definition is for.

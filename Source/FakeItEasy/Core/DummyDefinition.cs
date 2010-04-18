@@ -8,8 +8,8 @@ namespace FakeItEasy.Core
     /// be created.
     /// </summary>
     /// <typeparam name="T">The type of fake.</typeparam>
-    public abstract class FakeDefinition<T>
-        : IFakeDefinition
+    public abstract class DummyDefinition<T>
+        : IDummyDefinition
     {
         /// <summary>
         /// Gets the type the definition is for.
@@ -24,7 +24,7 @@ namespace FakeItEasy.Core
         /// Creates the fake.
         /// </summary>
         /// <returns>The fake object.</returns>
-        object IFakeDefinition.CreateFake()
+        object IDummyDefinition.CreateFake()
         {
             return this.CreateFake();
         }

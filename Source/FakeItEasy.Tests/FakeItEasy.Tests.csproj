@@ -82,8 +82,8 @@
     <Compile Include="Configuration\FakeConfigurationExceptionTests.cs" />
     <Compile Include="Configuration\FakeConfigurationManagerTests.cs" />
     <Compile Include="Configuration\StartConfigurationTests.cs" />
-    <Compile Include="Core\FakeDefinitionTests.cs" />
-    <Compile Include="Core\MefContainerTests.cs" />
+    <Compile Include="Core\DummyDefinitionTests.cs" />
+    <Compile Include="Core\DynamicContainerTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />

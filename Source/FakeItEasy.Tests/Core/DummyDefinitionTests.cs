@@ -5,10 +5,10 @@ using System.Text;
 using NUnit.Framework;
 using FakeItEasy.Tests;
 
-namespace FakeItEasy.Core
+namespace FakeItEasy.Core.Tests
 {
     [TestFixture]
-    public class FakeDefinitionTests
+    public class DummyDefinitionTests
     {
         [Test]
         public void ForType_should_return_the_generic_type_parameter_type()
@@ -21,7 +21,7 @@ namespace FakeItEasy.Core
         [Test]
         public void CreateFake_should_return_object_from_protected_function()
         {
-            var definition = new TestableFakeDefinition() as IFakeDefinition;
+            var definition = new TestableFakeDefinition() as IDummyDefinition;
             var created = definition.CreateFake();
 
             Assert.That(created, Is.InstanceOf<SomeType>());
@@ -32,7 +32,7 @@ namespace FakeItEasy.Core
         
         }
 
-        public class TestableFakeDefinition : FakeDefinition<SomeType>
+        public class TestableFakeDefinition : DummyDefinition<SomeType>
         {
             protected override SomeType CreateFake()
             {

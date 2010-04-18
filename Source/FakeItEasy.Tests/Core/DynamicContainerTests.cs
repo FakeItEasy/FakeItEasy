@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace FakeItEasy.Core
+namespace FakeItEasy.Core.Tests
 {
     [TestFixture]
-    public class MefContainerTests
+    public class DynamicContainerTests
     {
         [Test]
         public void TryCreateFakeObject_should_create_fake_for_type_that_has_definition()
         {
-            var container = new MefContainer();
+            var container = new DynamicContainer();
 
             object fake;
 
@@ -23,7 +23,7 @@ namespace FakeItEasy.Core
         [Test]
         public void TryCreateFakeObject_should_return_false_when_no_definition_exists()
         {
-            var container = new MefContainer();
+            var container = new DynamicContainer();
 
             object fake;
 
@@ -33,7 +33,7 @@ namespace FakeItEasy.Core
         [Test]
         public void ConfigureFake_should_apply_configuration_for_registered_configuration()
         {
-            var container = new MefContainer();
+            var container = new DynamicContainer();
 
             var fake = A.Fake<IUndefined>();
 
@@ -45,7 +45,7 @@ namespace FakeItEasy.Core
         [Test]
         public void ConfigureFake_should_do_nothing_when_fake_type_has_no_configuration_specified()
         {
-            var container = new MefContainer();
+            var container = new DynamicContainer();
 
             var fake = A.Fake<IUndefined>();
         }
@@ -71,7 +71,7 @@ namespace FakeItEasy.Core
     }
 
     public class IDefinedDefinition
-        : FakeDefinition<IDefined>
+        : DummyDefinition<IDefined>
     {
         protected override IDefined CreateFake()
         {
