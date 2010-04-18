@@ -2,7 +2,6 @@ using FakeItEasy.Core;
 using NUnit.Framework;
 using System;
 using FakeItEasy.Core;
-using FakeItEasy.Mef;
 
 namespace FakeItEasy.Tests
 {
@@ -47,13 +46,4 @@ namespace FakeItEasy.Tests
             return result;
         }
     }
-
-    public class FakeObjectFactoryDefinition : FakeDefinition<FakeObject.Factory>
-    {
-        protected override FakeObject.Factory CreateFake()
-        {
-            return ServiceLocator.Current.Resolve<FakeObject.Factory>();
-        }
-    }
-
 }

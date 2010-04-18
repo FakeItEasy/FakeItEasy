@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using NUnit.Framework.Constraints;
 using FakeItEasy.Core;
 using System.Collections.Generic;
-using FakeItEasy.Mef;
 
 namespace FakeItEasy.Tests.Configuration
 {
