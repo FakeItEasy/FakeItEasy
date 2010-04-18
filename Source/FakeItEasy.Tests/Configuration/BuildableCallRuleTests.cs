@@ -67,13 +67,14 @@ namespace FakeItEasy.Tests.Configuration
             rule.CallBaseMethod = true;
             rule.Apply(call);
 
-            OldFake.Assert(call).WasCalled(x => x.CallBaseMethod());
+            A.CallTo(() => call.CallBaseMethod()).MustHaveHappened();
         }
 
 
         [Test]
         public void Apply_should_set_ref_and_out_parameters_when_specified()
         {
+            // Arrange
             var rule = this.CreateRule();
 
             rule.OutAndRefParametersValues = new object[] { 1, "foo" };
@@ -83,12 +84,12 @@ namespace FakeItEasy.Tests.Configuration
             
             A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod("OutAndRef"));
 
+            // Act
             rule.Apply(call);
 
-            OldFake.Assert(call)
-                .WasCalled(_ => _.SetArgumentValue(1, 1));
-            OldFake.Assert(call)
-                .WasCalled(_ => _.SetArgumentValue(3, "foo"));
+            // Assert
+            A.CallTo(() => call.SetArgumentValue(1, 1)).MustHaveHappened();
+            A.CallTo(() => call.SetArgumentValue(3, "foo")).MustHaveHappened();
         }
 
         [Test]

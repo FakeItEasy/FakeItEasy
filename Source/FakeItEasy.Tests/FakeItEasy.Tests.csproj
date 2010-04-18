@@ -97,7 +97,6 @@
     <Compile Include="SelfInitializedFakes\RecordingExceptionTests.cs" />
     <Compile Include="SelfInitializedFakes\SelfInitializationRuleTests.cs" />
     <Compile Include="Core\CallWriterTests.cs" />
-    <Compile Include="Assertion\FakeAssertionsTests.cs" />
     <Compile Include="CommonExtensionsTests.cs" />
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
     <Compile Include="Expressions\ArgumentConstraintFactoryTests.cs" />
@@ -146,10 +145,6 @@
     <Compile Include="VisualBasic\VisualBasicRuleBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj">
-      <Project>{0EFB697E-09B6-493D-83CE-2135C814EE80}</Project>
-      <Name>FakeItEasy.BackwardsCompatibility</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FakeItEasy.Mef\FakeItEasy.Mef.csproj">
       <Project>{797E7789-2647-4E46-AEB6-2050AE63CCA4}</Project>
       <Name>FakeItEasy.Mef</Name>

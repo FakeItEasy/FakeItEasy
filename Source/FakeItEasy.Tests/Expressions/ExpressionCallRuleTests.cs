@@ -112,8 +112,7 @@ namespace FakeItEasy.Tests.Expressions
 
             rule.UsePredicateToValidateArguments(predicate);
 
-            OldFake.Assert(this.callMatcher)
-                .WasCalled(x => x.UsePredicateToValidateArguments(predicate));
+            A.CallTo(() => this.callMatcher.UsePredicateToValidateArguments(predicate)).MustHaveHappened();
         }
     }
 }

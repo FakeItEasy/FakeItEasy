@@ -5,8 +5,7 @@
     using FakeItEasy.Core;
     using FakeItEasy.Configuration;
     using NUnit.Framework;
-    using FakeItEasy.Assertion;
-
+    
     [TestFixture]
     public class RuleBuilderTests
     {
@@ -76,8 +75,8 @@
             this.ruleProducedByFactory.Applicator(call);
             this.ruleProducedByFactory.Applicator(call);
 
-            OldFake.Assert(call).WasCalled(x => x.SetReturnValue(1));
-            OldFake.Assert(call).WasCalled(x => x.SetReturnValue(2));
+            A.CallTo(() => call.SetReturnValue(1)).MustHaveHappened();
+            A.CallTo(() => call.SetReturnValue(2)).MustHaveHappened();
         }
 
         [Test]
@@ -114,7 +113,7 @@
 
             this.ruleProducedByFactory.Applicator(call);
 
-            OldFake.Assert(call).WasCalled(x => x.SetReturnValue(2));
+            A.CallTo(() => call.SetReturnValue(2)).MustHaveHappened();
         }
 
         [Test]
@@ -228,8 +227,7 @@
 
             this.builder.Invokes(action);
 
-            OldFake.Assert(this.builder.RuleBeingBuilt.Actions)
-                .WasCalled(x => x.Add(action));
+            A.CallTo(() => this.builder.RuleBeingBuilt.Actions.Add(action)).MustHaveHappened();
         }
 
         [Test]
@@ -256,9 +254,8 @@
             Action<IFakeObjectCall> action = x => { };
 
             returnConfig.Invokes(action);
-
-            OldFake.Assert(this.builder.RuleBeingBuilt.Actions)
-                .WasCalled(x => x.Add(action));
+           
+            A.CallTo(() => this.builder.RuleBeingBuilt.Actions.Add(action)).MustHaveHappened();
         }
 
         [Test]
@@ -428,8 +425,7 @@
             // Assert
             var repeatMatcher = A<Func<int, bool>>.That.Matches(x => x.Invoke(99) == true);
 
-            OldFake.Assert(this.asserter)
-                .WasCalled(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", repeatMatcher, "exactly #99 times"));
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", repeatMatcher, "exactly #99 times")).MustHaveHappened();
         }
 
         [Test]

@@ -2,7 +2,6 @@ namespace FakeItEasy.Tests.VisualBasic
 {
     using System;
     using FakeItEasy.Core;
-    using FakeItEasy.Assertion;
     using FakeItEasy.Configuration;
     using FakeItEasy.VisualBasic;
     using NUnit.Framework;

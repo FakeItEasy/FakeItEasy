@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using FakeItEasy.Configuration;
-using FakeItEasy.Assertion;
 using FakeItEasy.Core;
 using System.Linq.Expressions;
 using ES = FakeItEasy.ExtensionSyntax.Full;
@@ -14,18 +13,11 @@ namespace FakeItEasy.Tests.ExtensionSyntax.Full
     [TestFixture]
     public class FullExtensionSyntaxTests : ConfigurableServiceLocatorTestBase
     {
-        IFakeAssertionsFactory fakeAssertionsFactory;
-        IFakeAssertions<IFoo> fakeAssertions;
         IStartConfigurationFactory fakeConfigurationFactory;
         IStartConfiguration<IFoo> fakeConfiguration;
 
         protected override void OnSetUp()
         {
-            this.fakeAssertions = A.Fake <IFakeAssertions<IFoo>>();
-            this.fakeAssertionsFactory = A.Fake<IFakeAssertionsFactory>();
-            A.CallTo(() => this.fakeAssertionsFactory.CreateAsserter<IFoo>(A<FakeObject>.Ignored))
-                .Returns(this.fakeAssertions);
-
             this.fakeConfiguration = A.Fake<IStartConfiguration<IFoo>>();
             this.fakeConfigurationFactory = A.Fake<IStartConfigurationFactory>();
             A.CallTo(() => this.fakeConfigurationFactory.CreateConfiguration<IFoo>(A<FakeObject>.Ignored))
