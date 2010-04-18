@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using FakeItEasy.Tests;
 
-namespace FakeItEasy.Mef
+namespace FakeItEasy.Core
 {
     [TestFixture]
     public class FakeConfiguratorTests

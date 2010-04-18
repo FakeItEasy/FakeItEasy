@@ -1,16 +1,15 @@
-namespace FakeItEasy.Mef
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
-	using System.Globalization;
+    using System.Globalization;
 
     /// <summary>
     /// Provides the base implementation for the IFakeConfigurator-interface.
     /// </summary>
     /// <typeparam name="T">The type of fakes the configurator can configure.</typeparam>
     public abstract class FakeConfigurator<T>
-            : IFakeConfigurator
+        : IFakeConfigurator
     {
         /// <summary>
         /// The type the instance provides configuration for.

@@ -69,6 +69,7 @@
     <Compile Include="Core\DefaultFakeWrapperConfiguratorTests.cs" />
     <Compile Include="Core\DefaultReturnValueRuleTests.cs" />
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
+    <Compile Include="Core\FakeConfiguratorTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
     <Compile Include="Core\Creation\DefaultFakeAndDummyManagerTests.cs" />
     <Compile Include="Core\Creation\ProxyResultTests.cs" />
@@ -81,6 +82,8 @@
     <Compile Include="Configuration\FakeConfigurationExceptionTests.cs" />
     <Compile Include="Configuration\FakeConfigurationManagerTests.cs" />
     <Compile Include="Configuration\StartConfigurationTests.cs" />
+    <Compile Include="Core\FakeDefinitionTests.cs" />
+    <Compile Include="Core\MefContainerTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />

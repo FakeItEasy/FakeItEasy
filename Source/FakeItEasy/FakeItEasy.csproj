@@ -66,6 +66,10 @@
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\Creation\DefaultFakeCreator.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
+    <Compile Include="Core\FakeConfigurator.cs" />
+    <Compile Include="Core\FakeDefinition.cs" />
+    <Compile Include="Core\IFakeConfigurator.cs" />
+    <Compile Include="Core\IFakeDefinition.cs" />
     <Compile Include="Core\IFakeWrapperConfigurator.cs" />
     <Compile Include="Core\Creation\IProxyGeneratorFactory.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
@@ -87,6 +91,7 @@
     <Compile Include="Configuration\IFakeConfigurationManager.cs" />
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
+    <Compile Include="Core\MefContainer.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

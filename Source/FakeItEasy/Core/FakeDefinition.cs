@@ -1,9 +1,8 @@
-namespace FakeItEasy.Mef
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
-
+    
     /// <summary>
     /// Represents a definition of how a fake object of the type T should
     /// be created.

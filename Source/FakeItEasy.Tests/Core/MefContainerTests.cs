@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace FakeItEasy.Mef
+namespace FakeItEasy.Core
 {
     [TestFixture]
     public class MefContainerTests

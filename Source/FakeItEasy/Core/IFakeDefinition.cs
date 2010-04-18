@@ -1,13 +1,11 @@
-namespace FakeItEasy.Mef
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
-
+    
     /// <summary>
     /// Represents a definition of how fakes of the specified type should be created.
     /// </summary>
-    [InheritedExport(typeof(IFakeDefinition))]
     public interface IFakeDefinition
     {
         /// <summary>
