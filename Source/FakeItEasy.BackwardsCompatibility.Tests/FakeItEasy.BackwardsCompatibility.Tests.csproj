@@ -63,10 +63,6 @@
       <Project>{0EFB697E-09B6-493D-83CE-2135C814EE80}</Project>
       <Name>FakeItEasy.BackwardsCompatibility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FakeItEasy.Mef\FakeItEasy.Mef.csproj">
-      <Project>{797E7789-2647-4E46-AEB6-2050AE63CCA4}</Project>
-      <Name>FakeItEasy.Mef</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj">
       <Project>{0E26272D-045A-47C2-8928-BD9B980115D5}</Project>
       <Name>FakeItEasy.Tests</Name>
