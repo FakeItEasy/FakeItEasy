@@ -1,6 +1,6 @@
 namespace FakeItEasy.Expressions
 {
-    internal class RootValidations<T>
+    internal class RootArgumentConstraintScope<T>
         : ArgumentConstraintScope<T>
     {
         internal override bool IsValid(T argument)

@@ -97,7 +97,7 @@
     <Compile Include="Expressions\IExpressionCallMatcherFactory.cs" />
     <Compile Include="Expressions\IExpressionParser.cs" />
     <Compile Include="Expressions\NotArgumentConstraintScope.cs" />
-    <Compile Include="Expressions\RootValidations.cs" />
+    <Compile Include="Expressions\RootArgumentConstraintScope.cs" />
     <Compile Include="Repeated.cs" />
     <Compile Include="Core\Creation\IFakeOptionsBuilder.cs" />
     <Compile Include="Core\Creation\IFakeOptionsBuilderForWrappers.cs" />

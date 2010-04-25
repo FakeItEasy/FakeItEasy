@@ -10,14 +10,6 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
     public class EnumerableContainsConstraintTests
         : ArgumentConstraintTestBase<IEnumerable>
     {
-        [SetUp]
-        public void SetUp()
-        {
-            var scope = A<IEnumerable>.That;
-            
-            this.constraint = new EnumerableContainsConstraint<IEnumerable>(scope, 10);
-        }
-
         protected override IEnumerable<object> InvalidValues
         {
             get
@@ -51,6 +43,11 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
             {
                 return "contains 10";
             }
+        }
+
+        protected override FakeItEasy.Expressions.ArgumentConstraint<IEnumerable> CreateConstraint(FakeItEasy.Expressions.ArgumentConstraintScope<IEnumerable> scope)
+        {
+            return new EnumerableContainsConstraint<IEnumerable>(scope, 10);
         }
     }
 }

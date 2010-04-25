@@ -38,29 +38,30 @@ namespace FakeItEasy.Tests
     public abstract class ArgumentConstraintTestBase<T>
         : ArgumentConstraintTestBase
     {
-        protected new ArgumentConstraint<T> Constraint
+        [SetUp]
+        public void SetUp()
         {
-            get
-            {
-                return (ArgumentConstraint<T>)base.constraint;
-            }
-            set
-            {
-                base.constraint = value;
-            }
+            this.constraint = this.CreateConstraint(new RootArgumentConstraintScope<T>());
         }
+       
+        protected abstract ArgumentConstraint<T> CreateConstraint(ArgumentConstraintScope<T> scope);
 
         [Test]
         public void FullDescription_should_provide_expected_description()
         {
             // Arrange
-
+            var constraint = this.CreateConstraint(new RootArgumentConstraintScope<T>());
+            
             // Act
-
+            
             // Assert
-            Assert.That(this.Constraint.FullDescription, Is.EqualTo(this.ExpectedDescription));
+            Assert.That(constraint.FullDescription, Is.EqualTo(this.ExpectedDescription));
         }
 
+        protected static ArgumentConstraintScope<TArgument> GetScopeForTesting<TArgument>()
+        {
+            return new RootArgumentConstraintScope<TArgument>();
+        }
     }
 
 }

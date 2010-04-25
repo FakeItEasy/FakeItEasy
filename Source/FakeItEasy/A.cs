@@ -134,7 +134,7 @@ using FakeItEasy.Core.Creation;
         {
             get
             {
-                return new RootValidations<T>();
+                return new RootArgumentConstraintScope<T>();
             }
         }
 
@@ -145,7 +145,7 @@ using FakeItEasy.Core.Creation;
         {
             get
             {
-                return ArgumentConstraint.Create(new RootValidations<T>(), x => true, "Ignored");
+                return ArgumentConstraint.Create(new RootArgumentConstraintScope<T>(), x => true, "Ignored");
             }
         }
     }

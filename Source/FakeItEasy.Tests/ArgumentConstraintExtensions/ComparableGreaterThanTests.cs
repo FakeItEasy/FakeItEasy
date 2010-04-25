@@ -4,28 +4,28 @@ using NUnit.Framework;
 namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
-    public class StringContainsTests
+    public class ComparableGreaterThanTests
         : ArgumentConstraintTestBase
     {
         [SetUp]
         public void SetUp()
         {
-            this.constraint = A<string>.That.Contains("bar");
+            this.constraint = A<int>.That.IsGreaterThan(100);
         }
 
         protected override IEnumerable<object> InvalidValues
         {
-            get { return new object[] { "foo", "baz", "biz", "", null, "lorem ipsum" }; }
+            get { return new object[] { int.MinValue, -100, 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 100 }; }
         }
 
         protected override IEnumerable<object> ValidValues
         {
-            get { return new object[] { "bar", "barcode", "foo bar", "unbareable ;-)" }; }
+            get { return new object[] { 101, 1000, 78990, int.MaxValue }; }
         }
 
         protected override string ExpectedDescription
         {
-            get { return "String that contains \"bar\""; }
+            get { return "Greater than 100"; }
         }
     }
 }

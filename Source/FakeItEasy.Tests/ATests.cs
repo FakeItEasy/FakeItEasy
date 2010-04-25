@@ -157,7 +157,7 @@
             var validations = A<string>.That;
 
             // Assert
-            Assert.That(validations, Is.InstanceOf<RootValidations<string>>());
+            Assert.That(validations, Is.InstanceOf<RootArgumentConstraintScope<string>>());
         }
 
         [Test]
@@ -194,7 +194,7 @@
             var validator = A<string>.Ignored;
 
             // Assert
-            Assert.That(validator.Scope, Is.InstanceOf<RootValidations<string>>());
+            Assert.That(validator.Scope, Is.InstanceOf<RootArgumentConstraintScope<string>>());
         }
     }
 }

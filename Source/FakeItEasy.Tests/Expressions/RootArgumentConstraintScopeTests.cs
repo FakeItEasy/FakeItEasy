@@ -4,11 +4,11 @@ namespace FakeItEasy.Tests.Expressions
     using NUnit.Framework;
 
     [TestFixture]
-    public class RootValidationsTests
+    public class RootArgumentConstraintScopeTests
     {
-        private RootValidations<int> CreateValidations()
+        private RootArgumentConstraintScope<int> CreateValidations()
         {
-            return new RootValidations<int>();
+            return new RootArgumentConstraintScope<int>();
         }
 
         [Test]

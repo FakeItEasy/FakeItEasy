@@ -33,4 +33,32 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             return this.expectedValue.ToString();
         }
     }
+
+    internal class EqualityArgumentConstraint<T>
+        : ArgumentConstraint<T>
+    {
+        private T expectedValue;
+
+        public EqualityArgumentConstraint(ArgumentConstraintScope<T> scope, T expectedValue)
+            : base(scope)
+        {
+            this.expectedValue = expectedValue;    
+        }
+
+        protected override string Description
+        {
+            get 
+            {
+
+                return this.expectedValue != null ? this.expectedValue.ToString() : "NULL";
+            }
+        }
+
+        protected override bool Evaluate(T value)
+        {
+            return object.Equals(this.expectedValue, value);
+        }
+    }
+
+
 }

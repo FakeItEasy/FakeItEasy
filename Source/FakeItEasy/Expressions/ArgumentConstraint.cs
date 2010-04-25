@@ -77,6 +77,8 @@ namespace FakeItEasy.Expressions
         /// <param name="scope">The scope of the constraint.</param>
         protected ArgumentConstraint(ArgumentConstraintScope<T> scope)
         {
+            Guard.AgainstNull(scope, "scope");
+
             this.Scope = scope;
         }
 
@@ -142,7 +144,7 @@ namespace FakeItEasy.Expressions
         protected abstract string Description { get; }
 
         /// <summary>
-        /// Converst a constraint to the the type of the constrained argument.
+        /// Converts a constraint to the the type of the constrained argument.
         /// </summary>
         /// <param name="constraint"></param>
         /// <returns></returns>
@@ -151,9 +153,14 @@ namespace FakeItEasy.Expressions
             return constraint.Argument;
         }
 
+        /// <summary>
+        /// Converts an argument to an ArgumentConstraint that evaluates equality.
+        /// </summary>
+        /// <param name="argument">The argument to convert.</param>
+        /// <returns>An equality constraint.</returns>
         public static implicit operator ArgumentConstraint<T>(T argument)
         {
-            return new EqualityArgumentConstraint<T>(new RootValidations<T>(), argument);
+            return new EqualityArgumentConstraint<T>(new RootArgumentConstraintScope<T>(), argument);
         }
 
         /// <summary>
@@ -203,28 +210,6 @@ namespace FakeItEasy.Expressions
         /// <returns>True if the argument is valid.</returns>
         protected abstract bool Evaluate(T value);
 
-        private class EqualityArgumentConstraint<T>
-            : ArgumentConstraint<T>
-        {
-            private T expectedValue;
-
-            public EqualityArgumentConstraint(ArgumentConstraintScope<T> scope, T expectedValue)
-                : base(scope)
-            {
-                this.expectedValue = expectedValue;
-            }
-
-            protected override string Description
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            protected override bool Evaluate(T value)
-            {
-                return object.Equals(this.expectedValue, value);
-            }
-        }
-
         private class OrConstraint
             : ArgumentConstraint<T>
         {
@@ -232,7 +217,7 @@ namespace FakeItEasy.Expressions
             private ArgumentConstraint<T> second;
 
             public OrConstraint(ArgumentConstraint<T> first, ArgumentConstraint<T> second)
-                : base(new RootValidations<T>())
+                : base(new RootArgumentConstraintScope<T>())
             {
                 this.first = first;
                 this.second = second;

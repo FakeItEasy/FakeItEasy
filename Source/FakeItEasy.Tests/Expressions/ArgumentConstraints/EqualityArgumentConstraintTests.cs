@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using FakeItEasy.Expressions.ArgumentConstraints;
     using NUnit.Framework;
+    using FakeItEasy.Expressions;
 
     [TestFixture]
     public class EqualityArgumentConstraintTests
@@ -53,6 +54,69 @@
             var validator = new EqualityArgumentConstraint("foo");
 
             Assert.That(validator.ToString(), Is.EqualTo("\"foo\""));
+        }
+    }
+
+    [TestFixture]
+    public class GenericEqualityArgumentConstraintTests
+        : ArgumentConstraintTestBase<object>
+    {
+        
+        protected override IEnumerable<object> InvalidValues
+        {
+            get 
+            {
+                yield return "unexpected value";
+                yield return 1;
+                yield return null;
+            }
+        }
+
+        protected override IEnumerable<object> ValidValues
+        {
+            get 
+            {
+                return new[] { "expected value" };
+            }
+        }
+
+        protected override string ExpectedDescription
+        {
+            get 
+            {
+                return "expected value";
+            }
+        }
+
+        protected override ArgumentConstraint<object> CreateConstraint(FakeItEasy.Expressions.ArgumentConstraintScope<object> scope)
+        {
+            return new EqualityArgumentConstraint<object>(scope, "expected value");
+        }
+
+
+        [Test]
+        public void Should_handle_null_as_expected_value()
+        {
+            // Arrange
+            var constraint = new EqualityArgumentConstraint<object>(GetScopeForTesting<object>(), null);
+
+            // Act
+            var result = constraint.IsValid(null);
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void Should_give_correct_description_when_expected_value_is_null()
+        {
+            // Arrange
+            var constraint = new EqualityArgumentConstraint<object>(GetScopeForTesting<object>(), null);
+
+            // Act
+
+            // Assert
+            Assert.That(constraint.FullDescription, Is.EqualTo("NULL"));
         }
     }
 }

@@ -4,28 +4,28 @@ using NUnit.Framework;
 namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
-    public class StringContainsTests
+    public class StringIsNullOrEmptyTests
         : ArgumentConstraintTestBase
     {
         [SetUp]
         public void SetUp()
         {
-            this.constraint = A<string>.That.Contains("bar");
+            this.constraint = A<string>.That.IsNullOrEmpty();
         }
 
         protected override IEnumerable<object> InvalidValues
         {
-            get { return new object[] { "foo", "baz", "biz", "", null, "lorem ipsum" }; }
+            get { return new object[] { "foo", "bar", "a", "b" }; }
         }
 
         protected override IEnumerable<object> ValidValues
         {
-            get { return new object[] { "bar", "barcode", "foo bar", "unbareable ;-)" }; }
+            get { return new object[] { "", null }; }
         }
 
         protected override string ExpectedDescription
         {
-            get { return "String that contains \"bar\""; }
+            get { return "(NULL or string.Empty)"; }
         }
     }
 }
