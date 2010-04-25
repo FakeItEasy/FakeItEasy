@@ -302,7 +302,7 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         [Test]
-        public void Validator_should_convert_to_argument_type_implicitly()
+        public void Constraint_should_convert_to_argument_type_implicitly()
         {
             // Arrange
             var validator = this.CreateValidator();
@@ -312,6 +312,19 @@ namespace FakeItEasy.Tests.Expressions
 
             // Assert
             Assert.That(result, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Argument_should_convert_to_equality_constraint_implicitly()
+        {
+            // Arrange
+
+            // Act
+            ArgumentConstraint<string> constraint = "test";
+
+            // Assert
+            Assert.That(constraint.IsValid("test"), Is.True);
+            Assert.That(constraint.IsValid("something else"), Is.False);
         }
 
         [Test]

@@ -2,6 +2,7 @@ namespace FakeItEasy.Expressions
 {
     using System;
     using FakeItEasy.Core;
+    using FakeItEasy.Expressions.ArgumentConstraints;
 
     /// <summary>
     /// Provides static methods for the ArgumentConstraint{T} class.
@@ -150,6 +151,11 @@ namespace FakeItEasy.Expressions
             return constraint.Argument;
         }
 
+        public static implicit operator ArgumentConstraint<T>(T argument)
+        {
+            return new EqualityArgumentConstraint<T>(new RootValidations<T>(), argument);
+        }
+
         /// <summary>
         /// Allows you to combine the current constraint with another constraint, where only
         /// one of them has to be valid.
@@ -196,6 +202,28 @@ namespace FakeItEasy.Expressions
         /// <param name="value">The value to evaluate.</param>
         /// <returns>True if the argument is valid.</returns>
         protected abstract bool Evaluate(T value);
+
+        private class EqualityArgumentConstraint<T>
+            : ArgumentConstraint<T>
+        {
+            private T expectedValue;
+
+            public EqualityArgumentConstraint(ArgumentConstraintScope<T> scope, T expectedValue)
+                : base(scope)
+            {
+                this.expectedValue = expectedValue;
+            }
+
+            protected override string Description
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            protected override bool Evaluate(T value)
+            {
+                return object.Equals(this.expectedValue, value);
+            }
+        }
 
         private class OrConstraint
             : ArgumentConstraint<T>
