@@ -12,6 +12,8 @@
     <AssemblyName>FakeItEasy</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>FakeItEasy.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,6 +66,10 @@
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\Creation\DefaultFakeCreator.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
+    <Compile Include="Core\FakeConfigurator.cs" />
+    <Compile Include="Core\DummyDefinition.cs" />
+    <Compile Include="Core\IFakeConfigurator.cs" />
+    <Compile Include="Core\IDummyDefinition.cs" />
     <Compile Include="Core\IFakeWrapperConfigurator.cs" />
     <Compile Include="Core\Creation\IProxyGeneratorFactory.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
@@ -85,6 +91,7 @@
     <Compile Include="Configuration\IFakeConfigurationManager.cs" />
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
+    <Compile Include="Core\DynamicContainer.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -206,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Creation\Creation.cd" />
+    <None Include="FakeItEasy.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using NUnit.Framework.Constraints;
 using FakeItEasy.Core;
 using System.Collections.Generic;
-using FakeItEasy.Mef;
 
 namespace FakeItEasy.Tests.Configuration
 {
@@ -87,7 +86,6 @@ namespace FakeItEasy.Tests.Configuration
             // Act
             rule.Apply(call);
 
-            // Assert
             A.CallTo(() => call.SetArgumentValue(1, 1)).MustHaveHappened();
             A.CallTo(() => call.SetArgumentValue(3, "foo")).MustHaveHappened();
         }

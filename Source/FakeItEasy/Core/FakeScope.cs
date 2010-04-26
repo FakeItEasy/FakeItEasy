@@ -108,34 +108,7 @@ namespace FakeItEasy.Core
 
             public RootScope()
             {
-                this.fakeObjectContainerField = ResolveContainer();
-            }
-
-            private static IFakeObjectContainer ResolveContainer()
-            {
-                var result = TryLoadMefContainer();
-
-                if (result == null)
-                {
-                    result = new NullFakeObjectContainer();
-                }
-
-                return result;
-            }
-
-            private static IFakeObjectContainer TryLoadMefContainer()
-            {
-                try
-                {
-                    var assembly = Assembly.Load(new AssemblyName("FakeItEasy.Mef"));
-                    var type = assembly.GetType("FakeItEasy.Mef.MefContainer");
-
-                    return (IFakeObjectContainer)Activator.CreateInstance(type, false);
-                }
-                catch (FileNotFoundException)
-                {
-                    return null;
-                }
+                this.fakeObjectContainerField = new DynamicContainer();
             }
 
             internal override IFakeObjectContainer FakeObjectContainer

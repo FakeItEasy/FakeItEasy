@@ -1,12 +1,10 @@
-namespace FakeItEasy.Mef
+namespace FakeItEasy.Core
 {
     using System;
-    using System.ComponentModel.Composition;
-
+    
     /// <summary>
     /// Provides configurations for fake objects of a specific type.
     /// </summary>
-    [InheritedExport(typeof(IFakeConfigurator))]
     public interface IFakeConfigurator
     {
         /// <summary>

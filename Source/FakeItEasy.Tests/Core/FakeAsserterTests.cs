@@ -12,7 +12,7 @@ using System.Reflection;
 using FakeItEasy.Expressions;
 using System.IO;
 
-namespace FakeItEasy.Tests.Assertion
+namespace FakeItEasy.Tests.Core
 {
 
     [TestFixture]

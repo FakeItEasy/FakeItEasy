@@ -12,6 +12,9 @@
     <AssemblyName>FakeItEasy.BackwardsCompatibility.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>FakeItEasy.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\FakeItEasy.Tests\Assertion\FakeAssertionsTests.cs">
+      <Link>Assertion\FakeAssertionsTests.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy.Tests\ConfigureTests.cs" />
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
@@ -60,10 +66,6 @@
       <Project>{0EFB697E-09B6-493D-83CE-2135C814EE80}</Project>
       <Name>FakeItEasy.BackwardsCompatibility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FakeItEasy.Mef\FakeItEasy.Mef.csproj">
-      <Project>{797E7789-2647-4E46-AEB6-2050AE63CCA4}</Project>
-      <Name>FakeItEasy.Mef</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj">
       <Project>{0E26272D-045A-47C2-8928-BD9B980115D5}</Project>
       <Name>FakeItEasy.Tests</Name>
@@ -72,6 +74,9 @@
       <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
       <Name>FakeItEasy</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FakeItEasy.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using FakeItEasy.Tests;
+using NUnit.Framework;
 
-namespace FakeItEasy.Mef
+namespace FakeItEasy.Core
 {
     [TestFixture]
     public class FakeConfiguratorTests
@@ -47,7 +44,7 @@ namespace FakeItEasy.Mef
 
             var thrown = Assert.Throws<ArgumentException>(() =>
                 configurator.ConfigureFake(""));
-            Assert.That(thrown.Message, Text.StartsWith("The FakeItEasy.Mef.FakeConfiguratorTests+TestableConfigurator`1[FakeItEasy.Tests.IFoo] can only configure fakes of the type 'FakeItEasy.Tests.IFoo'."));
+            Assert.That(thrown.Message, Text.StartsWith("The FakeItEasy.Core.FakeConfiguratorTests+TestableConfigurator`1[FakeItEasy.Tests.IFoo] can only configure fakes of the type 'FakeItEasy.Tests.IFoo'."));
             Assert.That(thrown.ParamName, Is.EqualTo("fakeObject"));
         }
 

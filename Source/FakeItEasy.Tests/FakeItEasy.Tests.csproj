@@ -12,6 +12,8 @@
     <AssemblyName>FakeItEasy.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>FakeItEasy.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,6 +64,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="AnyTests.cs" />
+    <Compile Include="Core\FakeAsserterTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ArgumentConstraintExtensions\ComparableGreaterThanTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\StringIsNullOrEmptyTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\StringStartsWithTests.cs" />
@@ -70,6 +75,7 @@
     <Compile Include="Core\DefaultFakeWrapperConfiguratorTests.cs" />
     <Compile Include="Core\DefaultReturnValueRuleTests.cs" />
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
+    <Compile Include="Core\FakeConfiguratorTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
     <Compile Include="Core\Creation\DefaultFakeAndDummyManagerTests.cs" />
     <Compile Include="Core\Creation\ProxyResultTests.cs" />
@@ -82,6 +88,8 @@
     <Compile Include="Configuration\FakeConfigurationExceptionTests.cs" />
     <Compile Include="Configuration\FakeConfigurationManagerTests.cs" />
     <Compile Include="Configuration\StartConfigurationTests.cs" />
+    <Compile Include="Core\DummyDefinitionTests.cs" />
+    <Compile Include="Core\DynamicContainerTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
@@ -125,7 +133,6 @@
     <Compile Include="FakeConstraints\WrappingFakeConstraint.cs" />
     <Compile Include="ExpectationExceptionTests.cs" />
     <Compile Include="ExtensionSyntax\ExtensionSyntaxTests.cs" />
-    <Compile Include="Assertion\FakeAsserterTests.cs" />
     <Compile Include="FakeCall.cs" />
     <Compile Include="FakeCallRule.cs" />
     <Compile Include="FakeExtensionsTests.cs" />
@@ -148,14 +155,16 @@
     <Compile Include="VisualBasic\VisualBasicRuleBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FakeItEasy.Mef\FakeItEasy.Mef.csproj">
-      <Project>{797E7789-2647-4E46-AEB6-2050AE63CCA4}</Project>
-      <Name>FakeItEasy.Mef</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj">
       <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
       <Name>FakeItEasy</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FakeItEasy.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assertion\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
