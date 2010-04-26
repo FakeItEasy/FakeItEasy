@@ -9,11 +9,10 @@ using NUnit.Framework.Constraints;
 using System.Linq.Expressions;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using FakeItEasy.Assertion;
 using FakeItEasy.Expressions;
 using System.IO;
 
-namespace FakeItEasy.Tests.Assertion
+namespace FakeItEasy.Tests.Core
 {
 
     [TestFixture]

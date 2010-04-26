@@ -6,7 +6,6 @@ using NUnit.Framework;
 using FakeItEasy.ExtensionSyntax;
 using FakeItEasy.Core;
 using FakeItEasy.Configuration;
-using FakeItEasy.Assertion;
 
 namespace FakeItEasy.Tests.Core
 {
@@ -53,7 +52,7 @@ namespace FakeItEasy.Tests.Core
             var rule = this.CreateRule(wrapped);
             rule.Apply(call);
 
-            OldFake.Assert(wrapped).WasCalled(x => x.Bar("foo", "bar"));
+            A.CallTo(() => wrapped.Bar("foo", "bar")).MustHaveHappened();
         }
 
         private WrappedObjectRule CreateRule()

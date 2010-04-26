@@ -9,9 +9,9 @@ using NUnit.Framework.Constraints;
 using System.Linq.Expressions;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using FakeItEasy.Assertion;
 using FakeItEasy.Expressions;
 using FakeItEasy.Tests.TestHelpers;
+using FakeItEasy.Assertion;
 
 namespace FakeItEasy.Tests.Assertion
 {

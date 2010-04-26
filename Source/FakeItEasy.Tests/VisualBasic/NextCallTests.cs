@@ -4,8 +4,7 @@
     using FakeItEasy.Configuration;
     using FakeItEasy.VisualBasic;
     using NUnit.Framework;
-    using FakeItEasy.Assertion;
-
+    
     [TestFixture]
     public class NextCallTests
         : ConfigurableServiceLocatorTestBase

@@ -64,6 +64,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="AnyTests.cs" />
+    <Compile Include="Core\FakeAsserterTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Core\CallInterceptedEventArgsTests.cs" />
     <Compile Include="Core\Creation\DefaultFakeCreatorTests.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfiguratorTests.cs" />
@@ -102,7 +105,6 @@
     <Compile Include="SelfInitializedFakes\RecordingExceptionTests.cs" />
     <Compile Include="SelfInitializedFakes\SelfInitializationRuleTests.cs" />
     <Compile Include="Core\CallWriterTests.cs" />
-    <Compile Include="Assertion\FakeAssertionsTests.cs" />
     <Compile Include="CommonExtensionsTests.cs" />
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
     <Compile Include="Expressions\ArgumentConstraintFactoryTests.cs" />
@@ -128,7 +130,6 @@
     <Compile Include="FakeConstraints\WrappingFakeConstraint.cs" />
     <Compile Include="ExpectationExceptionTests.cs" />
     <Compile Include="ExtensionSyntax\ExtensionSyntaxTests.cs" />
-    <Compile Include="Assertion\FakeAsserterTests.cs" />
     <Compile Include="FakeCall.cs" />
     <Compile Include="FakeCallRule.cs" />
     <Compile Include="FakeExtensionsTests.cs" />
@@ -151,10 +152,6 @@
     <Compile Include="VisualBasic\VisualBasicRuleBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj">
-      <Project>{0EFB697E-09B6-493D-83CE-2135C814EE80}</Project>
-      <Name>FakeItEasy.BackwardsCompatibility</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj">
       <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
       <Name>FakeItEasy</Name>
@@ -162,6 +159,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FakeItEasy.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assertion\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

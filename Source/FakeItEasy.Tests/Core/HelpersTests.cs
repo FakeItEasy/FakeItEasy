@@ -79,8 +79,7 @@ namespace FakeItEasy.Tests.Core
             Helpers.WriteCalls(calls, writer);
 
 
-            OldFake.Assert(callWriter)
-                .WasCalled(x => x.WriteCalls(0, calls, writer));
+            A.CallTo(() => callWriter.WriteCalls(0, calls, writer)).MustHaveHappened();
         }
 
         private class Base

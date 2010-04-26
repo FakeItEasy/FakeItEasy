@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\FakeItEasy.Tests\Assertion\FakeAssertionsTests.cs">
+      <Link>Assertion\FakeAssertionsTests.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy.Tests\ConfigureTests.cs" />
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />

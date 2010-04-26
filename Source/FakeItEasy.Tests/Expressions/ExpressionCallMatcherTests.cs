@@ -12,16 +12,16 @@ namespace FakeItEasy.Tests.Expressions
     [TestFixture]
     public class ExpressionCallMatcherTests
     {
-        private ArgumentConstraintFactory validatorFactory;
+        private ArgumentConstraintFactory constraintFactory;
         private MethodInfoManager methodInfoManager;
 
         [SetUp]
         public void SetUp()
         {
-            this.validatorFactory = A.Fake<ArgumentConstraintFactory>();
+            this.constraintFactory = A.Fake<ArgumentConstraintFactory>();
             var validator = A.Fake<IArgumentConstraint>();
             A.CallTo(() => validator.IsValid(A<object>.Ignored)).Returns(true);
-            A.CallTo(() => validatorFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
+            A.CallTo(() => constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
 
             this.methodInfoManager = A.Fake<MethodInfoManager>();
         }
@@ -38,7 +38,7 @@ namespace FakeItEasy.Tests.Expressions
 
         private ExpressionCallMatcher CreateMatcher(LambdaExpression callSpecification)
         {
-            return new ExpressionCallMatcher(callSpecification, this.validatorFactory, this.methodInfoManager);
+            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager);
         }
 
         private void StubMethodInfoManagerToReturn(bool returnValue)
@@ -87,8 +87,7 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.Matches(call);
 
-            OldFake.Assert(this.methodInfoManager)
-                .WasCalled(x => x.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), call.Method, expressionMethod));
+            A.CallTo(() => this.methodInfoManager.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), call.Method, expressionMethod)).MustHaveHappened();
         }
 
         [Test]
@@ -101,8 +100,7 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.Matches(call);
 
-            OldFake.Assert(this.methodInfoManager)
-                .WasCalled(x => x.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), getter, getter));
+            A.CallTo(() => this.methodInfoManager.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), getter, getter)).MustHaveHappened();
         }
 
         [Test]
@@ -110,10 +108,8 @@ namespace FakeItEasy.Tests.Expressions
         {
             this.CreateMatcher<IFoo>(x => x.Bar("foo", 10));
 
-            OldFake.Assert(this.validatorFactory)
-                .WasCalled(x => x.GetArgumentConstraint(A<Expression>.That.ProducesValue("foo")));
-            OldFake.Assert(this.validatorFactory)
-                .WasCalled(x => x.GetArgumentConstraint(A<Expression>.That.ProducesValue(10)));
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.That.ProducesValue("foo"))).MustHaveHappened();
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.That.ProducesValue(10))).MustHaveHappened();
         }
 
         [Test]
@@ -127,7 +123,7 @@ namespace FakeItEasy.Tests.Expressions
             var validator = A.Fake<IArgumentConstraint>();
             A.CallTo(() => validator.IsValid(A<object>.Ignored))
                 .Returns(true);
-            A.CallTo(() => this.validatorFactory.GetArgumentConstraint(A<Expression>.Ignored))
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.Ignored))
                 .Returns(validator);
             
 
@@ -149,7 +145,7 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => validator.IsValid(A<object>.Ignored)).Returns(false);
             A.CallTo(() => validator.IsValid(A<object>.Ignored)).Returns(true).Once();
 
-            A.CallTo(() => this.validatorFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
             
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2));
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 3));
@@ -163,13 +159,13 @@ namespace FakeItEasy.Tests.Expressions
             var validator = A.Fake<IArgumentConstraint>();
             A.CallTo(() => validator.ToString()).Returns("<FOO>");
 
-            A.CallTo(() => this.validatorFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 
             Assert.That(matcher.ToString(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<FOO>, <FOO>)"));
-            OldFake.Assert(this.validatorFactory)
-                .WasCalled(x => x.GetArgumentConstraint(A<Expression>.Ignored), repeat => repeat == 2);
+            
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).MustHaveHappened(Repeated.Twice.Exactly);
         }
 
         [Test]
@@ -224,8 +220,7 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.Matches(call);
 
-            OldFake.Assert(this.methodInfoManager)
-                .WasCalled(x => x.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), getter, getter));
+            A.CallTo(() => this.methodInfoManager.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), getter, getter)).MustHaveHappened();
         }
     }
 
