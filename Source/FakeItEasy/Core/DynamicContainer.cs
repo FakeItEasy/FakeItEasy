@@ -23,23 +23,8 @@
         {
             var assemblyLocation = Path.GetDirectoryName(typeof(Fake).Assembly.Location);
 
-            this.registeredDummyDefinitions =
-                (from assemblyFile in Directory.GetFiles(assemblyLocation, "*.dll")
-                 let assembly = Assembly.LoadFile(assemblyFile)
-                 from type in assembly.GetTypes()
-                 where type.GetInterfaces().Contains(typeof(IDummyDefinition))
-                 let instance = TryCreateInstance(type)
-                 where instance != null
-                 select (IDummyDefinition)instance).ToDictionary(x => x.ForType);
-
-            this.registeredConfigurators =
-                (from assemblyFile in Directory.GetFiles(assemblyLocation, "*.dll")
-                 let assembly = Assembly.LoadFile(assemblyFile)
-                 from type in assembly.GetTypes()
-                 where type.GetInterfaces().Contains(typeof(IFakeConfigurator))
-                 let instance = TryCreateInstance(type)
-                 where instance != null
-                 select (IFakeConfigurator)instance).ToDictionary(x => x.ForType);
+            this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(assemblyLocation);
+            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(assemblyLocation);       
         }
 
         /// <summary>
@@ -76,6 +61,32 @@
             {
                 configurator.ConfigureFake(fakeObject);
             }
+        }
+
+        private static Dictionary<Type, IFakeConfigurator> CreateFakeConfiguratorsDictionary(string assemblyLocation)
+        {
+            return GetOneInstancePerTypeDerivingFrom<IFakeConfigurator>(assemblyLocation).ToDictionary(x => x.ForType);
+        }
+
+        private static Dictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(string assemblyLocation)
+        {
+            return GetOneInstancePerTypeDerivingFrom<IDummyDefinition>(assemblyLocation).ToDictionary(x => x.ForType);
+        }
+
+        private static IEnumerable<T> GetOneInstancePerTypeDerivingFrom<T>(string assemblyLocation)
+        {
+            return from assembly in GetAllAssembliesInFolder(assemblyLocation)
+                   from type in assembly.GetTypes()
+                   where type.GetInterfaces().Contains(typeof(T))
+                   let instance = TryCreateInstance(type)
+                   where instance != null
+                   select (T)instance;
+        }
+
+        private static IEnumerable<Assembly> GetAllAssembliesInFolder(string folderPath)
+        {
+            return from assemblyFile in Directory.GetFiles(folderPath, "*.dll")
+                   select Assembly.LoadFile(assemblyFile);
         }
 
         private static object TryCreateInstance(Type type)
