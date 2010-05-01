@@ -49,7 +49,7 @@ namespace FakeItEasy.Tests.Core.Creation
                 result.SetProxy(null));
         }
 
-        private class TestableProxyResult
+        public class TestableProxyResult
             : ProxyResult
         {
             public TestableProxyResult(Type proxiedType)

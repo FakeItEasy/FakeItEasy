@@ -5,7 +5,6 @@ namespace FakeItEasy.Tests.Expressions
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
-    using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 

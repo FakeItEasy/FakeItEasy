@@ -44,7 +44,5 @@ namespace FakeItEasy.Tests
             get;
             set;
         }
-
-        public virtual event EventHandler SomethingHappened;
     }
 }

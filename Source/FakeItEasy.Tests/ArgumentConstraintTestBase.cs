@@ -42,6 +42,12 @@ namespace FakeItEasy.Tests
         public void SetUp()
         {
             this.constraint = this.CreateConstraint(new RootArgumentConstraintScope<T>());
+            this.OnSetUp();
+        }
+
+        protected virtual void OnSetUp()
+        { 
+            
         }
        
         protected abstract ArgumentConstraint<T> CreateConstraint(ArgumentConstraintScope<T> scope);

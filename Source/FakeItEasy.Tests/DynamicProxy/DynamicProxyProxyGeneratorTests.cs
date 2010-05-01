@@ -1,12 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using FakeItEasy.Core;
 using FakeItEasy.DynamicProxy;
 using FakeItEasy.Tests.TestHelpers;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using FakeItEasy.Core;
-using System.IO;
-using System.Reflection;
 
 namespace FakeItEasy.Tests.DynamicProxy
 {

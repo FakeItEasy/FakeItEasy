@@ -16,6 +16,9 @@
         private Dictionary<Type, IDummyDefinition> registeredDummyDefinitions;
         private Dictionary<Type, IFakeConfigurator> registeredConfigurators;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicContainer"/> class.
+        /// </summary>
         public DynamicContainer()
         {
             var assemblyLocation = Path.GetDirectoryName(typeof(Fake).Assembly.Location);

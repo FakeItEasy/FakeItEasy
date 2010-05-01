@@ -1,12 +1,9 @@
-using NUnit.Framework;
-using FakeItEasy.VisualBasic;
-using FakeItEasy.Core;
-using FakeItEasy.Tests.TestHelpers;
-using FakeItEasy.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FakeItEasy.Core;
-using System;
+using FakeItEasy.VisualBasic;
+using NUnit.Framework;
 
 namespace FakeItEasy.Tests.VisualBasic
 {

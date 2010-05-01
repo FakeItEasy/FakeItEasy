@@ -1,15 +1,12 @@
-using FakeItEasy.Core;
-using NUnit.Framework;
 using System;
-using FakeItEasy.Core;
+using NUnit.Framework;
 
 namespace FakeItEasy.Tests
 {
     public abstract class ConfigurableServiceLocatorTestBase
     {
         private ServiceLocator replacedServiceLocator;
-        private IDisposable scope;
-
+        
         [SetUp]
         public void SetUp()
         {

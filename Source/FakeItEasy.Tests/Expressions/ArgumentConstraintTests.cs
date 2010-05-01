@@ -12,15 +12,14 @@ namespace FakeItEasy.Tests.Expressions
     {
         private ArgumentConstraintScope<int> scope;
 
-        [SetUp]
-        public void SetUp()
+        protected override void OnSetUp()
         {
+            base.OnSetUp();
+
             this.scope = A.Fake<ArgumentConstraintScope<int>>();
             A.CallTo(() => this.scope.IsValid(A<int>.Ignored)).Returns(true);
             A.CallTo(() => this.scope.ResultOfChildConstraintIsValid(true)).Returns(true);
             A.CallTo(() => this.scope.ResultOfChildConstraintIsValid(false)).Returns(false);
-
-            this.constraint = new TestableConstraint(this.scope);
         }
 
         private TestableConstraint CreateValidator()

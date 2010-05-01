@@ -1,7 +1,4 @@
 using System;
-using NUnit.Framework;
-using System.Linq.Expressions;
-using FakeItEasy.Core;
 using System.Reflection;
 using FakeItEasy.Core;
 

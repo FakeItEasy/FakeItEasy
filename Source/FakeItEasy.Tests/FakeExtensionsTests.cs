@@ -106,8 +106,6 @@ namespace FakeItEasy.Tests
         public void Matching_should_pass_call_specification_to_matcher_factory()
         {
             // Arrange
-            LambdaExpression expressionPassedToFactory = null;
-
             var factory = A.Fake<IExpressionCallMatcherFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>()));
 
             Expression<Action<IFoo>> callSpecification = x => x.Bar();
@@ -186,7 +184,6 @@ namespace FakeItEasy.Tests
         public bool MustNotHaveHappened_should_call_configuration_with_repeat_that_validates_correctly(int repeat)
         {
             // Arrange
-            Func<int, bool> repeatPredicate;
             var configuration = A.Fake<IAssertConfiguration>();
 
             // Act

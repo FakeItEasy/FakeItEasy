@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Core;
 using System.Linq.Expressions;
-using System.Reflection;
-using NUnit.Framework;
+using FakeItEasy.Core;
 using FakeItEasy.Expressions;
 using FakeItEasy.Tests.TestHelpers;
-using FakeItEasy.Core;
+using NUnit.Framework;
 
 namespace FakeItEasy.Tests.Expressions
 {
