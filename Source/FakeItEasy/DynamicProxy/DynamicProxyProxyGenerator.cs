@@ -5,11 +5,11 @@ namespace FakeItEasy.DynamicProxy
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
     using Castle.Core.Interceptor;
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
-    using System.Text;
 
     /// <summary>
     /// An implementation of the IProxyGenerator interface that uses DynamicProxy2 to
@@ -137,6 +137,62 @@ namespace FakeItEasy.DynamicProxy
             return false;
         }
 
+        private static void AppendDescriptionsForEachConstructor(StringBuilder message, ConstructorResolver constructorResolver)
+        {
+            foreach (var constructor in constructorResolver.ResolveConstructors())
+            {
+                AppendConstructorVisibility(message, constructor.Constructor);
+                AppendConstructorArgumentsList(message, constructor);
+
+                message.AppendLine(")");
+            }
+        }
+
+        private static void AppendConstructorArgumentsList(StringBuilder message, ConstructorAndArgumentsInfo constructor)
+        {
+            bool firstArgument = true;
+
+            foreach (var argument in constructor.Arguments)
+            {
+                if (!firstArgument)
+                {
+                    message.Append(", ");
+                }
+                else
+                {
+                    firstArgument = false;
+                }
+
+                AppendArgumentDescription(message, argument);
+            }
+        }
+
+        private static void AppendArgumentDescription(StringBuilder message, ArgumentInfo argument)
+        {
+            if (!argument.WasSuccessfullyResolved)
+            {
+                message.Append("*");
+            }
+
+            message.Append(argument.TypeOfArgument);
+        }
+
+        private static void AppendConstructorVisibility(StringBuilder message, ConstructorInfo constructor)
+        {
+            if (constructor.IsPublic)
+            {
+                message.Append("public     (");
+            }
+            else if (constructor.IsAssembly)
+            {
+                message.Append("internal   (");
+            }
+            else if (constructor.IsFamily)
+            {
+                message.Append("protected  (");
+            }
+        }
+
         private ProxyResult DoGenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
         {
             var fakeObjectInterceptor = CreateFakeObjectInterceptor(fakeObject);
@@ -176,32 +232,8 @@ namespace FakeItEasy.DynamicProxy
             message.AppendLine();
 
             var constructorResolver = new ConstructorResolver(typeToProxy, this);
-            foreach (var constructor in constructorResolver.ResolveConstructors())
-            {
-                AppendConstructorVisibility(message, constructor.Constructor);
-                bool firstArgument = true;
 
-                foreach (var argument in constructor.Arguments)
-                {
-                    if (!firstArgument)
-                    {
-                        message.Append(", ");
-                    }
-                    else
-                    {
-                        firstArgument = false;
-                    }
-
-                    if (!argument.WasSuccessfullyResolved)
-                    {
-                        message.Append("*");
-                    }
-
-                    message.Append(argument.TypeOfArgument);
-                }
-
-                message.AppendLine(")");
-            }
+            AppendDescriptionsForEachConstructor(message, constructorResolver);
 
             message.AppendLine();
             message.AppendLine("* The types marked with with a star (*) can not be faked. Register these types in the current");
@@ -210,22 +242,6 @@ namespace FakeItEasy.DynamicProxy
             return message.ToString();
         }
 
-        private static void AppendConstructorVisibility(StringBuilder message, ConstructorInfo constructor)
-        {
-            if (constructor.IsPublic)
-            {
-                message.Append("public     (");
-            }
-            else if (constructor.IsAssembly)
-            {
-                message.Append("internal   (");
-            }
-            else if (constructor.IsFamily)
-            {
-                message.Append("protected  (");
-            }
-        }
-       
         private IEnumerable<IEnumerable<object>> CreateConstructorArgumentCandidateSets(Type typeToProxy, IEnumerable<object> argumentsForConstructor)
         {
             IEnumerable<IEnumerable<object>> argumentSetsForConstructor = null;
@@ -269,7 +285,9 @@ namespace FakeItEasy.DynamicProxy
         private class ArgumentInfo
         {
             public bool WasSuccessfullyResolved { get; set; }
+
             public Type TypeOfArgument { get; set; }
+
             public object ResolvedValue { get; set; }
         }
 

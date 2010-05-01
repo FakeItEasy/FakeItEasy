@@ -57,7 +57,6 @@ namespace FakeItEasy.IntegrationTests
                 var thrown = Assert.Throws<FakeCreationException>(() =>
                     A.Fake<NonResolvableType>());
 
-                Console.WriteLine(thrown.Message);
                 Assert.That(thrown.Message, Is.EqualTo(@"
 
    FakeItEasy failed to create fake object of type ""FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType"".
