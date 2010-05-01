@@ -5,6 +5,7 @@ using FakeItEasy.Core;
 using FakeItEasy.DynamicProxy;
 using FakeItEasy.Tests.TestHelpers;
 using NUnit.Framework;
+using System.Linq;
 
 namespace FakeItEasy.Tests.DynamicProxy
 {
@@ -411,6 +412,25 @@ namespace FakeItEasy.Tests.DynamicProxy
             Assert.That(result.Proxy, Is.InstanceOf<IFormattable>());
         }
 
+        [Test]
+        public void GenerateProxy_should_return_result_that_contains_description_of_non_resolvable_constructors_when_failing()
+        {
+            // Arrange
+            var generator = this.CreateGenerator();
+
+            // Act
+            var result = generator.GenerateProxy(typeof(TypeWithNoResolvableConstructor), Enumerable.Empty<Type>(), this.fakeObject, null);
+            
+            // Assert
+            Assert.That(result.ErrorMessage, Is.EqualTo(@"The type has no default constructor and none of the available constructors listed below can be resolved:
+
+ public     (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
+ protected  (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
+
+ * The types marked with with a star (*) can not be faked. Register these types in the current
+ IFakeObjectContainer in order to generate a fake of this type."));
+        }
+
         public class TypeWithConstructorThatThrows
         {
             public TypeWithConstructorThatThrows(IServiceProvider a)
@@ -567,6 +587,27 @@ namespace FakeItEasy.Tests.DynamicProxy
         public class TypeWithNonVirtualProperty
         {
             public int Foo { get; set; }
+        }
+
+        public class TypeWithNoResolvableConstructor
+        {
+            public TypeWithNoResolvableConstructor(IFoo foo, NoInstanceType bar)
+            {
+
+            }
+
+            protected TypeWithNoResolvableConstructor(NoInstanceType bar)
+            {
+
+            }
+
+            public class NoInstanceType
+            {
+                private NoInstanceType()
+                {
+
+                }
+            }
         }
     }
 }

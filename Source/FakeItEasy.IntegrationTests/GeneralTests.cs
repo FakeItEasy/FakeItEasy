@@ -49,7 +49,7 @@ namespace FakeItEasy.IntegrationTests
             }
         }
 
-        [Test, Explicit]
+        [Test]
         public void ErrorMessage_when_type_can_not_be_faked_should_specify_non_resolvable_constructor_arguments()
         {
             using (Fake.CreateScope())
@@ -71,7 +71,7 @@ namespace FakeItEasy.IntegrationTests
      protected  (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
 
      * The types marked with with a star (*) can not be faked. Register these types in the current
-     IFakeObjectContainer in order to generate this fake.
+     IFakeObjectContainer in order to generate a fake of this type.
 
 "));
             }
