@@ -105,8 +105,8 @@
 			<Output ItemName="binariesToMerge" TaskParameter="Include"/>
 		</CreateItem>
 		
-		<Exec Command="&quot;Libraries\Ilmerge\Ilmerge.exe&quot; /out:&quot;$(BinariesPath)\$(ProjectName).dll&quot; /delaysign  /keyfile:&quot;Resources\Build\FakeItEasy.snk&quot; @(binariesToMerge, ' ')"/>
-		<Exec Command="&quot;$(SnCmdPath)&quot; -R &quot;$(BinariesPath)\FakeIteasy.dll&quot; &quot;Source\FakeItEasy\FakeItEasy.pfx&quot;" />
+		<Exec Command="&quot;Libraries\Ilmerge\Ilmerge.exe&quot; /out:&quot;$(BinariesPath)\$(ProjectName).dll&quot; /delaysign  /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge, ' ')"/>
+		<Exec Command="&quot;$(SnCmdPath)&quot; -R &quot;$(BinariesPath)\FakeIteasy.dll&quot; &quot;Source\FakeItEasy\FakeItEasy.snk&quot;" />
 		<Delete Files="@(binariesToMerge)" />
 		
 		<CreateItem Include="$(BinariesPath)\Temp\*.*;">
