@@ -162,7 +162,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FakeItEasy.pfx" />
     <None Include="FakeItEasy.snk" />
   </ItemGroup>
   <ItemGroup>

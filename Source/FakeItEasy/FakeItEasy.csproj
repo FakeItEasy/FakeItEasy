@@ -213,8 +213,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Creation\Creation.cd" />
-    <None Include="FakeItEasy.pfx" />
-    <None Include="FakeItEasy.pfx.snk" />
     <None Include="FakeItEasy.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
