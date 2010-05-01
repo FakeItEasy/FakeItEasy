@@ -157,7 +157,7 @@ namespace FakeItEasy.Core.Creation
 
             return string.Join(
                 Environment.NewLine,
-                (from line in lines select line.Length == 0 ? string.Empty : "  " + line).ToArray());
+                (from line in lines select line.Length == 0 ? string.Empty : "   " + line).ToArray());
         }
 
         private void ConfigureFakeToWrapWhenAppropriate(FakeOptions options, object result)

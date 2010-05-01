@@ -195,13 +195,13 @@ with two lines.");
 
             Assert.That(ex.Message, Is.EqualTo(@"
 
-  FakeItEasy failed to create fake object of type ""FakeItEasy.Tests.IFoo"".
+   FakeItEasy failed to create fake object of type ""FakeItEasy.Tests.IFoo"".
 
-  1. The type is not registered in the current IFakeObjectContainer.
-  2. The current IProxyGenerator failed to generate a proxy for the following reason:
+   1. The type is not registered in the current IFakeObjectContainer.
+   2. The current IProxyGenerator failed to generate a proxy for the following reason:
 
-    Error message
-    with two lines.
+      Error message
+      with two lines.
 
 "));
         }

@@ -9,6 +9,7 @@ namespace FakeItEasy.DynamicProxy
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
+    using System.Text;
 
     /// <summary>
     /// An implementation of the IProxyGenerator interface that uses DynamicProxy2 to
@@ -155,10 +156,74 @@ namespace FakeItEasy.DynamicProxy
             DynamicProxyResult result = null;
             if (!TryGenerateProxyUsingCandidateConstructorArguments(typeToProxy, additionalInterfacesToImplement, fakeObjectInterceptor, candidateConstructorArguments, out result))
             {
-                result = new DynamicProxyResult(typeToProxy, "false");
+                result = this.CreateFailedProxyResult(typeToProxy, result);
             }
 
             return result;
+        }
+
+        private DynamicProxyResult CreateFailedProxyResult(Type typeToProxy, DynamicProxyResult result)
+        {
+            string errorMessage = this.CreateErrorMessageForFailedProxyResult(typeToProxy);
+            return new DynamicProxyResult(typeToProxy, errorMessage);
+        }
+
+        private string CreateErrorMessageForFailedProxyResult(Type typeToProxy)
+        {
+            var message = new StringBuilder();
+
+            message.AppendLine("The type has no default constructor and none of the available constructors listed below can be resolved:");
+            message.AppendLine();
+
+            var constructorResolver = new ConstructorResolver(typeToProxy, this);
+            foreach (var constructor in constructorResolver.ResolveConstructors())
+            {
+                AppendConstructorVisibility(message, constructor.Constructor);
+                bool firstArgument = true;
+
+                foreach (var argument in constructor.Arguments)
+                {
+                    if (!firstArgument)
+                    {
+                        message.Append(", ");
+                    }
+                    else
+                    {
+                        firstArgument = false;
+                    }
+
+                    if (!argument.WasSuccessfullyResolved)
+                    {
+                        message.Append("*");
+                    }
+
+                    message.Append(argument.TypeOfArgument);
+                }
+
+                message.AppendLine(")");
+            }
+
+            message.AppendLine();
+            message.AppendLine("* The types marked with with a star (*) can not be faked. Register these types in the current");
+            message.Append("IFakeObjectContainer in order to generate a fake of this type.");
+
+            return message.ToString();
+        }
+
+        private static void AppendConstructorVisibility(StringBuilder message, ConstructorInfo constructor)
+        {
+            if (constructor.IsPublic)
+            {
+                message.Append("public     (");
+            }
+            else if (constructor.IsAssembly)
+            {
+                message.Append("internal   (");
+            }
+            else if (constructor.IsFamily)
+            {
+                message.Append("protected  (");
+            }
         }
        
         private IEnumerable<IEnumerable<object>> CreateConstructorArgumentCandidateSets(Type typeToProxy, IEnumerable<object> argumentsForConstructor)
@@ -173,6 +238,7 @@ namespace FakeItEasy.DynamicProxy
             {
                 argumentSetsForConstructor =
                     from constructor in this.ResolveConstructors(typeToProxy)
+                    where constructor.Arguments.All(x => x.WasSuccessfullyResolved)
                     select constructor.ArgumentsToUse;
             }
 
@@ -187,7 +253,24 @@ namespace FakeItEasy.DynamicProxy
 
         private class ConstructorAndArgumentsInfo
         {
-            public IEnumerable<object> ArgumentsToUse { get; set; }
+            public ConstructorInfo Constructor { get; set; }
+            
+            public IEnumerable<object> ArgumentsToUse 
+            {
+                get
+                {
+                    return this.Arguments.Select(x => x.ResolvedValue);
+                }
+            }
+
+            public IEnumerable<ArgumentInfo> Arguments { get; set; }
+        }
+
+        private class ArgumentInfo
+        {
+            public bool WasSuccessfullyResolved { get; set; }
+            public Type TypeOfArgument { get; set; }
+            public object ResolvedValue { get; set; }
         }
 
         private class ConstructorResolver
@@ -221,14 +304,12 @@ namespace FakeItEasy.DynamicProxy
                             
                 foreach (var constructor in constructors)
                 {
-                    IEnumerable<object> argumentValues = null;
-                    if (this.TryResolveAllValues(GetConstructorParameterTypes(constructor), out argumentValues))
+                    IEnumerable<ArgumentInfo> arguments = this.TryToResolveAllArguments(GetConstructorParameterTypes(constructor));
+                    yield return new ConstructorAndArgumentsInfo()
                     {
-                        yield return new ConstructorAndArgumentsInfo()
-                        {
-                            ArgumentsToUse = argumentValues
-                        };
-                    }
+                        Constructor = constructor,
+                        Arguments = arguments
+                    };
                 }
             }
 
@@ -315,25 +396,22 @@ namespace FakeItEasy.DynamicProxy
                 return this.parent.IsRecursiveType(typeOfValue) || typeOfValue.Equals(this.parent.typeToResolvedConstructorFor);
             }
 
-            private bool TryResolveAllValues(IEnumerable<Type> types, out IEnumerable<object> resolvedValues)
+            private IEnumerable<ArgumentInfo> TryToResolveAllArguments(IEnumerable<Type> types)
             {
-                var result = new List<object>();
+                var result = new List<ArgumentInfo>();
 
                 foreach (var parameterType in types)
                 {
-                    object value = null;
+                    var argumentInfo = new ArgumentInfo() { TypeOfArgument = parameterType };
 
-                    if (!this.TryResolveDummyValueOfType(parameterType, out value))
-                    {
-                        resolvedValues = null;
-                        return false;
-                    }
+                    object argumentValue = null;
+                    argumentInfo.WasSuccessfullyResolved = this.TryResolveDummyValueOfType(parameterType, out argumentValue);
+                    argumentInfo.ResolvedValue = argumentValue;
 
-                    result.Add(value);
+                    result.Add(argumentInfo);
                 }
 
-                resolvedValues = result;
-                return true;
+                return result;
             }
         }
 

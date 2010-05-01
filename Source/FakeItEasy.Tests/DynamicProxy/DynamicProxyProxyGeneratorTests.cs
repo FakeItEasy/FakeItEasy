@@ -33,7 +33,9 @@ namespace FakeItEasy.Tests.DynamicProxy
 		            typeof(ClassWithDefaultConstructor),
 		            typeof(AbstractClassWithDefaultConstructor),
                     typeof(TypeWithAbstractArgumentToConstructor),
-                    typeof(SealedTypeThatTakesClassWithDefaultConstructorInConstructor)
+                    typeof(SealedTypeThatTakesClassWithDefaultConstructorInConstructor),
+                    typeof(CircularClassA),
+                    typeof(CircularClassB)
 		        };
 
         private List<Type> typesThatCanNotBeProxied = new List<Type>()
@@ -358,15 +360,6 @@ namespace FakeItEasy.Tests.DynamicProxy
         }
 
         [Test]
-        public void GenerateProxy_should_return_false_when_resolvable_constructors_contains_circular_dependencies()
-        {
-            var generator = this.CreateGenerator();
-            var result = generator.GenerateProxy(typeof(CircularClassA), null, this.fakeObject, null);
-
-            Assert.That(result.ProxyWasSuccessfullyCreated, Is.False);
-        }
-
-        [Test]
         public void GenerateProxy_should_use_widest_fakeable_constructor()
         {
             var generator = this.CreateGenerator();
@@ -424,11 +417,12 @@ namespace FakeItEasy.Tests.DynamicProxy
             // Assert
             Assert.That(result.ErrorMessage, Is.EqualTo(@"The type has no default constructor and none of the available constructors listed below can be resolved:
 
- public     (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
- protected  (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
+public     (FakeItEasy.Tests.IFoo, *FakeItEasy.Tests.DynamicProxy.DynamicProxyProxyGeneratorTests+TypeWithNoResolvableConstructor+NoInstanceType)
+internal   (*FakeItEasy.Tests.DynamicProxy.DynamicProxyProxyGeneratorTests+TypeWithNoResolvableConstructor+NoInstanceType, System.String)
+protected  (*FakeItEasy.Tests.DynamicProxy.DynamicProxyProxyGeneratorTests+TypeWithNoResolvableConstructor+NoInstanceType)
 
- * The types marked with with a star (*) can not be faked. Register these types in the current
- IFakeObjectContainer in order to generate a fake of this type."));
+* The types marked with with a star (*) can not be faked. Register these types in the current
+IFakeObjectContainer in order to generate a fake of this type."));
         }
 
         public class TypeWithConstructorThatThrows
@@ -597,6 +591,16 @@ namespace FakeItEasy.Tests.DynamicProxy
             }
 
             protected TypeWithNoResolvableConstructor(NoInstanceType bar)
+            {
+
+            }
+
+            internal TypeWithNoResolvableConstructor(NoInstanceType bar, string foo)
+            {
+
+            }
+
+            private TypeWithNoResolvableConstructor()
             {
 
             }
