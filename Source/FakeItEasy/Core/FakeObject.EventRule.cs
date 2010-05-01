@@ -11,24 +11,17 @@ namespace FakeItEasy.Core
         private class EventRule
             : IFakeObjectCallRule
         {
-            public FakeObject FakeObject;
-
             [NonSerialized]
             private EventHandlerList registeredEventHandlersField;
 
-            public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
+            public FakeObject FakeObject { get; set; }
+
+            public int? NumberOfTimesToCall
             {
-                return EventCall.GetEvent(fakeObjectCall.Method) != null;
+                get { return null; }
             }
 
-            public void Apply(IWritableFakeObjectCall fakeObjectCall)
-            {
-                EventCall eventCall = EventCall.GetEventCall(fakeObjectCall);
-
-                this.HandleEventCall(eventCall);
-            }
-
-            private EventHandlerList registeredEventHandlers
+            private EventHandlerList RegisteredEventHandlers
             {
                 get
                 {
@@ -41,9 +34,16 @@ namespace FakeItEasy.Core
                 }
             }
 
-            public int? NumberOfTimesToCall
+            public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
-                get { return null; }
+                return EventCall.GetEvent(fakeObjectCall.Method) != null;
+            }
+
+            public void Apply(IWritableFakeObjectCall fakeObjectCall)
+            {
+                EventCall eventCall = EventCall.GetEventCall(fakeObjectCall);
+
+                this.HandleEventCall(eventCall);
             }
 
             private void HandleEventCall(EventCall eventCall)
@@ -67,17 +67,17 @@ namespace FakeItEasy.Core
 
             private void RemoveEventListener(EventCall call)
             {
-                this.registeredEventHandlers.RemoveHandler(call.Event, call.EventHandler);
+                this.RegisteredEventHandlers.RemoveHandler(call.Event, call.EventHandler);
             }
 
             private void AddEventListener(EventCall call)
             {
-                this.registeredEventHandlers.AddHandler(call.Event, call.EventHandler);
+                this.RegisteredEventHandlers.AddHandler(call.Event, call.EventHandler);
             }
 
             private void RaiseEvent(EventCall call)
             {
-                var raiseMethod = this.registeredEventHandlers[call.Event];
+                var raiseMethod = this.RegisteredEventHandlers[call.Event];
 
                 if (raiseMethod != null)
                 {
@@ -89,17 +89,17 @@ namespace FakeItEasy.Core
                 }
             }
 
-
             private class EventCall
             {
                 private EventCall()
                 {
-
                 }
 
-                public EventInfo Event;
-                public MethodInfo CallingMethod;
-                public Delegate EventHandler;
+                public EventInfo Event { get; set; }
+
+                public MethodInfo CallingMethod { get; set; }
+
+                public Delegate EventHandler { get; set; }
 
                 public static EventCall GetEventCall(IFakeObjectCall fakeObjectCall)
                 {
@@ -135,7 +135,6 @@ namespace FakeItEasy.Core
                 {
                     return this.Event.GetAddMethod().Equals(this.CallingMethod);
                 }
-
             }
         }
     }
