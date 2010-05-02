@@ -41,9 +41,9 @@ namespace FakeItEasy.DynamicProxy
         /// of the proxied type.</exception>
         public ProxyResult GenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
         {
-            if (typeToProxy.IsValueType || typeToProxy.IsSealed)
+            if (typeToProxy.IsSealed)
             {
-                return new DynamicProxyResult(typeToProxy, string.Empty);
+                return new DynamicProxyResult(typeToProxy, "The type is sealed.");
             }
             
             AssertThatArgumentsForConstructorAreNotSpecifiedForInterfaceType(typeToProxy, argumentsForConstructor);

@@ -425,6 +425,19 @@ protected  (*FakeItEasy.Tests.DynamicProxy.DynamicProxyProxyGeneratorTests+TypeW
 IFakeObjectContainer in order to generate a fake of this type."));
         }
 
+        [Test]
+        public void GenerateProxy_should_return_result_that_contains_correct_error_message_when_type_is_sealed()
+        {
+            // Arrange
+            var generator = this.CreateGenerator();
+
+            // Act
+            var result = generator.GenerateProxy(typeof(SealedClass), Enumerable.Empty<Type>(), this.fakeObject, null);
+
+            // Assert
+            Assert.That(result.ErrorMessage, Is.EqualTo("The type is sealed."));
+        }
+
         public class TypeWithConstructorThatThrows
         {
             public TypeWithConstructorThatThrows(IServiceProvider a)

@@ -73,8 +73,7 @@ namespace FakeItEasy.IntegrationTests
       IFakeObjectContainer in order to generate a fake of this type.
 
 "));
-            }
-            
+            }   
         }
 
         public class NonResolvableType
