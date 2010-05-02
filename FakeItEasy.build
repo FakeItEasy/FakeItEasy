@@ -13,13 +13,13 @@
 		<AllowPartiallyTrustedCallers Condition="$(AllowPartiallyTrustedCallers)==''">true</AllowPartiallyTrustedCallers>
 		<FxCopCmdPath>C:\Program Files (x86)\Microsoft FxCop 1.36\FxCopCmd.exe</FxCopCmdPath>
 		<SnCmdPath>C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\sn.exe</SnCmdPath>
+		<!--<VersionNumber>1.0.0.0</VersionNumber>-->
 		<!--
 			Derived configuration properties
 		 -->
 		<PackageDirectory Condition="$(PackageDirectory)==''">$(BuildPath)</PackageDirectory>
 		<BinariesPath>$(BuildPath)\Binaries</BinariesPath>
 		<LicensePath>$(BuildPath)\License</LicensePath>
-		
 		<BinariesSource>Source\FakeItEasy.BackwardsCompatibility\bin\$(Configuration)</BinariesSource>
 		<ProjectName>$(MSBuildProjectName)</ProjectName>
 	</PropertyGroup>
@@ -43,7 +43,7 @@
 
 	<Target Name="Rebuild" DependsOnTargets="UpdateVersion;Clean;Build;" />
 	
-	<Target Name="CreateVersionNumber">
+	<Target Name="CreateVersionNumber" Condition="$(VersionNumber)==''">
 		<Version VersionFile=".\Resources\Build\VersionNumber.txt" BuildType="Automatic" RevisionType="Increment" >
 			<Output TaskParameter="Major" PropertyName="Major" />
 			<Output TaskParameter="Minor" PropertyName="Minor" />
