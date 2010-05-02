@@ -8,6 +8,8 @@
     using FakeItEasy.SelfInitializedFakes;
     using FakeItEasy.Configuration;
     using FakeItEasy.DynamicProxy;
+    using System.Linq;
+    using System;
     
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -74,6 +76,9 @@
 
             container.Register<IFakeWrapperConfigurator>(c =>
                 new DefaultFakeWrapperConfigurator());
+
+            container.Register<ITypeAccessor>(c =>
+                new ApplicationDirectoryAssembliesTypeAccessor());
         }
 
         #region FactoryImplementations

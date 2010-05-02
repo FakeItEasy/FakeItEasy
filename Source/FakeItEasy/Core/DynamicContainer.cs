@@ -2,9 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Reflection;
 
     /// <summary>
     /// A IFakeObjectContainer implementation that uses mef to load IFakeDefinitions and
@@ -15,16 +13,14 @@
     {
         private Dictionary<Type, IDummyDefinition> registeredDummyDefinitions;
         private Dictionary<Type, IFakeConfigurator> registeredConfigurators;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer"/> class.
         /// </summary>
-        public DynamicContainer()
+        public DynamicContainer(ITypeAccessor typeAccessor)
         {
-            var assemblyLocation = Path.GetDirectoryName(typeof(Fake).Assembly.Location);
-
-            this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(assemblyLocation);
-            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(assemblyLocation);       
+            this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(typeAccessor);
+            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(typeAccessor);       
         }
 
         /// <summary>
@@ -63,30 +59,23 @@
             }
         }
 
-        private static Dictionary<Type, IFakeConfigurator> CreateFakeConfiguratorsDictionary(string assemblyLocation)
+        private static Dictionary<Type, IFakeConfigurator> CreateFakeConfiguratorsDictionary(ITypeAccessor typeAccessor)
         {
-            return GetOneInstancePerTypeDerivingFrom<IFakeConfigurator>(assemblyLocation).ToDictionary(x => x.ForType);
+            return GetOneInstancePerTypeImplementing<IFakeConfigurator>(typeAccessor).Distinct(x => x.ForType).ToDictionary(x => x.ForType);
         }
 
-        private static Dictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(string assemblyLocation)
+        private static Dictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(ITypeAccessor typeAccessor)
         {
-            return GetOneInstancePerTypeDerivingFrom<IDummyDefinition>(assemblyLocation).ToDictionary(x => x.ForType);
+            return GetOneInstancePerTypeImplementing<IDummyDefinition>(typeAccessor).Distinct(x => x.ForType).ToDictionary(x => x.ForType);
         }
 
-        private static IEnumerable<T> GetOneInstancePerTypeDerivingFrom<T>(string assemblyLocation)
+        private static IEnumerable<TInterface> GetOneInstancePerTypeImplementing<TInterface>(ITypeAccessor typeAccessor)
         {
-            return from assembly in GetAllAssembliesInFolder(assemblyLocation)
-                   from type in assembly.GetTypes()
-                   where type.GetInterfaces().Contains(typeof(T))
+            return from type in typeAccessor.GetAvailableTypes()
+                   where type.GetInterfaces().Contains(typeof(TInterface))
                    let instance = TryCreateInstance(type)
                    where instance != null
-                   select (T)instance;
-        }
-
-        private static IEnumerable<Assembly> GetAllAssembliesInFolder(string folderPath)
-        {
-            return from assemblyFile in Directory.GetFiles(folderPath, "*.dll")
-                   select Assembly.LoadFile(assemblyFile);
+                   select (TInterface)instance;
         }
 
         private static object TryCreateInstance(Type type)

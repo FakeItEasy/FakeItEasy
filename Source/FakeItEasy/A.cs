@@ -4,10 +4,10 @@ namespace FakeItEasy
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq.Expressions;
+    using System.Runtime.CompilerServices;
     using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
+    using FakeItEasy.Core.Creation;
     using FakeItEasy.Expressions;
-using FakeItEasy.Core.Creation;
 
     /// <summary>
     /// Provides methods for generating fake objects.

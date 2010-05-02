@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
     using System.Text;
 
     /// <summary>
@@ -65,6 +66,41 @@
 
             return result.ToString();
         }
+
+        /// <summary>
+        /// Selects a subset of the sequence so that the values returned from the projection run on
+        /// each item in the sequence are distinct.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the collection.</typeparam>
+        /// <typeparam name="TMember">The result of the projection.</typeparam>
+        /// <param name="sequence">The sequence to filter.</param>
+        /// <param name="projection">A projection from the type of items in the sequence to another type.</param>
+        /// <returns>The distinct elements.</returns>
+        public static IEnumerable<T> Distinct<T, TMember>(this IEnumerable<T> sequence, Func<T, TMember> projection)
+        {
+            return sequence.Distinct(new ProjectionEqualityComparer<T, TMember>(projection));
+        }
+
+        private class ProjectionEqualityComparer<T, TMember> : IEqualityComparer<T>
+        {
+            private Func<T, TMember> projection;
+            
+            public ProjectionEqualityComparer(Func<T, TMember> projection)
+            {
+                this.projection = projection;
+            }
+
+            public bool Equals(T x, T y)
+            {
+                return object.Equals(this.projection(x), this.projection(y));
+            }
+
+            public int GetHashCode(T obj)
+            {
+                return this.projection(obj).GetHashCode();
+            }
+        }
+
 
         private class ZipEnumerable<TFirst, TSecond>
             : IEnumerable<Tuple<TFirst, TSecond>>

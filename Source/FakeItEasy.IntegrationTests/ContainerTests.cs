@@ -29,6 +29,27 @@ namespace FakeItEasy.IntegrationTests
             }
         }
 
+        [Test]
+        public void Should_load_configurations_from_executing_assemlby_using_default_container()
+        {
+            // Arrange
+
+            // Act
+            var guid = A.Dummy<Guid>();
+
+            // Assert
+            Assert.That(guid, Is.EqualTo(new Guid("{1BBF2162-93CC-476b-BA8E-B52C4A5FEDEC}")));
+        }
+
+        public class GuidDefinition
+            : DummyDefinition<Guid>
+        {
+            protected override Guid CreateFake()
+            {
+                return new Guid("{1BBF2162-93CC-476b-BA8E-B52C4A5FEDEC}");
+            }
+        }
+
         private class DictionaryContainer
             : IFakeObjectContainer
         {

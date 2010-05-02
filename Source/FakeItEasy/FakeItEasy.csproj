@@ -64,6 +64,7 @@
     <Compile Include="A.cs" />
     <Compile Include="Any.cs" />
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
+    <Compile Include="Core\ApplicationDirectoryAssembliesTypeAccessor.cs" />
     <Compile Include="Core\Creation\DefaultFakeCreator.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
     <Compile Include="Core\FakeConfigurator.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
     <Compile Include="Core\DynamicContainer.cs" />
+    <Compile Include="Core\ITypeAccessor.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

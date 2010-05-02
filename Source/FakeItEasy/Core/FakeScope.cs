@@ -108,7 +108,7 @@ namespace FakeItEasy.Core
 
             public RootScope()
             {
-                this.fakeObjectContainerField = new DynamicContainer();
+                this.fakeObjectContainerField = new DynamicContainer(ServiceLocator.Current.Resolve<ITypeAccessor>());
             }
 
             internal override IFakeObjectContainer FakeObjectContainer
