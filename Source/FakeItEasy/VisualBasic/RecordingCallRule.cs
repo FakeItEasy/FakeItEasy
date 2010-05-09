@@ -10,13 +10,13 @@ namespace FakeItEasy.VisualBasic
     internal class RecordingCallRule<TFake>
         : IFakeObjectCallRule
     {
-        private FakeManager fakeObject;
+        private FakeManager fakeManager;
         private RecordedCallRule recordedRule;
         private FakeAsserter.Factory asserterFactory;
 
-        public RecordingCallRule(FakeManager fakeObject, RecordedCallRule recordedRule, FakeAsserter.Factory asserterFactory)
+        public RecordingCallRule(FakeManager fakeManager, RecordedCallRule recordedRule, FakeAsserter.Factory asserterFactory)
         {
-            this.fakeObject = fakeObject;
+            this.fakeManager = fakeManager;
             this.recordedRule = recordedRule;
             this.asserterFactory = asserterFactory;
         }
@@ -41,14 +41,14 @@ namespace FakeItEasy.VisualBasic
             }
             
             
-            this.fakeObject.AddRuleFirst(this.recordedRule);
+            this.fakeManager.AddRuleFirst(this.recordedRule);
 
             fakeObjectCall.SetReturnValue(Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType));
         }
 
         private void DoAssertion(IFakeObjectCall fakeObjectCall)
         {
-            var asserter = this.asserterFactory.Invoke(this.fakeObject.RecordedCallsInScope.Cast<IFakeObjectCall>());
+            var asserter = this.asserterFactory.Invoke(this.fakeManager.RecordedCallsInScope.Cast<IFakeObjectCall>());
             asserter.AssertWasCalled(this.recordedRule.IsApplicableTo, fakeObjectCall.ToString(), x => this.recordedRule.RepeatConstraint.Matches(x), this.recordedRule.RepeatConstraint.ToString());
         }
 

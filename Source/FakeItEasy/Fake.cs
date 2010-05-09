@@ -34,7 +34,7 @@ using FakeItEasy.Core.Creation;
                 throw new ArgumentException(message, "fakedObject");
             }
 
-            return accessor.FakeObject;
+            return accessor.FakeManager;
         }
 
 

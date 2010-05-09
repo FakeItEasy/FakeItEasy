@@ -97,11 +97,11 @@ namespace FakeItEasy.DynamicProxy
             return interfacesToImplement.Concat(additionalInterfacesToImplement).ToArray();
         }
 
-        private static FakeObjectInterceptor CreateFakeObjectInterceptor(FakeManager fakeObject)
+        private static FakeObjectInterceptor CreateFakeObjectInterceptor(FakeManager fakeManager)
         {
             return new FakeObjectInterceptor()
             {
-                FakeObject = fakeObject
+                FakeManager = fakeManager
             };
         }
 
@@ -443,14 +443,14 @@ namespace FakeItEasy.DynamicProxy
         {
             private static readonly MethodInfo getProxyManagerMethod = typeof(IFakedProxy).GetProperty("FakeObject").GetGetMethod();
 
-            public FakeManager FakeObject { get; set; }
+            public FakeManager FakeManager { get; set; }
 
             [DebuggerStepThrough]
             public void Intercept(IInvocation invocation)
             {
                 if (invocation.Method.Equals(getProxyManagerMethod))
                 {
-                    invocation.ReturnValue = this.FakeObject;
+                    invocation.ReturnValue = this.FakeManager;
                 }
                 else
                 {

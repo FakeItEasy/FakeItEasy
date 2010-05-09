@@ -21,12 +21,12 @@
             Guard.AgainstNull(fake, "fake");
 
             var recordedRule = CreateRecordedRule();
-            var fakeObject = Fake.GetFakeManager(fake);
-            var recordingRule = CreateRecordingRule<TFake>(recordedRule, fakeObject);
+            var fakeManager = Fake.GetFakeManager(fake);
+            var recordingRule = CreateRecordingRule<TFake>(recordedRule, fakeManager);
 
-            fakeObject.AddRuleFirst(recordingRule);
+            fakeManager.AddRuleFirst(recordingRule);
 
-            return CreateBuilder(recordedRule, fakeObject);
+            return CreateBuilder(recordedRule, fakeManager);
         }
 
         private static VisualBasicRuleBuilder CreateBuilder(RecordedCallRule rule, FakeManager fakeObject)

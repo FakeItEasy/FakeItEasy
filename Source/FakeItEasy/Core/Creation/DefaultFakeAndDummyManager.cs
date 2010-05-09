@@ -114,16 +114,16 @@ namespace FakeItEasy.Core.Creation
         /// <returns>A proxy.</returns>
         internal virtual object CreateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, bool throwOnFailure)
         {
-            var fakeObject = this.CreateNewFakeObject();
+            var fakeManager = this.CreateNewFakeObject();
             
-            var proxyResult = this.proxyGenerator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, fakeObject, argumentsForConstructor);
+            var proxyResult = this.proxyGenerator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, fakeManager, argumentsForConstructor);
 
             if (throwOnFailure)
             {
                 AssertThatProxyWasSuccessfullyCreated(typeOfProxy, proxyResult);
             }
 
-            fakeObject.SetProxy(proxyResult);
+            fakeManager.SetProxy(proxyResult);
 
             return proxyResult.Proxy;
         }

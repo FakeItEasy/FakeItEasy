@@ -14,7 +14,7 @@ namespace FakeItEasy.Core
             [NonSerialized]
             private EventHandlerList registeredEventHandlersField;
 
-            public FakeManager FakeObject { get; set; }
+            public FakeManager FakeManager { get; set; }
 
             public int? NumberOfTimesToCall
             {
@@ -83,7 +83,7 @@ namespace FakeItEasy.Core
                 {
                     var arguments = call.EventHandler.Target as IEventRaiserArguments;
 
-                    var sender = arguments.Sender ?? this.FakeObject.Object;
+                    var sender = arguments.Sender ?? this.FakeManager.Object;
 
                     raiseMethod.DynamicInvoke(sender, arguments.EventArguments);
                 }

@@ -151,7 +151,7 @@ namespace FakeItEasy.Tests.DynamicProxy
 
             var result = generator.GenerateProxy(typeOfProxy, null, this.fakeObject, null);
 
-            Assert.That(result.Proxy.FakeObject, Is.SameAs(this.fakeObject));
+            Assert.That(result.Proxy.FakeManager, Is.SameAs(this.fakeObject));
 
         }
 
@@ -233,7 +233,7 @@ namespace FakeItEasy.Tests.DynamicProxy
 
             var result = generator.GenerateProxy(typeof(TypeWithConstructorThatTakesSingleString), null, this.fakeObject, new object[] { "foo" });
 
-            Assert.That(result.Proxy.FakeObject, Is.SameAs(this.fakeObject));
+            Assert.That(result.Proxy.FakeManager, Is.SameAs(this.fakeObject));
         }
 
         [Test]

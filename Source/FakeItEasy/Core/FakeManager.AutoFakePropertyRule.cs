@@ -9,7 +9,7 @@
         private class AutoFakePropertyRule
             : IFakeObjectCallRule
         {
-            public FakeManager FakeObject;
+            public FakeManager FakeManager;
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
@@ -20,11 +20,11 @@
             {
                 var newRule = new CallRuleMetadata
                 {
-                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeObject) { Value = CreateFake(fakeObjectCall.Method.ReturnType) },
+                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeManager) { Value = CreateFake(fakeObjectCall.Method.ReturnType) },
                     CalledNumberOfTimes = 1
                 };
 
-                this.FakeObject.allUserRulesField.AddFirst(newRule);
+                this.FakeManager.allUserRulesField.AddFirst(newRule);
                 newRule.Rule.Apply(fakeObjectCall);
             }
 
