@@ -375,7 +375,7 @@ namespace FakeItEasy.DynamicProxy
                 if (!this.IsRecursiveType(typeOfValue))
                 {
                     var resolver = new ConstructorResolver(typeOfValue, this);
-                    var constructor = resolver.ResolveConstructors().FirstOrDefault();
+                    var constructor = resolver.ResolveConstructors().Where(x => x.Arguments.All(a => a.WasSuccessfullyResolved)).FirstOrDefault();
 
                     if (constructor != null)
                     {
