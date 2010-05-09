@@ -33,9 +33,7 @@ namespace FakeItEasy.Tests.DynamicProxy
 		            typeof(ClassWithDefaultConstructor),
 		            typeof(AbstractClassWithDefaultConstructor),
                     typeof(TypeWithAbstractArgumentToConstructor),
-                    typeof(SealedTypeThatTakesClassWithDefaultConstructorInConstructor),
-                    typeof(CircularClassA),
-                    typeof(CircularClassB)
+                    typeof(SealedTypeThatTakesClassWithDefaultConstructorInConstructor)
 		        };
 
         private List<Type> typesThatCanNotBeProxied = new List<Type>()
@@ -43,7 +41,9 @@ namespace FakeItEasy.Tests.DynamicProxy
 		            typeof(int),
 		            typeof(AbstractClassWithHiddenConstructor),
 		            typeof(ClassWithHiddenConstructor),
-		            typeof(SealedClass)
+		            typeof(SealedClass),
+                    typeof(CircularClassA),
+                    typeof(CircularClassB)
 		        };
 
         private MemberInfo[] nonInterceptableMembers = new MemberInfo[] 
@@ -403,6 +403,15 @@ namespace FakeItEasy.Tests.DynamicProxy
             // Assert
             Assert.That(result.Proxy, Is.InstanceOf<IFormatProvider>());
             Assert.That(result.Proxy, Is.InstanceOf<IFormattable>());
+        }
+
+        [Test]
+        public void GenerateProxy_should_return_false_when_resolvable_constructors_contains_circular_dependencies()
+        {
+            var generator = this.CreateGenerator();
+            var result = generator.GenerateProxy(typeof(CircularClassA), null, this.fakeObject, null);
+
+            Assert.That(result.ProxyWasSuccessfullyCreated, Is.False);
         }
 
         [Test]
