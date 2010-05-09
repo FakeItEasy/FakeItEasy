@@ -29,7 +29,7 @@
             this.wrapperConfigurator.ConfigureFakeToWrap(this.faked, wrapped, null);
 
             // Assert
-            Assert.That(Fake.GetFakeObject(this.faked).Rules.ToArray(), Has.Some.InstanceOf<WrappedObjectRule>());
+            Assert.That(Fake.GetFakeManager(this.faked).Rules.ToArray(), Has.Some.InstanceOf<WrappedObjectRule>());
         }
 
         [Test]
@@ -43,7 +43,7 @@
             this.wrapperConfigurator.ConfigureFakeToWrap(this.faked, wrapped, recorder);
 
             // Assert
-            Assert.That(Fake.GetFakeObject(this.faked).Rules.First(), Is.InstanceOf<SelfInitializationRule>());
+            Assert.That(Fake.GetFakeManager(this.faked).Rules.First(), Is.InstanceOf<SelfInitializationRule>());
         }
 
         [Test]
@@ -56,7 +56,7 @@
             this.wrapperConfigurator.ConfigureFakeToWrap(this.faked, wrapped, null);
 
             // Assert
-            Assert.That(Fake.GetFakeObject(this.faked).Rules, Has.None.InstanceOf<SelfInitializationRule>());
+            Assert.That(Fake.GetFakeManager(this.faked).Rules, Has.None.InstanceOf<SelfInitializationRule>());
         }
     }
 }

@@ -18,7 +18,7 @@ namespace FakeItEasy
         public static IAnyCallConfiguration CallTo<TFake>(TFake fakedObject)
         {
             var configurationFactory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
-            return configurationFactory.CreateConfiguration<TFake>(Fake.GetFakeObject(fakedObject)).AnyCall();
+            return configurationFactory.CreateConfiguration<TFake>(Fake.GetFakeManager(fakedObject)).AnyCall();
         }
 
         /// <summary>

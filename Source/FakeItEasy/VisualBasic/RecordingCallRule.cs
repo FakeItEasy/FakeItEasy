@@ -10,11 +10,11 @@ namespace FakeItEasy.VisualBasic
     internal class RecordingCallRule<TFake>
         : IFakeObjectCallRule
     {
-        private FakeObject fakeObject;
+        private FakeManager fakeObject;
         private RecordedCallRule recordedRule;
         private FakeAsserter.Factory asserterFactory;
 
-        public RecordingCallRule(FakeObject fakeObject, RecordedCallRule recordedRule, FakeAsserter.Factory asserterFactory)
+        public RecordingCallRule(FakeManager fakeObject, RecordedCallRule recordedRule, FakeAsserter.Factory asserterFactory)
         {
             this.fakeObject = fakeObject;
             this.recordedRule = recordedRule;

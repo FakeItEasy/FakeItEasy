@@ -18,7 +18,7 @@ namespace FakeItEasy.Tests.Assertion
     [TestFixture]
     public class FakeAssertionsTests
     {
-        private FakeObject fake;
+        private FakeManager fake;
         private FakeAssertions<IFoo> assertions;
         private IExpressionCallMatcherFactory callMatcherFactory;
         private FakeAsserter fakeAsserter;
@@ -29,7 +29,7 @@ namespace FakeItEasy.Tests.Assertion
         [SetUp]
         public void SetUp()
         {
-            this.fake = Fake.GetFakeObject(A.Fake<IFoo>());
+            this.fake = Fake.GetFakeManager(A.Fake<IFoo>());
             
             this.fakeAsserter = A.Fake<FakeAsserter>();
             

@@ -3,16 +3,16 @@
     using System.Linq;
     using System.Reflection;
 
-    public partial class FakeObject
+    public partial class FakeManager
     {
         private class PropertyBehaviorRule
             : IFakeObjectCallRule
         {
             private MethodInfo propertySetter;
             private MethodInfo propertyGetter;
-            private FakeObject fakeObject;
+            private FakeManager fakeObject;
 
-            public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter, FakeObject fakeObject)
+            public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter, FakeManager fakeObject)
             {
                 this.fakeObject = fakeObject;
                 var property = GetProperty(propertyGetterOrSetter);

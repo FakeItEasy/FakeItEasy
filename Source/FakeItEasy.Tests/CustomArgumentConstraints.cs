@@ -26,9 +26,9 @@ namespace FakeItEasy.Tests
 			                                string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
         }
 
-        public static ArgumentConstraint<FakeObject> Fakes(this ArgumentConstraintScope<FakeObject> scope, object fakedObject)
+        public static ArgumentConstraint<FakeManager> Fakes(this ArgumentConstraintScope<FakeManager> scope, object fakedObject)
         {
-            return ArgumentConstraint.Create(scope, x => x.Equals(Fake.GetFakeObject(fakedObject)), "Specified FakeObject");
+            return ArgumentConstraint.Create(scope, x => x.Equals(Fake.GetFakeManager(fakedObject)), "Specified FakeObject");
         }
     }
 }

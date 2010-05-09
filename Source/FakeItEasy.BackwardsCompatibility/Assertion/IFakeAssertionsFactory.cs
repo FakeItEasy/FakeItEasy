@@ -4,6 +4,6 @@ namespace FakeItEasy.Assertion
 
     internal interface IFakeAssertionsFactory
     {
-        IFakeAssertions<TFake> CreateAsserter<TFake>(FakeObject fake);
+        IFakeAssertions<TFake> CreateAsserter<TFake>(FakeManager fake);
     }
 }

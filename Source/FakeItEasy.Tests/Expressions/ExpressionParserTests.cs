@@ -32,7 +32,7 @@ namespace FakeItEasy.Tests.Expressions
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            var fake = Fake.GetFakeObject(foo);
+            var fake = Fake.GetFakeManager(foo);
 
             Expression<Action> callSpecification = () => foo.Bar();
 
@@ -50,7 +50,7 @@ namespace FakeItEasy.Tests.Expressions
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            var fake = Fake.GetFakeObject(foo);
+            var fake = Fake.GetFakeManager(foo);
 
             Expression<Func<int>> callSpecification = () => foo.SomeProperty;
 

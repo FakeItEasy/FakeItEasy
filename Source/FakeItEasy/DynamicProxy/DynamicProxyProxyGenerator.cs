@@ -39,7 +39,7 @@ namespace FakeItEasy.DynamicProxy
         /// <returns>True if the proxy could be generated.</returns>
         /// <exception cref="ArgumentException">The arguments in argumentsForConstructor does not match any constructor
         /// of the proxied type.</exception>
-        public ProxyResult GenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
+        public ProxyResult GenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeObject, IEnumerable<object> argumentsForConstructor)
         {
             if (typeToProxy.IsSealed)
             {
@@ -97,7 +97,7 @@ namespace FakeItEasy.DynamicProxy
             return interfacesToImplement.Concat(additionalInterfacesToImplement).ToArray();
         }
 
-        private static FakeObjectInterceptor CreateFakeObjectInterceptor(FakeObject fakeObject)
+        private static FakeObjectInterceptor CreateFakeObjectInterceptor(FakeManager fakeObject)
         {
             return new FakeObjectInterceptor()
             {
@@ -193,7 +193,7 @@ namespace FakeItEasy.DynamicProxy
             }
         }
 
-        private ProxyResult DoGenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
+        private ProxyResult DoGenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeObject, IEnumerable<object> argumentsForConstructor)
         {
             var fakeObjectInterceptor = CreateFakeObjectInterceptor(fakeObject);
 
@@ -443,7 +443,7 @@ namespace FakeItEasy.DynamicProxy
         {
             private static readonly MethodInfo getProxyManagerMethod = typeof(IFakedProxy).GetProperty("FakeObject").GetGetMethod();
 
-            public FakeObject FakeObject { get; set; }
+            public FakeManager FakeObject { get; set; }
 
             [DebuggerStepThrough]
             public void Intercept(IInvocation invocation)

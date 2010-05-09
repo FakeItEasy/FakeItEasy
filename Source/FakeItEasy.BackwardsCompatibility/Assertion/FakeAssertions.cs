@@ -26,7 +26,7 @@
         /// <summary>
         /// The fake to do assertions for.
         /// </summary>
-        private FakeObject fake;
+        private FakeManager fake;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeAssertions&lt;TFake&gt;"/> class.
@@ -34,7 +34,7 @@
         /// <param name="fake">The fake.</param>
         /// <param name="callMatcherFactory">The call matcher factory.</param>
         /// <param name="fakeAsserterFactory">The fake asserter factory.</param>
-        public FakeAssertions(FakeObject fake, IExpressionCallMatcherFactory callMatcherFactory, FakeAsserter.Factory fakeAsserterFactory)
+        public FakeAssertions(FakeManager fake, IExpressionCallMatcherFactory callMatcherFactory, FakeAsserter.Factory fakeAsserterFactory)
         {
             Guard.AgainstNull(fake, "fake");
             Guard.AgainstNull(callMatcherFactory, "callMatcherFactory");

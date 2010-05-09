@@ -14,6 +14,6 @@ namespace FakeItEasy.Configuration
         /// <typeparam name="TFake">The type of the fake object.</typeparam>
         /// <param name="fakeObject">The fake object to configure.</param>
         /// <returns>A configuration object.</returns>
-        IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeObject fakeObject);
+        IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeManager fakeObject);
     }
 }

@@ -10,6 +10,6 @@
         /// Gets the fake object behind a faked object.
         /// </summary>
         /// <returns>A fake object.</returns>
-        FakeObject FakeObject { get; }
+        FakeManager FakeObject { get; }
     }
 }

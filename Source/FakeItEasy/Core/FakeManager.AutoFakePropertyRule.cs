@@ -1,15 +1,15 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
-using FakeItEasy.Core.Creation;
+    using FakeItEasy.Core.Creation;
 
-    public partial class FakeObject
+    public partial class FakeManager
     {
         [Serializable]
         private class AutoFakePropertyRule
             : IFakeObjectCallRule
         {
-            public FakeObject FakeObject;
+            public FakeManager FakeObject;
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {

@@ -7,11 +7,11 @@ namespace FakeItEasy.Configuration
     internal class AnyCallConfiguration
         : IAnyCallConfiguration
     {
-        private FakeObject fakeObject;
+        private FakeManager fakeObject;
         private AnyCallCallRule configuredRule;
         private IConfigurationFactory configurationFactory;
 
-        public AnyCallConfiguration(FakeObject fakeObject, AnyCallCallRule configuredRule, IConfigurationFactory configurationFactory)
+        public AnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule configuredRule, IConfigurationFactory configurationFactory)
         {
             this.fakeObject = fakeObject;
             this.configuredRule = configuredRule;

@@ -24,7 +24,7 @@ namespace FakeItEasy
             Guard.AgainstNull(fakedObject, "fakedObject");
             
             var factory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
-            return factory.CreateConfiguration<TFake>(FakeItEasy.Fake.GetFakeObject(fakedObject));
+            return factory.CreateConfiguration<TFake>(FakeItEasy.Fake.GetFakeManager(fakedObject));
         }
     }
 }

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Reflection;
 
-    public partial class FakeObject
+    public partial class FakeManager
     {
         [Serializable]
         private class ObjectMemberRule
@@ -17,7 +17,7 @@
                 typeof(object).GetMethod("GetHashCode", new Type[] { })
             };
 
-            public FakeObject FakeObject { get; set; }
+            public FakeManager FakeObject { get; set; }
 
             public int? NumberOfTimesToCall
             {
@@ -59,7 +59,7 @@
                     return false;
                 }
 
-                var fakeObject = Fake.GetFakeObject(fakeObjectCall.FakedObject);
+                var fakeObject = Fake.GetFakeManager(fakeObjectCall.FakedObject);
                 fakeObjectCall.SetReturnValue(fakeObject.GetHashCode());
 
                 return true;

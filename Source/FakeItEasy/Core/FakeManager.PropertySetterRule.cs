@@ -2,13 +2,13 @@
 {
     using System;
 
-    public partial class FakeObject
+    public partial class FakeManager
     {
         [Serializable]
         private class PropertySetterRule
             : IFakeObjectCallRule
         {
-            public FakeObject FakeObject { get; set; }
+            public FakeManager FakeObject { get; set; }
             
             public int? NumberOfTimesToCall
             {

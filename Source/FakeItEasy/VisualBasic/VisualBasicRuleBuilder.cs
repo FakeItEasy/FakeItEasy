@@ -7,7 +7,7 @@ namespace FakeItEasy.VisualBasic
     internal class VisualBasicRuleBuilder
         : IVisualBasicConfigurationWithArgumentValidation
     {
-        public delegate VisualBasicRuleBuilder Factory(RecordedCallRule rule, FakeObject fakeObject);
+        public delegate VisualBasicRuleBuilder Factory(RecordedCallRule rule, FakeManager fakeObject);
 
         private RecordedCallRule rule;
         private RuleBuilder wrappedBuilder;

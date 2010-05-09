@@ -20,7 +20,7 @@ namespace FakeItEasy.Tests.ExtensionSyntax.Full
         {
             this.fakeConfiguration = A.Fake<IStartConfiguration<IFoo>>();
             this.fakeConfigurationFactory = A.Fake<IStartConfigurationFactory>();
-            A.CallTo(() => this.fakeConfigurationFactory.CreateConfiguration<IFoo>(A<FakeObject>.Ignored))
+            A.CallTo(() => this.fakeConfigurationFactory.CreateConfiguration<IFoo>(A<FakeManager>.Ignored))
                 .Returns(this.fakeConfiguration);       
         }
 

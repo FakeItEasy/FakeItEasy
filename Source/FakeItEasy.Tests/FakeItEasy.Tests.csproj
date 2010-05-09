@@ -120,7 +120,7 @@
     <Compile Include="IoC\DictionaryContainerTests.cs" />
     <Compile Include="TestCases.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
-    <Compile Include="Core\FakeObjectTests.cs" />
+    <Compile Include="Core\FakeManagerTests.cs" />
     <Compile Include="Core\HelpersTests.cs" />
     <Compile Include="Core\NullFakeObjectContainerTests.cs" />
     <Compile Include="CustomArgumentConstraints.cs" />

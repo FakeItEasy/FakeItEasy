@@ -7,7 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		FakeItEasy\FakeItEasy.FxCop = FakeItEasy\FakeItEasy.FxCop
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
-		VersionAssemblyInfo.cs = VersionAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{F9C87C93-FE80-45E1-8CFF-8D6E451F7939}"

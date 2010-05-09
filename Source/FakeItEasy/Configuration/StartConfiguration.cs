@@ -10,12 +10,12 @@ namespace FakeItEasy.Configuration
     internal class StartConfiguration<TFake>
         : IStartConfiguration<TFake>, IHideObjectMembers
     {
-        private FakeObject fakeObject;
+        private FakeManager fakeObject;
         private ExpressionCallRule.Factory callRuleFactory;
         private IConfigurationFactory configurationFactory;
         private IProxyGenerator proxyGenerator;
 
-        internal StartConfiguration(FakeObject fakeObject, ExpressionCallRule.Factory callRuleFactory, IConfigurationFactory configurationFactory, IProxyGenerator proxyGenerator)
+        internal StartConfiguration(FakeManager fakeObject, ExpressionCallRule.Factory callRuleFactory, IConfigurationFactory configurationFactory, IProxyGenerator proxyGenerator)
         {
             this.fakeObject = fakeObject;
             this.callRuleFactory = callRuleFactory;

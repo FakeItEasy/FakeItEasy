@@ -28,7 +28,7 @@
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            var fake = Fake.GetFakeObject(foo);
+            var fake = Fake.GetFakeManager(foo);
 
             var recordedRule = A.Fake<RecordedCallRule>();
             this.StubResolve<RecordedCallRule.Factory>(() => recordedRule);
@@ -57,7 +57,7 @@
             var rule = A.Fake<RecordedCallRule>();
 
             var wrapped = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() =>
-                new RuleBuilder(rule, A.Fake<FakeObject>(), c => A.Fake<FakeAsserter>())));
+                new RuleBuilder(rule, A.Fake<FakeManager>(), c => A.Fake<FakeAsserter>())));
             var result = A.Fake<VisualBasicRuleBuilder>(x => x.WithArgumentsForConstructor(() =>
                 new VisualBasicRuleBuilder(rule, wrapped)));
 

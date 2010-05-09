@@ -22,7 +22,7 @@ using FakeItEasy.Core.Creation;
         /// <param name="fakedObject">The faked object to get the manager object for.</param>
         /// <returns>The fake object manager.</returns>
         [DebuggerStepThrough]
-        public static FakeObject GetFakeObject(object fakedObject)
+        public static FakeManager GetFakeManager(object fakedObject)
         {
             Guard.AgainstNull(fakedObject, "fakedObject");
 
@@ -96,7 +96,7 @@ using FakeItEasy.Core.Creation;
         {
             Guard.AgainstNull(fakedObject, "fakedObject");
 
-            return Fake.GetFakeObject(fakedObject).RecordedCallsInScope;
+            return Fake.GetFakeManager(fakedObject).RecordedCallsInScope;
         }
     }
 
@@ -154,7 +154,7 @@ using FakeItEasy.Core.Creation;
             get
             {
                 var factory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
-                return factory.CreateConfiguration<T>(Fake.GetFakeObject(this.FakedObject));
+                return factory.CreateConfiguration<T>(Fake.GetFakeManager(this.FakedObject));
             }
         }
 

@@ -13,7 +13,7 @@ namespace FakeItEasy
         [Obsolete("Use the A.CallTo(() => foo.Bar()).MustHaveHappened()-syntax instead.")]
         public static IFakeAssertions<T> Assert<T>(T fakedObject)
         {
-            var asserter = new FakeAssertions<T>(Fake.GetFakeObject(fakedObject), ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>(), ServiceLocator.Current.Resolve<FakeAsserter.Factory>());
+            var asserter = new FakeAssertions<T>(Fake.GetFakeManager(fakedObject), ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>(), ServiceLocator.Current.Resolve<FakeAsserter.Factory>());
             return asserter;
         }
     }

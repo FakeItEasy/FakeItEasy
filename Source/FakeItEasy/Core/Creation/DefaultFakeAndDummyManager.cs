@@ -14,7 +14,7 @@ namespace FakeItEasy.Core.Creation
     {
         private IFakeObjectContainer container;
         private IProxyGenerator proxyGenerator;
-        private FakeObject.Factory fakeObjectFactory;
+        private FakeManager.Factory fakeObjectFactory;
         private IFakeWrapperConfigurator wrapperConfigurator;
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace FakeItEasy.Core.Creation
         /// <param name="proxyGenerator">The proxy generator.</param>
         /// <param name="fakeObjectFactory">The fake object factory.</param>
         /// <param name="wrapperConfigurator">The wrapper configurator to use.</param>
-        public DefaultFakeAndDummyManager(IFakeObjectContainer container, IProxyGenerator proxyGenerator, FakeObject.Factory fakeObjectFactory, IFakeWrapperConfigurator wrapperConfigurator)
+        public DefaultFakeAndDummyManager(IFakeObjectContainer container, IProxyGenerator proxyGenerator, FakeManager.Factory fakeObjectFactory, IFakeWrapperConfigurator wrapperConfigurator)
         {
             this.container = container;
             this.proxyGenerator = proxyGenerator;
@@ -168,7 +168,7 @@ namespace FakeItEasy.Core.Creation
             }
         }
 
-        private FakeObject CreateNewFakeObject()
+        private FakeManager CreateNewFakeObject()
         {
             return this.fakeObjectFactory.Invoke();
         }

@@ -14,9 +14,9 @@ namespace FakeItEasy.Configuration
           ICallCollectionAndCallMatcherAccessor
     {
         private FakeAsserter.Factory asserterFactory;
-        private FakeObject fakeObject;
+        private FakeManager fakeObject;
         
-        internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeObject fakeObject, FakeAsserter.Factory asserterFactory)
+        internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeManager fakeObject, FakeAsserter.Factory asserterFactory)
         {
             this.RuleBeingBuilt = ruleBeingBuilt;
             this.fakeObject = fakeObject;
@@ -30,7 +30,7 @@ namespace FakeItEasy.Configuration
         /// <param name="fakeObject">The fake object the rule is for.</param>
         /// <param name="ruleBeingBuilt">The rule that's being built.</param>
         /// <returns>A configuration object.</returns>
-        internal delegate RuleBuilder Factory(BuildableCallRule ruleBeingBuilt, FakeObject fakeObject);
+        internal delegate RuleBuilder Factory(BuildableCallRule ruleBeingBuilt, FakeManager fakeObject);
 
         public BuildableCallRule RuleBeingBuilt 
         {

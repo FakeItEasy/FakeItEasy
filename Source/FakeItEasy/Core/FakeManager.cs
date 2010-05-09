@@ -11,7 +11,7 @@ namespace FakeItEasy.Core
     /// by using the AddRule-method.
     /// </summary>
     [Serializable]
-    public partial class FakeObject
+    public partial class FakeManager
     {
         private IEnumerable<CallRuleMetadata> preUserRules;
         private LinkedList<CallRuleMetadata> allUserRulesField;
@@ -21,7 +21,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeObject"/> class.
         /// </summary>
-        public FakeObject()
+        public FakeManager()
         {
             this.preUserRules = new[] 
             {
@@ -43,7 +43,7 @@ namespace FakeItEasy.Core
         /// A delegate responsible for creating FakeObject instances.
         /// </summary>
         /// <returns></returns>
-        public delegate FakeObject Factory();
+        public delegate FakeManager Factory();
 
         /// <summary>
         /// Gets the faked object.

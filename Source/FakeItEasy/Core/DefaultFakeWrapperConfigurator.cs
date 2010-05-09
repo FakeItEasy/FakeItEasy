@@ -16,14 +16,14 @@ namespace FakeItEasy.Core
         /// <param name="recorder">The recorder to use, null if no recording should be made.</param>
         public void ConfigureFakeToWrap(object fakedObject, object wrappedInstance, FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder)
         {
-            var fake = Fake.GetFakeObject(fakedObject);
+            var fake = Fake.GetFakeManager(fakedObject);
 
             var wrapperRule = CreateAndAddWrapperRule(wrappedInstance, fake);
 
             AddRecordingRuleWhenRecorderIsSpecified(recorder, fake, wrapperRule);
         }
 
-        private static void AddRecordingRuleWhenRecorderIsSpecified(FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder, FakeObject fake, WrappedObjectRule wrapperRule)
+        private static void AddRecordingRuleWhenRecorderIsSpecified(FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder, FakeManager fake, WrappedObjectRule wrapperRule)
         {
             if (recorder != null)
             {
@@ -31,7 +31,7 @@ namespace FakeItEasy.Core
             }
         }
 
-        private static WrappedObjectRule CreateAndAddWrapperRule(object wrappedInstance, FakeObject fake)
+        private static WrappedObjectRule CreateAndAddWrapperRule(object wrappedInstance, FakeManager fake)
         {
             var wrappingRule = new WrappedObjectRule(wrappedInstance);
             fake.AddRuleFirst(wrappingRule);

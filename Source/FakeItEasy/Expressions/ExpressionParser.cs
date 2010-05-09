@@ -17,7 +17,7 @@ namespace FakeItEasy.Expressions
         /// <returns>A FakeObject.</returns>
         /// <exception cref="ArgumentNullException">The fakeObjectCall is null.</exception>
         /// <exception cref="ArgumentException">The specified expression is not an expression where a call is made to a faked object.</exception>
-        public FakeObject GetFakeObjectCallIsMadeOn(LambdaExpression fakeObjectCall)
+        public FakeManager GetFakeObjectCallIsMadeOn(LambdaExpression fakeObjectCall)
         {
             Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
 
@@ -39,7 +39,7 @@ namespace FakeItEasy.Expressions
                 throw new ArgumentException("The specified call is not made on a fake object.");
             }
 
-            return Fake.GetFakeObject(ExpressionManager.GetValueProducedByExpression(callTargetExpression));
+            return Fake.GetFakeManager(ExpressionManager.GetValueProducedByExpression(callTargetExpression));
         }
     }
 }

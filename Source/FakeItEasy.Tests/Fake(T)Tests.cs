@@ -78,7 +78,7 @@
         public void RecordedCalls_returns_recorded_calls_in_scope()
         {
             var fake = new Fake<IFoo>();
-            var fakeObject = Fake.GetFakeObject(fake.FakedObject);
+            var fakeObject = Fake.GetFakeManager(fake.FakedObject);
 
             fake.FakedObject.Bar();
 
@@ -95,7 +95,7 @@
             A.CallTo(() => config.CallsTo(callSpecification)).Returns(callConfig);
 
             var fake = new Fake<IFoo>();
-            A.CallTo(() => this.startConfigurationFactory.CreateConfiguration<IFoo>(A<FakeObject>.That.Fakes(fake.FakedObject))).Returns(config);
+            A.CallTo(() => this.startConfigurationFactory.CreateConfiguration<IFoo>(A<FakeManager>.That.Fakes(fake.FakedObject))).Returns(config);
 
             var result = fake.CallsTo(callSpecification);
 
@@ -112,7 +112,7 @@
             A.CallTo(() => config.CallsTo(callSpecification)).Returns(callConfig);
 
             var fake = new Fake<IFoo>();
-            A.CallTo(() => this.startConfigurationFactory.CreateConfiguration<IFoo>(A<FakeObject>.That.Fakes(fake.FakedObject))).Returns(config);
+            A.CallTo(() => this.startConfigurationFactory.CreateConfiguration<IFoo>(A<FakeManager>.That.Fakes(fake.FakedObject))).Returns(config);
 
             var result = fake.CallsTo(callSpecification);
 
@@ -129,7 +129,7 @@
             var config = A.Fake<IStartConfiguration<IFoo>>();
 
             A.CallTo(() => config.AnyCall()).Returns(callConfig);
-            A.CallTo(() => this.startConfigurationFactory.CreateConfiguration<IFoo>(A<FakeObject>.That.Fakes(fake.FakedObject))).Returns(config);
+            A.CallTo(() => this.startConfigurationFactory.CreateConfiguration<IFoo>(A<FakeManager>.That.Fakes(fake.FakedObject))).Returns(config);
 
             // Act
             var result = fake.AnyCall();

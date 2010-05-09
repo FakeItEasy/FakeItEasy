@@ -12,13 +12,13 @@ namespace FakeItEasy.Tests.DynamicProxy
     [TestFixture]
     public class DynamicProxyProxyGeneratorTests
     {
-        FakeObject fakeObject;
+        FakeManager fakeObject;
         IFakeObjectContainer container;
 
         [SetUp]
         public void SetUp()
         {
-            this.fakeObject = A.Fake<FakeObject>();
+            this.fakeObject = A.Fake<FakeManager>();
             this.container = A.Fake<IFakeObjectContainer>();
         }
 

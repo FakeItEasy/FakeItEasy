@@ -5,7 +5,7 @@ namespace FakeItEasy.Core
     using System.Linq;
     using System.Reflection;
 
-    public partial class FakeObject
+    public partial class FakeManager
     {
         [Serializable]
         private class EventRule
@@ -14,7 +14,7 @@ namespace FakeItEasy.Core
             [NonSerialized]
             private EventHandlerList registeredEventHandlersField;
 
-            public FakeObject FakeObject { get; set; }
+            public FakeManager FakeObject { get; set; }
 
             public int? NumberOfTimesToCall
             {
