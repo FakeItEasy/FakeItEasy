@@ -139,7 +139,7 @@ namespace FakeItEasy.DynamicProxy
 
         private static void AppendDescriptionsForEachConstructor(StringBuilder message, ConstructorResolver constructorResolver)
         {
-            foreach (var constructor in constructorResolver.ResolveConstructors())
+            foreach (var constructor in constructorResolver.ListAllConstructors())
             {
                 AppendConstructorVisibility(message, constructor.Constructor);
                 AppendConstructorArgumentsList(message, constructor);
@@ -248,23 +248,19 @@ namespace FakeItEasy.DynamicProxy
 
             if (argumentsForConstructor != null)
             {
-                argumentSetsForConstructor = new[] { argumentsForConstructor };
+                return new[] { argumentsForConstructor };
             }
-            else
-            {
-                argumentSetsForConstructor =
-                    from constructor in this.ResolveConstructors(typeToProxy)
-                    where constructor.Arguments.All(x => x.WasSuccessfullyResolved)
-                    select constructor.ArgumentsToUse;
-            }
-
-            return argumentSetsForConstructor;
+            
+            return this.ResolveArgumentSetsForConstructor(typeToProxy, argumentSetsForConstructor);
         }
 
-        private IEnumerable<ConstructorAndArgumentsInfo> ResolveConstructors(Type typeToProxy)
+        private IEnumerable<IEnumerable<object>> ResolveArgumentSetsForConstructor(Type typeToProxy, IEnumerable<IEnumerable<object>> argumentSetsForConstructor)
         {
             var resolver = new ConstructorResolver(typeToProxy, this);
-            return resolver.ResolveConstructors();
+
+            return
+                from constructor in resolver.GetConstructorsWhereAllArgumentsCanBeResolved()
+                select constructor.ArgumentsToUse;
         }
 
         private class ConstructorAndArgumentsInfo
@@ -316,7 +312,7 @@ namespace FakeItEasy.DynamicProxy
                 this.parent = parent;
             }
 
-            public IEnumerable<ConstructorAndArgumentsInfo> ResolveConstructors()
+            public IEnumerable<ConstructorAndArgumentsInfo> ListAllConstructors()
             { 
                 var constructors = this.GetConstructorsCallableByProxy();
                             
@@ -329,6 +325,14 @@ namespace FakeItEasy.DynamicProxy
                         Arguments = arguments
                     };
                 }
+            }
+
+            public IEnumerable<ConstructorAndArgumentsInfo> GetConstructorsWhereAllArgumentsCanBeResolved()
+            {
+                return
+                    from constructor in this.ListAllConstructors()
+                    where constructor.Arguments.All(x => x.WasSuccessfullyResolved)
+                    select constructor;
             }
 
             private static IEnumerable<Type> GetConstructorParameterTypes(ConstructorInfo constructor)
@@ -375,7 +379,7 @@ namespace FakeItEasy.DynamicProxy
                 if (!this.IsRecursiveType(typeOfValue))
                 {
                     var resolver = new ConstructorResolver(typeOfValue, this);
-                    var constructor = resolver.ResolveConstructors().Where(x => x.Arguments.All(a => a.WasSuccessfullyResolved)).FirstOrDefault();
+                    var constructor = resolver.GetConstructorsWhereAllArgumentsCanBeResolved().FirstOrDefault();
 
                     if (constructor != null)
                     {
