@@ -441,14 +441,14 @@ namespace FakeItEasy.DynamicProxy
         private class FakeObjectInterceptor
             : IInterceptor
         {
-            private static readonly MethodInfo getProxyManagerMethod = typeof(IFakedProxy).GetProperty("FakeObject").GetGetMethod();
+            private static readonly MethodInfo getFakeManagerMethod = typeof(IFakedProxy).GetProperty("FakeManager").GetGetMethod();
 
             public FakeManager FakeManager { get; set; }
 
             [DebuggerStepThrough]
             public void Intercept(IInvocation invocation)
             {
-                if (invocation.Method.Equals(getProxyManagerMethod))
+                if (invocation.Method.Equals(getFakeManagerMethod))
                 {
                     invocation.ReturnValue = this.FakeManager;
                 }

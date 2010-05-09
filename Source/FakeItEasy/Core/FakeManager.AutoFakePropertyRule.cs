@@ -9,7 +9,7 @@
         private class AutoFakePropertyRule
             : IFakeObjectCallRule
         {
-            public FakeManager FakeManager;
+            public FakeManager FakeManager { get; set; }
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
@@ -28,7 +28,7 @@
                 newRule.Rule.Apply(fakeObjectCall);
             }
 
-            private static IFakeAndDummyManager FakeManager
+            private static IFakeAndDummyManager FakeAndDummyManager
             {
                 get
                 {
@@ -38,13 +38,13 @@
 
             private static object CreateFake(Type type)
             {
-                return FakeManager.CreateFake(type, FakeOptions.Empty);
+                return FakeAndDummyManager.CreateFake(type, FakeOptions.Empty);
             }
 
             private static bool TypeIsFakable(Type type)
             {
                 object result = null;
-                return FakeManager.TryCreateFake(type, FakeOptions.Empty, out result);
+                return FakeAndDummyManager.TryCreateFake(type, FakeOptions.Empty, out result);
             }
 
             public int? NumberOfTimesToCall

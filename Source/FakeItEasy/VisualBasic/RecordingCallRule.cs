@@ -40,7 +40,6 @@ namespace FakeItEasy.VisualBasic
                 this.DoAssertion(fakeObjectCall);
             }
             
-            
             this.fakeManager.AddRuleFirst(this.recordedRule);
 
             fakeObjectCall.SetReturnValue(Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType));
