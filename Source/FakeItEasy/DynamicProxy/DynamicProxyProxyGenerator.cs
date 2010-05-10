@@ -383,22 +383,23 @@ namespace FakeItEasy.DynamicProxy
 
                     if (constructor != null)
                     {
-                        var proxyResult = this.proxyGenerator.DoGenerateProxy(typeOfValue, Enumerable.Empty<Type>(), null, constructor.ArgumentsToUse);
-
-                        if (proxyResult.ProxyWasSuccessfullyCreated)
+                        try
                         {
-                            dummyValue = proxyResult.Proxy;
+                            dummyValue = DynamicProxyProxyGenerator.proxyGenerator.CreateClassProxy(typeOfValue, new Type[] { }, ProxyGenerationOptions.Default, constructor.ArgumentsToUse.ToArray());
                             this.resolvedValues.Add(typeOfValue, dummyValue);
                             return true;
                         }
-
+                        catch
+                        { 
+                        }
+                        
                         try
                         {
                             dummyValue = Activator.CreateInstance(typeOfValue, constructor.ArgumentsToUse.ToArray());
                             this.resolvedValues.Add(typeOfValue, dummyValue);
                             return true;
                         }
-                        catch (Exception)
+                        catch
                         {
                         }
                     }
