@@ -6,6 +6,7 @@ using FakeItEasy.DynamicProxy;
 using FakeItEasy.Tests.TestHelpers;
 using NUnit.Framework;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace FakeItEasy.Tests.DynamicProxy
 {
@@ -445,6 +446,27 @@ IFakeObjectContainer in order to generate a fake of this type."));
 
             // Assert
             Assert.That(result.ErrorMessage, Is.EqualTo("The type is sealed."));
+        }
+
+        [Test]
+        public void Should_return_result_with_false_when_type_depends_on_delegate()
+        {
+            // Arrange
+            var generator = this.CreateGenerator();
+
+            // Act
+            var result = generator.GenerateProxy(typeof(TypeThatDependsOnDelegate), Enumerable.Empty<Type>(), this.fakeObject, null);
+            
+            // Assert
+            Assert.That(result.ProxyWasSuccessfullyCreated, Is.False);
+        }
+
+        public class TypeThatDependsOnDelegate
+        {
+            public TypeThatDependsOnDelegate(Func<int> d)
+            {
+
+            }
         }
 
         public class TypeWithConstructorThatThrows
