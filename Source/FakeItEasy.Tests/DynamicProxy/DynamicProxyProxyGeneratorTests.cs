@@ -15,17 +15,19 @@ namespace FakeItEasy.Tests.DynamicProxy
     {
         FakeManager fakeObject;
         IFakeObjectContainer container;
+        DefaultConstructorResolver constructorResolver;
 
         [SetUp]
         public void SetUp()
         {
             this.fakeObject = A.Fake<FakeManager>();
             this.container = A.Fake<IFakeObjectContainer>();
+            this.constructorResolver = new DefaultConstructorResolver(this.container);
         }
 
         private DynamicProxyProxyGenerator CreateGenerator()
         {
-            return new DynamicProxyProxyGenerator(this.container);
+            return new DynamicProxyProxyGenerator(this.constructorResolver);
         }
 
         private List<Type> typesThatCanBeProxied = new List<Type>()

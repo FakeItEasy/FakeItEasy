@@ -72,13 +72,16 @@
                 new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IProxyGenerator>(), c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
 
             container.Register<IProxyGenerator>(c =>
-                new DynamicProxyProxyGenerator(c.Resolve<IFakeObjectContainer>()));
+                new DynamicProxyProxyGenerator(c.Resolve<IConstructorResolver>()));
 
             container.Register<IFakeWrapperConfigurator>(c =>
                 new DefaultFakeWrapperConfigurator());
 
             container.Register<ITypeAccessor>(c =>
                 new ApplicationDirectoryAssembliesTypeAccessor());
+
+            container.Register<IConstructorResolver>(c =>
+                new DefaultConstructorResolver(c.Resolve<IFakeObjectContainer>()));
         }
 
         #region FactoryImplementations

@@ -94,6 +94,7 @@
     <Compile Include="Configuration\StartConfiguration.cs" />
     <Compile Include="Core\DynamicContainer.cs" />
     <Compile Include="Core\ITypeAccessor.cs" />
+    <Compile Include="DynamicProxy\IConstructorResolver.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
