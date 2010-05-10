@@ -20,6 +20,7 @@ namespace FakeItEasy.DynamicProxy
     {
         private static ProxyGenerator proxyGenerator = new ProxyGenerator();
         private static Type[] interfacesToImplement = new Type[] { typeof(IFakedProxy), typeof(ICanInterceptObjectMembers) };
+        private static readonly HashSet<Type> forbiddenTypes = new HashSet<Type>() { typeof(IntPtr) };
         private IFakeObjectContainer container;
 
         public DynamicProxyProxyGenerator(IFakeObjectContainer container)
@@ -351,6 +352,12 @@ namespace FakeItEasy.DynamicProxy
 
             private bool TryResolveDummyValueOfType(Type typeOfValue, out object dummyValue)
             {
+                if (forbiddenTypes.Contains(typeOfValue))
+                {
+                    dummyValue = null;
+                    return false;
+                }
+
                 if (this.resolvedValues.TryGetValue(typeOfValue, out dummyValue))
                 {
                     return true;
@@ -392,7 +399,7 @@ namespace FakeItEasy.DynamicProxy
                         catch
                         { 
                         }
-                        
+
                         try
                         {
                             dummyValue = Activator.CreateInstance(typeOfValue, constructor.ArgumentsToUse.ToArray());

@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using System;
 using FakeItEasy.Core;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FakeItEasy.IntegrationTests
 {
@@ -15,6 +17,8 @@ namespace FakeItEasy.IntegrationTests
                 var result = A.Dummy<Uri>();
                 Console.Write(result);
             }
+
+            
         }
     }
 }
