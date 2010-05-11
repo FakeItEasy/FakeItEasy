@@ -11,14 +11,18 @@ namespace FakeItEasy.Tests.DynamicProxy
     [TestFixture]
     public class DynamicProxyProxyGeneratorTests
     {
-        FakeManager fakeManager;
-        IConstructorResolver constructorResolver;
+        private FakeManager fakeManager;
+        private IConstructorResolver constructorResolver;
+        private IDummyResolvingSession session;
 
         [SetUp]
         public void SetUp()
         {
             this.fakeManager = A.Fake<FakeManager>();
+            this.session = A.Fake<IDummyResolvingSession>();
             this.constructorResolver = A.Fake<IConstructorResolver>(x => x.Wrapping(new ConstructorResolverThatGetsDefaultConstructors()));
+
+            A.CallTo(() => this.session.ConstructorResolver).Returns(this.constructorResolver);
         }
 
         private class ConstructorResolverThatGetsDefaultConstructors
@@ -39,7 +43,7 @@ namespace FakeItEasy.Tests.DynamicProxy
 
         private DynamicProxyProxyGenerator CreateGenerator()
         {
-            return new DynamicProxyProxyGenerator(this.constructorResolver);
+            return new DynamicProxyProxyGenerator(this.session);
         }
 
         private List<Type> typesThatCanBeProxied = new List<Type>()

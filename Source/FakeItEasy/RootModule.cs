@@ -8,6 +8,8 @@
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
+using System.Collections.Generic;
+using System;
     
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -70,7 +72,7 @@
                 new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IProxyGenerator>(), c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
 
             container.Register<IProxyGenerator>(c =>
-                new DynamicProxyProxyGenerator(c.Resolve<IConstructorResolver>()));
+                c.Resolve<IDummyResolvingSession>().ProxyGenerator);
 
             container.Register<IFakeWrapperConfigurator>(c =>
                 new DefaultFakeWrapperConfigurator());
@@ -78,8 +80,60 @@
             container.Register<ITypeAccessor>(c =>
                 new ApplicationDirectoryAssembliesTypeAccessor());
 
-            container.Register<IConstructorResolver>(c =>
-                new DefaultConstructorResolver(c.Resolve<IFakeObjectContainer>()));
+            container.Register<IDummyResolvingSession>(c =>
+                new DummyResolvingSession(c));
+        }
+
+        private class DummyResolvingSession
+            : IDummyResolvingSession
+        {
+            private Dictionary<Type, object> cachedValues = new Dictionary<Type, object>();
+            private HashSet<Type> attemptedTypes = new HashSet<Type>();
+
+            public DummyResolvingSession(DictionaryContainer container)
+            {
+                this.DummyCreator = new DefaultDummyValueCreator(this, container.Resolve<IFakeObjectContainer>());
+                this.ConstructorResolver = new DefaultConstructorResolver(this);
+                this.ProxyGenerator = new DynamicProxyProxyGenerator(this);
+            }
+
+            public bool TryGetCachedValue(System.Type type, out object value)
+            {
+                return this.cachedValues.TryGetValue(type, out value);
+            }
+
+            public void RegisterTriedToResolveType(System.Type type)
+            {
+                this.attemptedTypes.Add(type);
+            }
+
+            public bool TypeHasFailedToResolve(System.Type type)
+            {
+                return this.attemptedTypes.Contains(type) && !this.cachedValues.ContainsKey(type);
+            }
+
+            public void AddResolvedValueToCache(System.Type type, object dummy)
+            {
+                this.cachedValues.Add(type, dummy);
+            }
+
+            public IDummyValueCreator DummyCreator
+            {
+                get;
+                set;
+            }
+
+            public IConstructorResolver ConstructorResolver
+            {
+                get;
+                set;
+            }
+
+            public IProxyGenerator ProxyGenerator
+            {
+                get;
+                set;
+            }
         }
 
 

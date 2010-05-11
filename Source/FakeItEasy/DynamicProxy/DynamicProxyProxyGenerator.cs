@@ -21,11 +21,11 @@ namespace FakeItEasy.DynamicProxy
         internal static ProxyGenerator proxyGenerator = new ProxyGenerator();
         private static Type[] interfacesToImplement = new Type[] { typeof(IFakedProxy), typeof(ICanInterceptObjectMembers) };
         private static readonly HashSet<Type> forbiddenTypes = new HashSet<Type>() { typeof(IntPtr) };
-        private IConstructorResolver constructorResolver;
-
-        public DynamicProxyProxyGenerator(IConstructorResolver constructorResolver)
+        private IDummyResolvingSession session;
+        
+        public DynamicProxyProxyGenerator(IDummyResolvingSession session)
         {
-            this.constructorResolver = constructorResolver;
+            this.session = session;
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace FakeItEasy.DynamicProxy
             message.AppendLine("The type has no default constructor and none of the available constructors listed below can be resolved:");
             message.AppendLine();
 
-            AppendDescriptionsForEachConstructor(message, this.constructorResolver.ListAllConstructors(typeToProxy));
+            AppendDescriptionsForEachConstructor(message, this.session.ConstructorResolver.ListAllConstructors(typeToProxy));
 
             message.AppendLine();
             message.AppendLine("* The types marked with with a star (*) can not be faked. Register these types in the current");
@@ -256,7 +256,7 @@ namespace FakeItEasy.DynamicProxy
         private IEnumerable<IEnumerable<object>> ResolveArgumentSetsForConstructor(Type typeToProxy, IEnumerable<IEnumerable<object>> argumentSetsForConstructor)
         {
             return
-                from constructor in this.constructorResolver.ListAllConstructors(typeToProxy)
+                from constructor in this.session.ConstructorResolver.ListAllConstructors(typeToProxy)
                 where constructor.Arguments.All(x => x.WasSuccessfullyResolved)
                 orderby constructor.Constructor.GetParameters().Length descending
                 select constructor.ArgumentsToUse;
