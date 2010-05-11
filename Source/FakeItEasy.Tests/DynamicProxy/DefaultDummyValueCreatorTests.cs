@@ -23,11 +23,14 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             this.proxyGenerator = A.Fake<IProxyGenerator>();
             this.container = new DelegateFakeObjectContainer();
-            this.session = A.Fake<IDummyResolvingSession>();
-            
             this.constructorResolver = A.Fake<IConstructorResolver>();
 
-            this.dummyCreator = new DefaultDummyValueCreator(this.proxyGenerator, this.container, this.constructorResolver, this.session);
+            this.session = A.Fake<IDummyResolvingSession>();
+
+            A.CallTo(() => this.session.ProxyGenerator).Returns(this.proxyGenerator);
+            A.CallTo(() => this.session.ConstructorResolver).Returns(this.constructorResolver);            
+
+            this.dummyCreator = new DefaultDummyValueCreator(this.session, this.container);
         }
 
         [Test]

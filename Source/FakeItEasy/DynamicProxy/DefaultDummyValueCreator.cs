@@ -9,19 +9,15 @@ namespace FakeItEasy.DynamicProxy
     internal class DefaultDummyValueCreator
         : IDummyValueCreator
     {
-        private IConstructorResolver constructorResolver;
-        private IFakeObjectContainer container;
-        private IProxyGenerator proxyGenerator;
         private IDummyResolvingSession session;
+        private IFakeObjectContainer container;
         private List<DummyResolverFunction> resolverFunctions;
 
-        public DefaultDummyValueCreator(IProxyGenerator proxyGenerator, IFakeObjectContainer container, IConstructorResolver constructorResolver, IDummyResolvingSession session)
+        public DefaultDummyValueCreator(IDummyResolvingSession session, IFakeObjectContainer container)
         {
-            this.proxyGenerator = proxyGenerator;
-            this.container = container;
             this.session = session;
-            this.constructorResolver = constructorResolver;
-
+            this.container = container;
+            
             this.InitializeResolverFunctions();
         }
 
@@ -124,7 +120,7 @@ namespace FakeItEasy.DynamicProxy
 
         private bool TryResolveAsProxy(Type type, out object dummy)
         {
-            var result = this.proxyGenerator.GenerateProxy(type, Enumerable.Empty<Type>(), new FakeManager(), null);
+            var result = this.session.ProxyGenerator.GenerateProxy(type, Enumerable.Empty<Type>(), new FakeManager(), null);
 
             if (result.ProxyWasSuccessfullyCreated)
             {
@@ -163,7 +159,7 @@ namespace FakeItEasy.DynamicProxy
         private IEnumerable<ConstructorAndArgumentsInfo> GetSuccessfullyResolvedConstructors(Type type)
         {
             return
-                from constructor in this.constructorResolver.ListAllConstructors(type)
+                from constructor in this.session.ConstructorResolver.ListAllConstructors(type)
                 where constructor.Arguments.All(x => x.WasSuccessfullyResolved)
                 select constructor;
         }

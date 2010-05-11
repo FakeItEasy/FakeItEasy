@@ -1,6 +1,8 @@
 namespace FakeItEasy.DynamicProxy
 {
     using System;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Creation;
 
     internal interface IDummyResolvingSession
     {
@@ -11,5 +13,11 @@ namespace FakeItEasy.DynamicProxy
         bool TypeHasFailedToResolve(Type type);
 
         void AddResolvedValueToCache(Type type, object dummy);
+
+        IDummyValueCreator DummyCreator { get; }
+
+        IConstructorResolver ConstructorResolver { get; }
+
+        IProxyGenerator ProxyGenerator { get; }
     }
 }
