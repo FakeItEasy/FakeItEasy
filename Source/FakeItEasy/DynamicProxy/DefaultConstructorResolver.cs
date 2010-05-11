@@ -8,6 +8,9 @@ namespace FakeItEasy.DynamicProxy
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
 
+    /// <summary>
+    /// The default implementation of the <see cref="IConstructorResolver" /> interface.
+    /// </summary>
     internal class DefaultConstructorResolver
         : IConstructorResolver
     {
@@ -25,6 +28,18 @@ namespace FakeItEasy.DynamicProxy
         public DefaultConstructorResolver(Type typeToResolveConstructorFor, IFakeObjectContainer container)
             : this(typeToResolveConstructorFor, new Dictionary<Type, object>(), container)
         {
+        }
+
+        /// <summary>
+        /// Gets all the accessible constructor for the type along with dummy arguments
+        /// where they can be resolved.
+        /// </summary>
+        /// <param name="type">The type to list constructors for.</param>
+        /// <returns>A collection of constructors.</returns>
+        public IEnumerable<ConstructorAndArgumentsInfo> ListAllConstructors(Type type)
+        {
+            var resolver = new DefaultConstructorResolver(type, this.container);
+            return resolver.ListAllConstructors();
         }
 
         private DefaultConstructorResolver(Type typeToResolveConstructorFor, IDictionary<Type, object> resolvedValues, IFakeObjectContainer container)
@@ -68,12 +83,11 @@ namespace FakeItEasy.DynamicProxy
             return constructor.GetParameters().Select(x => x.ParameterType);
         }
 
-        private IOrderedEnumerable<ConstructorInfo> GetConstructorsCallableByProxy()
+        private IEnumerable<ConstructorInfo> GetConstructorsCallableByProxy()
         {
             return
                 from constructor in this.typeToResolvedConstructorFor.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 where !constructor.IsPrivate
-                orderby constructor.GetParameters().Length descending
                 select constructor;
         }
 
@@ -164,26 +178,22 @@ namespace FakeItEasy.DynamicProxy
 
         private IEnumerable<ArgumentInfo> TryToResolveAllArguments(IEnumerable<Type> types)
         {
-            var result = new List<ArgumentInfo>();
-
-            foreach (var parameterType in types)
-            {
-                var argumentInfo = new ArgumentInfo() { TypeOfArgument = parameterType };
-
-                object argumentValue = null;
-                argumentInfo.WasSuccessfullyResolved = this.TryResolveDummyValueOfType(parameterType, out argumentValue);
-                argumentInfo.ResolvedValue = argumentValue;
-
-                result.Add(argumentInfo);
-            }
-
-            return result;
+            return
+                from parameterType in types
+                select this.CreateArgumentInfo(parameterType);
         }
 
-        public IEnumerable<ConstructorAndArgumentsInfo> ListAllConstructors(Type type)
+        private ArgumentInfo CreateArgumentInfo(Type typeOfArgument)
         {
-            var resolver = new DefaultConstructorResolver(type, this.container);
-            return resolver.ListAllConstructors();
+            object argumentValue = null;
+            var wasResolved = this.TryResolveDummyValueOfType(typeOfArgument, out argumentValue);
+
+            return new ArgumentInfo
+            {
+                WasSuccessfullyResolved = wasResolved,
+                ResolvedValue = argumentValue,
+                TypeOfArgument = typeOfArgument
+            };
         }
     }
 }

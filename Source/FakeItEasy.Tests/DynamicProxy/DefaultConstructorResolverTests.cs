@@ -1,8 +1,7 @@
 namespace FakeItEasy.Tests.DynamicProxy
 {
-    using FakeItEasy.Tests.TestHelpers;
-    using NUnit.Framework;
     using System;
+    using NUnit.Framework;
 
     [TestFixture]
     public class DefaultConstructorResolverTests
