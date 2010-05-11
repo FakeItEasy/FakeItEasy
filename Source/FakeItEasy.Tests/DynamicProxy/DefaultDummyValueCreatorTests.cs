@@ -27,8 +27,6 @@ namespace FakeItEasy.Tests.DynamicProxy
             
             this.constructorResolver = A.Fake<IConstructorResolver>();
 
-
-
             this.dummyCreator = new DefaultDummyValueCreator(this.proxyGenerator, this.container, this.constructorResolver, this.session);
         }
 
