@@ -97,7 +97,10 @@
     <Compile Include="DynamicProxy\ArgumentInfo.cs" />
     <Compile Include="DynamicProxy\ConstructorAndArgumentsInfo.cs" />
     <Compile Include="DynamicProxy\DefaultConstructorResolver.cs" />
+    <Compile Include="DynamicProxy\DefaultDummyValueCreator.cs" />
     <Compile Include="DynamicProxy\IConstructorResolver.cs" />
+    <Compile Include="DynamicProxy\IDummyResolvingSession.cs" />
+    <Compile Include="DynamicProxy\IDummyValueCreator.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

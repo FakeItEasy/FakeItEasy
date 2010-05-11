@@ -93,6 +93,7 @@
     <Compile Include="Core\DynamicContainerTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="DynamicProxy\DefaultConstructorResolverTests.cs" />
+    <Compile Include="DynamicProxy\DefaultDummyValueCreatorTests.cs" />
     <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintScopeTests.cs" />
