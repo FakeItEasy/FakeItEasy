@@ -4,7 +4,6 @@ namespace FakeItEasy.DynamicProxy
     using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Creation;
 
     internal class DefaultDummyValueCreator
         : IDummyValueCreator
@@ -62,12 +61,12 @@ namespace FakeItEasy.DynamicProxy
         private void InitializeResolverFunctions()
         {
             this.resolverFunctions = new List<DummyResolverFunction> 
-		            {
-		                this.TryResolveFromContainer,
-		                this.TryResolveAsValueType,
-		                this.TryResolveAsProxy,
-		                this.TryResolveByActivating
-		            };
+            {
+                this.TryResolveFromContainer,
+                this.TryResolveAsValueType,
+                this.TryResolveAsProxy,
+                this.TryResolveByActivating
+            };
         }
 
         private bool TryResolveByUsingRegisteredResolverFunctions(Type type, out object dummy)
