@@ -2,7 +2,7 @@ namespace FakeItEasy.DynamicProxy
 {
     using System;
 
-    internal class ArgumentInfo
+    public class ArgumentInfo
     {
         public bool WasSuccessfullyResolved { get; set; }
 

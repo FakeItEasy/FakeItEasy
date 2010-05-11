@@ -4,7 +4,7 @@ namespace FakeItEasy.DynamicProxy
     using System.Linq;
     using System.Reflection;
 
-    internal class ConstructorAndArgumentsInfo
+    public class ConstructorAndArgumentsInfo
     {
         public ConstructorInfo Constructor { get; set; }
 

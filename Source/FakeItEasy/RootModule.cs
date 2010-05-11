@@ -1,5 +1,7 @@
 ﻿namespace FakeItEasy
 {
+    using System;
+    using System.Collections.Generic;
     using System.IO;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -8,8 +10,7 @@
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
-using System.Collections.Generic;
-using System;
+    using System.Diagnostics;
     
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -82,6 +83,18 @@ using System;
 
             container.Register<IDummyResolvingSession>(c =>
                 new DummyResolvingSession(c));
+
+            container.RegisterSingleton<IProxyGeneratorFactory>(c =>
+                new DynamicProxyProxyGeneratorFactory());
+        }
+
+        private class DynamicProxyProxyGeneratorFactory
+            : IProxyGeneratorFactory
+        {
+            public IProxyGenerator CreateProxyGenerator(IDummyResolvingSession session)
+            {
+                return new DynamicProxyProxyGenerator(session);
+            }
         }
 
         private class DummyResolvingSession
@@ -94,7 +107,7 @@ using System;
             {
                 this.DummyCreator = new DefaultDummyValueCreator(this, container.Resolve<IFakeObjectContainer>());
                 this.ConstructorResolver = new DefaultConstructorResolver(this);
-                this.ProxyGenerator = new DynamicProxyProxyGenerator(this);
+                this.ProxyGenerator = container.Resolve<IProxyGeneratorFactory>().CreateProxyGenerator(this);
             }
 
             public bool TryGetCachedValue(System.Type type, out object value)
@@ -136,9 +149,6 @@ using System;
             }
         }
 
-
-        #region FactoryImplementations
-
         private class ExpressionCallMatcherFactory
             : IExpressionCallMatcherFactory
         {
@@ -170,6 +180,5 @@ using System;
                 File.Create(fileName).Dispose();
             }
         }
-        #endregion
     }
 }

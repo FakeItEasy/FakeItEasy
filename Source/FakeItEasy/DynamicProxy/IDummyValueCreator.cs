@@ -6,7 +6,7 @@ namespace FakeItEasy.DynamicProxy
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
 
-    internal interface IDummyValueCreator
+    public interface IDummyValueCreator
     {
         bool TryCreateDummyValue(Type type, out object dummy);
     }

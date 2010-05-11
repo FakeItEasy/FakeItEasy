@@ -6,7 +6,7 @@
     /// <summary>
     /// Resolves constructors of types.
     /// </summary>
-    internal interface IConstructorResolver
+    public interface IConstructorResolver
     {
         /// <summary>
         /// Gets all the accessible constructor for the type along with dummy arguments
