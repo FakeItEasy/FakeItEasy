@@ -1,15 +1,13 @@
 ﻿namespace FakeItEasy
 {
     using System.IO;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
+    using FakeItEasy.DynamicProxy;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.DynamicProxy;
-    using System.Linq;
-    using System;
     
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -83,6 +81,7 @@
             container.Register<IConstructorResolver>(c =>
                 new DefaultConstructorResolver(c.Resolve<IFakeObjectContainer>()));
         }
+
 
         #region FactoryImplementations
 

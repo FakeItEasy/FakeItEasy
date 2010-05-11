@@ -258,6 +258,7 @@ namespace FakeItEasy.DynamicProxy
             return
                 from constructor in this.constructorResolver.ListAllConstructors(typeToProxy)
                 where constructor.Arguments.All(x => x.WasSuccessfullyResolved)
+                orderby constructor.Constructor.GetParameters().Length descending
                 select constructor.ArgumentsToUse;
         }
 
