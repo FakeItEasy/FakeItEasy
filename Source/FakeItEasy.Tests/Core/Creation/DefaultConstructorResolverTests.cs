@@ -1,4 +1,4 @@
-namespace FakeItEasy.Tests.DynamicProxy
+namespace FakeItEasy.Tests.Core.Creation
 {
     using System;
     using NUnit.Framework;
