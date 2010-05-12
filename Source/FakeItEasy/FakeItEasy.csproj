@@ -93,7 +93,7 @@
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
     <Compile Include="Core\DynamicContainer.cs" />
-    <Compile Include="Core\ITypeAccessor.cs" />
+    <Compile Include="Core\ITypeCatalogue.cs" />
     <Compile Include="Core\ArgumentInfo.cs" />
     <Compile Include="Core\ConstructorAndArgumentsInfo.cs" />
     <Compile Include="Core\Creation\DefaultConstructorResolver.cs" />

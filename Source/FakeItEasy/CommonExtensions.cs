@@ -68,39 +68,17 @@
         }
 
         /// <summary>
-        /// Selects a subset of the sequence so that the values returned from the projection run on
-        /// each item in the sequence are distinct.
+        /// Gets a dictionary containing the first element from the sequence that has a key specified by the key selector.
         /// </summary>
-        /// <typeparam name="T">The type of items in the collection.</typeparam>
-        /// <typeparam name="TMember">The result of the projection.</typeparam>
-        /// <param name="sequence">The sequence to filter.</param>
-        /// <param name="projection">A projection from the type of items in the sequence to another type.</param>
-        /// <returns>The distinct elements.</returns>
-        public static IEnumerable<T> Distinct<T, TMember>(this IEnumerable<T> sequence, Func<T, TMember> projection)
+        /// <typeparam name="T">The type of items in the sequence.</typeparam>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <param name="sequence">The sequence.</param>
+        /// <param name="keySelector">The key selector.</param>
+        /// <returns>A dictionary.</returns>
+        public static IDictionary<TKey, T> FirstFromEachKey<T, TKey>(this IEnumerable<T> sequence, Func<T, TKey> keySelector)
         {
-            return sequence.Distinct(new ProjectionEqualityComparer<T, TMember>(projection));
+            return sequence.ToLookup(keySelector).ToDictionary(x => x.Key, x => x.First());
         }
-
-        private class ProjectionEqualityComparer<T, TMember> : IEqualityComparer<T>
-        {
-            private Func<T, TMember> projection;
-            
-            public ProjectionEqualityComparer(Func<T, TMember> projection)
-            {
-                this.projection = projection;
-            }
-
-            public bool Equals(T x, T y)
-            {
-                return object.Equals(this.projection(x), this.projection(y));
-            }
-
-            public int GetHashCode(T obj)
-            {
-                return this.projection(obj).GetHashCode();
-            }
-        }
-
 
         private class ZipEnumerable<TFirst, TSecond>
             : IEnumerable<Tuple<TFirst, TSecond>>

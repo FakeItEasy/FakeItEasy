@@ -78,7 +78,7 @@
             container.Register<IFakeWrapperConfigurator>(c =>
                 new DefaultFakeWrapperConfigurator());
 
-            container.Register<ITypeAccessor>(c =>
+            container.Register<ITypeCatalogue>(c =>
                 new ApplicationDirectoryAssembliesTypeAccessor());
 
             container.Register<IFakeCreationSession>(c =>

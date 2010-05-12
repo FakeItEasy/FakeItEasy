@@ -19,7 +19,7 @@ namespace FakeItEasy.Core
         private List<ICompletedFakeObjectCall> recordedCallsField;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="FakeObject"/> class.
+        /// Initializes a new instance of the <see cref="FakeManager"/> class.
         /// </summary>
         public FakeManager()
         {

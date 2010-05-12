@@ -22,7 +22,7 @@ namespace FakeItEasy.Core.Creation
         /// Initializes a new instance of the <see cref="DefaultFakeAndDummyManager"/> class.
         /// </summary>
         /// <param name="container">The container.</param>
-        /// <param name="proxyGenerator">The proxy generator.</param>
+        /// <param name="session">The fake creation session the manager participates in.</param>
         /// <param name="fakeObjectFactory">The fake object factory.</param>
         /// <param name="wrapperConfigurator">The wrapper configurator to use.</param>
         public DefaultFakeAndDummyManager(IFakeObjectContainer container, IFakeCreationSession session, FakeManager.Factory fakeObjectFactory, IFakeWrapperConfigurator wrapperConfigurator)
