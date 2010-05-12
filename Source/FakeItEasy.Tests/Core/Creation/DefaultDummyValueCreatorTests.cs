@@ -5,7 +5,6 @@ namespace FakeItEasy.Tests.Core.Creation
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
-    using FakeItEasy.DynamicProxy;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 
@@ -37,7 +36,8 @@ namespace FakeItEasy.Tests.Core.Creation
         public void Should_returned_value_cached_in_session_when_available()
         {
             // Arrange
-            A.CallTo(() => this.session.TryGetCachedValue(typeof(string), out Null<object>.Out))
+            object outValue = null;
+            A.CallTo(() => this.session.TryGetCachedValue(typeof(string), out outValue))
                 .Returns(true).AssignsOutAndRefParameters("in session");
 
             // Act
