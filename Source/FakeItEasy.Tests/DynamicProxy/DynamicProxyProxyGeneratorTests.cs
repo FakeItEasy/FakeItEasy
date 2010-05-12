@@ -339,8 +339,8 @@ namespace FakeItEasy.Tests.DynamicProxy
                     {
                         Arguments = new[] 
                         { 
-                            new ArgumentInfo { ResolvedValue = A.Fake<ISomeInterface>(), WasSuccessfullyResolved = true },
-                            new ArgumentInfo { ResolvedValue = A.Fake<IFoo>(), WasSuccessfullyResolved = true }
+                            new ArgumentInfo(true, typeof(ISomeInterface), A.Fake<ISomeInterface>()),
+                            new ArgumentInfo(true, typeof(IFoo), A.Fake<IFoo>())
                         },
                         Constructor  = typeof(ClassWithDefaultConstructorAndResolvableConstructor).GetConstructor(new Type[] { typeof(ISomeInterface), typeof(IFoo) })
                     }
@@ -402,7 +402,7 @@ namespace FakeItEasy.Tests.DynamicProxy
                         Constructor = GetConstructor<TypeWithDifferentConstructors>(typeof(string)),
                         Arguments = new[]
                         {
-                            new ArgumentInfo { TypeOfArgument = typeof(string), WasSuccessfullyResolved = false }
+                            new ArgumentInfo(false, typeof(string), null)
                         }
                     },
                     new ConstructorAndArgumentsInfo
@@ -410,8 +410,8 @@ namespace FakeItEasy.Tests.DynamicProxy
                         Constructor = GetConstructor<TypeWithDifferentConstructors>(typeof(int), typeof(object)),
                         Arguments = new[]
                         {
-                            new ArgumentInfo { TypeOfArgument = typeof(int), WasSuccessfullyResolved  = true },
-                            new ArgumentInfo { TypeOfArgument = typeof(object), WasSuccessfullyResolved = false }
+                            new ArgumentInfo(true, typeof(int), 0),
+                            new ArgumentInfo(false, typeof(object), null)
                         }
                     },
                     new ConstructorAndArgumentsInfo
@@ -419,7 +419,7 @@ namespace FakeItEasy.Tests.DynamicProxy
                         Constructor = GetConstructor<TypeWithDifferentConstructors>(typeof(DateTime)),
                         Arguments = new[]
                         {
-                            new ArgumentInfo { TypeOfArgument = typeof(DateTime), WasSuccessfullyResolved = false }
+                            new ArgumentInfo(false, typeof(DateTime), new DateTime())
                         }
                     }
                 });

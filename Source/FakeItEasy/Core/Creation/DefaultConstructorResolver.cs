@@ -72,12 +72,7 @@ namespace FakeItEasy.Core.Creation
             object argumentValue = null;
             var wasResolved = this.TryResolveDummyValueOfType(typeOfArgument, out argumentValue);
 
-            return new ArgumentInfo
-            {
-                WasSuccessfullyResolved = wasResolved,
-                ResolvedValue = argumentValue,
-                TypeOfArgument = typeOfArgument
-            };
+            return new ArgumentInfo(wasResolved, typeOfArgument, argumentValue);
         }
     }
 }

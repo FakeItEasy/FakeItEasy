@@ -151,8 +151,8 @@ namespace FakeItEasy.Tests.Core.Creation
                     {
                         Arguments = new[] 
                         { 
-                            new ArgumentInfo { ResolvedValue = new object(), TypeOfArgument = typeof(object), WasSuccessfullyResolved = true },
-                            new ArgumentInfo { ResolvedValue = IntPtr.Zero, TypeOfArgument = typeof(IntPtr), WasSuccessfullyResolved = true }
+                            new ArgumentInfo(true, typeof(object), new object()),
+                            new ArgumentInfo(true, typeof(IntPtr), IntPtr.Zero)
                         },
                         Constructor = typeof(TypeWithConstructors).GetConstructor(new[] { typeof(object), typeof(IntPtr) })
                     }
@@ -177,8 +177,8 @@ namespace FakeItEasy.Tests.Core.Creation
                     {
                         Arguments = new[] 
                         { 
-                            new ArgumentInfo { ResolvedValue = A.Fake<IFoo>(), TypeOfArgument = typeof(IFoo), WasSuccessfullyResolved = true },
-                            new ArgumentInfo { ResolvedValue = "foo", TypeOfArgument = typeof(string), WasSuccessfullyResolved = true }
+                            new ArgumentInfo(true, typeof(IFoo), A.Fake<IFoo>()),
+                            new ArgumentInfo(true, typeof(string), "foo")
                         },
                         Constructor = typeof(TypeWithConstructors).GetConstructor(new[] { typeof(IFoo), typeof(string) })
                     }
