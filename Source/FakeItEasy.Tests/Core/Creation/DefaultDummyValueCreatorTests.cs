@@ -146,15 +146,14 @@ namespace FakeItEasy.Tests.Core.Creation
             A.CallTo(() => this.constructorResolver.ListAllConstructors(typeof(Func<int>)))
                 .Returns(new[] 
                 {
-                    new ConstructorAndArgumentsInfo
-                    {
-                        Arguments = new[] 
+                    new ConstructorAndArgumentsInfo(
+                        typeof(TypeWithConstructors).GetConstructor(new[] { typeof(object), typeof(IntPtr) }),
+                        new[] 
                         { 
                             new ArgumentInfo(true, typeof(object), new object()),
                             new ArgumentInfo(true, typeof(IntPtr), IntPtr.Zero)
-                        },
-                        Constructor = typeof(TypeWithConstructors).GetConstructor(new[] { typeof(object), typeof(IntPtr) })
-                    }
+                        }
+                    )
                 });
 
             // Act
@@ -172,15 +171,14 @@ namespace FakeItEasy.Tests.Core.Creation
             A.CallTo(() => this.constructorResolver.ListAllConstructors(typeof(TypeWithConstructors)))
                 .Returns(new[] 
                 {
-                    new ConstructorAndArgumentsInfo
-                    {
-                        Arguments = new[] 
+                    new ConstructorAndArgumentsInfo(
+                        typeof(TypeWithConstructors).GetConstructor(new[] { typeof(IFoo), typeof(string) }),
+                        new[] 
                         { 
                             new ArgumentInfo(true, typeof(IFoo), A.Fake<IFoo>()),
                             new ArgumentInfo(true, typeof(string), "foo")
-                        },
-                        Constructor = typeof(TypeWithConstructors).GetConstructor(new[] { typeof(IFoo), typeof(string) })
-                    }
+                        }
+                    )
                 });
 
             // Act
@@ -200,11 +198,10 @@ namespace FakeItEasy.Tests.Core.Creation
             A.CallTo(() => this.constructorResolver.ListAllConstructors(typeof(TypeWithConstructorThatThrows)))
                 .Returns(new[] 
                 { 
-                    new ConstructorAndArgumentsInfo
-                    {
-                        Arguments = Enumerable.Empty<ArgumentInfo>(),
-                        Constructor = typeof(TypeWithConstructorThatThrows).GetConstructor(new Type[] { })
-                    }
+                    new ConstructorAndArgumentsInfo(
+                        typeof(TypeWithConstructorThatThrows).GetConstructor(new Type[] { }),
+                        Enumerable.Empty<ArgumentInfo>()
+                    )
                 });
 
             // Act

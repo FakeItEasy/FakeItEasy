@@ -34,11 +34,7 @@ namespace FakeItEasy.Tests.DynamicProxy
                 return
                     from constructor in type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                     where constructor.GetParameters().Length == 0
-                    select new ConstructorAndArgumentsInfo
-                        {
-                            Arguments = Enumerable.Empty<ArgumentInfo>(),
-                            Constructor = constructor
-                        };
+                    select new ConstructorAndArgumentsInfo(constructor, Enumerable.Empty<ArgumentInfo>());
             }
         }
 
@@ -330,20 +326,18 @@ namespace FakeItEasy.Tests.DynamicProxy
             A.CallTo(() => this.constructorResolver.ListAllConstructors(typeof(ClassWithDefaultConstructorAndResolvableConstructor)))
                 .Returns(new[] 
                 {
-                    new ConstructorAndArgumentsInfo
-                    {
-                        Arguments = Enumerable.Empty<ArgumentInfo>(),
-                        Constructor = typeof(ClassWithDefaultConstructorAndResolvableConstructor).GetConstructor(new Type[] {})
-                    },
-                    new ConstructorAndArgumentsInfo
-                    {
-                        Arguments = new[] 
+                    new ConstructorAndArgumentsInfo(
+                        typeof(ClassWithDefaultConstructorAndResolvableConstructor).GetConstructor(new Type[] {}),
+                        Enumerable.Empty<ArgumentInfo>()
+                    ),
+                    new ConstructorAndArgumentsInfo(
+                        typeof(ClassWithDefaultConstructorAndResolvableConstructor).GetConstructor(new Type[] { typeof(ISomeInterface), typeof(IFoo) }),
+                        new[] 
                         { 
                             new ArgumentInfo(true, typeof(ISomeInterface), A.Fake<ISomeInterface>()),
                             new ArgumentInfo(true, typeof(IFoo), A.Fake<IFoo>())
-                        },
-                        Constructor  = typeof(ClassWithDefaultConstructorAndResolvableConstructor).GetConstructor(new Type[] { typeof(ISomeInterface), typeof(IFoo) })
-                    }
+                        }
+                    )
                 });
 
             // Act
@@ -397,31 +391,28 @@ namespace FakeItEasy.Tests.DynamicProxy
             A.CallTo(() => this.constructorResolver.ListAllConstructors(typeof(TypeWithDifferentConstructors)))
                 .Returns(new[] 
                 {
-                    new ConstructorAndArgumentsInfo
-                    {
-                        Constructor = GetConstructor<TypeWithDifferentConstructors>(typeof(string)),
-                        Arguments = new[]
+                    new ConstructorAndArgumentsInfo(
+                        GetConstructor<TypeWithDifferentConstructors>(typeof(string)),
+                        new[]
                         {
                             new ArgumentInfo(false, typeof(string), null)
                         }
-                    },
-                    new ConstructorAndArgumentsInfo
-                    {
-                        Constructor = GetConstructor<TypeWithDifferentConstructors>(typeof(int), typeof(object)),
-                        Arguments = new[]
+                    ),
+                    new ConstructorAndArgumentsInfo(
+                        GetConstructor<TypeWithDifferentConstructors>(typeof(int), typeof(object)),
+                        new[]
                         {
                             new ArgumentInfo(true, typeof(int), 0),
                             new ArgumentInfo(false, typeof(object), null)
                         }
-                    },
-                    new ConstructorAndArgumentsInfo
-                    {
-                        Constructor = GetConstructor<TypeWithDifferentConstructors>(typeof(DateTime)),
-                        Arguments = new[]
+                    ),
+                    new ConstructorAndArgumentsInfo(
+                        GetConstructor<TypeWithDifferentConstructors>(typeof(DateTime)),
+                        new[]
                         {
                             new ArgumentInfo(false, typeof(DateTime), new DateTime())
                         }
-                    }
+                    )
                 });
 
             // Act

@@ -32,11 +32,7 @@ namespace FakeItEasy.Core.Creation
             foreach (var constructor in constructors)
             {
                 IEnumerable<ArgumentInfo> arguments = this.TryToResolveAllArguments(GetConstructorParameterTypes(constructor));
-                yield return new ConstructorAndArgumentsInfo()
-                {
-                    Constructor = constructor,
-                    Arguments = arguments
-                };
+                yield return new ConstructorAndArgumentsInfo(constructor, arguments);
             }
         }
 
