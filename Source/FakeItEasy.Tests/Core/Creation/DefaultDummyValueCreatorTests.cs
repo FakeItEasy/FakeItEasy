@@ -5,7 +5,6 @@ namespace FakeItEasy.Tests.Core.Creation
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
-    using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -37,7 +36,7 @@ namespace FakeItEasy.Tests.Core.Creation
         {
             // Arrange
             object outValue = null;
-            A.CallTo(() => this.session.TryGetCachedValue(typeof(string), out outValue))
+            A.CallTo(() => this.session.TryGetCachedDummyValue(typeof(string), out outValue))
                 .Returns(true).AssignsOutAndRefParameters("in session");
 
             // Act
@@ -110,7 +109,7 @@ namespace FakeItEasy.Tests.Core.Creation
             var result = this.dummyCreator.TryCreateDummyValue(typeof(int), out dummy);
 
             // Assert
-            A.CallTo(() => this.session.AddResolvedValueToCache(typeof(int), 0)).MustHaveHappened();
+            A.CallTo(() => this.session.AddResolvedDummyValueToCache(typeof(int), 0)).MustHaveHappened();
         }
 
         [Test]

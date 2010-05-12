@@ -110,7 +110,7 @@
                 this.ProxyGenerator = container.Resolve<IProxyGeneratorFactory>().CreateProxyGenerator(this);
             }
 
-            public bool TryGetCachedValue(System.Type type, out object value)
+            public bool TryGetCachedDummyValue(System.Type type, out object value)
             {
                 return this.cachedValues.TryGetValue(type, out value);
             }
@@ -125,7 +125,7 @@
                 return this.attemptedTypes.Contains(type) && !this.cachedValues.ContainsKey(type);
             }
 
-            public void AddResolvedValueToCache(System.Type type, object dummy)
+            public void AddResolvedDummyValueToCache(System.Type type, object dummy)
             {
                 this.cachedValues.Add(type, dummy);
             }

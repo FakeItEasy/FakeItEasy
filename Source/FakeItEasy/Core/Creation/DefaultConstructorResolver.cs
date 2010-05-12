@@ -4,8 +4,6 @@ namespace FakeItEasy.Core.Creation
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Castle.Core.Interceptor;
-    using Castle.DynamicProxy;
     using FakeItEasy.Core;
 
     /// <summary>

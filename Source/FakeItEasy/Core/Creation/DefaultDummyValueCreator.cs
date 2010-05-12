@@ -45,7 +45,7 @@ namespace FakeItEasy.Core.Creation
 
             if (this.TryResolveByUsingRegisteredResolverFunctions(type, out dummy))
             {
-                this.session.AddResolvedValueToCache(type, dummy);
+                this.session.AddResolvedDummyValueToCache(type, dummy);
                 return true;
             }
 
@@ -85,7 +85,7 @@ namespace FakeItEasy.Core.Creation
 
         private bool TryResolveFromSessionCache(Type type, out object dummy)
         {
-            if (this.session.TryGetCachedValue(type, out dummy))
+            if (this.session.TryGetCachedDummyValue(type, out dummy))
             {
                 return true;
             }
