@@ -216,6 +216,19 @@ namespace FakeItEasy.Tests.DynamicProxy
             Assert.That(result, Is.False);
         }
 
+        [Test]
+        public void Should_fail_gracefully_when_type_is_void()
+        {
+            // Arrange
+
+            // Act
+            object dummy = null;
+            var result = this.dummyCreator.TryCreateDummyValue(typeof(void), out dummy);
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
         public class TypeWithConstructors
         {
             public IFoo Argument;

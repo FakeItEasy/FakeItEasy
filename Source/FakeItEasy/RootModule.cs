@@ -70,7 +70,7 @@
                 new DefaultFakeCreator(c.Resolve<IFakeAndDummyManager>()));
 
             container.Register<IFakeAndDummyManager>(c =>
-                new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IProxyGenerator>(), c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
+                new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IDummyResolvingSession>(), c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
 
             container.Register<IProxyGenerator>(c =>
                 c.Resolve<IDummyResolvingSession>().ProxyGenerator);

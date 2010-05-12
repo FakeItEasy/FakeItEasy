@@ -194,4 +194,7 @@
 
 {1}</value>
   </data>
+  <data name="UnableToCreateDummyPattern" xml:space="preserve">
+    <value>FakeItEasy was unable to create dummy of type "{0}", register it in the current IFakeObjectContainer to enable this.</value>
+  </data>
 </root>

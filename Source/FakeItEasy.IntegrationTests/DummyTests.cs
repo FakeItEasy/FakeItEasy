@@ -35,7 +35,15 @@ namespace FakeItEasy.IntegrationTests
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
                 Assert.Throws<FakeCreationException>(() =>
-                    A.Dummy<int>());
+                    A.Dummy<NonInstance>());
+            }
+        }
+
+        private class NonInstance
+        {
+            private NonInstance()
+            {
+
             }
         }
     }

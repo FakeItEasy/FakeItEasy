@@ -107,7 +107,7 @@ namespace FakeItEasy.DynamicProxy
 
         private bool TryResolveAsValueType(Type type, out object dummy)
         {
-            if (type.IsValueType)
+            if (type.IsValueType && !typeof(void).Equals(type))
             {
                 dummy = Activator.CreateInstance(type);
                 return true;
