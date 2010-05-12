@@ -16,7 +16,7 @@ namespace FakeItEasy.Tests.DynamicProxy
         private DelegateFakeObjectContainer container;
         private IConstructorResolver constructorResolver;
         private DefaultDummyValueCreator dummyCreator;
-        private IDummyResolvingSession session;
+        private IFakeCreationSession session;
 
         [SetUp]
         public void SetUp()
@@ -25,7 +25,7 @@ namespace FakeItEasy.Tests.DynamicProxy
             this.container = new DelegateFakeObjectContainer();
             this.constructorResolver = A.Fake<IConstructorResolver>();
 
-            this.session = A.Fake<IDummyResolvingSession>();
+            this.session = A.Fake<IFakeCreationSession>();
 
             A.CallTo(() => this.session.ProxyGenerator).Returns(this.proxyGenerator);
             A.CallTo(() => this.session.ConstructorResolver).Returns(this.constructorResolver);            

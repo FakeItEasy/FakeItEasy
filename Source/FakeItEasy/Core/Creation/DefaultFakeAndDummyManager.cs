@@ -14,7 +14,7 @@ namespace FakeItEasy.Core.Creation
         : IFakeAndDummyManager
     {
         private IFakeObjectContainer container;
-        private IDummyResolvingSession session;
+        private IFakeCreationSession session;
         private FakeManager.Factory fakeObjectFactory;
         private IFakeWrapperConfigurator wrapperConfigurator;
 
@@ -25,7 +25,7 @@ namespace FakeItEasy.Core.Creation
         /// <param name="proxyGenerator">The proxy generator.</param>
         /// <param name="fakeObjectFactory">The fake object factory.</param>
         /// <param name="wrapperConfigurator">The wrapper configurator to use.</param>
-        public DefaultFakeAndDummyManager(IFakeObjectContainer container, IDummyResolvingSession session, FakeManager.Factory fakeObjectFactory, IFakeWrapperConfigurator wrapperConfigurator)
+        public DefaultFakeAndDummyManager(IFakeObjectContainer container, IFakeCreationSession session, FakeManager.Factory fakeObjectFactory, IFakeWrapperConfigurator wrapperConfigurator)
         {
             this.container = container;
             this.session = session;

@@ -12,6 +12,6 @@ namespace FakeItEasy.Core.Creation
         /// </summary>
         /// <param name="session">The session for the proxy generator to work in.</param>
         /// <returns>A new IProxyGenerator.</returns>
-        IProxyGenerator CreateProxyGenerator(IDummyResolvingSession session);
+        IProxyGenerator CreateProxyGenerator(IFakeCreationSession session);
     }
 }

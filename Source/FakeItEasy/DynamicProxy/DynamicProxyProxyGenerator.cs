@@ -21,9 +21,9 @@ namespace FakeItEasy.DynamicProxy
         internal static ProxyGenerator proxyGenerator = new ProxyGenerator();
         private static Type[] interfacesToImplement = new Type[] { typeof(IFakedProxy), typeof(ICanInterceptObjectMembers) };
         private static readonly HashSet<Type> forbiddenTypes = new HashSet<Type>() { typeof(IntPtr) };
-        private IDummyResolvingSession session;
+        private IFakeCreationSession session;
         
-        public DynamicProxyProxyGenerator(IDummyResolvingSession session)
+        public DynamicProxyProxyGenerator(IFakeCreationSession session)
         {
             this.session = session;
         }

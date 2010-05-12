@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests.Core.Creation
         private IFakeWrapperConfigurator fakeWrapperConfigurator;
         private ArgumentConstraint<IEnumerable<Type>> noAdditionalInterfaces = A<IEnumerable<Type>>.Ignored;
 
-        private IDummyResolvingSession session;
+        private IFakeCreationSession session;
         private DefaultFakeAndDummyManager fakeAndDummyManager;
 
         [SetUp]
@@ -30,7 +30,7 @@ namespace FakeItEasy.Tests.Core.Creation
         {
             this.container = A.Fake<IFakeObjectContainer>();
             this.proxyGenerator = A.Fake<IProxyGenerator>();
-            this.session = A.Fake<IDummyResolvingSession>();
+            this.session = A.Fake<IFakeCreationSession>();
             this.dummyValueCreator = A.Fake<IDummyValueCreator>();
             this.fakeManager = A.Fake<FakeManager>();
             this.fakeObjectFactory = () => this.fakeManager;

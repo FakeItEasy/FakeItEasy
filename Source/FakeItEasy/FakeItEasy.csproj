@@ -94,13 +94,13 @@
     <Compile Include="Configuration\StartConfiguration.cs" />
     <Compile Include="Core\DynamicContainer.cs" />
     <Compile Include="Core\ITypeAccessor.cs" />
-    <Compile Include="DynamicProxy\ArgumentInfo.cs" />
-    <Compile Include="DynamicProxy\ConstructorAndArgumentsInfo.cs" />
-    <Compile Include="DynamicProxy\DefaultConstructorResolver.cs" />
-    <Compile Include="DynamicProxy\DefaultDummyValueCreator.cs" />
-    <Compile Include="DynamicProxy\IConstructorResolver.cs" />
-    <Compile Include="DynamicProxy\IDummyResolvingSession.cs" />
-    <Compile Include="DynamicProxy\IDummyValueCreator.cs" />
+    <Compile Include="Core\ArgumentInfo.cs" />
+    <Compile Include="Core\ConstructorAndArgumentsInfo.cs" />
+    <Compile Include="Core\Creation\DefaultConstructorResolver.cs" />
+    <Compile Include="Core\Creation\DefaultDummyValueCreator.cs" />
+    <Compile Include="Core\Creation\IConstructorResolver.cs" />
+    <Compile Include="Core\Creation\IFakeCreationSession.cs" />
+    <Compile Include="Core\Creation\IDummyValueCreator.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -221,7 +221,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Core\Creation\Creation.cd" />
     <None Include="FakeItEasy.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

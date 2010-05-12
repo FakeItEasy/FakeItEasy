@@ -2,7 +2,7 @@ namespace FakeItEasy.Core.Creation
 {
     using System;
     
-    public interface IDummyResolvingSession
+    public interface IFakeCreationSession
     {
         bool TryGetCachedValue(Type type, out object value);
 

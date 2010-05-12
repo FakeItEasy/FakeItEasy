@@ -5,6 +5,7 @@ namespace FakeItEasy.Tests.DynamicProxy
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;
+    using FakeItEasy.Core.Creation;
     using FakeItEasy.DynamicProxy;
     using NUnit.Framework;
 
@@ -13,13 +14,13 @@ namespace FakeItEasy.Tests.DynamicProxy
     {
         private FakeManager fakeManager;
         private IConstructorResolver constructorResolver;
-        private IDummyResolvingSession session;
+        private IFakeCreationSession session;
 
         [SetUp]
         public void SetUp()
         {
             this.fakeManager = A.Fake<FakeManager>();
-            this.session = A.Fake<IDummyResolvingSession>();
+            this.session = A.Fake<IFakeCreationSession>();
             this.constructorResolver = A.Fake<IConstructorResolver>(x => x.Wrapping(new ConstructorResolverThatGetsDefaultConstructors()));
 
             A.CallTo(() => this.session.ConstructorResolver).Returns(this.constructorResolver);

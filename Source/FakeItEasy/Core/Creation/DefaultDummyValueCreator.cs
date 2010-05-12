@@ -8,11 +8,11 @@ namespace FakeItEasy.Core.Creation
     internal class DefaultDummyValueCreator
         : IDummyValueCreator
     {
-        private IDummyResolvingSession session;
+        private IFakeCreationSession session;
         private IFakeObjectContainer container;
         private List<DummyResolverFunction> resolverFunctions;
 
-        public DefaultDummyValueCreator(IDummyResolvingSession session, IFakeObjectContainer container)
+        public DefaultDummyValueCreator(IFakeCreationSession session, IFakeObjectContainer container)
         {
             this.session = session;
             this.container = container;

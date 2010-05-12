@@ -70,10 +70,10 @@
                 new DefaultFakeCreator(c.Resolve<IFakeAndDummyManager>()));
 
             container.Register<IFakeAndDummyManager>(c =>
-                new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IDummyResolvingSession>(), c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
+                new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IFakeCreationSession>(), c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
 
             container.Register<IProxyGenerator>(c =>
-                c.Resolve<IDummyResolvingSession>().ProxyGenerator);
+                c.Resolve<IFakeCreationSession>().ProxyGenerator);
 
             container.Register<IFakeWrapperConfigurator>(c =>
                 new DefaultFakeWrapperConfigurator());
@@ -81,7 +81,7 @@
             container.Register<ITypeAccessor>(c =>
                 new ApplicationDirectoryAssembliesTypeAccessor());
 
-            container.Register<IDummyResolvingSession>(c =>
+            container.Register<IFakeCreationSession>(c =>
                 new DummyResolvingSession(c));
 
             container.RegisterSingleton<IProxyGeneratorFactory>(c =>
@@ -91,14 +91,14 @@
         private class DynamicProxyProxyGeneratorFactory
             : IProxyGeneratorFactory
         {
-            public IProxyGenerator CreateProxyGenerator(IDummyResolvingSession session)
+            public IProxyGenerator CreateProxyGenerator(IFakeCreationSession session)
             {
                 return new DynamicProxyProxyGenerator(session);
             }
         }
 
         private class DummyResolvingSession
-            : IDummyResolvingSession
+            : IFakeCreationSession
         {
             private Dictionary<Type, object> cachedValues = new Dictionary<Type, object>();
             private HashSet<Type> attemptedTypes = new HashSet<Type>();

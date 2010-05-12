@@ -14,9 +14,9 @@ namespace FakeItEasy.Core.Creation
     internal class DefaultConstructorResolver
         : IConstructorResolver
     {
-        private IDummyResolvingSession session;
+        private IFakeCreationSession session;
 
-        public DefaultConstructorResolver(IDummyResolvingSession session)
+        public DefaultConstructorResolver(IFakeCreationSession session)
         {
             this.session = session;
         }
