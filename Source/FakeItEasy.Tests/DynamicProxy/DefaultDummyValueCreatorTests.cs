@@ -58,7 +58,7 @@ namespace FakeItEasy.Tests.DynamicProxy
             var proxyResult = A.Fake<ProxyResult>();
             A.CallTo(() => proxyResult.Proxy).Returns(resultFromProxyGenerator);
             A.CallTo(() => proxyResult.ProxyWasSuccessfullyCreated).Returns(true);
-
+            
             A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.That.Matches(x => x.Count() == 0).Argument, A<FakeManager>.That.Not.IsNull(), null))
                 .Returns(proxyResult);
 

@@ -68,7 +68,7 @@ namespace FakeItEasy.DynamicProxy
             {
                 return method.IsVirtual;
             }
-
+            
             var property = (PropertyInfo)member;
             return property.GetAccessors().All(x => x.IsVirtual);
         }

@@ -425,7 +425,7 @@ namespace FakeItEasy.Tests.DynamicProxy
 
             // Act
             var result = generator.GenerateProxy(typeof(TypeWithDifferentConstructors), Enumerable.Empty<Type>(), this.fakeManager, null);
-            Console.WriteLine(result.ErrorMessage);
+
             // Assert
             Assert.That(result.ErrorMessage, Is.EqualTo(
 @"The type has no default constructor and none of the available constructors listed below can be resolved:
