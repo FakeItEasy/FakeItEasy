@@ -1,9 +1,7 @@
-namespace FakeItEasy.DynamicProxy
+namespace FakeItEasy.Core.Creation
 {
     using System;
-    using FakeItEasy.Core;
-    using FakeItEasy.Core.Creation;
-
+    
     public interface IDummyResolvingSession
     {
         bool TryGetCachedValue(Type type, out object value);

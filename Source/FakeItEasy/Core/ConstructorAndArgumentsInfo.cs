@@ -1,4 +1,4 @@
-namespace FakeItEasy.DynamicProxy
+namespace FakeItEasy.Core
 {
     using System.Collections.Generic;
     using System.Linq;
