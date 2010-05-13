@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// A IFakeObjectContainer implementation that uses mef to load IFakeDefinitions and
@@ -78,6 +79,7 @@
                    select (TInterface)instance;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Used to determine if an instance could be created or not.")]
         private static object TryCreateInstance(Type type)
         {
             try

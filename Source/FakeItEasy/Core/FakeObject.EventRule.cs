@@ -2,12 +2,14 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
 
     public partial class FakeObject
     {
         [Serializable]
+        [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Would provide no benefit since there is no place from where to call the Dispose-method.")]
         private class EventRule
             : IFakeObjectCallRule
         {

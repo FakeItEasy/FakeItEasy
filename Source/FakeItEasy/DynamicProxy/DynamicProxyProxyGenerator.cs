@@ -3,6 +3,7 @@ namespace FakeItEasy.DynamicProxy
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -18,9 +19,9 @@ namespace FakeItEasy.DynamicProxy
     internal class DynamicProxyProxyGenerator
          : IProxyGenerator
     {
+        private static readonly HashSet<Type> forbiddenTypes = new HashSet<Type>() { typeof(IntPtr) };
         private static ProxyGenerator proxyGenerator = new ProxyGenerator();
         private static Type[] interfacesToImplement = new Type[] { typeof(IFakedProxy), typeof(ICanInterceptObjectMembers) };
-        private static readonly HashSet<Type> forbiddenTypes = new HashSet<Type>() { typeof(IntPtr) };
         private IFakeObjectContainer container;
 
         public DynamicProxyProxyGenerator(IFakeObjectContainer container)
@@ -106,6 +107,7 @@ namespace FakeItEasy.DynamicProxy
             };
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try-methods.")]
         private static bool TryGenerateProxyUsingCandidateConstructorArguments(
             Type typeToProxy, 
             IEnumerable<Type> additionalInterfacesToImplement,
@@ -213,13 +215,13 @@ namespace FakeItEasy.DynamicProxy
             DynamicProxyResult result = null;
             if (!TryGenerateProxyUsingCandidateConstructorArguments(typeToProxy, additionalInterfacesToImplement, fakeObjectInterceptor, candidateConstructorArguments, out result))
             {
-                result = this.CreateFailedProxyResult(typeToProxy, result);
+                result = this.CreateFailedProxyResult(typeToProxy);
             }
 
             return result;
         }
 
-        private DynamicProxyResult CreateFailedProxyResult(Type typeToProxy, DynamicProxyResult result)
+        private DynamicProxyResult CreateFailedProxyResult(Type typeToProxy)
         {
             string errorMessage = this.CreateErrorMessageForFailedProxyResult(typeToProxy);
             return new DynamicProxyResult(typeToProxy, errorMessage);
@@ -245,17 +247,15 @@ namespace FakeItEasy.DynamicProxy
 
         private IEnumerable<IEnumerable<object>> CreateConstructorArgumentCandidateSets(Type typeToProxy, IEnumerable<object> argumentsForConstructor)
         {
-            IEnumerable<IEnumerable<object>> argumentSetsForConstructor = null;
-
             if (argumentsForConstructor != null)
             {
                 return new[] { argumentsForConstructor };
             }
             
-            return this.ResolveArgumentSetsForConstructor(typeToProxy, argumentSetsForConstructor);
+            return this.ResolveArgumentSetsForConstructor(typeToProxy);
         }
 
-        private IEnumerable<IEnumerable<object>> ResolveArgumentSetsForConstructor(Type typeToProxy, IEnumerable<IEnumerable<object>> argumentSetsForConstructor)
+        private IEnumerable<IEnumerable<object>> ResolveArgumentSetsForConstructor(Type typeToProxy)
         {
             var resolver = new ConstructorResolver(typeToProxy, this);
 
@@ -350,6 +350,7 @@ namespace FakeItEasy.DynamicProxy
                     select constructor;
             }
 
+            [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in a try-method.")]
             private bool TryResolveDummyValueOfType(Type typeOfValue, out object dummyValue)
             {
                 if (forbiddenTypes.Contains(typeOfValue))
@@ -471,12 +472,14 @@ namespace FakeItEasy.DynamicProxy
         private class DynamicProxyResult
             : ProxyResult, IInterceptor
         {
+            [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Virtual for testability only, should probably be fixed but is a breaking change.")]
             public DynamicProxyResult(Type typeOfProxy)
                 : base(typeOfProxy)
             {
                 this.ProxyWasSuccessfullyCreated = true;
             }
 
+            [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Virtual for testability only, should probably be fixed but is a breaking change.")]
             public DynamicProxyResult(Type typeToProxy, string errorMessage)
                 : this(typeToProxy)
             {

@@ -3,6 +3,7 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
 
@@ -10,6 +11,7 @@ namespace FakeItEasy.Core
     /// A collection of method arguments.
     /// </summary>
     [Serializable]
+    [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Best name to describe the type.")]
     public class ArgumentCollection
     {
         /// <summary>
@@ -97,6 +99,7 @@ namespace FakeItEasy.Core
         /// <typeparam name="T">The type of the argument to get.</typeparam>
         /// <param name="index">The index of the argument.</param>
         /// <returns>The argument at the specified index.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to cast the argument to the specified type.")]
         public T Get<T>(int index)
         {
             return (T)this.arguments[index];
@@ -108,6 +111,7 @@ namespace FakeItEasy.Core
         /// <typeparam name="T">The type of the argument to get.</typeparam>
         /// <param name="argumentName">The name of the argument.</param>
         /// <returns>The argument with the specified name.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to cast the argument to the specified type.")]
         public T Get<T>(string argumentName)
         {
             var index = this.GetArgumentIndex(argumentName);

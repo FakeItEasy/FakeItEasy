@@ -8,8 +8,8 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets a value indicating whether the call matches the predicate.
         /// </summary>
-        /// <param name="call">The call to match.</param>
+        /// <param name="fakeObjectCall">The call to match.</param>
         /// <returns>True if the call matches the predicate.</returns>
-        bool Matches(IFakeObjectCall call);
+        bool Matches(IFakeObjectCall fakeObjectCall);
     }
 }

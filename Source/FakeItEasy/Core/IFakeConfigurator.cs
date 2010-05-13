@@ -18,6 +18,7 @@ namespace FakeItEasy.Core
         /// Applies the configuration for the specified fake object.
         /// </summary>
         /// <param name="fakeObject">The fake object to configure.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "Fake object is a common term in FakeItEasy.")]
         void ConfigureFake(object fakeObject);
     }
 }

@@ -4,6 +4,7 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Core.Creation;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// The central point in the API for proxied fake objects handles interception
@@ -43,6 +44,7 @@ namespace FakeItEasy.Core
         /// A delegate responsible for creating FakeObject instances.
         /// </summary>
         /// <returns></returns>
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "Valid pattern for factory delegates.")]
         public delegate FakeObject Factory();
 
         /// <summary>

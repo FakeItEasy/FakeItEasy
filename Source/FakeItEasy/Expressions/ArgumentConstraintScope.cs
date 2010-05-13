@@ -1,8 +1,8 @@
 namespace FakeItEasy.Expressions
 {
     using System;
-    using FakeItEasy.Configuration;
-
+    using System.Diagnostics.CodeAnalysis;
+    
     /// <summary>
     /// Represents a scope for  arguments constraints when they're chained together, enables the logical operators
     /// and and not.
@@ -39,6 +39,7 @@ namespace FakeItEasy.Expressions
         /// </summary>
         /// <typeparam name="TType">The type to check for.</typeparam>
         /// <returns>An argument constraint.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of instance. A non generic version should be provided though.")]
         public virtual ArgumentConstraint<T> IsInstanceOf<TType>()
         {
             return ArgumentConstraint.Create(this, x => x is TType, "Instance of {0}".FormatInvariant(typeof(TType)));

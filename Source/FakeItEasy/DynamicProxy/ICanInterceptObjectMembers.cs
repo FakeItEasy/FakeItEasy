@@ -1,5 +1,7 @@
 namespace FakeItEasy.DynamicProxy
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// An interface implemented by DynamicProxy proxies in order to let them
     /// intercept object members.
@@ -23,6 +25,7 @@ namespace FakeItEasy.DynamicProxy
         /// <returns>
         /// 	<c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o", Justification = "Uses the same name as the hidden method.")]
         bool Equals(object o);
 
         /// <summary>

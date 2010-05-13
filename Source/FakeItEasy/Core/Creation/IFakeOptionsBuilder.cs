@@ -46,6 +46,7 @@ namespace FakeItEasy.Core.Creation
         /// <returns>Options object.</returns>
         /// <exception cref="ArgumentException">The specified type is not an interface.</exception>
         /// <exception cref="ArgumentNullException">The specified type is null.</exception>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Implements", Justification = "Would be a breaking change, might be changed in a later major version.")]
         IFakeOptionsBuilder<T> Implements(Type interfaceType);
     }
 }

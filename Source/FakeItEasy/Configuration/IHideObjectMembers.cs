@@ -2,6 +2,7 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Hides standard Object members to make fluent interfaces
@@ -27,6 +28,7 @@ namespace FakeItEasy.Configuration
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o", Justification = "Uses the same name as the hidden method.")]
         bool Equals(object o);
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace FakeItEasy.Configuration
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Hides object member.")]
         int GetHashCode();
 
         /// <summary>
@@ -43,6 +46,8 @@ namespace FakeItEasy.Configuration
         /// </summary>
         /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Hides object member.")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "GetType", Justification = "Uses the name of the method to intercept.")]
         Type GetType();
     }
 }
