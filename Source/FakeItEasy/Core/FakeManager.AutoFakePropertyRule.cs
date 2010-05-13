@@ -11,6 +11,14 @@
         {
             public FakeManager FakeManager { get; set; }
 
+            private static IFakeAndDummyManager FakeAndDummyManager
+            {
+                get
+                {
+                    return ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
+                }
+            }
+
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
                 return PropertyBehaviorRule.IsPropertyGetter(fakeObjectCall.Method) && TypeIsFakable(fakeObjectCall.Method.ReturnType);
@@ -26,14 +34,6 @@
 
                 this.FakeManager.allUserRulesField.AddFirst(newRule);
                 newRule.Rule.Apply(fakeObjectCall);
-            }
-
-            private static IFakeAndDummyManager FakeAndDummyManager
-            {
-                get
-                {
-                    return ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
-                }
             }
 
             private static object CreateFake(Type type)

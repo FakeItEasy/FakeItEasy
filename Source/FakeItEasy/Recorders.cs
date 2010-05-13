@@ -21,6 +21,4 @@ namespace FakeItEasy
             return managerFactory.Invoke(storage);
         }
     }
-
-   
 }

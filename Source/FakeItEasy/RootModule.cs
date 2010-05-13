@@ -10,8 +10,7 @@
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
-    using System.Diagnostics;
-    
+
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
     /// </summary>

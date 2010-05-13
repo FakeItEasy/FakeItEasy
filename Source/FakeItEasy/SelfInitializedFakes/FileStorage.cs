@@ -8,6 +8,20 @@ namespace FakeItEasy.SelfInitializedFakes
     internal class FileStorage
         : ICallStorage
     {
+        private readonly string fileName;
+        private readonly IFileSystem fileSystem;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileStorage"/> class.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="fileSystem">The file system.</param>
+        public FileStorage(string fileName, IFileSystem fileSystem)
+        {
+            this.fileName = fileName;
+            this.fileSystem = fileSystem;
+        }
+
         /// <summary>
         /// A factory responsible for creating instances of FileStorage.
         /// </summary>
@@ -15,15 +29,20 @@ namespace FakeItEasy.SelfInitializedFakes
         /// <returns>A FileStorage instance.</returns>
         public delegate FileStorage Factory(string fileName);
 
-        private readonly string fileName;
-        private readonly IFileSystem fileSystem;
-
-        public FileStorage(string fileName, IFileSystem fileSystem)
+        private bool FileExists
         {
-            this.fileName = fileName;
-            this.fileSystem = fileSystem;
+            get
+            {
+                return this.fileSystem.FileExists(this.fileName);
+            }
         }
 
+        /// <summary>
+        /// Loads the recorded calls for the specified recording.
+        /// </summary>
+        /// <returns>
+        /// The recorded calls for the recording with the specified id.
+        /// </returns>
         public IEnumerable<CallData> Load()
         {
             if (!this.FileExists)
@@ -34,6 +53,11 @@ namespace FakeItEasy.SelfInitializedFakes
             return this.LoadCallsFromFile();
         }
 
+        /// <summary>
+        /// Saves the specified calls as the recording with the specified id,
+        /// overwriting any previous recording.
+        /// </summary>
+        /// <param name="calls">The calls to save.</param>
         public void Save(IEnumerable<CallData> calls)
         {
             this.EnsureThatFileExists();
@@ -55,14 +79,6 @@ namespace FakeItEasy.SelfInitializedFakes
             using (var file = this.fileSystem.Open(this.fileName, FileMode.Open))
             {
                 return (IEnumerable<CallData>)formatter.Deserialize(file);
-            }
-        }
-
-        private bool FileExists
-        {
-            get
-            {
-                return this.fileSystem.FileExists(this.fileName);
             }
         }
 

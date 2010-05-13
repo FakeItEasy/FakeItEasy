@@ -12,39 +12,10 @@
     public class RecordingManager
         : ISelfInitializingFakeRecorder
     {
-        #region Nested types
-        /// <summary>
-        /// Represents a factory responsible for creating recording manager
-        /// instances.
-        /// </summary>
-        /// <param name="storage">The storage the manager should use.</param>
-        /// <returns>A RecordingManager instance.</returns>
-        internal delegate RecordingManager Factory(ICallStorage storage);
-
-        private class CallDataMetadata
-        {
-            public CallData RecordedCall;
-            public bool HasBeenApplied;
-            public override string ToString()
-            {
-                return new StringBuilder()
-                    .AppendFormat("Applied: {0}", this.HasBeenApplied)
-                    .AppendLine()
-                    .Append(this.RecordedCall.Method.Name)
-                    .Append(" ")
-                    .Append(RecordedCall.ReturnValue)
-                    .ToString();
-            }
-        } 
-        #endregion
-
-        #region Fields
         private ICallStorage storage;
         private Queue<CallDataMetadata> callQueue;
         private List<CallDataMetadata> recordedCalls;
-        #endregion
 
-        #region Construction
         /// <summary>
         /// Initializes a new instance of the <see cref="RecordingManager"/> class.
         /// </summary>
@@ -59,9 +30,15 @@
             this.callQueue = CreateCallsList(recordedCalls);
             this.recordedCalls = new List<CallDataMetadata>(this.callQueue);
         } 
-        #endregion
+        
+        /// <summary>
+        /// Represents a factory responsible for creating recording manager
+        /// instances.
+        /// </summary>
+        /// <param name="storage">The storage the manager should use.</param>
+        /// <returns>A RecordingManager instance.</returns>
+        internal delegate RecordingManager Factory(ICallStorage storage);
 
-        #region Properties
         /// <summary>
         /// Gets a value indicating if the recorder is currently recording.
         /// </summary>
@@ -71,9 +48,7 @@
             get;
             private set;
         }
-        #endregion
-
-        #region Methods
+        
         /// <summary>
         /// Applies the call if the call has been recorded.
         /// </summary>
@@ -89,30 +64,6 @@
 
             call.SetReturnValue(callToApply.RecordedCall.ReturnValue);
             callToApply.HasBeenApplied = true;
-        }
-
-        private static void ApplyOutputArguments(IWritableFakeObjectCall call, CallDataMetadata callToApply)
-        {
-            foreach (var outputArgument in GetIndicesAndValuesOfOutputParameters(call, callToApply.RecordedCall))
-            {
-                call.SetArgumentValue(outputArgument.First, outputArgument.Second);
-            }
-        }
-
-        private void AssertThatCallQueueIsNotEmpty()
-        {
-            if (this.callQueue.Count == 0)
-            {
-                throw new RecordingException(ExceptionMessages.NoMoreRecordedCalls);
-            }
-        }
-
-        private static void AssertThatMethodsMatches(IWritableFakeObjectCall call, CallDataMetadata callToApply)
-        {
-            if (!callToApply.RecordedCall.Method.Equals(call.Method))
-            {
-                throw new RecordingException(ExceptionMessages.MethodMissmatchWhenPlayingBackRecording);
-            }
         }
 
         /// <summary>
@@ -131,6 +82,22 @@
         public virtual void Dispose()
         {
             this.storage.Save(this.recordedCalls.Select(x => x.RecordedCall));
+        }
+
+        private static void ApplyOutputArguments(IWritableFakeObjectCall call, CallDataMetadata callToApply)
+        {
+            foreach (var outputArgument in GetIndicesAndValuesOfOutputParameters(call, callToApply.RecordedCall))
+            {
+                call.SetArgumentValue(outputArgument.First, outputArgument.Second);
+            }
+        }
+
+        private static void AssertThatMethodsMatches(IWritableFakeObjectCall call, CallDataMetadata callToApply)
+        {
+            if (!callToApply.RecordedCall.Method.Equals(call.Method))
+            {
+                throw new RecordingException(ExceptionMessages.MethodMissmatchWhenPlayingBackRecording);
+            }
         }
 
         private static IEnumerable<object> GetOutputArgumentsForCall(IFakeObjectCall call)
@@ -163,7 +130,32 @@
                 (from argument in call.Method.GetParameters().Zip(Enumerable.Range(0, int.MaxValue))
                  where argument.First.ParameterType.IsByRef
                  select argument.Second).Zip(recordedCall.OutputArguments);
-        } 
-        #endregion
+        }
+
+        private void AssertThatCallQueueIsNotEmpty()
+        {
+            if (this.callQueue.Count == 0)
+            {
+                throw new RecordingException(ExceptionMessages.NoMoreRecordedCalls);
+            }
+        }
+
+        private class CallDataMetadata
+        {
+            public CallData RecordedCall { get; set; }
+
+            public bool HasBeenApplied { get; set; }
+
+            public override string ToString()
+            {
+                return new StringBuilder()
+                    .AppendFormat("Applied: {0}", this.HasBeenApplied)
+                    .AppendLine()
+                    .Append(this.RecordedCall.Method.Name)
+                    .Append(" ")
+                    .Append(this.RecordedCall.ReturnValue)
+                    .ToString();
+            }
+        }    
     }
 }
