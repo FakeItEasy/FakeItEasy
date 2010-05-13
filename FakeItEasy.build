@@ -132,7 +132,7 @@
 			ContinueOnError="False" />
 	</Target>
 	
-	<Target Name="Distrib" DependsOnTargets="CodeAnalysis">
+	<Target Name="Distrib" DependsOnTargets="Clean;CodeAnalysis;ReBuild;Copy">
 		<MakeDir Directories="$(PackageDirectory)" />
 
 		<!-- Archive-->
