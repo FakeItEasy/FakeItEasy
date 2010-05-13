@@ -19,7 +19,7 @@
         public static IStartConfiguration<TFake> Configure<TFake>(this TFake fakedObject)
         {
             var factory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
-            return factory.CreateConfiguration<TFake>(Fake.GetFakeObject(fakedObject));
+            return factory.CreateConfiguration<TFake>(Fake.GetFakeManager(fakedObject));
         }
     }
 }

@@ -2,13 +2,13 @@
 {
     using System;
 
-    public partial class FakeObject
+    public partial class FakeManager
     {
         [Serializable]
         private class PropertySetterRule
             : IFakeObjectCallRule
         {
-            public FakeObject FakeObject { get; set; }
+            public FakeManager FakeManager { get; set; }
             
             public int? NumberOfTimesToCall
             {
@@ -25,10 +25,10 @@
                 var newRule = new CallRuleMetadata
                 {
                     CalledNumberOfTimes = 1,
-                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeObject) { Value = fakeObjectCall.Arguments[0] }
+                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeManager) { Value = fakeObjectCall.Arguments[0] }
                 };
 
-                this.FakeObject.allUserRulesField.AddFirst(newRule);
+                this.FakeManager.allUserRulesField.AddFirst(newRule);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace FakeItEasy.Core
     /// Access all types in all assemblies in the same directory as the FakeItEasy dll.
     /// </summary>
     public class ApplicationDirectoryAssembliesTypeAccessor
-        : ITypeAccessor
+        : ITypeCatalogue
     {
         private List<Type> availableTypes;
 

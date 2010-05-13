@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.ExtensionSyntax
 
             var configuration = A.Fake<IStartConfiguration<IFoo>>();
             var configurationFactory = A.Fake<IStartConfigurationFactory>();
-            A.CallTo(() => configurationFactory.CreateConfiguration<IFoo>(Fake.GetFakeObject(foo)))
+            A.CallTo(() => configurationFactory.CreateConfiguration<IFoo>(Fake.GetFakeManager(foo)))
                 .Returns(configuration);
 
             using (Fake.CreateScope())

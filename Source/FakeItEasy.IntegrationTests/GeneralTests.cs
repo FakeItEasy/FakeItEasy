@@ -36,7 +36,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Assert
             Assert.That(enumerator, Is.Not.Null);
-            Assert.That(Fake.GetFakeObject(enumerator), Is.Not.Null);
+            Assert.That(Fake.GetFakeManager(enumerator), Is.Not.Null);
         }
 
         [Test]

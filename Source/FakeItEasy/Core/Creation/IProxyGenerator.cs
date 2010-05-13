@@ -21,7 +21,7 @@ namespace FakeItEasy.Core.Creation
         /// <returns>True if the proxy could be generated.</returns>
         /// <exception cref="ArgumentException">The arguments in argumentsForConstructor does not match any constructor
         /// of the proxied type.</exception>
-        ProxyResult GenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor);
+        ProxyResult GenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeObject, IEnumerable<object> argumentsForConstructor);
 
         /// <summary>
         /// Gets a value indicating if the specified member can be intercepted on a proxied

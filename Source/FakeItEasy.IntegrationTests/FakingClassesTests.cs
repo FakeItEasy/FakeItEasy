@@ -14,11 +14,8 @@ namespace FakeItEasy.IntegrationTests
         {
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
-                var result = A.Dummy<Uri>();
-                Console.Write(result);
+                var result = A.Fake<Uri>();
             }
-
-            
         }
     }
 }

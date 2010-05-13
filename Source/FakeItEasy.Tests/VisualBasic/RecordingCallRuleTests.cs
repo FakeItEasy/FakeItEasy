@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests.VisualBasic
     public class RecordingCallRuleTests
     {
         IFoo fakedObject;
-        FakeObject fakeObject;
+        FakeManager fakeObject;
         RecordedCallRule recordedRule;
         FakeAsserter.Factory asserterFactory;
         IEnumerable<IFakeObjectCall> argumentUsedForAsserterFactory;
@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.VisualBasic
         public void SetUp()
         {
             this.fakedObject = A.Fake<IFoo>();
-            this.fakeObject = Fake.GetFakeObject(fakedObject);
+            this.fakeObject = Fake.GetFakeManager(fakedObject);
             this.recordedRule = A.Fake<RecordedCallRule>(x => x.WithArgumentsForConstructor(() => new RecordedCallRule(A.Fake<MethodInfoManager>())));
 
             this.asserter = A.Fake<FakeAsserter>();

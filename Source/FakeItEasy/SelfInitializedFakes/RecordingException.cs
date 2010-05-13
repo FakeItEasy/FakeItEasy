@@ -16,7 +16,6 @@ namespace FakeItEasy.SelfInitializedFakes
         /// </summary>
         public RecordingException()
         { 
-        
         }
 
         /// <summary>
@@ -26,7 +25,6 @@ namespace FakeItEasy.SelfInitializedFakes
         public RecordingException(string message)
             : base(message)
         {
-
         }
 
         /// <summary>
@@ -37,7 +35,6 @@ namespace FakeItEasy.SelfInitializedFakes
         public RecordingException(string message, Exception innerException)
             : base(message, innerException)
         { 
-        
         }
 
         /// <summary>
@@ -54,7 +51,6 @@ namespace FakeItEasy.SelfInitializedFakes
         protected RecordingException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         { 
-        
         }
     }
 }

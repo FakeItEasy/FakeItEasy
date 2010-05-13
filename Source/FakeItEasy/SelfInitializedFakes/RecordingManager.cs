@@ -32,7 +32,7 @@
             this.callQueue = CreateCallsList(recordedCalls);
             this.recordedCalls = new List<CallDataMetadata>(this.callQueue);
         }
-
+        
         /// <summary>
         /// Represents a factory responsible for creating recording manager
         /// instances.

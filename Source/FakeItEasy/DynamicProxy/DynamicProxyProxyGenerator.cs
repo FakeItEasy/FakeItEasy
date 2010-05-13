@@ -19,14 +19,13 @@ namespace FakeItEasy.DynamicProxy
     internal class DynamicProxyProxyGenerator
          : IProxyGenerator
     {
-        private static readonly HashSet<Type> forbiddenTypes = new HashSet<Type>() { typeof(IntPtr) };
-        private static ProxyGenerator proxyGenerator = new ProxyGenerator();
+        internal static ProxyGenerator proxyGenerator = new ProxyGenerator();
         private static Type[] interfacesToImplement = new Type[] { typeof(IFakedProxy), typeof(ICanInterceptObjectMembers) };
-        private IFakeObjectContainer container;
-
-        public DynamicProxyProxyGenerator(IFakeObjectContainer container)
+        private IFakeCreationSession session;
+        
+        public DynamicProxyProxyGenerator(IFakeCreationSession session)
         {
-            this.container = container;
+            this.session = session;
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace FakeItEasy.DynamicProxy
         /// <returns>True if the proxy could be generated.</returns>
         /// <exception cref="ArgumentException">The arguments in argumentsForConstructor does not match any constructor
         /// of the proxied type.</exception>
-        public ProxyResult GenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
+        public ProxyResult GenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeObject, IEnumerable<object> argumentsForConstructor)
         {
             if (typeToProxy.IsSealed)
             {
@@ -69,7 +68,7 @@ namespace FakeItEasy.DynamicProxy
             {
                 return method.IsVirtual;
             }
-
+            
             var property = (PropertyInfo)member;
             return property.GetAccessors().All(x => x.IsVirtual);
         }
@@ -99,11 +98,11 @@ namespace FakeItEasy.DynamicProxy
             return interfacesToImplement.Concat(additionalInterfacesToImplement).ToArray();
         }
 
-        private static FakeObjectInterceptor CreateFakeObjectInterceptor(FakeObject fakeObject)
+        private static FakeObjectInterceptor CreateFakeObjectInterceptor(FakeManager fakeManager)
         {
             return new FakeObjectInterceptor()
             {
-                FakeObject = fakeObject
+                FakeManager = fakeManager
             };
         }
 
@@ -140,9 +139,9 @@ namespace FakeItEasy.DynamicProxy
             return false;
         }
 
-        private static void AppendDescriptionsForEachConstructor(StringBuilder message, ConstructorResolver constructorResolver)
+        private static void AppendDescriptionsForEachConstructor(StringBuilder message, IEnumerable<ConstructorAndArgumentsInfo> constructors)
         {
-            foreach (var constructor in constructorResolver.ListAllConstructors())
+            foreach (var constructor in constructors)
             {
                 AppendConstructorVisibility(message, constructor.Constructor);
                 AppendConstructorArgumentsList(message, constructor);
@@ -196,7 +195,7 @@ namespace FakeItEasy.DynamicProxy
             }
         }
 
-        private ProxyResult DoGenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeObject fakeObject, IEnumerable<object> argumentsForConstructor)
+        private ProxyResult DoGenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeObject, IEnumerable<object> argumentsForConstructor)
         {
             var fakeObjectInterceptor = CreateFakeObjectInterceptor(fakeObject);
 
@@ -234,9 +233,7 @@ namespace FakeItEasy.DynamicProxy
             message.AppendLine("The type has no default constructor and none of the available constructors listed below can be resolved:");
             message.AppendLine();
 
-            var constructorResolver = new ConstructorResolver(typeToProxy, this);
-
-            AppendDescriptionsForEachConstructor(message, constructorResolver);
+            AppendDescriptionsForEachConstructor(message, this.session.ConstructorResolver.ListAllConstructors(typeToProxy));
 
             message.AppendLine();
             message.AppendLine("* The types marked with with a star (*) can not be faked. Register these types in the current");
@@ -257,209 +254,27 @@ namespace FakeItEasy.DynamicProxy
 
         private IEnumerable<IEnumerable<object>> ResolveArgumentSetsForConstructor(Type typeToProxy)
         {
-            var resolver = new ConstructorResolver(typeToProxy, this);
-
             return
-                from constructor in resolver.GetConstructorsWhereAllArgumentsCanBeResolved()
+                from constructor in this.session.ConstructorResolver.ListAllConstructors(typeToProxy)
+                where constructor.Arguments.All(x => x.WasSuccessfullyResolved)
+                orderby constructor.Constructor.GetParameters().Length descending
                 select constructor.ArgumentsToUse;
-        }
-
-        private class ConstructorAndArgumentsInfo
-        {
-            public ConstructorInfo Constructor { get; set; }
-            
-            public IEnumerable<object> ArgumentsToUse 
-            {
-                get
-                {
-                    return this.Arguments.Select(x => x.ResolvedValue);
-                }
-            }
-
-            public IEnumerable<ArgumentInfo> Arguments { get; set; }
-        }
-
-        private class ArgumentInfo
-        {
-            public bool WasSuccessfullyResolved { get; set; }
-
-            public Type TypeOfArgument { get; set; }
-
-            public object ResolvedValue { get; set; }
-        }
-
-        private class ConstructorResolver
-        {
-            private IDictionary<Type, object> resolvedValues;
-            private Type typeToResolvedConstructorFor;
-            private ConstructorResolver parent;
-            private DynamicProxyProxyGenerator proxyGenerator;
-
-            public ConstructorResolver(Type typeToResolveConstructorFor, DynamicProxyProxyGenerator proxyGenerator)
-                : this(typeToResolveConstructorFor, new Dictionary<Type, object>(), proxyGenerator)
-            {
-            }
-
-            private ConstructorResolver(Type typeToResolveConstructorFor, IDictionary<Type, object> resolvedValues, DynamicProxyProxyGenerator proxyGenerator)
-            {
-                this.typeToResolvedConstructorFor = typeToResolveConstructorFor;
-                this.resolvedValues = resolvedValues;
-                this.proxyGenerator = proxyGenerator;
-            }
-
-            private ConstructorResolver(Type typeToResolveConstructorFor, ConstructorResolver parent)
-                : this(typeToResolveConstructorFor, parent.resolvedValues, parent.proxyGenerator)
-            {
-                this.parent = parent;
-            }
-
-            public IEnumerable<ConstructorAndArgumentsInfo> ListAllConstructors()
-            { 
-                var constructors = this.GetConstructorsCallableByProxy();
-                            
-                foreach (var constructor in constructors)
-                {
-                    IEnumerable<ArgumentInfo> arguments = this.TryToResolveAllArguments(GetConstructorParameterTypes(constructor));
-                    yield return new ConstructorAndArgumentsInfo()
-                    {
-                        Constructor = constructor,
-                        Arguments = arguments
-                    };
-                }
-            }
-
-            public IEnumerable<ConstructorAndArgumentsInfo> GetConstructorsWhereAllArgumentsCanBeResolved()
-            {
-                return
-                    from constructor in this.ListAllConstructors()
-                    where constructor.Arguments.All(x => x.WasSuccessfullyResolved)
-                    select constructor;
-            }
-
-            private static IEnumerable<Type> GetConstructorParameterTypes(ConstructorInfo constructor)
-            {
-                return constructor.GetParameters().Select(x => x.ParameterType);
-            }
-
-            private IOrderedEnumerable<ConstructorInfo> GetConstructorsCallableByProxy()
-            {
-                return
-                    from constructor in this.typeToResolvedConstructorFor.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    where !constructor.IsPrivate
-                    orderby constructor.GetParameters().Length descending
-                    select constructor;
-            }
-
-            [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in a try-method.")]
-            private bool TryResolveDummyValueOfType(Type typeOfValue, out object dummyValue)
-            {
-                if (forbiddenTypes.Contains(typeOfValue))
-                {
-                    dummyValue = null;
-                    return false;
-                }
-
-                if (this.resolvedValues.TryGetValue(typeOfValue, out dummyValue))
-                {
-                    return true;
-                }
-
-                if (this.proxyGenerator.container.TryCreateFakeObject(typeOfValue, out dummyValue))
-                {
-                    this.resolvedValues.Add(typeOfValue, dummyValue);
-                    return true;
-                }
-
-                if (typeOfValue.IsInterface)
-                {
-                    dummyValue = this.proxyGenerator.DoGenerateProxy(typeOfValue, Enumerable.Empty<Type>(), null, null).Proxy;
-                    this.resolvedValues.Add(typeOfValue, dummyValue);
-                    return true;
-                }
-
-                if (typeOfValue.IsValueType)
-                {
-                    dummyValue = Activator.CreateInstance(typeOfValue);
-                    this.resolvedValues.Add(typeOfValue, dummyValue);
-                    return true;
-                }
-
-                if (!this.IsRecursiveType(typeOfValue))
-                {
-                    var resolver = new ConstructorResolver(typeOfValue, this);
-                    var constructor = resolver.GetConstructorsWhereAllArgumentsCanBeResolved().FirstOrDefault();
-
-                    if (constructor != null)
-                    {
-                        try
-                        {
-                            dummyValue = DynamicProxyProxyGenerator.proxyGenerator.CreateClassProxy(typeOfValue, new Type[] { }, ProxyGenerationOptions.Default, constructor.ArgumentsToUse.ToArray());
-                            this.resolvedValues.Add(typeOfValue, dummyValue);
-                            return true;
-                        }
-                        catch
-                        { 
-                        }
-
-                        try
-                        {
-                            dummyValue = Activator.CreateInstance(typeOfValue, constructor.ArgumentsToUse.ToArray());
-                            this.resolvedValues.Add(typeOfValue, dummyValue);
-                            return true;
-                        }
-                        catch
-                        {
-                        }
-                    }
-                }
-
-                dummyValue = null;
-                return false;
-            }
-
-            private bool IsRecursiveType(Type typeOfValue)
-            {
-                if (this.parent == null)
-                {
-                    return false;
-                }
-                
-                return this.parent.IsRecursiveType(typeOfValue) || typeOfValue.Equals(this.parent.typeToResolvedConstructorFor);
-            }
-
-            private IEnumerable<ArgumentInfo> TryToResolveAllArguments(IEnumerable<Type> types)
-            {
-                var result = new List<ArgumentInfo>();
-
-                foreach (var parameterType in types)
-                {
-                    var argumentInfo = new ArgumentInfo() { TypeOfArgument = parameterType };
-
-                    object argumentValue = null;
-                    argumentInfo.WasSuccessfullyResolved = this.TryResolveDummyValueOfType(parameterType, out argumentValue);
-                    argumentInfo.ResolvedValue = argumentValue;
-
-                    result.Add(argumentInfo);
-                }
-
-                return result;
-            }
         }
 
         [Serializable]
         private class FakeObjectInterceptor
             : IInterceptor
         {
-            private static readonly MethodInfo getProxyManagerMethod = typeof(IFakedProxy).GetProperty("FakeObject").GetGetMethod();
+            private static readonly MethodInfo getFakeManagerMethod = typeof(IFakedProxy).GetProperty("FakeManager").GetGetMethod();
 
-            public FakeObject FakeObject { get; set; }
+            public FakeManager FakeManager { get; set; }
 
             [DebuggerStepThrough]
             public void Intercept(IInvocation invocation)
             {
-                if (invocation.Method.Equals(getProxyManagerMethod))
+                if (invocation.Method.Equals(getFakeManagerMethod))
                 {
-                    invocation.ReturnValue = this.FakeObject;
+                    invocation.ReturnValue = this.FakeManager;
                 }
                 else
                 {

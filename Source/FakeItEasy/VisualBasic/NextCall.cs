@@ -1,8 +1,6 @@
 ﻿namespace FakeItEasy.VisualBasic
 {
-    using System;
     using FakeItEasy.Core;
-    using FakeItEasy.Configuration;
 
     /// <summary>
     /// Lets you specify options for the next call to a fake object.
@@ -21,21 +19,21 @@
             Guard.AgainstNull(fake, "fake");
 
             var recordedRule = CreateRecordedRule();
-            var fakeObject = Fake.GetFakeObject(fake);
-            var recordingRule = CreateRecordingRule<TFake>(recordedRule, fakeObject);
+            var fakeManager = Fake.GetFakeManager(fake);
+            var recordingRule = CreateRecordingRule<TFake>(recordedRule, fakeManager);
 
-            fakeObject.AddRuleFirst(recordingRule);
+            fakeManager.AddRuleFirst(recordingRule);
 
-            return CreateBuilder(recordedRule, fakeObject);
+            return CreateBuilder(recordedRule, fakeManager);
         }
 
-        private static VisualBasicRuleBuilder CreateBuilder(RecordedCallRule rule, FakeObject fakeObject)
+        private static VisualBasicRuleBuilder CreateBuilder(RecordedCallRule rule, FakeManager fakeObject)
         {
             var factory = ServiceLocator.Current.Resolve<VisualBasicRuleBuilder.Factory>();
             return factory.Invoke(rule, fakeObject);
         }
 
-        private static RecordingCallRule<TFake> CreateRecordingRule<TFake>(RecordedCallRule recordedRule, FakeObject fakeObject)
+        private static RecordingCallRule<TFake> CreateRecordingRule<TFake>(RecordedCallRule recordedRule, FakeManager fakeObject)
         {
             var factory = ServiceLocator.Current.Resolve<IRecordingCallRuleFactory>();
             return factory.Create<TFake>(fakeObject, recordedRule);

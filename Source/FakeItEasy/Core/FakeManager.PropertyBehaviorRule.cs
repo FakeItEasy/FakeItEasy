@@ -3,18 +3,18 @@
     using System.Linq;
     using System.Reflection;
 
-    public partial class FakeObject
+    public partial class FakeManager
     {
         private class PropertyBehaviorRule
             : IFakeObjectCallRule
         {
             private MethodInfo propertySetter;
             private MethodInfo propertyGetter;
-            private FakeObject fakeObject;
+            private FakeManager fakeManager;
 
-            public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter, FakeObject fakeObject)
+            public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter, FakeManager fakeManager)
             {
-                this.fakeObject = fakeObject;
+                this.fakeManager = fakeManager;
                 var property = GetProperty(propertyGetterOrSetter);
 
                 this.propertySetter = property.GetSetMethod();
@@ -54,7 +54,7 @@
                     this.Value = fakeObjectCall.Arguments[0];
                 }
 
-                this.fakeObject.MoveRuleToFront(this);
+                this.fakeManager.MoveRuleToFront(this);
             }
 
             private static PropertyInfo GetProperty(MethodInfo propertyGetterOrSetter)

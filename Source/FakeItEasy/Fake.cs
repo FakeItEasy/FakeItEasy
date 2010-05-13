@@ -22,7 +22,7 @@ namespace FakeItEasy
         /// <returns>The fake object manager.</returns>
         [DebuggerStepThrough]
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
-        public static FakeObject GetFakeObject(object fakedObject)
+        public static FakeManager GetFakeManager(object fakedObject)
         {
             Guard.AgainstNull(fakedObject, "fakedObject");
 
@@ -34,7 +34,7 @@ namespace FakeItEasy
                 throw new ArgumentException(message, "fakedObject");
             }
 
-            return accessor.FakeObject;
+            return accessor.FakeManager;
         }
 
 
@@ -99,7 +99,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(fakedObject, "fakedObject");
 
-            return Fake.GetFakeObject(fakedObject).RecordedCallsInScope;
+            return Fake.GetFakeManager(fakedObject).RecordedCallsInScope;
         }
     }
 
@@ -158,7 +158,7 @@ namespace FakeItEasy
             get
             {
                 var factory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
-                return factory.CreateConfiguration<T>(Fake.GetFakeObject(this.FakedObject));
+                return factory.CreateConfiguration<T>(Fake.GetFakeManager(this.FakedObject));
             }
         }
 

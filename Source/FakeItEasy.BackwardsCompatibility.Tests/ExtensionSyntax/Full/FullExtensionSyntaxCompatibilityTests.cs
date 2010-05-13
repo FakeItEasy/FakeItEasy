@@ -20,11 +20,11 @@
         {
             this.fakeAssertions = A.Fake<IFakeAssertions<IFoo>>();
             this.fakeAssertionsFactory = A.Fake<IFakeAssertionsFactory>();
-            A.CallTo(() => this.fakeAssertionsFactory.CreateAsserter<IFoo>(A<FakeObject>.Ignored)).Returns(this.fakeAssertions);
+            A.CallTo(() => this.fakeAssertionsFactory.CreateAsserter<IFoo>(A<FakeManager>.Ignored)).Returns(this.fakeAssertions);
 
             this.fakeConfiguration = A.Fake<IStartConfiguration<IFoo>>();
             this.fakeConfigurationFactory = A.Fake<IStartConfigurationFactory>();
-            A.CallTo(() => this.fakeConfigurationFactory.CreateConfiguration<IFoo>(A<FakeObject>.Ignored)).Returns(this.fakeConfiguration);
+            A.CallTo(() => this.fakeConfigurationFactory.CreateConfiguration<IFoo>(A<FakeManager>.Ignored)).Returns(this.fakeConfiguration);
         }
 
         [Test]

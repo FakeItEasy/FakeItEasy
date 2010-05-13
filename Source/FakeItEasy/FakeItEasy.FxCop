@@ -146,13 +146,6 @@
    <Target Name="$(ProjectDir)/bin/Release/FakeItEasy.dll">
     <Modules>
      <Module Name="fakeiteasy.dll">
-      <Messages>
-       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Created="2009-09-05 10:55:05Z">
-        <Issue Name="NoStrongName">
-         <Item>'FakeItEasy.dll'</Item>
-        </Issue>
-       </Message>
-      </Messages>
       <Namespaces>
        <Namespace Name="FakeItEasy">
         <Types>
@@ -370,11 +363,11 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#GetFakeObject(System.Object)">
+           <Member Name="#GetFakeManager(System.Object)">
             <Messages>
-             <Message Id="object" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2009-12-25 00:06:38Z">
+             <Message Id="object" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Created="2010-05-13 11:48:23Z">
               <Issue Name="LanguageIndependentMemberParameter">
-               <Item>'Fake.GetFakeObject(object)'</Item>
+               <Item>'Fake.GetFakeManager(object)'</Item>
                <Item>Object</Item>
                <Item>'fakedObject'</Item>
               </Issue>
@@ -606,6 +599,20 @@
        </Namespace>
        <Namespace Name="FakeItEasy.Core">
         <Types>
+         <Type Name="ApplicationDirectoryAssembliesTypeAccessor">
+          <Members>
+           <Member Name="#LoadAllTypesFromAssemblyFile(System.String)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2010-05-13 11:48:23Z">
+              <Issue>
+               <Item>'ApplicationDirectoryAssembliesTypeAccessor.LoadAllTypesFromAssemblyFile(string)'</Item>
+               <Item>'object'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="ArgumentCollection">
           <Messages>
            <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Status="Excluded" Created="2010-04-07 20:12:28Z">
@@ -638,21 +645,45 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="FakeObject+EventRule">
+         <Type Name="DynamicContainer">
+          <Members>
+           <Member Name="#TryCreateInstance(System.Type)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2010-05-13 11:48:23Z">
+              <Issue>
+               <Item>'DynamicContainer.TryCreateInstance(Type)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FakeConfigurator`1">
           <Messages>
-           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Excluded" Created="2010-04-07 20:12:28Z" FixCategory="NonBreaking">
+           <Message Id="Configurator" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2010-05-13 11:48:23Z">
+            <Issue Name="Type">
+             <Item>Configurator</Item>
+             <Item>'FakeConfigurator&lt;T&gt;'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FakeManager+EventRule">
+          <Messages>
+           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Created="2010-05-13 11:48:23Z" FixCategory="NonBreaking">
             <Issue Name="NonBreaking">
-             <Item>'FakeObject.EventRule'</Item>
+             <Item>'FakeManager.EventRule'</Item>
              <Item>'EventHandlerList'</Item>
             </Issue>
            </Message>
           </Messages>
          </Type>
-         <Type Name="FakeObject+Factory">
+         <Type Name="FakeManager+Factory">
           <Messages>
-           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2010-04-07 20:12:28Z">
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2010-05-13 11:48:23Z">
             <Issue>
-             <Item>'FakeObject.Factory'</Item>
+             <Item>'FakeManager.Factory'</Item>
             </Issue>
            </Message>
           </Messages>
@@ -666,6 +697,29 @@
                <Item>'ICallMatcher.Matches(IFakeObjectCall)'</Item>
                <Item>'call'</Item>
                <Item>Call</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IFakeConfigurator">
+          <Messages>
+           <Message Id="Configurator" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2010-05-13 11:48:23Z">
+            <Issue Name="Type">
+             <Item>Configurator</Item>
+             <Item>'IFakeConfigurator'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#ConfigureFake(System.Object)">
+            <Messages>
+             <Message Id="object" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Created="2010-05-13 11:48:23Z">
+              <Issue Name="LanguageIndependentMemberParameter">
+               <Item>'IFakeConfigurator.ConfigureFake(object)'</Item>
+               <Item>Object</Item>
+               <Item>'fakeObject'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -696,6 +750,19 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="ITypeCatalogue">
+          <Members>
+           <Member Name="#GetAvailableTypes()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Created="2010-05-13 11:48:23Z">
+              <Issue Certainty="50">
+               <Item>'ITypeCatalogue.GetAvailableTypes()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="MethodInfoManager+TypeMethodInfoPair">
           <Members>
            <Member Name="#Equals(System.Object)">
@@ -713,6 +780,59 @@
        </Namespace>
        <Namespace Name="FakeItEasy.Core.Creation">
         <Types>
+         <Type Name="DefaultConstructorResolver">
+          <Members>
+           <Member Name="#GetConstructorsCallableByProxy(System.Type)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2010-05-13 11:48:23Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'DefaultConstructorResolver.GetConstructorsCallableByProxy(Type)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="DefaultDummyValueCreator">
+          <Members>
+           <Member Name="#TryResolveByActivating(System.Type,System.Object&amp;)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2010-05-13 11:48:23Z">
+              <Issue>
+               <Item>'DefaultDummyValueCreator.TryResolveByActivating(Type, out object)'</Item>
+               <Item>'object'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IDummyValueCreator">
+          <Members>
+           <Member Name="#TryCreateDummyValue(System.Type,System.Object&amp;)">
+            <Messages>
+             <Message TypeName="UseGenericsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1007" Created="2010-05-13 11:48:23Z">
+              <Issue>
+               <Item>'IDummyValueCreator.TryCreateDummyValue(Type, out object)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IFakeCreationSession">
+          <Members>
+           <Member Name="#TryGetCachedDummyValue(System.Type,System.Object&amp;)">
+            <Messages>
+             <Message TypeName="UseGenericsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1007" Created="2010-05-13 11:48:23Z">
+              <Issue>
+               <Item>'IFakeCreationSession.TryGetCachedDummyValue(Type, out object)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="IFakeOptionsBuilder`1">
           <Members>
            <Member Name="#Implements(System.Type)">
@@ -768,30 +888,40 @@
         <Types>
          <Type Name="DynamicProxyProxyGenerator">
           <Members>
+           <Member Name="#CreateFailedProxyResult(System.Type,FakeItEasy.DynamicProxy.DynamicProxyProxyGenerator+DynamicProxyResult)">
+            <Messages>
+             <Message Id="result" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-05-13 11:48:23Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'result'</Item>
+               <Item>'DynamicProxyProxyGenerator.CreateFailedProxyResult(Type, DynamicProxyProxyGenerator.DynamicProxyResult)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#forbiddenTypes">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2010-05-13 11:48:23Z">
+              <Issue>
+               <Item>'DynamicProxyProxyGenerator.forbiddenTypes'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ResolveArgumentSetsForConstructor(System.Type,System.Collections.Generic.IEnumerable`1&lt;System.Collections.Generic.IEnumerable`1&lt;System.Object&gt;&gt;)">
+            <Messages>
+             <Message Id="argumentSetsForConstructor" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-05-13 11:48:23Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'argumentSetsForConstructor'</Item>
+               <Item>'DynamicProxyProxyGenerator.ResolveArgumentSetsForConstructor(Type, IEnumerable&lt;IEnumerable&lt;object&gt;&gt;)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#TryGenerateProxyUsingCandidateConstructorArguments(System.Type,System.Collections.Generic.IEnumerable`1&lt;System.Type&gt;,FakeItEasy.DynamicProxy.DynamicProxyProxyGenerator+FakeObjectInterceptor,System.Collections.Generic.IEnumerable`1&lt;System.Collections.Generic.IEnumerable`1&lt;System.Object&gt;&gt;,FakeItEasy.DynamicProxy.DynamicProxyProxyGenerator+DynamicProxyResult&amp;)">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2010-04-07 20:12:28Z">
               <Issue>
                <Item>'DynamicProxyProxyGenerator.TryGenerateProxyUsingCandidateConstructorArguments(Type, IEnumerable&lt;Type&gt;, DynamicProxyProxyGenerator.FakeObjectInterceptor, IEnumerable&lt;IEnumerable&lt;object&gt;&gt;, out DynamicProxyProxyGenerator.DynamicProxyResult)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="Patrik">
-                <Note Id="4" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="DynamicProxyProxyGenerator+ConstructorResolver">
-          <Members>
-           <Member Name="#TryResolveDummyValueOfType(System.Type,System.Object&amp;)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2010-04-07 20:12:28Z">
-              <Issue>
-               <Item>'DynamicProxyProxyGenerator.ConstructorResolver.TryResolveDummyValueOfType(Type, out object)'</Item>
                <Item>'Exception'</Item>
               </Issue>
               <Notes>
@@ -837,6 +967,20 @@
                 <Note Id="18" />
                </User>
               </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ICanInterceptObjectMembers">
+          <Members>
+           <Member Name="#Equals(System.Object)">
+            <Messages>
+             <Message Id="o" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2010-05-13 11:48:23Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'ICanInterceptObjectMembers.Equals(object)'</Item>
+               <Item>'o'</Item>
+              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -1020,11 +1164,11 @@
    </User>
   </Notes>
   <Rules>
-   <Rule TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210">
-    <Resolution Name="NoStrongName">Sign {0} with a strong name key.</Resolution>
-   </Rule>
    <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
     <Resolution Name="Default" />
+   </Rule>
+   <Rule TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823">
+    <Resolution Name="Default">It appears that field {0} is never used or is only ever assigned to. Use this field or remove it.</Resolution>
    </Rule>
    <Rule TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816">
     <Resolution Name="NotCalled">Change {0} to call {1}. This will prevent unnecessary finalization of the object once it has been disposed and it has fallen out of scope.</Resolution>
@@ -1054,6 +1198,7 @@
     <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
     <Resolution Name="MemberParameter">In method {0}, correct the spelling of '{1}' in parameter name {2} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
     <Resolution Name="MemberParameterMoreMeaningfulName">In method {0}, consider providing a more meaningful name than parameter name {1}.</Resolution>
+    <Resolution Name="Type">Correct the spelling of '{0}' in type name {1}.</Resolution>
     <Resolution Name="TypeMoreMeaningfulName">Consider providing a more meaningful name than type name {0}.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720">
@@ -1071,11 +1216,17 @@
     <Resolution Name="DisposeSignature">Ensure that {0} is declared as public and sealed.</Resolution>
     <Resolution Name="ProvideDisposeBool">Provide an overridable implementation of Dispose(bool) on {0} or mark the type as sealed. A call to Dispose(false) should only clean up native resources. A call to Dispose(true) should clean up both managed and native resources.</Resolution>
    </Rule>
+   <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
+    <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
+   </Rule>
    <Rule TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034">
     <Resolution Name="Default">Do not nest type {0}. Alternatively, change its accessibility so that it is not externally visible.</Resolution>
    </Rule>
    <Rule TypeName="OverloadOperatorEqualsOnOverridingValueTypeEquals" Category="Microsoft.Usage" CheckId="CA2231">
     <Resolution Name="Default">Because {0} is a value type that overrides ValueType.Equals, it should also overload the equality and inequality operators (== and !=).</Resolution>
+   </Rule>
+   <Rule TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801">
+    <Resolution Name="Default">Parameter {0} of {1} is never used. Remove the parameter or use it in the method body.</Resolution>
    </Rule>
    <Rule TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109">
     <Resolution Name="Default">Consider making {0} not externally visible.</Resolution>

@@ -11,7 +11,7 @@
     {
         private RuleBuilder builder;
         private BuildableCallRule ruleProducedByFactory;
-        private FakeObject fakeObject;
+        private FakeManager fakeObject;
         private FakeAsserter asserter;
 
         [SetUp]
@@ -23,7 +23,7 @@
         protected virtual void OnSetUp()
         {
             this.ruleProducedByFactory = A.Fake<BuildableCallRule>();
-            this.fakeObject = new FakeObject();
+            this.fakeObject = new FakeManager();
             this.asserter = A.Fake<FakeAsserter>();
 
             this.builder = this.CreateBuilder();

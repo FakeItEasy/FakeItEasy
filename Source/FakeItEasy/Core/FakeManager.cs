@@ -12,7 +12,7 @@ namespace FakeItEasy.Core
     /// by using the AddRule-method.
     /// </summary>
     [Serializable]
-    public partial class FakeObject
+    public partial class FakeManager
     {
         private IEnumerable<CallRuleMetadata> preUserRules;
         private LinkedList<CallRuleMetadata> allUserRulesField;
@@ -20,20 +20,20 @@ namespace FakeItEasy.Core
         private List<ICompletedFakeObjectCall> recordedCallsField;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="FakeObject"/> class.
+        /// Initializes a new instance of the <see cref="FakeManager"/> class.
         /// </summary>
-        public FakeObject()
+        public FakeManager()
         {
             this.preUserRules = new[] 
             {
-                new CallRuleMetadata { Rule = new EventRule { FakeObject = this } } 
+                new CallRuleMetadata { Rule = new EventRule { FakeManager = this } } 
             };
             this.allUserRulesField = new LinkedList<CallRuleMetadata>();
             this.postUserRules = new[] 
             { 
-                new CallRuleMetadata { Rule = new ObjectMemberRule { FakeObject = this } },
-                new CallRuleMetadata { Rule = new AutoFakePropertyRule { FakeObject = this } },
-                new CallRuleMetadata { Rule = new PropertySetterRule { FakeObject = this } },
+                new CallRuleMetadata { Rule = new ObjectMemberRule { FakeManager = this } },
+                new CallRuleMetadata { Rule = new AutoFakePropertyRule { FakeManager = this } },
+                new CallRuleMetadata { Rule = new PropertySetterRule { FakeManager = this } },
                 new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
             };
 
@@ -45,7 +45,7 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <returns></returns>
         [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "Valid pattern for factory delegates.")]
-        public delegate FakeObject Factory();
+        public delegate FakeManager Factory();
 
         /// <summary>
         /// Gets the faked object.

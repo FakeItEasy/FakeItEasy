@@ -1,15 +1,23 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
-using FakeItEasy.Core.Creation;
+    using FakeItEasy.Core.Creation;
 
-    public partial class FakeObject
+    public partial class FakeManager
     {
         [Serializable]
         private class AutoFakePropertyRule
             : IFakeObjectCallRule
         {
-            public FakeObject FakeObject;
+            public FakeManager FakeManager { get; set; }
+
+            private static IFakeAndDummyManager FakeAndDummyManager
+            {
+                get
+                {
+                    return ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
+                }
+            }
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
@@ -20,31 +28,23 @@ using FakeItEasy.Core.Creation;
             {
                 var newRule = new CallRuleMetadata
                 {
-                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeObject) { Value = CreateFake(fakeObjectCall.Method.ReturnType) },
+                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeManager) { Value = CreateFake(fakeObjectCall.Method.ReturnType) },
                     CalledNumberOfTimes = 1
                 };
 
-                this.FakeObject.allUserRulesField.AddFirst(newRule);
+                this.FakeManager.allUserRulesField.AddFirst(newRule);
                 newRule.Rule.Apply(fakeObjectCall);
-            }
-
-            private static IFakeAndDummyManager FakeManager
-            {
-                get
-                {
-                    return ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
-                }
             }
 
             private static object CreateFake(Type type)
             {
-                return FakeManager.CreateFake(type, FakeOptions.Empty);
+                return FakeAndDummyManager.CreateFake(type, FakeOptions.Empty);
             }
 
             private static bool TypeIsFakable(Type type)
             {
                 object result = null;
-                return FakeManager.TryCreateFake(type, FakeOptions.Empty, out result);
+                return FakeAndDummyManager.TryCreateFake(type, FakeOptions.Empty, out result);
             }
 
             public int? NumberOfTimesToCall

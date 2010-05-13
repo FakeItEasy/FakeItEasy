@@ -7,7 +7,7 @@ namespace FakeItEasy.Core
     /// <summary>
     /// Provides a set of types that are available.
     /// </summary>
-    public interface ITypeAccessor
+    public interface ITypeCatalogue
     {
         /// <summary>
         /// Gets a collection of available types.

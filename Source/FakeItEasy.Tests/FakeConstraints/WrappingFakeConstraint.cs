@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.FakeConstraints
         {
             this.actual = actual;
 
-            var fake = Fake.GetFakeObject(actual);
+            var fake = Fake.GetFakeManager(actual);
 
             return fake.Rules.Any(x => x is WrappedObjectRule);
         }

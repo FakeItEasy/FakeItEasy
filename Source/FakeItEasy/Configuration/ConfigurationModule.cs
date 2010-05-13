@@ -43,7 +43,7 @@
         {
             public DictionaryContainer Container { get; set; }
 
-            public RecordingCallRule<TFake> Create<TFake>(FakeObject fakeObject, RecordedCallRule recordedRule)
+            public RecordingCallRule<TFake> Create<TFake>(FakeManager fakeObject, RecordedCallRule recordedRule)
             {
                 return new RecordingCallRule<TFake>(fakeObject, recordedRule, this.Container.Resolve<FakeAsserter.Factory>());
             }
@@ -61,12 +61,12 @@
                 }
             }
 
-            public IVoidArgumentValidationConfiguration CreateConfiguration(FakeObject fakeObject, BuildableCallRule callRule)
+            public IVoidArgumentValidationConfiguration CreateConfiguration(FakeManager fakeObject, BuildableCallRule callRule)
             {
                 return this.BuilderFactory.Invoke(callRule, fakeObject);
             }
 
-            public IReturnValueArgumentValidationConfiguration<TMember> CreateConfiguration<TMember>(FakeObject fakeObject, BuildableCallRule callRule)
+            public IReturnValueArgumentValidationConfiguration<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule)
             {
                 var parent = this.BuilderFactory.Invoke(callRule, fakeObject);
                 var configuration = new RuleBuilder.ReturnValueConfiguration<TMember>();
@@ -74,7 +74,7 @@
                 return configuration;
             }
 
-            public IAnyCallConfiguration CreateAnyCallConfiguration(FakeObject fakeObject, AnyCallCallRule callRule)
+            public IAnyCallConfiguration CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule)
             {
                 return new AnyCallConfiguration(fakeObject, callRule, this.Container.Resolve<IConfigurationFactory>());
             }
@@ -84,7 +84,7 @@
         {
             public DictionaryContainer Container { get; set; }
 
-            public IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeObject fakeObject)
+            public IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeManager fakeObject)
             {
                 return new StartConfiguration<TFake>(fakeObject, this.Container.Resolve<ExpressionCallRule.Factory>(), this.Container.Resolve<IConfigurationFactory>(), this.Container.Resolve<IProxyGenerator>());
             }

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Reflection;
 
-    public partial class FakeObject
+    public partial class FakeManager
     {
         [Serializable]
         private class ObjectMemberRule
@@ -17,7 +17,7 @@
                 typeof(object).GetMethod("GetHashCode", new Type[] { })
             };
 
-            public FakeObject FakeObject { get; set; }
+            public FakeManager FakeManager { get; set; }
 
             public int? NumberOfTimesToCall
             {
@@ -59,8 +59,8 @@
                     return false;
                 }
 
-                var fakeObject = Fake.GetFakeObject(fakeObjectCall.FakedObject);
-                fakeObjectCall.SetReturnValue(fakeObject.GetHashCode());
+                var fakeManager = Fake.GetFakeManager(fakeObjectCall.FakedObject);
+                fakeObjectCall.SetReturnValue(fakeManager.GetHashCode());
 
                 return true;
             }
@@ -72,7 +72,7 @@
                     return false;
                 }
 
-                fakeObjectCall.SetReturnValue("Faked {0}".FormatInvariant(this.FakeObject.FakeObjectType.FullName));
+                fakeObjectCall.SetReturnValue("Faked {0}".FormatInvariant(this.FakeManager.FakeObjectType.FullName));
 
                 return true;
             }
@@ -87,7 +87,7 @@
                 var argument = fakeObjectCall.Arguments[0] as IFakedProxy;
                 if (argument != null)
                 {
-                    fakeObjectCall.SetReturnValue(argument.FakeObject.Equals(this.FakeObject));
+                    fakeObjectCall.SetReturnValue(argument.FakeManager.Equals(this.FakeManager));
                 }
                 else
                 {

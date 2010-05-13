@@ -10,14 +10,14 @@ namespace FakeItEasy.Configuration
     internal class StartConfiguration<TFake>
         : IStartConfiguration<TFake>, IHideObjectMembers
     {
-        private FakeObject fakeObject;
+        private FakeManager manager;
         private ExpressionCallRule.Factory callRuleFactory;
         private IConfigurationFactory configurationFactory;
         private IProxyGenerator proxyGenerator;
 
-        internal StartConfiguration(FakeObject fakeObject, ExpressionCallRule.Factory callRuleFactory, IConfigurationFactory configurationFactory, IProxyGenerator proxyGenerator)
+        internal StartConfiguration(FakeManager manager, ExpressionCallRule.Factory callRuleFactory, IConfigurationFactory configurationFactory, IProxyGenerator proxyGenerator)
         {
-            this.fakeObject = fakeObject;
+            this.manager = manager;
             this.callRuleFactory = callRuleFactory;
             this.configurationFactory = configurationFactory;
             this.proxyGenerator = proxyGenerator;
@@ -30,8 +30,8 @@ namespace FakeItEasy.Configuration
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
             var rule = this.callRuleFactory(callSpecification);
-            this.fakeObject.AddRuleFirst(rule);
-            return this.configurationFactory.CreateConfiguration<TMember>(this.fakeObject, rule);
+            this.manager.AddRuleFirst(rule);
+            return this.configurationFactory.CreateConfiguration<TMember>(this.manager, rule);
         }
 
         public IVoidArgumentValidationConfiguration CallsTo(Expression<Action<TFake>> callSpecification)
@@ -42,15 +42,15 @@ namespace FakeItEasy.Configuration
 
             var rule = this.callRuleFactory(callSpecification);
             rule.Applicator = x => { };
-            this.fakeObject.AddRuleFirst(rule);
-            return this.configurationFactory.CreateConfiguration(this.fakeObject, rule);
+            this.manager.AddRuleFirst(rule);
+            return this.configurationFactory.CreateConfiguration(this.manager, rule);
         }
 
         public IAnyCallConfiguration AnyCall()
         {
             var rule = new AnyCallCallRule();
-            this.fakeObject.AddRuleFirst(rule);
-            return this.configurationFactory.CreateAnyCallConfiguration(this.fakeObject, rule);
+            this.manager.AddRuleFirst(rule);
+            return this.configurationFactory.CreateAnyCallConfiguration(this.manager, rule);
         }
 
         private void AssertThatMemberCanBeIntercepted(LambdaExpression callSpecification)

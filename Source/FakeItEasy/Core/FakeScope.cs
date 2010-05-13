@@ -68,7 +68,7 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="fakeObject">The fake object.</param>
         /// <param name="call">The call that is intercepted.</param>
-        internal void AddInterceptedCall(FakeObject fakeObject, ICompletedFakeObjectCall call)
+        internal void AddInterceptedCall(FakeManager fakeObject, ICompletedFakeObjectCall call)
         {
             fakeObject.AllRecordedCalls.Add(call);
             this.OnAddInterceptedCall(fakeObject, call);
@@ -79,25 +79,25 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="fakeObject">The fake object.</param>
         /// <param name="rule">The rule to add.</param>
-        internal void AddRuleFirst(FakeObject fakeObject, CallRuleMetadata rule)
+        internal void AddRuleFirst(FakeManager fakeObject, CallRuleMetadata rule)
         {
             fakeObject.AllUserRules.AddFirst(rule);
             this.OnAddRule(fakeObject, rule);
         }
 
-        internal void AddRuleLast(FakeObject fakeObject, CallRuleMetadata rule)
+        internal void AddRuleLast(FakeManager fakeObject, CallRuleMetadata rule)
         {
             fakeObject.AllUserRules.AddLast(rule);
             this.OnAddRule(fakeObject, rule);
         }
 
-        internal abstract IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeObject fakeObject);
+        internal abstract IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject);
 
         protected abstract void OnDispose();
 
-        protected abstract void OnAddRule(FakeObject fakeObject, CallRuleMetadata rule);
+        protected abstract void OnAddRule(FakeManager fakeObject, CallRuleMetadata rule);
 
-        protected abstract void OnAddInterceptedCall(FakeObject fakeObject, ICompletedFakeObjectCall call);
+        protected abstract void OnAddInterceptedCall(FakeManager fakeObject, ICompletedFakeObjectCall call);
         #endregion
 
         #region Nested types
@@ -108,7 +108,7 @@ namespace FakeItEasy.Core
 
             public RootScope()
             {
-                this.fakeObjectContainerField = new DynamicContainer(ServiceLocator.Current.Resolve<ITypeAccessor>());
+                this.fakeObjectContainerField = new DynamicContainer(ServiceLocator.Current.Resolve<ITypeCatalogue>());
             }
 
             internal override IFakeObjectContainer FakeObjectContainer
@@ -119,12 +119,12 @@ namespace FakeItEasy.Core
                 }
             }
 
-            internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeObject fakeObject)
+            internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject)
             {
                 return fakeObject.AllRecordedCalls;
             }
 
-            protected override void OnAddRule(FakeObject fakeObject, CallRuleMetadata rule)
+            protected override void OnAddRule(FakeManager fakeObject, CallRuleMetadata rule)
             {
                 // Do nothing
             }
@@ -134,7 +134,7 @@ namespace FakeItEasy.Core
                 // Do nothing
             }
 
-            protected override void OnAddInterceptedCall(FakeObject fakeObject, ICompletedFakeObjectCall call)
+            protected override void OnAddInterceptedCall(FakeManager fakeObject, ICompletedFakeObjectCall call)
             {
                 // Do nothing
             }
@@ -144,15 +144,15 @@ namespace FakeItEasy.Core
             : FakeScope
         {
             private FakeScope parentScope;
-            private Dictionary<FakeObject, List<CallRuleMetadata>> rulesField;
-            private Dictionary<FakeObject, List<ICompletedFakeObjectCall>> recordedCalls;
+            private Dictionary<FakeManager, List<CallRuleMetadata>> rulesField;
+            private Dictionary<FakeManager, List<ICompletedFakeObjectCall>> recordedCalls;
             private IFakeObjectContainer fakeObjectContainerField;
 
             public ChildScope(FakeScope parentScope, IFakeObjectContainer container)
             {
                 this.parentScope = parentScope;
-                this.rulesField = new Dictionary<FakeObject, List<CallRuleMetadata>>();
-                this.recordedCalls = new Dictionary<FakeObject, List<ICompletedFakeObjectCall>>();
+                this.rulesField = new Dictionary<FakeManager, List<CallRuleMetadata>>();
+                this.recordedCalls = new Dictionary<FakeManager, List<ICompletedFakeObjectCall>>();
                 this.fakeObjectContainerField = container;
             }
 
@@ -161,7 +161,7 @@ namespace FakeItEasy.Core
                 get { return this.fakeObjectContainerField; }
             }
 
-            internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeObject fakeObject)
+            internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject)
             {
                 List<ICompletedFakeObjectCall> calls;
 
@@ -173,7 +173,7 @@ namespace FakeItEasy.Core
                 return calls;
             }
 
-            protected override void OnAddRule(FakeObject fakeObject, CallRuleMetadata rule)
+            protected override void OnAddRule(FakeManager fakeObject, CallRuleMetadata rule)
             {
                 List<CallRuleMetadata> rules;
 
@@ -192,7 +192,7 @@ namespace FakeItEasy.Core
                 FakeScope.Current = this.parentScope;
             }
 
-            protected override void OnAddInterceptedCall(FakeObject fakeObject, ICompletedFakeObjectCall call)
+            protected override void OnAddInterceptedCall(FakeManager fakeObject, ICompletedFakeObjectCall call)
             {
                 this.parentScope.OnAddInterceptedCall(fakeObject, call);
 

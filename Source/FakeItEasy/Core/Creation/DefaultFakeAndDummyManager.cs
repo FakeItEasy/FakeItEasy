@@ -5,6 +5,7 @@ namespace FakeItEasy.Core.Creation
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using FakeItEasy.DynamicProxy;
 
     /// <summary>
     /// The default implementation of the IFakeAndDummyManager interface.
@@ -13,23 +14,31 @@ namespace FakeItEasy.Core.Creation
         : IFakeAndDummyManager
     {
         private IFakeObjectContainer container;
-        private IProxyGenerator proxyGenerator;
-        private FakeObject.Factory fakeObjectFactory;
+        private IFakeCreationSession session;
+        private FakeManager.Factory fakeObjectFactory;
         private IFakeWrapperConfigurator wrapperConfigurator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultFakeAndDummyManager"/> class.
         /// </summary>
         /// <param name="container">The container.</param>
-        /// <param name="proxyGenerator">The proxy generator.</param>
+        /// <param name="session">The fake creation session the manager participates in.</param>
         /// <param name="fakeObjectFactory">The fake object factory.</param>
         /// <param name="wrapperConfigurator">The wrapper configurator to use.</param>
-        public DefaultFakeAndDummyManager(IFakeObjectContainer container, IProxyGenerator proxyGenerator, FakeObject.Factory fakeObjectFactory, IFakeWrapperConfigurator wrapperConfigurator)
+        public DefaultFakeAndDummyManager(IFakeObjectContainer container, IFakeCreationSession session, FakeManager.Factory fakeObjectFactory, IFakeWrapperConfigurator wrapperConfigurator)
         {
             this.container = container;
-            this.proxyGenerator = proxyGenerator;
+            this.session = session;
             this.fakeObjectFactory = fakeObjectFactory;
             this.wrapperConfigurator = wrapperConfigurator;
+        }
+
+        private IProxyGenerator ProxyGenerator
+        {
+            get
+            {
+                return this.session.ProxyGenerator;
+            }
         }
 
         /// <summary>
@@ -42,10 +51,11 @@ namespace FakeItEasy.Core.Creation
         public object CreateDummy(Type typeOfDummy)
         {
             object result = null;
-            
-            if (!this.container.TryCreateFakeObject(typeOfDummy, out result))
+
+            if (!this.TryCreateDummy(typeOfDummy, out result))
             {
-                return this.CreateProxy(typeOfDummy, Enumerable.Empty<Type>(), null, true);
+                throw new FakeCreationException(
+                    string.Format(CultureInfo.CurrentCulture, ExceptionMessages.UnableToCreateDummyPattern, typeOfDummy));
             }
 
             return result;
@@ -77,12 +87,18 @@ namespace FakeItEasy.Core.Creation
         /// </returns>
         public bool TryCreateDummy(Type typeOfDummy, out object result)
         {
-            if (!this.container.TryCreateFakeObject(typeOfDummy, out result))
+            if (this.container.TryCreateFakeObject(typeOfDummy, out result))
             {
-                result = this.CreateProxy(typeOfDummy, null, null, false);
+                return true;
             }
 
-            return result != null;
+            result = this.CreateProxy(typeOfDummy, null, null, false);
+            if (result != null)
+            {
+                return true;
+            }
+
+            return this.session.DummyCreator.TryCreateDummyValue(typeOfDummy, out result);
         }
 
         /// <summary>
@@ -114,18 +130,30 @@ namespace FakeItEasy.Core.Creation
         /// <returns>A proxy.</returns>
         internal virtual object CreateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, bool throwOnFailure)
         {
-            var fakeObject = this.CreateNewFakeObject();
+            var fakeManager = this.CreateNewFakeObject();
             
-            var proxyResult = this.proxyGenerator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, fakeObject, argumentsForConstructor);
+            var proxyResult = this.ProxyGenerator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, fakeManager, argumentsForConstructor);
 
             if (throwOnFailure)
             {
                 AssertThatProxyWasSuccessfullyCreated(typeOfProxy, proxyResult);
             }
 
-            fakeObject.SetProxy(proxyResult);
+            fakeManager.SetProxy(proxyResult);
 
-            return proxyResult.Proxy;
+            return GetReturnValueFromProxyResult(proxyResult);
+        }
+
+        private static object GetReturnValueFromProxyResult(ProxyResult proxyResult)
+        {
+            if (proxyResult.ProxyWasSuccessfullyCreated)
+            {
+                return proxyResult.Proxy;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private static void AssertThatProxyWasSuccessfullyCreated(Type typeOfProxy, ProxyResult proxyResult)
@@ -168,7 +196,7 @@ namespace FakeItEasy.Core.Creation
             }
         }
 
-        private FakeObject CreateNewFakeObject()
+        private FakeManager CreateNewFakeObject()
         {
             return this.fakeObjectFactory.Invoke();
         }

@@ -1,40 +1,53 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using FakeItEasy.Core;
-using FakeItEasy.DynamicProxy;
-using FakeItEasy.Tests.TestHelpers;
-using NUnit.Framework;
-using System.Linq;
-using System.Runtime.Serialization;
-
 namespace FakeItEasy.Tests.DynamicProxy
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using FakeItEasy.Core;
+    using FakeItEasy.Core.Creation;
+    using FakeItEasy.DynamicProxy;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DynamicProxyProxyGeneratorTests
     {
-        FakeObject fakeObject;
-        IFakeObjectContainer container;
+        private FakeManager fakeManager;
+        private IConstructorResolver constructorResolver;
+        private IFakeCreationSession session;
 
         [SetUp]
         public void SetUp()
         {
-            this.fakeObject = A.Fake<FakeObject>();
-            this.container = A.Fake<IFakeObjectContainer>();
+            this.fakeManager = A.Fake<FakeManager>();
+            this.session = A.Fake<IFakeCreationSession>();
+            this.constructorResolver = A.Fake<IConstructorResolver>(x => x.Wrapping(new ConstructorResolverThatGetsDefaultConstructors()));
+
+            A.CallTo(() => this.session.ConstructorResolver).Returns(this.constructorResolver);
+        }
+
+        private class ConstructorResolverThatGetsDefaultConstructors
+            : IConstructorResolver
+        {
+            public IEnumerable<ConstructorAndArgumentsInfo> ListAllConstructors(Type type)
+            {
+                return
+                    from constructor in type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    where constructor.GetParameters().Length == 0
+                    select new ConstructorAndArgumentsInfo(constructor, Enumerable.Empty<ArgumentInfo>());
+            }
         }
 
         private DynamicProxyProxyGenerator CreateGenerator()
         {
-            return new DynamicProxyProxyGenerator(this.container);
+            return new DynamicProxyProxyGenerator(this.session);
         }
 
         private List<Type> typesThatCanBeProxied = new List<Type>()
 		        {
 		            typeof(IFoo),
 		            typeof(ClassWithDefaultConstructor),
-		            typeof(AbstractClassWithDefaultConstructor),
-                    typeof(TypeWithAbstractArgumentToConstructor),
-                    typeof(SealedTypeThatTakesClassWithDefaultConstructorInConstructor)
+		            typeof(AbstractClassWithDefaultConstructor)
 		        };
 
         private List<Type> typesThatCanNotBeProxied = new List<Type>()
@@ -42,9 +55,7 @@ namespace FakeItEasy.Tests.DynamicProxy
 		            typeof(int),
 		            typeof(AbstractClassWithHiddenConstructor),
 		            typeof(ClassWithHiddenConstructor),
-		            typeof(SealedClass),
-                    typeof(CircularClassA),
-                    typeof(CircularClassB)
+		            typeof(SealedClass)
 		        };
 
         private MemberInfo[] nonInterceptableMembers = new MemberInfo[] 
@@ -130,7 +141,7 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeOfProxy, null, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeOfProxy, null, this.fakeManager, null);
 
             Assert.That(result.ProxyWasSuccessfullyCreated, Is.True);
         }
@@ -140,7 +151,7 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeOfProxy, null, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeOfProxy, null, this.fakeManager, null);
 
             Assert.That(result.Proxy, Is.InstanceOf(typeOfProxy));
         }
@@ -150,9 +161,9 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeOfProxy, null, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeOfProxy, null, this.fakeManager, null);
 
-            Assert.That(result.Proxy.FakeObject, Is.SameAs(this.fakeObject));
+            Assert.That(result.Proxy.FakeManager, Is.SameAs(this.fakeManager));
 
         }
 
@@ -161,7 +172,7 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeOfProxy, null, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeOfProxy, null, this.fakeManager, null);
 
             Assert.That(result.ProxyWasSuccessfullyCreated, Is.False);
         }
@@ -172,7 +183,7 @@ namespace FakeItEasy.Tests.DynamicProxy
             var generator = this.CreateGenerator();
 
             var thrown = Assert.Throws<ArgumentException>(() =>
-                generator.GenerateProxy(typeof(IFoo), null, this.fakeObject, new object[] { 1, 2 }));
+                generator.GenerateProxy(typeof(IFoo), null, this.fakeManager, new object[] { 1, 2 }));
 
             Assert.That(thrown.Message, Text.StartsWith("Arguments for constructor was specified when generating proxy of interface type."));
         }
@@ -184,7 +195,7 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(someInterfaceType, null, this.fakeObject, null);
+            var result = generator.GenerateProxy(someInterfaceType, null, this.fakeManager, null);
 
             IWritableFakeObjectCall interceptedCall = null;
             result.CallWasIntercepted += (s, e) =>
@@ -203,7 +214,7 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatTakesSingleString), null, this.fakeObject, new object[] { "foo" });
+            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatTakesSingleString), null, this.fakeManager, new object[] { "foo" });
 
             Assert.That(result.ProxyWasSuccessfullyCreated, Is.True);
         }
@@ -213,7 +224,7 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatTakesSingleString), null, this.fakeObject, new object[] { "foo" });
+            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatTakesSingleString), null, this.fakeManager, new object[] { "foo" });
 
             IWritableFakeObjectCall interceptedCall = null;
             result.CallWasIntercepted += (s, e) =>
@@ -232,63 +243,9 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatTakesSingleString), null, this.fakeObject, new object[] { "foo" });
+            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatTakesSingleString), null, this.fakeManager, new object[] { "foo" });
 
-            Assert.That(result.Proxy.FakeObject, Is.SameAs(this.fakeObject));
-        }
-
-        [Test]
-        public void GenerateProxy_without_arguments_for_constructor_should_return_true_when_container_can_resolve_arguments_for_constructor()
-        {
-            A.CallTo(() => this.container.TryCreateFakeObject(typeof(string), out Null<object>.Out)).Returns(true).AssignsOutAndRefParameters("foo");
-
-            var generator = this.CreateGenerator();
-
-            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatTakesSingleString), null, this.fakeObject, null);
-
-            Assert.That(result.ProxyWasSuccessfullyCreated, Is.True);
-        }
-
-        [Test]
-        public void GenerateProxy_without_arguments_for_constructor_should_generate_proxy_when_container_can_resolve_arguments_for_constructor()
-        {
-            A.CallTo(() => this.container.TryCreateFakeObject(typeof(string), out Null<object>.Out)).Returns(true).AssignsOutAndRefParameters("foo");
-
-            var generator = this.CreateGenerator();
-
-            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatTakesSingleString), null, this.fakeObject, null);
-
-            Assert.That(result.Proxy, Is.InstanceOf<TypeWithConstructorThatTakesSingleString>());
-        }
-
-        [Test]
-        public void GenerateProxy_without_arguments_for_constructor_should_generate_proxy_when_constructor_argument_is_value_type()
-        {
-            var generator = this.CreateGenerator();
-
-            var result = generator.GenerateProxy(typeof(TypeThatTakesValueTypeInConstructor), null, this.fakeObject, null);
-
-            Assert.That(result.ProxyWasSuccessfullyCreated, Is.True);
-        }
-
-        [Test]
-        public void GenerateProxy_without_arguments_for_constructor_should_generate_proxy_when_constructor_argument_is_interface_type()
-        {
-            var generator = this.CreateGenerator();
-
-            var result = generator.GenerateProxy(typeof(TypeThatTakesProxyableTypeInConstructor), null, this.fakeObject, null);
-
-            Assert.That(result.ProxyWasSuccessfullyCreated, Is.True);
-        }
-
-        [Test]
-        public void GenerateProxy_without_arguments_for_constructor_should_generate_proxy_when_constructor_argument_is_class_with_default_constructor()
-        {
-            var generator = this.CreateGenerator();
-
-            var result = generator.GenerateProxy(typeof(SealedTypeThatTakesClassWithDefaultConstructorInConstructor), null, this.fakeObject, null);
-
-            Assert.That(result.ProxyWasSuccessfullyCreated, Is.True);
+            Assert.That(result.Proxy.FakeManager, Is.SameAs(this.fakeManager));
         }
 
         [Test]
@@ -296,7 +253,7 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeManager, null);
 
             Assert.That(result, Is.BinarySerializable);
         }
@@ -308,7 +265,7 @@ namespace FakeItEasy.Tests.DynamicProxy
 
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeManager, null);
 
             result.CallWasIntercepted += (s, e) =>
             {
@@ -327,7 +284,7 @@ namespace FakeItEasy.Tests.DynamicProxy
 
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeManager, null);
 
             result.CallWasIntercepted += (s, e) =>
             {
@@ -347,7 +304,7 @@ namespace FakeItEasy.Tests.DynamicProxy
 
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeManager, null);
 
             result.CallWasIntercepted += (s, e) =>
             {
@@ -361,14 +318,33 @@ namespace FakeItEasy.Tests.DynamicProxy
         }
 
         [Test]
-        public void GenerateProxy_should_use_widest_fakeable_constructor()
+        public void GenerateProxy_should_use_widest_resolved_constructor()
         {
+            // Arrange
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeof(ClassWithDefaultConstructorAndResolvableConstructor), null, this.fakeObject, null);
+            A.CallTo(() => this.constructorResolver.ListAllConstructors(typeof(ClassWithDefaultConstructorAndResolvableConstructor)))
+                .Returns(new[] 
+                {
+                    new ConstructorAndArgumentsInfo(
+                        typeof(ClassWithDefaultConstructorAndResolvableConstructor).GetConstructor(new Type[] {}),
+                        Enumerable.Empty<ArgumentInfo>()
+                    ),
+                    new ConstructorAndArgumentsInfo(
+                        typeof(ClassWithDefaultConstructorAndResolvableConstructor).GetConstructor(new Type[] { typeof(ISomeInterface), typeof(IFoo) }),
+                        new[] 
+                        { 
+                            new ArgumentInfo(true, typeof(ISomeInterface), A.Fake<ISomeInterface>()),
+                            new ArgumentInfo(true, typeof(IFoo), A.Fake<IFoo>())
+                        }
+                    )
+                });
 
+            // Act
+            var result = generator.GenerateProxy(typeof(ClassWithDefaultConstructorAndResolvableConstructor), null, this.fakeManager, null);
+
+            // Assert
             var proxy = result.Proxy as ClassWithDefaultConstructorAndResolvableConstructor;
-
             Assert.That(proxy.WidestConstructorWasCalled, Is.True);
         }
 
@@ -377,7 +353,7 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatThrows), null, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatThrows), null, this.fakeManager, null);
 
             Assert.That(result.ProxyWasSuccessfullyCreated, Is.False);
         }
@@ -387,7 +363,7 @@ namespace FakeItEasy.Tests.DynamicProxy
         {
             var generator = this.CreateGenerator();
 
-            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatThrowsAndConstructorThatDoesNotThrow), null, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeof(TypeWithConstructorThatThrowsAndConstructorThatDoesNotThrow), null, this.fakeManager, null);
 
             Assert.That(result.ProxyWasSuccessfullyCreated, Is.True);
         }
@@ -399,20 +375,11 @@ namespace FakeItEasy.Tests.DynamicProxy
             var generator = this.CreateGenerator();
 
             // Act
-            var result = generator.GenerateProxy(typeOfProxy, new[] { typeof(IFormatProvider), typeof(IFormattable) }, this.fakeObject, null);
+            var result = generator.GenerateProxy(typeOfProxy, new[] { typeof(IFormatProvider), typeof(IFormattable) }, this.fakeManager, null);
 
             // Assert
             Assert.That(result.Proxy, Is.InstanceOf<IFormatProvider>());
             Assert.That(result.Proxy, Is.InstanceOf<IFormattable>());
-        }
-
-        [Test]
-        public void GenerateProxy_should_return_false_when_resolvable_constructors_contains_circular_dependencies()
-        {
-            var generator = this.CreateGenerator();
-            var result = generator.GenerateProxy(typeof(CircularClassA), null, this.fakeObject, null);
-
-            Assert.That(result.ProxyWasSuccessfullyCreated, Is.False);
         }
 
         [Test]
@@ -421,18 +388,70 @@ namespace FakeItEasy.Tests.DynamicProxy
             // Arrange
             var generator = this.CreateGenerator();
 
-            // Act
-            var result = generator.GenerateProxy(typeof(TypeWithNoResolvableConstructor), Enumerable.Empty<Type>(), this.fakeObject, null);
-            
-            // Assert
-            Assert.That(result.ErrorMessage, Is.EqualTo(@"The type has no default constructor and none of the available constructors listed below can be resolved:
+            A.CallTo(() => this.constructorResolver.ListAllConstructors(typeof(TypeWithDifferentConstructors)))
+                .Returns(new[] 
+                {
+                    new ConstructorAndArgumentsInfo(
+                        GetConstructor<TypeWithDifferentConstructors>(typeof(string)),
+                        new[]
+                        {
+                            new ArgumentInfo(false, typeof(string), null)
+                        }
+                    ),
+                    new ConstructorAndArgumentsInfo(
+                        GetConstructor<TypeWithDifferentConstructors>(typeof(int), typeof(object)),
+                        new[]
+                        {
+                            new ArgumentInfo(true, typeof(int), 0),
+                            new ArgumentInfo(false, typeof(object), null)
+                        }
+                    ),
+                    new ConstructorAndArgumentsInfo(
+                        GetConstructor<TypeWithDifferentConstructors>(typeof(DateTime)),
+                        new[]
+                        {
+                            new ArgumentInfo(false, typeof(DateTime), new DateTime())
+                        }
+                    )
+                });
 
-public     (FakeItEasy.Tests.IFoo, *FakeItEasy.Tests.DynamicProxy.DynamicProxyProxyGeneratorTests+TypeWithNoResolvableConstructor+NoInstanceType)
-internal   (*FakeItEasy.Tests.DynamicProxy.DynamicProxyProxyGeneratorTests+TypeWithNoResolvableConstructor+NoInstanceType, System.String)
-protected  (*FakeItEasy.Tests.DynamicProxy.DynamicProxyProxyGeneratorTests+TypeWithNoResolvableConstructor+NoInstanceType)
+            // Act
+            var result = generator.GenerateProxy(typeof(TypeWithDifferentConstructors), Enumerable.Empty<Type>(), this.fakeManager, null);
+
+            // Assert
+            Assert.That(result.ErrorMessage, Is.EqualTo(
+@"The type has no default constructor and none of the available constructors listed below can be resolved:
+
+public     (*System.String)
+internal   (System.Int32, *System.Object)
+protected  (*System.DateTime)
 
 * The types marked with with a star (*) can not be faked. Register these types in the current
 IFakeObjectContainer in order to generate a fake of this type."));
+        }
+
+        private static ConstructorInfo GetConstructor<T>(params Type[] parameterTypes)
+        {
+            return typeof(T).GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+                System.Type.DefaultBinder, parameterTypes, null);
+        }
+
+        public class TypeWithDifferentConstructors
+        {
+            public TypeWithDifferentConstructors(string argument)
+            {
+
+            }
+
+            internal TypeWithDifferentConstructors(int argument, object argument2)
+            {
+
+            }
+
+            protected TypeWithDifferentConstructors(DateTime argument)
+            {
+
+            }
         }
 
         [Test]
@@ -442,23 +461,10 @@ IFakeObjectContainer in order to generate a fake of this type."));
             var generator = this.CreateGenerator();
 
             // Act
-            var result = generator.GenerateProxy(typeof(SealedClass), Enumerable.Empty<Type>(), this.fakeObject, null);
+            var result = generator.GenerateProxy(typeof(SealedClass), Enumerable.Empty<Type>(), this.fakeManager, null);
 
             // Assert
             Assert.That(result.ErrorMessage, Is.EqualTo("The type is sealed."));
-        }
-
-        [Test]
-        public void Should_return_result_with_false_when_type_depends_on_delegate()
-        {
-            // Arrange
-            var generator = this.CreateGenerator();
-
-            // Act
-            var result = generator.GenerateProxy(typeof(TypeThatDependsOnDelegate), Enumerable.Empty<Type>(), this.fakeObject, null);
-            
-            // Assert
-            Assert.That(result.ProxyWasSuccessfullyCreated, Is.False);
         }
 
         public class TypeThatDependsOnDelegate
@@ -497,61 +503,13 @@ IFakeObjectContainer in order to generate a fake of this type."));
             public ClassWithDefaultConstructorAndResolvableConstructor()
             { }
 
-            public ClassWithDefaultConstructorAndResolvableConstructor(ISomeInterface a)
-            { }
-
             public ClassWithDefaultConstructorAndResolvableConstructor(ISomeInterface a, IFoo b)
             {
                 this.WidestConstructorWasCalled = true;
             }
         }
 
-        public class CircularClassA
-        {
-            public CircularClassA(CircularClassB b)
-            { }
-        }
-
-        public class CircularClassB
-        {
-            public CircularClassB(CircularClassA a)
-            {
-
-            }
-        }
-
-        public class TypeThatTakesProxyableTypeInConstructor
-        {
-            public TypeThatTakesProxyableTypeInConstructor(IFormattable formattable)
-            {
-
-            }
-        }
-
-        public class TypeThatTakesValueTypeInConstructor
-        {
-            public TypeThatTakesValueTypeInConstructor(int value)
-            {
-
-            }
-        }
-
-        public class TypeWithAbstractArgumentToConstructor
-        {
-            public TypeWithAbstractArgumentToConstructor(AbstractClassWithDefaultConstructor argument)
-            {
-
-            }
-        }
-
-        public class SealedTypeThatTakesClassWithDefaultConstructorInConstructor
-        {
-            public SealedTypeThatTakesClassWithDefaultConstructorInConstructor(TypeWithDefaultConstructor a)
-            {
-
-            }
-        }
-
+      
         public sealed class TypeWithDefaultConstructor
         {
             public TypeWithDefaultConstructor()
@@ -597,21 +555,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
         {
 
         }
-
-        public abstract class AbstractClassWithHiddenConstructor
-        {
-            private AbstractClassWithHiddenConstructor()
-            { }
-        }
-
-        public class ClassWithHiddenConstructor
-        {
-            private ClassWithHiddenConstructor()
-            {
-
-            }
-        }
-
+      
         public sealed class SealedClass
         {
 
@@ -627,34 +571,17 @@ IFakeObjectContainer in order to generate a fake of this type."));
             public int Foo { get; set; }
         }
 
-        public class TypeWithNoResolvableConstructor
+        public abstract class AbstractClassWithHiddenConstructor
         {
-            public TypeWithNoResolvableConstructor(IFoo foo, NoInstanceType bar)
+            private AbstractClassWithHiddenConstructor()
+            { }
+        }
+
+        public class ClassWithHiddenConstructor
+        {
+            private ClassWithHiddenConstructor()
             {
 
-            }
-
-            protected TypeWithNoResolvableConstructor(NoInstanceType bar)
-            {
-
-            }
-
-            internal TypeWithNoResolvableConstructor(NoInstanceType bar, string foo)
-            {
-
-            }
-
-            private TypeWithNoResolvableConstructor()
-            {
-
-            }
-
-            public class NoInstanceType
-            {
-                private NoInstanceType()
-                {
-
-                }
             }
         }
     }

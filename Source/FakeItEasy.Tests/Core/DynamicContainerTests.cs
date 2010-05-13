@@ -8,16 +8,15 @@ namespace FakeItEasy.Core.Tests
     [TestFixture]
     public class DynamicContainerTests
     {
-        private ITypeAccessor typeAccessor;
+        private ITypeCatalogue typeAccessor;
         private List<Type> availableTypes;
-        private DynamicContainer container;
-
+        
         [SetUp]
         public void SetUp()
         {
             this.availableTypes = new List<Type>();
 
-            this.typeAccessor = A.Fake<ITypeAccessor>();
+            this.typeAccessor = A.Fake<ITypeCatalogue>();
             A.CallTo(() => this.typeAccessor.GetAvailableTypes()).Returns(this.availableTypes);
         }
 

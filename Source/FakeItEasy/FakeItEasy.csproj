@@ -67,10 +67,10 @@
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeAccessor.cs" />
     <Compile Include="Core\Creation\DefaultFakeCreator.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
-    <Compile Include="Core\FakeConfigurator.cs" />
-    <Compile Include="Core\DummyDefinition.cs" />
-    <Compile Include="Core\IFakeConfigurator.cs" />
-    <Compile Include="Core\IDummyDefinition.cs" />
+    <Compile Include="FakeConfigurator.cs" />
+    <Compile Include="DummyDefinition.cs" />
+    <Compile Include="IFakeConfigurator.cs" />
+    <Compile Include="IDummyDefinition.cs" />
     <Compile Include="Core\IFakeWrapperConfigurator.cs" />
     <Compile Include="Core\Creation\IProxyGeneratorFactory.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
@@ -93,7 +93,14 @@
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
     <Compile Include="Core\DynamicContainer.cs" />
-    <Compile Include="Core\ITypeAccessor.cs" />
+    <Compile Include="Core\ITypeCatalogue.cs" />
+    <Compile Include="Core\ArgumentInfo.cs" />
+    <Compile Include="Core\ConstructorAndArgumentsInfo.cs" />
+    <Compile Include="Core\Creation\DefaultConstructorResolver.cs" />
+    <Compile Include="Core\Creation\DefaultDummyValueCreator.cs" />
+    <Compile Include="Core\Creation\IConstructorResolver.cs" />
+    <Compile Include="Core\Creation\IFakeCreationSession.cs" />
+    <Compile Include="Core\Creation\IDummyValueCreator.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -137,21 +144,21 @@
     <Compile Include="Expressions\ExpressionCallMatcher.cs" />
     <Compile Include="Core\IFakeObjectContainer.cs" />
     <Compile Include="Core\NullFakeObjectContainer.cs" />
-    <Compile Include="Core\FakeObject.EventRule.cs">
-      <DependentUpon>FakeObject.cs</DependentUpon>
+    <Compile Include="Core\FakeManager.EventRule.cs">
+      <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\FakeObject.AutoFakePropertyRule.cs">
-      <DependentUpon>FakeObject.cs</DependentUpon>
+    <Compile Include="Core\FakeManager.AutoFakePropertyRule.cs">
+      <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\DefaultReturnValueRule.cs" />
-    <Compile Include="Core\FakeObject.ObjectMemberRule.cs">
-      <DependentUpon>FakeObject.cs</DependentUpon>
+    <Compile Include="Core\FakeManager.ObjectMemberRule.cs">
+      <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\FakeObject.PropertyBehaviorRule.cs">
-      <DependentUpon>FakeObject.cs</DependentUpon>
+    <Compile Include="Core\FakeManager.PropertyBehaviorRule.cs">
+      <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\FakeObject.PropertySetterRule.cs">
-      <DependentUpon>FakeObject.cs</DependentUpon>
+    <Compile Include="Core\FakeManager.PropertySetterRule.cs">
+      <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Helpers.cs" />
     <Compile Include="Core\ICompletedFakeObjectCall.cs" />
@@ -187,7 +194,7 @@
     <Compile Include="Core\IEventRaiserArguments.cs" />
     <Compile Include="IoC\Module.cs" />
     <Compile Include="Core\Creation\IProxyGenerator.cs" />
-    <Compile Include="Core\FakeObject.cs" />
+    <Compile Include="Core\FakeManager.cs" />
     <Compile Include="Fake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Creation\ProxyResult.cs" />
@@ -214,7 +221,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Core\Creation\Creation.cd" />
     <None Include="FakeItEasy.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
