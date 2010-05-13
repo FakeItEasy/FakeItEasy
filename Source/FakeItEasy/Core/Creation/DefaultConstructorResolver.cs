@@ -27,7 +27,7 @@ namespace FakeItEasy.Core.Creation
         /// <returns>A collection of constructors.</returns>
         public IEnumerable<ConstructorAndArgumentsInfo> ListAllConstructors(Type type)
         {
-            var constructors = this.GetConstructorsCallableByProxy(type);
+            var constructors = GetConstructorsCallableByProxy(type);
 
             foreach (var constructor in constructors)
             {
@@ -41,7 +41,7 @@ namespace FakeItEasy.Core.Creation
             return constructor.GetParameters().Select(x => x.ParameterType);
         }
 
-        private IEnumerable<ConstructorInfo> GetConstructorsCallableByProxy(Type type)
+        private static IEnumerable<ConstructorInfo> GetConstructorsCallableByProxy(Type type)
         {
             return
                 from constructor in type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)

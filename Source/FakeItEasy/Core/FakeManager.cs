@@ -146,7 +146,7 @@ namespace FakeItEasy.Core
         internal virtual void SetProxy(ProxyResult proxy)
         {
             this.Object = proxy.Proxy;
-            this.FakeObjectType = proxy.ProxiedType;
+            this.FakeObjectType = proxy.TypeOfProxy;
             proxy.CallWasIntercepted += this.Proxy_CallWasIntercepted;
         }
 

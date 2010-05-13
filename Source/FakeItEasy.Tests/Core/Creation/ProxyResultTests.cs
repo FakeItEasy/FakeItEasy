@@ -37,7 +37,7 @@ namespace FakeItEasy.Tests.Core.Creation
         {
             var result = this.CreateResult(typeof(IFoo));
 
-            Assert.That(result.ProxiedType, Is.EqualTo(typeof(IFoo)));
+            Assert.That(result.TypeOfProxy, Is.EqualTo(typeof(IFoo)));
         }
 
         [Test]
@@ -52,8 +52,8 @@ namespace FakeItEasy.Tests.Core.Creation
         public class TestableProxyResult
             : ProxyResult
         {
-            public TestableProxyResult(Type proxiedType)
-                : base(proxiedType)
+            public TestableProxyResult(Type typeOfProxy)
+                : base(typeOfProxy)
             {
                 
             }

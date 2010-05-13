@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core.Creation
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     
     /// <summary>
     /// Represents a fake creation session.
@@ -13,6 +14,7 @@ namespace FakeItEasy.Core.Creation
         /// <param name="type">The type of dummy value to get.</param>
         /// <param name="value">An output parameter for the cached dummy value.</param>
         /// <returns>True if a cached value exists.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate", Justification = "Used by the framework, generics would provide no benefit.")]
         bool TryGetCachedDummyValue(Type type, out object value);
 
         /// <summary>

@@ -2,6 +2,7 @@ namespace FakeItEasy.Core.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using FakeItEasy.Core;
 
@@ -131,6 +132,7 @@ namespace FakeItEasy.Core.Creation
             return false;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private bool TryResolveByActivating(Type type, out object dummy)
         {
             if (IsTypeThatCanNotBeActivated(type))

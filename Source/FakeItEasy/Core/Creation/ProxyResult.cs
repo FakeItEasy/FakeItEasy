@@ -16,21 +16,19 @@ namespace FakeItEasy.Core.Creation
         /// <summary>
         /// Initializes a new instance of the <see cref="ProxyResult"/> class.
         /// </summary>
-        /// <param name="proxiedType">Type of the proxied.</param>
-		[SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId="proxied")]
-		protected ProxyResult(Type proxiedType)
+        /// <param name="typeOfProxy">Type of the proxied.</param>
+		protected ProxyResult(Type typeOfProxy)
         {
-            Guard.AgainstNull(proxiedType, "proxiedType");
+            Guard.AgainstNull(typeOfProxy, "typeOfProxy");
 
-            this.ProxiedType = proxiedType;
+            this.TypeOfProxy = typeOfProxy;
         }
 
         /// <summary>
         /// Gets the type of the generated proxy.
         /// </summary>
         /// <value>The type of the generated proxy.</value>
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Proxied")]
-        public Type ProxiedType
+        public Type TypeOfProxy
         {
             get;
             private set;
@@ -74,7 +72,7 @@ namespace FakeItEasy.Core.Creation
             {
                 Guard.AgainstNull(value, "value");
 
-                if (!this.ProxiedType.IsAssignableFrom(value.GetType()))
+                if (!this.TypeOfProxy.IsAssignableFrom(value.GetType()))
                 {
                     throw new ArgumentException("The specified proxy is not of the correct type.");
                 }

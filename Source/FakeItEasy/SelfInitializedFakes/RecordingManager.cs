@@ -82,6 +82,7 @@
         /// Saves all recorded calls to the storage.
         /// </summary>
         [SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly", Justification = "Does not have a finalizer.")]
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "The dispose method is provided for enabling using statement only, virtual for testability.")]
         public virtual void Dispose()
         {
             this.storage.Save(this.recordedCalls.Select(x => x.RecordedCall));
