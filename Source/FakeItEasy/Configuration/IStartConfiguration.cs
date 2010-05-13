@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Configuration
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
 
     /// <summary>
@@ -17,6 +18,7 @@
         /// <typeparam name="TMember">The type of the return value of the member.</typeparam>
         /// <param name="callSpecification">An expression that specifies the calls to configure.</param>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(Expression<Func<TFake, TMember>> callSpecification);
 
         /// <summary>
@@ -25,6 +27,7 @@
         /// </summary>
         /// <param name="callSpecification">An expression that specifies the calls to configure.</param>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         IVoidArgumentValidationConfiguration CallsTo(Expression<Action<TFake>> callSpecification);
 
         /// <summary>

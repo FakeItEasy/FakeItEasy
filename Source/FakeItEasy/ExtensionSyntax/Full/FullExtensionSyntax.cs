@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.ExtensionSyntax.Full
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
 
@@ -19,6 +20,7 @@
         /// <param name="fakedObject">The faked object to configure.</param>
         /// <typeparam name="TFake">The type of fake object to configure.</typeparam>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TFake, TMember>(this TFake fakedObject, Expression<Func<TFake, TMember>> callSpecification)
         {
             Guard.AgainstNull(callSpecification, "callSpecification");
@@ -34,6 +36,7 @@
         /// <typeparam name="TFake">The type of fake object to configure.</typeparam>
         /// <param name="callSpecification">An expression that specifies the calls to configure.</param>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static IVoidArgumentValidationConfiguration CallsTo<TFake>(this TFake fakedObject, Expression<Action<TFake>> callSpecification)
         {
             Guard.AgainstNull(callSpecification, "callSpecification");

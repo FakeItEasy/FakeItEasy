@@ -3,6 +3,7 @@ namespace FakeItEasy.Core.Creation
     using System;
     using System.Diagnostics;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represents a result from an IProxyGenerator.
@@ -16,7 +17,8 @@ namespace FakeItEasy.Core.Creation
         /// Initializes a new instance of the <see cref="ProxyResult"/> class.
         /// </summary>
         /// <param name="proxiedType">Type of the proxied.</param>
-        protected ProxyResult(Type proxiedType)
+		[SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId="proxied")]
+		protected ProxyResult(Type proxiedType)
         {
             Guard.AgainstNull(proxiedType, "proxiedType");
 
@@ -27,6 +29,7 @@ namespace FakeItEasy.Core.Creation
         /// Gets the type of the generated proxy.
         /// </summary>
         /// <value>The type of the generated proxy.</value>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Proxied")]
         public Type ProxiedType
         {
             get;

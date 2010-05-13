@@ -1,10 +1,12 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     
     /// <summary>
     /// Provides configurations for fake objects of a specific type.
     /// </summary>
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurator", Justification = "I'm from Sweden.")]
     public interface IFakeConfigurator
     {
         /// <summary>

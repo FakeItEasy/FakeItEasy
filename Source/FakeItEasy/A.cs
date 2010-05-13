@@ -3,8 +3,8 @@ namespace FakeItEasy
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
-    using System.Runtime.CompilerServices;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core.Creation;
     using FakeItEasy.Expressions;
@@ -12,6 +12,7 @@ namespace FakeItEasy
     /// <summary>
     /// Provides methods for generating fake objects.
     /// </summary>
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A")]
     public static class A
     {
         private static IFakeConfigurationManager ConfigurationManager
@@ -46,6 +47,7 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of fake object to create.</typeparam>
         /// <param name="options">A lambda where options for the built fake object cna be specified.</param>
         /// <returns>A fake object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static T Fake<T>(Action<IFakeOptionsBuilder<T>> options)
         {
             return FakeCreator.CreateFake<T>(options);
@@ -82,6 +84,7 @@ namespace FakeItEasy
         /// <param name="objB">The second object to compare.</param>
         /// <returns>True if the two objects are equal.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Uses the same naming as the framework")]
         public static new bool Equals(object objA, object objB)
         {
             return object.Equals(objA, objB);
@@ -94,6 +97,7 @@ namespace FakeItEasy
         /// <param name="objB">The obj B.</param>
         /// <returns>True if the objects are the same reference.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Uses the same naming as the framework")]
         public static new bool ReferenceEquals(object objA, object objB)
         {
             return object.ReferenceEquals(objA, objB);
@@ -115,6 +119,7 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of member on the faked object to configure.</typeparam>
         /// <param name="callSpecification">An expression where the configured memeber is called.</param>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
@@ -125,11 +130,13 @@ namespace FakeItEasy
     /// Provides an api entry point for validating arguments of fake object calls.
     /// </summary>
     /// <typeparam name="T">The type of argument to validate.</typeparam>
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A")]
     public static class A<T>
     {
         /// <summary>
         /// Gets an argument validations object that provides validations for the argument.
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static ArgumentConstraintScope<T> That
         {
             get
@@ -141,6 +148,7 @@ namespace FakeItEasy
         /// <summary>
         /// Returns a constraint that considers any value of an argument as valid.
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static ArgumentConstraint<T> Ignored
         {
             get

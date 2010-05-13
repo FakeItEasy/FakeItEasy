@@ -4,12 +4,11 @@ namespace FakeItEasy
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
-    using System.Linq;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Expressions;
-using FakeItEasy.Core.Creation;
+    using FakeItEasy.Core.Creation;
 
     /// <summary>
     /// Provides static methods for accessing fake objects.
@@ -22,6 +21,7 @@ using FakeItEasy.Core.Creation;
         /// <param name="fakedObject">The faked object to get the manager object for.</param>
         /// <returns>The fake object manager.</returns>
         [DebuggerStepThrough]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static FakeObject GetFakeObject(object fakedObject)
         {
             Guard.AgainstNull(fakedObject, "fakedObject");
@@ -69,6 +69,7 @@ using FakeItEasy.Core.Creation;
         /// <param name="objB">The second object to compare.</param>
         /// <returns>True if the two objects are equal.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Using the same names as the hidden method.")]
         public new static bool Equals(object objA, object objB)
         {
             return object.Equals(objA, objB);
@@ -81,6 +82,7 @@ using FakeItEasy.Core.Creation;
         /// <param name="objB">The obj B.</param>
         /// <returns>True if the objects are the same reference.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Using the same names as the hidden method.")]
         public new static bool ReferenceEquals(object objA, object objB)
         {
             return object.ReferenceEquals(objA, objB);
@@ -92,6 +94,7 @@ using FakeItEasy.Core.Creation;
         /// <param name="fakedObject">The faked object.</param>
         /// <returns>A collection containing the calls to the object.</returns>
         /// <exception cref="ArgumentException">The object passed in is not a faked object.</exception>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static IEnumerable<ICompletedFakeObjectCall> GetCalls(object fakedObject)
         {
             Guard.AgainstNull(fakedObject, "fakedObject");
@@ -120,6 +123,7 @@ using FakeItEasy.Core.Creation;
         /// Creates a new fake object using the specified options.
         /// </summary>
         /// <param name="options">Options used to create the fake object.</param>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public Fake(Action<IFakeOptionsBuilder<T>> options)
         {
             Guard.AgainstNull(options, "options");
@@ -173,6 +177,7 @@ using FakeItEasy.Core.Creation;
         /// </summary>
         /// <param name="callSpecification">An expression specifying the call to configure.</param>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public IVoidArgumentValidationConfiguration CallsTo(Expression<Action<T>> callSpecification)
         {
             return this.StartConfiguration.CallsTo(callSpecification);
@@ -184,6 +189,7 @@ using FakeItEasy.Core.Creation;
         /// <typeparam name="TMember">The type of value the member returns.</typeparam>
         /// <param name="callSpecification">An expression specifying the call to configure.</param>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(Expression<Func<T, TMember>> callSpecification)
         {
             return this.StartConfiguration.CallsTo(callSpecification);

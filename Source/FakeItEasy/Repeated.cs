@@ -1,6 +1,7 @@
 namespace FakeItEasy
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
 
     /// <summary>
@@ -69,6 +70,7 @@ namespace FakeItEasy
         /// <param name="repeatValidation">A predicate that specifies the number of times
         /// a call must have been made.</param>
         /// <returns>A Repeated-instance.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static Repeated Like(Expression<Func<int, bool>> repeatValidation)
         {
             return new ExpressionRepeated(repeatValidation);
