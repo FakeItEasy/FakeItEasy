@@ -124,10 +124,11 @@
 		<Delete Files="@(pdbFiles)" />
 	</Target>
 	
-	<Target Name="CodeAnalysis" DependsOnTargets="ReBuild;Copy">
+	<Target Name="CodeAnalysis">
 		<MakeDir Directories="$(BuildPath)\Artifacts" />
+		<MSBuild Projects="Source\$(ProjectName).sln" Targets="Build" Properties="Configuration=Debug$(BuildFramework);BuildConstants=$(BuildConstants);MSBuildTargets=$(BuildTargets)"/>
 		<Exec 
-			Command="&quot;$(FxCopCmdPath)&quot; /searchgac /project:Source\FakeItEasy\FakeItEasy.FxCop /out:$(BuildPath)\Artifacts\FxCop.xml" 
+			Command="&quot;$(FxCopCmdPath)&quot; /searchgac /file:Source\FakeItEasy\bin\Debug\FakeItEasy.dll /out:$(BuildPath)\Artifacts\FxCop.xml" 
 			ContinueOnError="False" />
 	</Target>
 	
