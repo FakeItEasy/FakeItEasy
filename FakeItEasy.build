@@ -11,9 +11,9 @@
 		<Configuration Condition="$(Configuration)==''">Release</Configuration>
 		<BuildFramework></BuildFramework>
 		<AllowPartiallyTrustedCallers Condition="$(AllowPartiallyTrustedCallers)==''">true</AllowPartiallyTrustedCallers>
-		<FxCopCmdPath>C:\Program Files (x86)\Microsoft FxCop 1.36\FxCopCmd.exe</FxCopCmdPath>
-		<SnCmdPath>C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\sn.exe</SnCmdPath>
-		<!--<VersionNumber>1.0.0.0</VersionNumber>-->
+		<FxCopCmdPath Condition="$(FxCopCmdPath)==''">C:\Program Files (x86)\Microsoft FxCop 1.36\FxCopCmd.exe</FxCopCmdPath>
+		<SnCmdPath Condition="$(SnCmdPath)==''">C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\sn.exe</SnCmdPath>
+		<ILMergeCmdPath Condition="$(ILMergeCmdPath)==''">C:\Program Files (x86)\Microsoft\ILMerge\ILMerge.exe</ILMergeCmdPath>
 		<!--
 			Derived configuration properties
 		 -->
@@ -105,7 +105,7 @@
 			<Output ItemName="binariesToMerge" TaskParameter="Include"/>
 		</CreateItem>
 		
-		<Exec Command="&quot;Libraries\Ilmerge\Ilmerge.exe&quot; /out:&quot;$(BinariesPath)\$(ProjectName).dll&quot; /delaysign  /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge, ' ')"/>
+		<Exec Command="&quot;$(ILMergeCmdPath)&quot; /out:&quot;$(BinariesPath)\$(ProjectName).dll&quot; /delaysign  /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge, ' ')"/>
 		<Exec Command="&quot;$(SnCmdPath)&quot; -R &quot;$(BinariesPath)\FakeIteasy.dll&quot; &quot;Source\FakeItEasy\FakeItEasy.snk&quot;" />
 		<Delete Files="@(binariesToMerge)" />
 		
@@ -124,9 +124,12 @@
 		<Delete Files="@(pdbFiles)" />
 	</Target>
 	
-	<Target Name="CodeAnalysis">
-		<MakeDir Directories="$(BuildPath)\Artifacts" />
+	<Target Name="BuildDebug">
 		<MSBuild Projects="Source\$(ProjectName).sln" Targets="Build" Properties="Configuration=Debug$(BuildFramework);BuildConstants=$(BuildConstants);MSBuildTargets=$(BuildTargets)"/>
+	</Target>
+	
+	<Target Name="CodeAnalysis" DependsOnTargets="BuildDebug">
+		<MakeDir Directories="$(BuildPath)\Artifacts" />
 		<Exec 
 			Command="&quot;$(FxCopCmdPath)&quot; /searchgac /file:Source\FakeItEasy\bin\Debug\FakeItEasy.dll /out:$(BuildPath)\Artifacts\FxCop.xml" 
 			ContinueOnError="False" />

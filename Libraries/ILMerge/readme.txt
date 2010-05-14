@@ -1,1 +1,0 @@
-The license of the ILMerge tool does not allow for redistribution, to build download it from http://msdn.microsoft.com/en-us/netframework/aa569269.aspx and place the file in the same folder as this readme-file.
