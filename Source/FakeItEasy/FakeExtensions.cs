@@ -110,7 +110,17 @@ namespace FakeItEasy
         /// <returns>A configuration object.</returns>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<T> configuration, T value)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.ReturnsLazily(x => value);
+        }
+
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this IReturnValueConfiguration<T> configuration, Func<T> valueProducer)
+        {
+            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(valueProducer, "valueProducer");
+
+            return configuration.ReturnsLazily(x => valueProducer());
         }
     }
 }

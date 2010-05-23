@@ -37,7 +37,7 @@ namespace FakeItEasy.Tests
             var repeatConfig = A.Fake<IRepeatConfiguration>();
             
             repeatConfig.Twice();
-
+            
             A.CallTo(() => repeatConfig.NumberOfTimes(2)).MustHaveHappened(Repeated.Once);
         }
 
@@ -245,6 +245,49 @@ namespace FakeItEasy.Tests
 
             // Assert
             Assert.That(returned, Is.SameAs(expectedConfig));
+        }
+
+        [Test]
+        public void Returns_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            //NullGuardedConstraint.Assert(() =>
+            NullGuardedConstraint.Assert(() => 
+                A.Fake<IReturnValueConfiguration<string>>().Returns(null));
+        }
+
+        [Test]
+        public void Curried_ReturnsLazily_returns_value_from_curried_function()
+        {
+            // Arrange
+            var config = A.Fake<IReturnValueConfiguration<int>>();
+            int currentValue = 10;
+
+            // Act
+            config.ReturnsLazily(() => currentValue);
+
+            // Assert
+            var curriedFunction = Fake.GetCalls(config).Single().Arguments.Get<Func<IFakeObjectCall, int>>(0);
+
+            Assert.That(curriedFunction.Invoke(A.Dummy<IFakeObjectCall>()), Is.EqualTo(currentValue));
+            currentValue = 20;
+            Assert.That(curriedFunction.Invoke(A.Dummy<IFakeObjectCall>()), Is.EqualTo(currentValue));
+        }
+
+        [Test]
+        public void Curried_ReturnsLazily_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                A.Fake<IReturnValueConfiguration<int>>().ReturnsLazily(() => 10));
         }
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)
