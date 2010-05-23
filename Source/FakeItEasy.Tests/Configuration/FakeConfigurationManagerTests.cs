@@ -46,7 +46,7 @@ namespace FakeItEasy.Tests.Configuration
 
             this.fakeObjectReturnedFromParser = new FakeManager();
 
-            A.CallTo(() => this.expressionParser.GetFakeObjectCallIsMadeOn(A<LambdaExpression>.Ignored)).Returns(x => this.fakeObjectReturnedFromParser);
+            A.CallTo(() => this.expressionParser.GetFakeObjectCallIsMadeOn(A<LambdaExpression>.Ignored)).ReturnsLazily(x => this.fakeObjectReturnedFromParser);
 
             this.configurationManager = this.CreateManager();
         }

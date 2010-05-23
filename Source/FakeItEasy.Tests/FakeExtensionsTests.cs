@@ -51,31 +51,31 @@ namespace FakeItEasy.Tests
         [Test]
         public void ReturnsNull_should_set_call_returns_with_null_on_configuration()
         {
-            var config = A.Fake<IReturnValueConfiguration<string>>();
-            config.ReturnsNull();
-
-            A.CallTo(() => config.Returns(A<string>.That.IsNull())).MustHaveHappened(Repeated.Once);
+#if DEBUG
+            throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
         }
 
         [Test]
         public void ReturnsNull_should_return_configuration_object()
         {
-            var config = A.Fake<IReturnValueConfiguration<string>>();
-            var returnConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
-
-            A.CallTo(() => config.Returns(A<string>.Ignored)).Returns(returnConfig);
-
-            var returned = config.ReturnsNull();
-            var f = new Fake<IFoo>();
-            
-            Assert.That(returned, Is.SameAs(returnConfig));
+#if DEBUG
+            throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
         }
 
         [Test]
         public void ReturnsNull_should_be_null_guarded()
         {
-            NullGuardedConstraint.Assert(() =>
-                FakeExtensions.ReturnsNull(A.Fake<IReturnValueConfiguration<string>>()));
+#if DEBUG
+            throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
         }
 
         [Test]
@@ -212,18 +212,19 @@ namespace FakeItEasy.Tests
             // Arrange
             var sequence = new[] { 1, 2, 3 };
             var config = A.Fake<IReturnValueConfiguration<int>>();
+            var call = A.Fake<IFakeObjectCall>();
 
             // Act
             FakeExtensions.ReturnsNextFromSequence(config, sequence);
 
             // Assert
-            var factoryValidator = A<Func<int>>.That.Matches(x => 
+            var factoryValidator = A<Func<IFakeObjectCall, int>>.That.Matches(x => 
             {
-                var producedSequence = new[] { x.Invoke(), x.Invoke(), x.Invoke() };
+                var producedSequence = new[] { x.Invoke(call), x.Invoke(call), x.Invoke(call) };
                 return producedSequence.SequenceEqual(sequence);
             });
-
-            A.CallTo(() => config.Returns(factoryValidator)).MustHaveHappened();
+            
+            A.CallTo(() => config.ReturnsLazily(factoryValidator)).MustHaveHappened();
         }
 
         [Test]
@@ -233,7 +234,7 @@ namespace FakeItEasy.Tests
             var config = A.Fake<IReturnValueConfiguration<int>>();
             var returnedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
 
-            A.CallTo(() => config.Returns(A<Func<int>>.Ignored)).Returns(returnedConfig);
+            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.Ignored)).Returns(returnedConfig);
 
             // Act
 
@@ -252,13 +253,28 @@ namespace FakeItEasy.Tests
             FakeExtensions.ReturnsNextFromSequence(config, sequence);
 
             // Assert
-            var factoryValidator = A<Func<string>>.That.Matches(x =>
+            var factoryValidator = A<Func<IFakeObjectCall, string>>.That.Matches(x =>
             {
-                x.Invoke();
-                return x.Invoke() == null;
+                x.Invoke(A.Dummy<IFakeObjectCall>());
+                return x.Invoke(A.Dummy<IFakeObjectCall>()) == null;
             });
 
-            A.CallTo(() => config.Returns(factoryValidator)).MustHaveHappened();
+            A.CallTo(() => config.ReturnsLazily(factoryValidator)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Returns_should_return_configuration_returned_from_passed_in_configuration()
+        {
+            // Arrange
+            var expectedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
+            var config = A.Fake <IReturnValueConfiguration<int>>();
+            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.That.Matches(x => x.Invoke(null) == 10))).Returns(expectedConfig);
+            
+            // Act
+            var returned = FakeExtensions.Returns(config, 10);
+
+            // Assert
+            Assert.That(returned, Is.SameAs(expectedConfig));
         }
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)

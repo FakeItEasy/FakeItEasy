@@ -43,7 +43,7 @@ namespace FakeItEasy.Tests.Core
             foreach (var call in this.calls)
             {
                 var boundCallNumber = callNumber;
-                A.CallTo(() => call.ToString()).Returns(x => "Fake call " + boundCallNumber.ToString());
+                A.CallTo(() => call.ToString()).ReturnsLazily(x => "Fake call " + boundCallNumber.ToString());
                 callNumber++;
             }
 
@@ -120,7 +120,7 @@ namespace FakeItEasy.Tests.Core
 
             foreach (var call in this.calls)
             {
-                A.CallTo(() => call.ToString()).Returns(x => string.Format(CultureInfo.InvariantCulture, "Fake call {0}", Guid.NewGuid()));
+                A.CallTo(() => call.ToString()).ReturnsLazily(x => string.Format(CultureInfo.InvariantCulture, "Fake call {0}", Guid.NewGuid()));
             }
 
             A.CallTo(() => this.calls[18].ToString()).Returns("Last call");
@@ -143,7 +143,7 @@ namespace FakeItEasy.Tests.Core
             foreach (var call in this.calls)
             {
                 var boundCallNumber = callNumber;
-                A.CallTo(() => call.ToString()).Returns(x => "Fake call " + boundCallNumber.ToString());
+                A.CallTo(() => call.ToString()).ReturnsLazily(x => "Fake call " + boundCallNumber.ToString());
                 callNumber++;
             }
 

@@ -109,7 +109,7 @@
                 new object[] { 1, 2 },
                 new string[] { "foo", "bar" }));
 
-            returnConfig.Returns(x => x.Arguments.Get<int>("bar"));
+            returnConfig.ReturnsLazily(x => x.Arguments.Get<int>("bar"));
 
             this.ruleProducedByFactory.Applicator(call);
 
@@ -121,7 +121,7 @@
         {
             var config = this.CreateTestableReturnConfiguration();
 
-            var returned = config.Returns(x => x.Arguments.Get<int>(0));
+            var returned = config.ReturnsLazily(x => x.Arguments.Get<int>(0));
 
             Assert.That(returned, Is.EqualTo(config.ParentConfiguration));
         }
@@ -131,7 +131,7 @@
         {
             var config = this.CreateTestableReturnConfiguration();
 
-            NullGuardedConstraint.Assert(() => config.Returns(x => x.Arguments.Get<int>(0)));
+            NullGuardedConstraint.Assert(() => config.ReturnsLazily(x => x.Arguments.Get<int>(0)));
         }
 
         [Test]

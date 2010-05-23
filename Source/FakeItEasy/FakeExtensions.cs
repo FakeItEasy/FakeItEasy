@@ -113,7 +113,17 @@ namespace FakeItEasy
         {
             var queue = new Queue<T>(values);
 
-            return configuration.Returns(() => queue.Count != 0 ? queue.Dequeue() : default(T));
+            return configuration.ReturnsLazily(x => queue.Count != 0 ? queue.Dequeue() : default(T));
+        }
+
+        /// <summary>
+        /// Specifies the value to return when the configured call is made.
+        /// </summary>
+        /// <param name="value">The value to return.</param>
+        /// <returns>A configuration object.</returns>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<T> configuration, T value)
+        {
+            return configuration.ReturnsLazily(x => value);
         }
     }
 }

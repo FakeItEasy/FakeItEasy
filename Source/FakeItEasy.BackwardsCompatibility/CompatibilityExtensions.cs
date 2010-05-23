@@ -23,5 +23,17 @@ namespace FakeItEasy
         {
             configuration.MustHaveHappened(repeatValidation);
         }
+
+        /// <summary>
+        /// Specifies a function used to produce a return value when the configured call is made.
+        /// The function will be called each time this call is made and can return different values
+        /// each time.
+        /// </summary>
+        /// <param name="valueProducer">A function that produces the return value.</param>
+        /// <returns>A configuration object.</returns>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<TMember>(this IReturnValueConfiguration<TMember> configuration, Func<TMember> valueProducer)
+        {
+            return configuration.ReturnsLazily(x => valueProducer.Invoke());
+        }
     }
 }

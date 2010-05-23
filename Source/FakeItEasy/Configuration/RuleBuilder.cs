@@ -153,7 +153,7 @@ namespace FakeItEasy.Configuration
                 return this.ParentConfiguration.Throws(exception);
             }
 
-            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(Func<IFakeObjectCall, TMember> valueProducer)
+            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily(Func<IFakeObjectCall, TMember> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, "valueProducer");
 

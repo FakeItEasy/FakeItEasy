@@ -40,7 +40,7 @@ namespace FakeItEasy.Tests.Assertion
                     ServiceLocator.Current.Resolve<MethodInfoManager>())));
 
             this.callMatcherFactory = A.Fake<IExpressionCallMatcherFactory>();
-            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(A<LambdaExpression>.Ignored)).Returns(() => this.matcher);
+            A.CallTo(() => this.callMatcherFactory.CreateCallMathcer(A<LambdaExpression>.Ignored)).ReturnsLazily(x => this.matcher);
 
             this.fakeAsserterFactory = x =>
                 {
