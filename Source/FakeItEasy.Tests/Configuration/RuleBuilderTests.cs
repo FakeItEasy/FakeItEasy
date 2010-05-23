@@ -11,7 +11,7 @@
     {
         private RuleBuilder builder;
         private BuildableCallRule ruleProducedByFactory;
-        private FakeManager fakeObject;
+        private FakeManager fakeManager;
         private FakeAsserter asserter;
 
         [SetUp]
@@ -23,7 +23,7 @@
         protected virtual void OnSetUp()
         {
             this.ruleProducedByFactory = A.Fake<BuildableCallRule>();
-            this.fakeObject = new FakeManager();
+            this.fakeManager = new FakeManager();
             this.asserter = A.Fake<FakeAsserter>();
 
             this.builder = this.CreateBuilder();
@@ -31,12 +31,12 @@
 
         private RuleBuilder CreateBuilder()
         {
-            return new RuleBuilder(this.ruleProducedByFactory, this.fakeObject, x => this.asserter);
+            return new RuleBuilder(this.ruleProducedByFactory, this.fakeManager, x => this.asserter);
         }
 
         private RuleBuilder CreateBuilder(BuildableCallRule ruleBeingBuilt)
         {
-            return new RuleBuilder(ruleBeingBuilt, this.fakeObject, x => this.asserter);
+            return new RuleBuilder(ruleBeingBuilt, this.fakeManager, x => this.asserter);
         }
 
      
@@ -397,13 +397,13 @@
         public void Assert_with_void_call_should_remove_built_rule_from_fake_object()
         {
             // Arrange
-            this.fakeObject.AddRuleFirst(this.ruleProducedByFactory);
+            this.fakeManager.AddRuleFirst(this.ruleProducedByFactory);
 
             // Act
             this.builder.MustHaveHappened(Repeated.Once);
 
             // Assert
-            Assert.That(this.fakeObject.Rules, Is.Empty);
+            Assert.That(this.fakeManager.Rules, Is.Empty);
         }
 
         [Test]
@@ -426,14 +426,14 @@
         public void Assert_with_function_call_should_remove_built_rule_from_fake_object()
         {
             // Arrange
-            this.fakeObject.AddRuleFirst(this.ruleProducedByFactory);
+            this.fakeManager.AddRuleFirst(this.ruleProducedByFactory);
 
             // Act
             var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
             returnConfig.MustHaveHappened(Repeated.Once);
 
             // Assert
-            Assert.That(this.fakeObject.Rules, Is.Empty);
+            Assert.That(this.fakeManager.Rules, Is.Empty);
         }
 
         private RuleBuilder.ReturnValueConfiguration<int> CreateTestableReturnConfiguration()
