@@ -134,20 +134,6 @@ namespace FakeItEasy.Configuration
                 get { return this.ParentConfiguration.Calls; }
             }
 
-            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(TMember value)
-            {
-                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(value);
-                return this.ParentConfiguration;
-            }
-
-            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(Func<TMember> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer, "valueProducer");
-
-                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(valueProducer.Invoke());
-                return this.ParentConfiguration;
-            }
-
             public IAfterCallSpecifiedConfiguration Throws(Exception exception)
             {
                 return this.ParentConfiguration.Throws(exception);

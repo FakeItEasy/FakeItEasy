@@ -64,41 +64,6 @@
         }
 
         [Test]
-        public void Returns_called_with_delegate_sets_return_value_produced_by_delegate_each_time()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-            var call = A.Fake<IWritableFakeObjectCall>();
-            int i = 1;
-            
-            returnConfig.Returns(() => i++);
-
-            this.ruleProducedByFactory.Applicator(call);
-            this.ruleProducedByFactory.Applicator(call);
-
-            A.CallTo(() => call.SetReturnValue(1)).MustHaveHappened();
-            A.CallTo(() => call.SetReturnValue(2)).MustHaveHappened();
-        }
-
-        [Test]
-        public void Returns_with_delegate_throws_when_delegate_is_null()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-            
-            Assert.Throws<ArgumentNullException>(() =>
-                returnConfig.Returns((Func<int>)null));
-        }
-
-        [Test]
-        public void Returns_called_with_delegate_returns_parent_cofiguration()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-
-            var result = returnConfig.Returns(() => 10);
-
-            Assert.That(result, Is.EqualTo(this.builder));
-        }
-
-        [Test]
         public void Returns_with_call_function_applies_value_returned_from_function()
         {
             var config = this.CreateTestableReturnConfiguration();

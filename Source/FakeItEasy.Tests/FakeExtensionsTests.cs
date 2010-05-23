@@ -255,7 +255,6 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            //NullGuardedConstraint.Assert(() =>
             NullGuardedConstraint.Assert(() => 
                 A.Fake<IReturnValueConfiguration<string>>().Returns(null));
         }
