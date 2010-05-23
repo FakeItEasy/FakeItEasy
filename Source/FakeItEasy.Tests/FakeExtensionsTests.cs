@@ -49,36 +49,6 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void ReturnsNull_should_set_call_returns_with_null_on_configuration()
-        {
-#if DEBUG
-            throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
-        }
-
-        [Test]
-        public void ReturnsNull_should_return_configuration_object()
-        {
-#if DEBUG
-            throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
-        }
-
-        [Test]
-        public void ReturnsNull_should_be_null_guarded()
-        {
-#if DEBUG
-            throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
-        }
-
-        [Test]
         public void WithAnyArguments_with_void_call_should_call_when_arguments_match_with_predicate_that_returns_true()
         {
             var configuration = A.Fake<IArgumentValidationConfiguration<IVoidConfiguration>>();

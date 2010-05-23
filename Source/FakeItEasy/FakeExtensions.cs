@@ -36,19 +36,6 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Specifies that the configured call/calls should return null when called.
-        /// </summary>
-        /// <typeparam name="TMember">The type of the faked member.</typeparam>
-        /// <param name="configuration">The configuration to apply to.</param>
-        /// <returns>A configuration object.</returns>
-        public static IAfterCallSpecifiedConfiguration ReturnsNull<TMember>(this IReturnValueConfiguration<TMember> configuration) where TMember : class
-        {
-            Guard.AgainstNull(configuration, "configuration");
-
-            return configuration.Returns((TMember)null);
-        }
-
-        /// <summary>
         /// Specifies that a call to the configured call should be applied no matter what arguments
         /// are used in the call to the faked object.
         /// </summary>

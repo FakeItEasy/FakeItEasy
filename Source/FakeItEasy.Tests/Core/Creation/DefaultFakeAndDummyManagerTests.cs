@@ -283,7 +283,7 @@ with two lines.");
             object result = null;
             
             A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out result)).Returns(true).AssignsOutAndRefParameters(foo);
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).Returns(null);
 
             // Act
             var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
@@ -300,7 +300,7 @@ with two lines.");
             object result = null;
 
             A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out result)).Returns(true).AssignsOutAndRefParameters(foo);
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false)).Returns(null);
 
             // Act
             var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
@@ -342,7 +342,7 @@ with two lines.");
         public void TryCreateDummy_should_return_false_when_create_proxy_returns_null()
         {
             // Arrange
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).Returns(null);
             object result = null;
 
             // Act
@@ -385,7 +385,7 @@ with two lines.");
         public void TryCreateFake_should_return_false_when_create_proxy_returns_null()
         {
             // Arrange
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).Returns(null);
             object result = null;
 
             // Act
