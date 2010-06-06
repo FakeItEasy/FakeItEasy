@@ -198,38 +198,19 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void ReturnsNextFromSequence_should_return_repeat_config_from_passed_in_configuration()
+        public void ReturnsNextFromSequence_should_set_repeat_to_the_number_of_values_in_sequence()
         {
             // Arrange
             var config = A.Fake<IReturnValueConfiguration<int>>();
             var returnedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
-
+            
             A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.Ignored)).Returns(returnedConfig);
 
             // Act
+            FakeExtensions.ReturnsNextFromSequence(config, 1, 2, 3);
 
             // Assert
-            Assert.That(FakeExtensions.ReturnsNextFromSequence(config, 1), Is.SameAs(returnedConfig));
-        }
-
-        [Test]
-        public void ReturnsNextFromSequence_should_return_null_when_all_values_has_been_returned()
-        {
-            // Arrange
-            var sequence = new[] { "" };
-            var config = A.Fake<IReturnValueConfiguration<string>>();
-
-            // Act
-            FakeExtensions.ReturnsNextFromSequence(config, sequence);
-
-            // Assert
-            var factoryValidator = A<Func<IFakeObjectCall, string>>.That.Matches(x =>
-            {
-                x.Invoke(A.Dummy<IFakeObjectCall>());
-                return x.Invoke(A.Dummy<IFakeObjectCall>()) == null;
-            });
-
-            A.CallTo(() => config.ReturnsLazily(factoryValidator)).MustHaveHappened();
+            A.CallTo(() => returnedConfig.NumberOfTimes(3)).MustHaveHappened();
         }
 
         [Test]

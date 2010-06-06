@@ -96,11 +96,11 @@ namespace FakeItEasy
         /// <param name="configuration">The call configuration to extend.</param>
         /// <param name="values">The values to return in sequence.</param>
         /// <returns>A configuration object.</returns>
-        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
+        public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
         {
             var queue = new Queue<T>(values);
 
-            return configuration.ReturnsLazily(x => queue.Count != 0 ? queue.Dequeue() : default(T));
+            configuration.ReturnsLazily(x => queue.Dequeue()).NumberOfTimes(queue.Count);
         }
 
         /// <summary>
