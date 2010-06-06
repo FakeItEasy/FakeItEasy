@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests
         
         public static ArgumentConstraint<Expression> ProducesValue(this ArgumentConstraintScope<Expression> scope, object expectedValue)
         {
-            return ArgumentConstraint.Create(scope, x => object.Equals(expectedValue, ExpressionManager.GetValueProducedByExpression(x)), 
+            return ArgumentConstraint.Create(scope, x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x)), 
 			                                string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
         }
 

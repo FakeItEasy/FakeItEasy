@@ -21,7 +21,7 @@ namespace FakeItEasy.Expressions
             
             if (!TryGetArgumentConstraint(argument, out result))
             {
-                result = new EqualityArgumentConstraint(ExpressionManager.GetValueProducedByExpression(argument));
+                result = new EqualityArgumentConstraint(Helpers.GetValueProducedByExpression(argument));
             }
 
             return result;
@@ -43,18 +43,18 @@ namespace FakeItEasy.Expressions
             var unary = argument as UnaryExpression;
             if (unary != null && IsArgumentConstraintConversionMethod(unary.Method))
             {
-                result = ExpressionManager.GetValueProducedByExpression(unary.Operand) as IArgumentConstraint;
+                result = Helpers.GetValueProducedByExpression(unary.Operand) as IArgumentConstraint;
                 return true;
             }
 
             var member = argument as MemberExpression;
             if (member != null && IsArgumentConstraintArgumentProperty(member))
             {
-                result = ExpressionManager.GetValueProducedByExpression(member.Expression) as IArgumentConstraint;
+                result = Helpers.GetValueProducedByExpression(member.Expression) as IArgumentConstraint;
                 return true;
             }
 
-            result = ExpressionManager.GetValueProducedByExpression(argument) as IArgumentConstraint;
+            result = Helpers.GetValueProducedByExpression(argument) as IArgumentConstraint;
             return result != null;
         }
 

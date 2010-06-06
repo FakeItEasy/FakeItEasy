@@ -131,7 +131,7 @@ namespace FakeItEasy.Core.Creation
 
                 var constructorArguments =
                     from argument in ((NewExpression)constructorCall.Body).Arguments
-                    select ExpressionManager.GetValueProducedByExpression(argument);
+                    select Helpers.GetValueProducedByExpression(argument);
 
                 return constructorArguments;
             }

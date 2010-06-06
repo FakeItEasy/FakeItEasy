@@ -182,7 +182,6 @@
     <Compile Include="ExtensionSyntax\Syntax.cs" />
     <Compile Include="FakeExtensions.cs" />
     <Compile Include="Core\ArgumentCollection.cs" />
-    <Compile Include="Expressions\ExpressionManager.cs" />
     <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -39,7 +39,7 @@ namespace FakeItEasy.Expressions
                 throw new ArgumentException("The specified call is not made on a fake object.");
             }
 
-            return Fake.GetFakeManager(ExpressionManager.GetValueProducedByExpression(callTargetExpression));
+            return Fake.GetFakeManager(Helpers.GetValueProducedByExpression(callTargetExpression));
         }
     }
 }
