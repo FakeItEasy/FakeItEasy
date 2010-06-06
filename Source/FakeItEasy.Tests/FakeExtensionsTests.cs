@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Collections.Generic;
 using FakeItEasy.Tests.TestHelpers;
 using FakeItEasy.Expressions;
+using System.IO;
 
 namespace FakeItEasy.Tests
 {
@@ -268,6 +269,75 @@ namespace FakeItEasy.Tests
             // Assert
             NullGuardedConstraint.Assert(() =>
                 A.Fake<IReturnValueConfiguration<int>>().ReturnsLazily(() => 10));
+        }
+
+        [Test]
+        public void WriteCalls_should_throw_when_calls_is_null()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+                FakeExtensions.Write((IEnumerable<IFakeObjectCall>)null, new StringWriter()));
+        }
+
+        [Test]
+        public void WriteCalls_should_call_call_writer_registered_in_container_with_calls()
+        {
+            // Arrange
+            var calls = A.CollectionOfFake<IFakeObjectCall>(2);
+            
+            var callWriter = A.Fake<CallWriter>();
+            this.StubResolve<CallWriter>(callWriter);
+
+            var writer = new StringWriter();
+
+            // Act
+            FakeExtensions.Write(calls, writer);
+
+            // Assert
+            A.CallTo(() => callWriter.WriteCalls(0, calls, writer)).MustHaveHappened();
+        }
+
+        [Test]
+        public void WriteToConsole_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                FakeExtensions.WriteToConsole(Enumerable.Empty<IFakeObjectCall>()));
+        }
+
+        [Test]
+        public void WriteToConsole_should_call_writer_registered_in_container_with_calls()
+        {
+            // Arrange
+            var calls = A.CollectionOfFake<IFakeObjectCall>(2);
+
+            var callWriter = A.Fake<CallWriter>();
+            this.StubResolve<CallWriter>(callWriter);
+
+            // Act
+            FakeExtensions.WriteToConsole(calls);
+
+            // Assert
+            A.CallTo(() => callWriter.WriteCalls(0, calls, A<TextWriter>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
+        public void WriteToConsole_should_call_writer_registered_in_container_with_console_out()
+        {
+            // Arrange
+            var calls = A.CollectionOfFake<IFakeObjectCall>(2);
+
+            var callWriter = A.Fake<CallWriter>();
+            this.StubResolve<CallWriter>(callWriter);
+
+            // Act
+            FakeExtensions.WriteToConsole(calls);
+
+            // Assert
+            A.CallTo(() => callWriter.WriteCalls(0, A<IEnumerable<IFakeObjectCall>>.Ignored.Argument, Console.Out)).MustHaveHappened();
         }
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)

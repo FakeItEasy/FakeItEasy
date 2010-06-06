@@ -7,12 +7,6 @@
 
     internal static class Helpers
     {
-        public static void WriteCalls(this IEnumerable<IFakeObjectCall> calls, TextWriter writer)
-        {
-            var callWriter = ServiceLocator.Current.Resolve<CallWriter>();
-            callWriter.WriteCalls(0, calls, writer);
-        }
-
         public static string GetDescription(this IFakeObjectCall fakeObjectCall)
         {
             var method = fakeObjectCall.Method;

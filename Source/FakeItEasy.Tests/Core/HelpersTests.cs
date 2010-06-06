@@ -54,33 +54,6 @@ namespace FakeItEasy.Tests.Core
             Assert.That(Helpers.GetDescription(call), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<string.Empty>, 123)"));
         }
 
-        [Test]
-        public void WriteCalls_should_throw_when_calls_is_null()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-                Helpers.WriteCalls((IEnumerable<IFakeObjectCall>)null, new StringWriter()));
-        }
-
-        [Test]
-        public void WriteCalls_should_call_call_writer_registered_in_container_with_calls()
-        {
-            var calls = new List<IFakeObjectCall> 
-            {
-                CreateFakeCallToFooDotBar("abc", 123),
-                CreateFakeCallToFooDotBar("def", 456)
-            };
-
-            var callWriter = A.Fake<CallWriter>();
-            this.StubResolve<CallWriter>(callWriter);
-
-
-            var writer = new StringWriter();
-
-            Helpers.WriteCalls(calls, writer);
-
-            A.CallTo(() => callWriter.WriteCalls(0, calls, writer)).MustHaveHappened();
-        }
-
         private class Base
         {
             public virtual void BaseMethod()

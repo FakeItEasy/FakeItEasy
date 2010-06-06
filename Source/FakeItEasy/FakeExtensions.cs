@@ -8,6 +8,7 @@ namespace FakeItEasy
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+using System.IO;
 
     /// <summary>
     /// Provides extension methods for fake objects.
@@ -128,6 +129,28 @@ namespace FakeItEasy
             Guard.AgainstNull(valueProducer, "valueProducer");
 
             return configuration.ReturnsLazily(x => valueProducer());
+        }
+
+        /// <summary>
+        /// Writes the calls in the collection to the specified text writer.
+        /// </summary>
+        /// <param name="calls">The calls to write.</param>
+        /// <param name="writer">The writer to write the calls to.</param>
+        public static void Write(this IEnumerable<IFakeObjectCall> calls, TextWriter writer)
+        {
+            var callWriter = ServiceLocator.Current.Resolve<CallWriter>();
+            callWriter.WriteCalls(0, calls, writer);
+        }
+
+        /// <summary>
+        /// Writes all calls in the collection to the console.
+        /// </summary>
+        /// <param name="calls">The calls to write.</param>
+        public static void WriteToConsole(this IEnumerable<IFakeObjectCall> calls)
+        {
+            Guard.AgainstNull(calls, "calls");
+
+            calls.Write(Console.Out);
         }
     }
 }
