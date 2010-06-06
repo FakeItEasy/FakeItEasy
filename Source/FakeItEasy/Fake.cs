@@ -37,8 +37,6 @@ namespace FakeItEasy
             return accessor.FakeManager;
         }
 
-
-
         /// <summary>
         /// Creates a new scope and sets it as the current scope. When inside a scope the
         /// getting the calls made to a fake will return only the calls within that scope and when
@@ -70,7 +68,7 @@ namespace FakeItEasy
         /// <returns>True if the two objects are equal.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Using the same names as the hidden method.")]
-        public new static bool Equals(object objA, object objB)
+        public static new bool Equals(object objA, object objB)
         {
             return object.Equals(objA, objB);
         }
@@ -83,7 +81,7 @@ namespace FakeItEasy
         /// <returns>True if the objects are the same reference.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Using the same names as the hidden method.")]
-        public new static bool ReferenceEquals(object objA, object objB)
+        public static new bool ReferenceEquals(object objA, object objB)
         {
             return object.ReferenceEquals(objA, objB);
         }
@@ -110,7 +108,6 @@ namespace FakeItEasy
     /// <typeparam name="T">The type of the faked object.</typeparam>
     public class Fake<T> : IStartConfiguration<T>
     {
-        #region Construction
         /// <summary>
         /// Creates a new fake object.
         /// </summary>
@@ -130,9 +127,7 @@ namespace FakeItEasy
 
             this.FakedObject = CreateFake(options);
         }
-        #endregion
-
-        #region Properties
+        
         /// <summary>
         /// Gets the faked object.
         /// </summary>
@@ -149,16 +144,7 @@ namespace FakeItEasy
         {
             get
             {
-                return Fake.GetCalls(this.FakedObject);
-            }
-        }
-
-        private IStartConfiguration<T> StartConfiguration
-        {
-            get
-            {
-                var factory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
-                return factory.CreateConfiguration<T>(Fake.GetFakeManager(this.FakedObject));
+                return FakeItEasy.Fake.GetCalls(this.FakedObject);
             }
         }
 
@@ -169,9 +155,16 @@ namespace FakeItEasy
                 return ServiceLocator.Current.Resolve<IFakeCreator>();
             }
         }
-        #endregion
 
-        #region Methods
+        private IStartConfiguration<T> StartConfiguration
+        {
+            get
+            {
+                var factory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
+                return factory.CreateConfiguration<T>(FakeItEasy.Fake.GetFakeManager(this.FakedObject));
+            }
+        }
+        
         /// <summary>
         /// Configures calls to the specified member.
         /// </summary>
@@ -208,6 +201,5 @@ namespace FakeItEasy
         {
             return FakeCreator.CreateFake<T>(options);
         }
-        #endregion
     }
 }
