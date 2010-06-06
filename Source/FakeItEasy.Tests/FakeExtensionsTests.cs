@@ -274,8 +274,8 @@ namespace FakeItEasy.Tests
         [Test]
         public void WriteCalls_should_throw_when_calls_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-                FakeExtensions.Write((IEnumerable<IFakeObjectCall>)null, new StringWriter()));
+            NullGuardedConstraint.Assert(() =>
+                FakeExtensions.Write(Enumerable.Empty<IFakeObjectCall>(), new StringWriter()));
         }
 
         [Test]
