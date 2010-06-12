@@ -221,6 +221,25 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
+        public void RecordedCalls_should_contain_calls_that_throws_exceptions()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            var manager = Fake.GetFakeObject(fake);
+            A.CallTo(() => fake.Bar()).Throws(new Exception());
+
+            // Act
+            try
+            {
+                fake.Bar();
+            }
+            catch { }
+
+            // Assert
+            Assert.That(manager.RecordedCallsInScope.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
         public void RecordedCalls_only_returns_calls_made_within_the_scope()
         {
             var foo = A.Fake<IFoo>();

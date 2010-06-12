@@ -156,14 +156,14 @@ namespace FakeItEasy.Core
         
         private void Intercept(IWritableFakeObjectCall fakeObjectCall)
         {
+            FakeScope.Current.AddInterceptedCall(this, fakeObjectCall.AsReadOnly());
+
             var ruleToUse =
                 (from rule in this.AllRules
                  where rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes()
                  select rule).First();
 
             ApplyRule(ruleToUse, fakeObjectCall);
-
-            FakeScope.Current.AddInterceptedCall(this, fakeObjectCall.AsReadOnly());
         }
 
         private void MoveRuleToFront(CallRuleMetadata rule)
