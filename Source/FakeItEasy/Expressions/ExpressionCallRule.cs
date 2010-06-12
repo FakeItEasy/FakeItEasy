@@ -11,11 +11,6 @@ namespace FakeItEasy.Expressions
     internal class ExpressionCallRule
         : BuildableCallRule
     {
-        #region Fields
-        
-        #endregion
-
-        #region Construction
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionCallRule"/> class.
         /// </summary>
@@ -26,25 +21,19 @@ namespace FakeItEasy.Expressions
 
             this.ExpressionMatcher = expressionMatcher;
         } 
-        #endregion
-
-        #region Delegates
+        
         /// <summary>
         /// Handles the instantiation of ExpressionCallRule instance.
         /// </summary>
         /// <param name="callSpecification">An expression specifying the call.</param>
         /// <returns>A rule instance.</returns>
         public delegate ExpressionCallRule Factory(LambdaExpression callSpecification);
-        #endregion
-
-        #region Properties
+        
         /// <summary>
         /// Gets the expression matcher used by this rule.
         /// </summary>
         private ExpressionCallMatcher ExpressionMatcher { get; set; }
-        #endregion
-
-        #region Methods
+        
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
@@ -65,6 +54,5 @@ namespace FakeItEasy.Expressions
         {
             return this.ExpressionMatcher.Matches(fakeObjectCall);
         }
-        #endregion
     }
 }

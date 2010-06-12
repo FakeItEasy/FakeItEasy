@@ -23,7 +23,7 @@ namespace FakeItEasy.Tests
             var anyCallConfiguration = A.Fake<IAnyCallConfiguration>();
             var startConfiguration = A.Fake<IStartConfiguration<IFoo>>();
             var configurationFactory = A.Fake<IStartConfigurationFactory>();
-            A.CallTo(() => configurationFactory.CreateConfiguration<IFoo>(A<FakeObject>.That.Fakes(foo))).Returns(startConfiguration);
+            A.CallTo(() => configurationFactory.CreateConfiguration<IFoo>(A<FakeManager>.That.Fakes(foo))).Returns(startConfiguration);
             A.CallTo(() => startConfiguration.AnyCall()).Returns(anyCallConfiguration);
             
             using (Fake.CreateScope())

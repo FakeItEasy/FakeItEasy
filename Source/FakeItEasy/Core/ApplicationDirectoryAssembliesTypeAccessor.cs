@@ -4,12 +4,13 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Access all types in all assemblies in the same directory as the FakeItEasy dll.
     /// </summary>
     public class ApplicationDirectoryAssembliesTypeAccessor
-        : ITypeAccessor
+        : ITypeCatalogue
     {
         private List<Type> availableTypes;
 
@@ -42,6 +43,8 @@ namespace FakeItEasy.Core
             }
         }
 
+		
+		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Should just ignore any exceptions and move on with other assemblies.")]
         private void LoadAllTypesFromAssemblyFile(string assemblyFile)
         {
             try

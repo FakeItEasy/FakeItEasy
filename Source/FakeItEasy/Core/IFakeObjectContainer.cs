@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// A container that can create fake objects.
@@ -14,6 +15,7 @@
         /// <param name="typeOfFake">The type of fake object to create.</param>
         /// <param name="fakeObject">The fake object that was created if the method returns true.</param>
         /// <returns>True if a fake object can be created.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1007:UseGenericsWhereAppropriate", Justification = "Used by the framework, generics would have no benefit.")]
         bool TryCreateFakeObject(Type typeOfFake, out object fakeObject);
 
         /// <summary>
@@ -21,6 +23,7 @@
         /// </summary>
         /// <param name="typeOfFake">The type the fake object represents.</param>
         /// <param name="fakeObject">The fake object to configure.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "Fake object is a common term in FakeItEasy.")]
         void ConfigureFake(Type typeOfFake, object fakeObject);
     }
 }

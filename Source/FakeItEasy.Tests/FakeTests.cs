@@ -66,7 +66,7 @@ namespace FakeItEasy.Tests
 
             // Assert
             NullGuardedConstraint.Assert(() =>
-                Fake.GetFakeObject(A.Fake<IFoo>()));
+                Fake.GetFakeManager(A.Fake<IFoo>()));
         }
     }
 }

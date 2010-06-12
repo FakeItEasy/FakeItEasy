@@ -40,7 +40,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             var serializedCalls = this.SerializeCalls(calls);
 
             A.CallTo(() => this.fileSystem.Open("c:\\file.dat", FileMode.Open))
-                .Returns(x => new MemoryStream(serializedCalls));
+                .ReturnsLazily(x => new MemoryStream(serializedCalls));
 
             // Act
             var storage = this.CreateStorage("c:\\file.dat");

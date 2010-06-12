@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
@@ -17,6 +17,6 @@ namespace FakeItEasy.Core
         /// Creates the fake.
         /// </summary>
         /// <returns>The fake object.</returns>
-        object CreateFake();
+        object CreateDummy();
     }
 }

@@ -1,5 +1,7 @@
 namespace FakeItEasy.Core.Creation
 {
+    using FakeItEasy.DynamicProxy;
+
     /// <summary>
     /// Handles the creation of a IProxyGenerator instance.
     /// </summary>
@@ -8,8 +10,8 @@ namespace FakeItEasy.Core.Creation
         /// <summary>
         /// When implemented creates a new IProxyGenerator-instance.
         /// </summary>
-        /// <param name="container">The IFakeObjectContainer provided by the FakeItEasy framework.</param>
+        /// <param name="session">The session for the proxy generator to work in.</param>
         /// <returns>A new IProxyGenerator.</returns>
-        IProxyGenerator CreateProxyGenerator(IFakeObjectContainer container);
+        IProxyGenerator CreateProxyGenerator(IFakeCreationSession session);
     }
 }

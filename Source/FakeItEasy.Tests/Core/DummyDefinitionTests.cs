@@ -22,7 +22,7 @@ namespace FakeItEasy.Core.Tests
         public void CreateFake_should_return_object_from_protected_function()
         {
             var definition = new TestableFakeDefinition() as IDummyDefinition;
-            var created = definition.CreateFake();
+            var created = definition.CreateDummy();
 
             Assert.That(created, Is.InstanceOf<SomeType>());
         }
@@ -34,7 +34,7 @@ namespace FakeItEasy.Core.Tests
 
         public class TestableFakeDefinition : DummyDefinition<SomeType>
         {
-            protected override SomeType CreateFake()
+            protected override SomeType CreateDummy()
             {
                 return new SomeType();
             }

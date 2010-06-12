@@ -7,9 +7,9 @@
     public interface IFakedProxy
     {
         /// <summary>
-        /// Gets the fake object behind a faked object.
+        /// Gets the fake manager behind a faked object.
         /// </summary>
-        /// <returns>A fake object.</returns>
-        FakeObject FakeObject { get; }
+        /// <returns>A fake manager.</returns>
+        FakeManager FakeManager { get; }
     }
 }

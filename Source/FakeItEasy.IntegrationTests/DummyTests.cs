@@ -1,10 +1,10 @@
-using System;
-using FakeItEasy.Core;
-using FakeItEasy.Tests;
-using NUnit.Framework;
-
 namespace FakeItEasy.IntegrationTests
 {
+    using System;
+    using FakeItEasy.Core;
+    using FakeItEasy.Tests;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DummyTests
     {
@@ -13,7 +13,7 @@ namespace FakeItEasy.IntegrationTests
         {
             var container = new DelegateFakeObjectContainer();
             container.Register<string>(() => "dummy");
-
+            
             using (Fake.CreateScope(container))
             {
                 Assert.That(A.Dummy<string>(), Is.EqualTo("dummy"));
@@ -35,7 +35,15 @@ namespace FakeItEasy.IntegrationTests
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
                 Assert.Throws<FakeCreationException>(() =>
-                    A.Dummy<int>());
+                    A.Dummy<NonInstance>());
+            }
+        }
+
+        private class NonInstance
+        {
+            private NonInstance()
+            {
+
             }
         }
     }

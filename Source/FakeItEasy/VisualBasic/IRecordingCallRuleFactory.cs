@@ -14,6 +14,6 @@ namespace FakeItEasy.VisualBasic
         /// <param name="fakeObject">The fake object the rule belongs to.</param>
         /// <param name="recordedRule">The rule that's being recorded.</param>
         /// <returns>A RecordingCallRule instance.</returns>
-        RecordingCallRule<TFake> Create<TFake>(FakeObject fakeObject, RecordedCallRule recordedRule);
+        RecordingCallRule<TFake> Create<TFake>(FakeManager fakeObject, RecordedCallRule recordedRule);
     }
 }

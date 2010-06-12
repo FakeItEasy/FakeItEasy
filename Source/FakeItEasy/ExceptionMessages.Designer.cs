@@ -171,8 +171,10 @@ namespace FakeItEasy
         /// <summary>
         ///   Looks up a localized string similar to FakeItEasy failed to create fake object of type &quot;{0}&quot;.
         ///
-        ///  1. The type is not registered in the current IFakeObjectContainer.
-        ///  2. The current IProxyGenerator failed to generate a proxy for the following reason: {1}.
+        ///1. The type is not registered in the current IFakeObjectContainer.
+        ///2. The current IProxyGenerator failed to generate a proxy for the following reason:
+        ///
+        ///{1}.
         /// </summary>
         internal static string FailedToGenerateProxyPattern
         {
@@ -304,6 +306,17 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to The specified call is not made on a fake object..
+        /// </summary>
+        internal static string SpecifiedCallIsNotToFakedObject
+        {
+            get
+            {
+                return ResourceManager.GetString("SpecifiedCallIsNotToFakedObject", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to The current fake proxy generator can not create proxies of the type {0}..
         /// </summary>
         internal static string TypeCanNotBeProxied
@@ -311,6 +324,17 @@ namespace FakeItEasy
             get
             {
                 return ResourceManager.GetString("TypeCanNotBeProxied", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to FakeItEasy was unable to create dummy of type &quot;{0}&quot;, register it in the current IFakeObjectContainer to enable this..
+        /// </summary>
+        internal static string UnableToCreateDummyPattern
+        {
+            get
+            {
+                return ResourceManager.GetString("UnableToCreateDummyPattern", resourceCulture);
             }
         }
 

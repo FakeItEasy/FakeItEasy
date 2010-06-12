@@ -11,7 +11,7 @@
     {
         private RuleBuilder builder;
         private BuildableCallRule ruleProducedByFactory;
-        private FakeObject fakeObject;
+        private FakeManager fakeManager;
         private FakeAsserter asserter;
 
         [SetUp]
@@ -23,7 +23,7 @@
         protected virtual void OnSetUp()
         {
             this.ruleProducedByFactory = A.Fake<BuildableCallRule>();
-            this.fakeObject = new FakeObject();
+            this.fakeManager = new FakeManager();
             this.asserter = A.Fake<FakeAsserter>();
 
             this.builder = this.CreateBuilder();
@@ -31,12 +31,12 @@
 
         private RuleBuilder CreateBuilder()
         {
-            return new RuleBuilder(this.ruleProducedByFactory, this.fakeObject, x => this.asserter);
+            return new RuleBuilder(this.ruleProducedByFactory, this.fakeManager, x => this.asserter);
         }
 
         private RuleBuilder CreateBuilder(BuildableCallRule ruleBeingBuilt)
         {
-            return new RuleBuilder(ruleBeingBuilt, this.fakeObject, x => this.asserter);
+            return new RuleBuilder(ruleBeingBuilt, this.fakeManager, x => this.asserter);
         }
 
      
@@ -64,41 +64,6 @@
         }
 
         [Test]
-        public void Returns_called_with_delegate_sets_return_value_produced_by_delegate_each_time()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-            var call = A.Fake<IWritableFakeObjectCall>();
-            int i = 1;
-            
-            returnConfig.Returns(() => i++);
-
-            this.ruleProducedByFactory.Applicator(call);
-            this.ruleProducedByFactory.Applicator(call);
-
-            A.CallTo(() => call.SetReturnValue(1)).MustHaveHappened();
-            A.CallTo(() => call.SetReturnValue(2)).MustHaveHappened();
-        }
-
-        [Test]
-        public void Returns_with_delegate_throws_when_delegate_is_null()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-            
-            Assert.Throws<ArgumentNullException>(() =>
-                returnConfig.Returns((Func<int>)null));
-        }
-
-        [Test]
-        public void Returns_called_with_delegate_returns_parent_cofiguration()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-
-            var result = returnConfig.Returns(() => 10);
-
-            Assert.That(result, Is.EqualTo(this.builder));
-        }
-
-        [Test]
         public void Returns_with_call_function_applies_value_returned_from_function()
         {
             var config = this.CreateTestableReturnConfiguration();
@@ -109,7 +74,7 @@
                 new object[] { 1, 2 },
                 new string[] { "foo", "bar" }));
 
-            returnConfig.Returns(x => x.Arguments.Get<int>("bar"));
+            returnConfig.ReturnsLazily(x => x.Arguments.Get<int>("bar"));
 
             this.ruleProducedByFactory.Applicator(call);
 
@@ -121,7 +86,7 @@
         {
             var config = this.CreateTestableReturnConfiguration();
 
-            var returned = config.Returns(x => x.Arguments.Get<int>(0));
+            var returned = config.ReturnsLazily(x => x.Arguments.Get<int>(0));
 
             Assert.That(returned, Is.EqualTo(config.ParentConfiguration));
         }
@@ -131,7 +96,7 @@
         {
             var config = this.CreateTestableReturnConfiguration();
 
-            NullGuardedConstraint.Assert(() => config.Returns(x => x.Arguments.Get<int>(0)));
+            NullGuardedConstraint.Assert(() => config.ReturnsLazily(x => x.Arguments.Get<int>(0)));
         }
 
         [Test]
@@ -432,13 +397,13 @@
         public void Assert_with_void_call_should_remove_built_rule_from_fake_object()
         {
             // Arrange
-            this.fakeObject.AddRuleFirst(this.ruleProducedByFactory);
+            this.fakeManager.AddRuleFirst(this.ruleProducedByFactory);
 
             // Act
             this.builder.MustHaveHappened(Repeated.Once);
 
             // Assert
-            Assert.That(this.fakeObject.Rules, Is.Empty);
+            Assert.That(this.fakeManager.Rules, Is.Empty);
         }
 
         [Test]
@@ -461,14 +426,14 @@
         public void Assert_with_function_call_should_remove_built_rule_from_fake_object()
         {
             // Arrange
-            this.fakeObject.AddRuleFirst(this.ruleProducedByFactory);
+            this.fakeManager.AddRuleFirst(this.ruleProducedByFactory);
 
             // Act
             var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
             returnConfig.MustHaveHappened(Repeated.Once);
 
             // Assert
-            Assert.That(this.fakeObject.Rules, Is.Empty);
+            Assert.That(this.fakeManager.Rules, Is.Empty);
         }
 
         private RuleBuilder.ReturnValueConfiguration<int> CreateTestableReturnConfiguration()

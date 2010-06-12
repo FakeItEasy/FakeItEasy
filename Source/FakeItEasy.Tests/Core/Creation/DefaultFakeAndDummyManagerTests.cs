@@ -9,17 +9,20 @@ namespace FakeItEasy.Tests.Core.Creation
     using FakeItEasy.SelfInitializedFakes;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
+    using FakeItEasy.DynamicProxy;
 
     [TestFixture]
     public class DefaultFakeAndDummyManagerTests
     {
         private IFakeObjectContainer container;
         private IProxyGenerator proxyGenerator;
-        private FakeObject.Factory fakeObjectFactory;
-        private FakeObject fakeObject;
+        private IDummyValueCreator dummyValueCreator;
+        private FakeManager.Factory fakeObjectFactory;
+        private FakeManager fakeManager;
         private IFakeWrapperConfigurator fakeWrapperConfigurator;
-        private ArgumentConstraint<IEnumerable<Type>> noAdditionalInterfaces = A<IEnumerable<Type>>.That.Matches(x => x != null && x.Count() == 0);
+        private ArgumentConstraint<IEnumerable<Type>> noAdditionalInterfaces = A<IEnumerable<Type>>.Ignored;
 
+        private IFakeCreationSession session;
         private DefaultFakeAndDummyManager fakeAndDummyManager;
 
         [SetUp]
@@ -27,12 +30,17 @@ namespace FakeItEasy.Tests.Core.Creation
         {
             this.container = A.Fake<IFakeObjectContainer>();
             this.proxyGenerator = A.Fake<IProxyGenerator>();
-            this.fakeObject = A.Fake<FakeObject>();
-            this.fakeObjectFactory = () => this.fakeObject;
+            this.session = A.Fake<IFakeCreationSession>();
+            this.dummyValueCreator = A.Fake<IDummyValueCreator>();
+            this.fakeManager = A.Fake<FakeManager>();
+            this.fakeObjectFactory = () => this.fakeManager;
             this.fakeWrapperConfigurator = A.Fake<IFakeWrapperConfigurator>();
 
+            A.CallTo(() => this.session.ProxyGenerator).Returns(this.proxyGenerator);
+            A.CallTo(() => this.session.DummyCreator).Returns(this.dummyValueCreator);
+
             this.fakeAndDummyManager = A.Fake<DefaultFakeAndDummyManager>(x => x.WithArgumentsForConstructor(() =>
-                new DefaultFakeAndDummyManager(this.container, this.proxyGenerator, this.fakeObjectFactory, this.fakeWrapperConfigurator)));
+                new DefaultFakeAndDummyManager(this.container, this.session, this.fakeObjectFactory, this.fakeWrapperConfigurator)));
             
             Any.CallTo(this.fakeAndDummyManager).CallsBaseMethod();
         }
@@ -63,18 +71,64 @@ namespace FakeItEasy.Tests.Core.Creation
         }
 
         [Test]
+        public void CreateDummy_should_create_dummy_with_dummy_creator_when_container_doesnt_contain_type()
+        {
+            // Arrange
+            A.CallTo(() => this.dummyValueCreator.TryCreateDummyValue(typeof(int), out Null<object>.Out))
+                .Returns(true).AssignsOutAndRefParameters(10);
+
+            // Act
+            var returned = this.fakeAndDummyManager.CreateDummy(typeof(int));
+
+            // Assert
+            Assert.That(returned, Is.EqualTo(10));
+        }
+
+        [Test]
         public void CreateDummy_should_create_proxy_when_container_doesnt_contain_type()
         {
             // Arrange
             var result = A.Fake<IFoo>();
 
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), noAdditionalInterfaces.Argument, null, true)).Returns(result);
-            
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), noAdditionalInterfaces.Argument, null, false)).Returns(result);
+
             // Act
             var returned = this.fakeAndDummyManager.CreateDummy(typeof(IFoo));
 
             // Assert
             Assert.That(returned, Is.SameAs(result));
+        }
+
+        [Test]
+        public void CreateDummy_should_create_proxy_when_both_proxy_generator_and_dummy_creator_can_create_dummy()
+        {
+            // Arrange
+            var expectedResult = A.Fake<IFoo>();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), noAdditionalInterfaces.Argument, null, false)).Returns(expectedResult);
+
+            A.CallTo(() => this.dummyValueCreator.TryCreateDummyValue(typeof(IFoo), out Null<object>.Out))
+                .Returns(true).AssignsOutAndRefParameters(A.Fake<IFoo>());
+
+            // Act
+            var returned = this.fakeAndDummyManager.CreateDummy(typeof(IFoo));
+
+            // Assert
+            Assert.That(returned, Is.SameAs(expectedResult));
+        }
+
+        [Test]
+        [SetCulture("en-US")]
+        public void CreateDummy_should_throw_when_dummy_cant_be_created()
+        {
+            // Arrange
+            A.CallTo(() => this.dummyValueCreator.TryCreateDummyValue(A<Type>.Ignored, out Null<object>.Out)).Returns(false);
+            A.CallTo(() => this.container.TryCreateFakeObject(A<Type>.Ignored, out Null<object>.Out)).Returns(false);
+
+            // Act
+
+            // Assert
+            var thrown =  Assert.Throws<FakeCreationException>(() =>this.fakeAndDummyManager.CreateDummy(typeof(int)));
+            Assert.That(thrown.Message, Text.Contains("FakeItEasy was unable to create dummy of type \"System.Int32\", register it in the current IFakeObjectContainer to enable this."));
         }
 
         [Test]
@@ -86,7 +140,7 @@ namespace FakeItEasy.Tests.Core.Creation
             this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false);
 
             // Assert
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), noAdditionalInterfaces.Argument, this.fakeObject, null)).MustHaveHappened();
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), noAdditionalInterfaces.Argument, this.fakeManager, null)).MustHaveHappened();
         }
 
         [Test]
@@ -95,13 +149,13 @@ namespace FakeItEasy.Tests.Core.Creation
             // Arrange
             var returned = CreateFakeProxyResult();
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<FakeObject>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(returned);
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<FakeManager>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(returned);
 
             // Act
             this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, null, false);
 
             // Assert
-            A.CallTo(() => this.fakeObject.SetProxy(returned)).MustHaveHappened();
+            A.CallTo(() => this.fakeManager.SetProxy(returned)).MustHaveHappened();
         }
 
         [Test]
@@ -113,7 +167,7 @@ namespace FakeItEasy.Tests.Core.Creation
             this.fakeAndDummyManager.CreateProxy(typeof(IFoo), null, new[] { "constructor", "arguments" }, false);
 
             // Assert
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored.Argument, A<FakeObject>.Ignored, A<IEnumerable<object>>.That.IsThisSequence("constructor", "arguments").Argument)).MustHaveHappened();
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored.Argument, A<FakeManager>.Ignored, A<IEnumerable<object>>.That.IsThisSequence("constructor", "arguments").Argument)).MustHaveHappened();
         }
 
         [Test]
@@ -128,7 +182,7 @@ namespace FakeItEasy.Tests.Core.Creation
             A.CallTo(() => this.proxyGenerator.GenerateProxy(
                 A<Type>.Ignored, 
                 A<IEnumerable<Type>>.That.IsThisSequence(typeof(IFormatProvider)).Argument, 
-                A<FakeObject>.Ignored, 
+                A<FakeManager>.Ignored, 
                 A<IEnumerable<object>>.Ignored.Argument
             )).MustHaveHappened();
         }
@@ -185,7 +239,7 @@ namespace FakeItEasy.Tests.Core.Creation
             A.CallTo(() => proxyResult.ErrorMessage).Returns(@"Error message
 with two lines.");
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, this.fakeObject, null)).Returns(proxyResult);
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, this.fakeManager, null)).Returns(proxyResult);
 
             // Act
             
@@ -207,6 +261,21 @@ with two lines.");
         }
 
         [Test]
+        public void CreateProxy_should_return_null_when_throwOnFailure_is_false_and_proxy_is_not_successfully_created()
+        {
+            // Arrange
+            var result = A.Fake<ProxyResult>();
+            A.CallTo(() => result.ProxyWasSuccessfullyCreated).Returns(false);
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(null, null, null, null)).WithAnyArguments().Returns(result);
+
+            // Act
+            var proxy = this.fakeAndDummyManager.CreateProxy(typeof(string), Enumerable.Empty<Type>(), null, false);
+
+            // Assert
+            Assert.That(proxy, Is.Null);
+        }
+
+        [Test]
         public void TryCreateDummy_should_return_true_when_container_contains_dummy_type()
         {
             // Arrange
@@ -214,7 +283,7 @@ with two lines.");
             object result = null;
             
             A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out result)).Returns(true).AssignsOutAndRefParameters(foo);
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).Returns(null);
 
             // Act
             var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
@@ -231,7 +300,7 @@ with two lines.");
             object result = null;
 
             A.CallTo(() => this.container.TryCreateFakeObject(typeof(IFoo), out result)).Returns(true).AssignsOutAndRefParameters(foo);
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false)).Returns(null);
 
             // Act
             var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
@@ -241,10 +310,39 @@ with two lines.");
         }
 
         [Test]
+        public void TryCreateDummy_should_return_true_when_dummy_creator_can_create_type()
+        {
+            // Arrange
+            A.CallTo(() => this.dummyValueCreator.TryCreateDummyValue(typeof(int), out Null<object>.Out))
+                .Returns(true).AssignsOutAndRefParameters(10);
+
+            // Act
+            var returned = this.fakeAndDummyManager.TryCreateDummy(typeof(int), out Null<object>.Out);
+
+            // Assert
+            Assert.That(returned, Is.True);
+        }
+
+        [Test]
+        public void TryCreateDummy_should_assign_result_when_dummy_creator_can_create_type()
+        {
+            // Arrange
+            A.CallTo(() => this.dummyValueCreator.TryCreateDummyValue(typeof(int), out Null<object>.Out))
+                .Returns(true).AssignsOutAndRefParameters(10);
+
+            // Act
+            object result = null;
+            this.fakeAndDummyManager.TryCreateDummy(typeof(int), out result);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(10));
+        }
+
+        [Test]
         public void TryCreateDummy_should_return_false_when_create_proxy_returns_null()
         {
             // Arrange
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).Returns(null);
             object result = null;
 
             // Act
@@ -258,10 +356,10 @@ with two lines.");
         public void TryCreateDummy_should_return_true_when_create_proxy_returns_result()
         {
             // Arrange
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false)).Returns(A.Fake<IFoo>());
-            object result = null;
-
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).Returns(A.Fake<IFoo>());
+            
             // Act
+            object result = null;
             var success = this.fakeAndDummyManager.TryCreateDummy(typeof(IFoo), out result);
 
             // Assert
@@ -287,7 +385,7 @@ with two lines.");
         public void TryCreateFake_should_return_false_when_create_proxy_returns_null()
         {
             // Arrange
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).ReturnsNull();
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).Returns(null);
             object result = null;
 
             // Act
@@ -301,7 +399,7 @@ with two lines.");
         public void TryCreateFake_should_return_true_when_create_proxy_returns_result()
         {
             // Arrange
-            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), Enumerable.Empty<Type>(), null, false)).Returns(A.Fake<IFoo>());
+            A.CallTo(() => this.fakeAndDummyManager.CreateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, null, false)).Returns(A.Fake<IFoo>());
             object result = null;
 
             // Act
@@ -366,7 +464,7 @@ with two lines.");
                 SelfInitializedFakeRecorder = recorder
             };
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), null, this.fakeObject, null)).Returns(proxyResult);
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), null, this.fakeManager, null)).Returns(proxyResult);
 
             // Act
             this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), options, out Null<object>.Out);
@@ -386,7 +484,7 @@ with two lines.");
 
             var proxyResult = CreateFakeProxyResult();
             
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored.Argument, A<FakeObject>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(proxyResult);
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored.Argument, A<FakeManager>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(proxyResult);
 
             // Act
             this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), options, out Null<object>.Out);
@@ -409,7 +507,7 @@ with two lines.");
                 SelfInitializedFakeRecorder = recorder
             };
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, this.fakeObject, null)).Returns(proxyResult);
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, this.fakeManager, null)).Returns(proxyResult);
 
             // Act
             this.fakeAndDummyManager.CreateFake(typeof(IFoo), options);
@@ -429,7 +527,7 @@ with two lines.");
 
             var proxyResult = CreateFakeProxyResult();
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored.Argument, A<FakeObject>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(proxyResult);
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored.Argument, A<FakeManager>.Ignored, A<IEnumerable<object>>.Ignored.Argument)).Returns(proxyResult);
 
             // Act
             this.fakeAndDummyManager.CreateFake(typeof(IFoo), options);

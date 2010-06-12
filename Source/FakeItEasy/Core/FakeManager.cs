@@ -4,6 +4,7 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Core.Creation;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// The central point in the API for proxied fake objects handles interception
@@ -11,7 +12,7 @@ namespace FakeItEasy.Core
     /// by using the AddRule-method.
     /// </summary>
     [Serializable]
-    public partial class FakeObject
+    public partial class FakeManager
     {
         private IEnumerable<CallRuleMetadata> preUserRules;
         private LinkedList<CallRuleMetadata> allUserRulesField;
@@ -19,20 +20,20 @@ namespace FakeItEasy.Core
         private List<ICompletedFakeObjectCall> recordedCallsField;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="FakeObject"/> class.
+        /// Initializes a new instance of the <see cref="FakeManager"/> class.
         /// </summary>
-        public FakeObject()
+        public FakeManager()
         {
             this.preUserRules = new[] 
             {
-                new CallRuleMetadata { Rule = new EventRule { FakeObject = this } } 
+                new CallRuleMetadata { Rule = new EventRule { FakeManager = this } } 
             };
             this.allUserRulesField = new LinkedList<CallRuleMetadata>();
             this.postUserRules = new[] 
             { 
-                new CallRuleMetadata { Rule = new ObjectMemberRule { FakeObject = this } },
-                new CallRuleMetadata { Rule = new AutoFakePropertyRule { FakeObject = this } },
-                new CallRuleMetadata { Rule = new PropertySetterRule { FakeObject = this } },
+                new CallRuleMetadata { Rule = new ObjectMemberRule { FakeManager = this } },
+                new CallRuleMetadata { Rule = new AutoFakePropertyRule { FakeManager = this } },
+                new CallRuleMetadata { Rule = new PropertySetterRule { FakeManager = this } },
                 new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
             };
 
@@ -43,7 +44,8 @@ namespace FakeItEasy.Core
         /// A delegate responsible for creating FakeObject instances.
         /// </summary>
         /// <returns></returns>
-        public delegate FakeObject Factory();
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "Valid pattern for factory delegates.")]
+        public delegate FakeManager Factory();
 
         /// <summary>
         /// Gets the faked object.
@@ -144,7 +146,7 @@ namespace FakeItEasy.Core
         internal virtual void SetProxy(ProxyResult proxy)
         {
             this.Object = proxy.Proxy;
-            this.FakeObjectType = proxy.ProxiedType;
+            this.FakeObjectType = proxy.TypeOfProxy;
             proxy.CallWasIntercepted += this.Proxy_CallWasIntercepted;
         }
 

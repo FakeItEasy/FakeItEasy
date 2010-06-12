@@ -13,20 +13,20 @@ using FakeItEasy.Tests.TestHelpers;
 namespace FakeItEasy.Tests.Core
 {
     [TestFixture]
-    public class FakeObjectTests
+    public class FakeManagerTests
     {
         private static readonly IFakeObjectCallRule NonApplicableInterception = new FakeCallRule { IsApplicableTo = x => false };
 
-        private FakeObject CreateFakeObject<T>()
+        private FakeManager CreateFakeManager<T>()
         {
             var result = A.Fake<T>();
 
-            return Fake.GetFakeObject(result);
+            return Fake.GetFakeManager(result);
         }
 
         private static void AddFakeRule<T>(T fakedObject, FakeCallRule rule) where T : class
         {
-            Fake.GetFakeObject(fakedObject).AddRuleFirst(rule);
+            Fake.GetFakeManager(fakedObject).AddRuleFirst(rule);
         }
 
         private static void AddFakeRule<T>(T fakedObject, Action<FakeCallRule> ruleConfiguration) where T : class
@@ -53,7 +53,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void Calls_configured_in_a_child_context_does_not_exist_outside_that_context()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
 
             using (Fake.CreateScope())
@@ -82,7 +82,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void Method_call_should_return_default_value_when_theres_no_matching_interception_and_return_type_is_value_type()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var result = ((IFoo)fake.Object).Baz();
 
             Assert.That(result, Is.EqualTo(0));
@@ -91,14 +91,14 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void Method_call_should_not_set_return_value_when_theres_no_matching_interception_and_return_type_is_void()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             ((IFoo)fake.Object).Bar();
         }
 
         [Test]
         public void The_first_interceptor_should_be_applied_when_it_has_not_been_used()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
 
             var interception = new FakeCallRule
             {
@@ -116,7 +116,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void The_first_applicable_interceptor_should_be_called_when_it_has_not_been_used()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
 
             var interception = new FakeCallRule
             {
@@ -134,7 +134,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void The_latest_added_rule_should_be_called_for_ever_when_no_number_of_times_is_specified()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
 
             var firstRule = CreateApplicableInterception();
             var latestRule = CreateApplicableInterception();
@@ -154,7 +154,7 @@ namespace FakeItEasy.Tests.Core
         public void An_applicable_action_should_be_called_its_specified_number_of_times_before_the_next_applicable_action_is_called()
         {
 
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
 
             var applicableTwice = new FakeCallRule
             {
@@ -178,7 +178,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void DefaultValue_should_be_returned_when_the_last_applicable_action_has_been_used_its_specified_number_of_times()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
 
             var applicableTwice = CreateApplicableInterception();
             applicableTwice.NumberOfTimesToCall = 2;
@@ -197,7 +197,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void Interceptions_should_return_interceptions_that_are_added()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
 
             var one = CreateApplicableInterception();
             var two = CreateApplicableInterception();
@@ -211,7 +211,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void RecordedCalls_contains_all_calls_made_on_the_fake()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
 
             ((IFoo)fake.Object).Bar();
             var i = ((IFoo)fake.Object)[1];
@@ -277,7 +277,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void Rules_should_only_be_valid_within_the_current_scope()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
             A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>.Ignored.Argument)).Returns(true);
 
@@ -357,7 +357,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void GetHashCode_on_faked_object_should_return_hash_code_of_fake_when_not_configured()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var foo = (IFoo)fake.Object;
 
             Assert.That(foo.GetHashCode(), Is.EqualTo(fake.GetHashCode()));
@@ -366,7 +366,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void Equals_on_faked_object_should_return_true_if_the_passed_in_object_is_the_same_and_it_is_not_configured()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var foo = (IFoo)fake.Object;
 
             Assert.That(foo.Equals(foo));
@@ -375,7 +375,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void Equals_on_faked_object_should_return_false_when_passed_in_object_is_not_the_same_and_it_is_not_configured()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var foo = (IFoo)fake.Object;
 
             Assert.That(foo.Equals("Something else"), Is.False);
@@ -384,7 +384,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void ToString_should_return_fake_of_type_when_not_configured()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             
             Assert.That(fake.Object.ToString(), Is.EqualTo("Faked FakeItEasy.Tests.IFoo"));
         }
@@ -392,7 +392,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void SetProxy_should_set_proxy_from_proxy_result()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
 
             var proxy = this.CreateProxyResult<IFoo>();
 
@@ -404,7 +404,7 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void SetProxy_should_set_the_fake_type_from_the_proxy()
         {
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
 
             var proxy = this.CreateProxyResult<IFoo>();
 
@@ -418,7 +418,7 @@ namespace FakeItEasy.Tests.Core
         {
             bool wasCalled = false;
             
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var proxy = this.CreateProxyResult<IFoo>();
             var call = A.Fake<IWritableFakeObjectCall>();
             call.Configure().CallsTo(x => x.Method).Returns(typeof(IFoo).GetMethod("Bar", new Type[] { }));
@@ -446,7 +446,7 @@ namespace FakeItEasy.Tests.Core
         public void RemoveRule_should_remove_the_specified_rule_from_the_fake()
         {
             // Arrange
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());
             fake.AddRuleFirst(rule);
 
@@ -461,7 +461,7 @@ namespace FakeItEasy.Tests.Core
         public void RemoveRule_should_do_nothing_when_rule_does_not_exist_in_fake()
         {
             // Arrange
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());
 
             // Act
@@ -475,7 +475,7 @@ namespace FakeItEasy.Tests.Core
         public void RemoveRule_should_be_null_guarded()
         {
             // Arrange
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
 
             // Act
             
@@ -488,7 +488,7 @@ namespace FakeItEasy.Tests.Core
         public void AddRuleLast_should_add_rule()
         {
             // Arrange
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
             
             // Act
@@ -502,7 +502,7 @@ namespace FakeItEasy.Tests.Core
         public void AddRuleLast_should_add_rule_last_among_the_user_specified_rules()
         {
             // Arrange
-            var fake = this.CreateFakeObject<IFoo>();
+            var fake = this.CreateFakeManager<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
             A.CallTo(() => rule.ToString()).Returns("rule!");
             // Act

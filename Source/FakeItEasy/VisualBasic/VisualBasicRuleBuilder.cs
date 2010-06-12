@@ -1,14 +1,12 @@
 namespace FakeItEasy.VisualBasic
 {
     using System;
-    using FakeItEasy.Core;
     using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
 
     internal class VisualBasicRuleBuilder
         : IVisualBasicConfigurationWithArgumentValidation
     {
-        public delegate VisualBasicRuleBuilder Factory(RecordedCallRule rule, FakeObject fakeObject);
-
         private RecordedCallRule rule;
         private RuleBuilder wrappedBuilder;
 
@@ -19,6 +17,8 @@ namespace FakeItEasy.VisualBasic
 
             rule.Applicator = x => { };
         }
+
+        public delegate VisualBasicRuleBuilder Factory(RecordedCallRule rule, FakeManager fakeObject);
 
         public IAfterCallSpecifiedConfiguration DoesNothing()
         {
@@ -50,7 +50,7 @@ namespace FakeItEasy.VisualBasic
             Guard.AgainstNull(repeatConstraint, "repeatConstraint");
 
             this.rule.RepeatConstraint = repeatConstraint;
-            rule.IsAssertion = true;
+            this.rule.IsAssertion = true;
         }
 
         public IVisualBasicConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)

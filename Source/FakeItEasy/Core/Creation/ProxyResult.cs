@@ -3,6 +3,7 @@ namespace FakeItEasy.Core.Creation
     using System;
     using System.Diagnostics;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represents a result from an IProxyGenerator.
@@ -15,19 +16,19 @@ namespace FakeItEasy.Core.Creation
         /// <summary>
         /// Initializes a new instance of the <see cref="ProxyResult"/> class.
         /// </summary>
-        /// <param name="proxiedType">Type of the proxied.</param>
-        protected ProxyResult(Type proxiedType)
+        /// <param name="typeOfProxy">Type of the proxied.</param>
+		protected ProxyResult(Type typeOfProxy)
         {
-            Guard.AgainstNull(proxiedType, "proxiedType");
+            Guard.AgainstNull(typeOfProxy, "typeOfProxy");
 
-            this.ProxiedType = proxiedType;
+            this.TypeOfProxy = typeOfProxy;
         }
 
         /// <summary>
         /// Gets the type of the generated proxy.
         /// </summary>
         /// <value>The type of the generated proxy.</value>
-        public Type ProxiedType
+        public Type TypeOfProxy
         {
             get;
             private set;
@@ -71,7 +72,7 @@ namespace FakeItEasy.Core.Creation
             {
                 Guard.AgainstNull(value, "value");
 
-                if (!this.ProxiedType.IsAssignableFrom(value.GetType()))
+                if (!this.TypeOfProxy.IsAssignableFrom(value.GetType()))
                 {
                     throw new ArgumentException("The specified proxy is not of the correct type.");
                 }

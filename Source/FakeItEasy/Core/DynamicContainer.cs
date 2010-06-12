@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// A IFakeObjectContainer implementation that uses mef to load IFakeDefinitions and
@@ -11,13 +12,13 @@
     public class DynamicContainer
         : IFakeObjectContainer
     {
-        private Dictionary<Type, IDummyDefinition> registeredDummyDefinitions;
-        private Dictionary<Type, IFakeConfigurator> registeredConfigurators;
+        private IDictionary<Type, IDummyDefinition> registeredDummyDefinitions;
+        private IDictionary<Type, IFakeConfigurator> registeredConfigurators;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer"/> class.
         /// </summary>
-        public DynamicContainer(ITypeAccessor typeAccessor)
+        public DynamicContainer(ITypeCatalogue typeAccessor)
         {
             this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(typeAccessor);
             this.registeredConfigurators = CreateFakeConfiguratorsDictionary(typeAccessor);       
@@ -40,7 +41,7 @@
                 return false;
             }
 
-            fakeObject = dummyDefinition.CreateFake();
+            fakeObject = dummyDefinition.CreateDummy();
             return true;
         }
 
@@ -59,17 +60,17 @@
             }
         }
 
-        private static Dictionary<Type, IFakeConfigurator> CreateFakeConfiguratorsDictionary(ITypeAccessor typeAccessor)
+        private static IDictionary<Type, IFakeConfigurator> CreateFakeConfiguratorsDictionary(ITypeCatalogue typeAccessor)
         {
-            return GetOneInstancePerTypeImplementing<IFakeConfigurator>(typeAccessor).Distinct(x => x.ForType).ToDictionary(x => x.ForType);
+            return GetOneInstancePerTypeImplementing<IFakeConfigurator>(typeAccessor).FirstFromEachKey(x => x.ForType);
         }
 
-        private static Dictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(ITypeAccessor typeAccessor)
+        private static IDictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(ITypeCatalogue typeAccessor)
         {
-            return GetOneInstancePerTypeImplementing<IDummyDefinition>(typeAccessor).Distinct(x => x.ForType).ToDictionary(x => x.ForType);
+            return GetOneInstancePerTypeImplementing<IDummyDefinition>(typeAccessor).FirstFromEachKey(x => x.ForType);
         }
 
-        private static IEnumerable<TInterface> GetOneInstancePerTypeImplementing<TInterface>(ITypeAccessor typeAccessor)
+        private static IEnumerable<TInterface> GetOneInstancePerTypeImplementing<TInterface>(ITypeCatalogue typeAccessor)
         {
             return from type in typeAccessor.GetAvailableTypes()
                    where type.GetInterfaces().Contains(typeof(TInterface))
@@ -78,6 +79,7 @@
                    select (TInterface)instance;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Used to determine if an instance could be created or not.")]
         private static object TryCreateInstance(Type type)
         {
             try

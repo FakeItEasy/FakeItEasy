@@ -14,12 +14,12 @@ namespace FakeItEasy.Configuration
           ICallCollectionAndCallMatcherAccessor
     {
         private FakeAsserter.Factory asserterFactory;
-        private FakeObject fakeObject;
+        private FakeManager manager;
         
-        internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeObject fakeObject, FakeAsserter.Factory asserterFactory)
+        internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeManager manager, FakeAsserter.Factory asserterFactory)
         {
             this.RuleBeingBuilt = ruleBeingBuilt;
-            this.fakeObject = fakeObject;
+            this.manager = manager;
             this.asserterFactory = asserterFactory;
         }
 
@@ -30,7 +30,7 @@ namespace FakeItEasy.Configuration
         /// <param name="fakeObject">The fake object the rule is for.</param>
         /// <param name="ruleBeingBuilt">The rule that's being built.</param>
         /// <returns>A configuration object.</returns>
-        internal delegate RuleBuilder Factory(BuildableCallRule ruleBeingBuilt, FakeObject fakeObject);
+        internal delegate RuleBuilder Factory(BuildableCallRule ruleBeingBuilt, FakeManager fakeObject);
 
         public BuildableCallRule RuleBeingBuilt 
         {
@@ -42,7 +42,7 @@ namespace FakeItEasy.Configuration
         {
             get
             {
-                return this.fakeObject.RecordedCallsInScope;
+                return this.manager.RecordedCallsInScope;
             }
         }
 
@@ -107,7 +107,7 @@ namespace FakeItEasy.Configuration
 
         public void MustHaveHappened(Repeated repeatConstraint)
         {
-            this.fakeObject.RemoveRule(this.RuleBeingBuilt);
+            this.manager.RemoveRule(this.RuleBeingBuilt);
             var asserter = this.asserterFactory.Invoke(this.Calls.Cast<IFakeObjectCall>());
             asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.ToString(), repeatConstraint.Matches, repeatConstraint.ToString());
         }
@@ -134,26 +134,12 @@ namespace FakeItEasy.Configuration
                 get { return this.ParentConfiguration.Calls; }
             }
 
-            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(TMember value)
-            {
-                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(value);
-                return this.ParentConfiguration;
-            }
-
-            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(Func<TMember> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer, "valueProducer");
-
-                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(valueProducer.Invoke());
-                return this.ParentConfiguration;
-            }
-
             public IAfterCallSpecifiedConfiguration Throws(Exception exception)
             {
                 return this.ParentConfiguration.Throws(exception);
             }
 
-            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns(Func<IFakeObjectCall, TMember> valueProducer)
+            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily(Func<IFakeObjectCall, TMember> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, "valueProducer");
 
@@ -177,7 +163,7 @@ namespace FakeItEasy.Configuration
             public IReturnValueConfiguration<TMember> WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
             {
                 Guard.AgainstNull(argumentsPredicate, "argumentsPredicate");
-
+                
                 this.ParentConfiguration.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
                 return this;
             }

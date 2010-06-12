@@ -23,5 +23,19 @@ namespace FakeItEasy
         {
             configuration.MustHaveHappened(repeatValidation);
         }
+
+        /// <summary>
+        /// Specifies that the configured call/calls should return null when called.
+        /// </summary>
+        /// <typeparam name="TMember">The type of the faked member.</typeparam>
+        /// <param name="configuration">The configuration to apply to.</param>
+        /// <returns>A configuration object.</returns>
+        [Obsolete]
+        public static IAfterCallSpecifiedConfiguration ReturnsNull<TMember>(this IReturnValueConfiguration<TMember> configuration) where TMember : class
+        {
+            Guard.AgainstNull(configuration, "configuration");
+
+            return configuration.Returns((TMember)null);
+        }
     }
 }

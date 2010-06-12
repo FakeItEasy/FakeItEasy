@@ -75,7 +75,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         public void IsRecording_should_return_true_when_storage_returns_null_from_load()
         {
             // Arrange
-            A.CallTo(() => this.callStorage.Load()).ReturnsNull();
+            A.CallTo(() => this.callStorage.Load()).Returns(null);
 
             // Act
             var recorder = this.CreateRecorder();
@@ -155,7 +155,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         [Test]
         public void Dispose_should_call_save_with_empty_collection_when_no_calls_has_been_recorded_and_no_previous_recording_exists()
         {
-            A.CallTo(() => this.callStorage.Load()).ReturnsNull();
+            A.CallTo(() => this.callStorage.Load()).Returns(null);
 
             using (var recorder = this.CreateRecorder())
             { 

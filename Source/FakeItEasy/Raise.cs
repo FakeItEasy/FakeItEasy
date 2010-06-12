@@ -2,7 +2,7 @@
 {
     using System;
     using System.ComponentModel;
-    using FakeItEasy.Configuration;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
 
     /// <summary>
@@ -18,6 +18,7 @@
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         /// <returns>A Raise(TEventArgs)-object that exposes the eventhandler to attatch.</returns>
+        [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "Must be visible to provide the event raising syntax.")]
         public static Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e) where TEventArgs : EventArgs
         {
             return new Raise<TEventArgs>(sender, e);
@@ -94,6 +95,7 @@
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">Event args for the event.</param>
+        [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "Must be visible to provide the event raising syntax.")]
         public void Now(object sender, TEventArgs e)
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);

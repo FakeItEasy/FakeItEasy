@@ -1,6 +1,7 @@
 namespace FakeItEasy.Expressions
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions.ArgumentConstraints;
 
@@ -32,6 +33,7 @@ namespace FakeItEasy.Expressions
         /// <param name="constraint">The constraint to extend.</param>
         /// <param name="otherConstraint">A delegate that returns the constraint to combine with.</param>
         /// <returns>A combined constraint.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static ArgumentConstraint<T> Or<T>(this ArgumentConstraint<T> constraint, Func<ArgumentConstraintScope<T>, ArgumentConstraint<T>> otherConstraint)
         {
             Guard.AgainstNull(constraint, "constraint");

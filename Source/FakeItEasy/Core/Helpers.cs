@@ -1,18 +1,11 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
+    using System.Linq.Expressions;
 
     internal static class Helpers
     {
-        public static void WriteCalls(this IEnumerable<IFakeObjectCall> calls, TextWriter writer)
-        {
-            var callWriter = ServiceLocator.Current.Resolve<CallWriter>();
-            callWriter.WriteCalls(0, calls, writer);
-        }
-
         public static string GetDescription(this IFakeObjectCall fakeObjectCall)
         {
             var method = fakeObjectCall.Method;
@@ -45,6 +38,17 @@
         public static object GetDefaultValueOfType(Type type)
         {
             return type.IsValueType && !type.Equals(typeof(void)) ? Activator.CreateInstance(type) : null;
+        }
+
+        /// <summary>
+        /// Gets the value produced by the specified expression when compiled and invoked.
+        /// </summary>
+        /// <param name="expression">The expression to get the value from.</param>
+        /// <returns>The value produced by the expression.</returns>
+        public static object GetValueProducedByExpression(Expression expression)
+        {
+            var lambda = Expression.Lambda(expression).Compile();
+            return lambda.DynamicInvoke();
         }
     }
 }

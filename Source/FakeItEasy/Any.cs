@@ -1,6 +1,7 @@
 namespace FakeItEasy
 {
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
 
     /// <summary>
@@ -18,7 +19,7 @@ namespace FakeItEasy
         public static IAnyCallConfiguration CallTo<TFake>(TFake fakedObject)
         {
             var configurationFactory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
-            return configurationFactory.CreateConfiguration<TFake>(Fake.GetFakeObject(fakedObject)).AnyCall();
+            return configurationFactory.CreateConfiguration<TFake>(Fake.GetFakeManager(fakedObject)).AnyCall();
         }
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace FakeItEasy
         /// <param name="objB">The second object to compare.</param>
         /// <returns>True if the two objects are equal.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Using the same names as the hidden method.")]
         public static new bool Equals(object objA, object objB)
         {
             return object.Equals(objA, objB);
@@ -40,6 +42,7 @@ namespace FakeItEasy
         /// <param name="objB">The obj B.</param>
         /// <returns>True if the objects are the same reference.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Using the same names as the hidden method.")]
         public static new bool ReferenceEquals(object objA, object objB)
         {
             return object.ReferenceEquals(objA, objB);

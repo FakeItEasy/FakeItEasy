@@ -1,8 +1,7 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy
 {
     using System;
-    using System.Collections.Generic;
-    
+
     /// <summary>
     /// Represents a definition of how a fake object of the type T should
     /// be created.
@@ -21,18 +20,18 @@ namespace FakeItEasy.Core
         }
 
         /// <summary>
-        /// Creates the fake.
+        /// Creates the dummy.
         /// </summary>
-        /// <returns>The fake object.</returns>
-        object IDummyDefinition.CreateFake()
+        /// <returns>The dummy object.</returns>
+        object IDummyDefinition.CreateDummy()
         {
-            return this.CreateFake();
+            return this.CreateDummy();
         }
 
         /// <summary>
-        /// Creates the fake.
+        /// Creates the dummy.
         /// </summary>
-        /// <returns>The fake object.</returns>
-        protected abstract T CreateFake();
+        /// <returns>The dummy object.</returns>
+        protected abstract T CreateDummy();
     }
 }

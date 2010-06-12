@@ -1,16 +1,16 @@
 ﻿namespace FakeItEasy
 {
+    using System;
+    using System.Collections.Generic;
     using System.IO;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
+    using FakeItEasy.DynamicProxy;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.DynamicProxy;
-    using System.Linq;
-    using System;
-    
+
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
     /// </summary>
@@ -44,8 +44,8 @@
             container.RegisterSingleton<FakeAsserter.Factory>(c =>
                 x => new FakeAsserter(x, c.Resolve<CallWriter>()));
 
-            container.RegisterSingleton<FakeObject.Factory>(c =>
-                () => new FakeObject());
+            container.RegisterSingleton<FakeManager.Factory>(c =>
+                () => new FakeManager());
 
             container.RegisterSingleton<CallWriter>(c =>
                 new CallWriter());
@@ -69,19 +69,84 @@
                 new DefaultFakeCreator(c.Resolve<IFakeAndDummyManager>()));
 
             container.Register<IFakeAndDummyManager>(c =>
-                new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IProxyGenerator>(), c.Resolve<FakeObject.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
+                new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IFakeCreationSession>(), c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
 
             container.Register<IProxyGenerator>(c =>
-                new DynamicProxyProxyGenerator(c.Resolve<IFakeObjectContainer>()));
+                c.Resolve<IFakeCreationSession>().ProxyGenerator);
 
             container.Register<IFakeWrapperConfigurator>(c =>
                 new DefaultFakeWrapperConfigurator());
 
-            container.Register<ITypeAccessor>(c =>
+            container.Register<ITypeCatalogue>(c =>
                 new ApplicationDirectoryAssembliesTypeAccessor());
+
+            container.Register<IFakeCreationSession>(c =>
+                new DummyResolvingSession(c));
+
+            container.RegisterSingleton<IProxyGeneratorFactory>(c =>
+                new DynamicProxyProxyGeneratorFactory());
         }
 
-        #region FactoryImplementations
+        private class DynamicProxyProxyGeneratorFactory
+            : IProxyGeneratorFactory
+        {
+            public IProxyGenerator CreateProxyGenerator(IFakeCreationSession session)
+            {
+                return new DynamicProxyProxyGenerator(session);
+            }
+        }
+
+        private class DummyResolvingSession
+            : IFakeCreationSession
+        {
+            private Dictionary<Type, object> cachedValues = new Dictionary<Type, object>();
+            private HashSet<Type> attemptedTypes = new HashSet<Type>();
+
+            public DummyResolvingSession(DictionaryContainer container)
+            {
+                this.DummyCreator = new DefaultDummyValueCreator(this, container.Resolve<IFakeObjectContainer>());
+                this.ConstructorResolver = new DefaultConstructorResolver(this);
+                this.ProxyGenerator = container.Resolve<IProxyGeneratorFactory>().CreateProxyGenerator(this);
+            }
+
+            public bool TryGetCachedDummyValue(System.Type type, out object value)
+            {
+                return this.cachedValues.TryGetValue(type, out value);
+            }
+
+            public void RegisterTriedToResolveType(System.Type type)
+            {
+                this.attemptedTypes.Add(type);
+            }
+
+            public bool TypeHasFailedToResolve(System.Type type)
+            {
+                return this.attemptedTypes.Contains(type) && !this.cachedValues.ContainsKey(type);
+            }
+
+            public void AddResolvedDummyValueToCache(System.Type type, object dummy)
+            {
+                this.cachedValues.Add(type, dummy);
+            }
+
+            public IDummyValueCreator DummyCreator
+            {
+                get;
+                set;
+            }
+
+            public IConstructorResolver ConstructorResolver
+            {
+                get;
+                set;
+            }
+
+            public IProxyGenerator ProxyGenerator
+            {
+                get;
+                set;
+            }
+        }
 
         private class ExpressionCallMatcherFactory
             : IExpressionCallMatcherFactory
@@ -114,6 +179,5 @@
                 File.Create(fileName).Dispose();
             }
         }
-        #endregion
     }
 }

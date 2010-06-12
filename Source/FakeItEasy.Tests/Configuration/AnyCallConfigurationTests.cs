@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests.Configuration
     public class AnyCallConfigurationTests
     {
         private IConfigurationFactory configurationFactory;
-        private FakeObject fakeObject;
+        private FakeManager fakeObject;
         private AnyCallCallRule callRule;
         private AnyCallConfiguration configuration;
 
@@ -18,7 +18,7 @@ namespace FakeItEasy.Tests.Configuration
         public void SetUp()
         {
             this.configurationFactory = A.Fake<IConfigurationFactory>();
-            this.fakeObject = new FakeObject();
+            this.fakeObject = new FakeManager();
             this.callRule = new AnyCallCallRule();
 
             this.configuration = this.CreateConfiguration();

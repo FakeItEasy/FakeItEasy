@@ -2,6 +2,7 @@ namespace FakeItEasy.Core.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
 
@@ -27,6 +28,7 @@ namespace FakeItEasy.Core.Creation
         /// </summary>
         /// <param name="constructorCall">The constructor call to use when creating a class proxy.</param>
         /// <returns>Options object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         IFakeOptionsBuilder<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall);
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace FakeItEasy.Core.Creation
         /// <returns>Options object.</returns>
         /// <exception cref="ArgumentException">The specified type is not an interface.</exception>
         /// <exception cref="ArgumentNullException">The specified type is null.</exception>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Implements", Justification = "Would be a breaking change, might be changed in a later major version.")]
         IFakeOptionsBuilder<T> Implements(Type interfaceType);
     }
 }

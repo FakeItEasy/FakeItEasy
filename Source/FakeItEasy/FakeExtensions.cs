@@ -2,6 +2,8 @@ namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
@@ -35,19 +37,6 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Specifies that the configured call/calls should return null when called.
-        /// </summary>
-        /// <typeparam name="TMember">The type of the faked member.</typeparam>
-        /// <param name="configuration">The configuration to apply to.</param>
-        /// <returns>A configuration object.</returns>
-        public static IAfterCallSpecifiedConfiguration ReturnsNull<TMember>(this IReturnValueConfiguration<TMember> configuration) where TMember : class
-        {
-            Guard.AgainstNull(configuration, "configuration");
-
-            return configuration.Returns((TMember)null);
-        }
-
-        /// <summary>
         /// Specifies that a call to the configured call should be applied no matter what arguments
         /// are used in the call to the faked object.
         /// </summary>
@@ -65,6 +54,8 @@ namespace FakeItEasy
         /// <param name="calls">The calls to filter.</param>
         /// <param name="callSpecification">The call to match on.</param>
         /// <returns>A collection of the calls that matches the call specification.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "The compiler would not be able to figure out the type.")]
         public static IEnumerable<ICompletedFakeObjectCall> Matching<TFake>(this IEnumerable<ICompletedFakeObjectCall> calls, Expression<Action<TFake>> callSpecification)
         {
             var factory = ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>();
@@ -106,11 +97,61 @@ namespace FakeItEasy
         /// <param name="configuration">The call configuration to extend.</param>
         /// <param name="values">The values to return in sequence.</param>
         /// <returns>A configuration object.</returns>
-        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
+        public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
         {
             var queue = new Queue<T>(values);
 
-            return configuration.Returns(() => queue.Count != 0 ? queue.Dequeue() : default(T));
+            configuration.ReturnsLazily(x => queue.Dequeue()).NumberOfTimes(queue.Count);
+        }
+
+        /// <summary>
+        /// Specifies the value to return when the configured call is made.
+        /// </summary>
+        /// <param name="value">The value to return.</param>
+        /// <returns>A configuration object.</returns>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<T> configuration, T value)
+        {
+            Guard.AgainstNull(configuration, "configuration");
+
+            return configuration.ReturnsLazily(x => value);
+        }
+
+        /// <summary>
+        /// Specifies a function used to produce a return value when the configured call is made.
+        /// The function will be called each time this call is made and can return different values
+        /// each time.
+        /// </summary>
+        /// <param name="valueProducer">A function that produces the return value.</param>
+        /// <returns>A configuration object.</returns>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this IReturnValueConfiguration<T> configuration, Func<T> valueProducer)
+        {
+            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(valueProducer, "valueProducer");
+
+            return configuration.ReturnsLazily(x => valueProducer());
+        }
+
+        /// <summary>
+        /// Writes the calls in the collection to the specified text writer.
+        /// </summary>
+        /// <param name="calls">The calls to write.</param>
+        /// <param name="writer">The writer to write the calls to.</param>
+        public static void Write(this IEnumerable<IFakeObjectCall> calls, TextWriter writer)
+        {
+            Guard.AgainstNull(calls, "calls");
+            Guard.AgainstNull(writer, "writer");
+
+            var callWriter = ServiceLocator.Current.Resolve<CallWriter>();
+            callWriter.WriteCalls(0, calls, writer);
+        }
+
+        /// <summary>
+        /// Writes all calls in the collection to the console.
+        /// </summary>
+        /// <param name="calls">The calls to write.</param>
+        public static void WriteToConsole(this IEnumerable<IFakeObjectCall> calls)
+        {
+            calls.Write(Console.Out);
         }
     }
 }

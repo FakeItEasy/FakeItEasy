@@ -92,6 +92,8 @@
     <Compile Include="Core\DummyDefinitionTests.cs" />
     <Compile Include="Core\DynamicContainerTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
+    <Compile Include="Core\Creation\DefaultConstructorResolverTests.cs" />
+    <Compile Include="Core\Creation\DefaultDummyValueCreatorTests.cs" />
     <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintScopeTests.cs" />
@@ -120,7 +122,7 @@
     <Compile Include="IoC\DictionaryContainerTests.cs" />
     <Compile Include="TestCases.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
-    <Compile Include="Core\FakeObjectTests.cs" />
+    <Compile Include="Core\FakeManagerTests.cs" />
     <Compile Include="Core\HelpersTests.cs" />
     <Compile Include="Core\NullFakeObjectContainerTests.cs" />
     <Compile Include="CustomArgumentConstraints.cs" />

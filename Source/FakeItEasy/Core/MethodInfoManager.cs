@@ -3,6 +3,7 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
 
@@ -152,6 +153,7 @@ namespace FakeItEasy.Core
                 return this.Type.GetHashCode() ^ this.MethodInfo.GetHashCode();
             }
 
+            [SuppressMessage("Microsoft.Usage", "CA2231:OverloadOperatorEqualsOnOverridingValueTypeEquals", Justification = "The type is used privately only.")]
             public override bool Equals(object obj)
             {
                 var other = (TypeMethodInfoPair)obj;

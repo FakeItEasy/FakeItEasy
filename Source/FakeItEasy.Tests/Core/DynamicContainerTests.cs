@@ -8,16 +8,15 @@ namespace FakeItEasy.Core.Tests
     [TestFixture]
     public class DynamicContainerTests
     {
-        private ITypeAccessor typeAccessor;
+        private ITypeCatalogue typeAccessor;
         private List<Type> availableTypes;
-        private DynamicContainer container;
-
+        
         [SetUp]
         public void SetUp()
         {
             this.availableTypes = new List<Type>();
 
-            this.typeAccessor = A.Fake<ITypeAccessor>();
+            this.typeAccessor = A.Fake<ITypeCatalogue>();
             A.CallTo(() => this.typeAccessor.GetAvailableTypes()).Returns(this.availableTypes);
         }
 
@@ -152,7 +151,7 @@ namespace FakeItEasy.Core.Tests
             {
             }
 
-            protected override TypeWithDummyDefinition CreateFake()
+            protected override TypeWithDummyDefinition CreateDummy()
             {
                 return new TypeWithDummyDefinition();
             }
@@ -178,7 +177,7 @@ namespace FakeItEasy.Core.Tests
         public class DummyDefinitionForTypeWithDefinition
             : DummyDefinition<TypeWithDummyDefinition>
         {
-            protected override TypeWithDummyDefinition CreateFake()
+            protected override TypeWithDummyDefinition CreateDummy()
             {
                 return new TypeWithDummyDefinition();
             }
@@ -187,7 +186,7 @@ namespace FakeItEasy.Core.Tests
         public class DuplicateDummyDefinitionForTypeWithDefinition
             : DummyDefinition<TypeWithDummyDefinition>
         {
-            protected override TypeWithDummyDefinition CreateFake()
+            protected override TypeWithDummyDefinition CreateDummy()
             {
                 return new TypeWithDummyDefinition();
             }

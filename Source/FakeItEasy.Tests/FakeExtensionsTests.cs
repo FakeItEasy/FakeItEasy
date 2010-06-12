@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Collections.Generic;
 using FakeItEasy.Tests.TestHelpers;
 using FakeItEasy.Expressions;
+using System.IO;
 
 namespace FakeItEasy.Tests
 {
@@ -37,7 +38,7 @@ namespace FakeItEasy.Tests
             var repeatConfig = A.Fake<IRepeatConfiguration>();
             
             repeatConfig.Twice();
-
+            
             A.CallTo(() => repeatConfig.NumberOfTimes(2)).MustHaveHappened(Repeated.Once);
         }
 
@@ -46,36 +47,6 @@ namespace FakeItEasy.Tests
         {
             Assert.Throws<ArgumentNullException>(() =>
                 FakeExtensions.Twice((IRepeatConfiguration)null));
-        }
-
-        [Test]
-        public void ReturnsNull_should_set_call_returns_with_null_on_configuration()
-        {
-            var config = A.Fake<IReturnValueConfiguration<string>>();
-            config.ReturnsNull();
-
-            A.CallTo(() => config.Returns(A<string>.That.IsNull())).MustHaveHappened(Repeated.Once);
-        }
-
-        [Test]
-        public void ReturnsNull_should_return_configuration_object()
-        {
-            var config = A.Fake<IReturnValueConfiguration<string>>();
-            var returnConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
-
-            A.CallTo(() => config.Returns(A<string>.Ignored)).Returns(returnConfig);
-
-            var returned = config.ReturnsNull();
-            var f = new Fake<IFoo>();
-            
-            Assert.That(returned, Is.SameAs(returnConfig));
-        }
-
-        [Test]
-        public void ReturnsNull_should_be_null_guarded()
-        {
-            NullGuardedConstraint.Assert(() =>
-                FakeExtensions.ReturnsNull(A.Fake<IReturnValueConfiguration<string>>()));
         }
 
         [Test]
@@ -212,53 +183,161 @@ namespace FakeItEasy.Tests
             // Arrange
             var sequence = new[] { 1, 2, 3 };
             var config = A.Fake<IReturnValueConfiguration<int>>();
+            var call = A.Fake<IFakeObjectCall>();
 
             // Act
             FakeExtensions.ReturnsNextFromSequence(config, sequence);
 
             // Assert
-            var factoryValidator = A<Func<int>>.That.Matches(x => 
+            var factoryValidator = A<Func<IFakeObjectCall, int>>.That.Matches(x => 
             {
-                var producedSequence = new[] { x.Invoke(), x.Invoke(), x.Invoke() };
+                var producedSequence = new[] { x.Invoke(call), x.Invoke(call), x.Invoke(call) };
                 return producedSequence.SequenceEqual(sequence);
             });
-
-            A.CallTo(() => config.Returns(factoryValidator)).MustHaveHappened();
+            
+            A.CallTo(() => config.ReturnsLazily(factoryValidator)).MustHaveHappened();
         }
 
         [Test]
-        public void ReturnsNextFromSequence_should_return_repeat_config_from_passed_in_configuration()
+        public void ReturnsNextFromSequence_should_set_repeat_to_the_number_of_values_in_sequence()
         {
             // Arrange
             var config = A.Fake<IReturnValueConfiguration<int>>();
             var returnedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
-
-            A.CallTo(() => config.Returns(A<Func<int>>.Ignored)).Returns(returnedConfig);
+            
+            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.Ignored)).Returns(returnedConfig);
 
             // Act
+            FakeExtensions.ReturnsNextFromSequence(config, 1, 2, 3);
 
             // Assert
-            Assert.That(FakeExtensions.ReturnsNextFromSequence(config, 1), Is.SameAs(returnedConfig));
+            A.CallTo(() => returnedConfig.NumberOfTimes(3)).MustHaveHappened();
         }
 
         [Test]
-        public void ReturnsNextFromSequence_should_return_null_when_all_values_has_been_returned()
+        public void Returns_should_return_configuration_returned_from_passed_in_configuration()
         {
             // Arrange
-            var sequence = new[] { "" };
-            var config = A.Fake<IReturnValueConfiguration<string>>();
-
+            var expectedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
+            var config = A.Fake <IReturnValueConfiguration<int>>();
+            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.That.Matches(x => x.Invoke(null) == 10))).Returns(expectedConfig);
+            
             // Act
-            FakeExtensions.ReturnsNextFromSequence(config, sequence);
+            var returned = FakeExtensions.Returns(config, 10);
 
             // Assert
-            var factoryValidator = A<Func<string>>.That.Matches(x =>
-            {
-                x.Invoke();
-                return x.Invoke() == null;
-            });
+            Assert.That(returned, Is.SameAs(expectedConfig));
+        }
 
-            A.CallTo(() => config.Returns(factoryValidator)).MustHaveHappened();
+        [Test]
+        public void Returns_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() => 
+                A.Fake<IReturnValueConfiguration<string>>().Returns(null));
+        }
+
+        [Test]
+        public void Curried_ReturnsLazily_returns_value_from_curried_function()
+        {
+            // Arrange
+            var config = A.Fake<IReturnValueConfiguration<int>>();
+            int currentValue = 10;
+
+            // Act
+            config.ReturnsLazily(() => currentValue);
+
+            // Assert
+            var curriedFunction = Fake.GetCalls(config).Single().Arguments.Get<Func<IFakeObjectCall, int>>(0);
+
+            Assert.That(curriedFunction.Invoke(A.Dummy<IFakeObjectCall>()), Is.EqualTo(currentValue));
+            currentValue = 20;
+            Assert.That(curriedFunction.Invoke(A.Dummy<IFakeObjectCall>()), Is.EqualTo(currentValue));
+        }
+
+        [Test]
+        public void Curried_ReturnsLazily_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                A.Fake<IReturnValueConfiguration<int>>().ReturnsLazily(() => 10));
+        }
+
+        [Test]
+        public void WriteCalls_should_throw_when_calls_is_null()
+        {
+            NullGuardedConstraint.Assert(() =>
+                FakeExtensions.Write(Enumerable.Empty<IFakeObjectCall>(), new StringWriter()));
+        }
+
+        [Test]
+        public void WriteCalls_should_call_call_writer_registered_in_container_with_calls()
+        {
+            // Arrange
+            var calls = A.CollectionOfFake<IFakeObjectCall>(2);
+            
+            var callWriter = A.Fake<CallWriter>();
+            this.StubResolve<CallWriter>(callWriter);
+
+            var writer = new StringWriter();
+
+            // Act
+            FakeExtensions.Write(calls, writer);
+
+            // Assert
+            A.CallTo(() => callWriter.WriteCalls(0, calls, writer)).MustHaveHappened();
+        }
+
+        [Test]
+        public void WriteToConsole_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                FakeExtensions.WriteToConsole(Enumerable.Empty<IFakeObjectCall>()));
+        }
+
+        [Test]
+        public void WriteToConsole_should_call_writer_registered_in_container_with_calls()
+        {
+            // Arrange
+            var calls = A.CollectionOfFake<IFakeObjectCall>(2);
+
+            var callWriter = A.Fake<CallWriter>();
+            this.StubResolve<CallWriter>(callWriter);
+
+            // Act
+            FakeExtensions.WriteToConsole(calls);
+
+            // Assert
+            A.CallTo(() => callWriter.WriteCalls(0, calls, A<TextWriter>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
+        public void WriteToConsole_should_call_writer_registered_in_container_with_console_out()
+        {
+            // Arrange
+            var calls = A.CollectionOfFake<IFakeObjectCall>(2);
+
+            var callWriter = A.Fake<CallWriter>();
+            this.StubResolve<CallWriter>(callWriter);
+
+            // Act
+            FakeExtensions.WriteToConsole(calls);
+
+            // Assert
+            A.CallTo(() => callWriter.WriteCalls(0, A<IEnumerable<IFakeObjectCall>>.Ignored.Argument, Console.Out)).MustHaveHappened();
         }
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)

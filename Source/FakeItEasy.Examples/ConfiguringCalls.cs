@@ -17,7 +17,7 @@ namespace FakeItEasy.Examples
             A.CallTo(() => factory.Create()).Returns(A.Fake<IWidget>());
 
             // Configure method to return a new widget each time it's called
-            A.CallTo(() => factory.Create()).Returns(() => A.Fake<IWidget>());
+            A.CallTo(() => factory.Create()).ReturnsLazily(x => A.Fake<IWidget>());
 
             // A call can be configured to only be valid a certain number of times.
             A.CallTo(() => factory.Create()).Returns(A.Fake<IWidget>()).Twice();

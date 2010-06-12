@@ -13,7 +13,7 @@ namespace FakeItEasy.Tests.Configuration
     [TestFixture]
     public class StartConfigurationTests
     {
-        private FakeObject fakeObject;
+        private FakeManager fakeObject;
         private ExpressionCallRule rule;
         private ExpressionCallRule.Factory ruleFactory;
         private LambdaExpression argumentToRuleFactory;
@@ -28,7 +28,7 @@ namespace FakeItEasy.Tests.Configuration
 
         protected virtual void OnSetUp()
         {
-            this.fakeObject = new FakeObject();
+            this.fakeObject = new FakeManager();
             this.rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());
             this.ruleFactory = x =>
                 {

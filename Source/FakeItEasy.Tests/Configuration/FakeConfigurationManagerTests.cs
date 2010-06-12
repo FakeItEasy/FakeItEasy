@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.Configuration
         private FakeConfigurationManager configurationManager;
         private ExpressionCallRule.Factory ruleFactory;
         private ExpressionCallRule ruleReturnedFromFactory;
-        private FakeObject fakeObjectReturnedFromParser;
+        private FakeManager fakeObjectReturnedFromParser;
         private IProxyGenerator proxyGenerator;
 
         [SetUp]
@@ -44,9 +44,9 @@ namespace FakeItEasy.Tests.Configuration
                     return this.ruleReturnedFromFactory;
                 };
 
-            this.fakeObjectReturnedFromParser = new FakeObject();
+            this.fakeObjectReturnedFromParser = new FakeManager();
 
-            A.CallTo(() => this.expressionParser.GetFakeObjectCallIsMadeOn(A<LambdaExpression>.Ignored)).Returns(x => this.fakeObjectReturnedFromParser);
+            A.CallTo(() => this.expressionParser.GetFakeObjectCallIsMadeOn(A<LambdaExpression>.Ignored)).ReturnsLazily(x => this.fakeObjectReturnedFromParser);
 
             this.configurationManager = this.CreateManager();
         }
@@ -80,7 +80,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Bar());
 
             // Assert
-            A.CallTo(() => this.configurationFactory.CreateConfiguration(A<FakeObject>.Ignored, this.ruleReturnedFromFactory)).MustHaveHappened();
+            A.CallTo(() => this.configurationFactory.CreateConfiguration(A<FakeManager>.Ignored, this.ruleReturnedFromFactory)).MustHaveHappened();
         }
 
         [Test]
@@ -170,7 +170,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Baz());
 
             // Assert
-            A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(A<FakeObject>.Ignored, this.ruleReturnedFromFactory)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(A<FakeManager>.Ignored, this.ruleReturnedFromFactory)).MustHaveHappened(Repeated.Once);
         }
 
         [Test]

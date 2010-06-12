@@ -7,13 +7,13 @@ namespace FakeItEasy.Configuration
     internal class AnyCallConfiguration
         : IAnyCallConfiguration
     {
-        private FakeObject fakeObject;
+        private FakeManager manager;
         private AnyCallCallRule configuredRule;
         private IConfigurationFactory configurationFactory;
 
-        public AnyCallConfiguration(FakeObject fakeObject, AnyCallCallRule configuredRule, IConfigurationFactory configurationFactory)
+        public AnyCallConfiguration(FakeManager manager, AnyCallCallRule configuredRule, IConfigurationFactory configurationFactory)
         {
-            this.fakeObject = fakeObject;
+            this.manager = manager;
             this.configuredRule = configuredRule;
             this.configurationFactory = configurationFactory;
         }
@@ -22,14 +22,14 @@ namespace FakeItEasy.Configuration
         {
             get
             {
-                return this.configurationFactory.CreateConfiguration(this.fakeObject, this.configuredRule);
+                return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule);
             }
         }
 
         public IReturnValueArgumentValidationConfiguration<TMember> WithReturnType<TMember>()
         {
             this.configuredRule.ApplicableToMembersWithReturnType = typeof(TMember);
-            return this.configurationFactory.CreateConfiguration<TMember>(this.fakeObject, this.configuredRule);
+            return this.configurationFactory.CreateConfiguration<TMember>(this.manager, this.configuredRule);
         }
 
         public IAfterCallSpecifiedConfiguration DoesNothing()

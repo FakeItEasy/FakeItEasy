@@ -36,7 +36,7 @@ namespace FakeItEasy
 
             
             A.CallTo(() => foo.Bar())
-                .Returns(() => "test");
+                .ReturnsLazily(x => "test");
 
             //A.CallTo(() => foo).Baz()).RemoveCallConfigurations();
             //A.CallTo(() => foo).RemoveFakeObjectConfigurations();

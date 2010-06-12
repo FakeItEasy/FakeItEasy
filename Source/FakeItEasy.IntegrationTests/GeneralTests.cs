@@ -36,7 +36,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Assert
             Assert.That(enumerator, Is.Not.Null);
-            Assert.That(Fake.GetFakeObject(enumerator), Is.Not.Null);
+            Assert.That(Fake.GetFakeManager(enumerator), Is.Not.Null);
         }
 
         [Test]
@@ -195,6 +195,24 @@ namespace FakeItEasy.IntegrationTests
 
             // Assert
             Assert.That(result, Is.InstanceOf<IList<IFoo>>().And.All.InstanceOf<IFoo>().And.All.InstanceOf<IFakedProxy>());
+        }
+
+        [Test]
+        public void Returns_from_sequence_only_applies_the_number_as_many_times_as_the_number_of_specified_values()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+
+            // Act
+            A.CallTo(() => foo.Baz()).Throws(new Exception());
+            A.CallTo(() => foo.Baz()).ReturnsNextFromSequence(1, 2);
+
+            foo.Baz();
+            foo.Baz();
+
+            // Assert
+            Assert.Throws<Exception>(() =>
+                foo.Baz());
         }
 
         public class FakeableClass

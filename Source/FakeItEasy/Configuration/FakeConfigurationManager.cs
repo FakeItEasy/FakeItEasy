@@ -1,6 +1,7 @@
 namespace FakeItEasy.Configuration
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FakeItEasy.Core.Creation;
     using FakeItEasy.Expressions;
@@ -35,6 +36,7 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration(fake, rule);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
             Guard.AgainstNull(callSpecification, "callSpecification");

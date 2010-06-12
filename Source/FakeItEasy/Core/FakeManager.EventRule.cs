@@ -2,19 +2,21 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
 
-    public partial class FakeObject
+    public partial class FakeManager
     {
         [Serializable]
+        [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Would provide no benefit since there is no place from where to call the Dispose-method.")]
         private class EventRule
             : IFakeObjectCallRule
         {
             [NonSerialized]
             private EventHandlerList registeredEventHandlersField;
 
-            public FakeObject FakeObject { get; set; }
+            public FakeManager FakeManager { get; set; }
 
             public int? NumberOfTimesToCall
             {
@@ -83,7 +85,7 @@ namespace FakeItEasy.Core
                 {
                     var arguments = call.EventHandler.Target as IEventRaiserArguments;
 
-                    var sender = arguments.Sender ?? this.FakeObject.Object;
+                    var sender = arguments.Sender ?? this.FakeManager.Object;
 
                     raiseMethod.DynamicInvoke(sender, arguments.EventArguments);
                 }
