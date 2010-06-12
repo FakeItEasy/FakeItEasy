@@ -225,7 +225,7 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var fake = A.Fake<IFoo>();
-            var manager = Fake.GetFakeObject(fake);
+            var manager = Fake.GetFakeManager(fake);
             A.CallTo(() => fake.Bar()).Throws(new Exception());
 
             // Act
