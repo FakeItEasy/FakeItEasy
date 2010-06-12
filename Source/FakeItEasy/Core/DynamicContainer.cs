@@ -41,7 +41,7 @@
                 return false;
             }
 
-            fakeObject = dummyDefinition.CreateFake();
+            fakeObject = dummyDefinition.CreateDummy();
             return true;
         }
 

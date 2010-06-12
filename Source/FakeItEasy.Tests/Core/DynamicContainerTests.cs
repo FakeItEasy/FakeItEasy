@@ -151,7 +151,7 @@ namespace FakeItEasy.Core.Tests
             {
             }
 
-            protected override TypeWithDummyDefinition CreateFake()
+            protected override TypeWithDummyDefinition CreateDummy()
             {
                 return new TypeWithDummyDefinition();
             }
@@ -177,7 +177,7 @@ namespace FakeItEasy.Core.Tests
         public class DummyDefinitionForTypeWithDefinition
             : DummyDefinition<TypeWithDummyDefinition>
         {
-            protected override TypeWithDummyDefinition CreateFake()
+            protected override TypeWithDummyDefinition CreateDummy()
             {
                 return new TypeWithDummyDefinition();
             }
@@ -186,7 +186,7 @@ namespace FakeItEasy.Core.Tests
         public class DuplicateDummyDefinitionForTypeWithDefinition
             : DummyDefinition<TypeWithDummyDefinition>
         {
-            protected override TypeWithDummyDefinition CreateFake()
+            protected override TypeWithDummyDefinition CreateDummy()
             {
                 return new TypeWithDummyDefinition();
             }

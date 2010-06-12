@@ -17,6 +17,6 @@ namespace FakeItEasy
         /// Creates the fake.
         /// </summary>
         /// <returns>The fake object.</returns>
-        object CreateFake();
+        object CreateDummy();
     }
 }

@@ -306,6 +306,17 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to The specified call is not made on a fake object..
+        /// </summary>
+        internal static string SpecifiedCallIsNotToFakedObject
+        {
+            get
+            {
+                return ResourceManager.GetString("SpecifiedCallIsNotToFakedObject", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to The current fake proxy generator can not create proxies of the type {0}..
         /// </summary>
         internal static string TypeCanNotBeProxied

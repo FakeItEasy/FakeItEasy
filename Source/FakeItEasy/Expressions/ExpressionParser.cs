@@ -36,7 +36,7 @@ namespace FakeItEasy.Expressions
 
             if (callTargetExpression == null)
             {
-                throw new ArgumentException("The specified call is not made on a fake object.");
+                throw new ArgumentException(ExceptionMessages.SpecifiedCallIsNotToFakedObject);
             }
 
             return Fake.GetFakeManager(Helpers.GetValueProducedByExpression(callTargetExpression));

@@ -44,7 +44,7 @@ namespace FakeItEasy.IntegrationTests
         public class GuidDefinition
             : DummyDefinition<Guid>
         {
-            protected override Guid CreateFake()
+            protected override Guid CreateDummy()
             {
                 return new Guid("{1BBF2162-93CC-476b-BA8E-B52C4A5FEDEC}");
             }
