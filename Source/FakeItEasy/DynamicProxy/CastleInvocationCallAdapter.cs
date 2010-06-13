@@ -11,7 +11,7 @@ namespace FakeItEasy.DynamicProxy
     /// An adapter that adapts an <see cref="IInvocation" /> to a <see cref="IFakeObjectCall" />.
     /// </summary>
     [Serializable]
-    internal class InvocationCallAdapter
+    internal class CastleInvocationCallAdapter
         : IWritableFakeObjectCall, ICompletedFakeObjectCall
     {
         private static readonly Dictionary<MethodInfo, MethodInfo> objectMembersMap = new Dictionary<MethodInfo, MethodInfo>
@@ -28,7 +28,7 @@ namespace FakeItEasy.DynamicProxy
         /// </summary>
         /// <param name="invocation">The invocation.</param>
         [DebuggerStepThrough]
-        public InvocationCallAdapter(IInvocation invocation)
+        public CastleInvocationCallAdapter(IInvocation invocation)
         {
             this.invocation = invocation;
             this.Method = RewriteMappedMethod(invocation);

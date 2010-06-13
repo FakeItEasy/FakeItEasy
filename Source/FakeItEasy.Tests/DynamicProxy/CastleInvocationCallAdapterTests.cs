@@ -11,7 +11,7 @@ using FakeItEasy.DynamicProxy;
 namespace FakeItEasy.Tests.DynamicProxy
 {
     [TestFixture]
-    public class InvocationCallAdapterTests
+    public class CastleInvocationCallAdapterTests
     {
         [Test]
         public void CallBaseMethod_should_call_Proceed_on_invokation()
@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.DynamicProxy
             A.CallTo(() => invokation.Arguments).Returns(new object[] { });
             A.CallTo(() => invokation.Method).Returns(typeof(IFoo).GetMethod("Bar", new Type[] { }));
 
-            var adapter = new InvocationCallAdapter(invokation);
+            var adapter = new CastleInvocationCallAdapter(invokation);
 
             adapter.CallBaseMethod();
 
@@ -35,7 +35,7 @@ namespace FakeItEasy.Tests.DynamicProxy
             A.CallTo(() => invocation.Arguments).Returns(new object[] { });
             A.CallTo(() => invocation.Method).Returns(typeof(IFoo).GetMethod("Bar", new Type[] { }));
 
-            var adapter = new InvocationCallAdapter(invocation);
+            var adapter = new CastleInvocationCallAdapter(invocation);
 
             adapter.SetArgumentValue(0, "test");
 
@@ -66,7 +66,7 @@ namespace FakeItEasy.Tests.DynamicProxy
             A.CallTo(() => invocation.Arguments).Returns(interfaceMethod.GetParameters());
             A.CallTo(() => invocation.Method).Returns(interfaceMethod);
 
-            var adapter = new InvocationCallAdapter(invocation);
+            var adapter = new CastleInvocationCallAdapter(invocation);
 
             Assert.That(adapter.Method, Is.EqualTo(objectMethod));
         }

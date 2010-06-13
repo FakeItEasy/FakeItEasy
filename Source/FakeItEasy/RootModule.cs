@@ -84,15 +84,15 @@
                 new DummyResolvingSession(c));
 
             container.RegisterSingleton<IProxyGeneratorFactory>(c =>
-                new DynamicProxyProxyGeneratorFactory());
+                new CastleDynamicProxyGeneratorFactory());
         }
 
-        private class DynamicProxyProxyGeneratorFactory
+        private class CastleDynamicProxyGeneratorFactory
             : IProxyGeneratorFactory
         {
             public IProxyGenerator CreateProxyGenerator(IFakeCreationSession session)
             {
-                return new DynamicProxyProxyGenerator(session);
+                return new CastleDynamicProxyGenerator(session);
             }
         }
 

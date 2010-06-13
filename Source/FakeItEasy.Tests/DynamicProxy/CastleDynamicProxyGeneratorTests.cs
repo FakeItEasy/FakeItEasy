@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests.DynamicProxy
     using NUnit.Framework;
 
     [TestFixture]
-    public class DynamicProxyProxyGeneratorTests
+    public class CastleDynamicProxyGeneratorTests
     {
         private FakeManager fakeManager;
         private IConstructorResolver constructorResolver;
@@ -38,9 +38,9 @@ namespace FakeItEasy.Tests.DynamicProxy
             }
         }
 
-        private DynamicProxyProxyGenerator CreateGenerator()
+        private CastleDynamicProxyGenerator CreateGenerator()
         {
-            return new DynamicProxyProxyGenerator(this.session);
+            return new CastleDynamicProxyGenerator(this.session);
         }
 
         private List<Type> typesThatCanBeProxied = new List<Type>()

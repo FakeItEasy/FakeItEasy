@@ -94,7 +94,7 @@
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="Core\Creation\DefaultConstructorResolverTests.cs" />
     <Compile Include="Core\Creation\DefaultDummyValueCreatorTests.cs" />
-    <Compile Include="DynamicProxy\DynamicProxyProxyGeneratorTests.cs" />
+    <Compile Include="DynamicProxy\CastleDynamicProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintScopeTests.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraintTests.cs" />
@@ -126,7 +126,7 @@
     <Compile Include="Core\HelpersTests.cs" />
     <Compile Include="Core\NullFakeObjectContainerTests.cs" />
     <Compile Include="CustomArgumentConstraints.cs" />
-    <Compile Include="DynamicProxy\InvocationCallAdapterTests.cs" />
+    <Compile Include="DynamicProxy\CastleInvocationCallAdapterTests.cs" />
     <Compile Include="Core\WrappedObjectRuleTests.cs" />
     <Compile Include="ArgumentCollectionTests.cs" />
     <Compile Include="ATests.cs" />

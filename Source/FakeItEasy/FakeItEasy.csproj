@@ -67,6 +67,7 @@
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeAccessor.cs" />
     <Compile Include="Core\Creation\DefaultFakeCreator.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
+    <Compile Include="DynamicProxy\CastleDynamicProxyGenerator.cs" />
     <Compile Include="FakeConfigurator.cs" />
     <Compile Include="DummyDefinition.cs" />
     <Compile Include="IFakeConfigurator.cs" />
@@ -133,7 +134,7 @@
     <Compile Include="Configuration\IOutAndRefParametersConfiguration.cs" />
     <Compile Include="Configuration\IReturnValueArgumentValidationConfiguration.cs" />
     <Compile Include="Configuration\IVoidArgumentValidationConfiguration.cs" />
-    <Compile Include="DynamicProxy\DynamicProxyProxyGenerator.cs" />
+    <Compile Include="DynamicProxy\DynamicProxyGeneratorBase.cs" />
     <Compile Include="DynamicProxy\ICanInterceptObjectMembers.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs" />
     <Compile Include="Core\MethodInfoManager.cs" />
@@ -162,7 +163,7 @@
     </Compile>
     <Compile Include="Core\Helpers.cs" />
     <Compile Include="Core\ICompletedFakeObjectCall.cs" />
-    <Compile Include="DynamicProxy\InvocationCallAdapter.cs" />
+    <Compile Include="DynamicProxy\CastleInvocationCallAdapter.cs" />
     <Compile Include="Core\IWritableFakeObjectCall.cs" />
     <Compile Include="Core\WrappedObjectRule.cs" />
     <Compile Include="Configuration\BuildableCallRule.cs" />
