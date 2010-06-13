@@ -35,7 +35,7 @@
         protected override IFakedProxy GenerateInterfaceProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeManager, IInterceptionCallback interceptionCallback)
         {
             var interceptor = new FakeObjectInterceptor() { FakeManager = fakeManager, InterceptionCallback = interceptionCallback };
-            var proxy = (IFakedProxy)proxyGenerator.CreateInterfaceProxyWithoutTarget(typeToProxy, GetAllInterfacesToImplement(additionalInterfacesToImplement), interceptor);
+            var proxy = (IFakedProxy)proxyGenerator.CreateInterfaceProxyWithoutTarget(typeToProxy, additionalInterfacesToImplement.ToArray(), interceptor);
             return proxy;
         }
 
@@ -47,7 +47,7 @@
             {
                 proxy = (IFakedProxy)proxyGenerator.CreateClassProxy(
                     typeToProxy,
-                    GetAllInterfacesToImplement(additionalInterfacesToImplement),
+                    additionalInterfacesToImplement.ToArray(),
                     ProxyGenerationOptions.Default,
                     argumentsForConstructor.ToArray(),
                     interceptor);

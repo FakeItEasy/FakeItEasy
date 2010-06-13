@@ -81,14 +81,14 @@ namespace FakeItEasy.DynamicProxy
 
         protected abstract IFakedProxy GenerateInterfaceProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeManager, IInterceptionCallback interceptionCallback);
 
-        protected Type[] GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
+        private IEnumerable<Type> GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
         {
             if (additionalInterfacesToImplement == null)
             {
                 additionalInterfacesToImplement = Enumerable.Empty<Type>();
             }
 
-            return this.InterfacesThatAllProxiesShouldImplement.Concat(additionalInterfacesToImplement).ToArray();
+            return this.InterfacesThatAllProxiesShouldImplement.Concat(additionalInterfacesToImplement);
         }
 
         protected abstract bool TryGenerateClassProxy(
@@ -181,7 +181,7 @@ namespace FakeItEasy.DynamicProxy
             foreach (var argumentSet in argumentsForConstructor)
             {
                 IFakedProxy proxy = null;
-                if (this.TryGenerateClassProxy(typeToProxy, additionalInterfacesToImplement, fakeManager, argumentSet, outputProxyResult, out proxy))
+                if (this.TryGenerateClassProxy(typeToProxy, this.GetAllInterfacesToImplement(additionalInterfacesToImplement), fakeManager, argumentSet, outputProxyResult, out proxy))
                 {
                     outputProxyResult.Proxy = proxy;
                     proxyResult = outputProxyResult;
@@ -207,7 +207,7 @@ namespace FakeItEasy.DynamicProxy
         {
             var result = new DynamicProxyResult(typeToProxy);
 
-            result.Proxy = this.GenerateInterfaceProxy(typeToProxy, additionalInterfacesToImplement, fakeManager, result);
+            result.Proxy = this.GenerateInterfaceProxy(typeToProxy, this.GetAllInterfacesToImplement(additionalInterfacesToImplement), fakeManager, result);
             result.ProxyWasSuccessfullyCreated = true;
 
             return result;
