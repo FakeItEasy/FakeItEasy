@@ -108,6 +108,7 @@ namespace FakeItEasy
         /// Specifies the value to return when the configured call is made.
         /// </summary>
         /// <param name="value">The value to return.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <returns>A configuration object.</returns>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<T> configuration, T value)
         {
@@ -122,6 +123,7 @@ namespace FakeItEasy
         /// each time.
         /// </summary>
         /// <param name="valueProducer">A function that produces the return value.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <returns>A configuration object.</returns>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this IReturnValueConfiguration<T> configuration, Func<T> valueProducer)
         {

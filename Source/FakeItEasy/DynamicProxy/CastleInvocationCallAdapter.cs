@@ -24,7 +24,7 @@ namespace FakeItEasy.DynamicProxy
         private IInvocation invocation;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvocationCallAdapter"/> class.
+        /// Initializes a new instance of the <see cref="CastleInvocationCallAdapter"/> class.
         /// </summary>
         /// <param name="invocation">The invocation.</param>
         [DebuggerStepThrough]
