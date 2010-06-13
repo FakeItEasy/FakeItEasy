@@ -19,6 +19,14 @@ namespace FakeItEasy.DynamicProxy
             this.session = session;
         }
 
+        protected virtual IEnumerable<Type> InterfacesThatAllProxiesShouldImplement
+        {
+            get
+            {
+                return new[] { typeof(IFakedProxy) };
+            }
+        }
+
         /// <summary>
         /// Gets a value indicating if a proxy of the specified type can be generated and sets the generated proxy
         /// to the out parameter if it can.
@@ -66,19 +74,6 @@ namespace FakeItEasy.DynamicProxy
             return property.GetAccessors().All(x => x.IsVirtual);
         }
 
-        private DynamicProxyResult CreateProxyResult(Type typeOfProxy)
-        {
-            return new DynamicProxyResult(typeOfProxy);
-        }
-
-        private static void AssertThatArgumentsForConstructorAreNotSpecifiedForInterfaceType(Type typeToProxy, IEnumerable<object> argumentsForConstructor)
-        {
-            if (typeToProxy.IsInterface && argumentsForConstructor != null)
-            {
-                throw new ArgumentException(ExceptionMessages.ArgumentsForConstructorOnInterfaceType, "argumentsForConstructor");
-            }
-        }
-
         protected abstract IFakedProxy GenerateInterfaceProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeManager, IInterceptionCallback interceptionCallback);
 
         protected Type[] GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
@@ -91,31 +86,6 @@ namespace FakeItEasy.DynamicProxy
             return this.InterfacesThatAllProxiesShouldImplement.Concat(additionalInterfacesToImplement).ToArray();
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try-methods.")]
-        private bool TryGenerateProxyUsingCandidateConstructorArguments(
-            Type typeToProxy,
-            IEnumerable<Type> additionalInterfacesToImplement,
-            FakeManager fakeManager,
-            IEnumerable<IEnumerable<object>> argumentsForConstructor,
-            out DynamicProxyResult proxyResult)
-        {
-            var outputProxyResult = new DynamicProxyResult(typeToProxy);
-
-            foreach (var argumentSet in argumentsForConstructor)
-            {
-                IFakedProxy proxy = null;
-                if (this.TryGenerateClassProxy(typeToProxy, additionalInterfacesToImplement, fakeManager, argumentSet, outputProxyResult, out proxy))
-                {
-                    outputProxyResult.Proxy = proxy;
-                    proxyResult = outputProxyResult;
-                    return true;
-                }
-            }
-
-            proxyResult = null;
-            return false;
-        }
-
         protected abstract bool TryGenerateClassProxy(
             Type typeToProxy,
             IEnumerable<Type> additionalInterfacesToImplement,
@@ -124,11 +94,11 @@ namespace FakeItEasy.DynamicProxy
             IInterceptionCallback interceptionCallback,
             out IFakedProxy proxy);
 
-        protected virtual IEnumerable<Type> InterfacesThatAllProxiesShouldImplement
+        private static void AssertThatArgumentsForConstructorAreNotSpecifiedForInterfaceType(Type typeToProxy, IEnumerable<object> argumentsForConstructor)
         {
-            get
+            if (typeToProxy.IsInterface && argumentsForConstructor != null)
             {
-                return new[] { typeof(IFakedProxy) };
+                throw new ArgumentException(ExceptionMessages.ArgumentsForConstructorOnInterfaceType, "argumentsForConstructor");
             }
         }
 
@@ -188,11 +158,41 @@ namespace FakeItEasy.DynamicProxy
             }
         }
 
+        private DynamicProxyResult CreateProxyResult(Type typeOfProxy)
+        {
+            return new DynamicProxyResult(typeOfProxy);
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try-methods.")]
+        private bool TryGenerateProxyUsingCandidateConstructorArguments(
+            Type typeToProxy,
+            IEnumerable<Type> additionalInterfacesToImplement,
+            FakeManager fakeManager,
+            IEnumerable<IEnumerable<object>> argumentsForConstructor,
+            out DynamicProxyResult proxyResult)
+        {
+            var outputProxyResult = new DynamicProxyResult(typeToProxy);
+
+            foreach (var argumentSet in argumentsForConstructor)
+            {
+                IFakedProxy proxy = null;
+                if (this.TryGenerateClassProxy(typeToProxy, additionalInterfacesToImplement, fakeManager, argumentSet, outputProxyResult, out proxy))
+                {
+                    outputProxyResult.Proxy = proxy;
+                    proxyResult = outputProxyResult;
+                    return true;
+                }
+            }
+
+            proxyResult = null;
+            return false;
+        }
+
         private ProxyResult DoGenerateProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeManager, IEnumerable<object> argumentsForConstructor)
         {
             if (typeToProxy.IsInterface)
             {
-                return CreateInterfaceProxyResult(typeToProxy, additionalInterfacesToImplement, fakeManager);
+                return this.CreateInterfaceProxyResult(typeToProxy, additionalInterfacesToImplement, fakeManager);
             }
 
             return this.CreateClassProxy(typeToProxy, additionalInterfacesToImplement, fakeManager, argumentsForConstructor);
@@ -276,6 +276,11 @@ namespace FakeItEasy.DynamicProxy
 
             public override event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
 
+            protected interface IInterceptionCallback
+            {
+                void Invoke(IWritableFakeObjectCall interceptedCall);
+            }
+
             public new IFakedProxy Proxy
             {
                 get
@@ -302,12 +307,7 @@ namespace FakeItEasy.DynamicProxy
                 {
                     this.CallWasIntercepted(this, new CallInterceptedEventArgs(interceptedCall));
                 }
-            }
-        }
-
-        protected interface IInterceptionCallback
-        {
-            void Invoke(IWritableFakeObjectCall interceptedCall);
+            }   
         }
     }
 }
