@@ -9,6 +9,7 @@
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
     using IInterceptor = Castle.Core.Interceptor.IInterceptor;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// An implementation of the IProxyGenerator interface that uses DynamicProxy2 to
@@ -39,6 +40,8 @@
             return proxy;
         }
 
+
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification="Appropriate in try-methods.")]
         protected override bool TryGenerateClassProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeManager, IEnumerable<object> argumentsForConstructor, IInterceptionCallback interceptionCallback, out IFakedProxy proxy)
         {
             var interceptor = new FakeObjectInterceptor { FakeManager = fakeManager, InterceptionCallback = interceptionCallback };

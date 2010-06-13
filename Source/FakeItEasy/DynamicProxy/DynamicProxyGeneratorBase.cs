@@ -48,7 +48,7 @@ namespace FakeItEasy.DynamicProxy
         {
             if (typeToProxy.IsSealed)
             {
-                var result = this.CreateProxyResult(typeToProxy);
+                var result = CreateProxyResult(typeToProxy);
                 result.SetFailure("The type is sealed.");
                 return result;
             }
@@ -163,7 +163,7 @@ namespace FakeItEasy.DynamicProxy
             }
         }
 
-        private DynamicProxyResult CreateProxyResult(Type typeOfProxy)
+        private static DynamicProxyResult CreateProxyResult(Type typeOfProxy)
         {
             return new DynamicProxyResult(typeOfProxy);
         }
@@ -183,7 +183,7 @@ namespace FakeItEasy.DynamicProxy
                 IFakedProxy proxy = null;
                 if (this.TryGenerateClassProxy(typeToProxy, this.GetAllInterfacesToImplement(additionalInterfacesToImplement), fakeManager, argumentSet, outputProxyResult, out proxy))
                 {
-                    outputProxyResult.Proxy = proxy;
+                    outputProxyResult.AssignProxy(proxy);
                     proxyResult = outputProxyResult;
                     return true;
                 }
@@ -207,8 +207,8 @@ namespace FakeItEasy.DynamicProxy
         {
             var result = new DynamicProxyResult(typeToProxy);
 
-            result.Proxy = this.GenerateInterfaceProxy(typeToProxy, this.GetAllInterfacesToImplement(additionalInterfacesToImplement), fakeManager, result);
-            result.ProxyWasSuccessfullyCreated = true;
+            var proxy = this.GenerateInterfaceProxy(typeToProxy, this.GetAllInterfacesToImplement(additionalInterfacesToImplement), fakeManager, result);
+            result.AssignProxy(proxy);
 
             return result;
         }
@@ -273,6 +273,8 @@ namespace FakeItEasy.DynamicProxy
         private class DynamicProxyResult
             : ProxyResult, IInterceptionCallback
         {
+            
+            [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification="Virtual for testability only, should be redesigned in later versions.")]
             public DynamicProxyResult(Type typeOfProxy)
                 : base(typeOfProxy)
             {
@@ -281,17 +283,10 @@ namespace FakeItEasy.DynamicProxy
 
             public override event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
 
-            public new IFakedProxy Proxy
+            public void AssignProxy(IFakedProxy proxy)
             {
-                get
-                {
-                    return base.Proxy;
-                }
-
-                set
-                {
-                    base.Proxy = value;
-                }
+                this.Proxy = proxy;
+                this.ProxyWasSuccessfullyCreated = true;
             }
 
             public void SetFailure(string errorMessage)
