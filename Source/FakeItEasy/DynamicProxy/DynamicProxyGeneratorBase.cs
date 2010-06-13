@@ -19,6 +19,11 @@ namespace FakeItEasy.DynamicProxy
             this.session = session;
         }
 
+        protected interface IInterceptionCallback
+        {
+            void Invoke(IWritableFakeObjectCall interceptedCall);
+        }
+
         protected virtual IEnumerable<Type> InterfacesThatAllProxiesShouldImplement
         {
             get
@@ -276,11 +281,6 @@ namespace FakeItEasy.DynamicProxy
 
             public override event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
 
-            protected interface IInterceptionCallback
-            {
-                void Invoke(IWritableFakeObjectCall interceptedCall);
-            }
-
             public new IFakedProxy Proxy
             {
                 get
@@ -307,7 +307,7 @@ namespace FakeItEasy.DynamicProxy
                 {
                     this.CallWasIntercepted(this, new CallInterceptedEventArgs(interceptedCall));
                 }
-            }   
+            }
         }
     }
 }
