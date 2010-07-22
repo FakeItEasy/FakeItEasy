@@ -124,6 +124,11 @@ namespace FakeItEasy.Core
             return this.arguments;
         }
 
+        internal object[] GetUnderlyingArgumentsArray()
+        {
+            return this.arguments;
+        }
+
         [DebuggerStepThrough]
         private static IEnumerable<string> GetArgumentNames(MethodInfo method)
         {

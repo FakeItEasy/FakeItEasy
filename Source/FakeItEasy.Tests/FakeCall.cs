@@ -36,7 +36,7 @@ namespace FakeItEasy.Tests
         public static FakeCall Create<T>(string methodName, Type[] parameterTypes, object[] arguments) where T : class
         {
             var method = typeof(T).GetMethod(methodName, parameterTypes);
-
+            
             return new FakeCall
             {
                 Method = method,
