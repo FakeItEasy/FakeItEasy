@@ -55,6 +55,44 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => wrapped.Bar("foo", "bar")).MustHaveHappened();
         }
 
+        [Test]
+        public void Apply_should_assign_reference_arguments()
+        {
+            // Arrange
+            var wrapped = new TypeThatImplementsInterfaceWithOutAndRefArguments()
+            {
+                ReferenceArgumentThatWillBeApplied = 10
+            };
+
+            var call = FakeCall.Create<ITypeWithOutAndRefArguments>("MethodWithReferenceArgument", new[] { Type.GetType("System.Int32&") }, new object[] { 0 });
+            var rule = this.CreateRule(wrapped);
+
+            // Act
+            rule.Apply(call);
+
+            // Assert
+            Assert.That(call.Arguments[0], Is.EqualTo(10));
+        }
+
+        [Test]
+        public void Apply_should_assign_out_arguments()
+        {
+            // Arrange
+            var wrapped = new TypeThatImplementsInterfaceWithOutAndRefArguments()
+            {
+                OutArgumentThatWillBeApplied = 10
+            };
+
+            var call = FakeCall.Create<ITypeWithOutAndRefArguments>("MethodWithOutArgument", new[] { Type.GetType("System.Int32&") }, new object[] { 0 });
+            var rule = this.CreateRule(wrapped);
+
+            // Act
+            rule.Apply(call);
+
+            // Assert
+            Assert.That(call.Arguments[0], Is.EqualTo(10));
+        }
+
         private WrappedObjectRule CreateRule()
         {
             return new WrappedObjectRule(new object());
@@ -63,6 +101,29 @@ namespace FakeItEasy.Tests.Core
         private WrappedObjectRule CreateRule(object wrapped)
         {
             return new WrappedObjectRule(wrapped);
+        }
+
+        public interface ITypeWithOutAndRefArguments
+        {
+            void MethodWithReferenceArgument(ref int argument);
+            void MethodWithOutArgument(out int argument);
+        }
+
+        public class TypeThatImplementsInterfaceWithOutAndRefArguments
+            : ITypeWithOutAndRefArguments
+        {
+            public int ReferenceArgumentThatWillBeApplied;
+            public int OutArgumentThatWillBeApplied;
+
+            public void MethodWithReferenceArgument(ref int argument)
+            {
+                argument = this.ReferenceArgumentThatWillBeApplied;
+            }
+
+            public void MethodWithOutArgument(out int argument)
+            {
+                argument = this.OutArgumentThatWillBeApplied;
+            }
         }
     }
 }
