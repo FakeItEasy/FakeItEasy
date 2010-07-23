@@ -340,6 +340,60 @@ namespace FakeItEasy.Tests
             A.CallTo(() => callWriter.WriteCalls(0, A<IEnumerable<IFakeObjectCall>>.Ignored.Argument, Console.Out)).MustHaveHappened();
         }
 
+        [Test]
+        public void GetArgument_delegates_to_the_argument_collections_get_method_when_using_index()
+        {
+            // Arrange
+            var call = A.Fake<IFakeObjectCall>();
+            var arguments = new ArgumentCollection(new object[] { 1, 2 }, new string[] { "argument1", "argument2" });
+            A.CallTo(() => call.Arguments).Returns(arguments);
+
+            // Act
+            var result = call.GetArgument<int>(0);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void GetArgument_delegates_to_the_argument_collections_get_method_when_using_name()
+        {
+            // Arrange
+            var call = A.Fake<IFakeObjectCall>();
+            var arguments = new ArgumentCollection(new object[] { 1, 2 }, new string[] { "argument1", "argument2" });
+            A.CallTo(() => call.Arguments).Returns(arguments);
+
+            // Act
+            var result = call.GetArgument<int>("argument2");
+
+            // Assert
+            Assert.That(result, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void GetArgument_should_be_null_guarded_when_using_index()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                FakeExtensions.GetArgument<int>(A.Fake<IFakeObjectCall>(), 0));
+        }
+
+        [Test]
+        public void GetArgument_should_be_null_guarded_when_using_argument_name()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                FakeExtensions.GetArgument<int>(A.Fake<IFakeObjectCall>(), "foo"));
+        }
+
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)
         {
             return callSpecifications.Select(x => ExpressionHelper.CreateFakeCall<TFake>(x).AsReadOnly());

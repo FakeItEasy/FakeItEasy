@@ -15,7 +15,7 @@
 
         private static string GetParametersString(IFakeObjectCall fakeObjectCall)
         {
-            return fakeObjectCall.Arguments.AsEnumerable().ToCollectionString(x => GetArgumentAsString(x), ", ");
+            return fakeObjectCall.Arguments.ToCollectionString(x => GetArgumentAsString(x), ", ");
         }
 
         private static string GetArgumentAsString(object argument)

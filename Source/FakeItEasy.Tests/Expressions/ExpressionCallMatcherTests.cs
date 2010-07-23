@@ -184,7 +184,7 @@ namespace FakeItEasy.Tests.Expressions
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2));
             matcher.Matches(call);
 
-            Assert.That(argumentsPassedToPredicate.AsEnumerable(), Is.EquivalentTo(new object[] { 1, 2 }));
+            Assert.That(argumentsPassedToPredicate, Is.EquivalentTo(new object[] { 1, 2 }));
         }
 
         [TestCase(true, Result = true)]
