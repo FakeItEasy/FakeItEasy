@@ -13,6 +13,7 @@ namespace FakeItEasy.Core
     [Serializable]
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Best name to describe the type.")]
     public class ArgumentCollection
+        : IEnumerable<object>
     {
         /// <summary>
         /// The arguments this collection contains.
@@ -119,11 +120,7 @@ namespace FakeItEasy.Core
             return (T)this.arguments[index];
         }
 
-        /// <summary>
-        /// Converts the ArgumentCollection to an enumerable that enumerates the argument values.
-        /// </summary>
-        /// <returns>An IEnumerable(object).</returns>
-        internal IEnumerable<object> AsEnumerable()
+        internal object[] GetUnderlyingArgumentsArray()
         {
             return this.arguments;
         }
@@ -151,6 +148,16 @@ namespace FakeItEasy.Core
             }
 
             throw new ArgumentException(ExceptionMessages.ArgumentNameDoesNotExist, "argumentName");
+        }
+
+        public IEnumerator<object> GetEnumerator()
+        {
+            return this.arguments.Cast<object>().GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

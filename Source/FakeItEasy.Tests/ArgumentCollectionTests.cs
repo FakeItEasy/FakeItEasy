@@ -2,6 +2,8 @@
 using System.Linq;
 using FakeItEasy.Core;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace FakeItEasy.Tests
 {
@@ -73,29 +75,27 @@ namespace FakeItEasy.Tests
             Assert.That(arguments.Count, Is.EqualTo(2));
         }
 
-        //[Test]
-        //public void GetEnumerator_through_non_generic_interface_returns_enumerator_that_enumerates_all_arguments()
-        //{
-        //    var arguments = CreateFakeArgumentList(new[] { "foo", "bar" }, 1, 2);
-        //    var found = new List<object>();
+        [Test]
+        public void GetEnumerator_through_non_generic_interface_returns_enumerator_that_enumerates_all_arguments()
+        {
+            var arguments = CreateFakeArgumentList(new[] { "foo", "bar" }, 1, 2);
+            var found = new List<object>();
 
-        //    var enumerator = ((IEnumerable)arguments).GetEnumerator();
-        //    while (enumerator.MoveNext())
-        //    {
-        //        found.Add(enumerator.Current);
-        //    }            
+            var enumerator = ((IEnumerable)arguments).GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                found.Add(enumerator.Current);
+            }
 
-        //    Assert.That(found, Is.EquivalentTo(new object[] { 1, 2 }));
-        //}
+            Assert.That(found, Is.EquivalentTo(new object[] { 1, 2 }));
+        }
 
         [Test]
-        public void AsEnumerable_returns_enumerable_that_enumerates_the_arguments_of_the_collection()
+        public void GetEnumerator_returns_enumerable_that_enumerates_the_arguments_of_the_collection()
         {
             var arguments = CreateFakeArgumentList(1, 2, 3);
 
-            var enumeratedArguments = arguments.AsEnumerable().ToArray();
-
-            Assert.That(enumeratedArguments, Is.EquivalentTo(new[] { 1, 2, 3 }));
+            Assert.That(arguments, Is.EquivalentTo(new[] { 1, 2, 3 }));
         }
 
         private ArgumentCollection CreateFakeArgumentList(string[] argumentNames, params object[] arguments)
