@@ -12,7 +12,7 @@ namespace FakeItEasy.Core
     /// assert on those calls done within the scope.
     /// </summary>
     internal abstract class FakeScope
-        : IDisposable
+        : IFakeScope
     {
         #region Construction
         static FakeScope()
@@ -219,5 +219,23 @@ namespace FakeItEasy.Core
             }
         } 
         #endregion
+
+        public IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
+        {
+#if DEBUG
+            throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+#if DEBUG
+            throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
+        }
     }   
 }

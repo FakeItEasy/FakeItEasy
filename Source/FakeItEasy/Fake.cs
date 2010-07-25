@@ -43,7 +43,7 @@ namespace FakeItEasy
         /// asserting that calls were made, the calls must have been made within that scope.
         /// </summary>
         /// <returns>The created scope.</returns>
-        public static IDisposable CreateScope()
+        public static IFakeScope CreateScope()
         {
             return FakeScope.Create();
         }
@@ -55,7 +55,7 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="container">The container to use within the specified scope.</param>
         /// <returns>The created scope.</returns>
-        public static IDisposable CreateScope(IFakeObjectContainer container)
+        public static IFakeScope CreateScope(IFakeObjectContainer container)
         {
             return FakeScope.Create(container);
         }
