@@ -4,6 +4,7 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
+    using System.Linq;
 
     /// <summary>
     /// Represents a scope for fake objects, calls configured within a scope
@@ -138,12 +139,18 @@ namespace FakeItEasy.Core
             {
                 // Do nothing
             }
+
+            public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
+            {
+                throw new NotSupportedException();
+            }
         }
 
         private class ChildScope
             : FakeScope
         {
             private FakeScope parentScope;
+            private List<ICompletedFakeObjectCall> allCalls;
             private Dictionary<FakeManager, List<CallRuleMetadata>> rulesField;
             private Dictionary<FakeManager, List<ICompletedFakeObjectCall>> recordedCalls;
             private IFakeObjectContainer fakeObjectContainerField;
@@ -154,6 +161,7 @@ namespace FakeItEasy.Core
                 this.rulesField = new Dictionary<FakeManager, List<CallRuleMetadata>>();
                 this.recordedCalls = new Dictionary<FakeManager, List<ICompletedFakeObjectCall>>();
                 this.fakeObjectContainerField = container;
+                this.allCalls = new List<ICompletedFakeObjectCall>();
             }
 
             internal override IFakeObjectContainer FakeObjectContainer
@@ -205,6 +213,7 @@ namespace FakeItEasy.Core
                 }
 
                 calls.Add(call);
+                this.allCalls.Add(call);
             }
 
             private void RemoveRulesConfiguredInScope()
@@ -217,25 +226,19 @@ namespace FakeItEasy.Core
                     }
                 }
             }
+
+            public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
+            {
+                return this.allCalls.GetEnumerator();
+            }
         } 
         #endregion
 
-        public IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
-        {
-#if DEBUG
-            throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
-        }
+        public abstract IEnumerator<ICompletedFakeObjectCall> GetEnumerator();
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-#if DEBUG
-            throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
+            return this.GetEnumerator();
         }
     }   
 }

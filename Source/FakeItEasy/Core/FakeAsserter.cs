@@ -8,7 +8,7 @@ namespace FakeItEasy.Core
 
     internal class FakeAsserter
     {
-        private IEnumerable<IFakeObjectCall> calls;
+        protected IEnumerable<IFakeObjectCall> calls;
         private CallWriter callWriter;
 
         public delegate FakeAsserter Factory(IEnumerable<IFakeObjectCall> calls);
@@ -74,5 +74,38 @@ namespace FakeItEasy.Core
         {
             this.callWriter.WriteCalls(4, this.calls, writer);
         }
+    }
+
+    internal class OrderedFakeAsserter
+        : FakeAsserter
+    {
+        public OrderedFakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
+            : base(calls, callWriter)
+        {
+        }
+
+        public override void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
+        {
+            base.AssertWasCalled(callPredicate, callDescription, repeatPredicate, repeatDescription);
+
+            int numberOfFoundCalls = 0;
+            int callNumber = 0;
+
+            using (var callEnumerator = this.calls.GetEnumerator())
+            {
+                while (!repeatPredicate(numberOfFoundCalls) && callEnumerator.MoveNext())
+                {
+                    if (callPredicate(callEnumerator.Current))
+                    {
+                        numberOfFoundCalls++;
+                    }
+
+                    callNumber++;
+                }
+            }
+
+            this.calls = this.calls.Skip(callNumber);
+        }
+    
     }
 }

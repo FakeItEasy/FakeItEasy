@@ -3,6 +3,7 @@ using FakeItEasy.Tests;
 using System;
 using FakeItEasy.Core;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FakeItEasy.IntegrationTests
 {
@@ -38,16 +39,14 @@ namespace FakeItEasy.IntegrationTests
                 foo.Baz();
 
                 // Assert            
-                Assert.That(() =>
+                using (scope.OrderedAssertions())
                 {
-                    using (scope.OrderedAssertions())
-                    {
-                        A.CallTo(() => foo.Bar()).MustHaveHappened();
-                        A.CallTo(() => foo.Baz()).MustHaveHappened();
-                    }
-                },
-                Throws.Exception.InstanceOf<ExpectationException>());
+                    A.CallTo(() => foo.Bar()).MustHaveHappened();
+                    A.CallTo(() => foo.Baz()).MustHaveHappened();
+                }
             }
+
+            
         }
 
         [Test]
@@ -61,7 +60,7 @@ namespace FakeItEasy.IntegrationTests
                 // Act
                 foo.Baz();
                 foo.Bar();
-
+                
                 // Assert       
                 Assert.That(() =>
                 {
@@ -73,28 +72,27 @@ namespace FakeItEasy.IntegrationTests
                 },
                 Throws.Exception.InstanceOf<ExpectationException>());
             }
+        }
 
-            using (var scope = Fake.CreateScope())
-            {
-                // Arrange
-                var foo = A.Fake<IFoo>();
+        [Test]
+        public void Should_be_able_to_use_ordered_asserts_on_single_fake_without_scope()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
 
-                // Act
-                foo.Baz();
-                foo.Bar();
-                
-                // Assert       
-                using (scope.OrderedAssertions())
+            // Act
+            foo.Bar();
+            foo.Baz();
+
+            // Assert
+            Assert.That(() =>
                 {
-                    A.CallTo(() => foo.Bar()).MustHaveHappened();
-                    A.CallTo(() => foo.Baz()).MustHaveHappened();
-                }
-
-                using (Fake.GetCalls(foo).OrderedAssertions())
-                { 
-                    
-                }
-            }
+                    using (Fake.OrderedAssertions(foo))
+                    { 
+                        
+                    }
+                },
+            Throws.Exception.InstanceOf<ExpectationException>());
         }
     }
 }
