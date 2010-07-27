@@ -99,6 +99,15 @@ namespace FakeItEasy
 
             return Fake.GetFakeManager(fakedObject).RecordedCallsInScope;
         }
+
+        public static IDisposable OrderedAssertions(object fakedObject)
+        {
+#if DEBUG
+            throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
+        }
     }
 
     /// <summary>

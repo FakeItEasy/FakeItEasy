@@ -85,11 +85,12 @@ namespace FakeItEasy.IntegrationTests
             foo.Baz();
 
             // Assert
-            Assert.That(() =>
+            Assert.That(delegate()
                 {
                     using (Fake.OrderedAssertions(foo))
-                    { 
-                        
+                    {
+                        A.CallTo(() => foo.Baz()).MustHaveHappened();
+                        A.CallTo(() => foo.Bar()).MustHaveHappened();
                     }
                 },
             Throws.Exception.InstanceOf<ExpectationException>());

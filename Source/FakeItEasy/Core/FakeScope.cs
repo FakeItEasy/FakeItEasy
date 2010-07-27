@@ -67,29 +67,29 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Adds an intercepted call to the current scope.
         /// </summary>
-        /// <param name="fakeObject">The fake object.</param>
+        /// <param name="fakeManager">The fake object.</param>
         /// <param name="call">The call that is intercepted.</param>
-        internal void AddInterceptedCall(FakeManager fakeObject, ICompletedFakeObjectCall call)
+        internal void AddInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call)
         {
-            fakeObject.AllRecordedCalls.Add(call);
-            this.OnAddInterceptedCall(fakeObject, call);
+            fakeManager.AllRecordedCalls.Add(call);
+            this.OnAddInterceptedCall(fakeManager, call);
         }
 
         /// <summary>
         /// Adds a fake object call to the current scope.
         /// </summary>
-        /// <param name="fakeObject">The fake object.</param>
+        /// <param name="fakeManager">The fake object.</param>
         /// <param name="rule">The rule to add.</param>
-        internal void AddRuleFirst(FakeManager fakeObject, CallRuleMetadata rule)
+        internal void AddRuleFirst(FakeManager fakeManager, CallRuleMetadata rule)
         {
-            fakeObject.AllUserRules.AddFirst(rule);
-            this.OnAddRule(fakeObject, rule);
+            fakeManager.AllUserRules.AddFirst(rule);
+            this.OnAddRule(fakeManager, rule);
         }
 
-        internal void AddRuleLast(FakeManager fakeObject, CallRuleMetadata rule)
+        internal void AddRuleLast(FakeManager fakeManager, CallRuleMetadata rule)
         {
-            fakeObject.AllUserRules.AddLast(rule);
-            this.OnAddRule(fakeObject, rule);
+            fakeManager.AllUserRules.AddLast(rule);
+            this.OnAddRule(fakeManager, rule);
         }
 
         internal abstract IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject);
@@ -150,7 +150,6 @@ namespace FakeItEasy.Core
             : FakeScope
         {
             private FakeScope parentScope;
-            private List<ICompletedFakeObjectCall> allCalls;
             private Dictionary<FakeManager, List<CallRuleMetadata>> rulesField;
             private Dictionary<FakeManager, List<ICompletedFakeObjectCall>> recordedCalls;
             private IFakeObjectContainer fakeObjectContainerField;
@@ -161,7 +160,6 @@ namespace FakeItEasy.Core
                 this.rulesField = new Dictionary<FakeManager, List<CallRuleMetadata>>();
                 this.recordedCalls = new Dictionary<FakeManager, List<ICompletedFakeObjectCall>>();
                 this.fakeObjectContainerField = container;
-                this.allCalls = new List<ICompletedFakeObjectCall>();
             }
 
             internal override IFakeObjectContainer FakeObjectContainer
@@ -200,20 +198,19 @@ namespace FakeItEasy.Core
                 FakeScope.Current = this.parentScope;
             }
 
-            protected override void OnAddInterceptedCall(FakeManager fakeObject, ICompletedFakeObjectCall call)
+            protected override void OnAddInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call)
             {
-                this.parentScope.OnAddInterceptedCall(fakeObject, call);
+                this.parentScope.OnAddInterceptedCall(fakeManager, call);
 
                 List<ICompletedFakeObjectCall> calls;
 
-                if (!this.recordedCalls.TryGetValue(fakeObject, out calls))
+                if (!this.recordedCalls.TryGetValue(fakeManager, out calls))
                 {
                     calls = new List<ICompletedFakeObjectCall>();
-                    this.recordedCalls.Add(fakeObject, calls);
+                    this.recordedCalls.Add(fakeManager, calls);
                 }
 
                 calls.Add(call);
-                this.allCalls.Add(call);
             }
 
             private void RemoveRulesConfiguredInScope()
@@ -229,7 +226,11 @@ namespace FakeItEasy.Core
 
             public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
             {
-                return this.allCalls.GetEnumerator();
+#if DEBUG
+                throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
             }
         } 
         #endregion

@@ -8,12 +8,11 @@ namespace FakeItEasy.Core
     {
         public static IDisposable OrderedAssertions(this IEnumerable<ICompletedFakeObjectCall> calls)
         {
-            var result = new AsserterResetter() { ResetTo = CurrentAsserterFactory };
-            
-            var asserter = new OrderedFakeAsserter(calls.Cast<IFakeObjectCall>(), ServiceLocator.Current.Resolve<CallWriter>());
-            CurrentAsserterFactory = x => asserter;
-            
-            return result;
+#if DEBUG
+            throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
         }
 
         private class AsserterResetter
@@ -23,11 +22,12 @@ namespace FakeItEasy.Core
 
             public void Dispose()
             {
-                OrderedAssertion.CurrentAsserterFactory = this.ResetTo;
+#if DEBUG
+                throw new NotImplementedException();
+#else
+#error "Must be implemented"
+#endif
             }
         }
-
-
-        internal static FakeAsserter.Factory CurrentAsserterFactory = x => new FakeAsserter(x, ServiceLocator.Current.Resolve<CallWriter>());
     }
 }
