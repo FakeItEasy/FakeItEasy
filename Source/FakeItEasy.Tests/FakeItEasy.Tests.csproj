@@ -91,6 +91,7 @@
     <Compile Include="Configuration\StartConfigurationTests.cs" />
     <Compile Include="Core\DummyDefinitionTests.cs" />
     <Compile Include="Core\DynamicContainerTests.cs" />
+    <Compile Include="Core\OrderedFakeAsserterTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="Core\Creation\DefaultConstructorResolverTests.cs" />
     <Compile Include="Core\Creation\DefaultDummyValueCreatorTests.cs" />

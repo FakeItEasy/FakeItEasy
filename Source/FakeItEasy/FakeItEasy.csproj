@@ -68,8 +68,10 @@
     <Compile Include="Core\Creation\DefaultFakeCreator.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
     <Compile Include="Core\ICallMatcherAccessor.cs" />
+    <Compile Include="Core\IFakeAsserter.cs" />
     <Compile Include="Core\IFakeScope.cs" />
     <Compile Include="Core\OrderedAssertion.cs" />
+    <Compile Include="Core\OrderedFakeAsserter.cs" />
     <Compile Include="DynamicProxy\CastleDynamicProxyGenerator.cs" />
     <Compile Include="FakeConfigurator.cs" />
     <Compile Include="DummyDefinition.cs" />

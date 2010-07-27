@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.Assertion
         private FakeManager fake;
         private FakeAssertions<IFoo> assertions;
         private IExpressionCallMatcherFactory callMatcherFactory;
-        private FakeAsserter fakeAsserter;
+        private IFakeAsserter fakeAsserter;
         private FakeAsserter.Factory fakeAsserterFactory;
         private IEnumerable<IFakeObjectCall> argumentToFakeAsserterFactory;
         private ExpressionCallMatcher matcher;
@@ -31,7 +31,7 @@ namespace FakeItEasy.Tests.Assertion
         {
             this.fake = Fake.GetFakeManager(A.Fake<IFoo>());
             
-            this.fakeAsserter = A.Fake<FakeAsserter>();
+            this.fakeAsserter = A.Fake<IFakeAsserter>();
             
             this.matcher = A.Fake<ExpressionCallMatcher>(x => x.WithArgumentsForConstructor(() =>
                 new ExpressionCallMatcher(

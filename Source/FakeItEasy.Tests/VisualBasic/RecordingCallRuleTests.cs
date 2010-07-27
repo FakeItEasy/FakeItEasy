@@ -15,7 +15,7 @@ namespace FakeItEasy.Tests.VisualBasic
         RecordedCallRule recordedRule;
         FakeAsserter.Factory asserterFactory;
         IEnumerable<IFakeObjectCall> argumentUsedForAsserterFactory;
-        FakeAsserter asserter;
+        IFakeAsserter asserter;
         
         [SetUp]
         public void SetUp()
@@ -24,7 +24,7 @@ namespace FakeItEasy.Tests.VisualBasic
             this.fakeObject = Fake.GetFakeManager(fakedObject);
             this.recordedRule = A.Fake<RecordedCallRule>(x => x.WithArgumentsForConstructor(() => new RecordedCallRule(A.Fake<MethodInfoManager>())));
 
-            this.asserter = A.Fake<FakeAsserter>();
+            this.asserter = A.Fake<IFakeAsserter>();
 
             this.asserterFactory = x =>
                 {
@@ -74,7 +74,7 @@ namespace FakeItEasy.Tests.VisualBasic
 
             rule.Apply(call);
 
-            var asserterCall = Fake.GetCalls(this.asserter).Matching<FakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, A<string>.Ignored)).Single();
+            var asserterCall = Fake.GetCalls(this.asserter).Matching<IFakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, A<string>.Ignored)).Single();
             var callPredicate = asserterCall.Arguments.Get<Func<IFakeObjectCall, bool>>("callPredicate");
 
             callPredicate.Invoke(call);
@@ -100,7 +100,7 @@ namespace FakeItEasy.Tests.VisualBasic
 
             A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, "once")).MustHaveHappened();
             
-            var asserterCall = Fake.GetCalls(this.asserter).Matching<FakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, A<string>.Ignored)).Single();
+            var asserterCall = Fake.GetCalls(this.asserter).Matching<IFakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, A<string>.Ignored)).Single();
             var repeatPredicatePassedToAsserter = asserterCall.Arguments.Get<Func<int, bool>>("repeatPredicate");
 
             Assert.That(repeatPredicatePassedToAsserter.Invoke(0), Is.False);

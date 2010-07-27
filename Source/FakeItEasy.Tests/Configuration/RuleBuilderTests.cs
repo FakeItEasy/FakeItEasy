@@ -12,7 +12,7 @@
         private RuleBuilder builder;
         private BuildableCallRule ruleProducedByFactory;
         private FakeManager fakeManager;
-        private FakeAsserter asserter;
+        private IFakeAsserter asserter;
 
         [SetUp]
         public void SetUp()
@@ -24,7 +24,7 @@
         {
             this.ruleProducedByFactory = A.Fake<BuildableCallRule>();
             this.fakeManager = new FakeManager();
-            this.asserter = A.Fake<FakeAsserter>();
+            this.asserter = A.Fake<IFakeAsserter>();
 
             this.builder = this.CreateBuilder();
         }

@@ -5,21 +5,11 @@ namespace FakeItEasy.Core
     using System.Linq;
 
     internal class OrderedFakeAsserter
-            : FakeAsserter
+        : IFakeAsserter
     {
-        public OrderedFakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
-            : base(calls, callWriter)
+        void IFakeAsserter.AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
         {
-        }
-
-        public override void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
-        {
-#if DEBUG
             throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
         }
-
     }
 }
