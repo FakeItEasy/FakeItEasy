@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Configuration;
-using FakeItEasy.Core;
-using NUnit.Framework.Constraints;
-using System.Linq.Expressions;
-using System.Collections.ObjectModel;
-using System.Reflection;
-using FakeItEasy.Expressions;
-using System.IO;
-
-namespace FakeItEasy.Tests.Core
+﻿namespace FakeItEasy.Tests.Core
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
 
     [TestFixture]
     public class FakeAsserterTests
