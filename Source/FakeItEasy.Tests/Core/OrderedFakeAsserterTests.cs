@@ -19,6 +19,11 @@ namespace FakeItEasy.Tests.Core
 
         private OrderedFakeAsserter CreateAsserter(IEnumerable<IFakeObjectCall> calls)
         {
+            return this.CreateAsserter(new Queue<IFakeObjectCall>(calls));
+        }
+
+        private OrderedFakeAsserter CreateAsserter(Queue<IFakeObjectCall> calls)
+        {
             return new OrderedFakeAsserter(calls, this.innerAsserter);
         }
 
@@ -96,6 +101,24 @@ namespace FakeItEasy.Tests.Core
             // Assert
             Assert.Throws<ExpectationException>(() =>
                 orderedAsserter.AssertWasCalled(secondCallPredicate, "foo", x => x == 1, "foo"));
+        }
+
+        [Test]
+        public void Should_remove_used_calls_from_queue()
+        {
+            // Arrange
+            var originalCalls = A.CollectionOfFake<IFakeObjectCall>(2);
+            var calls = new Queue<IFakeObjectCall>(originalCalls);
+            
+            var orderedAsserter = this.CreateAsserter(calls);
+
+            Func<IFakeObjectCall, bool> firstCallPredicate = x => object.ReferenceEquals(originalCalls[0], x);
+
+            // Act
+            orderedAsserter.AssertWasCalled(firstCallPredicate, "foo", x => x == 1, "foo");
+
+            // Assert
+            Assert.That(calls, Is.EquivalentTo(new[] { originalCalls[1] }));
         }
     }
 }

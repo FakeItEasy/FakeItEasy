@@ -9,10 +9,10 @@ namespace FakeItEasy.Core
         private IFakeAsserter asserter;
         private Queue<IFakeObjectCall> calls;
 
-        public OrderedFakeAsserter(IEnumerable<IFakeObjectCall> calls, IFakeAsserter asserter)
+        public OrderedFakeAsserter(Queue<IFakeObjectCall> remainingCalls, IFakeAsserter asserter)
         {
             this.asserter = asserter;
-            this.calls = new Queue<IFakeObjectCall>(calls);
+            this.calls = remainingCalls;
         }
 
         public void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
