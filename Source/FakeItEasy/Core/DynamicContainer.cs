@@ -13,7 +13,7 @@
         : IFakeObjectContainer
     {
         private IDictionary<Type, IDummyDefinition> registeredDummyDefinitions;
-        private IDictionary<Type, IFakeConfigurator> registeredConfigurators;
+        private IDictionary<Type, IFakeConfigurer> registeredConfigurators;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer"/> class.
@@ -52,7 +52,7 @@
         /// <param name="fakeObject">The fake object to configure.</param>
         public void ConfigureFake(Type typeOfFake, object fakeObject)
         {
-            IFakeConfigurator configurator = null;
+            IFakeConfigurer configurator = null;
 
             if (this.registeredConfigurators.TryGetValue(typeOfFake, out configurator))
             {
@@ -60,9 +60,9 @@
             }
         }
 
-        private static IDictionary<Type, IFakeConfigurator> CreateFakeConfiguratorsDictionary(ITypeCatalogue typeAccessor)
+        private static IDictionary<Type, IFakeConfigurer> CreateFakeConfiguratorsDictionary(ITypeCatalogue typeAccessor)
         {
-            return GetOneInstancePerTypeImplementing<IFakeConfigurator>(typeAccessor).FirstFromEachKey(x => x.ForType);
+            return GetOneInstancePerTypeImplementing<IFakeConfigurer>(typeAccessor).FirstFromEachKey(x => x.ForType);
         }
 
         private static IDictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(ITypeCatalogue typeAccessor)

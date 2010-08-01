@@ -22,7 +22,7 @@ namespace FakeItEasy.Core
 
             var foo = A.Fake<IFoo>();
 
-            ((IFakeConfigurator)configurator).ConfigureFake(foo);
+            ((IFakeConfigurer)configurator).ConfigureFake(foo);
 
             Assert.That(configurator.InstancePassedToConfigureFake, Is.SameAs(foo));
         }
@@ -30,7 +30,7 @@ namespace FakeItEasy.Core
         [Test]
         public void ConfigureFake_should_be_null_guarded()
         {
-            var configurator = new TestableConfigurator<IFoo>() as IFakeConfigurator;
+            var configurator = new TestableConfigurator<IFoo>() as IFakeConfigurer;
 
             NullGuardedConstraint.Assert(() =>
                 configurator.ConfigureFake(A.Fake<IFoo>()));
@@ -40,7 +40,7 @@ namespace FakeItEasy.Core
         [SetCulture("en-US")]
         public void ConfigureFake_should_throw_when_the_specified_fake_object_is_not_of_the_correct_type()
         {
-            var configurator = new TestableConfigurator<IFoo>() as IFakeConfigurator;
+            var configurator = new TestableConfigurator<IFoo>() as IFakeConfigurer;
 
             var thrown = Assert.Throws<ArgumentException>(() =>
                 configurator.ConfigureFake(""));
@@ -49,7 +49,7 @@ namespace FakeItEasy.Core
         }
 
         private class TestableConfigurator<T>
-            : FakeConfigurator<T>
+            : FakeConfigurer<T>
         {
             public T InstancePassedToConfigureFake;
 

@@ -6,8 +6,7 @@ namespace FakeItEasy
     /// <summary>
     /// Provides configurations for fake objects of a specific type.
     /// </summary>
-    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurator", Justification = "I'm from Sweden.")]
-    public interface IFakeConfigurator
+    public interface IFakeConfigurer
     {
         /// <summary>
         /// The type the instance provides configuration for.

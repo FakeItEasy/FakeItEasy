@@ -133,7 +133,7 @@ namespace FakeItEasy.Core.Tests
                 this.CreateContainer());
         }
 
-        public class ConfigurationWithNoConstructor : FakeConfigurator<TypeWithDummyDefinition>
+        public class ConfigurationWithNoConstructor : FakeConfigurer<TypeWithDummyDefinition>
         {
             public ConfigurationWithNoConstructor(string argumentToConstructor)
             {
@@ -158,7 +158,7 @@ namespace FakeItEasy.Core.Tests
         }
 
 
-        public class ConfigurationForTypeWithDummyDefintion : FakeConfigurator<TypeWithDummyDefinition>
+        public class ConfigurationForTypeWithDummyDefintion : FakeConfigurer<TypeWithDummyDefinition>
         {
             public override void ConfigureFake(TypeWithDummyDefinition fakeObject)
             {
@@ -166,7 +166,7 @@ namespace FakeItEasy.Core.Tests
             }
         }
 
-        public class DuplicateConfigurationForTypeWithDummyDefintion : FakeConfigurator<TypeWithDummyDefinition>
+        public class DuplicateConfigurationForTypeWithDummyDefintion : FakeConfigurer<TypeWithDummyDefinition>
         {
             public override void ConfigureFake(TypeWithDummyDefinition fakeObject)
             {

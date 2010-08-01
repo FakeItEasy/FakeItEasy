@@ -73,9 +73,9 @@
     <Compile Include="Core\OrderedAssertion.cs" />
     <Compile Include="Core\OrderedFakeAsserter.cs" />
     <Compile Include="DynamicProxy\CastleDynamicProxyGenerator.cs" />
-    <Compile Include="FakeConfigurator.cs" />
+    <Compile Include="FakeConfigurer.cs" />
     <Compile Include="DummyDefinition.cs" />
-    <Compile Include="IFakeConfigurator.cs" />
+    <Compile Include="IFakeConfigurer.cs" />
     <Compile Include="IDummyDefinition.cs" />
     <Compile Include="Core\IFakeWrapperConfigurator.cs" />
     <Compile Include="Core\Creation\IProxyGeneratorFactory.cs" />
