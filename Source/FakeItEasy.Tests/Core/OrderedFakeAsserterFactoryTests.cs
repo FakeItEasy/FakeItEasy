@@ -33,7 +33,7 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void Should_call_asserter_from_ordered_asserter_factory()
+        public void Should_call_ordered_asserter()
         {
             // Arrange
             var innerAsserter = A.Fake<FakeAsserter>();
