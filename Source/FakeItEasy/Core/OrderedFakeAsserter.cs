@@ -21,6 +21,11 @@ namespace FakeItEasy.Core
         /// <param name="callWriter">The call writer.</param>
         public OrderedFakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
         {
+            foreach (var c in calls)
+            {
+                Console.WriteLine(c);
+            }
+
             this.originalCallList = calls;
             this.calls = new Queue<IFakeObjectCall>(calls);
             this.callWriter = callWriter;
@@ -35,7 +40,7 @@ namespace FakeItEasy.Core
         /// <param name="callDescription">The call description.</param>
         /// <param name="repeatPredicate">The repeat predicate.</param>
         /// <param name="repeatDescription">The repeat description.</param>
-        public void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
+        public virtual void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
         {
             this.assertedCalls.Add(new AssertedCall
             {
