@@ -1,48 +1,25 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Collections.Generic;
+    using System.IO;
     using FakeItEasy.Core;
     using NUnit.Framework;
-    using System.Linq;
-    using System.Collections.Generic;
 
     [TestFixture]
     public class OrderedFakeAsserterTests
     {
-        private IFakeAsserter innerAsserter;
-
+        private CallWriter callWriter;
+        
         [SetUp]
         public void SetUp()
         {
-            this.innerAsserter = A.Fake<IFakeAsserter>();
+            this.callWriter = A.Fake<CallWriter>();
         }
 
         private OrderedFakeAsserter CreateAsserter(IEnumerable<IFakeObjectCall> calls)
         {
-            return this.CreateAsserter(new Queue<IFakeObjectCall>(calls));
-        }
-
-        private OrderedFakeAsserter CreateAsserter(Queue<IFakeObjectCall> calls)
-        {
-            return new OrderedFakeAsserter(calls, this.innerAsserter);
-        }
-
-        [Test]
-        public void Should_call_fake_asserter()
-        {
-            // Arrange
-            var orderedAsserter = this.CreateAsserter(Enumerable.Empty<IFakeObjectCall>());
-
-            Func<IFakeObjectCall, bool> callPredicate = x => true;
-            Func<int, bool> repeatPredicate = x => true;
-
-            // Act
-            orderedAsserter.AssertWasCalled(callPredicate, "call description", repeatPredicate, "repeat description");
-            
-            // Assert
-            A.CallTo(() => 
-                this.innerAsserter.AssertWasCalled(callPredicate, "call description", repeatPredicate, "repeat description"))
-                .MustHaveHappened();
+            return new OrderedFakeAsserter(calls, this.callWriter);
         }
 
         [Test]
@@ -103,22 +80,37 @@ namespace FakeItEasy.Tests.Core
                 orderedAsserter.AssertWasCalled(secondCallPredicate, "foo", x => x == 1, "foo"));
         }
 
+
         [Test]
-        public void Should_remove_used_calls_from_queue()
+        [SetCulture("en-US")]
+        public void Should_throw_exception_with_correct_message()
         {
             // Arrange
-            var originalCalls = A.CollectionOfFake<IFakeObjectCall>(2);
-            var calls = new Queue<IFakeObjectCall>(originalCalls);
-            
+            var calls = A.CollectionOfFake<IFakeObjectCall>(2);
+            calls.Add(calls[0]);
+
             var orderedAsserter = this.CreateAsserter(calls);
 
-            Func<IFakeObjectCall, bool> firstCallPredicate = x => object.ReferenceEquals(originalCalls[0], x);
+            Func<IFakeObjectCall, bool> secondCallPredicate = x => object.ReferenceEquals(calls[1], x);
+            Func<IFakeObjectCall, bool> firstCallPredicate = x => object.ReferenceEquals(calls[0], x);
+
+            A.CallTo(() => this.callWriter.WriteCalls(4, A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(calls).Argument, A<TextWriter>.Ignored))
+                .Invokes(x => x.Arguments.Get<TextWriter>("writer").Write("    list of calls"));
 
             // Act
-            orderedAsserter.AssertWasCalled(firstCallPredicate, "foo", x => x == 1, "foo");
+            orderedAsserter.AssertWasCalled(firstCallPredicate, "first call description", x => x == 2, "first repeat description");
 
             // Assert
-            Assert.That(calls, Is.EquivalentTo(new[] { originalCalls[1] }));
+            var expectedMessage = @"
+
+  Assertion failed for the following calls:
+    'first call description' repeated first repeat description
+    'second call description' repeated second repeat description
+  The calls where found but not in the correct order among the calls:
+    list of calls";
+
+            Assert.That(() => orderedAsserter.AssertWasCalled(secondCallPredicate, "second call description", x => x == 1, "second repeat description"),
+                Throws.Exception.With.Message.EqualTo(expectedMessage));
         }
     }
 }
