@@ -120,6 +120,7 @@
     <Compile Include="Expressions\IExpressionParser.cs" />
     <Compile Include="Expressions\NotArgumentConstraintScope.cs" />
     <Compile Include="Expressions\RootArgumentConstraintScope.cs" />
+    <Compile Include="MustBeImplementedException.cs" />
     <Compile Include="Repeated.cs" />
     <Compile Include="Core\Creation\IFakeOptionsBuilder.cs" />
     <Compile Include="Core\Creation\IFakeOptionsBuilderForWrappers.cs" />

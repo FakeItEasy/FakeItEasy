@@ -226,11 +226,7 @@ namespace FakeItEasy.Core
 
             public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
             {
-#if DEBUG
-                throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
+                throw new MustBeImplementedException();
             }
         } 
         #endregion

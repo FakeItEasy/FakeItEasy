@@ -8,11 +8,7 @@ namespace FakeItEasy.Core
     {
         public static IDisposable OrderedAssertions(this IEnumerable<ICompletedFakeObjectCall> calls)
         {
-#if DEBUG
-            throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
+            throw new MustBeImplementedException();
         }
 
         private class AsserterResetter
@@ -22,11 +18,7 @@ namespace FakeItEasy.Core
 
             public void Dispose()
             {
-#if DEBUG
-                throw new NotImplementedException();
-#else
-#error "Must be implemented"
-#endif
+                throw new MustBeImplementedException();
             }
         }
     }
