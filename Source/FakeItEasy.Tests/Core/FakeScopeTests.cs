@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using FakeItEasy.Core;
+using System.Collections;
 
 namespace FakeItEasy.Tests.Core
 {
@@ -17,10 +18,10 @@ namespace FakeItEasy.Tests.Core
 
             using (Fake.CreateScope())
             {
-                Assert.That(FakeScope.Current, Is.Not.EqualTo(scope));
+                Assert.That(FakeScope.Current, Is.Not.SameAs(scope));
             }
 
-            Assert.That(FakeScope.Current, Is.EqualTo(scope));
+            Assert.That(FakeScope.Current, Is.SameAs(scope));
         }
 
         [Test]
@@ -88,6 +89,54 @@ namespace FakeItEasy.Tests.Core
                 }
 
                 fake.Bar();
+            }
+        }
+
+        [Test]
+        public void GetEnumerator_on_root_scope_should_not_be_supported()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.Throws<NotSupportedException>(() =>
+                FakeScope.Current.GetEnumerator());
+        }
+
+        [Test]
+        public void Enumerating_should_enumerate_all_calls_that_were_made_in_the_scope()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            var otherFake = A.Fake<IFoo>();
+
+            // Act
+            using (var scope = Fake.CreateScope())
+            {
+                fake.Bar();
+                otherFake.Baz();
+
+                // Assert
+                Assert.That(scope.ToArray().Select(x => x.Method.Name), Is.EquivalentTo(new[] { "Bar", "Baz" }));
+            }
+        }
+
+        [Test]
+        public void Enumerating_through_non_generic_interface_should_enumerate_all_calls_that_were_made_in_the_scope()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            var otherFake = A.Fake<IFoo>();
+
+            // Act
+            using (var scope = Fake.CreateScope())
+            {
+                fake.Bar();
+                otherFake.Baz();
+
+                // Assert
+                Assert.That(((IEnumerable)scope).Cast<ICompletedFakeObjectCall>().ToArray().Select(x => x.Method.Name), Is.EquivalentTo(new[] { "Bar", "Baz" }));
             }
         }
     }

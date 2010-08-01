@@ -2,9 +2,6 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Reflection;
-    using System.Linq;
 
     /// <summary>
     /// Represents a scope for fake objects, calls configured within a scope
@@ -64,6 +61,13 @@ namespace FakeItEasy.Core
             this.OnDispose();
         }
 
+        public abstract IEnumerator<ICompletedFakeObjectCall> GetEnumerator();
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
         /// <summary>
         /// Adds an intercepted call to the current scope.
         /// </summary>
@@ -120,6 +124,11 @@ namespace FakeItEasy.Core
                 }
             }
 
+            public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
+            {
+                throw new NotSupportedException();
+            }
+
             internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject)
             {
                 return fakeObject.AllRecordedCalls;
@@ -139,11 +148,6 @@ namespace FakeItEasy.Core
             {
                 // Do nothing
             }
-
-            public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
-            {
-                throw new NotSupportedException();
-            }
         }
 
         private class ChildScope
@@ -151,14 +155,16 @@ namespace FakeItEasy.Core
         {
             private FakeScope parentScope;
             private Dictionary<FakeManager, List<CallRuleMetadata>> rulesField;
-            private Dictionary<FakeManager, List<ICompletedFakeObjectCall>> recordedCalls;
+            private Dictionary<FakeManager, List<ICompletedFakeObjectCall>> recordedCallsGroupedByFakeManager;
             private IFakeObjectContainer fakeObjectContainerField;
+            private LinkedList<ICompletedFakeObjectCall> recordedCalls;
 
             public ChildScope(FakeScope parentScope, IFakeObjectContainer container)
             {
                 this.parentScope = parentScope;
                 this.rulesField = new Dictionary<FakeManager, List<CallRuleMetadata>>();
-                this.recordedCalls = new Dictionary<FakeManager, List<ICompletedFakeObjectCall>>();
+                this.recordedCallsGroupedByFakeManager = new Dictionary<FakeManager, List<ICompletedFakeObjectCall>>();
+                this.recordedCalls = new LinkedList<ICompletedFakeObjectCall>();
                 this.fakeObjectContainerField = container;
             }
 
@@ -167,11 +173,16 @@ namespace FakeItEasy.Core
                 get { return this.fakeObjectContainerField; }
             }
 
+            public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
+            {
+                return this.recordedCalls.GetEnumerator();
+            }
+
             internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject)
             {
                 List<ICompletedFakeObjectCall> calls;
 
-                if (!this.recordedCalls.TryGetValue(fakeObject, out calls))
+                if (!this.recordedCallsGroupedByFakeManager.TryGetValue(fakeObject, out calls))
                 {
                     calls = new List<ICompletedFakeObjectCall>();
                 }
@@ -202,12 +213,14 @@ namespace FakeItEasy.Core
             {
                 this.parentScope.OnAddInterceptedCall(fakeManager, call);
 
+                this.recordedCalls.AddLast(call);
+
                 List<ICompletedFakeObjectCall> calls;
 
-                if (!this.recordedCalls.TryGetValue(fakeManager, out calls))
+                if (!this.recordedCallsGroupedByFakeManager.TryGetValue(fakeManager, out calls))
                 {
                     calls = new List<ICompletedFakeObjectCall>();
-                    this.recordedCalls.Add(fakeManager, calls);
+                    this.recordedCallsGroupedByFakeManager.Add(fakeManager, calls);
                 }
 
                 calls.Add(call);
@@ -223,19 +236,7 @@ namespace FakeItEasy.Core
                     }
                 }
             }
-
-            public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
-            {
-                throw new MustBeImplementedException();
-            }
         } 
         #endregion
-
-        public abstract IEnumerator<ICompletedFakeObjectCall> GetEnumerator();
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
     }   
 }
