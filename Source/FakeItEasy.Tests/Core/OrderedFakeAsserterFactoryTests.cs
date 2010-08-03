@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.Core
                 return innerAsserter;
             };
 
-            var factory = new OrderedFakeAsserterFactory(Enumerable.Empty<IFakeObjectCall>(), innerFactory, A.Fake<OrderedFakeAsserter>());
+            var factory = new OrderedFakeAsserterFactory(innerFactory, A.Fake<OrderedFakeAsserter>());
 
             Func<IFakeObjectCall, bool> callPredicate = x => true;
             Func<int, bool> repeatPredicate = x => true;
@@ -39,7 +39,7 @@ namespace FakeItEasy.Tests.Core
             var innerAsserter = A.Fake<FakeAsserter>();
             var orderedAsserter = A.Fake<OrderedFakeAsserter>();
 
-            var factory = new OrderedFakeAsserterFactory(Enumerable.Empty<IFakeObjectCall>(), x => innerAsserter, orderedAsserter);
+            var factory = new OrderedFakeAsserterFactory(x => innerAsserter, orderedAsserter);
 
             Func<IFakeObjectCall, bool> callPredicate = x => true;
             Func<int, bool> repeatPredicate = x => true;

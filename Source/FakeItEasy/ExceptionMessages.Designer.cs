@@ -306,6 +306,17 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to A scope for ordered assertions is already opened, close that scope before opening another one..
+        /// </summary>
+        internal static string OrderedAssertionsAlreadyOpen
+        {
+            get
+            {
+                return ResourceManager.GetString("OrderedAssertionsAlreadyOpen", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to The specified call is not made on a fake object..
         /// </summary>
         internal static string SpecifiedCallIsNotToFakedObject

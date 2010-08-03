@@ -10,7 +10,7 @@ namespace FakeItEasy.Core
         private FakeAsserterFactory asserterFactory;
         private OrderedFakeAsserter orderedAsserter;
 
-        public OrderedFakeAsserterFactory(IEnumerable<IFakeObjectCall> calls, FakeAsserterFactory asserterFactory, OrderedFakeAsserter orderedAsserter)
+        public OrderedFakeAsserterFactory(FakeAsserterFactory asserterFactory, OrderedFakeAsserter orderedAsserter)
         {
             this.asserterFactory = asserterFactory;
             this.orderedAsserter = orderedAsserter;

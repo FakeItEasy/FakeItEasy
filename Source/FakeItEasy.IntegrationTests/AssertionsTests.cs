@@ -95,5 +95,20 @@ namespace FakeItEasy.IntegrationTests
                 },
             Throws.Exception.InstanceOf<ExpectationException>());
         }
+
+        [Test]
+        public void Should_throw_when_starting_new_ordered_assertions_scope_when_one_is_already_opened()
+        {
+            // Arrange
+            using (var outerScope = Enumerable.Empty<ICompletedFakeObjectCall>().OrderedAssertions())
+            {
+                // Act, Assert
+                Assert.That(() => 
+                {
+                    using (Enumerable.Empty<ICompletedFakeObjectCall>().OrderedAssertions()) { }
+                },
+                Throws.Exception.TypeOf<InvalidOperationException>());
+            }
+        }
     }
 }

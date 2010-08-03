@@ -200,4 +200,7 @@
   <data name="SpecifiedCallIsNotToFakedObject" xml:space="preserve">
     <value>The specified call is not made on a fake object.</value>
   </data>
+  <data name="OrderedAssertionsAlreadyOpen" xml:space="preserve">
+    <value>A scope for ordered assertions is already opened, close that scope before opening another one.</value>
+  </data>
 </root>

@@ -6,6 +6,7 @@ namespace FakeItEasy
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
+    using System.Linq;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
@@ -102,7 +103,7 @@ namespace FakeItEasy
 
         public static IDisposable OrderedAssertions(object fakedObject)
         {
-            throw new MustBeImplementedException();
+            return Fake.GetCalls(fakedObject).OrderedAssertions();
         }
     }
 

@@ -21,11 +21,6 @@ namespace FakeItEasy.Core
         /// <param name="callWriter">The call writer.</param>
         public OrderedFakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
         {
-            foreach (var c in calls)
-            {
-                Console.WriteLine(c);
-            }
-
             this.originalCallList = calls;
             this.calls = new Queue<IFakeObjectCall>(calls);
             this.callWriter = callWriter;

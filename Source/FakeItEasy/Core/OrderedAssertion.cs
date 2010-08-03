@@ -6,9 +6,29 @@ namespace FakeItEasy.Core
 
     public static class OrderedAssertion
     {
+        private static FakeAsserter.Factory currentAsserterFactoryField = x => new FakeAsserter(x, ServiceLocator.Current.Resolve<CallWriter>());
+        private static bool orderedAssertionsScopeIsOpened;
+
         public static IDisposable OrderedAssertions(this IEnumerable<ICompletedFakeObjectCall> calls)
         {
-            throw new MustBeImplementedException();
+            if (orderedAssertionsScopeIsOpened)
+            {
+                throw new InvalidOperationException(ExceptionMessages.OrderedAssertionsAlreadyOpen);
+            }
+            
+            orderedAssertionsScopeIsOpened = true;
+
+            var orderedFactory = 
+                new OrderedFakeAsserterFactory(
+                    x => new FakeAsserter(x, ServiceLocator.Current.Resolve<CallWriter>()),
+                    new OrderedFakeAsserter(calls.Cast<IFakeObjectCall>(), ServiceLocator.Current.Resolve<CallWriter>())
+                 );
+
+            var resetter = new AsserterResetter { ResetTo = currentAsserterFactoryField };
+
+            currentAsserterFactoryField = orderedFactory.CreateAsserter;
+
+            return resetter;
         }
 
         private class AsserterResetter
@@ -18,7 +38,16 @@ namespace FakeItEasy.Core
 
             public void Dispose()
             {
-                throw new MustBeImplementedException();
+                OrderedAssertion.currentAsserterFactoryField = ResetTo;
+                OrderedAssertion.orderedAssertionsScopeIsOpened = false;
+            }
+        }
+
+        internal static FakeAsserter.Factory CurrentAsserterFactory
+        {
+            get
+            {
+                return currentAsserterFactoryField;
             }
         }
     }
