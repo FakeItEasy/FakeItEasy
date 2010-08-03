@@ -70,7 +70,7 @@
     <Compile Include="Core\ICallMatcherAccessor.cs" />
     <Compile Include="Core\IFakeAsserter.cs" />
     <Compile Include="Core\IFakeScope.cs" />
-    <Compile Include="Core\OrderedAssertion.cs" />
+    <Compile Include="OrderedAssertion.cs" />
     <Compile Include="Core\OrderedFakeAsserter.cs" />
     <Compile Include="Core\OrderedFakeAsserterFactory.cs" />
     <Compile Include="DynamicProxy\CastleDynamicProxyGenerator.cs" />

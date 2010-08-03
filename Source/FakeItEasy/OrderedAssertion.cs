@@ -1,8 +1,9 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Provides functionality for making ordered assertions on fakes.
