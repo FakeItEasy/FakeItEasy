@@ -4,26 +4,42 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>
+    /// Provides functionality for making ordered assertions on fakes.
+    /// </summary>
     public static class OrderedAssertion
     {
         private static FakeAsserter.Factory currentAsserterFactoryField = x => new FakeAsserter(x, ServiceLocator.Current.Resolve<CallWriter>());
         private static bool orderedAssertionsScopeIsOpened;
 
+        internal static FakeAsserter.Factory CurrentAsserterFactory
+        {
+            get
+            {
+                return currentAsserterFactoryField;
+            }
+        }
+
+        /// <summary>
+        /// Creates a scope that changes the behavior on asserts so that all asserts within
+        /// the scope must be to calls in the specified collection of calls. Calls must have happened
+        /// in the order that the asserts are specified or the asserts will fail.
+        /// </summary>
+        /// <param name="calls">The calls to assert among.</param>
+        /// <returns>A disposable used to close the scope.</returns>
         public static IDisposable OrderedAssertions(this IEnumerable<ICompletedFakeObjectCall> calls)
         {
-            if (orderedAssertionsScopeIsOpened)
-            {
-                throw new InvalidOperationException(ExceptionMessages.OrderedAssertionsAlreadyOpen);
-            }
+            AssertThatScopeIsNotOpen();
             
             orderedAssertionsScopeIsOpened = true;
 
-            var orderedFactory = 
-                new OrderedFakeAsserterFactory(
-                    x => new FakeAsserter(x, ServiceLocator.Current.Resolve<CallWriter>()),
-                    new OrderedFakeAsserter(calls.Cast<IFakeObjectCall>(), ServiceLocator.Current.Resolve<CallWriter>())
-                 );
+            var orderedFactory = CreateOrderedAsserterFactory(calls);
 
+            return SetOrderedFactoryAsCurrentAndGetResetter(orderedFactory);
+        }
+
+        private static IDisposable SetOrderedFactoryAsCurrentAndGetResetter(OrderedFakeAsserterFactory orderedFactory)
+        {
             var resetter = new AsserterResetter { ResetTo = currentAsserterFactoryField };
 
             currentAsserterFactoryField = orderedFactory.CreateAsserter;
@@ -31,23 +47,30 @@ namespace FakeItEasy.Core
             return resetter;
         }
 
-        private class AsserterResetter
-            : IDisposable
+        private static OrderedFakeAsserterFactory CreateOrderedAsserterFactory(IEnumerable<ICompletedFakeObjectCall> calls)
         {
-            public FakeAsserter.Factory ResetTo;
+            return new OrderedFakeAsserterFactory(
+                x => new FakeAsserter(x, ServiceLocator.Current.Resolve<CallWriter>()),
+                new OrderedFakeAsserter(calls.Cast<IFakeObjectCall>(), ServiceLocator.Current.Resolve<CallWriter>()));
+        }
 
-            public void Dispose()
+        private static void AssertThatScopeIsNotOpen()
+        {
+            if (orderedAssertionsScopeIsOpened)
             {
-                OrderedAssertion.currentAsserterFactoryField = ResetTo;
-                OrderedAssertion.orderedAssertionsScopeIsOpened = false;
+                throw new InvalidOperationException(ExceptionMessages.OrderedAssertionsAlreadyOpen);
             }
         }
 
-        internal static FakeAsserter.Factory CurrentAsserterFactory
+        private class AsserterResetter
+            : IDisposable
         {
-            get
+            public FakeAsserter.Factory ResetTo { get; set; }
+
+            public void Dispose()
             {
-                return currentAsserterFactoryField;
+                OrderedAssertion.currentAsserterFactoryField = this.ResetTo;
+                OrderedAssertion.orderedAssertionsScopeIsOpened = false;
             }
         }
     }
