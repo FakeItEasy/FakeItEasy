@@ -1,5 +1,8 @@
 namespace FakeItEasy.Core
 {
+    /// <summary>
+    /// Provides access to a call matcher.
+    /// </summary>
     public interface ICallMatcherAccessor
     {
         /// <summary>

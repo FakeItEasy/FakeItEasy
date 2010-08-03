@@ -16,8 +16,6 @@ namespace FakeItEasy.Core
         /// Initializes a new instance of the <see cref="OrderedFakeAsserter"/> class.
         /// </summary>
         /// <param name="calls">The calls.</param>
-        /// <param name="asserterFactory">The asserter factory that creates an inner asserter to assert that the asserted call
-        /// was made at all, ignoring order..</param>
         /// <param name="callWriter">The call writer.</param>
         public OrderedFakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
         {

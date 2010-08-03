@@ -41,7 +41,7 @@
             container.RegisterSingleton<MethodInfoManager>(c =>
                 new MethodInfoManager());
 
-            container.Register<FakeAsserter.Factory>(c => OrderedAssertion.CurrentAsserterFactory.Invoke);
+            container.Register<FakeAsserter.Factory>(c => x => OrderedAssertion.CurrentAsserterFactory.Invoke(x));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
                 () => new FakeManager());

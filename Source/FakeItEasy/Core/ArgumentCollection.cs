@@ -150,6 +150,12 @@ namespace FakeItEasy.Core
             throw new ArgumentException(ExceptionMessages.ArgumentNameDoesNotExist, "argumentName");
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection or arguments.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
         public IEnumerator<object> GetEnumerator()
         {
             return this.arguments.Cast<object>().GetEnumerator();
