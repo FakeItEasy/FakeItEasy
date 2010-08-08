@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests
     /// A fake implementation of IFakeObjectCall, used for testing.
     /// </summary>
     public class FakeCall
-            : IWritableFakeObjectCall, ICompletedFakeObjectCall
+        : IWritableFakeObjectCall, ICompletedFakeObjectCall
     {
         public FakeCall()
         {
@@ -78,6 +78,12 @@ namespace FakeItEasy.Tests
         public void SetArgumentValue(int index, object value)
         {
             
+        }
+
+
+        public string Description
+        {
+            get { return this.ToString(); }
         }
     }
 }

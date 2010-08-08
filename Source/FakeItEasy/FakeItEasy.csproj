@@ -142,7 +142,6 @@
     <Compile Include="Configuration\IReturnValueArgumentValidationConfiguration.cs" />
     <Compile Include="Configuration\IVoidArgumentValidationConfiguration.cs" />
     <Compile Include="DynamicProxy\DynamicProxyGeneratorBase.cs" />
-    <Compile Include="DynamicProxy\ICanInterceptObjectMembers.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs" />
     <Compile Include="Core\MethodInfoManager.cs" />
     <Compile Include="SelfInitializedFakes\ICallStorage.cs" />

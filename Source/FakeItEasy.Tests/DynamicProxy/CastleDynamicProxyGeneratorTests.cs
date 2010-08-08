@@ -60,8 +60,14 @@ namespace FakeItEasy.Tests.DynamicProxy
 
         private MemberInfo[] nonInterceptableMembers = new MemberInfo[] 
 		        {
-		            typeof(string).GetMethod("GetType"),
+		            typeof(object).GetMethod("GetType"),
 		            typeof(string).GetProperty("Length"),
+                    typeof(object).GetMethod("ToString", new Type[] {}),
+                    typeof(object).GetMethod("GetHashCode", new Type[] {}),
+                    typeof(object).GetMethod("Equals", new Type[] { typeof(object) }),
+                    typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
+                    typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("GetHashCode", new Type[] {}),
+                    typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("Equals", new Type[] { typeof(object) }),
 		            typeof(TypeWithNonVirtualProperty).GetProperty("Foo").GetGetMethod(),
 		            typeof(TypeWithNonVirtualProperty).GetProperty("Foo").GetSetMethod(),
 		            typeof(TypeWithNonVirtualProperty).GetProperty("Foo")
@@ -73,6 +79,9 @@ namespace FakeItEasy.Tests.DynamicProxy
 		            typeof(IFoo).GetProperty("SomeProperty").GetGetMethod(),
 		            typeof(IFoo).GetProperty("SomeProperty").GetSetMethod(),
 		            typeof(IFoo).GetProperty("SomeProperty"),
+                    typeof(TypeWithAllOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
+                    typeof(TypeWithAllOfTheObjectMethodsOverridden).GetMethod("GetHashCode", new Type[] {}),
+                    typeof(TypeWithAllOfTheObjectMethodsOverridden).GetMethod("Equals", new Type[] { typeof(object) }),
 		            typeof(TypeWithInternalInterceptableProperties).GetProperty("ReadOnly", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
 		            typeof(TypeWithInternalInterceptableProperties).GetProperty("WriteOnly", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
 		            typeof(TypeWithInternalInterceptableProperties).GetProperty("Normal", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
@@ -256,65 +265,6 @@ namespace FakeItEasy.Tests.DynamicProxy
             var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeManager, null);
 
             Assert.That(result, Is.BinarySerializable);
-        }
-
-        [Test]
-        public void GeneratedProxies_should_intercept_calls_to_ToString()
-        {
-            bool wasIntercepted = false;
-
-            var generator = this.CreateGenerator();
-
-            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeManager, null);
-
-            result.CallWasIntercepted += (s, e) =>
-            {
-                wasIntercepted = true;
-            };
-
-            result.Proxy.ToString();
-
-            Assert.That(wasIntercepted, Is.EqualTo(true));
-        }
-
-        [Test]
-        public void GeneratedProxies_should_intercept_calls_to_Equals()
-        {
-            bool wasIntercepted = false;
-
-            var generator = this.CreateGenerator();
-
-            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeManager, null);
-
-            result.CallWasIntercepted += (s, e) =>
-            {
-                wasIntercepted = true;
-                e.Call.SetReturnValue(true);
-            };
-
-            result.Proxy.Equals(null);
-
-            Assert.That(wasIntercepted, Is.EqualTo(true));
-        }
-
-        [Test]
-        public void GeneratedProxies_should_intercept_calls_to_GetHashCode()
-        {
-            bool wasIntercepted = false;
-
-            var generator = this.CreateGenerator();
-
-            var result = generator.GenerateProxy(typeof(IFoo), null, this.fakeManager, null);
-
-            result.CallWasIntercepted += (s, e) =>
-            {
-                wasIntercepted = true;
-                e.Call.SetReturnValue(1);
-            };
-
-            result.Proxy.GetHashCode();
-
-            Assert.That(wasIntercepted, Is.EqualTo(true));
         }
 
         [Test]
@@ -564,6 +514,27 @@ IFakeObjectContainer in order to generate a fake of this type."));
         public class ClassWithDefaultConstructor
         {
 
+        }
+
+        public class TypeWithNoneOfTheObjectMethodsOverridden
+        { }
+
+        public class TypeWithAllOfTheObjectMethodsOverridden
+        {
+            public override bool Equals(object obj)
+            {
+                return base.Equals(obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
+
+            public override string ToString()
+            {
+                return base.ToString();
+            }
         }
 
         public class TypeWithNonVirtualProperty

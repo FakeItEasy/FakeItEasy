@@ -66,7 +66,7 @@ namespace FakeItEasy.DynamicProxy
         /// <returns>
         /// True if the member can be intercepted, otherwise false.
         /// </returns>
-        public bool MemberCanBeIntercepted(MemberInfo member)
+        public virtual bool MemberCanBeIntercepted(MemberInfo member)
         {
             var method = member as MethodInfo;
 
