@@ -46,8 +46,11 @@
             container.RegisterSingleton<FakeManager.Factory>(c =>
                 () => new FakeManager());
 
+            container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
+                new DefaultFakeObjectCallFormatter());
+
             container.RegisterSingleton<CallWriter>(c =>
-                new CallWriter());
+                new CallWriter(c.Resolve<IFakeObjectCallFormatter>()));
 
             container.RegisterSingleton<RecordingManager.Factory>(c =>
                 x => new RecordingManager(x));

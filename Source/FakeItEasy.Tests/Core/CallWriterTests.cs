@@ -13,17 +13,19 @@ namespace FakeItEasy.Tests.Core
     {
         private List<IFakeObjectCall> calls;
         private StringWriter writer;
+        private IFakeObjectCallFormatter callFormatter;
 
         [SetUp]
         public void SetUp()
         {
             this.calls = new List<IFakeObjectCall>();
             this.writer = new StringWriter();
+            this.callFormatter = A.Fake<IFakeObjectCallFormatter>();            
         }
 
         private CallWriter CreateWriter()
         {
-            return new CallWriter();
+            return new CallWriter(this.callFormatter);
         }
 
         private void StubCalls(int numberOfCalls)
@@ -43,7 +45,7 @@ namespace FakeItEasy.Tests.Core
             foreach (var call in this.calls)
             {
                 var boundCallNumber = callNumber;
-                A.CallTo(() => call.ToString()).ReturnsLazily(x => "Fake call " + boundCallNumber.ToString());
+                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("Fake call " + boundCallNumber.ToString());
                 callNumber++;
             }
 
@@ -71,10 +73,10 @@ namespace FakeItEasy.Tests.Core
 
             foreach (var call in this.calls)
             {
-                A.CallTo(() => call.ToString()).Returns("Fake call");
+                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("Fake call");
             }
 
-            A.CallTo(() => this.calls[9].ToString()).Returns("Other call");
+            A.CallTo(() => this.callFormatter.GetDescription(this.calls[9])).Returns("Other call");
 
             var writer = this.CreateWriter();
             writer.WriteCalls(0, this.calls, this.writer);
@@ -93,12 +95,12 @@ namespace FakeItEasy.Tests.Core
 
             foreach (var call in this.calls.Where((x, i) => i % 2 == 0))
             {
-                A.CallTo(() => call.ToString()).Returns("odd");
+                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("odd");
             }
 
             foreach (var call in this.calls.Where((x, i) => i % 2 != 0))
             {
-                A.CallTo(() => call.ToString()).Returns("even");
+                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("even");
             }
 
             var writer = this.CreateWriter();
@@ -120,10 +122,10 @@ namespace FakeItEasy.Tests.Core
 
             foreach (var call in this.calls)
             {
-                A.CallTo(() => call.ToString()).ReturnsLazily(x => string.Format(CultureInfo.InvariantCulture, "Fake call {0}", Guid.NewGuid()));
+                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns(string.Format(CultureInfo.InvariantCulture, "Fake call {0}", Guid.NewGuid()));
             }
 
-            A.CallTo(() => this.calls[18].ToString()).Returns("Last call");
+            A.CallTo(() => this.callFormatter.GetDescription(this.calls[18])).Returns("Last call");
 
             var writer = this.CreateWriter();
             writer.WriteCalls(0, this.calls, this.writer);
@@ -142,8 +144,7 @@ namespace FakeItEasy.Tests.Core
             int callNumber = 1;
             foreach (var call in this.calls)
             {
-                var boundCallNumber = callNumber;
-                A.CallTo(() => call.ToString()).ReturnsLazily(x => "Fake call " + boundCallNumber.ToString());
+                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("Fake call " + callNumber.ToString());
                 callNumber++;
             }
 

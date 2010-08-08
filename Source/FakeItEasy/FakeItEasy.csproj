@@ -66,9 +66,11 @@
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeAccessor.cs" />
     <Compile Include="Core\Creation\DefaultFakeCreator.cs" />
+    <Compile Include="Core\DefaultFakeObjectCallFormatter.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
     <Compile Include="Core\ICallMatcherAccessor.cs" />
     <Compile Include="Core\IFakeAsserter.cs" />
+    <Compile Include="Core\IFakeObjectCallFormatter.cs" />
     <Compile Include="Core\IFakeScope.cs" />
     <Compile Include="OrderedAssertion.cs" />
     <Compile Include="Core\OrderedFakeAsserter.cs" />
