@@ -6,5 +6,9 @@ namespace FakeItEasy.Core
     public interface IInterceptedFakeObjectCall
         : IWritableFakeObjectCall
     {
+        /// <summary>
+        /// Sets that the call should not be recorded by the fake manager.
+        /// </summary>
+        void DoNotRecordCall();
     }
 }

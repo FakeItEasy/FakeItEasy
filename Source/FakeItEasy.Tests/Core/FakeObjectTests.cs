@@ -504,6 +504,24 @@ namespace FakeItEasy.Tests.Core
             Assert.That(fake.AllUserRules.Last.Value.Rule, Is.SameAs(rule));
         }
 
+        [Test]
+        public void Call_should_not_be_recorded_when_DoNotRecordCall_has_been_called()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            var rule = A.Fake<IFakeObjectCallRule>();
+            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>.Ignored.Argument)).Returns(true);
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored.Argument)).Invokes(x => x.Arguments.Get<IInterceptedFakeObjectCall>(0).DoNotRecordCall());
+            
+            Fake.GetFakeObject(fake).AddRuleFirst(rule);
+
+            // Act
+            fake.Bar();
+
+            // Assert
+            Assert.That(Fake.GetCalls(fake), Is.Empty);
+        }
+
         public class TypeWithNoDefaultConstructorButAllArgumentsFakeable
         {
             public IFoo Foo;

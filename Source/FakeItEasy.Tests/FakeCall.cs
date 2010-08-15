@@ -79,5 +79,10 @@ namespace FakeItEasy.Tests
         {
             
         }
+
+        public void DoNotRecordCall()
+        {
+            
+        }
     }
 }

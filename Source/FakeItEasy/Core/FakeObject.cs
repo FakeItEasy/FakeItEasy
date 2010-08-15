@@ -156,14 +156,29 @@ namespace FakeItEasy.Core
         
         private void Intercept(IWritableFakeObjectCall fakeObjectCall)
         {
-            FakeScope.Current.AddInterceptedCall(this, fakeObjectCall.AsReadOnly());
-
             var ruleToUse =
                 (from rule in this.AllRules
                  where rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes()
                  select rule).First();
 
-            ApplyRule(ruleToUse, new InterceptedCallAdapter(fakeObjectCall));
+            var interceptedCall = new InterceptedCallAdapter(fakeObjectCall);
+
+            try
+            {
+                ApplyRule(ruleToUse, interceptedCall);
+            }
+            finally
+            {
+                this.RecordInterceptedCall(interceptedCall);
+            }
+        }
+
+        private void RecordInterceptedCall(InterceptedCallAdapter interceptedCall)
+        {
+            if (!interceptedCall.IgnoreCallInRecording)
+            {
+                FakeScope.Current.AddInterceptedCall(this, interceptedCall.AsReadOnly());
+            }
         }
 
         private void MoveRuleToFront(CallRuleMetadata rule)
@@ -195,6 +210,23 @@ namespace FakeItEasy.Core
                 this.call = call;
             }
 
+            public bool IgnoreCallInRecording { get; private set; }
+
+            public System.Reflection.MethodInfo Method
+            {
+                get { return this.call.Method; }
+            }
+
+            public ArgumentCollection Arguments
+            {
+                get { return this.call.Arguments; }
+            }
+
+            public object FakedObject
+            {
+                get { return this.call.FakedObject; }
+            }
+
             public void SetReturnValue(object value)
             {
                 this.call.SetReturnValue(value);
@@ -215,21 +247,10 @@ namespace FakeItEasy.Core
                 return this.call.AsReadOnly();
             }
 
-            public System.Reflection.MethodInfo Method
+            public void DoNotRecordCall()
             {
-                get { return this.call.Method; }
-            }
-
-            public ArgumentCollection Arguments
-            {
-                get { return this.call.Arguments; }
-            }
-
-            public object FakedObject
-            {
-                get { return this.call.FakedObject; }
+                this.IgnoreCallInRecording = true;
             }
         }
-
     }
 }

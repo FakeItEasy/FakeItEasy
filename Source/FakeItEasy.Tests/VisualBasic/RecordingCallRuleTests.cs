@@ -45,6 +45,20 @@ namespace FakeItEasy.Tests.VisualBasic
         }
 
         [Test]
+        public void Apply_should_call_DoNotRecordCall()
+        {
+            // Arrange
+            var rule = this.CreateRule();
+            var call = A.Fake<IInterceptedFakeObjectCall>();
+
+            // Act
+            rule.Apply(call);
+
+            // Assert
+            A.CallTo(() => call.DoNotRecordCall()).MustHaveHappened();
+        }
+
+        [Test]
         public void Apply_should_create_asserter_and_call_it_with_the_recorded_call_when_IsAssertion_is_set_to_true_on_recorded_rule()
         {
             this.recordedRule.IsAssertion = true;
