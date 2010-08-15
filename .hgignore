@@ -12,4 +12,4 @@ ILMerge.exe
 Build/*
 *.diff
 *resharper*
-StyleCop.Cache
+*.[Cc]ache
