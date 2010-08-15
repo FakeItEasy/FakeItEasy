@@ -20,7 +20,7 @@ namespace FakeItEasy.Core
         /// an exception.
         /// </summary>
         /// <param name="fakeObjectCall">The call to apply the interceptor to.</param>
-        void Apply(IWritableFakeObjectCall fakeObjectCall);
+        void Apply(IInterceptedFakeObjectCall fakeObjectCall);
 
         /// <summary>
         /// Gets the number of times this call rule is valid, if it's set

@@ -18,7 +18,7 @@
         /// Applies the call if the call has been recorded.
         /// </summary>
         /// <param name="fakeObjectCall">The call to apply to from recording.</param>
-        void ApplyNext(IWritableFakeObjectCall fakeObjectCall);
+        void ApplyNext(IInterceptedFakeObjectCall fakeObjectCall);
         
         /// <summary>
         /// Records the specified call.

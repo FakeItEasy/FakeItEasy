@@ -7,7 +7,7 @@ namespace FakeItEasy.Tests
     : IFakeObjectCallRule
     {
         public Func<IFakeObjectCall, bool> IsApplicableTo;
-        public Action<IWritableFakeObjectCall> Apply;
+        public Action<IInterceptedFakeObjectCall> Apply;
         public bool ApplyWasCalled;
         public bool IsApplicableToWasCalled;
 
@@ -17,7 +17,7 @@ namespace FakeItEasy.Tests
             return this.IsApplicableTo != null ? this.IsApplicableTo(invocation) : false;
         }
 
-        void IFakeObjectCallRule.Apply(IWritableFakeObjectCall invocation)
+        void IFakeObjectCallRule.Apply(IInterceptedFakeObjectCall invocation)
         {
             this.ApplyWasCalled = true;
 

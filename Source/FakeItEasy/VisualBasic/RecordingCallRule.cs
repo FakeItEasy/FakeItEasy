@@ -26,8 +26,10 @@ namespace FakeItEasy.VisualBasic
             return true;
         }
 
-        public void Apply(IWritableFakeObjectCall fakeObjectCall)
+        public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
+            fakeObjectCall.DoNotRecordCall();
+
             this.recordedRule.ApplicableToMethod = fakeObjectCall.Method;
 
             if (this.recordedRule.IsApplicableToArguments == null)

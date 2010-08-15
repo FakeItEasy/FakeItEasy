@@ -1,7 +1,8 @@
 namespace FakeItEasy.Core
 {
+
     /// <summary>
-    /// Represents a call to a fake object at interception time.
+    /// Represents a fake object call that can be edited.
     /// </summary>
     public interface IWritableFakeObjectCall
         : IFakeObjectCall

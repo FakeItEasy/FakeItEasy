@@ -150,7 +150,7 @@ namespace FakeItEasy.Core
             proxy.CallWasIntercepted += this.Proxy_CallWasIntercepted;
         }
 
-        private static void ApplyRule(CallRuleMetadata rule, IWritableFakeObjectCall fakeObjectCall)
+        private static void ApplyRule(CallRuleMetadata rule, IInterceptedFakeObjectCall fakeObjectCall)
         {
             rule.CalledNumberOfTimes++;
             rule.Rule.Apply(fakeObjectCall);
@@ -158,14 +158,29 @@ namespace FakeItEasy.Core
         
         private void Intercept(IWritableFakeObjectCall fakeObjectCall)
         {
-            FakeScope.Current.AddInterceptedCall(this, fakeObjectCall.AsReadOnly());
-
             var ruleToUse =
                 (from rule in this.AllRules
                  where rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes()
                  select rule).First();
 
-            ApplyRule(ruleToUse, fakeObjectCall);
+            var interceptedCall = new InterceptedCallAdapter(fakeObjectCall);
+
+            try
+            {
+                ApplyRule(ruleToUse, interceptedCall);
+            }
+            finally
+            {
+                this.RecordInterceptedCall(interceptedCall);
+            }
+        }
+
+        private void RecordInterceptedCall(InterceptedCallAdapter interceptedCall)
+        {
+            if (!interceptedCall.IgnoreCallInRecording)
+            {
+                FakeScope.Current.AddInterceptedCall(this, interceptedCall.AsReadOnly());
+            }
         }
 
         private void MoveRuleToFront(CallRuleMetadata rule)
@@ -185,6 +200,59 @@ namespace FakeItEasy.Core
         private void Proxy_CallWasIntercepted(object sender, CallInterceptedEventArgs e)
         {
             this.Intercept(e.Call);
+        }
+
+        private class InterceptedCallAdapter
+            : IInterceptedFakeObjectCall
+        {
+            private IWritableFakeObjectCall call;
+
+            public InterceptedCallAdapter(IWritableFakeObjectCall call)
+            {
+                this.call = call;
+            }
+
+            public bool IgnoreCallInRecording { get; private set; }
+
+            public System.Reflection.MethodInfo Method
+            {
+                get { return this.call.Method; }
+            }
+
+            public ArgumentCollection Arguments
+            {
+                get { return this.call.Arguments; }
+            }
+
+            public object FakedObject
+            {
+                get { return this.call.FakedObject; }
+            }
+
+            public void SetReturnValue(object value)
+            {
+                this.call.SetReturnValue(value);
+            }
+
+            public void CallBaseMethod()
+            {
+                this.call.CallBaseMethod();
+            }
+
+            public void SetArgumentValue(int index, object value)
+            {
+                this.call.SetArgumentValue(index, value);
+            }
+
+            public ICompletedFakeObjectCall AsReadOnly()
+            {
+                return this.call.AsReadOnly();
+            }
+
+            public void DoNotRecordCall()
+            {
+                this.IgnoreCallInRecording = true;
+            }
         }
     }
 }

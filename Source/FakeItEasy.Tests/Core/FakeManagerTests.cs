@@ -216,8 +216,8 @@ namespace FakeItEasy.Tests.Core
             ((IFoo)fake.Object).Bar();
             var i = ((IFoo)fake.Object)[1];
 
-            Assert.That(fake.RecordedCallsInScope, Has.Some.Matches<IWritableFakeObjectCall>(x => x.Method.Name == "Bar"));
-            Assert.That(fake.RecordedCallsInScope, Has.Some.Matches<IWritableFakeObjectCall>(x => x.Method.Name == "get_Item"));
+            Assert.That(fake.RecordedCallsInScope, Has.Some.Matches<IFakeObjectCall>(x => x.Method.Name == "Bar"));
+            Assert.That(fake.RecordedCallsInScope, Has.Some.Matches<IFakeObjectCall>(x => x.Method.Name == "get_Item"));
         }
 
         [Test]
@@ -288,7 +288,7 @@ namespace FakeItEasy.Tests.Core
 
             (fake.Object as IFoo).Bar();
 
-            A.CallTo(() => rule.Apply(A<IWritableFakeObjectCall>.Ignored.Argument)).MustNotHaveHappened();
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored.Argument)).MustNotHaveHappened();
         }
 
         [Test]
@@ -416,8 +416,6 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void SetProxy_should_configure_fake_object_to_intercept_calls()
         {
-            bool wasCalled = false;
-            
             var fake = this.CreateFakeManager<IFoo>();
             var proxy = this.CreateProxyResult<IFoo>();
             var call = A.Fake<IWritableFakeObjectCall>();
@@ -426,20 +424,13 @@ namespace FakeItEasy.Tests.Core
             fake.SetProxy(proxy);
 
             var rule = A.Fake<IFakeObjectCallRule>();
-            rule.Configure()
-                .CallsTo(x => x.IsApplicableTo(call))
-                .Returns(true);
-
-            rule.Configure()
-                .CallsTo(x => x.Apply(call))
-                .Invokes(x => wasCalled = true);
+            A.CallTo(() => rule.IsApplicableTo(call)).Returns(true);
             
             fake.AddRuleFirst(rule);
 
             proxy.RaiseCallWasIntercepted(call);
 
-           
-            Assert.That(wasCalled, Is.True);
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored.Argument)).MustHaveHappened();
         }
 
         [Test]
@@ -511,6 +502,24 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             Assert.That(fake.AllUserRules.Last.Value.Rule, Is.SameAs(rule));
+        }
+
+        [Test]
+        public void Call_should_not_be_recorded_when_DoNotRecordCall_has_been_called()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            var rule = A.Fake<IFakeObjectCallRule>();
+            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>.Ignored.Argument)).Returns(true);
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored.Argument)).Invokes(x => x.Arguments.Get<IInterceptedFakeObjectCall>(0).DoNotRecordCall());
+            
+            Fake.GetFakeManager(fake).AddRuleFirst(rule);
+
+            // Act
+            fake.Bar();
+
+            // Assert
+            Assert.That(Fake.GetCalls(fake), Is.Empty);
         }
 
         public class TypeWithNoDefaultConstructorButAllArgumentsFakeable

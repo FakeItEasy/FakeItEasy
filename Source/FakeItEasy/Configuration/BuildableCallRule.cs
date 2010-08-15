@@ -21,7 +21,7 @@ namespace FakeItEasy.Configuration
         /// An action that is called by the Apply method to apply this
         /// rule to a fake object call.
         /// </summary>
-        public virtual Action<IWritableFakeObjectCall> Applicator { get; set; }
+        public virtual Action<IInterceptedFakeObjectCall> Applicator { get; set; }
 
         /// <summary>
         /// A collection of actions that should be invoked when the configured
@@ -57,7 +57,7 @@ namespace FakeItEasy.Configuration
             set;
         }
 
-        public virtual void Apply(IWritableFakeObjectCall fakeObjectCall)
+        public virtual void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
             foreach (var action in this.Actions)
             {
@@ -87,7 +87,7 @@ namespace FakeItEasy.Configuration
 
         protected abstract bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall);
 
-        private static ICollection<int> GetIndexesOfOutAndRefParameters(IWritableFakeObjectCall fakeObjectCall)
+        private static ICollection<int> GetIndexesOfOutAndRefParameters(IInterceptedFakeObjectCall fakeObjectCall)
         {
             var indexes = new List<int>();
 
@@ -103,7 +103,7 @@ namespace FakeItEasy.Configuration
             return indexes;
         }
 
-        private void ApplyOutAndRefParametersValues(IWritableFakeObjectCall fakeObjectCall)
+        private void ApplyOutAndRefParametersValues(IInterceptedFakeObjectCall fakeObjectCall)
         {
             if (this.OutAndRefParametersValues == null)
             {
