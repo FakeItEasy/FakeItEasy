@@ -93,6 +93,7 @@
     <Compile Include="Configuration\IStartConfigurationFactory.cs" />
     <Compile Include="Configuration\StartConfiguration.cs" />
     <Compile Include="Core\DynamicContainer.cs" />
+    <Compile Include="Core\IInterceptedFakeObjectCall.cs" />
     <Compile Include="Core\ITypeAccessor.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>

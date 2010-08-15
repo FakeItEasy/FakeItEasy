@@ -20,7 +20,7 @@
                 return PropertyBehaviorRule.IsPropertySetter(fakeObjectCall.Method);
             }
 
-            public void Apply(IWritableFakeObjectCall fakeObjectCall)
+            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 var newRule = new CallRuleMetadata
                 {

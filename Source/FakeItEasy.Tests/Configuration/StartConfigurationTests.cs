@@ -108,7 +108,7 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             Assert.DoesNotThrow(() =>
-                this.rule.Applicator(A.Fake<IWritableFakeObjectCall>()));
+                this.rule.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
         }
 
         [Test]

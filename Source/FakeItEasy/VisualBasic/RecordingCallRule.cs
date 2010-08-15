@@ -26,7 +26,7 @@ namespace FakeItEasy.VisualBasic
             return true;
         }
 
-        public void Apply(IWritableFakeObjectCall fakeObjectCall)
+        public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
             this.recordedRule.ApplicableToMethod = fakeObjectCall.Method;
 

@@ -78,7 +78,7 @@
         /// Applies the call if the call has been recorded.
         /// </summary>
         /// <param name="call">The call to apply to from recording.</param>
-        public void ApplyNext(IWritableFakeObjectCall call)
+        public void ApplyNext(IInterceptedFakeObjectCall call)
         {
             this.AssertThatCallQueueIsNotEmpty();
 
@@ -91,7 +91,7 @@
             callToApply.HasBeenApplied = true;
         }
 
-        private static void ApplyOutputArguments(IWritableFakeObjectCall call, CallDataMetadata callToApply)
+        private static void ApplyOutputArguments(IInterceptedFakeObjectCall call, CallDataMetadata callToApply)
         {
             foreach (var outputArgument in GetIndicesAndValuesOfOutputParameters(call, callToApply.RecordedCall))
             {
@@ -107,7 +107,7 @@
             }
         }
 
-        private static void AssertThatMethodsMatches(IWritableFakeObjectCall call, CallDataMetadata callToApply)
+        private static void AssertThatMethodsMatches(IInterceptedFakeObjectCall call, CallDataMetadata callToApply)
         {
             if (!callToApply.RecordedCall.Method.Equals(call.Method))
             {
@@ -157,7 +157,7 @@
             return result;
         }
 
-        private static IEnumerable<Tuple<int, object>> GetIndicesAndValuesOfOutputParameters(IWritableFakeObjectCall call, CallData recordedCall)
+        private static IEnumerable<Tuple<int, object>> GetIndicesAndValuesOfOutputParameters(IInterceptedFakeObjectCall call, CallData recordedCall)
         {
             return
                 (from argument in call.Method.GetParameters().Zip(Enumerable.Range(0, int.MaxValue))

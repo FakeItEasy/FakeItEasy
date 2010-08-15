@@ -52,7 +52,7 @@ namespace FakeItEasy.Tests.VisualBasic
 
             var rule = this.CreateRule();
 
-            var call = A.Fake<IWritableFakeObjectCall>();
+            var call = A.Fake<IInterceptedFakeObjectCall>();
             A.CallTo(() => call.ToString()).Returns("call description");
 
             rule.Apply(call);
@@ -68,7 +68,7 @@ namespace FakeItEasy.Tests.VisualBasic
 
             var rule = this.CreateRule();
 
-            var call = A.Fake<IWritableFakeObjectCall>();
+            var call = A.Fake<IInterceptedFakeObjectCall>();
             
             A.CallTo(() => call.ToString()).Returns("call description");
 
@@ -93,7 +93,7 @@ namespace FakeItEasy.Tests.VisualBasic
 
             var rule = this.CreateRule();
 
-            var call = A.Fake<IWritableFakeObjectCall>();
+            var call = A.Fake<IInterceptedFakeObjectCall>();
             A.CallTo(() => call.ToString()).Returns("call description");
 
             rule.Apply(call);
@@ -118,7 +118,7 @@ namespace FakeItEasy.Tests.VisualBasic
 
             var rule = this.CreateRule();
 
-            rule.Apply(A.Fake<IWritableFakeObjectCall>());
+            rule.Apply(A.Fake<IInterceptedFakeObjectCall>());
 
             Assert.That(this.argumentUsedForAsserterFactory, Is.EquivalentTo(this.fakeObject.RecordedCallsInScope));
         }

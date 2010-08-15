@@ -16,7 +16,7 @@ using FakeItEasy.Core.Creation;
                 return PropertyBehaviorRule.IsPropertyGetter(fakeObjectCall.Method) && TypeIsFakable(fakeObjectCall.Method.ReturnType);
             }
 
-            public void Apply(IWritableFakeObjectCall fakeObjectCall)
+            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 var newRule = new CallRuleMetadata
                 {

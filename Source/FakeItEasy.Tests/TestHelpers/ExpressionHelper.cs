@@ -41,12 +41,12 @@ namespace FakeItEasy.Tests.TestHelpers
             return ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>().CreateCallMathcer(expression);
         }
 
-        public static IWritableFakeObjectCall CreateFakeCall<TFake, Treturn>(Expression<Func<TFake, Treturn>> callSpecification)
+        public static IInterceptedFakeObjectCall CreateFakeCall<TFake, Treturn>(Expression<Func<TFake, Treturn>> callSpecification)
         {
             return CreateFakeCall(A.Fake<TFake>(), (LambdaExpression)callSpecification);
         }
 
-        public static IWritableFakeObjectCall CreateFakeCall<TFake>(Expression<Action<TFake>> callSpecification)
+        public static IInterceptedFakeObjectCall CreateFakeCall<TFake>(Expression<Action<TFake>> callSpecification)
         {
             return CreateFakeCall(A.Fake<TFake>(), (LambdaExpression)callSpecification);
         }
@@ -72,9 +72,9 @@ namespace FakeItEasy.Tests.TestHelpers
             return methodExpression.Arguments[argumentIndex];
         }
 
-        private static IWritableFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)
+        private static IInterceptedFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)
         {
-            var result = A.Fake<IWritableFakeObjectCall>();
+            var result = A.Fake<IInterceptedFakeObjectCall>();
             var frozen = A.Fake<ICompletedFakeObjectCall>();
 
             A.CallTo(() => result.Method).Returns(GetMethodInfo(callSpecification));
@@ -87,7 +87,7 @@ namespace FakeItEasy.Tests.TestHelpers
             A.CallTo(() => frozen.Arguments).Returns(CreateArgumentCollection(fakedObject, callSpecification));
 
             A.CallTo(() => frozen.ReturnValue)
-                .Returns(() => Fake.GetCalls(result).Matching<IWritableFakeObjectCall>(x => x.SetReturnValue(A<object>.Ignored)).Last().Arguments[0]);
+                .Returns(() => Fake.GetCalls(result).Matching<IInterceptedFakeObjectCall>(x => x.SetReturnValue(A<object>.Ignored)).Last().Arguments[0]);
 
             A.CallTo(() => result.AsReadOnly()).Returns(frozen);
 

@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests
     /// A fake implementation of IFakeObjectCall, used for testing.
     /// </summary>
     public class FakeCall
-            : IWritableFakeObjectCall, ICompletedFakeObjectCall
+        : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
     {
         public FakeCall()
         {
