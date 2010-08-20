@@ -104,7 +104,7 @@
     <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraintTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />
-    <Compile Include="Expressions\NotArgumentValidatorScopeTests.cs" />
+    <Compile Include="Expressions\NotArgumentConstraintScopeTests.cs" />
     <Compile Include="Expressions\RootArgumentConstraintScopeTests.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="LowerBoundHappenedTests.cs" />
@@ -154,6 +154,7 @@
     <Compile Include="SyntaxTests.cs" />
     <Compile Include="TestHelpers\ReflectionHelper.cs" />
     <Compile Include="TestHelpers\TestableProxyResult.cs" />
+    <Compile Include="VisualBasic\RecordedCallRuleTests.cs" />
     <Compile Include="VisualBasic\RecordingCallRuleTests.cs" />
     <Compile Include="VisualBasic\NextCallTests.cs" />
     <Compile Include="VisualBasic\VisualBasicHelpersTests.cs" />

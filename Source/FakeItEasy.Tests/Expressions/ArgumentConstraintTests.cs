@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => this.scope.ResultOfChildConstraintIsValid(false)).Returns(false);
         }
 
-        private TestableConstraint CreateValidator()
+        private TestableConstraint CreateConstraint()
         {
             return new TestableConstraint(this.scope);
         }
@@ -111,7 +111,7 @@ namespace FakeItEasy.Tests.Expressions
         public void ToString_should_return_formatted_description()
         {
             // Arrange
-            var validator = this.CreateValidator();
+            var validator = this.CreateConstraint();
             validator.DescriptionToUse = "Some Description";
 
             // Act
@@ -125,7 +125,7 @@ namespace FakeItEasy.Tests.Expressions
         public void IsValid_should_return_false_when_the_validator_is_valid_in_itself_but_the_parent_validations_is_not_valid()
         {
             // Arrange
-            var validator = this.CreateValidator();
+            var validator = this.CreateConstraint();
             validator.EvaluateReturnValue = true;
 
             A.CallTo(() => this.scope.IsValid(A<int>.Ignored)).Returns(false);
@@ -141,13 +141,13 @@ namespace FakeItEasy.Tests.Expressions
         public void IsValid_should_return_false_when_validator_is_not_valid_and_parent_validations_is_not_valid()
         {
             // Arrange
-            var validator = this.CreateValidator();
-            validator.EvaluateReturnValue = false;
+            var constraint = this.CreateConstraint();
+            constraint.EvaluateReturnValue = false;
 
             A.CallTo(() => this.scope.IsValid(A<int>.Ignored)).Returns(false);
 
             // Act
-            var result = validator.IsValid(10);
+            var result = constraint.IsValid(10);
 
             // Assert
             Assert.That(result, Is.False);
@@ -157,29 +157,29 @@ namespace FakeItEasy.Tests.Expressions
         public void IsValid_should_return_true_when_validations_is_valid_and_validator_is_validated_by_validations()
         {
             // Arrange
-            var validator = this.CreateValidator();
-            validator.EvaluateReturnValue = true;
+            var constraint = this.CreateConstraint();
+            constraint.EvaluateReturnValue = true;
 
             A.CallTo(() => this.scope.ResultOfChildConstraintIsValid(true)).Returns(true);
 
             // Act
-            var result = validator.IsValid(10);
+            var result = constraint.IsValid(10);
 
             // Assert
             Assert.That(result, Is.True);
         }
 
         [Test]
-        public void IsValid_should_return_false_when_validations_is_valid_but_validator_is_not_validated_by_validations()
+        public void IsValid_should_return_false_when_scope_is_valid_but_constraint_is_not_validated_by_scope()
         {
             // Arrange
-            var validator = this.CreateValidator();
-            validator.EvaluateReturnValue = true;
+            var constraint = this.CreateConstraint();
+            constraint.EvaluateReturnValue = true;
 
             A.CallTo(() => this.scope.ResultOfChildConstraintIsValid(true)).Returns(false);
 
             // Act
-            var result = validator.IsValid(10);
+            var result = constraint.IsValid(10);
 
             // Assert
             Assert.That(result, Is.False);
@@ -190,7 +190,7 @@ namespace FakeItEasy.Tests.Expressions
         public void And_should_return_validations_that_delegates_IsValid_to_IsValid_of_validator(bool validatorIsValid)
         {
             // Arrange
-            var validator = this.CreateValidator();
+            var validator = this.CreateConstraint();
             validator.EvaluateReturnValue = validatorIsValid;
 
             A.CallTo(() => this.scope.IsValid(10)).Returns(true);
@@ -206,7 +206,7 @@ namespace FakeItEasy.Tests.Expressions
         public void And_should_return_validations_that_concatenates_the_full_description_of_the_parent_validator_with_AND()
         {
             // Arrange
-            var validator = this.CreateValidator();
+            var validator = this.CreateConstraint();
             validator.DescriptionToUse = "foo";
 
             // Act
@@ -221,7 +221,7 @@ namespace FakeItEasy.Tests.Expressions
         public bool And_should_return_validations_where_ResultOfChildValidatorIsValid_is_positive(bool validatorIsValid)
         {
             // Arrange
-            var validator = this.CreateValidator();
+            var validator = this.CreateConstraint();
             var and = validator.And;
 
             // Act
@@ -233,13 +233,13 @@ namespace FakeItEasy.Tests.Expressions
         [TestCase("foo and", "bar", Result = "foo and bar")]
         [TestCase("", "something", Result = "something")]
         [TestCase(null, "foo", Result = "foo")]
-        public string FullDescription_should_return_description_of_validations_concatenated_with_own_description(string validationsDescription, string validatorDescription)
+        public string FullDescription_should_return_description_of_validations_concatenated_with_own_description(string scopeDescription, string constraintDescription)
         {
             // Arrange
-            A.CallTo(() => this.scope.ToString()).Returns(validationsDescription);
+            A.CallTo(() => this.scope.Description).Returns(scopeDescription);
 
-            var validator = this.CreateValidator();
-            validator.DescriptionToUse = validatorDescription;
+            var validator = this.CreateConstraint();
+            validator.DescriptionToUse = constraintDescription;
 
             // Act
             var description = validator.FullDescription;
@@ -257,10 +257,10 @@ namespace FakeItEasy.Tests.Expressions
             // Arrange
             A.CallTo(() => this.scope.IsValid(3)).Returns(true);
 
-            var firstValidator = this.CreateValidator();
+            var firstValidator = this.CreateConstraint();
             firstValidator.EvaluateReturnValue = firstValidatorResult;
 
-            var secondValidator = this.CreateValidator();
+            var secondValidator = this.CreateConstraint();
             secondValidator.EvaluateReturnValue = secondValidatorResult;
 
             // Act
@@ -274,10 +274,10 @@ namespace FakeItEasy.Tests.Expressions
         public void Or_should_return_validator_that_combines_the_descriptions_of_the_two_validators()
         {
             // Arrange
-            var firstValidator = this.CreateValidator();
+            var firstValidator = this.CreateConstraint();
             firstValidator.DescriptionToUse = "first";
 
-            var secondValidator = this.CreateValidator();
+            var secondValidator = this.CreateConstraint();
             secondValidator.DescriptionToUse = "second";
 
             var orValidator = firstValidator.Or(secondValidator);
@@ -292,7 +292,7 @@ namespace FakeItEasy.Tests.Expressions
         public void Argument_should_return_default_value()
         {
             // Arrange
-            var validator = this.CreateValidator();
+            var validator = this.CreateConstraint();
 
             // Act
             var result = validator.Argument;
@@ -305,7 +305,7 @@ namespace FakeItEasy.Tests.Expressions
         public void Constraint_should_convert_to_argument_type_implicitly()
         {
             // Arrange
-            var validator = this.CreateValidator();
+            var validator = this.CreateConstraint();
 
             // Act
             int result = validator;

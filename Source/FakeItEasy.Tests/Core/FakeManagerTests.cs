@@ -355,41 +355,6 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void GetHashCode_on_faked_object_should_return_hash_code_of_fake_when_not_configured()
-        {
-            var fake = this.CreateFakeManager<IFoo>();
-            var foo = (IFoo)fake.Object;
-
-            Assert.That(foo.GetHashCode(), Is.EqualTo(fake.GetHashCode()));
-        }
-
-        [Test]
-        public void Equals_on_faked_object_should_return_true_if_the_passed_in_object_is_the_same_and_it_is_not_configured()
-        {
-            var fake = this.CreateFakeManager<IFoo>();
-            var foo = (IFoo)fake.Object;
-
-            Assert.That(foo.Equals(foo));
-        }
-
-        [Test]
-        public void Equals_on_faked_object_should_return_false_when_passed_in_object_is_not_the_same_and_it_is_not_configured()
-        {
-            var fake = this.CreateFakeManager<IFoo>();
-            var foo = (IFoo)fake.Object;
-
-            Assert.That(foo.Equals("Something else"), Is.False);
-        }
-
-        [Test]
-        public void ToString_should_return_fake_of_type_when_not_configured()
-        {
-            var fake = this.CreateFakeManager<IFoo>();
-            
-            Assert.That(fake.Object.ToString(), Is.EqualTo("Faked FakeItEasy.Tests.IFoo"));
-        }
-
-        [Test]
         public void SetProxy_should_set_proxy_from_proxy_result()
         {
             var fake = this.CreateFakeManager<IFoo>();
@@ -504,7 +469,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var fake = this.CreateFakeManager<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => rule.ToString()).Returns("rule!");
+            
             // Act
             fake.AddRuleFirst(A.Fake<IFakeObjectCallRule>());
             fake.AddRuleLast(rule);

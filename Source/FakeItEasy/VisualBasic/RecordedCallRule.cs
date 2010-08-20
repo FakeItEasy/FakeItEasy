@@ -44,5 +44,13 @@ namespace FakeItEasy.Core
         {
             this.IsApplicableToArguments = argumentsPredicate;
         }
+
+        public override string DescriptionOfValidCall
+        {
+            get 
+            {
+                return string.Empty;
+            }
+        }
     }
 }

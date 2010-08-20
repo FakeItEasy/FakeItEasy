@@ -15,12 +15,14 @@ namespace FakeItEasy.Configuration
     {
         private FakeAsserter.Factory asserterFactory;
         private FakeManager manager;
+        private IFakeObjectCallFormatter callFormatter;
         
-        internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeManager manager, FakeAsserter.Factory asserterFactory)
+        internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeManager manager, FakeAsserter.Factory asserterFactory, IFakeObjectCallFormatter callFormatter)
         {
             this.RuleBeingBuilt = ruleBeingBuilt;
             this.manager = manager;
             this.asserterFactory = asserterFactory;
+            this.callFormatter = callFormatter;
         }
 
         /// <summary>
@@ -109,7 +111,7 @@ namespace FakeItEasy.Configuration
         {
             this.manager.RemoveRule(this.RuleBeingBuilt);
             var asserter = this.asserterFactory.Invoke(this.Calls.Cast<IFakeObjectCall>());
-            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.ToString(), repeatConstraint.Matches, repeatConstraint.ToString());
+            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.DescriptionOfValidCall, repeatConstraint.Matches, repeatConstraint.ToString());
         }
 
         public class ReturnValueConfiguration<TMember>

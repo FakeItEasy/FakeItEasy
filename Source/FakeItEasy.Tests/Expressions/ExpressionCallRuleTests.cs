@@ -89,13 +89,13 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         [Test]
-        public void ToString_should_return_expressionMatcher_ToString()
+        public void DescriptionOfValidCall_should_return_expressionMatcher_ToString()
         {
-            A.CallTo(() => this.callMatcher.ToString()).Returns("foo");
+            A.CallTo(() => this.callMatcher.DescriptionOfMatchingCall).Returns("foo");
 
             var rule = CreateRule<IFoo>(x => x.Bar());
 
-            Assert.That(rule.ToString(), Is.EqualTo("foo"));
+            Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("foo"));
         }
 
         [Test]

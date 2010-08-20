@@ -36,6 +36,18 @@
         private MethodInfo Method { get; set; }
 
         /// <summary>
+        /// Gets a human readable description of calls that will be matched by this
+        /// matcher.
+        /// </summary>
+        public virtual string DescriptionOfMatchingCall
+        {
+            get
+            {
+                return this.ToString();
+            }
+        }
+
+        /// <summary>
         /// Matcheses the specified call against the expression.
         /// </summary>
         /// <param name="call">The call to match.</param>
@@ -122,7 +134,7 @@
                     firstArgument = false;
                 }
 
-                result.Append(constraint.ToString());
+                result.Append(constraint.ConstraintDescription);
             }
 
             result.Append(")");
@@ -149,6 +161,14 @@
         private class PredicatedArgumentConstraint
             : IArgumentConstraint
         {
+            public string ConstraintDescription
+            {
+                get 
+                {
+                    return this.ToString();
+                }
+            }
+
             public bool IsValid(object argument)
             {
                 return true;

@@ -33,7 +33,7 @@
                 });
 
             container.RegisterSingleton<RuleBuilder.Factory>(c =>
-                (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>()));
+                (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>(), c.Resolve<IFakeObjectCallFormatter>()));
 
             container.RegisterSingleton<IFakeConfigurationManager>(c =>
                 new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), c.Resolve<IExpressionParser>(), c.Resolve<ExpressionCallRule.Factory>(), c.Resolve<IProxyGenerator>()));
@@ -45,7 +45,7 @@
 
             public RecordingCallRule<TFake> Create<TFake>(FakeManager fakeObject, RecordedCallRule recordedRule)
             {
-                return new RecordingCallRule<TFake>(fakeObject, recordedRule, this.Container.Resolve<FakeAsserter.Factory>());
+                return new RecordingCallRule<TFake>(fakeObject, recordedRule, this.Container.Resolve<FakeAsserter.Factory>(), this.Container.Resolve<IFakeObjectCallFormatter>());
             }
         }
 

@@ -17,7 +17,7 @@ namespace FakeItEasy.Tests.VisualBasic
         public void SetUp()
         {
             this.wrappedBuilder = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() => 
-                new RuleBuilder(A.Fake<BuildableCallRule>(), A.Fake<FakeManager>(), c => A.Fake<IFakeAsserter>())));
+                new RuleBuilder(A.Fake<BuildableCallRule>(), A.Fake<FakeManager>(), c => A.Fake<IFakeAsserter>(), A.Fake<IFakeObjectCallFormatter>())));
 
             this.rule = A.Fake<RecordedCallRule>();
 

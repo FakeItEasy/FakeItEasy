@@ -123,6 +123,14 @@ namespace FakeItEasy.Tests.Configuration
             {
                 
             }
+
+            public override string DescriptionOfValidCall
+            {
+                get 
+                {
+                    return string.Empty;
+                }
+            }
         }
 
     }

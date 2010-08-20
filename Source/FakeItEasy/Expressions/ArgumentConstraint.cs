@@ -120,6 +120,18 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
+        /// Gets a string describing the argument constraint.
+        /// </summary>
+        /// <value></value>
+        public string ConstraintDescription
+        {
+            get 
+            {
+                return this.ToString();
+            }
+        }
+
+        /// <summary>
         /// Gets the full description of the constraint, together with any parent validations
         /// and constraints descriptions.
         /// </summary>
@@ -127,15 +139,15 @@ namespace FakeItEasy.Expressions
         {
             get
             {
-                var validationsDescription = this.Scope.ToString();
+                var scopeDescription = this.Scope.Description;
 
-                if (string.IsNullOrEmpty(validationsDescription))
+                if (string.IsNullOrEmpty(scopeDescription))
                 {
                     return this.Description;
                 }
                 else
                 {
-                    return string.Concat(validationsDescription, " ", this.Description);
+                    return string.Concat(scopeDescription, " ", this.Description);
                 }
             }
         }

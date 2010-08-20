@@ -3,16 +3,25 @@ namespace FakeItEasy.Core
     using System;
     using System.Linq;
     using System.Text;
-    
+
+    /// <summary>
+    /// The default implementation of the IFakeObjectCallFormatter interface.
+    /// </summary>
     internal class DefaultFakeObjectCallFormatter
-            : IFakeObjectCallFormatter
+        : IFakeObjectCallFormatter
     {
+        /// <summary>
+        /// Gets a human readable description of the specified
+        /// fake object call.
+        /// </summary>
+        /// <param name="call">The call to get a description for.</param>
+        /// <returns>A description of the call.</returns>
         public string GetDescription(IFakeObjectCall call)
         {
             var builder = new StringBuilder();
 
             builder
-                .Append(call.FakedObject.GetType().FullName)
+                .Append(Fake.GetFakeManager(call.FakedObject).FakeObjectType)
                 .Append(".")
                 .Append(call.Method.Name)
                 .Append("(");

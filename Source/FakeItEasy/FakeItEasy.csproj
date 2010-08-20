@@ -71,6 +71,7 @@
     <Compile Include="Core\ICallMatcherAccessor.cs" />
     <Compile Include="Core\IFakeAsserter.cs" />
     <Compile Include="Core\IFakeObjectCallFormatter.cs" />
+    <Compile Include="Core\IFakeObjectCallRuleWithDescription.cs" />
     <Compile Include="Core\IFakeScope.cs" />
     <Compile Include="OrderedAssertion.cs" />
     <Compile Include="Core\OrderedFakeAsserter.cs" />

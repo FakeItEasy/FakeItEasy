@@ -13,6 +13,7 @@
         private BuildableCallRule ruleProducedByFactory;
         private FakeManager fakeManager;
         private IFakeAsserter asserter;
+        private IFakeObjectCallFormatter callFormatter;
 
         [SetUp]
         public void SetUp()
@@ -25,20 +26,28 @@
             this.ruleProducedByFactory = A.Fake<BuildableCallRule>();
             this.fakeManager = new FakeManager();
             this.asserter = A.Fake<IFakeAsserter>();
+            this.callFormatter = A.Fake<IFakeObjectCallFormatter>();
 
             this.builder = this.CreateBuilder();
         }
 
         private RuleBuilder CreateBuilder()
         {
-            return new RuleBuilder(this.ruleProducedByFactory, this.fakeManager, x => this.asserter);
+            return this.CreateBuilder(this.ruleProducedByFactory);
         }
 
         private RuleBuilder CreateBuilder(BuildableCallRule ruleBeingBuilt)
         {
-            return new RuleBuilder(ruleBeingBuilt, this.fakeManager, x => this.asserter);
+            return new RuleBuilder(ruleBeingBuilt, this.fakeManager, x => this.asserter, this.callFormatter);
         }
 
+        private IFakeObjectCallRuleWithDescription RuleWithDescription
+        {
+            get
+            {
+                return (IFakeObjectCallRuleWithDescription)this.ruleProducedByFactory;
+            }
+        }
      
         [Test] public void 
         Returns_called_with_value_sets_applicator_to_a_function_that_applies_that_value_to_interceptor()
@@ -382,7 +391,7 @@
         public void Assert_with_void_call_should_assert_on_assertions_produced_by_factory()
         {
             // Arrange
-            A.CallTo(() => this.ruleProducedByFactory.ToString()).Returns("call description");
+            A.CallTo(() => this.ruleProducedByFactory.DescriptionOfValidCall).Returns("call description");
 
             // Act
             this.builder.MustHaveHappened(Repeated.Times(99).Exactly);
@@ -410,7 +419,7 @@
         public void Assert_with_function_call_should_assert_on_assertions_produced_by_factory()
         {
             // Arrange
-            A.CallTo(() => this.ruleProducedByFactory.ToString()).Returns("call description");
+            A.CallTo(() => this.ruleProducedByFactory.DescriptionOfValidCall).Returns("call description");
 
             // Act
             var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };

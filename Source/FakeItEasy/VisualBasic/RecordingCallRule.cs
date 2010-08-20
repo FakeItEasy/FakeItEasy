@@ -13,12 +13,14 @@ namespace FakeItEasy.VisualBasic
         private FakeManager fakeManager;
         private RecordedCallRule recordedRule;
         private FakeAsserter.Factory asserterFactory;
+        private IFakeObjectCallFormatter callFormatter;
 
-        public RecordingCallRule(FakeManager fakeManager, RecordedCallRule recordedRule, FakeAsserter.Factory asserterFactory)
+        public RecordingCallRule(FakeManager fakeManager, RecordedCallRule recordedRule, FakeAsserter.Factory asserterFactory, IFakeObjectCallFormatter callFormatter)
         {
             this.fakeManager = fakeManager;
             this.recordedRule = recordedRule;
             this.asserterFactory = asserterFactory;
+            this.callFormatter = callFormatter;
         }
 
         public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
@@ -48,7 +50,11 @@ namespace FakeItEasy.VisualBasic
         private void DoAssertion(IFakeObjectCall fakeObjectCall)
         {
             var asserter = this.asserterFactory.Invoke(this.fakeManager.RecordedCallsInScope.Cast<IFakeObjectCall>());
-            asserter.AssertWasCalled(this.recordedRule.IsApplicableTo, fakeObjectCall.ToString(), x => this.recordedRule.RepeatConstraint.Matches(x), this.recordedRule.RepeatConstraint.ToString());
+
+            var callDescription = this.callFormatter.GetDescription(fakeObjectCall);
+            var repeatDescription = this.recordedRule.RepeatConstraint.ToString();
+
+            asserter.AssertWasCalled(this.recordedRule.IsApplicableTo, callDescription, x => this.recordedRule.RepeatConstraint.Matches(x), repeatDescription);
         }
 
         private void CreateArgumentsPredicateFromArguments(IFakeObjectCall fakeObjectCall)

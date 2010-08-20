@@ -1,9 +1,9 @@
 namespace FakeItEasy.Tests.Core
 {
-    using NUnit.Framework;
-    using FakeItEasy.Core;
     using System;
-using System.Reflection;
+    using System.Reflection;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
     
     [TestFixture]
     public class DefaultFakeObjectCallFormatterTests
@@ -21,14 +21,13 @@ using System.Reflection;
         {
             // Arrange
             var call = this.CreateFakeCall(typeof(object).GetMethod("Equals", new[] { typeof(object) }), "foo");
-            A.CallTo(() => call.FakedObject).Returns("");
 
             // Act
             var description = this.formatter.GetDescription(call);
 
             // Assert
             Assert.That(description, Text.StartsWith(
-                "System.String.Equals("));
+                "System.Object.Equals("));
         }
 
         [Test]
@@ -124,7 +123,7 @@ using System.Reflection;
             
             A.CallTo(() => call.Method).Returns(method);
             A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(arguments, method));
-            A.CallTo(() => call.FakedObject).Returns(new object());
+            A.CallTo(() => call.FakedObject).Returns(A.Fake<object>());
 
             return call;
         }

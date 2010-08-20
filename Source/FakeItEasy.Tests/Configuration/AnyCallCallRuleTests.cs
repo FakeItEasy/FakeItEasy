@@ -60,7 +60,7 @@ namespace FakeItEasy.Tests.Configuration
             // Act
 
             // Assert
-            Assert.That(rule.ToString(), Is.EqualTo("Any call made to the fake object."));
+            Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("Any call made to the fake object."));
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace FakeItEasy.Tests.Configuration
             rule.ApplicableToMembersWithReturnType = typeof(string);
 
             // Assert
-            Assert.That(rule.ToString(), Is.EqualTo("Any call with return type System.String to the fake object."));
+            Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("Any call with return type System.String to the fake object."));
         }
     }
 }
