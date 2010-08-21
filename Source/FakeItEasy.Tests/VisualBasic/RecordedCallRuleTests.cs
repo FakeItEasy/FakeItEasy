@@ -25,14 +25,15 @@ namespace FakeItEasy.Tests.VisualBasic
         }
 
         [Test]
-        public void DescriptionOfValidCall_should_be_tested()
+        public void DescriptionOfValidCall_should_be_recorded_call()
         {
             // Arrange
-
+            var rule = this.CreateRule();
+            
             // Act
-
+            
             // Assert
-            Assert.Fail("The test has not yet been implemented.");
+            Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("Recorded call"));
         }
     }
 }

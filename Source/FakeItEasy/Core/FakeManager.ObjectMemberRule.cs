@@ -10,11 +10,11 @@
         private class ObjectMemberRule
             : IFakeObjectCallRule
         {
-            private static readonly List<MethodInfo> objectMethods = new List<MethodInfo>()
+            private static readonly List<RuntimeMethodHandle> objectMethodsMethodHandles = new List<RuntimeMethodHandle>()
             {
-                typeof(object).GetMethod("Equals", new[] { typeof(object) }),
-                typeof(object).GetMethod("ToString", new Type[] { }),
-                typeof(object).GetMethod("GetHashCode", new Type[] { })
+                typeof(object).GetMethod("Equals", new[] { typeof(object) }).MethodHandle,
+                typeof(object).GetMethod("ToString", new Type[] { }).MethodHandle,
+                typeof(object).GetMethod("GetHashCode", new Type[] { }).MethodHandle
             };
 
             public FakeManager FakeManager { get; set; }
@@ -49,25 +49,24 @@
 
             private static bool IsObjetMethod(IFakeObjectCall fakeObjectCall)
             {
-                return objectMethods.Contains(fakeObjectCall.Method);
+                return objectMethodsMethodHandles.Contains(fakeObjectCall.Method.MethodHandle);
             }
             
-            private static bool TryHandleGetHashCode(IWritableFakeObjectCall fakeObjectCall)
+            private bool TryHandleGetHashCode(IWritableFakeObjectCall fakeObjectCall)
             {
-                if (!fakeObjectCall.Method.Equals(objectMethods[2]))
+                if (!fakeObjectCall.Method.MethodHandle.Equals(objectMethodsMethodHandles[2]))
                 {
                     return false;
                 }
 
-                var fakeManager = Fake.GetFakeManager(fakeObjectCall.FakedObject);
-                fakeObjectCall.SetReturnValue(fakeManager.GetHashCode());
+                fakeObjectCall.SetReturnValue(this.FakeManager.GetHashCode());
 
                 return true;
             }
 
             private bool TryHandleToString(IWritableFakeObjectCall fakeObjectCall)
             {
-                if (!fakeObjectCall.Method.Equals(objectMethods[1]))
+                if (!fakeObjectCall.Method.MethodHandle.Equals(objectMethodsMethodHandles[1]))
                 {
                     return false;
                 }
@@ -79,7 +78,7 @@
 
             private bool TryHandleEquals(IWritableFakeObjectCall fakeObjectCall)
             {
-                if (!fakeObjectCall.Method.Equals(objectMethods[0]))
+                if (!fakeObjectCall.Method.MethodHandle.Equals(objectMethodsMethodHandles[0]))
                 {
                     return false;
                 }

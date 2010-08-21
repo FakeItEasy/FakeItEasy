@@ -31,7 +31,7 @@ namespace FakeItEasy.Tests
         [Test]
         public virtual void Constraint_should_provide_correct_description()
         {
-            Assert.That(this.constraint.ToString(), Is.EqualTo("<" + this.ExpectedDescription + ">"));
+            Assert.That(this.constraint.ConstraintDescription, Is.EqualTo("<" + this.ExpectedDescription + ">"));
         }
     }
 

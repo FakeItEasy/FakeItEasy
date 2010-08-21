@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.ExtensionSyntax;
-using FakeItEasy.Core;
-using FakeItEasy.Configuration;
-using System.Diagnostics;
-using FakeItEasy.Expressions;
-using FakeItEasy.Tests.TestHelpers;
-
-namespace FakeItEasy.Tests.Core
+﻿namespace FakeItEasy.Tests.Core
 {
+    using System;
+    using System.Linq;
+    using FakeItEasy.Core;
+    using FakeItEasy.ExtensionSyntax;
+    using FakeItEasy.Tests.TestHelpers;
+    using NUnit.Framework;
+    using FakeItEasy.Core.Creation;
+using System.Reflection;
+
     [TestFixture]
     public class FakeManagerTests
     {
@@ -478,6 +475,104 @@ namespace FakeItEasy.Tests.Core
             Assert.That(fake.AllUserRules.Last.Value.Rule, Is.SameAs(rule));
         }
 
+        [Test]
+        public void Should_return_fake_and_type_when_ToString_is_intercepted_but_not_configured()
+        {
+            this.Should_set_default_return_value_when_object_method_has_not_been_configured(typeof(object).GetMethod("ToString"), x => "Faked FakeItEasy.Tests.IFoo");
+        }
+
+        [Test]
+        public void Should_return_hash_code_of_fake_manager_when_GetHashCode_has_not_been_configured()
+        {
+            this.Should_set_default_return_value_when_object_method_has_not_been_configured(typeof(object).GetMethod("GetHashCode"), x => x.GetHashCode());
+        }
+
+        private void Should_set_default_return_value_when_object_method_has_not_been_configured(MethodInfo interceptedMethod, Func<FakeManager, object> expectedValue)
+        {
+            // Arrange
+            var manager = new FakeManager();
+
+            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
+            A.CallTo(() => interceptedCall.Method).Returns(interceptedMethod);
+            
+            var proxyResult = A.Fake<ProxyResult>();
+            A.CallTo(() => proxyResult.TypeOfProxy).Returns(typeof(IFoo));
+            A.CallTo(() => proxyResult.Proxy.FakeManager).Returns(manager);
+            
+            manager.SetProxy(proxyResult);
+
+            // Act
+            proxyResult.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
+
+            // Assert
+            A.CallTo(() => interceptedCall.SetReturnValue(expectedValue.Invoke(manager))).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_return_false_for_equals_method_when_fake_managers_are_not_the_same()
+        {
+            // Arrange
+            var interceptingProxy = new FakedProxyWithManagerSpecified { FakeManager = new FakeManager() };
+            var proxyPassedToEquals = new FakedProxyWithManagerSpecified { FakeManager = new FakeManager() };
+
+            var equalsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
+            
+            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
+            A.CallTo(() => interceptedCall.Method).Returns(equalsMethod);
+            A.CallTo(() => interceptedCall.FakedObject).Returns(proxyPassedToEquals);
+            A.CallTo(() => interceptedCall.Arguments).Returns(new ArgumentCollection(new object[] { proxyPassedToEquals }, interceptedCall.Method));
+
+            var proxyResult = A.Fake<ProxyResult>();
+            A.CallTo(() => proxyResult.TypeOfProxy).Returns(typeof(FakedProxyWithManagerSpecified));
+            A.CallTo(() => proxyResult.Proxy).Returns(interceptingProxy);
+
+            interceptingProxy.FakeManager.SetProxy(proxyResult);
+
+            // Act
+            proxyResult.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
+
+            // Assert
+            A.CallTo(() => interceptedCall.SetReturnValue(false)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_return_true_for_equals_method_when_fake_managers_are_the_same()
+        {
+            // Arrange
+            var interceptingProxy = new FakedProxyWithManagerSpecified { FakeManager = new FakeManager() };
+            var proxyPassedToEquals = new FakedProxyWithManagerSpecified { FakeManager = interceptingProxy.FakeManager };
+
+            var equalsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
+
+            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
+            A.CallTo(() => interceptedCall.Method).Returns(equalsMethod);
+            A.CallTo(() => interceptedCall.FakedObject).Returns(proxyPassedToEquals);
+            A.CallTo(() => interceptedCall.Arguments).Returns(new ArgumentCollection(new object[] { proxyPassedToEquals }, interceptedCall.Method));
+
+            var proxyResult = A.Fake<ProxyResult>();
+            A.CallTo(() => proxyResult.TypeOfProxy).Returns(typeof(FakedProxyWithManagerSpecified));
+            A.CallTo(() => proxyResult.Proxy).Returns(interceptingProxy);
+
+            interceptingProxy.FakeManager.SetProxy(proxyResult);
+
+            // Act
+            proxyResult.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
+
+            // Assert
+            A.CallTo(() => interceptedCall.SetReturnValue(true)).MustHaveHappened();
+        }
+
+        private class FakedProxyWithManagerSpecified
+            : IFakedProxy
+        {
+            public FakeManager FakeManager
+            {
+                get;
+                set;
+            }
+        }
+
+        
         public class TypeWithNoDefaultConstructorButAllArgumentsFakeable
         {
             public IFoo Foo;

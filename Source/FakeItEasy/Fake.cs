@@ -99,18 +99,6 @@ namespace FakeItEasy
 
             return Fake.GetFakeManager(fakedObject).RecordedCallsInScope;
         }
-
-        /// <summary>
-        /// Opens a scope where all asserts (MustHaveHappened-calls) must have happened in the
-        /// order they are specified. All asserts after the scope is opened until the dispose
-        /// method is called must have happened in the specified order.
-        /// </summary>
-        /// <param name="fakedObject">The fake object to assert ordered on.</param>
-        /// <returns>A disposable that is used to close the scope (wrap in using statement).</returns>
-        public static IDisposable OrderedAssertions(object fakedObject)
-        {
-            return Fake.GetCalls(fakedObject).OrderedAssertions();
-        }
     }
 
     /// <summary>

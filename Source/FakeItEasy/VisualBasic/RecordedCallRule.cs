@@ -49,7 +49,7 @@ namespace FakeItEasy.Core
         {
             get 
             {
-                return string.Empty;
+                return "Recorded call";
             }
         }
     }
