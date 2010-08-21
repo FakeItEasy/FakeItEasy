@@ -5,8 +5,6 @@
     <_SolutionProjectCacheVersion>3.5</_SolutionProjectCacheVersion>
   </PropertyGroup>
   <ItemGroup>
-    <_SolutionProjectProjects Include="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj" />
-    <_SolutionProjectProjects Include="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj" />
     <_SolutionProjectProjects Include="FakeItEasy.Examples.VB\FakeItEasy.Examples.VB.vbproj" />
     <_SolutionProjectProjects Include="FakeItEasy.Examples\FakeItEasy.Examples.csproj" />
     <_SolutionProjectProjects Include="FakeItEasy.IntegrationTests.VB\FakeItEasy.IntegrationTests.VB.vbproj" />
@@ -19,10 +17,6 @@
       <Configuration>Debug</Configuration>
       <Platform>AnyCPU</Platform>
     </BuildLevel0>
-    <BuildLevel2 Include="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj">
-      <Configuration>Debug</Configuration>
-      <Platform>AnyCPU</Platform>
-    </BuildLevel2>
     <BuildLevel2 Include="FakeItEasy.Examples\FakeItEasy.Examples.csproj">
       <Configuration>Debug</Configuration>
       <Platform>AnyCPU</Platform>
@@ -35,10 +29,6 @@
       <Configuration>Debug</Configuration>
       <Platform>AnyCPU</Platform>
     </BuildLevel2>
-    <BuildLevel1 Include="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj">
-      <Configuration>Debug</Configuration>
-      <Platform>AnyCPU</Platform>
-    </BuildLevel1>
     <BuildLevel1 Include="FakeItEasy.Tests\FakeItEasy.Tests.csproj">
       <Configuration>Debug</Configuration>
       <Platform>AnyCPU</Platform>
@@ -53,10 +43,6 @@
       <Configuration>Release</Configuration>
       <Platform>AnyCPU</Platform>
     </BuildLevel0>
-    <BuildLevel2 Include="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj">
-      <Configuration>Release</Configuration>
-      <Platform>AnyCPU</Platform>
-    </BuildLevel2>
     <BuildLevel2 Include="FakeItEasy.Examples\FakeItEasy.Examples.csproj">
       <Configuration>Release</Configuration>
       <Platform>AnyCPU</Platform>
@@ -69,10 +55,6 @@
       <Configuration>Release</Configuration>
       <Platform>AnyCPU</Platform>
     </BuildLevel2>
-    <BuildLevel1 Include="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj">
-      <Configuration>Release</Configuration>
-      <Platform>AnyCPU</Platform>
-    </BuildLevel1>
     <BuildLevel1 Include="FakeItEasy.Tests\FakeItEasy.Tests.csproj">
       <Configuration>Release</Configuration>
       <Platform>AnyCPU</Platform>
@@ -94,11 +76,11 @@
     <AspNetConfiguration>$(Configuration)</AspNetConfiguration>
   </PropertyGroup>
   <PropertyGroup>
-    <SolutionDir>C:\Users\Patrik\Documents\Code\OS\FakeItEasy\FakeItEasy - MultiAssert\Source\</SolutionDir>
+    <SolutionDir>C:\Users\Patrik\Documents\Code\OS\FakeItEasy\FakeItEasy - ArgumentConstraints\Source\</SolutionDir>
     <SolutionExt>.sln</SolutionExt>
     <SolutionFileName>FakeItEasy.sln</SolutionFileName>
     <SolutionName>FakeItEasy</SolutionName>
-    <SolutionPath>C:\Users\Patrik\Documents\Code\OS\FakeItEasy\FakeItEasy - MultiAssert\Source\FakeItEasy.sln</SolutionPath>
+    <SolutionPath>C:\Users\Patrik\Documents\Code\OS\FakeItEasy\FakeItEasy - ArgumentConstraints\Source\FakeItEasy.sln</SolutionPath>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == '' and '$(MSBuildToolsVersion)' == '2.0'">v2.0</TargetFrameworkVersion>
@@ -110,9 +92,7 @@
         <ProjectConfiguration Project="{80721425-68E5-48DC-87EA-41D63D0B45FA}">Debug|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}">Debug|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{0E26272D-045A-47C2-8928-BD9B980115D5}">Debug|AnyCPU</ProjectConfiguration>
-        <ProjectConfiguration Project="{A939D36E-3941-4223-AD16-9CCBEC8AE321}">Debug|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{C291B61B-0729-4DC5-B8E4-147A8E3F801F}">Debug|AnyCPU</ProjectConfiguration>
-        <ProjectConfiguration Project="{0EFB697E-09B6-493D-83CE-2135C814EE80}">Debug|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{69A27B0A-710B-4CEC-B159-56E34C788665}">Debug|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{193C944B-733B-4E01-87A3-73F7AB40CDC7}">Debug|AnyCPU</ProjectConfiguration>
       </SolutionConfiguration>
@@ -124,9 +104,7 @@
         <ProjectConfiguration Project="{80721425-68E5-48DC-87EA-41D63D0B45FA}">Release|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}">Release|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{0E26272D-045A-47C2-8928-BD9B980115D5}">Release|AnyCPU</ProjectConfiguration>
-        <ProjectConfiguration Project="{A939D36E-3941-4223-AD16-9CCBEC8AE321}">Release|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{C291B61B-0729-4DC5-B8E4-147A8E3F801F}">Release|AnyCPU</ProjectConfiguration>
-        <ProjectConfiguration Project="{0EFB697E-09B6-493D-83CE-2135C814EE80}">Release|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{69A27B0A-710B-4CEC-B159-56E34C788665}">Release|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{193C944B-733B-4E01-87A3-73F7AB40CDC7}">Release|AnyCPU</ProjectConfiguration>
       </SolutionConfiguration>
@@ -212,30 +190,6 @@
     <MSBuild Projects="FakeItEasy.Tests\FakeItEasy.Tests.csproj" Targets="Publish" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') " />
     <MSBuild Projects="FakeItEasy.Tests\FakeItEasy.Tests.csproj" Targets="Publish" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') " />
   </Target>
-  <Target Name="Tests\FakeItEasy_BackwardsCompatibility_Tests" DependsOnTargets="FakeItEasy_BackwardsCompatibility;Tests\FakeItEasy_Tests;FakeItEasy" Condition="'$(CurrentSolutionConfigurationContents)' != ''" Outputs="@(FakeItEasy_BackwardsCompatibility_TestsBuildOutput)">
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') ">
-      <Output TaskParameter="TargetOutputs" ItemName="FakeItEasy_BackwardsCompatibility_TestsBuildOutput" />
-    </MSBuild>
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') ">
-      <Output TaskParameter="TargetOutputs" ItemName="FakeItEasy_BackwardsCompatibility_TestsBuildOutput" />
-    </MSBuild>
-  </Target>
-  <Target Name="Tests\FakeItEasy_BackwardsCompatibility_Tests:Clean" DependsOnTargets="FakeItEasy_BackwardsCompatibility:Clean;Tests\FakeItEasy_Tests:Clean;FakeItEasy:Clean" Condition="'$(CurrentSolutionConfigurationContents)' != ''">
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj" Targets="Clean" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') " />
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj" Targets="Clean" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') " />
-  </Target>
-  <Target Name="Tests\FakeItEasy_BackwardsCompatibility_Tests:Rebuild" DependsOnTargets="FakeItEasy_BackwardsCompatibility:Rebuild;Tests\FakeItEasy_Tests:Rebuild;FakeItEasy:Rebuild" Condition="'$(CurrentSolutionConfigurationContents)' != ''" Outputs="@(FakeItEasy_BackwardsCompatibility_TestsBuildOutput)">
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj" Targets="Rebuild" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') ">
-      <Output TaskParameter="TargetOutputs" ItemName="FakeItEasy_BackwardsCompatibility_TestsBuildOutput" />
-    </MSBuild>
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj" Targets="Rebuild" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') ">
-      <Output TaskParameter="TargetOutputs" ItemName="FakeItEasy_BackwardsCompatibility_TestsBuildOutput" />
-    </MSBuild>
-  </Target>
-  <Target Name="Tests\FakeItEasy_BackwardsCompatibility_Tests:Publish" DependsOnTargets="FakeItEasy_BackwardsCompatibility:Publish;Tests\FakeItEasy_Tests:Publish;FakeItEasy:Publish" Condition="'$(CurrentSolutionConfigurationContents)' != ''">
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj" Targets="Publish" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') " />
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility.Tests\FakeItEasy.BackwardsCompatibility.Tests.csproj" Targets="Publish" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') " />
-  </Target>
   <Target Name="Integration Tests\FakeItEasy_IntegrationTests" DependsOnTargets="Tests\FakeItEasy_Tests;FakeItEasy" Condition="'$(CurrentSolutionConfigurationContents)' != ''" Outputs="@(FakeItEasy_IntegrationTestsBuildOutput)">
     <MSBuild Projects="FakeItEasy.IntegrationTests\FakeItEasy.IntegrationTests.csproj" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') ">
       <Output TaskParameter="TargetOutputs" ItemName="FakeItEasy_IntegrationTestsBuildOutput" />
@@ -259,30 +213,6 @@
   <Target Name="Integration Tests\FakeItEasy_IntegrationTests:Publish" DependsOnTargets="Tests\FakeItEasy_Tests:Publish;FakeItEasy:Publish" Condition="'$(CurrentSolutionConfigurationContents)' != ''">
     <MSBuild Projects="FakeItEasy.IntegrationTests\FakeItEasy.IntegrationTests.csproj" Targets="Publish" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') " />
     <MSBuild Projects="FakeItEasy.IntegrationTests\FakeItEasy.IntegrationTests.csproj" Targets="Publish" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') " />
-  </Target>
-  <Target Name="FakeItEasy_BackwardsCompatibility" DependsOnTargets="FakeItEasy" Condition="'$(CurrentSolutionConfigurationContents)' != ''" Outputs="@(FakeItEasy_BackwardsCompatibilityBuildOutput)">
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') ">
-      <Output TaskParameter="TargetOutputs" ItemName="FakeItEasy_BackwardsCompatibilityBuildOutput" />
-    </MSBuild>
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') ">
-      <Output TaskParameter="TargetOutputs" ItemName="FakeItEasy_BackwardsCompatibilityBuildOutput" />
-    </MSBuild>
-  </Target>
-  <Target Name="FakeItEasy_BackwardsCompatibility:Clean" DependsOnTargets="FakeItEasy:Clean" Condition="'$(CurrentSolutionConfigurationContents)' != ''">
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj" Targets="Clean" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') " />
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj" Targets="Clean" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') " />
-  </Target>
-  <Target Name="FakeItEasy_BackwardsCompatibility:Rebuild" DependsOnTargets="FakeItEasy:Rebuild" Condition="'$(CurrentSolutionConfigurationContents)' != ''" Outputs="@(FakeItEasy_BackwardsCompatibilityBuildOutput)">
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj" Targets="Rebuild" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') ">
-      <Output TaskParameter="TargetOutputs" ItemName="FakeItEasy_BackwardsCompatibilityBuildOutput" />
-    </MSBuild>
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj" Targets="Rebuild" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') ">
-      <Output TaskParameter="TargetOutputs" ItemName="FakeItEasy_BackwardsCompatibilityBuildOutput" />
-    </MSBuild>
-  </Target>
-  <Target Name="FakeItEasy_BackwardsCompatibility:Publish" DependsOnTargets="FakeItEasy:Publish" Condition="'$(CurrentSolutionConfigurationContents)' != ''">
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj" Targets="Publish" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') " />
-    <MSBuild Projects="FakeItEasy.BackwardsCompatibility\FakeItEasy.BackwardsCompatibility.csproj" Targets="Publish" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') " />
   </Target>
   <Target Name="Integration Tests\FakeItEasy_IntegrationTests_VB" DependsOnTargets="Tests\FakeItEasy_Tests;FakeItEasy" Condition="'$(CurrentSolutionConfigurationContents)' != ''" Outputs="@(FakeItEasy_IntegrationTests_VBBuildOutput)">
     <MSBuild Projects="FakeItEasy.IntegrationTests.VB\FakeItEasy.IntegrationTests.VB.vbproj" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') ">

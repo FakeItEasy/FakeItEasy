@@ -20,7 +20,7 @@
 		<PackageDirectory Condition="$(PackageDirectory)==''">$(BuildPath)</PackageDirectory>
 		<BinariesPath>$(BuildPath)\Binaries</BinariesPath>
 		<LicensePath>$(BuildPath)\License</LicensePath>
-		<BinariesSource>Source\FakeItEasy.BackwardsCompatibility\bin\$(Configuration)</BinariesSource>
+		<BinariesSource>Source\FakeItEasy\bin\$(Configuration)</BinariesSource>
 		<ProjectName>$(MSBuildProjectName)</ProjectName>
 	</PropertyGroup>
 
