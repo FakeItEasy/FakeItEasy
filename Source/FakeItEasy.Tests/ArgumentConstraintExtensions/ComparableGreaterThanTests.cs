@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
         [SetUp]
         public void SetUp()
         {
-            this.constraint = A<int>.That.IsGreaterThan(100);
+            this.constraintField = A<int>.That.IsGreaterThan(100);
         }
 
         protected override IEnumerable<object> InvalidValues

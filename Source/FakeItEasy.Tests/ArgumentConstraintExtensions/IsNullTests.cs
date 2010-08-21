@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
         [SetUp]
         public void SetUp()
         {
-            this.constraint = A<string>.That.IsNull();
+            this.constraintField = A<string>.That.IsNull();
         }
 
         protected override IEnumerable<object> ValidValues

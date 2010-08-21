@@ -8,7 +8,7 @@ namespace FakeItEasy.Expressions
     /// <summary>
     /// Responsible for creating argument constraints from arguments in an expression.
     /// </summary>
-    public class ArgumentConstraintFactory
+    internal class ArgumentConstraintFactory
     {
         /// <summary>
         /// Gets an argument constraint for the argument represented by the expression.
@@ -60,6 +60,7 @@ namespace FakeItEasy.Expressions
 
         private static bool IsArgumentConstraintArgumentProperty(MemberExpression member)
         {
+            A<string>.That.Not.Contains("test");
             return
                 member.Member.Name == "Argument"
                 && member.Member.DeclaringType.GetGenericTypeDefinition().Equals(typeof(ArgumentConstraint<>));

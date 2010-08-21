@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
         [SetUp]
         public void SetUp()
         {
-            this.constraint = A<object>.That.IsInstanceOf<DateTime>();
+            this.constraintField = A<object>.That.IsInstanceOf<DateTime>();
         }
 
         protected override IEnumerable<object> InvalidValues

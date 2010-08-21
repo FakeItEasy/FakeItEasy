@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
         [SetUp]
         public void SetUp()
         {
-            this.constraint = A<string>.That.StartsWith("abc");
+            this.constraintField = A<string>.That.StartsWith("abc");
         }
 
         protected override IEnumerable<object> InvalidValues

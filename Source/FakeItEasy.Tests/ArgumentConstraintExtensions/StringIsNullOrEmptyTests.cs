@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
         [SetUp]
         public void SetUp()
         {
-            this.constraint = A<string>.That.IsNullOrEmpty();
+            this.constraintField = A<string>.That.IsNullOrEmpty();
         }
 
         protected override IEnumerable<object> InvalidValues
