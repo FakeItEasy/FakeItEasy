@@ -35,13 +35,13 @@
     <DocumentationFile>bin\Release\FakeItEasy.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
+    <Reference Include="Castle.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\DynamicProxy\net-3.5\Castle.Core.dll</HintPath>
+      <HintPath>..\..\Libraries\DynamicProxy\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
+    <Reference Include="Castle.DynamicProxy2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\DynamicProxy\net-3.5\Castle.DynamicProxy2.dll</HintPath>
+      <HintPath>..\..\Libraries\DynamicProxy\Castle.DynamicProxy2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
