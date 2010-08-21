@@ -40,6 +40,36 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
 "));
         }
+
+        [Test]
+        [SetCulture("en-US")]
+        public void Exception_message_should_be_correctly_formatted_when_containing_call_with_three_or_more_arguments()
+        {
+            var foo = A.Fake<IFoo>();
+
+            foo.Bar(1, 2, "three");
+            foo.Bar(1, 2, "three");
+            foo.Bar();
+
+
+            var exception = Assert.Throws<ExpectationException>(() =>
+                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.Twice));
+
+            Console.WriteLine(exception.Message);
+            Assert.That(exception.Message, Is.EqualTo(@"
+
+  Assertion failed for the following call:
+    'FakeItEasy.Tests.IFoo.Bar("""")'
+  Expected to find it twice but found it #0 times among the calls:
+    1.  'FakeItEasy.Tests.IFoo.Bar(
+            argument1: 1,
+            argument2: 2,
+            argument3: ""three"")' repeated 2 times
+    ...
+    3.  'FakeItEasy.Tests.IFoo.Bar()'
+
+"));
+        }
         
         [Test]
         public void Should_be_able_to_assert_on_void_calls_from_configuration()
@@ -69,7 +99,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-
+            
             // Act
             foo.Baz(new object(), "lorem ipsum");
 

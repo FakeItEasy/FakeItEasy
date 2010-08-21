@@ -164,5 +164,26 @@ namespace FakeItEasy.Tests.Core
     9.  'Fake call 9'
     10. 'Fake call 10'"));
         }
+
+        [Test]
+        public void WriteCalls_should_indent_values_with_newlines_correctly()
+        {
+            // Arrange
+            this.StubCalls(1);
+            A.CallTo(() => this.callFormatter.GetDescription(this.calls[0])).Returns(@"first line
+    second line is indented");
+            
+            var writer = this.CreateWriter();
+
+            // Act
+            
+            writer.WriteCalls(4, this.calls, this.writer);
+
+            // Assert
+            var message = this.writer.GetStringBuilder().ToString();
+
+            Assert.That(message, Text.Contains(@"    1.  'first line
+            second line is indented"));
+        }
     }
 }

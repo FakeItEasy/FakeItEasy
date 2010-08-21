@@ -87,9 +87,16 @@ namespace FakeItEasy.Core
 
             WriteCallNumber(writer, callNumber);
 
+            callDescription = IndentNewlinesInCallDescription(indentString, callDescription);
+
             writer.Write("'");
             writer.Write(callDescription);
             writer.Write("'");
+        }
+
+        private static string IndentNewlinesInCallDescription(string indentString, string callDescription)
+        {
+            return callDescription.Replace("\r\n", "\r\n" + indentString + "    ");
         }
 
         private static void WriteCallNumber(TextWriter writer, int callNumber)
