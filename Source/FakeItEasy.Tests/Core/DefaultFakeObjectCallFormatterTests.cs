@@ -56,7 +56,7 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             Assert.That(description,
-                Text.EndsWith("(argument1: System.String = \"argument value\", argument2: System.Object = 1)"));
+                Text.EndsWith("(argument1: \"argument value\", argument2: 1)"));
         }
 
         [Test]
@@ -112,9 +112,9 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             Assert.That(description, Text.EndsWith(@"(
-    one: System.String = ""one"",
-    two: System.String = ""two"",
-    three: System.String = ""three"")"));
+    one: ""one"",
+    two: ""two"",
+    three: ""three"")"));
         }
 
         private IFakeObjectCall CreateFakeCall(MethodInfo method, params object[] arguments)

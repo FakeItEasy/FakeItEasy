@@ -34,8 +34,8 @@ namespace FakeItEasy.IntegrationTests.Assertions
   Expected to find it twice but found it #0 times among the calls:
     1.  'FakeItEasy.Tests.IFoo.Bar()' repeated 2 times
     ...
-    3.  'FakeItEasy.Tests.IFoo.Bar(argument: System.Object = ""test"")'
-    4.  'FakeItEasy.Tests.IFoo.Bar(argument: System.Object = 4/5/1977 12:00:00 AM, argument2: System.Object = ""birthday"")'
+    3.  'FakeItEasy.Tests.IFoo.Bar(argument: ""test"")'
+    4.  'FakeItEasy.Tests.IFoo.Bar(argument: 4/5/1977 12:00:00 AM, argument2: ""birthday"")'
     5.  'FakeItEasy.Tests.IFoo.Biz()'
 
 "));
@@ -59,7 +59,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
   Assertion failed for the following call:
     'FakeItEasy.Tests.IFoo.Bar(<Ignored>, <Starts with ""lorem"">)'
   Expected to find it twice but found it #1 times among the calls:
-    1.  'FakeItEasy.Tests.IFoo.Bar(argument: System.Object = System.Object, argument2: System.Object = ""lorem ipsum"")'
+    1.  'FakeItEasy.Tests.IFoo.Bar(argument: System.Object, argument2: ""lorem ipsum"")'
 
 "));
         }
@@ -82,7 +82,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
   Assertion failed for the following call:
     'FakeItEasy.Tests.IFoo.Baz(<Ignored>, <Starts with ""lorem"">)'
   Expected to find it twice but found it #1 times among the calls:
-    1.  'FakeItEasy.Tests.IFoo.Baz(argument: System.Object = System.Object, argument2: System.Object = ""lorem ipsum"")'
+    1.  'FakeItEasy.Tests.IFoo.Baz(argument: System.Object, argument2: ""lorem ipsum"")'
 
 "));
         }

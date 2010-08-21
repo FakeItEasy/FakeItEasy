@@ -58,8 +58,6 @@ namespace FakeItEasy.Core
             builder
                 .Append(argument.ArgumentName)
                 .Append(": ")
-                .Append(argument.ArgumentType.FullName)
-                .Append(" = ")
                 .Append(GetArgumentValueAsString(argument.ArgumentValue));
         }
 
@@ -70,7 +68,6 @@ namespace FakeItEasy.Core
                  select new ArgumentValueInfo
                  {
                      ArgumentName = argument.First.Name,
-                     ArgumentType = argument.First.ParameterType,
                      ArgumentValue = argument.Second
                  }).ToArray();
         }
@@ -122,8 +119,6 @@ namespace FakeItEasy.Core
         private struct ArgumentValueInfo
         {
             public object ArgumentValue { get; set; }
-            
-            public Type ArgumentType { get; set; }
             
             public string ArgumentName { get; set; }
         }
