@@ -1,8 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy", "FakeItEasy\FakeItEasy.csproj", "{80721425-68E5-48DC-87EA-41D63D0B45FA}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6A7B553-5359-4FB9-B19C-8A23004F49DB}"
 	ProjectSection(SolutionItems) = preProject
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
@@ -10,13 +8,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{F9C87C93-FE80-45E1-8CFF-8D6E451F7939}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Examples", "FakeItEasy.Examples\FakeItEasy.Examples.csproj", "{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{52D18A62-B744-48F6-A4B5-1382F83FA437}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Tests", "FakeItEasy.Tests\FakeItEasy.Tests.csproj", "{0E26272D-045A-47C2-8928-BD9B980115D5}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration Tests", "Integration Tests", "{D1B4816C-96E9-4B42-8B7C-1A687214FA2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy", "FakeItEasy\FakeItEasy.csproj", "{80721425-68E5-48DC-87EA-41D63D0B45FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Examples", "FakeItEasy.Examples\FakeItEasy.Examples.csproj", "{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Tests", "FakeItEasy.Tests\FakeItEasy.Tests.csproj", "{0E26272D-045A-47C2-8928-BD9B980115D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.IntegrationTests", "FakeItEasy.IntegrationTests\FakeItEasy.IntegrationTests.csproj", "{C291B61B-0729-4DC5-B8E4-147A8E3F801F}"
 EndProject

@@ -1,3 +1,3 @@
 @echo off
-@%SystemRoot%\Microsoft.NET\Framework\v3.5\msbuild FakeItEasy.build %*
+@%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\msbuild FakeItEasy.build %*
 pause
