@@ -9,7 +9,6 @@ namespace FakeItEasy.Tests.Core.Creation
     using FakeItEasy.SelfInitializedFakes;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
-    using FakeItEasy.DynamicProxy;
 
     [TestFixture]
     public class DefaultFakeAndDummyManagerTests

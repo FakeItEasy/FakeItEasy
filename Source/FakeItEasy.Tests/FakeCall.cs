@@ -1,9 +1,9 @@
-using System;
-using System.Reflection;
-using FakeItEasy.Core;
-
 namespace FakeItEasy.Tests
 {
+    using System;
+    using System.Reflection;
+    using FakeItEasy.Core;
+
     /// <summary>
     /// A fake implementation of IFakeObjectCall, used for testing.
     /// </summary>
@@ -27,10 +27,21 @@ namespace FakeItEasy.Tests
             set;
         }
 
-
-        public void SetReturnValue(object returnValue)
+        public object ReturnValue
         {
-            this.ReturnValue = returnValue;           
+            get;
+            private set;
+        }
+
+        public object FakedObject
+        {
+            get;
+            set;
+        }
+
+        public string Description
+        {
+            get { return this.ToString(); }
         }
 
         public static FakeCall Create<T>(string methodName, Type[] parameterTypes, object[] arguments) where T : class
@@ -50,29 +61,15 @@ namespace FakeItEasy.Tests
             return Create<T>(methodName, new Type[] { }, new object[] { });
         }
 
-        public object ReturnValue
+        public void SetReturnValue(object returnValue)
         {
-            get;
-            private set;
-        }
-
-
-        public object FakedObject
-        {
-            get;
-            set;
-        }
-
-        public string Description
-        {
-            get { return this.ToString(); }
+            this.ReturnValue = returnValue;
         }
 
         public ICompletedFakeObjectCall AsReadOnly()
         {
             return this;
         }
-
 
         public void CallBaseMethod()
         {

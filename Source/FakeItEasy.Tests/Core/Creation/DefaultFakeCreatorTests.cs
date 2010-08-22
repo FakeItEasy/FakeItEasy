@@ -185,7 +185,7 @@ namespace FakeItEasy.Tests.Core.Creation
 
             // Act
             var result = this.creator.CollectionOfFake<IFoo>(10);
-
+            
             // Assert
             Assert.That(result, Has.All.InstanceOf<IFoo>().And.All.InstanceOf<IFakedProxy>());
         }

@@ -48,17 +48,6 @@
         }
 
         [Test]
-        public void AssertWasCalled_should_be_null_guarded()
-        {
-            this.StubCalls(1);
-
-            var asserter = this.CreateAsserter();
-            
-            NullGuardedConstraint.Assert(() =>
-                asserter.AssertWasCalled(x => true, "", x => true, ""));
-        }
-
-        [Test]
         public void AssertWasCalled_should_pass_when_the_repeatPredicate_returns_true_for_the_number_of_matching_calls()
         {
             this.StubCalls(2);

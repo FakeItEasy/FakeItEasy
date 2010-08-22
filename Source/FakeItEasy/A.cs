@@ -12,7 +12,7 @@ namespace FakeItEasy
     /// <summary>
     /// Provides methods for generating fake objects.
     /// </summary>
-    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A")]
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A", Justification = "Is spelled correctly.")]
     public static class A
     {
         private static IFakeConfigurationManager ConfigurationManager
@@ -134,13 +134,13 @@ namespace FakeItEasy
     /// Provides an api entry point for validating arguments of fake object calls.
     /// </summary>
     /// <typeparam name="T">The type of argument to validate.</typeparam>
-    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A")]
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A", Justification = "It is spelled correctly.")]
     public static class A<T>
     {
         /// <summary>
         /// Gets an argument validations object that provides validations for the argument.
         /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
         public static ArgumentConstraintScope<T> That
         {
             get
@@ -152,7 +152,7 @@ namespace FakeItEasy
         /// <summary>
         /// Returns a constraint that considers any value of an argument as valid.
         /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
         public static ArgumentConstraint<T> Ignored
         {
             get

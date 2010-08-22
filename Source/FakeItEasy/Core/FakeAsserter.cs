@@ -21,11 +21,6 @@ namespace FakeItEasy.Core
 
         public virtual void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
         {
-            Guard.AgainstNull(callPredicate, "callPredicate");
-            Guard.AgainstNull(repeatPredicate, "repeatPredicate");
-            Guard.AgainstNull(callDescription, "callDescription");
-            Guard.AgainstNull(repeatDescription, "repeatDescription");
-
             var repeat = this.calls.Count(callPredicate);
 
             if (!repeatPredicate(repeat))
