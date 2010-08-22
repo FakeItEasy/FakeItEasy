@@ -28,7 +28,7 @@ namespace FakeItEasy.Core.Creation
         /// Gets the type of the generated proxy.
         /// </summary>
         /// <value>The type of the generated proxy.</value>
-        public Type TypeOfProxy
+        public virtual Type TypeOfProxy
         {
             get;
             private set;

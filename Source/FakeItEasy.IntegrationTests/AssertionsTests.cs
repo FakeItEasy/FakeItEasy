@@ -75,28 +75,6 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
-        public void Should_be_able_to_use_ordered_asserts_on_single_fake_without_scope()
-        {
-            // Arrange
-            var foo = A.Fake<IFoo>();
-
-            // Act
-            foo.Bar();
-            foo.Baz();
-
-            // Assert
-            Assert.That(delegate()
-                {
-                    using (Fake.OrderedAssertions(foo))
-                    {
-                        A.CallTo(() => foo.Baz()).MustHaveHappened();
-                        A.CallTo(() => foo.Bar()).MustHaveHappened();
-                    }
-                },
-            Throws.Exception.InstanceOf<ExpectationException>());
-        }
-
-        [Test]
         public void Should_throw_when_starting_new_ordered_assertions_scope_when_one_is_already_opened()
         {
             // Arrange

@@ -7,6 +7,13 @@ namespace FakeItEasy.Core
 
     internal class CallWriter
     {
+        private IFakeObjectCallFormatter callFormatter;
+
+        public CallWriter(IFakeObjectCallFormatter callFormatter)
+        {
+            this.callFormatter = callFormatter;
+        }
+
         public virtual void WriteCalls(int indent, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
         {
             var indentString = CreateIndentString(indent);
@@ -18,9 +25,9 @@ namespace FakeItEasy.Core
             return string.Concat(Enumerable.Repeat(" ", indent).ToArray());
         }
 
-        private static void AppendCallList(string indentString, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
+        private void AppendCallList(string indentString, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
         {
-            var callDescriptions = new Queue<string>(calls.Select(x => x.ToString()));
+            var callDescriptions = new Queue<string>(calls.Select(x => this.callFormatter.GetDescription(x)));
 
             int callNumber = 0;
             int lineNumber = 1;
@@ -80,9 +87,16 @@ namespace FakeItEasy.Core
 
             WriteCallNumber(writer, callNumber);
 
+            callDescription = IndentNewlinesInCallDescription(indentString, callDescription);
+
             writer.Write("'");
             writer.Write(callDescription);
             writer.Write("'");
+        }
+
+        private static string IndentNewlinesInCallDescription(string indentString, string callDescription)
+        {
+            return callDescription.Replace("\r\n", "\r\n" + indentString + "    ");
         }
 
         private static void WriteCallNumber(TextWriter writer, int callNumber)

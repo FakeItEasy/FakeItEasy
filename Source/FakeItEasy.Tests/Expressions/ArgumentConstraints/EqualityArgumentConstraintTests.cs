@@ -13,7 +13,7 @@
         [SetUp]
         public void SetUp()
         {
-            this.constraint = new EqualityArgumentConstraint(1);
+            this.constraintField = new EqualityArgumentConstraint(1);
         }
 
         protected override IEnumerable<object> InvalidValues
@@ -37,7 +37,7 @@
         [Test]
         public override void Constraint_should_provide_correct_description()
         {
-            Assert.That(this.constraint.ToString(), Is.EqualTo("1"));
+            Assert.That(this.constraintField.ToString(), Is.EqualTo("1"));
         }
 
         [Test]

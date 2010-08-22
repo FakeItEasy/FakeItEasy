@@ -33,7 +33,7 @@
             var recordedRule = A.Fake<RecordedCallRule>();
             this.StubResolve<RecordedCallRule.Factory>(() => recordedRule);
 
-            var recordingRule = A.Fake<RecordingCallRule<IFoo>>(x => x.WithArgumentsForConstructor(() => new RecordingCallRule<IFoo>(fake, recordedRule, _ => null)));
+            var recordingRule = A.Fake<RecordingCallRule<IFoo>>(x => x.WithArgumentsForConstructor(() => new RecordingCallRule<IFoo>(fake, recordedRule, _ => null, A.Fake<IFakeObjectCallFormatter>())));
             var recordingRuleFactory = A.Fake<IRecordingCallRuleFactory>();
             A.CallTo(() => recordingRuleFactory.Create<IFoo>(fake, recordedRule)).Returns(recordingRule);
             this.StubResolve<IRecordingCallRuleFactory>(recordingRuleFactory);
@@ -57,7 +57,7 @@
             var rule = A.Fake<RecordedCallRule>();
 
             var wrapped = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() =>
-                new RuleBuilder(rule, A.Fake<FakeManager>(), c => A.Fake<IFakeAsserter>())));
+                new RuleBuilder(rule, A.Fake<FakeManager>(), c => A.Fake<IFakeAsserter>(), A.Fake<IFakeObjectCallFormatter>())));
             var result = A.Fake<VisualBasicRuleBuilder>(x => x.WithArgumentsForConstructor(() =>
                 new VisualBasicRuleBuilder(rule, wrapped)));
 

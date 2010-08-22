@@ -19,18 +19,16 @@
         : DynamicProxyGeneratorBase
     {
         private static ProxyGenerator proxyGenerator = new ProxyGenerator();
+        private static HashSet<RuntimeMethodHandle> objectMethods = new HashSet<RuntimeMethodHandle>() 
+        {
+            typeof(object).GetMethod("ToString", new Type[] {}).MethodHandle,
+            typeof(object).GetMethod("GetHashCode", new Type[] {}).MethodHandle,
+            typeof(object).GetMethod("Equals", new[] { typeof(object) }).MethodHandle
+        };
 
         public CastleDynamicProxyGenerator(IFakeCreationSession session)
             : base(session)
         {
-        }
-
-        protected override IEnumerable<Type> InterfacesThatAllProxiesShouldImplement
-        {
-            get
-            {
-                return base.InterfacesThatAllProxiesShouldImplement.Concat(new[] { typeof(ICanInterceptObjectMembers) });
-            }
         }
 
         protected override IFakedProxy GenerateInterfaceProxy(Type typeToProxy, IEnumerable<Type> additionalInterfacesToImplement, FakeManager fakeManager, IInterceptionCallback interceptionCallback)
@@ -62,6 +60,22 @@
             }
 
             return true;
+        }
+
+        public override bool MemberCanBeIntercepted(MemberInfo member)
+        {
+            if (IsNonInterceptableObjectMethod(member))
+            {
+                return false;
+            }
+
+            return base.MemberCanBeIntercepted(member);
+        }
+
+        private static bool IsNonInterceptableObjectMethod(MemberInfo member)
+        {
+            var method = member as MethodInfo;
+            return method != null && objectMethods.Contains(method.MethodHandle);
         }
 
         [Serializable]

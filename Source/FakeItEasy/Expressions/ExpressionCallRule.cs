@@ -3,6 +3,7 @@ namespace FakeItEasy.Expressions
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using System;
 
     /// <summary>
     /// An implementation of the <see cref="IFakeObjectCallRule" /> interface that uses
@@ -42,7 +43,7 @@ namespace FakeItEasy.Expressions
         /// </returns>
         public override string ToString()
         {
-            return this.ExpressionMatcher.ToString();
+            return this.DescriptionOfValidCall;   
         }
 
         public override void UsePredicateToValidateArguments(System.Func<ArgumentCollection, bool> argumentsPredicate)
@@ -53,6 +54,14 @@ namespace FakeItEasy.Expressions
         protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
             return this.ExpressionMatcher.Matches(fakeObjectCall);
+        }
+
+        public override string DescriptionOfValidCall
+        {
+            get 
+            {
+                return this.ExpressionMatcher.DescriptionOfMatchingCall;
+            }
         }
     }
 }

@@ -63,6 +63,10 @@ namespace FakeItEasy.Tests
             set;
         }
 
+        public string Description
+        {
+            get { return this.ToString(); }
+        }
 
         public ICompletedFakeObjectCall AsReadOnly()
         {
@@ -82,7 +86,7 @@ namespace FakeItEasy.Tests
 
         public void DoNotRecordCall()
         {
-            
+
         }
     }
 }

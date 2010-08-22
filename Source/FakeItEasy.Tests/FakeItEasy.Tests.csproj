@@ -34,13 +34,13 @@
     <NoWarn>3016, 0067</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
+    <Reference Include="Castle.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\DynamicProxy\net-3.5\Castle.Core.dll</HintPath>
+      <HintPath>..\..\Libraries\DynamicProxy\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
+    <Reference Include="Castle.DynamicProxy2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\DynamicProxy\net-3.5\Castle.DynamicProxy2.dll</HintPath>
+      <HintPath>..\..\Libraries\DynamicProxy\Castle.DynamicProxy2.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <SpecificVersion>False</SpecificVersion>
@@ -65,6 +65,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="AnyTests.cs" />
+    <Compile Include="Core\DefaultFakeObjectCallFormatterTests.cs" />
     <Compile Include="Core\EnumerableOfFakeCallsDefinition.cs" />
     <Compile Include="Core\FakeAsserterTests.cs">
       <SubType>Code</SubType>
@@ -103,7 +104,7 @@
     <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraintTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />
-    <Compile Include="Expressions\NotArgumentValidatorScopeTests.cs" />
+    <Compile Include="Expressions\NotArgumentConstraintScopeTests.cs" />
     <Compile Include="Expressions\RootArgumentConstraintScopeTests.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="LowerBoundHappenedTests.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="SyntaxTests.cs" />
     <Compile Include="TestHelpers\ReflectionHelper.cs" />
     <Compile Include="TestHelpers\TestableProxyResult.cs" />
+    <Compile Include="VisualBasic\RecordedCallRuleTests.cs" />
     <Compile Include="VisualBasic\RecordingCallRuleTests.cs" />
     <Compile Include="VisualBasic\NextCallTests.cs" />
     <Compile Include="VisualBasic\VisualBasicHelpersTests.cs" />
@@ -168,9 +170,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FakeItEasy.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assertion\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

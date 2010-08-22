@@ -23,22 +23,25 @@ namespace FakeItEasy.Configuration
         {
             this.argumentsPredicate = argumentsPredicate;   
         }
-
-        public override string ToString()
-        {
-            if (this.ApplicableToMembersWithReturnType != null)
-            {
-                return "Any call with return type {0} to the fake object.".FormatInvariant(this.ApplicableToMembersWithReturnType.FullName);
-            }
-
-            return "Any call made to the fake object.";
-        }
         
         protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
             return 
                 this.argumentsPredicate(fakeObjectCall.Arguments) &&        
                 (this.ApplicableToMembersWithReturnType == null || this.ApplicableToMembersWithReturnType.Equals(fakeObjectCall.Method.ReturnType));
+        }
+
+        public override string DescriptionOfValidCall
+        {
+            get 
+            {
+                if (this.ApplicableToMembersWithReturnType != null)
+                {
+                    return "Any call with return type {0} to the fake object.".FormatInvariant(this.ApplicableToMembersWithReturnType.FullName);
+                }
+
+                return "Any call made to the fake object.";
+            }
         }
     }
 }

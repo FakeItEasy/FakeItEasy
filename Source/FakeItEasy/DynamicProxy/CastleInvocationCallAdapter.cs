@@ -14,13 +14,6 @@ namespace FakeItEasy.DynamicProxy
     internal class CastleInvocationCallAdapter
         : IWritableFakeObjectCall, ICompletedFakeObjectCall
     {
-        private static readonly Dictionary<MethodInfo, MethodInfo> objectMembersMap = new Dictionary<MethodInfo, MethodInfo>
-        {
-            { typeof(ICanInterceptObjectMembers).GetMethod("Equals", new[] { typeof(object) }), typeof(object).GetMethod("Equals", new[] { typeof(object) }) },
-            { typeof(ICanInterceptObjectMembers).GetMethod("GetHashCode"), typeof(object).GetMethod("GetHashCode") },
-            { typeof(ICanInterceptObjectMembers).GetMethod("ToString"), typeof(object).GetMethod("ToString") }
-        };
-
         private IInvocation invocation;
 
         /// <summary>
@@ -31,7 +24,7 @@ namespace FakeItEasy.DynamicProxy
         public CastleInvocationCallAdapter(IInvocation invocation)
         {
             this.invocation = invocation;
-            this.Method = RewriteMappedMethod(invocation);
+            this.Method = invocation.Method;
 
             this.Arguments = new ArgumentCollection(invocation.Arguments, this.Method);
         }
@@ -65,10 +58,18 @@ namespace FakeItEasy.DynamicProxy
         /// <summary>
         /// The faked object the call is performed on.
         /// </summary>
-        /// <value></value>
         public object FakedObject
         {
             get { return this.invocation.Proxy; }
+        }
+
+        /// <summary>
+        /// A human readable description of the call.
+        /// </summary>
+        /// <value></value>
+        public string Description
+        {
+            get { return this.GetDescription(); }
         }
 
         /// <summary>
@@ -116,19 +117,7 @@ namespace FakeItEasy.DynamicProxy
         /// </returns>
         public override string ToString()
         {
-            return this.GetDescription();
-        }
-
-        private static MethodInfo RewriteMappedMethod(IInvocation invocation)
-        {
-            MethodInfo result;
-
-            if (!objectMembersMap.TryGetValue(invocation.Method, out result))
-            {
-                result = invocation.Method;
-            }
-
-            return result;
+            return this.Description;
         }
     }
 }

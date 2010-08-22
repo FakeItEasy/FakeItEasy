@@ -9,7 +9,7 @@ namespace FakeItEasy.Configuration
     /// Provides the base for rules that can be built using the FakeConfiguration.
     /// </summary>
     internal abstract class BuildableCallRule
-        : IFakeObjectCallRule
+        : IFakeObjectCallRuleWithDescription
     {
         protected BuildableCallRule()
         {
@@ -121,6 +121,15 @@ namespace FakeItEasy.Configuration
             {
                 fakeObjectCall.SetArgumentValue(argument.First, argument.Second);
             }
+        }
+
+        /// <summary>
+        /// Gets a description of calls the rule is applicable to.
+        /// </summary>
+        /// <value></value>
+        public abstract string DescriptionOfValidCall
+        {
+            get;
         }
     }
 }

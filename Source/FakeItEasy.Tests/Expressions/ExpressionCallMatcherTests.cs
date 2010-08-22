@@ -155,10 +155,10 @@ namespace FakeItEasy.Tests.Expressions
         [Test]
         public void ToString_should_write_full_method_name_with_type_name_and_arguments_list()
         {
-            var validator = A.Fake<IArgumentConstraint>();
-            A.CallTo(() => validator.ToString()).Returns("<FOO>");
+            var constraint = A.Fake<IArgumentConstraint>();
+            A.CallTo(() => constraint.ConstraintDescription).Returns("<FOO>");
 
-            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(constraint);
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 

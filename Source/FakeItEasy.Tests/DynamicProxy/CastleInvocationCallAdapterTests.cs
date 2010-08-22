@@ -42,33 +42,11 @@ namespace FakeItEasy.Tests.DynamicProxy
             A.CallTo(() => invocation.SetArgumentValue(0, "test")).MustHaveHappened(Repeated.Once);
         }
 
-        private MethodInfo[] interfaceMethods = new MethodInfo[]
-            {
-                typeof(ICanInterceptObjectMembers).GetMethod("Equals", new Type[] { typeof(object) }),
-                typeof(ICanInterceptObjectMembers).GetMethod("GetHashCode", new Type[] { }),
-                typeof(ICanInterceptObjectMembers).GetMethod("ToString", new Type[] { })
-            };
-
         private MethodInfo[] objectMethods = new MethodInfo[]
             {
                 typeof(object).GetMethod("Equals", new Type[] { typeof(object) }),
                 typeof(object).GetMethod("GetHashCode", new Type[] { }),
                 typeof(object).GetMethod("ToString", new Type[] { })
             };
-
-        [Test]
-        [Sequential]
-        public void Method_should_rewrite_method_from_ICanInterceptObjectMembers_to_mapped_object_method_when_called(
-            [ValueSource("interfaceMethods")] MethodInfo interfaceMethod, 
-            [ValueSource("objectMethods")] MethodInfo objectMethod)
-        {
-            var invocation = A.Fake<IInvocation>();
-            A.CallTo(() => invocation.Arguments).Returns(interfaceMethod.GetParameters());
-            A.CallTo(() => invocation.Method).Returns(interfaceMethod);
-
-            var adapter = new CastleInvocationCallAdapter(invocation);
-
-            Assert.That(adapter.Method, Is.EqualTo(objectMethod));
-        }
     }
 }

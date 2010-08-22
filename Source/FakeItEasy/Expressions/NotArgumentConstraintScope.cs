@@ -20,7 +20,7 @@ namespace FakeItEasy.Expressions
         {
             var result = new StringBuilder();
 
-            var parentDescription = this.ParentValidations.ToString();
+            var parentDescription = this.ParentValidations.Description;
             if (!string.IsNullOrEmpty(parentDescription))
             {
                 result.Append(parentDescription);

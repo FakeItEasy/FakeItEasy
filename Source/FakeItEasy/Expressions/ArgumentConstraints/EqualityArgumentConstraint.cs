@@ -32,6 +32,14 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
 
             return this.expectedValue.ToString();
         }
+
+        public string ConstraintDescription
+        {
+            get 
+            {
+                return this.ToString();
+            }
+        }
     }
 
     internal class EqualityArgumentConstraint<T>

@@ -24,6 +24,18 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
+        /// Returns a description of the constraint scope containing the descriptions of all the
+        /// participating constraints.
+        /// </summary>
+        public virtual string Description
+        {
+            get
+            {
+                return this.ToString();
+            }
+        }
+
+        /// <summary>
         /// Gets an ArgumentConstraint that is valid if the specified predicate returns true.
         /// </summary>
         /// <param name="predicate">A predicate that validates the argument.</param>

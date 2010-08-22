@@ -168,10 +168,7 @@ namespace FakeItEasy.IntegrationTests
             
             // Assert
             Assert.That(foo.SomeProperty, Is.EqualTo(10));
-            Assert.That(foo.GetHashCode(), Is.EqualTo(10));
             Assert.That(foo.Baz(), Is.EqualTo(10));
-
-            Assert.That(foo.ToString(), Is.EqualTo("foo"));
         }
 
         public class BaseClass

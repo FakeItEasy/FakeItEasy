@@ -16,6 +16,7 @@ namespace FakeItEasy.Tests.VisualBasic
         FakeAsserter.Factory asserterFactory;
         IEnumerable<IFakeObjectCall> argumentUsedForAsserterFactory;
         IFakeAsserter asserter;
+        IFakeObjectCallFormatter callFormatter;
         
         [SetUp]
         public void SetUp()
@@ -23,6 +24,7 @@ namespace FakeItEasy.Tests.VisualBasic
             this.fakedObject = A.Fake<IFoo>();
             this.fakeObject = Fake.GetFakeManager(fakedObject);
             this.recordedRule = A.Fake<RecordedCallRule>(x => x.WithArgumentsForConstructor(() => new RecordedCallRule(A.Fake<MethodInfoManager>())));
+            this.callFormatter = A.Fake<IFakeObjectCallFormatter>();
 
             this.asserter = A.Fake<IFakeAsserter>();
 
@@ -41,7 +43,7 @@ namespace FakeItEasy.Tests.VisualBasic
 
         private RecordingCallRule<IFoo> CreateRule()
         {
-            return new RecordingCallRule<IFoo>(this.fakeObject, this.recordedRule, this.asserterFactory);
+            return new RecordingCallRule<IFoo>(this.fakeObject, this.recordedRule, this.asserterFactory, this.callFormatter);
         }
 
         [Test]
@@ -67,7 +69,7 @@ namespace FakeItEasy.Tests.VisualBasic
             var rule = this.CreateRule();
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => call.ToString()).Returns("call description");
+            A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("call description");
 
             rule.Apply(call);
 
@@ -83,8 +85,7 @@ namespace FakeItEasy.Tests.VisualBasic
             var rule = this.CreateRule();
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            
-            A.CallTo(() => call.ToString()).Returns("call description");
+            A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("call description");
 
             rule.Apply(call);
 
@@ -108,7 +109,7 @@ namespace FakeItEasy.Tests.VisualBasic
             var rule = this.CreateRule();
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => call.ToString()).Returns("call description");
+            A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("call description");
 
             rule.Apply(call);
 
@@ -143,27 +144,6 @@ namespace FakeItEasy.Tests.VisualBasic
             var rule = this.CreateRule();
 
             Assert.That(rule.NumberOfTimesToCall, Is.EqualTo(1));
-        }
-    }
-
-    [TestFixture]
-    public class RecordedCallRuleTests
-    {
-        private RecordedCallRule CreateRule()
-        {
-            return new RecordedCallRule(A.Fake<MethodInfoManager>());
-        }
-
-        [Test]
-        public void UsePredicateToValidateArguments_should_set_predicate_to_IsApplicableToArguments()
-        {
-            var rule = this.CreateRule();
-
-            Func<ArgumentCollection, bool> predicate = x => true;
-
-            rule.UsePredicateToValidateArguments(predicate);
-
-            Assert.That(rule.IsApplicableToArguments, Is.SameAs(predicate));
         }
     }
 }
