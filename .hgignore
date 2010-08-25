@@ -3,6 +3,7 @@ syntax: glob
 
 # Ignore built files
 *.csproj.user
+*.vbproj.user
 [Oo]bj
 [Bb]in
 *.ncb
