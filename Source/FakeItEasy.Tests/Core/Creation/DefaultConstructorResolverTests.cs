@@ -153,6 +153,5 @@ namespace FakeItEasy.Tests.Core.Creation
 
         //    }
         //}
-
     }
 }
