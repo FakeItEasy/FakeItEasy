@@ -145,7 +145,7 @@
             }
             catch
             {
-                return GetProxyResultForNoDefaultConstructor(typeOfProxy);
+                return GetResultForFailedProxyGeneration(typeOfProxy, argumentsForConstructor);
             }
         }
 
@@ -159,6 +159,16 @@
                 IsNonVirtualProperty(member);
 
             return !isNonInterceptableMember;
+        }
+
+        private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
+        {
+            if (argumentsForConstructor != null)
+            {
+                return new ProxyGeneratorResult(DynamicProxyResources.ArgumentsForConstructorDoesNotMatchAnyConstructorMessage);
+            }
+
+            return GetProxyResultForNoDefaultConstructor(typeOfProxy);
         }
 
         private static bool IsNonVirtualMethod(MemberInfo member)

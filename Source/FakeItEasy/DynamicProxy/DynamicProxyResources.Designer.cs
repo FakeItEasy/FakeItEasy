@@ -61,6 +61,15 @@ namespace FakeItEasy.DynamicProxy {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No constructor matches the passed arguments for constructor..
+        /// </summary>
+        internal static string ArgumentsForConstructorDoesNotMatchAnyConstructorMessage {
+            get {
+                return ResourceManager.GetString("ArgumentsForConstructorDoesNotMatchAnyConstructorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The type of proxy must be an interface or a class but it was {0}..
         /// </summary>
         internal static string ProxyIsValueTypeMessage {

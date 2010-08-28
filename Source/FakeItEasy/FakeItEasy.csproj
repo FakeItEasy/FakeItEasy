@@ -103,7 +103,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="DynamicProxy\IProx.cs" />
     <Compile Include="OrderedAssertion.cs" />
     <Compile Include="Core\OrderedFakeAsserter.cs" />
     <Compile Include="Core\OrderedFakeAsserterFactory.cs" />

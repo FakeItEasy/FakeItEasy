@@ -790,6 +790,21 @@ IFakeObjectContainer in order to generate a fake of this type."));
             Assert.That(proxy.Argument, Is.EqualTo(10));
         }
 
+        [Test]
+        public void Should_fail_with_correct_message_when_no_constructor_matches_the_passed_in_arguments()
+        {
+            // Arrange
+
+            // Act
+            var result = this.generator.TryCreateProxy(
+                typeof(TypeWithArgumentsForConstructor),
+                Enumerable.Empty<Type>(),
+                new object[] { "no constructor takes a string" });
+
+            // Assert
+            Assert.That(result.ReasonForFailure, Is.EqualTo("No constructor matches the passed arguments for constructor."));
+        }
+
         public class TypeWithArgumentsForConstructor
         {
             public int Argument;
