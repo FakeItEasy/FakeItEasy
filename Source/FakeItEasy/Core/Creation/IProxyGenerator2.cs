@@ -6,7 +6,7 @@ namespace FakeItEasy.Core.Creation
 
     public interface IProxyGenerator2
     {
-        ProxyGeneratorResult TryCreateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor);
+        ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor);
         bool MemberCanBeIntercepted(MemberInfo member);
     }
 }

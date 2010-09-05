@@ -70,6 +70,15 @@ namespace FakeItEasy.DynamicProxy {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arguments for constructor specified for interface type..
+        /// </summary>
+        internal static string ArgumentsForConstructorOnInterfaceTypeMessage {
+            get {
+                return ResourceManager.GetString("ArgumentsForConstructorOnInterfaceTypeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The type of proxy must be an interface or a class but it was {0}..
         /// </summary>
         internal static string ProxyIsValueTypeMessage {

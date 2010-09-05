@@ -120,6 +120,9 @@
   <data name="ArgumentsForConstructorDoesNotMatchAnyConstructorMessage" xml:space="preserve">
     <value>No constructor matches the passed arguments for constructor.</value>
   </data>
+  <data name="ArgumentsForConstructorOnInterfaceTypeMessage" xml:space="preserve">
+    <value>Arguments for constructor specified for interface type.</value>
+  </data>
   <data name="ProxyIsValueTypeMessage" xml:space="preserve">
     <value>The type of proxy must be an interface or a class but it was {0}.</value>
   </data>

@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+using FakeItEasy.Core.Creation;
 
     public static class CustomArgumentConstraints
     {
@@ -29,6 +30,18 @@ namespace FakeItEasy.Tests
         public static ArgumentConstraint<FakeManager> Fakes(this ArgumentConstraintScope<FakeManager> scope, object fakedObject)
         {
             return ArgumentConstraint.Create(scope, x => x.Equals(Fake.GetFakeManager(fakedObject)), "Specified FakeObject");
+        }
+
+        internal static ArgumentConstraint<FakeOptions> IsEmpty(this ArgumentConstraintScope<FakeOptions> scope)
+        {
+            return ArgumentConstraint.Create(scope,
+                x => 
+                {
+                    return x.AdditionalInterfacesToImplement == null
+                        && x.ArgumentsForConstructor == null
+                        && x.SelfInitializedFakeRecorder == null
+                        && x.WrappedInstance == null;
+                }, "Empty fake options");
         }
     }
 }

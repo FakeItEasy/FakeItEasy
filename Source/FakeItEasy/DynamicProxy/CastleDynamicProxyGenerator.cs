@@ -114,17 +114,26 @@
             typeof(object).GetMethod("Equals", new[] { typeof(object) }).MethodHandle
         };
 
-        public ProxyGeneratorResult TryCreateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
+        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
         {
             Guard.AgainstNull(typeOfProxy, "typeOfProxy");
             Guard.AgainstNull(additionalInterfacesToImplement, "additionalInterfacesToImplement");
-            
+            GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
+
             if (typeOfProxy.IsValueType)
             {
                 return GetProxyResultForValueType(typeOfProxy);
             }
-            
+
             return this.CreateProxyGeneratorResult(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
+        }
+
+        private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
+        {
+            if (typeOfProxy.IsInterface && argumentsForConstructor != null)
+            {
+                throw new ArgumentException(DynamicProxyResources.ArgumentsForConstructorOnInterfaceTypeMessage);
+            }
         }
 
         private ProxyGeneratorResult CreateProxyGeneratorResult(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)

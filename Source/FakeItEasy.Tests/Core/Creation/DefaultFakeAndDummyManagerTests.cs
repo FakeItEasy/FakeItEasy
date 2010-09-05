@@ -463,7 +463,9 @@ with two lines.");
                 SelfInitializedFakeRecorder = recorder
             };
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), null, this.fakeManager, null)).Returns(proxyResult);
+
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.That.IsThisSequence().Argument, this.fakeManager, null))
+                .Returns(proxyResult);
 
             // Act
             this.fakeAndDummyManager.TryCreateFake(typeof(IFoo), options, out Null<object>.Out);

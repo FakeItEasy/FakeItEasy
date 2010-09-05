@@ -24,7 +24,7 @@ namespace FakeItEasy.Core.Creation
         /// <param name="generatedProxy">The proxy that was generated.</param>
         /// <param name="callInterceptedEventRaiser">An event raiser that raises
         /// events when calls are intercepted to the proxy.</param>
-        public ProxyGeneratorResult(IProxy generatedProxy, ICallInterceptedEventRaiser callInterceptedEventRaiser)
+        public ProxyGeneratorResult(object generatedProxy, ICallInterceptedEventRaiser callInterceptedEventRaiser)
         {
             Guard.AgainstNull(generatedProxy, "generatedProxy");
             Guard.AgainstNull(callInterceptedEventRaiser, "callInterceptedEventRaiser");
@@ -42,7 +42,7 @@ namespace FakeItEasy.Core.Creation
         /// <summary>
         /// Gets the generated proxy when it was successfully created.
         /// </summary>
-        public IProxy GeneratedProxy { get; private set; }
+        public object GeneratedProxy { get; private set; }
 
         /// <summary>
         /// Gets the event raiser that raises events when calls to the proxy are

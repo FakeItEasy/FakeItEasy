@@ -3,9 +3,15 @@ namespace FakeItEasy.Core.Creation
     using System;
     using System.Collections.Generic;
     using FakeItEasy.SelfInitializedFakes;
+    using System.Linq;
 
     internal class FakeOptions
     {
+        public FakeOptions()
+        {
+            this.AdditionalInterfacesToImplement = Enumerable.Empty<Type>();
+        }
+
         public object WrappedInstance { get; set; }
         
         public ISelfInitializingFakeRecorder SelfInitializedFakeRecorder { get; set; }

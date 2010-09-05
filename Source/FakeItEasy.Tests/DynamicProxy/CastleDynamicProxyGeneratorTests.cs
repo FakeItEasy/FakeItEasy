@@ -614,17 +614,29 @@ IFakeObjectContainer in order to generate a fake of this type."));
         }
 
         [TestCaseSource("supportedTypes")]
+        public void Should_return_proxy_that_implements_IProxy(Type typeOfProxy)
+        {
+            // Arrange
+
+            // Act
+            var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
+
+            // Assert
+            Assert.That(result.GeneratedProxy, Is.InstanceOf<IProxy>());
+        }
+
+        [TestCaseSource("supportedTypes")]
         public void Should_return_proxy_where_tag_can_be_set(Type typeOfProxy)
         {
             // Arrange
             var tag = new object();
 
             // Act
-            var result = this.generator.TryCreateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
-            result.GeneratedProxy.Tag = tag;
+            var proxy = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null).GeneratedProxy as IProxy;
+            proxy.Tag = tag;
 
             // Assert
-            Assert.That(result.GeneratedProxy.Tag, Is.SameAs(tag));
+            Assert.That(proxy.Tag, Is.SameAs(tag));
         }
 
         [TestCaseSource("supportedTypes")]
@@ -633,7 +645,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
             // Arrange
             
             // Act
-            var result = this.generator.TryCreateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
+            var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
             
             // Assert
             Assert.That(result.GeneratedProxy, Is.InstanceOf(typeOfProxy));
@@ -645,7 +657,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
             // Arrange
 
             // Act
-            var result = this.generator.TryCreateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
+            var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
 
             // Assert
             Assert.That(result.ProxyWasSuccessfullyGenerated, Is.True);
@@ -657,7 +669,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
             // Arrange
 
             // Act
-            var result = this.generator.TryCreateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
+            var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
 
             // Assert
             Assert.That(result.ProxyWasSuccessfullyGenerated, Is.False);
@@ -667,7 +679,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
         public void Should_raise_event_on_event_raiser_when_method_on_fake_is_called(Type typeThatImplementsInterfaceType)
         {
             // Arrange
-            var result = this.generator.TryCreateProxy(typeThatImplementsInterfaceType, Enumerable.Empty<Type>(), null);
+            var result = this.generator.GenerateProxy(typeThatImplementsInterfaceType, Enumerable.Empty<Type>(), null);
             IWritableFakeObjectCall callMadeToProxy = null;
 
             result.CallInterceptedEventRaiser.CallWasIntercepted += (sender, e) => 
@@ -694,7 +706,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
             // Arrange
 
             // Act
-            var result = this.generator.TryCreateProxy(typeof(int), Enumerable.Empty<Type>(), null);
+            var result = this.generator.GenerateProxy(typeof(int), Enumerable.Empty<Type>(), null);
 
             // Assert
             Assert.That(result.ReasonForFailure, Is.EqualTo("The type of proxy must be an interface or a class but it was System.Int32."));
@@ -707,7 +719,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
             // Arrange
 
             // Act
-            var result = this.generator.TryCreateProxy(typeof(ClassWithPrivateConstructor), Enumerable.Empty<Type>(), null);
+            var result = this.generator.GenerateProxy(typeof(ClassWithPrivateConstructor), Enumerable.Empty<Type>(), null);
 
             // Assert
             Assert.That(result.ReasonForFailure, Text.StartsWith("No default constructor was found on the type"));
@@ -743,7 +755,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
             // Arrange
 
             // Act
-            var result = this.generator.TryCreateProxy(typeOfProxy, new[] { typeof(IFoo) }, null);
+            var result = this.generator.GenerateProxy(typeOfProxy, new[] { typeof(IFoo) }, null);
 
             // Assert
             Assert.That(result.GeneratedProxy, Is.InstanceOf<IFoo>());
@@ -758,7 +770,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
 
             // Assert
             NullGuardedConstraint.Assert(() =>
-                this.generator.TryCreateProxy(typeof(IInterfaceType), Enumerable.Empty<Type>(), null));
+                this.generator.GenerateProxy(typeof(IInterfaceType), Enumerable.Empty<Type>(), null));
         }
 
         [Test]
@@ -779,7 +791,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
             // Arrange
 
             // Act
-            var result = this.generator.TryCreateProxy(
+            var result = this.generator.GenerateProxy(
                 typeof(TypeWithArgumentsForConstructor),
                 Enumerable.Empty<Type>(),
                 new object[] { 10 });
@@ -796,13 +808,31 @@ IFakeObjectContainer in order to generate a fake of this type."));
             // Arrange
 
             // Act
-            var result = this.generator.TryCreateProxy(
+            var result = this.generator.GenerateProxy(
                 typeof(TypeWithArgumentsForConstructor),
                 Enumerable.Empty<Type>(),
                 new object[] { "no constructor takes a string" });
 
             // Assert
             Assert.That(result.ReasonForFailure, Is.EqualTo("No constructor matches the passed arguments for constructor."));
+        }
+
+        [Test]
+        [SetCulture("en-US")]
+        public void Should_fail_when_arguments_for_constructor_is_passed_with_interface_proxy()
+        {
+            // Arrange
+
+            // Act, Assert
+            var ex = Assert.Throws<ArgumentException>(() =>
+                {
+                    var result = this.generator.GenerateProxy(
+                        typeof(IInterfaceType),
+                        Enumerable.Empty<Type>(),
+                        new object[] { "no constructor on interface " });
+                });
+
+            Assert.That(ex.Message, Is.EqualTo("Arguments for constructor specified for interface type."));
         }
 
         public class TypeWithArgumentsForConstructor
