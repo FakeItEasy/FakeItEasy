@@ -87,7 +87,10 @@
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeAccessor.cs" />
     <Compile Include="Core\Creation\DefaultFakeCreator.cs" />
+    <Compile Include="Core\Creation\DummyValueCreationSession.cs" />
     <Compile Include="Core\Creation\ICallInterceptedEventRaiser.cs" />
+    <Compile Include="Core\Creation\IDummyValueCreationSession.cs" />
+    <Compile Include="Core\Creation\IFakeObjectCreator.cs" />
     <Compile Include="Core\Creation\IProxy.cs" />
     <Compile Include="Core\Creation\IProxyGenerator2.cs" />
     <Compile Include="Core\Creation\ProxyGeneratorResult.cs" />

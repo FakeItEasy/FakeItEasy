@@ -86,6 +86,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="AnyTests.cs" />
+    <Compile Include="Core\Creation\DummyValueCreationSessionTests.cs" />
     <Compile Include="Core\Creation\ProxyGeneratorResultTests.cs" />
     <Compile Include="Core\DefaultFakeObjectCallFormatterTests.cs" />
     <Compile Include="Core\EnumerableOfFakeCallsDefinition.cs" />
