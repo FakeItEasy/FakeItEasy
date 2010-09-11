@@ -30,7 +30,7 @@
 //            var call = A.Fake<IWritableFakeObjectCall>();
 
 //            object generatedFake = A.Fake<IFoo>();
-//            A.CallTo(() => this.fakeManager.TryCreateDummy(typeof(IFoo), out Null<object>.Out))
+//            A.CallTo(() => this.fakeManager.TryCreateDummy(typeof(IFoo), out output))
 //                .Returns(true)
 //                .AssignsOutAndRefParameters(generatedFake);
 
@@ -63,7 +63,7 @@
 
 
 //            // Assert
-//            A.CallTo(() => this.fakeManager.TryCreateDummy(typeof(int), out Null<object>.Out)).MustHaveHappened();
+//            A.CallTo(() => this.fakeManager.TryCreateDummy(typeof(int), out output)).MustHaveHappened();
 //        }
 
 //        [Test]
@@ -74,7 +74,7 @@
 //            var call = A.Fake<IWritableFakeObjectCall>();
 
 //            A.CallTo(() => call.Method).Returns(typeof(IFoo).GetMethod("Baz", new Type[] { }));
-//            A.CallTo(() => this.fakeManager.TryCreateDummy(A<Type>.Ignored, out Null<object>.Out)).Returns(false);
+//            A.CallTo(() => this.fakeManager.TryCreateDummy(A<Type>.Ignored, out output)).Returns(false);
 
 //            // Act
 //            using (Fake.CreateScope())

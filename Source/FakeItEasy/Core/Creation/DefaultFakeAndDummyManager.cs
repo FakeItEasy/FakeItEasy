@@ -5,7 +5,6 @@ namespace FakeItEasy.Core.Creation
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using FakeItEasy.DynamicProxy;
 
     /// <summary>
     /// The default implementation of the IFakeAndDummyManager interface.

@@ -146,12 +146,4 @@ namespace FakeItEasy.Tests.TestHelpers
             return methodExpression.Method;
         }
     }
-
-    /// <summary>
-    /// Helps when configuring calls with output parameters.
-    /// </summary>
-    internal static class Null<T>
-    {
-        static public T Out;
-    }
 }

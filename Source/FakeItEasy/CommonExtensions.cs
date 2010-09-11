@@ -149,5 +149,15 @@
                 }
             }
         }
+
+        public static void Debug(this ILogger logger, string message)
+        {
+            logger.Debug(() => message);
+        }
+
+        public static void Debug(this ILogger logger, string messageFormat, params object[] args)
+        {
+            logger.Debug(() => string.Format(messageFormat, args));
+        }
     }
 }

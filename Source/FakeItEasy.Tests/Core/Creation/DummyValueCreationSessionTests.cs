@@ -172,14 +172,16 @@ namespace FakeItEasy.Tests.Core.Creation
 
         private void StubFakeObjectCreatorWithValue<T>(T value)
         {
-            A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(typeof(T), this.session, out Null<object>.Out))
+            object output;
+            A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(typeof(T), this.session, out output))
                 .Returns(true)
                 .AssignsOutAndRefParameters(value);
         }
 
         private void StubContainerWithValue<T>(T value)
         {
-            A.CallTo(() => this.container.TryCreateFakeObject(typeof(T), out Null<object>.Out))
+            object output;
+            A.CallTo(() => this.container.TryCreateFakeObject(typeof(T), out output))
                 .Returns(true)
                 .AssignsOutAndRefParameters(value);
         }
