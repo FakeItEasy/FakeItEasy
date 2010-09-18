@@ -24,7 +24,7 @@ namespace FakeItEasy.Tests.Core.Creation
             // Arrange
 
             // Act
-            var result = new ProxyGeneratorResult(A.Fake<IProxy>(), A.Fake<ICallInterceptedEventRaiser>());
+            var result = new ProxyGeneratorResult(A.Fake<ITaggable>(), A.Fake<ICallInterceptedEventRaiser>());
 
             // Assert
             Assert.That(result.ProxyWasSuccessfullyGenerated, Is.True);
@@ -46,7 +46,7 @@ namespace FakeItEasy.Tests.Core.Creation
         public void Should_set_proxy_when_constructor_with_proxy_is_used()
         {
             // Arrange
-            var proxy = A.Fake<IProxy>();
+            var proxy = A.Fake<ITaggable>();
 
             // Act
             var result = new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>());
@@ -62,7 +62,7 @@ namespace FakeItEasy.Tests.Core.Creation
             var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
 
             // Act
-            var result = new ProxyGeneratorResult(A.Dummy<IProxy>(), eventRaiser);
+            var result = new ProxyGeneratorResult(A.Dummy<ITaggable>(), eventRaiser);
 
             // Assert
             Assert.That(result.CallInterceptedEventRaiser, Is.EqualTo(eventRaiser));
@@ -89,7 +89,7 @@ namespace FakeItEasy.Tests.Core.Creation
 
             // Assert
             NullGuardedConstraint.Assert(() =>
-                new ProxyGeneratorResult(A.Dummy<IProxy>(), A.Dummy<ICallInterceptedEventRaiser>()));
+                new ProxyGeneratorResult(A.Dummy<ITaggable>(), A.Dummy<ICallInterceptedEventRaiser>()));
         }
     }
 }

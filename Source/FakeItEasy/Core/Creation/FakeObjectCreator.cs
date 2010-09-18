@@ -10,9 +10,9 @@ namespace FakeItEasy.Core.Creation
         private static readonly Logger logger = Log.GetLogger<FakeObjectCreator>();
         private IProxyGenerator2 proxyGenerator;
         private IExceptionThrower thrower;
-        private IFakeManagerAttacher fakeManagerAttacher;
+        private IFakeManagerAccessor fakeManagerAttacher;
 
-        public FakeObjectCreator(IProxyGenerator2 proxyGenerator, IExceptionThrower thrower, IFakeManagerAttacher fakeManagerAttacher)
+        public FakeObjectCreator(IProxyGenerator2 proxyGenerator, IExceptionThrower thrower, IFakeManagerAccessor fakeManagerAttacher)
         {
             this.proxyGenerator = proxyGenerator;
             this.thrower = thrower;
@@ -35,7 +35,7 @@ namespace FakeItEasy.Core.Creation
 
             if (result != null)
             {
-                this.fakeManagerAttacher.AttachFakeObjectToProxy(result.GeneratedProxy, result.CallInterceptedEventRaiser);
+                this.fakeManagerAttacher.AttachFakeManagerToProxy(result.GeneratedProxy, result.CallInterceptedEventRaiser);
 
                 return result.GeneratedProxy;
             }

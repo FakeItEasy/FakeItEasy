@@ -622,7 +622,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
             var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
 
             // Assert
-            Assert.That(result.GeneratedProxy, Is.InstanceOf<IProxy>());
+            Assert.That(result.GeneratedProxy, Is.InstanceOf<ITaggable>());
         }
 
         [TestCaseSource("supportedTypes")]
@@ -632,7 +632,7 @@ IFakeObjectContainer in order to generate a fake of this type."));
             var tag = new object();
 
             // Act
-            var proxy = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null).GeneratedProxy as IProxy;
+            var proxy = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null).GeneratedProxy as ITaggable;
             proxy.Tag = tag;
 
             // Assert

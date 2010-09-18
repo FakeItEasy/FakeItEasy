@@ -1,0 +1,64 @@
+namespace FakeItEasy.Core
+{
+    using System;
+    using FakeItEasy.Core.Creation;
+
+    /// <summary>
+    /// Default implementation of the fake manager attacher.
+    /// </summary>
+    internal class DefaultFakeManagerAccessor
+        : IFakeManagerAccessor
+    {
+        private FakeManager.Factory managerFactory;
+
+        public DefaultFakeManagerAccessor(FakeManager.Factory managerFactory)
+        {
+            this.managerFactory = managerFactory;
+        }
+
+        /// <summary>
+        /// Attaches a fakemanager to the specified proxy, listening to
+        /// the event raiser.
+        /// </summary>
+        /// <param name="proxy">The proxy to attach to.</param>
+        /// <param name="eventRaiser">The event raiser to listen to.</param>
+        public void AttachFakeManagerToProxy(object proxy, ICallInterceptedEventRaiser eventRaiser)
+        {
+            var manager = this.managerFactory.Invoke();
+
+            TagProxy(proxy, manager);
+
+            manager.AttachProxy(proxy, eventRaiser);
+        }
+
+        /// <summary>
+        /// Gets the fake manager associated with the proxy.
+        /// </summary>
+        /// <param name="proxy">The proxy to get the manager from.</param>
+        /// <returns>A fake manager</returns>
+        public FakeManager GetFakeManager(object proxy)
+        {
+            var taggable = AsTaggable(proxy);
+            return (FakeManager)taggable.Tag;
+        }
+
+        private static void TagProxy(object proxy, FakeManager manager)
+        {
+            var taggable = AsTaggable(proxy);
+
+            taggable.Tag = manager;
+        }
+
+        private static ITaggable AsTaggable(object proxy)
+        {
+            var taggable = proxy as ITaggable;
+
+            if (taggable == null)
+            {
+                throw new NotSupportedException("The specified proxy does not implement ITaggable.");
+            }
+
+            return taggable;
+        }
+    }
+}

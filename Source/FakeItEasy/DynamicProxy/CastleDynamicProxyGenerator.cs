@@ -218,13 +218,13 @@
             return new ProxyGeneratorResult(string.Format(CultureInfo.CurrentCulture, DynamicProxyResources.ProxyIsValueTypeMessage, typeOfProxy));
         }
 
-        private IProxy DoGenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor)
+        private ITaggable DoGenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor)
         {
             var allInterfacesToImplement = GetAllInterfacesToImplement(additionalInterfacesToImplement);
 
             if (typeOfProxy.IsInterface)
             {
-                return (IProxy)proxyGenerator.CreateInterfaceProxyWithoutTarget(
+                return (ITaggable)proxyGenerator.CreateInterfaceProxyWithoutTarget(
                     typeOfProxy, 
                     allInterfacesToImplement,
                     interceptor);
@@ -239,11 +239,11 @@
             }
         }
 
-        private static IProxy GenerateClassProxy(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor, Type[] allInterfacesToImplement)
+        private static ITaggable GenerateClassProxy(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor, Type[] allInterfacesToImplement)
         {
             var argumentsArray = GetConstructorArgumentsArray(argumentsForConstructor);
 
-            return (IProxy)proxyGenerator.CreateClassProxy(
+            return (ITaggable)proxyGenerator.CreateClassProxy(
                 typeOfProxy,
                 allInterfacesToImplement,
                 ProxyGenerationOptions.Default,
@@ -258,14 +258,14 @@
 
         private static Type[] GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
         {
-            return additionalInterfacesToImplement.Concat(new[] { typeof(IProxy) }).ToArray();
+            return additionalInterfacesToImplement.Concat(new[] { typeof(ITaggable) }).ToArray();
         }
 
         private class ProxyInterceptor 
             : IInterceptor, ICallInterceptedEventRaiser
         {
-            private static readonly MethodInfo tagGetMethod = typeof(IProxy).GetProperty("Tag").GetGetMethod();
-            private static readonly MethodInfo tagSetMethod = typeof(IProxy).GetProperty("Tag").GetSetMethod();
+            private static readonly MethodInfo tagGetMethod = typeof(ITaggable).GetProperty("Tag").GetGetMethod();
+            private static readonly MethodInfo tagSetMethod = typeof(ITaggable).GetProperty("Tag").GetSetMethod();
 
             private object tag;
 

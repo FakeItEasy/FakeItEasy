@@ -104,6 +104,7 @@
     <Compile Include="Core\Creation\ProxyResultTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\DefaultFakeManagerAccessorTests.cs" />
     <Compile Include="Core\DefaultFakeObjectCallFormatterTests.cs" />
     <Compile Include="Core\EnumerableOfFakeCallsDefinition.cs" />
     <Compile Include="Core\FakeAsserterTests.cs">

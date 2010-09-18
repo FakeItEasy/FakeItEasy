@@ -254,5 +254,10 @@ namespace FakeItEasy.Core
                 this.IgnoreCallInRecording = true;
             }
         }
+
+        internal virtual void AttachProxy(object proxy, ICallInterceptedEventRaiser eventRaiser)
+        {
+            throw new MustBeImplementedException();
+        }
     }
 }

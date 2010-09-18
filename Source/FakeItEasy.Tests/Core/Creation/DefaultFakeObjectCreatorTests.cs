@@ -17,14 +17,14 @@ namespace FakeItEasy.Tests.Core.Creation
         private IProxyGenerator2 proxyGenerator;
         private FakeObjectCreator fakeObjectCreator;
         private IExceptionThrower thrower;
-        private IFakeManagerAttacher fakeManagerAttacher;
+        private IFakeManagerAccessor fakeManagerAttacher;
 
         [SetUp]
         public void SetUp()
         {
             this.proxyGenerator = A.Fake<IProxyGenerator2>();
             this.thrower = A.Fake<IExceptionThrower>();
-            this.fakeManagerAttacher = A.Fake<IFakeManagerAttacher>();
+            this.fakeManagerAttacher = A.Fake<IFakeManagerAccessor>();
 
             this.fakeObjectCreator = new FakeObjectCreator(this.proxyGenerator, this.thrower, this.fakeManagerAttacher);
         }
@@ -67,7 +67,7 @@ namespace FakeItEasy.Tests.Core.Creation
             this.fakeObjectCreator.CreateFake(typeof(IFoo), FakeOptions.Empty, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.fakeManagerAttacher.AttachFakeObjectToProxy(proxy, eventRaiser)).MustHaveHappened();
+            A.CallTo(() => this.fakeManagerAttacher.AttachFakeManagerToProxy(proxy, eventRaiser)).MustHaveHappened();
         }
 
         [Test]

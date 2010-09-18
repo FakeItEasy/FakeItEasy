@@ -1,6 +1,6 @@
 namespace FakeItEasy.Core.Creation
 {
-    public interface IProxy
+    public interface ITaggable
     {
         object Tag { get; set; }
     }
