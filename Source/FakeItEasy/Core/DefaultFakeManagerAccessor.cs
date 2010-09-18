@@ -20,15 +20,16 @@ namespace FakeItEasy.Core
         /// Attaches a fakemanager to the specified proxy, listening to
         /// the event raiser.
         /// </summary>
+        /// <param name="typeOfFake">The type of the fake object proxy.</param>
         /// <param name="proxy">The proxy to attach to.</param>
         /// <param name="eventRaiser">The event raiser to listen to.</param>
-        public void AttachFakeManagerToProxy(object proxy, ICallInterceptedEventRaiser eventRaiser)
+        public void AttachFakeManagerToProxy(Type typeOfFake, object proxy, ICallInterceptedEventRaiser eventRaiser)
         {
             var manager = this.managerFactory.Invoke();
 
             TagProxy(proxy, manager);
 
-            manager.AttachProxy(proxy, eventRaiser);
+            manager.AttachProxy(typeOfFake, proxy, eventRaiser);
         }
 
         /// <summary>

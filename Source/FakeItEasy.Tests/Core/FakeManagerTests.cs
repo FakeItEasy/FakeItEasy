@@ -2,12 +2,12 @@
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using FakeItEasy.Core;
+    using FakeItEasy.Core.Creation;
     using FakeItEasy.ExtensionSyntax;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
-    using FakeItEasy.Core.Creation;
-using System.Reflection;
 
     [TestFixture]
     public class FakeManagerTests
@@ -569,6 +569,58 @@ using System.Reflection;
 
             // Assert
             Assert.That(Fake.GetCalls(fake), Is.Empty);
+        }
+
+        [Test]
+        public void AttachProxy_should_set_proxy()
+        {
+            // Arrange
+            var fake = this.CreateFakeManager<IFoo>();
+
+            var proxy = A.Dummy<IFoo>();
+
+            // Act
+            fake.AttachProxy(typeof(object), proxy, A.Dummy<ICallInterceptedEventRaiser>());
+
+            // Assert
+            Assert.That(fake.Object, Is.SameAs(proxy));
+        }
+
+        [Test]
+        public void AttachProxy_should_set_the_fake_type()
+        {
+            // Arrange
+            var fake = this.CreateFakeManager<IFoo>();
+
+            // Act
+            fake.AttachProxy(typeof(IFoo), A.Dummy<IFoo>(), A.Dummy<ICallInterceptedEventRaiser>());
+
+            // Assert
+            Assert.That(fake.FakeObjectType, Is.EqualTo(typeof(IFoo)));
+        }
+
+        [Test]
+        public void AttachProxy_should_configure_manager_to_intercept_calls()
+        {
+            var fake = this.CreateFakeManager<IFoo>();
+            //var proxy = this.CreateProxyResult<IFoo>();
+            var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
+
+            var call = A.Fake<IWritableFakeObjectCall>();
+            call.Configure().CallsTo(x => x.Method).Returns(typeof(IFoo).GetMethod("Bar", new Type[] { }));
+
+            // Act
+            fake.AttachProxy(typeof(object), A.Dummy<IFoo>(), eventRaiser);
+
+            // Assert
+            var rule = A.Fake<IFakeObjectCallRule>();
+            A.CallTo(() => rule.IsApplicableTo(call)).Returns(true);
+
+            fake.AddRuleFirst(rule);
+
+            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(call)).Now;
+
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored.Argument)).MustHaveHappened();
         }
 
 

@@ -67,7 +67,7 @@ namespace FakeItEasy.Tests.Core.Creation
             this.fakeObjectCreator.CreateFake(typeof(IFoo), FakeOptions.Empty, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.fakeManagerAttacher.AttachFakeManagerToProxy(proxy, eventRaiser)).MustHaveHappened();
+            A.CallTo(() => this.fakeManagerAttacher.AttachFakeManagerToProxy(typeof(IFoo), proxy, eventRaiser)).MustHaveHappened();
         }
 
         [Test]

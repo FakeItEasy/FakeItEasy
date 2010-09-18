@@ -28,7 +28,7 @@ using FakeItEasy.Core;
             var proxy = A.Fake<ITaggable>();
             
             // Act
-            this.accessor.AttachFakeManagerToProxy(proxy, A.Dummy<ICallInterceptedEventRaiser>());
+            this.accessor.AttachFakeManagerToProxy(typeof(object), proxy, A.Dummy<ICallInterceptedEventRaiser>());
 
             // Assert
             Assert.That(proxy.Tag, Is.EqualTo(this.managerToReturnFromFactory));
@@ -44,7 +44,7 @@ using FakeItEasy.Core;
             // Act, Assert
             Assert.That(() =>
             {
-                this.accessor.AttachFakeManagerToProxy(proxy, A.Dummy<ICallInterceptedEventRaiser>());
+                this.accessor.AttachFakeManagerToProxy(typeof(object), proxy, A.Dummy<ICallInterceptedEventRaiser>());
             },
             Throws.Exception.InstanceOf<NotSupportedException>()
                 .With.Message.EqualTo("The specified proxy does not implement ITaggable."));
@@ -60,10 +60,10 @@ using FakeItEasy.Core;
             var eventRaiser = A.Dummy<ICallInterceptedEventRaiser>();
 
             // Act
-            this.accessor.AttachFakeManagerToProxy(proxy, eventRaiser);
+            this.accessor.AttachFakeManagerToProxy(typeof(object), proxy, eventRaiser);
 
             // Assert
-            A.CallTo(() => this.managerToReturnFromFactory.AttachProxy(proxy, eventRaiser)).MustHaveHappened();
+            A.CallTo(() => this.managerToReturnFromFactory.AttachProxy(typeof(object), proxy, eventRaiser)).MustHaveHappened();
         }
 
         [Test]

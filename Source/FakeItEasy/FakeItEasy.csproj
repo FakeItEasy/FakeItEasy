@@ -93,6 +93,7 @@
     <Compile Include="Core\Creation\IDummyValueCreationSession.cs" />
     <Compile Include="Core\Creation\ResolvedArgument.cs" />
     <Compile Include="Core\Creation\ResolvedConstructor.cs" />
+    <Compile Include="Core\DefaultExceptionThrower.cs" />
     <Compile Include="Core\DefaultFakeManagerAccessor.cs" />
     <Compile Include="Core\IExceptionThrower.cs" />
     <Compile Include="Core\Creation\IFakeObjectCreator.cs" />

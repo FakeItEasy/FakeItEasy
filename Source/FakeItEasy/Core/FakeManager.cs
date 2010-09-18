@@ -255,9 +255,12 @@ namespace FakeItEasy.Core
             }
         }
 
-        internal virtual void AttachProxy(object proxy, ICallInterceptedEventRaiser eventRaiser)
+        internal virtual void AttachProxy(Type typeOfFake, object proxy, ICallInterceptedEventRaiser eventRaiser)
         {
-            throw new MustBeImplementedException();
+            this.Object = proxy;
+            this.FakeObjectType = typeOfFake;
+
+            eventRaiser.CallWasIntercepted += this.Proxy_CallWasIntercepted;
         }
     }
 }

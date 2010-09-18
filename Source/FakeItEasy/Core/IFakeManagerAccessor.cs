@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core
 {
     using FakeItEasy.Core.Creation;
+    using System;
 
     /// <summary>
     /// Attaches a fake manager to the proxy so that intercepted
@@ -13,8 +14,9 @@ namespace FakeItEasy.Core
         /// the event raiser.
         /// </summary>
         /// <param name="proxy">The proxy to attach to.</param>
+        /// <param name="typeOfFake">The type of the fake object proxy.</param>
         /// <param name="eventRaiser">The event raiser to listen to.</param>
-        void AttachFakeManagerToProxy(object proxy, ICallInterceptedEventRaiser eventRaiser);
+        void AttachFakeManagerToProxy(Type typeOfFake, object proxy, ICallInterceptedEventRaiser eventRaiser);
 
         /// <summary>
         /// Gets the fake manager associated with the proxy.

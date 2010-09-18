@@ -35,7 +35,7 @@ namespace FakeItEasy.Core.Creation
 
             if (result != null)
             {
-                this.fakeManagerAttacher.AttachFakeManagerToProxy(result.GeneratedProxy, result.CallInterceptedEventRaiser);
+                this.fakeManagerAttacher.AttachFakeManagerToProxy(typeOfFake, result.GeneratedProxy, result.CallInterceptedEventRaiser);
 
                 return result.GeneratedProxy;
             }
