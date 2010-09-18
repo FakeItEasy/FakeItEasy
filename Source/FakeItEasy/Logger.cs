@@ -1,14 +1,16 @@
 namespace FakeItEasy
 {
     using System;
+    using System.Diagnostics;
 
-    internal interface ILogger
+    internal abstract class Logger
     {
         /// <summary>
         /// Writes the specified message to the logger.
         /// </summary>
         /// <param name="logger">The logger to write to.</param>
         /// <param name="message">The message to write.</param>
-        void Debug(Func<string> message);
+        [Conditional("DEBUG")]
+        public abstract void Debug(Func<string> message);
     }
 }

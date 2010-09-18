@@ -4,6 +4,7 @@ namespace FakeItEasy.Configuration
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
+    using System.Text;
 
     /// <summary>
     /// Provides the base for rules that can be built using the FakeConfiguration.
@@ -11,6 +12,8 @@ namespace FakeItEasy.Configuration
     internal abstract class BuildableCallRule
         : IFakeObjectCallRuleWithDescription
     {
+        private static readonly Logger logger = Log.GetLogger<BuildableCallRule>();
+
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
@@ -82,7 +85,7 @@ namespace FakeItEasy.Configuration
         {
             return this.OnIsApplicableTo(fakeObjectCall);
         }
-        
+
         public abstract void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate);
 
         protected abstract bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall);

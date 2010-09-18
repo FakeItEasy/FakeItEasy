@@ -150,12 +150,12 @@
             }
         }
 
-        public static void Debug(this ILogger logger, string message)
+        public static void Debug(this Logger logger, string message)
         {
             logger.Debug(() => message);
         }
 
-        public static void Debug(this ILogger logger, string messageFormat, params object[] args)
+        public static void Debug(this Logger logger, string messageFormat, params object[] args)
         {
             logger.Debug(() => string.Format(messageFormat, args));
         }

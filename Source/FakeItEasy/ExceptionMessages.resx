@@ -136,7 +136,10 @@
     <value>The method '{0}' was called too many times, expected #{1} times but was called #{2} times.</value>
   </data>
   <data name="CanNotGenerateFakeMessage" xml:space="preserve">
-    <value>Can not create fake of the type '{0}', it's not registered in the current container and the current IProxyGenerator can not generate the fake.</value>
+    <value>Can not create fake of the type '{0}', it's not registered in the current container and the current IProxyGenerator can not generate the fake.
+
+The following constructors failed:
+{1}</value>
   </data>
   <data name="ConfiguringNonFakeObjectExceptionMessage" xml:space="preserve">
     <value>Error when accessing FakeObject, the specified argument is of the type '{0}' which is not faked.</value>
@@ -202,5 +205,15 @@
   </data>
   <data name="OrderedAssertionsAlreadyOpen" xml:space="preserve">
     <value>A scope for ordered assertions is already opened, close that scope before opening another one.</value>
+  </data>
+  <data name="FailedToGenerateFakeWithArgumentsForConstructorPattern" xml:space="preserve">
+    <value>
+
+  The current proxy generator failed to create a proxy with the specified arguments for the constructor:
+
+  Reason for failure:
+    - {0}
+  
+</value>
   </data>
 </root>

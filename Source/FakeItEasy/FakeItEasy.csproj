@@ -91,6 +91,9 @@
     <Compile Include="Core\Creation\FakeObjectCreator.cs" />
     <Compile Include="Core\Creation\ICallInterceptedEventRaiser.cs" />
     <Compile Include="Core\Creation\IDummyValueCreationSession.cs" />
+    <Compile Include="Core\Creation\ResolvedArgument.cs" />
+    <Compile Include="Core\Creation\ResolvedConstructor.cs" />
+    <Compile Include="Core\IExceptionThrower.cs" />
     <Compile Include="Core\Creation\IFakeObjectCreator.cs" />
     <Compile Include="Core\Creation\IProxy.cs" />
     <Compile Include="Core\Creation\IProxyGenerator2.cs" />
@@ -99,6 +102,7 @@
     <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
     <Compile Include="Core\ICallMatcherAccessor.cs" />
     <Compile Include="Core\IFakeAsserter.cs" />
+    <Compile Include="Core\IFakeManagerAttacher.cs" />
     <Compile Include="Core\IFakeObjectCallFormatter.cs" />
     <Compile Include="Core\IFakeObjectCallRuleWithDescription.cs" />
     <Compile Include="Core\IFakeScope.cs" />
@@ -107,7 +111,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ILogger.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="OrderedAssertion.cs" />
     <Compile Include="Core\OrderedFakeAsserter.cs" />

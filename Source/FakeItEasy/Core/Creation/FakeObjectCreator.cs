@@ -7,94 +7,115 @@ namespace FakeItEasy.Core.Creation
 
     internal class FakeObjectCreator
     {
-        private static readonly ILogger logger = Log.GetLogger<FakeObjectCreator>();
-
+        private static readonly Logger logger = Log.GetLogger<FakeObjectCreator>();
         private IProxyGenerator2 proxyGenerator;
+        private IExceptionThrower thrower;
+        private IFakeManagerAttacher fakeManagerAttacher;
 
-        public FakeObjectCreator(IProxyGenerator2 proxyGenerator)
+        public FakeObjectCreator(IProxyGenerator2 proxyGenerator, IExceptionThrower thrower, IFakeManagerAttacher fakeManagerAttacher)
         {
-            logger.Debug("Creating new instance.");
-
             this.proxyGenerator = proxyGenerator;
+            this.thrower = thrower;
+            this.fakeManagerAttacher = fakeManagerAttacher;
         }
 
-        internal object CreateFake(Type type, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
+        public object CreateFake(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
         {
-            logger.Debug("Creating fake of type {0}.", type);
+            var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, fakeOptions.ArgumentsForConstructor);
 
-            ProxyGeneratorResult result = new ProxyGeneratorResult("foo");
-
-            foreach (var constructor in this.GetCandidateConstructorArguments(type, fakeOptions.ArgumentsForConstructor, session))
+            if (throwOnFailure)
             {
-                logger.Debug(() =>
-                {
-                    return string.Format("Trying to use constructor for {0} passing \"{1}\" as arguments.",
-                        type, constructor.ResolvedArguments == null ? "<NULL>" : constructor.ResolvedArguments.ToCollectionString(x => x.ToString(), ", "));
-                });
-
-                result = this.proxyGenerator.GenerateProxy(type, fakeOptions.AdditionalInterfacesToImplement, constructor.ResolvedArguments);
+                AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(result, fakeOptions);
             }
 
-            if (throwOnFailure && !result.ProxyWasSuccessfullyGenerated)
+            if (!result.ProxyWasSuccessfullyGenerated && fakeOptions.ArgumentsForConstructor == null)
             {
-                throw new FakeCreationException();
+                result = this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, fakeOptions, session, result.ReasonForFailure, throwOnFailure);
             }
 
-            return result.GeneratedProxy;
+            if (result != null)
+            {
+                this.fakeManagerAttacher.AttachFakeObjectToProxy(result.GeneratedProxy, result.CallInterceptedEventRaiser);
+
+                return result.GeneratedProxy;
+            }
+
+            return null;
         }
 
-        private IEnumerable<ConstructorArgumentsInfo> GetCandidateConstructorArguments(Type typeOfFake, IEnumerable<object> specifiedArgumentsForConstructor, IDummyValueCreationSession session)
+        private void AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(ProxyGeneratorResult result, FakeOptions fakeOptions)
         {
-            if (specifiedArgumentsForConstructor != null)
+            if (!result.ProxyWasSuccessfullyGenerated && fakeOptions.ArgumentsForConstructor != null)
             {
-                logger.Debug("Using specified arguments as arguments for constructor.");
-
-                return new[] 
-		                {
-		                    new ConstructorArgumentsInfo
-		                    {
-		                        ResolvedArguments = specifiedArgumentsForConstructor
-		                    }
-		                };
+                this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(result.ReasonForFailure);
             }
+        }
 
-            if (typeOfFake.IsInterface)
+        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, string failReasonForDefaultConstructor, bool throwOnFailure)
+        {
+            var constructors = this.ResolveConstructors(typeOfFake, session);
+                
+            foreach (var constructor in constructors.Where(x => x.WasSuccessfullyResolved))
             {
-                logger.Debug("Using null as arguments for constructor for interface {0}.", typeOfFake);
+                logger.Debug("Trying with constructor with {0} arguments.", constructor.Arguments.Length);
 
-                return new[]
-		                {
-		                    new ConstructorArgumentsInfo
-		                    {
-		                        ResolvedArguments = null
-		                    }
-		                };
-            }
+                var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, constructor.Arguments.Select(x => x.ResolvedValue));
 
-            logger.Debug("Resolving constructors to try to use for proxy.");
-
-            return
-                from constructor in typeOfFake.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                select new ConstructorArgumentsInfo
+                if (result.ProxyWasSuccessfullyGenerated)
                 {
-                    ResolvedArguments = from argument in constructor.GetParameters()
-                                        let resolved = this.ResolveArgument(argument.ParameterType, session)
-                                        where resolved.First == true
-                                        select resolved.Second
+                    return result;
+                }
+            }
+
+            if (throwOnFailure)
+            {
+                this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeOfFake, failReasonForDefaultConstructor, constructors);
+            }
+
+            return null;
+        }
+
+        private ResolvedConstructor[] ResolveConstructors(Type typeOfFake, IDummyValueCreationSession session)
+        {
+            logger.Debug("Resolving constructors for type {0}.", typeOfFake);
+
+            return (from constructor in GetUsableConstructorsInOrder(typeOfFake)
+                    let constructorAndArguments = ResolveConstructorArguments(constructor, session)
+                    select constructorAndArguments).ToArray();
+        }
+
+        private static IEnumerable<ConstructorInfo> GetUsableConstructorsInOrder(Type type)
+        {
+            return type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .Where(x => x.GetParameters().Length > 0)
+                .OrderByDescending(x => x.GetParameters().Length);
+        }
+
+        private static ResolvedConstructor ResolveConstructorArguments(ConstructorInfo constructor, IDummyValueCreationSession session)
+        {
+            logger.Debug("Beginning to resolve constructor with {0} arguments.", constructor.GetParameters().Length);
+
+            var resolvedArguments = new List<ResolvedArgument>();
+
+            foreach (var argument in constructor.GetParameters())
+            {
+                object result = null;
+
+                var resolvedArgument = new ResolvedArgument
+                {
+                    WasResolved = session.TryResolveDummyValue(argument.ParameterType, out result),
+                    ResolvedValue = result,
+                    ArgumentType = argument.ParameterType
                 };
-        }
 
-        private Tuple<bool, object> ResolveArgument(Type typeOfArgument, IDummyValueCreationSession session)
-        {
-            logger.Debug("Trying to resolve {0} argument.", typeOfArgument);
+                logger.Debug("Was able to resolve {0}: {1}.", argument.ParameterType, resolvedArgument.WasResolved);
+                resolvedArguments.Add(resolvedArgument);
+            }
 
-            object result;
-            return new Tuple<bool, object>(session.TryResolveDummyValue(typeOfArgument, out result), result);
-        }
-
-        private class ConstructorArgumentsInfo
-        {
-            public IEnumerable<object> ResolvedArguments { get; set; }
+            return new ResolvedConstructor
+            {
+                Arguments = resolvedArguments.ToArray()
+            };
         }
     }
 }

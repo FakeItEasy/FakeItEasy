@@ -4,17 +4,27 @@ namespace FakeItEasy
 
     internal static class Log
     {
-        public static ILogger GetLogger<T>()
-        {
 #if DEBUG
-            return new ConsoleLogger(typeof(T).ToString());
+        private const bool UseLogging = true;
 #else
-            return NullLogger.Instance;
+        private const bool UseLogging = false;
 #endif
+        
+
+        public static Logger GetLogger<T>()
+        {
+            if (UseLogging)
+            {
+                return new ConsoleLogger(typeof(T).ToString());
+            }
+            else
+            {
+                return NullLogger.Instance;
+            }
         }
 
         private class ConsoleLogger
-            : ILogger
+            : Logger
         {
             private string name;
 
@@ -23,14 +33,14 @@ namespace FakeItEasy
                 this.name = name;
             }
 
-            public void Debug(Func<string> message)
+            public override void Debug(Func<string> message)
             {
                 Console.WriteLine(string.Format("Log: {0} - {1}", this.name, message.Invoke()));
             }
         }
 
         private class NullLogger
-            : ILogger
+            : Logger
         {
             public static readonly NullLogger Instance = new NullLogger();
 
@@ -38,7 +48,7 @@ namespace FakeItEasy
             {
 
             }
-            public void Debug(Func<string> message)
+            public override void Debug(Func<string> message)
             {
                 // Do nothing
             }
