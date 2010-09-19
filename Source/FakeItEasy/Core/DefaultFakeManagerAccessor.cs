@@ -39,6 +39,8 @@ namespace FakeItEasy.Core
         /// <returns>A fake manager</returns>
         public FakeManager GetFakeManager(object proxy)
         {
+            Guard.AgainstNull(proxy, "proxy");
+
             var taggable = AsTaggable(proxy);
             return (FakeManager)taggable.Tag;
         }
@@ -56,7 +58,7 @@ namespace FakeItEasy.Core
 
             if (taggable == null)
             {
-                throw new NotSupportedException("The specified proxy does not implement ITaggable.");
+                throw new ArgumentException("The specified object is not recognized as a fake.");
             }
 
             return taggable;

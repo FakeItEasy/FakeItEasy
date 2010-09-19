@@ -86,7 +86,7 @@
     <Compile Include="Any.cs" />
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeAccessor.cs" />
-    <Compile Include="Core\Creation\DefaultFakeCreator.cs" />
+    <Compile Include="Core\Creation\DefaultFakeCreatorFacade.cs" />
     <Compile Include="Core\Creation\DummyValueCreationSession.cs" />
     <Compile Include="Core\Creation\FakeObjectCreator.cs" />
     <Compile Include="Core\Creation\ICallInterceptedEventRaiser.cs" />
@@ -98,7 +98,7 @@
     <Compile Include="Core\IExceptionThrower.cs" />
     <Compile Include="Core\Creation\IFakeObjectCreator.cs" />
     <Compile Include="Core\Creation\ITaggable.cs" />
-    <Compile Include="Core\Creation\IProxyGenerator2.cs" />
+    <Compile Include="Core\Creation\IProxyGenerator.cs" />
     <Compile Include="Core\Creation\ProxyGeneratorResult.cs" />
     <Compile Include="Core\DefaultFakeObjectCallFormatter.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
@@ -124,12 +124,11 @@
     <Compile Include="IFakeConfigurer.cs" />
     <Compile Include="IDummyDefinition.cs" />
     <Compile Include="Core\IFakeWrapperConfigurator.cs" />
-    <Compile Include="Core\Creation\IProxyGeneratorFactory.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
     <Compile Include="Core\FakeCreationException.cs" />
     <Compile Include="Core\Creation\DefaultFakeAndDummyManager.cs" />
     <Compile Include="Core\Creation\IFakeAndDummyManager.cs" />
-    <Compile Include="Core\Creation\IFakeCreator.cs" />
+    <Compile Include="Core\Creation\IFakeCreatorFacade.cs" />
     <Compile Include="Core\Creation\FakeOptions.cs" />
     <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs" />
     <Compile Include="Core\ICallMatcher.cs" />
@@ -148,12 +147,6 @@
     <Compile Include="Core\IInterceptedFakeObjectCall.cs" />
     <Compile Include="Core\ITypeCatalogue.cs" />
     <Compile Include="Core\ArgumentInfo.cs" />
-    <Compile Include="Core\ConstructorAndArgumentsInfo.cs" />
-    <Compile Include="Core\Creation\DefaultConstructorResolver.cs" />
-    <Compile Include="Core\Creation\DefaultDummyValueCreator.cs" />
-    <Compile Include="Core\Creation\IConstructorResolver.cs" />
-    <Compile Include="Core\Creation\IFakeCreationSession.cs" />
-    <Compile Include="Core\Creation\IDummyValueCreator.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -187,7 +180,6 @@
     <Compile Include="Configuration\IOutAndRefParametersConfiguration.cs" />
     <Compile Include="Configuration\IReturnValueArgumentValidationConfiguration.cs" />
     <Compile Include="Configuration\IVoidArgumentValidationConfiguration.cs" />
-    <Compile Include="DynamicProxy\DynamicProxyGeneratorBase.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs" />
     <Compile Include="Core\MethodInfoManager.cs" />
     <Compile Include="SelfInitializedFakes\ICallStorage.cs" />
@@ -240,16 +232,13 @@
     </Compile>
     <Compile Include="Core\FakeScope.cs" />
     <Compile Include="Guard.cs" />
-    <Compile Include="Core\IFakedProxy.cs" />
     <Compile Include="Core\IFakeObjectCall.cs" />
     <Compile Include="Core\IFakeObjectCallRule.cs" />
     <Compile Include="Core\IEventRaiserArguments.cs" />
     <Compile Include="IoC\Module.cs" />
-    <Compile Include="Core\Creation\IProxyGenerator.cs" />
     <Compile Include="Core\FakeManager.cs" />
     <Compile Include="Fake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\Creation\ProxyResult.cs" />
     <Compile Include="Raise.cs" />
     <Compile Include="RootModule.cs" />
     <Compile Include="ServiceLocator.cs" />

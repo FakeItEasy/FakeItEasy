@@ -86,12 +86,6 @@
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="AnyTests.cs" />
-    <Compile Include="Core\Creation\DefaultConstructorResolverTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\Creation\DefaultDummyValueCreatorTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\Creation\DefaultFakeAndDummyManagerTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -101,9 +95,6 @@
     <Compile Include="Core\Creation\DefaultFakeObjectCreatorTests.cs" />
     <Compile Include="Core\Creation\DummyValueCreationSessionTests.cs" />
     <Compile Include="Core\Creation\ProxyGeneratorResultTests.cs" />
-    <Compile Include="Core\Creation\ProxyResultTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\DefaultFakeManagerAccessorTests.cs" />
     <Compile Include="Core\DefaultFakeObjectCallFormatterTests.cs" />
     <Compile Include="Core\EnumerableOfFakeCallsDefinition.cs" />
@@ -142,6 +133,7 @@
     <Compile Include="Expressions\NotArgumentConstraintScopeTests.cs" />
     <Compile Include="Expressions\RootArgumentConstraintScopeTests.cs" />
     <Compile Include="Foo.cs" />
+    <Compile Include="IsProxyConstraint.cs" />
     <Compile Include="LowerBoundHappenedTests.cs" />
     <Compile Include="RepeatedTests.cs" />
     <Compile Include="RecordersTests.cs" />
@@ -188,7 +180,6 @@
     <Compile Include="ServiceLocatorTests.cs" />
     <Compile Include="SyntaxTests.cs" />
     <Compile Include="TestHelpers\ReflectionHelper.cs" />
-    <Compile Include="TestHelpers\TestableProxyResult.cs" />
     <Compile Include="VisualBasic\RecordedCallRuleTests.cs" />
     <Compile Include="VisualBasic\RecordingCallRuleTests.cs" />
     <Compile Include="VisualBasic\NextCallTests.cs" />

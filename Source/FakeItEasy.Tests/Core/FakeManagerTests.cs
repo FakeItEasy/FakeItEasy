@@ -42,11 +42,6 @@
             };
         }
 
-        private TestableProxyResult CreateProxyResult<T>()
-        {
-            return new TestableProxyResult(typeof(T), (IFakedProxy)A.Fake<T>());
-        }
-
         [Test]
         public void Calls_configured_in_a_child_context_does_not_exist_outside_that_context()
         {
@@ -321,7 +316,7 @@
         {
             var foo = A.Fake<IFoo>();
 
-            Assert.That(foo.ChildFoo, Is.InstanceOf<IFakedProxy>());
+            Assert.That(foo.ChildFoo, new IsProxyConstraint());
         }
 
         [Test]
@@ -349,50 +344,6 @@
 
             // Assert
             Assert.That(foo.InternalVirtualFakeableProperty, Is.SameAs(value));
-        }
-
-        [Test]
-        public void SetProxy_should_set_proxy_from_proxy_result()
-        {
-            var fake = this.CreateFakeManager<IFoo>();
-
-            var proxy = this.CreateProxyResult<IFoo>();
-
-            fake.SetProxy(proxy);
-
-            Assert.That(fake.Object, Is.SameAs(proxy.Proxy));
-        }
-
-        [Test]
-        public void SetProxy_should_set_the_fake_type_from_the_proxy()
-        {
-            var fake = this.CreateFakeManager<IFoo>();
-
-            var proxy = this.CreateProxyResult<IFoo>();
-
-            fake.SetProxy(proxy);
-
-            Assert.That(fake.FakeObjectType, Is.EqualTo(typeof(IFoo)));
-        }
-
-        [Test]
-        public void SetProxy_should_configure_fake_object_to_intercept_calls()
-        {
-            var fake = this.CreateFakeManager<IFoo>();
-            var proxy = this.CreateProxyResult<IFoo>();
-            var call = A.Fake<IWritableFakeObjectCall>();
-            call.Configure().CallsTo(x => x.Method).Returns(typeof(IFoo).GetMethod("Bar", new Type[] { }));
-
-            fake.SetProxy(proxy);
-
-            var rule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => rule.IsApplicableTo(call)).Returns(true);
-            
-            fake.AddRuleFirst(rule);
-
-            proxy.RaiseCallWasIntercepted(call);
-
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored.Argument)).MustHaveHappened();
         }
 
         [Test]
@@ -486,14 +437,11 @@
             var interceptedCall = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => interceptedCall.Method).Returns(interceptedMethod);
             
-            var proxyResult = A.Fake<ProxyResult>();
-            A.CallTo(() => proxyResult.TypeOfProxy).Returns(typeof(IFoo));
-            A.CallTo(() => proxyResult.Proxy.FakeManager).Returns(manager);
+            var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
+            manager.AttachProxy(typeof(IFoo), A.Fake<IFoo>(), eventRaiser);
             
-            manager.SetProxy(proxyResult);
-
             // Act
-            proxyResult.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
+            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
 
             // Assert
             A.CallTo(() => interceptedCall.SetReturnValue(expectedValue.Invoke(manager))).MustHaveHappened();
@@ -513,14 +461,12 @@
             A.CallTo(() => interceptedCall.FakedObject).Returns(proxyPassedToEquals);
             A.CallTo(() => interceptedCall.Arguments).Returns(new ArgumentCollection(new object[] { proxyPassedToEquals }, interceptedCall.Method));
 
-            var proxyResult = A.Fake<ProxyResult>();
-            A.CallTo(() => proxyResult.TypeOfProxy).Returns(typeof(FakedProxyWithManagerSpecified));
-            A.CallTo(() => proxyResult.Proxy).Returns(interceptingProxy);
-
-            interceptingProxy.FakeManager.SetProxy(proxyResult);
+            var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
+            
+            interceptingProxy.FakeManager.AttachProxy(typeof(FakedProxyWithManagerSpecified), interceptingProxy, eventRaiser);
 
             // Act
-            proxyResult.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
+            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
 
             // Assert
             A.CallTo(() => interceptedCall.SetReturnValue(false)).MustHaveHappened();
@@ -540,14 +486,11 @@
             A.CallTo(() => interceptedCall.FakedObject).Returns(proxyPassedToEquals);
             A.CallTo(() => interceptedCall.Arguments).Returns(new ArgumentCollection(new object[] { proxyPassedToEquals }, interceptedCall.Method));
 
-            var proxyResult = A.Fake<ProxyResult>();
-            A.CallTo(() => proxyResult.TypeOfProxy).Returns(typeof(FakedProxyWithManagerSpecified));
-            A.CallTo(() => proxyResult.Proxy).Returns(interceptingProxy);
-
-            interceptingProxy.FakeManager.SetProxy(proxyResult);
+            var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
+            interceptingProxy.FakeManager.AttachProxy(typeof(FakedProxyWithManagerSpecified), interceptingProxy, eventRaiser);
 
             // Act
-            proxyResult.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
+            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
 
             // Assert
             A.CallTo(() => interceptedCall.SetReturnValue(true)).MustHaveHappened();
@@ -625,9 +568,21 @@
 
 
         private class FakedProxyWithManagerSpecified
-            : IFakedProxy
+            : ITaggable
         {
             public FakeManager FakeManager
+            {
+                get
+                {
+                    return (FakeManager)this.Tag;
+                }
+                set
+                {
+                    this.Tag = value;
+                }
+            }
+
+            public object Tag
             {
                 get;
                 set;

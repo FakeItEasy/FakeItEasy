@@ -13,14 +13,14 @@ namespace FakeItEasy.Tests.Core.Creation
     public class DefaultFakeCreatorTests
     {
         private IFakeAndDummyManager fakeAndDummyManager;
-        private DefaultFakeCreator creator;
+        private DefaultFakeCreatorFacade creator;
 
         [SetUp]
         public void SetUp()
         {
             this.fakeAndDummyManager = A.Fake<IFakeAndDummyManager>();
 
-            this.creator = new DefaultFakeCreator(this.fakeAndDummyManager);
+            this.creator = new DefaultFakeCreatorFacade(this.fakeAndDummyManager);
 
             ConfigureDefaultValuesForFakeAndDummyManager();
         }
@@ -187,7 +187,7 @@ namespace FakeItEasy.Tests.Core.Creation
             var result = this.creator.CollectionOfFake<IFoo>(10);
             
             // Assert
-            Assert.That(result, Has.All.InstanceOf<IFoo>().And.All.InstanceOf<IFakedProxy>());
+            Assert.That(result, Has.All.InstanceOf<IFoo>().And.All.InstanceOf<ITaggable>());
         }
 
         [TestCase(2)]

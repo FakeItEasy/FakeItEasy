@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.Core.Creation
     {
         private static readonly Logger logger = Log.GetLogger<FakeObjectCreatorTests>();
 
-        private IProxyGenerator2 proxyGenerator;
+        private IProxyGenerator proxyGenerator;
         private FakeObjectCreator fakeObjectCreator;
         private IExceptionThrower thrower;
         private IFakeManagerAccessor fakeManagerAttacher;
@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests.Core.Creation
         [SetUp]
         public void SetUp()
         {
-            this.proxyGenerator = A.Fake<IProxyGenerator2>();
+            this.proxyGenerator = A.Fake<IProxyGenerator>();
             this.thrower = A.Fake<IExceptionThrower>();
             this.fakeManagerAttacher = A.Fake<IFakeManagerAccessor>();
 
@@ -219,6 +219,7 @@ namespace FakeItEasy.Tests.Core.Creation
             // Arrange
             var session = A.Fake<IDummyValueCreationSession>();
             StubSessionWithDummyValue<int>(session, 1);
+            StubProxyGeneratorToFail();
 
             var options = FakeOptions.Empty;
 

@@ -25,7 +25,7 @@ namespace FakeItEasy.IntegrationTests
         {
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
-                Assert.That(A.Dummy<IFoo>(), Is.InstanceOf<IFakedProxy>());
+                Assert.That(A.Dummy<IFoo>(), new IsProxyConstraint());
             }
         }
 

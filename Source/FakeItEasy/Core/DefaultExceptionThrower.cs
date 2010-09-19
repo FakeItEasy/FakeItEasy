@@ -9,12 +9,12 @@ namespace FakeItEasy.Core
     {
         public void ThrowFailedToGenerateProxyWithArgumentsForConstructor(string reasonForFailure)
         {
-            throw new NotImplementedException();
+            throw new FakeCreationException();
         }
 
         public void ThrowFailedToGenerateProxyWithResolvedConstructors(Type typeOfFake, string reasonForFailureOfUnspecifiedConstructor, IEnumerable<ResolvedConstructor> resolvedConstructors)
         {
-            throw new NotImplementedException();
+            throw new FakeCreationException();
         }
     }
 }

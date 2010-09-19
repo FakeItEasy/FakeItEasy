@@ -12,12 +12,12 @@ using FakeItEasy.Core.Creation;
     {
         public static ArgumentConstraint<T> IsThisSequence<T>(this ArgumentConstraintScope<T> scope, T collection) where T : IEnumerable
         {
-            return ArgumentConstraint.Create(scope, x => x.Cast<object>().SequenceEqual(collection.Cast<object>()), "Same sequence");
+            return ArgumentConstraint.Create(scope, x => x.Cast<object>().SequenceEqual(collection.Cast<object>()), "This sequence: " + collection.Cast<object>().ToCollectionString(x => x.ToString(), ", "));
         }
 
         public static ArgumentConstraint<T> IsThisSequence<T>(this ArgumentConstraintScope<T> scope, params object[] collection) where T : IEnumerable
         {
-            return ArgumentConstraint.Create(scope, x => x != null && x.Cast<object>().SequenceEqual(collection.Cast<object>()), "Same sequence");
+            return ArgumentConstraint.Create(scope, x => x != null && x.Cast<object>().SequenceEqual(collection.Cast<object>()), "This sequence: " + collection.ToCollectionString(x => x.ToString(), ", "));
         }
 
         

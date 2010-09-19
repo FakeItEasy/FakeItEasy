@@ -13,13 +13,13 @@
     public class ATests
         : ConfigurableServiceLocatorTestBase
     {
-        private IFakeCreator fakeCreator;
+        private IFakeCreatorFacade fakeCreator;
 
         protected override void OnSetUp()
         {
-            this.fakeCreator = A.Fake<IFakeCreator>();
+            this.fakeCreator = A.Fake<IFakeCreatorFacade>();
 
-            this.StubResolve<IFakeCreator>(this.fakeCreator);
+            this.StubResolve<IFakeCreatorFacade>(this.fakeCreator);
         }
 
         [Test]
@@ -87,7 +87,7 @@
             // Arrange            
             var returnedFromCreator = new List<IFoo>();
 
-            var creator = this.StubResolveWithFake<IFakeCreator>();
+            var creator = this.StubResolveWithFake<IFakeCreatorFacade>();
             A.CallTo(() => creator.CollectionOfFake<IFoo>(10)).Returns(returnedFromCreator);
 
             // Act

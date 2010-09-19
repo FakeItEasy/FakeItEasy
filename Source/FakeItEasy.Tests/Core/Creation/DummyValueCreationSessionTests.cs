@@ -170,6 +170,21 @@ namespace FakeItEasy.Tests.Core.Creation
             Assert.That(typedDummy.WidestConstructorWasCalled, Is.True);
         }
 
+        [TestCase(typeof(void))]
+        [TestCase(typeof(Func<int>))]
+        [TestCase(typeof(Action))]
+        public void Should_return_false_for_restricted_types(Type restrictedType)
+        {
+            // Arrange
+
+            // Act
+            object dummy;
+            var result = this.session.TryResolveDummyValue(restrictedType, out dummy);
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
         private void StubFakeObjectCreatorWithValue<T>(T value)
         {
             object output;

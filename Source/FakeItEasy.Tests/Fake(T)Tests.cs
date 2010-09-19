@@ -11,15 +11,15 @@
     public class FakeTTests
         : ConfigurableServiceLocatorTestBase
     {
-        private IFakeCreator fakeCreator;
+        private IFakeCreatorFacade fakeCreator;
         private IStartConfigurationFactory startConfigurationFactory;
 
         protected override void OnSetUp()
         {
-            this.fakeCreator = A.Fake<IFakeCreator>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeCreator>()));
+            this.fakeCreator = A.Fake<IFakeCreatorFacade>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeCreatorFacade>()));
             this.startConfigurationFactory = A.Fake<IStartConfigurationFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<IStartConfigurationFactory>()));
 
-            this.StubResolve<IFakeCreator>(this.fakeCreator);
+            this.StubResolve<IFakeCreatorFacade>(this.fakeCreator);
             this.StubResolve<IStartConfigurationFactory>(this.startConfigurationFactory);
         }
         

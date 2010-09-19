@@ -24,17 +24,19 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static FakeManager GetFakeManager(object fakedObject)
         {
-            Guard.AgainstNull(fakedObject, "fakedObject");
+            //Guard.AgainstNull(fakedObject, "fakedObject");
 
-            var accessor = fakedObject as IFakedProxy;
+            //var accessor = fakedObject as IFakedProxy;
 
-            if (accessor == null)
-            {
-                var message = ExceptionMessages.ConfiguringNonFakeObjectExceptionMessage.FormatInvariant(fakedObject.GetType());
-                throw new ArgumentException(message, "fakedObject");
-            }
+            //if (accessor == null)
+            //{
+            //    var message = ExceptionMessages.ConfiguringNonFakeObjectExceptionMessage.FormatInvariant(fakedObject.GetType());
+            //    throw new ArgumentException(message, "fakedObject");
+            //}
 
-            return accessor.FakeManager;
+            //return accessor.FakeManager;
+            var accessor = ServiceLocator.Current.Resolve<IFakeManagerAccessor>();
+            return accessor.GetFakeManager(fakedObject);
         }
 
         /// <summary>
@@ -148,11 +150,11 @@ namespace FakeItEasy
             }
         }
 
-        private static IFakeCreator FakeCreator
+        private static IFakeCreatorFacade FakeCreator
         {
             get
             {
-                return ServiceLocator.Current.Resolve<IFakeCreator>();
+                return ServiceLocator.Current.Resolve<IFakeCreatorFacade>();
             }
         }
 

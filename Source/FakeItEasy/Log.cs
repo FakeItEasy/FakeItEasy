@@ -5,7 +5,7 @@ namespace FakeItEasy
     internal static class Log
     {
 #if DEBUG
-        private const bool UseLogging = true;
+        private const bool UseLogging = false;
 #else
         private const bool UseLogging = false;
 #endif
@@ -35,7 +35,10 @@ namespace FakeItEasy
 
             public override void Debug(Func<string> message)
             {
-                Console.WriteLine(string.Format("Log: {0} - {1}", this.name, message.Invoke()));
+                if (this.name.Contains("FakeManager"))
+                {
+                    Console.WriteLine(string.Format("Log: {0}\r\n\t {1}", this.name, message.Invoke()));
+                }
             }
         }
 

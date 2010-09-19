@@ -23,11 +23,11 @@ namespace FakeItEasy
             }
         }
 
-        private static IFakeCreator FakeCreator
+        private static IFakeCreatorFacade FakeCreator
         {
             get
             {
-                return ServiceLocator.Current.Resolve<IFakeCreator>();
+                return ServiceLocator.Current.Resolve<IFakeCreatorFacade>();
             }
         }
         

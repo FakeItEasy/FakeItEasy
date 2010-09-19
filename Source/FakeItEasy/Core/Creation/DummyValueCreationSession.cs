@@ -8,9 +8,12 @@
     internal class DummyValueCreationSession
         : IDummyValueCreationSession
     {
-        private IFakeObjectContainer container;
+        private static readonly Logger logger = Log.GetLogger<DummyValueCreationSession>();
+
         private IFakeObjectCreator fakeObjectCreator;
         private HashSet<Type> isInProcessOfResolving;
+        private ResolveStrategy[] availableStrategies;
+        private Dictionary<Type, ResolveStrategy> strategyToUseForType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DummyValueCreationSession"/> class.
@@ -20,8 +23,16 @@
         public DummyValueCreationSession(IFakeObjectContainer container, IFakeObjectCreator fakeObjectCreator)
         {
             this.isInProcessOfResolving = new HashSet<Type>();
-            this.container = container;
             this.fakeObjectCreator = fakeObjectCreator;
+            this.strategyToUseForType = new Dictionary<Type, ResolveStrategy>();
+
+            this.availableStrategies = new ResolveStrategy[] 
+            {
+                new ResolveFromContainerSrategy { Container = container },
+                new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this },
+                new ResolveByActivatingValueTypeStrategy(),
+                new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy { Session = this }
+            };
         }
 
         public bool TryResolveDummyValue(Type typeOfDummy, out object result)
@@ -60,88 +71,142 @@
 
         private bool TryResolveDummyValueWithAllAvailableStrategies(Type typeOfDummy, out object result)
         {
-            if (this.container.TryCreateFakeObject(typeOfDummy, out result))
+            ResolveStrategy cachedStrategy;
+            if (this.strategyToUseForType.TryGetValue(typeOfDummy, out cachedStrategy))
             {
-                return true;
+                logger.Debug("Using cached strategy {0} for type {1}.", cachedStrategy.GetType(), typeOfDummy);
+                return cachedStrategy.TryCreateDummyValue(typeOfDummy, out result);
             }
 
-            if (this.fakeObjectCreator.TryCreateFakeObject(typeOfDummy, this, out result))
+            for (int i = 0; i < this.availableStrategies.Length; i++)
             {
-                return true;
-            }
-
-            if (this.TryActivateValueType(typeOfDummy, out result))
-            {
-                return true;
-            }
-
-            if (this.TryInstantiateClassUsingDummyValuesForConstructorArguments(typeOfDummy, out result))
-            {
-                return true;
-            }
-
-            result = null;
-            return false;
-        }
-
-        private bool TryActivateValueType(Type typeOfDummy, out object result)
-        {
-            if (typeOfDummy.IsValueType)
-            {
-                result = Activator.CreateInstance(typeOfDummy);
-                return true;
-            }
-
-            result = null;
-            return false;
-        }
-
-        private bool TryInstantiateClassUsingDummyValuesForConstructorArguments(Type typeOfDummy, out object result)
-        {
-            foreach (var constructor in this.GetConstructorsInOrder(typeOfDummy))
-            {
-                var argumentTypes = constructor.GetParameters().Select(x => x.ParameterType);
-                var resolvedArguments = this.ResolveAllTypes(argumentTypes);
-
-                if (resolvedArguments != null)
+                if (this.availableStrategies[i].TryCreateDummyValue(typeOfDummy, out result))
                 {
-                    try
-                    {
-                        result = Activator.CreateInstance(typeOfDummy, resolvedArguments.ToArray());
-                        return true;
-                    }
-                    catch
-                    {
-                    }
+                    logger.Debug("Using strategy {0} for type {1}.", this.availableStrategies[i].GetType(), typeOfDummy);
+                    this.strategyToUseForType.Add(typeOfDummy, this.availableStrategies[i]);
+                    return true;
                 }
             }
 
+            this.strategyToUseForType.Add(typeOfDummy, new UnableToResolveStrategy());
             result = null;
             return false;
         }
 
-        private IEnumerable<ConstructorInfo> GetConstructorsInOrder(Type type)
+        #region Strategies
+        private abstract class ResolveStrategy
         {
-            return type.GetConstructors().OrderBy(x => x.GetParameters().Length).Reverse();
+            public abstract bool TryCreateDummyValue(Type typeOfDummy, out object result);
         }
 
-        private IEnumerable<object> ResolveAllTypes(IEnumerable<Type> types)
+        private class ResolveFromContainerSrategy
+            : ResolveStrategy
         {
-            var result = new List<object>();
+            public IFakeObjectContainer Container;
 
-            foreach (var type in types)
+            public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
-                object resolvedType = null;
+                return this.Container.TryCreateFakeObject(typeOfDummy, out result);
+            }
+        }
 
-                if (!this.TryResolveDummyValue(type, out resolvedType))
+        private class ResolveByCreatingFakeStrategy
+            : ResolveStrategy
+        {
+            public IFakeObjectCreator FakeCreator;
+            public DummyValueCreationSession Session;
+
+            public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
+            {
+                return this.FakeCreator.TryCreateFakeObject(typeOfDummy, this.Session, out result);
+            }
+        }
+
+        private class ResolveByActivatingValueTypeStrategy
+            : ResolveStrategy
+        {
+            public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
+            {
+                if (typeOfDummy.IsValueType && !typeOfDummy.Equals(typeof(void)))
                 {
-                    return null;
+                    result = Activator.CreateInstance(typeOfDummy);
+                    return true;
                 }
 
-                result.Add(resolvedType);
+                result = null;
+                return false;
+            }
+        }
+
+        private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy
+            : ResolveStrategy
+        {
+            public DummyValueCreationSession Session;
+
+            public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
+            {
+                if (typeof(Delegate).IsAssignableFrom(typeOfDummy))
+                {
+                    result = null;
+                    return false;
+                }
+
+                foreach (var constructor in this.GetConstructorsInOrder(typeOfDummy))
+                {
+                    var argumentTypes = constructor.GetParameters().Select(x => x.ParameterType);
+                    var resolvedArguments = this.ResolveAllTypes(argumentTypes);
+
+                    if (resolvedArguments != null)
+                    {
+                        try
+                        {
+                            result = Activator.CreateInstance(typeOfDummy, resolvedArguments.ToArray());
+                            return true;
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+
+                result = null;
+                return false;
             }
 
-            return result;
+            private IEnumerable<ConstructorInfo> GetConstructorsInOrder(Type type)
+            {
+                return type.GetConstructors().OrderBy(x => x.GetParameters().Length).Reverse();
+            }
+
+            private IEnumerable<object> ResolveAllTypes(IEnumerable<Type> types)
+            {
+                var result = new List<object>();
+
+                foreach (var type in types)
+                {
+                    object resolvedType = null;
+
+                    if (!this.Session.TryResolveDummyValue(type, out resolvedType))
+                    {
+                        return null;
+                    }
+
+                    result.Add(resolvedType);
+                }
+
+                return result;
+            }
+        } 
+
+        private class UnableToResolveStrategy
+            : ResolveStrategy
+        {
+            public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
+            {
+                result = null;
+                return false;
+            }
         }
+        #endregion
     }
 }

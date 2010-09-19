@@ -17,6 +17,8 @@
     internal class RootModule 
         : Module
     {
+        private static readonly Logger logger = Log.GetLogger<RootModule>();
+
         /// <summary>
         /// Registers the dependencies.
         /// </summary>
@@ -67,86 +69,41 @@
             container.RegisterSingleton<VisualBasic.VisualBasicRuleBuilder.Factory>(c =>
                 (rule, fakeObject) => new VisualBasic.VisualBasicRuleBuilder(rule, c.Resolve<RuleBuilder.Factory>().Invoke(rule, fakeObject)));
 
-            container.Register<IFakeCreator>(c =>
-                new DefaultFakeCreator(c.Resolve<IFakeAndDummyManager>()));
+            container.Register<IFakeCreatorFacade>(c =>
+                new DefaultFakeCreatorFacade(c.Resolve<IFakeAndDummyManager>()));
 
             container.Register<IFakeAndDummyManager>(c =>
-                new DefaultFakeAndDummyManager(c.Resolve<IFakeObjectContainer>(), c.Resolve<IFakeCreationSession>(), c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeWrapperConfigurator>()));
+                {
+                    logger.Debug("Creating new fake and dummy manager.");
 
-            container.Register<IProxyGenerator>(c =>
-                c.Resolve<IFakeCreationSession>().ProxyGenerator);
+                    var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<IFakeManagerAccessor>());
+                    var session = new DummyValueCreationSession(c.Resolve<IFakeObjectContainer>(), new SessionFakeObjectCreator { Creator = fakeCreator });
 
+                    return new DefaultFakeAndDummyManager(session, fakeCreator, c.Resolve<IFakeWrapperConfigurator>());
+                });
+
+            container.RegisterSingleton<IProxyGenerator>(c => new CastleDynamicProxyGenerator());
+
+            container.RegisterSingleton<IExceptionThrower>(c => new DefaultExceptionThrower());
+
+            container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor(c.Resolve<FakeManager.Factory>()));
+                
             container.Register<IFakeWrapperConfigurator>(c =>
                 new DefaultFakeWrapperConfigurator());
 
             container.Register<ITypeCatalogue>(c =>
                 new ApplicationDirectoryAssembliesTypeAccessor());
-
-            container.Register<IFakeCreationSession>(c =>
-                new DummyResolvingSession(c));
-
-            container.RegisterSingleton<IProxyGeneratorFactory>(c =>
-                new CastleDynamicProxyGeneratorFactory());
         }
 
-        private class CastleDynamicProxyGeneratorFactory
-            : IProxyGeneratorFactory
+        private class SessionFakeObjectCreator
+            : IFakeObjectCreator
         {
-            public IProxyGenerator CreateProxyGenerator(IFakeCreationSession session)
-            {
-                return new CastleDynamicProxyGenerator(session);
-            }
-        }
+            public FakeObjectCreator Creator;
 
-        private class DummyResolvingSession
-            : IFakeCreationSession
-        {
-            private Dictionary<Type, object> cachedValues = new Dictionary<Type, object>();
-            private HashSet<Type> attemptedTypes = new HashSet<Type>();
-
-            public DummyResolvingSession(DictionaryContainer container)
+            public bool TryCreateFakeObject(Type typeOfFake, DummyValueCreationSession session, out object result)
             {
-                this.DummyCreator = new DefaultDummyValueCreator(this, container.Resolve<IFakeObjectContainer>());
-                this.ConstructorResolver = new DefaultConstructorResolver(this);
-                this.ProxyGenerator = container.Resolve<IProxyGeneratorFactory>().CreateProxyGenerator(this);
-            }
-
-            public bool TryGetCachedDummyValue(System.Type type, out object value)
-            {
-                return this.cachedValues.TryGetValue(type, out value);
-            }
-
-            public void RegisterTriedToResolveType(System.Type type)
-            {
-                this.attemptedTypes.Add(type);
-            }
-
-            public bool TypeHasFailedToResolve(System.Type type)
-            {
-                return this.attemptedTypes.Contains(type) && !this.cachedValues.ContainsKey(type);
-            }
-
-            public void AddResolvedDummyValueToCache(System.Type type, object dummy)
-            {
-                this.cachedValues.Add(type, dummy);
-            }
-
-            public IDummyValueCreator DummyCreator
-            {
-                get;
-                set;
-            }
-
-            public IConstructorResolver ConstructorResolver
-            {
-                get;
-                set;
-            }
-
-            public IProxyGenerator ProxyGenerator
-            {
-                get;
-                set;
+                result = this.Creator.CreateFake(typeOfFake, FakeOptions.Empty, session, false);
+                return result != null;
             }
         }
 

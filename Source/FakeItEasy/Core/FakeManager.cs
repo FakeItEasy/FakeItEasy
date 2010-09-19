@@ -14,6 +14,7 @@ namespace FakeItEasy.Core
     [Serializable]
     public partial class FakeManager
     {
+        private static readonly Logger logger = Log.GetLogger<FakeManager>();
         private IEnumerable<CallRuleMetadata> preUserRules;
         private LinkedList<CallRuleMetadata> allUserRulesField;
         private IEnumerable<CallRuleMetadata> postUserRules;
@@ -142,16 +143,10 @@ namespace FakeItEasy.Core
             var ruleToRemove = this.AllUserRules.Where(x => x.Rule.Equals(rule)).FirstOrDefault();
             this.AllUserRules.Remove(ruleToRemove);
         }
-        
-        internal virtual void SetProxy(ProxyResult proxy)
-        {
-            this.Object = proxy.Proxy;
-            this.FakeObjectType = proxy.TypeOfProxy;
-            proxy.CallWasIntercepted += this.Proxy_CallWasIntercepted;
-        }
-
+       
         private static void ApplyRule(CallRuleMetadata rule, IInterceptedFakeObjectCall fakeObjectCall)
         {
+            logger.Debug("Applying rule {0}.", rule.Rule.ToString());
             rule.CalledNumberOfTimes++;
             rule.Rule.Apply(fakeObjectCall);
         }

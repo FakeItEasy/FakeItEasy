@@ -9,16 +9,16 @@ namespace FakeItEasy.Core.Creation
     /// <summary>
     /// Default implementation ofthe IFakeCreator-interface.
     /// </summary>
-    internal class DefaultFakeCreator
-        : IFakeCreator
+    internal class DefaultFakeCreatorFacade
+        : IFakeCreatorFacade
     {
         private IFakeAndDummyManager fakeAndDummyManager;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultFakeCreator"/> class.
+        /// Initializes a new instance of the <see cref="DefaultFakeCreatorFacade"/> class.
         /// </summary>
         /// <param name="fakeAndDummyManager">The fake and dummy manager.</param>
-        public DefaultFakeCreator(IFakeAndDummyManager fakeAndDummyManager)
+        public DefaultFakeCreatorFacade(IFakeAndDummyManager fakeAndDummyManager)
         {
             this.fakeAndDummyManager = fakeAndDummyManager;
         }

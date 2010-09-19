@@ -6,7 +6,7 @@ using System.Collections.Generic;
     /// <summary>
     /// A facade used by the public api for testability.
     /// </summary>
-    internal interface IFakeCreator
+    internal interface IFakeCreatorFacade
     {
         /// <summary>
         /// Creates a fake object of the specified type.

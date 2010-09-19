@@ -23,6 +23,7 @@
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TFake, TMember>(this TFake fakedObject, Expression<Func<TFake, TMember>> callSpecification)
         {
+            Guard.AgainstNull(fakedObject, "fakedObject");
             Guard.AgainstNull(callSpecification, "callSpecification");
             
             return fakedObject.Configure().CallsTo(callSpecification);
@@ -39,6 +40,7 @@
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static IVoidArgumentValidationConfiguration CallsTo<TFake>(this TFake fakedObject, Expression<Action<TFake>> callSpecification)
         {
+            Guard.AgainstNull(fakedObject, "fakedObject");
             Guard.AgainstNull(callSpecification, "callSpecification");
 
             return fakedObject.Configure().CallsTo(callSpecification);
@@ -53,6 +55,8 @@
         /// <returns>A configuration object.</returns>
         public static IVoidConfiguration AnyCall<TFake>(this TFake fakedObject)
         {
+            Guard.AgainstNull(fakedObject, "fakedObject");
+
             return fakedObject.Configure().AnyCall();
         }
     }

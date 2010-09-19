@@ -8,11 +8,11 @@ namespace FakeItEasy.Core.Creation
     internal class FakeObjectCreator
     {
         private static readonly Logger logger = Log.GetLogger<FakeObjectCreator>();
-        private IProxyGenerator2 proxyGenerator;
+        private IProxyGenerator proxyGenerator;
         private IExceptionThrower thrower;
         private IFakeManagerAccessor fakeManagerAttacher;
 
-        public FakeObjectCreator(IProxyGenerator2 proxyGenerator, IExceptionThrower thrower, IFakeManagerAccessor fakeManagerAttacher)
+        public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, IFakeManagerAccessor fakeManagerAttacher)
         {
             this.proxyGenerator = proxyGenerator;
             this.thrower = thrower;

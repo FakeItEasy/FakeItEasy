@@ -56,17 +56,5 @@ namespace FakeItEasy.Tests
                 Assert.That(FakeScope.Current, Is.Not.SameAs(originalScope));
             }
         }
-
-        [Test]
-        public void GetFakeObject_should_be_null_guarded()
-        {
-            // Arrange
-
-            // Act
-
-            // Assert
-            NullGuardedConstraint.Assert(() =>
-                Fake.GetFakeManager(A.Fake<IFoo>()));
-        }
     }
 }

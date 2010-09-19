@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using FakeItEasy.Core.Creation;
 
     public partial class FakeManager
     {
@@ -83,10 +84,10 @@
                     return false;
                 }
 
-                var argument = fakeObjectCall.Arguments[0] as IFakedProxy;
+                var argument = fakeObjectCall.Arguments[0] as ITaggable;
                 if (argument != null)
                 {
-                    fakeObjectCall.SetReturnValue(argument.FakeManager.Equals(this.FakeManager));
+                    fakeObjectCall.SetReturnValue(argument.Tag.Equals(this.FakeManager));
                 }
                 else
                 {

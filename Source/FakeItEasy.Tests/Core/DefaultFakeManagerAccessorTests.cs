@@ -46,8 +46,8 @@ using FakeItEasy.Core;
             {
                 this.accessor.AttachFakeManagerToProxy(typeof(object), proxy, A.Dummy<ICallInterceptedEventRaiser>());
             },
-            Throws.Exception.InstanceOf<NotSupportedException>()
-                .With.Message.EqualTo("The specified proxy does not implement ITaggable."));
+            Throws.Exception.InstanceOf<ArgumentException>()
+                .With.Message.EqualTo("The specified object is not recognized as a fake."));
         }
 
         [Test]
@@ -91,8 +91,20 @@ using FakeItEasy.Core;
             {
                 this.accessor.GetFakeManager(proxy);
             },
-            Throws.Exception.InstanceOf<NotSupportedException>()
-                .With.Message.EqualTo("The specified proxy does not implement ITaggable."));
+            Throws.Exception.InstanceOf<ArgumentException>()
+                .With.Message.EqualTo("The specified object is not recognized as a fake."));
+        }
+
+        [Test]
+        public void Should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                this.accessor.GetFakeManager(A.Fake<ITaggable>()));
         }
     }
 }
