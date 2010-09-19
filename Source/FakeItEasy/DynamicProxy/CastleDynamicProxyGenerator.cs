@@ -12,14 +12,10 @@
     public class CastleDynamicProxyGenerator
         : IProxyGenerator
     {
-        private static ProxyGenerator proxyGenerator = new ProxyGenerator();
-        private static HashSet<RuntimeMethodHandle> objectMethods = new HashSet<RuntimeMethodHandle>() 
-        {
-            typeof(object).GetMethod("ToString", new Type[] {}).MethodHandle,
-            typeof(object).GetMethod("GetHashCode", new Type[] {}).MethodHandle,
-            typeof(object).GetMethod("Equals", new[] { typeof(object) }).MethodHandle
-        };
-
+        private static readonly Logger logger = Log.GetLogger<CastleDynamicProxyGenerator>();
+        private static readonly ProxyGenerationOptions proxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
+        private static readonly ProxyGenerator proxyGenerator = new ProxyGenerator();
+        
         public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
         {
             Guard.AgainstNull(typeOfProxy, "typeOfProxy");
@@ -69,8 +65,7 @@
             Guard.AgainstNull(member, "member");
 
             var isNonInterceptableMember =
-                IsNonInterceptableObjectMethod(member) || 
-                IsNonVirtualMethod(member) || 
+                IsNonVirtualMethod(member) ||
                 IsNonVirtualProperty(member);
 
             return !isNonInterceptableMember;
@@ -108,12 +103,6 @@
                 (setMethod == null || setMethod.IsVirtual);
         }
 
-        private static bool IsNonInterceptableObjectMethod(MemberInfo member)
-        {
-            var method = member as MethodInfo;
-            return method != null && objectMethods.Contains(method.MethodHandle);
-        }
-
         private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy)
         {
             return new ProxyGeneratorResult(string.Format(CultureInfo.CurrentCulture, DynamicProxyResources.ProxyTypeWithNoDefaultConstructorMessage, typeOfProxy));
@@ -124,13 +113,13 @@
             return new ProxyGeneratorResult(string.Format(CultureInfo.CurrentCulture, DynamicProxyResources.ProxyIsValueTypeMessage, typeOfProxy));
         }
 
-        private ITaggable DoGenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor)
+        private object DoGenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor)
         {
             var allInterfacesToImplement = GetAllInterfacesToImplement(additionalInterfacesToImplement);
 
             if (typeOfProxy.IsInterface)
             {
-                return (ITaggable)proxyGenerator.CreateInterfaceProxyWithoutTarget(
+                return proxyGenerator.CreateInterfaceProxyWithoutTarget(
                     typeOfProxy, 
                     allInterfacesToImplement,
                     interceptor);
@@ -145,14 +134,14 @@
             }
         }
 
-        private static ITaggable GenerateClassProxy(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor, Type[] allInterfacesToImplement)
+        private static object GenerateClassProxy(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor, Type[] allInterfacesToImplement)
         {
             var argumentsArray = GetConstructorArgumentsArray(argumentsForConstructor);
 
-            return (ITaggable)proxyGenerator.CreateClassProxy(
+            return proxyGenerator.CreateClassProxy(
                 typeOfProxy,
                 allInterfacesToImplement,
-                ProxyGenerationOptions.Default,
+                proxyGenerationOptions,
                 argumentsArray,
                 interceptor);
         }
@@ -165,6 +154,25 @@
         private static Type[] GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
         {
             return additionalInterfacesToImplement.Concat(new[] { typeof(ITaggable) }).ToArray();
+        }
+
+        [Serializable]
+        private class InterceptEverythingHook 
+            : IProxyGenerationHook
+        {
+            public void MethodsInspected()
+            {
+            }
+
+            public void NonProxyableMemberNotification(Type type, MemberInfo memberInfo)
+            {
+                logger.Debug("Non proxyable member: {0}.{1}.", type, memberInfo.Name);
+            }
+
+            public bool ShouldInterceptMethod(Type type, MethodInfo methodInfo)
+            {
+                return true;
+            }
         }
 
         [Serializable]

@@ -33,12 +33,6 @@ namespace FakeItEasy.Tests.DynamicProxy
             {
                 typeof(object).GetMethod("GetType"),
                 typeof(string).GetProperty("Length"),
-                typeof(object).GetMethod("ToString", new Type[] {}),
-                typeof(object).GetMethod("GetHashCode", new Type[] {}),
-                typeof(object).GetMethod("Equals", new Type[] { typeof(object) }),
-                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
-                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("GetHashCode", new Type[] {}),
-                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("Equals", new Type[] { typeof(object) }),
                 typeof(TypeWithNonVirtualProperty).GetProperty("Foo").GetGetMethod(),
                 typeof(TypeWithNonVirtualProperty).GetProperty("Foo").GetSetMethod(),
                 typeof(TypeWithNonVirtualProperty).GetProperty("Foo")
@@ -46,8 +40,14 @@ namespace FakeItEasy.Tests.DynamicProxy
 
         private MemberInfo[] interceptableMembers = new MemberInfo[] 
             {
+                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
+                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("GetHashCode", new Type[] {}),
+                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("Equals", new Type[] { typeof(object) }),
+                typeof(object).GetMethod("GetHashCode", new Type[] {}),
+                typeof(object).GetMethod("Equals", new Type[] { typeof(object) }),
                 typeof(IFoo).GetMethod("Bar", new Type[] {}),
                 typeof(IFoo).GetProperty("SomeProperty").GetGetMethod(),
+                typeof(object).GetMethod("ToString", new Type[] {}),
                 typeof(IFoo).GetProperty("SomeProperty").GetSetMethod(),
                 typeof(IFoo).GetProperty("SomeProperty"),
                 typeof(TypeWithAllOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
@@ -297,6 +297,26 @@ namespace FakeItEasy.Tests.DynamicProxy
                 });
 
             Assert.That(ex.Message, Is.EqualTo("Arguments for constructor specified for interface type."));
+        }
+
+        [Test]
+        public void Should_be_able_to_intercept_ToString()
+        {
+            // Arrange
+            bool wasCalled = false;
+
+            // Act
+            var proxy = this.generator.GenerateProxy(typeof(object), Enumerable.Empty<Type>(), null);
+
+            proxy.CallInterceptedEventRaiser.CallWasIntercepted += (s, e) =>
+                {
+                    wasCalled = true;
+                };
+
+            proxy.GeneratedProxy.ToString();
+
+            // Assert
+            Assert.That(wasCalled, Is.True);
         }
 
         [Serializable]
