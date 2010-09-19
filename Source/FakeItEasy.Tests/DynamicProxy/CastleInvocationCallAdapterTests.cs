@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using Castle.Core.Interceptor;
 using FakeItEasy.Core;
 using System.Reflection;
 using FakeItEasy.DynamicProxy;
+using Castle.DynamicProxy;
 
 namespace FakeItEasy.Tests.DynamicProxy
 {

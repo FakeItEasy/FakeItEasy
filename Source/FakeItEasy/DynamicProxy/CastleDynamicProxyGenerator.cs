@@ -5,12 +5,10 @@
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
-    using Castle.Core.Interceptor;
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
     using FakeItEasy.Core.Creation;
-    using IInterceptor = Castle.Core.Interceptor.IInterceptor;
-
+    
     public class CastleDynamicProxyGenerator
         : IProxyGenerator
     {

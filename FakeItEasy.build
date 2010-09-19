@@ -101,7 +101,7 @@
 		<Copy SourceFiles="@(licenseFiles)" DestinationFolder="$(LicensePath)" />
 		<Copy SourceFiles="@(unmergedFiles)" DestinationFolder="$(BinariesPath)\Temp" />
 		
-		<CreateItem Include="$(BinariesPath)\Temp\FakeItEasy.dll;$(BinariesPath)\Temp\Castle.Core.dll;$(BinariesPath)\Temp\Castle.DynamicProxy2.dll">
+		<CreateItem Include="$(BinariesPath)\Temp\FakeItEasy.dll;$(BinariesPath)\Temp\Castle.Core.dll">
 			<Output ItemName="binariesToMerge" TaskParameter="Include"/>
 		</CreateItem>
 		

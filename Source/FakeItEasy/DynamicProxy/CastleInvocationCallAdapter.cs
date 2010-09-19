@@ -1,10 +1,9 @@
 namespace FakeItEasy.DynamicProxy
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Reflection;
-    using Castle.Core.Interceptor;
+    using Castle.DynamicProxy;
     using FakeItEasy.Core;
 
     /// <summary>

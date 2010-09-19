@@ -5,7 +5,6 @@ using System.Text;
 using NUnit.Framework;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using System.Linq.Expressions;
-using Castle.Core.Interceptor;
 using FakeItEasy.Configuration;
 
 namespace FakeItEasy.Tests

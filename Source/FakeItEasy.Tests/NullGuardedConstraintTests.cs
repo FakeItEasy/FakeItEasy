@@ -9,7 +9,6 @@ using NUnit.Framework.Constraints;
 using System.Linq.Expressions;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using Castle.Core.Interceptor;
 
 namespace FakeItEasy.Tests
 {
