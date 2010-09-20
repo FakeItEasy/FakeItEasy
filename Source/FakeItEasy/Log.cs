@@ -35,7 +35,7 @@ namespace FakeItEasy
 
             public override void Debug(Func<string> message)
             {
-                if (this.name.Contains("DynamicProxy"))
+                if (!this.name.Contains("RootModule"))
                 {
                     Console.WriteLine(string.Format("Log: {0}\r\n\t {1}", this.name, message.Invoke()));
                 }

@@ -299,14 +299,14 @@ namespace FakeItEasy.Tests.DynamicProxy
             Assert.That(ex.Message, Is.EqualTo("Arguments for constructor specified for interface type."));
         }
 
-        [Test]
-        public void Should_be_able_to_intercept_ToString()
+        [TestCaseSource("supportedTypes")]
+        public void Should_be_able_to_intercept_ToString(Type typeOfProxy)
         {
             // Arrange
             bool wasCalled = false;
 
             // Act
-            var proxy = this.generator.GenerateProxy(typeof(object), Enumerable.Empty<Type>(), null);
+            var proxy = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
 
             proxy.CallInterceptedEventRaiser.CallWasIntercepted += (s, e) =>
                 {

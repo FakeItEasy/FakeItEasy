@@ -97,7 +97,6 @@ namespace FakeItEasy.Tests.Expressions
             Assert.That(thrown.Message, Is.EqualTo("The specified call is not made on a fake object."));
         }
 
-
         public class TypeWithPublicField
         {
             public int Foo = 1;

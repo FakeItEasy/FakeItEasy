@@ -15,7 +15,7 @@
         private static readonly Logger logger = Log.GetLogger<CastleDynamicProxyGenerator>();
         private static readonly ProxyGenerationOptions proxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
         private static readonly ProxyGenerator proxyGenerator = new ProxyGenerator();
-        
+
         public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
         {
             Guard.AgainstNull(typeOfProxy, "typeOfProxy");
@@ -119,28 +119,20 @@
 
             if (typeOfProxy.IsInterface)
             {
-                return proxyGenerator.CreateInterfaceProxyWithoutTarget(
-                    typeOfProxy, 
-                    allInterfacesToImplement,
-                    interceptor);
+                allInterfacesToImplement = new[] { typeOfProxy }.Concat(allInterfacesToImplement);
+                typeOfProxy = typeof(object);
             }
-            else
-            {
-                return GenerateClassProxy(
-                    typeOfProxy, 
-                    argumentsForConstructor, 
-                    interceptor, 
-                    allInterfacesToImplement);
-            }
+
+            return GenerateClassProxy(typeOfProxy, argumentsForConstructor, interceptor, allInterfacesToImplement);
         }
 
-        private static object GenerateClassProxy(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor, Type[] allInterfacesToImplement)
+        private static object GenerateClassProxy(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor, IEnumerable<Type> allInterfacesToImplement)
         {
             var argumentsArray = GetConstructorArgumentsArray(argumentsForConstructor);
 
             return proxyGenerator.CreateClassProxy(
                 typeOfProxy,
-                allInterfacesToImplement,
+                allInterfacesToImplement.ToArray(),
                 proxyGenerationOptions,
                 argumentsArray,
                 interceptor);
@@ -151,9 +143,9 @@
             return argumentsForConstructor != null ? argumentsForConstructor.ToArray() : null;
         }
 
-        private static Type[] GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
+        private static IEnumerable<Type> GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
         {
-            return additionalInterfacesToImplement.Concat(new[] { typeof(ITaggable) }).ToArray();
+            return additionalInterfacesToImplement.Concat(new[] { typeof(ITaggable) });
         }
 
         [Serializable]
@@ -166,11 +158,12 @@
 
             public void NonProxyableMemberNotification(Type type, MemberInfo memberInfo)
             {
-                logger.Debug("Non proxyable member: {0}.{1}.", type, memberInfo.Name);
+                logger.Debug("Non interceptable member: {0}.{1}.", type, memberInfo.Name);
             }
 
             public bool ShouldInterceptMethod(Type type, MethodInfo methodInfo)
             {
+                logger.Debug("Intercept member: {0}.{1}.", type, methodInfo);
                 return true;
             }
         }
@@ -202,6 +195,7 @@
 
             private void RaiseCallWasIntercepted(IInvocation invocation)
             {
+                logger.Debug("Call was intercepted: {0}.", invocation.Method);
                 var handler = this.CallWasIntercepted;
                 if (handler != null)
                 {
