@@ -5,7 +5,7 @@ namespace FakeItEasy
     internal static class Log
     {
 #if DEBUG
-        private const bool UseLogging = false;
+        private const bool UseLogging = true;
 #else
         private const bool UseLogging = false;
 #endif

@@ -17,18 +17,5 @@ namespace FakeItEasy.IntegrationTests
                 var result = A.Fake<Uri>();
             }
         }
-
-        [Test]
-        public void Should_be_able_to_fake_dictionary_that_can_be_used()
-        {
-            // Arrange
-            var dictionary = A.Fake<Dictionary<string, string>>();
-
-            // Act
-            dictionary.Add("foo", "bar");
-
-            // Assert
-            A.CallTo(() => dictionary.Add("foo", "bar")).MustHaveHappened();
-        }
     }
 }
