@@ -18,6 +18,7 @@ namespace FakeItEasy.Tests.Core.Creation
         private FakeObjectCreator fakeObjectCreator;
         private IExceptionThrower thrower;
         private IFakeManagerAccessor fakeManagerAttacher;
+        private IFakeObjectConfigurer configurer;
 
         [SetUp]
         public void SetUp()
@@ -25,8 +26,9 @@ namespace FakeItEasy.Tests.Core.Creation
             this.proxyGenerator = A.Fake<IProxyGenerator>();
             this.thrower = A.Fake<IExceptionThrower>();
             this.fakeManagerAttacher = A.Fake<IFakeManagerAccessor>();
+            this.configurer = A.Fake<IFakeObjectConfigurer>();
 
-            this.fakeObjectCreator = new FakeObjectCreator(this.proxyGenerator, this.thrower, this.fakeManagerAttacher);
+            this.fakeObjectCreator = new FakeObjectCreator(this.proxyGenerator, this.thrower, this.fakeManagerAttacher, this.configurer);
         }
 
         [Test]
@@ -281,6 +283,22 @@ namespace FakeItEasy.Tests.Core.Creation
             
             A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeof(TypeWithMultipleConstructors), "failed", ConstructorsEquivalentTo(expectedConstructors).Argument))
                 .MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_pass_created_fake_to_configurer()
+        {
+            // Arrange
+            var proxy = A.Fake<IFoo>(x => x.Implements(typeof(ITaggable)));
+            A.CallTo(() =>
+                this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<IEnumerable<object>>.Ignored.Argument)
+            ).Returns(new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>()));
+
+            // Act
+            this.fakeObjectCreator.CreateFake(typeof(IFoo), FakeOptions.Empty, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
+
+            // Assert
+            A.CallTo(() => this.configurer.ConfigureFake(typeof(IFoo), proxy)).MustHaveHappened();
         }
 
         private ArgumentConstraint<IEnumerable<ResolvedConstructor>> ConstructorsEquivalentTo(IEnumerable<ResolvedConstructor> constructors)

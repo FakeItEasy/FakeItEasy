@@ -6,6 +6,7 @@ using NUnit.Framework;
 using FakeItEasy.Tests;
 using FakeItEasy.ExtensionSyntax;
 using FakeItEasy.VisualBasic;
+using FakeItEasy.Core;
 
 namespace FakeItEasy.IntegrationTests
 {
@@ -169,6 +170,23 @@ namespace FakeItEasy.IntegrationTests
             // Assert
             Assert.That(foo.SomeProperty, Is.EqualTo(10));
             Assert.That(foo.Baz(), Is.EqualTo(10));
+        }
+
+        [Test]
+        public void A_fake_should_be_passed_to_the_container_to_be_configured_when_created()
+        {
+            // Arrange
+            var container = A.Fake<IFakeObjectContainer>();
+            Any.CallTo(container).WithReturnType<bool>().Returns(false);
+
+            using (Fake.CreateScope(container))
+            {
+                // Act
+                var fake = A.Fake<IFoo>();
+
+                // Assert
+                A.CallTo(() => container.ConfigureFake(typeof(IFoo), fake)).MustHaveHappened();
+            }
         }
 
         public class BaseClass

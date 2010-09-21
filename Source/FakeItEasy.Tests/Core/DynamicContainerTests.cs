@@ -8,21 +8,30 @@ namespace FakeItEasy.Core.Tests
     [TestFixture]
     public class DynamicContainerTests
     {
-        private ITypeCatalogue typeAccessor;
+        private ITypeCatalogue typeCatalogue;
         private List<Type> availableTypes;
-        
+        private IDisposable scope;
+
         [SetUp]
         public void SetUp()
         {
+            this.scope = Fake.CreateScope(new NullFakeObjectContainer());
+
             this.availableTypes = new List<Type>();
 
-            this.typeAccessor = A.Fake<ITypeCatalogue>();
-            A.CallTo(() => this.typeAccessor.GetAvailableTypes()).Returns(this.availableTypes);
+            this.typeCatalogue = A.Fake<ITypeCatalogue>();
+            A.CallTo(() => this.typeCatalogue.GetAvailableTypes()).Returns(this.availableTypes);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.scope.Dispose();
         }
 
         private DynamicContainer CreateContainer()
         {
-            return new DynamicContainer(this.typeAccessor);
+            return new DynamicContainer(this.typeCatalogue);
         }
 
         [Test]
@@ -34,7 +43,7 @@ namespace FakeItEasy.Core.Tests
 
             object fake;
 
-            Assert.That(container.TryCreateFakeObject(typeof(TypeWithDummyDefinition), out fake), Is.True);
+            Assert.That(container.TryCreateDummyObject(typeof(TypeWithDummyDefinition), out fake), Is.True);
             Assert.That(fake, Is.InstanceOf<TypeWithDummyDefinition>());
         }
 
@@ -45,7 +54,7 @@ namespace FakeItEasy.Core.Tests
 
             object fake;
 
-            Assert.That(container.TryCreateFakeObject(typeof(TypeWithDummyDefinition), out fake), Is.False);
+            Assert.That(container.TryCreateDummyObject(typeof(TypeWithDummyDefinition), out fake), Is.False);
         }
 
         [Test]
@@ -80,7 +89,7 @@ namespace FakeItEasy.Core.Tests
 
             // Act
             object outputVariable;
-            var result = container.TryCreateFakeObject(typeof(TypeWithDummyDefinition), out outputVariable);
+            var result = container.TryCreateDummyObject(typeof(TypeWithDummyDefinition), out outputVariable);
 
             // Assert
             Assert.That(result, Is.False);
@@ -113,7 +122,7 @@ namespace FakeItEasy.Core.Tests
 
             // Act
             object fake = null;
-            var result = container.TryCreateFakeObject(typeof(TypeWithDummyDefinition), out fake);
+            var result = container.TryCreateDummyObject(typeof(TypeWithDummyDefinition), out fake);
 
             // Assert
             Assert.That(result, Is.True);
@@ -141,6 +150,7 @@ namespace FakeItEasy.Core.Tests
 
             public override void ConfigureFake(TypeWithDummyDefinition fakeObject)
             {
+                Console.WriteLine("Applying form no default constructor");
                 A.CallTo(() => fakeObject.WasConfigured).Returns(true);
             }
         }

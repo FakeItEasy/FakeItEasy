@@ -103,6 +103,7 @@
     <Compile Include="Core\IFakeManagerAccessor.cs" />
     <Compile Include="Core\IFakeObjectCallFormatter.cs" />
     <Compile Include="Core\IFakeObjectCallRuleWithDescription.cs" />
+    <Compile Include="Core\IFakeObjectConfigurer.cs" />
     <Compile Include="Core\IFakeScope.cs" />
     <Compile Include="DynamicProxy\DynamicProxyResources.Designer.cs">
       <DependentUpon>DynamicProxyResources.resx</DependentUpon>

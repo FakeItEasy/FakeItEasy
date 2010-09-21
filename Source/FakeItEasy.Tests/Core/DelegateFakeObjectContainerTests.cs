@@ -31,7 +31,7 @@ namespace FakeItEasy.Tests.Core
             container.Register<IFoo>(() => foo);
 
             object result;
-            Assert.That(container.TryCreateFakeObject(typeof(IFoo), out result), Is.True);
+            Assert.That(container.TryCreateDummyObject(typeof(IFoo), out result), Is.True);
             Assert.That(result, Is.SameAs(foo));
         }
 
@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests.Core
             var container = this.CreateContainer();
 
             object result;
-            Assert.That(container.TryCreateFakeObject(typeof(IFoo), out result), Is.False);
+            Assert.That(container.TryCreateDummyObject(typeof(IFoo), out result), Is.False);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace FakeItEasy.Tests.Core
             container.Register<IFoo>(() => foo2);
 
             object result;
-            container.TryCreateFakeObject(typeof(IFoo), out result);
+            container.TryCreateDummyObject(typeof(IFoo), out result);
 
             Assert.That(result, Is.SameAs(foo2));
         }

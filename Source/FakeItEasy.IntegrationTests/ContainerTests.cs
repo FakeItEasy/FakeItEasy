@@ -55,7 +55,7 @@ namespace FakeItEasy.IntegrationTests
         {
             public IDictionary<Type, object> RegisteredTypes;
 
-            public bool TryCreateFakeObject(Type typeOfFakeObject, out object fakeObject)
+            public bool TryCreateDummyObject(Type typeOfFakeObject, out object fakeObject)
             {
                 return this.RegisteredTypes.TryGetValue(typeOfFakeObject, out fakeObject);
             }

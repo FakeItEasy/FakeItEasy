@@ -16,7 +16,7 @@ namespace FakeItEasy.Tests.Core
             var container = new NullFakeObjectContainer();
 
             object result = null;
-            Assert.That(container.TryCreateFakeObject((Type)null, out result), Is.False);
+            Assert.That(container.TryCreateDummyObject((Type)null, out result), Is.False);
         }
 
         [Test]
@@ -25,7 +25,7 @@ namespace FakeItEasy.Tests.Core
             var container = new NullFakeObjectContainer();
             object result = null;
 
-            container.TryCreateFakeObject((Type)null, out result);
+            container.TryCreateDummyObject((Type)null, out result);
 
             Assert.That(result, Is.Null);
         }

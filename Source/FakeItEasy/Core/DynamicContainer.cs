@@ -31,7 +31,7 @@
         /// <param name="typeOfFake">The type of fake object to create.</param>
         /// <param name="fakeObject">The fake object that was created if the method returns true.</param>
         /// <returns>True if a fake object can be created.</returns>
-        public bool TryCreateFakeObject(Type typeOfFake, out object fakeObject)
+        public bool TryCreateDummyObject(Type typeOfFake, out object fakeObject)
         {
             IDummyDefinition dummyDefinition = null;
 

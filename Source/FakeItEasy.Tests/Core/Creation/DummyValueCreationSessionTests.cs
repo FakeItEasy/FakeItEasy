@@ -196,7 +196,7 @@ namespace FakeItEasy.Tests.Core.Creation
         private void StubContainerWithValue<T>(T value)
         {
             object output;
-            A.CallTo(() => this.container.TryCreateFakeObject(typeof(T), out output))
+            A.CallTo(() => this.container.TryCreateDummyObject(typeof(T), out output))
                 .Returns(true)
                 .AssignsOutAndRefParameters(value);
         }

@@ -11,12 +11,14 @@ namespace FakeItEasy.Core.Creation
         private IProxyGenerator proxyGenerator;
         private IExceptionThrower thrower;
         private IFakeManagerAccessor fakeManagerAttacher;
+        private IFakeObjectConfigurer configurer;
 
-        public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, IFakeManagerAccessor fakeManagerAttacher)
+        public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, IFakeManagerAccessor fakeManagerAttacher, IFakeObjectConfigurer configurer)
         {
             this.proxyGenerator = proxyGenerator;
             this.thrower = thrower;
             this.fakeManagerAttacher = fakeManagerAttacher;
+            this.configurer = configurer;
         }
 
         public object CreateFake(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
@@ -36,7 +38,7 @@ namespace FakeItEasy.Core.Creation
             if (result != null)
             {
                 this.fakeManagerAttacher.AttachFakeManagerToProxy(typeOfFake, result.GeneratedProxy, result.CallInterceptedEventRaiser);
-
+                this.configurer.ConfigureFake(typeOfFake, result.GeneratedProxy);
                 return result.GeneratedProxy;
             }
 

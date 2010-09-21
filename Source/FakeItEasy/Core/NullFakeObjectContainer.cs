@@ -14,7 +14,7 @@
         /// <param name="typeOfFake">The type of fake object to create.</param>
         /// <param name="fakeObject">Output variable for the fake object that will always be set to null.</param>
         /// <returns>Always return false.</returns>
-        public bool TryCreateFakeObject(Type typeOfFake, out object fakeObject)
+        public bool TryCreateDummyObject(Type typeOfFake, out object fakeObject)
         {
             fakeObject = null;
             return false;

@@ -76,8 +76,9 @@
                 {
                     logger.Debug("Creating new fake and dummy manager.");
 
-                    var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<IFakeManagerAccessor>());
-                    var session = new DummyValueCreationSession(c.Resolve<IFakeObjectContainer>(), new SessionFakeObjectCreator { Creator = fakeCreator });
+                    var fakeContainer = c.Resolve<IFakeObjectContainer>();
+                    var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<IFakeManagerAccessor>(), fakeContainer);
+                    var session = new DummyValueCreationSession(fakeContainer, new SessionFakeObjectCreator { Creator = fakeCreator });
 
                     return new DefaultFakeAndDummyManager(session, fakeCreator, c.Resolve<IFakeWrapperConfigurator>());
                 });

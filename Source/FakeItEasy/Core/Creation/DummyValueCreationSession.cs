@@ -106,7 +106,7 @@
 
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
-                return this.Container.TryCreateFakeObject(typeOfDummy, out result);
+                return this.Container.TryCreateDummyObject(typeOfDummy, out result);
             }
         }
 
@@ -196,7 +196,7 @@
 
                 return result;
             }
-        } 
+        }
 
         private class UnableToResolveStrategy
             : ResolveStrategy
