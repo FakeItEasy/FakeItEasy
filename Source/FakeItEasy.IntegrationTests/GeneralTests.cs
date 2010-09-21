@@ -56,21 +56,19 @@ namespace FakeItEasy.IntegrationTests
             {
                 var thrown = Assert.Throws<FakeCreationException>(() =>
                     A.Fake<NonResolvableType>());
-
+                
                 Assert.That(thrown.Message, Is.EqualTo(@"
+  Failed to create fake of type ""FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType"".
 
-   FakeItEasy failed to create fake object of type ""FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType"".
+  Below is a list of reasons for failure per attempted constructor:
+    No constructor arguments failed:
+      No default constructor was found on the type FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType.
+    The following constructors were not tried:
+      (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
+      (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
 
-   1. The type is not registered in the current IFakeObjectContainer.
-   2. The current IProxyGenerator failed to generate a proxy for the following reason:
-
-      The type has no default constructor and none of the available constructors listed below can be resolved:
-
-      public     (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
-      protected  (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
-
-      * The types marked with with a star (*) can not be faked. Register these types in the current
-      IFakeObjectContainer in order to generate a fake of this type.
+      Types marked with * could not be resolved, register them in the current
+      IFakeObjectContainer to enable these constructors.
 
 "));
             }   

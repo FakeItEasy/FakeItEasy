@@ -91,6 +91,7 @@
     <Compile Include="Core\Creation\DefaultFakeObjectCreatorTests.cs" />
     <Compile Include="Core\Creation\DummyValueCreationSessionTests.cs" />
     <Compile Include="Core\Creation\ProxyGeneratorResultTests.cs" />
+    <Compile Include="Core\DefaultExceptionThrowerTests.cs" />
     <Compile Include="Core\DefaultFakeManagerAccessorTests.cs" />
     <Compile Include="Core\DefaultFakeObjectCallFormatterTests.cs" />
     <Compile Include="Core\EnumerableOfFakeCallsDefinition.cs" />

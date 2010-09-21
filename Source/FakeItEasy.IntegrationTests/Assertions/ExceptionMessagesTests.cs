@@ -36,7 +36,8 @@ namespace FakeItEasy.IntegrationTests.Assertions
     ...
     3.  'FakeItEasy.Tests.IFoo.Bar(argument: ""test"")'
     4.  'FakeItEasy.Tests.IFoo.Bar(argument: 4/5/1977 12:00:00 AM, argument2: ""birthday"")'
-    5.  'FakeItEasy.Tests.IFoo.Biz()'
+    5.  'FakeItEasy.Tests.IFoo.ToString()'
+    6.  'FakeItEasy.Tests.IFoo.Biz()'
 
 "));
         }
@@ -55,7 +56,6 @@ namespace FakeItEasy.IntegrationTests.Assertions
             var exception = Assert.Throws<ExpectationException>(() =>
                 A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.Twice));
 
-            Console.WriteLine(exception.Message);
             Assert.That(exception.Message, Is.EqualTo(@"
 
   Assertion failed for the following call:

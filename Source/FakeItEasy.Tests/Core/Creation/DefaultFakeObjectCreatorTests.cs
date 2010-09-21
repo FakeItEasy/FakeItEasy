@@ -87,7 +87,7 @@ namespace FakeItEasy.Tests.Core.Creation
             this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: true);
             
             // Assert
-            A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor("fail reason"))
+            A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(IFoo), "fail reason"))
                 .MustHaveHappened();
         }
 
@@ -125,6 +125,7 @@ namespace FakeItEasy.Tests.Core.Creation
                 // Arrange
                 var session = A.Fake<IDummyValueCreationSession>();
                 StubSessionWithDummyValue<int>(session, 1);
+                StubSessionWithDummyValue<string>(session, "dummy");
 
                 this.StubProxyGeneratorToFail();
 
@@ -143,7 +144,7 @@ namespace FakeItEasy.Tests.Core.Creation
                        .MustHaveHappened();
                     A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1).Argument))
                         .MustHaveHappened();
-                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1).Argument))
+                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence("dummy").Argument))
                         .MustHaveHappened();
                 }
             }
@@ -238,8 +239,8 @@ namespace FakeItEasy.Tests.Core.Creation
         {
             // Arrange
             var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionToFailForType<int>(session);
-            StubSessionToFailForType<string>(session);
+            StubSessionToFailForType<int>(session);            
+            StubSessionWithDummyValue<string>(session, "dummy");
             
             this.StubProxyGeneratorToFail("failed");
 
@@ -269,13 +270,14 @@ namespace FakeItEasy.Tests.Core.Creation
                 },
                 new ResolvedConstructor
                 {
+                    ReasonForFailure = "failed",
                     Arguments = new[]
                     {
                         new ResolvedArgument
                         {
-                            ArgumentType = typeof(int),
-                            ResolvedValue = null,
-                            WasResolved = false
+                            ArgumentType = typeof(string),
+                            ResolvedValue = "dummy",
+                            WasResolved = true
                         }
                     }
                 }
@@ -309,10 +311,16 @@ namespace FakeItEasy.Tests.Core.Creation
                 {
                     logger.Debug("Unequal number of constructors.");
                     return false;
-                }
+                }                
 
                 foreach (var constructorPair in x.Zip(constructors))
                 {
+                    if (!string.Equals(constructorPair.First.ReasonForFailure, constructorPair.Second.ReasonForFailure))
+                    {
+                        logger.Debug("Not the same reason for failure.");
+                        return false;
+                    }
+
                     if (constructorPair.First.Arguments.Length != constructorPair.Second.Arguments.Length)
                     {
                         logger.Debug("Unequal number of arguments.");
@@ -370,7 +378,7 @@ namespace FakeItEasy.Tests.Core.Creation
             {
             }
 
-            public TypeWithMultipleConstructors(int argument1)
+            public TypeWithMultipleConstructors(string argument1)
             {
             }
 

@@ -158,12 +158,10 @@
 
             public void NonProxyableMemberNotification(Type type, MemberInfo memberInfo)
             {
-                logger.Debug("Non interceptable member: {0}.{1}.", type, memberInfo.Name);
             }
 
             public bool ShouldInterceptMethod(Type type, MethodInfo methodInfo)
             {
-                logger.Debug("Intercept member: {0}.{1}.", type, methodInfo);
                 return true;
             }
         }

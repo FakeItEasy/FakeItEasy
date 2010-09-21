@@ -27,7 +27,7 @@ namespace FakeItEasy.Core.Creation
 
             if (throwOnFailure)
             {
-                AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(result, fakeOptions);
+                AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(typeOfFake, result, fakeOptions);
             }
 
             if (!result.ProxyWasSuccessfullyGenerated && fakeOptions.ArgumentsForConstructor == null)
@@ -45,11 +45,11 @@ namespace FakeItEasy.Core.Creation
             return null;
         }
 
-        private void AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(ProxyGeneratorResult result, FakeOptions fakeOptions)
+        private void AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(Type typeOfFake, ProxyGeneratorResult result, FakeOptions fakeOptions)
         {
             if (!result.ProxyWasSuccessfullyGenerated && fakeOptions.ArgumentsForConstructor != null)
             {
-                this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(result.ReasonForFailure);
+                this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeOfFake, result.ReasonForFailure);
             }
         }
 
@@ -66,6 +66,11 @@ namespace FakeItEasy.Core.Creation
                 if (result.ProxyWasSuccessfullyGenerated)
                 {
                     return result;
+                }
+                else
+                {
+                    logger.Debug("Setting reason for failure of constructor to {0}.", result.ReasonForFailure);
+                    constructor.ReasonForFailure = result.ReasonForFailure;
                 }
             }
 

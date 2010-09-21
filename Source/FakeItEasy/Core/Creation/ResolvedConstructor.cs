@@ -13,5 +13,7 @@ namespace FakeItEasy.Core.Creation
         }
 
         public ResolvedArgument[] Arguments { get; set; }
+
+        public string ReasonForFailure { get; set; }
     }
 }

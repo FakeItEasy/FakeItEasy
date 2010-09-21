@@ -6,7 +6,7 @@ namespace FakeItEasy.Core
     
     internal interface IExceptionThrower
     {
-        void ThrowFailedToGenerateProxyWithArgumentsForConstructor(string reasonForFailure);
+        void ThrowFailedToGenerateProxyWithArgumentsForConstructor(Type typeOfFake, string reasonForFailure);
         void ThrowFailedToGenerateProxyWithResolvedConstructors(Type typeOfFake, string reasonForFailureOfUnspecifiedConstructor, IEnumerable<ResolvedConstructor> resolvedConstructors);
     }
 }
