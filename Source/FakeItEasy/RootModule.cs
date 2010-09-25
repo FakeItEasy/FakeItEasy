@@ -5,7 +5,7 @@
     using System.IO;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     using FakeItEasy.DynamicProxy;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;

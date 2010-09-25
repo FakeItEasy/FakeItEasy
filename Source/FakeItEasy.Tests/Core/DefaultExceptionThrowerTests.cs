@@ -1,10 +1,10 @@
 namespace FakeItEasy.Tests.Core
 {
-    using FakeItEasy.Core;
-    using NUnit.Framework;
     using System;
     using System.Collections.Generic;
-using FakeItEasy.Core.Creation;
+    using FakeItEasy.Core;
+    using FakeItEasy.Creation;
+    using NUnit.Framework;
 
     [TestFixture]
     internal class DefaultExceptionThrowerTests

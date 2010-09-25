@@ -8,7 +8,7 @@ namespace FakeItEasy
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
 
     /// <summary>
     /// Provides static methods for accessing fake objects.

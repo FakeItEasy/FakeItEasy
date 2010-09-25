@@ -6,7 +6,7 @@ namespace FakeItEasy
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
 
     /// <summary>

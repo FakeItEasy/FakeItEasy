@@ -1,9 +1,10 @@
-﻿namespace FakeItEasy.Core.Creation
+﻿namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using FakeItEasy.Core;
     
     internal class DummyValueCreationSession
         : IDummyValueCreationSession

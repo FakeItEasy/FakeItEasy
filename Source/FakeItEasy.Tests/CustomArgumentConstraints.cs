@@ -6,8 +6,8 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
-using FakeItEasy.Core.Creation;
-
+    using FakeItEasy.Creation;
+    
     public static class CustomArgumentConstraints
     {
         public static ArgumentConstraint<T> IsThisSequence<T>(this ArgumentConstraintScope<T> scope, T collection) where T : IEnumerable

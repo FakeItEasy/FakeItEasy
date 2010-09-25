@@ -4,7 +4,7 @@ namespace FakeItEasy.Tests.Core.Creation
     using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     using NUnit.Framework;
     using System.Diagnostics;
     using FakeItEasy.Expressions;

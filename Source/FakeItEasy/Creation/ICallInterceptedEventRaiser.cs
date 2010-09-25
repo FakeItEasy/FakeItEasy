@@ -1,6 +1,7 @@
-namespace FakeItEasy.Core.Creation
+namespace FakeItEasy.Creation
 {
     using System;
+    using FakeItEasy.Core;
 
     public interface ICallInterceptedEventRaiser
     {

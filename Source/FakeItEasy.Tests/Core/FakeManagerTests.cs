@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     using FakeItEasy.ExtensionSyntax;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;

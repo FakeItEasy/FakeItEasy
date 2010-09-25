@@ -7,7 +7,7 @@
     using System.Reflection;
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     
     public class CastleDynamicProxyGenerator
         : IProxyGenerator

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
 
     public partial class FakeManager
     {

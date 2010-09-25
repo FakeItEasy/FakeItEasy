@@ -3,7 +3,7 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>

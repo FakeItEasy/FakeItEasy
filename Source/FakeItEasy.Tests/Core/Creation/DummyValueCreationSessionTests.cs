@@ -2,7 +2,7 @@ namespace FakeItEasy.Tests.Core.Creation
 {
     using System;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 

@@ -2,7 +2,7 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     
     internal interface IExceptionThrower
     {

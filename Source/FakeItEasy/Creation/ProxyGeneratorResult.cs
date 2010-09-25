@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core.Creation
+namespace FakeItEasy.Creation
 {
     /// <summary>
     /// Contains the result of a call to TryCreateProxy of IProxyGenerator.

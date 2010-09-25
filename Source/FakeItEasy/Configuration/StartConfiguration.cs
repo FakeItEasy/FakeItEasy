@@ -4,7 +4,7 @@ namespace FakeItEasy.Configuration
     using System.Linq.Expressions;
     using System.Reflection;
     using FakeItEasy.Core;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
 
     internal class StartConfiguration<TFake>

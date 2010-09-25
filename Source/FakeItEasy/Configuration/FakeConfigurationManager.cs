@@ -3,7 +3,7 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
 
     internal class FakeConfigurationManager

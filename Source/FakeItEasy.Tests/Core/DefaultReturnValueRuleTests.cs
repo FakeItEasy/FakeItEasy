@@ -3,7 +3,7 @@
 //    using NUnit.Framework;
 //    using FakeItEasy.Core;
 //    using System;
-//using FakeItEasy.Core.Creation;
+//using FakeItEasy.Creation;
 //    using FakeItEasy.Tests.TestHelpers;
 
 //    [TestFixture]

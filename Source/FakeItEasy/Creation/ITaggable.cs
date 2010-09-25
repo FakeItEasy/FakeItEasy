@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core.Creation
+namespace FakeItEasy.Creation
 {
     public interface ITaggable
     {

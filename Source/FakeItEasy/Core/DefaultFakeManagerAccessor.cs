@@ -1,7 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
 
     /// <summary>
     /// Default implementation of the fake manager attacher.

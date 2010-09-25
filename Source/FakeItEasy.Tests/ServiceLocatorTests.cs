@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using FakeItEasy.Core;
 using FakeItEasy.Expressions;
-using FakeItEasy.Core.Creation;
+using FakeItEasy.Creation;
 
 namespace FakeItEasy.Tests
 {

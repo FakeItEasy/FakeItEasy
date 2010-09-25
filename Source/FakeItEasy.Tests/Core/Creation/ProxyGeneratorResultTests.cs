@@ -1,7 +1,7 @@
 namespace FakeItEasy.Tests.Core.Creation
 {
     using NUnit.Framework;
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
 
     [TestFixture]
     public class ProxyGeneratorResultTests

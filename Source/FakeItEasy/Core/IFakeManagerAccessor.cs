@@ -1,6 +1,6 @@
 namespace FakeItEasy.Core
 {
-    using FakeItEasy.Core.Creation;
+    using FakeItEasy.Creation;
     using System;
 
     /// <summary>
