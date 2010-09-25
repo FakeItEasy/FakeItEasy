@@ -202,7 +202,7 @@
     <Compile Include="Core\FakeManager.PropertySetterRule.cs">
       <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\Helpers.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="Core\ICompletedFakeObjectCall.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs" />
     <Compile Include="Core\IWritableFakeObjectCall.cs" />
@@ -223,7 +223,7 @@
     <Compile Include="ExtensionSyntax\Full\FullExtensionSyntax.cs" />
     <Compile Include="ExtensionSyntax\Syntax.cs" />
     <Compile Include="FakeExtensions.cs" />
-    <Compile Include="Core\ArgumentCollection.cs" />
+    <Compile Include="ArgumentCollection.cs" />
     <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>

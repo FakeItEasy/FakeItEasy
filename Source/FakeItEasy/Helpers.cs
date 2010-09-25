@@ -1,8 +1,9 @@
-﻿namespace FakeItEasy.Core
+﻿namespace FakeItEasy
 {
     using System;
     using System.Diagnostics;
     using System.Linq.Expressions;
+    using FakeItEasy.Core;
 
     internal static class Helpers
     {
