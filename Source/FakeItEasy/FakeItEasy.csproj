@@ -105,7 +105,7 @@
     <Compile Include="Core\IFakeObjectCallRuleWithDescription.cs" />
     <Compile Include="Core\IFakeObjectConfigurer.cs" />
     <Compile Include="Core\IFakeScope.cs" />
-    <Compile Include="DynamicProxy\DynamicProxyResources.Designer.cs">
+    <Compile Include="Creation\CastleDynamicProxy\DynamicProxyResources.Designer.cs">
       <DependentUpon>DynamicProxyResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -115,7 +115,7 @@
     <Compile Include="OrderedAssertion.cs" />
     <Compile Include="Core\OrderedFakeAsserter.cs" />
     <Compile Include="Core\OrderedFakeAsserterFactory.cs" />
-    <Compile Include="DynamicProxy\CastleDynamicProxyGenerator.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGenerator.cs" />
     <Compile Include="FakeConfigurer.cs" />
     <Compile Include="DummyDefinition.cs" />
     <Compile Include="IFakeConfigurer.cs" />
@@ -204,7 +204,7 @@
     </Compile>
     <Compile Include="Core\Helpers.cs" />
     <Compile Include="Core\ICompletedFakeObjectCall.cs" />
-    <Compile Include="DynamicProxy\CastleInvocationCallAdapter.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs" />
     <Compile Include="Core\IWritableFakeObjectCall.cs" />
     <Compile Include="Core\WrappedObjectRule.cs" />
     <Compile Include="Configuration\BuildableCallRule.cs" />
@@ -252,7 +252,7 @@
     <Compile Include="VisualBasic\VisualBasicRuleBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DynamicProxy\DynamicProxyResources.resx">
+    <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DynamicProxyResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>

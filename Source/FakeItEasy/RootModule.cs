@@ -6,7 +6,7 @@
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-    using FakeItEasy.DynamicProxy;
+    using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;

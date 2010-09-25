@@ -121,7 +121,7 @@
     <Compile Include="Core\OrderedFakeAsserterFactoryTests.cs" />
     <Compile Include="Core\OrderedFakeAsserterTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
-    <Compile Include="DynamicProxy\CastleDynamicProxyGeneratorTests.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintScopeTests.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraintTests.cs" />
@@ -154,7 +154,7 @@
     <Compile Include="Core\HelpersTests.cs" />
     <Compile Include="Core\NullFakeObjectContainerTests.cs" />
     <Compile Include="CustomArgumentConstraints.cs" />
-    <Compile Include="DynamicProxy\CastleInvocationCallAdapterTests.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapterTests.cs" />
     <Compile Include="Core\WrappedObjectRuleTests.cs" />
     <Compile Include="ArgumentCollectionTests.cs" />
     <Compile Include="ATests.cs" />

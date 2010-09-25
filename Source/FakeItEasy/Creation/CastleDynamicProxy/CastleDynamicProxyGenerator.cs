@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.DynamicProxy
+﻿namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;

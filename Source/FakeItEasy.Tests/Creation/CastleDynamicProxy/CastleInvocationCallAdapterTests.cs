@@ -5,10 +5,10 @@ using System.Text;
 using NUnit.Framework;
 using FakeItEasy.Core;
 using System.Reflection;
-using FakeItEasy.DynamicProxy;
+using FakeItEasy.Creation.CastleDynamicProxy;
 using Castle.DynamicProxy;
 
-namespace FakeItEasy.Tests.DynamicProxy
+namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     [TestFixture]
     public class CastleInvocationCallAdapterTests

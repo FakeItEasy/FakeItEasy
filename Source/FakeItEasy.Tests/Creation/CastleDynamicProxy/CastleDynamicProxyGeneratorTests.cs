@@ -1,4 +1,4 @@
-namespace FakeItEasy.Tests.DynamicProxy
+namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,7 @@ namespace FakeItEasy.Tests.DynamicProxy
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-    using FakeItEasy.DynamicProxy;
+    using FakeItEasy.Creation.CastleDynamicProxy;
     using NUnit.Framework;
 
     [TestFixture]
