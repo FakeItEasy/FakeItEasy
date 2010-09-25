@@ -54,8 +54,9 @@
                     generatedProxy: proxy, 
                     callInterceptedEventRaiser: interceptor);
             }
-            catch
+            catch (Exception ex)
             {
+                logger.Debug("Failed to create proxy of type {0}, an exception was thrown:\r\n\r\n{1}\r\n\r\n.", typeOfProxy, ex.Message);
                 return GetResultForFailedProxyGeneration(typeOfProxy, argumentsForConstructor);
             }
         }
