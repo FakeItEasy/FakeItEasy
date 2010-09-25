@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using FakeItEasy.Core;
 using System.Linq.Expressions;
 using System.Reflection;
+using FakeItEasy.Core;
 using FakeItEasy.Expressions;
 
 namespace FakeItEasy.Tests.TestHelpers

@@ -3,7 +3,6 @@ namespace FakeItEasy.Tests.Creation
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
     using FakeItEasy.SelfInitializedFakes;

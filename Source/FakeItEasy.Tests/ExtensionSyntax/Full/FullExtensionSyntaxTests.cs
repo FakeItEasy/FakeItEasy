@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+using System.Linq.Expressions;
 using FakeItEasy.Configuration;
 using FakeItEasy.Core;
-using System.Linq.Expressions;
+using NUnit.Framework;
 using ES = FakeItEasy.ExtensionSyntax.Full;
 
 namespace FakeItEasy.Tests.ExtensionSyntax.Full

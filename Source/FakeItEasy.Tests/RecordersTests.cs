@@ -1,6 +1,5 @@
-using System;
-using NUnit.Framework;
 using FakeItEasy.SelfInitializedFakes;
+using NUnit.Framework;
 
 namespace FakeItEasy.Tests
 {

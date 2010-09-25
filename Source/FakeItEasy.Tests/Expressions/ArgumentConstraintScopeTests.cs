@@ -1,8 +1,8 @@
 namespace FakeItEasy.Tests.Expressions
 {
+    using System;
     using FakeItEasy.Expressions;
     using NUnit.Framework;
-    using System;
 
     [TestFixture]
     public class ArgumentConstraintScopeTests

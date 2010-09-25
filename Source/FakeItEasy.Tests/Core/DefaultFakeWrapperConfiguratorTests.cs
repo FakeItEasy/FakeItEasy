@@ -2,8 +2,8 @@
 {
     using System.Linq;
     using FakeItEasy.Core;
-    using NUnit.Framework;
     using FakeItEasy.SelfInitializedFakes;
+    using NUnit.Framework;
 
     [TestFixture]
     public class DefaultFakeWrapperConfiguratorTests

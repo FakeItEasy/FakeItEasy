@@ -2,7 +2,6 @@ namespace FakeItEasy.Tests.Expressions
 {
     using FakeItEasy.Expressions;
     using NUnit.Framework;
-    using System;
 
     [TestFixture]
     public class NotArgumentConstraintScopeTests

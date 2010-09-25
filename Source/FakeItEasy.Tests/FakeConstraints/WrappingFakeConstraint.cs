@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework.Constraints;
+﻿using System.Linq;
 using FakeItEasy.Core;
+using NUnit.Framework.Constraints;
 
 namespace FakeItEasy.Tests.FakeConstraints
 {

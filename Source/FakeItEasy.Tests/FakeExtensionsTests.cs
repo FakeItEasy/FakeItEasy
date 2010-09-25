@@ -1,13 +1,13 @@
 using System;
-using FakeItEasy.Configuration;
-using NUnit.Framework;
-using System.Linq;
-using FakeItEasy.Core;
-using System.Linq.Expressions;
 using System.Collections.Generic;
-using FakeItEasy.Tests.TestHelpers;
-using FakeItEasy.Expressions;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using FakeItEasy.Configuration;
+using FakeItEasy.Core;
+using FakeItEasy.Expressions;
+using FakeItEasy.Tests.TestHelpers;
+using NUnit.Framework;
 
 namespace FakeItEasy.Tests
 {

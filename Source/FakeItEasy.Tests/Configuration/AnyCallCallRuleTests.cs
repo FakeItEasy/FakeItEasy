@@ -1,11 +1,10 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
-    using System.Linq.Expressions;
-    using FakeItEasy.Core;
     using FakeItEasy.Configuration;
-    using NUnit.Framework;
+    using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
+    using NUnit.Framework;
 
     [TestFixture]
     public class AnyCallCallRuleTests

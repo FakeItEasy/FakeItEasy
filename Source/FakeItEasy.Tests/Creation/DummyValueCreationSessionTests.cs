@@ -3,7 +3,6 @@ namespace FakeItEasy.Tests.Creation
     using System;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-    using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 
     [TestFixture]

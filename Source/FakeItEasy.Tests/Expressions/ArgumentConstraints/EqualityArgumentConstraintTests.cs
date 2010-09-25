@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using FakeItEasy.Expressions;
     using FakeItEasy.Expressions.ArgumentConstraints;
     using NUnit.Framework;
-    using FakeItEasy.Expressions;
 
     [TestFixture]
     public class EqualityArgumentConstraintTests

@@ -1,9 +1,8 @@
 namespace FakeItEasy.Tests
 {
-    using NUnit.Framework;
-    using FakeItEasy.Core;
-    using System.Linq.Expressions;
     using System;
+    using System.Linq.Expressions;
+    using NUnit.Framework;
 
     [TestFixture]
     public class RepeatedTests

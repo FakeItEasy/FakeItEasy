@@ -1,10 +1,10 @@
 namespace FakeItEasy.Tests.Expressions
 {
+    using System;
+    using System.Linq.Expressions;
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
-    using System;
-    using System.Linq.Expressions;
 
     [TestFixture]
     public class ExpressionParserTests

@@ -3,9 +3,8 @@ namespace FakeItEasy.Tests.Core
     using System;
     using System.Linq.Expressions;
     using System.Reflection;
-    using FakeItEasy.Expressions;
-    using NUnit.Framework;
     using FakeItEasy.Core;
+    using NUnit.Framework;
 
     [TestFixture]
     public class MethodInfoManagerTests

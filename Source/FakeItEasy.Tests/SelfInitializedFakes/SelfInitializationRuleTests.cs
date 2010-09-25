@@ -1,9 +1,6 @@
 ﻿using FakeItEasy.Core;
 using FakeItEasy.SelfInitializedFakes;
 using NUnit.Framework;
-using System.Reflection;
-using System.Linq;
-using System;
 
 namespace FakeItEasy.Tests.SelfInitializedFakes
 {

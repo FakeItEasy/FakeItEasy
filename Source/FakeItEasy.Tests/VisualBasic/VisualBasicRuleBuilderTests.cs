@@ -1,8 +1,8 @@
 namespace FakeItEasy.Tests.VisualBasic
 {
     using System;
-    using FakeItEasy.Core;
     using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
     using FakeItEasy.VisualBasic;
     using NUnit.Framework;
 

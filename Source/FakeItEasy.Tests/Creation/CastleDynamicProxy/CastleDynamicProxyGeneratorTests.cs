@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;

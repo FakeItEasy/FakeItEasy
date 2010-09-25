@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Tests.Expressions.ArgumentConstraints;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace FakeItEasy.Tests.ArgumentValidationExtensions

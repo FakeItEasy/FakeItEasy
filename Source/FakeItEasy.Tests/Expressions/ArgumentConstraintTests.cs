@@ -1,10 +1,9 @@
 namespace FakeItEasy.Tests.Expressions
 {
-    using NUnit.Framework;
-    using FakeItEasy.Expressions;
-    using FakeItEasy.Tests.Expressions.ArgumentConstraints;
     using System;
+    using FakeItEasy.Expressions;
     using FakeItEasy.Expressions.ArgumentConstraints;
+    using NUnit.Framework;
 
     [TestFixture]
     public class ArgumentConstraintTests

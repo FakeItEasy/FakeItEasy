@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using FakeItEasy.IoC;
 using NUnit.Framework;
-using FakeItEasy.IoC;
 
 namespace FakeItEasy.Tests.IoC
 {

@@ -2,8 +2,8 @@
 {
     using System;
     using System.Linq.Expressions;
-    using FakeItEasy.Core;
     using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
     using NUnit.Framework;
     
     [TestFixture]

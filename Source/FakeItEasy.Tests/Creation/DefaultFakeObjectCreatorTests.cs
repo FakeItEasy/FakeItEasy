@@ -5,9 +5,8 @@ namespace FakeItEasy.Tests.Creation
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-    using NUnit.Framework;
-    using System.Diagnostics;
     using FakeItEasy.Expressions;
+    using NUnit.Framework;
 
     [TestFixture]
     public class FakeObjectCreatorTests

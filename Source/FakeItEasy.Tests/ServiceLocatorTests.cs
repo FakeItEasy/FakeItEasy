@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using FakeItEasy.Core;
-using FakeItEasy.Expressions;
 using FakeItEasy.Creation;
+using FakeItEasy.Expressions;
+using NUnit.Framework;
 
 namespace FakeItEasy.Tests
 {

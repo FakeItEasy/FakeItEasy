@@ -5,7 +5,6 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
     using System.IO;
     using System.Linq;
     using System.Runtime.Serialization.Formatters.Binary;
-    using FakeItEasy.Core;
     using FakeItEasy.SelfInitializedFakes;
     using NUnit.Framework;
 

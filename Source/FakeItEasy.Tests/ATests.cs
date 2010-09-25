@@ -1,13 +1,12 @@
 ﻿namespace FakeItEasy.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
     using NUnit.Framework;
-    using System.Collections.Generic;
 
     [TestFixture]
     public class ATests

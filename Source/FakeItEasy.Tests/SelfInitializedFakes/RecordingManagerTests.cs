@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Core;
-using System.Runtime.Serialization;
-using System.IO;
-using System.Xml;
 using System.Reflection;
+using FakeItEasy.Core;
 using FakeItEasy.SelfInitializedFakes;
 using FakeItEasy.Tests.TestHelpers;
+using NUnit.Framework;
 
 namespace FakeItEasy.Tests.SelfInitializedFakes
 {

@@ -1,9 +1,9 @@
 namespace FakeItEasy.Tests.Core
 {
-    using NUnit.Framework;
-using FakeItEasy.Core;
-    using FakeItEasy.Creation;
     using System;
+    using FakeItEasy.Core;
+    using FakeItEasy.Creation;
+    using NUnit.Framework;
 
     [TestFixture]
     public class DefaultFakeManagerAccessorTests

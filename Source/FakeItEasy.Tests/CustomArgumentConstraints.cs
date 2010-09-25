@@ -5,8 +5,8 @@ namespace FakeItEasy.Tests
     using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Core;
-    using FakeItEasy.Expressions;
     using FakeItEasy.Creation;
+    using FakeItEasy.Expressions;
     
     public static class CustomArgumentConstraints
     {

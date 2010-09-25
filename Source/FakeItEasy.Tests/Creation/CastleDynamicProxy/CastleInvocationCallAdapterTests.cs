@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Core;
 using System.Reflection;
-using FakeItEasy.Creation.CastleDynamicProxy;
 using Castle.DynamicProxy;
+using FakeItEasy.Creation.CastleDynamicProxy;
+using NUnit.Framework;
 
 namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
