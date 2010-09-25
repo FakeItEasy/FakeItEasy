@@ -1,4 +1,4 @@
-//namespace FakeItEasy.Tests.Core.Creation
+//namespace FakeItEasy.Tests.Creation
 //{
 //    using System;
 //    using System.Collections.Generic;

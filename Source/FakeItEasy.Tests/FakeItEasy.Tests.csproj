@@ -82,15 +82,15 @@
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="AnyTests.cs" />
-    <Compile Include="Core\Creation\DefaultFakeAndDummyManagerTests.cs">
+    <Compile Include="Creation\DefaultFakeAndDummyManagerTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\Creation\DefaultFakeCreatorTests.cs">
+    <Compile Include="Creation\DefaultFakeCreatorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\Creation\DefaultFakeObjectCreatorTests.cs" />
-    <Compile Include="Core\Creation\DummyValueCreationSessionTests.cs" />
-    <Compile Include="Core\Creation\ProxyGeneratorResultTests.cs" />
+    <Compile Include="Creation\DefaultFakeObjectCreatorTests.cs" />
+    <Compile Include="Creation\DummyValueCreationSessionTests.cs" />
+    <Compile Include="Creation\ProxyGeneratorResultTests.cs" />
     <Compile Include="Core\DefaultExceptionThrowerTests.cs" />
     <Compile Include="Core\DefaultFakeManagerAccessorTests.cs" />
     <Compile Include="Core\DefaultFakeObjectCallFormatterTests.cs" />
