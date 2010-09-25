@@ -2,9 +2,9 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Access all types in all assemblies in the same directory as the FakeItEasy dll.

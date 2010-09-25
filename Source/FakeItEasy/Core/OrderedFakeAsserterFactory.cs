@@ -3,7 +3,6 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using FakeAsserterFactory = System.Func<System.Collections.Generic.IEnumerable<FakeItEasy.Core.IFakeObjectCall>, FakeItEasy.Core.FakeAsserter>;
-    using OrderedAsserterFactory = System.Func<System.Collections.Generic.IEnumerable<FakeItEasy.Core.IFakeObjectCall>, FakeItEasy.Core.OrderedFakeAsserter>;
 
     internal class OrderedFakeAsserterFactory
     {

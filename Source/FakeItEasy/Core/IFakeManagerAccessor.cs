@@ -1,7 +1,7 @@
 namespace FakeItEasy.Core
 {
-    using FakeItEasy.Creation;
     using System;
+    using FakeItEasy.Creation;
 
     /// <summary>
     /// Attaches a fake manager to the proxy so that intercepted

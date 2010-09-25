@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FakeItEasy.Creation.CastleDynamicProxy {
-    using System;
-    
-    
+namespace FakeItEasy.Creation.CastleDynamicProxy
+{
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

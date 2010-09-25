@@ -1,6 +1,5 @@
 namespace FakeItEasy.Core
 {
-    using System.Reflection;
 
     /// <summary>
     /// Provides string formatting for fake object calls.

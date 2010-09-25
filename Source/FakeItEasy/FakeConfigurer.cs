@@ -1,7 +1,6 @@
 namespace FakeItEasy
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
     /// <summary>

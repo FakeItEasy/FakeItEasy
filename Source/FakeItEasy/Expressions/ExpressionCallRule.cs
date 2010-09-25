@@ -3,7 +3,6 @@ namespace FakeItEasy.Expressions
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using System;
 
     /// <summary>
     /// An implementation of the <see cref="IFakeObjectCallRule" /> interface that uses

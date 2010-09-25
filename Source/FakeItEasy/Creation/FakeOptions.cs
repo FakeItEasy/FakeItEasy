@@ -2,8 +2,8 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
-    using FakeItEasy.SelfInitializedFakes;
     using System.Linq;
+    using FakeItEasy.SelfInitializedFakes;
 
     internal class FakeOptions
     {

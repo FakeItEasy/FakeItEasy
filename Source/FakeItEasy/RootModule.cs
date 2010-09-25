@@ -1,7 +1,6 @@
 ﻿namespace FakeItEasy
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;

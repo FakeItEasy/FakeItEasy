@@ -1,7 +1,6 @@
 namespace FakeItEasy
 {
     using System;
-    using System.Diagnostics;
 
     /// <summary>
     /// An attribute that can be applied to code that should be fixed becuase theres a

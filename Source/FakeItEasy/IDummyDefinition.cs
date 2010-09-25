@@ -1,8 +1,7 @@
 namespace FakeItEasy
 {
     using System;
-    using System.Collections.Generic;
-    
+
     /// <summary>
     /// Represents a definition of how dummies of the specified type should be created.
     /// </summary>

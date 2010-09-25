@@ -2,9 +2,9 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using FakeItEasy.Creation;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// The central point in the API for proxied fake objects handles interception

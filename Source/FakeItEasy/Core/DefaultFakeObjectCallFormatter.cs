@@ -1,6 +1,5 @@
 namespace FakeItEasy.Core
 {
-    using System;
     using System.Linq;
     using System.Text;
 

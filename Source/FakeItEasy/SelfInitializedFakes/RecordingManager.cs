@@ -1,10 +1,10 @@
 ﻿namespace FakeItEasy.SelfInitializedFakes
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using FakeItEasy.Core;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Manages the applying of recorded calls and recording of new calls when

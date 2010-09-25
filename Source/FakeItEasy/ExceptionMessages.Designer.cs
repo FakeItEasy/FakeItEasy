@@ -10,7 +10,6 @@
 
 namespace FakeItEasy
 {
-    using System;
 
 
     /// <summary>

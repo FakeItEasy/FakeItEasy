@@ -1,6 +1,5 @@
 namespace FakeItEasy.Core
 {
-    using System.Linq;
 
     /// <summary>
     /// A call rule that applies to any call and just delegates the

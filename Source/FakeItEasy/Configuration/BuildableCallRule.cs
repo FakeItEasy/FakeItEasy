@@ -2,9 +2,7 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
-    using System.Text;
 
     /// <summary>
     /// Provides the base for rules that can be built using the FakeConfiguration.

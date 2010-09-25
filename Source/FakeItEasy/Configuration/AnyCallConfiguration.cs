@@ -1,7 +1,6 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-    using System.Linq.Expressions;
     using FakeItEasy.Core;
 
     internal class AnyCallConfiguration

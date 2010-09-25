@@ -2,9 +2,9 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using FakeItEasy.Creation;
-    using System.Text;
     using System.Linq;
+    using System.Text;
+    using FakeItEasy.Creation;
 
     internal class DefaultExceptionThrower
         : IExceptionThrower

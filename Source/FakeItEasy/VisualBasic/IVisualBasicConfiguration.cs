@@ -1,6 +1,5 @@
 namespace FakeItEasy.VisualBasic
 {
-    using System;
     using FakeItEasy.Configuration;
 
     /// <summary>
