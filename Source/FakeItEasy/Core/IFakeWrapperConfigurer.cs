@@ -5,7 +5,7 @@ namespace FakeItEasy.Core
     /// <summary>
     /// Manages configuration of fake objects to wrap instances.
     /// </summary>
-    internal interface IFakeWrapperConfigurator
+    internal interface IFakeWrapperConfigurer
     {
         /// <summary>
         /// Configures the specified faked object to wrap the specified instance.

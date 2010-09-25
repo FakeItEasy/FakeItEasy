@@ -9,14 +9,14 @@
     public class DefaultFakeWrapperConfiguratorTests
     {
         private IFoo faked;
-        private DefaultFakeWrapperConfigurator wrapperConfigurator;
+        private DefaultFakeWrapperConfigurer wrapperConfigurator;
 
         [SetUp]
         public void SetUp()
         {
             this.faked = A.Fake<IFoo>();
 
-            this.wrapperConfigurator = new DefaultFakeWrapperConfigurator();
+            this.wrapperConfigurator = new DefaultFakeWrapperConfigurer();
         }
 
         [Test]

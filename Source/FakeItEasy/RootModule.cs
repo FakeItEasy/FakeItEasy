@@ -80,7 +80,7 @@
                     var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<IFakeManagerAccessor>(), fakeContainer);
                     var session = new DummyValueCreationSession(fakeContainer, new SessionFakeObjectCreator { Creator = fakeCreator });
 
-                    return new DefaultFakeAndDummyManager(session, fakeCreator, c.Resolve<IFakeWrapperConfigurator>());
+                    return new DefaultFakeAndDummyManager(session, fakeCreator, c.Resolve<IFakeWrapperConfigurer>());
                 });
 
             container.RegisterSingleton<IProxyGenerator>(c => new CastleDynamicProxyGenerator());
@@ -89,8 +89,8 @@
 
             container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor(c.Resolve<FakeManager.Factory>()));
                 
-            container.Register<IFakeWrapperConfigurator>(c =>
-                new DefaultFakeWrapperConfigurator());
+            container.Register<IFakeWrapperConfigurer>(c =>
+                new DefaultFakeWrapperConfigurer());
 
             container.Register<ITypeCatalogue>(c =>
                 new ApplicationDirectoryAssembliesTypeAccessor());

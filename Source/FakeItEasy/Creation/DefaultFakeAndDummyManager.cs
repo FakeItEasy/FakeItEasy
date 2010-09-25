@@ -17,9 +17,9 @@ namespace FakeItEasy.Creation
 
         private IDummyValueCreationSession session;
         private FakeObjectCreator fakeCreator;
-        private IFakeWrapperConfigurator wrapperConfigurer;
+        private IFakeWrapperConfigurer wrapperConfigurer;
 
-        public DefaultFakeAndDummyManager(IDummyValueCreationSession session, FakeObjectCreator fakeCreator, IFakeWrapperConfigurator wrapperConfigurer)
+        public DefaultFakeAndDummyManager(IDummyValueCreationSession session, FakeObjectCreator fakeCreator, IFakeWrapperConfigurer wrapperConfigurer)
         {
             logger.Debug("Created new instance.");
 

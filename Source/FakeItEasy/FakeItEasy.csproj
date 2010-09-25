@@ -97,7 +97,7 @@
     <Compile Include="Creation\IProxyGenerator.cs" />
     <Compile Include="Creation\ProxyGeneratorResult.cs" />
     <Compile Include="Core\DefaultFakeObjectCallFormatter.cs" />
-    <Compile Include="Core\DefaultFakeWrapperConfigurator.cs" />
+    <Compile Include="Core\DefaultFakeWrapperConfigurer.cs" />
     <Compile Include="Core\ICallMatcherAccessor.cs" />
     <Compile Include="Core\IFakeAsserter.cs" />
     <Compile Include="Core\IFakeManagerAccessor.cs" />
@@ -120,7 +120,7 @@
     <Compile Include="DummyDefinition.cs" />
     <Compile Include="IFakeConfigurer.cs" />
     <Compile Include="IDummyDefinition.cs" />
-    <Compile Include="Core\IFakeWrapperConfigurator.cs" />
+    <Compile Include="Core\IFakeWrapperConfigurer.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />
     <Compile Include="Core\FakeCreationException.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManager.cs" />
