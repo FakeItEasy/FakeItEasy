@@ -257,5 +257,13 @@ namespace FakeItEasy.Core
 
             eventRaiser.CallWasIntercepted += this.Proxy_CallWasIntercepted;
         }
+
+        /// <summary>
+        /// Removes any specified user rules.
+        /// </summary>
+        internal virtual void ClearUserRules()
+        {
+            this.allUserRulesField.Clear();
+        }
     }
 }

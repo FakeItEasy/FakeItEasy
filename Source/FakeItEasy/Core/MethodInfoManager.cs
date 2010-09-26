@@ -94,8 +94,8 @@ namespace FakeItEasy.Core
 
                 var foundMethod =
                     (from methodTargetPair in interfaceMap.InterfaceMethods.Zip(interfaceMap.TargetMethods)
-                     where IsSameMethod(EnsureNonGeneric(method), EnsureNonGeneric(methodTargetPair.Second))
-                     select MakeGeneric(methodTargetPair.First, method)).FirstOrDefault();
+                     where IsSameMethod(EnsureNonGeneric(method), EnsureNonGeneric(methodTargetPair.Value2))
+                     select MakeGeneric(methodTargetPair.Value1, method)).FirstOrDefault();
 
                 if (foundMethod != null)
                 {
@@ -119,8 +119,8 @@ namespace FakeItEasy.Core
 
             return
                 (from methodTargetPair in interfaceMap.InterfaceMethods.Zip(interfaceMap.TargetMethods)
-                 where IsSameMethod(EnsureNonGeneric(methodTargetPair.First), EnsureNonGeneric(method))
-                 select MakeGeneric(methodTargetPair.Second, method)).First();
+                 where IsSameMethod(EnsureNonGeneric(methodTargetPair.Value1), EnsureNonGeneric(method))
+                 select MakeGeneric(methodTargetPair.Value2, method)).First();
         }
 
         private static MethodInfo EnsureNonGeneric(MethodInfo methodInfo)

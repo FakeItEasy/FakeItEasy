@@ -2,7 +2,6 @@ namespace FakeItEasy.Tests.Configuration
 {
     using System;
     using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 

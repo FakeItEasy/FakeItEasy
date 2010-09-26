@@ -34,7 +34,7 @@ namespace FakeItEasy.Core
         /// Creates a new scope and sets it as the current scope.
         /// </summary>
         /// <returns>The created scope.</returns>
-        public static FakeScope Create()
+        public static IFakeScope Create()
         {
             return Create(FakeScope.Current.FakeObjectContainer);
         }
@@ -45,7 +45,7 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="container">The container to usee for the new scope.</param>
         /// <returns>The created scope.</returns>
-        public static FakeScope Create(IFakeObjectContainer container)
+        public static IFakeScope Create(IFakeObjectContainer container)
         {
             var result = new ChildScope(FakeScope.Current, container);
             FakeScope.Current = result;
@@ -238,5 +238,25 @@ namespace FakeItEasy.Core
             }
         } 
         #endregion
-    }   
+    }
+
+    internal interface IFakeScopeFactory
+    {
+        IFakeScope Create();
+        IFakeScope Create(IFakeObjectContainer container);
+    }
+
+    internal class FakeScopeFactory
+        : IFakeScopeFactory
+    {
+        public IFakeScope Create()
+        {
+            throw new MustBeImplementedException();
+        }
+
+        public IFakeScope Create(IFakeObjectContainer container)
+        {
+            throw new MustBeImplementedException();
+        }
+    }
 }

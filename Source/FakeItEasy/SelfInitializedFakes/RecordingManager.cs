@@ -92,7 +92,7 @@
         {
             foreach (var outputArgument in GetIndicesAndValuesOfOutputParameters(call, callToApply.RecordedCall))
             {
-                call.SetArgumentValue(outputArgument.First, outputArgument.Second);
+                call.SetArgumentValue(outputArgument.Value1, outputArgument.Value2);
             }
         }
 
@@ -108,8 +108,8 @@
         {
             return
                 from valueAndParameterInfo in call.Method.GetParameters().Zip(call.Arguments.AsEnumerable())
-                where valueAndParameterInfo.First.ParameterType.IsByRef
-                select valueAndParameterInfo.Second;
+                where valueAndParameterInfo.Value1.ParameterType.IsByRef
+                select valueAndParameterInfo.Value2;
         }
 
         private static Queue<CallDataMetadata> CreateCallsList(IEnumerable<CallData> callsFromStorage)
@@ -132,8 +132,8 @@
         {
             return
                 (from argument in call.Method.GetParameters().Zip(Enumerable.Range(0, int.MaxValue))
-                 where argument.First.ParameterType.IsByRef
-                 select argument.Second).Zip(recordedCall.OutputArguments);
+                 where argument.Value1.ParameterType.IsByRef
+                 select argument.Value2).Zip(recordedCall.OutputArguments);
         }
 
         private void AssertThatCallQueueIsNotEmpty()

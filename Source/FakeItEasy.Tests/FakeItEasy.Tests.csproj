@@ -129,6 +129,8 @@
     <Compile Include="Expressions\ExpressionParserTests.cs" />
     <Compile Include="Expressions\NotArgumentConstraintScopeTests.cs" />
     <Compile Include="Expressions\RootArgumentConstraintScopeTests.cs" />
+    <Compile Include="FacadedTestBase.cs" />
+    <Compile Include="FakeFacadeTests.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="IsProxyConstraint.cs" />
     <Compile Include="LowerBoundHappenedTests.cs" />

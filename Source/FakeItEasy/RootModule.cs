@@ -93,7 +93,28 @@
 
             container.Register<ITypeCatalogue>(c =>
                 new ApplicationDirectoryAssembliesTypeAccessor());
+
+            container.Register<FakeFacade>(c =>
+                new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeScopeFactory>()));
+            
+            container.Register<IFakeScopeFactory>(c => new TemporaryFakeScopeFactory());
         }
+
+#if DEBUG
+        private class TemporaryFakeScopeFactory
+            : IFakeScopeFactory
+        {
+            public IFakeScope Create()
+            {
+                return FakeScope.Create();
+            }
+
+            public IFakeScope Create(IFakeObjectContainer container)
+            {
+                return FakeScope.Create(container);
+            }
+        }
+#endif
 
         private class SessionFakeObjectCreator
             : IFakeObjectCreator

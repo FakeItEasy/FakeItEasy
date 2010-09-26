@@ -314,24 +314,24 @@ namespace FakeItEasy.Tests.Creation
 
                 foreach (var constructorPair in x.Zip(constructors))
                 {
-                    if (!string.Equals(constructorPair.First.ReasonForFailure, constructorPair.Second.ReasonForFailure))
+                    if (!string.Equals(constructorPair.Value1.ReasonForFailure, constructorPair.Value2.ReasonForFailure))
                     {
                         logger.Debug("Not the same reason for failure.");
                         return false;
                     }
 
-                    if (constructorPair.First.Arguments.Length != constructorPair.Second.Arguments.Length)
+                    if (constructorPair.Value1.Arguments.Length != constructorPair.Value2.Arguments.Length)
                     {
                         logger.Debug("Unequal number of arguments.");
                         return false;
                     }
 
-                    foreach (var argumentPair in constructorPair.First.Arguments.Zip(constructorPair.Second.Arguments))
+                    foreach (var argumentPair in constructorPair.Value1.Arguments.Zip(constructorPair.Value2.Arguments))
                     {
                         var isEqual =
-                            object.Equals(argumentPair.First.ArgumentType, argumentPair.Second.ArgumentType)
-                            && object.Equals(argumentPair.First.ResolvedValue, argumentPair.Second.ResolvedValue)
-                            && argumentPair.First.WasResolved == argumentPair.Second.WasResolved;
+                            object.Equals(argumentPair.Value1.ArgumentType, argumentPair.Value2.ArgumentType)
+                            && object.Equals(argumentPair.Value1.ResolvedValue, argumentPair.Value2.ResolvedValue)
+                            && argumentPair.Value1.WasResolved == argumentPair.Value2.WasResolved;
 
                         if (!isEqual)
                         {

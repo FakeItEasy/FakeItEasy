@@ -14,20 +14,20 @@ namespace FakeItEasy
         /// <param name="second">The second.</param>
         public Tuple(TFirst first, TSecond second)
         {
-            this.First = first;
-            this.Second = second;
+            this.Value1 = first;
+            this.Value2 = second;
         }
 
         /// <summary>
         /// Gets the first value.
         /// </summary>
         /// <value>The first.</value>
-        public TFirst First { get; private set; }
+        public TFirst Value1 { get; private set; }
 
         /// <summary>
         /// Gets the second value.
         /// </summary>
         /// <value>The second.</value>
-        public TSecond Second { get; private set; }
+        public TSecond Value2 { get; private set; }
     }
 }

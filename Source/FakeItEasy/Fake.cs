@@ -15,6 +15,14 @@ namespace FakeItEasy
     /// </summary>
     public static partial class Fake
     {
+        private static FakeFacade Facade
+        {
+            get
+            {
+                return ServiceLocator.Current.Resolve<FakeFacade>();
+            }
+        }
+
         /// <summary>
         /// Gets the fake object that manages the faked object.
         /// </summary>
@@ -24,19 +32,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static FakeManager GetFakeManager(object fakedObject)
         {
-            //Guard.AgainstNull(fakedObject, "fakedObject");
-
-            //var accessor = fakedObject as IFakedProxy;
-
-            //if (accessor == null)
-            //{
-            //    var message = ExceptionMessages.ConfiguringNonFakeObjectExceptionMessage.FormatInvariant(fakedObject.GetType());
-            //    throw new ArgumentException(message, "fakedObject");
-            //}
-
-            //return accessor.FakeManager;
-            var accessor = ServiceLocator.Current.Resolve<IFakeManagerAccessor>();
-            return accessor.GetFakeManager(fakedObject);
+            return Facade.GetFakeManager(fakedObject);
         }
 
         /// <summary>
@@ -47,7 +43,7 @@ namespace FakeItEasy
         /// <returns>The created scope.</returns>
         public static IFakeScope CreateScope()
         {
-            return FakeScope.Create();
+            return Facade.CreateScope();
         }
 
         /// <summary>
@@ -59,7 +55,7 @@ namespace FakeItEasy
         /// <returns>The created scope.</returns>
         public static IFakeScope CreateScope(IFakeObjectContainer container)
         {
-            return FakeScope.Create(container);
+            return Facade.CreateScope(container);
         }
 
         /// <summary>
@@ -97,9 +93,16 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static IEnumerable<ICompletedFakeObjectCall> GetCalls(object fakedObject)
         {
-            Guard.AgainstNull(fakedObject, "fakedObject");
+            return Facade.GetCalls(fakedObject);
+        }
 
-            return Fake.GetFakeManager(fakedObject).RecordedCallsInScope;
+        /// <summary>
+        /// Cleares the configuration of the faked object.
+        /// </summary>
+        /// <param name="fakedObject">The faked object to clear the configuration of.</param>
+        public static void ClearConfiguration(object fakedObject)
+        {
+            Facade.ClearConfiguration(fakedObject);
         }
     }
 

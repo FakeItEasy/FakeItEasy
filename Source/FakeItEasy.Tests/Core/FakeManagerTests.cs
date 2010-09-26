@@ -566,6 +566,20 @@
             A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored.Argument)).MustHaveHappened();
         }
 
+        [Test]
+        public void Should_clear_all_added_rules_when_calling_clear_user_rules()
+        {
+            // Arrange
+            var manager = new FakeManager();
+            manager.AddRuleFirst(A.Dummy<IFakeObjectCallRule>());
+            manager.AddRuleLast(A.Dummy<IFakeObjectCallRule>());
+
+            // Act
+            manager.ClearUserRules();
+
+            // Assert
+            Assert.That(manager.AllUserRules, Is.Empty);
+        }
 
         private class FakedProxyWithManagerSpecified
             : ITaggable

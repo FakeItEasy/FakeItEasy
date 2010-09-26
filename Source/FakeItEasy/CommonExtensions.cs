@@ -36,9 +36,6 @@
         /// <returns>An enumerable of tuples.</returns>
         public static IEnumerable<Tuple<TFirst, TSecond>> Zip<TFirst, TSecond>(this IEnumerable<TFirst> firstCollection, IEnumerable<TSecond> secondCollection)
         {
-            Guard.AgainstNull(firstCollection, "firstCollection");
-            Guard.AgainstNull(secondCollection, "secondCollection");
-
             return new ZipEnumerable<TFirst, TSecond>(firstCollection, secondCollection);
         }
 

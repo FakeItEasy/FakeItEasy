@@ -8,19 +8,12 @@ namespace FakeItEasy.Tests
     public class CommonExtensionsTests
     {
         [Test]
-        public void Pairwise_should_be_null_guarded()
-        {
-            NullGuardedConstraint.Assert(() =>
-                CommonExtensions.Zip(new List<string>(), new List<string>()));
-        }
-
-        [Test]
-        public void Pairwise_returns_an_enumeral_of_tuples_paired_in_order()
+        public void Zip_returns_an_enumeral_of_tuples_paired_in_order()
         {
             var strings = new List<string>() { "a", "b", "c" };
             var ints = Enumerable.Range(1, int.MaxValue);
 
-            var result = CommonExtensions.Zip(strings, ints).Select(x => x.First + x.Second.ToString());
+            var result = CommonExtensions.Zip(strings, ints).Select(x => x.Value1 + x.Value2.ToString());
 
             Assert.That(result, Is.EquivalentTo(new[] { "a1", "b2", "c3" }));
         }

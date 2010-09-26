@@ -149,7 +149,7 @@
         {
             foreach (var argumentConstraintPair in argumentCollection.AsEnumerable().Zip(this.argumentConstraints))
             {
-                if (!argumentConstraintPair.Second.IsValid(argumentConstraintPair.First))
+                if (!argumentConstraintPair.Value2.IsValid(argumentConstraintPair.Value1))
                 {
                     return false;
                 }

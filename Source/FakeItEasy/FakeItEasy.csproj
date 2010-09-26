@@ -110,6 +110,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="FakeFacade.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="OrderedAssertion.cs" />
