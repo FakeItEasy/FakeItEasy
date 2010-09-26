@@ -138,20 +138,20 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="calls">The calls to write.</param>
         /// <param name="writer">The writer to write the calls to.</param>
-        public static void Write(this IEnumerable<IFakeObjectCall> calls, TextWriter writer)
+        public static void Write<T>(this IEnumerable<T> calls, TextWriter writer) where T : IFakeObjectCall
         {
             Guard.AgainstNull(calls, "calls");
             Guard.AgainstNull(writer, "writer");
-
+            
             var callWriter = ServiceLocator.Current.Resolve<CallWriter>();
-            callWriter.WriteCalls(0, calls, writer);
+            callWriter.WriteCalls(0, calls.Cast<IFakeObjectCall>(), writer);
         }
 
         /// <summary>
         /// Writes all calls in the collection to the console.
         /// </summary>
         /// <param name="calls">The calls to write.</param>
-        public static void WriteToConsole(this IEnumerable<IFakeObjectCall> calls)
+        public static void WriteToConsole<T>(this IEnumerable<T> calls) where T : IFakeObjectCall
         {
             calls.Write(Console.Out);
         }
