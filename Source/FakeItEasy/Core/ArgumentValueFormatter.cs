@@ -13,7 +13,12 @@ namespace FakeItEasy.Core
         {
             this.cachedFormatters = new Dictionary<Type, IArgumentValueFormatter>();
 
-            this.typeFormatters = typeFormatters.Concat(new IArgumentValueFormatter[] { new DefaultStringFormatter(), new DefaultFormatter() });
+            this.typeFormatters = typeFormatters.Concat(
+                new IArgumentValueFormatter[] 
+                { 
+                    new DefaultStringFormatter(), 
+                    new DefaultFormatter() 
+                });
         }
 
         public virtual string GetArgumentValueAsString(object argumentValue)

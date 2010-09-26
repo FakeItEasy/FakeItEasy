@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -9,7 +10,6 @@
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
-    using System.Linq;
 
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -52,7 +52,7 @@
                 new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>()));
 
             container.RegisterSingleton<ArgumentValueFormatter>(c =>
-                new ArgumentValueFormatter(Enumerable.Empty<IArgumentValueFormatter>()));
+                new ArgumentValueFormatter(c.Resolve<IEnumerable<IArgumentValueFormatter>>()));
 
             container.RegisterSingleton<CallWriter>(c =>
                 new CallWriter(c.Resolve<IFakeObjectCallFormatter>()));
@@ -77,8 +77,6 @@
 
             container.Register<IFakeAndDummyManager>(c =>
                 {
-                    logger.Debug("Creating new fake and dummy manager.");
-
                     var fakeContainer = c.Resolve<IFakeObjectContainer>();
                     var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<IFakeManagerAccessor>(), fakeContainer);
                     var session = new DummyValueCreationSession(fakeContainer, new SessionFakeObjectCreator { Creator = fakeCreator });
@@ -95,13 +93,26 @@
             container.Register<IFakeWrapperConfigurer>(c =>
                 new DefaultFakeWrapperConfigurer());
 
-            container.Register<ITypeCatalogue>(c =>
-                new ApplicationDirectoryAssembliesTypeAccessor());
+            container.RegisterSingleton<ITypeCatalogue>(c =>
+                new ApplicationDirectoryAssembliesTypeCatalogue());
+
+            container.RegisterSingleton<TypeCatalogueInstanceProvider>(c =>
+                new TypeCatalogueInstanceProvider(c.Resolve<ITypeCatalogue>()));
+
+            RegisterEnumerableInstantiatedFromTypeCatalogue<IArgumentValueFormatter>(container);
+            RegisterEnumerableInstantiatedFromTypeCatalogue<IDummyDefinition>(container);
+            RegisterEnumerableInstantiatedFromTypeCatalogue<IFakeConfigurer>(container);
 
             container.Register<FakeFacade>(c =>
                 new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeScopeFactory>()));
             
             container.Register<IFakeScopeFactory>(c => new TemporaryFakeScopeFactory());
+        }
+
+        private static void RegisterEnumerableInstantiatedFromTypeCatalogue<T>(DictionaryContainer container)
+        {
+            container.RegisterSingleton<IEnumerable<T>>(c =>
+                    c.Resolve<TypeCatalogueInstanceProvider>().InstantiateAllOfType<T>());
         }
 
 #if DEBUG

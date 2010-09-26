@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using System.Linq;
 
 namespace FakeItEasy.Core.Tests
 {
     [TestFixture]
     public class DynamicContainerTests
     {
-        private ITypeCatalogue typeCatalogue;
-        private List<Type> availableTypes;
+        private List<IDummyDefinition> availableDummyDefinitions;
+        private List<IFakeConfigurer> availableConfigurers;
+
         private IDisposable scope;
 
         [SetUp]
@@ -16,10 +18,8 @@ namespace FakeItEasy.Core.Tests
         {
             this.scope = Fake.CreateScope(new NullFakeObjectContainer());
 
-            this.availableTypes = new List<Type>();
-
-            this.typeCatalogue = A.Fake<ITypeCatalogue>();
-            A.CallTo(() => this.typeCatalogue.GetAvailableTypes()).Returns(this.availableTypes);
+            this.availableConfigurers = new List<IFakeConfigurer>();
+            this.availableDummyDefinitions = new List<IDummyDefinition>();
         }
 
         [TearDown]
@@ -30,13 +30,13 @@ namespace FakeItEasy.Core.Tests
 
         private DynamicContainer CreateContainer()
         {
-            return new DynamicContainer(this.typeCatalogue);
+            return new DynamicContainer(this.availableDummyDefinitions, this.availableConfigurers);
         }
 
         [Test]
         public void TryCreateFakeObject_should_create_fake_for_type_that_has_definition()
         {
-            this.availableTypes.Add(typeof(DummyDefinitionForTypeWithDefinition));
+            this.availableDummyDefinitions.Add(new DummyDefinitionForTypeWithDefinition());
 
             var container = this.CreateContainer();
 
@@ -59,7 +59,7 @@ namespace FakeItEasy.Core.Tests
         [Test]
         public void ConfigureFake_should_apply_configuration_for_registered_configuration()
         {
-            this.availableTypes.Add(typeof(ConfigurationForTypeWithDummyDefintion));
+            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyDefintion());
 
             var container = this.CreateContainer();
 
@@ -79,43 +79,11 @@ namespace FakeItEasy.Core.Tests
         }
 
         [Test]
-        public void TryCreateFakeObject_should_return_false_when_existing_definition_has_no_default_constructor()
-        {
-            // Arrange
-            this.availableTypes.Add(typeof(DefinitionWithNoConstructor));
-
-            var container = this.CreateContainer();
-
-            // Act
-            object outputVariable;
-            var result = container.TryCreateDummyObject(typeof(TypeWithDummyDefinition), out outputVariable);
-
-            // Assert
-            Assert.That(result, Is.False);
-        }
-
-        [Test]
-        public void ConfigureFake_should_apply_no_configuration_when_existing_configuration_has_no_default_constructor()
-        {
-            // Arrange
-            this.availableTypes.Add(typeof(ConfigurationWithNoConstructor));
-            var fake = A.Fake<TypeWithDummyDefinition>();
-
-            var container = this.CreateContainer();
-            
-            // Act
-            container.ConfigureFake(typeof(TypeWithDummyDefinition), fake);
-
-            // Assert
-            Assert.That(fake.WasConfigured, Is.False);
-        }
-
-        [Test]
         public void Should_not_fail_when_more_than_one_defintion_exists_for_a_given_type()
         {
             // Arrange
-            this.availableTypes.Add(typeof(DummyDefinitionForTypeWithDefinition));
-            this.availableTypes.Add(typeof(DuplicateDummyDefinitionForTypeWithDefinition));
+            this.availableDummyDefinitions.Add(new DummyDefinitionForTypeWithDefinition());
+            this.availableDummyDefinitions.Add(new DuplicateDummyDefinitionForTypeWithDefinition());
 
             var container = this.CreateContainer();
 
@@ -131,41 +99,15 @@ namespace FakeItEasy.Core.Tests
         public void Should_not_fail_when_more_than_one_configurator_exists_for_a_given_type()
         {
             // Arrange
-            this.availableTypes.Add(typeof(ConfigurationForTypeWithDummyDefintion));
-            this.availableTypes.Add(typeof(DuplicateConfigurationForTypeWithDummyDefintion));
-
+            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyDefintion());
+            this.availableConfigurers.Add(new DuplicateConfigurationForTypeWithDummyDefintion());
+            
             // Act
 
             // Assert
             Assert.DoesNotThrow(() =>
                 this.CreateContainer());
         }
-
-        public class ConfigurationWithNoConstructor : FakeConfigurer<TypeWithDummyDefinition>
-        {
-            public ConfigurationWithNoConstructor(string argumentToConstructor)
-            {
-            }
-
-            public override void ConfigureFake(TypeWithDummyDefinition fakeObject)
-            {
-                Console.WriteLine("Applying form no default constructor");
-                A.CallTo(() => fakeObject.WasConfigured).Returns(true);
-            }
-        }
-        
-        public class DefinitionWithNoConstructor : DummyDefinition<TypeWithDummyDefinition>
-        {
-            public DefinitionWithNoConstructor(string argumentToConstructor)
-            {
-            }
-
-            protected override TypeWithDummyDefinition CreateDummy()
-            {
-                return new TypeWithDummyDefinition();
-            }
-        }
-
 
         public class ConfigurationForTypeWithDummyDefintion : FakeConfigurer<TypeWithDummyDefinition>
         {

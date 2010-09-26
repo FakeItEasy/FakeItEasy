@@ -18,10 +18,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer"/> class.
         /// </summary>
-        public DynamicContainer(ITypeCatalogue typeAccessor)
+        public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurer> fakeConfigurers)
         {
-            this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(typeAccessor);
-            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(typeAccessor);       
+            this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(dummyDefinitions);
+            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(fakeConfigurers);       
         }
 
         /// <summary>
@@ -60,36 +60,14 @@
             }
         }
 
-        private static IDictionary<Type, IFakeConfigurer> CreateFakeConfiguratorsDictionary(ITypeCatalogue typeAccessor)
+        private static IDictionary<Type, IFakeConfigurer> CreateFakeConfiguratorsDictionary(IEnumerable<IFakeConfigurer> fakeConfigurers)
         {
-            return GetOneInstancePerTypeImplementing<IFakeConfigurer>(typeAccessor).FirstFromEachKey(x => x.ForType);
+            return fakeConfigurers.FirstFromEachKey(x => x.ForType);
         }
 
-        private static IDictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(ITypeCatalogue typeAccessor)
+        private static IDictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(IEnumerable<IDummyDefinition> dummyDefinitions)
         {
-            return GetOneInstancePerTypeImplementing<IDummyDefinition>(typeAccessor).FirstFromEachKey(x => x.ForType);
-        }
-
-        private static IEnumerable<TInterface> GetOneInstancePerTypeImplementing<TInterface>(ITypeCatalogue typeAccessor)
-        {
-            return from type in typeAccessor.GetAvailableTypes()
-                   where type.GetInterfaces().Contains(typeof(TInterface))
-                   let instance = TryCreateInstance(type)
-                   where instance != null
-                   select (TInterface)instance;
-        }
-
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Used to determine if an instance could be created or not.")]
-        private static object TryCreateInstance(Type type)
-        {
-            try
-            {
-                return Activator.CreateInstance(type);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return dummyDefinitions.FirstFromEachKey(x => x.ForType);
         }
     }
 }

@@ -9,15 +9,15 @@ namespace FakeItEasy.Core
     /// <summary>
     /// Access all types in all assemblies in the same directory as the FakeItEasy dll.
     /// </summary>
-    public class ApplicationDirectoryAssembliesTypeAccessor
+    public class ApplicationDirectoryAssembliesTypeCatalogue
         : ITypeCatalogue
     {
         private List<Type> availableTypes;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationDirectoryAssembliesTypeAccessor"/> class.
+        /// Initializes a new instance of the <see cref="ApplicationDirectoryAssembliesTypeCatalogue"/> class.
         /// </summary>
-        public ApplicationDirectoryAssembliesTypeAccessor()
+        public ApplicationDirectoryAssembliesTypeCatalogue()
         {
             this.availableTypes = new List<Type>();
 
@@ -35,7 +35,7 @@ namespace FakeItEasy.Core
 
         private void InitializeAvailableTypes()
         {
-            var applicationDirectory = Path.GetDirectoryName(typeof(ApplicationDirectoryAssembliesTypeAccessor).Assembly.Location);
+            var applicationDirectory = Path.GetDirectoryName(typeof(ApplicationDirectoryAssembliesTypeCatalogue).Assembly.Location);
 
             foreach (var assemblyFile in Directory.GetFiles(applicationDirectory, "*.dll"))
             {
@@ -43,8 +43,8 @@ namespace FakeItEasy.Core
             }
         }
 
-		
-		[SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Should just ignore any exceptions and move on with other assemblies.")]
+        
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Should just ignore any exceptions and move on with other assemblies.")]
         private void LoadAllTypesFromAssemblyFile(string assemblyFile)
         {
             try
