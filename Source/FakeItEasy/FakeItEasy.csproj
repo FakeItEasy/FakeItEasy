@@ -83,7 +83,7 @@
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Core\ArgumentValueFormatter.cs" />
-    <Compile Include="Core\IArgumentValueFormatter.cs" />
+    <Compile Include="IArgumentValueFormatter.cs" />
     <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
     <Compile Include="Creation\DefaultFakeCreatorFacade.cs" />
     <Compile Include="Creation\DummyValueCreationSession.cs" />
