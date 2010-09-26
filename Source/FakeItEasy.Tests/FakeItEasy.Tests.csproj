@@ -82,6 +82,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="AnyTests.cs" />
+    <Compile Include="Core\ArgumentValueFormatterTests.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManagerTests.cs">
       <SubType>Code</SubType>
     </Compile>

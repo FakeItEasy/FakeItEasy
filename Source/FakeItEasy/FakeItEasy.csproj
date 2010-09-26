@@ -82,6 +82,8 @@
     <Compile Include="Any.cs" />
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeAccessor.cs" />
+    <Compile Include="Core\ArgumentValueFormatter.cs" />
+    <Compile Include="Core\IArgumentValueFormatter.cs" />
     <Compile Include="Creation\DefaultFakeCreatorFacade.cs" />
     <Compile Include="Creation\DummyValueCreationSession.cs" />
     <Compile Include="Creation\FakeObjectCreator.cs" />

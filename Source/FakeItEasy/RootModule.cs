@@ -9,6 +9,7 @@
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
+    using System.Linq;
 
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -48,7 +49,10 @@
                 () => new FakeManager());
 
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
-                new DefaultFakeObjectCallFormatter());
+                new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>()));
+
+            container.RegisterSingleton<ArgumentValueFormatter>(c =>
+                new ArgumentValueFormatter(Enumerable.Empty<IArgumentValueFormatter>()));
 
             container.RegisterSingleton<CallWriter>(c =>
                 new CallWriter(c.Resolve<IFakeObjectCallFormatter>()));

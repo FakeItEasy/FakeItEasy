@@ -9,6 +9,13 @@ namespace FakeItEasy.Core
     internal class DefaultFakeObjectCallFormatter
         : IFakeObjectCallFormatter
     {
+        private ArgumentValueFormatter argumentValueFormatter;
+        
+        public DefaultFakeObjectCallFormatter(ArgumentValueFormatter argumentValueFormatter)
+        {
+            this.argumentValueFormatter = argumentValueFormatter;
+        }
+
         /// <summary>
         /// Gets a human readable description of the specified
         /// fake object call.
@@ -52,12 +59,12 @@ namespace FakeItEasy.Core
             }
         }
 
-        private static void AppendArgumentValue(StringBuilder builder, ArgumentValueInfo argument)
+        private void AppendArgumentValue(StringBuilder builder, ArgumentValueInfo argument)
         {
             builder
                 .Append(argument.ArgumentName)
                 .Append(": ")
-                .Append(GetArgumentValueAsString(argument.ArgumentValue));
+                .Append(this.GetArgumentValueAsString(argument.ArgumentValue));
         }
 
         private static ArgumentValueInfo[] GetArgumentValueInfos(IFakeObjectCall call)
@@ -71,38 +78,12 @@ namespace FakeItEasy.Core
                  }).ToArray();
         }
 
-        private static string GetArgumentValueAsString(object argumentValue)
+        private string GetArgumentValueAsString(object argumentValue)
         {
-            if (argumentValue == null)
-            {
-                return "<NULL>";
-            }
-
-            var stringValue = argumentValue as string;
-
-            if (stringValue != null)
-            {
-                if (stringValue.Length == 0)
-                {
-                    return "string.Empty";
-                }
-
-                stringValue = string.Concat("\"", stringValue, "\"");
-            }
-            else
-            {
-                stringValue = argumentValue.ToString();
-            }
-
-            if (stringValue.Length > 40)
-            {
-                stringValue = stringValue.Substring(0, 40) + "...";
-            }
-
-            return stringValue;
+            return this.argumentValueFormatter.GetArgumentValueAsString(argumentValue);
         }
 
-        private static void AppendArguments(StringBuilder builder, IFakeObjectCall call)
+        private void AppendArguments(StringBuilder builder, IFakeObjectCall call)
         {
             var arguments = GetArgumentValueInfos(call);
 
@@ -111,7 +92,7 @@ namespace FakeItEasy.Core
                 var argument = arguments[i];
 
                 AppendArgumentSeparator(builder, i, arguments.Length);
-                AppendArgumentValue(builder, argument);
+                this.AppendArgumentValue(builder, argument);
             }
         }
 
