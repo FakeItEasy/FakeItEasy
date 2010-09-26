@@ -4,6 +4,11 @@ namespace FakeItEasy.Tests.Core
     using System.Reflection;
     using FakeItEasy.Core;
     using NUnit.Framework;
+    using System.Linq;
+    using System.IO;
+    using System.Text;
+    using System.Collections.Generic;
+    using System.Collections;
 
     [TestFixture]
     public class DefaultFakeObjectCallFormatterTests

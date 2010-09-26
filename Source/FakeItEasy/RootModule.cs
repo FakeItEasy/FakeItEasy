@@ -106,7 +106,7 @@
             container.Register<FakeFacade>(c =>
                 new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeScopeFactory>()));
             
-            container.Register<IFakeScopeFactory>(c => new TemporaryFakeScopeFactory());
+            container.RegisterSingleton<IFakeScopeFactory>(c => new FakeScopeFactory());
         }
 
         private static void RegisterEnumerableInstantiatedFromTypeCatalogue<T>(DictionaryContainer container)
@@ -114,22 +114,6 @@
             container.RegisterSingleton<IEnumerable<T>>(c =>
                     c.Resolve<TypeCatalogueInstanceProvider>().InstantiateAllOfType<T>());
         }
-
-#if DEBUG
-        private class TemporaryFakeScopeFactory
-            : IFakeScopeFactory
-        {
-            public IFakeScope Create()
-            {
-                return FakeScope.Create();
-            }
-
-            public IFakeScope Create(IFakeObjectContainer container)
-            {
-                return FakeScope.Create(container);
-            }
-        }
-#endif
 
         private class SessionFakeObjectCreator
             : IFakeObjectCreator

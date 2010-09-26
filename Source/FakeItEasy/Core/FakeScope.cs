@@ -241,24 +241,4 @@ namespace FakeItEasy.Core
         } 
         #endregion
     }
-
-    internal interface IFakeScopeFactory
-    {
-        IFakeScope Create();
-        IFakeScope Create(IFakeObjectContainer container);
-    }
-
-    internal class FakeScopeFactory
-        : IFakeScopeFactory
-    {
-        public IFakeScope Create()
-        {
-            throw new MustBeImplementedException();
-        }
-
-        public IFakeScope Create(IFakeObjectContainer container)
-        {
-            throw new MustBeImplementedException();
-        }
-    }
 }

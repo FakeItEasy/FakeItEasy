@@ -83,6 +83,8 @@
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Core\ArgumentValueFormatter.cs" />
+    <Compile Include="Core\FakeScopeFactory.cs" />
+    <Compile Include="Core\IFakeScopeFactory.cs" />
     <Compile Include="IArgumentValueFormatter.cs" />
     <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
     <Compile Include="Creation\DefaultFakeCreatorFacade.cs" />
