@@ -80,6 +80,7 @@
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="A.cs" />
     <Compile Include="Any.cs" />
+    <Compile Include="ArgumentValueFormatter.cs" />
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Core\ArgumentValueFormatter.cs" />

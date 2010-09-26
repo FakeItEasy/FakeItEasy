@@ -109,48 +109,25 @@ namespace FakeItEasy.Core
         }
 
         private class DefaultFormatter
-            : IArgumentValueFormatter
+            : ArgumentValueFormatter<object>
         {
-            public Type ForType
-            {
-                get { return typeof(object); }
-            }
-
-            public string GetArgumentValueAsString(object argumentValue)
+            protected override string GetStringValue(object argumentValue)
             {
                 return argumentValue.ToString();
-            }
-
-
-            public int Priority
-            {
-                get { return int.MinValue; }
             }
         }
 
         private class DefaultStringFormatter
-            : IArgumentValueFormatter
+            : ArgumentValueFormatter<string>
         {
-            public Type ForType
+            protected override string GetStringValue(string argumentValue)
             {
-                get { return typeof(string); }
-            }
-
-            public int Priority
-            {
-                get { return int.MinValue; }
-            }
-
-            public string GetArgumentValueAsString(object argumentValue)
-            {
-                var value = (string)argumentValue;
-
-                if (value.Length == 0)
+                if (argumentValue.Length == 0)
                 {
                     return "string.Empty";
                 }
 
-                return string.Concat("\"", value, "\"");
+                return string.Concat("\"", argumentValue, "\"");
             }
         }
     }
