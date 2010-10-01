@@ -104,6 +104,16 @@ namespace FakeItEasy
         {
             Facade.ClearConfiguration(fakedObject);
         }
+
+        /// <summary>
+        /// Sets a new fake to each property or field that is tagged with the FakeAttribute in the specified
+        /// fixture.
+        /// </summary>
+        /// <param name="fixture">The object to initialize.</param>
+        public static void InitializeFixture(object fixture)
+        {
+            Facade.InitializeFixture(fixture);
+        }
     }
 
     /// <summary>

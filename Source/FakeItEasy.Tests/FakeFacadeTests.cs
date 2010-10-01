@@ -8,6 +8,7 @@ namespace FakeItEasy.Tests
     {
         private IFakeManagerAccessor managerAccessor;
         private IFakeScopeFactory fakeScopeFactory;
+        private IFixtureInitializer fixtureInitializer;
 
         private FakeFacade facade;
 
@@ -16,8 +17,9 @@ namespace FakeItEasy.Tests
         {
             this.managerAccessor = A.Fake<IFakeManagerAccessor>();
             this.fakeScopeFactory = A.Fake<IFakeScopeFactory>();
+            this.fixtureInitializer = A.Fake<IFixtureInitializer>();
 
-            this.facade = new FakeFacade(this.managerAccessor, this.fakeScopeFactory);
+            this.facade = new FakeFacade(this.managerAccessor, this.fakeScopeFactory, this.fixtureInitializer);
         }
 
         [Test]
@@ -146,6 +148,31 @@ namespace FakeItEasy.Tests
             // Assert
             NullGuardedConstraint.Assert(() =>
                 this.facade.ClearConfiguration(A.Dummy<object>()));
+        }
+
+        [Test]
+        public void Initialize_should_call_initialize_on_fake_initializer()
+        {
+            // Arrange
+            var o = A.Dummy<object>();
+
+            // Act
+            this.facade.InitializeFixture(o);
+
+            // Assert
+            A.CallTo(() => this.fixtureInitializer.InitializeFakes(o)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Initialize_should_be_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                this.facade.InitializeFixture(new object()));
         }
     }
 }
