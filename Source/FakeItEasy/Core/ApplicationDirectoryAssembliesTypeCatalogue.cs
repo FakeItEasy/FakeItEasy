@@ -4,6 +4,7 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
 
     /// <summary>
@@ -35,27 +36,37 @@ namespace FakeItEasy.Core
 
         private void InitializeAvailableTypes()
         {
-            var applicationDirectory = Path.GetDirectoryName(typeof(ApplicationDirectoryAssembliesTypeCatalogue).Assembly.Location);
-
-            foreach (var assemblyFile in Directory.GetFiles(applicationDirectory, "*.dll"))
+            foreach (var assembly in GetAllAvailableAssemblies())
             {
-                this.LoadAllTypesFromAssemblyFile(assemblyFile);
+                this.LoadAllTypesFromAssembly(assembly);
             }
         }
 
-        
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Should just ignore any exceptions and move on with other assemblies.")]
-        private void LoadAllTypesFromAssemblyFile(string assemblyFile)
+        private IEnumerable<Assembly> GetAllAvailableAssemblies()
         {
-            try
-            {
-                var assembly = Assembly.LoadFile(assemblyFile);
+            return GetAllAssembliesInApplicationDirectory().Concat(GetAllAsembliesInAppDomain()).Distinct();
+        }
 
-                this.LoadAllTypesFromAssembly(assembly);
-            }
-            catch
+        private IEnumerable<Assembly> GetAllAssembliesInApplicationDirectory()
+        {
+            var applicationDirectory = Environment.CurrentDirectory;
+            var result = new LinkedList<Assembly>();
+
+            foreach (var assemblyFile in Directory.GetFiles(applicationDirectory, "*.dll"))
             {
+                try
+                {
+                    result.AddLast(Assembly.LoadFile(assemblyFile));
+                }
+                catch { }
             }
+
+            return result;
+        }
+
+        private IEnumerable<Assembly> GetAllAsembliesInAppDomain()
+        {
+            return AppDomain.CurrentDomain.GetAssemblies();
         }
 
         private void LoadAllTypesFromAssembly(Assembly assembly)
