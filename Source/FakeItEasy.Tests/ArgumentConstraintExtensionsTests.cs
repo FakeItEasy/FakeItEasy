@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests
         public void Contains_should_return_collection_contains_constraint()
         {
             // Arrange
-            var constraint = A<List<string>>.That.Contains(10);
+            var constraint = A<List<string>>.That.Contains("Foo");
 
             // Act
 

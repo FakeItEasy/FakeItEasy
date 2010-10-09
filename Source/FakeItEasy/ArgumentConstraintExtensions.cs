@@ -2,8 +2,10 @@ namespace FakeItEasy
 {
     using System;
     using System.Collections;
+    using System.Linq;
     using FakeItEasy.Expressions;
     using FakeItEasy.Expressions.ArgumentConstraints;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Provides validation extension to the Argumentscope{T} class.
@@ -74,6 +76,29 @@ namespace FakeItEasy
         public static ArgumentConstraint<T> IsGreaterThan<T>(this ArgumentConstraintScope<T> scope, T value) where T : IComparable
         {
             return scope.CreateConstraint(x => x.CompareTo(value) > 0, "Greater than {0}", value);
+        }
+
+        /// <summary>
+        /// The tested argument collection should contain the same elements as the
+        /// as the specified collection.
+        /// </summary>
+        /// <typeparam name="T">The type of collection.</typeparam>
+        /// <param name="scope">The scope of the constraint.</param>
+        /// <param name="value">The sequence to test against.</param>
+        /// <returns>An argument constraint.</returns>
+        public static ArgumentConstraint<T> IsSameSequenceAs<T>(this ArgumentConstraintScope<T> scope, IEnumerable value) where T : IEnumerable
+        {
+            return scope.CreateConstraint(
+                x => x != null && x.Cast<object>().SequenceEqual(value.Cast<object>()), 
+                "specified sequence");
+        }
+
+        public static ArgumentConstraint<T> IsEmpty<T>(this ArgumentConstraintScope<T> scope) where T : IEnumerable
+        {
+            return scope.CreateConstraint(
+                x => x != null && !x.Cast<object>().Any(),
+                "empty collection"
+                );
         }
 
         private static ArgumentConstraint<T> CreateConstraint<T>(this ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)

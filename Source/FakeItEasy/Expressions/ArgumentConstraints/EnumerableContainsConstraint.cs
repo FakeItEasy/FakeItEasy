@@ -18,7 +18,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
         {
             get 
             {
-                return "contains {0}".FormatInvariant(this.expectedValue);
+                return "sequence that contains the value {0}".FormatInvariant(this.expectedValue);
             }
         }
 
