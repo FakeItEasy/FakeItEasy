@@ -1,4 +1,4 @@
-namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
+namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
     using System.Linq;
@@ -32,12 +32,6 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
             {
                 typeof(object).GetMethod("GetType"),
                 typeof(string).GetProperty("Length"),
-                typeof(object).GetMethod("ToString", new Type[] {}),
-                typeof(object).GetMethod("GetHashCode", new Type[] {}),
-                typeof(object).GetMethod("Equals", new Type[] { typeof(object) }),
-                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
-                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("GetHashCode", new Type[] {}),
-                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("Equals", new Type[] { typeof(object) }),
                 typeof(TypeWithNonVirtualProperty).GetProperty("Foo").GetGetMethod(),
                 typeof(TypeWithNonVirtualProperty).GetProperty("Foo").GetSetMethod(),
                 typeof(TypeWithNonVirtualProperty).GetProperty("Foo")
@@ -45,8 +39,14 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
 
         private MemberInfo[] interceptableMembers = new MemberInfo[] 
             {
+                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
+                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("GetHashCode", new Type[] {}),
+                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("Equals", new Type[] { typeof(object) }),
+                typeof(object).GetMethod("GetHashCode", new Type[] {}),
+                typeof(object).GetMethod("Equals", new Type[] { typeof(object) }),
                 typeof(IFoo).GetMethod("Bar", new Type[] {}),
                 typeof(IFoo).GetProperty("SomeProperty").GetGetMethod(),
+                typeof(object).GetMethod("ToString", new Type[] {}),
                 typeof(IFoo).GetProperty("SomeProperty").GetSetMethod(),
                 typeof(IFoo).GetProperty("SomeProperty"),
                 typeof(TypeWithAllOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
@@ -94,10 +94,10 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
         public void Should_return_proxy_that_is_of_the_specified_type(Type typeOfProxy)
         {
             // Arrange
-
+            
             // Act
             var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
-
+            
             // Assert
             Assert.That(result.GeneratedProxy, Is.InstanceOf(typeOfProxy));
         }
@@ -133,16 +133,16 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
             var result = this.generator.GenerateProxy(typeThatImplementsInterfaceType, Enumerable.Empty<Type>(), null);
             IWritableFakeObjectCall callMadeToProxy = null;
 
-            result.CallInterceptedEventRaiser.CallWasIntercepted += (sender, e) =>
-            {
-                callMadeToProxy = e.Call;
-            };
-
+            result.CallInterceptedEventRaiser.CallWasIntercepted += (sender, e) => 
+                {
+                    callMadeToProxy = e.Call;    
+                };
+            
             var proxy = (IInterfaceType)result.GeneratedProxy;
 
             // Act
             proxy.Foo(1, 2);
-
+            
             // Assert
             Assert.That(callMadeToProxy, Is.Not.Null);
             Assert.That(callMadeToProxy.Arguments, Is.EquivalentTo(new object[] { 1, 2 }));
@@ -192,7 +192,7 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
         public void MemberCanBeIntercepted_should_return_false_for_non_virtual_member(MemberInfo member)
         {
             // Arrange
-
+            
             // Act
             var result = this.generator.MemberCanBeIntercepted(member);
 
@@ -204,7 +204,7 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
         public void MemberCanBeIntercepted_should_return_true_for_virtual_member(MemberInfo member)
         {
             // Arrange
-
+            
             // Act
             var result = this.generator.MemberCanBeIntercepted(member);
 
@@ -244,7 +244,7 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
+            NullGuardedConstraint.Assert(() => 
                 this.generator.MemberCanBeIntercepted(typeof(object).GetMethod("GetHashCode")));
         }
 
@@ -288,14 +288,34 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
 
             // Act, Assert
             var ex = Assert.Throws<ArgumentException>(() =>
-            {
-                var result = this.generator.GenerateProxy(
-                    typeof(IInterfaceType),
-                    Enumerable.Empty<Type>(),
-                    new object[] { "no constructor on interface " });
-            });
+                {
+                    var result = this.generator.GenerateProxy(
+                        typeof(IInterfaceType),
+                        Enumerable.Empty<Type>(),
+                        new object[] { "no constructor on interface " });
+                });
 
             Assert.That(ex.Message, Is.EqualTo("Arguments for constructor specified for interface type."));
+        }
+
+        [TestCaseSource("supportedTypes")]
+        public void Should_be_able_to_intercept_ToString(Type typeOfProxy)
+        {
+            // Arrange
+            bool wasCalled = false;
+
+            // Act
+            var proxy = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
+
+            proxy.CallInterceptedEventRaiser.CallWasIntercepted += (s, e) =>
+                {
+                    wasCalled = true;
+                };
+
+            proxy.GeneratedProxy.ToString();
+
+            // Assert
+            Assert.That(wasCalled, Is.True);
         }
 
         [Serializable]
@@ -308,7 +328,7 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
                 this.Argument = argument;
             }
         }
-
+       
         public interface IInterfaceType
         {
             void Foo(int argument1, int argument2);
@@ -321,7 +341,7 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
 
             public virtual void Foo(int argument1, int argument2)
             {
-
+                
             }
         }
 
@@ -336,7 +356,7 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
 
             public virtual void Foo(int argument1, int argument2)
             {
-
+                
             }
         }
 
@@ -351,7 +371,7 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
 
             public virtual void Foo(int argument1, int argument2)
             {
-
+                
             }
         }
 
@@ -370,14 +390,14 @@ namespace FakeItEasy.Tests.Creatino.CastleDynamicProxy
         {
             public virtual void Foo(int argument1, int argument2)
             {
-
+                
             }
         }
 
         [Serializable]
         public class TypeWithNoneOfTheObjectMethodsOverridden
         { }
-
+        
         [Serializable]
         public class TypeWithAllOfTheObjectMethodsOverridden
         {
