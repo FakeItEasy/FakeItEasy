@@ -104,9 +104,11 @@
             RegisterEnumerableInstantiatedFromTypeCatalogue<IFakeConfigurer>(container);
 
             container.Register<FakeFacade>(c =>
-                new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeScopeFactory>()));
+                new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeScopeFactory>(), c.Resolve<IFixtureInitializer>()));
             
             container.RegisterSingleton<IFakeScopeFactory>(c => new FakeScopeFactory());
+
+            container.Register<IFixtureInitializer>(c => new DefaultFixtureInitializer(c.Resolve<IFakeAndDummyManager>()));
         }
 
         private static void RegisterEnumerableInstantiatedFromTypeCatalogue<T>(DictionaryContainer container)

@@ -83,6 +83,7 @@
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="AnyTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
+    <Compile Include="Core\DefaultFixtureInitializerTests.cs" />
     <Compile Include="Core\TypeCatalogueInstanceProviderTests.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManagerTests.cs">
       <SubType>Code</SubType>

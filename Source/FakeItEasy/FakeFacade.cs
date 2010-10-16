@@ -7,11 +7,13 @@ namespace FakeItEasy
     {
         private IFakeManagerAccessor fakeManagerAccessor;
         private IFakeScopeFactory fakeScopeFactory;
+        private IFixtureInitializer fakeInitializer;
 
-        public FakeFacade(IFakeManagerAccessor fakeManagerAccessor, IFakeScopeFactory fakeScopeFactory)
+        public FakeFacade(IFakeManagerAccessor fakeManagerAccessor, IFakeScopeFactory fakeScopeFactory, IFixtureInitializer fakeInitializer)
         {
             this.fakeManagerAccessor = fakeManagerAccessor;
             this.fakeScopeFactory = fakeScopeFactory;
+            this.fakeInitializer = fakeInitializer;
         }
 
         public virtual FakeManager GetFakeManager(object fakedObject)
@@ -47,6 +49,13 @@ namespace FakeItEasy
 
             var manager = this.fakeManagerAccessor.GetFakeManager(fakedObject);
             manager.ClearUserRules();
+        }
+
+        public void InitializeFixture(object fixture)
+        {
+            Guard.AgainstNull(fixture, "fixture");
+
+            this.fakeInitializer.InitializeFakes(fixture);
         }
     }
 }

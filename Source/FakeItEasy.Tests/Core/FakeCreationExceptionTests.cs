@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests.Core
 {
     using FakeItEasy.Core;
     using NUnit.Framework;
+    using FakeItEasy.Creation;
 
     [TestFixture]
     public class FakeCreationExceptionTests

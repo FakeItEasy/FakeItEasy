@@ -86,6 +86,8 @@
     <Compile Include="Core\ArgumentValueFormatter.cs" />
     <Compile Include="Core\FakeScopeFactory.cs" />
     <Compile Include="Core\IFakeScopeFactory.cs" />
+    <Compile Include="Core\IFixtureInitializer.cs" />
+    <Compile Include="FakeAttribute.cs" />
     <Compile Include="IArgumentValueFormatter.cs" />
     <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
     <Compile Include="Creation\DefaultFakeCreatorFacade.cs" />

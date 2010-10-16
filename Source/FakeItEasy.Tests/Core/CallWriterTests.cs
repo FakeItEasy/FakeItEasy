@@ -13,14 +13,17 @@ namespace FakeItEasy.Tests.Core
     {
         private List<IFakeObjectCall> calls;
         private StringWriter writer;
+        
+        [Fake]
         private IFakeObjectCallFormatter callFormatter;
 
         [SetUp]
         public void SetUp()
         {
+            Fake.InitializeFixture(this);
+
             this.calls = new List<IFakeObjectCall>();
             this.writer = new StringWriter();
-            this.callFormatter = A.Fake<IFakeObjectCallFormatter>();            
         }
 
         private CallWriter CreateWriter()
