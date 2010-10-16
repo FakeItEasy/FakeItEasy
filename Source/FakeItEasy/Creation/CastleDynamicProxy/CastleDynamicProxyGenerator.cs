@@ -20,12 +20,18 @@
         {
             Guard.AgainstNull(typeOfProxy, "typeOfProxy");
             Guard.AgainstNull(additionalInterfacesToImplement, "additionalInterfacesToImplement");
-            GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
-
+            
             if (typeOfProxy.IsValueType)
             {
                 return GetProxyResultForValueType(typeOfProxy);
             }
+
+            if (typeOfProxy.IsSealed)
+            {
+                return new ProxyGeneratorResult(DynamicProxyResources.ProxyIsSealedTypeMessage.FormatInvariant(typeOfProxy));
+            }
+
+            GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
 
             return this.CreateProxyGeneratorResult(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
         }

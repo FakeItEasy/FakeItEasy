@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FakeItEasy.Creation.CastleDynamicProxy
-{
-
-
+namespace FakeItEasy.Creation.CastleDynamicProxy {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -75,6 +75,15 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         internal static string ArgumentsForConstructorOnInterfaceTypeMessage {
             get {
                 return ResourceManager.GetString("ArgumentsForConstructorOnInterfaceTypeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type of proxy &quot;{0}&quot; is sealed..
+        /// </summary>
+        internal static string ProxyIsSealedTypeMessage {
+            get {
+                return ResourceManager.GetString("ProxyIsSealedTypeMessage", resourceCulture);
             }
         }
         

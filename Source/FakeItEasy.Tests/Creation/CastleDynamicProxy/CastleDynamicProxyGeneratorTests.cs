@@ -7,9 +7,10 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.CastleDynamicProxy;
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
-    public class CastleDynamicProxyGeneratorNewTests
+    public class CastleDynamicProxyGeneratorTests
     {
         private CastleDynamicProxyGenerator generator;
 
@@ -173,6 +174,23 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             // Assert
             Assert.That(result.ReasonForFailure, Is.EqualTo("The type of proxy must be an interface or a class but it was System.Int32."));
+        }
+
+        [Test]
+        public void Should_specify_that_sealed_types_can_not_be_generated()
+        {
+            // Arrange
+
+            // Act
+            var result = this.generator.GenerateProxy(typeof(SealedType), A.Dummy<IEnumerable<Type>>(), A.Dummy<IEnumerable<object>>());
+
+            // Assert
+            Assert.That(result.ReasonForFailure, Is.EqualTo("The type of proxy \"FakeItEasy.Tests.Creation.CastleDynamicProxy.CastleDynamicProxyGeneratorTests+SealedType\" is sealed.")); 
+        }
+
+        private sealed class SealedType
+        { 
+        
         }
 
         [Test]

@@ -51,5 +51,12 @@
             var lambda = Expression.Lambda(expression).Compile();
             return lambda.DynamicInvoke();
         }
+
+#if DEBUG
+        internal static T DebugValue<T>(T value)
+        {
+            return value;
+        }
+#endif
     }
 }
