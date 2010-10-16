@@ -14,4 +14,3 @@ Build/*
 *.diff
 *resharper*
 *.[Cc]ache
-packages/*
