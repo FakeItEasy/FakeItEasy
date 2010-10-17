@@ -8,6 +8,7 @@ namespace FakeItEasy.Core
     internal class CallWriter
     {
         private IFakeObjectCallFormatter callFormatter;
+
         public CallWriter(IFakeObjectCallFormatter callFormatter)
         {
             this.callFormatter = callFormatter;
