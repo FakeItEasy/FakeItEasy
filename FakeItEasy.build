@@ -24,6 +24,14 @@
 		<BinariesSource>Source\FakeItEasy\bin\$(Configuration)</BinariesSource>
 		<ProjectName>$(MSBuildProjectName)</ProjectName>
 	</PropertyGroup>
+	<PropertyGroup>
+		<FxCop_CriticalErrors>0</FxCop_CriticalErrors>
+		<FxCop_Errors>0</FxCop_Errors>
+		<FxCop_CriticalWarnings>0</FxCop_CriticalWarnings>
+		<FxCop_Warnings>0</FxCop_Warnings>
+		<FxCop_TotalErrors>0</FxCop_TotalErrors>
+		<FxCopOutput>$(BuildPath)\Artifacts\FxCop.xml</FxCopOutput>
+	</PropertyGroup>
 
 	<!-- 
 	 Solution redirects. Every VS project normally knows how to support these targets
@@ -126,8 +134,40 @@
 	<Target Name="CodeAnalysis" DependsOnTargets="BuildDebug">
 		<MakeDir Directories="$(BuildPath)\Artifacts" />
 		<Exec 
-			Command="&quot;$(FxCopCmdPath)&quot; /searchgac /file:Source\FakeItEasy\bin\Debug\FakeItEasy.dll /out:$(BuildPath)\Artifacts\FxCop.xml" 
-			ContinueOnError="False" />
+			Command="&quot;$(FxCopCmdPath)&quot; /searchgac /file:Source\FakeItEasy\bin\Debug\FakeItEasy.dll /out:$(FxCopOutput)" 
+			ContinueOnError="True" />
+			
+		<XmlRead ContinueOnError="True"
+			XmlFileName="$(FxCopOutput)"
+			XPath="string(count(//Issue[@Level='CriticalError']))">
+			<Output TaskParameter="Value" PropertyName="FxCop_CriticalErrors" />
+		</XmlRead>
+		<XmlRead ContinueOnError="True"
+			XmlFileName="$(FxCopOutput)"
+			XPath="string(count(//Issue[@Level='Error']))">
+			<Output TaskParameter="Value" PropertyName="FxCop_Errors" />
+		</XmlRead>
+		<XmlRead ContinueOnError="True"
+			XmlFileName="$(FxCopOutput)"
+			XPath="string(count(//Issue[@Level='CriticalWarning']))">
+			<Output TaskParameter="Value" PropertyName="FxCop_CriticalWarnings" />
+		</XmlRead>
+		<XmlRead ContinueOnError="True"
+			XmlFileName="$(FxCopOutput)"
+			XPath="string(count(//Issue[@Level='Warning']))">
+			<Output TaskParameter="Value" PropertyName="FxCop_Warnings" />
+		</XmlRead>
+		<XmlRead ContinueOnError="True"
+			XmlFileName="$(FxCopOutput)"
+			XPath="string(count(//Issue))">
+			<Output TaskParameter="Value" PropertyName="FxCop_TotalErrors" />
+		</XmlRead>
+
+		<Warning Text="FxCop encountered $(FxCop_TotalErrors) rule violations"
+				Condition="$(FxCop_TotalErrors) &gt; 0" />
+
+		<Error Text="FxCop encountered $(FxCop_TotalErrors) rule violations"
+				Condition="$(FxCop_TotalErrors) &gt; 0" />
 	</Target>
 	
 	<Target Name="Package" DependsOnTargets="Clean;Rebuild">
