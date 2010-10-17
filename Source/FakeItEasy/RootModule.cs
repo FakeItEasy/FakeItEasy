@@ -17,8 +17,6 @@
     internal class RootModule 
         : Module
     {
-        private static readonly Logger logger = Log.GetLogger<RootModule>();
-
         /// <summary>
         /// Registers the dependencies.
         /// </summary>

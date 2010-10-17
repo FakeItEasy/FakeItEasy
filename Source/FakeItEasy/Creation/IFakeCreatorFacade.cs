@@ -1,7 +1,7 @@
 namespace FakeItEasy.Creation
 {
     using System;
-using System.Collections.Generic;
+    using System.Collections.Generic;
 
     /// <summary>
     /// A facade used by the public api for testability.
@@ -14,7 +14,7 @@ using System.Collections.Generic;
         /// <typeparam name="T">The type of fake to create.</typeparam>
         /// <param name="options">Options for the created fake object.</param>
         /// <returns>The created fake object.</returns>
-        /// <exception cref="FakeCreationException">Was unable to generate the fake in the current configuration.</exception>
+        /// <exception cref="FakeItEasy.Core.FakeCreationException">Was unable to generate the fake in the current configuration.</exception>
         T CreateFake<T>(Action<IFakeOptionsBuilder<T>> options);
 
         /// <summary>
@@ -23,7 +23,7 @@ using System.Collections.Generic;
         /// </summary>
         /// <typeparam name="T">The type of dummy to create.</typeparam>
         /// <returns>The created dummy.</returns>
-        /// <exception cref="FakeCreationException">Was unable to generate the fake in the current configuration and
+        /// <exception cref="FakeItEasy.Core.FakeCreationException">Was unable to generate the fake in the current configuration and
         /// no dummy was registered in the container for the specifed type..</exception>
         T CreateDummy<T>();
 

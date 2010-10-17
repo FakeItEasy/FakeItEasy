@@ -164,6 +164,7 @@ namespace FakeItEasy
         /// <param name="call">The call to get the argument from.</param>
         /// <param name="argumentIndex">The index of the argument.</param>
         /// <returns>The value of the argument with the specified index.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Generic argument is used to cast the result.")]
         public static T GetArgument<T>(this IFakeObjectCall call, int argumentIndex)
         {
             Guard.AgainstNull(call, "call");
@@ -179,6 +180,7 @@ namespace FakeItEasy
         /// <param name="call">The call to get the argument from.</param>
         /// <param name="argumentName">The name of the argument.</param>
         /// <returns>The value of the argument with the specified name.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Generic argument is used to cast the result.")]
         public static T GetArgument<T>(this IFakeObjectCall call, string argumentName)
         {
             Guard.AgainstNull(call, "call");

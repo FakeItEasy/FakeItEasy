@@ -11,10 +11,10 @@
         /// <summary>
         /// Always returns false and sets the fakeObject to null.
         /// </summary>
-        /// <param name="typeOfFake">The type of fake object to create.</param>
+        /// <param name="typeOfDummy">The type of dummy object to create.</param>
         /// <param name="fakeObject">Output variable for the fake object that will always be set to null.</param>
         /// <returns>Always return false.</returns>
-        public bool TryCreateDummyObject(Type typeOfFake, out object fakeObject)
+        public bool TryCreateDummyObject(Type typeOfDummy, out object fakeObject)
         {
             fakeObject = null;
             return false;

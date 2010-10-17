@@ -100,6 +100,7 @@ namespace FakeItEasy
         /// Cleares the configuration of the faked object.
         /// </summary>
         /// <param name="fakedObject">The faked object to clear the configuration of.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static void ClearConfiguration(object fakedObject)
         {
             Facade.ClearConfiguration(fakedObject);

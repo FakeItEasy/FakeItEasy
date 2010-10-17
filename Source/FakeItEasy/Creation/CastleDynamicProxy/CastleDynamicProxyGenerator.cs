@@ -8,8 +8,9 @@
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using System.Diagnostics.CodeAnalysis;
     
-    public class CastleDynamicProxyGenerator
+    internal class CastleDynamicProxyGenerator
         : IProxyGenerator
     {
         private static readonly Logger logger = Log.GetLogger<CastleDynamicProxyGenerator>();
@@ -33,7 +34,18 @@
 
             GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
 
-            return this.CreateProxyGeneratorResult(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
+            return CreateProxyGeneratorResult(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
+        }
+
+        public bool MemberCanBeIntercepted(MemberInfo member)
+        {
+            Guard.AgainstNull(member, "member");
+
+            var isNonInterceptableMember =
+                IsNonVirtualMethod(member) ||
+                IsNonVirtualProperty(member);
+
+            return !isNonInterceptableMember;
         }
 
         private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
@@ -44,13 +56,14 @@
             }
         }
 
-        private ProxyGeneratorResult CreateProxyGeneratorResult(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate since the method tries to create a proxy and returns a result object where success is reported.")]
+        private static ProxyGeneratorResult CreateProxyGeneratorResult(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
         {
             var interceptor = new ProxyInterceptor();
             
             try
             {
-                var proxy = this.DoGenerateProxy(
+                var proxy = DoGenerateProxy(
                     typeOfProxy, 
                     additionalInterfacesToImplement, 
                     argumentsForConstructor,
@@ -65,17 +78,6 @@
                 logger.Debug("Failed to create proxy of type {0}, an exception was thrown:\r\n\r\n{1}\r\n\r\n.", typeOfProxy, ex.Message);
                 return GetResultForFailedProxyGeneration(typeOfProxy, argumentsForConstructor);
             }
-        }
-
-        public bool MemberCanBeIntercepted(MemberInfo member)
-        {
-            Guard.AgainstNull(member, "member");
-
-            var isNonInterceptableMember =
-                IsNonVirtualMethod(member) ||
-                IsNonVirtualProperty(member);
-
-            return !isNonInterceptableMember;
         }
 
         private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
@@ -120,7 +122,7 @@
             return new ProxyGeneratorResult(string.Format(CultureInfo.CurrentCulture, DynamicProxyResources.ProxyIsValueTypeMessage, typeOfProxy));
         }
 
-        private object DoGenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor)
+        private static object DoGenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor)
         {
             var allInterfacesToImplement = GetAllInterfacesToImplement(additionalInterfacesToImplement);
 

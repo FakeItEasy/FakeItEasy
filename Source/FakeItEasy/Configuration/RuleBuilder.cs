@@ -14,14 +14,12 @@ namespace FakeItEasy.Configuration
     {
         private FakeAsserter.Factory asserterFactory;
         private FakeManager manager;
-        private IFakeObjectCallFormatter callFormatter;
         
-        internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeManager manager, FakeAsserter.Factory asserterFactory, IFakeObjectCallFormatter callFormatter)
+        internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeManager manager, FakeAsserter.Factory asserterFactory)
         {
             this.RuleBeingBuilt = ruleBeingBuilt;
             this.manager = manager;
             this.asserterFactory = asserterFactory;
-            this.callFormatter = callFormatter;
         }
 
         /// <summary>

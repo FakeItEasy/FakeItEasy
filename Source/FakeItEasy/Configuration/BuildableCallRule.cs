@@ -10,8 +10,6 @@ namespace FakeItEasy.Configuration
     internal abstract class BuildableCallRule
         : IFakeObjectCallRuleWithDescription
     {
-        private static readonly Logger logger = Log.GetLogger<BuildableCallRule>();
-
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();

@@ -2,6 +2,7 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
 
     internal class OrderedFakeAsserter
@@ -66,7 +67,7 @@ namespace FakeItEasy.Core
 
         private void ThrowExceptionWhenAssertionFailed()
         {
-            var message = new StringWriter();
+            var message = new StringWriter(CultureInfo.InvariantCulture);
 
             message.WriteLine(string.Empty);
             message.WriteLine(string.Empty);

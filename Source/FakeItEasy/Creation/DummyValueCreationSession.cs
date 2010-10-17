@@ -5,13 +5,13 @@
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;
+    using System.Diagnostics.CodeAnalysis;
     
     internal class DummyValueCreationSession
         : IDummyValueCreationSession
     {
         private static readonly Logger logger = Log.GetLogger<DummyValueCreationSession>();
 
-        private IFakeObjectCreator fakeObjectCreator;
         private HashSet<Type> isInProcessOfResolving;
         private ResolveStrategy[] availableStrategies;
         private Dictionary<Type, ResolveStrategy> strategyToUseForType;
@@ -24,7 +24,6 @@
         public DummyValueCreationSession(IFakeObjectContainer container, IFakeObjectCreator fakeObjectCreator)
         {
             this.isInProcessOfResolving = new HashSet<Type>();
-            this.fakeObjectCreator = fakeObjectCreator;
             this.strategyToUseForType = new Dictionary<Type, ResolveStrategy>();
 
             this.availableStrategies = new ResolveStrategy[] 
@@ -144,6 +143,8 @@
         {
             public DummyValueCreationSession Session;
 
+
+            [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try method.")]
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
                 if (typeof(Delegate).IsAssignableFrom(typeOfDummy))
@@ -152,7 +153,7 @@
                     return false;
                 }
 
-                foreach (var constructor in this.GetConstructorsInOrder(typeOfDummy))
+                foreach (var constructor in GetConstructorsInOrder(typeOfDummy))
                 {
                     var argumentTypes = constructor.GetParameters().Select(x => x.ParameterType);
                     var resolvedArguments = this.ResolveAllTypes(argumentTypes);
@@ -174,7 +175,7 @@
                 return false;
             }
 
-            private IEnumerable<ConstructorInfo> GetConstructorsInOrder(Type type)
+            private static IEnumerable<ConstructorInfo> GetConstructorsInOrder(Type type)
             {
                 return type.GetConstructors().OrderBy(x => x.GetParameters().Length).Reverse();
             }

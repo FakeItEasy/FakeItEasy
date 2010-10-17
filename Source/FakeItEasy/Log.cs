@@ -1,6 +1,8 @@
 namespace FakeItEasy
 {
     using System;
+    using System.Globalization;
+    using System.Diagnostics.CodeAnalysis;
 
     internal static class Log
     {
@@ -23,6 +25,7 @@ namespace FakeItEasy
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Can be instanticated at will.")]
         private class ConsoleLogger
             : Logger
         {
@@ -37,7 +40,7 @@ namespace FakeItEasy
             {
                 if (this.name.Contains("TypeCatalogueInstanceProvider"))
                 {
-                    Console.WriteLine(string.Format("Log: {0}\r\n\t {1}", this.name, message.Invoke()));
+                    Console.WriteLine("Log: {0}\r\n\t {1}".FormatInvariant(this.name, message.Invoke()));
                 }
             }
         }

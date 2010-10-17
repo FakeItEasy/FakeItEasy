@@ -33,7 +33,7 @@
                 });
 
             container.RegisterSingleton<RuleBuilder.Factory>(c =>
-                (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>(), c.Resolve<IFakeObjectCallFormatter>()));
+                (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>()));
 
             container.RegisterSingleton<IFakeConfigurationManager>(c =>
                 new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), c.Resolve<IExpressionParser>(), c.Resolve<ExpressionCallRule.Factory>(), c.Resolve<IProxyGenerator>()));

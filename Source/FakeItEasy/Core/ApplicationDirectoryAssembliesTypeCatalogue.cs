@@ -42,12 +42,14 @@ namespace FakeItEasy.Core
             }
         }
 
-        private IEnumerable<Assembly> GetAllAvailableAssemblies()
+        private static IEnumerable<Assembly> GetAllAvailableAssemblies()
         {
             return GetAllAssembliesInApplicationDirectory().Concat(GetAllAsembliesInAppDomain()).Distinct();
         }
 
-        private IEnumerable<Assembly> GetAllAssembliesInApplicationDirectory()
+
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
+        private static IEnumerable<Assembly> GetAllAssembliesInApplicationDirectory()
         {
             var applicationDirectory = Environment.CurrentDirectory;
             var result = new LinkedList<Assembly>();
@@ -64,7 +66,7 @@ namespace FakeItEasy.Core
             return result;
         }
 
-        private IEnumerable<Assembly> GetAllAsembliesInAppDomain()
+        private static IEnumerable<Assembly> GetAllAsembliesInAppDomain()
         {
             return AppDomain.CurrentDomain.GetAssemblies();
         }

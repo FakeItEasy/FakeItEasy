@@ -3,6 +3,7 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Providesinstances from type catalogues.
@@ -24,6 +25,7 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <typeparam name="T">The type of instances to get.</typeparam>
         /// <returns>A sequence of instances of the specified type.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Necessary in this case.")]
         public IEnumerable<T> InstantiateAllOfType<T>()
         {
             logger.Debug("Getting instances of type {0}.", typeof(T));

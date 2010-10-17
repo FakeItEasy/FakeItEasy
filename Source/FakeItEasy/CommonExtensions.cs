@@ -172,7 +172,7 @@
 
         public static void Debug(this Logger logger, string messageFormat, params object[] args)
         {
-            logger.Debug(() => string.Format(messageFormat, args));
+            logger.Debug(() => messageFormat.FormatInvariant(args));
         }
     }
 }

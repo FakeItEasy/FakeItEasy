@@ -28,14 +28,14 @@
         /// Creates a fake object of the specified type using the specified arguments if it's
         /// supported by the container, returns a value indicating if it's supported or not.
         /// </summary>
-        /// <param name="typeOfFake">The type of fake object to create.</param>
+        /// <param name="typeOfDummy">The type of fake object to create.</param>
         /// <param name="fakeObject">The fake object that was created if the method returns true.</param>
         /// <returns>True if a fake object can be created.</returns>
-        public bool TryCreateDummyObject(Type typeOfFake, out object fakeObject)
+        public bool TryCreateDummyObject(Type typeOfDummy, out object fakeObject)
         {
             IDummyDefinition dummyDefinition = null;
 
-            if (!this.registeredDummyDefinitions.TryGetValue(typeOfFake, out dummyDefinition))
+            if (!this.registeredDummyDefinitions.TryGetValue(typeOfDummy, out dummyDefinition))
             {
                 fakeObject = null;
                 return false;

@@ -56,7 +56,7 @@ namespace FakeItEasy.Creation
 
         private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, string failReasonForDefaultConstructor, bool throwOnFailure)
         {
-            var constructors = this.ResolveConstructors(typeOfFake, session);
+            var constructors = ResolveConstructors(typeOfFake, session);
                 
             foreach (var constructor in constructors.Where(x => x.WasSuccessfullyResolved))
             {
@@ -83,7 +83,7 @@ namespace FakeItEasy.Creation
             return null;
         }
 
-        private ResolvedConstructor[] ResolveConstructors(Type typeOfFake, IDummyValueCreationSession session)
+        private static ResolvedConstructor[] ResolveConstructors(Type typeOfFake, IDummyValueCreationSession session)
         {
             logger.Debug("Resolving constructors for type {0}.", typeOfFake);
 

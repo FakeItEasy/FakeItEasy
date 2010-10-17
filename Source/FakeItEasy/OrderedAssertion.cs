@@ -4,6 +4,7 @@ namespace FakeItEasy
     using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Core;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Provides functionality for making ordered assertions on fakes.
@@ -68,6 +69,7 @@ namespace FakeItEasy
         {
             public FakeAsserter.Factory ResetTo { get; set; }
 
+            [SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly", Justification = "There is no finalizer.")]
             public void Dispose()
             {
                 OrderedAssertion.currentAsserterFactoryField = this.ResetTo;

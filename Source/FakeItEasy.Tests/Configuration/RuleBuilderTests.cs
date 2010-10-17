@@ -9,12 +9,11 @@
     [TestFixture]
     public class RuleBuilderTests
     {
-        private RuleBuilder builder;
-        private BuildableCallRule ruleProducedByFactory;
-        private FakeManager fakeManager;
-        private IFakeAsserter asserter;
-        private IFakeObjectCallFormatter callFormatter;
-
+        RuleBuilder builder;
+        FakeManager fakeManager;
+        [Fake] IFakeAsserter asserter;
+        [Fake] BuildableCallRule ruleProducedByFactory;
+        
         [SetUp]
         public void SetUp()
         {
@@ -23,11 +22,10 @@
 
         protected virtual void OnSetUp()
         {
-            this.ruleProducedByFactory = A.Fake<BuildableCallRule>();
+            Fake.InitializeFixture(this);
+            
             this.fakeManager = new FakeManager();
-            this.asserter = A.Fake<IFakeAsserter>();
-            this.callFormatter = A.Fake<IFakeObjectCallFormatter>();
-
+            
             this.builder = this.CreateBuilder();
         }
 
@@ -38,7 +36,7 @@
 
         private RuleBuilder CreateBuilder(BuildableCallRule ruleBeingBuilt)
         {
-            return new RuleBuilder(ruleBeingBuilt, this.fakeManager, x => this.asserter, this.callFormatter);
+            return new RuleBuilder(ruleBeingBuilt, this.fakeManager, x => this.asserter);
         }
 
         private IFakeObjectCallRuleWithDescription RuleWithDescription
@@ -49,8 +47,8 @@
             }
         }
      
-        [Test] public void 
-        Returns_called_with_value_sets_applicator_to_a_function_that_applies_that_value_to_interceptor()
+        [Test] 
+        public void Returns_called_with_value_sets_applicator_to_a_function_that_applies_that_value_to_interceptor()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
             var call = A.Fake<IInterceptedFakeObjectCall>();

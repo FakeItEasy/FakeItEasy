@@ -93,6 +93,12 @@ namespace FakeItEasy
                 "specified sequence");
         }
 
+        /// <summary>
+        /// Tests that the IEnumerable contains no items.
+        /// </summary>
+        /// <typeparam name="T">The type of argument.</typeparam>
+        /// <param name="scope">The scope of the constraint.</param>
+        /// <returns>An argument constraint.</returns>
         public static ArgumentConstraint<T> IsEmpty<T>(this ArgumentConstraintScope<T> scope) where T : IEnumerable
         {
             return scope.CreateConstraint(

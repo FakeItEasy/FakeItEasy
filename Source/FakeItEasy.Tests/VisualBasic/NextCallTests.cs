@@ -57,7 +57,7 @@
             var rule = A.Fake<RecordedCallRule>();
 
             var wrapped = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() =>
-                new RuleBuilder(rule, A.Fake<FakeManager>(), c => A.Fake<IFakeAsserter>(), A.Fake<IFakeObjectCallFormatter>())));
+                new RuleBuilder(rule, A.Fake<FakeManager>(), c => A.Fake<IFakeAsserter>())));
             var result = A.Fake<VisualBasicRuleBuilder>(x => x.WithArgumentsForConstructor(() =>
                 new VisualBasicRuleBuilder(rule, wrapped)));
 
