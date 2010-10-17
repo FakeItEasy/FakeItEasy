@@ -110,6 +110,8 @@
 		<Exec Command="&quot;$(ILMergeCmdPath)&quot; /out:&quot;$(BinariesPath)\Merged\$(ProjectName).dll&quot; /delaysign  /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge, ' ')"/>
 		<Exec Command="&quot;$(SnCmdPath)&quot; -R &quot;$(BinariesPath)\Merged\FakeIteasy.dll&quot; &quot;Source\FakeItEasy\FakeItEasy.snk&quot;" />
 		
+		<Copy SourceFiles="$(BinariesPath)\UnMerged\FakeItEasy.xml" DestinationFolder="$(BinariesPath)\Merged" />
+		
 		<CreateItem Include="$(BinariesPath)\**\*.pdb;">
 			<Output ItemName="pdbFiles" TaskParameter="Include" />
 		</CreateItem>
