@@ -144,7 +144,7 @@
 		<XmlUpdate XmlFileName="$(NuPackPackageDirectory)\$(VersionNumber)\FakeItEasy.nuspec" Xpath="/package/metadata/version"  Value="$(VersionNumber)" />
 	</Target>	
 	
-	<Target Name="Distrib" DependsOnTargets="Clean;ReBuild;Merge;Package">
+	<Target Name="Distrib" DependsOnTargets="Clean;CodeAnalysis;ReBuild;Merge;Package">
 		<MakeDir Directories="$(ArchiveDirectory)" />
 
 		<!-- Archive-->

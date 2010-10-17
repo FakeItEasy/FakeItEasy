@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            Assert.That(description, Text.StartsWith(
+            Assert.That(description, Is.StringStarting(
                 "System.Object.Equals("));
         }
 
@@ -48,7 +48,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            Assert.That(description, Text.EndsWith(
+            Assert.That(description, Is.StringEnding(
                 "()"));
         }
 
@@ -66,7 +66,7 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             Assert.That(description,
-                Text.EndsWith("(argument1: \"argument value\", argument2: 1)"));
+                Is.StringEnding("(argument1: \"argument value\", argument2: 1)"));
         }
 
       
@@ -85,7 +85,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            Assert.That(description, Text.EndsWith(@"(
+            Assert.That(description, Is.StringEnding(@"(
     one: one,
     two: two,
     three: three)"));

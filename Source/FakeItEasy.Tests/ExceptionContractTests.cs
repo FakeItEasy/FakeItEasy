@@ -52,7 +52,7 @@ namespace FakeItEasy.Tests
             var exception = (T)constructor.Invoke(new object[] { "A message" });
 
             // Assert
-            Assert.That(exception.Message, Text.StartsWith("A message"));
+            Assert.That(exception.Message, Is.StringStarting("A message"));
         }
 
         [Test]

@@ -131,7 +131,7 @@
 
 //            // Assert
 //            var thrown = Assert.Throws<FakeCreationException>(() => this.fakeAndDummyManager.CreateDummy(typeof(int)));
-//            Assert.That(thrown.Message, Text.Contains("FakeItEasy was unable to create dummy of type \"System.Int32\", register it in the current IFakeObjectContainer to enable this."));
+//            Assert.That(thrown.Message, Is.StringContaining("FakeItEasy was unable to create dummy of type \"System.Int32\", register it in the current IFakeObjectContainer to enable this."));
 //        }
 
 //        [Test]

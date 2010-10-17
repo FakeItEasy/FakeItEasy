@@ -89,7 +89,7 @@
             var message = this.GetExceptionMessage(() =>
                 asserter.AssertWasCalled(x => true, @"IFoo.Bar(1)", x => false, ""));
 
-            Assert.That(message, Text.StartsWith(@"
+            Assert.That(message, Is.StringStarting(@"
 
   Assertion failed for the following call:
     'IFoo.Bar(1)'"));
@@ -105,7 +105,7 @@
             var message = this.GetExceptionMessage(() =>
                 asserter.AssertWasCalled(x => false, "", x => x == 2, "#2 times"));
 
-            Assert.That(message, Text.Contains(@"
+            Assert.That(message, Is.StringContaining(@"
   Expected to find it #2 times but found it #0 times among the calls:"));
         }
 
@@ -122,7 +122,7 @@
             var message = this.GetExceptionMessage(() =>
                 asserter.AssertWasCalled(x => false, "", x => false, ""));
 
-            Assert.That(message, Text.Contains(@"
+            Assert.That(message, Is.StringContaining(@"
 foo"));
         }
 
@@ -136,7 +136,7 @@ foo"));
             var message = this.GetExceptionMessage(() =>
                 asserter.AssertWasCalled(x => false, "", x => x == 2, "#2 times"));
 
-            Assert.That(message, Text.Contains(@"
+            Assert.That(message, Is.StringContaining(@"
   Expected to find it #2 times but no calls were made to the fake object."));
         }
 
@@ -148,7 +148,7 @@ foo"));
             var message = this.GetExceptionMessage(() =>
                 asserter.AssertWasCalled(x => false, "", x => false, ""));
 
-            Assert.That(message, Text.EndsWith(string.Concat(Environment.NewLine, Environment.NewLine)));
+            Assert.That(message, Is.StringEnding(string.Concat(Environment.NewLine, Environment.NewLine)));
         }
 
         [Test]
@@ -159,7 +159,7 @@ foo"));
             var message = this.GetExceptionMessage(() =>
                 asserter.AssertWasCalled(x => false, "", x => false, ""));
 
-            Assert.That(message, Text.StartsWith(Environment.NewLine));
+            Assert.That(message, Is.StringStarting(Environment.NewLine));
         }
     }
 }

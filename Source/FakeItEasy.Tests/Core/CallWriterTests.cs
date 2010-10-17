@@ -57,7 +57,7 @@ namespace FakeItEasy.Tests.Core
 
             var message = this.writer.GetStringBuilder().ToString();
             
-            Assert.That(message, Text.Contains(@"1.  'Fake call 1'
+            Assert.That(message,  Is.StringContaining(@"1.  'Fake call 1'
 2.  'Fake call 2'
 3.  'Fake call 3'
 4.  'Fake call 4'
@@ -86,7 +86,7 @@ namespace FakeItEasy.Tests.Core
 
             var message = this.writer.GetStringBuilder().ToString();
 
-            Assert.That(message, Text.Contains(@"1.  'Fake call' repeated 9 times
+            Assert.That(message, Is.StringContaining(@"1.  'Fake call' repeated 9 times
 ...
 10. 'Other call'"));
         }
@@ -111,7 +111,7 @@ namespace FakeItEasy.Tests.Core
             
             var message =this.writer.GetStringBuilder().ToString();
 
-            Assert.That(message, Text.Contains(@"1.  'odd'
+            Assert.That(message, Is.StringContaining(@"1.  'odd'
 2.  'even'
 3.  'odd'
 4.  'even'
@@ -135,7 +135,7 @@ namespace FakeItEasy.Tests.Core
 
             var message = this.writer.GetStringBuilder().ToString();
 
-            Assert.That(message, Text.Contains(@"19. 'Last call'
+            Assert.That(message, Is.StringContaining(@"19. 'Last call'
 ... Found 11 more calls not displayed here."));
         }
 
@@ -156,7 +156,7 @@ namespace FakeItEasy.Tests.Core
 
             var message = this.writer.GetStringBuilder().ToString();
 
-            Assert.That(message, Text.Contains(@"    1.  'Fake call 1'
+            Assert.That(message, Is.StringContaining(@"    1.  'Fake call 1'
     2.  'Fake call 2'
     3.  'Fake call 3'
     4.  'Fake call 4'
@@ -185,7 +185,7 @@ namespace FakeItEasy.Tests.Core
             // Assert
             var message = this.writer.GetStringBuilder().ToString();
 
-            Assert.That(message, Text.Contains(@"    1.  'first line
+            Assert.That(message, Is.StringContaining(@"    1.  'first line
             second line is indented"));
         }
     }

@@ -203,7 +203,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var result = this.generator.GenerateProxy(typeof(ClassWithPrivateConstructor), Enumerable.Empty<Type>(), null);
 
             // Assert
-            Assert.That(result.ReasonForFailure, Text.StartsWith("No default constructor was found on the type"));
+            Assert.That(result.ReasonForFailure, Is.StringStarting("No default constructor was found on the type"));
         }
 
         [TestCaseSource("nonInterceptableMembers")]

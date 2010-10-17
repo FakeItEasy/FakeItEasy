@@ -44,7 +44,7 @@ namespace FakeItEasy.Core
 
             var thrown = Assert.Throws<ArgumentException>(() =>
                 configurator.ConfigureFake(""));
-            Assert.That(thrown.Message, Text.StartsWith("The FakeItEasy.Core.FakeConfiguratorTests+TestableConfigurator`1[FakeItEasy.Tests.IFoo] can only configure fakes of the type 'FakeItEasy.Tests.IFoo'."));
+            Assert.That(thrown.Message, Is.StringStarting("The FakeItEasy.Core.FakeConfiguratorTests+TestableConfigurator`1[FakeItEasy.Tests.IFoo] can only configure fakes of the type 'FakeItEasy.Tests.IFoo'."));
             Assert.That(thrown.ParamName, Is.EqualTo("fakeObject"));
         }
 

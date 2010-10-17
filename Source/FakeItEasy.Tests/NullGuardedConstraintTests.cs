@@ -86,7 +86,7 @@ namespace FakeItEasy.Tests
             WriteConstraintMessageToWriter(() => new ClassWithNonProperlyGuardedConstructor("foo", "bar"));
 
             Assert.That(this.writer.ToString(),
-                Text.Contains("Calls to FakeItEasy.Tests.NullGuardedConstraintTests+ClassWithNonProperlyGuardedConstructor.ctor([String] a, [String] b) should be null guarded."));
+                Is.StringContaining("Calls to FakeItEasy.Tests.NullGuardedConstraintTests+ClassWithNonProperlyGuardedConstructor.ctor([String] a, [String] b) should be null guarded."));
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace FakeItEasy.Tests
             WriteConstraintMessageToWriter(() => UnguardedMethod("foo", "bar"));
 
             Assert.That(this.writer.ToString(),
-                Text.Contains("Calls to NullGuardedConstraintTests.UnguardedMethod([String] a, [String] b) should be null guarded."));
+                Is.StringContaining("Calls to NullGuardedConstraintTests.UnguardedMethod([String] a, [String] b) should be null guarded."));
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace FakeItEasy.Tests
             WriteConstraintMessageToWriter(() => UnguardedMethod("foo", "bar"));
 
             Assert.That(this.writer.ToString(),
-                Text.Contains("(\"foo\", <NULL>) did not throw any exception.")
+                Is.StringContaining("(\"foo\", <NULL>) did not throw any exception.")
                 .And.Contains("(<NULL>, \"bar\") did not throw any exception."));
         }
 
@@ -114,7 +114,7 @@ namespace FakeItEasy.Tests
             WriteConstraintMessageToWriter(() => GuardedWithWrongName("foo"));
 
             Assert.That(this.writer.ToString(),
-                Text.Contains("(<NULL>) threw ArgumentNullException with wrong argument name, it should be \"a\"."));
+                Is.StringContaining("(<NULL>) threw ArgumentNullException with wrong argument name, it should be \"a\"."));
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace FakeItEasy.Tests
             WriteConstraintMessageToWriter(() => UnguardedMethodThatThrowsException("foo"));
 
             Assert.That(this.writer.ToString(),
-                Text.Contains("(<NULL>) threw unexpected System.ApplicationException."));
+                Is.StringContaining("(<NULL>) threw unexpected System.ApplicationException."));
         }
 
         [Test]

@@ -127,7 +127,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             // Assert
             var thrown = Assert.Throws<RecordingException>(() =>
                 recorder.ApplyNext(call));
-            Assert.That(thrown.Message, Text.StartsWith("The method of the call did not match the method of the recorded call, the recorded sequence is no longer valid."));
+            Assert.That(thrown.Message, Is.StringStarting("The method of the call did not match the method of the recorded call, the recorded sequence is no longer valid."));
         }
 
         [Test]
