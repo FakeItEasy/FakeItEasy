@@ -99,7 +99,7 @@
 
             RegisterEnumerableInstantiatedFromTypeCatalogue<IArgumentValueFormatter>(container);
             RegisterEnumerableInstantiatedFromTypeCatalogue<IDummyDefinition>(container);
-            RegisterEnumerableInstantiatedFromTypeCatalogue<IFakeConfigurer>(container);
+            RegisterEnumerableInstantiatedFromTypeCatalogue<IFakeConfigurator>(container);
 
             container.Register<FakeFacade>(c =>
                 new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeScopeFactory>(), c.Resolve<IFixtureInitializer>()));

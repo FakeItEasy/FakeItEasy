@@ -1,23 +1,19 @@
-namespace FakeItEasy
+namespace FakeItEasy.Core
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    
+
     /// <summary>
-    /// Provides configurations for fake objects of a specific type.
+    /// Handles global configuration of fake object.
     /// </summary>
-    public interface IFakeConfigurer
+    public interface IFakeObjectConfigurator
     {
         /// <summary>
-        /// The type the instance provides configuration for.
+        /// Applies base configuration to a fake object.
         /// </summary>
-        Type ForType { get; }
-
-        /// <summary>
-        /// Applies the configuration for the specified fake object.
-        /// </summary>
+        /// <param name="typeOfFake">The type the fake object represents.</param>
         /// <param name="fakeObject">The fake object to configure.</param>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "Fake object is a common term in FakeItEasy.")]
-        void ConfigureFake(object fakeObject);
+        void ConfigureFake(Type typeOfFake, object fakeObject);
     }
 }

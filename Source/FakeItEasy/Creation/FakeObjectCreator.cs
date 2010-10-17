@@ -12,9 +12,9 @@ namespace FakeItEasy.Creation
         private IProxyGenerator proxyGenerator;
         private IExceptionThrower thrower;
         private IFakeManagerAccessor fakeManagerAttacher;
-        private IFakeObjectConfigurer configurer;
+        private IFakeObjectConfigurator configurer;
 
-        public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, IFakeManagerAccessor fakeManagerAttacher, IFakeObjectConfigurer configurer)
+        public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, IFakeManagerAccessor fakeManagerAttacher, IFakeObjectConfigurator configurer)
         {
             this.proxyGenerator = proxyGenerator;
             this.thrower = thrower;

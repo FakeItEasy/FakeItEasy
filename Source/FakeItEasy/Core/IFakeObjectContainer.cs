@@ -7,7 +7,7 @@
     /// A container that can create fake objects.
     /// </summary>
     public interface IFakeObjectContainer
-        : IFakeObjectConfigurer
+        : IFakeObjectConfigurator
     {
         /// <summary>
         /// Creates a dummy object of the specified type using the specified arguments if it's

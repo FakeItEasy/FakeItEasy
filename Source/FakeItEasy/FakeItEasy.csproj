@@ -85,6 +85,9 @@
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Core\ArgumentValueFormatter.cs" />
     <Compile Include="Core\FakeScopeFactory.cs" />
+    <Compile Include="Core\IFakeObjectConfigurator.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Core\IFakeScopeFactory.cs" />
     <Compile Include="Core\IFixtureInitializer.cs" />
     <Compile Include="FakeAttribute.cs" />
@@ -111,7 +114,6 @@
     <Compile Include="Core\IFakeManagerAccessor.cs" />
     <Compile Include="Core\IFakeObjectCallFormatter.cs" />
     <Compile Include="Core\IFakeObjectCallRuleWithDescription.cs" />
-    <Compile Include="Core\IFakeObjectConfigurer.cs" />
     <Compile Include="Core\IFakeScope.cs" />
     <Compile Include="Creation\CastleDynamicProxy\DynamicProxyResources.Designer.cs">
       <DependentUpon>DynamicProxyResources.resx</DependentUpon>
@@ -125,9 +127,9 @@
     <Compile Include="Core\OrderedFakeAsserter.cs" />
     <Compile Include="Core\OrderedFakeAsserterFactory.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGenerator.cs" />
-    <Compile Include="FakeConfigurer.cs" />
+    <Compile Include="FakeConfigurator.cs" />
     <Compile Include="DummyDefinition.cs" />
-    <Compile Include="IFakeConfigurer.cs" />
+    <Compile Include="IFakeConfigurator.cs" />
     <Compile Include="IDummyDefinition.cs" />
     <Compile Include="Core\IFakeWrapperConfigurer.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs" />

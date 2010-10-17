@@ -13,15 +13,16 @@
         : IFakeObjectContainer
     {
         private IDictionary<Type, IDummyDefinition> registeredDummyDefinitions;
-        private IDictionary<Type, IFakeConfigurer> registeredConfigurators;
+        private IDictionary<Type, IFakeConfigurator> registeredConfigurators;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer"/> class.
         /// </summary>
-        public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurer> fakeConfigurers)
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurators", Justification = "This is the correct spelling.")]
+        public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurator> fakeConfigurators)
         {
             this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(dummyDefinitions);
-            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(fakeConfigurers);       
+            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(fakeConfigurators);       
         }
 
         /// <summary>
@@ -52,7 +53,7 @@
         /// <param name="fakeObject">The fake object to configure.</param>
         public void ConfigureFake(Type typeOfFake, object fakeObject)
         {
-            IFakeConfigurer configurator = null;
+            IFakeConfigurator configurator = null;
 
             if (this.registeredConfigurators.TryGetValue(typeOfFake, out configurator))
             {
@@ -60,7 +61,7 @@
             }
         }
 
-        private static IDictionary<Type, IFakeConfigurer> CreateFakeConfiguratorsDictionary(IEnumerable<IFakeConfigurer> fakeConfigurers)
+        private static IDictionary<Type, IFakeConfigurator> CreateFakeConfiguratorsDictionary(IEnumerable<IFakeConfigurator> fakeConfigurers)
         {
             return fakeConfigurers.FirstFromEachKey(x => x.ForType);
         }

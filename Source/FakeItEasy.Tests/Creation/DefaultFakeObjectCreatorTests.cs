@@ -17,7 +17,7 @@ namespace FakeItEasy.Tests.Creation
         private FakeObjectCreator fakeObjectCreator;
         private IExceptionThrower thrower;
         private IFakeManagerAccessor fakeManagerAttacher;
-        private IFakeObjectConfigurer configurer;
+        private IFakeObjectConfigurator configurer;
 
         [SetUp]
         public void SetUp()
@@ -25,7 +25,7 @@ namespace FakeItEasy.Tests.Creation
             this.proxyGenerator = A.Fake<IProxyGenerator>();
             this.thrower = A.Fake<IExceptionThrower>();
             this.fakeManagerAttacher = A.Fake<IFakeManagerAccessor>();
-            this.configurer = A.Fake<IFakeObjectConfigurer>();
+            this.configurer = A.Fake<IFakeObjectConfigurator>();
 
             this.fakeObjectCreator = new FakeObjectCreator(this.proxyGenerator, this.thrower, this.fakeManagerAttacher, this.configurer);
         }

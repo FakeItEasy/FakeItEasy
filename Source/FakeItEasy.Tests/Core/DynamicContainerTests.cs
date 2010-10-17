@@ -9,7 +9,7 @@ namespace FakeItEasy.Core.Tests
     public class DynamicContainerTests
     {
         private List<IDummyDefinition> availableDummyDefinitions;
-        private List<IFakeConfigurer> availableConfigurers;
+        private List<IFakeConfigurator> availableConfigurers;
 
         private IDisposable scope;
 
@@ -18,7 +18,7 @@ namespace FakeItEasy.Core.Tests
         {
             this.scope = Fake.CreateScope(new NullFakeObjectContainer());
 
-            this.availableConfigurers = new List<IFakeConfigurer>();
+            this.availableConfigurers = new List<IFakeConfigurator>();
             this.availableDummyDefinitions = new List<IDummyDefinition>();
         }
 
@@ -109,7 +109,7 @@ namespace FakeItEasy.Core.Tests
                 this.CreateContainer());
         }
 
-        public class ConfigurationForTypeWithDummyDefintion : FakeConfigurer<TypeWithDummyDefinition>
+        public class ConfigurationForTypeWithDummyDefintion : FakeConfigurator<TypeWithDummyDefinition>
         {
             public override void ConfigureFake(TypeWithDummyDefinition fakeObject)
             {
@@ -117,7 +117,7 @@ namespace FakeItEasy.Core.Tests
             }
         }
 
-        public class DuplicateConfigurationForTypeWithDummyDefintion : FakeConfigurer<TypeWithDummyDefinition>
+        public class DuplicateConfigurationForTypeWithDummyDefintion : FakeConfigurator<TypeWithDummyDefinition>
         {
             public override void ConfigureFake(TypeWithDummyDefinition fakeObject)
             {
