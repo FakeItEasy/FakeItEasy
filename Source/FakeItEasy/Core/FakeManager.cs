@@ -15,9 +15,9 @@ namespace FakeItEasy.Core
     public partial class FakeManager
     {
         private static readonly Logger logger = Log.GetLogger<FakeManager>();
-        private IEnumerable<CallRuleMetadata> preUserRules;
+        private CallRuleMetadata[] preUserRules;
         private LinkedList<CallRuleMetadata> allUserRulesField;
-        private IEnumerable<CallRuleMetadata> postUserRules;
+        private CallRuleMetadata[] postUserRules;
         private List<ICompletedFakeObjectCall> recordedCallsField;
         
         /// <summary>

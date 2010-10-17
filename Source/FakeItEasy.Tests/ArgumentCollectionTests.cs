@@ -97,6 +97,19 @@ namespace FakeItEasy.Tests
             Assert.That(arguments, Is.EquivalentTo(new[] { 1, 2, 3 }));
         }
 
+        [Test]
+        public void Should_be_serializable()
+        {
+            // Arrange
+            var collection = new ArgumentCollection(new object[] { new object() },
+                typeof(object).GetMethod("Equals", new[] { typeof(object) }));
+
+            // Act
+
+            // Assert
+            Assert.That(collection, Is.BinarySerializable);
+        }
+
         private ArgumentCollection CreateFakeArgumentList(string[] argumentNames, params object[] arguments)
         {
             return new ArgumentCollection(arguments, argumentNames);

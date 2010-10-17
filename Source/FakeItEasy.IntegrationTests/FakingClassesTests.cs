@@ -3,6 +3,7 @@ using System;
 using FakeItEasy.Core;
 using System.Collections.Generic;
 using System.Linq;
+using FakeItEasy.Tests;
 
 namespace FakeItEasy.IntegrationTests
 {

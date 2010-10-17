@@ -19,7 +19,8 @@ namespace FakeItEasy
         /// The arguments this collection contains.
         /// </summary>
         private readonly object[] arguments;
-        
+        private readonly string[] argumentNamesField;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ArgumentCollection"/> class.
         /// </summary>
@@ -37,7 +38,7 @@ namespace FakeItEasy
             }
 
             this.arguments = arguments;
-            this.ArgumentNames = argumentNames;
+            this.argumentNamesField = argumentNames.ToArray();
         }
 
         /// <summary>
@@ -78,7 +79,13 @@ namespace FakeItEasy
         /// <summary>
         /// Gets the names of the arguments in the list.
         /// </summary>
-        public IEnumerable<string> ArgumentNames { get; private set; }
+        public IEnumerable<string> ArgumentNames
+        {
+            get
+            {
+                return this.argumentNamesField;
+            }
+        }
 
         /// <summary>
         /// Gets the argument at the specified index.
@@ -136,8 +143,7 @@ namespace FakeItEasy
         private int GetArgumentIndex(string argumentName)
         {
             int index = 0;
-
-            foreach (var name in this.ArgumentNames)
+            foreach (var name in this.argumentNamesField)
             {
                 if (name.Equals(argumentName, StringComparison.Ordinal))
                 {

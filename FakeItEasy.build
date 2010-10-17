@@ -17,7 +17,8 @@
 		<!--
 			Derived configuration properties
 		 -->
-		<PackageDirectory Condition="$(PackageDirectory)==''">$(BuildPath)</PackageDirectory>
+		<ArchiveDirectory Condition="$(ArchiveDirectory)==''">$(BuildPath)</ArchiveDirectory>
+		<NuPackPackageDirectory Condition="$(NuPackPackageDirectory)==''">$(BuildPath)\Package</NuPackPackageDirectory>
 		<BinariesPath>$(BuildPath)\Binaries</BinariesPath>
 		<LicensePath>$(BuildPath)\License</LicensePath>
 		<BinariesSource>Source\FakeItEasy\bin\$(Configuration)</BinariesSource>
@@ -84,9 +85,10 @@
 	<!--
 	 Copies built items to the distrib directory
 	 -->
-	<Target Name="Copy" DependsOnTargets="Build">
+	<Target Name="Merge" DependsOnTargets="Build">
 		<MakeDir Directories="$(BuildPath);"/>
-		<MakeDir Directories="$(BinariesPath)\Temp;" />
+		<MakeDir Directories="$(BinariesPath)\UnMerged;" />
+		<MakeDir Directories="$(BinariesPath)\Merged" />
 		
 		<!--Libraries-->
 		<CreateItem Include="$(BinariesSource)\*.*;">
@@ -99,25 +101,16 @@
 		</CreateItem>
 		
 		<Copy SourceFiles="@(licenseFiles)" DestinationFolder="$(LicensePath)" />
-		<Copy SourceFiles="@(unmergedFiles)" DestinationFolder="$(BinariesPath)\Temp" />
+		<Copy SourceFiles="@(unmergedFiles)" DestinationFolder="$(BinariesPath)\UnMerged" />
 		
-		<CreateItem Include="$(BinariesPath)\Temp\FakeItEasy.dll;$(BinariesPath)\Temp\Castle.Core.dll">
+		<CreateItem Include="$(BinariesPath)\UnMerged\FakeItEasy.dll;$(BinariesPath)\UnMerged\Castle.Core.dll">
 			<Output ItemName="binariesToMerge" TaskParameter="Include"/>
 		</CreateItem>
 		
-		<Exec Command="&quot;$(ILMergeCmdPath)&quot; /out:&quot;$(BinariesPath)\$(ProjectName).dll&quot; /delaysign  /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge, ' ')"/>
-		<Exec Command="&quot;$(SnCmdPath)&quot; -R &quot;$(BinariesPath)\FakeIteasy.dll&quot; &quot;Source\FakeItEasy\FakeItEasy.snk&quot;" />
-		<Delete Files="@(binariesToMerge)" />
+		<Exec Command="&quot;$(ILMergeCmdPath)&quot; /out:&quot;$(BinariesPath)\Merged\$(ProjectName).dll&quot; /delaysign  /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge, ' ')"/>
+		<Exec Command="&quot;$(SnCmdPath)&quot; -R &quot;$(BinariesPath)\Merged\FakeIteasy.dll&quot; &quot;Source\FakeItEasy\FakeItEasy.snk&quot;" />
 		
-		<CreateItem Include="$(BinariesPath)\Temp\*.*;">
-			<Output ItemName="temporaryFiles" TaskParameter="Include" />
-		</CreateItem>
-		
-		<Copy SourceFiles="@(temporaryFiles)" DestinationFolder="$(BinariesPath)" />
-		
-		<RemoveDir Directories="$(BinariesPath)\Temp" />
-		
-		<CreateItem Include="$(BinariesPath)\*.pdb;">
+		<CreateItem Include="$(BinariesPath)\**\*.pdb;">
 			<Output ItemName="pdbFiles" TaskParameter="Include" />
 		</CreateItem>
 		
@@ -135,13 +128,27 @@
 			ContinueOnError="False" />
 	</Target>
 	
-	<Target Name="Distrib" DependsOnTargets="Clean;CodeAnalysis;ReBuild;Copy">
-		<MakeDir Directories="$(PackageDirectory)" />
+	<Target Name="Package" DependsOnTargets="Clean;Rebuild">
+		<MakeDir Directories="$(NuPackPackageDirectory)\$(VersionNumber)\lib" />
+		
+		<CreateItem Include="$(BinariesPath)\UnMerged\FakeItEasy.*;">
+			<Output ItemName="fakeItEasyLibFiles" TaskParameter="Include"/>
+		</CreateItem>
+		
+		<Copy SourceFiles="@(fakeItEasyLibFiles)" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)\lib" />
+		<Copy SourceFiles=".\Resources\Build\FakeItEasy.nuspec" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)" />
+		
+		<!-- Update version number in NuPack file -->
+		<XmlUpdate XmlFileName="$(NuPackPackageDirectory)\$(VersionNumber)\FakeItEasy.nuspec" Xpath="/package/metadata/version"  Value="$(VersionNumber)" />
+	</Target>	
+	
+	<Target Name="Distrib" DependsOnTargets="Clean;ReBuild;Merge;Package">
+		<MakeDir Directories="$(ArchiveDirectory)" />
 
 		<!-- Archive-->
-		<CreateItem Include="$(BinariesPath)\*.*;$(LicensePath)\*.*">
-			<Output ItemName="_libFiles" TaskParameter="Include" />
+		<CreateItem Include="$(BinariesPath)\Merged\*.*;$(LicensePath)\*.*">
+			<Output ItemName="archiveFiles" TaskParameter="Include" />
 		</CreateItem>
-		<Zip Files="@(_libFiles)" ZipFileName="$(PackageDirectory)\$(ProjectName)-$(VersionNumber).zip" Flatten="true" WorkingDirectory="$(BuildPath)" />
+		<Zip Files="@(archiveFiles)" ZipFileName="$(ArchiveDirectory)\$(ProjectName)-$(VersionNumber).zip" Flatten="true" WorkingDirectory="$(BuildPath)" />
 	</Target>
 </Project>
