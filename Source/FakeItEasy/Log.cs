@@ -29,7 +29,7 @@ namespace FakeItEasy
         private class ConsoleLogger
             : Logger
         {
-            private string name;
+            private readonly string name;
 
             public ConsoleLogger(string name)
             {
@@ -38,7 +38,7 @@ namespace FakeItEasy
 
             public override void Debug(Func<string> message)
             {
-                if (this.name.Contains("TypeCatalogueInstanceProvider"))
+                if (this.name.Contains("Dummy"))
                 {
                     Console.WriteLine("Log: {0}\r\n\t {1}".FormatInvariant(this.name, message.Invoke()));
                 }

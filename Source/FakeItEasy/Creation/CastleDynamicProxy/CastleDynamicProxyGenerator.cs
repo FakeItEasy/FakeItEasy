@@ -161,6 +161,8 @@
         private class InterceptEverythingHook 
             : IProxyGenerationHook
         {
+            private static readonly int hashCode = typeof(InterceptEverythingHook).GetHashCode();
+
             public void MethodsInspected()
             {
             }
@@ -172,6 +174,17 @@
             public bool ShouldInterceptMethod(Type type, MethodInfo methodInfo)
             {
                 return true;
+            }
+
+            public override int GetHashCode()
+            {
+                return hashCode;
+            }
+
+            public override bool Equals(object obj)
+            {
+                var other = obj as InterceptEverythingHook;
+                return other != null;
             }
         }
 
@@ -214,5 +227,10 @@
             public event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
         }
 
+
+        public bool IsAtAllPossibleToProxyType(Type typeOfProxy)
+        {
+            return !typeOfProxy.IsSealed && !typeOfProxy.IsValueType;
+        }
     }
 }
