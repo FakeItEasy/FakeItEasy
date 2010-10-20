@@ -226,11 +226,5 @@
 
             public event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
         }
-
-
-        public bool IsAtAllPossibleToProxyType(Type typeOfProxy)
-        {
-            return !typeOfProxy.IsSealed && !typeOfProxy.IsValueType;
-        }
     }
 }
