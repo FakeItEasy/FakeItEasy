@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>FakeItEasy</id>
+    <version>ReplacedByBuild</version>
+    <authors>
+      <author>Patrik Hägne</author>
+    </authors>
+    <description>It's faking amazing! The easy mocking framework for .Net that works great in C# and VB.Net alike. No need
+	to know the difference between a stub and a mock, everythings a fake! The easy to use, refactoring friendly api makes
+	faking a breeze.</description>
+    <language>en-US</language>
+  </metadata>
+  <dependencies>
+    <dependency id="Castle.Core" version="2.5.1" />
+  </dependencies>
+</package>
