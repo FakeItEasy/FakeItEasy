@@ -36,7 +36,7 @@
         /// <returns>An enumerable of tuples.</returns>
         public static IEnumerable<Tuple<TFirst, TSecond>> Zip<TFirst, TSecond>(this IEnumerable<TFirst> firstCollection, IEnumerable<TSecond> secondCollection)
         {
-            return new ZipEnumerable<TFirst, TSecond>(firstCollection, secondCollection);
+            return firstCollection.Zip(secondCollection, Tuple.Create);
         }
 
         /// <summary>
@@ -93,76 +93,6 @@
             }
 
             return builder;
-        }
-
-        private class ZipEnumerable<TFirst, TSecond>
-            : IEnumerable<Tuple<TFirst, TSecond>>
-        {
-            private IEnumerable<TFirst> firstCollection;
-            private IEnumerable<TSecond> secondCollection;
-
-            public ZipEnumerable(IEnumerable<TFirst> firstCollection, IEnumerable<TSecond> secondCollection)
-            {
-                this.firstCollection = firstCollection;
-                this.secondCollection = secondCollection;
-            }
-
-            public IEnumerator<Tuple<TFirst, TSecond>> GetEnumerator()
-            {
-                return new ZipEnumerator(this.firstCollection, this.secondCollection);
-            }
-
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-            {
-                return this.GetEnumerator();
-            }
-
-            private class ZipEnumerator
-                : IEnumerator<Tuple<TFirst, TSecond>>
-            {
-                private IEnumerable<TFirst> firstCollection;
-                private IEnumerable<TSecond> secondCollection;
-                private IEnumerator<TFirst> firsts;
-                private IEnumerator<TSecond> seconds;
-
-                public ZipEnumerator(IEnumerable<TFirst> firstCollection, IEnumerable<TSecond> secondCollection)
-                {
-                    this.firstCollection = firstCollection;
-                    this.secondCollection = secondCollection;
-                    this.Reset();
-                }
-
-                public Tuple<TFirst, TSecond> Current
-                {
-                    get { return new Tuple<TFirst, TSecond>(this.firsts.Current, this.seconds.Current); }
-                }
-
-                object System.Collections.IEnumerator.Current
-                {
-                    get { return this.Current; }
-                }
-
-                public void Dispose()
-                {
-                    this.firsts.Dispose();
-                    this.seconds.Dispose();
-                    GC.SuppressFinalize(this);
-                }
-
-                public bool MoveNext()
-                {
-                    var firstsCanMove = this.firsts.MoveNext();
-                    var secondsCanMove = this.seconds.MoveNext();
-
-                    return firstsCanMove && secondsCanMove;
-                }
-
-                public void Reset()
-                {
-                    this.firsts = this.firstCollection.GetEnumerator();
-                    this.seconds = this.secondCollection.GetEnumerator();
-                }
-            }
         }
 
         public static void Debug(this Logger logger, string message)
