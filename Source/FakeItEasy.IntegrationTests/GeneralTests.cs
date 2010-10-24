@@ -1,13 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using FakeItEasy.Tests;
-using FakeItEasy.ExtensionSyntax;
-using FakeItEasy.VisualBasic;
-using System.IO;
-using System.Web.UI;
 using FakeItEasy.Core;
 using FakeItEasy.Configuration;
 

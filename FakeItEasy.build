@@ -115,7 +115,7 @@
 			<Output ItemName="binariesToMerge" TaskParameter="Include"/>
 		</CreateItem>
 		
-		<Exec Command="&quot;$(ILMergeCmdPath)&quot; /out:&quot;$(BinariesPath)\Merged\$(ProjectName).dll&quot; /delaysign  /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge, ' ')"/>
+		<Exec Command="&quot;$(ILMergeCmdPath)&quot; /out:&quot;$(BinariesPath)\Merged\$(ProjectName).dll&quot; /delaysign /lib:&quot;C:\Windows\Microsoft.NET\Framework\v4.0.30319&quot; /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge, ' ')"/>
 		<Exec Command="&quot;$(SnCmdPath)&quot; -R &quot;$(BinariesPath)\Merged\FakeIteasy.dll&quot; &quot;Source\FakeItEasy\FakeItEasy.snk&quot;" />
 		
 		<Copy SourceFiles="$(BinariesPath)\UnMerged\FakeItEasy.xml" DestinationFolder="$(BinariesPath)\Merged" />
