@@ -118,7 +118,7 @@ namespace FakeItEasy.Configuration
 
             foreach (var argument in indexes.Zip(this.OutAndRefParametersValues))
             {
-                fakeObjectCall.SetArgumentValue(argument.Value1, argument.Value2);
+                fakeObjectCall.SetArgumentValue(argument.Item1, argument.Item2);
             }
         }
 

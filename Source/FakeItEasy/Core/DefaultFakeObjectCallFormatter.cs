@@ -73,8 +73,8 @@ namespace FakeItEasy.Core
                 (from argument in call.Method.GetParameters().Zip(call.Arguments)
                  select new ArgumentValueInfo
                  {
-                     ArgumentName = argument.Value1.Name,
-                     ArgumentValue = argument.Value2
+                     ArgumentName = argument.Item1.Name,
+                     ArgumentValue = argument.Item2
                  }).ToArray();
         }
 

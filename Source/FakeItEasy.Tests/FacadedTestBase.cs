@@ -53,8 +53,8 @@ namespace FakeItEasy.Tests
 
             foreach (var argument in method1.GetParameters().Zip(method2.GetParameters()))
             {
-                if (!object.Equals(argument.Value1.ParameterType, argument.Value2.ParameterType) ||
-                    !string.Equals(argument.Value1.Name, argument.Value2.Name))
+                if (!object.Equals(argument.Item1.ParameterType, argument.Item2.ParameterType) ||
+                    !string.Equals(argument.Item1.Name, argument.Item2.Name))
                 {
                     return false;
                 }
