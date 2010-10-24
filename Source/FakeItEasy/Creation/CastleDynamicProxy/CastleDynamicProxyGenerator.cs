@@ -5,6 +5,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
+    using System.Security.Permissions;
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -16,6 +17,11 @@
         private static readonly Logger logger = Log.GetLogger<CastleDynamicProxyGenerator>();
         private static readonly ProxyGenerationOptions proxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
         private static readonly ProxyGenerator proxyGenerator = new ProxyGenerator();
+
+        static CastleDynamicProxyGenerator()
+        {
+            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(SecurityPermissionAttribute));
+        }
 
         public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
         {

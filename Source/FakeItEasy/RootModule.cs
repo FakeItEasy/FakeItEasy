@@ -91,28 +91,12 @@
             container.Register<IFakeWrapperConfigurer>(c =>
                 new DefaultFakeWrapperConfigurer());
 
-            container.RegisterSingleton<ITypeCatalogue>(c =>
-                new ApplicationDirectoryAssembliesTypeCatalogue());
-
-            container.RegisterSingleton<TypeCatalogueInstanceProvider>(c =>
-                new TypeCatalogueInstanceProvider(c.Resolve<ITypeCatalogue>()));
-
-            RegisterEnumerableInstantiatedFromTypeCatalogue<IArgumentValueFormatter>(container);
-            RegisterEnumerableInstantiatedFromTypeCatalogue<IDummyDefinition>(container);
-            RegisterEnumerableInstantiatedFromTypeCatalogue<IFakeConfigurator>(container);
-
             container.Register<FakeFacade>(c =>
                 new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeScopeFactory>(), c.Resolve<IFixtureInitializer>()));
             
             container.RegisterSingleton<IFakeScopeFactory>(c => new FakeScopeFactory());
 
             container.Register<IFixtureInitializer>(c => new DefaultFixtureInitializer(c.Resolve<IFakeAndDummyManager>()));
-        }
-
-        private static void RegisterEnumerableInstantiatedFromTypeCatalogue<T>(DictionaryContainer container)
-        {
-            container.RegisterSingleton<IEnumerable<T>>(c =>
-                    c.Resolve<TypeCatalogueInstanceProvider>().InstantiateAllOfType<T>());
         }
 
         private class SessionFakeObjectCreator
@@ -143,7 +127,7 @@
        
         private class FileSystem : IFileSystem
         {
-            public System.IO.Stream Open(string fileName, System.IO.FileMode mode)
+            public Stream Open(string fileName, FileMode mode)
             {
                 return File.Open(fileName, mode);
             }

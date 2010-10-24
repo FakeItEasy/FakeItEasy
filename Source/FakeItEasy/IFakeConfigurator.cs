@@ -1,11 +1,13 @@
 namespace FakeItEasy
 {
     using System;
+    using System.ComponentModel.Composition;
     using System.Diagnostics.CodeAnalysis;
     
     /// <summary>
     /// Provides configurations for fake objects of a specific type.
     /// </summary>
+    [InheritedExport]
     public interface IFakeConfigurator
     {
         /// <summary>

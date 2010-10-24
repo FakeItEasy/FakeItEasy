@@ -61,6 +61,7 @@
       <HintPath>..\packages\Castle.Core.2.5.1\lib\NET35\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" />
@@ -69,7 +70,6 @@
     <Compile Include="Any.cs" />
     <Compile Include="ArgumentValueFormatter.cs" />
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
-    <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Core\ArgumentValueFormatter.cs" />
     <Compile Include="Core\FakeScopeFactory.cs" />
     <Compile Include="Core\IFakeObjectConfigurator.cs">
@@ -79,7 +79,6 @@
     <Compile Include="Core\IFixtureInitializer.cs" />
     <Compile Include="FakeAttribute.cs" />
     <Compile Include="IArgumentValueFormatter.cs" />
-    <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
     <Compile Include="Creation\DefaultFakeCreatorFacade.cs" />
     <Compile Include="Creation\DummyValueCreationSession.cs" />
     <Compile Include="Creation\FakeObjectCreator.cs" />
@@ -108,6 +107,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="FakeFacade.cs" />
+    <Compile Include="ImportsModule.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="OrderedAssertion.cs" />
@@ -140,7 +140,6 @@
     <Compile Include="Configuration\StartConfiguration.cs" />
     <Compile Include="Core\DynamicContainer.cs" />
     <Compile Include="Core\IInterceptedFakeObjectCall.cs" />
-    <Compile Include="Core\ITypeCatalogue.cs" />
     <Compile Include="Core\ArgumentInfo.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>

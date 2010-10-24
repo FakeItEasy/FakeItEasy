@@ -59,7 +59,6 @@
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
-    <Compile Include="ApplicationDirectoryAssembliesTypeCatalogueIntegrationTests.cs" />
     <Compile Include="ArgumentValidationsTests.cs" />
     <Compile Include="AssertionsTests.cs" />
     <Compile Include="Assertions\ExceptionMessagesTests.cs" />

@@ -12,6 +12,7 @@
             var container = new DictionaryContainer();
             new RootModule().RegisterDependencies(container);
             new ConfigurationModule().RegisterDependencies(container);
+            new ImportsModule().RegisterDependencies(container);
             Current = container;
         }
 

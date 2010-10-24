@@ -1,11 +1,13 @@
 namespace FakeItEasy
 {
     using System;
+    using System.ComponentModel.Composition;
 
     /// <summary>
     /// Provides string formatting for arguments when written in 
     /// call lists.
     /// </summary>
+    [InheritedExport]
     public interface IArgumentValueFormatter
     {
         /// <summary>
