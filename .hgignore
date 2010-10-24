@@ -12,5 +12,5 @@ syntax: glob
 ILMerge.exe
 Build/*
 *.diff
-*resharper*
 *.[Cc]ache
+*[Rr][Ee][Ss][Hh][Aa][Rr][Pp][Ee][Rr]*
