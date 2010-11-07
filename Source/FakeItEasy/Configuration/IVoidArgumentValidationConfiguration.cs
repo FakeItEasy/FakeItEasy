@@ -1,4 +1,3 @@
-using FakeItEasy.Core;
 namespace FakeItEasy.Configuration
 {
     /// <summary>
@@ -7,8 +6,7 @@ namespace FakeItEasy.Configuration
     /// </summary>
     public interface IVoidArgumentValidationConfiguration
         : IVoidConfiguration,
-          IArgumentValidationConfiguration<IVoidConfiguration>,
-          ICallMatcherAccessor
+          IArgumentValidationConfiguration<IVoidConfiguration>
     {
     }
 }

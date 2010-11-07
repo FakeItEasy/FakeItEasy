@@ -7,7 +7,7 @@ namespace FakeItEasy.Configuration
     /// Provides configurations to validate arguments of a fake object call.
     /// </summary>
     /// <typeparam name="TInterface">The type of interface to return.</typeparam>
-    public interface IArgumentValidationConfiguration<TInterface>
+    public interface IArgumentValidationConfiguration<out TInterface>
         : IHideObjectMembers
     {
         /// <summary>

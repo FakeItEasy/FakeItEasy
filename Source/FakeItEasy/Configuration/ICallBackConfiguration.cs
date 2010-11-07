@@ -1,13 +1,13 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-    using FakeItEasy.Core;
+    using Core;
 
     /// <summary>
     /// Configuration for callbacks of fake object calls.
     /// </summary>
     /// <typeparam name="TInterface">The type of interface to return.</typeparam>
-    public interface ICallbackConfiguration<TInterface> : IHideObjectMembers
+    public interface ICallbackConfiguration<out TInterface> : IHideObjectMembers
     {
         /// <summary>
         /// Executes the specified action when a matching call is being made.

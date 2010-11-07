@@ -9,8 +9,7 @@ namespace FakeItEasy.Configuration
     /// <typeparam name="TMember">The type of the member.</typeparam>
     public interface IReturnValueArgumentValidationConfiguration<TMember>
         : IReturnValueConfiguration<TMember>,
-          IArgumentValidationConfiguration<IReturnValueConfiguration<TMember>>,
-          ICallMatcherAccessor
+          IArgumentValidationConfiguration<IReturnValueConfiguration<TMember>>
     {
     }
 }
