@@ -1,10 +1,9 @@
-﻿namespace FakeItEasy.Tests.VisualBasic
+﻿namespace FakeItEasy.Tests
 {
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.VisualBasic;
     using NUnit.Framework;
-    
+
     [TestFixture]
     public class NextCallTests
         : ConfigurableServiceLocatorTestBase

@@ -238,14 +238,14 @@
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="CommonExtensions.cs" />
     <Compile Include="SmellyAttribute.cs" />
-    <Compile Include="VisualBasic\IRecordingCallRuleFactory.cs" />
-    <Compile Include="VisualBasic\IVisualBasicConfiguration.cs" />
-    <Compile Include="VisualBasic\IVisualBasicConfigurationWithArgumentValidation.cs" />
-    <Compile Include="VisualBasic\RecordedCallRule.cs" />
-    <Compile Include="VisualBasic\RecordingCallRule.cs" />
-    <Compile Include="VisualBasic\NextCall.cs" />
+    <Compile Include="Configuration\IRecordingCallRuleFactory.cs" />
+    <Compile Include="Configuration\IVisualBasicConfiguration.cs" />
+    <Compile Include="Configuration\IVisualBasicConfigurationWithArgumentValidation.cs" />
+    <Compile Include="Configuration\RecordedCallRule.cs" />
+    <Compile Include="Configuration\RecordingCallRule.cs" />
+    <Compile Include="NextCall.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManager.cs" />
-    <Compile Include="VisualBasic\VisualBasicRuleBuilder.cs" />
+    <Compile Include="Configuration\VisualBasicRuleBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">

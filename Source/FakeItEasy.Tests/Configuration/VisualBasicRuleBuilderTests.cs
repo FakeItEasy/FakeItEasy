@@ -1,9 +1,8 @@
-namespace FakeItEasy.Tests.VisualBasic
+namespace FakeItEasy.Tests.Configuration
 {
     using System;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.VisualBasic;
     using NUnit.Framework;
 
     [TestFixture]

@@ -1,6 +1,5 @@
 ﻿Imports NUnit.Framework
 Imports FakeItEasy.Tests
-Imports FakeItEasy.VisualBasic
 
 <TestFixture()> _
 Public Class NextCallTests

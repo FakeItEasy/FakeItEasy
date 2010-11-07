@@ -67,8 +67,8 @@
             container.RegisterSingleton<IExpressionParser>(c =>
                 new ExpressionParser());
 
-            container.RegisterSingleton<VisualBasic.VisualBasicRuleBuilder.Factory>(c =>
-                (rule, fakeObject) => new VisualBasic.VisualBasicRuleBuilder(rule, c.Resolve<RuleBuilder.Factory>().Invoke(rule, fakeObject)));
+            container.RegisterSingleton<VisualBasicRuleBuilder.Factory>(c =>
+                (rule, fakeObject) => new VisualBasicRuleBuilder(rule, c.Resolve<RuleBuilder.Factory>().Invoke(rule, fakeObject)));
 
             container.Register<IFakeCreatorFacade>(c =>
                 new DefaultFakeCreatorFacade(c.Resolve<IFakeAndDummyManager>()));

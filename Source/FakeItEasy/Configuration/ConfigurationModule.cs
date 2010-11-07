@@ -4,7 +4,6 @@
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
-    using FakeItEasy.VisualBasic;
 
     internal class ConfigurationModule
         : Module

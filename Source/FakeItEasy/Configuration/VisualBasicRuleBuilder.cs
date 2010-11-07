@@ -1,7 +1,6 @@
-namespace FakeItEasy.VisualBasic
+namespace FakeItEasy.Configuration
 {
     using System;
-    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     internal class VisualBasicRuleBuilder

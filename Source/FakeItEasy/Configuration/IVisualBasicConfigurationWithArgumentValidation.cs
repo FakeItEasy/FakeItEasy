@@ -1,7 +1,5 @@
-namespace FakeItEasy.VisualBasic
+namespace FakeItEasy.Configuration
 {
-    using FakeItEasy.Configuration;
-
     /// <summary>
     /// Provides configuration from VisualBasic.
     /// </summary>
