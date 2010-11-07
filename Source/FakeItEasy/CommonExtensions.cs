@@ -81,12 +81,12 @@
         {
             var lines = value == null ? new string[] { } : value.Split('\n');
 
-            for (int i = 0; i < lines.Length; i++)
+            for (var i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
                 builder.Append(indentString).Append(line);
 
-                if (!(i == lines.Length - 1))
+                if (i != lines.Length - 1)
                 {
                     builder.Append('\n');
                 }
