@@ -6,6 +6,5 @@ namespace FakeItEasy.Configuration
     public interface IRecordingConfigurationWithArgumentValidation
         : IRecordingConfiguration, IArgumentValidationConfiguration<IRecordingConfiguration>
     {
-
     }
 }

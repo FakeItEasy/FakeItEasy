@@ -8,11 +8,9 @@
     public class NextCallTests
         : ConfigurableServiceLocatorTestBase
     {
-        private IConfigurationFactory builderFactory;
-
         protected override void OnSetUp()
         {
-            this.builderFactory = A.Fake<IConfigurationFactory>();
+            A.Fake<IConfigurationFactory>();
         }
 
         [Test]
