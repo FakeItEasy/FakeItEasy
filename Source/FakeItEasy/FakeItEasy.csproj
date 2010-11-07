@@ -239,13 +239,13 @@
     <Compile Include="CommonExtensions.cs" />
     <Compile Include="SmellyAttribute.cs" />
     <Compile Include="Configuration\IRecordingCallRuleFactory.cs" />
-    <Compile Include="Configuration\IVisualBasicConfiguration.cs" />
-    <Compile Include="Configuration\IVisualBasicConfigurationWithArgumentValidation.cs" />
+    <Compile Include="Configuration\IRecordingConfiguration.cs" />
+    <Compile Include="Configuration\IRecordingConfigurationWithArgumentValidation.cs" />
     <Compile Include="Configuration\RecordedCallRule.cs" />
     <Compile Include="Configuration\RecordingCallRule.cs" />
     <Compile Include="NextCall.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManager.cs" />
-    <Compile Include="Configuration\VisualBasicRuleBuilder.cs" />
+    <Compile Include="Configuration\RecordingRuleBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">

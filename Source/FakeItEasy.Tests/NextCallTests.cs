@@ -38,7 +38,7 @@
             this.StubResolve<IRecordingCallRuleFactory>(recordingRuleFactory);
 
             var builder = this.CreateFakeVisualBasicRuleBuilder();
-            this.StubResolve<VisualBasicRuleBuilder.Factory>((r, f) =>
+            this.StubResolve<RecordingRuleBuilder.Factory>((r, f) =>
                 {
                     return r.Equals(recordedRule) && f.Equals(fake) ? builder : null;
                 });
@@ -51,14 +51,14 @@
             Assert.That(fake.Rules, Has.Some.SameAs(recordingRule));
         }
 
-        private VisualBasicRuleBuilder CreateFakeVisualBasicRuleBuilder()
+        private RecordingRuleBuilder CreateFakeVisualBasicRuleBuilder()
         {
             var rule = A.Fake<RecordedCallRule>();
 
             var wrapped = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() =>
                 new RuleBuilder(rule, A.Fake<FakeManager>(), c => A.Fake<IFakeAsserter>())));
-            var result = A.Fake<VisualBasicRuleBuilder>(x => x.WithArgumentsForConstructor(() =>
-                new VisualBasicRuleBuilder(rule, wrapped)));
+            var result = A.Fake<RecordingRuleBuilder>(x => x.WithArgumentsForConstructor(() =>
+                new RecordingRuleBuilder(rule, wrapped)));
 
             return result;
         }

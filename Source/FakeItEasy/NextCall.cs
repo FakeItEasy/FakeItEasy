@@ -1,7 +1,7 @@
 ﻿namespace FakeItEasy
 {
     using Configuration;
-    using FakeItEasy.Core;
+    using Core;
 
     /// <summary>
     /// Lets you specify options for the next call to a fake object.
@@ -15,7 +15,7 @@
         /// <typeparam name="TFake">The type of the faked object.</typeparam>
         /// <param name="fake">The faked object to configure.</param>
         /// <returns>A call configuration object.</returns>
-        public static IVisualBasicConfigurationWithArgumentValidation To<TFake>(TFake fake)
+        public static IRecordingConfigurationWithArgumentValidation To<TFake>(TFake fake)
         {
             Guard.AgainstNull(fake, "fake");
 
@@ -28,9 +28,9 @@
             return CreateBuilder(recordedRule, fakeManager);
         }
 
-        private static VisualBasicRuleBuilder CreateBuilder(RecordedCallRule rule, FakeManager fakeObject)
+        private static RecordingRuleBuilder CreateBuilder(RecordedCallRule rule, FakeManager fakeObject)
         {
-            var factory = ServiceLocator.Current.Resolve<VisualBasicRuleBuilder.Factory>();
+            var factory = ServiceLocator.Current.Resolve<RecordingRuleBuilder.Factory>();
             return factory.Invoke(rule, fakeObject);
         }
 

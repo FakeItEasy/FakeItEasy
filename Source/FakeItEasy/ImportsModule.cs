@@ -10,11 +10,11 @@
         : Module
     {
         [ImportMany(typeof(IArgumentValueFormatter))]
-        private IEnumerable<IArgumentValueFormatter> importedArgumentValueFormatters;
+        public IEnumerable<IArgumentValueFormatter> ImportedArgumentValueFormatters;
         [ImportMany(typeof(IDummyDefinition))]
-        private IEnumerable<IDummyDefinition> importedDummyDefinitions;
+        public IEnumerable<IDummyDefinition> ImportedDummyDefinitions;
         [ImportMany(typeof(IFakeConfigurator))]
-        private IEnumerable<IFakeConfigurator> importedFakeConfigurators;
+        public IEnumerable<IFakeConfigurator> ImportedFakeConfigurators;
 
         public ImportsModule()
         {
@@ -30,9 +30,9 @@
 
         public override void RegisterDependencies(DictionaryContainer container)
         {
-            container.RegisterSingleton(c => this.importedArgumentValueFormatters);
-            container.RegisterSingleton(c => this.importedDummyDefinitions);
-            container.RegisterSingleton(c => this.importedFakeConfigurators);
+            container.RegisterSingleton(c => this.ImportedArgumentValueFormatters);
+            container.RegisterSingleton(c => this.ImportedDummyDefinitions);
+            container.RegisterSingleton(c => this.ImportedFakeConfigurators);
         }
     }
 }

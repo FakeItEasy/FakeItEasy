@@ -1,9 +1,9 @@
 namespace FakeItEasy.Configuration
 {
     /// <summary>
-    /// Configurations for visual basic.
+    /// Configurations for when a configured call is recorded.
     /// </summary>
-    public interface IVisualBasicConfiguration
+    public interface IRecordingConfiguration
         : IVoidConfiguration, IAssertConfiguration
     {
         
