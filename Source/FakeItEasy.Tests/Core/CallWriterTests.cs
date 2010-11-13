@@ -14,8 +14,8 @@ namespace FakeItEasy.Tests.Core
         private List<IFakeObjectCall> calls;
         private StringWriter writer;
         
-        [Fake]
-        private IFakeObjectCallFormatter callFormatter;
+        [Fake] internal IFakeObjectCallFormatter callFormatter;
+        [Fake] public IEqualityComparer<IFakeObjectCall> CallComparer;
 
         [SetUp]
         public void SetUp()
@@ -31,7 +31,7 @@ namespace FakeItEasy.Tests.Core
 
         private CallWriter CreateWriter()
         {
-            return new CallWriter(this.callFormatter);
+            return new CallWriter(this.callFormatter, this.CallComparer);
         }
 
         private void StubCalls(int numberOfCalls)
@@ -75,20 +75,21 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void WriteCalls_should_skip_duplicate_calls_in_row()
         {
+            // Arrange
             this.StubCalls(10);
 
-            foreach (var call in this.calls)
-            {
-                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("Fake call");
-            }
-
+            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>.Ignored.Argument)).Returns("Fake call");
             A.CallTo(() => this.callFormatter.GetDescription(this.calls[9])).Returns("Other call");
 
+            A.CallTo(() => this.CallComparer.Equals(A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]).Argument, A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]).Argument)).Returns(true);
+            
             var writer = this.CreateWriter();
+            
+            // Act
             writer.WriteCalls(0, this.calls, this.writer);
 
+            // Assert
             var message = this.writer.GetStringBuilder().ToString();
-
             Assert.That(message, Is.StringContaining(@"1:  Fake call repeated 9 times
 ...
 10: Other call"));

@@ -71,6 +71,7 @@
     <Compile Include="ArgumentValueFormatter.cs" />
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\ArgumentValueFormatter.cs" />
+    <Compile Include="Core\FakeCallEqualityComparer.cs" />
     <Compile Include="Core\FakeScopeFactory.cs" />
     <Compile Include="Core\IFakeObjectConfigurator.cs">
       <SubType>Code</SubType>

@@ -9,10 +9,12 @@ namespace FakeItEasy.Core
     {
         private const int MaxNumberOfCallsToWrite = 19;
         private readonly IFakeObjectCallFormatter callFormatter;
+        private readonly IEqualityComparer<IFakeObjectCall> callComparer;
 
-        public CallWriter(IFakeObjectCallFormatter callFormatter)
+        public CallWriter(IFakeObjectCallFormatter callFormatter, IEqualityComparer<IFakeObjectCall> callComparer)
         {
             this.callFormatter = callFormatter;
+            this.callComparer = callComparer;
         }
 
         public virtual void WriteCalls(int indent, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
@@ -22,31 +24,27 @@ namespace FakeItEasy.Core
                 return;
             }
 
-            var callInfos = new List<CallInfo>(new[] {new CallInfo { CallNumber = 0, Repeat = 1, StringRepresentation = "NullCall" }});
+            var callInfos = new List<CallInfo>();
             var callArray = calls.ToArray();
 
             for (int i = 0; i < callArray.Length && i < MaxNumberOfCallsToWrite; i++)
             {
                 var call = callArray[i];
 
-                var lastCall = callInfos[callInfos.Count - 1];
-                var description = this.callFormatter.GetDescription(call);
-
-                if (description == lastCall.StringRepresentation)
+                if (i > 0 && this.callComparer.Equals(callInfos[callInfos.Count - 1].Call, call))
                 {
-                    lastCall.Repeat++;
+                    callInfos[callInfos.Count - 1].Repeat++;
                 }
                 else
                 {
                     callInfos.Add(new CallInfo()
                                       {
-                                          CallNumber = lastCall.CallNumber + lastCall.Repeat,
-                                          StringRepresentation = description
+                                          Call = call,
+                                          CallNumber = i + 1,
+                                          StringRepresentation = this.callFormatter.GetDescription(call)
                                       });
                 }
             }
-
-            callInfos.RemoveAt(0);
 
             WriteCalls(indent, callInfos, writer);
 
@@ -118,6 +116,7 @@ namespace FakeItEasy.Core
             public int CallNumber;
             public int Repeat = 1;
             public string StringRepresentation;
+            public IFakeObjectCall Call;
 
             public int NumberOfDigitsInCallNumber()
             {

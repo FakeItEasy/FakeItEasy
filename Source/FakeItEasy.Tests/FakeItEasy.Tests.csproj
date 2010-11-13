@@ -68,9 +68,11 @@
     <Compile Include="AnyTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\CollectionContainsTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\CollectionIsEmptyTests.cs" />
+    <Compile Include="ArgumentConstraintExtensions\EqualToConstraintTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
     <Compile Include="Core\DefaultFixtureInitializerTests.cs" />
+    <Compile Include="Core\FakeCallEqualityComparerTests.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManagerTests.cs">
       <SubType>Code</SubType>
     </Compile>

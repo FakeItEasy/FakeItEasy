@@ -53,7 +53,7 @@
                 new ArgumentValueFormatter(c.Resolve<IEnumerable<IArgumentValueFormatter>>()));
 
             container.RegisterSingleton<CallWriter>(c =>
-                new CallWriter(c.Resolve<IFakeObjectCallFormatter>()));
+                new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), c.Resolve<IEqualityComparer<IFakeObjectCall>>()));
 
             container.RegisterSingleton<RecordingManager.Factory>(c =>
                 x => new RecordingManager(x));
@@ -97,6 +97,8 @@
             container.RegisterSingleton<IFakeScopeFactory>(c => new FakeScopeFactory());
 
             container.Register<IFixtureInitializer>(c => new DefaultFixtureInitializer(c.Resolve<IFakeAndDummyManager>()));
+
+            container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
         }
 
         private class SessionFakeObjectCreator
