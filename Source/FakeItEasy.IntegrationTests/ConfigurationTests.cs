@@ -5,7 +5,6 @@ using System.Text;
 using NUnit.Framework;
 using FakeItEasy.Tests;
 using FakeItEasy.ExtensionSyntax;
-using FakeItEasy.VisualBasic;
 using FakeItEasy.Core;
 
 namespace FakeItEasy.IntegrationTests

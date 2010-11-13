@@ -14,13 +14,16 @@ namespace FakeItEasy.Tests.Core
         private List<IFakeObjectCall> calls;
         private StringWriter writer;
         
-        [Fake]
-        private IFakeObjectCallFormatter callFormatter;
+        [Fake] internal IFakeObjectCallFormatter callFormatter;
+        [Fake] public IEqualityComparer<IFakeObjectCall> CallComparer;
 
         [SetUp]
         public void SetUp()
         {
             Fake.InitializeFixture(this);
+
+            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>.Ignored.Argument))
+                .Returns("Default call description");
 
             this.calls = new List<IFakeObjectCall>();
             this.writer = new StringWriter();
@@ -28,7 +31,7 @@ namespace FakeItEasy.Tests.Core
 
         private CallWriter CreateWriter()
         {
-            return new CallWriter(this.callFormatter);
+            return new CallWriter(this.callFormatter, this.CallComparer);
         }
 
         private void StubCalls(int numberOfCalls)
@@ -57,38 +60,39 @@ namespace FakeItEasy.Tests.Core
 
             var message = this.writer.GetStringBuilder().ToString();
             
-            Assert.That(message,  Is.StringContaining(@"1.  'Fake call 1'
-2.  'Fake call 2'
-3.  'Fake call 3'
-4.  'Fake call 4'
-5.  'Fake call 5'
-6.  'Fake call 6'
-7.  'Fake call 7'
-8.  'Fake call 8'
-9.  'Fake call 9'
-10. 'Fake call 10'"));
+            Assert.That(message,  Is.StringContaining(@"1:  Fake call 1
+2:  Fake call 2
+3:  Fake call 3
+4:  Fake call 4
+5:  Fake call 5
+6:  Fake call 6
+7:  Fake call 7
+8:  Fake call 8
+9:  Fake call 9
+10: Fake call 10"));
         }
 
         [Test]
         public void WriteCalls_should_skip_duplicate_calls_in_row()
         {
+            // Arrange
             this.StubCalls(10);
 
-            foreach (var call in this.calls)
-            {
-                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("Fake call");
-            }
-
+            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>.Ignored.Argument)).Returns("Fake call");
             A.CallTo(() => this.callFormatter.GetDescription(this.calls[9])).Returns("Other call");
 
+            A.CallTo(() => this.CallComparer.Equals(A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]).Argument, A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]).Argument)).Returns(true);
+            
             var writer = this.CreateWriter();
+            
+            // Act
             writer.WriteCalls(0, this.calls, this.writer);
 
+            // Assert
             var message = this.writer.GetStringBuilder().ToString();
-
-            Assert.That(message, Is.StringContaining(@"1.  'Fake call' repeated 9 times
+            Assert.That(message, Is.StringContaining(@"1:  Fake call repeated 9 times
 ...
-10. 'Other call'"));
+10: Other call"));
         }
 
         [Test]
@@ -111,11 +115,10 @@ namespace FakeItEasy.Tests.Core
             
             var message =this.writer.GetStringBuilder().ToString();
 
-            Assert.That(message, Is.StringContaining(@"1.  'odd'
-2.  'even'
-3.  'odd'
-4.  'even'
-"));
+            Assert.That(message, Is.StringContaining(@"1: odd
+2: even
+3: odd
+4: even"));
         }
 
         [Test]
@@ -135,7 +138,7 @@ namespace FakeItEasy.Tests.Core
 
             var message = this.writer.GetStringBuilder().ToString();
 
-            Assert.That(message, Is.StringContaining(@"19. 'Last call'
+            Assert.That(message, Is.StringContaining(@"19: Last call
 ... Found 11 more calls not displayed here."));
         }
 
@@ -156,37 +159,69 @@ namespace FakeItEasy.Tests.Core
 
             var message = this.writer.GetStringBuilder().ToString();
 
-            Assert.That(message, Is.StringContaining(@"    1.  'Fake call 1'
-    2.  'Fake call 2'
-    3.  'Fake call 3'
-    4.  'Fake call 4'
-    5.  'Fake call 5'
-    6.  'Fake call 6'
-    7.  'Fake call 7'
-    8.  'Fake call 8'
-    9.  'Fake call 9'
-    10. 'Fake call 10'"));
+            Assert.That(message, Is.StringContaining(@"    1:  Fake call 1
+    2:  Fake call 2
+    3:  Fake call 3
+    4:  Fake call 4
+    5:  Fake call 5
+    6:  Fake call 6
+    7:  Fake call 7
+    8:  Fake call 8
+    9:  Fake call 9
+    10: Fake call 10"));
         }
 
         [Test]
         public void WriteCalls_should_indent_values_with_newlines_correctly()
         {
             // Arrange
-            this.StubCalls(1);
-            A.CallTo(() => this.callFormatter.GetDescription(this.calls[0])).Returns(@"first line
-    second line is indented");
+            this.StubCalls(10);
+
+            var callIndex = 0;
+            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>.Ignored.Argument)).ReturnsLazily(() =>
+@"first line
+second line" + ++callIndex);
             
             var writer = this.CreateWriter();
 
             // Act
             
-            writer.WriteCalls(4, this.calls, this.writer);
+            writer.WriteCalls(0, this.calls, this.writer);
 
             // Assert
             var message = this.writer.GetStringBuilder().ToString();
 
-            Assert.That(message, Is.StringContaining(@"    1.  'first line
-            second line is indented"));
+            Assert.That(message, Is.StringContaining(@"1:  first line
+    second line").And.StringContaining(@"10: first line
+    second line"));
+        }
+
+        [Test]
+        public void WriteCalls_should_write_new_line_at_end()
+        {
+            // Arrange
+            this.StubCalls(1);
+
+            var writer = this.CreateWriter();
+
+            // Act
+            writer.WriteCalls(0, this.calls, this.writer);
+            
+            // Assert
+            Assert.That(this.writer.GetStringBuilder().ToString(), Is.StringEnding(Environment.NewLine));
+        }
+
+        [Test]
+        public void Should_write_nothing_if_call_list_is_empty()
+        {
+            // Arrange
+            var writer = this.CreateWriter();
+
+            // Act
+            writer.WriteCalls(0, Enumerable.Empty<IFakeObjectCall>(), this.writer);
+
+            // Assert
+            Assert.That(this.writer.GetStringBuilder().ToString(), Is.Empty);
         }
     }
 }

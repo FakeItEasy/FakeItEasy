@@ -48,7 +48,7 @@ namespace FakeItEasy.Core
         {
             writer.WriteLine();
             writer.WriteLine("  Assertion failed for the following call:");
-            writer.WriteLine("    '{0}'", callDescription);
+            writer.WriteLine("    {0}", callDescription);
         }
 
         private void AppendExpectation(string repeatDescription, int repeat, StringWriter writer)

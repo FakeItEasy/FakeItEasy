@@ -2,7 +2,6 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     using System.Collections.Generic;
     using NUnit.Framework;
-    using System;
 
     [TestFixture]
     public class CollectionContainsTests

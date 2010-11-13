@@ -7,106 +7,120 @@ namespace FakeItEasy.Core
 
     internal class CallWriter
     {
-        private IFakeObjectCallFormatter callFormatter;
+        private const int MaxNumberOfCallsToWrite = 19;
+        private readonly IFakeObjectCallFormatter callFormatter;
+        private readonly IEqualityComparer<IFakeObjectCall> callComparer;
 
-        public CallWriter(IFakeObjectCallFormatter callFormatter)
+        public CallWriter(IFakeObjectCallFormatter callFormatter, IEqualityComparer<IFakeObjectCall> callComparer)
         {
             this.callFormatter = callFormatter;
+            this.callComparer = callComparer;
         }
 
         public virtual void WriteCalls(int indent, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
         {
-            var indentString = CreateIndentString(indent);
-            AppendCallList(indentString, calls, writer);
-        }
-
-        private static string CreateIndentString(int indent)
-        {
-            return string.Concat(Enumerable.Repeat(" ", indent).ToArray());
-        }
-
-        private void AppendCallList(string indentString, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
-        {
-            var callDescriptions = new Queue<string>(calls.Select(x => this.callFormatter.GetDescription(x)));
-
-            int callNumber = 0;
-            int lineNumber = 1;
-
-            while (callDescriptions.Count > 0 && lineNumber < 20)
+            if (!calls.Any())
             {
-                callNumber++;
-                
-                var description = callDescriptions.Dequeue();
-                var repeatOfCurrentCall = GetRepeatOfCurrentCallAndMoveToNextCall(callDescriptions, description);
-
-                WriteCallDescription(indentString, writer, callNumber, description);
-                AppendRepeatAndEndCallDescription(indentString, writer, repeatOfCurrentCall);
-                
-                callNumber += repeatOfCurrentCall - 1;
-                lineNumber++;
+                return;
             }
 
-            var nonPrintedCalls = callDescriptions.Count;
-            if (nonPrintedCalls > 0)
-            {
-                writer.Write(indentString);
-                writer.WriteLine("... Found {0} more calls not displayed here.", nonPrintedCalls);
-            }
-        }
+            var callInfos = new List<CallInfo>();
+            var callArray = calls.ToArray();
 
-        private static void AppendRepeatAndEndCallDescription(string indentString, TextWriter writer, int repeatOfCurrentCall)
-        {
-            if (repeatOfCurrentCall > 1)
+            for (int i = 0; i < callArray.Length && i < MaxNumberOfCallsToWrite; i++)
             {
-                writer.WriteLine(" repeated {0} times", repeatOfCurrentCall);
-                writer.Write(indentString);
-                writer.WriteLine("...");
+                var call = callArray[i];
+
+                if (i > 0 && this.callComparer.Equals(callInfos[callInfos.Count - 1].Call, call))
+                {
+                    callInfos[callInfos.Count - 1].Repeat++;
+                }
+                else
+                {
+                    callInfos.Add(new CallInfo()
+                                      {
+                                          Call = call,
+                                          CallNumber = i + 1,
+                                          StringRepresentation = this.callFormatter.GetDescription(call)
+                                      });
+                }
             }
-            else
+
+            WriteCalls(indent, callInfos, writer);
+
+            if (callArray.Length > MaxNumberOfCallsToWrite)
             {
                 writer.WriteLine();
+                writer.Write("... Found {0} more calls not displayed here.", callArray.Length - MaxNumberOfCallsToWrite);
             }
+
+            writer.WriteLine();
         }
-
-        private static int GetRepeatOfCurrentCallAndMoveToNextCall(Queue<string> callDescriptions, string description)
+        
+        private static void WriteCalls(int indent, IEnumerable<CallInfo> callInfos, TextWriter writer)
         {
-            int repeatOfCurrentCall = 1;
+            var lastCall = callInfos.Last();
+            var numberOfDigitsInLastCallNumber = lastCall.NumberOfDigitsInCallNumber();
+            var callDescriptionStartColumn = numberOfDigitsInLastCallNumber + 3 + indent;
 
-            while (callDescriptions.Count > 0 && string.Equals(description, callDescriptions.Peek(), StringComparison.Ordinal))
+            foreach (var call in callInfos)
             {
-                repeatOfCurrentCall++;
-                callDescriptions.Dequeue();
+                if (call.CallNumber > 1)
+                {
+                    writer.WriteLine();
+                }
+
+                WriteIndentation(writer, indent);
+                writer.Write(call.CallNumber);
+                writer.Write(": ");
+
+                WriteIndentation(writer, numberOfDigitsInLastCallNumber - call.NumberOfDigitsInCallNumber());
+
+                WriteIndentedAtNewLine(writer, call.StringRepresentation, callDescriptionStartColumn);
+                
+                if (call.Repeat > 1)
+                {
+                    writer.Write(" repeated ");
+                    writer.Write(call.Repeat);
+                    writer.WriteLine(" times");
+                    WriteIndentation(writer, indent);
+                    writer.Write("...");
+                }
             }
-
-            return repeatOfCurrentCall;
         }
 
-        private static void WriteCallDescription(string indentString, TextWriter writer, int callNumber, string callDescription)
+        private static void WriteIndentedAtNewLine(TextWriter writer, string value, int indentLevel)
         {
-            writer.Write(indentString);
+            var lines = value.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
-            WriteCallNumber(writer, callNumber);
+            writer.Write(lines[0]);
 
-            callDescription = IndentNewlinesInCallDescription(indentString, callDescription);
-
-            writer.Write("'");
-            writer.Write(callDescription);
-            writer.Write("'");
+            for (int i = 1; i < lines.Length; i++)
+            {
+                writer.WriteLine();
+                WriteIndentation(writer, indentLevel);
+                writer.Write(lines[i]);
+            }
         }
 
-        private static string IndentNewlinesInCallDescription(string indentString, string callDescription)
+        private static void WriteIndentation(TextWriter writer, int indentLevel)
         {
-            return callDescription.Replace("\r\n", "\r\n" + indentString + "    ");
-        }
-
-        private static void WriteCallNumber(TextWriter writer, int callNumber)
-        {
-            writer.Write(callNumber);
-            writer.Write(". ");
-
-            if (callNumber < 10)
+            for (int i = 0; i < indentLevel; i++)
             {
                 writer.Write(" ");
+            } 
+        }
+
+        private class CallInfo
+        {
+            public int CallNumber;
+            public int Repeat = 1;
+            public string StringRepresentation;
+            public IFakeObjectCall Call;
+
+            public int NumberOfDigitsInCallNumber()
+            {
+                return (int)Math.Log10(this.CallNumber);
             }
         }
     }

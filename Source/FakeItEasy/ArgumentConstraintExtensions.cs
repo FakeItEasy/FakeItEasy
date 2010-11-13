@@ -107,6 +107,20 @@ namespace FakeItEasy
                 );
         }
 
+        /// <summary>
+        /// Tests that the passed in argument is equal to the specified value.
+        /// </summary>
+        /// <typeparam name="T">The type of the argument.</typeparam>
+        /// <param name="scope">The scope of the constraint.</param>
+        /// <param name="value">The value to compare to.</param>
+        /// <returns>An argument constraint.</returns>
+        public static ArgumentConstraint<T> IsEqualTo<T>(this ArgumentConstraintScope<T> scope, T value)
+        {
+            return scope.CreateConstraint(
+                x => object.Equals(value, x),
+                "equal to {0}", value);
+        }
+
         private static ArgumentConstraint<T> CreateConstraint<T>(this ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)
         {
             return ArgumentConstraint.Create(scope, predicate, description);

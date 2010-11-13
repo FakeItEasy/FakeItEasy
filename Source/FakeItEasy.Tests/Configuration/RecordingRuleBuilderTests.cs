@@ -1,15 +1,14 @@
-namespace FakeItEasy.Tests.VisualBasic
+namespace FakeItEasy.Tests.Configuration
 {
     using System;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.VisualBasic;
     using NUnit.Framework;
 
     [TestFixture]
-    public class VisualBasicRuleBuilderTests
+    public class RecordingRuleBuilderTests
     {
-        private VisualBasicRuleBuilder builder;
+        private RecordingRuleBuilder builder;
         private RuleBuilder wrappedBuilder;
         private RecordedCallRule rule;
 
@@ -21,7 +20,7 @@ namespace FakeItEasy.Tests.VisualBasic
 
             this.rule = A.Fake<RecordedCallRule>();
 
-            this.builder = new VisualBasicRuleBuilder(this.rule, this.wrappedBuilder);
+            this.builder = new RecordingRuleBuilder(this.rule, this.wrappedBuilder);
         }
 
         [Test]

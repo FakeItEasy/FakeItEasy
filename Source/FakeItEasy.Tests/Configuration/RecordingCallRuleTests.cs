@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using FakeItEasy.Core;
-using FakeItEasy.VisualBasic;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.VisualBasic
+namespace FakeItEasy.Tests.Configuration
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
+    using FakeItEasy.Configuration;
+
     [TestFixture]
     public class RecordingCallRuleTests
     {

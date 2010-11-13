@@ -1,8 +1,8 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy.Configuration
 {
     using System;
     using System.Reflection;
-    using FakeItEasy.Configuration;
+    using Core;
 
     /// <summary>
     /// A call rule that has been recorded.

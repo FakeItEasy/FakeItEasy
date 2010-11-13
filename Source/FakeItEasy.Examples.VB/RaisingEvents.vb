@@ -1,5 +1,4 @@
 Imports FakeItEasy
-Imports FakeItEasy.VisualBasic
 
 
 Public Class RaisingEvents

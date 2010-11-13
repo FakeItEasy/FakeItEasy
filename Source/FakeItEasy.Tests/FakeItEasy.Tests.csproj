@@ -68,9 +68,11 @@
     <Compile Include="AnyTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\CollectionContainsTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\CollectionIsEmptyTests.cs" />
+    <Compile Include="ArgumentConstraintExtensions\EqualToConstraintTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
     <Compile Include="Core\DefaultFixtureInitializerTests.cs" />
+    <Compile Include="Core\FakeCallEqualityComparerTests.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManagerTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -167,13 +169,13 @@
     <Compile Include="ServiceLocatorTests.cs" />
     <Compile Include="SyntaxTests.cs" />
     <Compile Include="TestHelpers\ReflectionHelper.cs" />
-    <Compile Include="VisualBasic\RecordedCallRuleTests.cs" />
-    <Compile Include="VisualBasic\RecordingCallRuleTests.cs" />
-    <Compile Include="VisualBasic\NextCallTests.cs" />
-    <Compile Include="VisualBasic\VisualBasicHelpersTests.cs" />
+    <Compile Include="Configuration\RecordedCallRuleTests.cs" />
+    <Compile Include="Configuration\RecordingCallRuleTests.cs" />
+    <Compile Include="NextCallTests.cs" />
+    <Compile Include="Configuration\VisualBasicHelpersTests.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManagerTests.cs" />
     <Compile Include="Fake(T)Tests.cs" />
-    <Compile Include="VisualBasic\VisualBasicRuleBuilderTests.cs" />
+    <Compile Include="Configuration\RecordingRuleBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj">
@@ -202,6 +204,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
