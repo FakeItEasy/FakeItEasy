@@ -13,8 +13,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("1.5.3963.196")]
-[assembly: AssemblyFileVersion("1.5.3963.196")]
-[assembly: AssemblyConfiguration("Release built on 2010-11-07 11:30:01Z")]
+[assembly: AssemblyVersion("1.5.3969.197")]
+[assembly: AssemblyFileVersion("1.5.3969.197")]
+[assembly: AssemblyConfiguration("Release built on 2010-11-13 23:51:43Z")]
 
 
