@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy
 {
+    using System;
     using Configuration;
     using Core;
 

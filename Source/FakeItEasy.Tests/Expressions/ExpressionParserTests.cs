@@ -24,7 +24,7 @@ namespace FakeItEasy.Tests.Expressions
 
             // Assert
             NullGuardedConstraint.Assert(() =>
-                manager.GetFakeObjectCallIsMadeOn(this.CreateDummyExpression()));
+                manager.GetFakeManagerCallIsMadeOn(this.CreateDummyExpression()));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace FakeItEasy.Tests.Expressions
             var manager = this.CreateManager();
 
             // Act
-            var retrievedFake = manager.GetFakeObjectCallIsMadeOn(callSpecification);
+            var retrievedFake = manager.GetFakeManagerCallIsMadeOn(callSpecification);
 
             // Assert
             Assert.That(retrievedFake, Is.SameAs(fake));
@@ -57,7 +57,7 @@ namespace FakeItEasy.Tests.Expressions
             var manager = this.CreateManager();
 
             // Act
-            var retrievedFake = manager.GetFakeObjectCallIsMadeOn(callSpecification);
+            var retrievedFake = manager.GetFakeManagerCallIsMadeOn(callSpecification);
 
             // Assert
             Assert.That(retrievedFake, Is.SameAs(fake));
@@ -77,7 +77,7 @@ namespace FakeItEasy.Tests.Expressions
 
             // Assert
             Assert.Throws<ArgumentException>(() =>
-                manager.GetFakeObjectCallIsMadeOn(callSpecification));
+                manager.GetFakeManagerCallIsMadeOn(callSpecification));
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace FakeItEasy.Tests.Expressions
 
             // Assert
             var thrown = Assert.Throws<ArgumentException>(() =>
-                manager.GetFakeObjectCallIsMadeOn(callSpecification));
+                manager.GetFakeManagerCallIsMadeOn(callSpecification));
 
             Assert.That(thrown.Message, Is.EqualTo("The specified call is not made on a fake object."));
         }

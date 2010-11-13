@@ -12,9 +12,9 @@ namespace FakeItEasy.Expressions
         /// Gets the fake object an expression is called on.
         /// </summary>
         /// <param name="fakeObjectCall">The call expression.</param>
-        /// <returns>A FakeObject.</returns>
+        /// <returns>The FakeManager instance that manages the faked object the call is made on.</returns>
         /// <exception cref="System.ArgumentNullException">The fakeObjectCall is null.</exception>
         /// <exception cref="System.ArgumentException">The specified expression is not an expression where a call is made to a faked object.</exception>
-        FakeManager GetFakeObjectCallIsMadeOn(LambdaExpression fakeObjectCall);
+        FakeManager GetFakeManagerCallIsMadeOn(LambdaExpression fakeObjectCall);
     }
 }
