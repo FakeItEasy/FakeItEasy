@@ -2,16 +2,18 @@
 <package>
   <metadata>
     <id>FakeItEasy</id>
+	<title>Fake it Easy!</title>
+	<projectUrl>http://code.google.com/p/fakeiteasy/</projectUrl>
+	<licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
     <version>ReplacedByBuild</version>
-    <authors>
-      <author>Patrik Hägne</author>
-    </authors>
+    <authors>Patrik Hägne</authors>
     <description>It's faking amazing! The easy mocking framework for .Net that works great in C# and VB.Net alike. No need
 	to know the difference between a stub and a mock, everythings a fake! The easy to use, refactoring friendly api makes
 	faking a breeze.</description>
     <language>en-US</language>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<dependencies>
+		<dependency id="Castle.Core" version="2.5.1" />
+	</dependencies>
   </metadata>
-  <dependencies>
-    <dependency id="Castle.Core" version="2.5.1" />
-  </dependencies>
 </package>
