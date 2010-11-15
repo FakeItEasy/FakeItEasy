@@ -29,6 +29,4 @@ namespace FakeItEasy
         /// <returns>A string representation of the value.</returns>
         string GetArgumentValueAsString(object argumentValue);
     }
-
-
 }

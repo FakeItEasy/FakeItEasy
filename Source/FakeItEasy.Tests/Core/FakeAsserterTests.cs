@@ -92,7 +92,7 @@
             Assert.That(message, Is.StringStarting(@"
 
   Assertion failed for the following call:
-    'IFoo.Bar(1)'"));
+    IFoo.Bar(1)"));
         }
 
         [Test]

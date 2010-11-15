@@ -71,6 +71,7 @@
     <Compile Include="ArgumentValueFormatter.cs" />
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Core\ArgumentValueFormatter.cs" />
+    <Compile Include="Core\FakeCallEqualityComparer.cs" />
     <Compile Include="Core\FakeScopeFactory.cs" />
     <Compile Include="Core\IFakeObjectConfigurator.cs">
       <SubType>Code</SubType>
@@ -238,14 +239,14 @@
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="CommonExtensions.cs" />
     <Compile Include="SmellyAttribute.cs" />
-    <Compile Include="VisualBasic\IRecordingCallRuleFactory.cs" />
-    <Compile Include="VisualBasic\IVisualBasicConfiguration.cs" />
-    <Compile Include="VisualBasic\IVisualBasicConfigurationWithArgumentValidation.cs" />
-    <Compile Include="VisualBasic\RecordedCallRule.cs" />
-    <Compile Include="VisualBasic\RecordingCallRule.cs" />
-    <Compile Include="VisualBasic\NextCall.cs" />
+    <Compile Include="Configuration\IRecordingCallRuleFactory.cs" />
+    <Compile Include="Configuration\IRecordingConfiguration.cs" />
+    <Compile Include="Configuration\IRecordingConfigurationWithArgumentValidation.cs" />
+    <Compile Include="Configuration\RecordedCallRule.cs" />
+    <Compile Include="Configuration\RecordingCallRule.cs" />
+    <Compile Include="NextCall.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManager.cs" />
-    <Compile Include="VisualBasic\VisualBasicRuleBuilder.cs" />
+    <Compile Include="Configuration\RecordingRuleBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">

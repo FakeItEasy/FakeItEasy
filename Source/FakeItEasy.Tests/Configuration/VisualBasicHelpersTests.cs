@@ -1,9 +1,8 @@
-using System;
-using FakeItEasy.VisualBasic;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.VisualBasic
+namespace FakeItEasy.Tests.Configuration
 {
+    using System;
+    using NUnit.Framework;
+
     [TestFixture]
     public class VisualBasicHelpersTests
     {

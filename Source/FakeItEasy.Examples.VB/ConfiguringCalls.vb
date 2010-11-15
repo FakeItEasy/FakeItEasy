@@ -1,5 +1,4 @@
 ﻿Imports FakeItEasy
-Imports FakeItEasy.VisualBasic
 
 Public Class ConfiguringCalls
     Public Sub Configuring_a_sub_to_throw_an_exception()

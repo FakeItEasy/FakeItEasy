@@ -1,19 +1,16 @@
-﻿namespace FakeItEasy.Tests.VisualBasic
+﻿namespace FakeItEasy.Tests
 {
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.VisualBasic;
     using NUnit.Framework;
-    
+
     [TestFixture]
     public class NextCallTests
         : ConfigurableServiceLocatorTestBase
     {
-        private IConfigurationFactory builderFactory;
-
         protected override void OnSetUp()
         {
-            this.builderFactory = A.Fake<IConfigurationFactory>();
+            A.Fake<IConfigurationFactory>();
         }
 
         [Test]
@@ -39,7 +36,7 @@
             this.StubResolve<IRecordingCallRuleFactory>(recordingRuleFactory);
 
             var builder = this.CreateFakeVisualBasicRuleBuilder();
-            this.StubResolve<VisualBasicRuleBuilder.Factory>((r, f) =>
+            this.StubResolve<RecordingRuleBuilder.Factory>((r, f) =>
                 {
                     return r.Equals(recordedRule) && f.Equals(fake) ? builder : null;
                 });
@@ -52,14 +49,14 @@
             Assert.That(fake.Rules, Has.Some.SameAs(recordingRule));
         }
 
-        private VisualBasicRuleBuilder CreateFakeVisualBasicRuleBuilder()
+        private RecordingRuleBuilder CreateFakeVisualBasicRuleBuilder()
         {
             var rule = A.Fake<RecordedCallRule>();
 
             var wrapped = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() =>
                 new RuleBuilder(rule, A.Fake<FakeManager>(), c => A.Fake<IFakeAsserter>())));
-            var result = A.Fake<VisualBasicRuleBuilder>(x => x.WithArgumentsForConstructor(() =>
-                new VisualBasicRuleBuilder(rule, wrapped)));
+            var result = A.Fake<RecordingRuleBuilder>(x => x.WithArgumentsForConstructor(() =>
+                new RecordingRuleBuilder(rule, wrapped)));
 
             return result;
         }

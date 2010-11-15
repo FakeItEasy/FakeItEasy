@@ -8,8 +8,8 @@
     <ProjectGuid>{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Legend.Fakes.Examples</RootNamespace>
-    <AssemblyName>Legend.Fakes.Examples</AssemblyName>
+    <RootNamespace>FakeItEasy.Examples</RootNamespace>
+    <AssemblyName>FakeItEasy.Examples</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>

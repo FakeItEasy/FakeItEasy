@@ -28,7 +28,7 @@ namespace FakeItEasy.Configuration
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
-            var fake = this.expressionParser.GetFakeObjectCallIsMadeOn(callSpecification);
+            var fake = this.expressionParser.GetFakeManagerCallIsMadeOn(callSpecification);
             var rule = this.ruleFactory.Invoke(callSpecification);
 
             fake.AddRuleFirst(rule);
@@ -43,7 +43,7 @@ namespace FakeItEasy.Configuration
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
-            var fake = this.expressionParser.GetFakeObjectCallIsMadeOn(callSpecification);
+            var fake = this.expressionParser.GetFakeManagerCallIsMadeOn(callSpecification);
             var rule = this.ruleFactory.Invoke(callSpecification);
 
             fake.AddRuleFirst(rule);

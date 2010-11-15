@@ -1,16 +1,15 @@
-namespace FakeItEasy.VisualBasic
+namespace FakeItEasy.Configuration
 {
     using System;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
+    using Core;
 
-    internal class VisualBasicRuleBuilder
-        : IVisualBasicConfigurationWithArgumentValidation
+    internal class RecordingRuleBuilder
+        : IRecordingConfigurationWithArgumentValidation
     {
-        private RecordedCallRule rule;
-        private RuleBuilder wrappedBuilder;
+        private readonly RecordedCallRule rule;
+        private readonly RuleBuilder wrappedBuilder;
 
-        public VisualBasicRuleBuilder(RecordedCallRule rule, RuleBuilder wrappedBuilder)
+        public RecordingRuleBuilder(RecordedCallRule rule, RuleBuilder wrappedBuilder)
         {
             this.rule = rule;
             this.wrappedBuilder = wrappedBuilder;
@@ -18,7 +17,7 @@ namespace FakeItEasy.VisualBasic
             rule.Applicator = x => { };
         }
 
-        public delegate VisualBasicRuleBuilder Factory(RecordedCallRule rule, FakeManager fakeObject);
+        public delegate RecordingRuleBuilder Factory(RecordedCallRule rule, FakeManager fakeObject);
 
         public IAfterCallSpecifiedConfiguration DoesNothing()
         {
@@ -53,7 +52,7 @@ namespace FakeItEasy.VisualBasic
             this.rule.IsAssertion = true;
         }
 
-        public IVisualBasicConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
+        public IRecordingConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
         {
             Guard.AgainstNull(argumentsPredicate, "argumentsPredicate");
 

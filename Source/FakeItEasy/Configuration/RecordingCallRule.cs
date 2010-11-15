@@ -1,4 +1,4 @@
-namespace FakeItEasy.VisualBasic
+namespace FakeItEasy.Configuration
 {
     using System.Linq;
     using FakeItEasy.Core;

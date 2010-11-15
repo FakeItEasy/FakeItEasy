@@ -18,6 +18,8 @@
         private static readonly ProxyGenerationOptions proxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
         private static readonly ProxyGenerator proxyGenerator = new ProxyGenerator();
 
+
+        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "No field initialization.")]
         static CastleDynamicProxyGenerator()
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(SecurityPermissionAttribute));

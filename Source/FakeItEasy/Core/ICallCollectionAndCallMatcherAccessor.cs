@@ -12,6 +12,5 @@ namespace FakeItEasy.Core
         /// A set of calls.
         /// </summary>
         IEnumerable<ICompletedFakeObjectCall> Calls { get; }
-        
     }
 }
