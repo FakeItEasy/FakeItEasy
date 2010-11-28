@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
     using IoC;
@@ -13,34 +14,24 @@
     internal class ImportsModule
         : Module
     {
-        [ImportMany(typeof(IArgumentValueFormatter))]
-        public IEnumerable<IArgumentValueFormatter> ImportedArgumentValueFormatters;
+        [ImportMany(typeof (IArgumentValueFormatter))]
+        public IEnumerable<IArgumentValueFormatter> ImportedArgumentValueFormatters { get; set; }
+
         [ImportMany(typeof(IDummyDefinition))]
-        public IEnumerable<IDummyDefinition> ImportedDummyDefinitions;
+        public IEnumerable<IDummyDefinition> ImportedDummyDefinitions { get; set; }
+
         [ImportMany(typeof(IFakeConfigurator))]
-        public IEnumerable<IFakeConfigurator> ImportedFakeConfigurators;
+        public IEnumerable<IFakeConfigurator> ImportedFakeConfigurators { get; set; }
 
         public ImportsModule()
         {
             this.SatisfyImports();
         }
 
+
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Should just ignore importing of add-ins that explode.")]
         private void SatisfyImports()
         {
-            //var catalog = new DirectoryCatalog(Path.GetDirectoryName(typeof (ImportsModule).Assembly.Location));
-            
-            //var container = new CompositionContainer(catalog);
-
-            //try
-            //{
-            //    container.SatisfyImportsOnce(this);
-            //}
-            //catch
-            //{
-            //    this.importedArgumentValueFormatters = Enumerable.Empty<IArgumentValueFormatter>();
-            //    this.importedDummyDefinitions = Enumerable.Empty<IDummyDefinition>();
-            //    this.importedFakeConfigurators = Enumerable.Empty<IFakeConfigurator>();
-            //}
             var assemblyCatalogs = new List<AssemblyCatalog>();
 
             var directory = Path.GetDirectoryName(typeof (ImportsModule).Assembly.Location);

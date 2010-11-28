@@ -148,22 +148,6 @@ namespace FakeItEasy.Tests.Core
             Assert.That(description, Is.EqualTo("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.Item[index: 0] = \"argument\""));
         }
 
-        [Test]
-        public void test_name()
-        {
-            // Arrange
-            var foo = A.Fake<IFoo>();
-
-            // Act
-            foo.Bar(1, 2, "three");
-            foo.SomeProperty = 10;
-            var bar = foo.SomeProperty;
-            foo.Bar("one", DateTime.Now);
-
-            // Assert
-            A.CallTo(() => foo.Biz()).MustHaveHappened();
-        }
-
         private IFakeObjectCall CreateFakeCall(MethodInfo method, params object[] arguments)
         {
             return CreateFakeCall(typeof (object), method, arguments);

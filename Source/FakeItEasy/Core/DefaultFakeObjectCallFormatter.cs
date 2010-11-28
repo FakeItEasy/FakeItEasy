@@ -1,5 +1,6 @@
 namespace FakeItEasy.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -116,12 +117,12 @@ using System.Reflection;
 
         private static bool IsPropertySetter(MethodInfo method)
         {
-            return method.IsSpecialName && method.Name.StartsWith("set_");
+            return method.IsSpecialName && method.Name.StartsWith("set_", StringComparison.Ordinal);
         }
 
         private static bool IsPropertyGetter(MethodInfo method)
         {
-            return method.IsSpecialName && method.Name.StartsWith("get_");
+            return method.IsSpecialName && method.Name.StartsWith("get_", StringComparison.Ordinal);
         }
 
         private static void AppendArgumentSeparator(StringBuilder builder, int argumentIndex, int totalNumberOfArguments)
