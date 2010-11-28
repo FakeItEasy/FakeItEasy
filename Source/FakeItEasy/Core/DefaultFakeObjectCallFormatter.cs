@@ -1,7 +1,9 @@
 namespace FakeItEasy.Core
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+using System.Reflection;
 
     /// <summary>
     /// The default implementation of the IFakeObjectCallFormatter interface.
@@ -9,11 +11,13 @@ namespace FakeItEasy.Core
     internal class DefaultFakeObjectCallFormatter
         : IFakeObjectCallFormatter
     {
-        private ArgumentValueFormatter argumentValueFormatter;
-        
-        public DefaultFakeObjectCallFormatter(ArgumentValueFormatter argumentValueFormatter)
+        private readonly ArgumentValueFormatter argumentValueFormatter;
+        private readonly IFakeManagerAccessor fakeManagerAccessor;
+
+        public DefaultFakeObjectCallFormatter(ArgumentValueFormatter argumentValueFormatter, IFakeManagerAccessor fakeManagerAccessor)
         {
             this.argumentValueFormatter = argumentValueFormatter;
+            this.fakeManagerAccessor = fakeManagerAccessor;
         }
 
         /// <summary>
@@ -27,16 +31,97 @@ namespace FakeItEasy.Core
             var builder = new StringBuilder();
 
             builder
-                .Append(Fake.GetFakeManager(call.FakedObject).FakeObjectType)
-                .Append(".")
-                .Append(call.Method.Name)
-                .Append("(");
+                .Append(this.fakeManagerAccessor.GetFakeManager(call.FakedObject).FakeObjectType)
+                .Append(".");
 
-            AppendArguments(builder, call);
+            AppendMethodName(builder, call.Method);
 
-            builder.Append(")");
+            AppendArgumentsList(builder, call);
 
             return builder.ToString();
+        }
+
+        private void AppendArgumentsList(StringBuilder builder, IFakeObjectCall call)
+        {
+            var allArguments = GetArgumentValueInfos(call);
+            var argumentsForArgumentList = GetArgumentsForArgumentsList(allArguments, call.Method);
+      
+            if (argumentsForArgumentList.Length > 0 || !IsPropertyGetterOrSetter(call.Method))
+            {
+                AppendArgumentListPrefix(builder, call.Method);
+
+                AppendArguments(builder, argumentsForArgumentList);
+
+                AppendArgumentListSuffix(builder, call.Method);
+            }
+
+
+            if (IsPropertySetter(call.Method))
+            {
+                builder.Append(" = ");
+                builder.Append(this.argumentValueFormatter.GetArgumentValueAsString(allArguments[allArguments.Length - 1].ArgumentValue));
+            }
+        }
+
+        private static ArgumentValueInfo[] GetArgumentsForArgumentsList(ArgumentValueInfo[] allArguments, MethodInfo method)
+        {
+            if (IsPropertySetter(method))
+            {
+                return allArguments.Take(allArguments.Length - 1).ToArray();
+            }
+
+            return allArguments;
+        }
+
+        private static void AppendArgumentListPrefix(StringBuilder builder, MethodInfo method)
+        {
+            if (IsPropertyGetterOrSetter(method))
+            {
+                builder.Append("[");
+            }
+            else
+            {
+                builder.Append("(");    
+            }
+        }
+
+        private static void AppendArgumentListSuffix(StringBuilder builder, MethodInfo method)
+        {
+            if (IsPropertyGetterOrSetter(method))
+            {
+                builder.Append("]");
+            }
+            else
+            {
+                builder.Append(")");
+            }
+        }
+
+        private static void AppendMethodName(StringBuilder builder, MethodInfo method)
+        {
+            if (IsPropertyGetterOrSetter(method))
+            {
+                builder.Append(method.Name.Substring(4));
+            }
+            else
+            {
+                builder.Append(method.Name);
+            }
+        }
+
+        private static bool IsPropertyGetterOrSetter(MethodInfo method)
+        {
+            return IsPropertyGetter(method) || IsPropertySetter(method);
+        }
+
+        private static bool IsPropertySetter(MethodInfo method)
+        {
+            return method.IsSpecialName && method.Name.StartsWith("set_");
+        }
+
+        private static bool IsPropertyGetter(MethodInfo method)
+        {
+            return method.IsSpecialName && method.Name.StartsWith("get_");
         }
 
         private static void AppendArgumentSeparator(StringBuilder builder, int argumentIndex, int totalNumberOfArguments)
@@ -83,16 +168,15 @@ namespace FakeItEasy.Core
             return this.argumentValueFormatter.GetArgumentValueAsString(argumentValue);
         }
 
-        private void AppendArguments(StringBuilder builder, IFakeObjectCall call)
+        private void AppendArguments(StringBuilder builder, IEnumerable<ArgumentValueInfo> arguments)
         {
-            var arguments = GetArgumentValueInfos(call);
-
-            for (int i = 0; i < arguments.Length; i++)
+            var totalNumberOfArguments = arguments.Count();
+            int callIndex = 0;
+            foreach (var argument in arguments)
             {
-                var argument = arguments[i];
-
-                AppendArgumentSeparator(builder, i, arguments.Length);
+                AppendArgumentSeparator(builder, callIndex, totalNumberOfArguments);
                 this.AppendArgumentValue(builder, argument);
+                callIndex++;
             }
         }
 

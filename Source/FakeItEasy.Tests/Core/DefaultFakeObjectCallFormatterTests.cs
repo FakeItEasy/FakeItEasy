@@ -4,38 +4,35 @@ namespace FakeItEasy.Tests.Core
     using System.Reflection;
     using FakeItEasy.Core;
     using NUnit.Framework;
-    using System.Linq;
-    using System.IO;
-    using System.Text;
-    using System.Collections.Generic;
-    using System.Collections;
 
     [TestFixture]
     public class DefaultFakeObjectCallFormatterTests
     {
         private DefaultFakeObjectCallFormatter formatter;
-        private ArgumentValueFormatter argumentFormatter;
+        [Fake] internal ArgumentValueFormatter ArgumentFormatter;
+        [Fake] internal IFakeManagerAccessor FakeManagerAccessor;
+
 
         [SetUp]
         public void SetUp()
         {
-            this.argumentFormatter = A.Fake<ArgumentValueFormatter>();
+            Fake.InitializeFixture(this);
 
-            this.formatter = new DefaultFakeObjectCallFormatter(this.argumentFormatter);
+            this.formatter = new DefaultFakeObjectCallFormatter(this.ArgumentFormatter, this.FakeManagerAccessor);
         }
 
         [Test]
         public void Should_start_with_method_name()
         {
             // Arrange
-            var call = this.CreateFakeCall(typeof(object).GetMethod("Equals", new[] { typeof(object) }), "foo");
+            var call = this.CreateFakeCall(typeof(string), typeof(object).GetMethod("Equals", new[] { typeof(object) }), "foo");
 
             // Act
             var description = this.formatter.GetDescription(call);
 
             // Assert
             Assert.That(description, Is.StringStarting(
-                "System.Object.Equals("));
+                "System.String.Equals("));
         }
 
         [Test]
@@ -58,8 +55,8 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var call = CreateFakeCallToFoo("argument value", 1);
-            A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString("argument value")).Returns("\"argument value\"");
-            A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString(1)).Returns("1");
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("argument value")).Returns("\"argument value\"");
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(1)).Returns("1");
 
             // Act
             var description = this.formatter.GetDescription(call);
@@ -72,13 +69,13 @@ namespace FakeItEasy.Tests.Core
       
 
         [Test]
-        public void Should_put_each_argument_on_separate_lines_when_more_than_two_arguments()
+        public void Should_put_each_argument_on_separate_line_when_more_than_two_arguments()
         {
             // Arrange
             var call = CreateFakeCall(
                 typeof(ITypeWithMethodThatTakesArguments).GetMethod("MoreThanTwo", new[] { typeof(string), typeof(string), typeof(string) }),
                 "one", "two", "three");
-            A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString(A<object>.Ignored))
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(A<object>.Ignored))
                 .ReturnsLazily(x => x.GetArgument<object>(0).ToString());
 
             // Act
@@ -91,13 +88,98 @@ namespace FakeItEasy.Tests.Core
     three: three)"));
         }
 
+        [Test]
+        public void Should_write_property_getter_properly()
+        {
+            // Arrange
+            var propertyGetter = typeof (TypeWithProperties).GetProperty("NormalProperty").GetGetMethod();
+            var call = CreateFakeCall(typeof(TypeWithProperties), propertyGetter);
+
+            // Act
+            var description = this.formatter.GetDescription(call);
+
+            // Assert
+            Assert.That(description, Is.EqualTo("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.NormalProperty"));
+        }
+
+        [Test]
+        public void Should_write_property_setter_properly()
+        {
+            // Arrange
+            var propertyGetter = typeof(TypeWithProperties).GetProperty("NormalProperty").GetSetMethod();
+            var call = CreateFakeCall(typeof(TypeWithProperties), propertyGetter, "foo");
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("foo")).Returns("\"foo\"");
+
+            // Act
+            var description = this.formatter.GetDescription(call);
+
+            // Assert
+            Assert.That(description, Is.EqualTo("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.NormalProperty = \"foo\""));
+        }
+
+        [Test]
+        public void Should_write_indexed_property_getter_properly()
+        {
+            // Arrange
+            var propertyGetter = typeof(TypeWithProperties).GetProperty("Item").GetGetMethod();
+            var call = CreateFakeCall(typeof(TypeWithProperties), propertyGetter, 0);
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(0)).Returns("0");
+
+            // Act
+            var description = this.formatter.GetDescription(call);
+
+            // Assert
+            Assert.That(description, Is.EqualTo("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.Item[index: 0]"));
+        }
+
+        [Test]
+        public void Should_write_indexed_property_setter_properly()
+        {
+            // Arrange
+            var propertyGetter = typeof(TypeWithProperties).GetProperty("Item").GetSetMethod();
+            var call = CreateFakeCall(typeof(TypeWithProperties), propertyGetter, 0, "argument");
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(0)).Returns("0");
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("argument")).Returns("\"argument\"");
+
+            // Act
+            var description = this.formatter.GetDescription(call);
+
+            // Assert
+            Assert.That(description, Is.EqualTo("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.Item[index: 0] = \"argument\""));
+        }
+
+        [Test]
+        public void test_name()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+
+            // Act
+            foo.Bar(1, 2, "three");
+            foo.SomeProperty = 10;
+            var bar = foo.SomeProperty;
+            foo.Bar("one", DateTime.Now);
+
+            // Assert
+            A.CallTo(() => foo.Biz()).MustHaveHappened();
+        }
+
         private IFakeObjectCall CreateFakeCall(MethodInfo method, params object[] arguments)
         {
+            return CreateFakeCall(typeof (object), method, arguments);
+        }
+
+        private IFakeObjectCall CreateFakeCall(Type typeOfFakeObject, MethodInfo method, params object[] arguments)
+        {
             var call = A.Fake<IFakeObjectCall>();
-            
+
             A.CallTo(() => call.Method).Returns(method);
             A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(arguments, method));
             A.CallTo(() => call.FakedObject).Returns(A.Fake<object>());
+
+            var fakeManager = A.Fake<FakeManager>();
+            A.CallTo(() => this.FakeManagerAccessor.GetFakeManager(call.FakedObject)).Returns(fakeManager);
+            A.CallTo(() => fakeManager.FakeObjectType).Returns(typeOfFakeObject);
 
             return call;
         }
@@ -106,6 +188,17 @@ namespace FakeItEasy.Tests.Core
         {
             return this.CreateFakeCall(typeof(ITypeWithMethodThatTakesArguments).GetMethod("Foo", new[] { typeof(string), typeof(object) }),
                 argument1, argument2);
+        }
+
+        public class TypeWithProperties
+        {
+            public string NormalProperty { get; set; }
+
+            public string this[int index]
+            {
+                get { return index.ToString(); }
+                set { }
+            }
         }
 
         public interface ITypeWithMethodThatTakesArguments

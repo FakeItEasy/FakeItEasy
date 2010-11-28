@@ -47,7 +47,7 @@
                 () => new FakeManager());
 
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
-                new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>()));
+                new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), c.Resolve<IFakeManagerAccessor>()));
 
             container.RegisterSingleton<ArgumentValueFormatter>(c =>
                 new ArgumentValueFormatter(c.Resolve<IEnumerable<IArgumentValueFormatter>>()));
