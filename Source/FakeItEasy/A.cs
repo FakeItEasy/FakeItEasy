@@ -131,14 +131,14 @@ namespace FakeItEasy
     }
 
     /// <summary>
-    /// Provides an api entry point for validating arguments of fake object calls.
+    /// Provides an api entry point for constraining arguments of fake object calls.
     /// </summary>
     /// <typeparam name="T">The type of argument to validate.</typeparam>
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A", Justification = "It is spelled correctly.")]
     public static class A<T>
     {
         /// <summary>
-        /// Gets an argument validations object that provides validations for the argument.
+        /// Gets an argument constraint object that will be used to constrain a method call argument.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
         public static ArgumentConstraintScope<T> That

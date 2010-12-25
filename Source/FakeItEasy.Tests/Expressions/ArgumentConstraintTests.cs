@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Expressions
 {
     using System;
+    using FakeItEasy.Core;
     using FakeItEasy.Expressions;
     using FakeItEasy.Expressions.ArgumentConstraints;
     using NUnit.Framework;
