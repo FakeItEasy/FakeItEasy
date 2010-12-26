@@ -1,6 +1,5 @@
 namespace FakeItEasy.Core
 {
-
     /// <summary>
     /// Provides string formatting for fake object calls.
     /// </summary>

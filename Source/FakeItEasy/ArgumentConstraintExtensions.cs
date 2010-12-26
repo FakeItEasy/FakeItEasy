@@ -5,7 +5,6 @@ namespace FakeItEasy
     using System.Linq;
     using FakeItEasy.Expressions;
     using FakeItEasy.Expressions.ArgumentConstraints;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Provides validation extension to the Argumentscope{T} class.
@@ -102,9 +101,8 @@ namespace FakeItEasy
         public static ArgumentConstraint<T> IsEmpty<T>(this ArgumentConstraintScope<T> scope) where T : IEnumerable
         {
             return scope.CreateConstraint(
-                x => x != null && !x.Cast<object>().Any(),
-                "empty collection"
-                );
+                         x => x != null && !x.Cast<object>().Any(), 
+                         "empty collection");
         }
 
         /// <summary>
@@ -117,15 +115,16 @@ namespace FakeItEasy
         public static ArgumentConstraint<T> IsEqualTo<T>(this ArgumentConstraintScope<T> scope, T value)
         {
             return scope.CreateConstraint(
-                x => object.Equals(value, x),
-                "equal to {0}", value);
+                         x => Equals(value, x), 
+                         "equal to {0}", 
+                         value);
         }
 
         private static ArgumentConstraint<T> CreateConstraint<T>(this ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)
         {
             return ArgumentConstraint.Create(scope, predicate, description);
         }
-        
+
         private static ArgumentConstraint<T> CreateConstraint<T>(this ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string descriptionFormat, params object[] args)
         {
             return ArgumentConstraint.Create(scope, predicate, descriptionFormat.FormatInvariant(args));

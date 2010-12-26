@@ -14,8 +14,8 @@
     internal class ExpressionCallMatcher
         : ICallMatcher
     {
+        private readonly MethodInfoManager methodInfoManager;
         private IEnumerable<IArgumentConstraint> argumentConstraints;
-        private MethodInfoManager methodInfoManager;
         private Func<ArgumentCollection, bool> argumentsPredicate;
 
         /// <summary>
@@ -33,19 +33,16 @@
             this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
         }
 
-        private MethodInfo Method { get; set; }
-
         /// <summary>
         /// Gets a human readable description of calls that will be matched by this
         /// matcher.
         /// </summary>
         public virtual string DescriptionOfMatchingCall
         {
-            get
-            {
-                return this.ToString();
-            }
+            get { return this.ToString(); }
         }
+
+        private MethodInfo Method { get; set; }
 
         /// <summary>
         /// Matcheses the specified call against the expression.
@@ -121,7 +118,7 @@
         private void AppendArgumentsListString(StringBuilder result)
         {
             result.Append("(");
-            bool firstArgument = true;
+            var firstArgument = true;
 
             foreach (var constraint in this.argumentConstraints)
             {
@@ -163,10 +160,7 @@
         {
             public string ConstraintDescription
             {
-                get 
-                {
-                    return this.ToString();
-                }
+                get { return this.ToString(); }
             }
 
             public bool IsValid(object argument)

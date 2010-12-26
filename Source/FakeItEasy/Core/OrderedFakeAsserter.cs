@@ -8,10 +8,10 @@ namespace FakeItEasy.Core
     internal class OrderedFakeAsserter
         : IFakeAsserter
     {
-        private CallWriter callWriter;
-        private Queue<IFakeObjectCall> calls;
-        private IEnumerable<IFakeObjectCall> originalCallList;
-        private List<AssertedCall> assertedCalls;
+        private readonly List<AssertedCall> assertedCalls;
+        private readonly CallWriter callWriter;
+        private readonly Queue<IFakeObjectCall> calls;
+        private readonly IEnumerable<IFakeObjectCall> originalCallList;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OrderedFakeAsserter"/> class.
@@ -37,17 +37,17 @@ namespace FakeItEasy.Core
         public virtual void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
         {
             this.assertedCalls.Add(new AssertedCall
-            {
-                CallDescription = callDescription,
-                RepeatDescription = repeatDescription
-            });
+                                       {
+                                           CallDescription = callDescription, 
+                                           RepeatDescription = repeatDescription
+                                       });
 
             this.RemoveCallsToSatisfyRepeatPredicate(callPredicate, repeatPredicate);
         }
 
         private void RemoveCallsToSatisfyRepeatPredicate(Func<IFakeObjectCall, bool> callPredicate, Func<int, bool> repeatPredicate)
         {
-            int numberOfCallsFound = 0;
+            var numberOfCallsFound = 0;
 
             while (!repeatPredicate(numberOfCallsFound))
             {
@@ -83,9 +83,9 @@ namespace FakeItEasy.Core
             }
 
             message.WriteLine("  The calls where found but not in the correct order among the calls:");
-            
+
             this.callWriter.WriteCalls(4, this.originalCallList, message);
-            
+
             throw new ExpectationException(message.GetStringBuilder().ToString());
         }
 

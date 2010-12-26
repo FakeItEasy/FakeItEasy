@@ -2,34 +2,33 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Security.Permissions;
     using Castle.DynamicProxy;
+    using Castle.DynamicProxy.Generators;
     using FakeItEasy.Core;
-    using FakeItEasy.Creation;
-    using System.Diagnostics.CodeAnalysis;
-    
+
     internal class CastleDynamicProxyGenerator
         : IProxyGenerator
     {
-        private static readonly Logger logger = Log.GetLogger<CastleDynamicProxyGenerator>();
+        private static readonly Logger Logger = Log.GetLogger<CastleDynamicProxyGenerator>();
         private static readonly ProxyGenerationOptions proxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
         private static readonly ProxyGenerator proxyGenerator = new ProxyGenerator();
-
 
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "No field initialization.")]
         static CastleDynamicProxyGenerator()
         {
-            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(SecurityPermissionAttribute));
+            AttributesToAvoidReplicating.Add(typeof(SecurityPermissionAttribute));
         }
 
         public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
         {
             Guard.AgainstNull(typeOfProxy, "typeOfProxy");
             Guard.AgainstNull(additionalInterfacesToImplement, "additionalInterfacesToImplement");
-            
+
             if (typeOfProxy.IsValueType)
             {
                 return GetProxyResultForValueType(typeOfProxy);
@@ -51,7 +50,7 @@
 
             var isNonInterceptableMember =
                 IsNonVirtualMethod(member) ||
-                IsNonVirtualProperty(member);
+                    IsNonVirtualProperty(member);
 
             return !isNonInterceptableMember;
         }
@@ -68,13 +67,13 @@
         private static ProxyGeneratorResult CreateProxyGeneratorResult(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
         {
             var interceptor = new ProxyInterceptor();
-            
+
             try
             {
                 var proxy = DoGenerateProxy(
                     typeOfProxy, 
                     additionalInterfacesToImplement, 
-                    argumentsForConstructor,
+                    argumentsForConstructor, 
                     interceptor);
 
                 return new ProxyGeneratorResult(
@@ -83,7 +82,7 @@
             }
             catch (Exception ex)
             {
-                logger.Debug("Failed to create proxy of type {0}, an exception was thrown:\r\n\r\n{1}\r\n\r\n.", typeOfProxy, ex.Message);
+                Logger.Debug("Failed to create proxy of type {0}, an exception was thrown:\r\n\r\n{1}\r\n\r\n.", typeOfProxy, ex.Message);
                 return GetResultForFailedProxyGeneration(typeOfProxy, argumentsForConstructor);
             }
         }
@@ -115,9 +114,9 @@
             var getMethod = property.GetGetMethod();
             var setMethod = property.GetSetMethod();
 
-            return 
-                (getMethod == null || getMethod.IsVirtual) && 
-                (setMethod == null || setMethod.IsVirtual);
+            return
+                (getMethod == null || getMethod.IsVirtual) &&
+                    (setMethod == null || setMethod.IsVirtual);
         }
 
         private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy)
@@ -136,7 +135,7 @@
 
             if (typeOfProxy.IsInterface)
             {
-                allInterfacesToImplement = new[] { typeOfProxy }.Concat(allInterfacesToImplement);
+                allInterfacesToImplement = new[] { typeOfProxy } .Concat(allInterfacesToImplement);
                 typeOfProxy = typeof(object);
             }
 
@@ -148,10 +147,10 @@
             var argumentsArray = GetConstructorArgumentsArray(argumentsForConstructor);
 
             return proxyGenerator.CreateClassProxy(
-                typeOfProxy,
-                allInterfacesToImplement.ToArray(),
-                proxyGenerationOptions,
-                argumentsArray,
+                typeOfProxy, 
+                allInterfacesToImplement.ToArray(), 
+                proxyGenerationOptions, 
+                argumentsArray, 
                 interceptor);
         }
 
@@ -166,7 +165,7 @@
         }
 
         [Serializable]
-        private class InterceptEverythingHook 
+        private class InterceptEverythingHook
             : IProxyGenerationHook
         {
             private static readonly int hashCode = typeof(InterceptEverythingHook).GetHashCode();
@@ -197,13 +196,15 @@
         }
 
         [Serializable]
-        private class ProxyInterceptor 
+        private class ProxyInterceptor
             : IInterceptor, ICallInterceptedEventRaiser
         {
             private static readonly MethodInfo tagGetMethod = typeof(ITaggable).GetProperty("Tag").GetGetMethod();
             private static readonly MethodInfo tagSetMethod = typeof(ITaggable).GetProperty("Tag").GetSetMethod();
 
             private object tag;
+
+            public event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
 
             public void Intercept(IInvocation invocation)
             {
@@ -223,7 +224,7 @@
 
             private void RaiseCallWasIntercepted(IInvocation invocation)
             {
-                logger.Debug("Call was intercepted: {0}.", invocation.Method);
+                Logger.Debug("Call was intercepted: {0}.", invocation.Method);
                 var handler = this.CallWasIntercepted;
                 if (handler != null)
                 {
@@ -231,8 +232,6 @@
                     handler.Invoke(this, new CallInterceptedEventArgs(call));
                 }
             }
-
-            public event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
         }
     }
 }

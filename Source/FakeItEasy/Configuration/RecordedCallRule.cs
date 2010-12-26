@@ -2,7 +2,7 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Reflection;
-    using Core;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// A call rule that has been recorded.
@@ -10,7 +10,7 @@ namespace FakeItEasy.Configuration
     internal class RecordedCallRule
         : BuildableCallRule
     {
-        private MethodInfoManager methodInfoManager;
+        private readonly MethodInfoManager methodInfoManager;
 
         public RecordedCallRule(MethodInfoManager methodInfoManager)
         {
@@ -19,25 +19,17 @@ namespace FakeItEasy.Configuration
 
         public delegate RecordedCallRule Factory();
 
-        public virtual bool IsAssertion
-        {
-            get;
-            set;
-        }
+        public virtual bool IsAssertion { get; set; }
 
-        public Repeated RepeatConstraint
-        {
-            get;
-            set;
-        }
+        public Repeated RepeatConstraint { get; set; }
 
         public virtual MethodInfo ApplicableToMethod { get; set; }
+        
         public virtual Func<ArgumentCollection, bool> IsApplicableToArguments { get; set; }
-    
-        protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
+
+        public override string DescriptionOfValidCall
         {
-            return this.methodInfoManager.WillInvokeSameMethodOnTarget(fakeObjectCall.FakedObject.GetType(), fakeObjectCall.Method, this.ApplicableToMethod)
-                && this.IsApplicableToArguments(fakeObjectCall.Arguments);
+            get { return "Recorded call"; }
         }
 
         public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
@@ -45,12 +37,10 @@ namespace FakeItEasy.Configuration
             this.IsApplicableToArguments = argumentsPredicate;
         }
 
-        public override string DescriptionOfValidCall
+        protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
-            get 
-            {
-                return "Recorded call";
-            }
+            return this.methodInfoManager.WillInvokeSameMethodOnTarget(fakeObjectCall.FakedObject.GetType(), fakeObjectCall.Method, this.ApplicableToMethod)
+                && this.IsApplicableToArguments(fakeObjectCall.Arguments);
         }
     }
 }

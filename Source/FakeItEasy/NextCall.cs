@@ -1,8 +1,7 @@
 ﻿namespace FakeItEasy
 {
-    using System;
-    using Configuration;
-    using Core;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Lets you specify options for the next call to a fake object.

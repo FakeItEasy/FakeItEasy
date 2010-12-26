@@ -57,10 +57,10 @@
     /// </summary>
     /// <typeparam name="TEventArgs">The type of the event args.</typeparam>
     public class Raise<TEventArgs>
-        : IEventRaiserArguments where TEventArgs : EventArgs 
+        : IEventRaiserArguments where TEventArgs : EventArgs
     {
-        private object sender;
-        private TEventArgs eventArguments;
+        private readonly TEventArgs eventArguments;
+        private readonly object sender;
 
         internal Raise(object sender, TEventArgs e)
         {
@@ -74,10 +74,7 @@
         [EditorBrowsable(EditorBrowsableState.Never)]
         public EventHandler<TEventArgs> Go
         {
-            get
-            {
-                return new EventHandler<TEventArgs>(this.Now);
-            }
+            get { return this.Now; }
         }
 
         object IEventRaiserArguments.Sender

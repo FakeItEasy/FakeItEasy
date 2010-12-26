@@ -1,20 +1,24 @@
 ﻿namespace FakeItEasy
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using System.Reflection;
-    using IoC;
     using System.Linq;
-    using Module = IoC.Module;
+    using System.Reflection;
+    using FakeItEasy.IoC;
+    using Module = FakeItEasy.IoC.Module;
 
     internal class ImportsModule
         : Module
     {
-        [ImportMany(typeof (IArgumentValueFormatter))]
+        public ImportsModule()
+        {
+            this.SatisfyImports();
+        }
+
+        [ImportMany(typeof(IArgumentValueFormatter))]
         public IEnumerable<IArgumentValueFormatter> ImportedArgumentValueFormatters { get; set; }
 
         [ImportMany(typeof(IDummyDefinition))]
@@ -23,19 +27,20 @@
         [ImportMany(typeof(IFakeConfigurator))]
         public IEnumerable<IFakeConfigurator> ImportedFakeConfigurators { get; set; }
 
-        public ImportsModule()
+        public override void RegisterDependencies(DictionaryContainer container)
         {
-            this.SatisfyImports();
+            container.RegisterSingleton(c => this.ImportedArgumentValueFormatters);
+            container.RegisterSingleton(c => this.ImportedDummyDefinitions);
+            container.RegisterSingleton(c => this.ImportedFakeConfigurators);
         }
-
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Should just ignore importing of add-ins that explode.")]
         private void SatisfyImports()
         {
             var assemblyCatalogs = new List<AssemblyCatalog>();
 
-            var directory = Path.GetDirectoryName(typeof (ImportsModule).Assembly.Location);
-            
+            var directory = Path.GetDirectoryName(typeof(ImportsModule).Assembly.Location);
+
             foreach (var assemblyFile in Directory.EnumerateFiles(directory, "*.dll"))
             {
                 try
@@ -53,13 +58,6 @@
             var container = new CompositionContainer(aggregateCatalog);
 
             container.SatisfyImportsOnce(this);
-        }
-
-        public override void RegisterDependencies(DictionaryContainer container)
-        {
-            container.RegisterSingleton(c => this.ImportedArgumentValueFormatters);
-            container.RegisterSingleton(c => this.ImportedDummyDefinitions);
-            container.RegisterSingleton(c => this.ImportedFakeConfigurators);
         }
     }
 }

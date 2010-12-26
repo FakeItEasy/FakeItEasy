@@ -10,8 +10,8 @@ namespace FakeItEasy.Configuration
     public interface IReturnValueConfiguration<TMember>
         : IExceptionThrowerConfiguration, 
           ICallbackConfiguration<IReturnValueConfiguration<TMember>>, 
-          IAssertConfiguration,
-          IHideObjectMembers,
+          IAssertConfiguration, 
+          IHideObjectMembers, 
           ICallBaseConfiguration
     {
         /// <summary>

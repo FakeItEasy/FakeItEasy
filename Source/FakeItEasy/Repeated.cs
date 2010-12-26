@@ -16,10 +16,7 @@ namespace FakeItEasy
         /// </summary>
         public static Repeated Never
         {
-            get
-            {
-                return new LowerBoundRepeated(0).Exactly;
-            }
+            get { return new LowerBoundRepeated(0).Exactly; }
         }
 
         /// <summary>
@@ -27,10 +24,7 @@ namespace FakeItEasy
         /// </summary>
         public static LowerBoundRepeated Once
         {
-            get
-            {
-                return new LowerBoundRepeated(1);
-            }
+            get { return new LowerBoundRepeated(1); }
         }
 
         /// <summary>
@@ -38,10 +32,7 @@ namespace FakeItEasy
         /// </summary>
         public static LowerBoundRepeated Twice
         {
-            get
-            {
-                return new LowerBoundRepeated(2);
-            }
+            get { return new LowerBoundRepeated(2); }
         }
 
         /// <summary>
@@ -56,14 +47,6 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// When implemented gets a value indicating if the repeat is matched
-        /// by the Happened-instance.
-        /// </summary>
-        /// <param name="repeat">The repeat of a call.</param>
-        /// <returns>True if the repeat is a match.</returns>
-        internal abstract bool Matches(int repeat);
-
-        /// <summary>
         /// Specifies that a call must have been repeated a number of times
         /// that is validated by the specified repeatValidation argument.
         /// </summary>
@@ -76,24 +59,32 @@ namespace FakeItEasy
             return new ExpressionRepeated(repeatValidation);
         }
 
+        /// <summary>
+        /// When implemented gets a value indicating if the repeat is matched
+        /// by the Happened-instance.
+        /// </summary>
+        /// <param name="repeat">The repeat of a call.</param>
+        /// <returns>True if the repeat is a match.</returns>
+        internal abstract bool Matches(int repeat);
+
         private class ExpressionRepeated
             : Repeated
         {
-            private Expression<Func<int, bool>> repeatValidation;
+            private readonly Expression<Func<int, bool>> repeatValidation;
 
             public ExpressionRepeated(Expression<Func<int, bool>> repeatValidation)
             {
                 this.repeatValidation = repeatValidation;
             }
 
-            internal override bool Matches(int repeat)
-            {
-                return this.repeatValidation.Compile().Invoke(repeat);
-            }
-
             public override string ToString()
             {
                 return "the number of times specified by the predicate '{0}'".FormatInvariant(this.repeatValidation.ToString());
+            }
+
+            internal override bool Matches(int repeat)
+            {
+                return this.repeatValidation.Compile().Invoke(repeat);
             }
         }
     }

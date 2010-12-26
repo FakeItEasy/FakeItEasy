@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.Core
 {
+    using System;
     using System.Linq;
     using System.Reflection;
 
@@ -8,9 +9,9 @@
         private class PropertyBehaviorRule
             : IFakeObjectCallRule
         {
-            private MethodInfo propertySetter;
-            private MethodInfo propertyGetter;
-            private FakeManager fakeManager;
+            private readonly FakeManager fakeManager;
+            private readonly MethodInfo propertyGetter;
+            private readonly MethodInfo propertySetter;
 
             public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter, FakeManager fakeManager)
             {
@@ -22,7 +23,7 @@
             }
 
             public object Value { get; set; }
-            
+
             public int? NumberOfTimesToCall
             {
                 get { return null; }
@@ -30,12 +31,12 @@
 
             public static bool IsPropertySetter(MethodInfo method)
             {
-                return method.IsSpecialName && method.Name.StartsWith("set_", System.StringComparison.Ordinal);
+                return method.IsSpecialName && method.Name.StartsWith("set_", StringComparison.Ordinal);
             }
 
             public static bool IsPropertyGetter(MethodInfo method)
             {
-                return method.IsSpecialName && method.Name.StartsWith("get_", System.StringComparison.Ordinal);
+                return method.IsSpecialName && method.Name.StartsWith("get_", StringComparison.Ordinal);
             }
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
@@ -67,7 +68,7 @@
                          || (setMethod != null && setMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
                      select property).Single();
             }
-            
+
             private bool IsPropertySetter(IFakeObjectCall fakeObjectCall)
             {
                 return this.propertySetter != null && this.propertySetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition());

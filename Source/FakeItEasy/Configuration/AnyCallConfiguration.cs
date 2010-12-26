@@ -6,9 +6,9 @@ namespace FakeItEasy.Configuration
     internal class AnyCallConfiguration
         : IAnyCallConfiguration
     {
-        private FakeManager manager;
-        private AnyCallCallRule configuredRule;
-        private IConfigurationFactory configurationFactory;
+        private readonly IConfigurationFactory configurationFactory;
+        private readonly AnyCallCallRule configuredRule;
+        private readonly FakeManager manager;
 
         public AnyCallConfiguration(FakeManager manager, AnyCallCallRule configuredRule, IConfigurationFactory configurationFactory)
         {
@@ -19,10 +19,7 @@ namespace FakeItEasy.Configuration
 
         private IVoidArgumentValidationConfiguration VoidConfiguration
         {
-            get
-            {
-                return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule);
-            }
+            get { return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule); }
         }
 
         public IReturnValueArgumentValidationConfiguration<TMember> WithReturnType<TMember>()

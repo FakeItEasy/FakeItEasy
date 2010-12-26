@@ -25,8 +25,6 @@ namespace FakeItEasy.Core
             throw new FakeCreationException(message.ToString());
         }
 
-       
-
         public void ThrowFailedToGenerateProxyWithResolvedConstructors(Type typeOfFake, string reasonForFailureOfUnspecifiedConstructor, IEnumerable<ResolvedConstructor> resolvedConstructors)
         {
             var message = new StringBuilder();
@@ -61,7 +59,6 @@ namespace FakeItEasy.Core
 
             message
                 .AppendLine();
-
 
             throw new FakeCreationException(message.ToString());
         }

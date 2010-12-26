@@ -9,8 +9,8 @@
     internal class SelfInitializationRule
         : IFakeObjectCallRule
     {
-        private IFakeObjectCallRule wrappedRule;
-        private ISelfInitializingFakeRecorder recorder;
+        private readonly ISelfInitializingFakeRecorder recorder;
+        private readonly IFakeObjectCallRule wrappedRule;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelfInitializationRule"/> class.
@@ -21,6 +21,16 @@
         {
             this.wrappedRule = wrappedRule;
             this.recorder = recorder;
+        }
+
+        /// <summary>
+        /// Gets the number of times this call rule is valid, if it's set
+        /// to null its infinitely valid.
+        /// </summary>
+        /// <value></value>
+        public int? NumberOfTimesToCall
+        {
+            get { return this.wrappedRule.NumberOfTimesToCall; }
         }
 
         /// <summary>
@@ -51,16 +61,6 @@
             {
                 this.recorder.ApplyNext(fakeObjectCall);
             }
-        }
-
-        /// <summary>
-        /// Gets the number of times this call rule is valid, if it's set
-        /// to null its infinitely valid.
-        /// </summary>
-        /// <value></value>
-        public int? NumberOfTimesToCall
-        {
-            get { return this.wrappedRule.NumberOfTimesToCall; }
         }
     }
 }

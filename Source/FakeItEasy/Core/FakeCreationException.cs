@@ -10,13 +10,12 @@ namespace FakeItEasy.Core
     public class FakeCreationException
         : Exception
     {
-       /// <summary>
+        /// <summary>
         /// Initializes a new instance of the <see cref="FakeCreationException"/> class.
         /// </summary>
         public FakeCreationException()
             : base(ExceptionMessages.FakeCreationExceptionDefaultMessage)
-        { 
-        
+        {
         }
 
         /// <summary>
@@ -26,7 +25,6 @@ namespace FakeItEasy.Core
         public FakeCreationException(string message)
             : base(message)
         {
-
         }
 
         /// <summary>
@@ -36,8 +34,7 @@ namespace FakeItEasy.Core
         /// <param name="innerException">The inner exception.</param>
         public FakeCreationException(string message, Exception innerException)
             : base(message, innerException)
-        { 
-            
+        {
         }
 
         /// <summary>
@@ -51,6 +48,8 @@ namespace FakeItEasy.Core
         /// <exception cref="T:System.Runtime.Serialization.SerializationException">
         /// The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
         /// </exception>
-        protected FakeCreationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        protected FakeCreationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

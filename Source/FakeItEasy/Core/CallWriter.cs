@@ -8,8 +8,8 @@ namespace FakeItEasy.Core
     internal class CallWriter
     {
         private const int MaxNumberOfCallsToWrite = 19;
-        private readonly IFakeObjectCallFormatter callFormatter;
         private readonly IEqualityComparer<IFakeObjectCall> callComparer;
+        private readonly IFakeObjectCallFormatter callFormatter;
 
         public CallWriter(IFakeObjectCallFormatter callFormatter, IEqualityComparer<IFakeObjectCall> callComparer)
         {
@@ -27,7 +27,7 @@ namespace FakeItEasy.Core
             var callInfos = new List<CallInfo>();
             var callArray = calls.ToArray();
 
-            for (int i = 0; i < callArray.Length && i < MaxNumberOfCallsToWrite; i++)
+            for (var i = 0; i < callArray.Length && i < MaxNumberOfCallsToWrite; i++)
             {
                 var call = callArray[i];
 
@@ -37,10 +37,10 @@ namespace FakeItEasy.Core
                 }
                 else
                 {
-                    callInfos.Add(new CallInfo()
+                    callInfos.Add(new CallInfo
                                       {
-                                          Call = call,
-                                          CallNumber = i + 1,
+                                          Call = call, 
+                                          CallNumber = i + 1, 
                                           StringRepresentation = this.callFormatter.GetDescription(call)
                                       });
                 }
@@ -56,7 +56,7 @@ namespace FakeItEasy.Core
 
             writer.WriteLine();
         }
-        
+
         private static void WriteCalls(int indent, IEnumerable<CallInfo> callInfos, TextWriter writer)
         {
             var lastCall = callInfos.Last();
@@ -77,7 +77,7 @@ namespace FakeItEasy.Core
                 WriteIndentation(writer, numberOfDigitsInLastCallNumber - call.NumberOfDigitsInCallNumber());
 
                 WriteIndentedAtNewLine(writer, call.StringRepresentation, callDescriptionStartColumn);
-                
+
                 if (call.Repeat > 1)
                 {
                     writer.Write(" repeated ");
@@ -95,7 +95,7 @@ namespace FakeItEasy.Core
 
             writer.Write(lines[0]);
 
-            for (int i = 1; i < lines.Length; i++)
+            for (var i = 1; i < lines.Length; i++)
             {
                 writer.WriteLine();
                 WriteIndentation(writer, indentLevel);
@@ -105,18 +105,26 @@ namespace FakeItEasy.Core
 
         private static void WriteIndentation(TextWriter writer, int indentLevel)
         {
-            for (int i = 0; i < indentLevel; i++)
+            for (var i = 0; i < indentLevel; i++)
             {
                 writer.Write(" ");
-            } 
+            }
         }
 
         private class CallInfo
         {
-            public int CallNumber;
-            public int Repeat = 1;
-            public string StringRepresentation;
-            public IFakeObjectCall Call;
+            public CallInfo()
+            {
+                this.Repeat = 1;
+            }
+
+            public IFakeObjectCall Call { get; set; }
+
+            public int CallNumber { get; set; }
+
+            public int Repeat { get; set; }
+
+            public string StringRepresentation { get; set; }
 
             public int NumberOfDigitsInCallNumber()
             {

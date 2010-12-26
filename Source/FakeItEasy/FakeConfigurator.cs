@@ -22,6 +22,12 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Configures the fake.
+        /// </summary>
+        /// <param name="fakeObject">The fake object.</param>
+        public abstract void ConfigureFake(T fakeObject);
+
+        /// <summary>
         /// Applies the configuration for the specified fake object.
         /// </summary>
         /// <param name="fakeObject">The fake object to configure.</param>
@@ -41,16 +47,14 @@ namespace FakeItEasy
         private void AssertThatFakeIsOfCorrectType(object fakeObject)
         {
             if (!(fakeObject is T))
-            { 
-                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The {0} can only configure fakes of the type '{1}'.",
-                    this.GetType(), typeof(T)), "fakeObject");
+            {
+                var message = string.Format(
+                                     CultureInfo.InvariantCulture, 
+                                     "The {0} can only configure fakes of the type '{1}'.", 
+                                     this.GetType(), 
+                                     typeof(T));
+                throw new ArgumentException(message, "fakeObject");
             }
         }
-
-        /// <summary>
-        /// Configures the fake.
-        /// </summary>
-        /// <param name="fakeObject">The fake object.</param>
-        public abstract void ConfigureFake(T fakeObject);
     }
 }

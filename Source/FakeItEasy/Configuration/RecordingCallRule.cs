@@ -10,10 +10,10 @@ namespace FakeItEasy.Configuration
     internal class RecordingCallRule<TFake>
         : IFakeObjectCallRule
     {
-        private FakeManager fakeManager;
-        private RecordedCallRule recordedRule;
-        private FakeAsserter.Factory asserterFactory;
-        private IFakeObjectCallFormatter callFormatter;
+        private readonly FakeAsserter.Factory asserterFactory;
+        private readonly IFakeObjectCallFormatter callFormatter;
+        private readonly FakeManager fakeManager;
+        private readonly RecordedCallRule recordedRule;
 
         public RecordingCallRule(FakeManager fakeManager, RecordedCallRule recordedRule, FakeAsserter.Factory asserterFactory, IFakeObjectCallFormatter callFormatter)
         {
@@ -21,6 +21,11 @@ namespace FakeItEasy.Configuration
             this.recordedRule = recordedRule;
             this.asserterFactory = asserterFactory;
             this.callFormatter = callFormatter;
+        }
+
+        public int? NumberOfTimesToCall
+        {
+            get { return 1; }
         }
 
         public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
@@ -43,7 +48,7 @@ namespace FakeItEasy.Configuration
             {
                 this.DoAssertion(fakeObjectCall);
             }
-            
+
             this.fakeManager.AddRuleFirst(this.recordedRule);
 
             fakeObjectCall.SetReturnValue(Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType));
@@ -62,11 +67,6 @@ namespace FakeItEasy.Configuration
         private void CreateArgumentsPredicateFromArguments(IFakeObjectCall fakeObjectCall)
         {
             this.recordedRule.IsApplicableToArguments = x => x.AsEnumerable().SequenceEqual(fakeObjectCall.Arguments.AsEnumerable());
-        }
-
-        public int? NumberOfTimesToCall
-        {
-            get { return 1; }
         }
     }
 }

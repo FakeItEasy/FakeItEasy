@@ -7,7 +7,7 @@
     /// An interface for recorders that provides stored responses for self initializing fakes.
     /// </summary>
     public interface ISelfInitializingFakeRecorder
-        : IDisposable 
+        : IDisposable
     {
         /// <summary>
         /// Gets a value indicating if the recorder is currently recording.
@@ -19,7 +19,7 @@
         /// </summary>
         /// <param name="fakeObjectCall">The call to apply to from recording.</param>
         void ApplyNext(IInterceptedFakeObjectCall fakeObjectCall);
-        
+
         /// <summary>
         /// Records the specified call.
         /// </summary>

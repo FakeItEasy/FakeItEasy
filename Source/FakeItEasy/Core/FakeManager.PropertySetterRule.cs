@@ -9,7 +9,7 @@
             : IFakeObjectCallRule
         {
             public FakeManager FakeManager { get; set; }
-            
+
             public int? NumberOfTimesToCall
             {
                 get { return null; }
@@ -23,10 +23,10 @@
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 var newRule = new CallRuleMetadata
-                {
-                    CalledNumberOfTimes = 1,
-                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeManager) { Value = fakeObjectCall.Arguments[0] }
-                };
+                                  {
+                                      CalledNumberOfTimes = 1, 
+                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeManager) { Value = fakeObjectCall.Arguments[0] }
+                                  };
 
                 this.FakeManager.allUserRulesField.AddFirst(newRule);
             }

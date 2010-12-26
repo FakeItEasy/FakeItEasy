@@ -13,14 +13,11 @@ namespace FakeItEasy
     /// <summary>
     /// Provides static methods for accessing fake objects.
     /// </summary>
-    public static partial class Fake
+    public static class Fake
     {
         private static FakeFacade Facade
         {
-            get
-            {
-                return ServiceLocator.Current.Resolve<FakeFacade>();
-            }
+            get { return ServiceLocator.Current.Resolve<FakeFacade>(); }
         }
 
         /// <summary>
@@ -125,6 +122,7 @@ namespace FakeItEasy
     public class Fake<T> : IStartConfiguration<T>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Fake{T}"/> class. 
         /// Creates a new fake object.
         /// </summary>
         public Fake()
@@ -133,9 +131,12 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Fake{T}"/> class. 
         /// Creates a new fake object using the specified options.
         /// </summary>
-        /// <param name="options">Options used to create the fake object.</param>
+        /// <param name="options">
+        /// Options used to create the fake object.
+        /// </param>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public Fake(Action<IFakeOptionsBuilder<T>> options)
         {
@@ -143,33 +144,23 @@ namespace FakeItEasy
 
             this.FakedObject = CreateFake(options);
         }
-        
+
         /// <summary>
         /// Gets the faked object.
         /// </summary>
-        public T FakedObject
-        {
-            get;
-            private set;
-        }
+        public T FakedObject { get; private set; }
 
         /// <summary>
         /// Gets all calls made to the faked object.
         /// </summary>
         public IEnumerable<ICompletedFakeObjectCall> RecordedCalls
         {
-            get
-            {
-                return FakeItEasy.Fake.GetCalls(this.FakedObject);
-            }
+            get { return FakeItEasy.Fake.GetCalls(this.FakedObject); }
         }
 
         private static IFakeCreatorFacade FakeCreator
         {
-            get
-            {
-                return ServiceLocator.Current.Resolve<IFakeCreatorFacade>();
-            }
+            get { return ServiceLocator.Current.Resolve<IFakeCreatorFacade>(); }
         }
 
         private IStartConfiguration<T> StartConfiguration
@@ -180,7 +171,7 @@ namespace FakeItEasy
                 return factory.CreateConfiguration<T>(FakeItEasy.Fake.GetFakeManager(this.FakedObject));
             }
         }
-        
+
         /// <summary>
         /// Configures calls to the specified member.
         /// </summary>
@@ -215,7 +206,7 @@ namespace FakeItEasy
 
         private static T CreateFake(Action<IFakeOptionsBuilder<T>> options)
         {
-            return FakeCreator.CreateFake<T>(options);
+            return FakeCreator.CreateFake(options);
         }
     }
 }

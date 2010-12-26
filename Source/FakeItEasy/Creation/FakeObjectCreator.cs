@@ -9,10 +9,10 @@ namespace FakeItEasy.Creation
     internal class FakeObjectCreator
     {
         private static readonly Logger logger = Log.GetLogger<FakeObjectCreator>();
-        private IProxyGenerator proxyGenerator;
-        private IExceptionThrower thrower;
-        private IFakeManagerAccessor fakeManagerAttacher;
-        private IFakeObjectConfigurator configurer;
+        private readonly IFakeObjectConfigurator configurer;
+        private readonly IFakeManagerAccessor fakeManagerAttacher;
+        private readonly IProxyGenerator proxyGenerator;
+        private readonly IExceptionThrower thrower;
 
         public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, IFakeManagerAccessor fakeManagerAttacher, IFakeObjectConfigurator configurer)
         {
@@ -28,7 +28,7 @@ namespace FakeItEasy.Creation
 
             if (throwOnFailure)
             {
-                AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(typeOfFake, result, fakeOptions);
+                this.AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(typeOfFake, result, fakeOptions);
             }
 
             if (!result.ProxyWasSuccessfullyGenerated && fakeOptions.ArgumentsForConstructor == null)
@@ -41,43 +41,6 @@ namespace FakeItEasy.Creation
                 this.fakeManagerAttacher.AttachFakeManagerToProxy(typeOfFake, result.GeneratedProxy, result.CallInterceptedEventRaiser);
                 this.configurer.ConfigureFake(typeOfFake, result.GeneratedProxy);
                 return result.GeneratedProxy;
-            }
-
-            return null;
-        }
-
-        private void AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(Type typeOfFake, ProxyGeneratorResult result, FakeOptions fakeOptions)
-        {
-            if (!result.ProxyWasSuccessfullyGenerated && fakeOptions.ArgumentsForConstructor != null)
-            {
-                this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeOfFake, result.ReasonForFailure);
-            }
-        }
-
-        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, string failReasonForDefaultConstructor, bool throwOnFailure)
-        {
-            var constructors = ResolveConstructors(typeOfFake, session);
-                
-            foreach (var constructor in constructors.Where(x => x.WasSuccessfullyResolved))
-            {
-                logger.Debug("Trying with constructor with {0} arguments.", constructor.Arguments.Length);
-
-                var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, constructor.Arguments.Select(x => x.ResolvedValue));
-
-                if (result.ProxyWasSuccessfullyGenerated)
-                {
-                    return result;
-                }
-                else
-                {
-                    logger.Debug("Setting reason for failure of constructor to {0}.", result.ReasonForFailure);
-                    constructor.ReasonForFailure = result.ReasonForFailure;
-                }
-            }
-
-            if (throwOnFailure)
-            {
-                this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeOfFake, failReasonForDefaultConstructor, constructors);
             }
 
             return null;
@@ -110,20 +73,57 @@ namespace FakeItEasy.Creation
                 object result = null;
 
                 var resolvedArgument = new ResolvedArgument
-                {
-                    WasResolved = session.TryResolveDummyValue(argument.ParameterType, out result),
-                    ResolvedValue = result,
-                    ArgumentType = argument.ParameterType
-                };
+                                           {
+                                               WasResolved = session.TryResolveDummyValue(argument.ParameterType, out result), 
+                                               ResolvedValue = result, 
+                                               ArgumentType = argument.ParameterType
+                                           };
 
                 logger.Debug("Was able to resolve {0}: {1}.", argument.ParameterType, resolvedArgument.WasResolved);
                 resolvedArguments.Add(resolvedArgument);
             }
 
             return new ResolvedConstructor
+                       {
+                           Arguments = resolvedArguments.ToArray()
+                       };
+        }
+
+        private void AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(Type typeOfFake, ProxyGeneratorResult result, FakeOptions fakeOptions)
+        {
+            if (!result.ProxyWasSuccessfullyGenerated && fakeOptions.ArgumentsForConstructor != null)
             {
-                Arguments = resolvedArguments.ToArray()
-            };
+                this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeOfFake, result.ReasonForFailure);
+            }
+        }
+
+        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, string failReasonForDefaultConstructor, bool throwOnFailure)
+        {
+            var constructors = ResolveConstructors(typeOfFake, session);
+
+            foreach (var constructor in constructors.Where(x => x.WasSuccessfullyResolved))
+            {
+                logger.Debug("Trying with constructor with {0} arguments.", constructor.Arguments.Length);
+
+                var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, constructor.Arguments.Select(x => x.ResolvedValue));
+
+                if (result.ProxyWasSuccessfullyGenerated)
+                {
+                    return result;
+                }
+                else
+                {
+                    logger.Debug("Setting reason for failure of constructor to {0}.", result.ReasonForFailure);
+                    constructor.ReasonForFailure = result.ReasonForFailure;
+                }
+            }
+
+            if (throwOnFailure)
+            {
+                this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeOfFake, failReasonForDefaultConstructor, constructors);
+            }
+
+            return null;
         }
     }
 }

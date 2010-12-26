@@ -1,7 +1,6 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-    using FakeItEasy.Core;
 
     /// <summary>
     /// Provides configurations to validate arguments of a fake object call.

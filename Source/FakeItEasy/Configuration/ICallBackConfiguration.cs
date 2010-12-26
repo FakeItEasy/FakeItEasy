@@ -1,7 +1,7 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-    using Core;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Configuration for callbacks of fake object calls.

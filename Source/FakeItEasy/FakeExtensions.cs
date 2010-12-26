@@ -93,10 +93,15 @@ namespace FakeItEasy
         /// Configures the call to return the next value from the specified sequence each time it's called. Null will
         /// be returned when all the values in the sequence has been returned.
         /// </summary>
-        /// <typeparam name="T">The type of return value.</typeparam>
-        /// <param name="configuration">The call configuration to extend.</param>
-        /// <param name="values">The values to return in sequence.</param>
-        /// <returns>A configuration object.</returns>
+        /// <typeparam name="T">
+        /// The type of return value.
+        /// </typeparam>
+        /// <param name="configuration">
+        /// The call configuration to extend.
+        /// </param>
+        /// <param name="values">
+        /// The values to return in sequence.
+        /// </param>
         public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
         {
             var queue = new Queue<T>(values);
@@ -142,7 +147,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(calls, "calls");
             Guard.AgainstNull(writer, "writer");
-            
+
             var callWriter = ServiceLocator.Current.Resolve<CallWriter>();
             callWriter.WriteCalls(0, calls.Cast<IFakeObjectCall>(), writer);
         }
@@ -168,7 +173,7 @@ namespace FakeItEasy
         public static T GetArgument<T>(this IFakeObjectCall call, int argumentIndex)
         {
             Guard.AgainstNull(call, "call");
-            
+
             return call.Arguments.Get<T>(argumentIndex);
         }
 

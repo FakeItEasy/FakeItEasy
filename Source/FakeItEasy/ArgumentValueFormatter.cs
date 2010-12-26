@@ -1,6 +1,7 @@
 namespace FakeItEasy
 {
     using System;
+
     /// <summary>
     /// Provides string formatting for arguments of type T when written in 
     /// call lists.

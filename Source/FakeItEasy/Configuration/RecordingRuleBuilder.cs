@@ -1,7 +1,7 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-    using Core;
+    using FakeItEasy.Core;
 
     internal class RecordingRuleBuilder
         : IRecordingConfigurationWithArgumentValidation
@@ -18,7 +18,7 @@ namespace FakeItEasy.Configuration
         }
 
         public delegate RecordingRuleBuilder Factory(RecordedCallRule rule, FakeManager fakeObject);
-
+        
         public IAfterCallSpecifiedConfiguration DoesNothing()
         {
             return this.wrappedBuilder.DoesNothing();

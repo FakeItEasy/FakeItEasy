@@ -1,7 +1,7 @@
 namespace FakeItEasy.SelfInitializedFakes
 {
     using System.Collections.Generic;
-    
+
     /// <summary>
     /// Represents storage for recorded calls for self initializing
     /// fakes.

@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
 
     /// <summary>
     /// A IFakeObjectContainer implementation that uses mef to load IFakeDefinitions and
@@ -12,9 +11,9 @@
     public class DynamicContainer
         : IFakeObjectContainer
     {
-        private IDictionary<Type, IDummyDefinition> registeredDummyDefinitions;
-        private IDictionary<Type, IFakeConfigurator> registeredConfigurators;
-        
+        private readonly IDictionary<Type, IFakeConfigurator> registeredConfigurators;
+        private readonly IDictionary<Type, IDummyDefinition> registeredDummyDefinitions;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer"/> class.
         /// </summary>
@@ -22,7 +21,7 @@
         public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurator> fakeConfigurators)
         {
             this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(dummyDefinitions);
-            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(fakeConfigurators);       
+            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(fakeConfigurators);
         }
 
         /// <summary>

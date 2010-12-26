@@ -11,21 +11,18 @@ namespace FakeItEasy.Creation
         {
             this.AdditionalInterfacesToImplement = Enumerable.Empty<Type>();
         }
+        
+        public static FakeOptions Empty
+        {
+            get { return new FakeOptions(); }
+        }
 
         public object WrappedInstance { get; set; }
-        
+
         public ISelfInitializingFakeRecorder SelfInitializedFakeRecorder { get; set; }
-        
+
         public IEnumerable<object> ArgumentsForConstructor { get; set; }
 
         public IEnumerable<Type> AdditionalInterfacesToImplement { get; set; }
-
-        public static FakeOptions Empty
-        {
-            get
-            {
-                return new FakeOptions();
-            }
-        }
     }
 }

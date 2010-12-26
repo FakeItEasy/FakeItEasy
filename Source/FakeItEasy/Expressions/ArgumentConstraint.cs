@@ -43,7 +43,7 @@ namespace FakeItEasy.Expressions
         }
 
         private class PredicateArgumentConstraint<T>
-           : ArgumentConstraint<T>
+            : ArgumentConstraint<T>
         {
             public PredicateArgumentConstraint(ArgumentConstraintScope<T> scope)
                 : base(scope)
@@ -74,9 +74,12 @@ namespace FakeItEasy.Expressions
         : IArgumentConstraint
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ArgumentConstraint{T}"/> class. 
         /// Initializes a new instance of the <see cref="ArgumentConstraint&lt;T&gt;"/> class.
         /// </summary>
-        /// <param name="scope">The scope of the constraint.</param>
+        /// <param name="scope">
+        /// The scope of the constraint.
+        /// </param>
         protected ArgumentConstraint(ArgumentConstraintScope<T> scope)
         {
             Guard.AgainstNull(scope, "scope");
@@ -93,10 +96,7 @@ namespace FakeItEasy.Expressions
         /// </example>
         public T Argument
         {
-            get
-            {
-                return default(T);
-            }
+            get { return default(T); }
         }
 
         /// <summary>
@@ -104,19 +104,7 @@ namespace FakeItEasy.Expressions
         /// </summary>
         public ArgumentConstraintScope<T> And
         {
-            get
-            {
-                return new AndValidations() { ParentConstraint = this };
-            }
-        }
-
-        /// <summary>
-        /// The scope of the constraint.
-        /// </summary>
-        internal ArgumentConstraintScope<T> Scope
-        {
-            get;
-            private set;
+            get { return new AndValidations { ParentConstraint = this }; }
         }
 
         /// <summary>
@@ -125,11 +113,13 @@ namespace FakeItEasy.Expressions
         /// <value></value>
         public string ConstraintDescription
         {
-            get 
-            {
-                return this.ToString();
-            }
+            get { return this.ToString(); }
         }
+
+        /// <summary>
+        /// The scope of the constraint.
+        /// </summary>
+        internal ArgumentConstraintScope<T> Scope { get; private set; }
 
         /// <summary>
         /// Gets the full description of the constraint, together with any parent validations
@@ -178,6 +168,16 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
+        /// Gets whether the argument is valid.
+        /// </summary>
+        /// <param name="argument">The argument to validate.</param>
+        /// <returns>True if the argument is valid.</returns>
+        bool IArgumentConstraint.IsValid(object argument)
+        {
+            return this.IsValid((T)argument);
+        }
+
+        /// <summary>
         /// Allows you to combine the current constraint with another constraint, where only
         /// one of them has to be valid.
         /// </summary>
@@ -208,45 +208,11 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
-        /// Gets whether the argument is valid.
-        /// </summary>
-        /// <param name="argument">The argument to validate.</param>
-        /// <returns>True if the argument is valid.</returns>
-        bool IArgumentConstraint.IsValid(object argument)
-        {
-            return this.IsValid((T)argument);
-        }
-
-        /// <summary>
         /// When implemented evaluates if the argument is valid.
         /// </summary>
         /// <param name="value">The value to evaluate.</param>
         /// <returns>True if the argument is valid.</returns>
         protected abstract bool Evaluate(T value);
-
-        private class OrConstraint
-            : ArgumentConstraint<T>
-        {
-            private ArgumentConstraint<T> first;
-            private ArgumentConstraint<T> second;
-
-            public OrConstraint(ArgumentConstraint<T> first, ArgumentConstraint<T> second)
-                : base(new RootArgumentConstraintScope<T>())
-            {
-                this.first = first;
-                this.second = second;
-            }
-
-            protected override string Description
-            {
-                get { return "{0} or ({1})".FormatInvariant(this.first.FullDescription, this.second.FullDescription); }
-            }
-
-            protected override bool Evaluate(T value)
-            {
-                return this.first.IsValid(value) || this.second.IsValid(value);
-            }
-        }
 
         private class AndValidations
             : ArgumentConstraintScope<T>
@@ -266,6 +232,30 @@ namespace FakeItEasy.Expressions
             internal override bool ResultOfChildConstraintIsValid(bool result)
             {
                 return result;
+            }
+        }
+
+        private class OrConstraint
+            : ArgumentConstraint<T>
+        {
+            private readonly ArgumentConstraint<T> first;
+            private readonly ArgumentConstraint<T> second;
+
+            public OrConstraint(ArgumentConstraint<T> first, ArgumentConstraint<T> second)
+                : base(new RootArgumentConstraintScope<T>())
+            {
+                this.first = first;
+                this.second = second;
+            }
+
+            protected override string Description
+            {
+                get { return "{0} or ({1})".FormatInvariant(this.first.FullDescription, this.second.FullDescription); }
+            }
+
+            protected override bool Evaluate(T value)
+            {
+                return this.first.IsValid(value) || this.second.IsValid(value);
             }
         }
     }

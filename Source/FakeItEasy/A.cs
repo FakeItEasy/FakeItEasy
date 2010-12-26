@@ -17,20 +17,14 @@ namespace FakeItEasy
     {
         private static IFakeConfigurationManager ConfigurationManager
         {
-            get
-            {
-                return ServiceLocator.Current.Resolve<IFakeConfigurationManager>();
-            }
+            get { return ServiceLocator.Current.Resolve<IFakeConfigurationManager>(); }
         }
 
         private static IFakeCreatorFacade FakeCreator
         {
-            get
-            {
-                return ServiceLocator.Current.Resolve<IFakeCreatorFacade>();
-            }
+            get { return ServiceLocator.Current.Resolve<IFakeCreatorFacade>(); }
         }
-        
+
         /// <summary>
         /// Creates a fake object of the type T.
         /// </summary>
@@ -52,7 +46,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specifie the type of fake.")]
         public static T Fake<T>(Action<IFakeOptionsBuilder<T>> options)
         {
-            return FakeCreator.CreateFake<T>(options);
+            return FakeCreator.CreateFake(options);
         }
 
         /// <summary>
@@ -143,10 +137,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
         public static ArgumentConstraintScope<T> That
         {
-            get
-            {
-                return new RootArgumentConstraintScope<T>();
-            }
+            get { return new RootArgumentConstraintScope<T>(); }
         }
 
         /// <summary>
@@ -155,10 +146,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
         public static ArgumentConstraint<T> Ignored
         {
-            get
-            {
-                return ArgumentConstraint.Create(new RootArgumentConstraintScope<T>(), x => true, "Ignored");
-            }
+            get { return ArgumentConstraint.Create(new RootArgumentConstraintScope<T>(), x => true, "Ignored"); }
         }
     }
 }

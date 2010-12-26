@@ -12,7 +12,7 @@ namespace FakeItEasy.Core
     /// </summary>
     internal class MethodInfoManager
     {
-        private static Dictionary<TypeMethodInfoPair, MethodInfo> methodCache = new Dictionary<TypeMethodInfoPair, MethodInfo>();
+        private static readonly Dictionary<TypeMethodInfoPair, MethodInfo> methodCache = new Dictionary<TypeMethodInfoPair, MethodInfo>();
 
         /// <summary>
         /// Gets a value indicating if the two method infos would invoke the same method
@@ -61,7 +61,7 @@ namespace FakeItEasy.Core
 
         private static MethodInfo FindMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
         {
-            MethodInfo result =
+            var result =
                 (from typeMethod in type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                  where IsSameMethod(typeMethod, method)
                  select MakeGeneric(typeMethod, method)).FirstOrDefault();
@@ -145,8 +145,8 @@ namespace FakeItEasy.Core
 
         private struct TypeMethodInfoPair
         {
-            public Type Type;
             public MethodInfo MethodInfo;
+            public Type Type;
 
             public override int GetHashCode()
             {

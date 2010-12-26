@@ -14,27 +14,6 @@
             return "{0}.{1}({2})".FormatInvariant(method.DeclaringType.FullName, method.Name, GetParametersString(fakeObjectCall));
         }
 
-        private static string GetParametersString(IFakeObjectCall fakeObjectCall)
-        {
-            return fakeObjectCall.Arguments.ToCollectionString(x => GetArgumentAsString(x), ", ");
-        }
-
-        private static string GetArgumentAsString(object argument)
-        {
-            if (argument == null)
-            {
-                return "<NULL>";
-            }
-
-            string stringArgument = argument as string;
-            if (stringArgument != null)
-            {
-                return stringArgument.Length > 0 ? string.Concat("\"", stringArgument, "\"") : "<string.Empty>";
-            }
-
-            return argument.ToString();
-        }
-
         [DebuggerStepThrough]
         public static object GetDefaultValueOfType(Type type)
         {
@@ -58,5 +37,26 @@
             return value;
         }
 #endif
+
+        private static string GetParametersString(IFakeObjectCall fakeObjectCall)
+        {
+            return fakeObjectCall.Arguments.ToCollectionString(x => GetArgumentAsString(x), ", ");
+        }
+
+        private static string GetArgumentAsString(object argument)
+        {
+            if (argument == null)
+            {
+                return "<NULL>";
+            }
+
+            var stringArgument = argument as string;
+            if (stringArgument != null)
+            {
+                return stringArgument.Length > 0 ? string.Concat("\"", stringArgument, "\"") : "<string.Empty>";
+            }
+
+            return argument.ToString();
+        }
     }
 }

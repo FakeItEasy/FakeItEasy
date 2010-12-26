@@ -7,6 +7,16 @@
     internal class DefaultReturnValueRule
         : IFakeObjectCallRule
     {
+        public int? NumberOfTimesToCall
+        {
+            get { return null; }
+        }
+        
+        private static IFakeAndDummyManager FakeManager
+        {
+            get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
+        }
+
         public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
             return true;
@@ -14,7 +24,7 @@
 
         public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            object returnValue = ResolveReturnValue(fakeObjectCall);
+            var returnValue = ResolveReturnValue(fakeObjectCall);
 
             fakeObjectCall.SetReturnValue(returnValue);
         }
@@ -25,23 +35,10 @@
 
             if (!FakeManager.TryCreateDummy(fakeObjectCall.Method.ReturnType, out result))
             {
-                result = Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType);    
+                result = Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType);
             }
 
             return result;
-        }
-
-        private static IFakeAndDummyManager FakeManager
-        {
-            get
-            {
-                return ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
-            }
-        }
-
-        public int? NumberOfTimesToCall
-        {
-            get { return null; }
         }
     }
 }

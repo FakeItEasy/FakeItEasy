@@ -1,6 +1,5 @@
 namespace FakeItEasy.Core
 {
-
     /// <summary>
     /// A call rule that applies to any call and just delegates the
     /// call to the wrapped object.
@@ -8,15 +7,28 @@ namespace FakeItEasy.Core
     internal class WrappedObjectRule
         : IFakeObjectCallRule
     {
-        private object wrappedObject;
+        private readonly object wrappedObject;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="WrappedObjectRule"/> class. 
         /// Creates a new instance.
         /// </summary>
-        /// <param name="wrappedInstance">The object to wrap.</param>
+        /// <param name="wrappedInstance">
+        /// The object to wrap.
+        /// </param>
         public WrappedObjectRule(object wrappedInstance)
         {
             this.wrappedObject = wrappedInstance;
+        }
+
+        /// <summary>
+        /// Gets the number of times this call rule is valid, if it's set
+        /// to null its infinitely valid.
+        /// </summary>
+        /// <value></value>
+        public int? NumberOfTimesToCall
+        {
+            get { return null; }
         }
 
         /// <summary>
@@ -38,20 +50,9 @@ namespace FakeItEasy.Core
         /// <param name="fakeObjectCall">The call to apply the interceptor to.</param>
         public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            var parameters = fakeObjectCall.Arguments.GetUnderlyingArgumentsArray(); 
-            var valueFromWrappedInstance = fakeObjectCall.Method.Invoke(this.wrappedObject, parameters); 
+            var parameters = fakeObjectCall.Arguments.GetUnderlyingArgumentsArray();
+            var valueFromWrappedInstance = fakeObjectCall.Method.Invoke(this.wrappedObject, parameters);
             fakeObjectCall.SetReturnValue(valueFromWrappedInstance);
         }
-
-        /// <summary>
-        /// Gets the number of times this call rule is valid, if it's set
-        /// to null its infinitely valid.
-        /// </summary>
-        /// <value></value>
-        public int? NumberOfTimesToCall
-        {
-            get { return null; }
-        }
-
     }
 }

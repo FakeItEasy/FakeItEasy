@@ -9,7 +9,7 @@ namespace FakeItEasy.Core
     internal class DefaultFakeManagerAccessor
         : IFakeManagerAccessor
     {
-        private FakeManager.Factory managerFactory;
+        private readonly FakeManager.Factory managerFactory;
 
         public DefaultFakeManagerAccessor(FakeManager.Factory managerFactory)
         {

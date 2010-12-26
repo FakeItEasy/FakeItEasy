@@ -1,7 +1,6 @@
 namespace FakeItEasy
 {
     using System;
-    using System.Globalization;
     using System.Diagnostics.CodeAnalysis;
 
     internal static class Log
@@ -11,7 +10,6 @@ namespace FakeItEasy
 #else
         private const bool UseLogging = false;
 #endif
-        
 
         public static Logger GetLogger<T>()
         {
@@ -52,8 +50,8 @@ namespace FakeItEasy
 
             private NullLogger()
             {
-
             }
+
             public override void Debug(Func<string> message)
             {
                 // Do nothing

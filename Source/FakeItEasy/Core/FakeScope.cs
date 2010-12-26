@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
 
     /// <summary>
@@ -12,31 +13,26 @@ namespace FakeItEasy.Core
     internal abstract class FakeScope
         : IFakeScope
     {
-        #region Construction
         static FakeScope()
         {
-            FakeScope.Current = new RootScope();
+            Current = new RootScope();
         }
 
         private FakeScope()
         {
         }
-        #endregion
 
-        #region Properties
         internal static FakeScope Current { get; set; }
 
         internal abstract IFakeObjectContainer FakeObjectContainer { get; }
-        #endregion
 
-        #region Methods
         /// <summary>
         /// Creates a new scope and sets it as the current scope.
         /// </summary>
         /// <returns>The created scope.</returns>
         public static IFakeScope Create()
         {
-            return Create(FakeScope.Current.FakeObjectContainer);
+            return Create(Current.FakeObjectContainer);
         }
 
         /// <summary>
@@ -47,8 +43,8 @@ namespace FakeItEasy.Core
         /// <returns>The created scope.</returns>
         public static IFakeScope Create(IFakeObjectContainer container)
         {
-            var result = new ChildScope(FakeScope.Current, container);
-            FakeScope.Current = result;
+            var result = new ChildScope(Current, container);
+            Current = result;
             return result;
         }
 
@@ -63,7 +59,7 @@ namespace FakeItEasy.Core
 
         public abstract IEnumerator<ICompletedFakeObjectCall> GetEnumerator();
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
@@ -103,63 +99,15 @@ namespace FakeItEasy.Core
         protected abstract void OnAddRule(FakeManager fakeObject, CallRuleMetadata rule);
 
         protected abstract void OnAddInterceptedCall(FakeManager fakeObject, ICompletedFakeObjectCall call);
-        #endregion
-
-        #region Nested types
-        private class RootScope
-            : FakeScope
-        {
-            private IFakeObjectContainer fakeObjectContainerField;
-
-            public RootScope()
-            {
-                this.fakeObjectContainerField = new DynamicContainer(
-                    ServiceLocator.Current.Resolve<IEnumerable<IDummyDefinition>>(), 
-                    ServiceLocator.Current.Resolve<IEnumerable<IFakeConfigurator>>());
-            }
-
-            internal override IFakeObjectContainer FakeObjectContainer
-            {
-                get
-                {
-                    return this.fakeObjectContainerField;
-                }
-            }
-
-            public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
-            {
-                throw new NotSupportedException();
-            }
-
-            internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject)
-            {
-                return fakeObject.AllRecordedCalls;
-            }
-
-            protected override void OnAddRule(FakeManager fakeObject, CallRuleMetadata rule)
-            {
-                // Do nothing
-            }
-
-            protected override void OnDispose()
-            {
-                // Do nothing
-            }
-
-            protected override void OnAddInterceptedCall(FakeManager fakeObject, ICompletedFakeObjectCall call)
-            {
-                // Do nothing
-            }
-        }
 
         private class ChildScope
             : FakeScope
         {
-            private FakeScope parentScope;
-            private Dictionary<FakeManager, List<CallRuleMetadata>> rulesField;
-            private Dictionary<FakeManager, List<ICompletedFakeObjectCall>> recordedCallsGroupedByFakeManager;
-            private IFakeObjectContainer fakeObjectContainerField;
-            private LinkedList<ICompletedFakeObjectCall> recordedCalls;
+            private readonly IFakeObjectContainer fakeObjectContainerField;
+            private readonly FakeScope parentScope;
+            private readonly LinkedList<ICompletedFakeObjectCall> recordedCalls;
+            private readonly Dictionary<FakeManager, List<ICompletedFakeObjectCall>> recordedCallsGroupedByFakeManager;
+            private readonly Dictionary<FakeManager, List<CallRuleMetadata>> rulesField;
 
             public ChildScope(FakeScope parentScope, IFakeObjectContainer container)
             {
@@ -208,7 +156,7 @@ namespace FakeItEasy.Core
             protected override void OnDispose()
             {
                 this.RemoveRulesConfiguredInScope();
-                FakeScope.Current = this.parentScope;
+                Current = this.parentScope;
             }
 
             protected override void OnAddInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call)
@@ -238,7 +186,46 @@ namespace FakeItEasy.Core
                     }
                 }
             }
-        } 
-        #endregion
+        }
+
+        private class RootScope
+            : FakeScope
+        {
+            private readonly IFakeObjectContainer fakeObjectContainerField;
+
+            public RootScope()
+            {
+                this.fakeObjectContainerField = new DynamicContainer(
+                    ServiceLocator.Current.Resolve<IEnumerable<IDummyDefinition>>(), 
+                    ServiceLocator.Current.Resolve<IEnumerable<IFakeConfigurator>>());
+            }
+
+            internal override IFakeObjectContainer FakeObjectContainer
+            {
+                get { return this.fakeObjectContainerField; }
+            }
+
+            public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
+            {
+                throw new NotSupportedException();
+            }
+
+            internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject)
+            {
+                return fakeObject.AllRecordedCalls;
+            }
+
+            protected override void OnAddRule(FakeManager fakeObject, CallRuleMetadata rule)
+            {
+            }
+
+            protected override void OnDispose()
+            {
+            }
+
+            protected override void OnAddInterceptedCall(FakeManager fakeObject, ICompletedFakeObjectCall call)
+            {
+            }
+        }
     }
 }

@@ -13,8 +13,7 @@ namespace FakeItEasy.Core
         private class EventRule
             : IFakeObjectCallRule
         {
-            [NonSerialized]
-            private EventHandlerList registeredEventHandlersField;
+            [NonSerialized] private EventHandlerList registeredEventHandlersField;
 
             public FakeManager FakeManager { get; set; }
 
@@ -43,7 +42,7 @@ namespace FakeItEasy.Core
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                EventCall eventCall = EventCall.GetEventCall(fakeObjectCall);
+                var eventCall = EventCall.GetEventCall(fakeObjectCall);
 
                 this.HandleEventCall(eventCall);
             }
@@ -108,19 +107,19 @@ namespace FakeItEasy.Core
                     var eventInfo = GetEvent(fakeObjectCall.Method);
 
                     return new EventCall
-                    {
-                        Event = eventInfo,
-                        CallingMethod = fakeObjectCall.Method,
-                        EventHandler = (Delegate)fakeObjectCall.Arguments[0]
-                    };
+                               {
+                                   Event = eventInfo, 
+                                   CallingMethod = fakeObjectCall.Method, 
+                                   EventHandler = (Delegate)fakeObjectCall.Arguments[0]
+                               };
                 }
 
                 public static EventInfo GetEvent(MethodInfo eventAdderOrRemover)
                 {
                     return
                         (from e in eventAdderOrRemover.DeclaringType.GetEvents()
-                         where object.Equals(e.GetAddMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
-                              || object.Equals(e.GetRemoveMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
+                         where Equals(e.GetAddMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
+                             || Equals(e.GetRemoveMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
                          select e).SingleOrDefault();
                 }
 
@@ -130,7 +129,7 @@ namespace FakeItEasy.Core
 
                     return declaringType.IsGenericType
                         && declaringType.GetGenericTypeDefinition() == typeof(Raise<>)
-                        && this.EventHandler.Method.Name.Equals("Now");
+                            && this.EventHandler.Method.Name.Equals("Now");
                 }
 
                 public bool IsEventRegistration()

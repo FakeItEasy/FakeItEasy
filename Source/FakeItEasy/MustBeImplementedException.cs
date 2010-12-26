@@ -1,4 +1,6 @@
-﻿#if DEBUG
+﻿
+#if DEBUG
+
 namespace FakeItEasy
 {
     using System;
@@ -16,4 +18,5 @@ namespace FakeItEasy
     {
     }
 }
+
 #endif

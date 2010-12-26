@@ -13,7 +13,7 @@ namespace FakeItEasy.Creation
     public interface IFakeOptionsBuilder<T>
         : IHideObjectMembers
     {
-        //IFakeBuilderOptionsBuilder<T> Implementing<TInterface>();
+        // IFakeBuilderOptionsBuilder<T> Implementing<TInterface>();
 
         /// <summary>
         /// Specifies arguments for the constructor of the faked class.

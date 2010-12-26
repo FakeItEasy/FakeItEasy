@@ -18,7 +18,7 @@ namespace FakeItEasy.Creation
         /// <param name="argumentsForConstructor">Arguments to pass to the constructor of the type in <paramref name="typeOfProxy" />.</param>
         /// <returns></returns>
         ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor);
-        
+
         /// <summary>
         /// Gets a value indicating if the specified member can be intercepted by the proxy generator.
         /// </summary>

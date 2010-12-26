@@ -10,9 +10,10 @@
     public class DelegateFakeObjectContainer
         : IFakeObjectContainer
     {
-        private Dictionary<Type, Func<object>> registeredDelegates;
+        private readonly Dictionary<Type, Func<object>> registeredDelegates;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DelegateFakeObjectContainer"/> class. 
         /// Creates a new instance of the DelegateFakeObjectContainer.
         /// </summary>
         public DelegateFakeObjectContainer()
@@ -42,6 +43,15 @@
         }
 
         /// <summary>
+        /// Configures the fake.
+        /// </summary>
+        /// <param name="typeOfFake">The type of fake.</param>
+        /// <param name="fakeObject">The fake object.</param>
+        public void ConfigureFake(Type typeOfFake, object fakeObject)
+        {
+        }
+
+        /// <summary>
         /// Registers the specified fake delegate.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -49,17 +59,6 @@
         public void Register<T>(Func<T> fakeDelegate)
         {
             this.registeredDelegates[typeof(T)] = () => fakeDelegate.Invoke();
-        }
-
-
-        /// <summary>
-        /// Configures the fake.
-        /// </summary>
-        /// <param name="typeOfFake">The type of fake.</param>
-        /// <param name="fakeObject">The fake object.</param>
-        public void ConfigureFake(Type typeOfFake, object fakeObject)
-        {
-            
         }
     }
 }

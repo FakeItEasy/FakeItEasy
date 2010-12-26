@@ -31,10 +31,7 @@ namespace FakeItEasy.SelfInitializedFakes
 
         private bool FileExists
         {
-            get
-            {
-                return this.fileSystem.FileExists(this.fileName);
-            }
+            get { return this.fileSystem.FileExists(this.fileName); }
         }
 
         /// <summary>

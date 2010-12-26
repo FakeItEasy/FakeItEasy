@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -8,7 +7,6 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Fake it easy")]
 [assembly: AssemblyDescription("The FakeItEasy dynamic fake framework.")]
-
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("2622059a-d73a-4066-9d7f-eb545a79ca5e")]

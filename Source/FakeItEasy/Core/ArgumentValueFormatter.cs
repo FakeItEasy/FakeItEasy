@@ -6,19 +6,19 @@ namespace FakeItEasy.Core
 
     internal class ArgumentValueFormatter
     {
-        private IEnumerable<IArgumentValueFormatter> typeFormatters;
-        private Dictionary<Type, IArgumentValueFormatter> cachedFormatters;
+        private readonly Dictionary<Type, IArgumentValueFormatter> cachedFormatters;
+        private readonly IEnumerable<IArgumentValueFormatter> typeFormatters;
 
         public ArgumentValueFormatter(IEnumerable<IArgumentValueFormatter> typeFormatters)
         {
             this.cachedFormatters = new Dictionary<Type, IArgumentValueFormatter>();
 
             this.typeFormatters = typeFormatters.Concat(
-                new IArgumentValueFormatter[] 
-                { 
-                    new DefaultStringFormatter(), 
-                    new DefaultFormatter() 
-                });
+                new IArgumentValueFormatter[]
+                    {
+                        new DefaultStringFormatter(), 
+                        new DefaultFormatter()
+                    });
         }
 
         public virtual string GetArgumentValueAsString(object argumentValue)
@@ -51,13 +51,13 @@ namespace FakeItEasy.Core
                 (from formatter in this.typeFormatters
                  where formatter.ForType.IsAssignableFrom(type)
                  select formatter)
-                 .OrderBy(x => x, new ClosestToThisTypeComparer(type));
+                    .OrderBy(x => x, new ClosestToThisTypeComparer(type));
         }
 
         private class ClosestToThisTypeComparer
             : IComparer<IArgumentValueFormatter>
         {
-            private Type knownType;
+            private readonly Type knownType;
 
             public ClosestToThisTypeComparer(Type knownType)
             {
@@ -79,10 +79,10 @@ namespace FakeItEasy.Core
 
             private int GetDistanceFromKnownType(Type comparedType)
             {
-                int distance = 0;
+                var distance = 0;
                 var currentType = this.knownType;
 
-                if (IsInterfaceImplementedByKnownType(comparedType))
+                if (this.IsInterfaceImplementedByKnownType(comparedType))
                 {
                     return 0;
                 }

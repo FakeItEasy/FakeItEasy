@@ -4,6 +4,7 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Reflection;
     using FakeItEasy.Creation;
 
     /// <summary>
@@ -15,28 +16,28 @@ namespace FakeItEasy.Core
     public partial class FakeManager
     {
         private static readonly Logger logger = Log.GetLogger<FakeManager>();
-        private CallRuleMetadata[] preUserRules;
-        private LinkedList<CallRuleMetadata> allUserRulesField;
-        private CallRuleMetadata[] postUserRules;
-        private List<ICompletedFakeObjectCall> recordedCallsField;
-        
+        private readonly LinkedList<CallRuleMetadata> allUserRulesField;
+        private readonly CallRuleMetadata[] postUserRules;
+        private readonly CallRuleMetadata[] preUserRules;
+        private readonly List<ICompletedFakeObjectCall> recordedCallsField;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeManager"/> class.
         /// </summary>
         public FakeManager()
         {
-            this.preUserRules = new[] 
-            {
-                new CallRuleMetadata { Rule = new EventRule { FakeManager = this } } 
-            };
+            this.preUserRules = new[]
+                                    {
+                                        new CallRuleMetadata { Rule = new EventRule { FakeManager = this } }
+                                    };
             this.allUserRulesField = new LinkedList<CallRuleMetadata>();
-            this.postUserRules = new[] 
-            { 
-                new CallRuleMetadata { Rule = new ObjectMemberRule { FakeManager = this } },
-                new CallRuleMetadata { Rule = new AutoFakePropertyRule { FakeManager = this } },
-                new CallRuleMetadata { Rule = new PropertySetterRule { FakeManager = this } },
-                new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
-            };
+            this.postUserRules = new[]
+                                     {
+                                         new CallRuleMetadata { Rule = new ObjectMemberRule { FakeManager = this } }, 
+                                         new CallRuleMetadata { Rule = new AutoFakePropertyRule { FakeManager = this } }, 
+                                         new CallRuleMetadata { Rule = new PropertySetterRule { FakeManager = this } }, 
+                                         new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
+                                     };
 
             this.recordedCallsField = new List<ICompletedFakeObjectCall>();
         }
@@ -51,30 +52,19 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the faked object.
         /// </summary>
-        public virtual object Object
-        {
-            get;
-            private set;
-        }
+        public virtual object Object { get; private set; }
 
         /// <summary>
         /// Gets the faked type.
         /// </summary>
-        public virtual Type FakeObjectType
-        {
-            get;
-            private set;
-        }
+        public virtual Type FakeObjectType { get; private set; }
 
         /// <summary>
         /// Gets the interceptions that are currently registered with the fake object.
         /// </summary>
         public virtual IEnumerable<IFakeObjectCallRule> Rules
         {
-            get
-            {
-                return this.allUserRulesField.Select(x => x.Rule);
-            }
+            get { return this.allUserRulesField.Select(x => x.Rule); }
         }
 
         /// <summary>
@@ -82,34 +72,22 @@ namespace FakeItEasy.Core
         /// </summary>
         public virtual IEnumerable<ICompletedFakeObjectCall> RecordedCallsInScope
         {
-            get
-            {
-                return FakeScope.Current.GetCallsWithinScope(this);
-            }
+            get { return FakeScope.Current.GetCallsWithinScope(this); }
         }
 
         internal List<ICompletedFakeObjectCall> AllRecordedCalls
         {
-            get
-            {
-                return this.recordedCallsField;
-            }
+            get { return this.recordedCallsField; }
         }
 
         internal LinkedList<CallRuleMetadata> AllUserRules
         {
-            get
-            {
-                return this.allUserRulesField;
-            }
+            get { return this.allUserRulesField; }
         }
 
         private IEnumerable<CallRuleMetadata> AllRules
-        { 
-            get
-            {
-                return this.preUserRules.Concat(this.AllUserRules.Concat(this.postUserRules));
-            }
+        {
+            get { return this.preUserRules.Concat(this.AllUserRules.Concat(this.postUserRules)); }
         }
 
         /// <summary>
@@ -143,14 +121,30 @@ namespace FakeItEasy.Core
             var ruleToRemove = this.AllUserRules.Where(x => x.Rule.Equals(rule)).FirstOrDefault();
             this.AllUserRules.Remove(ruleToRemove);
         }
-       
+
+        internal virtual void AttachProxy(Type typeOfFake, object proxy, ICallInterceptedEventRaiser eventRaiser)
+        {
+            this.Object = proxy;
+            this.FakeObjectType = typeOfFake;
+
+            eventRaiser.CallWasIntercepted += this.Proxy_CallWasIntercepted;
+        }
+
+        /// <summary>
+        /// Removes any specified user rules.
+        /// </summary>
+        internal virtual void ClearUserRules()
+        {
+            this.allUserRulesField.Clear();
+        }
+
         private static void ApplyRule(CallRuleMetadata rule, IInterceptedFakeObjectCall fakeObjectCall)
         {
             logger.Debug("Applying rule {0}.", rule.Rule.ToString());
             rule.CalledNumberOfTimes++;
             rule.Rule.Apply(fakeObjectCall);
         }
-        
+
         private void Intercept(IWritableFakeObjectCall fakeObjectCall)
         {
             var ruleToUse =
@@ -196,11 +190,11 @@ namespace FakeItEasy.Core
         {
             this.Intercept(e.Call);
         }
-
+        
         private class InterceptedCallAdapter
             : IInterceptedFakeObjectCall
         {
-            private IWritableFakeObjectCall call;
+            private readonly IWritableFakeObjectCall call;
 
             public InterceptedCallAdapter(IWritableFakeObjectCall call)
             {
@@ -209,7 +203,7 @@ namespace FakeItEasy.Core
 
             public bool IgnoreCallInRecording { get; private set; }
 
-            public System.Reflection.MethodInfo Method
+            public MethodInfo Method
             {
                 get { return this.call.Method; }
             }
@@ -248,22 +242,6 @@ namespace FakeItEasy.Core
             {
                 this.IgnoreCallInRecording = true;
             }
-        }
-
-        internal virtual void AttachProxy(Type typeOfFake, object proxy, ICallInterceptedEventRaiser eventRaiser)
-        {
-            this.Object = proxy;
-            this.FakeObjectType = typeOfFake;
-
-            eventRaiser.CallWasIntercepted += this.Proxy_CallWasIntercepted;
-        }
-
-        /// <summary>
-        /// Removes any specified user rules.
-        /// </summary>
-        internal virtual void ClearUserRules()
-        {
-            this.allUserRulesField.Clear();
         }
     }
 }

@@ -2,9 +2,9 @@ namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using FakeItEasy.Core;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Provides functionality for making ordered assertions on fakes.
@@ -16,10 +16,7 @@ namespace FakeItEasy
 
         internal static FakeAsserter.Factory CurrentAsserterFactory
         {
-            get
-            {
-                return currentAsserterFactoryField;
-            }
+            get { return currentAsserterFactoryField; }
         }
 
         /// <summary>
@@ -32,7 +29,7 @@ namespace FakeItEasy
         public static IDisposable OrderedAssertions(this IEnumerable<ICompletedFakeObjectCall> calls)
         {
             AssertThatScopeIsNotOpen();
-            
+
             orderedAssertionsScopeIsOpened = true;
 
             var orderedFactory = CreateOrderedAsserterFactory(calls);
@@ -52,7 +49,7 @@ namespace FakeItEasy
         private static OrderedFakeAsserterFactory CreateOrderedAsserterFactory(IEnumerable<ICompletedFakeObjectCall> calls)
         {
             return new OrderedFakeAsserterFactory(
-                x => new FakeAsserter(x, ServiceLocator.Current.Resolve<CallWriter>()),
+                x => new FakeAsserter(x, ServiceLocator.Current.Resolve<CallWriter>()), 
                 new OrderedFakeAsserter(calls.Cast<IFakeObjectCall>(), ServiceLocator.Current.Resolve<CallWriter>()));
         }
 
@@ -72,8 +69,8 @@ namespace FakeItEasy
             [SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly", Justification = "There is no finalizer.")]
             public void Dispose()
             {
-                OrderedAssertion.currentAsserterFactoryField = this.ResetTo;
-                OrderedAssertion.orderedAssertionsScopeIsOpened = false;
+                currentAsserterFactoryField = this.ResetTo;
+                orderedAssertionsScopeIsOpened = false;
             }
         }
     }

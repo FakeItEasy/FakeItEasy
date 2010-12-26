@@ -6,15 +6,15 @@ namespace FakeItEasy.Configuration
     using FakeItEasy.Core;
 
     internal class RuleBuilder
-        : IVoidArgumentValidationConfiguration,
-          IRepeatConfiguration,
-          IAfterCallSpecifiedConfiguration,
-          IAfterCallSpecifiedWithOutAndRefParametersConfiguration,
+        : IVoidArgumentValidationConfiguration, 
+          IRepeatConfiguration, 
+          IAfterCallSpecifiedConfiguration, 
+          IAfterCallSpecifiedWithOutAndRefParametersConfiguration, 
           ICallCollectionAndCallMatcherAccessor
     {
-        private FakeAsserter.Factory asserterFactory;
-        private FakeManager manager;
-        
+        private readonly FakeAsserter.Factory asserterFactory;
+        private readonly FakeManager manager;
+
         internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeManager manager, FakeAsserter.Factory asserterFactory)
         {
             this.RuleBeingBuilt = ruleBeingBuilt;
@@ -31,32 +31,16 @@ namespace FakeItEasy.Configuration
         /// <returns>A configuration object.</returns>
         internal delegate RuleBuilder Factory(BuildableCallRule ruleBeingBuilt, FakeManager fakeObject);
 
-        public BuildableCallRule RuleBeingBuilt 
-        {
-            get; 
-            private set; 
-        }
+        public BuildableCallRule RuleBeingBuilt { get; private set; }
 
         public IEnumerable<ICompletedFakeObjectCall> Calls
         {
-            get
-            {
-                return this.manager.RecordedCallsInScope;
-            }
+            get { return this.manager.RecordedCallsInScope; }
         }
 
         public ICallMatcher Matcher
         {
-            get
-            {
-                return new RuleMatcher(this);
-            }
-        }
-
-        public virtual IAfterCallSpecifiedConfiguration Throws(Exception exception)
-        {
-            this.RuleBeingBuilt.Applicator = x => { throw exception; };
-            return this;
+            get { return new RuleMatcher(this); }
         }
 
         public void NumberOfTimes(int numberOfTimesToRepeat)
@@ -64,6 +48,12 @@ namespace FakeItEasy.Configuration
             Guard.IsInRange(numberOfTimesToRepeat, 1, int.MaxValue, "numberOfTimesToRepeat");
 
             this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimesToRepeat;
+        }
+
+        public virtual IAfterCallSpecifiedConfiguration Throws(Exception exception)
+        {
+            this.RuleBeingBuilt.Applicator = x => { throw exception; };
+            return this;
         }
 
         public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
@@ -114,21 +104,14 @@ namespace FakeItEasy.Configuration
         public class ReturnValueConfiguration<TMember>
             : IReturnValueArgumentValidationConfiguration<TMember>, ICallCollectionAndCallMatcherAccessor
         {
-            public RuleBuilder ParentConfiguration 
-            {
-                get; 
-                set; 
-            }
+            public RuleBuilder ParentConfiguration { get; set; }
 
             public ICallMatcher Matcher
             {
-                get
-                {
-                    return this.ParentConfiguration.Matcher;
-                }
+                get { return this.ParentConfiguration.Matcher; }
             }
 
-            public System.Collections.Generic.IEnumerable<ICompletedFakeObjectCall> Calls
+            public IEnumerable<ICompletedFakeObjectCall> Calls
             {
                 get { return this.ParentConfiguration.Calls; }
             }
@@ -162,7 +145,7 @@ namespace FakeItEasy.Configuration
             public IReturnValueConfiguration<TMember> WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
             {
                 Guard.AgainstNull(argumentsPredicate, "argumentsPredicate");
-                
+
                 this.ParentConfiguration.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
                 return this;
             }
@@ -176,7 +159,7 @@ namespace FakeItEasy.Configuration
         private class RuleMatcher
             : ICallMatcher
         {
-            private RuleBuilder builder;
+            private readonly RuleBuilder builder;
 
             public RuleMatcher(RuleBuilder builder)
             {

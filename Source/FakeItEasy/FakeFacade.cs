@@ -5,9 +5,9 @@ namespace FakeItEasy
 
     internal class FakeFacade
     {
-        private IFakeManagerAccessor fakeManagerAccessor;
-        private IFakeScopeFactory fakeScopeFactory;
-        private IFixtureInitializer fakeInitializer;
+        private readonly IFixtureInitializer fakeInitializer;
+        private readonly IFakeManagerAccessor fakeManagerAccessor;
+        private readonly IFakeScopeFactory fakeScopeFactory;
 
         public FakeFacade(IFakeManagerAccessor fakeManagerAccessor, IFakeScopeFactory fakeScopeFactory, IFixtureInitializer fakeInitializer)
         {

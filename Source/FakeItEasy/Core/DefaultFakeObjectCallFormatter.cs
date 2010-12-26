@@ -3,8 +3,8 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
-using System.Reflection;
 
     /// <summary>
     /// The default implementation of the IFakeObjectCallFormatter interface.
@@ -37,31 +37,9 @@ using System.Reflection;
 
             AppendMethodName(builder, call.Method);
 
-            AppendArgumentsList(builder, call);
+            this.AppendArgumentsList(builder, call);
 
             return builder.ToString();
-        }
-
-        private void AppendArgumentsList(StringBuilder builder, IFakeObjectCall call)
-        {
-            var allArguments = GetArgumentValueInfos(call);
-            var argumentsForArgumentList = GetArgumentsForArgumentsList(allArguments, call.Method);
-      
-            if (argumentsForArgumentList.Length > 0 || !IsPropertyGetterOrSetter(call.Method))
-            {
-                AppendArgumentListPrefix(builder, call.Method);
-
-                AppendArguments(builder, argumentsForArgumentList);
-
-                AppendArgumentListSuffix(builder, call.Method);
-            }
-
-
-            if (IsPropertySetter(call.Method))
-            {
-                builder.Append(" = ");
-                builder.Append(this.argumentValueFormatter.GetArgumentValueAsString(allArguments[allArguments.Length - 1].ArgumentValue));
-            }
         }
 
         private static ArgumentValueInfo[] GetArgumentsForArgumentsList(ArgumentValueInfo[] allArguments, MethodInfo method)
@@ -82,7 +60,7 @@ using System.Reflection;
             }
             else
             {
-                builder.Append("(");    
+                builder.Append("(");
             }
         }
 
@@ -145,23 +123,44 @@ using System.Reflection;
             }
         }
 
+        private static ArgumentValueInfo[] GetArgumentValueInfos(IFakeObjectCall call)
+        {
+            return
+                (from argument in call.Method.GetParameters().Zip(call.Arguments)
+                 select new ArgumentValueInfo
+                            {
+                                ArgumentName = argument.Item1.Name, 
+                                ArgumentValue = argument.Item2
+                            }).ToArray();
+        }
+
+        private void AppendArgumentsList(StringBuilder builder, IFakeObjectCall call)
+        {
+            var allArguments = GetArgumentValueInfos(call);
+            var argumentsForArgumentList = GetArgumentsForArgumentsList(allArguments, call.Method);
+
+            if (argumentsForArgumentList.Length > 0 || !IsPropertyGetterOrSetter(call.Method))
+            {
+                AppendArgumentListPrefix(builder, call.Method);
+
+                this.AppendArguments(builder, argumentsForArgumentList);
+
+                AppendArgumentListSuffix(builder, call.Method);
+            }
+
+            if (IsPropertySetter(call.Method))
+            {
+                builder.Append(" = ");
+                builder.Append(this.argumentValueFormatter.GetArgumentValueAsString(allArguments[allArguments.Length - 1].ArgumentValue));
+            }
+        }
+
         private void AppendArgumentValue(StringBuilder builder, ArgumentValueInfo argument)
         {
             builder
                 .Append(argument.ArgumentName)
                 .Append(": ")
                 .Append(this.GetArgumentValueAsString(argument.ArgumentValue));
-        }
-
-        private static ArgumentValueInfo[] GetArgumentValueInfos(IFakeObjectCall call)
-        {
-            return
-                (from argument in call.Method.GetParameters().Zip(call.Arguments)
-                 select new ArgumentValueInfo
-                 {
-                     ArgumentName = argument.Item1.Name,
-                     ArgumentValue = argument.Item2
-                 }).ToArray();
         }
 
         private string GetArgumentValueAsString(object argumentValue)
@@ -172,7 +171,7 @@ using System.Reflection;
         private void AppendArguments(StringBuilder builder, IEnumerable<ArgumentValueInfo> arguments)
         {
             var totalNumberOfArguments = arguments.Count();
-            int callIndex = 0;
+            var callIndex = 0;
             foreach (var argument in arguments)
             {
                 AppendArgumentSeparator(builder, callIndex, totalNumberOfArguments);
@@ -184,7 +183,7 @@ using System.Reflection;
         private struct ArgumentValueInfo
         {
             public object ArgumentValue { get; set; }
-            
+
             public string ArgumentName { get; set; }
         }
     }

@@ -25,7 +25,7 @@
         {
             Guard.AgainstNull(fakedObject, "fakedObject");
             Guard.AgainstNull(callSpecification, "callSpecification");
-            
+
             return fakedObject.Configure().CallsTo(callSpecification);
         }
 

@@ -9,12 +9,8 @@ namespace FakeItEasy.Expressions
         {
             this.ParentValidations = parentValidations;
         }
-        
-        internal ArgumentConstraintScope<T> ParentValidations
-        {
-            get;
-            private set;
-        }
+
+        internal ArgumentConstraintScope<T> ParentValidations { get; private set; }
 
         public override string ToString()
         {

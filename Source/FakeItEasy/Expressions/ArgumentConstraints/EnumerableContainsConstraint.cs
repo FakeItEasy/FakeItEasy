@@ -6,7 +6,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
     internal class EnumerableContainsConstraint<T>
         : ArgumentConstraint<T> where T : IEnumerable
     {
-        private object expectedValue;
+        private readonly object expectedValue;
 
         public EnumerableContainsConstraint(ArgumentConstraintScope<T> scope, object value)
             : base(scope)
@@ -16,10 +16,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
 
         protected override string Description
         {
-            get 
-            {
-                return "sequence that contains the value {0}".FormatInvariant(this.expectedValue);
-            }
+            get { return "sequence that contains the value {0}".FormatInvariant(this.expectedValue); }
         }
 
         protected override bool Evaluate(T value)

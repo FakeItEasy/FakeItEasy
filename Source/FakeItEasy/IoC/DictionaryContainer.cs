@@ -10,12 +10,12 @@ namespace FakeItEasy.IoC
     internal class DictionaryContainer
         : ServiceLocator
     {
-        private static Logger logger = Log.GetLogger<DictionaryContainer>();
+        private static readonly Logger logger = Log.GetLogger<DictionaryContainer>();
 
         /// <summary>
         /// The dictionary that stores the registered services.
         /// </summary>
-        private Dictionary<Type, Func<DictionaryContainer, object>> registeredServices;
+        private readonly Dictionary<Type, Func<DictionaryContainer, object>> registeredServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DictionaryContainer"/> class.
@@ -70,7 +70,7 @@ namespace FakeItEasy.IoC
 
             var singletonResolver = new SingletonResolver<T>(resolver);
 
-            this.Register<T>(singletonResolver.Resolve);
+            this.Register(singletonResolver.Resolve);
         }
 
         private class SingletonResolver<T>
@@ -87,6 +87,22 @@ namespace FakeItEasy.IoC
                 return this.state.Resolve(container);
             }
 
+            private class ResolvedState
+                : SingletonResolverState
+            {
+                private readonly T instance;
+
+                public ResolvedState(T instance)
+                {
+                    this.instance = instance;
+                }
+
+                public override T Resolve(DictionaryContainer container)
+                {
+                    return this.instance;
+                }
+            }
+
             private abstract class SingletonResolverState
             {
                 public abstract T Resolve(DictionaryContainer container);
@@ -95,8 +111,8 @@ namespace FakeItEasy.IoC
             private class UnresolvedState
                 : SingletonResolverState
             {
+                private readonly SingletonResolver<T> resolver;
                 private Func<DictionaryContainer, T> resolveFunction;
-                private SingletonResolver<T> resolver;
 
                 public UnresolvedState(SingletonResolver<T> resolver, Func<DictionaryContainer, T> resolveFunction)
                 {
@@ -106,10 +122,7 @@ namespace FakeItEasy.IoC
 
                 private bool SingletonHasNotBeenCreated
                 {
-                    get
-                    {
-                        return this.resolveFunction != null;
-                    }
+                    get { return this.resolveFunction != null; }
                 }
 
                 public override T Resolve(DictionaryContainer container)
@@ -130,22 +143,6 @@ namespace FakeItEasy.IoC
                 private void SignalThatSingletonHasBeenCreated()
                 {
                     this.resolveFunction = null;
-                }
-            }
-
-            private class ResolvedState
-                : SingletonResolverState
-            {
-                private T instance;
-
-                public ResolvedState(T instance)
-                {
-                    this.instance = instance;
-                }
-
-                public override T Resolve(DictionaryContainer container)
-                {
-                    return this.instance;
                 }
             }
         }

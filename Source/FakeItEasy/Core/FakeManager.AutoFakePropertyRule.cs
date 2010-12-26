@@ -11,12 +11,14 @@
         {
             public FakeManager FakeManager { get; set; }
 
+            public int? NumberOfTimesToCall
+            {
+                get { return null; }
+            }
+            
             private static IFakeAndDummyManager FakeAndDummyManager
             {
-                get
-                {
-                    return ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
-                }
+                get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
             }
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
@@ -27,10 +29,10 @@
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 var newRule = new CallRuleMetadata
-                {
-                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeManager) { Value = CreateFake(fakeObjectCall.Method.ReturnType) },
-                    CalledNumberOfTimes = 1
-                };
+                                  {
+                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeManager) { Value = CreateFake(fakeObjectCall.Method.ReturnType) }, 
+                                      CalledNumberOfTimes = 1
+                                  };
 
                 this.FakeManager.allUserRulesField.AddFirst(newRule);
                 newRule.Rule.Apply(fakeObjectCall);
@@ -45,11 +47,6 @@
             {
                 object result = null;
                 return FakeAndDummyManager.TryCreateFake(type, FakeOptions.Empty, out result);
-            }
-
-            public int? NumberOfTimesToCall
-            {
-                get { return null; }
             }
         }
     }

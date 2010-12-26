@@ -9,13 +9,13 @@ namespace FakeItEasy.SelfInitializedFakes
     /// </summary>
     [Serializable]
     public class RecordingException
-            : Exception
+        : Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RecordingException"/> class.
         /// </summary>
         public RecordingException()
-        { 
+        {
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace FakeItEasy.SelfInitializedFakes
         /// <param name="innerException">The inner exception.</param>
         public RecordingException(string message, Exception innerException)
             : base(message, innerException)
-        { 
+        {
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace FakeItEasy.SelfInitializedFakes
         /// </exception>
         protected RecordingException(SerializationInfo info, StreamingContext context)
             : base(info, context)
-        { 
+        {
         }
     }
 }

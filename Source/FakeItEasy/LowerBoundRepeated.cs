@@ -7,7 +7,7 @@ namespace FakeItEasy
     public class LowerBoundRepeated
         : Repeated
     {
-        private int expectedRepeat;
+        private readonly int expectedRepeat;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LowerBoundRepeated"/> class.
@@ -25,10 +25,7 @@ namespace FakeItEasy
         /// </summary>
         public Repeated Exactly
         {
-            get
-            {
-                return new HappenedNTimesExactly() { Parent = this };
-            }
+            get { return new HappenedNTimesExactly { Parent = this }; }
         }
 
         /// <summary>
@@ -37,20 +34,7 @@ namespace FakeItEasy
         /// </summary>
         public Repeated OrLess
         {
-            get
-            {
-                return new HappenedNTimesOrLess() { Parent = this };
-            }
-        }
-
-        /// <summary>
-        /// Gets whether the specified repeat is the expected repeat or higher.
-        /// </summary>
-        /// <param name="repeat">The repeat of a call.</param>
-        /// <returns>True if the repeat is a match.</returns>
-        internal override bool Matches(int repeat)
-        {
-            return repeat >= this.expectedRepeat;
+            get { return new HappenedNTimesOrLess { Parent = this }; }
         }
 
         /// <summary>
@@ -65,6 +49,16 @@ namespace FakeItEasy
             }
 
             return "#{0} times".FormatInvariant(this.expectedRepeat);
+        }
+
+        /// <summary>
+        /// Gets whether the specified repeat is the expected repeat or higher.
+        /// </summary>
+        /// <param name="repeat">The repeat of a call.</param>
+        /// <returns>True if the repeat is a match.</returns>
+        internal override bool Matches(int repeat)
+        {
+            return repeat >= this.expectedRepeat;
         }
 
         private string GetDescriptionForRepeatThatsLessThanThree()
@@ -82,36 +76,35 @@ namespace FakeItEasy
             return "never";
         }
 
-
         private class HappenedNTimesExactly
             : Repeated
         {
-            public LowerBoundRepeated Parent;
-
-            internal override bool Matches(int repeat)
-            {
-                return this.Parent.expectedRepeat == repeat;
-            }
+            public LowerBoundRepeated Parent { get; set; }
 
             public override string ToString()
             {
                 return "exactly {0}".FormatInvariant(this.Parent.ToString());
+            }
+
+            internal override bool Matches(int repeat)
+            {
+                return this.Parent.expectedRepeat == repeat;
             }
         }
 
         private class HappenedNTimesOrLess
             : Repeated
         {
-            public LowerBoundRepeated Parent;
-
-            internal override bool Matches(int repeat)
-            {
-                return repeat <= this.Parent.expectedRepeat;
-            }
+            public LowerBoundRepeated Parent { get; set; }
 
             public override string ToString()
             {
                 return "{0} or less".FormatInvariant(this.Parent.ToString());
+            }
+
+            internal override bool Matches(int repeat)
+            {
+                return repeat <= this.Parent.expectedRepeat;
             }
         }
     }

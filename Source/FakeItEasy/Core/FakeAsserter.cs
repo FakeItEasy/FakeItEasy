@@ -6,29 +6,37 @@ namespace FakeItEasy.Core
     using System.IO;
     using System.Linq;
 
-    internal class FakeAsserter : FakeItEasy.Core.IFakeAsserter
+    internal class FakeAsserter : IFakeAsserter
     {
-        protected IEnumerable<IFakeObjectCall> calls;
-        private CallWriter callWriter;
+        private readonly CallWriter callWriter;
 
-        public delegate IFakeAsserter Factory(IEnumerable<IFakeObjectCall> calls);
-        
         public FakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
         {
-            this.calls = calls;
+            this.Calls = calls;
             this.callWriter = callWriter;
         }
 
+        public delegate IFakeAsserter Factory(IEnumerable<IFakeObjectCall> calls);
+
+        protected IEnumerable<IFakeObjectCall> Calls { get; set; }
+
         public virtual void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
         {
-            var repeat = this.calls.Count(callPredicate);
+            var repeat = this.Calls.Count(callPredicate);
 
             if (!repeatPredicate(repeat))
             {
-                var message = CreateExceptionMessage(callDescription, repeatDescription, repeat);
+                var message = this.CreateExceptionMessage(callDescription, repeatDescription, repeat);
 
                 throw new ExpectationException(message);
             }
+        }
+
+        private static void AppendCallDescription(string callDescription, StringWriter writer)
+        {
+            writer.WriteLine();
+            writer.WriteLine("  Assertion failed for the following call:");
+            writer.WriteLine("    {0}", callDescription);
         }
 
         private string CreateExceptionMessage(string callDescription, string repeatDescription, int repeat)
@@ -44,18 +52,11 @@ namespace FakeItEasy.Core
             return messageWriter.GetStringBuilder().ToString();
         }
 
-        private static void AppendCallDescription(string callDescription, StringWriter writer)
-        {
-            writer.WriteLine();
-            writer.WriteLine("  Assertion failed for the following call:");
-            writer.WriteLine("    {0}", callDescription);
-        }
-
         private void AppendExpectation(string repeatDescription, int repeat, StringWriter writer)
         {
             writer.Write("  Expected to find it {0} ", repeatDescription);
 
-            if (this.calls.Any())
+            if (this.Calls.Any())
             {
                 writer.WriteLine("but found it #{0} times among the calls:", repeat);
             }
@@ -67,7 +68,7 @@ namespace FakeItEasy.Core
 
         private void AppendCallList(StringWriter writer)
         {
-            this.callWriter.WriteCalls(4, this.calls, writer);
+            this.callWriter.WriteCalls(4, this.Calls, writer);
         }
     }
 }

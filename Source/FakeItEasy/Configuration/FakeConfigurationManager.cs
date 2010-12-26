@@ -9,10 +9,10 @@ namespace FakeItEasy.Configuration
     internal class FakeConfigurationManager
         : IFakeConfigurationManager
     {
-        private IConfigurationFactory configurationFactory;
-        private IExpressionParser expressionParser;
-        private ExpressionCallRule.Factory ruleFactory;
-        private IProxyGenerator proxyGenerator;
+        private readonly IConfigurationFactory configurationFactory;
+        private readonly IExpressionParser expressionParser;
+        private readonly IProxyGenerator proxyGenerator;
+        private readonly ExpressionCallRule.Factory ruleFactory;
 
         public FakeConfigurationManager(IConfigurationFactory configurationFactory, IExpressionParser parser, ExpressionCallRule.Factory callRuleFactory, IProxyGenerator proxyGenerator)
         {

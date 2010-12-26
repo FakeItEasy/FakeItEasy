@@ -5,16 +5,21 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
     internal class EqualityArgumentConstraint
         : IArgumentConstraint
     {
-        private object expectedValue;
+        private readonly object expectedValue;
 
         public EqualityArgumentConstraint(object expectedValue)
         {
             this.expectedValue = expectedValue;
         }
 
+        public string ConstraintDescription
+        {
+            get { return this.ToString(); }
+        }
+
         public bool IsValid(object argument)
         {
-            return object.Equals(this.expectedValue, argument);
+            return Equals(this.expectedValue, argument);
         }
 
         public override string ToString()
@@ -32,41 +37,27 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
 
             return this.expectedValue.ToString();
         }
-
-        public string ConstraintDescription
-        {
-            get 
-            {
-                return this.ToString();
-            }
-        }
     }
 
     internal class EqualityArgumentConstraint<T>
         : ArgumentConstraint<T>
     {
-        private T expectedValue;
+        private readonly T expectedValue;
 
         public EqualityArgumentConstraint(ArgumentConstraintScope<T> scope, T expectedValue)
             : base(scope)
         {
-            this.expectedValue = expectedValue;    
+            this.expectedValue = expectedValue;
         }
 
         protected override string Description
         {
-            get 
-            {
-
-                return this.expectedValue != null ? this.expectedValue.ToString() : "NULL";
-            }
+            get { return this.expectedValue != null ? this.expectedValue.ToString() : "NULL"; }
         }
 
         protected override bool Evaluate(T value)
         {
-            return object.Equals(this.expectedValue, value);
+            return Equals(this.expectedValue, value);
         }
     }
-
-
 }

@@ -6,15 +6,15 @@ namespace FakeItEasy.Core
     internal interface IArgumentConstraint
     {
         /// <summary>
+        /// Gets a string describing the argument constraint.
+        /// </summary>
+        string ConstraintDescription { get; }
+
+        /// <summary>
         /// Gets whether the argument is valid.
         /// </summary>
         /// <param name="argument">The argument to validate.</param>
         /// <returns>True if the argument is valid.</returns>
         bool IsValid(object argument);
-
-        /// <summary>
-        /// Gets a string describing the argument constraint.
-        /// </summary>
-        string ConstraintDescription { get; }
     }
 }

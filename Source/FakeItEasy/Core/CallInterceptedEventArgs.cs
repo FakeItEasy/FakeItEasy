@@ -25,10 +25,6 @@ namespace FakeItEasy.Core
         /// Gets the call that was intercepted.
         /// </summary>
         /// <value>The call.</value>
-        public IWritableFakeObjectCall Call
-        {
-            get;
-            private set;
-        }
+        public IWritableFakeObjectCall Call { get; private set; }
     }
 }

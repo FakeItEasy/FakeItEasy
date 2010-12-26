@@ -18,7 +18,7 @@ namespace FakeItEasy.Expressions
         public virtual IArgumentConstraint GetArgumentConstraint(Expression argument)
         {
             IArgumentConstraint result = null;
-            
+
             if (!TryGetArgumentConstraint(argument, out result))
             {
                 result = new EqualityArgumentConstraint(Helpers.GetValueProducedByExpression(argument));
@@ -63,15 +63,15 @@ namespace FakeItEasy.Expressions
             A<string>.That.Not.Contains("test");
             return
                 member.Member.Name == "Argument"
-                && member.Member.DeclaringType.GetGenericTypeDefinition().Equals(typeof(ArgumentConstraint<>));
+                    && member.Member.DeclaringType.GetGenericTypeDefinition().Equals(typeof(ArgumentConstraint<>));
         }
 
         private static bool IsArgumentConstraintConversionMethod(MethodInfo method)
         {
             return
                 method != null
-                && method.Name.Equals("op_Implicit")
-                && method.DeclaringType.GetGenericTypeDefinition().Equals(typeof(ArgumentConstraint<>));
+                    && method.Name.Equals("op_Implicit")
+                        && method.DeclaringType.GetGenericTypeDefinition().Equals(typeof(ArgumentConstraint<>));
         }
     }
 }

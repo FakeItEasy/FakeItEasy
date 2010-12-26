@@ -13,7 +13,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     internal class CastleInvocationCallAdapter
         : IWritableFakeObjectCall, ICompletedFakeObjectCall
     {
-        private IInvocation invocation;
+        private readonly IInvocation invocation;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CastleInvocationCallAdapter"/> class.
@@ -29,21 +29,12 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         }
 
         /// <summary>
-        /// The method that's called.
+        /// A human readable description of the call.
         /// </summary>
-        public MethodInfo Method
+        /// <value></value>
+        public string Description
         {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// The arguments used in the call.
-        /// </summary>
-        public ArgumentCollection Arguments
-        {
-            get;
-            private set;
+            get { return this.GetDescription(); }
         }
 
         /// <summary>
@@ -55,20 +46,21 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         }
 
         /// <summary>
+        /// The method that's called.
+        /// </summary>
+        public MethodInfo Method { get; private set; }
+
+        /// <summary>
+        /// The arguments used in the call.
+        /// </summary>
+        public ArgumentCollection Arguments { get; private set; }
+
+        /// <summary>
         /// The faked object the call is performed on.
         /// </summary>
         public object FakedObject
         {
             get { return this.invocation.Proxy; }
-        }
-
-        /// <summary>
-        /// A human readable description of the call.
-        /// </summary>
-        /// <value></value>
-        public string Description
-        {
-            get { return this.GetDescription(); }
         }
 
         /// <summary>

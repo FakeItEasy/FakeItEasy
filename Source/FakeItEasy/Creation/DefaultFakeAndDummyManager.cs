@@ -11,9 +11,9 @@ namespace FakeItEasy.Creation
     {
         private static readonly Logger logger = Log.GetLogger<DefaultFakeAndDummyManager>();
 
-        private IDummyValueCreationSession session;
-        private FakeObjectCreator fakeCreator;
-        private IFakeWrapperConfigurer wrapperConfigurer;
+        private readonly FakeObjectCreator fakeCreator;
+        private readonly IDummyValueCreationSession session;
+        private readonly IFakeWrapperConfigurer wrapperConfigurer;
 
         public DefaultFakeAndDummyManager(IDummyValueCreationSession session, FakeObjectCreator fakeCreator, IFakeWrapperConfigurer wrapperConfigurer)
         {

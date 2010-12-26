@@ -2,12 +2,12 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using FakeAsserterFactory = System.Func<System.Collections.Generic.IEnumerable<FakeItEasy.Core.IFakeObjectCall>, FakeItEasy.Core.FakeAsserter>;
+    using FakeAsserterFactory = System.Func<System.Collections.Generic.IEnumerable<IFakeObjectCall>, FakeAsserter>;
 
     internal class OrderedFakeAsserterFactory
     {
-        private FakeAsserterFactory asserterFactory;
-        private OrderedFakeAsserter orderedAsserter;
+        private readonly FakeAsserterFactory asserterFactory;
+        private readonly OrderedFakeAsserter orderedAsserter;
 
         public OrderedFakeAsserterFactory(FakeAsserterFactory asserterFactory, OrderedFakeAsserter orderedAsserter)
         {
@@ -17,18 +17,19 @@ namespace FakeItEasy.Core
 
         public IFakeAsserter CreateAsserter(IEnumerable<IFakeObjectCall> calls)
         {
-            return new CompositeAsserter 
-            {
-                Asserter = this.asserterFactory(calls),
-                OrderedAsserter = this.orderedAsserter
-            };
+            return new CompositeAsserter
+                       {
+                           Asserter = this.asserterFactory(calls), 
+                           OrderedAsserter = this.orderedAsserter
+                       };
         }
 
         private class CompositeAsserter
             : IFakeAsserter
         {
-            public FakeAsserter Asserter;
-            public OrderedFakeAsserter OrderedAsserter;
+            public FakeAsserter Asserter { get; set; }
+
+            public OrderedFakeAsserter OrderedAsserter { get; set; }
 
             public void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
             {
@@ -36,6 +37,5 @@ namespace FakeItEasy.Core
                 this.OrderedAsserter.AssertWasCalled(callPredicate, callDescription, repeatPredicate, repeatDescription);
             }
         }
-
     }
 }

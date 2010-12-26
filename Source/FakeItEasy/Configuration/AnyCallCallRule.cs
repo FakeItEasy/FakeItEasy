@@ -13,27 +13,11 @@ namespace FakeItEasy.Configuration
             this.argumentsPredicate = x => true;
         }
 
-        public Type ApplicableToMembersWithReturnType
-        {
-            get; 
-            set;
-        }
-
-        public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
-        {
-            this.argumentsPredicate = argumentsPredicate;   
-        }
-        
-        protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
-        {
-            return 
-                this.argumentsPredicate(fakeObjectCall.Arguments) &&        
-                (this.ApplicableToMembersWithReturnType == null || this.ApplicableToMembersWithReturnType.Equals(fakeObjectCall.Method.ReturnType));
-        }
+        public Type ApplicableToMembersWithReturnType { get; set; }
 
         public override string DescriptionOfValidCall
         {
-            get 
+            get
             {
                 if (this.ApplicableToMembersWithReturnType != null)
                 {
@@ -42,6 +26,18 @@ namespace FakeItEasy.Configuration
 
                 return "Any call made to the fake object.";
             }
+        }
+
+        public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
+        {
+            this.argumentsPredicate = argumentsPredicate;
+        }
+
+        protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
+        {
+            return
+                this.argumentsPredicate(fakeObjectCall.Arguments) &&
+                    (this.ApplicableToMembersWithReturnType == null || this.ApplicableToMembersWithReturnType.Equals(fakeObjectCall.Method.ReturnType));
         }
     }
 }

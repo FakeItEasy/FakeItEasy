@@ -15,7 +15,7 @@ namespace FakeItEasy.Configuration
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
             this.Applicator = x => { };
         }
-       
+
         /// <summary>
         /// An action that is called by the Apply method to apply this
         /// rule to a fake object call.
@@ -29,32 +29,26 @@ namespace FakeItEasy.Configuration
         public virtual ICollection<Action<IFakeObjectCall>> Actions { get; private set; }
 
         /// <summary>
-        /// The number of times the configured rule should be used.
-        /// </summary>
-        public virtual int? NumberOfTimesToCall
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Values to apply to output and reference variables.
         /// </summary>
-        public virtual ICollection<object> OutAndRefParametersValues 
-        {
-            get; 
-            set; 
-        }
+        public virtual ICollection<object> OutAndRefParametersValues { get; set; }
 
         /// <summary>
         /// Gets or sets wether the base mehtod of the fake object call should be
         /// called when the fake object call is made.
         /// </summary>
-        public virtual bool CallBaseMethod
-        {
-            get;
-            set;
-        }
+        public virtual bool CallBaseMethod { get; set; }
+
+        /// <summary>
+        /// The number of times the configured rule should be used.
+        /// </summary>
+        public virtual int? NumberOfTimesToCall { get; set; }
+
+        /// <summary>
+        /// Gets a description of calls the rule is applicable to.
+        /// </summary>
+        /// <value></value>
+        public abstract string DescriptionOfValidCall { get; }
 
         public virtual void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
@@ -71,7 +65,7 @@ namespace FakeItEasy.Configuration
                 fakeObjectCall.CallBaseMethod();
             }
         }
-      
+
         /// <summary>
         /// Gets if this rule is applicable to the specified call.
         /// </summary>
@@ -91,7 +85,7 @@ namespace FakeItEasy.Configuration
             var indexes = new List<int>();
 
             var arguments = fakeObjectCall.Method.GetParameters();
-            for (int i = 0; i < arguments.Length; i++)
+            for (var i = 0; i < arguments.Length; i++)
             {
                 if (arguments[i].ParameterType.IsByRef)
                 {
@@ -120,15 +114,6 @@ namespace FakeItEasy.Configuration
             {
                 fakeObjectCall.SetArgumentValue(argument.Item1, argument.Item2);
             }
-        }
-
-        /// <summary>
-        /// Gets a description of calls the rule is applicable to.
-        /// </summary>
-        /// <value></value>
-        public abstract string DescriptionOfValidCall
-        {
-            get;
         }
     }
 }

@@ -2,19 +2,19 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;
-    using System.Diagnostics.CodeAnalysis;
-    
+
     internal class DummyValueCreationSession
         : IDummyValueCreationSession
     {
         private static readonly Logger logger = Log.GetLogger<DummyValueCreationSession>();
 
-        private HashSet<Type> isInProcessOfResolving;
-        private ResolveStrategy[] availableStrategies;
-        private Dictionary<Type, ResolveStrategy> strategyToUseForType;
+        private readonly ResolveStrategy[] availableStrategies;
+        private readonly HashSet<Type> isInProcessOfResolving;
+        private readonly Dictionary<Type, ResolveStrategy> strategyToUseForType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DummyValueCreationSession"/> class.
@@ -26,13 +26,13 @@
             this.isInProcessOfResolving = new HashSet<Type>();
             this.strategyToUseForType = new Dictionary<Type, ResolveStrategy>();
 
-            this.availableStrategies = new ResolveStrategy[] 
-            {
-                new ResolveFromContainerSrategy { Container = container },
-                new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this },
-                new ResolveByActivatingValueTypeStrategy(),
-                new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy { Session = this }
-            };
+            this.availableStrategies = new ResolveStrategy[]
+                                           {
+                                               new ResolveFromContainerSrategy { Container = container }, 
+                                               new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this }, 
+                                               new ResolveByActivatingValueTypeStrategy(), 
+                                               new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy { Session = this }
+                                           };
         }
 
         public bool TryResolveDummyValue(Type typeOfDummy, out object result)
@@ -78,7 +78,7 @@
                 return cachedStrategy.TryCreateDummyValue(typeOfDummy, out result);
             }
 
-            for (int i = 0; i < this.availableStrategies.Length; i++)
+            for (var i = 0; i < this.availableStrategies.Length; i++)
             {
                 if (this.availableStrategies[i].TryCreateDummyValue(typeOfDummy, out result))
                 {
@@ -94,33 +94,6 @@
         }
 
         #region Strategies
-        private abstract class ResolveStrategy
-        {
-            public abstract bool TryCreateDummyValue(Type typeOfDummy, out object result);
-        }
-
-        private class ResolveFromContainerSrategy
-            : ResolveStrategy
-        {
-            public IFakeObjectContainer Container;
-
-            public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
-            {
-                return this.Container.TryCreateDummyObject(typeOfDummy, out result);
-            }
-        }
-
-        private class ResolveByCreatingFakeStrategy
-            : ResolveStrategy
-        {
-            public IFakeObjectCreator FakeCreator;
-            public DummyValueCreationSession Session;
-
-            public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
-            {
-                return this.FakeCreator.TryCreateFakeObject(typeOfDummy, this.Session, out result);
-            }
-        }
 
         private class ResolveByActivatingValueTypeStrategy
             : ResolveStrategy
@@ -138,11 +111,23 @@
             }
         }
 
+        private class ResolveByCreatingFakeStrategy
+            : ResolveStrategy
+        {
+            public IFakeObjectCreator FakeCreator { get; set; }
+
+            public DummyValueCreationSession Session { get; set; }
+
+            public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
+            {
+                return this.FakeCreator.TryCreateFakeObject(typeOfDummy, this.Session, out result);
+            }
+        }
+
         private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy
             : ResolveStrategy
         {
-            public DummyValueCreationSession Session;
-
+            public DummyValueCreationSession Session { get; set; }
 
             [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try method.")]
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
@@ -200,6 +185,22 @@
             }
         }
 
+        private class ResolveFromContainerSrategy
+            : ResolveStrategy
+        {
+            public IFakeObjectContainer Container { get; set; }
+
+            public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
+            {
+                return this.Container.TryCreateDummyObject(typeOfDummy, out result);
+            }
+        }
+
+        private abstract class ResolveStrategy
+        {
+            public abstract bool TryCreateDummyValue(Type typeOfDummy, out object result);
+        }
+
         private class UnableToResolveStrategy
             : ResolveStrategy
         {
@@ -209,6 +210,7 @@
                 return false;
             }
         }
-        #endregion
+
+        #endregion Strategies
     }
 }

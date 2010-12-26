@@ -1,5 +1,6 @@
 namespace FakeItEasy.Expressions
 {
+    using System;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -20,7 +21,7 @@ namespace FakeItEasy.Expressions
             Guard.AgainstNull(expressionMatcher, "expressionMatcher");
 
             this.ExpressionMatcher = expressionMatcher;
-        } 
+        }
         
         /// <summary>
         /// Handles the instantiation of ExpressionCallRule instance.
@@ -28,12 +29,17 @@ namespace FakeItEasy.Expressions
         /// <param name="callSpecification">An expression specifying the call.</param>
         /// <returns>A rule instance.</returns>
         public delegate ExpressionCallRule Factory(LambdaExpression callSpecification);
-        
+
+        public override string DescriptionOfValidCall
+        {
+            get { return this.ExpressionMatcher.DescriptionOfMatchingCall; }
+        }
+
         /// <summary>
         /// Gets the expression matcher used by this rule.
         /// </summary>
         private ExpressionCallMatcher ExpressionMatcher { get; set; }
-        
+
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
@@ -42,10 +48,10 @@ namespace FakeItEasy.Expressions
         /// </returns>
         public override string ToString()
         {
-            return this.DescriptionOfValidCall;   
+            return this.DescriptionOfValidCall;
         }
 
-        public override void UsePredicateToValidateArguments(System.Func<ArgumentCollection, bool> argumentsPredicate)
+        public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
         {
             this.ExpressionMatcher.UsePredicateToValidateArguments(argumentsPredicate);
         }
@@ -53,14 +59,6 @@ namespace FakeItEasy.Expressions
         protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
             return this.ExpressionMatcher.Matches(fakeObjectCall);
-        }
-
-        public override string DescriptionOfValidCall
-        {
-            get 
-            {
-                return this.ExpressionMatcher.DescriptionOfMatchingCall;
-            }
         }
     }
 }

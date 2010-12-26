@@ -6,10 +6,7 @@ namespace FakeItEasy.Creation
     {
         public bool WasSuccessfullyResolved
         {
-            get
-            {
-                return !this.Arguments.Any(x => !x.WasResolved);
-            }
+            get { return !this.Arguments.Any(x => !x.WasResolved); }
         }
 
         public ResolvedArgument[] Arguments { get; set; }

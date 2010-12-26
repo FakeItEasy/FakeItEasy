@@ -5,7 +5,7 @@ namespace FakeItEasy.Configuration
     /// allows the use to specify validations for arguments.
     /// </summary>
     public interface IVoidArgumentValidationConfiguration
-        : IVoidConfiguration,
+        : IVoidConfiguration, 
           IArgumentValidationConfiguration<IVoidConfiguration>
     {
     }

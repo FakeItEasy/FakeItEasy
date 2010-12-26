@@ -15,9 +15,9 @@
     public class RecordingManager
         : ISelfInitializingFakeRecorder
     {
-        private ICallStorage storage;
-        private Queue<CallDataMetadata> callQueue;
-        private List<CallDataMetadata> recordedCalls;
+        private readonly Queue<CallDataMetadata> callQueue;
+        private readonly List<CallDataMetadata> recordedCalls;
+        private readonly ICallStorage storage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecordingManager"/> class.
@@ -28,12 +28,12 @@
             this.storage = storage;
 
             var recordedCalls = storage.Load();
-            
+
             this.IsRecording = recordedCalls == null;
             this.callQueue = CreateCallsList(recordedCalls);
             this.recordedCalls = new List<CallDataMetadata>(this.callQueue);
         }
-        
+
         /// <summary>
         /// Represents a factory responsible for creating recording manager
         /// instances.
@@ -46,12 +46,8 @@
         /// Gets a value indicating if the recorder is currently recording.
         /// </summary>
         /// <value></value>
-        public bool IsRecording
-        {
-            get;
-            private set;
-        }
- 
+        public bool IsRecording { get; private set; }
+
         /// <summary>
         /// Applies the call if the call has been recorded.
         /// </summary>
@@ -161,6 +157,6 @@
                     .Append(this.RecordedCall.ReturnValue)
                     .ToString();
             }
-        } 
+        }
     }
 }

@@ -10,13 +10,13 @@
         {
             return x.Method.Equals(y.Method)
                 && x.FakedObject.Equals(y.FakedObject)
-                && x.Arguments.SequenceEqual(y.Arguments);
+                    && x.Arguments.SequenceEqual(y.Arguments);
         }
 
         public int GetHashCode(IFakeObjectCall obj)
         {
             var result = obj.Method.GetHashCode()
-                   ^ obj.FakedObject.GetHashCode();
+                ^ obj.FakedObject.GetHashCode();
 
             foreach (var argument in obj.Arguments)
             {

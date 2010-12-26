@@ -10,12 +10,13 @@
         private class ObjectMemberRule
             : IFakeObjectCallRule
         {
-            private static readonly List<RuntimeMethodHandle> objectMethodsMethodHandles = new List<RuntimeMethodHandle>()
-            {
-                typeof(object).GetMethod("Equals", new[] { typeof(object) }).MethodHandle,
-                typeof(object).GetMethod("ToString", new Type[] { }).MethodHandle,
-                typeof(object).GetMethod("GetHashCode", new Type[] { }).MethodHandle
-            };
+            private static readonly List<RuntimeMethodHandle> objectMethodsMethodHandles =
+                new List<RuntimeMethodHandle>
+                    {
+                        typeof(object).GetMethod("Equals", new[] { typeof(object) }).MethodHandle, 
+                        typeof(object).GetMethod("ToString", new Type[] { }).MethodHandle, 
+                        typeof(object).GetMethod("GetHashCode", new Type[] { }).MethodHandle
+                    };
 
             public FakeManager FakeManager { get; set; }
 
@@ -36,7 +37,7 @@
                     return;
                 }
 
-                if (TryHandleGetHashCode(fakeObjectCall))
+                if (this.TryHandleGetHashCode(fakeObjectCall))
                 {
                     return;
                 }
@@ -51,7 +52,7 @@
             {
                 return objectMethodsMethodHandles.Contains(fakeObjectCall.Method.MethodHandle);
             }
-            
+
             private bool TryHandleGetHashCode(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 if (!fakeObjectCall.Method.MethodHandle.Equals(objectMethodsMethodHandles[2]))
@@ -84,6 +85,7 @@
                 }
 
                 var argument = fakeObjectCall.Arguments[0] as ITaggable;
+
                 if (argument != null)
                 {
                     fakeObjectCall.SetReturnValue(argument.Tag.Equals(this.FakeManager));

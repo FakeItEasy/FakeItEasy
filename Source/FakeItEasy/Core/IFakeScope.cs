@@ -3,7 +3,7 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    
+
     /// <summary>
     /// Provides access to all calls made to fake objects within a scope.
     /// Scopes calls so that only calls made within the scope are visible.
@@ -12,6 +12,5 @@ namespace FakeItEasy.Core
     public interface IFakeScope
         : IDisposable, IEnumerable<ICompletedFakeObjectCall>
     {
-
     }
 }

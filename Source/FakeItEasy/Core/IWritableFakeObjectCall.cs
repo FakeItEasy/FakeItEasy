@@ -1,6 +1,5 @@
 namespace FakeItEasy.Core
 {
-
     /// <summary>
     /// Represents a fake object call that can be edited.
     /// </summary>

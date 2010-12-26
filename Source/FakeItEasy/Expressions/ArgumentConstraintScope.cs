@@ -2,7 +2,7 @@ namespace FakeItEasy.Expressions
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    
+
     /// <summary>
     /// Represents a scope for  arguments constraints when they're chained together, enables the logical operators
     /// and and not.
@@ -17,10 +17,7 @@ namespace FakeItEasy.Expressions
         /// </summary>
         public ArgumentConstraintScope<T> Not
         {
-            get
-            {
-                return new NotArgumentConstraintScope<T>(this);
-            }
+            get { return new NotArgumentConstraintScope<T>(this); }
         }
 
         /// <summary>
@@ -29,10 +26,7 @@ namespace FakeItEasy.Expressions
         /// </summary>
         public virtual string Description
         {
-            get
-            {
-                return this.ToString();
-            }
+            get { return this.ToString(); }
         }
 
         /// <summary>

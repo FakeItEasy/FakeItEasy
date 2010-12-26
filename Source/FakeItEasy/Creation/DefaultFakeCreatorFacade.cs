@@ -5,6 +5,7 @@ namespace FakeItEasy.Creation
     using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Core;
+    using FakeItEasy.SelfInitializedFakes;
 
     /// <summary>
     /// Default implementation ofthe IFakeCreator-interface.
@@ -12,7 +13,7 @@ namespace FakeItEasy.Creation
     internal class DefaultFakeCreatorFacade
         : IFakeCreatorFacade
     {
-        private IFakeAndDummyManager fakeAndDummyManager;
+        private readonly IFakeAndDummyManager fakeAndDummyManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultFakeCreatorFacade"/> class.
@@ -34,11 +35,10 @@ namespace FakeItEasy.Creation
         {
             Guard.AgainstNull(options, "options");
 
-            var fakeOptions = BuildFakeOptions<T>(options);
+            var fakeOptions = BuildFakeOptions(options);
 
             return (T)this.fakeAndDummyManager.CreateFake(typeof(T), fakeOptions);
         }
-
 
         /// <summary>
         /// Creates a collection of fakes of the specified type.
@@ -52,7 +52,7 @@ namespace FakeItEasy.Creation
         {
             var result = new List<T>();
 
-            for (int i = 0; i < numberOfFakes; i++)
+            for (var i = 0; i < numberOfFakes; i++)
             {
                 result.Add(this.CreateFake<T>(x => { }));
             }
@@ -83,7 +83,7 @@ namespace FakeItEasy.Creation
         private class FakeOptionsBuilder<T>
             : IFakeOptionsBuilderForWrappers<T>
         {
-            private List<Type> additionalInterfacesToImpelement;
+            private readonly List<Type> additionalInterfacesToImpelement;
 
             public FakeOptionsBuilder()
             {
@@ -95,7 +95,7 @@ namespace FakeItEasy.Creation
 
             public FakeOptions Options { get; private set; }
 
-            public IFakeOptionsBuilder<T> WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor)
+            public IFakeOptionsBuilder<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
             {
                 this.Options.ArgumentsForConstructor = argumentsForConstructor;
                 return this;
@@ -119,7 +119,7 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
-            public IFakeOptionsBuilder<T> RecordedBy(FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder)
+            public IFakeOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
             {
                 this.Options.SelfInitializedFakeRecorder = recorder;
                 return this;
