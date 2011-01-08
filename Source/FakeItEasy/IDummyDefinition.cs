@@ -1,12 +1,10 @@
 namespace FakeItEasy
 {
     using System;
-    using System.ComponentModel.Composition;
-
+    
     /// <summary>
     /// Represents a definition of how dummies of the specified type should be created.
     /// </summary>
-    [InheritedExport]
     public interface IDummyDefinition
     {
         /// <summary>

@@ -62,7 +62,6 @@
       <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" />
@@ -71,6 +70,7 @@
     <Compile Include="Any.cs" />
     <Compile Include="ArgumentValueFormatter.cs" />
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
+    <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Core\ArgumentValueFormatter.cs" />
     <Compile Include="Core\FakeCallEqualityComparer.cs" />
     <Compile Include="Core\FakeScopeFactory.cs" />
@@ -79,6 +79,8 @@
     </Compile>
     <Compile Include="Core\IFakeScopeFactory.cs" />
     <Compile Include="Core\IFixtureInitializer.cs" />
+    <Compile Include="Core\ITypeCatalogue.cs" />
+    <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
     <Compile Include="FakeAttribute.cs" />
     <Compile Include="IArgumentValueFormatter.cs" />
     <Compile Include="Creation\DefaultFakeCreatorFacade.cs" />
@@ -248,6 +250,7 @@
     <Compile Include="NextCall.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManager.cs" />
     <Compile Include="Configuration\RecordingRuleBuilder.cs" />
+    <Compile Include="Tuple.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">
