@@ -64,7 +64,7 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_create_asserter_and_call_it_with_the_recorded_call_when_IsAssertion_is_set_to_true_on_recorded_rule()
         {
             this.recordedRule.IsAssertion = true;
-            this.recordedRule.RepeatConstraint = Repeated.Once;
+            this.recordedRule.RepeatConstraint = Repeated.AtLeast.Once;
 
             var rule = this.CreateRule();
 
@@ -80,7 +80,7 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_create_asserter_and_call_it_with_call_predicate_that_invokes_IsApplicableTo_on_the_recorded_rule()
         {
             this.recordedRule.IsAssertion = true;
-            this.recordedRule.RepeatConstraint = Repeated.Once;
+            this.recordedRule.RepeatConstraint = Repeated.AtLeast.Once;
 
             var rule = this.CreateRule();
 
@@ -94,13 +94,13 @@ namespace FakeItEasy.Tests.Configuration
 
             callPredicate.Invoke(call);
 
-            A.CallTo(() => this.recordedRule.IsApplicableTo(call)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => this.recordedRule.IsApplicableTo(call)).MustHaveHappened();
         }
 
         [Test]
         public void Apply_should_call_asserter_with_repeat_predicate_from_recorded_rule()
         {
-            var repeat = Repeated.Once;
+            var repeat = Repeated.AtLeast.Once;
             this.recordedRule.IsAssertion = true;
             this.recordedRule.RepeatConstraint = repeat;
 
@@ -129,7 +129,7 @@ namespace FakeItEasy.Tests.Configuration
             this.fakedObject.Baz();
 
             this.recordedRule.IsAssertion = true;
-            this.recordedRule.RepeatConstraint = Repeated.Once;
+            this.recordedRule.RepeatConstraint = Repeated.AtLeast.Once;
 
             var rule = this.CreateRule();
 

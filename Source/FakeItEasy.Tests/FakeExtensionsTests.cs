@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests
 
             repeatConfig.Once();
 
-            A.CallTo(() => repeatConfig.NumberOfTimes(1)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => repeatConfig.NumberOfTimes(1)).MustHaveHappened();
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace FakeItEasy.Tests
             
             repeatConfig.Twice();
             
-            A.CallTo(() => repeatConfig.NumberOfTimes(2)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => repeatConfig.NumberOfTimes(2)).MustHaveHappened();
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace FakeItEasy.Tests
             }
 
             // Assert
-            A.CallTo(() => factory.CreateCallMathcer(callSpecification)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => factory.CreateCallMathcer(callSpecification)).MustHaveHappened();
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace FakeItEasy.Tests
             configuration.MustHaveHappened();
 
             // Assert
-            A.CallTo(() => configuration.MustHaveHappened(A<Repeated>.That.Matches(x => x.Matches(1)))).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => configuration.MustHaveHappened(A<Repeated>.That.Matches(x => x.Matches(1)))).MustHaveHappened();
         }
 
         [Test]

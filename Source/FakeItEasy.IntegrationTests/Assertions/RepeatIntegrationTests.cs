@@ -27,7 +27,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Act
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once.Exactly);
+            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Exactly.Once);
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             Assert.Throws<ExpectationException>(() => 
-                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once.Exactly));
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Exactly.Once));
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once.Exactly));
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Exactly.Once));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             
             // Assert
             Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once));
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened());
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Act
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => this.foo.Bar()).MustHaveHappened();
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Act
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => this.foo.Bar()).MustHaveHappened();
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Act
             
             // Assert
-            A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Times(3));
+            A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.AtLeast.Times(3));
         }
 
         [Test]

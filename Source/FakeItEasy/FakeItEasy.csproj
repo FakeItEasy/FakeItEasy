@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="FakeFacade.cs" />
     <Compile Include="ImportsModule.cs" />
+    <Compile Include="IRepeatSpecification.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="OrderedAssertion.cs" />
@@ -159,7 +160,6 @@
     <Compile Include="Repeated.cs" />
     <Compile Include="Creation\IFakeOptionsBuilder.cs" />
     <Compile Include="Creation\IFakeOptionsBuilderForWrappers.cs" />
-    <Compile Include="LowerBoundRepeated.cs" />
     <Compile Include="Recorders.cs" />
     <Compile Include="SelfInitializedFakes\FileStorage.cs" />
     <Compile Include="IFileSystem.cs" />

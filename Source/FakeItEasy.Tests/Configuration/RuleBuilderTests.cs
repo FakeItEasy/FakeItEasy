@@ -57,7 +57,7 @@
 
             this.ruleProducedByFactory.Applicator(call);
 
-            A.CallTo(() => call.SetReturnValue(10)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => call.SetReturnValue(10)).MustHaveHappened();
         }
 
         [Test] public void 
@@ -304,7 +304,7 @@
             var config = this.CreateBuilder(builtRule);
             config.WhenArgumentsMatch(predicate);
 
-            A.CallTo(() => builtRule.UsePredicateToValidateArguments(predicate)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => builtRule.UsePredicateToValidateArguments(predicate)).MustHaveHappened();
         }
 
         [Test]
@@ -340,7 +340,7 @@
             
             returnConfig.WhenArgumentsMatch(predicate);
            
-            A.CallTo(() => builtRule.UsePredicateToValidateArguments(predicate)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => builtRule.UsePredicateToValidateArguments(predicate)).MustHaveHappened();
         }
 
         [Test]
@@ -392,7 +392,7 @@
             A.CallTo(() => this.ruleProducedByFactory.DescriptionOfValidCall).Returns("call description");
 
             // Act
-            this.builder.MustHaveHappened(Repeated.Times(99).Exactly);
+            this.builder.MustHaveHappened(Repeated.Exactly.Times(99));
 
             // Assert
             var repeatMatcher = A<Func<int, bool>>.That.Matches(x => x.Invoke(99) == true);
@@ -407,7 +407,7 @@
             this.fakeManager.AddRuleFirst(this.ruleProducedByFactory);
 
             // Act
-            this.builder.MustHaveHappened(Repeated.Once);
+            this.builder.MustHaveHappened();
 
             // Assert
             Assert.That(this.fakeManager.Rules, Is.Empty);
@@ -421,12 +421,12 @@
 
             // Act
             var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
-            returnConfig.MustHaveHappened(Repeated.Times(99).Exactly);
+            returnConfig.MustHaveHappened(Repeated.Exactly.Times(99));
 
             // Assert
             var repeatMatcher = A<Func<int, bool>>.That.Matches(x => x.Invoke(99) == true);
 
-            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", repeatMatcher, "exactly #99 times")).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", repeatMatcher, "exactly #99 times")).MustHaveHappened();
         }
 
         [Test]
@@ -437,7 +437,7 @@
 
             // Act
             var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
-            returnConfig.MustHaveHappened(Repeated.Once);
+            returnConfig.MustHaveHappened();
 
             // Assert
             Assert.That(this.fakeManager.Rules, Is.Empty);

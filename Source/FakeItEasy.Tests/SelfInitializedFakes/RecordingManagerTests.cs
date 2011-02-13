@@ -41,9 +41,9 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 
             recorder.ApplyNext(call);
 
-            A.CallTo(() => call.SetReturnValue(10)).MustHaveHappened(Repeated.Once);
-            A.CallTo(() => call.SetArgumentValue(2, 10)).MustHaveHappened(Repeated.Once);
-            A.CallTo(() => call.SetArgumentValue(3, "20")).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => call.SetReturnValue(10)).MustHaveHappened();
+            A.CallTo(() => call.SetArgumentValue(2, 10)).MustHaveHappened();
+            A.CallTo(() => call.SetArgumentValue(3, "20")).MustHaveHappened();
         }
 
         [Test]
@@ -61,9 +61,9 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             recorder.ApplyNext(call);
             recorder.ApplyNext(call);
 
-            A.CallTo(() => call.SetReturnValue(100)).MustHaveHappened(Repeated.Once.Exactly);
-            A.CallTo(() => call.SetArgumentValue(2, 100)).MustHaveHappened(Repeated.Once.Exactly);
-            A.CallTo(() => call.SetArgumentValue(3, "200")).MustHaveHappened(Repeated.Once.Exactly);
+            A.CallTo(() => call.SetReturnValue(100)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => call.SetArgumentValue(2, 100)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => call.SetArgumentValue(3, "200")).MustHaveHappened(Repeated.Exactly.Once);
         }
 
         [Test]

@@ -40,7 +40,7 @@ namespace FakeItEasy.Tests.Configuration
             // Arrange
             
             // Act
-            this.builder.MustHaveHappened(Repeated.Once);
+            this.builder.MustHaveHappened();
 
             // Assert
             Assert.That(this.rule.IsAssertion, Is.True);
@@ -53,7 +53,7 @@ namespace FakeItEasy.Tests.Configuration
             
 
             // Act
-            this.builder.MustHaveHappened(Repeated.Once);
+            this.builder.MustHaveHappened();
 
             // Assert
             Assert.That(this.rule.Applicator, Is.Not.Null);
@@ -63,7 +63,7 @@ namespace FakeItEasy.Tests.Configuration
         public void MustHaveHappened_should_set_repeat_predicate_to_the_recorded_rule()
         {
             // Arrange
-            var repeatPredicate = Repeated.Once;
+            var repeatPredicate = Repeated.AtLeast.Once;
 
             // Act
             this.builder.MustHaveHappened(repeatPredicate);
@@ -76,7 +76,7 @@ namespace FakeItEasy.Tests.Configuration
         public void MustHaveHappened_should_be_null_guarded()
         {
             NullGuardedConstraint.Assert(() =>
-                this.builder.MustHaveHappened(Repeated.Once));
+                this.builder.MustHaveHappened(Repeated.AtLeast.Once));
         }
 
         //
@@ -109,7 +109,7 @@ namespace FakeItEasy.Tests.Configuration
             this.builder.WhenArgumentsMatch(predicate);
 
             // Assert
-            A.CallTo(() => this.rule.UsePredicateToValidateArguments(predicate)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => this.rule.UsePredicateToValidateArguments(predicate)).MustHaveHappened();
         }
 
         [Test]

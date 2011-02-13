@@ -25,7 +25,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.Biz();
 
             var exception = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.Twice));
+                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.AtLeast.Twice));
 
             Assert.That(exception.Message, Is.EqualTo(@"
 
@@ -54,7 +54,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
 
             var exception = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.Twice));
+                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.AtLeast.Twice));
             
             Assert.That(exception.Message, Is.EqualTo(@"
 
@@ -82,7 +82,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             var thrown = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Bar(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.Twice));
+                A.CallTo(() => foo.Bar(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
 
             Assert.That(thrown.Message, Is.EqualTo(@"
 
@@ -105,7 +105,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             var thrown = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Baz(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.Twice));
+                A.CallTo(() => foo.Baz(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
 
             Assert.That(thrown.Message, Is.EqualTo(@"
 

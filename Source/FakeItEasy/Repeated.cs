@@ -16,34 +16,76 @@ namespace FakeItEasy
         /// </summary>
         public static Repeated Never
         {
-            get { return new LowerBoundRepeated(0).Exactly; }
+            get { throw new NotImplementedException(); }
         }
 
-        /// <summary>
-        /// Asserts that a call has happened once or more.
-        /// </summary>
-        public static LowerBoundRepeated Once
+        public static IRepeatSpecification Exactly
         {
-            get { return new LowerBoundRepeated(1); }
+            get { return new ExactlyRepeatSpecification(); }
         }
 
-        /// <summary>
-        /// Asserts that a call has happend twice or more.
-        /// </summary>
-        public static LowerBoundRepeated Twice
+        public static IRepeatSpecification AtLeast
         {
-            get { return new LowerBoundRepeated(2); }
+            get { return new AtLeastRepeatSpecification(); }
         }
 
-        /// <summary>
-        /// Asserts that a call has happened the specified number of times
-        /// or more.
-        /// </summary>
-        /// <param name="numberOfTimes">The number of times the call must have happened.</param>
-        /// <returns>A HappenedNoUpperBound instance.</returns>
-        public static LowerBoundRepeated Times(int numberOfTimes)
+        public static IRepeatSpecification NoMoreThan
         {
-            return new LowerBoundRepeated(numberOfTimes);
+            get { return new NoMoreThanRepeatSpecification(); }
+        }
+
+        private class ExactlyRepeatSpecification : IRepeatSpecification
+        {
+            public Repeated Once
+            {
+                get { return new ExpressionRepeated(x => x == 1); }
+            }
+
+            public Repeated Twice
+            {
+                get { return new ExpressionRepeated(x => x == 2); }
+            }
+
+            public Repeated Times(int numberOfTimes)
+            {
+                return new ExpressionRepeated(x => x == numberOfTimes);
+            }
+        }
+
+        private class AtLeastRepeatSpecification : IRepeatSpecification
+        {
+            public Repeated Once
+            {
+                get { return new ExpressionRepeated(x => x >= 1); }
+            }
+
+            public Repeated Twice
+            {
+                get { return new ExpressionRepeated(x => x >= 2); }
+            }
+
+            public Repeated Times(int numberOfTimes)
+            {
+                return new ExpressionRepeated(x => x >= numberOfTimes);
+            }
+        }
+
+        private class NoMoreThanRepeatSpecification : IRepeatSpecification
+        {
+            public Repeated Once
+            {
+                get { return new ExpressionRepeated(x => x <= 1); }
+            }
+
+            public Repeated Twice
+            {
+                get { return new ExpressionRepeated(x => x <= 2); }
+            }
+
+            public Repeated Times(int numberOfTimes)
+            {
+                return new ExpressionRepeated(x => x <= numberOfTimes);
+            }
         }
 
         /// <summary>

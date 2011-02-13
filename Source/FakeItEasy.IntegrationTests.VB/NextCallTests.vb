@@ -29,7 +29,7 @@ Public Class NextCallTests
 
         foo.Bar("something", "")
 
-        NextCall.To(foo).WhenArgumentsMatch(Function(a) a.Get(Of String)(0) = "something else").MustHaveHappened(Repeated.Once.Exactly)
+        NextCall.To(foo).WhenArgumentsMatch(Function(a) a.Get(Of String)(0) = "something else").MustHaveHappened(Repeated.Exactly.Once)
         foo.Bar(Nothing, Nothing)
     End Sub
 
