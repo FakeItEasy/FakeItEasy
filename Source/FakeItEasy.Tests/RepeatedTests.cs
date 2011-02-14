@@ -7,69 +7,9 @@ namespace FakeItEasy.Tests
     [TestFixture]
     public class RepeatedTests
     {
-        [TestCase(1, Result = true)]
-        [TestCase(2, Result = true)]
-        [TestCase(0, Result = false)]
-        public bool Once_should_return_instance_that_matches_one_or_above(int repeat)
-        {
-            // Arrange
-            var once = Repeated.Once;
-
-            // Act
-            
-            // Assert
-            return once.Matches(repeat);
-        }
-
-        [TestCase(1, Result = false)]
-        [TestCase(2, Result = true)]
-        [TestCase(0, Result = false)]
-        [TestCase(3, Result = true)]
-        public bool Twice_should_return_instance_that_matches_one_or_above(int repeat)
-        {
-            // Arrange
-            var twice = Repeated.Twice;
-
-            // Act
-            
-            // Assert
-            return twice.Matches(repeat);
-        }
-
-        [TestCase(1, Result = false)]
-        [TestCase(2, Result = false)]
-        [TestCase(0, Result = true)]
-        [TestCase(3, Result = false)]
-        public bool Never_should_return_instance_that_matches_one_or_above(int repeat)
-        {
-            // Arrange
-            var never = Repeated.Never;
-
-            // Act
-
-            // Assert
-            return never.Matches(repeat);
-        }
-
-        [TestCase(1, 2, Result = true)]
-        [TestCase(2, 2, Result = true)]
-        [TestCase(3, 2, Result = false)]
-        [TestCase(1, 0, Result = false)]
-        [TestCase(0, 4, Result = true)]
-        public bool Never_should_return_instance_that_matches_one_or_above(int expectedRepeat, int repeat)
-        {
-            // Arrange
-            var times = Repeated.Times(expectedRepeat);
-
-            // Act
-
-            // Assert
-            return times.Matches(repeat);
-        }
-
         [TestCase(1, 1, Result = true)]
         [TestCase(1, 2, Result = false)]
-        public bool ConvertFromExpression_should_return_instance_that_delegates_to_expression(int expected, int actual)
+        public bool Like_should_return_instance_that_delegates_to_expression(int expected, int actual)
         {
             // Arrange
             Expression<Func<int, bool>> repeatPredicate = repeat => repeat == expected;
@@ -92,6 +32,226 @@ namespace FakeItEasy.Tests
 
             // Assert
             Assert.That(happened.ToString(), Is.EqualTo("the number of times specified by the predicate 'repeat => (repeat = 1)'"));
+        }
+
+        [TestCase(1, Result = true)]
+        [TestCase(2, Result = false)]
+        public bool Exactly_once_should_only_match_one(int actualRepeat)
+        {
+            // Arrange
+
+            // Act
+            var repeated = Repeated.Exactly.Once;
+
+            // Assert
+            return repeated.Matches(actualRepeat);
+        }
+
+        [TestCase(2, Result = true)]
+        [TestCase(0, Result = false)]
+        public bool Exactly_twice_should_only_match_two(int actualRepeat)
+        {
+            // Arrange
+
+            // Act
+            var repeated = Repeated.Exactly.Twice;
+
+            // Assert
+            return repeated.Matches(actualRepeat);
+        }
+
+        [TestCase(0, 0, Result = true)]
+        [TestCase(0, 1, Result = false)]
+        public bool Exactly_number_of_times_should_match_as_expected(int actualRepeat, int expectedNumberOfTimes)
+        {
+            // Arrange
+
+            // Act
+            var repeated = Repeated.Exactly.Times(expectedNumberOfTimes);
+
+            // Assert
+            return repeated.Matches(actualRepeat);
+        }
+
+        [TestCase(1, Result = true)]
+        [TestCase(0, Result = false)]
+        [TestCase(2, Result = true)]
+        public bool At_least_once_should_match_one_or_higher(int actualRepeat)
+        {
+            // Arrange
+
+            // Act
+            var repeated = Repeated.AtLeast.Once;
+
+            // Assert
+            return repeated.Matches(actualRepeat);
+        }
+
+        [TestCase(1, Result = false)]
+        [TestCase(0, Result = false)]
+        [TestCase(2, Result = true)]
+        [TestCase(3, Result = true)]
+        public bool At_least_twice_should_only_match_two_or_higher(int actualRepeat)
+        {
+            // Arrange
+
+            // Act
+            var repeated = Repeated.AtLeast.Twice;
+
+            // Assert
+            return repeated.Matches(actualRepeat);
+        }
+
+        [TestCase(0, 0, Result = true)]
+        [TestCase(1, 0, Result = true)]
+        [TestCase(1, 1, Result = true)]
+        [TestCase(0, 1, Result = false)]
+        [TestCase(2, 1, Result = true)]
+        public bool At_least_number_of_times_should_match_as_expected(int actualRepeat, int expectedNumberOfTimes)
+        {
+            // Arrange
+
+            // Act
+            var repeated = Repeated.AtLeast.Times(expectedNumberOfTimes);
+
+            // Assert
+            return repeated.Matches(actualRepeat);
+        }
+
+        [TestCase(0, Result = true)]
+        [TestCase(1, Result = true)]
+        [TestCase(2, Result = false)]
+        public bool No_more_than_once_should_match_zero_and_one_only(int actualRepeat)
+        {
+            // Arrange
+
+            // Act
+            var repeated = Repeated.NoMoreThan.Once;
+
+            // Assert
+            return repeated.Matches(actualRepeat);
+        }
+
+        [TestCase(0, Result = true)]
+        [TestCase(1, Result = true)]
+        [TestCase(2, Result = true)]
+        [TestCase(3, Result = false)]
+        public bool No_more_than_twice_should_match_zero_one_and_two_only(int actualRepeat)
+        {
+            // Arrange
+
+            // Act
+            var repeated = Repeated.NoMoreThan.Twice;
+
+            // Assert
+            return repeated.Matches(actualRepeat);
+        }
+
+        [TestCase(0, 0, Result = true)]
+        [TestCase(1, 0, Result = false)]
+        [TestCase(1, 1, Result = true)]
+        [TestCase(0, 1, Result = true)]
+        [TestCase(2, 1, Result = false)]
+        public bool No_more_than_times_should_match_as_expected(int actualRepeat, int expectedNumberOfTimes)
+        {
+            // Arrange
+
+            // Act
+            var repeated = Repeated.NoMoreThan.Times(expectedNumberOfTimes);
+
+            // Assert
+            return repeated.Matches(actualRepeat);
+        }
+
+        [TestCase(0, Result = true)]
+        [TestCase(1, Result = false)]
+        public bool Never_should_match_zero_only(int actualRepeat)
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            return Repeated.Never.Matches(actualRepeat);
+        }
+
+        [TestCaseSource("descriptionTestCases")]
+        public void Should_provide_expected_description(Func<Repeated> repeated, string expectedDescription)
+        {
+            // Arrange
+            var repeatedInstance = repeated.Invoke();
+
+            // Act
+            var description = repeatedInstance.ToString();
+
+            // Assert
+            Assert.That(description, Is.EqualTo(expectedDescription));
+        }
+
+        private object[] descriptionTestCases = TestCases.Create
+            (
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.AtLeast.Once,
+                    ExpectedDescription = "at least once"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.AtLeast.Twice,
+                    ExpectedDescription = "at least twice"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.AtLeast.Times(3),
+                    ExpectedDescription = "at least 3 times"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.AtLeast.Times(10),
+                    ExpectedDescription = "at least 10 times"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.AtLeast.Times(10),
+                    ExpectedDescription = "at least 10 times"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.NoMoreThan.Once,
+                    ExpectedDescription = "no more than once"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.NoMoreThan.Twice,
+                    ExpectedDescription = "no more than twice"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.NoMoreThan.Times(10),
+                    ExpectedDescription = "no more than 10 times"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.Exactly.Once,
+                    ExpectedDescription = "exactly once"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.Exactly.Twice,
+                    ExpectedDescription = "exactly twice"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.Exactly.Times(99),
+                    ExpectedDescription = "exactly 99 times"
+                }
+            ).AsTestCaseSource();
+
+        private class RepeatDescriptionTestCase
+        {
+            public Func<Repeated> Repeat { get; set; }
+
+            public string ExpectedDescription { get; set; }
         }
     }
 }

@@ -63,7 +63,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration.DoesNothing();
 
             // Assert
-            A.CallTo(() => factoryConfig.DoesNothing()).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => factoryConfig.DoesNothing()).MustHaveHappened();
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration.Throws(ex);
 
             // Assert
-            A.CallTo(() => factoryConfig.Throws(ex)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => factoryConfig.Throws(ex)).MustHaveHappened();
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration.Invokes(invokation);
 
             // Assert
-            A.CallTo(() => factoryConfig.Invokes(invokation)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => factoryConfig.Invokes(invokation)).MustHaveHappened();
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration.CallsBaseMethod();
 
             // Assert
-            A.CallTo(() => factoryConfig.CallsBaseMethod()).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => factoryConfig.CallsBaseMethod()).MustHaveHappened();
         }
 
         [Test]
@@ -187,7 +187,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration.AssignsOutAndRefParameters(parameters);
 
             // Assert
-            A.CallTo(() => factoryConfig.AssignsOutAndRefParameters(parameters)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => factoryConfig.AssignsOutAndRefParameters(parameters)).MustHaveHappened();
         }
 
         [Test]
@@ -215,10 +215,10 @@ namespace FakeItEasy.Tests.Configuration
             var factoryConfig = this.StubVoidConfig();
 
             // Act
-            this.configuration.MustHaveHappened(Repeated.Twice);
+            this.configuration.MustHaveHappened(Repeated.AtLeast.Twice);
 
             // Assert
-            A.CallTo(() => factoryConfig.MustHaveHappened(A<Repeated>.Ignored)).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => factoryConfig.MustHaveHappened(A<Repeated>.Ignored)).MustHaveHappened();
         }
 
         private IVoidArgumentValidationConfiguration StubVoidConfig()

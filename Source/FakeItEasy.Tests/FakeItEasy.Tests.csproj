@@ -132,7 +132,6 @@
     <Compile Include="FakeFacadeTests.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="IsProxyConstraint.cs" />
-    <Compile Include="LowerBoundHappenedTests.cs" />
     <Compile Include="RepeatedTests.cs" />
     <Compile Include="RecordersTests.cs" />
     <Compile Include="SelfInitializedFakes\CallDataTests.cs" />
