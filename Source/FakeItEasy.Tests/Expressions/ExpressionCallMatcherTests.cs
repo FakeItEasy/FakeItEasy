@@ -164,7 +164,7 @@ namespace FakeItEasy.Tests.Expressions
 
             Assert.That(matcher.ToString(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<FOO>, <FOO>)"));
             
-            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).MustHaveHappened(Repeated.Twice.Exactly);
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).MustHaveHappened(Repeated.Exactly.Twice);
         }
 
         [Test]

@@ -19,7 +19,7 @@ namespace FakeItEasy.Examples
 
             // This will succeed since there was a call to the create method
             // in the current scope.
-            A.CallTo(() => factory.Create()).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => factory.Create()).MustHaveHappened();
 
             using (Fake.CreateScope())
             {
@@ -28,7 +28,7 @@ namespace FakeItEasy.Examples
                 Fake.GetCalls(factory).Matching<IWidgetFactory>(x => x.Create()).Count();
 
                 // This will throw:
-                A.CallTo(() => factory.Create()).MustHaveHappened(Repeated.Once);
+                A.CallTo(() => factory.Create()).MustHaveHappened();
             }
 
             using (Fake.CreateScope())

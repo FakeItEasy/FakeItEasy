@@ -25,13 +25,13 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.Biz();
 
             var exception = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.Twice));
+                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.AtLeast.Twice));
 
             Assert.That(exception.Message, Is.EqualTo(@"
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar("""")
-  Expected to find it twice but found it #0 times among the calls:
+  Expected to find it at least twice but found it #0 times among the calls:
     1: FakeItEasy.Tests.IFoo.Bar() repeated 2 times
     ...
     3: FakeItEasy.Tests.IFoo.Bar(argument: ""test"")
@@ -54,13 +54,13 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
 
             var exception = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.Twice));
+                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.AtLeast.Twice));
             
             Assert.That(exception.Message, Is.EqualTo(@"
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar("""")
-  Expected to find it twice but found it #0 times among the calls:
+  Expected to find it at least twice but found it #0 times among the calls:
     1: FakeItEasy.Tests.IFoo.Bar(
            argument1: 1,
            argument2: 2,
@@ -82,13 +82,13 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             var thrown = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Bar(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.Twice));
+                A.CallTo(() => foo.Bar(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
 
             Assert.That(thrown.Message, Is.EqualTo(@"
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar(<Ignored>, <Starts with ""lorem"">)
-  Expected to find it twice but found it #1 times among the calls:
+  Expected to find it at least twice but found it #1 times among the calls:
     1: FakeItEasy.Tests.IFoo.Bar(argument: System.Object, argument2: ""lorem ipsum"")
 
 "));
@@ -105,13 +105,13 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             var thrown = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Baz(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.Twice));
+                A.CallTo(() => foo.Baz(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
 
             Assert.That(thrown.Message, Is.EqualTo(@"
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Baz(<Ignored>, <Starts with ""lorem"">)
-  Expected to find it twice but found it #1 times among the calls:
+  Expected to find it at least twice but found it #1 times among the calls:
     1: FakeItEasy.Tests.IFoo.Baz(argument: System.Object, argument2: ""lorem ipsum"")
 
 "));

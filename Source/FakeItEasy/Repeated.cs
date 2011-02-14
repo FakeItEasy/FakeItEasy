@@ -16,34 +16,22 @@ namespace FakeItEasy
         /// </summary>
         public static Repeated Never
         {
-            get { return new LowerBoundRepeated(0).Exactly; }
+            get { return new NeverRepeated(); }
         }
 
-        /// <summary>
-        /// Asserts that a call has happened once or more.
-        /// </summary>
-        public static LowerBoundRepeated Once
+        public static IRepeatSpecification Exactly
         {
-            get { return new LowerBoundRepeated(1); }
+            get { return new RepeatSpecification((actual, expected) => actual == expected, "exactly"); }
         }
 
-        /// <summary>
-        /// Asserts that a call has happend twice or more.
-        /// </summary>
-        public static LowerBoundRepeated Twice
+        public static IRepeatSpecification AtLeast
         {
-            get { return new LowerBoundRepeated(2); }
+            get { return new RepeatSpecification((actual, expected) => actual >= expected, "at least"); }
         }
 
-        /// <summary>
-        /// Asserts that a call has happened the specified number of times
-        /// or more.
-        /// </summary>
-        /// <param name="numberOfTimes">The number of times the call must have happened.</param>
-        /// <returns>A HappenedNoUpperBound instance.</returns>
-        public static LowerBoundRepeated Times(int numberOfTimes)
+        public static IRepeatSpecification NoMoreThan
         {
-            return new LowerBoundRepeated(numberOfTimes);
+            get { return new RepeatSpecification((actual, expected) => actual <= expected, "no more than"); }
         }
 
         /// <summary>
@@ -85,6 +73,70 @@ namespace FakeItEasy
             internal override bool Matches(int repeat)
             {
                 return this.repeatValidation.Compile().Invoke(repeat);
+            }
+        }
+
+        private class RepeatSpecification : IRepeatSpecification
+        {
+            public delegate bool RepeatValidator(int actualRepeat, int expectedRepeat);
+
+            private readonly RepeatValidator repeatValidator;
+            private readonly string description;
+
+            public RepeatSpecification(RepeatValidator repeatValidator, string description)
+            {
+                this.repeatValidator = repeatValidator;
+                this.description = description;
+            }
+
+            public Repeated Once
+            {
+                get { return new RepeatedWithDescription(x => this.repeatValidator(x, 1), this.description + " once"); }
+            }
+
+            public Repeated Twice
+            {
+                get { return new RepeatedWithDescription(x => this.repeatValidator(x, 2), this.description + " twice"); }
+            }
+
+            public Repeated Times(int numberOfTimes)
+            {
+                return new RepeatedWithDescription(x => this.repeatValidator(x, numberOfTimes), "{0} {1} times".FormatInvariant(this.description, numberOfTimes));
+            }
+
+            private class RepeatedWithDescription : Repeated
+            {
+                private readonly Func<int, bool> repeatValidator;
+                private readonly string description;
+
+                public RepeatedWithDescription(Func<int, bool> repeatValidator, string description)
+                {
+                    this.repeatValidator = repeatValidator;
+                    this.description = description;
+                }
+
+                internal override bool Matches(int repeat)
+                {
+                    return this.repeatValidator(repeat);
+                }
+
+                public override string ToString()
+                {
+                    return this.description;
+                }
+            }
+        }
+
+        private class NeverRepeated : Repeated
+        {
+            internal override bool Matches(int repeat)
+            {
+                return repeat == 0;
+            }
+
+            public override string ToString()
+            {
+                return "never";
             }
         }
     }

@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             adapter.CallBaseMethod();
 
-            A.CallTo(() => invokation.Proceed()).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => invokation.Proceed()).MustHaveHappened();
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             adapter.SetArgumentValue(0, "test");
 
-            A.CallTo(() => invocation.SetArgumentValue(0, "test")).MustHaveHappened(Repeated.Once);
+            A.CallTo(() => invocation.SetArgumentValue(0, "test")).MustHaveHappened();
         }
 
         private MethodInfo[] objectMethods = new MethodInfo[]
