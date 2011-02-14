@@ -164,6 +164,7 @@ namespace FakeItEasy.Tests
         }
 
         [TestCase(0, Result = true)]
+        [TestCase(1, Result = false)]
         public bool Never_should_match_zero_only(int actualRepeat)
         {
             // Arrange

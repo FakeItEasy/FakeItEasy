@@ -75,7 +75,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, "configuration");
 
-            throw new MustBeImplementedException();
+            configuration.MustHaveHappened(Repeated.AtLeast.Once);
         }
 
         /// <summary>

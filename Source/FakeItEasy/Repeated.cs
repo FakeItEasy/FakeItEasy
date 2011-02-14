@@ -16,7 +16,7 @@ namespace FakeItEasy
         /// </summary>
         public static Repeated Never
         {
-            get { throw new NotImplementedException(); }
+            get { return new ExactlyRepeatSpecification().Times(0); }
         }
 
         public static IRepeatSpecification Exactly
