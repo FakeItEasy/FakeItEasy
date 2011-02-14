@@ -9,7 +9,7 @@ namespace FakeItEasy.Tests
     {
         [TestCase(1, 1, Result = true)]
         [TestCase(1, 2, Result = false)]
-        public bool ConvertFromExpression_should_return_instance_that_delegates_to_expression(int expected, int actual)
+        public bool Like_should_return_instance_that_delegates_to_expression(int expected, int actual)
         {
             // Arrange
             Expression<Func<int, bool>> repeatPredicate = repeat => repeat == expected;
@@ -173,6 +173,85 @@ namespace FakeItEasy.Tests
 
             // Assert
             return Repeated.Never.Matches(actualRepeat);
+        }
+
+        [TestCaseSource("descriptionTestCases")]
+        public void Should_provide_expected_description(Func<Repeated> repeated, string expectedDescription)
+        {
+            // Arrange
+            var repeatedInstance = repeated.Invoke();
+
+            // Act
+            var description = repeatedInstance.ToString();
+
+            // Assert
+            Assert.That(description, Is.EqualTo(expectedDescription));
+        }
+
+        private object[] descriptionTestCases = TestCases.Create
+            (
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.AtLeast.Once,
+                    ExpectedDescription = "at least once"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.AtLeast.Twice,
+                    ExpectedDescription = "at least twice"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.AtLeast.Times(3),
+                    ExpectedDescription = "at least 3 times"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.AtLeast.Times(10),
+                    ExpectedDescription = "at least 10 times"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.AtLeast.Times(10),
+                    ExpectedDescription = "at least 10 times"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.NoMoreThan.Once,
+                    ExpectedDescription = "no more than once"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.NoMoreThan.Twice,
+                    ExpectedDescription = "no more than twice"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.NoMoreThan.Times(10),
+                    ExpectedDescription = "no more than 10 times"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.Exactly.Once,
+                    ExpectedDescription = "exactly once"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.Exactly.Twice,
+                    ExpectedDescription = "exactly twice"
+                },
+                new RepeatDescriptionTestCase()
+                {
+                    Repeat = () => Repeated.Exactly.Times(99),
+                    ExpectedDescription = "exactly 99 times"
+                }
+            ).AsTestCaseSource();
+
+        private class RepeatDescriptionTestCase
+        {
+            public Func<Repeated> Repeat { get; set; }
+
+            public string ExpectedDescription { get; set; }
         }
     }
 }
