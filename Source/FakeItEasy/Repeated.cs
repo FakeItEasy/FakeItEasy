@@ -19,16 +19,27 @@ namespace FakeItEasy
             get { return new NeverRepeated(); }
         }
 
+        /// <summary>
+        /// The call must have happened exactly the number of times that is specified in the next step.
+        /// </summary>
         public static IRepeatSpecification Exactly
         {
             get { return new RepeatSpecification((actual, expected) => actual == expected, "exactly"); }
         }
 
+        /// <summary>
+        /// The call must have happened any number of times greater than or equal to the number of times that is specified
+        /// in the next step.
+        /// </summary>
         public static IRepeatSpecification AtLeast
         {
             get { return new RepeatSpecification((actual, expected) => actual >= expected, "at least"); }
         }
 
+        /// <summary>
+        /// The call must have happened any number of times less than or equal to the number of times that is specified
+        /// in the next step.
+        /// </summary>
         public static IRepeatSpecification NoMoreThan
         {
             get { return new RepeatSpecification((actual, expected) => actual <= expected, "no more than"); }
@@ -78,8 +89,6 @@ namespace FakeItEasy
 
         private class RepeatSpecification : IRepeatSpecification
         {
-            public delegate bool RepeatValidator(int actualRepeat, int expectedRepeat);
-
             private readonly RepeatValidator repeatValidator;
             private readonly string description;
 
@@ -89,6 +98,8 @@ namespace FakeItEasy
                 this.description = description;
             }
 
+            public delegate bool RepeatValidator(int actualRepeat, int expectedRepeat);
+            
             public Repeated Once
             {
                 get { return new RepeatedWithDescription(x => this.repeatValidator(x, 1), this.description + " once"); }
@@ -115,28 +126,28 @@ namespace FakeItEasy
                     this.description = description;
                 }
 
-                internal override bool Matches(int repeat)
-                {
-                    return this.repeatValidator(repeat);
-                }
-
                 public override string ToString()
                 {
                     return this.description;
+                }
+
+                internal override bool Matches(int repeat)
+                {
+                    return this.repeatValidator(repeat);
                 }
             }
         }
 
         private class NeverRepeated : Repeated
         {
-            internal override bool Matches(int repeat)
-            {
-                return repeat == 0;
-            }
-
             public override string ToString()
             {
                 return "never";
+            }
+            
+            internal override bool Matches(int repeat)
+            {
+                return repeat == 0;
             }
         }
     }
