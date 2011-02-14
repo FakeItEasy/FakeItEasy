@@ -182,6 +182,11 @@
 		
 		<!-- Update version number in NuPack file -->
 		<XmlUpdate XmlFileName="$(NuPackPackageDirectory)\$(VersionNumber)\FakeItEasy.nuspec" Xpath="/package/metadata/version"  Value="$(VersionNumber)" />
+		
+		<!-- Create package file -->
+		<Exec 
+			Command=".\Resources\NuGet.exe pack .\Build\Package\$(VersionNumber)\FakeItEasy.nuspec /o .\Build\Package\" 
+			ContinueOnError="False" />
 	</Target>	
 	
 	<Target Name="Distrib" DependsOnTargets="Clean;CodeAnalysis;ReBuild;Merge;Package">
