@@ -12,7 +12,7 @@
 	faking a breeze.</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="Castle.Core" version="2.5.1" />
+      <dependency id="Castle.Core" version="2.5.2" />
     </dependencies>
   </metadata>
 </package>
