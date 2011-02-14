@@ -291,9 +291,6 @@
             Assert.That(this.builder.RuleBeingBuilt.Applicator, Is.Not.Null);
         }
 
-    
-       
-
         [Test]
         public void WhenArgumentsMatches_should_call_UsePredicateToValidateArguments_on_built_rule()
         {
