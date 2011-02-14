@@ -16,76 +16,22 @@ namespace FakeItEasy
         /// </summary>
         public static Repeated Never
         {
-            get { return new ExactlyRepeatSpecification().Times(0); }
+            get { return new NeverRepeated(); }
         }
 
         public static IRepeatSpecification Exactly
         {
-            get { return new ExactlyRepeatSpecification(); }
+            get { return new RepeatSpecification((actual, expected) => actual == expected, "exactly"); }
         }
 
         public static IRepeatSpecification AtLeast
         {
-            get { return new AtLeastRepeatSpecification(); }
+            get { return new RepeatSpecification((actual, expected) => actual >= expected, "at least"); }
         }
 
         public static IRepeatSpecification NoMoreThan
         {
-            get { return new NoMoreThanRepeatSpecification(); }
-        }
-
-        private class ExactlyRepeatSpecification : IRepeatSpecification
-        {
-            public Repeated Once
-            {
-                get { return new ExpressionRepeated(x => x == 1); }
-            }
-
-            public Repeated Twice
-            {
-                get { return new ExpressionRepeated(x => x == 2); }
-            }
-
-            public Repeated Times(int numberOfTimes)
-            {
-                return new ExpressionRepeated(x => x == numberOfTimes);
-            }
-        }
-
-        private class AtLeastRepeatSpecification : IRepeatSpecification
-        {
-            public Repeated Once
-            {
-                get { return new ExpressionRepeated(x => x >= 1); }
-            }
-
-            public Repeated Twice
-            {
-                get { return new ExpressionRepeated(x => x >= 2); }
-            }
-
-            public Repeated Times(int numberOfTimes)
-            {
-                return new ExpressionRepeated(x => x >= numberOfTimes);
-            }
-        }
-
-        private class NoMoreThanRepeatSpecification : IRepeatSpecification
-        {
-            public Repeated Once
-            {
-                get { return new ExpressionRepeated(x => x <= 1); }
-            }
-
-            public Repeated Twice
-            {
-                get { return new ExpressionRepeated(x => x <= 2); }
-            }
-
-            public Repeated Times(int numberOfTimes)
-            {
-                return new ExpressionRepeated(x => x <= numberOfTimes);
-            }
+            get { return new RepeatSpecification((actual, expected) => actual <= expected, "no more than"); }
         }
 
         /// <summary>
@@ -127,6 +73,70 @@ namespace FakeItEasy
             internal override bool Matches(int repeat)
             {
                 return this.repeatValidation.Compile().Invoke(repeat);
+            }
+        }
+
+        private class RepeatSpecification : IRepeatSpecification
+        {
+            public delegate bool RepeatValidator(int actualRepeat, int expectedRepeat);
+
+            private readonly RepeatValidator repeatValidator;
+            private readonly string description;
+
+            public RepeatSpecification(RepeatValidator repeatValidator, string description)
+            {
+                this.repeatValidator = repeatValidator;
+                this.description = description;
+            }
+
+            public Repeated Once
+            {
+                get { return new RepeatedWithDescription(x => this.repeatValidator(x, 1), this.description + " once"); }
+            }
+
+            public Repeated Twice
+            {
+                get { return new RepeatedWithDescription(x => this.repeatValidator(x, 2), this.description + " twice"); }
+            }
+
+            public Repeated Times(int numberOfTimes)
+            {
+                return new RepeatedWithDescription(x => this.repeatValidator(x, numberOfTimes), "{0} {1} times".FormatInvariant(this.description, numberOfTimes));
+            }
+
+            private class RepeatedWithDescription : Repeated
+            {
+                private readonly Func<int, bool> repeatValidator;
+                private readonly string description;
+
+                public RepeatedWithDescription(Func<int, bool> repeatValidator, string description)
+                {
+                    this.repeatValidator = repeatValidator;
+                    this.description = description;
+                }
+
+                internal override bool Matches(int repeat)
+                {
+                    return this.repeatValidator(repeat);
+                }
+
+                public override string ToString()
+                {
+                    return this.description;
+                }
+            }
+        }
+
+        private class NeverRepeated : Repeated
+        {
+            internal override bool Matches(int repeat)
+            {
+                return repeat == 0;
+            }
+
+            public override string ToString()
+            {
+                return "never";
             }
         }
     }

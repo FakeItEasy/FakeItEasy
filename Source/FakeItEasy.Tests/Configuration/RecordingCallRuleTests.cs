@@ -113,7 +113,7 @@ namespace FakeItEasy.Tests.Configuration
 
             rule.Apply(call);
 
-            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, "once")).MustHaveHappened();
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, "at least once")).MustHaveHappened();
             
             var asserterCall = Fake.GetCalls(this.asserter).Matching<IFakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, A<string>.Ignored)).Single();
             var repeatPredicatePassedToAsserter = asserterCall.Arguments.Get<Func<int, bool>>("repeatPredicate");
