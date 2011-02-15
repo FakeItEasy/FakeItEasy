@@ -7,12 +7,14 @@
     <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
     <version>ReplacedByBuild</version>
     <authors>Patrik Hägne</authors>
+	<owners>Patrik Hägne</owners>
     <description>It's faking amazing! The easy mocking framework for .Net that works great in C# and VB.Net alike. No need
-	to know the difference between a stub and a mock, everythings a fake! The easy to use, refactoring friendly api makes
+	to know the difference between a stub, a mock or a spy, everythings a fake! The easy to use, refactoring friendly api makes
 	faking a breeze.</description>
     <language>en-US</language>
     <dependencies>
       <dependency id="Castle.Core" version="2.5.2" />
     </dependencies>
+	<tags>TDD unittesting mocking faking stubbing spy spies doubles</tags>
   </metadata>
 </package>
