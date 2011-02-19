@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using IoC;
 
     [Conditional("Near_a_tree_by_a_river_theres_a_hole_in_the_ground")]
     public class SerializableAttribute
@@ -56,5 +57,25 @@
         {
             return this.dictionary.Remove(value);
         }
+    }
+
+    internal class ImportsModule : Module
+    {
+        public override void RegisterDependencies(DictionaryContainer container)
+        {
+        }
+    }
+}
+
+namespace System.ComponentModel.Composition
+{
+    public class InheritedExportAttribute
+        : Attribute
+    {
+    }
+
+    public class ImportManyAttribute
+        : Attribute
+    {
     }
 }

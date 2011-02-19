@@ -39,6 +39,20 @@
             return firstCollection.Zip(secondCollection, Tuple.Create);
         }
 
+#if SILVERLIGHT
+        public static IEnumerable<T> Zip<TFirst, TSecond, T>(this IEnumerable<TFirst> firstSequence, IEnumerable<TSecond> secondSequence, Func<TFirst, TSecond, T> projection)
+        {
+            using (var one = firstSequence.GetEnumerator())
+            using (var two = secondSequence.GetEnumerator())
+            {
+                while (one.MoveNext() && two.MoveNext())
+                {
+                    yield return projection(one.Current, two.Current);
+                }
+            }
+        }
+#endif
+
         /// <summary>
         /// Joins the collection to a string.
         /// </summary>

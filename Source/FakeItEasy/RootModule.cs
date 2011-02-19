@@ -65,8 +65,10 @@
             container.RegisterSingleton<IFileSystem>(c =>
                 new FileSystem());
 
+#if !SILVERLIGHT
             container.RegisterSingleton<FileStorage.Factory>(c =>
                 x => new FileStorage(x, c.Resolve<IFileSystem>()));
+#endif
 
             container.RegisterSingleton<IExpressionParser>(c =>
                 new ExpressionParser());
