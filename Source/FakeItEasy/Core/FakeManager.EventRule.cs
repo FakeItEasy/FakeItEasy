@@ -98,7 +98,7 @@ namespace FakeItEasy.Core
 
                 if (this.RegisteredEventHandlers.TryGetValue(key, out registration))
                 {
-                    Delegate.Remove(registration, handler);
+                    registration = Delegate.Remove(registration, handler);
                     this.RegisteredEventHandlers[key] = registration;
                 }
             }
