@@ -6,7 +6,7 @@ namespace FakeItEasy
     internal static class Log
     {
 #if DEBUG
-        private const bool UseLogging = false;
+        private const bool UseLogging = true;
 #else
         private const bool UseLogging = false;
 #endif
@@ -36,10 +36,7 @@ namespace FakeItEasy
 
             public override void Debug(Func<string> message)
             {
-                if (this.name.Contains("Dummy"))
-                {
-                    Console.WriteLine("Log: {0}\r\n\t {1}".FormatInvariant(this.name, message.Invoke()));
-                }
+                Console.WriteLine("Log: {0}\r\n\t {1}".FormatInvariant(this.name, message.Invoke()));
             }
         }
 
