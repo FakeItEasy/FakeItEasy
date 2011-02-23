@@ -22,6 +22,7 @@
 		<BinariesPath>$(BuildPath)\Binaries</BinariesPath>
 		<LicensePath>$(BuildPath)\License</LicensePath>
 		<BinariesSource>Source\FakeItEasy\bin\$(Configuration)</BinariesSource>
+		<BinariesSourceSilverlight>Source\FakeItEasy-SL\bin\$(Configuration)</BinariesSourceSilverlight>
 		<ProjectName>$(MSBuildProjectName)</ProjectName>
 	</PropertyGroup>
 	<PropertyGroup>
@@ -127,6 +128,34 @@
 		<Delete Files="@(pdbFiles)" />
 	</Target>
 	
+	<Target Name="Merge-SL" DependsOnTargets="Build">
+		<!--MakeDir Directories="$(BuildPath);"/-->
+		<MakeDir Directories="$(BinariesPath)\UnMerged-SL;" />
+		<MakeDir Directories="$(BinariesPath)\Merged-SL" />
+		
+		<!--Libraries-->
+		<CreateItem Include="$(BinariesSourceSilverlight)\*.*;">
+			<Output ItemName="unmergedFiles-SL" TaskParameter="Include"/>
+		</CreateItem>
+		
+		<Copy SourceFiles="@(unmergedFiles-SL)" DestinationFolder="$(BinariesPath)\UnMerged-SL" />
+		
+		<CreateItem Include="$(BinariesPath)\UnMerged-SL\FakeItEasy-SL.dll;$(BinariesPath)\UnMerged-SL\Castle.Core.dll">
+			<Output ItemName="binariesToMerge-SL" TaskParameter="Include"/>
+		</CreateItem>
+		
+		<Exec Command="&quot;$(ILMergeCmdPath)&quot; /out:&quot;$(BinariesPath)\Merged-SL\FakeItEasy-SL.dll&quot; /delaysign /targetplatform:&quot;v4,C:\Windows\Microsoft.NET\Framework\v4.0.30319&quot; /lib:&quot;C:\Windows\Microsoft.NET\Framework\v4.0.30319&quot; /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge, ' ')"/>
+		<Exec Command="&quot;$(SnCmdPath)&quot; -R &quot;$(BinariesPath)\Merged-SL\FakeIteasy-SL.dll&quot; &quot;Source\FakeItEasy\FakeItEasy.snk&quot;" />
+		
+		<!--<Copy SourceFiles="$(BinariesPath)\UnMerged-SL\FakeItEasy-SL.xml" DestinationFolder="$(BinariesPath)\Merged-SL" />-->
+		
+		<CreateItem Include="$(BinariesPath)\**\*.pdb;">
+			<Output ItemName="pdbFiles" TaskParameter="Include" />
+		</CreateItem>
+		
+		<Delete Files="@(pdbFiles)" />
+	</Target>
+	
 	<Target Name="BuildDebug">
 		<MSBuild Projects="Source\$(ProjectName).sln" Targets="Build" Properties="Configuration=Debug$(BuildFramework);BuildConstants=$(BuildConstants);MSBuildTargets=$(BuildTargets)"/>
 	</Target>
@@ -170,14 +199,21 @@
 				Condition="$(FxCop_TotalErrors) &gt; 0" />
 	</Target>
 	
-	<Target Name="Package" DependsOnTargets="Clean;Rebuild">
+	<Target Name="Package" DependsOnTargets="Clean;Rebuild;Merge">
 		<MakeDir Directories="$(NuPackPackageDirectory)\$(VersionNumber)\lib" />
+		<MakeDir Directories="$(NuPackPackageDirectory)\$(VersionNumber)\lib\NET40" />
+		<MakeDir Directories="$(NuPackPackageDirectory)\$(VersionNumber)\lib\SL4" />
 		
 		<CreateItem Include="$(BinariesPath)\UnMerged\FakeItEasy.*;">
 			<Output ItemName="fakeItEasyLibFiles" TaskParameter="Include"/>
 		</CreateItem>
 		
-		<Copy SourceFiles="@(fakeItEasyLibFiles)" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)\lib" />
+		<CreateItem Include="$(BinariesPath)\UnMerged-SL\FakeItEasy-SL.*;">
+			<Output ItemName="fakeItEasyLibFiles-SL" TaskParameter="Include"/>
+		</CreateItem>
+		
+		<Copy SourceFiles="@(fakeItEasyLibFiles)" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)\lib\NET40" />
+		<Copy SourceFiles="@(fakeItEasyLibFiles-SL)" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)\lib\SL4" />
 		<Copy SourceFiles=".\Resources\Build\FakeItEasy.nuspec" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)" />
 		
 		<!-- Update version number in NuPack file -->
@@ -189,11 +225,11 @@
 			ContinueOnError="False" />
 	</Target>	
 	
-	<Target Name="Distrib" DependsOnTargets="Clean;CodeAnalysis;ReBuild;Merge;Package">
+	<Target Name="Distrib" DependsOnTargets="Clean;CodeAnalysis;ReBuild;Merge;Merge-SL;Package">
 		<MakeDir Directories="$(ArchiveDirectory)" />
 
 		<!-- Archive-->
-		<CreateItem Include="$(BinariesPath)\Merged\*.*;$(LicensePath)\*.*">
+		<CreateItem Include="$(BinariesPath)\Merged\*.*;$(BinariesPath)\Merged-SL\*.*;;$(LicensePath)\*.*">
 			<Output ItemName="archiveFiles" TaskParameter="Include" />
 		</CreateItem>
 		<Zip Files="@(archiveFiles)" ZipFileName="$(ArchiveDirectory)\$(ProjectName)-$(VersionNumber).zip" Flatten="true" WorkingDirectory="$(BuildPath)" />
