@@ -27,4 +27,56 @@
         [DebuggerStepThrough]
         internal abstract object Resolve(Type componentType);
     }
+
+    public static class ComponentStore
+    {
+        private static IDependencyResolver currentResolver = CreateDefaultResolver();
+
+        private static IDependencyResolver CreateDefaultResolver()
+        {
+            return new ServiceLocatorDependencyResolver();
+        }
+
+        private class ServiceLocatorDependencyResolver
+            : IDependencyResolver, IDependencyScope
+        {
+            public object Resolve(Type typeOfDependency)
+            {
+                return ServiceLocator.Current.Resolve(typeOfDependency);
+            }
+
+            public void Dispose()
+            {
+                
+            }
+
+            public IDependencyScope CreateScope()
+            {
+                return this;
+            }
+        }
+
+
+        public static IDisposable RegisterDependencyResolver(IDependencyResolver factory)
+        {
+            currentResolver = factory;
+            return A.Fake<IDisposable>();
+        }
+
+        public static IDependencyScope BeginResolve()
+        {
+            return currentResolver.CreateScope();
+        }
+    }
+
+    public interface IDependencyResolver
+    {
+        IDependencyScope CreateScope();
+    }
+
+    public interface IDependencyScope
+        : IDisposable
+    {
+        object Resolve(Type typeOfDependency);
+    }
 }
