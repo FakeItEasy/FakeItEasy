@@ -40,7 +40,7 @@
                 new ArgumentConstraintFactory());
 
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>())));
+                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>(), c.Resolve<ICallExpressionParser>())));
 
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
@@ -70,8 +70,11 @@
                 x => new FileStorage(x, c.Resolve<IFileSystem>()));
 #endif
 
+            container.RegisterSingleton<ICallExpressionParser>(c =>
+                new CallExpressionParser());
+
             container.RegisterSingleton<IExpressionParser>(c =>
-                new ExpressionParser());
+                new ExpressionParser(c.Resolve<ICallExpressionParser>()));
 
             container.RegisterSingleton<RecordingRuleBuilder.Factory>(c =>
                 (rule, fakeObject) => new RecordingRuleBuilder(rule, c.Resolve<RuleBuilder.Factory>().Invoke(rule, fakeObject)));
@@ -117,7 +120,8 @@
                 return new ExpressionCallMatcher(
                     callSpecification, 
                     this.Container.Resolve<ArgumentConstraintFactory>(), 
-                    this.Container.Resolve<MethodInfoManager>());
+                    this.Container.Resolve<MethodInfoManager>(),
+                    this.Container.Resolve<ICallExpressionParser>());
             }
         }
 

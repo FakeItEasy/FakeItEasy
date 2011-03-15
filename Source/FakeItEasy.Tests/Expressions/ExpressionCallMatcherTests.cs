@@ -5,7 +5,7 @@ namespace FakeItEasy.Tests.Expressions
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
-    using FakeItEasy.Tests.TestHelpers;
+    using TestHelpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -13,6 +13,7 @@ namespace FakeItEasy.Tests.Expressions
     {
         private ArgumentConstraintFactory constraintFactory;
         private MethodInfoManager methodInfoManager;
+        private CallExpressionParser parser;
 
         [SetUp]
         public void SetUp()
@@ -23,6 +24,7 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
 
             this.methodInfoManager = A.Fake<MethodInfoManager>();
+            this.parser = new CallExpressionParser();
         }
 
         private ExpressionCallMatcher CreateMatcher<TFake, TMember>(Expression<Func<TFake, TMember>> callSpecification)
@@ -37,7 +39,7 @@ namespace FakeItEasy.Tests.Expressions
 
         private ExpressionCallMatcher CreateMatcher(LambdaExpression callSpecification)
         {
-            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager);
+            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager, this.parser);
         }
 
         private void StubMethodInfoManagerToReturn(bool returnValue)
@@ -221,10 +223,5 @@ namespace FakeItEasy.Tests.Expressions
 
             A.CallTo(() => this.methodInfoManager.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), getter, getter)).MustHaveHappened();
         }
-    }
-
-    public abstract class TypeWithInternalProperty
-    {
-        internal abstract bool InternalProperty { get; }
     }
 }

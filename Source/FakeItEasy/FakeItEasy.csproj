@@ -397,6 +397,7 @@
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Expressions\CallExpressionParser.cs" />
     <Compile Include="Expressions\ExpressionCallMatcher.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -406,6 +407,7 @@
     <Compile Include="Expressions\ExpressionParser.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Expressions\ICallExpressionParser.cs" />
     <Compile Include="Expressions\IExpressionCallMatcherFactory.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -415,6 +417,7 @@
     <Compile Include="Expressions\NotArgumentConstraintScope.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Expressions\ParsedCallExpression.cs" />
     <Compile Include="Expressions\RootArgumentConstraintScope.cs">
       <SubType>Code</SubType>
     </Compile>

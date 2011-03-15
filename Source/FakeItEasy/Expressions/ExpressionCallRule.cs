@@ -2,8 +2,8 @@ namespace FakeItEasy.Expressions
 {
     using System;
     using System.Linq.Expressions;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
+    using Configuration;
+    using Core;
 
     /// <summary>
     /// An implementation of the <see cref="IFakeObjectCallRule" /> interface that uses
@@ -35,9 +35,6 @@ namespace FakeItEasy.Expressions
             get { return this.ExpressionMatcher.DescriptionOfMatchingCall; }
         }
 
-        /// <summary>
-        /// Gets the expression matcher used by this rule.
-        /// </summary>
         private ExpressionCallMatcher ExpressionMatcher { get; set; }
 
         /// <summary>

@@ -427,6 +427,9 @@
     <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs">
       <Link>Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\CallExpressionParser.cs">
+      <Link>Expressions\CallExpressionParser.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Expressions\ExpressionCallMatcher.cs">
       <Link>Expressions\ExpressionCallMatcher.cs</Link>
     </Compile>
@@ -436,6 +439,9 @@
     <Compile Include="..\FakeItEasy\Expressions\ExpressionParser.cs">
       <Link>Expressions\ExpressionParser.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ICallExpressionParser.cs">
+      <Link>Expressions\ICallExpressionParser.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Expressions\IExpressionCallMatcherFactory.cs">
       <Link>Expressions\IExpressionCallMatcherFactory.cs</Link>
     </Compile>
@@ -444,6 +450,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\NotArgumentConstraintScope.cs">
       <Link>Expressions\NotArgumentConstraintScope.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ParsedCallExpression.cs">
+      <Link>Expressions\ParsedCallExpression.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\RootArgumentConstraintScope.cs">
       <Link>Expressions\RootArgumentConstraintScope.cs</Link>
@@ -583,7 +592,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
