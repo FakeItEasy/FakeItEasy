@@ -12,14 +12,16 @@ namespace FakeItEasy.Configuration
         private readonly IConfigurationFactory configurationFactory;
         private readonly IExpressionParser expressionParser;
         private readonly IProxyGenerator proxyGenerator;
+        private readonly ICallExpressionParser callExpressionParser;
         private readonly ExpressionCallRule.Factory ruleFactory;
 
-        public FakeConfigurationManager(IConfigurationFactory configurationFactory, IExpressionParser parser, ExpressionCallRule.Factory callRuleFactory, IProxyGenerator proxyGenerator)
+        public FakeConfigurationManager(IConfigurationFactory configurationFactory, IExpressionParser parser, ExpressionCallRule.Factory callRuleFactory, IProxyGenerator proxyGenerator, ICallExpressionParser callExpressionParser)
         {
             this.configurationFactory = configurationFactory;
             this.expressionParser = parser;
             this.ruleFactory = callRuleFactory;
             this.proxyGenerator = proxyGenerator;
+            this.callExpressionParser = callExpressionParser;
         }
 
         public IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
@@ -53,16 +55,11 @@ namespace FakeItEasy.Configuration
 
         private void AssertThatMemberCanBeIntercepted(LambdaExpression callSpecification)
         {
-            var methodCall = callSpecification.Body as MethodCallExpression;
-            if (methodCall != null && !this.proxyGenerator.MemberCanBeIntercepted(methodCall.Method))
+            var calledMethod = this.callExpressionParser.Parse(callSpecification).CalledMethod;
+
+            if (!this.proxyGenerator.MemberCanBeIntercepted(calledMethod))
             {
                 throw new FakeConfigurationException(ExceptionMessages.MemberCanNotBeIntercepted);
-            }
-
-            var propertyCall = callSpecification.Body as MemberExpression;
-            if (propertyCall != null && !this.proxyGenerator.MemberCanBeIntercepted(propertyCall.Member))
-            {
-                throw new FakeConfigurationException("The specified member can not be configured since it can not be intercepted by the current IProxyGenerator.");
             }
         }
     }

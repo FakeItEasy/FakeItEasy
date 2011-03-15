@@ -19,6 +19,7 @@ namespace FakeItEasy.Tests.Configuration
         private LambdaExpression argumentToRuleFactory;
         private IConfigurationFactory configurationFactory;
         private IProxyGenerator proxyGenerator;
+        private CallExpressionParser expressionParser;
 
         [SetUp]
         public void SetUp()
@@ -38,6 +39,8 @@ namespace FakeItEasy.Tests.Configuration
 
             this.configurationFactory = A.Fake<IConfigurationFactory>();
 
+            this.expressionParser = new CallExpressionParser();
+
             this.proxyGenerator = A.Fake<IProxyGenerator>();
             A.CallTo(() => this.proxyGenerator.MemberCanBeIntercepted(A<MemberInfo>.Ignored)).Returns(true);
         }
@@ -50,7 +53,7 @@ namespace FakeItEasy.Tests.Configuration
 
         private StartConfiguration<T> CreateConfiguration<T>()
         {
-            return new StartConfiguration<T>(this.fakeObject, this.ruleFactory, this.configurationFactory, this.proxyGenerator);
+            return new StartConfiguration<T>(this.fakeObject, this.ruleFactory, this.configurationFactory, this.proxyGenerator, this.expressionParser);
         }
 
         [Test]
@@ -193,7 +196,7 @@ namespace FakeItEasy.Tests.Configuration
             // Arrange
             var configuration = this.CreateConfiguration<IFoo>();
 
-            A.CallTo(() => this.proxyGenerator.MemberCanBeIntercepted(typeof(IFoo).GetProperty("SomeProperty"))).Returns(false);
+            A.CallTo(() => this.proxyGenerator.MemberCanBeIntercepted(typeof(IFoo).GetProperty("SomeProperty").GetGetMethod(true))).Returns(false);
 
             // Act
             var thrown = Assert.Throws<FakeConfigurationException>(() =>

@@ -14,13 +14,15 @@ namespace FakeItEasy.Configuration
         private readonly IConfigurationFactory configurationFactory;
         private readonly FakeManager manager;
         private readonly IProxyGenerator proxyGenerator;
+        private readonly ICallExpressionParser expressionParser;
 
-        internal StartConfiguration(FakeManager manager, ExpressionCallRule.Factory callRuleFactory, IConfigurationFactory configurationFactory, IProxyGenerator proxyGenerator)
+        internal StartConfiguration(FakeManager manager, ExpressionCallRule.Factory callRuleFactory, IConfigurationFactory configurationFactory, IProxyGenerator proxyGenerator, ICallExpressionParser expressionParser)
         {
             this.manager = manager;
             this.callRuleFactory = callRuleFactory;
             this.configurationFactory = configurationFactory;
             this.proxyGenerator = proxyGenerator;
+            this.expressionParser = expressionParser;
         }
 
         public IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(Expression<Func<TFake, TMember>> callSpecification)
@@ -55,21 +57,10 @@ namespace FakeItEasy.Configuration
 
         private void AssertThatMemberCanBeIntercepted(LambdaExpression callSpecification)
         {
-            var methodExpression = callSpecification.Body as MethodCallExpression;
-            if (methodExpression != null)
-            {
-                this.AssertThatMemberCanBeIntercepted(methodExpression.Method);
-                return;
-            }
-
-            var propertyExpression = callSpecification.Body as MemberExpression;
-            if (propertyExpression != null)
-            {
-                this.AssertThatMemberCanBeIntercepted(propertyExpression.Member);
-            }
+            this.AssertThatMemberCanBeIntercepted(this.expressionParser.Parse(callSpecification).CalledMethod);
         }
 
-        private void AssertThatMemberCanBeIntercepted(MemberInfo member)
+        private void AssertThatMemberCanBeIntercepted(MethodInfo member)
         {
             if (!this.proxyGenerator.MemberCanBeIntercepted(member))
             {
