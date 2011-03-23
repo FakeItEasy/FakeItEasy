@@ -1,15 +1,12 @@
-using System;
-using System.Linq.Expressions;
-using System.Reflection;
-using FakeItEasy.Configuration;
-using FakeItEasy.Core;
-using FakeItEasy.Creation;
-using FakeItEasy.Expressions;
-using FakeItEasy.Tests.TestHelpers;
-using NUnit.Framework;
-
 namespace FakeItEasy.Tests.Configuration
 {
+    using System;
+    using System.Linq.Expressions;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using FakeItEasy.Expressions;
+    using NUnit.Framework;
+
     [TestFixture]
     public class FakeConfigurationManagerTests
     {
@@ -19,8 +16,8 @@ namespace FakeItEasy.Tests.Configuration
         private ExpressionCallRule.Factory ruleFactory;
         private ExpressionCallRule ruleReturnedFromFactory;
         private FakeManager fakeObjectReturnedFromParser;
-        private IProxyGenerator proxyGenerator;
-        private ICallExpressionParser callExpressionParser;
+        private CallExpressionParser callExpressionParser;
+        private IInterceptionAsserter interceptionAsserter;
 
         [SetUp]
         public void SetUp()
@@ -32,9 +29,8 @@ namespace FakeItEasy.Tests.Configuration
         {
             this.configurationFactory = A.Fake<IConfigurationFactory>();
             this.expressionParser = A.Fake<IExpressionParser>();
-            this.proxyGenerator = A.Fake<IProxyGenerator>();
-            this.callExpressionParser = A.Fake<ICallExpressionParser>();
-            A.CallTo(() => this.proxyGenerator.MemberCanBeIntercepted(A<MemberInfo>.Ignored)).Returns(true);
+            this.callExpressionParser = new CallExpressionParser();
+            this.interceptionAsserter = A.Fake<IInterceptionAsserter>();
 
             Expression<Action<IFoo>> dummyExpression = x => x.Bar();
             this.ruleReturnedFromFactory = ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>().Invoke(dummyExpression);
@@ -52,7 +48,12 @@ namespace FakeItEasy.Tests.Configuration
 
         private FakeConfigurationManager CreateManager()
         {
-            return new FakeConfigurationManager(this.configurationFactory, this.expressionParser, this.ruleFactory, this.proxyGenerator, this.callExpressionParser);
+            return new FakeConfigurationManager(
+                this.configurationFactory, 
+                this.expressionParser, 
+                this.ruleFactory,
+                this.callExpressionParser, 
+                this.interceptionAsserter);
         }
 
         //Callto
@@ -125,26 +126,6 @@ namespace FakeItEasy.Tests.Configuration
                 this.configurationManager.CallTo(() => foo.Bar()));
         }
 
-        //[Test]
-        //public void CallTo_with_void_call_that_can_not_be_faked_should_throw()
-        //{
-        //    // Arrange
-        //    var foo = A.Fake<Foo>();
-
-        //    Expression<Action> fooMember = () => foo.Bar();
-        //    var methodCall = fooMember.Body as MethodCallExpression;
-
-        //    A.CallTo(() => this.proxyGenerator.MemberCanBeIntercepted(methodCall.Method)).Returns(false);
-
-        //    // Act
-        //    var thrown = Assert.Throws<FakeConfigurationException>(() =>
-        //        this.configurationManager.CallTo(fooMember));
-
-        //    // Assert
-        //    Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
-        //}
-
-
         // CallTo with function calls
         [Test]
         public void CallTo_with_function_call_should_call_configuration_factory_with_fake_object()
@@ -202,59 +183,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
-        public void CallTo_with_function_call_that_can_not_be_itercepted_should_throw()
-        {
-            // Arrange
-            var foo = A.Fake<IFoo>();
-            A.CallTo(() => this.proxyGenerator.MemberCanBeIntercepted(A<MemberInfo>.Ignored)).Returns(false);
-            
-            // Act
-
-            // Assert
-            Assert.That(() => { this.configurationManager.CallTo(() => foo.Baz()); },
-                Throws.Exception.InstanceOf<FakeConfigurationException>()
-                .With.Message.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
-        }
-
-        //[Test]
-        //public void CallTo_with_function_call_that_can_not_be_faked_should_throw()
-        //{
-        //    // Arrange
-        //    var foo = A.Fake<IFoo>();
-
-        //    Expression<Func<int>> fooMember = () => foo.Baz();
-        //    var methodCall = fooMember.Body as MethodCallExpression;
-
-        //    A.CallTo(() => this.proxyGenerator.MemberCanBeIntercepted(methodCall.Method)).Returns(false);
-
-        //    // Act
-        //    var thrown = Assert.Throws<FakeConfigurationException>(() =>
-        //        this.configurationManager.CallTo(fooMember));
-            
-        //    // Assert
-        //    Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
-        //}
-
-        //[Test]
-        //public void CallTo_with_property_getter_call_that_can_not_be_faked_should_throw()
-        //{
-        //    // Arrange
-        //    var foo = A.Fake<IFoo>();
-
-        //    Expression<Func<int>> fooMember = () => foo.SomeProperty;
-        //    var memberAccess = fooMember.Body as MemberExpression;
-
-        //    A.CallTo(() => this.proxyGenerator.MemberCanBeIntercepted(memberAccess.Member)).Returns(false);
-
-        //    // Act
-        //    var thrown = Assert.Throws<FakeConfigurationException>(() =>
-        //        this.configurationManager.CallTo(fooMember));
-
-        //    // Assert
-        //    Assert.That(thrown.Message, Is.EqualTo("The specified member can not be configured since it can not be intercepted by the current IProxyGenerator."));
-        //}
-
-        [Test]
         public void CallTo_with_function_call_should_be_null_guarded()
         {
             // Arrange
@@ -264,6 +192,42 @@ namespace FakeItEasy.Tests.Configuration
             // Assert
             NullGuardedConstraint.Assert(() =>
                 this.configurationManager.CallTo(() => "".Length));
+        }
+
+        [Test]
+        public void Should_call_interception_asserter_when_configuring_function_call()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            Expression<Func<int>> call = () => foo.Baz();
+
+            var parsedCall = this.callExpressionParser.Parse(call);
+
+            // Act
+            this.configurationManager.CallTo(call);
+
+            // Assert
+            A.CallTo(() => this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(
+                parsedCall.CalledMethod,
+                parsedCall.CallTarget)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_call_interception_asserter_when_configuring_void_call()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            Expression<Action> call = () => foo.Bar();
+
+            var parsedCall = this.callExpressionParser.Parse(call);
+
+            // Act
+            this.configurationManager.CallTo(call);
+
+            // Assert
+            A.CallTo(() => this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(
+                parsedCall.CalledMethod,
+                parsedCall.CallTarget)).MustHaveHappened();
         }
     }
 }
