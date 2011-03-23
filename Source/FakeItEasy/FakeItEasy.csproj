@@ -81,6 +81,7 @@
     <Compile Include="Configuration\ConfigurationModule.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\DefaultInterceptionAsserter.cs" />
     <Compile Include="Configuration\FakeConfigurationException.cs">
       <SubType>Code</SubType>
     </Compile>

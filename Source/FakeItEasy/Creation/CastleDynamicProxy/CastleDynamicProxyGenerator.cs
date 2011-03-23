@@ -55,6 +55,12 @@
             return !isNonInterceptableMember;
         }
 
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
+        {
+            failReason = null;
+            return this.MemberCanBeIntercepted(method);
+        }
+
         private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
         {
             if (typeOfProxy.IsInterface && argumentsForConstructor != null)

@@ -100,6 +100,9 @@
     <Compile Include="..\FakeItEasy\Configuration\ConfigurationModule.cs">
       <Link>Configuration\ConfigurationModule.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\DefaultInterceptionAsserter.cs">
+      <Link>Configuration\DefaultInterceptionAsserter.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\FakeConfigurationException.cs">
       <Link>Configuration\FakeConfigurationException.cs</Link>
     </Compile>

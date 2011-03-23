@@ -109,7 +109,7 @@
 
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
-            container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter());
+            container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IProxyGenerator>()));
         }
 
         private class ExpressionCallMatcherFactory

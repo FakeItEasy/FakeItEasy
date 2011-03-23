@@ -25,5 +25,7 @@ namespace FakeItEasy.Creation
         /// <param name="member">The member to test.</param>
         /// <returns>True if the member can be intercepted.</returns>
         bool MemberCanBeIntercepted(MemberInfo member);
+
+        bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason );
     }
 }
