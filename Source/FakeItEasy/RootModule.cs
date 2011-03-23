@@ -108,6 +108,8 @@
             container.Register<IFixtureInitializer>(c => new DefaultFixtureInitializer(c.Resolve<IFakeAndDummyManager>()));
 
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
+
+            container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter());
         }
 
         private class ExpressionCallMatcherFactory

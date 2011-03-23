@@ -3,9 +3,9 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Linq.Expressions;
     using System.Reflection;
-    using FakeItEasy.Core;
-    using FakeItEasy.Creation;
-    using FakeItEasy.Expressions;
+    using Core;
+    using Creation;
+    using Expressions;
 
     internal class StartConfiguration<TFake>
         : IStartConfiguration<TFake>, IHideObjectMembers
@@ -13,16 +13,16 @@ namespace FakeItEasy.Configuration
         private readonly ExpressionCallRule.Factory callRuleFactory;
         private readonly IConfigurationFactory configurationFactory;
         private readonly FakeManager manager;
-        private readonly IProxyGenerator proxyGenerator;
         private readonly ICallExpressionParser expressionParser;
+        private readonly IInterceptionAsserter interceptionAsserter;
 
-        internal StartConfiguration(FakeManager manager, ExpressionCallRule.Factory callRuleFactory, IConfigurationFactory configurationFactory, IProxyGenerator proxyGenerator, ICallExpressionParser expressionParser)
+        internal StartConfiguration(FakeManager manager, ExpressionCallRule.Factory callRuleFactory, IConfigurationFactory configurationFactory, ICallExpressionParser expressionParser, IInterceptionAsserter interceptionAsserter)
         {
             this.manager = manager;
             this.callRuleFactory = callRuleFactory;
             this.configurationFactory = configurationFactory;
-            this.proxyGenerator = proxyGenerator;
             this.expressionParser = expressionParser;
+            this.interceptionAsserter = interceptionAsserter;
         }
 
         public IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(Expression<Func<TFake, TMember>> callSpecification)
@@ -30,7 +30,7 @@ namespace FakeItEasy.Configuration
             Guard.AgainstNull(callSpecification, "callSpecification");
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
-
+            
             var rule = this.callRuleFactory(callSpecification);
             this.manager.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, rule);
@@ -57,15 +57,8 @@ namespace FakeItEasy.Configuration
 
         private void AssertThatMemberCanBeIntercepted(LambdaExpression callSpecification)
         {
-            this.AssertThatMemberCanBeIntercepted(this.expressionParser.Parse(callSpecification).CalledMethod);
-        }
-
-        private void AssertThatMemberCanBeIntercepted(MethodInfo member)
-        {
-            if (!this.proxyGenerator.MemberCanBeIntercepted(member))
-            {
-                throw new FakeConfigurationException(ExceptionMessages.MemberCanNotBeIntercepted);
-            }
+            var parsedCall = this.expressionParser.Parse(callSpecification);
+            this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(parsedCall.CalledMethod, this.manager.Object);
         }
     }
 }

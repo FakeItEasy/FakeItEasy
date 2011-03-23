@@ -82,7 +82,12 @@
 
             public IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeManager fakeObject)
             {
-                return new StartConfiguration<TFake>(fakeObject, this.Container.Resolve<ExpressionCallRule.Factory>(), this.Container.Resolve<IConfigurationFactory>(), this.Container.Resolve<IProxyGenerator>(), this.Container.Resolve<ICallExpressionParser>());
+                return new StartConfiguration<TFake>(
+                    fakeObject, 
+                    this.Container.Resolve<ExpressionCallRule.Factory>(), 
+                    this.Container.Resolve<IConfigurationFactory>(), 
+                    this.Container.Resolve<ICallExpressionParser>(), 
+                    this.Container.Resolve<IInterceptionAsserter>());
             }
         }
     }

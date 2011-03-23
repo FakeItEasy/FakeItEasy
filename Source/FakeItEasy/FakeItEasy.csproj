@@ -120,6 +120,7 @@
     <Compile Include="Configuration\IHideObjectMembers.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\IInterceptionAsserter.cs" />
     <Compile Include="Configuration\IOutAndRefParametersConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
