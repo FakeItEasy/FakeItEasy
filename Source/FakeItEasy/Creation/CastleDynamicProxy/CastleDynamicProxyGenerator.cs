@@ -9,7 +9,7 @@
     using System.Security.Permissions;
     using Castle.DynamicProxy;
     using Castle.DynamicProxy.Generators;
-    using FakeItEasy.Core;
+    using Core;
 
     internal class CastleDynamicProxyGenerator
         : IProxyGenerator
@@ -17,6 +17,7 @@
         private static readonly Logger Logger = Log.GetLogger<CastleDynamicProxyGenerator>();
         private static readonly ProxyGenerationOptions proxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
         private static readonly ProxyGenerator proxyGenerator = new ProxyGenerator();
+        private readonly CastleDynamicProxyInterceptionValidator interceptionValidator = new CastleDynamicProxyInterceptionValidator(new MethodInfoManager());
 
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "No field initialization.")]
         static CastleDynamicProxyGenerator()
@@ -57,8 +58,8 @@
 
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
         {
-            failReason = null;
-            return this.MemberCanBeIntercepted(method);
+            return this.interceptionValidator
+                .MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
         private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)

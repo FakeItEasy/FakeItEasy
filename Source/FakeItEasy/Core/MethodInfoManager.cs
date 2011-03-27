@@ -29,20 +29,13 @@ namespace FakeItEasy.Core
                 return true;
             }
 
-            var methodInvokedByFirst = GetMethodOnTypeThatWillBeInvokedByMethodInfo(target, first);
-            var methodInvokedBySecond = GetMethodOnTypeThatWillBeInvokedByMethodInfo(target, second);
+            var methodInvokedByFirst = this.GetMethodOnTypeThatWillBeInvokedByMethodInfo(target, first);
+            var methodInvokedBySecond = this.GetMethodOnTypeThatWillBeInvokedByMethodInfo(target, second);
 
             return methodInvokedByFirst != null && methodInvokedBySecond != null && methodInvokedByFirst.Equals(methodInvokedBySecond);
         }
 
-        [DebuggerStepThrough]
-        private static bool IsSameMethod(MethodInfo first, MethodInfo second)
-        {
-            return first.GetBaseDefinition().Equals(second.GetBaseDefinition())
-                && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
-        }
-
-        private static MethodInfo GetMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
+        public virtual MethodInfo GetMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
         {
             MethodInfo result = null;
             var key = new TypeMethodInfoPair { Type = type, MethodInfo = method };
@@ -57,6 +50,13 @@ namespace FakeItEasy.Core
             }
 
             return result;
+        }
+
+        [DebuggerStepThrough]
+        private static bool IsSameMethod(MethodInfo first, MethodInfo second)
+        {
+            return first.GetBaseDefinition().Equals(second.GetBaseDefinition())
+                && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
         }
 
         private static MethodInfo FindMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)

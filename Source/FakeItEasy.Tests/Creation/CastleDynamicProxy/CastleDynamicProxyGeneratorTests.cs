@@ -29,15 +29,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             typeof(ClassWithPrivateConstructor)
         };
 
-        private MemberInfo[] nonInterceptableMembers = new MemberInfo[] 
-            {
-                typeof(object).GetMethod("GetType"),
-                typeof(string).GetProperty("Length"),
-                typeof(TypeWithNonVirtualProperty).GetProperty("Foo").GetGetMethod(),
-                typeof(TypeWithNonVirtualProperty).GetProperty("Foo").GetSetMethod(),
-                typeof(TypeWithNonVirtualProperty).GetProperty("Foo")
-            };
-
+       
         private MemberInfo[] interceptableMembers = new MemberInfo[] 
             {
                 typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
@@ -204,18 +196,6 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             // Assert
             Assert.That(result.ReasonForFailure, Is.StringStarting("No default constructor was found on the type"));
-        }
-
-        [TestCaseSource("nonInterceptableMembers")]
-        public void MemberCanBeIntercepted_should_return_false_for_non_virtual_member(MemberInfo member)
-        {
-            // Arrange
-            
-            // Act
-            var result = this.generator.MemberCanBeIntercepted(member);
-
-            // Assert
-            Assert.That(result, Is.False);
         }
 
         [TestCaseSource("interceptableMembers")]

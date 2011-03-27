@@ -325,6 +325,7 @@
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidator.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs">
       <SubType>Code</SubType>
     </Compile>

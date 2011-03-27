@@ -82,6 +82,7 @@
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
     <Compile Include="Core\DefaultFixtureInitializerTests.cs" />
     <Compile Include="Core\FakeCallEqualityComparerTests.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidatorTests.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManagerTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -133,6 +134,7 @@
     <Compile Include="FacadedTestBase.cs" />
     <Compile Include="FakeFacadeTests.cs" />
     <Compile Include="Foo.cs" />
+    <Compile Include="Ignore.cs" />
     <Compile Include="IsProxyConstraint.cs" />
     <Compile Include="LambdaExpressionDummyDefinition.cs" />
     <Compile Include="RepeatedTests.cs" />
