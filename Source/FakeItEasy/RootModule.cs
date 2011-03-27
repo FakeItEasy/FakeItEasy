@@ -91,7 +91,10 @@
                                                              return new DefaultFakeAndDummyManager(session, fakeCreator, c.Resolve<IFakeWrapperConfigurer>());
                                                          });
 
-            container.RegisterSingleton<IProxyGenerator>(c => new CastleDynamicProxyGenerator());
+            container.RegisterSingleton<IProxyGenerator>(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
+            
+            container.RegisterSingleton(
+                c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
 
             container.RegisterSingleton<IExceptionThrower>(c => new DefaultExceptionThrower());
 

@@ -13,7 +13,7 @@
             this.methodInfoManager = methodInfoManager;
         }
 
-        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
+        public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
         {
             var invokedMethod = this.GetInvokedMethod(method, callTarget);
 

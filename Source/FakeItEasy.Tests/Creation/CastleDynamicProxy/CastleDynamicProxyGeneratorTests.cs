@@ -13,6 +13,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     public class CastleDynamicProxyGeneratorTests
     {
         private CastleDynamicProxyGenerator generator;
+        private CastleDynamicProxyInterceptionValidator interceptionValidator;
 
         private object[] supportedTypes = new object[] 
         {
@@ -29,32 +30,12 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             typeof(ClassWithPrivateConstructor)
         };
 
-       
-        private MemberInfo[] interceptableMembers = new MemberInfo[] 
-            {
-                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
-                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("GetHashCode", new Type[] {}),
-                typeof(TypeWithNoneOfTheObjectMethodsOverridden).GetMethod("Equals", new Type[] { typeof(object) }),
-                typeof(object).GetMethod("GetHashCode", new Type[] {}),
-                typeof(object).GetMethod("Equals", new Type[] { typeof(object) }),
-                typeof(IFoo).GetMethod("Bar", new Type[] {}),
-                typeof(IFoo).GetProperty("SomeProperty").GetGetMethod(),
-                typeof(object).GetMethod("ToString", new Type[] {}),
-                typeof(IFoo).GetProperty("SomeProperty").GetSetMethod(),
-                typeof(IFoo).GetProperty("SomeProperty"),
-                typeof(TypeWithAllOfTheObjectMethodsOverridden).GetMethod("ToString", new Type[] {}),
-                typeof(TypeWithAllOfTheObjectMethodsOverridden).GetMethod("GetHashCode", new Type[] {}),
-                typeof(TypeWithAllOfTheObjectMethodsOverridden).GetMethod("Equals", new Type[] { typeof(object) }),
-                typeof(TypeWithInternalInterceptableProperties).GetProperty("ReadOnly", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(TypeWithInternalInterceptableProperties).GetProperty("WriteOnly", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(TypeWithInternalInterceptableProperties).GetProperty("Normal", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
-                typeof(TypeWithInternalInterceptableProperties).GetProperty("ReadOnlyAutomatic", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-            };
-
         [SetUp]
         public void SetUp()
         {
-            this.generator = new CastleDynamicProxyGenerator();
+            this.interceptionValidator = A.Fake<CastleDynamicProxyInterceptionValidator>();
+            
+            this.generator = new CastleDynamicProxyGenerator(this.interceptionValidator);
         }
 
         [TestCaseSource("supportedTypes")]
@@ -198,18 +179,6 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             Assert.That(result.ReasonForFailure, Is.StringStarting("No default constructor was found on the type"));
         }
 
-        [TestCaseSource("interceptableMembers")]
-        public void MemberCanBeIntercepted_should_return_true_for_virtual_member(MemberInfo member)
-        {
-            // Arrange
-            
-            // Act
-            var result = this.generator.MemberCanBeIntercepted(member);
-
-            // Assert
-            Assert.That(result, Is.True, "Was not able to intercept the member");
-        }
-
         [TestCaseSource("supportedTypes")]
         public void Should_implement_additional_interfaces(Type typeOfProxy)
         {
@@ -232,18 +201,6 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Assert
             NullGuardedConstraint.Assert(() =>
                 this.generator.GenerateProxy(typeof(IInterfaceType), Enumerable.Empty<Type>(), null));
-        }
-
-        [Test]
-        public void MemberCanBeIntercepted_should_be_null_guarded()
-        {
-            // Arrange
-
-            // Act
-
-            // Assert
-            NullGuardedConstraint.Assert(() => 
-                this.generator.MemberCanBeIntercepted(typeof(object).GetMethod("GetHashCode")));
         }
 
         [Test]
@@ -314,6 +271,21 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             // Assert
             Assert.That(wasCalled, Is.True);
+        }
+
+        [Test]
+        public void Should_delegate_to_interception_validator_when_validating_if_method_can_be_intercepted()
+        {
+            // Arrange
+            var method = typeof(object).GetMethod("ToString");
+            var instance = new object();
+
+            // Act
+            this.generator.MethodCanBeInterceptedOnInstance(method, instance, out Ignore.This<string>().Value);
+
+            // Assert
+            A.CallTo(() => this.interceptionValidator
+                .MethodCanBeInterceptedOnInstance(method, instance, out Ignore.This<string>().Value)).MustHaveHappened();
         }
 
         [Serializable]
