@@ -81,24 +81,6 @@
             this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValdiators);
         }
 
-        private static MethodInfo GetMethodInfo(LambdaExpression callSpecification)
-        {
-            var methodExpression = callSpecification.Body as MethodCallExpression;
-            if (methodExpression != null)
-            {
-                return methodExpression.Method;
-            }
-
-            var memberExpression = callSpecification.Body as MemberExpression;
-            if (memberExpression != null && memberExpression.Member.MemberType == MemberTypes.Property)
-            {
-                var property = memberExpression.Member as PropertyInfo;
-                return property.GetGetMethod(true);
-            }
-
-            throw new ArgumentException(ExceptionMessages.CreatingExpressionCallMatcherWithNonMethodOrPropertyExpression);
-        }
-
         private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<Expression> argumentExpressions, ArgumentConstraintFactory constraintFactory)
         {
             if (argumentExpressions != null)
