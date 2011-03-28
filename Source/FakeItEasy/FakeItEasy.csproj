@@ -185,6 +185,7 @@
     <Compile Include="Core\CallWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\DefaultArgumentConstraintManager.cs" />
     <Compile Include="Core\DefaultExceptionThrower.cs">
       <SubType>Code</SubType>
     </Compile>

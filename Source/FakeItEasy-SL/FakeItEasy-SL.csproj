@@ -211,6 +211,9 @@
     <Compile Include="..\FakeItEasy\Core\CallWriter.cs">
       <Link>Core\CallWriter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultArgumentConstraintManager.cs">
+      <Link>Core\DefaultArgumentConstraintManager.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\DefaultExceptionThrower.cs">
       <Link>Core\DefaultExceptionThrower.cs</Link>
     </Compile>

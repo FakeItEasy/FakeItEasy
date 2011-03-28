@@ -80,6 +80,7 @@
     <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
+    <Compile Include="Core\DefaultArgumentConstraintManagerTests.cs" />
     <Compile Include="Core\DefaultFixtureInitializerTests.cs" />
     <Compile Include="Core\FakeCallEqualityComparerTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidatorTests.cs" />
