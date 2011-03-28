@@ -1,9 +1,13 @@
 namespace FakeItEasy.Expressions
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions.ArgumentConstraints;
+    using System.IO;
+using System.Collections;
 
     /// <summary>
     /// Provides static methods for the ArgumentConstraint{T} class.

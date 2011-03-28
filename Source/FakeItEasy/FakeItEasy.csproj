@@ -247,6 +247,7 @@
     <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\IArgumentConstraintManager.cs" />
     <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -304,6 +305,7 @@
     <Compile Include="Core\IInterceptedFakeObjectCall.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\IOutputWriter.cs" />
     <Compile Include="Core\IWritableFakeObjectCall.cs">
       <SubType>Code</SubType>
     </Compile>

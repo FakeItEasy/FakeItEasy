@@ -273,6 +273,9 @@
     <Compile Include="..\FakeItEasy\Core\IArgumentConstraint.cs">
       <Link>Core\IArgumentConstraint.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\IArgumentConstraintManager.cs">
+      <Link>Core\IArgumentConstraintManager.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\ICallCollectionAndCallMatcherAccessor.cs">
       <Link>Core\ICallCollectionAndCallMatcherAccessor.cs</Link>
     </Compile>
@@ -329,6 +332,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IInterceptedFakeObjectCall.cs">
       <Link>Core\IInterceptedFakeObjectCall.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IOutputWriter.cs">
+      <Link>Core\IOutputWriter.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IWritableFakeObjectCall.cs">
       <Link>Core\IWritableFakeObjectCall.cs</Link>
@@ -601,7 +607,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
+      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
