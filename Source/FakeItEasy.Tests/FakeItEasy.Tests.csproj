@@ -79,6 +79,7 @@
     <Compile Include="ArgumentConstraintExtensions\EqualToConstraintTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
+    <Compile Include="Core\ArgumentConstraintTrapTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
     <Compile Include="Core\DefaultArgumentConstraintManagerTests.cs" />
     <Compile Include="Core\DefaultFixtureInitializerTests.cs" />
