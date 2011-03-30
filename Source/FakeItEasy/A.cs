@@ -1,3 +1,5 @@
+using FakeItEasy.Core;
+
 namespace FakeItEasy
 {
     using System;
@@ -135,18 +137,18 @@ namespace FakeItEasy
         /// Gets an argument constraint object that will be used to constrain a method call argument.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
-        public static ArgumentConstraintScope<T> That
+        public static IArgumentConstraintManager<T> That
         {
-            get { return new RootArgumentConstraintScope<T>(); }
+            get { return ServiceLocator.Current.Resolve<IArgumentConstraintManagerFactory>().Create<T>(); }
         }
 
         /// <summary>
         /// Returns a constraint that considers any value of an argument as valid.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
-        public static ArgumentConstraint<T> Ignored
+        public static T Ignored
         {
-            get { return ArgumentConstraint.Create(new RootArgumentConstraintScope<T>(), x => true, "Ignored"); }
+            get { return That.Matches(x => true, x => x.Write("Ignored")); }
         }
     }
 }

@@ -94,7 +94,7 @@ namespace FakeItEasy.Tests.Core
             Func<IFakeObjectCall, bool> secondCallPredicate = x => object.ReferenceEquals(calls[1], x);
             Func<IFakeObjectCall, bool> firstCallPredicate = x => object.ReferenceEquals(calls[0], x);
 
-            A.CallTo(() => this.callWriter.WriteCalls(4, A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(calls).Argument, A<TextWriter>.Ignored))
+            A.CallTo(() => this.callWriter.WriteCalls(4, A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(calls), A<TextWriter>.Ignored))
                 .Invokes(x => x.Arguments.Get<TextWriter>("writer").Write("    list of calls"));
 
             // Act

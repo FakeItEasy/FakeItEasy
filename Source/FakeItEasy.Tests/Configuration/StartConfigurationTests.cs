@@ -168,7 +168,7 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             A.CallTo(() => this.fakeObject.AddRuleFirst(
-                A<IFakeObjectCallRule>.That.IsInstanceOf<AnyCallCallRule>().Argument)).MustHaveHappened();
+                A<IFakeObjectCallRule>.That.IsInstanceOf(typeof(AnyCallCallRule)))).MustHaveHappened();
         }
 
         [Test]

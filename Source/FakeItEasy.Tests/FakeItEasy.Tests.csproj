@@ -110,7 +110,6 @@
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
     <Compile Include="Core\FakeConfiguratorTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
-    <Compile Include="ArgumentConstraintExtensionsTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsInstanceOfTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsNullTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\StringContainsTests.cs" />
@@ -126,12 +125,9 @@
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
-    <Compile Include="Expressions\ArgumentConstraintScopeTests.cs" />
-    <Compile Include="Expressions\ArgumentConstraintTests.cs" />
     <Compile Include="Expressions\CallExpressionParserTests.cs" />
+    <Compile Include="Expressions\ExpressionArgumentConstraintFactoryTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />
-    <Compile Include="Expressions\NotArgumentConstraintScopeTests.cs" />
-    <Compile Include="Expressions\RootArgumentConstraintScopeTests.cs" />
     <Compile Include="Expressions\TypeWithInternalProperty.cs" />
     <Compile Include="FacadedTestBase.cs" />
     <Compile Include="FakeFacadeTests.cs" />
@@ -148,7 +144,6 @@
     <Compile Include="Core\CallWriterTests.cs" />
     <Compile Include="CommonExtensionsTests.cs" />
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
-    <Compile Include="Expressions\ArgumentConstraintFactoryTests.cs" />
     <Compile Include="ArgumentConstraintTestBase.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ExpressionCallRuleTests.cs" />

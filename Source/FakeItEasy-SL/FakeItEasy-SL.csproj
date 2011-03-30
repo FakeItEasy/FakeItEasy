@@ -196,6 +196,9 @@
     <Compile Include="..\FakeItEasy\Configure.cs">
       <Link>Configure.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\ArgumentConstraintTrap.cs">
+      <Link>Core\ArgumentConstraintTrap.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentInfo.cs">
       <Link>Core\ArgumentInfo.cs</Link>
     </Compile>
@@ -278,6 +281,12 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IArgumentConstraintManager.cs">
       <Link>Core\IArgumentConstraintManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IArgumentConstraintManagerFactory.cs">
+      <Link>Core\IArgumentConstraintManagerFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IArgumentConstraintTrapper.cs">
+      <Link>Core\IArgumentConstraintTrapper.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\ICallCollectionAndCallMatcherAccessor.cs">
       <Link>Core\ICallCollectionAndCallMatcherAccessor.cs</Link>
@@ -430,23 +439,14 @@
     <Compile Include="..\FakeItEasy\ExpectationException.cs">
       <Link>ExpectationException.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraint.cs">
-      <Link>Expressions\ArgumentConstraint.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraintFactory.cs">
-      <Link>Expressions\ArgumentConstraintFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraintScope.cs">
-      <Link>Expressions\ArgumentConstraintScope.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs">
-      <Link>Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs">
       <Link>Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\CallExpressionParser.cs">
       <Link>Expressions\CallExpressionParser.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ExpressionArgumentConstraintFactory.cs">
+      <Link>Expressions\ExpressionArgumentConstraintFactory.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\ExpressionCallMatcher.cs">
       <Link>Expressions\ExpressionCallMatcher.cs</Link>
@@ -466,14 +466,8 @@
     <Compile Include="..\FakeItEasy\Expressions\IExpressionParser.cs">
       <Link>Expressions\IExpressionParser.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\NotArgumentConstraintScope.cs">
-      <Link>Expressions\NotArgumentConstraintScope.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Expressions\ParsedCallExpression.cs">
       <Link>Expressions\ParsedCallExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\RootArgumentConstraintScope.cs">
-      <Link>Expressions\RootArgumentConstraintScope.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ExtensionSyntax\Full\FullExtensionSyntax.cs">
       <Link>ExtensionSyntax\Full\FullExtensionSyntax.cs</Link>

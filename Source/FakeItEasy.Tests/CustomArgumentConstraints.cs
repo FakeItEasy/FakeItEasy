@@ -10,31 +10,33 @@ namespace FakeItEasy.Tests
     
     public static class CustomArgumentConstraints
     {
-        public static ArgumentConstraint<T> IsThisSequence<T>(this ArgumentConstraintScope<T> scope, T collection) where T : IEnumerable
+        public static T IsThisSequence<T>(this IArgumentConstraintManager<T> scope, T collection) where T : IEnumerable
         {
-            return ArgumentConstraint.Create(scope, x => x.Cast<object>().SequenceEqual(collection.Cast<object>()), "This sequence: " + collection.Cast<object>().ToCollectionString(x => x.ToString(), ", "));
+            return scope.Matches(
+                x => x.Cast<object>().SequenceEqual(collection.Cast<object>()), 
+                "This sequence: " + collection.Cast<object>().ToCollectionString(x => x.ToString(), ", "));
         }
 
-        public static ArgumentConstraint<T> IsThisSequence<T>(this ArgumentConstraintScope<T> scope, params object[] collection) where T : IEnumerable
+        public static T IsThisSequence<T>(this IArgumentConstraintManager<T> scope, params object[] collection) where T : IEnumerable
         {
-            return ArgumentConstraint.Create(scope, x => x != null && x.Cast<object>().SequenceEqual(collection.Cast<object>()), "This sequence: " + collection.ToCollectionString(x => x.ToString(), ", "));
+            return scope.Matches(x => x != null && x.Cast<object>().SequenceEqual(collection.Cast<object>()), "This sequence: " + collection.ToCollectionString(x => x.ToString(), ", "));
         }
 
         
-        public static ArgumentConstraint<Expression> ProducesValue(this ArgumentConstraintScope<Expression> scope, object expectedValue)
+        public static Expression ProducesValue(this IArgumentConstraintManager<Expression> scope, object expectedValue)
         {
-            return ArgumentConstraint.Create(scope, x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x)), 
+            return scope.Matches(x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x)), 
 			                                string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
         }
 
-        public static ArgumentConstraint<FakeManager> Fakes(this ArgumentConstraintScope<FakeManager> scope, object fakedObject)
+        public static FakeManager Fakes(this IArgumentConstraintManager<FakeManager> scope, object fakedObject)
         {
-            return ArgumentConstraint.Create(scope, x => x.Equals(Fake.GetFakeManager(fakedObject)), "Specified FakeObject");
+            return scope.Matches(x => x.Equals(Fake.GetFakeManager(fakedObject)), "Specified FakeObject");
         }
 
-        internal static ArgumentConstraint<FakeOptions> IsEmpty(this ArgumentConstraintScope<FakeOptions> scope)
+        internal static FakeOptions IsEmpty(this IArgumentConstraintManager<FakeOptions> scope)
         {
-            return ArgumentConstraint.Create(scope,
+            return scope.Matches(
                 x => 
                 {
                     return x.AdditionalInterfacesToImplement == null

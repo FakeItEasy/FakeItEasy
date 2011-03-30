@@ -61,7 +61,7 @@ namespace FakeItEasy.Tests.Creation
             var proxy = A.Fake<IFoo>();
             var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<IEnumerable<object>>.Ignored.Argument))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored, A<IEnumerable<object>>.Ignored))
                 .Returns(new ProxyGeneratorResult(proxy, eventRaiser));
 
             // Act
@@ -139,11 +139,11 @@ namespace FakeItEasy.Tests.Creation
                 // Assert
                 using (scope.OrderedAssertions())
                 {
-                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsNull().Argument))
+                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsNull()))
                        .MustHaveHappened();
-                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1).Argument))
+                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1)))
                         .MustHaveHappened();
-                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence("dummy").Argument))
+                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence("dummy")))
                         .MustHaveHappened();
                 }
             }
@@ -168,7 +168,7 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.Not.IsThisSequence(2, 2).Argument))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.Not.IsThisSequence(2, 2)))
                 .MustNotHaveHappened();
         }
 
@@ -187,9 +187,9 @@ namespace FakeItEasy.Tests.Creation
             var proxy = A.Fake<IFoo>();
 
             this.StubProxyGeneratorToFail();
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1).Argument))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1)))
                 .Returns(new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>()));
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1).Argument))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1)))
                 .Returns(new ProxyGeneratorResult(new object(), A.Dummy<ICallInterceptedEventRaiser>()));
                 
             // Act
@@ -211,7 +211,7 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator.CreateFake(typeof(TypeWithConstructorThatTakesDifferentTypes), FakeOptions.Empty, session, throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored.Argument, A<IEnumerable<object>>.That.Not.IsNull().Argument ))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored, A<IEnumerable<object>>.That.Not.IsNull() ))
                 .MustNotHaveHappened();
         }
 
@@ -229,7 +229,7 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator.CreateFake(typeof(TypeWithProtectedConstructor), options, session, throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithProtectedConstructor), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1).Argument))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithProtectedConstructor), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1)))
                 .MustHaveHappened();
         }
 
@@ -282,7 +282,7 @@ namespace FakeItEasy.Tests.Creation
                 }
             };
             
-            A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeof(TypeWithMultipleConstructors), "failed", ConstructorsEquivalentTo(expectedConstructors).Argument))
+            A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeof(TypeWithMultipleConstructors), "failed", ConstructorsEquivalentTo(expectedConstructors)))
                 .MustHaveHappened();
         }
 
@@ -292,7 +292,7 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var proxy = A.Fake<IFoo>(x => x.Implements(typeof(ITaggable)));
             A.CallTo(() =>
-                this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored.Argument, A<IEnumerable<object>>.Ignored.Argument)
+                this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored, A<IEnumerable<object>>.Ignored)
             ).Returns(new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>()));
 
             // Act
@@ -302,7 +302,7 @@ namespace FakeItEasy.Tests.Creation
             A.CallTo(() => this.configurer.ConfigureFake(typeof(IFoo), proxy)).MustHaveHappened();
         }
 
-        private ArgumentConstraint<IEnumerable<ResolvedConstructor>> ConstructorsEquivalentTo(IEnumerable<ResolvedConstructor> constructors)
+        private IEnumerable<ResolvedConstructor> ConstructorsEquivalentTo(IEnumerable<ResolvedConstructor> constructors)
         {
             return A<IEnumerable<ResolvedConstructor>>.That.Matches(x => 
             {
@@ -342,7 +342,7 @@ namespace FakeItEasy.Tests.Creation
                 }
 
                 return true;
-            });
+            }, "Matching constructor");
         }
 
         private static void StubSessionToFailForType<T>(IDummyValueCreationSession session)
@@ -362,7 +362,7 @@ namespace FakeItEasy.Tests.Creation
 
         private void StubProxyGeneratorToFail(string failReason)
         {
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored.Argument, A<IEnumerable<object>>.Ignored.Argument))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored, A<IEnumerable<object>>.Ignored))
                 .Returns(new ProxyGeneratorResult(failReason));
         }
 

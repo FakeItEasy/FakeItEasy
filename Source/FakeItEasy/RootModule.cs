@@ -37,10 +37,10 @@
                     });
 
             container.RegisterSingleton(c =>
-                new ArgumentConstraintFactory());
+                new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
 
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>(), c.Resolve<ICallExpressionParser>())));
+                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>(), c.Resolve<ICallExpressionParser>())));
 
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
@@ -113,6 +113,10 @@
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
             container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IProxyGenerator>()));
+
+            container.Register<IArgumentConstraintTrapper>(c => new ArgumentConstraintTrap());
+
+            container.Register<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
         }
 
         private class ExpressionCallMatcherFactory
@@ -124,7 +128,7 @@
             {
                 return new ExpressionCallMatcher(
                     callSpecification, 
-                    this.Container.Resolve<ArgumentConstraintFactory>(), 
+                    this.Container.Resolve<ExpressionArgumentConstraintFactory>(), 
                     this.Container.Resolve<MethodInfoManager>(),
                     this.Container.Resolve<ICallExpressionParser>());
             }
@@ -159,5 +163,15 @@
                 return result != null;
             }
         }
+
+        private class ArgumentConstraintManagerFactory
+            : IArgumentConstraintManagerFactory
+        {
+            public IArgumentConstraintManager<T> Create<T>()
+            {
+                return new DefaultArgumentConstraintManager<T>(ArgumentConstraintTrap.ReportTrappedConstraint);
+            }
+        }
+
     }
 }

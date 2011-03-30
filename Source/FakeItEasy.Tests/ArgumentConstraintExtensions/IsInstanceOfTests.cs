@@ -6,14 +6,8 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
     [TestFixture]
     public class IsInstanceOfTests
-        : ArgumentConstraintTestBase
+        : ArgumentConstraintTestBase<object>
     {
-        [SetUp]
-        public void SetUp()
-        {
-            this.constraintField = A<object>.That.IsInstanceOf<DateTime>();
-        }
-
         protected override IEnumerable<object> InvalidValues
         {
             get { return new object[] { new object(), 1, "foo" }; }
@@ -27,6 +21,11 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
         protected override string ExpectedDescription
         {
             get { return "Instance of System.DateTime"; }
+        }
+
+        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<object> scope)
+        {
+            scope.IsInstanceOf(typeof(DateTime));
         }
     }
 }

@@ -5,14 +5,8 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
     public class StringStartsWithTests
-        : ArgumentConstraintTestBase
+        : ArgumentConstraintTestBase<string>
     {
-        [SetUp]
-        public void SetUp()
-        {
-            this.constraintField = A<string>.That.StartsWith("abc");
-        }
-
         protected override IEnumerable<object> InvalidValues
         {
             get { return new object[] { "foo", "bar", "biz", "baz", "lorem ipsum", null }; }
@@ -26,6 +20,11 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
         protected override string ExpectedDescription
         {
             get { return "String that starts with \"abc\""; }
+        }
+
+        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<string> scope)
+        {
+            scope.StartsWith("abc");
         }
     }
 }

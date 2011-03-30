@@ -5,14 +5,8 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
     public class IsNullTests
-        : ArgumentConstraintTestBase
+        : ArgumentConstraintTestBase<object>
     {
-        [SetUp]
-        public void SetUp()
-        {
-            this.constraintField = A<string>.That.IsNull();
-        }
-
         protected override IEnumerable<object> ValidValues
         {
             get { return new object[] { null }; }
@@ -26,6 +20,11 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
         protected override string ExpectedDescription
         {
             get { return "NULL"; }
+        }
+
+        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<object> scope)
+        {
+            scope.IsNull();
         }
     }
 

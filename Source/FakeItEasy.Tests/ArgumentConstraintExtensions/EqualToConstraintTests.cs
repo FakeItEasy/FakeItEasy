@@ -7,9 +7,9 @@
     public class EqualToConstraintTests
         : ArgumentConstraintTestBase<object>
     {
-        protected override FakeItEasy.Expressions.ArgumentConstraint<object> CreateConstraint(FakeItEasy.Expressions.ArgumentConstraintScope<object> scope)
+        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<object> scope)
         {
-            return scope.IsEqualTo(10);
+            scope.IsEqualTo(10);
         }
 
         protected override IEnumerable<object> InvalidValues

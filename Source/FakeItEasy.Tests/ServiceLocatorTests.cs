@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests
         private Type[] SingletonTypes = new Type[]
         {
             typeof(IExpressionCallMatcherFactory),
-            typeof(FakeItEasy.Expressions.ArgumentConstraintFactory),
+            typeof(ExpressionArgumentConstraintFactory),
             typeof(IProxyGenerator)
         };
 

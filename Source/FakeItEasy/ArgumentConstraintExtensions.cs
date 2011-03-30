@@ -1,3 +1,6 @@
+using System.Linq.Expressions;
+using FakeItEasy.Core;
+
 namespace FakeItEasy
 {
     using System;
@@ -17,9 +20,9 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of the argument.</typeparam>
         /// <param name="scope">The scope of the constraint.</param>
         /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> IsNull<T>(this ArgumentConstraintScope<T> scope) where T : class
+        public static T IsNull<T>(this IArgumentConstraintManager<T> scope) where T : class
         {
-            return scope.CreateConstraint(x => x == null, "NULL");
+            return scope.Matches(x => x == null, "NULL");
         }
 
         /// <summary>
@@ -28,9 +31,9 @@ namespace FakeItEasy
         /// <param name="scope">The scope of the constraint.</param>
         /// <param name="value">The string the argument string should contain.</param>
         /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<string> Contains(this ArgumentConstraintScope<string> scope, string value)
+        public static string Contains(this IArgumentConstraintManager<string> scope, string value)
         {
-            return scope.CreateConstraint(x => x != null && x.Contains(value), "String that contains \"{0}\"", value);
+            return scope.Matches(x => x != null && x.Contains(value), "String that contains \"{0}\"", value);
         }
 
         /// <summary>
@@ -39,9 +42,10 @@ namespace FakeItEasy
         /// <param name="scope">The scope of the constraint.</param>
         /// <param name="value">The value the collection should contain.</param>
         /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> Contains<T>(this ArgumentConstraintScope<T> scope, object value) where T : IEnumerable
+        public static T Contains<T>(this IArgumentConstraintManager<T> scope, object value) where T : IEnumerable
         {
-            return new EnumerableContainsConstraint<T>(scope, value);
+            return scope.Matches(x => x.Cast<object>().Contains(value),
+                                 x => x.Write("sequence that contains the value " + value.ToString()));
         }
 
         /// <summary>
@@ -50,9 +54,9 @@ namespace FakeItEasy
         /// <param name="scope">The scope of the constraint.</param>
         /// <param name="value">The string the argument string should start with.</param>
         /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<string> StartsWith(this ArgumentConstraintScope<string> scope, string value)
+        public static string StartsWith(this IArgumentConstraintManager<string> scope, string value)
         {
-            return scope.CreateConstraint(x => x != null && x.StartsWith(value, StringComparison.Ordinal), "String that starts with \"{0}\"", value);
+            return scope.Matches(x => x != null && x.StartsWith(value, StringComparison.Ordinal), "String that starts with \"{0}\"", value);
         }
 
         /// <summary>
@@ -60,9 +64,9 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="scope">The scope of the constraint.</param>
         /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<string> IsNullOrEmpty(this ArgumentConstraintScope<string> scope)
+        public static string IsNullOrEmpty(this IArgumentConstraintManager<string> scope)
         {
-            return scope.CreateConstraint(x => string.IsNullOrEmpty(x), "(NULL or string.Empty)");
+            return scope.Matches(x => string.IsNullOrEmpty(x), "(NULL or string.Empty)");
         }
 
         /// <summary>
@@ -72,9 +76,9 @@ namespace FakeItEasy
         /// <param name="scope">The scope of the constraint.</param>
         /// <param name="value">The value that the argument has to be greatere than.</param>
         /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> IsGreaterThan<T>(this ArgumentConstraintScope<T> scope, T value) where T : IComparable
+        public static T IsGreaterThan<T>(this IArgumentConstraintManager<T> scope, T value) where T : IComparable
         {
-            return scope.CreateConstraint(x => x.CompareTo(value) > 0, "Greater than {0}", value);
+            return scope.Matches(x => x.CompareTo(value) > 0, "Greater than {0}", value);
         }
 
         /// <summary>
@@ -85,9 +89,9 @@ namespace FakeItEasy
         /// <param name="scope">The scope of the constraint.</param>
         /// <param name="value">The sequence to test against.</param>
         /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> IsSameSequenceAs<T>(this ArgumentConstraintScope<T> scope, IEnumerable value) where T : IEnumerable
+        public static T IsSameSequenceAs<T>(this IArgumentConstraintManager<T> scope, IEnumerable value) where T : IEnumerable
         {
-            return scope.CreateConstraint(
+            return scope.Matches(
                 x => x != null && x.Cast<object>().SequenceEqual(value.Cast<object>()), 
                 "specified sequence");
         }
@@ -98,9 +102,9 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of argument.</typeparam>
         /// <param name="scope">The scope of the constraint.</param>
         /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> IsEmpty<T>(this ArgumentConstraintScope<T> scope) where T : IEnumerable
+        public static T IsEmpty<T>(this IArgumentConstraintManager<T> scope) where T : IEnumerable
         {
-            return scope.CreateConstraint(
+            return scope.Matches(
                          x => x != null && !x.Cast<object>().Any(), 
                          "empty collection");
         }
@@ -112,22 +116,32 @@ namespace FakeItEasy
         /// <param name="scope">The scope of the constraint.</param>
         /// <param name="value">The value to compare to.</param>
         /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> IsEqualTo<T>(this ArgumentConstraintScope<T> scope, T value)
+        public static T IsEqualTo<T>(this IArgumentConstraintManager<T> scope, T value)
         {
-            return scope.CreateConstraint(
+            return scope.Matches(
                          x => Equals(value, x), 
                          "equal to {0}", 
                          value);
         }
 
-        private static ArgumentConstraint<T> CreateConstraint<T>(this ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)
+        public static T IsInstanceOf<T>(this IArgumentConstraintManager<T> manager, Type type)
         {
-            return ArgumentConstraint.Create(scope, predicate, description);
+            return manager.Matches(x => type.IsAssignableFrom(x.GetType()), "Instance of " + type.Name);
         }
 
-        private static ArgumentConstraint<T> CreateConstraint<T>(this ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string descriptionFormat, params object[] args)
+        public static T Matches<T>(this IArgumentConstraintManager<T> scope, Func<T, bool> predicate, string description)
         {
-            return ArgumentConstraint.Create(scope, predicate, descriptionFormat.FormatInvariant(args));
+            return scope.Matches(predicate, x => x.Write(description));
+        }
+
+        public static T Matches<T>(this IArgumentConstraintManager<T> scope, Func<T, bool> predicate, string descriptionFormat, params object[] args)
+        {
+            return scope.Matches(predicate, x => x.Write(string.Format(descriptionFormat, args)));
+        }
+
+        public static T Matches<T>(this IArgumentConstraintManager<T> scope, Expression<Func<T, bool>> predicate)
+        {
+            return scope.Matches(predicate.Compile(), predicate.ToString());
         }
     }
 }

@@ -7,10 +7,9 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     public class CollectionContainsTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
-
-        protected override FakeItEasy.Expressions.ArgumentConstraint<IEnumerable<object>> CreateConstraint(FakeItEasy.Expressions.ArgumentConstraintScope<IEnumerable<object>> scope)
+        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<IEnumerable<object>> scope)
         {
-            return scope.Contains(10);
+            scope.Contains(10);
         }
 
         protected override IEnumerable<object> InvalidValues

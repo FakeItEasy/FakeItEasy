@@ -1,18 +1,14 @@
 using System.Collections.Generic;
+using FakeItEasy.Core;
 using NUnit.Framework;
+using FakeItEasy.Tests;
 
 namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
     public class StringIsNullOrEmptyTests
-        : ArgumentConstraintTestBase
+        : ArgumentConstraintTestBase<string>
     {
-        [SetUp]
-        public void SetUp()
-        {
-            this.constraintField = A<string>.That.IsNullOrEmpty();
-        }
-
         protected override IEnumerable<object> InvalidValues
         {
             get { return new object[] { "foo", "bar", "a", "b" }; }
@@ -26,6 +22,11 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
         protected override string ExpectedDescription
         {
             get { return "(NULL or string.Empty)"; }
+        }
+
+        protected override void CreateConstraint(IArgumentConstraintManager<string> scope)
+        {
+            scope.IsNullOrEmpty();
         }
     }
 }

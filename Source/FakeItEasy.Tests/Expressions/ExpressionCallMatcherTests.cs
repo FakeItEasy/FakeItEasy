@@ -11,14 +11,14 @@ namespace FakeItEasy.Tests.Expressions
     [TestFixture]
     public class ExpressionCallMatcherTests
     {
-        private ArgumentConstraintFactory constraintFactory;
+        private ExpressionArgumentConstraintFactory constraintFactory;
         private MethodInfoManager methodInfoManager;
         private CallExpressionParser parser;
 
         [SetUp]
         public void SetUp()
         {
-            this.constraintFactory = A.Fake<ArgumentConstraintFactory>();
+            this.constraintFactory = A.Fake<ExpressionArgumentConstraintFactory>();
             var validator = A.Fake<IArgumentConstraint>();
             A.CallTo(() => validator.IsValid(A<object>.Ignored)).Returns(true);
             A.CallTo(() => constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(validator);
@@ -158,7 +158,7 @@ namespace FakeItEasy.Tests.Expressions
         public void ToString_should_write_full_method_name_with_type_name_and_arguments_list()
         {
             var constraint = A.Fake<IArgumentConstraint>();
-            A.CallTo(() => constraint.WriteDescription(A<IOutputWriter>.Ignored.Argument))
+            A.CallTo(() => constraint.WriteDescription(A<IOutputWriter>.Ignored))
                 .Invokes(x => x.GetArgument<IOutputWriter>(0).Write("<FOO>"));
 
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(constraint);

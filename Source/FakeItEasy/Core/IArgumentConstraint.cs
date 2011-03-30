@@ -3,7 +3,7 @@ namespace FakeItEasy.Core
     /// <summary>
     /// Validates an argument, checks that it's valid in a specific fake call.
     /// </summary>
-    internal interface IArgumentConstraint
+    public interface IArgumentConstraint
     {
         /// <summary>
         /// Writes a description of the arguemnt constraint to the specified writer.

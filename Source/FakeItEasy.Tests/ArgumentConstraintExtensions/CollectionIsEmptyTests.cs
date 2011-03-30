@@ -8,9 +8,9 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     public class CollectionIsEmptyTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
-        protected override FakeItEasy.Expressions.ArgumentConstraint<IEnumerable<object>> CreateConstraint(FakeItEasy.Expressions.ArgumentConstraintScope<IEnumerable<object>> scope)
+        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<IEnumerable<object>> scope)
         {
-            return scope.IsEmpty();
+            scope.IsEmpty();
         }
 
         protected override IEnumerable<object> InvalidValues

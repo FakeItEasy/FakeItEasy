@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests.ExtensionSyntax.Full
             var fake = A.Fake<IFoo>();
 
             var returnConfig = A.Fake<IReturnValueArgumentValidationConfiguration<int>>();
-            A.CallTo(() => this.fakeConfiguration.CallsTo(A<Expression<Func<IFoo, int>>>.Ignored.Argument))
+            A.CallTo(() => this.fakeConfiguration.CallsTo(A<Expression<Func<IFoo, int>>>.Ignored))
                 .Returns(returnConfig);
             
             using (Fake.CreateScope())
