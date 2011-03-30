@@ -2,7 +2,7 @@ namespace FakeItEasy.Expressions
 {
     using System;
     using System.Linq.Expressions;
-    using FakeItEasy.Core;
+    using Core;
 
     /// <summary>
     /// Manages breaking call specification expression into their various parts.
@@ -10,6 +10,13 @@ namespace FakeItEasy.Expressions
     internal class ExpressionParser
         : IExpressionParser
     {
+        private readonly ICallExpressionParser innerParser;
+
+        public ExpressionParser(ICallExpressionParser innerParser)
+        {
+            this.innerParser = innerParser;
+        }
+
         /// <summary>
         /// Gets the fake object an expression is called on.
         /// </summary>
@@ -21,25 +28,14 @@ namespace FakeItEasy.Expressions
         {
             Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
 
-            Expression callTargetExpression = null;
+            var instance = this.innerParser.Parse(fakeObjectCall).CallTarget;
 
-            var methodExpression = fakeObjectCall.Body as MethodCallExpression;
-            if (methodExpression != null)
+            if (instance == null)
             {
-                callTargetExpression = methodExpression.Object;
-            }
-            else
-            {
-                var propertyExpression = fakeObjectCall.Body as MemberExpression;
-                callTargetExpression = propertyExpression.Expression;
+                throw new ArgumentException("The specified call is not made on a fake object.");
             }
 
-            if (callTargetExpression == null)
-            {
-                throw new ArgumentException(ExceptionMessages.SpecifiedCallIsNotToFakedObject);
-            }
-
-            return Fake.GetFakeManager(Helpers.GetValueProducedByExpression(callTargetExpression));
+            return Fake.GetFakeManager(instance);
         }
     }
 }

@@ -1,0 +1,614 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E0779E7F-8E25-4367-A7C1-57FCC91AF2FD}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FakeItEasy</RootNamespace>
+    <AssemblyName>FakeItEasy-SL</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>FakeItEasy.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.2.5.2\lib\SL3\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\FakeItEasy\A.cs">
+      <Link>A.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Any.cs">
+      <Link>Any.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ArgumentCollection.cs">
+      <Link>ArgumentCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ArgumentConstraintExtensions.cs">
+      <Link>ArgumentConstraintExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ArgumentValueFormatter.cs">
+      <Link>ArgumentValueFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\CommonExtensions.cs">
+      <Link>CommonExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\AnyCallCallRule.cs">
+      <Link>Configuration\AnyCallCallRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\AnyCallConfiguration.cs">
+      <Link>Configuration\AnyCallConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\BuildableCallRule.cs">
+      <Link>Configuration\BuildableCallRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\ConfigurationModule.cs">
+      <Link>Configuration\ConfigurationModule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\DefaultInterceptionAsserter.cs">
+      <Link>Configuration\DefaultInterceptionAsserter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\FakeConfigurationException.cs">
+      <Link>Configuration\FakeConfigurationException.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\FakeConfigurationManager.cs">
+      <Link>Configuration\FakeConfigurationManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IAfterCallSpecifiedConfiguration.cs">
+      <Link>Configuration\IAfterCallSpecifiedConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs">
+      <Link>Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IAnyCallConfiguration.cs">
+      <Link>Configuration\IAnyCallConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IArgumentValidationConfiguration.cs">
+      <Link>Configuration\IArgumentValidationConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IAssertConfiguration.cs">
+      <Link>Configuration\IAssertConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\ICallBackConfiguration.cs">
+      <Link>Configuration\ICallBackConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\ICallBaseConfiguration.cs">
+      <Link>Configuration\ICallBaseConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IConfigurationFactory.cs">
+      <Link>Configuration\IConfigurationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IExceptionThrowerConfiguration.cs">
+      <Link>Configuration\IExceptionThrowerConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IFakeConfigurationManager.cs">
+      <Link>Configuration\IFakeConfigurationManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IHideObjectMembers.cs">
+      <Link>Configuration\IHideObjectMembers.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IInterceptionAsserter.cs">
+      <Link>Configuration\IInterceptionAsserter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IOutAndRefParametersConfiguration.cs">
+      <Link>Configuration\IOutAndRefParametersConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IRecordingCallRuleFactory.cs">
+      <Link>Configuration\IRecordingCallRuleFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IRecordingConfiguration.cs">
+      <Link>Configuration\IRecordingConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IRecordingConfigurationWithArgumentValidation.cs">
+      <Link>Configuration\IRecordingConfigurationWithArgumentValidation.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IRepeatConfiguration.cs">
+      <Link>Configuration\IRepeatConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IReturnValueArgumentValidationConfiguration.cs">
+      <Link>Configuration\IReturnValueArgumentValidationConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IReturnValueConfiguration.cs">
+      <Link>Configuration\IReturnValueConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IStartConfiguration.cs">
+      <Link>Configuration\IStartConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IStartConfigurationFactory.cs">
+      <Link>Configuration\IStartConfigurationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IVoidArgumentValidationConfiguration.cs">
+      <Link>Configuration\IVoidArgumentValidationConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IVoidConfiguration.cs">
+      <Link>Configuration\IVoidConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\RecordedCallRule.cs">
+      <Link>Configuration\RecordedCallRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\RecordingCallRule.cs">
+      <Link>Configuration\RecordingCallRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\RecordingRuleBuilder.cs">
+      <Link>Configuration\RecordingRuleBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\RuleBuilder.cs">
+      <Link>Configuration\RuleBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\StartConfiguration.cs">
+      <Link>Configuration\StartConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configure.cs">
+      <Link>Configure.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\ArgumentInfo.cs">
+      <Link>Core\ArgumentInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\ArgumentValueFormatter.cs">
+      <Link>Core\ArgumentValueFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\CallInterceptedEventArgs.cs">
+      <Link>Core\CallInterceptedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\CallRuleMetadata.cs">
+      <Link>Core\CallRuleMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\CallWriter.cs">
+      <Link>Core\CallWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultExceptionThrower.cs">
+      <Link>Core\DefaultExceptionThrower.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultFakeManagerAccessor.cs">
+      <Link>Core\DefaultFakeManagerAccessor.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultFakeObjectCallFormatter.cs">
+      <Link>Core\DefaultFakeObjectCallFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultFakeWrapperConfigurer.cs">
+      <Link>Core\DefaultFakeWrapperConfigurer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultReturnValueRule.cs">
+      <Link>Core\DefaultReturnValueRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DelegateFakeObjectContainer.cs">
+      <Link>Core\DelegateFakeObjectContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DynamicContainer.cs">
+      <Link>Core\DynamicContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeAsserter.cs">
+      <Link>Core\FakeAsserter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeCallEqualityComparer.cs">
+      <Link>Core\FakeCallEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeCreationException.cs">
+      <Link>Core\FakeCreationException.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeManager.AutoFakePropertyRule.cs">
+      <Link>Core\FakeManager.AutoFakePropertyRule.cs</Link>
+      <DependentUpon>FakeManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeManager.cs">
+      <Link>Core\FakeManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeManager.EventRule.cs">
+      <Link>Core\FakeManager.EventRule.cs</Link>
+      <DependentUpon>FakeManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeManager.ObjectMemberRule.cs">
+      <Link>Core\FakeManager.ObjectMemberRule.cs</Link>
+      <DependentUpon>FakeManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeManager.PropertyBehaviorRule.cs">
+      <Link>Core\FakeManager.PropertyBehaviorRule.cs</Link>
+      <DependentUpon>FakeManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeManager.PropertySetterRule.cs">
+      <Link>Core\FakeManager.PropertySetterRule.cs</Link>
+      <DependentUpon>FakeManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeScope.cs">
+      <Link>Core\FakeScope.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeScopeFactory.cs">
+      <Link>Core\FakeScopeFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IArgumentConstraint.cs">
+      <Link>Core\IArgumentConstraint.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\ICallCollectionAndCallMatcherAccessor.cs">
+      <Link>Core\ICallCollectionAndCallMatcherAccessor.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\ICallMatcher.cs">
+      <Link>Core\ICallMatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\ICallMatcherAccessor.cs">
+      <Link>Core\ICallMatcherAccessor.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\ICompletedFakeObjectCall.cs">
+      <Link>Core\ICompletedFakeObjectCall.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IEventRaiserArguments.cs">
+      <Link>Core\IEventRaiserArguments.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IExceptionThrower.cs">
+      <Link>Core\IExceptionThrower.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeAsserter.cs">
+      <Link>Core\IFakeAsserter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeManagerAccessor.cs">
+      <Link>Core\IFakeManagerAccessor.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeObjectCall.cs">
+      <Link>Core\IFakeObjectCall.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeObjectCallFormatter.cs">
+      <Link>Core\IFakeObjectCallFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRule.cs">
+      <Link>Core\IFakeObjectCallRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRuleWithDescription.cs">
+      <Link>Core\IFakeObjectCallRuleWithDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeObjectConfigurator.cs">
+      <Link>Core\IFakeObjectConfigurator.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeObjectContainer.cs">
+      <Link>Core\IFakeObjectContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeScope.cs">
+      <Link>Core\IFakeScope.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeScopeFactory.cs">
+      <Link>Core\IFakeScopeFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeWrapperConfigurer.cs">
+      <Link>Core\IFakeWrapperConfigurer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFixtureInitializer.cs">
+      <Link>Core\IFixtureInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IInterceptedFakeObjectCall.cs">
+      <Link>Core\IInterceptedFakeObjectCall.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IWritableFakeObjectCall.cs">
+      <Link>Core\IWritableFakeObjectCall.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\MethodInfoManager.cs">
+      <Link>Core\MethodInfoManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\NullFakeObjectContainer.cs">
+      <Link>Core\NullFakeObjectContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserter.cs">
+      <Link>Core\OrderedFakeAsserter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserterFactory.cs">
+      <Link>Core\OrderedFakeAsserterFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\WrappedObjectRule.cs">
+      <Link>Core\WrappedObjectRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\CastleDynamicProxy\CastleDynamicProxyGenerator.cs">
+      <Link>Creation\CastleDynamicProxy\CastleDynamicProxyGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidator.cs">
+      <Link>Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs">
+      <Link>Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\CastleDynamicProxy\DynamicProxyResources.Designer.cs">
+      <Link>Creation\CastleDynamicProxy\DynamicProxyResources.Designer.cs</Link>
+      <DependentUpon>DynamicProxyResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\DefaultFakeAndDummyManager.cs">
+      <Link>Creation\DefaultFakeAndDummyManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\DefaultFakeCreatorFacade.cs">
+      <Link>Creation\DefaultFakeCreatorFacade.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\DummyValueCreationSession.cs">
+      <Link>Creation\DummyValueCreationSession.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\FakeObjectCreator.cs">
+      <Link>Creation\FakeObjectCreator.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\FakeOptions.cs">
+      <Link>Creation\FakeOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\ICallInterceptedEventRaiser.cs">
+      <Link>Creation\ICallInterceptedEventRaiser.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\IDummyValueCreationSession.cs">
+      <Link>Creation\IDummyValueCreationSession.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\IFakeAndDummyManager.cs">
+      <Link>Creation\IFakeAndDummyManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\IFakeCreatorFacade.cs">
+      <Link>Creation\IFakeCreatorFacade.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\IFakeObjectCreator.cs">
+      <Link>Creation\IFakeObjectCreator.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsBuilder.cs">
+      <Link>Creation\IFakeOptionsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsBuilderForWrappers.cs">
+      <Link>Creation\IFakeOptionsBuilderForWrappers.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\IProxyGenerator.cs">
+      <Link>Creation\IProxyGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\ITaggable.cs">
+      <Link>Creation\ITaggable.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\ProxyGeneratorResult.cs">
+      <Link>Creation\ProxyGeneratorResult.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\ResolvedArgument.cs">
+      <Link>Creation\ResolvedArgument.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\ResolvedConstructor.cs">
+      <Link>Creation\ResolvedConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\DummyDefinition.cs">
+      <Link>DummyDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ExceptionMessages.Designer.cs">
+      <Link>ExceptionMessages.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ExpectationException.cs">
+      <Link>ExpectationException.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraint.cs">
+      <Link>Expressions\ArgumentConstraint.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraintFactory.cs">
+      <Link>Expressions\ArgumentConstraintFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraintScope.cs">
+      <Link>Expressions\ArgumentConstraintScope.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs">
+      <Link>Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs">
+      <Link>Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\CallExpressionParser.cs">
+      <Link>Expressions\CallExpressionParser.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ExpressionCallMatcher.cs">
+      <Link>Expressions\ExpressionCallMatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ExpressionCallRule.cs">
+      <Link>Expressions\ExpressionCallRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ExpressionParser.cs">
+      <Link>Expressions\ExpressionParser.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ICallExpressionParser.cs">
+      <Link>Expressions\ICallExpressionParser.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\IExpressionCallMatcherFactory.cs">
+      <Link>Expressions\IExpressionCallMatcherFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\IExpressionParser.cs">
+      <Link>Expressions\IExpressionParser.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\NotArgumentConstraintScope.cs">
+      <Link>Expressions\NotArgumentConstraintScope.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ParsedCallExpression.cs">
+      <Link>Expressions\ParsedCallExpression.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\RootArgumentConstraintScope.cs">
+      <Link>Expressions\RootArgumentConstraintScope.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ExtensionSyntax\Full\FullExtensionSyntax.cs">
+      <Link>ExtensionSyntax\Full\FullExtensionSyntax.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ExtensionSyntax\Syntax.cs">
+      <Link>ExtensionSyntax\Syntax.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Fake.cs">
+      <Link>Fake.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\FakeAttribute.cs">
+      <Link>FakeAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\FakeConfigurator.cs">
+      <Link>FakeConfigurator.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\FakeExtensions.cs">
+      <Link>FakeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\FakeFacade.cs">
+      <Link>FakeFacade.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Guard.cs">
+      <Link>Guard.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Helpers.cs">
+      <Link>Helpers.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IArgumentValueFormatter.cs">
+      <Link>IArgumentValueFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IDummyDefinition.cs">
+      <Link>IDummyDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IFakeConfigurator.cs">
+      <Link>IFakeConfigurator.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IFileSystem.cs">
+      <Link>IFileSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ImportsModule.cs">
+      <Link>ImportsModule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IoC\DictionaryContainer.cs">
+      <Link>IoC\DictionaryContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IoC\Module.cs">
+      <Link>IoC\Module.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IRepeatSpecification.cs">
+      <Link>IRepeatSpecification.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Log.cs">
+      <Link>Log.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Logger.cs">
+      <Link>Logger.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\MustBeImplementedException.cs">
+      <Link>MustBeImplementedException.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\NextCall.cs">
+      <Link>NextCall.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\OrderedAssertion.cs">
+      <Link>OrderedAssertion.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Raise.cs">
+      <Link>Raise.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Recorders.cs">
+      <Link>Recorders.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Repeated.cs">
+      <Link>Repeated.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\RootModule.cs">
+      <Link>RootModule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\SelfInitializedFakes\CallData.cs">
+      <Link>SelfInitializedFakes\CallData.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\SelfInitializedFakes\FileStorage.cs">
+      <Link>SelfInitializedFakes\FileStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\SelfInitializedFakes\ICallStorage.cs">
+      <Link>SelfInitializedFakes\ICallStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\SelfInitializedFakes\ISelfInitializingFakeRecorder.cs">
+      <Link>SelfInitializedFakes\ISelfInitializingFakeRecorder.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\SelfInitializedFakes\RecordingException.cs">
+      <Link>SelfInitializedFakes\RecordingException.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\SelfInitializedFakes\RecordingManager.cs">
+      <Link>SelfInitializedFakes\RecordingManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\SelfInitializedFakes\SelfInitializationRule.cs">
+      <Link>SelfInitializedFakes\SelfInitializationRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ServiceLocator.cs">
+      <Link>ServiceLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\SmellyAttribute.cs">
+      <Link>SmellyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\VersionAssemblyInfo.cs">
+      <Link>VersionAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SilverlightCompatibility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FakeItEasy.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\FakeItEasy\Creation\CastleDynamicProxy\DynamicProxyResources.resx">
+      <Link>Creation\CastleDynamicProxy\DynamicProxyResources.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\FakeItEasy\ExceptionMessages.resx">
+      <Link>ExceptionMessages.resx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

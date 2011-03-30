@@ -24,12 +24,14 @@
         /// <param name="callSpecification">The call specification.</param>
         /// <param name="constraintFactory">The constraint factory.</param>
         /// <param name="methodInfoManager">The method infor manager to use.</param>
-        public ExpressionCallMatcher(LambdaExpression callSpecification, ArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager)
+        public ExpressionCallMatcher(LambdaExpression callSpecification, ArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, ICallExpressionParser callExpressionParser)
         {
             this.methodInfoManager = methodInfoManager;
-            this.Method = GetMethodInfo(callSpecification);
+            
+            var parsedExpression = callExpressionParser.Parse(callSpecification);
+            this.Method = parsedExpression.CalledMethod;
 
-            this.argumentConstraints = GetArgumentConstraints(callSpecification, constraintFactory).ToArray();
+            this.argumentConstraints = GetArgumentConstraints(parsedExpression.ArgumentsExpressions, constraintFactory).ToArray();
             this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
         }
 
@@ -79,31 +81,12 @@
             this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValdiators);
         }
 
-        private static MethodInfo GetMethodInfo(LambdaExpression callSpecification)
+        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<Expression> argumentExpressions, ArgumentConstraintFactory constraintFactory)
         {
-            var methodExpression = callSpecification.Body as MethodCallExpression;
-            if (methodExpression != null)
-            {
-                return methodExpression.Method;
-            }
-
-            var memberExpression = callSpecification.Body as MemberExpression;
-            if (memberExpression != null && memberExpression.Member.MemberType == MemberTypes.Property)
-            {
-                var property = memberExpression.Member as PropertyInfo;
-                return property.GetGetMethod(true);
-            }
-
-            throw new ArgumentException(ExceptionMessages.CreatingExpressionCallMatcherWithNonMethodOrPropertyExpression);
-        }
-
-        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(LambdaExpression callSpecification, ArgumentConstraintFactory constraintFactory)
-        {
-            var methodExpression = callSpecification.Body as MethodCallExpression;
-            if (methodExpression != null)
+            if (argumentExpressions != null)
             {
                 return
-                    from argument in methodExpression.Arguments
+                    from argument in argumentExpressions
                     select constraintFactory.GetArgumentConstraint(argument);
             }
 

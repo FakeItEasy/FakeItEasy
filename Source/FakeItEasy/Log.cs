@@ -36,10 +36,7 @@ namespace FakeItEasy
 
             public override void Debug(Func<string> message)
             {
-                if (this.name.Contains("Dummy"))
-                {
-                    Console.WriteLine("Log: {0}\r\n\t {1}".FormatInvariant(this.name, message.Invoke()));
-                }
+                Console.WriteLine("Log: {0}\r\n\t {1}".FormatInvariant(this.name, message.Invoke()));
             }
         }
 

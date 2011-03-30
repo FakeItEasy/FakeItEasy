@@ -1,7 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using System.ComponentModel;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
@@ -13,7 +13,7 @@ namespace FakeItEasy.Core
         private class EventRule
             : IFakeObjectCallRule
         {
-            [NonSerialized] private EventHandlerList registeredEventHandlersField;
+            [NonSerialized] private Dictionary<object, Delegate> registeredEventHandlersField;
 
             public FakeManager FakeManager { get; set; }
 
@@ -22,13 +22,13 @@ namespace FakeItEasy.Core
                 get { return null; }
             }
 
-            private EventHandlerList RegisteredEventHandlers
+            private Dictionary<object, Delegate> RegisteredEventHandlers
             {
                 get
                 {
                     if (this.registeredEventHandlersField == null)
                     {
-                        this.registeredEventHandlersField = new EventHandlerList();
+                        this.registeredEventHandlersField = new Dictionary<object, Delegate>();
                     }
 
                     return this.registeredEventHandlersField;
@@ -68,12 +68,39 @@ namespace FakeItEasy.Core
 
             private void RemoveEventListener(EventCall call)
             {
-                this.RegisteredEventHandlers.RemoveHandler(call.Event, call.EventHandler);
+                this.RemoveHandler(call.Event, call.EventHandler);
             }
 
             private void AddEventListener(EventCall call)
             {
-                this.RegisteredEventHandlers.AddHandler(call.Event, call.EventHandler);
+                this.AddHandler(call.Event, call.EventHandler);
+            }
+
+            private void AddHandler(object key, Delegate handler)
+            {
+                Delegate result = null;
+
+                if (this.RegisteredEventHandlers.TryGetValue(key, out result))
+                {
+                    result = Delegate.Combine(handler, handler);
+                }
+                else
+                {
+                    result = handler;
+                }
+
+                this.RegisteredEventHandlers[key] = result;
+            }
+
+            private void RemoveHandler(object key, Delegate handler)
+            {
+                Delegate registration = null;
+
+                if (this.RegisteredEventHandlers.TryGetValue(key, out registration))
+                {
+                    registration = Delegate.Remove(registration, handler);
+                    this.RegisteredEventHandlers[key] = registration;
+                }
             }
 
             private void RaiseEvent(EventCall call)

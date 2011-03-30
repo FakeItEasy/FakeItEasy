@@ -128,6 +128,5 @@ namespace FakeItEasy.Tests.Configuration
                 }
             }
         }
-
     }
 }

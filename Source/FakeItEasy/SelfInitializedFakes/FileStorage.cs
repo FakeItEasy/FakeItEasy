@@ -1,3 +1,4 @@
+#if !SILVERLIGHT
 namespace FakeItEasy.SelfInitializedFakes
 {
     using System.Collections.Generic;
@@ -88,3 +89,4 @@ namespace FakeItEasy.SelfInitializedFakes
         }
     }
 }
+#endif

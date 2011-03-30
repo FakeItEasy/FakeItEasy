@@ -1,4 +1,5 @@
-﻿namespace FakeItEasy
+﻿#if !SILVERLIGHT
+namespace FakeItEasy
 {
     using System.Collections.Generic;
     using Core;
@@ -27,3 +28,4 @@
         }
     }
 }
+#endif

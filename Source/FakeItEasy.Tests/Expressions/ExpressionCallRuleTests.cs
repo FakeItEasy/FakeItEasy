@@ -16,7 +16,8 @@ namespace FakeItEasy.Tests.Expressions
         public void SetUp()
         {
             Expression<Action<IFoo>> dummyCall = x => x.Bar();
-            this.callMatcher = A.Fake<ExpressionCallMatcher>(x => x.WithArgumentsForConstructor(() => new ExpressionCallMatcher(dummyCall, A.Fake<ArgumentConstraintFactory>(), A.Fake<MethodInfoManager>())));
+            
+            this.callMatcher = A.Fake<ExpressionCallMatcher>();
         }
 
         private ExpressionCallRule CreateRule<T>(Expression<Action<T>> callSpecification)

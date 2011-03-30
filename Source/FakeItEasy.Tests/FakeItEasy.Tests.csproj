@@ -78,10 +78,12 @@
     <Compile Include="ArgumentConstraintExtensions\CollectionIsEmptyTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\EqualToConstraintTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
+    <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
     <Compile Include="Core\DefaultFixtureInitializerTests.cs" />
     <Compile Include="Core\FakeCallEqualityComparerTests.cs" />
     <Compile Include="Core\TypeCatalogueInstanceProviderTests.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidatorTests.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManagerTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -125,13 +127,17 @@
     <Compile Include="ExceptionContractTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintScopeTests.cs" />
     <Compile Include="Expressions\ArgumentConstraintTests.cs" />
+    <Compile Include="Expressions\CallExpressionParserTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />
     <Compile Include="Expressions\NotArgumentConstraintScopeTests.cs" />
     <Compile Include="Expressions\RootArgumentConstraintScopeTests.cs" />
+    <Compile Include="Expressions\TypeWithInternalProperty.cs" />
     <Compile Include="FacadedTestBase.cs" />
     <Compile Include="FakeFacadeTests.cs" />
     <Compile Include="Foo.cs" />
+    <Compile Include="Ignore.cs" />
     <Compile Include="IsProxyConstraint.cs" />
+    <Compile Include="LambdaExpressionDummyDefinition.cs" />
     <Compile Include="RepeatedTests.cs" />
     <Compile Include="RecordersTests.cs" />
     <Compile Include="SelfInitializedFakes\CallDataTests.cs" />
