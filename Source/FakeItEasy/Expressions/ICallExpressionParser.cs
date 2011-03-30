@@ -6,7 +6,7 @@
     /// Represents a class that can parse a lambda expression
     /// that represents a method or property call.
     /// </summary>
-    public interface ICallExpressionParser
+    internal interface ICallExpressionParser
     {
         /// <summary>
         /// Parses the specified expression.

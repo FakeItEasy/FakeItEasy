@@ -1,10 +1,8 @@
 ﻿namespace FakeItEasy.Tests.Core
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
-    using NUnit.Framework;
     using FakeItEasy.Core;
+    using NUnit.Framework;
 
     [TestFixture]
     public class DefaultArgumentConstraintManagerTests
@@ -26,7 +24,7 @@
             // Arrange
             
             // Act
-            constraintManager.Matches(x => predicateIsValid, x => x.Write("foo"));
+            this.constraintManager.Matches(x => predicateIsValid, x => x.Write("foo"));
 
             // Assert
             return this.createdConstraint.IsValid("foo");
@@ -39,11 +37,13 @@
             string argumentPassedToDelegate = null;
 
             // Act
-            constraintManager.Matches(x =>
-                                          {
-                                              argumentPassedToDelegate = x;
-                                              return true;
-                                          }, x => x.Write("foo"));
+            this.constraintManager.Matches(
+                x =>
+                {
+                    argumentPassedToDelegate = x;
+                    return true;
+                },
+                x => x.Write("foo"));
             // Assert
             this.createdConstraint.IsValid("argument");
             Assert.That(argumentPassedToDelegate, Is.EqualTo("argument"));
@@ -58,7 +58,7 @@
             var writerFromOutside = A.Dummy<IOutputWriter>();
 
             // Act
-            constraintManager.Matches(x => true, x => passedInWriter = x);
+            this.constraintManager.Matches(x => true, x => passedInWriter = x);
 
             // Assert
             this.createdConstraint.WriteDescription(writerFromOutside);
@@ -72,7 +72,7 @@
             // Arrange
 
             // Act
-            constraintManager.Not.Matches(x => predicateIsValid, x => x.Write("foo"));
+            this.constraintManager.Not.Matches(x => predicateIsValid, x => x.Write("foo"));
 
             // Assert
             return this.createdConstraint.IsValid("foo");
@@ -85,11 +85,13 @@
             string argumentPassedToDelegate = null;
 
             // Act
-            constraintManager.Not.Matches(x =>
-            {
-                argumentPassedToDelegate = x;
-                return true;
-            }, x => x.Write("foo"));
+            this.constraintManager.Not.Matches(
+                x =>
+                {
+                    argumentPassedToDelegate = x;
+                    return true;
+                },
+                x => x.Write("foo"));
 
             // Assert
             this.createdConstraint.IsValid("argument");
@@ -105,7 +107,7 @@
             var writerFromOutside = A.Dummy<IOutputWriter>();
 
             // Act
-            constraintManager.Not.Matches(x => true, x => passedInWriter = x);
+            this.constraintManager.Not.Matches(x => true, x => passedInWriter = x);
 
             // Assert
             this.createdConstraint.WriteDescription(writerFromOutside);
@@ -119,7 +121,7 @@
             var writer = A.Fake<IOutputWriter>();
 
             // Act
-            constraintManager.Not.Matches(x => true, x => {});
+            this.constraintManager.Not.Matches(x => true, x => { });
 
             // Assert
             this.createdConstraint.WriteDescription(writer);
@@ -133,7 +135,7 @@
             var writer = new FakeOutputWriter();
 
             // Act
-            constraintManager.Matches(x => true, x => x.Write("foo"));
+            this.constraintManager.Matches(x => true, x => x.Write("foo"));
 
             // Assert
             this.createdConstraint.WriteDescription(writer);
@@ -143,7 +145,7 @@
         private class FakeOutputWriter
             : IOutputWriter
         {
-            public StringBuilder Builder = new StringBuilder();
+            public readonly StringBuilder Builder = new StringBuilder();
 
             public IOutputWriter Write(string value)
             {

@@ -5,7 +5,7 @@
     using System.Linq.Expressions;
     using System.Reflection;
 
-    public class ParsedCallExpression
+    internal class ParsedCallExpression
     {
         public ParsedCallExpression(MethodInfo calledMethod, Expression callTargetExpression, IEnumerable<Expression> argumentsExpressions)
         {

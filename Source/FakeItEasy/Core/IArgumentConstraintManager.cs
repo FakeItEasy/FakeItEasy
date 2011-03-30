@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Manages attaching of argument constraints.
@@ -12,6 +13,7 @@
         /// <summary>
         /// Inverts the logic of the matches method.
         /// </summary>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Not", Justification = "Part of the fluent syntax.")]
         IArgumentConstraintManager<T> Not { get; }
 
         /// <summary>

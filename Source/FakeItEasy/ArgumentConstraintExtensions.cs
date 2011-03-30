@@ -2,6 +2,7 @@ namespace FakeItEasy
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using Core;
@@ -169,6 +170,7 @@ namespace FakeItEasy
         /// <param name="scope">The constraint manager.</param>
         /// <typeparam name="T">The type of argument in the method signature.</typeparam>
         /// <returns>A dummy argument value.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for Linq expressions.")]
         public static T Matches<T>(this IArgumentConstraintManager<T> scope, Expression<Func<T, bool>> predicate)
         {
             return scope.Matches(predicate.Compile(), predicate.ToString());
