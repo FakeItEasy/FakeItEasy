@@ -1,13 +1,10 @@
-using System.Linq.Expressions;
-using FakeItEasy.Core;
-
 namespace FakeItEasy
 {
     using System;
     using System.Collections;
     using System.Linq;
-    using FakeItEasy.Expressions;
-    using FakeItEasy.Expressions.ArgumentConstraints;
+    using System.Linq.Expressions;
+    using Core;
 
     /// <summary>
     /// Provides validation extension to the Argumentscope{T} class.
@@ -44,8 +41,10 @@ namespace FakeItEasy
         /// <returns>An argument constraint.</returns>
         public static T Contains<T>(this IArgumentConstraintManager<T> scope, object value) where T : IEnumerable
         {
-            return scope.Matches(x => x.Cast<object>().Contains(value),
-                                 x => x.Write("sequence that contains the value " + value.ToString()));
+            return scope.Matches(
+                x => x.Cast<object>().Contains(value),
+                "sequence that contains the value {0}", 
+                value);
         }
 
         /// <summary>
@@ -124,21 +123,52 @@ namespace FakeItEasy
                          value);
         }
 
+        /// <summary>
+        /// Constraines the argument to be of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of argument in the method signature.</typeparam>
+        /// <param name="manager">The constraint manager.</param>
+        /// <param name="type">The type to constrain the argument with.</param>
+        /// <returns>A dummy value.</returns>
         public static T IsInstanceOf<T>(this IArgumentConstraintManager<T> manager, Type type)
         {
-            return manager.Matches(x => type.IsAssignableFrom(x.GetType()), "Instance of " + type.Name);
+            return manager.Matches(x => type.IsAssignableFrom(x.GetType()), "Instance of " + type.FullName);
         }
 
+        /// <summary>
+        /// Constrains the argument with a predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate that should constrain the argument.</param>
+        /// <param name="description">A human readable description of the constraint.</param>
+        /// <param name="scope">The constraint manager.</param>
+        /// <typeparam name="T">The type of argument in the method signature.</typeparam>
+        /// <returns>A dummy argument value.</returns>
         public static T Matches<T>(this IArgumentConstraintManager<T> scope, Func<T, bool> predicate, string description)
         {
             return scope.Matches(predicate, x => x.Write(description));
         }
 
+        /// <summary>
+        /// Constrains the argument with a predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate that should constrain the argument.</param>
+        /// <param name="descriptionFormat">A human readable description of the constraint format string.</param>
+        /// <param name="args">Arguments for the format string.</param>
+        /// <param name="scope">The constraint manager.</param>
+        /// <typeparam name="T">The type of argument in the method signature.</typeparam>
+        /// <returns>A dummy argument value.</returns>
         public static T Matches<T>(this IArgumentConstraintManager<T> scope, Func<T, bool> predicate, string descriptionFormat, params object[] args)
         {
             return scope.Matches(predicate, x => x.Write(string.Format(descriptionFormat, args)));
         }
 
+        /// <summary>
+        /// Constrains the argument with a predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate that should constrain the argument.</param>
+        /// <param name="scope">The constraint manager.</param>
+        /// <typeparam name="T">The type of argument in the method signature.</typeparam>
+        /// <returns>A dummy argument value.</returns>
         public static T Matches<T>(this IArgumentConstraintManager<T> scope, Expression<Func<T, bool>> predicate)
         {
             return scope.Matches(predicate.Compile(), predicate.ToString());

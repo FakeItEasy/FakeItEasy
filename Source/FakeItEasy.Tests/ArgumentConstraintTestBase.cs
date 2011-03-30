@@ -68,20 +68,6 @@ namespace FakeItEasy.Tests
         }
        
         protected abstract void CreateConstraint(IArgumentConstraintManager<T> scope);
-
-        [Test]
-        public void FullDescription_should_provide_expected_description()
-        {
-            // Arrange
-            var constraint = (IArgumentConstraint)this.constraintField;
-            
-            // Act
-            
-            // Assert
-            var result = new StringBuilder();
-            constraint.WriteDescription(new StringBuilderOutputWriter(result));
-            Assert.That(result.ToString(), Is.EqualTo(this.ExpectedDescription));
-        }
     }
 
 }
