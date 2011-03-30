@@ -249,6 +249,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\IArgumentConstraintManager.cs" />
+    <Compile Include="Core\IArgumentConstraintTrapper.cs" />
     <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -404,6 +405,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Expressions\CallExpressionParser.cs" />
+    <Compile Include="Expressions\ExpressionArgumentConstraintFactory.cs" />
     <Compile Include="Expressions\ExpressionCallMatcher.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -5,11 +5,11 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
     internal class EqualityArgumentConstraint
         : IArgumentConstraint
     {
-        private readonly object expectedValue;
+        public object ExpectedValue { get; private set; }
 
         public EqualityArgumentConstraint(object expectedValue)
         {
-            this.expectedValue = expectedValue;
+            this.ExpectedValue = expectedValue;
         }
 
         public string ConstraintDescription
@@ -19,23 +19,28 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
 
         public bool IsValid(object argument)
         {
-            return Equals(this.expectedValue, argument);
+            return Equals(this.ExpectedValue, argument);
         }
 
         public override string ToString()
         {
-            if (this.expectedValue == null)
+            if (this.ExpectedValue == null)
             {
                 return "<NULL>";
             }
 
-            var stringValue = this.expectedValue as string;
+            var stringValue = this.ExpectedValue as string;
             if (stringValue != null)
             {
                 return "\"{0}\"".FormatInvariant(stringValue);
             }
 
-            return this.expectedValue.ToString();
+            return this.ExpectedValue.ToString();
+        }
+
+        public void WriteDescription(IOutputWriter writer)
+        {
+            writer.Write(this.ConstraintDescription);
         }
     }
 

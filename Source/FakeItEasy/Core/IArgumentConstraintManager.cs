@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+using System.Collections.Generic;
 
     /// <summary>
     /// Manages attaching of argument constraints.
@@ -20,5 +21,5 @@
         /// <param name="descriptionWriter">An action that will be write a description of the constraint.</param>
         /// <returns>A dummy argument value.</returns>
         T Matches(Func<T, bool> predicate, Action<IOutputWriter> descriptionWriter);
-    }
+    }    
 }

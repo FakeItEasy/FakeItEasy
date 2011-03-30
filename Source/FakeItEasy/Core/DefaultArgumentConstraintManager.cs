@@ -5,9 +5,9 @@
     internal class DefaultArgumentConstraintManager<T>
         : IArgumentConstraintManager<T>
     {
-        private readonly Action<IArgumentConstraint2> onConstraintCreated;
+        private readonly Action<IArgumentConstraint> onConstraintCreated;
 
-        public DefaultArgumentConstraintManager(Action<IArgumentConstraint2> onConstraintCreated)
+        public DefaultArgumentConstraintManager(Action<IArgumentConstraint> onConstraintCreated)
         {
             this.onConstraintCreated = onConstraintCreated;
         }
@@ -51,7 +51,7 @@
         }
 
         private class MatchesConstraint
-            : IArgumentConstraint2
+            : IArgumentConstraint
         {
             private readonly Func<T, bool> predicate;
             private readonly Action<IOutputWriter> descriptionWriter;
@@ -62,14 +62,14 @@
                 this.descriptionWriter = descriptionWriter;
             }
 
-            void IArgumentConstraint2.WriteDescription(IOutputWriter writer)
+            void IArgumentConstraint.WriteDescription(IOutputWriter writer)
             {
                 writer.Write("<");
                 this.descriptionWriter.Invoke(writer);
                 writer.Write(">");
             }
 
-            bool IArgumentConstraint2.IsValid(object argument)
+            bool IArgumentConstraint.IsValid(object argument)
             {
                 return this.predicate.Invoke((T)argument);
             }

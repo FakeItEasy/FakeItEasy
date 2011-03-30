@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace FakeItEasy.Expressions
 {
     using System.Linq.Expressions;
@@ -60,7 +63,6 @@ namespace FakeItEasy.Expressions
 
         private static bool IsArgumentConstraintArgumentProperty(MemberExpression member)
         {
-            A<string>.That.Not.Contains("test");
             return
                 member.Member.Name == "Argument"
                     && member.Member.DeclaringType.GetGenericTypeDefinition().Equals(typeof(ArgumentConstraint<>));

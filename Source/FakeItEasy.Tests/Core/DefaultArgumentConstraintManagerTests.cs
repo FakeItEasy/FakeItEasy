@@ -10,7 +10,7 @@
     public class DefaultArgumentConstraintManagerTests
     {
         private DefaultArgumentConstraintManager<string> constraintManager;
-        private IArgumentConstraint2 createdConstraint;
+        private IArgumentConstraint createdConstraint;
 
         [SetUp]
         public void SetUp()

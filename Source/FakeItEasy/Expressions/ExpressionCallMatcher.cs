@@ -114,7 +114,7 @@
                     firstArgument = false;
                 }
 
-                result.Append(constraint.ConstraintDescription);
+                constraint.WriteDescription(new StringBuilderOutputWriter(result));
             }
 
             result.Append(")");
@@ -154,6 +154,11 @@
             public override string ToString()
             {
                 return "<Predicated>";
+            }
+
+            public void WriteDescription(IOutputWriter writer)
+            {
+                writer.Write(this.ConstraintDescription);
             }
         }
     }

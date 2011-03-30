@@ -158,7 +158,8 @@ namespace FakeItEasy.Tests.Expressions
         public void ToString_should_write_full_method_name_with_type_name_and_arguments_list()
         {
             var constraint = A.Fake<IArgumentConstraint>();
-            A.CallTo(() => constraint.ConstraintDescription).Returns("<FOO>");
+            A.CallTo(() => constraint.WriteDescription(A<IOutputWriter>.Ignored.Argument))
+                .Invokes(x => x.GetArgument<IOutputWriter>(0).Write("<FOO>"));
 
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.Ignored)).Returns(constraint);
 

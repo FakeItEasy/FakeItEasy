@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace FakeItEasy.Tests
 {
     using System.Collections.Generic;
@@ -42,7 +44,11 @@ namespace FakeItEasy.Tests
         [Test]
         public virtual void Constraint_should_provide_correct_description()
         {
-            Assert.That(this.Constraint.ConstraintDescription, Is.EqualTo("<" + this.ExpectedDescription + ">"));
+            var output = new StringBuilder();
+
+            this.Constraint.WriteDescription(new StringBuilderOutputWriter(output));
+
+            Assert.That(output.ToString(), Is.EqualTo("<" + this.ExpectedDescription + ">"));
         }
     }
 

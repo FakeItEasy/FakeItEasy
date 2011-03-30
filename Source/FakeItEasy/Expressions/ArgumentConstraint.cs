@@ -262,5 +262,10 @@ using System.Collections;
                 return this.first.IsValid(value) || this.second.IsValid(value);
             }
         }
+
+        public void WriteDescription(IOutputWriter writer)
+        {
+            writer.Write(this.ConstraintDescription);
+        }
     }
 }

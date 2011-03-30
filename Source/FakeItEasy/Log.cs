@@ -1,3 +1,6 @@
+using System.Text;
+using FakeItEasy.Core;
+
 namespace FakeItEasy
 {
     using System;
@@ -55,4 +58,23 @@ namespace FakeItEasy
             }
         }
     }
+
+    internal class StringBuilderOutputWriter
+        : IOutputWriter
+    {
+        private readonly StringBuilder builder;
+
+        public StringBuilderOutputWriter(StringBuilder builder)
+        {
+            this.builder = builder;
+        }
+
+        public IOutputWriter Write(string value)
+        {
+            this.builder.Append(value);
+            return this;
+        }
+    }
+
+
 }
