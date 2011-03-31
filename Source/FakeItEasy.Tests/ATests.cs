@@ -159,7 +159,7 @@
             var validations = A<string>.That;
 
             // Assert
-            Assert.That(validations, Is.InstanceOf<IArgumentConstraintManager<string>>());
+            Assert.That(validations, Is.InstanceOf<DefaultArgumentConstraintManager<string>>());
         }
 
         [Test]

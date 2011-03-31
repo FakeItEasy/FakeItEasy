@@ -101,7 +101,7 @@ namespace FakeItEasy.IntegrationTests
             var thrown = Assert.Throws<FakeConfigurationException>(() =>
                 A.CallTo(() => fake.NonVirtualVoidMethod("", 1)).DoesNothing());
 
-            Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
+            Assert.That(thrown.Message, Is.StringContaining("Non virtual"));
         }
 
         [Test]
@@ -116,37 +116,7 @@ namespace FakeItEasy.IntegrationTests
             var thrown = Assert.Throws<FakeConfigurationException>(() =>
                 A.CallTo(() => fake.NonVirtualFunction("", 1)).Returns(10));
 
-            Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
-        }
-
-        [Test]
-        public void ErrorMessage_when_configuring_void_call_that_can_not_be_configured_through_old_api_should_be_correct()
-        {
-            // Arrange
-            var fake = A.Fake<TypeWithNonConfigurableMethod>();
-
-            // Act
-
-            // Assert
-            var thrown = Assert.Throws<FakeConfigurationException>(() =>
-                A.CallTo(() => fake.NonVirtualVoidMethod("", 1)).DoesNothing());
-
-            Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
-        }
-
-        [Test]
-        public void ErrorMessage_when_configuring_function_call_that_can_not_be_configured_through_old_api_should_be_correct()
-        {
-            // Arrange
-            var fake = A.Fake<TypeWithNonConfigurableMethod>();
-
-            // Act
-
-            // Assert
-            var thrown = Assert.Throws<FakeConfigurationException>(() =>
-                A.CallTo(() => fake.NonVirtualFunction("", 1)).Returns(10));
-
-            Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
+            Assert.That(thrown.Message, Is.StringContaining("Non virtual"));
         }
 
         [Test]

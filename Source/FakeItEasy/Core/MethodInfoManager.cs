@@ -2,16 +2,16 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
-
+    
     /// <summary>
     /// Handles comparisons of MethodInfos.
     /// </summary>
     internal class MethodInfoManager
     {
+        private static readonly Logger Logger = Log.GetLogger<MethodInfoManager>();
         private static readonly Dictionary<TypeMethodInfoPair, MethodInfo> methodCache = new Dictionary<TypeMethodInfoPair, MethodInfo>();
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace FakeItEasy.Core
         /// <returns>True if the same method would be invoked.</returns>
         public virtual bool WillInvokeSameMethodOnTarget(Type target, MethodInfo first, MethodInfo second)
         {
-            if (first.Equals(second))
+            if (first == second)
             {
                 return true;
             }
@@ -52,18 +52,27 @@ namespace FakeItEasy.Core
             return result;
         }
 
-        [DebuggerStepThrough]
+        private static bool HasSameBaseMethod(MethodInfo first, MethodInfo second)
+        {
+            var baseOfFirst = first.GetBaseDefinition();
+            var baseOfSecond = second.GetBaseDefinition();
+
+            return IsSameMethod(baseOfFirst, baseOfSecond);
+        }
+
         private static bool IsSameMethod(MethodInfo first, MethodInfo second)
         {
-            return first.GetBaseDefinition().Equals(second.GetBaseDefinition())
-                && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
+            return first.DeclaringType == second.DeclaringType
+                   && first.MetadataToken == second.MetadataToken
+                   && first.Module == second.Module
+                   && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
         }
 
         private static MethodInfo FindMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
         {
             var result =
                 (from typeMethod in type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                 where IsSameMethod(typeMethod, method)
+                 where HasSameBaseMethod(typeMethod, method)
                  select MakeGeneric(typeMethod, method)).FirstOrDefault();
 
             if (result != null)
@@ -94,7 +103,7 @@ namespace FakeItEasy.Core
 
                 var foundMethod =
                     (from methodTargetPair in interfaceMap.InterfaceMethods.Zip(interfaceMap.TargetMethods)
-                     where IsSameMethod(EnsureNonGeneric(method), EnsureNonGeneric(methodTargetPair.Item2))
+                     where HasSameBaseMethod(EnsureNonGeneric(method), EnsureNonGeneric(methodTargetPair.Item2))
                      select MakeGeneric(methodTargetPair.Item1, method)).FirstOrDefault();
 
                 if (foundMethod != null)
@@ -119,7 +128,7 @@ namespace FakeItEasy.Core
 
             return
                 (from methodTargetPair in interfaceMap.InterfaceMethods.Zip(interfaceMap.TargetMethods)
-                 where IsSameMethod(EnsureNonGeneric(methodTargetPair.Item1), EnsureNonGeneric(method))
+                 where HasSameBaseMethod(EnsureNonGeneric(methodTargetPair.Item1), EnsureNonGeneric(method))
                  select MakeGeneric(methodTargetPair.Item2, method)).First();
         }
 
@@ -158,7 +167,7 @@ namespace FakeItEasy.Core
             {
                 var other = (TypeMethodInfoPair)obj;
 
-                return this.Type.Equals(other.Type) && this.MethodInfo.Equals(other.MethodInfo);
+                return this.Type.Equals(other.Type) && this.MethodInfo == other.MethodInfo;
             }
         }
     }
