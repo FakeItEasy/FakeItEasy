@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
             get { return "NULL"; }
         }
 
-        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<object> scope)
+        protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
         {
             scope.IsNull();
         }

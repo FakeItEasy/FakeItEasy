@@ -7,7 +7,7 @@
     public class EqualToConstraintTests
         : ArgumentConstraintTestBase<object>
     {
-        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<object> scope)
+        protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
         {
             scope.IsEqualTo(10);
         }

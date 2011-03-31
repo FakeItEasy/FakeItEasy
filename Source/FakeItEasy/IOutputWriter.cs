@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+﻿namespace FakeItEasy
 {
     /// <summary>
     /// Represents a text writer that writes to the output.

@@ -7,7 +7,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     public class CollectionContainsTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
-        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<IEnumerable<object>> scope)
+        protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)
         {
             scope.Contains(10);
         }

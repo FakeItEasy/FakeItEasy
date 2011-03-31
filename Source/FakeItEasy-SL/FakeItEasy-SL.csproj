@@ -279,12 +279,6 @@
     <Compile Include="..\FakeItEasy\Core\IArgumentConstraint.cs">
       <Link>Core\IArgumentConstraint.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\IArgumentConstraintManager.cs">
-      <Link>Core\IArgumentConstraintManager.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\IArgumentConstraintManagerFactory.cs">
-      <Link>Core\IArgumentConstraintManagerFactory.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\IArgumentConstraintTrapper.cs">
       <Link>Core\IArgumentConstraintTrapper.cs</Link>
     </Compile>
@@ -344,9 +338,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IInterceptedFakeObjectCall.cs">
       <Link>Core\IInterceptedFakeObjectCall.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\IOutputWriter.cs">
-      <Link>Core\IOutputWriter.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IWritableFakeObjectCall.cs">
       <Link>Core\IWritableFakeObjectCall.cs</Link>
@@ -496,6 +487,12 @@
     <Compile Include="..\FakeItEasy\Helpers.cs">
       <Link>Helpers.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\IArgumentConstraintManager.cs">
+      <Link>IArgumentConstraintManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IArgumentConstraintManagerFactory.cs">
+      <Link>IArgumentConstraintManagerFactory.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\IArgumentValueFormatter.cs">
       <Link>IArgumentValueFormatter.cs</Link>
     </Compile>
@@ -516,6 +513,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\IoC\Module.cs">
       <Link>IoC\Module.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IOutputWriter.cs">
+      <Link>IOutputWriter.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IRepeatSpecification.cs">
       <Link>IRepeatSpecification.cs</Link>

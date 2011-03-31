@@ -23,7 +23,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
             get { return "Instance of System.DateTime"; }
         }
 
-        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<object> scope)
+        protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
         {
             scope.IsInstanceOf(typeof(DateTime));
         }

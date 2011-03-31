@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
             get { return "String that starts with \"abc\""; }
         }
 
-        protected override void CreateConstraint(FakeItEasy.Core.IArgumentConstraintManager<string> scope)
+        protected override void CreateConstraint(IArgumentConstraintManager<string> scope)
         {
             scope.StartsWith("abc");
         }
