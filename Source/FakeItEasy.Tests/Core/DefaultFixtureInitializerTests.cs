@@ -23,7 +23,7 @@ namespace FakeItEasy.Tests.Core
             this.fakeReturnedFromFakeAndDummyManager = A.Fake<IFoo>();
             
             this.fakeAndDummyManager = A.Fake<IFakeAndDummyManager>();
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>.Ignored)).Returns(this.fakeReturnedFromFakeAndDummyManager);
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>._)).Returns(this.fakeReturnedFromFakeAndDummyManager);
 
             this.fixture = new FixtureType();
 

@@ -116,7 +116,7 @@
 
             var asserter = this.CreateAsserter();
 
-            A.CallTo(() => this.callWriter.WriteCalls(4, A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls.Cast<IFakeObjectCall>()), A<TextWriter>.Ignored))
+            A.CallTo(() => this.callWriter.WriteCalls(4, A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls.Cast<IFakeObjectCall>()), A<TextWriter>._))
                 .Invokes(x => x.Arguments.Get<TextWriter>("writer").Write("foo"));
 
             var message = this.GetExceptionMessage(() =>

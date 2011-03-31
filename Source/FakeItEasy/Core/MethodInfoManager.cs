@@ -11,7 +11,6 @@ namespace FakeItEasy.Core
     /// </summary>
     internal class MethodInfoManager
     {
-        private static readonly Logger Logger = Log.GetLogger<MethodInfoManager>();
         private static readonly Dictionary<TypeMethodInfoPair, MethodInfo> methodCache = new Dictionary<TypeMethodInfoPair, MethodInfo>();
 
         /// <summary>

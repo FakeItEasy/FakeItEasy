@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests.Configuration
 
             this.fakeObjectReturnedFromParser = new FakeManager();
 
-            A.CallTo(() => this.expressionParser.GetFakeManagerCallIsMadeOn(A<LambdaExpression>.Ignored)).ReturnsLazily(x => this.fakeObjectReturnedFromParser);
+            A.CallTo(() => this.expressionParser.GetFakeManagerCallIsMadeOn(A<LambdaExpression>._)).ReturnsLazily(x => this.fakeObjectReturnedFromParser);
 
             this.configurationManager = this.CreateManager();
         }
@@ -67,7 +67,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Bar());
 
             // Assert
-            A.CallTo(() => this.configurationFactory.CreateConfiguration(this.fakeObjectReturnedFromParser, A<BuildableCallRule>.Ignored)).MustHaveHappened();
+            A.CallTo(() => this.configurationFactory.CreateConfiguration(this.fakeObjectReturnedFromParser, A<BuildableCallRule>._)).MustHaveHappened();
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Bar());
 
             // Assert
-            A.CallTo(() => this.configurationFactory.CreateConfiguration(A<FakeManager>.Ignored, this.ruleReturnedFromFactory)).MustHaveHappened();
+            A.CallTo(() => this.configurationFactory.CreateConfiguration(A<FakeManager>._, this.ruleReturnedFromFactory)).MustHaveHappened();
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Baz());
 
             // Assert
-            A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(this.fakeObjectReturnedFromParser, A<BuildableCallRule>.Ignored)).MustHaveHappened();
+            A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(this.fakeObjectReturnedFromParser, A<BuildableCallRule>._)).MustHaveHappened();
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Baz());
 
             // Assert
-            A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(A<FakeManager>.Ignored, this.ruleReturnedFromFactory)).MustHaveHappened();
+            A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(A<FakeManager>._, this.ruleReturnedFromFactory)).MustHaveHappened();
         }
 
         [Test]

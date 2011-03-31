@@ -75,7 +75,7 @@ namespace FakeItEasy.Tests.Core
             var call = CreateFakeCall(
                 typeof(ITypeWithMethodThatTakesArguments).GetMethod("MoreThanTwo", new[] { typeof(string), typeof(string), typeof(string) }),
                 "one", "two", "three");
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(A<object>.Ignored))
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(A<object>._))
                 .ReturnsLazily(x => x.GetArgument<object>(0).ToString());
 
             // Act

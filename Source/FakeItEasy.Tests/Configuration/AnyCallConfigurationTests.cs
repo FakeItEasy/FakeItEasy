@@ -102,7 +102,7 @@ namespace FakeItEasy.Tests.Configuration
             var factoryConfig = this.StubVoidConfig();
             var throwsConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
 
-            A.CallTo(() => factoryConfig.Throws(A<Exception>.Ignored)).Returns(throwsConfig);
+            A.CallTo(() => factoryConfig.Throws(A<Exception>._)).Returns(throwsConfig);
 
             // Act
             var result = this.configuration.Throws(new Exception());
@@ -218,7 +218,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration.MustHaveHappened(Repeated.AtLeast.Twice);
 
             // Assert
-            A.CallTo(() => factoryConfig.MustHaveHappened(A<Repeated>.Ignored)).MustHaveHappened();
+            A.CallTo(() => factoryConfig.MustHaveHappened(A<Repeated>._)).MustHaveHappened();
         }
 
         private IVoidArgumentValidationConfiguration StubVoidConfig()

@@ -61,7 +61,7 @@ namespace FakeItEasy.Tests.Creation
             var proxy = A.Fake<IFoo>();
             var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored, A<IEnumerable<object>>.Ignored))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>._, A<IEnumerable<object>>._))
                 .Returns(new ProxyGeneratorResult(proxy, eventRaiser));
 
             // Act
@@ -211,7 +211,7 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator.CreateFake(typeof(TypeWithConstructorThatTakesDifferentTypes), FakeOptions.Empty, session, throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored, A<IEnumerable<object>>.That.Not.IsNull() ))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>.That.Not.IsNull() ))
                 .MustNotHaveHappened();
         }
 
@@ -292,7 +292,7 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var proxy = A.Fake<IFoo>(x => x.Implements(typeof(ITaggable)));
             A.CallTo(() =>
-                this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>.Ignored, A<IEnumerable<object>>.Ignored)
+                this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>._, A<IEnumerable<object>>._)
             ).Returns(new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>()));
 
             // Act
@@ -362,7 +362,7 @@ namespace FakeItEasy.Tests.Creation
 
         private void StubProxyGeneratorToFail(string failReason)
         {
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>.Ignored, A<IEnumerable<Type>>.Ignored, A<IEnumerable<object>>.Ignored))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>._))
                 .Returns(new ProxyGeneratorResult(failReason));
         }
 

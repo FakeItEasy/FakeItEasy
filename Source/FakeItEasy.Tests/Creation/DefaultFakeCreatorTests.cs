@@ -36,7 +36,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => new Foo(serviceProvider)));
             
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.HasArgumentsForConstructor(new object[] { serviceProvider }))).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.HasArgumentsForConstructor(new object[] { serviceProvider }))).MustHaveHappened();
         }
         
         [Test]
@@ -48,7 +48,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<IFoo>(x => x.Implements(typeof(IFormatProvider)).Implements(typeof(IFormattable)));
             
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.Matches(x => 
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.Matches(x => 
                 x.AdditionalInterfacesToImplement.Contains(typeof(IFormatProvider)) && 
                 x.AdditionalInterfacesToImplement.Contains(typeof(IFormattable)), "IFormatProvider and IFormattable"))).MustHaveHappened();
         }
@@ -73,7 +73,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<IFoo>(x => x.Wrapping(wrapped));
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.Wraps(wrapped))).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.Wraps(wrapped))).MustHaveHappened();
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<IFoo>(x => x.Wrapping(wrapped).RecordedBy(recorder));
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.HasRecorder(recorder))).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.HasRecorder(recorder))).MustHaveHappened();
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var instanceFromManager = A.Fake<IFoo>();
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.Ignored)).Returns(instanceFromManager);
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>._)).Returns(instanceFromManager);
 
             // Act
             var result = this.creator.CreateFake<IFoo>(x => { });
@@ -113,7 +113,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<IFoo>(x => { });
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>.Ignored)).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>._)).MustHaveHappened();
         }
 
         private static Foo CreateFoo()
@@ -175,7 +175,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(constructorArguments));
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>.Ignored, A<FakeOptions>.That.HasArgumentsForConstructor(constructorArguments))).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.HasArgumentsForConstructor(constructorArguments))).MustHaveHappened();
         }
 
         [Test]
@@ -205,9 +205,9 @@ namespace FakeItEasy.Tests.Creation
 
         private void ConfigureDefaultValuesForFakeAndDummyManager()
         {
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>.Ignored))
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>._))
                 .Returns(A.Fake<IFoo>());
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(Foo), A<FakeOptions>.Ignored))
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(Foo), A<FakeOptions>._))
                 .Returns(A.Fake<Foo>());
         }
     }

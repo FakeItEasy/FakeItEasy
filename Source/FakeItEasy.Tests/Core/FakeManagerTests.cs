@@ -271,7 +271,7 @@
         {
             var fake = this.CreateFakeManager<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>.Ignored)).Returns(true);
+            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>._)).Returns(true);
 
             using (Fake.CreateScope())
             {
@@ -280,7 +280,7 @@
 
             (fake.Object as IFoo).Bar();
 
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).MustNotHaveHappened();
         }
 
         [Test]
@@ -502,8 +502,8 @@
             // Arrange
             var fake = A.Fake<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>.Ignored)).Returns(true);
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored)).Invokes(x => x.Arguments.Get<IInterceptedFakeObjectCall>(0).DoNotRecordCall());
+            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>._)).Returns(true);
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).Invokes(x => x.Arguments.Get<IInterceptedFakeObjectCall>(0).DoNotRecordCall());
             
             Fake.GetFakeManager(fake).AddRuleFirst(rule);
 
@@ -563,7 +563,7 @@
 
             eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(call)).Now;
 
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored)).MustHaveHappened();
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).MustHaveHappened();
         }
 
         [Test]

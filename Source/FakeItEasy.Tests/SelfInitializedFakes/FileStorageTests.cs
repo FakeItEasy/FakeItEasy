@@ -17,8 +17,8 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         public void SetUp()
         {
             this.fileSystem = A.Fake<IFileSystem>();
-            A.CallTo(() => this.fileSystem.FileExists(A<string>.Ignored)).Returns(true);
-            A.CallTo(() => this.fileSystem.Open(A<string>.Ignored, A<FileMode>.Ignored)).Returns(new MemoryStream());
+            A.CallTo(() => this.fileSystem.FileExists(A<string>._)).Returns(true);
+            A.CallTo(() => this.fileSystem.Open(A<string>._, A<FileMode>._)).Returns(new MemoryStream());
         }
 
         private FileStorage CreateStorage(string fileName)

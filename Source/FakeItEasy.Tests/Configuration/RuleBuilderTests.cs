@@ -392,7 +392,7 @@
             this.builder.MustHaveHappened(Repeated.Exactly.Times(99));
 
             // Assert
-            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.That.Matches(x => x.Invoke(99)), "exactly 99 times")).MustHaveHappened();
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>.That.Matches(x => x.Invoke(99)), "exactly 99 times")).MustHaveHappened();
         }
 
         [Test]
@@ -419,7 +419,7 @@
             returnConfig.MustHaveHappened(Repeated.Exactly.Times(99));
 
             // Assert
-            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.That.Matches(x => x.Invoke(99)), "exactly 99 times")).MustHaveHappened();
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>.That.Matches(x => x.Invoke(99)), "exactly 99 times")).MustHaveHappened();
         }
 
         [Test]

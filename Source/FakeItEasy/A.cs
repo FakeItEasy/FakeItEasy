@@ -146,6 +146,18 @@ namespace FakeItEasy
         /// Returns a constraint that considers any value of an argument as valid.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "_", Justification = "Some trickery is allowed, isn't it?")]
+        [SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "But it's kinda cool right?")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static T _
+        {
+            get { return Ignored; }
+        }
+
+        /// <summary>
+        /// Returns a constraint that considers any value of an argument as valid.
+        /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
         public static T Ignored
         {
             get { return That.Matches(x => true, x => x.Write("Ignored")); }

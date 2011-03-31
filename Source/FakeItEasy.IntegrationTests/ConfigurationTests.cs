@@ -136,7 +136,7 @@ namespace FakeItEasy.IntegrationTests
             var foo = A.Fake<IFoo>();
             
             // Act
-            A.CallTo(() => foo.Bar(A<string>.Ignored, A<string>.Ignored)).Throws(new FormatException());
+            A.CallTo(() => foo.Bar(A<string>._, A<string>._)).Throws(new FormatException());
             
             // Assert
             Assert.Throws<FormatException>(() =>

@@ -30,7 +30,7 @@
 
             using (Fake.CreateScope())
             {
-                A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(A<Action<IFakeOptionsBuilder<IFoo>>>.Ignored)).Returns(foo);
+                A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(A<Action<IFakeOptionsBuilder<IFoo>>>._)).Returns(foo);
 
                 var fake = new Fake<IFoo>();
 
