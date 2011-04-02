@@ -19,15 +19,15 @@
         private static readonly ProxyGenerator proxyGenerator = new ProxyGenerator();
         private readonly CastleDynamicProxyInterceptionValidator interceptionValidator;
 
-        public CastleDynamicProxyGenerator(CastleDynamicProxyInterceptionValidator interceptionValidator)
-        {
-            this.interceptionValidator = interceptionValidator;
-        }
-
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "No field initialization.")]
         static CastleDynamicProxyGenerator()
         {
             AttributesToAvoidReplicating.Add(typeof(SecurityPermissionAttribute));
+        }
+
+        public CastleDynamicProxyGenerator(CastleDynamicProxyInterceptionValidator interceptionValidator)
+        {
+            this.interceptionValidator = interceptionValidator;
         }
 
         public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)

@@ -12,7 +12,7 @@
     <AssemblyName>FakeItEasy</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>FakeItEasy.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -483,6 +483,7 @@
     <Compile Include="CommonExtensions.cs" />
     <Compile Include="SmellyAttribute.cs" />
     <Compile Include="NextCall.cs" />
+    <Compile Include="StringBuilderOutputWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">

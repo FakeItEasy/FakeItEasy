@@ -23,6 +23,7 @@
         /// </summary>
         /// <param name="callSpecification">The call specification.</param>
         /// <param name="constraintFactory">The constraint factory.</param>
+        /// <param name="callExpressionParser">A parser to use to parse call expressions.</param>
         /// <param name="methodInfoManager">The method infor manager to use.</param>
         public ExpressionCallMatcher(LambdaExpression callSpecification, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, ICallExpressionParser callExpressionParser)
         {

@@ -47,7 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>FakeItEasy.snk</AssemblyOriginatorKeyFile>
@@ -573,6 +573,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\SmellyAttribute.cs">
       <Link>SmellyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\StringBuilderOutputWriter.cs">
+      <Link>StringBuilderOutputWriter.cs</Link>
     </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
