@@ -5,7 +5,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     using NUnit.Framework;
 
     [TestFixture]
-    public class IsInstanceOfTests
+    internal class IsInstanceOfTests
         : ArgumentConstraintTestBase<object>
     {
         protected override IEnumerable<object> InvalidValues

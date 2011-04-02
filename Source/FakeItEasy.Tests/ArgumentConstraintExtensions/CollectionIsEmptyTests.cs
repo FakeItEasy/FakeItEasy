@@ -5,7 +5,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     using System.Linq;
 
     [TestFixture]
-    public class CollectionIsEmptyTests
+    internal class CollectionIsEmptyTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
         protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)

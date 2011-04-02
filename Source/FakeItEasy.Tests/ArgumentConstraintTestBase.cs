@@ -7,7 +7,7 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Expressions;
     using NUnit.Framework;
 
-    public abstract class ArgumentConstraintTestBase
+    internal abstract class ArgumentConstraintTestBase
     {
         protected internal IArgumentConstraint constraintField;
         
@@ -52,7 +52,7 @@ namespace FakeItEasy.Tests
         }
     }
 
-    public abstract class ArgumentConstraintTestBase<T>
+    internal abstract class ArgumentConstraintTestBase<T>
         : ArgumentConstraintTestBase
     {
         [SetUp]

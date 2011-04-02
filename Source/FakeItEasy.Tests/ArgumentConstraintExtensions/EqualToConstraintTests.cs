@@ -5,7 +5,7 @@
     using System.Linq;
 
     [TestFixture]
-    public class EqualToConstraintTests
+    internal class EqualToConstraintTests
         : ArgumentConstraintTestBase<object>
     {
         protected override void CreateConstraint(IArgumentConstraintManager<object> scope)

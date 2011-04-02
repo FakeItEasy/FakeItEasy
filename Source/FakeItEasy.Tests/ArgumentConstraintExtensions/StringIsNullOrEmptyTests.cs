@@ -6,7 +6,7 @@ using FakeItEasy.Tests;
 namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
-    public class StringIsNullOrEmptyTests
+    internal class StringIsNullOrEmptyTests
         : ArgumentConstraintTestBase<string>
     {
         protected override IEnumerable<object> InvalidValues

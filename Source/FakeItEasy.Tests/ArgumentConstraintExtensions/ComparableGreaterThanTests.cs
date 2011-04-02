@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
-    public class ComparableGreaterThanTests
+    internal class ComparableGreaterThanTests
         : ArgumentConstraintTestBase<int>
     {
         protected override IEnumerable<object> InvalidValues

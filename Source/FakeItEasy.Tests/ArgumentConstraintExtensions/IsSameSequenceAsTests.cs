@@ -4,7 +4,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     using NUnit.Framework;
 
     [TestFixture]
-    public class IsSameSequenceAsTests
+    internal class IsSameSequenceAsTests
         : ArgumentConstraintTestBase<IEnumerable<int>>
     {
         protected override IEnumerable<object> InvalidValues

@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
     using NUnit.Framework;
 
     [TestFixture]
-    public class EqualityArgumentConstraintTests
+    internal class EqualityArgumentConstraintTests
         : ArgumentConstraintTestBase
     {
         [SetUp]

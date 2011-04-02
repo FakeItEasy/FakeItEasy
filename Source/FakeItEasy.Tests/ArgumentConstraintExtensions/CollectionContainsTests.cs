@@ -4,7 +4,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     using NUnit.Framework;
 
     [TestFixture]
-    public class CollectionContainsTests
+    internal class CollectionContainsTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
         protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)

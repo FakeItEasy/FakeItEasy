@@ -4,7 +4,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class NullCheckedMatchesConstraint
+    internal class NullCheckedMatchesConstraint
         : ArgumentConstraintTestBase<object>
     {
         protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
