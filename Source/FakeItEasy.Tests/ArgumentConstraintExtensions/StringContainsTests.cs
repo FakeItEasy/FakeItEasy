@@ -1,18 +1,14 @@
 using System.Collections.Generic;
+using FakeItEasy.Core;
+using FakeItEasy.Tests;
 using NUnit.Framework;
 
 namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     [TestFixture]
-    public class StringContainsTests
-        : ArgumentConstraintTestBase
+    internal class StringContainsTests
+        : ArgumentConstraintTestBase<string>
     {
-        [SetUp]
-        public void SetUp()
-        {
-            this.constraintField = A<string>.That.Contains("bar");
-        }
-
         protected override IEnumerable<object> InvalidValues
         {
             get { return new object[] { "foo", "baz", "biz", "", null, "lorem ipsum" }; }
@@ -25,7 +21,12 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
         protected override string ExpectedDescription
         {
-            get { return "String that contains \"bar\""; }
+            get { return "string that contains \"bar\""; }
+        }
+
+        protected override void CreateConstraint(IArgumentConstraintManager<string> scope)
+        {
+            scope.Contains("bar");
         }
     }
 }

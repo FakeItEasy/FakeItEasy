@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests.Core
         {
             Fake.InitializeFixture(this);
 
-            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>.Ignored.Argument))
+            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>._))
                 .Returns("Default call description");
 
             this.calls = new List<IFakeObjectCall>();
@@ -78,10 +78,10 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             this.StubCalls(10);
 
-            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>.Ignored.Argument)).Returns("Fake call");
+            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>._)).Returns("Fake call");
             A.CallTo(() => this.callFormatter.GetDescription(this.calls[9])).Returns("Other call");
 
-            A.CallTo(() => this.CallComparer.Equals(A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]).Argument, A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]).Argument)).Returns(true);
+            A.CallTo(() => this.CallComparer.Equals(A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]), A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]))).Returns(true);
             
             var writer = this.CreateWriter();
             
@@ -178,7 +178,7 @@ namespace FakeItEasy.Tests.Core
             this.StubCalls(10);
 
             var callIndex = 0;
-            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>.Ignored.Argument)).ReturnsLazily(() =>
+            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>._)).ReturnsLazily(() =>
 @"first line
 second line" + ++callIndex);
             

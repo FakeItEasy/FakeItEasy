@@ -102,12 +102,12 @@ namespace FakeItEasy.Tests
 
             var matcher = A.Fake<ICallMatcher>();
 
-            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>.Ignored.Argument)).Returns(false);
-            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>.That.Matches(x => x.Method.Name == "Baz").Argument)).Returns(true);
-            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>.That.Matches(x => x.Method.Name == "Biz").Argument)).Returns(true);
+            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>._)).Returns(false);
+            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>.That.Matches(x => x.Method.Name == "Baz", "Method named Baz"))).Returns(true);
+            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>.That.Matches(x => x.Method.Name == "Biz", "Method named Biz"))).Returns(true);
 
             var factory = A.Fake<IExpressionCallMatcherFactory>();
-            A.CallTo(() => factory.CreateCallMathcer(A<LambdaExpression>.Ignored)).Returns(matcher);
+            A.CallTo(() => factory.CreateCallMathcer(A<LambdaExpression>._)).Returns(matcher);
 
             // Act
             IEnumerable<ICompletedFakeObjectCall> matchingCalls = null;
@@ -189,13 +189,13 @@ namespace FakeItEasy.Tests
             FakeExtensions.ReturnsNextFromSequence(config, sequence);
 
             // Assert
-            var factoryValidator = A<Func<IFakeObjectCall, int>>.That.Matches(x => 
+            Func<Func<IFakeObjectCall, int>> factoryValidator = () => A<Func<IFakeObjectCall, int>>.That.Matches(x => 
             {
                 var producedSequence = new[] { x.Invoke(call), x.Invoke(call), x.Invoke(call) };
                 return producedSequence.SequenceEqual(sequence);
-            });
+            }, "Predicate");
             
-            A.CallTo(() => config.ReturnsLazily(factoryValidator)).MustHaveHappened();
+            A.CallTo(() => config.ReturnsLazily(factoryValidator.Invoke())).MustHaveHappened();
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace FakeItEasy.Tests
             var config = A.Fake<IReturnValueConfiguration<int>>();
             var returnedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
             
-            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.Ignored)).Returns(returnedConfig);
+            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>._)).Returns(returnedConfig);
 
             // Act
             FakeExtensions.ReturnsNextFromSequence(config, 1, 2, 3);
@@ -321,7 +321,7 @@ namespace FakeItEasy.Tests
             FakeExtensions.WriteToConsole(calls);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, calls, A<TextWriter>.Ignored)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(0, calls, A<TextWriter>._)).MustHaveHappened();
         }
 
         [Test]
@@ -337,7 +337,7 @@ namespace FakeItEasy.Tests
             FakeExtensions.WriteToConsole(calls);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, A<IEnumerable<IFakeObjectCall>>.Ignored.Argument, Console.Out)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(0, A<IEnumerable<IFakeObjectCall>>._, Console.Out)).MustHaveHappened();
         }
 
         [Test]

@@ -3,23 +3,24 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
-    using FakeItEasy.Creation;
-    using FakeItEasy.Expressions;
+    using Expressions;
 
     internal class FakeConfigurationManager
         : IFakeConfigurationManager
     {
         private readonly IConfigurationFactory configurationFactory;
         private readonly IExpressionParser expressionParser;
-        private readonly IProxyGenerator proxyGenerator;
+        private readonly ICallExpressionParser callExpressionParser;
+        private readonly IInterceptionAsserter interceptionAsserter;
         private readonly ExpressionCallRule.Factory ruleFactory;
 
-        public FakeConfigurationManager(IConfigurationFactory configurationFactory, IExpressionParser parser, ExpressionCallRule.Factory callRuleFactory, IProxyGenerator proxyGenerator)
+        public FakeConfigurationManager(IConfigurationFactory configurationFactory, IExpressionParser parser, ExpressionCallRule.Factory callRuleFactory, ICallExpressionParser callExpressionParser, IInterceptionAsserter interceptionAsserter)
         {
             this.configurationFactory = configurationFactory;
             this.expressionParser = parser;
             this.ruleFactory = callRuleFactory;
-            this.proxyGenerator = proxyGenerator;
+            this.callExpressionParser = callExpressionParser;
+            this.interceptionAsserter = interceptionAsserter;
         }
 
         public IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
@@ -53,17 +54,10 @@ namespace FakeItEasy.Configuration
 
         private void AssertThatMemberCanBeIntercepted(LambdaExpression callSpecification)
         {
-            var methodCall = callSpecification.Body as MethodCallExpression;
-            if (methodCall != null && !this.proxyGenerator.MemberCanBeIntercepted(methodCall.Method))
-            {
-                throw new FakeConfigurationException(ExceptionMessages.MemberCanNotBeIntercepted);
-            }
-
-            var propertyCall = callSpecification.Body as MemberExpression;
-            if (propertyCall != null && !this.proxyGenerator.MemberCanBeIntercepted(propertyCall.Member))
-            {
-                throw new FakeConfigurationException("The specified member can not be configured since it can not be intercepted by the current IProxyGenerator.");
-            }
+            var parsed = this.callExpressionParser.Parse(callSpecification);
+            this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(
+                parsed.CalledMethod,
+                parsed.CallTarget);
         }
     }
 }

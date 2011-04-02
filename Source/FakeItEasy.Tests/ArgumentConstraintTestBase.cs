@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace FakeItEasy.Tests
 {
     using System.Collections.Generic;
@@ -5,9 +7,9 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Expressions;
     using NUnit.Framework;
 
-    public abstract class ArgumentConstraintTestBase
+    internal abstract class ArgumentConstraintTestBase
     {
-        protected object constraintField;
+        protected internal IArgumentConstraint constraintField;
         
         protected abstract IEnumerable<object> InvalidValues { get; }
         
@@ -42,17 +44,21 @@ namespace FakeItEasy.Tests
         [Test]
         public virtual void Constraint_should_provide_correct_description()
         {
-            Assert.That(this.Constraint.ConstraintDescription, Is.EqualTo("<" + this.ExpectedDescription + ">"));
+            var output = new StringBuilder();
+
+            this.Constraint.WriteDescription(new StringBuilderOutputWriter(output));
+
+                Assert.That(output.ToString(), Is.EqualTo("<" + this.ExpectedDescription + ">"));
         }
     }
 
-    public abstract class ArgumentConstraintTestBase<T>
+    internal abstract class ArgumentConstraintTestBase<T>
         : ArgumentConstraintTestBase
     {
         [SetUp]
         public void SetUp()
         {
-            this.constraintField = this.CreateConstraint(new RootArgumentConstraintScope<T>());
+            this.CreateConstraint(new DefaultArgumentConstraintManager<T>(x => this.constraintField = x));
             this.OnSetUp();
         }
 
@@ -61,24 +67,6 @@ namespace FakeItEasy.Tests
             
         }
        
-        protected abstract ArgumentConstraint<T> CreateConstraint(ArgumentConstraintScope<T> scope);
-
-        [Test]
-        public void FullDescription_should_provide_expected_description()
-        {
-            // Arrange
-            var constraint = this.CreateConstraint(new RootArgumentConstraintScope<T>());
-            
-            // Act
-            
-            // Assert
-            Assert.That(constraint.FullDescription, Is.EqualTo(this.ExpectedDescription));
-        }
-
-        protected static ArgumentConstraintScope<TArgument> GetScopeForTesting<TArgument>()
-        {
-            return new RootArgumentConstraintScope<TArgument>();
-        }
+        protected abstract void CreateConstraint(IArgumentConstraintManager<T> scope);
     }
-
 }

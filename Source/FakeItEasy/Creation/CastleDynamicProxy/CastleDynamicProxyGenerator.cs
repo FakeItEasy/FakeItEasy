@@ -9,7 +9,7 @@
     using System.Security.Permissions;
     using Castle.DynamicProxy;
     using Castle.DynamicProxy.Generators;
-    using FakeItEasy.Core;
+    using Core;
 
     internal class CastleDynamicProxyGenerator
         : IProxyGenerator
@@ -17,11 +17,17 @@
         private static readonly Logger Logger = Log.GetLogger<CastleDynamicProxyGenerator>();
         private static readonly ProxyGenerationOptions proxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
         private static readonly ProxyGenerator proxyGenerator = new ProxyGenerator();
+        private readonly CastleDynamicProxyInterceptionValidator interceptionValidator;
 
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "No field initialization.")]
         static CastleDynamicProxyGenerator()
         {
             AttributesToAvoidReplicating.Add(typeof(SecurityPermissionAttribute));
+        }
+
+        public CastleDynamicProxyGenerator(CastleDynamicProxyInterceptionValidator interceptionValidator)
+        {
+            this.interceptionValidator = interceptionValidator;
         }
 
         public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
@@ -44,15 +50,9 @@
             return CreateProxyGeneratorResult(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
         }
 
-        public bool MemberCanBeIntercepted(MemberInfo member)
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
         {
-            Guard.AgainstNull(member, "member");
-
-            var isNonInterceptableMember =
-                IsNonVirtualMethod(member) ||
-                    IsNonVirtualProperty(member);
-
-            return !isNonInterceptableMember;
+            return this.interceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
         private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
@@ -95,28 +95,6 @@
             }
 
             return GetProxyResultForNoDefaultConstructor(typeOfProxy);
-        }
-
-        private static bool IsNonVirtualMethod(MemberInfo member)
-        {
-            var method = member as MethodInfo;
-            return method != null && !method.IsVirtual;
-        }
-
-        private static bool IsNonVirtualProperty(MemberInfo member)
-        {
-            var property = member as PropertyInfo;
-            return property != null && !PropertyIsVirtual(property);
-        }
-
-        private static bool PropertyIsVirtual(PropertyInfo property)
-        {
-            var getMethod = property.GetGetMethod();
-            var setMethod = property.GetSetMethod();
-
-            return
-                (getMethod == null || getMethod.IsVirtual) &&
-                    (setMethod == null || setMethod.IsVirtual);
         }
 
         private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy)

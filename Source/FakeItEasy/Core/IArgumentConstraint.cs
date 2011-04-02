@@ -6,9 +6,12 @@ namespace FakeItEasy.Core
     internal interface IArgumentConstraint
     {
         /// <summary>
-        /// Gets a string describing the argument constraint.
+        /// Writes a description of the arguemnt constraint to the specified writer.
         /// </summary>
-        string ConstraintDescription { get; }
+        /// <param name="writer">
+        /// The writer.
+        /// </param>
+        void WriteDescription(IOutputWriter writer);
 
         /// <summary>
         /// Gets whether the argument is valid.

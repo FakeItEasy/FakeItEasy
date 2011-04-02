@@ -81,6 +81,7 @@
     <Compile Include="Configuration\ConfigurationModule.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\DefaultInterceptionAsserter.cs" />
     <Compile Include="Configuration\FakeConfigurationException.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -120,6 +121,7 @@
     <Compile Include="Configuration\IHideObjectMembers.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\IInterceptionAsserter.cs" />
     <Compile Include="Configuration\IOutAndRefParametersConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -168,6 +170,7 @@
     <Compile Include="Configuration\StartConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\ArgumentConstraintTrap.cs" />
     <Compile Include="Core\ArgumentInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -183,6 +186,7 @@
     <Compile Include="Core\CallWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\DefaultArgumentConstraintManager.cs" />
     <Compile Include="Core\DefaultExceptionThrower.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -245,6 +249,9 @@
     <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IArgumentConstraintManager.cs" />
+    <Compile Include="IArgumentConstraintManagerFactory.cs" />
+    <Compile Include="Core\IArgumentConstraintTrapper.cs" />
     <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -302,6 +309,7 @@
     <Compile Include="Core\IInterceptedFakeObjectCall.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IOutputWriter.cs" />
     <Compile Include="Core\IWritableFakeObjectCall.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -323,6 +331,7 @@
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidator.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -382,19 +391,11 @@
     <Compile Include="Creation\ResolvedConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Expressions\ArgumentConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ArgumentConstraintFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ArgumentConstraintScope.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Expressions\CallExpressionParser.cs" />
+    <Compile Include="Expressions\ExpressionArgumentConstraintFactory.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Expressions\ExpressionCallMatcher.cs">
@@ -406,18 +407,14 @@
     <Compile Include="Expressions\ExpressionParser.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Expressions\ICallExpressionParser.cs" />
     <Compile Include="Expressions\IExpressionCallMatcherFactory.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Expressions\IExpressionParser.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Expressions\NotArgumentConstraintScope.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\RootArgumentConstraintScope.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Expressions\ParsedCallExpression.cs" />
     <Compile Include="ExtensionSyntax\Full\FullExtensionSyntax.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -486,6 +483,7 @@
     <Compile Include="CommonExtensions.cs" />
     <Compile Include="SmellyAttribute.cs" />
     <Compile Include="NextCall.cs" />
+    <Compile Include="StringBuilderOutputWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">

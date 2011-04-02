@@ -140,7 +140,7 @@ namespace FakeItEasy.Tests.Core
         {
             var formatter = A.Fake<IArgumentValueFormatter>();
             A.CallTo(() => formatter.ForType).Returns(type);
-            A.CallTo(() => formatter.GetArgumentValueAsString(A<object>.Ignored)).Returns(formattedValue);
+            A.CallTo(() => formatter.GetArgumentValueAsString(A<object>._)).Returns(formattedValue);
             A.CallTo(() => formatter.Priority).Returns(priority);
             this.registeredTypeFormatters.Add(formatter);
         }

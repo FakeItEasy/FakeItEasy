@@ -4,7 +4,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     using NUnit.Framework;
 
     [TestFixture]
-    public class IsSameSequenceAsTests
+    internal class IsSameSequenceAsTests
         : ArgumentConstraintTestBase<IEnumerable<int>>
     {
         protected override IEnumerable<object> InvalidValues
@@ -28,9 +28,9 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
             }
         }
 
-        protected override FakeItEasy.Expressions.ArgumentConstraint<IEnumerable<int>> CreateConstraint(FakeItEasy.Expressions.ArgumentConstraintScope<IEnumerable<int>> scope)
+        protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<int>> scope)
         {
-            return scope.IsSameSequenceAs(new int[] { 1, 2, 3 });
+            scope.IsSameSequenceAs(new int[] {1, 2, 3});
         }
 
         protected override string ExpectedDescription

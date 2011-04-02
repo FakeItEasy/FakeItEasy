@@ -5,9 +5,8 @@ namespace FakeItEasy
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.Creation;
-    using FakeItEasy.Expressions;
+    using Configuration;
+    using Creation;
 
     /// <summary>
     /// Provides methods for generating fake objects.
@@ -135,18 +134,30 @@ namespace FakeItEasy
         /// Gets an argument constraint object that will be used to constrain a method call argument.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
-        public static ArgumentConstraintScope<T> That
+        public static IArgumentConstraintManager<T> That
         {
-            get { return new RootArgumentConstraintScope<T>(); }
+            get { return ServiceLocator.Current.Resolve<IArgumentConstraintManagerFactory>().Create<T>(); }
         }
 
         /// <summary>
-        /// Returns a constraint that considers any value of an argument as valid.
+        /// Gets a constraint that considers any value of an argument as valid. (This is a shortcut for the "Ignored"-property.)
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
-        public static ArgumentConstraint<T> Ignored
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "_", Justification = "Some trickery is allowed, isn't it?")]
+        [SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "But it's kinda cool right?")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static T _
         {
-            get { return ArgumentConstraint.Create(new RootArgumentConstraintScope<T>(), x => true, "Ignored"); }
+            get { return Ignored; }
+        }
+
+        /// <summary>
+        /// Gets a constraint that considers any value of an argument as valid.
+        /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
+        public static T Ignored
+        {
+            get { return That.Matches(x => true, x => x.Write("Ignored")); }
         }
     }
 }

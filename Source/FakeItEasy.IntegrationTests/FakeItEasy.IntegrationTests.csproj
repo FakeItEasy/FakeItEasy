@@ -67,7 +67,6 @@
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
-    <Compile Include="ArgumentConstraintsTests.cs" />
     <Compile Include="ServiceLocationIntegrationTests.cs" />
     <Compile Include="StringArgumentConstraints.cs" />
     <Compile Include="AssertionsTests.cs" />

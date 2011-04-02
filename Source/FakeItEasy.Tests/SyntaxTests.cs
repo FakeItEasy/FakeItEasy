@@ -48,7 +48,7 @@ namespace FakeItEasy
 
             A.CallTo(() => foo.Bar()).Throws(new ArgumentException()).NumberOfTimes(2);
 
-            A.CallTo(() => foo.Bar(A<string>.Ignored, A<int>.That.Matches(p => p > 10)))
+            A.CallTo(() => foo.Bar(A<string>._, A<int>.That.Matches(p => p > 10)))
                 .Returns("foo");
             
 

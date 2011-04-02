@@ -73,7 +73,7 @@ namespace FakeItEasy.Tests.Configuration
 
             rule.Apply(call);
 
-            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, "the number of times specified by predicate"));
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>._, "the number of times specified by predicate"));
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace FakeItEasy.Tests.Configuration
 
             rule.Apply(call);
 
-            var asserterCall = Fake.GetCalls(this.asserter).Matching<IFakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, A<string>.Ignored)).Single();
+            var asserterCall = Fake.GetCalls(this.asserter).Matching<IFakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>._, A<string>._)).Single();
             var callPredicate = asserterCall.Arguments.Get<Func<IFakeObjectCall, bool>>("callPredicate");
 
             callPredicate.Invoke(call);
@@ -113,9 +113,9 @@ namespace FakeItEasy.Tests.Configuration
 
             rule.Apply(call);
 
-            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, "at least once")).MustHaveHappened();
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>._, "at least once")).MustHaveHappened();
             
-            var asserterCall = Fake.GetCalls(this.asserter).Matching<IFakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", A<Func<int, bool>>.Ignored, A<string>.Ignored)).Single();
+            var asserterCall = Fake.GetCalls(this.asserter).Matching<IFakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>._, A<string>._)).Single();
             var repeatPredicatePassedToAsserter = asserterCall.Arguments.Get<Func<int, bool>>("repeatPredicate");
 
             Assert.That(repeatPredicatePassedToAsserter.Invoke(0), Is.False);
