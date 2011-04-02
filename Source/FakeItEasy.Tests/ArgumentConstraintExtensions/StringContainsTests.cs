@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
         protected override string ExpectedDescription
         {
-            get { return "String that contains \"bar\""; }
+            get { return "string that contains \"bar\""; }
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<string> scope)

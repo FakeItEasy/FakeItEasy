@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
         protected override string ExpectedDescription
         {
-            get { return "Greater than 100"; }
+            get { return "greater than 100"; }
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<int> scope)

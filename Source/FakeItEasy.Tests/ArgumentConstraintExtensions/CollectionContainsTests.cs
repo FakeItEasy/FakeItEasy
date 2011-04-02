@@ -16,6 +16,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
         {
             get
             {
+                yield return null;
                 yield return new object[] { };
                 yield return new object[] { null };
                 yield return new object[] { 1, 2, 3, "foo", "bar" };

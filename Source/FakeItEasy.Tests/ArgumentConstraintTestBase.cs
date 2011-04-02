@@ -48,7 +48,7 @@ namespace FakeItEasy.Tests
 
             this.Constraint.WriteDescription(new StringBuilderOutputWriter(output));
 
-            Assert.That(output.ToString(), Is.EqualTo("<" + this.ExpectedDescription + ">"));
+                Assert.That(output.ToString(), Is.EqualTo("<" + this.ExpectedDescription + ">"));
         }
     }
 
@@ -69,5 +69,4 @@ namespace FakeItEasy.Tests
        
         protected abstract void CreateConstraint(IArgumentConstraintManager<T> scope);
     }
-
 }

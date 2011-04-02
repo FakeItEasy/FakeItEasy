@@ -12,7 +12,7 @@
     <AssemblyName>FakeItEasy.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>FakeItEasy.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -78,6 +78,7 @@
     <Compile Include="ArgumentConstraintExtensions\CollectionIsEmptyTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\EqualToConstraintTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
+    <Compile Include="ArgumentConstraintExtensions\NullCheckedMatchesConstraint.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
     <Compile Include="Core\ArgumentConstraintTrapTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />

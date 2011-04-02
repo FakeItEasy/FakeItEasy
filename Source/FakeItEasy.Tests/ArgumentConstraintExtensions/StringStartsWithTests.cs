@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using NUnit.Framework;
-
 namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     public class StringStartsWithTests
         : ArgumentConstraintTestBase<string>
@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
         protected override string ExpectedDescription
         {
-            get { return "String that starts with \"abc\""; }
+            get { return "string that starts with \"abc\""; }
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<string> scope)

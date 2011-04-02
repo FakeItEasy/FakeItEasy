@@ -132,7 +132,7 @@
         public void Should_create_constraint_that_writes_beginning_and_end_of_argument_constraint()
         {
             // Arrange
-            var writer = new FakeOutputWriter();
+            var writer = new StringBuilderOutputWriter();
 
             // Act
             this.constraintManager.Matches(x => true, x => x.Write("foo"));
@@ -140,18 +140,6 @@
             // Assert
             this.createdConstraint.WriteDescription(writer);
             Assert.That(writer.Builder.ToString(), Is.EqualTo("<foo>"));
-        }
-
-        private class FakeOutputWriter
-            : IOutputWriter
-        {
-            public readonly StringBuilder Builder = new StringBuilder();
-
-            public IOutputWriter Write(string value)
-            {
-                this.Builder.Append(value);
-                return this;
-            }
         }
 
     }

@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     {
         protected override IEnumerable<object> InvalidValues
         {
-            get { return new object[] { new object(), 1, "foo" }; }
+            get { return new object[] { new object(), 1, "foo", null }; }
         }
 
         protected override IEnumerable<object> ValidValues
