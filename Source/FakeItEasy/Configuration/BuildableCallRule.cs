@@ -3,6 +3,7 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using Core;
 
     /// <summary>
@@ -81,9 +82,41 @@ namespace FakeItEasy.Configuration
                 && this.wherePredicates.All(x => x.Item1.Invoke(fakeObjectCall));
         }
 
+        /// <summary>
+        /// Writes a description of calls the rule is applicable to.
+        /// </summary>
+        /// <param name="writer">The writer to write the description to.</param>
+        public void WriteDescriptionOfValidCall(IOutputWriter writer)
+        {
+            writer.Write(this.DescriptionOfValidCall);
+            writer.Write(Environment.NewLine);
+
+            Func<string> wherePrefix = () =>
+            {
+                wherePrefix = () => "and";
+                return "where";
+            };
+
+            using (writer.Indent())
+            {
+                foreach (var wherePredicateDescriptionWriter in this.wherePredicates.Select(x => x.Item2))
+                {
+                    writer.Write(wherePrefix.Invoke());
+                    writer.Write(" ");
+                    wherePredicateDescriptionWriter.Invoke(writer);
+                    writer.Write(Environment.NewLine);
+                }
+            }
+        }
+
         public void ApplyWherePredicate(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
             this.wherePredicates.Add(Tuple.Create(predicate, descriptionWriter));
+        }
+
+        public void ApplyWherePredicate(Expression<Func<IFakeObjectCall, bool>> predicate)
+        {
+            this.ApplyWherePredicate(predicate.Compile(), x => x.Write(predicate.ToString()));
         }
 
         public abstract void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate);
@@ -123,29 +156,6 @@ namespace FakeItEasy.Configuration
             foreach (var argument in indexes.Zip(this.OutAndRefParametersValues))
             {
                 fakeObjectCall.SetArgumentValue(argument.Item1, argument.Item2);
-            }
-        }
-
-        public void WriteDescriptionOfValidCall(IOutputWriter writer)
-        {
-            writer.Write(this.DescriptionOfValidCall);
-            writer.Write(Environment.NewLine);
-
-            Func<string> wherePrefix = () =>
-                                           {
-                                               wherePrefix = () => "and";
-                                               return "where";
-                                           };
-
-            using (writer.Indent())
-            {
-                foreach (var wherePredicateDescriptionWriter in this.wherePredicates.Select(x => x.Item2))
-                {
-                    writer.Write(wherePrefix.Invoke());
-                    writer.Write(" ");
-                    wherePredicateDescriptionWriter.Invoke(writer);
-                    writer.Write(Environment.NewLine);
-                }
             }
         }
     }
