@@ -9,7 +9,7 @@ namespace FakeItEasy.Core
     internal class FakeAsserter : IFakeAsserter
     {
         private readonly CallWriter callWriter;
-
+        
         public FakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
         {
             this.Calls = calls;
@@ -32,43 +32,57 @@ namespace FakeItEasy.Core
             }
         }
 
-        private static void AppendCallDescription(string callDescription, StringWriter writer)
+        private static void AppendCallDescription(string callDescription, IOutputWriter writer)
         {
             writer.WriteLine();
-            writer.WriteLine("  Assertion failed for the following call:");
-            writer.WriteLine("    {0}", callDescription);
+            writer.Write("Assertion failed for the following call:");
+            writer.WriteLine();
+
+            using (writer.Indent())
+            {
+                writer.Write(callDescription);
+                writer.WriteLine();
+            }
         }
 
         private string CreateExceptionMessage(string callDescription, string repeatDescription, int repeat)
         {
-            var messageWriter = new StringWriter(CultureInfo.InvariantCulture);
+            var outputWriter = new StringBuilderOutputWriter();
+            outputWriter.WriteLine();
 
-            messageWriter.WriteLine();
-            AppendCallDescription(callDescription, messageWriter);
-            this.AppendExpectation(repeatDescription, repeat, messageWriter);
-            this.AppendCallList(messageWriter);
-            messageWriter.WriteLine();
+            using (outputWriter.Indent())
+            {
+                AppendCallDescription(callDescription, outputWriter);
+                this.AppendExpectation(repeatDescription, repeat, outputWriter);
+                this.AppendCallList(outputWriter);
+                outputWriter.WriteLine();
+            }
 
-            return messageWriter.GetStringBuilder().ToString();
+            return outputWriter.Builder.ToString();
         }
 
-        private void AppendExpectation(string repeatDescription, int repeat, StringWriter writer)
+        private void AppendExpectation(string repeatDescription, int repeat, IOutputWriter writer)
         {
-            writer.Write("  Expected to find it {0} ", repeatDescription);
+            writer.Write("Expected to find it {0} ", repeatDescription);
 
             if (this.Calls.Any())
             {
-                writer.WriteLine("but found it #{0} times among the calls:", repeat);
+                writer.Write("but found it #{0} times among the calls:", repeat);
             }
             else
             {
-                writer.WriteLine("but no calls were made to the fake object.");
+                writer.Write("but no calls were made to the fake object.");
             }
+
+            writer.WriteLine();
         }
 
-        private void AppendCallList(StringWriter writer)
+        private void AppendCallList(IOutputWriter writer)
         {
-            this.callWriter.WriteCalls(4, this.Calls, writer);
+            using (writer.Indent())
+            {
+                this.callWriter.WriteCalls(this.Calls, writer);
+            }
         }
     }
 }

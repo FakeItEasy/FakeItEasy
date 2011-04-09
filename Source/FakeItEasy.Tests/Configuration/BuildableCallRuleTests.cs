@@ -203,8 +203,8 @@ namespace FakeItEasy.Tests.Configuration
             // Assert
             Assert.That(descriptionWriter.Builder.ToString(),
                 Is.EqualTo(@"description
-    where description of first where
-    and description of second where
+  where description of first where
+  and description of second where
 "));
         }
 
@@ -223,7 +223,7 @@ namespace FakeItEasy.Tests.Configuration
             // Assert
             Assert.That(descriptionWriter.Builder.ToString(),
                 Is.EqualTo(@"description
-    where x => (x.Arguments.Count > 0)
+  where x => (x.Arguments.Count > 0)
 "));
         }
 
