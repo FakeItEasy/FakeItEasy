@@ -285,7 +285,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = A.Fake<IReturnValueArgumentValidationConfiguration<T>>();
 
             A.CallTo(() => this.configurationFactory.CreateConfiguration<T>(this.fakeObject, this.callRule)).Returns(result);
-
+            
             return result;
         }
     }

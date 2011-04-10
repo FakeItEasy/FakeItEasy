@@ -24,6 +24,7 @@ namespace FakeItEasy.Configuration
         /// </summary>
         /// <param name="predicate">A predicate for a fake object call.</param>
         /// <returns>The configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for expressions.")]
         IAnyCallConfiguration Where(Expression<Func<IFakeObjectCall, bool>> predicate);
     }
 }

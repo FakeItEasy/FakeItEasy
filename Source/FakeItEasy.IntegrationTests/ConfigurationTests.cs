@@ -202,6 +202,25 @@ namespace FakeItEasy.IntegrationTests
             Assert.Throws<Exception>(foo.Bar);
         }
 
+        [Test]
+        public void Should_be_able_to_configure_indexed_properties()
+        {
+            // Arrange
+            var fake = A.Fake<IIndexed>(x => x.Strict());
+
+            A.CallTo(() => fake[10]).Returns("ten");
+            
+            // Act
+            
+            // Assert
+            Assert.That(fake[10], Is.EqualTo("ten"));
+        }
+
+        public interface IIndexed
+        {
+            string this[int index] { get; }
+        }
+
         public class BaseClass
         {
             public bool WasCalled;
