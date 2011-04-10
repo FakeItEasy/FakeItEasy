@@ -195,6 +195,7 @@ namespace FakeItEasy.IntegrationTests
             var foo = A.Fake<IFoo>();
             
             // Act
+            A.CallTo(foo).Where(x => x.Method.Name.Equals("Bar")).Throws(new Exception());
 
             // Assert
             Assert.DoesNotThrow(() => foo.Baz());
