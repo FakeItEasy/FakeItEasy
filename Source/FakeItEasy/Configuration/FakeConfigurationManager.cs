@@ -52,6 +52,15 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration<T>(fake, rule);
         }
 
+        public IAnyCallConfiguration CallTo(object fakeObject)
+        {
+            var rule = new AnyCallCallRule();
+            var manager = Fake.GetFakeManager(fakeObject);
+            manager.AddRuleFirst(rule);
+
+            return this.configurationFactory.CreateAnyCallConfiguration(manager, rule);
+        }
+
         private void AssertThatMemberCanBeIntercepted(LambdaExpression callSpecification)
         {
             var parsed = this.callExpressionParser.Parse(callSpecification);

@@ -29,7 +29,7 @@ namespace FakeItEasy.Tests.Expressions
         {
             // Arrange
             var constraint = A.Dummy<IArgumentConstraint>();
-            Any.CallTo(this.trapper).WithReturnType<IEnumerable<IArgumentConstraint>>().Returns(new[] {constraint});
+            Any.CallTo(this.trapper).WithReturnType<IEnumerable<IArgumentConstraint>>().Returns(new[] { constraint });
 
             // Act
             var result = this.factory.GetArgumentConstraint(A.Dummy<Expression>());

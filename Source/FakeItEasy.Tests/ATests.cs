@@ -16,12 +16,21 @@
         : ConfigurableServiceLocatorTestBase
     {
         private IFakeCreatorFacade fakeCreator;
+        private IDisposable scope;
 
         protected override void OnSetUp()
         {
             this.fakeCreator = A.Fake<IFakeCreatorFacade>();
-
+            
             this.StubResolve<IFakeCreatorFacade>(this.fakeCreator);
+            
+            this.scope = Fake.CreateScope();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.scope.Dispose();
         }
 
         [Test]

@@ -111,6 +111,21 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Gets a configuration object allowing for further configuration of
+        /// any calll to the specified faked object.
+        /// </summary>
+        /// <param name="fake">
+        /// The fake to configure.
+        /// </param>
+        /// <returns>
+        /// A configuration object.
+        /// </returns>
+        public static IAnyCallConfiguration CallTo(object fake)
+        {
+            return ConfigurationManager.CallTo(fake);
+        }
+
+        /// <summary>
         /// Configures a call to a faked object.
         /// </summary>
         /// <typeparam name="T">The type of member on the faked object to configure.</typeparam>

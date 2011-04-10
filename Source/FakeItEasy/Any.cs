@@ -1,25 +1,25 @@
 namespace FakeItEasy
 {
+    using System;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
-    using FakeItEasy.Configuration;
+    using Configuration;
 
     /// <summary>
     /// Provides configuration for any (not a specific) call on a faked object.
     /// </summary>
+    [Obsolete("Methods provided by this class are now available directly on the A-class.")]
     public static class Any
     {
         /// <summary>
         /// Gets a configuration object allowing for further configuration of
         /// any calll to the specified faked object.
         /// </summary>
-        /// <typeparam name="TFake">The type of fake object.</typeparam>
         /// <param name="fakedObject">The faked object to configure.</param>
         /// <returns>A configuration object.</returns>
-        public static IAnyCallConfiguration CallTo<TFake>(TFake fakedObject)
+        public static IAnyCallConfiguration CallTo(object fakedObject)
         {
-            var configurationFactory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
-            return configurationFactory.CreateConfiguration<TFake>(Fake.GetFakeManager(fakedObject)).AnyCall();
+            return A.CallTo(fakedObject);
         }
 
         /// <summary>

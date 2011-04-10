@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -228,6 +229,53 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(
                 parsedCall.CalledMethod,
                 parsedCall.CallTarget)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_call_configuration_factory_with_manager_from_fake()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            var manager = Fake.GetFakeManager(fake);
+
+            // Act
+            this.configurationManager.CallTo(fake);
+
+            // Assert
+            A.CallTo(() => this.configurationFactory.CreateAnyCallConfiguration(
+                manager, A<AnyCallCallRule>.That.Not.IsNull())).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_return_configuration_when_configuring_any_call()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            var manager = Fake.GetFakeManager(fake);
+            var expectedConfiguration = A.Dummy<IAnyCallConfiguration>();
+            A.CallTo(() => this.configurationFactory.CreateAnyCallConfiguration(
+                A<FakeManager>._, A<AnyCallCallRule>._))
+                .Returns(expectedConfiguration);
+
+            // Act
+            var result = this.configurationManager.CallTo(fake);
+
+            // Assert
+            Assert.That(result, Is.SameAs(expectedConfiguration));
+        }
+
+        [Test]
+        public void Should_add_call_rule_to_fake_manager_when_configuring_any_call()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            var manager = Fake.GetFakeManager(fake);
+
+            // Act
+            this.configurationManager.CallTo(fake);
+
+            // Assert
+            Assert.That(manager.AllUserRules.Single().Rule, Is.InstanceOf<AnyCallCallRule>());
         }
     }
 }

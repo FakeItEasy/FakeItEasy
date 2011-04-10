@@ -12,5 +12,7 @@ namespace FakeItEasy.Configuration
         IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification);
 
         IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification);
+
+        IAnyCallConfiguration CallTo(object fakeObject);
     }
 }
