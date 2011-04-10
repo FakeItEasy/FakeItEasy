@@ -440,15 +440,16 @@
         public void Where_should_apply_where_predicate_to_built_rule()
         {
             // Arrange
-            Expression<Func<IFakeObjectCall, bool>> predicate = x => true;
+            Func<IFakeObjectCall, bool> predicate = x => true;
+            Action<IOutputWriter> writer = x => { };
 
             var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
 
             // Act
-            returnConfig.Where(predicate);
+            returnConfig.Where(predicate, writer);
             
             // Assert
-            A.CallTo(() => this.ruleProducedByFactory.ApplyWherePredicate(predicate)).MustHaveHappened();
+            A.CallTo(() => this.ruleProducedByFactory.ApplyWherePredicate(predicate, writer)).MustHaveHappened();
         }
 
         [Test]
@@ -460,7 +461,7 @@
             // Act
 
             // Assert
-            Assert.That(returnConfig.Where(x => true), Is.SameAs(returnConfig));
+            Assert.That(returnConfig.Where(x => true, x => { }), Is.SameAs(returnConfig));
         }
 
         private RuleBuilder.ReturnValueConfiguration<int> CreateTestableReturnConfiguration()

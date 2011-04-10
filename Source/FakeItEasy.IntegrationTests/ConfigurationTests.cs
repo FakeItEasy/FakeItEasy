@@ -191,7 +191,7 @@
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            
+
             // Act
             A.CallTo(foo).Where(x => x.Method.Name.Equals("Bar")).Throws(new Exception());
 
@@ -218,7 +218,7 @@
         public void Should_be_able_to_intercept_protected_method()
         {
             // Arrange
-            var fake = A.Fake<TypeWithProtectedMethod>(x => x.Strict());
+            var fake = A.Fake<TypeWithProtectedMethod>();
 
             // Act
             A.CallTo(fake).WithReturnType<int>().Where(x => x.Method.Name == "ProtectedMethod").Returns(20);

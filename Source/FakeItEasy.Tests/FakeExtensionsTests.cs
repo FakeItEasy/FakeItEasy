@@ -439,6 +439,52 @@ namespace FakeItEasy.Tests
                 FakeExtensions.Strict(A.Dummy<IFakeOptionsBuilder<IFoo>>()));
         }
 
+        [Test]
+        public void Where_should_return_configuration_from_configuration()
+        {
+            // Arrange
+            var returnedConfiguration = A.Dummy<IVoidConfiguration>();
+            
+            var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
+            A.CallTo(configuration).WithReturnType<IVoidConfiguration>().Returns(returnedConfiguration);
+
+            // Act
+
+            // Assert
+            Assert.That(configuration.Where(x => true), Is.SameAs(returnedConfiguration));
+        }
+
+        [Test]
+        public void Where_should_pass_writer_that_writes_predicate_as_string()
+        {
+            // Arrange
+            var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
+            
+            // Act
+            configuration.Where(x => true);
+
+            // Assert
+            A.CallTo(() => configuration.Where(
+                A<Func<IFakeObjectCall, bool>>._, 
+                A<Action<IOutputWriter>>.That.Writes("x => True"))).MustHaveHappened();
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Where_should_pass_compiled_predicate_to_configuration(bool predicateReturnValue)
+        {
+            // Arrange
+            var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
+
+            // Act
+            configuration.Where(x => predicateReturnValue);
+
+            // Assert
+            A.CallTo(() => configuration.Where(
+                A<Func<IFakeObjectCall, bool>>.That.Returns(A.Dummy<IFakeObjectCall>(), predicateReturnValue),
+                A<Action<IOutputWriter>>._)).MustHaveHappened();
+        }
+
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)
         {
             return callSpecifications.Select(x => ExpressionHelper.CreateFakeCall<TFake>(x).AsReadOnly());

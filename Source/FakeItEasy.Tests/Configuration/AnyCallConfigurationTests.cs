@@ -226,13 +226,14 @@ namespace FakeItEasy.Tests.Configuration
         public void Where_should_apply_where_predicate_on_rule()
         {
             // Arrange
-            Expression<Func<IFakeObjectCall, bool>> predicate = x => true;
+            Func<IFakeObjectCall, bool> predicate = x => true;
+            Action<IOutputWriter> writer = x => { };
 
             // Act
-            this.configuration.Where(predicate);
+            this.configuration.Where(predicate, writer);
 
             // Assert
-            A.CallTo(() => this.callRule.ApplyWherePredicate(predicate)).MustHaveHappened();
+            A.CallTo(() => this.callRule.ApplyWherePredicate(predicate, writer)).MustHaveHappened();
         }
 
         [Test]
@@ -243,7 +244,7 @@ namespace FakeItEasy.Tests.Configuration
             // Act
 
             // Assert
-            Assert.That(this.configuration.Where(x => true), Is.SameAs(this.configuration));
+            Assert.That(this.configuration.Where(x => true, x => { }), Is.SameAs(this.configuration));
         }
 
         [Test]

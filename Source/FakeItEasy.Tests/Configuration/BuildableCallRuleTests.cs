@@ -206,24 +206,6 @@ namespace FakeItEasy.Tests.Configuration
   and description of second where"));
         }
 
-        [Test]
-        public void Should_be_able_to_specify_expressions_where_predicates()
-        {
-            // Arrange
-            this.rule.DescriptionOfValidCallReturnValue = "description";
-            this.rule.ApplyWherePredicate(x => x.Arguments.Count > 0);
-            
-            var descriptionWriter = new StringBuilderOutputWriter();
-
-            // Act
-            this.rule.WriteDescriptionOfValidCall(descriptionWriter);
-
-            // Assert
-            Assert.That(descriptionWriter.Builder.ToString(),
-                Is.EqualTo(@"description
-  where x => (x.Arguments.Count > 0)"));
-        }
-
         private interface IOutAndRef
         {
             void OutAndRef(object input, out int first, string input2, ref string second, string input3);

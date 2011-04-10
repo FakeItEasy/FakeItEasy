@@ -155,6 +155,7 @@
     <Compile Include="Configuration\IVoidConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\IWhereConfiguration.cs" />
     <Compile Include="Configuration\RecordedCallRule.cs">
       <SubType>Code</SubType>
     </Compile>

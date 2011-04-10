@@ -160,9 +160,9 @@ namespace FakeItEasy.Configuration
                 this.ParentConfiguration.MustHaveHappened(repeatConstraint);
             }
 
-            public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Expression<Func<IFakeObjectCall, bool>> predicate)
+            public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
             {
-                this.ParentConfiguration.RuleBeingBuilt.ApplyWherePredicate(predicate);
+                this.ParentConfiguration.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
                 return this;
             }
         }

@@ -58,10 +58,9 @@ namespace FakeItEasy.Configuration
             this.VoidConfiguration.MustHaveHappened(repeatConstraint);
         }
 
-
-        public IAnyCallConfigurationWithNoReturnTypeSpecified Where(System.Linq.Expressions.Expression<Func<IFakeObjectCall, bool>> predicate)
+        public IAnyCallConfigurationWithNoReturnTypeSpecified Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
-            this.configuredRule.ApplyWherePredicate(predicate);
+            this.configuredRule.ApplyWherePredicate(predicate, descriptionWriter);
             return this;
         }
 

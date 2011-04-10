@@ -212,7 +212,18 @@ namespace FakeItEasy
                 };
 
             return options.OnFakeCreated(
-                x => Any.CallTo(x).Invokes(thrower));
+                x => A.CallTo(x).Invokes(thrower));
+        }
+        
+        /// <summary>
+        /// Applies a predicate to constrain which calls will be considered for interception.
+        /// </summary>
+        /// <param name="predicate">A predicate for a fake object call.</param>
+        /// to the output.
+        /// <returns>The configuration object.</returns>
+        public static T Where<T>(this IWhereConfiguration<T> configuration, Expression<Func<IFakeObjectCall, bool>> predicate)
+        {
+            return configuration.Where(predicate.Compile(), x => x.Write(predicate.ToString()));
         }
     }
 }

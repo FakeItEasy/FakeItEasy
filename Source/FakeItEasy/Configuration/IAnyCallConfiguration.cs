@@ -1,9 +1,6 @@
 namespace FakeItEasy.Configuration
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq.Expressions;
-    using Core;
 
     /// <summary>
     /// Configuration for any call to a faked object.
@@ -24,16 +21,5 @@ namespace FakeItEasy.Configuration
         : IReturnValueArgumentValidationConfiguration<T>, IWhereConfiguration<IAnyCallConfigurationWithReturnTypeSpecified<T>>
     {
         
-    }
-
-    public interface IWhereConfiguration<out T>
-    {
-        /// <summary>
-        /// Applies a predicate to constrain which calls will be considered for interception.
-        /// </summary>
-        /// <param name="predicate">A predicate for a fake object call.</param>
-        /// <returns>The configuration object.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for expressions.")]
-        T Where(Expression<Func<IFakeObjectCall, bool>> predicate);
     }
 }
