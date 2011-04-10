@@ -67,26 +67,39 @@ namespace FakeItEasy.Core
 
         private void ThrowExceptionWhenAssertionFailed()
         {
-            var message = new StringWriter(CultureInfo.InvariantCulture);
+            var message = new StringBuilderOutputWriter();
 
-            message.WriteLine(string.Empty);
-            message.WriteLine(string.Empty);
-            message.WriteLine("  Assertion failed for the following calls:");
+            message.WriteLine();
+            message.WriteLine();
 
-            foreach (var call in this.assertedCalls)
+            using (message.Indent())
             {
-                message.Write("    '");
-                message.Write(call.CallDescription);
-                message.Write("' ");
-                message.Write("repeated ");
-                message.WriteLine(call.RepeatDescription);
+                message.Write("Assertion failed for the following calls:");
+                message.WriteLine();
+
+                using (message.Indent())
+                {
+                    foreach (var call in this.assertedCalls)
+                    {
+                        message.Write("'");
+                        message.Write(call.CallDescription);
+                        message.Write("' ");
+                        message.Write("repeated ");
+                        message.Write(call.RepeatDescription);
+                        message.WriteLine();
+                    }
+                }
+
+                message.Write("The calls where found but not in the correct order among the calls:");
+                message.WriteLine();
+
+                using (message.Indent())
+                {
+                    this.callWriter.WriteCalls(this.originalCallList, message);
+                }
             }
 
-            message.WriteLine("  The calls where found but not in the correct order among the calls:");
-
-            this.callWriter.WriteCalls(4, this.originalCallList, message);
-
-            throw new ExpectationException(message.GetStringBuilder().ToString());
+            throw new ExpectationException(message.Builder.ToString());
         }
 
         private struct AssertedCall

@@ -277,7 +277,7 @@ namespace FakeItEasy.Tests
         public void WriteCalls_should_throw_when_calls_is_null()
         {
             NullGuardedConstraint.Assert(() =>
-                FakeExtensions.Write(Enumerable.Empty<IFakeObjectCall>(), new StringWriter()));
+                FakeExtensions.Write(Enumerable.Empty<IFakeObjectCall>(), A.Dummy<IOutputWriter>()));
         }
 
         [Test]
@@ -289,13 +289,13 @@ namespace FakeItEasy.Tests
             var callWriter = A.Fake<CallWriter>();
             this.StubResolve<CallWriter>(callWriter);
 
-            var writer = new StringWriter();
+            var writer = A.Dummy<IOutputWriter>();
 
             // Act
             FakeExtensions.Write(calls, writer);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, calls, writer)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(calls, writer)).MustHaveHappened();
         }
 
         [Test]
@@ -323,7 +323,7 @@ namespace FakeItEasy.Tests
             FakeExtensions.WriteToConsole(calls);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, calls, A<TextWriter>._)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(calls, A<IOutputWriter>._)).MustHaveHappened();
         }
 
         [Test]
@@ -339,7 +339,7 @@ namespace FakeItEasy.Tests
             FakeExtensions.WriteToConsole(calls);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, A<IEnumerable<IFakeObjectCall>>._, Console.Out)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(A<IEnumerable<IFakeObjectCall>>._, A<IOutputWriter>._)).MustHaveHappened();
         }
 
         [Test]

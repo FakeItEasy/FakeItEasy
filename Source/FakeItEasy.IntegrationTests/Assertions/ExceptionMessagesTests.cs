@@ -62,9 +62,9 @@ namespace FakeItEasy.IntegrationTests.Assertions
     FakeItEasy.Tests.IFoo.Bar("""")
   Expected to find it at least twice but found it #0 times among the calls:
     1: FakeItEasy.Tests.IFoo.Bar(
-           argument1: 1,
-           argument2: 2,
-           argument3: ""three"") repeated 2 times
+          argument1: 1,
+          argument2: 2,
+          argument3: ""three"") repeated 2 times
     ...
     3: FakeItEasy.Tests.IFoo.Bar()
 

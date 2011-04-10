@@ -249,6 +249,7 @@
     <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DefaultOutputWriter.cs" />
     <Compile Include="IArgumentConstraintManager.cs" />
     <Compile Include="IArgumentConstraintManagerFactory.cs" />
     <Compile Include="Core\IArgumentConstraintTrapper.cs" />
@@ -446,6 +447,7 @@
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="MustBeImplementedException.cs" />
+    <Compile Include="OutputWriter.cs" />
     <Compile Include="Repeated.cs" />
     <Compile Include="Recorders.cs" />
     <Compile Include="IFileSystem.cs" />

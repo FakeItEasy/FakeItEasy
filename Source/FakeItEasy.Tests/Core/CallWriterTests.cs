@@ -12,7 +12,7 @@ namespace FakeItEasy.Tests.Core
     public class CallWriterTests
     {
         private List<IFakeObjectCall> calls;
-        private StringWriter writer;
+        private StringBuilderOutputWriter writer;
         
         [Fake] internal IFakeObjectCallFormatter callFormatter;
         [Fake] public IEqualityComparer<IFakeObjectCall> CallComparer;
@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.Core
                 .Returns("Default call description");
 
             this.calls = new List<IFakeObjectCall>();
-            this.writer = new StringWriter();
+            this.writer = new StringBuilderOutputWriter();
         }
 
         private CallWriter CreateWriter()
@@ -56,9 +56,9 @@ namespace FakeItEasy.Tests.Core
             }
 
             var writer = this.CreateWriter();
-            writer.WriteCalls(0, this.calls, this.writer);
+            writer.WriteCalls(this.calls, this.writer);
 
-            var message = this.writer.GetStringBuilder().ToString();
+            var message = this.writer.Builder.ToString();
             
             Assert.That(message,  Is.StringContaining(@"1:  Fake call 1
 2:  Fake call 2
@@ -86,10 +86,10 @@ namespace FakeItEasy.Tests.Core
             var writer = this.CreateWriter();
             
             // Act
-            writer.WriteCalls(0, this.calls, this.writer);
+            writer.WriteCalls(this.calls, this.writer);
 
             // Assert
-            var message = this.writer.GetStringBuilder().ToString();
+            var message = this.writer.Builder.ToString();
             Assert.That(message, Is.StringContaining(@"1:  Fake call repeated 9 times
 ...
 10: Other call"));
@@ -111,9 +111,9 @@ namespace FakeItEasy.Tests.Core
             }
 
             var writer = this.CreateWriter();
-            writer.WriteCalls(0, this.calls, this.writer);
+            writer.WriteCalls(this.calls, this.writer);
             
-            var message =this.writer.GetStringBuilder().ToString();
+            var message =this.writer.Builder.ToString();
 
             Assert.That(message, Is.StringContaining(@"1: odd
 2: even
@@ -134,41 +134,12 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => this.callFormatter.GetDescription(this.calls[18])).Returns("Last call");
 
             var writer = this.CreateWriter();
-            writer.WriteCalls(0, this.calls, this.writer);
+            writer.WriteCalls(this.calls, this.writer);
 
-            var message = this.writer.GetStringBuilder().ToString();
+            var message = this.writer.Builder.ToString();
 
             Assert.That(message, Is.StringContaining(@"19: Last call
 ... Found 11 more calls not displayed here."));
-        }
-
-        [Test]
-        public void WriteCalls_should_indent_calls_by_specified_number_of_characters()
-        {
-            this.StubCalls(10);
-
-            int callNumber = 1;
-            foreach (var call in this.calls)
-            {
-                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("Fake call " + callNumber.ToString());
-                callNumber++;
-            }
-
-            var writer = this.CreateWriter();
-            writer.WriteCalls(4, this.calls, this.writer);
-
-            var message = this.writer.GetStringBuilder().ToString();
-
-            Assert.That(message, Is.StringContaining(@"    1:  Fake call 1
-    2:  Fake call 2
-    3:  Fake call 3
-    4:  Fake call 4
-    5:  Fake call 5
-    6:  Fake call 6
-    7:  Fake call 7
-    8:  Fake call 8
-    9:  Fake call 9
-    10: Fake call 10"));
         }
 
         [Test]
@@ -183,13 +154,16 @@ namespace FakeItEasy.Tests.Core
 second line" + ++callIndex);
             
             var writer = this.CreateWriter();
-
-            // Act
             
-            writer.WriteCalls(0, this.calls, this.writer);
+            // Act
+
+            using (this.writer.Indent())
+            {
+                writer.WriteCalls(this.calls, this.writer);
+            }
 
             // Assert
-            var message = this.writer.GetStringBuilder().ToString();
+            var message = this.writer.Builder.ToString();
 
             Assert.That(message, Is.StringContaining(@"1:  first line
     second line").And.StringContaining(@"10: first line
@@ -205,10 +179,10 @@ second line" + ++callIndex);
             var writer = this.CreateWriter();
 
             // Act
-            writer.WriteCalls(0, this.calls, this.writer);
+            writer.WriteCalls(this.calls, this.writer);
             
             // Assert
-            Assert.That(this.writer.GetStringBuilder().ToString(), Is.StringEnding(Environment.NewLine));
+            Assert.That(this.writer.Builder.ToString(), Is.StringEnding(Environment.NewLine));
         }
 
         [Test]
@@ -218,10 +192,10 @@ second line" + ++callIndex);
             var writer = this.CreateWriter();
 
             // Act
-            writer.WriteCalls(0, Enumerable.Empty<IFakeObjectCall>(), this.writer);
+            writer.WriteCalls(Enumerable.Empty<IFakeObjectCall>(), this.writer);
 
             // Assert
-            Assert.That(this.writer.GetStringBuilder().ToString(), Is.Empty);
+            Assert.That(this.writer.Builder.ToString(), Is.Empty);
         }
     }
 }

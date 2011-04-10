@@ -136,6 +136,7 @@
     <Compile Include="Ignore.cs" />
     <Compile Include="IsProxyConstraint.cs" />
     <Compile Include="LambdaExpressionDummyDefinition.cs" />
+    <Compile Include="OutputWriterTests.cs" />
     <Compile Include="RepeatedTests.cs" />
     <Compile Include="RecordersTests.cs" />
     <Compile Include="SelfInitializedFakes\CallDataTests.cs" />

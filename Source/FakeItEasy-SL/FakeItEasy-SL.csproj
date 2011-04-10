@@ -421,6 +421,9 @@
     <Compile Include="..\FakeItEasy\Creation\ResolvedConstructor.cs">
       <Link>Creation\ResolvedConstructor.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\DefaultOutputWriter.cs">
+      <Link>DefaultOutputWriter.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\DummyDefinition.cs">
       <Link>DummyDefinition.cs</Link>
     </Compile>
@@ -535,6 +538,9 @@
     <Compile Include="..\FakeItEasy\OrderedAssertion.cs">
       <Link>OrderedAssertion.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\OutputWriter.cs">
+      <Link>OutputWriter.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
     </Compile>
@@ -607,7 +613,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
