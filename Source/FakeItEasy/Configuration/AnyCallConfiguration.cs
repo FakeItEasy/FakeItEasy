@@ -57,5 +57,18 @@ namespace FakeItEasy.Configuration
         {
             this.VoidConfiguration.MustHaveHappened(repeatConstraint);
         }
+
+
+        public IAnyCallConfiguration Where(System.Linq.Expressions.Expression<Func<IFakeObjectCall, bool>> predicate)
+        {
+            this.configuredRule.ApplyWherePredicate(predicate);
+            return this;
+        }
+
+        public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
+        {
+            this.configuredRule.UsePredicateToValidateArguments(argumentsPredicate);
+            return this;
+        }
     }
 }

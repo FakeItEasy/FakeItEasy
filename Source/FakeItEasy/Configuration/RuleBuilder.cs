@@ -98,7 +98,11 @@ namespace FakeItEasy.Configuration
         {
             this.manager.RemoveRule(this.RuleBeingBuilt);
             var asserter = this.asserterFactory.Invoke(this.Calls.Cast<IFakeObjectCall>());
-            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.DescriptionOfValidCall, repeatConstraint.Matches, repeatConstraint.ToString());
+
+            var description = new StringBuilderOutputWriter();
+            this.RuleBeingBuilt.WriteDescriptionOfValidCall(description);
+
+            asserter.AssertWasCalled(this.Matcher.Matches, description.Builder.ToString(), repeatConstraint.Matches, repeatConstraint.ToString());
         }
 
         public class ReturnValueConfiguration<TMember>

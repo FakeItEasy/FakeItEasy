@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using NUnit.Framework;
@@ -18,7 +19,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             this.configurationFactory = A.Fake<IConfigurationFactory>();
             this.fakeObject = new FakeManager();
-            this.callRule = new AnyCallCallRule();
+            this.callRule = A.Fake<AnyCallCallRule>();
 
             this.configuration = this.CreateConfiguration();
         }
@@ -87,7 +88,7 @@ namespace FakeItEasy.Tests.Configuration
             // Arrange
             var factoryConfig = this.StubVoidConfig();
             var ex = new Exception();
-
+            
             // Act
             this.configuration.Throws(ex);
 
@@ -219,6 +220,55 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             A.CallTo(() => factoryConfig.MustHaveHappened(A<Repeated>._)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Where_should_apply_where_predicate_on_rule()
+        {
+            // Arrange
+            Expression<Func<IFakeObjectCall, bool>> predicate = x => true;
+
+            // Act
+            this.configuration.Where(predicate);
+
+            // Assert
+            A.CallTo(() => this.callRule.ApplyWherePredicate(predicate)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Where_should_return_self()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.That(this.configuration.Where(x => true), Is.SameAs(this.configuration));
+        }
+
+        [Test]
+        public void WhenArgumentsMatch_should_delegate_to_buildable_rule()
+        {
+            // Arrange
+            Func<ArgumentCollection, bool> predicate = x => true;
+            
+            // Act
+            this.configuration.WhenArgumentsMatch(predicate);
+            
+            // Assert
+            A.CallTo(() => this.callRule.UsePredicateToValidateArguments(predicate))
+                .MustHaveHappened();
+        }
+
+        [Test]
+        public void WhenArgumentsMatch_should_return_self()
+        {
+            // Arrange
+
+            // Act
+            
+            // Assert
+            Assert.That(this.configuration.WhenArgumentsMatch(x => true), Is.SameAs(this.configuration));
         }
 
         private IVoidArgumentValidationConfiguration StubVoidConfig()

@@ -89,8 +89,7 @@ namespace FakeItEasy.Configuration
         public void WriteDescriptionOfValidCall(IOutputWriter writer)
         {
             writer.Write(this.DescriptionOfValidCall);
-            writer.Write(Environment.NewLine);
-
+            
             Func<string> wherePrefix = () =>
             {
                 wherePrefix = () => "and";
@@ -101,20 +100,20 @@ namespace FakeItEasy.Configuration
             {
                 foreach (var wherePredicateDescriptionWriter in this.wherePredicates.Select(x => x.Item2))
                 {
+                    writer.WriteLine();
                     writer.Write(wherePrefix.Invoke());
                     writer.Write(" ");
                     wherePredicateDescriptionWriter.Invoke(writer);
-                    writer.Write(Environment.NewLine);
                 }
             }
         }
 
-        public void ApplyWherePredicate(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
+        public virtual void ApplyWherePredicate(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
             this.wherePredicates.Add(Tuple.Create(predicate, descriptionWriter));
         }
 
-        public void ApplyWherePredicate(Expression<Func<IFakeObjectCall, bool>> predicate)
+        public virtual void ApplyWherePredicate(Expression<Func<IFakeObjectCall, bool>> predicate)
         {
             this.ApplyWherePredicate(predicate.Compile(), x => x.Write(predicate.ToString()));
         }

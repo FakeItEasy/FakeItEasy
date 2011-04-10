@@ -188,6 +188,19 @@ namespace FakeItEasy.IntegrationTests
             }
         }
 
+        [Test]
+        public void Should_be_able_to_specify_predicates_when_configuring_any_call_on_an_object()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            
+            // Act
+
+            // Assert
+            Assert.DoesNotThrow(() => foo.Baz());
+            Assert.Throws<Exception>(foo.Bar);
+        }
+
         public class BaseClass
         {
             public bool WasCalled;
