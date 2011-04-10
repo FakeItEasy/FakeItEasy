@@ -11,6 +11,8 @@ using NUnit.Framework;
 
 namespace FakeItEasy.Tests
 {
+    using FakeItEasy.Creation;
+
     [TestFixture]
     public class FakeExtensionsTests
         : ConfigurableServiceLocatorTestBase
@@ -392,6 +394,49 @@ namespace FakeItEasy.Tests
             // Assert
             NullGuardedConstraint.Assert(() =>
                 FakeExtensions.GetArgument<int>(A.Fake<IFakeObjectCall>(), "foo"));
+        }
+
+        [Test]
+        public void Strict_should_configure_fake_to_throw_expectation_exception()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>(x => x.Strict());
+
+            // Act
+
+            // Assert
+            Assert.That(delegate()
+                            {
+                                foo.Bar();
+                            },
+                            Throws.Exception.InstanceOf<ExpectationException>()
+                            .With.Message.EqualTo("Call to non configured method \"Bar\" of strict fake."));
+        }
+
+        [Test]
+        public void Strict_should_return_configuration_object()
+        {
+            // Arrange
+            var options = A.Fake<IFakeOptionsBuilder<IFoo>>();
+            Any.CallTo(options).WithReturnType<IFakeOptionsBuilder<IFoo>>().Returns(options);
+
+            // Act
+            var result = options.Strict();
+
+            // Assert
+            Assert.That(result, Is.SameAs(options));
+        }
+
+        [Test]
+        public void Strict_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() => 
+                FakeExtensions.Strict(A.Dummy<IFakeOptionsBuilder<IFoo>>()));
         }
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)

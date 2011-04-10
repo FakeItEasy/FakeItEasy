@@ -6,6 +6,7 @@ namespace FakeItEasy
     using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
+    using Creation;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
@@ -192,6 +193,26 @@ namespace FakeItEasy
             Guard.AgainstNull(argumentName, "argumentName");
 
             return call.Arguments.Get<T>(argumentName);
+        }
+
+        /// <summary>
+        /// Makes the fake strict, this means that any call to the fake
+        /// that has not been explicitly configured will throw an exception.
+        /// </summary>
+        /// <typeparam name="T">The type of fake object.</typeparam>
+        /// <param name="options">The configuration.</param>
+        /// <returns>A configuration object.</returns>
+        public static IFakeOptionsBuilder<T> Strict<T>(this IFakeOptionsBuilder<T> options)
+        {
+            Guard.AgainstNull(options, "options");
+
+            Action<IFakeObjectCall> thrower = c =>
+                {
+                    throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(c.Method.Name));
+                };
+
+            return options.OnFakeCreated(
+                x => Any.CallTo(x).Invokes(thrower));
         }
     }
 }

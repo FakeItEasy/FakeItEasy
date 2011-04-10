@@ -125,6 +125,12 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
+            public IFakeOptionsBuilder<T> OnFakeCreated(Action<T> action)
+            {
+                this.Options.OnFakeCreatedActions.Add(x => action((T)x));
+                return this;
+            }
+
             private static IEnumerable<object> GetConstructorArgumentsFromExpression(Expression<Func<T>> constructorCall)
             {
                 AssertThatExpressionRepresentConstructorCall(constructorCall);
