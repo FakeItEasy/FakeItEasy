@@ -6,8 +6,8 @@ namespace FakeItEasy.Configuration
     {
         IVoidArgumentValidationConfiguration CreateConfiguration(FakeManager fakeObject, BuildableCallRule callRule);
 
-        IReturnValueArgumentValidationConfiguration<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule);
+        IAnyCallConfigurationWithReturnTypeSpecified<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule);
 
-        IAnyCallConfiguration CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule);
+        IAnyCallConfigurationWithNoReturnTypeSpecified CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule);
     }
 }

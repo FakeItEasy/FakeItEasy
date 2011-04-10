@@ -76,7 +76,7 @@ namespace FakeItEasy.Tests.ExtensionSyntax.Full
         {
             var fake = A.Fake<IFoo>();
 
-            var callConfig = A.Fake<IAnyCallConfiguration>();
+            var callConfig = A.Fake<IAnyCallConfigurationWithNoReturnTypeSpecified>();
             A.CallTo(() => this.fakeConfiguration.AnyCall()).Returns(callConfig);
 
             using (Fake.CreateScope())

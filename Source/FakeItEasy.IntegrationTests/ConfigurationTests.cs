@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Tests;
-using FakeItEasy.ExtensionSyntax;
-using FakeItEasy.Core;
-
-namespace FakeItEasy.IntegrationTests
+﻿namespace FakeItEasy.IntegrationTests
 {
+    using System;
+    using System.Collections.Generic;
+    using Core;
+    using ExtensionSyntax;
+    using NUnit.Framework;
+    using Tests;
+
     [TestFixture]
     public class ConfigurationTests
     {
@@ -214,6 +212,32 @@ namespace FakeItEasy.IntegrationTests
             
             // Assert
             Assert.That(fake[10], Is.EqualTo("ten"));
+        }
+
+        [Test]
+        public void Should_be_able_to_intercept_protected_method()
+        {
+            // Arrange
+            var fake = A.Fake<TypeWithProtectedMethod>(x => x.Strict());
+
+            // Act
+            A.CallTo(fake).WithReturnType<int>().Where(x => x.Method.Name == "ProtectedMethod").Returns(20);
+
+            // Assert
+            Assert.That(fake.CallsProtectedMethod(), Is.EqualTo(20));
+        }
+
+        public class TypeWithProtectedMethod
+        {
+            public int CallsProtectedMethod()
+            {
+                return this.ProtectedMethod();
+            }
+
+            protected virtual int ProtectedMethod()
+            {
+                return 10;
+            }
         }
 
         public interface IIndexed

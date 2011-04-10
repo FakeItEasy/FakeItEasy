@@ -35,6 +35,6 @@
         /// object.
         /// </summary>
         /// <returns>A configuration object.</returns>
-        IAnyCallConfiguration AnyCall();
+        IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall();
     }
 }

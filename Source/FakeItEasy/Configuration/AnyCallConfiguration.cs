@@ -4,7 +4,7 @@ namespace FakeItEasy.Configuration
     using FakeItEasy.Core;
 
     internal class AnyCallConfiguration
-        : IAnyCallConfiguration
+        : IAnyCallConfigurationWithNoReturnTypeSpecified
     {
         private readonly IConfigurationFactory configurationFactory;
         private readonly AnyCallCallRule configuredRule;
@@ -22,7 +22,7 @@ namespace FakeItEasy.Configuration
             get { return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule); }
         }
 
-        public IReturnValueArgumentValidationConfiguration<TMember> WithReturnType<TMember>()
+        public IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>()
         {
             this.configuredRule.ApplicableToMembersWithReturnType = typeof(TMember);
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, this.configuredRule);
@@ -59,7 +59,7 @@ namespace FakeItEasy.Configuration
         }
 
 
-        public IAnyCallConfiguration Where(System.Linq.Expressions.Expression<Func<IFakeObjectCall, bool>> predicate)
+        public IAnyCallConfigurationWithNoReturnTypeSpecified Where(System.Linq.Expressions.Expression<Func<IFakeObjectCall, bool>> predicate)
         {
             this.configuredRule.ApplyWherePredicate(predicate);
             return this;

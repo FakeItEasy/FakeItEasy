@@ -120,7 +120,7 @@ namespace FakeItEasy
         /// <returns>
         /// A configuration object.
         /// </returns>
-        public static IAnyCallConfiguration CallTo(object fake)
+        public static IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fake)
         {
             return ConfigurationManager.CallTo(fake);
         }

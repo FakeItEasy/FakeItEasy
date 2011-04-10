@@ -3,6 +3,7 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using FakeItEasy.Core;
 
     internal class RuleBuilder
@@ -106,7 +107,7 @@ namespace FakeItEasy.Configuration
         }
 
         public class ReturnValueConfiguration<TMember>
-            : IReturnValueArgumentValidationConfiguration<TMember>, ICallCollectionAndCallMatcherAccessor
+            : IAnyCallConfigurationWithReturnTypeSpecified<TMember>, ICallCollectionAndCallMatcherAccessor
         {
             public RuleBuilder ParentConfiguration { get; set; }
 
@@ -157,6 +158,12 @@ namespace FakeItEasy.Configuration
             public void MustHaveHappened(Repeated repeatConstraint)
             {
                 this.ParentConfiguration.MustHaveHappened(repeatConstraint);
+            }
+
+            public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Expression<Func<IFakeObjectCall, bool>> predicate)
+            {
+                this.ParentConfiguration.RuleBeingBuilt.ApplyWherePredicate(predicate);
+                return this;
             }
         }
 

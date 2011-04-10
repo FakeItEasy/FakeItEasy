@@ -264,7 +264,7 @@ namespace FakeItEasy.Tests.Configuration
         public void WhenArgumentsMatch_should_return_self()
         {
             // Arrange
-
+            
             // Act
             
             // Assert
@@ -282,7 +282,7 @@ namespace FakeItEasy.Tests.Configuration
 
         private IReturnValueArgumentValidationConfiguration<T> StubReturnConfig<T>()
         {
-            var result = A.Fake<IReturnValueArgumentValidationConfiguration<T>>();
+            var result = A.Fake<IAnyCallConfigurationWithReturnTypeSpecified<T>>();
 
             A.CallTo(() => this.configurationFactory.CreateConfiguration<T>(this.fakeObject, this.callRule)).Returns(result);
             

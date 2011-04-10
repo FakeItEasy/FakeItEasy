@@ -159,7 +159,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            var returnedConfiguration = A.Fake<IReturnValueArgumentValidationConfiguration<int>>();
+            var returnedConfiguration = A.Fake<IAnyCallConfigurationWithReturnTypeSpecified<int>>();
             
             A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(this.fakeObjectReturnedFromParser, this.ruleReturnedFromFactory)).Returns(returnedConfiguration);
 
@@ -252,7 +252,7 @@ namespace FakeItEasy.Tests.Configuration
             // Arrange
             var fake = A.Fake<IFoo>();
             var manager = Fake.GetFakeManager(fake);
-            var expectedConfiguration = A.Dummy<IAnyCallConfiguration>();
+            var expectedConfiguration = A.Dummy<IAnyCallConfigurationWithNoReturnTypeSpecified>();
             A.CallTo(() => this.configurationFactory.CreateAnyCallConfiguration(
                 A<FakeManager>._, A<AnyCallCallRule>._))
                 .Returns(expectedConfiguration);

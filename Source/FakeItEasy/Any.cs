@@ -18,7 +18,7 @@ namespace FakeItEasy
         /// <param name="fakedObject">The faked object to configure.</param>
         /// <returns>A configuration object.</returns>
         [Obsolete("Use the CallTo-method on the A-class instead.")]
-        public static IAnyCallConfiguration CallTo(object fakedObject)
+        public static IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fakedObject)
         {
             return A.CallTo(fakedObject);
         }

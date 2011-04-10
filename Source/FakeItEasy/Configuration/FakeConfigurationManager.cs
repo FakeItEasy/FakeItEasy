@@ -52,7 +52,7 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration<T>(fake, rule);
         }
 
-        public IAnyCallConfiguration CallTo(object fakeObject)
+        public IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fakeObject)
         {
             var rule = new AnyCallCallRule();
             var manager = Fake.GetFakeManager(fakeObject);

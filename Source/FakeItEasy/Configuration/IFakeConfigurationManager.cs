@@ -13,6 +13,6 @@ namespace FakeItEasy.Configuration
 
         IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification);
 
-        IAnyCallConfiguration CallTo(object fakeObject);
+        IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fakeObject);
     }
 }
