@@ -117,7 +117,7 @@ namespace FakeItEasy.Tests.Configuration
         public void CallsTo_for_function_calls_should_return_configuration_from_configuration_factory()
         {
             // Arrange
-            var returnedConfiguration = A.Fake<IReturnValueArgumentValidationConfiguration<int>>();
+            var returnedConfiguration = A.Fake<IAnyCallConfigurationWithReturnTypeSpecified<int>>();
 
             A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(this.fakeObject, this.rule)).Returns(returnedConfiguration);
 
@@ -175,7 +175,7 @@ namespace FakeItEasy.Tests.Configuration
         public void AnyCall_should_return_configuration_from_factory()
         {
             // Arrange
-            var returnedConfig = A.Fake<IAnyCallConfiguration>();
+            var returnedConfig = A.Fake<IAnyCallConfigurationWithNoReturnTypeSpecified>();
             
             A.CallTo(() => this.configurationFactory.CreateAnyCallConfiguration(this.fakeObject, A<AnyCallCallRule>.That.Not.IsNull())).Returns(returnedConfig);
 

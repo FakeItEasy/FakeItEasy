@@ -1,5 +1,6 @@
 namespace FakeItEasy.Tests
 {
+    using System;
     using System.Collections;
     using System.Globalization;
     using System.Linq;
@@ -44,6 +45,32 @@ namespace FakeItEasy.Tests
                         && x.SelfInitializedFakeRecorder == null
                         && x.WrappedInstance == null;
                 }, "Empty fake options");
+        }
+
+        internal static Action<IOutputWriter> Writes(this IArgumentConstraintManager<Action<IOutputWriter>> manager, string expectedValue)
+        {
+            return manager.NullCheckedMatches(
+                x =>
+                    {
+                        var writer = new StringBuilderOutputWriter();
+                        x.Invoke(writer);
+
+                        return string.Equals(writer.Builder.ToString(), expectedValue, StringComparison.Ordinal);
+                    },
+                x => x.Write("action that writes ").WriteArgumentValue(expectedValue).Write(" to output."));
+        }
+
+        internal static Func<T1, T> Returns<T1, T>(this IArgumentConstraintManager<Func<T1, T>> manager, T1 inputValue, T expectedValue)
+        {
+            return manager.NullCheckedMatches(
+                x =>
+                {
+                    return object.Equals(x.Invoke(inputValue), expectedValue);
+                },
+                x =>
+                {
+                    x.Write("a function that returns ").WriteArgumentValue(expectedValue);
+                });
         }
     }
 }

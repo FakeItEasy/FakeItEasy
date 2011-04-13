@@ -2,7 +2,9 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Collections.Generic;
-    using FakeItEasy.Core;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using Core;
 
     /// <summary>
     /// Provides the base for rules that can be built using the FakeConfiguration.
@@ -10,10 +12,13 @@ namespace FakeItEasy.Configuration
     internal abstract class BuildableCallRule
         : IFakeObjectCallRuleWithDescription
     {
+        private List<Tuple<Func<IFakeObjectCall, bool>, Action<IOutputWriter>>> wherePredicates;
+        
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
             this.Applicator = x => { };
+            this.wherePredicates = new List<Tuple<Func<IFakeObjectCall, bool>, Action<IOutputWriter>>>();
         }
 
         /// <summary>
@@ -73,7 +78,39 @@ namespace FakeItEasy.Configuration
         /// <returns>True if the rule applies to the call.</returns>
         public virtual bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
-            return this.OnIsApplicableTo(fakeObjectCall);
+            return this.OnIsApplicableTo(fakeObjectCall)
+                && this.wherePredicates.All(x => x.Item1.Invoke(fakeObjectCall));
+        }
+
+        /// <summary>
+        /// Writes a description of calls the rule is applicable to.
+        /// </summary>
+        /// <param name="writer">The writer to write the description to.</param>
+        public void WriteDescriptionOfValidCall(IOutputWriter writer)
+        {
+            writer.Write(this.DescriptionOfValidCall);
+            
+            Func<string> wherePrefix = () =>
+            {
+                wherePrefix = () => "and";
+                return "where";
+            };
+
+            using (writer.Indent())
+            {
+                foreach (var wherePredicateDescriptionWriter in this.wherePredicates.Select(x => x.Item2))
+                {
+                    writer.WriteLine();
+                    writer.Write(wherePrefix.Invoke());
+                    writer.Write(" ");
+                    wherePredicateDescriptionWriter.Invoke(writer);
+                }
+            }
+        }
+
+        public virtual void ApplyWherePredicate(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
+        {
+            this.wherePredicates.Add(Tuple.Create(predicate, descriptionWriter));
         }
 
         public abstract void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate);

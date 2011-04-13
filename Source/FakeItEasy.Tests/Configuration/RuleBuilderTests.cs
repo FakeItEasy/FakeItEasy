@@ -436,6 +436,34 @@
             Assert.That(this.fakeManager.Rules, Is.Empty);
         }
 
+        [Test]
+        public void Where_should_apply_where_predicate_to_built_rule()
+        {
+            // Arrange
+            Func<IFakeObjectCall, bool> predicate = x => true;
+            Action<IOutputWriter> writer = x => { };
+
+            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
+
+            // Act
+            returnConfig.Where(predicate, writer);
+            
+            // Assert
+            A.CallTo(() => this.ruleProducedByFactory.ApplyWherePredicate(predicate, writer)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Where_should_return_the_configuration_object()
+        {
+            // Arrange
+            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
+
+            // Act
+
+            // Assert
+            Assert.That(returnConfig.Where(x => true, x => { }), Is.SameAs(returnConfig));
+        }
+
         private RuleBuilder.ReturnValueConfiguration<int> CreateTestableReturnConfiguration()
         {
             return new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };

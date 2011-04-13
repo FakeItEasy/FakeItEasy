@@ -117,6 +117,8 @@
             container.Register<IArgumentConstraintTrapper>(c => new ArgumentConstraintTrap());
 
             container.Register<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
+
+            container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write));
         }
 
         private class ExpressionCallMatcherFactory

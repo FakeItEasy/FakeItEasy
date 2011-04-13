@@ -116,14 +116,10 @@
 
             var asserter = this.CreateAsserter();
 
-            A.CallTo(() => this.callWriter.WriteCalls(4, A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls.Cast<IFakeObjectCall>()), A<TextWriter>._))
-                .Invokes(x => x.Arguments.Get<TextWriter>("writer").Write("foo"));
-
             var message = this.GetExceptionMessage(() =>
                 asserter.AssertWasCalled(x => false, "", x => false, ""));
 
-            Assert.That(message, Is.StringContaining(@"
-foo"));
+            A.CallTo(() => this.callWriter.WriteCalls(A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls), A<IOutputWriter>._)).MustHaveHappened();
         }
 
         [Test]

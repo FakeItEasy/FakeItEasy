@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests
     public class CommonExtensionsTests
     {
         [Test]
-        public void Zip_returns_an_enumeral_of_tuples_paired_in_order()
+        public void Zip_returns_an_enumerabel_of_tuples_paired_in_order()
         {
             var strings = new List<string>() { "a", "b", "c" };
             var ints = Enumerable.Range(1, int.MaxValue);

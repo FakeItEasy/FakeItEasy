@@ -11,6 +11,8 @@ using NUnit.Framework;
 
 namespace FakeItEasy.Tests
 {
+    using FakeItEasy.Creation;
+
     [TestFixture]
     public class FakeExtensionsTests
         : ConfigurableServiceLocatorTestBase
@@ -275,7 +277,7 @@ namespace FakeItEasy.Tests
         public void WriteCalls_should_throw_when_calls_is_null()
         {
             NullGuardedConstraint.Assert(() =>
-                FakeExtensions.Write(Enumerable.Empty<IFakeObjectCall>(), new StringWriter()));
+                FakeExtensions.Write(Enumerable.Empty<IFakeObjectCall>(), A.Dummy<IOutputWriter>()));
         }
 
         [Test]
@@ -287,13 +289,13 @@ namespace FakeItEasy.Tests
             var callWriter = A.Fake<CallWriter>();
             this.StubResolve<CallWriter>(callWriter);
 
-            var writer = new StringWriter();
+            var writer = A.Dummy<IOutputWriter>();
 
             // Act
             FakeExtensions.Write(calls, writer);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, calls, writer)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(calls, writer)).MustHaveHappened();
         }
 
         [Test]
@@ -321,7 +323,7 @@ namespace FakeItEasy.Tests
             FakeExtensions.WriteToConsole(calls);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, calls, A<TextWriter>._)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(calls, A<IOutputWriter>._)).MustHaveHappened();
         }
 
         [Test]
@@ -337,7 +339,7 @@ namespace FakeItEasy.Tests
             FakeExtensions.WriteToConsole(calls);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, A<IEnumerable<IFakeObjectCall>>._, Console.Out)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(A<IEnumerable<IFakeObjectCall>>._, A<IOutputWriter>._)).MustHaveHappened();
         }
 
         [Test]
@@ -392,6 +394,95 @@ namespace FakeItEasy.Tests
             // Assert
             NullGuardedConstraint.Assert(() =>
                 FakeExtensions.GetArgument<int>(A.Fake<IFakeObjectCall>(), "foo"));
+        }
+
+        [Test]
+        public void Strict_should_configure_fake_to_throw_expectation_exception()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>(x => x.Strict());
+
+            // Act
+
+            // Assert
+            Assert.That(delegate()
+                            {
+                                foo.Bar();
+                            },
+                            Throws.Exception.InstanceOf<ExpectationException>()
+                            .With.Message.EqualTo("Call to non configured method \"Bar\" of strict fake."));
+        }
+
+        [Test]
+        public void Strict_should_return_configuration_object()
+        {
+            // Arrange
+            var options = A.Fake<IFakeOptionsBuilder<IFoo>>();
+            Any.CallTo(options).WithReturnType<IFakeOptionsBuilder<IFoo>>().Returns(options);
+
+            // Act
+            var result = options.Strict();
+
+            // Assert
+            Assert.That(result, Is.SameAs(options));
+        }
+
+        [Test]
+        public void Strict_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() => 
+                FakeExtensions.Strict(A.Dummy<IFakeOptionsBuilder<IFoo>>()));
+        }
+
+        [Test]
+        public void Where_should_return_configuration_from_configuration()
+        {
+            // Arrange
+            var returnedConfiguration = A.Dummy<IVoidConfiguration>();
+            
+            var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
+            A.CallTo(configuration).WithReturnType<IVoidConfiguration>().Returns(returnedConfiguration);
+
+            // Act
+
+            // Assert
+            Assert.That(configuration.Where(x => true), Is.SameAs(returnedConfiguration));
+        }
+
+        [Test]
+        public void Where_should_pass_writer_that_writes_predicate_as_string()
+        {
+            // Arrange
+            var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
+            
+            // Act
+            configuration.Where(x => true);
+
+            // Assert
+            A.CallTo(() => configuration.Where(
+                A<Func<IFakeObjectCall, bool>>._, 
+                A<Action<IOutputWriter>>.That.Writes("x => True"))).MustHaveHappened();
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Where_should_pass_compiled_predicate_to_configuration(bool predicateReturnValue)
+        {
+            // Arrange
+            var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
+
+            // Act
+            configuration.Where(x => predicateReturnValue);
+
+            // Assert
+            A.CallTo(() => configuration.Where(
+                A<Func<IFakeObjectCall, bool>>.That.Returns(A.Dummy<IFakeObjectCall>(), predicateReturnValue),
+                A<Action<IOutputWriter>>._)).MustHaveHappened();
         }
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)

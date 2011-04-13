@@ -178,6 +178,9 @@
     <Compile Include="..\FakeItEasy\Configuration\IVoidConfiguration.cs">
       <Link>Configuration\IVoidConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IWhereConfiguration.cs">
+      <Link>Configuration\IWhereConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\RecordedCallRule.cs">
       <Link>Configuration\RecordedCallRule.cs</Link>
     </Compile>
@@ -421,6 +424,9 @@
     <Compile Include="..\FakeItEasy\Creation\ResolvedConstructor.cs">
       <Link>Creation\ResolvedConstructor.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\DefaultOutputWriter.cs">
+      <Link>DefaultOutputWriter.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\DummyDefinition.cs">
       <Link>DummyDefinition.cs</Link>
     </Compile>
@@ -534,6 +540,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\OrderedAssertion.cs">
       <Link>OrderedAssertion.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\OutputWriter.cs">
+      <Link>OutputWriter.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>

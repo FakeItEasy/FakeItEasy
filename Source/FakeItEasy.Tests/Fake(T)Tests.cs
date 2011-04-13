@@ -125,7 +125,7 @@
             // Arrange
             var fake = new Fake<IFoo>();
 
-            var callConfig = A.Fake<IAnyCallConfiguration>();
+            var callConfig = A.Fake<IAnyCallConfigurationWithNoReturnTypeSpecified>();
             var config = A.Fake<IStartConfiguration<IFoo>>();
 
             A.CallTo(() => config.AnyCall()).Returns(callConfig);

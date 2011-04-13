@@ -4,7 +4,7 @@ namespace FakeItEasy.Configuration
     using FakeItEasy.Core;
 
     internal class AnyCallConfiguration
-        : IAnyCallConfiguration
+        : IAnyCallConfigurationWithNoReturnTypeSpecified
     {
         private readonly IConfigurationFactory configurationFactory;
         private readonly AnyCallCallRule configuredRule;
@@ -22,7 +22,7 @@ namespace FakeItEasy.Configuration
             get { return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule); }
         }
 
-        public IReturnValueArgumentValidationConfiguration<TMember> WithReturnType<TMember>()
+        public IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>()
         {
             this.configuredRule.ApplicableToMembersWithReturnType = typeof(TMember);
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, this.configuredRule);
@@ -56,6 +56,18 @@ namespace FakeItEasy.Configuration
         public void MustHaveHappened(Repeated repeatConstraint)
         {
             this.VoidConfiguration.MustHaveHappened(repeatConstraint);
+        }
+
+        public IAnyCallConfigurationWithNoReturnTypeSpecified Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
+        {
+            this.configuredRule.ApplyWherePredicate(predicate, descriptionWriter);
+            return this;
+        }
+
+        public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
+        {
+            this.configuredRule.UsePredicateToValidateArguments(argumentsPredicate);
+            return this;
         }
     }
 }

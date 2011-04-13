@@ -3,6 +3,7 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using FakeItEasy.Core;
 
     internal class RuleBuilder
@@ -98,11 +99,15 @@ namespace FakeItEasy.Configuration
         {
             this.manager.RemoveRule(this.RuleBeingBuilt);
             var asserter = this.asserterFactory.Invoke(this.Calls.Cast<IFakeObjectCall>());
-            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.DescriptionOfValidCall, repeatConstraint.Matches, repeatConstraint.ToString());
+
+            var description = new StringBuilderOutputWriter();
+            this.RuleBeingBuilt.WriteDescriptionOfValidCall(description);
+
+            asserter.AssertWasCalled(this.Matcher.Matches, description.Builder.ToString(), repeatConstraint.Matches, repeatConstraint.ToString());
         }
 
         public class ReturnValueConfiguration<TMember>
-            : IReturnValueArgumentValidationConfiguration<TMember>, ICallCollectionAndCallMatcherAccessor
+            : IAnyCallConfigurationWithReturnTypeSpecified<TMember>, ICallCollectionAndCallMatcherAccessor
         {
             public RuleBuilder ParentConfiguration { get; set; }
 
@@ -153,6 +158,12 @@ namespace FakeItEasy.Configuration
             public void MustHaveHappened(Repeated repeatConstraint)
             {
                 this.ParentConfiguration.MustHaveHappened(repeatConstraint);
+            }
+
+            public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
+            {
+                this.ParentConfiguration.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
+                return this;
             }
         }
 

@@ -4,6 +4,7 @@ namespace FakeItEasy.Creation
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
+    using Core;
     using FakeItEasy.Configuration;
 
     /// <summary>
@@ -13,8 +14,6 @@ namespace FakeItEasy.Creation
     public interface IFakeOptionsBuilder<T>
         : IHideObjectMembers
     {
-        // IFakeBuilderOptionsBuilder<T> Implementing<TInterface>();
-
         /// <summary>
         /// Specifies arguments for the constructor of the faked class.
         /// </summary>
@@ -48,5 +47,13 @@ namespace FakeItEasy.Creation
         /// <exception cref="ArgumentNullException">The specified type is null.</exception>
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Implements", Justification = "Would be a breaking change, might be changed in a later major version.")]
         IFakeOptionsBuilder<T> Implements(Type interfaceType);
+
+        /// <summary>
+        /// Specifies an action that should be run over the fake object
+        /// once it's created.
+        /// </summary>
+        /// <param name="action">An action to perform.</param>
+        /// <returns>Options object.</returns>
+        IFakeOptionsBuilder<T> OnFakeCreated(Action<T> action);
     }
 }

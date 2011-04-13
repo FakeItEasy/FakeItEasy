@@ -199,7 +199,7 @@ namespace FakeItEasy
         /// Configures any call to the fake object.
         /// </summary>
         /// <returns>A configuration object.</returns>
-        public IAnyCallConfiguration AnyCall()
+        public IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall()
         {
             return this.StartConfiguration.AnyCall();
         }

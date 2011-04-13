@@ -21,5 +21,7 @@
         /// <param name="value">The value to write.</param>
         /// <returns>The writer for method chainging.</returns>
         IOutputWriter WriteArgumentValue(object value);
+
+        IDisposable Indent();
     }
 }
