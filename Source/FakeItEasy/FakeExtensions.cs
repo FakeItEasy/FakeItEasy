@@ -236,5 +236,14 @@ namespace FakeItEasy
         {
             return configuration.Where(predicate.Compile(), x => x.Write(predicate.ToString()));
         }
+
+        public static IVoidConfiguration PropertySetter<T>(this IAnyCallConfigurationWithNoReturnTypeSpecified configuration, string propertyName, T expectedValue)
+        {
+            return configuration
+                .Where(
+                    x => x.Method.IsSpecialName && x.Method.Name == "set_" + propertyName,
+                    x => x.Write(propertyName).Write(" = ").WriteArgumentValue(expectedValue))
+                .WhenArgumentsMatch(x => x.ArgumentNames.Contains("value") && x.Get<object>("value").Equals(expectedValue));
+        }
     }
 }

@@ -194,7 +194,8 @@
 
             // Act
             A.CallTo(foo).Where(x => x.Method.Name.Equals("Bar")).Throws(new Exception());
-
+            A.CallTo(() => foo.Bar()).Throws(new Exception());
+            
             // Assert
             Assert.DoesNotThrow(() => foo.Baz());
             Assert.Throws<Exception>(foo.Bar);
