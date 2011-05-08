@@ -22,11 +22,11 @@
                 where MemberIsTaggedWithFakeAttribute(member)
                 select GetSetterForMember(fixture, member);
 
-            foreach (var sette in settersForTaggedMembers)
+            foreach (var setter in settersForTaggedMembers)
             {
-                var fake = this.fakeAndDummyManager.CreateFake(sette.MemberType, FakeOptions.Empty);
+                var fake = this.fakeAndDummyManager.CreateFake(setter.MemberType, FakeOptions.Empty);
 
-                sette.Setter.Invoke(fake);
+                setter.Setter.Invoke(fake);
             }
         }
 

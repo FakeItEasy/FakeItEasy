@@ -232,6 +232,9 @@
     <Compile Include="..\FakeItEasy\Core\DefaultFakeWrapperConfigurer.cs">
       <Link>Core\DefaultFakeWrapperConfigurer.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultFixtureInitializer.cs">
+      <Link>Core\DefaultFixtureInitializer.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\DefaultReturnValueRule.cs">
       <Link>Core\DefaultReturnValueRule.cs</Link>
     </Compile>
@@ -586,13 +589,15 @@
     <Compile Include="..\FakeItEasy\StringBuilderOutputWriter.cs">
       <Link>StringBuilderOutputWriter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\UnderTestAttribute.cs">
+      <Link>UnderTestAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\VersionAssemblyInfo.cs">
       <Link>VersionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Core\DefaultFixtureInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SilverlightCompatibility.cs" />
   </ItemGroup>
@@ -617,7 +622,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
+      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
