@@ -65,11 +65,18 @@
             return AppDomain.CurrentDomain.GetAssemblies();
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
         private void LoadAllTypesFromAssembly(Assembly assembly)
         {
-            foreach (var type in assembly.GetTypes())
+            try
             {
-                this.availableTypes.Add(type);
+                foreach (var type in assembly.GetTypes())
+                {
+                    this.availableTypes.Add(type);
+                }
+            }
+            catch
+            {
             }
         }
 
