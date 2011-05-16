@@ -105,9 +105,9 @@ namespace FakeItEasy.Core
 
             private void RaiseEvent(EventCall call)
             {
-                var raiseMethod = this.RegisteredEventHandlers[call.Event];
+                Delegate raiseMethod = null;
 
-                if (raiseMethod != null)
+                if (this.RegisteredEventHandlers.TryGetValue(call.Event, out raiseMethod))
                 {
                     var arguments = call.EventHandler.Target as IEventRaiserArguments;
 
