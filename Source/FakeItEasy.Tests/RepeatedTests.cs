@@ -31,7 +31,7 @@ namespace FakeItEasy.Tests
             var happened = Repeated.Like(repeatPredicate);
 
             // Assert
-            Assert.That(happened.ToString(), Is.EqualTo("the number of times specified by the predicate 'repeat => (repeat == 1)'"));
+            Assert.That(happened.ToString(), Is.EqualTo("the number of times specified by the predicate 'repeat => (repeat = 1)'"));
         }
 
         [TestCase(1, Result = true)]
