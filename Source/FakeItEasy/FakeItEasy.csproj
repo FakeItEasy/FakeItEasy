@@ -12,7 +12,7 @@
     <AssemblyName>FakeItEasy</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly Condition=" '$(SignAssembly)' == '' ">false</SignAssembly>
     <AssemblyOriginatorKeyFile>FakeItEasy.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -64,6 +64,12 @@
     <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Condition="$(SignAssembly) != true" Include="..\InternalsVisibleTo.cs">
+      <Link>InternalsVisibleTo.cs</Link>
+    </Compile>
+	<Compile Condition="$(SignAssembly) == true" Include="..\InternalsVisibleTo-Signed.cs">
+      <Link>InternalsVisibleTo.cs</Link>
+    </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="A.cs" />

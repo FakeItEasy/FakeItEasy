@@ -1,10 +1,8 @@
 namespace FakeItEasy.IntegrationTests
 {
-    using System;
     using FakeItEasy.Core;
     using FakeItEasy.Tests;
     using NUnit.Framework;
-using Machine.Specifications;
 
     [TestFixture]
     public class DummyTests

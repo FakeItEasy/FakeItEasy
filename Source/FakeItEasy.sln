@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6A7B553-5359-4FB9-B19C-8A23004F49DB}"
 	ProjectSection(SolutionItems) = preProject
+		InternalsVisibleTo.cs = InternalsVisibleTo.cs
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
@@ -27,6 +28,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy-SL", "FakeItEasy-SL\FakeItEasy-SL.csproj", "{E0779E7F-8E25-4367-A7C1-57FCC91AF2FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy-SL.Tests", "FakeItEasy-SL.Tests\FakeItEasy-SL.Tests.csproj", "{B486F5FE-4371-4E57-BC21-36DCF9F1895A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Specs", "FakeItEasy.Specs\FakeItEasy.Specs.csproj", "{FA539A2D-98DC-4300-9A2C-EC6FE38A7392}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +69,10 @@ Global
 		{B486F5FE-4371-4E57-BC21-36DCF9F1895A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B486F5FE-4371-4E57-BC21-36DCF9F1895A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B486F5FE-4371-4E57-BC21-36DCF9F1895A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA539A2D-98DC-4300-9A2C-EC6FE38A7392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA539A2D-98DC-4300-9A2C-EC6FE38A7392}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA539A2D-98DC-4300-9A2C-EC6FE38A7392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA539A2D-98DC-4300-9A2C-EC6FE38A7392}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +84,7 @@ Global
 		{B486F5FE-4371-4E57-BC21-36DCF9F1895A} = {52D18A62-B744-48F6-A4B5-1382F83FA437}
 		{C291B61B-0729-4DC5-B8E4-147A8E3F801F} = {D1B4816C-96E9-4B42-8B7C-1A687214FA2C}
 		{69A27B0A-710B-4CEC-B159-56E34C788665} = {D1B4816C-96E9-4B42-8B7C-1A687214FA2C}
+		{FA539A2D-98DC-4300-9A2C-EC6FE38A7392} = {D1B4816C-96E9-4B42-8B7C-1A687214FA2C}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 0.1

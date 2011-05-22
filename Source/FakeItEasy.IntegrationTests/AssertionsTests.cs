@@ -45,8 +45,6 @@ namespace FakeItEasy.IntegrationTests
                     A.CallTo(() => foo.Baz()).MustHaveHappened();
                 }
             }
-
-            
         }
 
         [Test]
@@ -87,35 +85,6 @@ namespace FakeItEasy.IntegrationTests
                 },
                 Throws.Exception.TypeOf<InvalidOperationException>());
             }
-        }
-
-        [Test]
-        public void Should_be_able_to_assert_on_proerty_setter()
-        {
-            // Arrange
-            var fake = A.Fake<ITypeWithWriteOnlyProperty>();
-
-            // Act
-
-            for (int i = 0; i < 19; i++)
-            {
-                fake.SetOnly = i;
-            }
-
-            // Assert
-            Assert.That(delegate()
-            {
-                A.CallTo(fake).PropertySetter(propertyName: "SetOnly", expectedValue: 100).MustHaveHappened();
-            },
-            Throws.Exception.InstanceOf<ExpectationException>());
-
-            fake.SetOnly = 100;
-            A.CallTo(fake).PropertySetter<object>("SetOnly", null).MustHaveHappened();
-            Assert.That(delegate()
-            {
-                A.CallTo(fake).PropertySetter(propertyName: "SetOnly", expectedValue: 100).MustHaveHappened();
-            },
-            Throws.Nothing);
         }
 
         public interface ITypeWithWriteOnlyProperty
