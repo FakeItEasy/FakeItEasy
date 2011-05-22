@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FakeItEasy</RootNamespace>
     <AssemblyName>FakeItEasy</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly Condition=" '$(SignAssembly)' == '' ">false</SignAssembly>
     <AssemblyOriginatorKeyFile>FakeItEasy.snk</AssemblyOriginatorKeyFile>
@@ -33,7 +33,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,7 +62,6 @@
       <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
     <Compile Condition="$(SignAssembly) != true" Include="..\InternalsVisibleTo.cs">
@@ -78,6 +78,7 @@
     <Compile Include="Configuration\AnyCallCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Configuration\AnyCallConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -302,6 +303,8 @@
     <Compile Include="Core\IFakeObjectContainer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\ITypeCatalogue.cs" />
+    <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
     <Compile Include="Core\IFakeScope.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -492,6 +495,7 @@
     <Compile Include="CommonExtensions.cs" />
     <Compile Include="SmellyAttribute.cs" />
     <Compile Include="NextCall.cs" />
+    <Compile Include="Tuple.cs" />
     <Compile Include="StringBuilderOutputWriter.cs" />
   </ItemGroup>
   <ItemGroup>
