@@ -10,7 +10,7 @@ syntax: glob
 *.suo
 *.orig
 ILMerge.exe
-Build/*
+Build*/*
 *.diff
 *.[Cc]ache
 *[Rr][Ee][Ss][Hh][Aa][Rr][Pp][Ee][Rr]*

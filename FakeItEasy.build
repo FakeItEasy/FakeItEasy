@@ -14,6 +14,7 @@
 		<FxCopCmdPath Condition="$(FxCopCmdPath)==''">C:\Program Files (x86)\Microsoft FxCop 1.36\FxCopCmd.exe</FxCopCmdPath>
 		<SnCmdPath Condition="$(SnCmdPath)==''">C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\sn.exe</SnCmdPath>
 		<ILMergeCmdPath Condition="$(ILMergeCmdPath)==''">C:\Program Files (x86)\Microsoft\ILMerge\ILMerge.exe</ILMergeCmdPath>
+		<SilverlightFrameworkDirectory Condition="'$(SilverlightFrameworkDirectory)' == ''">C:\Program Files (x86)\Microsoft Silverlight\4.0.60310.0</SilverlightFrameworkDirectory>
 		<!--
 			Derived configuration properties
 		 -->
@@ -144,8 +145,8 @@
 			<Output ItemName="binariesToMerge-SL" TaskParameter="Include"/>
 		</CreateItem>
 		
-		<Exec Command="&quot;$(ILMergeCmdPath)&quot; /out:&quot;$(BinariesPath)\Merged-SL\FakeItEasy-SL.dll&quot; /delaysign /targetplatform:&quot;v4,C:\Program Files (x86)\Microsoft Silverlight\4.0.60129.0&quot; /lib:&quot;C:\Program Files (x86)\Microsoft Silverlight\4.0.60129.0&quot; /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge-SL, ' ')"/>
-		<!--Exec Command="&quot;$..\..\..\References\Ilmerge.exe&quot; /ndebug /targetplatform:v4,&quot;C:\Program Files (x86)\Microsoft Silverlight\4.0.50917.0&quot; /internalize:&quot;$..\..\ILMergeInclude.txt&quot; /keyfile:&quot;$..\..\..\References\StrongName.pfx&quot; /out:&quot;@(MainAssembly)&quot; &quot;@(IntermediateAssembly)&quot; @(IlmergeAssemblies->'&quot;%(FullPath)&quot;', ' ')" /-->
+		<Exec Command="&quot;$(ILMergeCmdPath)&quot; /out:&quot;$(BinariesPath)\Merged-SL\FakeItEasy-SL.dll&quot; /delaysign /targetplatform:&quot;v4,$(SilverlightFrameworkDirectory)&quot; /lib:&quot;$(SilverlightFrameworkDirectory)&quot; /keyfile:&quot;Source\FakeItEasy\FakeItEasy.snk&quot; @(binariesToMerge-SL, ' ')"/>
+		<!--Exec Command="&quot;$..\..\..\References\Ilmerge.exe&quot; /ndebug /targetplatform:v4,&quot;$(SilverlightFrameworkDirectory)&quot; /internalize:&quot;$..\..\ILMergeInclude.txt&quot; /keyfile:&quot;$..\..\..\References\StrongName.pfx&quot; /out:&quot;@(MainAssembly)&quot; &quot;@(IntermediateAssembly)&quot; @(IlmergeAssemblies->'&quot;%(FullPath)&quot;', ' ')" /-->
 		<Exec Command="&quot;$(SnCmdPath)&quot; -R &quot;$(BinariesPath)\Merged-SL\FakeIteasy-SL.dll&quot; &quot;Source\FakeItEasy\FakeItEasy.snk&quot;" />
 		
 		<!--<Copy SourceFiles="$(BinariesPath)\UnMerged-SL\FakeItEasy-SL.xml" DestinationFolder="$(BinariesPath)\Merged-SL" />-->
@@ -222,7 +223,7 @@
 		
 		<!-- Create package file -->
 		<Exec 
-			Command=".\Resources\NuGet.exe pack .\Build\Package\$(VersionNumber)\FakeItEasy.nuspec /o .\Build\Package\" 
+			Command=".\Resources\NuGet.exe pack $(NuPackPackageDirectory)\$(VersionNumber)\FakeItEasy.nuspec /o .\Build\Package\" 
 			ContinueOnError="False" />
 	</Target>	
 	
@@ -233,6 +234,7 @@
 		<CreateItem Include="$(BinariesPath)\Merged\*.*;$(BinariesPath)\Merged-SL\*.*;;$(LicensePath)\*.*">
 			<Output ItemName="archiveFiles" TaskParameter="Include" />
 		</CreateItem>
+
 		<Zip Files="@(archiveFiles)" ZipFileName="$(ArchiveDirectory)\$(ProjectName)-$(VersionNumber).zip" Flatten="true" WorkingDirectory="$(BuildPath)" />
 	</Target>
 </Project>
