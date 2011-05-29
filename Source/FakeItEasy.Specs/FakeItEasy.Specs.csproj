@@ -51,6 +51,7 @@
     </Compile>
     <Compile Include="ConfigurationSpecs.cs" />
     <Compile Include="EventRaisingSpecs.cs" />
+    <Compile Include="FixtureInitializationSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

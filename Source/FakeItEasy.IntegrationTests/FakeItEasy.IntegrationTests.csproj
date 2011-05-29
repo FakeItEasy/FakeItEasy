@@ -68,7 +68,6 @@
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
-    <Compile Include="FixtureInitializationTests.cs" />
     <Compile Include="StringArgumentConstraints.cs" />
     <Compile Include="AssertionsTests.cs" />
     <Compile Include="Assertions\ExceptionMessagesTests.cs" />
