@@ -206,6 +206,7 @@
     <Compile Include="Core\DefaultFakeWrapperConfigurer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\DefaultFixtureInitializer.cs" />
     <Compile Include="Core\DefaultReturnValueRule.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -493,6 +494,7 @@
     <Compile Include="SmellyAttribute.cs" />
     <Compile Include="NextCall.cs" />
     <Compile Include="StringBuilderOutputWriter.cs" />
+    <Compile Include="UnderTestAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">
