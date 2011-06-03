@@ -37,14 +37,15 @@ namespace FakeItEasy.Tests
 
         internal static FakeOptions IsEmpty(this IArgumentConstraintManager<FakeOptions> scope)
         {
-            return scope.Matches(
+            return scope.NullCheckedMatches(
                 x => 
                 {
-                    return x.AdditionalInterfacesToImplement == null
+                    return !x.AdditionalInterfacesToImplement.Any()
                         && x.ArgumentsForConstructor == null
                         && x.SelfInitializedFakeRecorder == null
                         && x.WrappedInstance == null;
-                }, "Empty fake options");
+                },
+                x => x.Write("empty fake options"));
         }
 
         internal static Action<IOutputWriter> Writes(this IArgumentConstraintManager<Action<IOutputWriter>> manager, string expectedValue)

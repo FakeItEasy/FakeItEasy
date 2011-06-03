@@ -67,7 +67,7 @@
     <Compile Condition="$(SignAssembly) != true" Include="..\InternalsVisibleTo.cs">
       <Link>InternalsVisibleTo.cs</Link>
     </Compile>
-	<Compile Condition="$(SignAssembly) == true" Include="..\InternalsVisibleTo-Signed.cs">
+    <Compile Condition="$(SignAssembly) == true" Include="..\InternalsVisibleTo-Signed.cs">
       <Link>InternalsVisibleTo.cs</Link>
     </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs" />
@@ -210,6 +210,7 @@
     <Compile Include="Core\DefaultReturnValueRule.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\DefaultSutInitializer.cs" />
     <Compile Include="Core\DelegateFakeObjectContainer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -257,6 +258,7 @@
     <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\ISutInitializer.cs" />
     <Compile Include="DefaultOutputWriter.cs" />
     <Compile Include="IArgumentConstraintManager.cs" />
     <Compile Include="IArgumentConstraintManagerFactory.cs" />
