@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests.Core
     [TestFixture]
     public class DefaultFakeObjectCallFormatterTests
     {
-        private DefaultFakeObjectCallFormatter formatter;
+        [UnderTest] private DefaultFakeObjectCallFormatter formatter;
         [Fake] internal ArgumentValueFormatter ArgumentFormatter;
         [Fake] internal IFakeManagerAccessor FakeManagerAccessor;
 
@@ -17,8 +17,6 @@ namespace FakeItEasy.Tests.Core
         public void SetUp()
         {
             Fake.InitializeFixture(this);
-
-            this.formatter = new DefaultFakeObjectCallFormatter(this.ArgumentFormatter, this.FakeManagerAccessor);
         }
 
         [Test]

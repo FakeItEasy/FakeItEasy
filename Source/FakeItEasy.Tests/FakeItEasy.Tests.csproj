@@ -74,7 +74,7 @@
     <Compile Condition="$(SignAssembly) == false" Include="..\InternalsVisibleTo.cs">
       <Link>InternalsVisibleTo.cs</Link>
     </Compile>
-	<Compile Condition="$(SignAssembly)" Include="..\InternalsVisibleTo-Signed.cs">
+    <Compile Condition="$(SignAssembly)" Include="..\InternalsVisibleTo-Signed.cs">
       <Link>InternalsVisibleTo.cs</Link>
     </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs" />
@@ -87,10 +87,12 @@
     <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\NullCheckedMatchesConstraint.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
+    <Compile Include="AutoInitializedFixture.cs" />
     <Compile Include="Core\ArgumentConstraintTrapTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
     <Compile Include="Core\DefaultArgumentConstraintManagerTests.cs" />
     <Compile Include="Core\DefaultFixtureInitializerTests.cs" />
+    <Compile Include="Core\DefaultSutInitializerTests.cs" />
     <Compile Include="Core\FakeCallEqualityComparerTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidatorTests.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManagerTests.cs">
@@ -141,7 +143,7 @@
     <Compile Include="FakeFacadeTests.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="Ignore.cs" />
-    <Compile Include="IsProxyConstraint.cs" />
+    <Compile Include="IsFakeConstraint.cs" />
     <Compile Include="LambdaExpressionDummyDefinition.cs" />
     <Compile Include="OutputWriterTests.cs" />
     <Compile Include="RepeatedTests.cs" />

@@ -156,7 +156,7 @@ namespace FakeItEasy.IntegrationTests
             var result = A.CollectionOfFake<IFoo>(10);
 
             // Assert
-            Assert.That(result, Is.InstanceOf<IList<IFoo>>().And.All.InstanceOf<IFoo>().And.All.Matches(new IsProxyConstraint()));
+            Assert.That(result, Is.InstanceOf<IList<IFoo>>().And.All.InstanceOf<IFoo>().And.All.Matches(new IsFakeConstraint()));
         }
 
         [Test]

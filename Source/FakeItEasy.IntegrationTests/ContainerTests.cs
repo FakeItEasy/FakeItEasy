@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using FakeItEasy.Core;
+using System.Reflection;
 
 namespace FakeItEasy.IntegrationTests
 {

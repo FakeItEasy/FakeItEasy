@@ -1,7 +1,7 @@
 
 namespace FakeItEasy.Tests
 {
-    public class IsProxyConstraint
+    public class IsFakeConstraint
             : NUnit.Framework.Constraints.Constraint
     {
 
