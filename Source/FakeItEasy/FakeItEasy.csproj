@@ -210,7 +210,9 @@
     <Compile Include="Core\DefaultReturnValueRule.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\DefaultSutInitializer.cs" />
+    <Compile Include="Core\DefaultSutInitializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Core\DelegateFakeObjectContainer.cs">
       <SubType>Code</SubType>
     </Compile>

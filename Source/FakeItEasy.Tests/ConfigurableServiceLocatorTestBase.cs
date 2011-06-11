@@ -1,7 +1,7 @@
-using NUnit.Framework;
-
 namespace FakeItEasy.Tests
 {
+    using NUnit.Framework;
+    
     public abstract class ConfigurableServiceLocatorTestBase
     {
         private ServiceLocator replacedServiceLocator;
@@ -16,16 +16,19 @@ namespace FakeItEasy.Tests
             this.OnSetUp();
         }
 
-        protected virtual void OnSetUp()
-        {
-            
-            
-        }
-
         [TearDown]
         public void TearDown()
         {
             ServiceLocator.Current = this.replacedServiceLocator;
+            this.OnTearDown();
+        }
+
+        protected virtual void OnSetUp()
+        {
+        }
+
+        protected virtual void OnTearDown()
+        {
         }
 
         protected void StubResolve<T>(T returnedInstance)
