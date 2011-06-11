@@ -1,33 +1,18 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
-    using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using NUnit.Framework;
 
     [TestFixture]
-    public class AnyCallConfigurationTests
+    internal class AnyCallConfigurationTests : AutoInitializedFixture
     {
-        private IConfigurationFactory configurationFactory;
-        private FakeManager fakeObject;
-        private AnyCallCallRule callRule;
-        private AnyCallConfiguration configuration;
-
-        [SetUp]
-        public void SetUp()
-        {
-            this.configurationFactory = A.Fake<IConfigurationFactory>();
-            this.fakeObject = new FakeManager();
-            this.callRule = A.Fake<AnyCallCallRule>();
-
-            this.configuration = this.CreateConfiguration();
-        }
-
-        private AnyCallConfiguration CreateConfiguration()
-        {
-            return new AnyCallConfiguration(this.fakeObject, this.callRule, this.configurationFactory);
-        }
+        [Fake] IConfigurationFactory configurationFactory;
+        [Fake] FakeManager fakeObject;
+        [Fake] AnyCallCallRule callRule;
+        
+        [UnderTest] AnyCallConfiguration configuration;
 
         [Test]
         public void WithReturnType_should_return_configuration_from_factory()

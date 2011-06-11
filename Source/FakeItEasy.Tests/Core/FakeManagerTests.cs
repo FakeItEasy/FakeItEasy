@@ -316,7 +316,7 @@
         {
             var foo = A.Fake<IFoo>();
 
-            Assert.That(foo.ChildFoo, new IsProxyConstraint());
+            Assert.That(foo.ChildFoo, new IsFakeConstraint());
         }
 
         [Test]

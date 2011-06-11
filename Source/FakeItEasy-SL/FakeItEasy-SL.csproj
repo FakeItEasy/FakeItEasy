@@ -232,8 +232,14 @@
     <Compile Include="..\FakeItEasy\Core\DefaultFakeWrapperConfigurer.cs">
       <Link>Core\DefaultFakeWrapperConfigurer.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultFixtureInitializer.cs">
+      <Link>Core\DefaultFixtureInitializer.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\DefaultReturnValueRule.cs">
       <Link>Core\DefaultReturnValueRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultSutInitializer.cs">
+      <Link>Core\DefaultSutInitializer.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\DelegateFakeObjectContainer.cs">
       <Link>Core\DelegateFakeObjectContainer.cs</Link>
@@ -341,6 +347,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IInterceptedFakeObjectCall.cs">
       <Link>Core\IInterceptedFakeObjectCall.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\ISutInitializer.cs">
+      <Link>Core\ISutInitializer.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IWritableFakeObjectCall.cs">
       <Link>Core\IWritableFakeObjectCall.cs</Link>
@@ -585,6 +594,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\StringBuilderOutputWriter.cs">
       <Link>StringBuilderOutputWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\UnderTestAttribute.cs">
+      <Link>UnderTestAttribute.cs</Link>
     </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>

@@ -67,7 +67,7 @@
     <Compile Condition="$(SignAssembly) != true" Include="..\InternalsVisibleTo.cs">
       <Link>InternalsVisibleTo.cs</Link>
     </Compile>
-	<Compile Condition="$(SignAssembly) == true" Include="..\InternalsVisibleTo-Signed.cs">
+    <Compile Condition="$(SignAssembly) == true" Include="..\InternalsVisibleTo-Signed.cs">
       <Link>InternalsVisibleTo.cs</Link>
     </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs" />
@@ -207,7 +207,11 @@
     <Compile Include="Core\DefaultFakeWrapperConfigurer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\DefaultFixtureInitializer.cs" />
     <Compile Include="Core\DefaultReturnValueRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\DefaultSutInitializer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\DelegateFakeObjectContainer.cs">
@@ -257,6 +261,7 @@
     <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\ISutInitializer.cs" />
     <Compile Include="DefaultOutputWriter.cs" />
     <Compile Include="IArgumentConstraintManager.cs" />
     <Compile Include="IArgumentConstraintManagerFactory.cs" />
@@ -497,6 +502,7 @@
     <Compile Include="NextCall.cs" />
     <Compile Include="Tuple.cs" />
     <Compile Include="StringBuilderOutputWriter.cs" />
+    <Compile Include="UnderTestAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">
