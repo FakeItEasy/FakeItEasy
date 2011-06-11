@@ -87,6 +87,7 @@
     <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\NullCheckedMatchesConstraint.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
+    <Compile Include="AutoInitializedFixture.cs" />
     <Compile Include="Core\ArgumentConstraintTrapTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
     <Compile Include="Core\DefaultArgumentConstraintManagerTests.cs" />
