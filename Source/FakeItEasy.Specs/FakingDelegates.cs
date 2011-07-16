@@ -12,12 +12,12 @@
         It should_be_able_to_intercept_call = () =>
             {
                 fakedDelegate.Invoke("foo");
-                A.CallTo(() => fakedDelegate("foo")).MustHaveHappened();
+                A.CallTo(() => fakedDelegate.Invoke("foo")).MustHaveHappened();
             };
 
         It should_be_able_to_set_return_value = () =>
             {
-                A.CallTo(() => fakedDelegate(A<string>._)).Returns(10);
+                A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Returns(10);
                 fakedDelegate(null).ShouldEqual(10);
             };
 
@@ -25,7 +25,7 @@
             {
                 var expectedException = new FormatException();
 
-                A.CallTo(() => fakedDelegate(A<string>._)).Throws(expectedException);
+                A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Throws(expectedException);
 
                 typeof (FormatException).ShouldBeThrownBy(() => fakedDelegate(null));
             };
