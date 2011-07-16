@@ -34,7 +34,14 @@
 
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
         {
-            throw new NotImplementedException();
+            if (method.Name != "Invoke")
+            {
+                failReason = "Only the Invoke method can be intercepted on delegates.";
+                return false;
+            }
+
+            failReason = null;
+            return true;
         }
 
         static Delegate CreateDelegateProxy(Type typeOfProxy, MethodInfo invokeMethod, DelegateCallInterceptedEventRaiser eventRaiser)

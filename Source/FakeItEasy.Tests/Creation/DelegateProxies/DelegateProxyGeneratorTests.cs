@@ -182,6 +182,39 @@
             Assert.That(fakedObject, Is.SameAs(proxy));
         }
 
+        [Test]
+        [SetCulture("en-US")]
+        public void Should_return_false_for_non_invoke_method_when_asking_if_it_can_be_intercepted()
+        {
+            // Arrange
+            var d = new Func<int>(() => 10);
+            var getHashCode = d.GetType().GetMethod("GetHashCode");
+
+            // Act
+            string reason;
+            var result = this.generator.MethodCanBeInterceptedOnInstance(getHashCode, d, out reason);
+
+            // Assert
+            Assert.That(result, Is.False);
+            Assert.That(reason, Is.EqualTo("Only the Invoke method can be intercepted on delegates."));
+        }
+
+        [Test]
+        public void Should_return_true_for_invoke_method_when_asking_if_it_can_be_intercepted()
+        {
+            // Arrange
+            var d = new Func<int>(() => 10);
+            var invoke = d.GetType().GetMethod("Invoke");
+
+            // Act
+            string reason;
+            var result = this.generator.MethodCanBeInterceptedOnInstance(invoke, d, out reason);
+
+            // Assert
+            Assert.That(result, Is.True);
+            Assert.That(reason, Is.Null);
+        }
+
         public delegate void DelegateWithOutValue(out string result);
 
         private T GenerateProxy<T>(Action<IWritableFakeObjectCall> callInterceptor)
