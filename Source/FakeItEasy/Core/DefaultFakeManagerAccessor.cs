@@ -1,6 +1,8 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using FakeItEasy.Creation;
     using System.Runtime.CompilerServices;
 
@@ -98,7 +100,50 @@ namespace FakeItEasy.Core
                     Tags.Add(this.taggedInstance, value);
                 }
             }
-        }
 
+            // Minimal implementation for compatibility with .net 3.5,
+            // has potential memory leaks and performance issues but should
+            // be fine for this particular use.
+            private class ConditionalWeakTable<TKey, TValue>
+            {
+                private List<Tuple<WeakReference, TValue>> entries = new List<Tuple<WeakReference, TValue>>();
+
+                public bool TryGetValue(TKey key, out TValue result)
+                {
+                    this.Purge();
+                    foreach (var entry in this.entries)
+                    {
+                        if (KeyEquals(key, entry.Item1))
+                        {
+                            result = entry.Item2;
+                            return true;
+                        }
+                    }
+
+                    result = default(TValue);
+                    return false;
+                }
+
+                public void Add(TKey key, TValue value)
+                {
+                    this.Purge();
+                    this.entries.Add(Tuple.Create(new WeakReference(key), value));
+                }
+
+                private void Purge()
+                {
+                    this.entries = (from entry in this.entries
+                                    where entry.Item1.IsAlive
+                                    select entry).ToList();
+                }
+
+                private static bool KeyEquals(TKey key, WeakReference keyReference)
+                {
+                    var strongKeyReference = keyReference.Target;
+
+                    return strongKeyReference != null && object.ReferenceEquals(key, strongKeyReference);
+                }
+            }
+        }
     }
 }

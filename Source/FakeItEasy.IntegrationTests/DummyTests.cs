@@ -1,5 +1,6 @@
 namespace FakeItEasy.IntegrationTests
 {
+    using System;
     using FakeItEasy.Core;
     using FakeItEasy.Tests;
     using NUnit.Framework;
@@ -36,6 +37,20 @@ namespace FakeItEasy.IntegrationTests
                 Assert.Throws<FakeCreationException>(() =>
                     A.Dummy<NonInstance>());
             }
+        }
+
+        [Test]
+        public void Should_do_something()
+        {
+            // Arrange
+            var fake = A.Fake<Func<int>>();
+            fake = A.Fake<Func<int>>();
+            GC.Collect();
+            // Act
+            var m = Fake.GetFakeManager(fake);
+
+            // Assert
+            Assert.Fail("The test is not yet implemented");
         }
 
         private class NonInstance
