@@ -88,5 +88,19 @@ namespace FakeItEasy.Tests.Core
             // Assert
             Assert.That(manager, Is.SameAs(this.managerToReturnFromFactory));
         }
+
+        [Test]
+        public void Should_fail_when_getting_manager_from_object_where_a_manager_has_not_been_attached()
+        {
+            // Arrange
+            var proxy = A.Fake<ITaggable>();
+            proxy.Tag = null;
+
+            // Act
+
+            // Assert
+            Assert.That(() => this.accessor.GetFakeManager(proxy),
+                Throws.ArgumentException.With.Message.EqualTo("The specified object is not recognized as a fake object."));
+        }
     }
 }

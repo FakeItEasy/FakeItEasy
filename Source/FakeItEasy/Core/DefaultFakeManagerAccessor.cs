@@ -43,7 +43,15 @@ namespace FakeItEasy.Core
             Guard.AgainstNull(proxy, "proxy");
 
             var taggable = AsTaggable(proxy);
-            return (FakeManager)taggable.Tag;
+
+            var result = taggable.Tag as FakeManager;
+
+            if (result == null)
+            {
+                throw new ArgumentException("The specified object is not recognized as a fake object.");
+            }
+
+            return result;
         }
 
         private static void TagProxy(object proxy, FakeManager manager)
