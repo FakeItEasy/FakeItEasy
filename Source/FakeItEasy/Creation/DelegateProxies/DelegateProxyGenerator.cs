@@ -10,7 +10,7 @@
     internal class DelegateProxyGenerator
         : IProxyGenerator
     {
-        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement,
+        public virtual ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement,
                                                   IEnumerable<object> argumentsForConstructor)
         {
             if (!typeof (Delegate).IsAssignableFrom(typeOfProxy))
@@ -32,7 +32,7 @@
             return new ProxyGeneratorResult(proxy, eventRaiser);
         }
 
-        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
+        public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
         {
             if (method.Name != "Invoke")
             {

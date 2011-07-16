@@ -262,6 +262,7 @@
     </Compile>
     <Compile Include="Core\ISutInitializer.cs" />
     <Compile Include="Creation\DelegateProxies\DelegateProxyGenerator.cs" />
+    <Compile Include="Creation\ProxyGeneratorSelector.cs" />
     <Compile Include="DefaultOutputWriter.cs" />
     <Compile Include="IArgumentConstraintManager.cs" />
     <Compile Include="IArgumentConstraintManagerFactory.cs" />

@@ -133,6 +133,7 @@
     <Compile Include="Core\DynamicContainerTests.cs" />
     <Compile Include="Core\OrderedFakeAsserterFactoryTests.cs" />
     <Compile Include="Core\OrderedFakeAsserterTests.cs" />
+    <Compile Include="Creation\ProxyGeneratorSelectorTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
