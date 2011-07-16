@@ -388,6 +388,9 @@
     <Compile Include="..\FakeItEasy\Creation\DefaultFakeCreatorFacade.cs">
       <Link>Creation\DefaultFakeCreatorFacade.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Creation\DelegateProxies\DelegateProxyGenerator.cs">
+      <Link>Creation\DelegateProxies\DelegateProxyGenerator.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Creation\DummyValueCreationSession.cs">
       <Link>Creation\DummyValueCreationSession.cs</Link>
     </Compile>
@@ -426,6 +429,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\ProxyGeneratorResult.cs">
       <Link>Creation\ProxyGeneratorResult.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\ProxyGeneratorSelector.cs">
+      <Link>Creation\ProxyGeneratorSelector.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\ResolvedArgument.cs">
       <Link>Creation\ResolvedArgument.cs</Link>
@@ -628,7 +634,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
+      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
