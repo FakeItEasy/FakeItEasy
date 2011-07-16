@@ -32,12 +32,12 @@
 
         private IProxyGenerator SelectProxyGenerator(Type typeOfProxy)
         {
-            if (typeof(Delegate).IsAssignableFrom(typeOfProxy))
-            {
-                return this.delegateProxyGenerator;
-            }
-            
-            return this.defaultProxyGenerator;
+            return IsDelegateType(typeOfProxy) ? this.delegateProxyGenerator : this.defaultProxyGenerator;
+        }
+
+        private static bool IsDelegateType(Type typeOfProxy)
+        {
+            return typeOfProxy.IsSubclassOf(typeof(Delegate));
         }
     }
 }
