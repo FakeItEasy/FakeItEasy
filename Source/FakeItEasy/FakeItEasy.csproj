@@ -258,6 +258,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\ISutInitializer.cs" />
+    <Compile Include="Creation\DelegateProxies\DelegateProxyGenerator.cs" />
+    <Compile Include="Creation\ProxyGeneratorSelector.cs" />
     <Compile Include="DefaultOutputWriter.cs" />
     <Compile Include="IArgumentConstraintManager.cs" />
     <Compile Include="IArgumentConstraintManagerFactory.cs" />
@@ -529,6 +531,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
