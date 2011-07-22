@@ -14,7 +14,8 @@
 		<FxCopCmdPath Condition="$(FxCopCmdPath)==''">C:\Program Files (x86)\Microsoft FxCop 1.36\FxCopCmd.exe</FxCopCmdPath>
 		<SnCmdPath Condition="$(SnCmdPath)==''">C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\sn.exe</SnCmdPath>
 		<ILMergeCmdPath Condition="$(ILMergeCmdPath)==''">C:\Program Files (x86)\Microsoft\ILMerge\ILMerge.exe</ILMergeCmdPath>
-		<SilverlightFrameworkDirectory Condition="'$(SilverlightFrameworkDirectory)' == ''">C:\Program Files (x86)\Microsoft Silverlight\4.0.60310.0</SilverlightFrameworkDirectory>
+		<SilverlightFrameworkDirectory Condition="'$(SilverlightFrameworkDirectory)' == ''">C:\Program Files (x86)\Microsoft Silverlight\4.0.60531.0</SilverlightFrameworkDirectory>
+		<FrameworkDirectory Condition="'$(FrameworkDirectory)' == ''">C:\Windows\Microsoft.NET\Framework\v4.0.30319</FrameworkDirectory>
 		<!--
 			Derived configuration properties
 		 -->

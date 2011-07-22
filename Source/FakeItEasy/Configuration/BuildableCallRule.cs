@@ -78,8 +78,8 @@ namespace FakeItEasy.Configuration
         /// <returns>True if the rule applies to the call.</returns>
         public virtual bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
-            return this.OnIsApplicableTo(fakeObjectCall)
-                && this.wherePredicates.All(x => x.Item1.Invoke(fakeObjectCall));
+            return this.wherePredicates.All(x => x.Item1.Invoke(fakeObjectCall))
+                && this.OnIsApplicableTo(fakeObjectCall);
         }
 
         /// <summary>
