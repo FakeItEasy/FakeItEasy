@@ -139,6 +139,19 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
+        public void Should_not_call_OnIsApplicableTo_when_any_where_predicate_returns_false()
+        {
+            // Arrange
+            this.rule.ApplyWherePredicate(x => false, x => { });
+            
+            // Act
+            this.rule.IsApplicableTo(A.Dummy<IFakeObjectCall>());
+
+            // Assert
+            Assert.That(this.rule.OnIsApplicableToWasCalled, Is.False);
+        }
+
+        [Test]
         public void Apply_should_return_true_when_on_is_applicable_to_is_true_and_all_where_predicates_returns_true()
         {
             // Arrange
@@ -216,9 +229,11 @@ namespace FakeItEasy.Tests.Configuration
         {
             public bool ReturnValueFromOnIsApplicableTo = true;
             public string DescriptionOfValidCallReturnValue = string.Empty;
+            public bool OnIsApplicableToWasCalled = false;
 
             protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
+                this.OnIsApplicableToWasCalled = true;
                 return this.ReturnValueFromOnIsApplicableTo;
             }
 

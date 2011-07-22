@@ -49,6 +49,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
     <Compile Include="ConfigurationSpecs.cs" />
     <Compile Include="EventRaisingSpecs.cs" />
     <Compile Include="FixtureInitializationSpecs.cs" />
