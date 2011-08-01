@@ -71,9 +71,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\InternalsVisibleTo-Signed.cs">
-      <Link>InternalsVisibleTo.cs</Link>
-    </Compile>
+    <Compile Include="..\InternalsVisibleTo-Signed.cs" />
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="ActionOverWriterValueFormatter.cs" />
