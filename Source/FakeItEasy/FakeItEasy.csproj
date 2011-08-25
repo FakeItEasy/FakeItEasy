@@ -255,6 +255,7 @@
     <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\IInterceptionListener.cs" />
     <Compile Include="Core\ISutInitializer.cs" />
     <Compile Include="Creation\DelegateProxies\DelegateProxyGenerator.cs" />
     <Compile Include="Creation\ProxyGeneratorSelector.cs" />
