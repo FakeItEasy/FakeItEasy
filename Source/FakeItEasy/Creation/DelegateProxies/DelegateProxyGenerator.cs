@@ -90,31 +90,41 @@
 
             public event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
 
+// ReSharper disable UnusedMember.Local
             public object Raise(object[] arguments)
+// ReSharper restore UnusedMember.Local
             {
                 var call = new DelegateFakeObjectCall(this.Instance, this.Method, arguments);
-                EventHandler<CallInterceptedEventArgs> handler = this.CallWasIntercepted;
-
-                if (handler != null)
-                    this.CallWasIntercepted(null, new CallInterceptedEventArgs(call));
+                
+                this.RaiseCallWasIntercepted(call);
 
                 return call.ReturnValue;
+            }
+
+            private void RaiseCallWasIntercepted(DelegateFakeObjectCall call)
+            {
+                var handler = this.CallWasIntercepted;
+
+                if (handler != null)
+                {
+                    this.CallWasIntercepted(null, new CallInterceptedEventArgs(call));
+                }
             }
         }
 
         class DelegateFakeObjectCall
             : IWritableFakeObjectCall, ICompletedFakeObjectCall
         {
-            readonly object instance;
+            readonly Delegate instance;
 
-            public DelegateFakeObjectCall(object instance, MethodInfo method, object[] arguments)
+            public DelegateFakeObjectCall(Delegate instance, MethodInfo method, object[] arguments)
             {
                 this.instance = instance;
                 this.Arguments = new ArgumentCollection(arguments, method);
                 this.Method = method;
             }
 
-            public object ReturnValue { get; set; }
+            public object ReturnValue { get; private set; }
 
             public void SetReturnValue(object value)
             {
@@ -136,9 +146,9 @@
                 return this;
             }
 
-            public MethodInfo Method { get; set; }
+            public MethodInfo Method { get; private set; }
 
-            public ArgumentCollection Arguments { get; set; }
+            public ArgumentCollection Arguments { get; private set; }
 
             public object FakedObject
             {

@@ -1,6 +1,7 @@
-﻿using Machine.Specifications;
-namespace FakeItEasy.IntegrationTests
+﻿namespace FakeItEasy.IntegrationTests
 {
+    using Machine.Specifications;
+
     public class AssertingOnSetOnlyPropertiesSpecs
     {
         static ISetOnly setOnly;

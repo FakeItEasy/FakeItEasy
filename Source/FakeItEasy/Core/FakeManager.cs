@@ -5,6 +5,7 @@ namespace FakeItEasy.Core
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
     using FakeItEasy.Creation;
 
     /// <summary>
@@ -21,6 +22,7 @@ namespace FakeItEasy.Core
         private readonly CallRuleMetadata[] preUserRules;
         private readonly List<ICompletedFakeObjectCall> recordedCallsField;
         private WeakReference objectReference;
+        private readonly LinkedList<IInterceptionListener> interceptionListeners;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeManager"/> class.
@@ -41,6 +43,7 @@ namespace FakeItEasy.Core
                                      };
 
             this.recordedCallsField = new List<ICompletedFakeObjectCall>();
+            this.interceptionListeners = new LinkedList<IInterceptionListener>();
         }
 
         /// <summary>
@@ -130,6 +133,15 @@ namespace FakeItEasy.Core
             this.AllUserRules.Remove(ruleToRemove);
         }
 
+        /// <summary>
+        /// Adds an interception listener to the manager.
+        /// </summary>
+        /// <param name="listener">The listener to add.</param>
+        public void AddInterceptionListener(IInterceptionListener listener)
+        {
+            this.interceptionListeners.AddFirst(listener);
+        }
+
         internal virtual void AttachProxy(Type typeOfFake, object proxy, ICallInterceptedEventRaiser eventRaiser)
         {
             this.Object = proxy;
@@ -155,6 +167,11 @@ namespace FakeItEasy.Core
 
         private void Intercept(IWritableFakeObjectCall fakeObjectCall)
         {
+            foreach (var listener in this.interceptionListeners)
+            {
+                listener.OnBeforeCallIntercepted(fakeObjectCall);
+            }
+
             var ruleToUse =
                 (from rule in this.AllRules
                  where rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes()
@@ -168,15 +185,17 @@ namespace FakeItEasy.Core
             }
             finally
             {
-                this.RecordInterceptedCall(interceptedCall);
-            }
-        }
+                var readonlyCall = fakeObjectCall.AsReadOnly();
+        
+                if (!interceptedCall.IgnoreCallInRecording)
+                {
+                    FakeScope.Current.AddInterceptedCall(this, readonlyCall);
+                }
 
-        private void RecordInterceptedCall(InterceptedCallAdapter interceptedCall)
-        {
-            if (!interceptedCall.IgnoreCallInRecording)
-            {
-                FakeScope.Current.AddInterceptedCall(this, interceptedCall.AsReadOnly());
+                foreach (var listener in this.interceptionListeners.Reverse())
+                {
+                    listener.OnAfterCallIntercepted(readonlyCall, ruleToUse.Rule);
+                }
             }
         }
 
