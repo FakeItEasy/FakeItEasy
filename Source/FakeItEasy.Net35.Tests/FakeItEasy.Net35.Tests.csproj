@@ -54,6 +54,7 @@
       <Link>VersionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ConditionalWeakTableTests.cs" />
+    <Compile Include="ZipTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

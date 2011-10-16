@@ -11,7 +11,6 @@
         {
             var table = new ConditionalWeakTable<TypeWithStrongReferenceThroughTable, TypeWithWeakReference>();
 
-
             var strong = new TypeWithStrongReferenceThroughTable();
             var weak = new TypeWithWeakReference()
                 {
