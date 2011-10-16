@@ -31,11 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Machine.Specifications">
-      <HintPath>..\packages\Machine.Specifications.0.4.13.0\lib\Machine.Specifications.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications.TDNetRunner">
-      <HintPath>..\packages\Machine.Specifications.0.4.13.0\lib\Machine.Specifications.TDNetRunner.dll</HintPath>
+    <Reference Include="Machine.Specifications, Version=0.4.24.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Machine.Specifications.0.4.24.0\lib\Machine.Specifications.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,9 +55,6 @@
     <Compile Include="FakingDelegates.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj">
       <Project>{0E26272D-045A-47C2-8928-BD9B980115D5}</Project>
       <Name>FakeItEasy.Tests</Name>
@@ -68,6 +63,9 @@
       <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
       <Name>FakeItEasy</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

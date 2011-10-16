@@ -30,6 +30,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>FakeItEasy.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
@@ -582,6 +588,9 @@
     <Compile Include="..\FakeItEasy\UnderTestAttribute.cs">
       <Link>UnderTestAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\InternalsVisibleTo-Signed.cs">
+      <Link>InternalsVisibleTo-Signed.cs</Link>
+    </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
@@ -591,6 +600,7 @@
     <Compile Include="Compatibility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="FakeItEasy.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
