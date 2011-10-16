@@ -27,16 +27,3 @@
         }
     }
 }
-
-namespace System.ComponentModel.Composition
-{
-    public class InheritedExportAttribute
-        : Attribute
-    {
-    }
-
-    public class ImportManyAttribute
-        : Attribute
-    {
-    }
-}

@@ -171,6 +171,9 @@
     <Compile Include="..\FakeItEasy\Configure.cs">
       <Link>Configure.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\ApplicationDirectoryAssembliesTypeCatalogue.cs">
+      <Link>Core\ApplicationDirectoryAssembliesTypeCatalogue.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentConstraintTrap.cs">
       <Link>Core\ArgumentConstraintTrap.cs</Link>
     </Compile>
@@ -321,6 +324,9 @@
     <Compile Include="..\FakeItEasy\Core\ISutInitializer.cs">
       <Link>Core\ISutInitializer.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\ITypeCatalogue.cs">
+      <Link>Core\ITypeCatalogue.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\IWritableFakeObjectCall.cs">
       <Link>Core\IWritableFakeObjectCall.cs</Link>
     </Compile>
@@ -335,6 +341,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserterFactory.cs">
       <Link>Core\OrderedFakeAsserterFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\TypeCatalogueInstanceProvider.cs">
+      <Link>Core\TypeCatalogueInstanceProvider.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\WrappedObjectRule.cs">
       <Link>Core\WrappedObjectRule.cs</Link>
@@ -494,6 +503,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\IFileSystem.cs">
       <Link>IFileSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ImportsModule.cs">
+      <Link>ImportsModule.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IoC\DictionaryContainer.cs">
       <Link>IoC\DictionaryContainer.cs</Link>

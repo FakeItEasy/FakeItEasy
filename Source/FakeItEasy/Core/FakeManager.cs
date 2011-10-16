@@ -21,6 +21,7 @@ namespace FakeItEasy.Core
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
         private readonly List<ICompletedFakeObjectCall> recordedCallsField;
+        private WeakReference objectReference;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
 
         /// <summary>
@@ -55,7 +56,14 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the faked object.
         /// </summary>
-        public virtual object Object { get; private set; }
+        public virtual object Object
+        {
+            get { return this.objectReference.Target; }
+            private set
+            {
+                this.objectReference = new WeakReference(value);
+            }
+        }        
 
         /// <summary>
         /// Gets the faked type.

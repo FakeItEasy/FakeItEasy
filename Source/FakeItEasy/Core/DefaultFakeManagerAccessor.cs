@@ -1,6 +1,8 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using FakeItEasy.Creation;
     using System.Runtime.CompilerServices;
 
@@ -99,6 +101,5 @@ namespace FakeItEasy.Core
                 }
             }
         }
-
     }
 }
