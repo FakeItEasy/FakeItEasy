@@ -1,0 +1,201 @@
+﻿namespace FakeItEasy
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using IoC;
+
+    [Conditional("Near_a_tree_by_a_river_theres_a_hole_in_the_ground")]
+    public class SerializableAttribute
+        : Attribute
+    {
+    }
+
+    [Conditional("Near_a_tree_by_a_river_theres_a_hole_in_the_ground")]
+    public class NonSerializedAttribute
+        : Attribute
+    {
+    }
+
+    internal class ImportsModule : Module
+    {
+        public override void RegisterDependencies(DictionaryContainer container)
+        {
+            container.RegisterSingleton(c => Enumerable.Empty<IFakeConfigurator>());
+            container.RegisterSingleton(c => Enumerable.Empty<IDummyDefinition>());
+            container.RegisterSingleton(c => Enumerable.Empty<IArgumentValueFormatter>());
+        }
+    }
+
+    // Minimal implementation for compatibility with .net 3.5,
+    // has potential memory leaks and performance issues but should
+    // be fine for this particular use.
+    public class ConditionalWeakTable<TKey, TValue>
+    {
+        private List<Tuple<WeakReference, TValue>> entries = new List<Tuple<WeakReference, TValue>>();
+
+        public bool TryGetValue(TKey key, out TValue result)
+        {
+            this.Purge();
+            foreach (var entry in this.entries)
+            {
+                if (KeyEquals(key, entry.Item1))
+                {
+                    result = entry.Item2;
+                    return true;
+                }
+            }
+
+            result = default(TValue);
+            return false;
+        }
+
+        public void Add(TKey key, TValue value)
+        {
+            this.Purge();
+            this.entries.Add(Tuple.Create(new WeakReference(key), value));
+        }
+
+        private void Purge()
+        {
+            this.entries = (from entry in this.entries
+                            where entry.Item1.IsAlive
+                            select entry).ToList();
+        }
+
+        private static bool KeyEquals(TKey key, WeakReference keyReference)
+        {
+            var strongKeyReference = keyReference.Target;
+
+            return strongKeyReference != null && object.ReferenceEquals(key, strongKeyReference);
+        }
+    }
+}
+
+namespace System.ComponentModel.Composition
+{
+    public class InheritedExportAttribute
+        : Attribute
+    {
+    }
+
+    public class ImportManyAttribute
+        : Attribute
+    {
+    }
+}
+
+namespace System
+{
+    public static class Tuple
+    {
+        public static Tuple<T1, T2> Create<T1, T2>(T1 item1, T2 item2)
+        {
+            return new Tuple<T1, T2>(item1, item2);
+        }
+    }
+
+    public class Tuple<T1, T2>
+    {
+        public Tuple(T1 item1, T2 item2)
+        {
+            this.Item1 = item1;
+            this.Item2 = item2;
+        }
+
+        public T1 Item1 { get; private set; }
+
+        public T2 Item2 { get; private set; }
+    }
+}
+
+namespace System.Linq
+{
+    using System.Collections.Generic;
+
+    internal static class EnumerableExtensions
+    {
+        public static IEnumerable<TReturn> Zip<T, T2, TReturn>(this IEnumerable<T> sequence, IEnumerable<T2> otherSequence, Func<T, T2, TReturn> selector)
+        {
+            return new ZipEnumerable<T, T2, TReturn>(sequence, otherSequence, selector);
+        }
+
+        private class ZipEnumerable<TFirst, TSecond, TReturn>
+           : IEnumerable<TReturn>
+        {
+            private readonly IEnumerable<TFirst> firstCollection;
+            private readonly IEnumerable<TSecond> secondCollection;
+            readonly Func<TFirst, TSecond, TReturn> selector;
+
+            public ZipEnumerable(IEnumerable<TFirst> firstCollection, IEnumerable<TSecond> secondCollection, Func<TFirst, TSecond, TReturn> selector)
+            {
+                this.firstCollection = firstCollection;
+                this.secondCollection = secondCollection;
+                this.selector = selector;
+            }
+
+            public IEnumerator<TReturn> GetEnumerator()
+            {
+                return new ZipEnumerator(this.firstCollection, this.secondCollection, this.selector);
+            }
+
+            Collections.IEnumerator Collections.IEnumerable.GetEnumerator()
+            {
+                return this.GetEnumerator();
+            }
+
+            private class ZipEnumerator
+                : IEnumerator<TReturn>
+            {
+                private IEnumerable<TFirst> firstCollection;
+                private IEnumerable<TSecond> secondCollection;
+                readonly Func<TFirst, TSecond, TReturn> selector;
+                private IEnumerator<TFirst> firsts;
+                private IEnumerator<TSecond> seconds;
+
+                public ZipEnumerator(IEnumerable<TFirst> firstCollection, IEnumerable<TSecond> secondCollection, Func<TFirst, TSecond, TReturn> selector)
+                {
+                    this.firstCollection = firstCollection;
+                    this.secondCollection = secondCollection;
+                    this.selector = selector;
+                    this.Reset();
+                }
+
+                public TReturn Current
+                {
+                    get
+                    {
+                        return this.selector.Invoke(this.firsts.Current, this.seconds.Current);
+                    }
+                }
+
+                object System.Collections.IEnumerator.Current
+                {
+                    get { return this.Current; }
+                }
+
+                public void Dispose()
+                {
+                    this.firsts.Dispose();
+                    this.seconds.Dispose();
+                    GC.SuppressFinalize(this);
+                }
+
+                public bool MoveNext()
+                {
+                    var firstsCanMove = this.firsts.MoveNext();
+                    var secondsCanMove = this.seconds.MoveNext();
+
+                    return firstsCanMove && secondsCanMove;
+                }
+
+                public void Reset()
+                {
+                    this.firsts = this.firstCollection.GetEnumerator();
+                    this.seconds = this.secondCollection.GetEnumerator();
+                }
+            }
+        }
+    }
+}
