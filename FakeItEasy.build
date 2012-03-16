@@ -224,7 +224,7 @@
 		
 		<!-- Create package file -->
 		<Exec 
-			Command=".\Resources\NuGet.exe pack $(NuPackPackageDirectory)\$(VersionNumber)\FakeItEasy.nuspec /o .\Build\Package\" 
+			Command=".\Source\.nuget\NuGet.exe pack $(NuPackPackageDirectory)\$(VersionNumber)\FakeItEasy.nuspec /o .\Build\Package\" 
 			ContinueOnError="False" />
 	</Target>	
 	
