@@ -475,24 +475,8 @@
             Assert.That(
                 act,
                 Throws.TypeOf<FakeConfigurationException>()
-                    .With.Message.EqualTo("The faked method has the signature " + fakeSignature + ", \r\nbut invokes was used with          " + invokesSignature + "."));
+                    .With.Message.EqualTo("The faked method has the signature " + fakeSignature + ", but invokes was used with " + invokesSignature + "."));
         }
-
-        //        [Test]
-//        public void Invokes_should_call_invokes_with_action_without_arguments_no_mock()
-//        {
-//            bool actionIsInvoked = false;
-//
-//            Action action = () => actionIsInvoked = true;
-//
-//            var configuration = A.Fake<ICallbackConfiguration<ITestInterface>>();
-//            A.CallTo(() => configuration.Invokes(A<Action>._))
-//                .Invokes(call => invokedAction = call.GetArgument<Action>()))
-//
-//            configuration.Action();
-//
-//            Assert.That(actionIsInvoked);
-//        }
 
         public interface IInterface
         {
