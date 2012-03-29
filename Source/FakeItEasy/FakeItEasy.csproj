@@ -326,6 +326,7 @@
     <Compile Include="Core\IInterceptedFakeObjectCall.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="InvokesExtensions.cs" />
     <Compile Include="IOutputWriter.cs" />
     <Compile Include="Core\IWritableFakeObjectCall.cs">
       <SubType>Code</SubType>
