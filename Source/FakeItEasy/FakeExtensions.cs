@@ -3,13 +3,13 @@ namespace FakeItEasy
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
     using Creation;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
-    using FakeItEasy.Expressions;
+    using Configuration;
+    using Core;
+    using Expressions;
 
     /// <summary>
     /// Provides extension methods for fake objects.
@@ -235,6 +235,123 @@ namespace FakeItEasy
         public static T Where<T>(this IWhereConfiguration<T> configuration, Expression<Func<IFakeObjectCall, bool>> predicate)
         {
             return configuration.Where(predicate.Compile(), x => x.Write(predicate.ToString()));
+        }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action"/> to invoke</param>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        public static TFake Invokes<TFake>(this ICallbackConfiguration<TFake> configuration, Action actionToInvoke)
+        {
+
+            return configuration.Invokes(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+
+                    actionToInvoke();
+                });
+        }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action{T1}"/> to invoke</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        public static TFake Invokes<TFake, T1>(this ICallbackConfiguration<TFake> configuration, Action<T1> actionToInvoke)
+        {
+            return configuration.Invokes(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+
+                    actionToInvoke(call.GetArgument<T1>(0));
+                });
+        }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action{T1,T2}"/> to invoke</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        public static TFake Invokes<TFake, T1, T2>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2> actionToInvoke)
+        {
+            return configuration.Invokes(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+
+                    actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
+                });
+        }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action{T1,T2,T3}"/> to invoke</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        public static TFake Invokes<TFake, T1, T2, T3>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2, T3> actionToInvoke)
+        {
+            return configuration.Invokes(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+
+                    actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
+                });
+        }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action{T1,T2,T3,T4}"/> to invoke</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <typeparam name="T4">Type of the fourth argument of the faked method call</typeparam>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        public static TFake Invokes<TFake, T1, T2, T3, T4>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2, T3, T4> actionToInvoke)
+        {
+            return configuration.Invokes(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+
+                    actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
+                });
+        }
+
+        private static void AssertThatSignaturesAreEqual(MethodInfo callMethod, MethodInfo actionMethod)
+        {
+            if (!SignaturesAreEqual(callMethod, actionMethod))
+            {
+                var fakeSignature = BuildSignatureDescription(callMethod);
+                var actionSignature = BuildSignatureDescription(actionMethod);
+
+                throw new FakeConfigurationException("The faked method has the signature ({0}), but invokes was used with ({1}).".FormatInvariant(fakeSignature, actionSignature));
+            }
+        }
+
+        private static bool SignaturesAreEqual(MethodInfo methodOne, MethodInfo methodTwo)
+        {
+            return methodOne.GetParameters().Select(x => x.ParameterType).SequenceEqual(methodTwo.GetParameters().Select(x => x.ParameterType));
+        }
+
+        private static string BuildSignatureDescription(MethodInfo method)
+        {
+            return method.GetParameters().ToCollectionString(x => x.ParameterType.FullName, ", ");
         }
     }
 }

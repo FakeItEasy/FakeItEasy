@@ -139,6 +139,7 @@
     <Compile Include="FakeFacadeTests.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="Ignore.cs" />
+    <Compile Include="InvokesExtensionsTests.cs" />
     <Compile Include="IsFakeConstraint.cs" />
     <Compile Include="LambdaExpressionDummyDefinition.cs" />
     <Compile Include="OutputWriterTests.cs" />
