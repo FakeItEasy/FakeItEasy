@@ -82,7 +82,7 @@ namespace FakeItEasy.Core
 
                 if (this.RegisteredEventHandlers.TryGetValue(key, out result))
                 {
-                    result = Delegate.Combine(handler, handler);
+                    result = Delegate.Combine(result, handler);
                 }
                 else
                 {

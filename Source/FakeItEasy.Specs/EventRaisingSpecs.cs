@@ -56,6 +56,25 @@
         It should_pass_the_sender = () => sender.ShouldBeTheSameAs(typeWithEvent);
 
         It should_pass_the_event_arguments = () => raisedWithArgs.Message = "message";
+    }
 
+    [Subject(typeof(Raise), "With multiple subscribers")]
+    public class RaisingEventWithMultipleSubscribers
+        : EventRaisingSpecs
+    {
+        static int firstWasRaisedNumberOfTimes;
+        static int secondWasRaisedNumberOfTimes;
+
+        Establish context = () => 
+        {
+            typeWithEvent.SomethingHappened += (s, e) => firstWasRaisedNumberOfTimes++;
+            typeWithEvent.SomethingHappened += (s, e) => secondWasRaisedNumberOfTimes++;
+        };
+
+        Because of = () => typeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now;
+
+        It should_invoke_the_first_handler = () => firstWasRaisedNumberOfTimes.ShouldEqual(1);
+
+        It should_invoke_the_second_handler = () => secondWasRaisedNumberOfTimes.ShouldEqual(1);
     }
 }
