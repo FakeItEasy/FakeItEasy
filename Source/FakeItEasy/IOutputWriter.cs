@@ -22,6 +22,10 @@
         /// <returns>The writer for method chainging.</returns>
         IOutputWriter WriteArgumentValue(object value);
 
+        /// <summary>
+        /// Indents the writer.
+        /// </summary>
+        /// <returns>A disposable that will unindent the writer when disposed.</returns>
         IDisposable Indent();
     }
 }

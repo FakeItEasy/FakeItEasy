@@ -1,10 +1,12 @@
 ﻿namespace FakeItEasy.Configuration
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq.Expressions;
     using Core;
 
+    /// <summary>
+    /// Provides a way to configure predicates for when a call should be applied.
+    /// </summary>
+    /// <typeparam name="T">The type of fake object that is going to be configured..</typeparam>
     public interface IWhereConfiguration<out T>
     {
         /// <summary>

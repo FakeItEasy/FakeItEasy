@@ -16,10 +16,4 @@ namespace FakeItEasy.Configuration
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to provide a strongly typed fluent API.")]
         IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>();
     }
-
-    public interface IAnyCallConfigurationWithReturnTypeSpecified<T>
-        : IReturnValueArgumentValidationConfiguration<T>, IWhereConfiguration<IAnyCallConfigurationWithReturnTypeSpecified<T>>
-    {
-        
-    }
 }

@@ -42,21 +42,21 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Build\Debug\4.0\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\FakeItEasy.xml</DocumentationFile>
+    <DocumentationFile>..\..\Build\Debug\4.0\FakeItEasy.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Build\Release\4.0\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\FakeItEasy.xml</DocumentationFile>
+    <DocumentationFile>..\..\Build\Release\4.0\FakeItEasy.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
@@ -76,6 +76,7 @@
     <Compile Include="Configuration\AnyCallCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Configuration\AnyCallConfiguration.cs">
       <SubType>Code</SubType>

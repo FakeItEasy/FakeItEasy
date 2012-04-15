@@ -19,15 +19,17 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Build\Debug\3.5\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Build\Release\3.5\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>0</WarningLevel>
@@ -98,6 +100,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IAnyCallConfiguration.cs">
       <Link>Configuration\IAnyCallConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs">
+      <Link>Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IArgumentValidationConfiguration.cs">
       <Link>Configuration\IArgumentValidationConfiguration.cs</Link>
