@@ -238,21 +238,14 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Executes the specified action when a matching call is being made.
+        /// Executes the specified action when a matching call is being made. This overload can also be used to fake calls with arguments when they don't need to be accessed.
         /// </summary>
         /// <param name="configuration">The configuration that is extended.</param>
         /// <param name="actionToInvoke">The <see cref="Action"/> to invoke</param>
         /// <typeparam name="TFake">The type of fake object.</typeparam>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
         public static TFake Invokes<TFake>(this ICallbackConfiguration<TFake> configuration, Action actionToInvoke)
         {
-
-            return configuration.Invokes(call =>
-                {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
-
-                    actionToInvoke();
-                });
+            return configuration.Invokes(call => actionToInvoke());
         }
 
         /// <summary>

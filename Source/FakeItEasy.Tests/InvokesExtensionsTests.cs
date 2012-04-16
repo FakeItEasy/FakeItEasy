@@ -7,6 +7,19 @@
     public class InvokesExtensionsTests
     {
         [Test]
+        public void Invokes_should_support_omitting_arguments_when_they_are_not_used()
+        {
+            bool actionIsInvoked = false;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.ActionOfOne(A<int>._))
+                .Invokes(() => actionIsInvoked = true);
+            fake.ActionOfOne(5);
+
+            Assert.That(actionIsInvoked, Is.True);
+        }
+
+        [Test]
         public void Invokes_with_no_argument_should_use_invokes_with_action_having_no_arguments()
         {
             bool actionIsInvoked = false;
@@ -17,17 +30,6 @@
             fake.Action();
 
             Assert.That(actionIsInvoked, Is.True);
-        }
-
-        [Test]
-        public void Invokes_with_no_argument_should_throw_exception_when_arguments_are_provided()
-        {
-            var fake = A.Fake<IInterface>();
-            A.CallTo(() => fake.ActionOfOne(A<int>._))
-                .Invokes(() => { });
-            TestDelegate act = () => fake.ActionOfOne(0);
-
-            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32)", "()");
         }
 
         [Test]
