@@ -3,35 +3,51 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9F875DD4-9C9A-4E8A-9C13-EFEE41C749F3}</ProjectGuid>
+    <ProjectGuid>{6FEDD596-9038-4962-86BD-DB000E197FEB}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FakeItEasy</RootNamespace>
     <AssemblyName>FakeItEasy</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>0</WarningLevel>
-    <DocumentationFile>bin\Release\FakeItEasy.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -39,18 +55,27 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>FakeItEasy.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
-      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
+      <HintPath>..\packages\Castle.Core.2.5.2\lib\SL3\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\FakeItEasy.Net35\Compatibility.cs">
+      <Link>Compatibility.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\A.cs">
       <Link>A.cs</Link>
     </Compile>
@@ -180,9 +205,6 @@
     <Compile Include="..\FakeItEasy\Configure.cs">
       <Link>Configure.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\ApplicationDirectoryAssembliesTypeCatalogue.cs">
-      <Link>Core\ApplicationDirectoryAssembliesTypeCatalogue.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentConstraintTrap.cs">
       <Link>Core\ArgumentConstraintTrap.cs</Link>
     </Compile>
@@ -242,21 +264,26 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeManager.AutoFakePropertyRule.cs">
       <Link>Core\FakeManager.AutoFakePropertyRule.cs</Link>
+      <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeManager.cs">
       <Link>Core\FakeManager.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeManager.EventRule.cs">
       <Link>Core\FakeManager.EventRule.cs</Link>
+      <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeManager.ObjectMemberRule.cs">
       <Link>Core\FakeManager.ObjectMemberRule.cs</Link>
+      <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeManager.PropertyBehaviorRule.cs">
       <Link>Core\FakeManager.PropertyBehaviorRule.cs</Link>
+      <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeManager.PropertySetterRule.cs">
       <Link>Core\FakeManager.PropertySetterRule.cs</Link>
+      <DependentUpon>FakeManager.cs</DependentUpon>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeScope.cs">
       <Link>Core\FakeScope.cs</Link>
@@ -333,9 +360,6 @@
     <Compile Include="..\FakeItEasy\Core\ISutInitializer.cs">
       <Link>Core\ISutInitializer.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\ITypeCatalogue.cs">
-      <Link>Core\ITypeCatalogue.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\IWritableFakeObjectCall.cs">
       <Link>Core\IWritableFakeObjectCall.cs</Link>
     </Compile>
@@ -351,9 +375,6 @@
     <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserterFactory.cs">
       <Link>Core\OrderedFakeAsserterFactory.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\TypeCatalogueInstanceProvider.cs">
-      <Link>Core\TypeCatalogueInstanceProvider.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\WrappedObjectRule.cs">
       <Link>Core\WrappedObjectRule.cs</Link>
     </Compile>
@@ -368,6 +389,7 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\CastleDynamicProxy\DynamicProxyResources.Designer.cs">
       <Link>Creation\CastleDynamicProxy\DynamicProxyResources.Designer.cs</Link>
+      <DependentUpon>DynamicProxyResources.resx</DependentUpon>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\DefaultFakeAndDummyManager.cs">
       <Link>Creation\DefaultFakeAndDummyManager.cs</Link>
@@ -513,9 +535,6 @@
     <Compile Include="..\FakeItEasy\IFileSystem.cs">
       <Link>IFileSystem.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ImportsModule.cs">
-      <Link>ImportsModule.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\IoC\DictionaryContainer.cs">
       <Link>IoC\DictionaryContainer.cs</Link>
     </Compile>
@@ -591,16 +610,15 @@
     <Compile Include="..\FakeItEasy\UnderTestAttribute.cs">
       <Link>UnderTestAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\InternalsVisibleTo-Signed.cs">
-      <Link>InternalsVisibleTo-Signed.cs</Link>
-    </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\VersionAssemblyInfo.cs">
       <Link>VersionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Compatibility.cs" />
+    <Compile Include="HashSet.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SilverlightCompatibility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FakeItEasy.snk" />
@@ -615,9 +633,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+    </VisualStudio>
+  </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
