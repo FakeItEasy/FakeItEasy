@@ -237,6 +237,11 @@ namespace FakeItEasy
             return configuration.Where(predicate.Compile(), x => x.Write(predicate.ToString()));
         }
 
+        public static T WhenArgumentsMatch<T>(this IWhereConfiguration<T> configuration, Func<ArgumentCollection, bool> predicate)
+        {
+            throw new MustBeImplementedException();
+        }
+
         /// <summary>
         /// Executes the specified action when a matching call is being made.
         /// </summary>

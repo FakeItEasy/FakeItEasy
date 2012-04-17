@@ -13,6 +13,7 @@ namespace FakeItEasy.IntegrationTests
         public static string Contains(this IArgumentConstraintManager<string> scope, string value)
         {
             return scope.Matches(x => x.Contains(value), string.Format("Contains \"{0}\"", value));
+            A.CallTo("").WhenArgumentsMatch()
         }
     }
 }

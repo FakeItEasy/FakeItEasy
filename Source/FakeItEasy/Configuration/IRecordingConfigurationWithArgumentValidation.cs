@@ -4,7 +4,7 @@ namespace FakeItEasy.Configuration
     /// Provides configuration from VisualBasic.
     /// </summary>
     public interface IRecordingConfigurationWithArgumentValidation
-        : IRecordingConfiguration, IArgumentValidationConfiguration<IRecordingConfiguration>
+        : IRecordingConfiguration, IWhereConfiguration<IRecordingConfigurationWithArgumentValidation>
     {
     }
 }
