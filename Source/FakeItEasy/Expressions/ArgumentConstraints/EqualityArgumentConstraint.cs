@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Linq;
+
 namespace FakeItEasy.Expressions.ArgumentConstraints
 {
     using FakeItEasy.Core;
@@ -19,7 +22,12 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
 
         public bool IsValid(object argument)
         {
-            return Equals(this.ExpectedValue, argument);
+            var expectedValues = this.ExpectedValue as IEnumerable;
+            var argumentValues = argument as IEnumerable;
+            if (expectedValues == null || argumentValues == null)
+                return Equals(this.ExpectedValue, argument);
+
+            return expectedValues.Cast<object>().SequenceEqual(argumentValues.Cast<object>());
         }
 
         public override string ToString()
