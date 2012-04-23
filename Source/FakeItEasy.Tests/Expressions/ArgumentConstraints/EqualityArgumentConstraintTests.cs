@@ -56,5 +56,12 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
 
             Assert.That(validator.ToString(), Is.EqualTo("\"foo\""));
         }
+
+        [Test]
+        public void Constraint_should_match_when_expected_and_actual_are_enumerables()
+        {
+            constraintField = new EqualityArgumentConstraint(new string[] { "some string" });
+            Assert.That(constraintField.IsValid(new string[] { "some string" }), Is.True);
+        }
     }
 }
