@@ -76,7 +76,9 @@
     <Compile Include="Configuration\AnyCallCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs" />
+    <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Configuration\AnyCallConfiguration.cs">
       <SubType>Code</SubType>
