@@ -79,6 +79,7 @@
     <Compile Include="ArgumentConstraintExtensions\EqualToConstraintTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\NullCheckedMatchesConstraint.cs" />
+    <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
     <Compile Include="AutoInitializedFixture.cs" />
     <Compile Include="Core\ArgumentConstraintTrapTests.cs" />
@@ -134,6 +135,8 @@
     <Compile Include="Expressions\CallExpressionParserTests.cs" />
     <Compile Include="Expressions\ExpressionArgumentConstraintFactoryTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />
+    <Compile Include="Builders\BuilderForExpression.cs" />
+    <Compile Include="TestDataBuilder.cs" />
     <Compile Include="Expressions\TypeWithInternalProperty.cs" />
     <Compile Include="FacadedTestBase.cs" />
     <Compile Include="FakeFacadeTests.cs" />

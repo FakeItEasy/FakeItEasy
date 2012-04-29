@@ -84,14 +84,14 @@
 
         private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<ParsedArgumentExpression> argumentExpressions, ExpressionArgumentConstraintFactory constraintFactory)
         {
-            if (argumentExpressions != null)
+            if (argumentExpressions == null)
             {
-                return
-                    from argument in argumentExpressions
-                    select constraintFactory.GetArgumentConstraint(argument.Expression);
+                return Enumerable.Empty<IArgumentConstraint>();    
             }
 
-            return Enumerable.Empty<IArgumentConstraint>();
+            return
+                from argument in argumentExpressions
+                select constraintFactory.GetArgumentConstraint(argument);
         }
 
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
@@ -128,15 +128,10 @@
 
         private bool ArgumentsMatchesArgumentConstraints(ArgumentCollection argumentCollection)
         {
-            foreach (var argumentConstraintPair in argumentCollection.AsEnumerable().Zip(this.argumentConstraints))
-            {
-                if (!argumentConstraintPair.Item2.IsValid(argumentConstraintPair.Item1))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return argumentCollection
+                .AsEnumerable()
+                .Zip(this.argumentConstraints, (x, y) => new { ArgumentValue = x, Constraint = y })
+                .All(x => x.Constraint.IsValid(x.ArgumentValue));
         }
 
         private class PredicatedArgumentConstraint

@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.Expressions
             this.constraintFactory = A.Fake<ExpressionArgumentConstraintFactory>();
             var validator = A.Fake<IArgumentConstraint>();
             A.CallTo(() => validator.IsValid(A<object>._)).Returns(true);
-            A.CallTo(() => constraintFactory.GetArgumentConstraint(A<Expression>._)).Returns(validator);
+            A.CallTo(() => constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).Returns(validator);
 
             this.methodInfoManager = A.Fake<MethodInfoManager>();
             this.parser = new CallExpressionParser();
@@ -109,8 +109,8 @@ namespace FakeItEasy.Tests.Expressions
         {
             this.CreateMatcher<IFoo>(x => x.Bar("foo", 10));
 
-            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.That.ProducesValue("foo"))).MustHaveHappened();
-            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>.That.ProducesValue(10))).MustHaveHappened();
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>.That.ProducesValue("foo"))).MustHaveHappened();
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>.That.ProducesValue(10))).MustHaveHappened();
         }
 
         [Test]
@@ -124,7 +124,7 @@ namespace FakeItEasy.Tests.Expressions
             var validator = A.Fake<IArgumentConstraint>();
             A.CallTo(() => validator.IsValid(A<object>._))
                 .Returns(true);
-            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>._))
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._))
                 .Returns(validator);
             
 
@@ -146,7 +146,7 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => validator.IsValid(A<object>._)).Returns(false);
             A.CallTo(() => validator.IsValid(A<object>._)).Returns(true).Once();
 
-            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>._)).Returns(validator);
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).Returns(validator);
             
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2));
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 3));
@@ -161,13 +161,13 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => constraint.WriteDescription(A<IOutputWriter>._))
                 .Invokes(x => x.GetArgument<IOutputWriter>(0).Write("<FOO>"));
 
-            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>._)).Returns(constraint);
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).Returns(constraint);
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 
             Assert.That(matcher.ToString(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<FOO>, <FOO>)"));
-            
-            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<Expression>._)).MustHaveHappened(Repeated.Exactly.Twice);
+
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).MustHaveHappened(Repeated.Exactly.Twice);
         }
 
         [Test]

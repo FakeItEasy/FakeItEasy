@@ -8,6 +8,7 @@ namespace FakeItEasy.Tests.Expressions
     using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests.Builders;
     using NUnit.Framework;
 
     [TestFixture]
@@ -32,7 +33,7 @@ namespace FakeItEasy.Tests.Expressions
             Any.CallTo(this.trapper).WithReturnType<IEnumerable<IArgumentConstraint>>().Returns(new[] { constraint });
 
             // Act
-            var result = this.factory.GetArgumentConstraint(A.Dummy<Expression>());
+            var result = this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.BuildWithDefaults());
 
             // Assert
             Assert.That(result, Is.SameAs(constraint));
@@ -47,7 +48,7 @@ namespace FakeItEasy.Tests.Expressions
                 .Returns(Enumerable.Empty<IArgumentConstraint>());
 
             // Act
-            var result = this.factory.GetArgumentConstraint(Expression.Constant("foo"));
+            var result = this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.Build(x => x.WithConstantExpression("foo")));
 
             // Assert
             Assert.That(result, Is.InstanceOf<EqualityArgumentConstraint>().And.Property("ExpectedValue").EqualTo("foo"));
@@ -60,9 +61,11 @@ namespace FakeItEasy.Tests.Expressions
             bool wasInvoked = false;
             Action invokation = () => wasInvoked = true;
             var expression = Expression.Call(Expression.Constant(invokation), typeof (Action).GetMethod("Invoke"));
+
+
             
             // Act
-            this.factory.GetArgumentConstraint(expression);
+            this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.Build(x => x.WithExpression(expression)));
 
             // Assert
             var actionToTrapper = Fake.GetCalls(this.trapper).Single().GetArgument<Action>(0);
@@ -85,7 +88,7 @@ namespace FakeItEasy.Tests.Expressions
                 .Returns(Enumerable.Empty<IArgumentConstraint>());
             
             // Act
-            this.factory.GetArgumentConstraint(expression);
+            this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.Build(x => x.WithExpression(expression)));
 
             // Assert
             Assert.That(invokedNumberOfTimes, Is.EqualTo(1));

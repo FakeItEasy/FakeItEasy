@@ -14,12 +14,12 @@ namespace FakeItEasy.Expressions
             this.argumentConstraintTrapper = argumentConstraintTrapper;
         }
 
-        public virtual IArgumentConstraint GetArgumentConstraint(Expression argument)
+        public virtual IArgumentConstraint GetArgumentConstraint(ParsedArgumentExpression argument)
         {
             object expressionValue = null;
             var result = this.argumentConstraintTrapper.TrapConstraints(() => 
                                                                             {
-                                                                                expressionValue = InvokeExpression(argument);
+                                                                                expressionValue = InvokeExpression(argument.Expression);
                                                                             }).SingleOrDefault();
 
             return result ?? CreateEqualityConstraint(expressionValue);
@@ -32,8 +32,7 @@ namespace FakeItEasy.Expressions
 
         private static object InvokeExpression(Expression expression)
         {
-            var result =  Expression.Lambda(expression).Compile().DynamicInvoke();
-            return result;
+            return Expression.Lambda(expression).Compile().DynamicInvoke();
         }
     }
 }
