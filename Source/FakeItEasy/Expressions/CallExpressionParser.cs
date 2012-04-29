@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Expressions
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -22,7 +23,8 @@
             return new ParsedCallExpression(
                 calledMethod: expression.Method,
                 callTargetExpression: expression.Object,
-                argumentsExpressions: expression.Arguments);
+                argumentsExpressions: from argument in expression.Arguments.Zip(expression.Method.GetParameters(), (x, y) => new { Expression = x, ParameterInfo = y})
+                                      select new ParsedArgumentExpression(argument.Expression, argument.ParameterInfo));
         }
 
         private static ParsedCallExpression ParsePropertyCallExpression(MemberExpression expression)

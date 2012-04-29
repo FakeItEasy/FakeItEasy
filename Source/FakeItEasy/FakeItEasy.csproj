@@ -267,6 +267,7 @@
     <Compile Include="Creation\DelegateProxies\DelegateProxyGenerator.cs" />
     <Compile Include="Creation\ProxyGeneratorSelector.cs" />
     <Compile Include="DefaultOutputWriter.cs" />
+    <Compile Include="Expressions\ParsedArgumentExpression.cs" />
     <Compile Include="IArgumentConstraintManager.cs" />
     <Compile Include="IArgumentConstraintManagerFactory.cs" />
     <Compile Include="Core\IArgumentConstraintTrapper.cs" />

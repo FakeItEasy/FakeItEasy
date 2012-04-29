@@ -132,6 +132,37 @@
         }
 
         [Test]
+        public void Should_return_parsed_expression_with_argument_names_set_when_calling_instance_method()
+        {
+            // Arrange
+            var argumentOne = new object();
+            var argumentTwo = new object();
+
+            var foo = A.Fake<IFoo>();
+            var call = Call(() => foo.Bar(argumentOne, argumentTwo));
+
+            // Act
+            var result = this.parser.Parse(call);
+
+            // Assert
+            Assert.That(result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name), Is.EquivalentTo(new[] { "argument", "argument2" }));
+        }
+
+        [Test]
+        public void Should_return_parsed_expresssion_with_argument_names_set_when_calling_indexed_property_getter()
+        {
+            // Arrange
+            var foo = A.Fake<IList<string>>();
+            var call = Call(() => foo[10]);
+
+            // Act
+            var result = this.parser.Parse(call);
+
+            // Assert
+            Assert.That(result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Single(), Is.EqualTo("index"));
+        }
+
+        [Test]
         public void Should_throw_when_expression_is_not_method_or_property_getter()
         {
             // Arrange

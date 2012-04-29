@@ -82,13 +82,13 @@
             this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValdiators);
         }
 
-        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<Expression> argumentExpressions, ExpressionArgumentConstraintFactory constraintFactory)
+        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<ParsedArgumentExpression> argumentExpressions, ExpressionArgumentConstraintFactory constraintFactory)
         {
             if (argumentExpressions != null)
             {
                 return
                     from argument in argumentExpressions
-                    select constraintFactory.GetArgumentConstraint(argument);
+                    select constraintFactory.GetArgumentConstraint(argument.Expression);
             }
 
             return Enumerable.Empty<IArgumentConstraint>();
