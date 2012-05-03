@@ -145,6 +145,9 @@
     <Compile Include="OutputWriterTests.cs" />
     <Compile Include="RepeatedTests.cs" />
     <Compile Include="RecordersTests.cs" />
+    <Compile Include="ReturnsLazilyExtensionsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SelfInitializedFakes\CallDataTests.cs" />
     <Compile Include="SelfInitializedFakes\FileStorageTests.cs" />
     <Compile Include="SelfInitializedFakes\RecordingExceptionTests.cs" />
