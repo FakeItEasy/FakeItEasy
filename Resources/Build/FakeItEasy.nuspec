@@ -13,7 +13,7 @@
 	faking a breeze.</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="Castle.Core" version="2.5.2" />
+      <dependency id="Castle.Core" version="3.0.0.4001" />
     </dependencies>
 	<tags>TDD unittesting mocking faking stubbing spy spies doubles</tags>
   </metadata>
