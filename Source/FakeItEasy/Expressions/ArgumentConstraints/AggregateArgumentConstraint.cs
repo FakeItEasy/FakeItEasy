@@ -5,10 +5,10 @@
     using System.Linq;
     using FakeItEasy.Core;
 
-    internal class AggregateConstraint
+    internal class AggregateArgumentConstraint
         : IArgumentConstraint
     {
-        public AggregateConstraint(IEnumerable<IArgumentConstraint> constraints)
+        public AggregateArgumentConstraint(IEnumerable<IArgumentConstraint> constraints)
         {
             this.Constraints = constraints;
         }
