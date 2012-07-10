@@ -110,8 +110,8 @@
             var result = this.factory.GetArgumentConstraint(expression);
 
             // Assert
-            Assert.That(result, Is.InstanceOf<AggregateConstraint>());
-            var aggregate = result as AggregateConstraint;
+            Assert.That(result, Is.InstanceOf<AggregateArgumentConstraint>());
+            var aggregate = result as AggregateArgumentConstraint;
             
             Assert.That(aggregate.Constraints.First(), Is.SameAs(constraintForFirst.Single()));
             Assert.That(aggregate.Constraints.Skip(1).First(), Is.InstanceOf<EqualityArgumentConstraint>().And.Property("ExpectedValue").EqualTo("foo"));

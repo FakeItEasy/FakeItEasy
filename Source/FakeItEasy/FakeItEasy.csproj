@@ -268,7 +268,7 @@
     <Compile Include="Creation\ProxyGeneratorSelector.cs" />
     <Compile Include="DefaultOutputWriter.cs" />
     <Compile Include="Expressions\ParsedArgumentExpression.cs" />
-    <Compile Include="Expressions\ArgumentConstraints\SequenceEquivalenceConstraint.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\AggregateArgumentConstraint.cs" />
     <Compile Include="IArgumentConstraintManager.cs" />
     <Compile Include="IArgumentConstraintManagerFactory.cs" />
     <Compile Include="Core\IArgumentConstraintTrapper.cs" />
