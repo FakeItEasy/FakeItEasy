@@ -1,6 +1,4 @@
-﻿using FakeItEasy.Expressions.ArgumentConstraints;
-
-namespace FakeItEasy.Tests.Expressions
+﻿namespace FakeItEasy.Tests.Expressions
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +6,7 @@ namespace FakeItEasy.Tests.Expressions
     using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Expressions.ArgumentConstraints;
     using FakeItEasy.Tests.Builders;
     using NUnit.Framework;
 
@@ -21,6 +20,8 @@ namespace FakeItEasy.Tests.Expressions
         public void SetUp()
         {
             this.trapper = A.Fake<IArgumentConstraintTrapper>();
+            
+            Fake.GetFakeManager(trapper).AddInterceptionListener(new InvokeTrapConstraintsAction());
 
             this.factory = new ExpressionArgumentConstraintFactory(this.trapper);
         }
@@ -43,8 +44,7 @@ namespace FakeItEasy.Tests.Expressions
         public void Should_return_equality_constraint_when_trapper_doesnt_produce_any_constraint()
         {
             // Arrange
-            Any.CallTo(this.trapper).WithReturnType<IEnumerable<IArgumentConstraint>>()
-                .Invokes(x => x.GetArgument<Action>(0).Invoke())
+            A.CallTo(() => this.trapper.TrapConstraints(A<Action>._))
                 .Returns(Enumerable.Empty<IArgumentConstraint>());
 
             // Act
@@ -59,11 +59,10 @@ namespace FakeItEasy.Tests.Expressions
         {
             // Arrange
             bool wasInvoked = false;
-            Action invokation = () => wasInvoked = true;
-            var expression = Expression.Call(Expression.Constant(invokation), typeof (Action).GetMethod("Invoke"));
+            var invokation = FuncFromAction(() => wasInvoked = true);
 
+            var expression = BuilderForExpression.GetBody(() => invokation());
 
-            
             // Act
             this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.Build(x => x.WithExpression(expression)));
 
@@ -80,18 +79,112 @@ namespace FakeItEasy.Tests.Expressions
         {
             // Arrange
             int invokedNumberOfTimes = 0;
-            Action invokation = () => invokedNumberOfTimes++;
-            var expression = Expression.Call(Expression.Constant(invokation), typeof(Action).GetMethod("Invoke"));
+            var invokation = FuncFromAction(() => invokedNumberOfTimes++);
             
-            A.CallTo(() => this.trapper.TrapConstraints(null)).WithAnyArguments()
-                .Invokes(x => x.GetArgument<Action>(0).Invoke())
-                .Returns(Enumerable.Empty<IArgumentConstraint>());
+            var expression = BuilderForExpression.GetBody(() => invokation());
+
+            this.StubTrapperToReturnNoConstraints();
             
             // Act
             this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.Build(x => x.WithExpression(expression)));
 
             // Assert
             Assert.That(invokedNumberOfTimes, Is.EqualTo(1));
+        }
+
+        
+        [Test]
+        public void Should_get_aggregate_constraint_when_multiple_items_are_passed_to_param_array()
+        {
+            // Arrange
+            var constraintForFirst = A.CollectionOfFake<IArgumentConstraint>(1);
+            var noConstraintForSecond = Enumerable.Empty<IArgumentConstraint>();
+            var constraintForThird = A.CollectionOfFake<IArgumentConstraint>(1);
+
+            A.CallTo(() => this.trapper.TrapConstraints(A<Action>._))
+                .ReturnsNextFromSequence(new[] { constraintForFirst, noConstraintForSecond, constraintForThird });
+
+            var expression = this.FromExpression(() => this.MethodWithParamArray(A<string>._, "foo", A<string>._));
+
+            // Act
+            var result = this.factory.GetArgumentConstraint(expression);
+
+            // Assert
+            Assert.That(result, Is.InstanceOf<AggregateConstraint>());
+            var aggregate = result as AggregateConstraint;
+            
+            Assert.That(aggregate.Constraints.First(), Is.SameAs(constraintForFirst.Single()));
+            Assert.That(aggregate.Constraints.Skip(1).First(), Is.InstanceOf<EqualityArgumentConstraint>().And.Property("ExpectedValue").EqualTo("foo"));
+            Assert.That(aggregate.Constraints.Skip(2).First(), Is.SameAs(constraintForThird.Single()));
+        }
+
+        [Test]
+        public void Should_get_equality_constraint_when_array_is_passed_to_param_array()
+        {
+            // Arrange
+            this.StubTrapperToReturnNoConstraints();
+            var someStrings = new[] {"foo", "bar"};
+            var expression = this.FromExpression(() => this.MethodWithParamArray(someStrings));
+
+            // Act
+            var result = this.factory.GetArgumentConstraint(expression);
+
+            // Assert
+            Assert.That(result, Is.InstanceOf<EqualityArgumentConstraint>());
+        }
+
+        [Test]
+        public void Should_get_equality_constraint_when_null_is_passed_to_param_array()
+        {
+            // Arrange
+            this.StubTrapperToReturnNoConstraints();
+            var someStrings = default(string[]);
+            var expression = this.FromExpression(() => this.MethodWithParamArray(null));
+
+            // Act
+            var result = this.factory.GetArgumentConstraint(expression);
+
+            // Assert
+            Assert.That(result, Is.InstanceOf<EqualityArgumentConstraint>());
+        }
+
+        private void MethodWithParamArray(params string[] args)
+        {
+        }
+
+        private ParsedArgumentExpression FromExpression(Expression<Action> fromFirstArgumentInCall)
+        {
+            return BuilderForParsedArgumentExpression.Build(x => x.FromFirstArgumentInMethodCall(fromFirstArgumentInCall));
+        }
+
+        private void StubTrapperToReturnNoConstraints()
+        {
+            A.CallTo(() => this.trapper.TrapConstraints(A<Action>._))
+                .Returns(Enumerable.Empty<IArgumentConstraint>());
+        }
+
+        private static Func<object> FuncFromAction(Action action)
+        {
+            return () =>
+            {
+                action();
+                return null;
+            };
+        }
+
+        private class InvokeTrapConstraintsAction : IInterceptionListener
+        {
+            public void OnBeforeCallIntercepted(IFakeObjectCall call)
+            {
+            }
+
+            public void OnAfterCallIntercepted(ICompletedFakeObjectCall call, IFakeObjectCallRule ruleThatWasApplied)
+            {
+                if (call.Method.Name.Equals("TrapConstraints"))
+                {
+                    call.GetArgument<Action>(0).Invoke();
+                }
+            }
         }
     }
 }

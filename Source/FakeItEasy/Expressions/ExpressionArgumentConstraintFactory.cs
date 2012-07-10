@@ -1,10 +1,12 @@
-﻿using System.Linq;
-using System.Linq.Expressions;
-using FakeItEasy.Core;
-using FakeItEasy.Expressions.ArgumentConstraints;
-
-namespace FakeItEasy.Expressions
+﻿namespace FakeItEasy.Expressions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using FakeItEasy.Core;
+    using FakeItEasy.Expressions.ArgumentConstraints;
+
     internal class ExpressionArgumentConstraintFactory
     {
         private readonly IArgumentConstraintTrapper argumentConstraintTrapper;
@@ -16,13 +18,51 @@ namespace FakeItEasy.Expressions
 
         public virtual IArgumentConstraint GetArgumentConstraint(ParsedArgumentExpression argument)
         {
-            object expressionValue = null;
-            var result = this.argumentConstraintTrapper.TrapConstraints(() => 
-                                                                            {
-                                                                                expressionValue = InvokeExpression(argument.Expression);
-                                                                            }).SingleOrDefault();
+            if (IsParamArrayExpression(argument))
+            {
+                return this.CreateParamArrayConstraint((NewArrayExpression)argument.Expression);
+            }
 
-            return result ?? CreateEqualityConstraint(expressionValue);
+            return this.GetArgumentConstraintFromExpression(argument.Expression);
+        }
+
+        private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression)
+        {
+            object expressionValue = null;
+
+            var trappedConstraints = this.argumentConstraintTrapper.TrapConstraints(() =>
+            {
+                expressionValue = InvokeExpression(expression);
+            });
+
+            return TryCreateConstraintFromTrappedConstraints(trappedConstraints.ToArray()) ?? CreateEqualityConstraint(expressionValue);
+        }
+
+        IArgumentConstraint CreateParamArrayConstraint(NewArrayExpression expression)
+        {
+            var result = new List<IArgumentConstraint>();
+
+            foreach (var argumentExpression in expression.Expressions)
+            {
+                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression));
+            }
+
+            return new AggregateArgumentConstraint(result);
+        }
+
+        private static IArgumentConstraint TryCreateConstraintFromTrappedConstraints(ICollection<IArgumentConstraint> trappedConstraints)
+        {
+            return trappedConstraints.FirstOrDefault();
+        }
+
+        private static bool IsParamArrayExpression(ParsedArgumentExpression argument)
+        {
+            return IsTaggedWithParamArrayAttribute(argument) && argument.Expression is NewArrayExpression;
+        }
+
+        private static bool IsTaggedWithParamArrayAttribute(ParsedArgumentExpression argument)
+        {
+            return argument.ArgumentInformation.GetCustomAttributes(typeof(ParamArrayAttribute), true).Any();
         }
 
         private static IArgumentConstraint CreateEqualityConstraint(object expressionValue)
