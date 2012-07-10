@@ -132,6 +132,7 @@
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\AggregateArgumentConstraintTests.cs" />
     <Compile Include="Expressions\CallExpressionParserTests.cs" />
     <Compile Include="Expressions\ExpressionArgumentConstraintFactoryTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />

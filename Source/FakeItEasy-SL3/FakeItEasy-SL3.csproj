@@ -464,6 +464,9 @@
     <Compile Include="..\FakeItEasy\ExpectationException.cs">
       <Link>ExpectationException.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\AggregateArgumentConstraint.cs">
+      <Link>Expressions\ArgumentConstraints\AggregateArgumentConstraint.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs">
       <Link>Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs</Link>
     </Compile>
@@ -490,6 +493,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\IExpressionParser.cs">
       <Link>Expressions\IExpressionParser.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ParsedArgumentExpression.cs">
+      <Link>Expressions\ParsedArgumentExpression.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\ParsedCallExpression.cs">
       <Link>Expressions\ParsedCallExpression.cs</Link>
@@ -645,7 +651,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
