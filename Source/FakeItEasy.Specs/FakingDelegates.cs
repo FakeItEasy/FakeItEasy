@@ -29,5 +29,11 @@
 
                 typeof (FormatException).ShouldBeThrownBy(() => fakedDelegate(null));
             };
+
+        It should_be_able_to_configure_delegate_without_specifying_invokes_method = () =>
+            {
+                A.CallTo(() => fakedDelegate(A<string>._)).Returns(10);
+                fakedDelegate(null).ShouldEqual(10);
+            };
     }
 }

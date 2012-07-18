@@ -15,7 +15,25 @@
                 return ParseMethodCallExpression(methodExpression);
             }
 
-            return ParsePropertyCallExpression((MemberExpression)callExpression.Body);
+            var propertyExpression = callExpression.Body as MemberExpression;
+            if (propertyExpression != null)
+            {
+                return ParsePropertyCallExpression(propertyExpression);
+            }
+
+            return ParseInvokationExpression((InvocationExpression) callExpression.Body);
+        }
+
+        private static ParsedCallExpression ParseInvokationExpression(InvocationExpression expression)
+        {
+            var target = Helpers.GetValueProducedByExpression(expression.Expression);
+            var method = target.GetType().GetMethod("Invoke");
+
+            return new ParsedCallExpression(
+                calledMethod: method, 
+                callTargetExpression: expression.Expression,
+                argumentsExpressions: from argument in expression.Arguments.Zip(method.GetParameters(), (x, y) => new { Expression = x, ParameterInfo = y })
+                                      select new ParsedArgumentExpression(argument.Expression, argument.ParameterInfo));
         }
 
         private static ParsedCallExpression ParseMethodCallExpression(MethodCallExpression expression)
