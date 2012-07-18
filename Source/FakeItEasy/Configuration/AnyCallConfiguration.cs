@@ -33,9 +33,9 @@ namespace FakeItEasy.Configuration
             return this.VoidConfiguration.DoesNothing();
         }
 
-        public IAfterCallSpecifiedConfiguration Throws(Exception exception)
+        public IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            return this.VoidConfiguration.Throws(exception);
+            return this.VoidConfiguration.Throws(exceptionFactory);
         }
 
         public IVoidConfiguration Invokes(Action<IFakeObjectCall> action)

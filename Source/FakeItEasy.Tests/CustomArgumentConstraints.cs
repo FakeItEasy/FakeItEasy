@@ -67,6 +67,11 @@ namespace FakeItEasy.Tests
                 x => x.Write("action that writes ").WriteArgumentValue(expectedValue).Write(" to output."));
         }
 
+        internal static Func<T1, T> Returns<T1, T>(this IArgumentConstraintManager<Func<T1, T>> manager, T expectedValue)
+        {
+            return manager.Returns(default(T1), expectedValue);
+        }
+
         internal static Func<T1, T> Returns<T1, T>(this IArgumentConstraintManager<Func<T1, T>> manager, T1 inputValue, T expectedValue)
         {
             return manager.NullCheckedMatches(

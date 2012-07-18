@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -481,6 +482,64 @@ namespace FakeItEasy.Tests
             A.CallTo(() => configuration.Where(
                 A<Func<IFakeObjectCall, bool>>.That.Returns(A.Dummy<IFakeObjectCall>(), predicateReturnValue),
                 A<Action<IOutputWriter>>._)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_configure_fake_to_throw_the_specified_exception()
+        {
+            // Arrange
+            var ex = A.Dummy<Exception>();
+            var config = A.Fake<IExceptionThrowerConfiguration>();
+
+            // Act
+            config.Throws(ex);
+
+            // Assert
+            A.CallTo(() => config.Throws(A<Func<IFakeObjectCall, Exception>>.That.Returns(ex))).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_configure_fake_to_throw_the_specified_exception_type()
+        {
+            // Arrange
+            var ex = A.Dummy<Exception>();
+            var config = A.Fake<IExceptionThrowerConfiguration>();
+
+            // Act
+            config.Throws<InvalidOperationException>();
+
+            // Assert
+            A.CallTo(() => config.Throws(FuncThatReturnsExceptionOfType<InvalidOperationException>())).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_configure_fake_to_throw_exceptions_returned_by_the_factory()
+        {
+            // Arrange
+            var exception = A.Dummy<Exception>();
+            var factory = new Func<Exception>(() => exception);
+            var config = A.Fake<IExceptionThrowerConfiguration>();
+
+            // Act
+            config.Throws(factory);
+
+            // Assert
+            A.CallTo(() => config.Throws(A<Func<IFakeObjectCall, Exception>>.That.Returns(exception))).MustHaveHappened();
+        }
+
+        private static Func<IFakeObjectCall, Exception> FuncThatReturnsExceptionOfType<T>()
+        {
+            return A<Func<IFakeObjectCall, Exception>>.That.NullCheckedMatches(x =>
+                {
+                    var result = x.Invoke(null);
+
+                    if (result == null)
+                    {
+                        return false;
+                    }
+
+                    return typeof (T).IsAssignableFrom(result.GetType());
+                }, x => x.Write("function that returns exception of type ").WriteArgumentValue(typeof (T)));
         }
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)

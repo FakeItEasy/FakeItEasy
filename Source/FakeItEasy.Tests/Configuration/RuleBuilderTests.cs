@@ -111,7 +111,7 @@
         {
             var exception = new FormatException();
 
-            this.builder.Throws(exception);
+            this.builder.Throws(x => exception);
 
             Assert.Throws<FormatException>(() =>
                 this.ruleProducedByFactory.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
@@ -120,7 +120,7 @@
         [Test]
         public void Throws_returns_configuration()
         {
-            var result = this.builder.Throws(new Exception());
+            var result = this.builder.Throws(A.Dummy<Func<IFakeObjectCall, Exception>>());
 
             Assert.That(result, Is.EqualTo(this.builder));
         }
@@ -132,7 +132,7 @@
             
             var exception = new FormatException();
 
-            returnConfig.Throws(exception);
+            returnConfig.Throws(x => exception);
             
             var thrown = Assert.Throws<FormatException>(() =>
                 this.ruleProducedByFactory.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
@@ -140,11 +140,48 @@
         }
 
         [Test]
+        public void Should_pass_call_to_interceptor_when_throwing_exception()
+        {
+            // Arrange
+            var factory = A.Fake<Func<IFakeObjectCall, Exception>>();
+            var call = A.Fake<IInterceptedFakeObjectCall>();
+
+            // Act
+            this.builder.Throws(factory);
+
+            // Assert
+            Assert.Catch(() =>
+               this.ruleProducedByFactory.Applicator(call));
+
+            A.CallTo(() => factory(call)).MustHaveHappened();
+
+        }
+
+        [Test]
+        public void Should_pass_call_to_interceptor_when_throwing_exception_specified_in_return_value_configuration()
+        {
+            // Arrange
+            var config = this.CreateTestableReturnConfiguration();
+            var factory = A.Fake<Func<IFakeObjectCall, Exception>>();
+            var call = A.Fake<IInterceptedFakeObjectCall>();
+
+            // Act
+            config.Throws(factory);
+
+            // Assert
+            Assert.Catch(() =>
+               this.ruleProducedByFactory.Applicator(call));
+
+            A.CallTo(() => factory(call)).MustHaveHappened();
+
+        }
+
+        [Test]
         public void Throws_called_from_return_value_configuration_returns_parent_configuration()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
 
-            var result = returnConfig.Throws(new Exception()) as RuleBuilder;
+            var result = returnConfig.Throws(_ => new Exception()) as RuleBuilder;
 
             Assert.That(result, Is.EqualTo(this.builder));
         }

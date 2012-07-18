@@ -51,9 +51,9 @@ namespace FakeItEasy.Configuration
             this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimesToRepeat;
         }
 
-        public virtual IAfterCallSpecifiedConfiguration Throws(Exception exception)
+        public virtual IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            this.RuleBeingBuilt.Applicator = x => { throw exception; };
+            this.RuleBeingBuilt.Applicator = x => { throw exceptionFactory(x); };
             return this;
         }
 
@@ -121,9 +121,9 @@ namespace FakeItEasy.Configuration
                 get { return this.ParentConfiguration.Calls; }
             }
 
-            public IAfterCallSpecifiedConfiguration Throws(Exception exception)
+            public IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
             {
-                return this.ParentConfiguration.Throws(exception);
+                return this.ParentConfiguration.Throws(exceptionFactory);
             }
 
             public IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily(Func<IFakeObjectCall, TMember> valueProducer)

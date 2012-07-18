@@ -24,9 +24,9 @@ namespace FakeItEasy.Configuration
             return this.wrappedBuilder.DoesNothing();
         }
 
-        public IAfterCallSpecifiedConfiguration Throws(Exception exception)
+        public IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            return this.wrappedBuilder.Throws(exception);
+            return this.wrappedBuilder.Throws(exceptionFactory);
         }
 
         public IVoidConfiguration Invokes(Action<IFakeObjectCall> action)

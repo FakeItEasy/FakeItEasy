@@ -420,6 +420,42 @@ namespace FakeItEasy
                 });
         }
 
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exception">The exception to throw when a call that matches is invoked.</param>
+        /// <returns>Configuration object.</returns>
+        public static IAfterCallSpecifiedConfiguration Throws(this IExceptionThrowerConfiguration configuration, Exception exception)
+        {
+            return configuration.Throws(_ => exception);
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <returns>Configuration object.</returns>
+        public static IAfterCallSpecifiedConfiguration Throws(this IExceptionThrowerConfiguration configuration, Func<Exception> exceptionFactory)
+        {
+            return configuration.Throws(_ => exceptionFactory());
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <typeparam name="T">The type of exception to throw.</typeparam>
+        /// <returns>Configuration object.</returns>
+        public static IAfterCallSpecifiedConfiguration Throws<T>(this IExceptionThrowerConfiguration configuration) where T : Exception, new()
+        {
+            return configuration.Throws(_ => new T());
+        }
+
         private static void AssertThatSignaturesAreEqual(MethodInfo callMethod, MethodInfo actionMethod)
         {
             if (!SignaturesAreEqual(callMethod, actionMethod))

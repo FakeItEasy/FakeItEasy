@@ -130,13 +130,13 @@ namespace FakeItEasy.Tests.Configuration
         public void Throws_should_delegate_to_wrapped_builder()
         {
             // Arrange
-            var exception = new Exception();
+            var exceptionFactory = A.Dummy<Func<IFakeObjectCall, Exception>>();
 
             var config = A.Fake<IAfterCallSpecifiedConfiguration>();
-            A.CallTo(() => this.wrappedBuilder.Throws(exception)).Returns(config);
+            A.CallTo(() => this.wrappedBuilder.Throws(exceptionFactory)).Returns(config);
             
             // Act
-            var returned = this.builder.Throws(exception);
+            var returned = this.builder.Throws(exceptionFactory);
             
             // Assert
             Assert.That(returned, Is.SameAs(config));
