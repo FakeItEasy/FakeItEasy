@@ -137,6 +137,8 @@
     <Compile Include="Expressions\ExpressionArgumentConstraintFactoryTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />
     <Compile Include="Builders\BuilderForExpression.cs" />
+    <Compile Include="ForTestAttribute.cs" />
+    <Compile Include="IFooAttribute.cs" />
     <Compile Include="TestDataBuilder.cs" />
     <Compile Include="Expressions\TypeWithInternalProperty.cs" />
     <Compile Include="FacadedTestBase.cs" />

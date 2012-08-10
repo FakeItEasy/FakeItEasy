@@ -1,3 +1,5 @@
+using System.Reflection.Emit;
+
 namespace FakeItEasy.Creation
 {
     using System;
@@ -10,6 +12,16 @@ namespace FakeItEasy.Creation
     /// </summary>
     public interface IProxyGenerator
     {
+        /// <summary>
+        /// Generates a proxy of the specifed type and returns a result object containing information
+        /// about the success of the generation and the proxy if it was generated.
+        /// </summary>
+        /// <param name="typeOfProxy">The type of proxy to generate.</param>
+        /// <param name="additionalInterfacesToImplement">Interfaces to be implemented by the proxy.</param>
+        /// <param name="argumentsForConstructor">Arguments to pass to the constructor of the type in <paramref name="typeOfProxy" />.</param>
+        /// <returns>A result containging the generated proxy.</returns>
+        ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders);
+
         /// <summary>
         /// Generates a proxy of the specifed type and returns a result object containing information
         /// about the success of the generation and the proxy if it was generated.
