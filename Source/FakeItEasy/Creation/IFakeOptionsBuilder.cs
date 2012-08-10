@@ -1,3 +1,5 @@
+using System.Reflection.Emit;
+
 namespace FakeItEasy.Creation
 {
     using System;
@@ -38,6 +40,13 @@ namespace FakeItEasy.Creation
         IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance);
 
         /// <summary>
+        /// Specifies that the fake should be created with these additional attributes.
+        /// </summary>
+        /// <param name="customAttributeBuilders">The attributes to build into the proxy</param>
+        /// <returns>Options object</returns>
+        IFakeOptionsBuilder<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders);
+
+            /// <summary>
         /// Sets up the fake to implement the specified interface in addition to the
         /// originally faked class.
         /// </summary>

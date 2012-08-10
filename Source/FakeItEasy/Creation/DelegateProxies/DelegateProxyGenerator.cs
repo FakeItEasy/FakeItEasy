@@ -1,4 +1,6 @@
-﻿namespace FakeItEasy.Creation.DelegateProxies
+﻿using System.Reflection.Emit;
+
+namespace FakeItEasy.Creation.DelegateProxies
 {
     using System;
     using System.Collections.Generic;
@@ -30,6 +32,12 @@
             eventRaiser.Instance = proxy;
 
             return new ProxyGeneratorResult(proxy, eventRaiser);
+        }
+
+        public virtual ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement,
+                                          IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders )
+        {
+            return GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
         }
 
         public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)

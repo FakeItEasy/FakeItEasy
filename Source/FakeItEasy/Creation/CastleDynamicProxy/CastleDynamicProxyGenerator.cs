@@ -1,4 +1,6 @@
-﻿namespace FakeItEasy.Creation.CastleDynamicProxy
+﻿using System.Reflection.Emit;
+
+namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;
@@ -28,6 +30,18 @@
         public CastleDynamicProxyGenerator(CastleDynamicProxyInterceptionValidator interceptionValidator)
         {
             this.interceptionValidator = interceptionValidator;
+        }
+
+        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders )
+        {
+
+            proxyGenerationOptions.AdditionalAttributes.Clear();
+            foreach (CustomAttributeBuilder builder in customAttributeBuilders)
+            {
+                proxyGenerationOptions.AdditionalAttributes.Add(builder);
+            }
+
+            return GenerateProxy(typeOfProxy,additionalInterfacesToImplement,argumentsForConstructor);
         }
 
         public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)

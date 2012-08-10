@@ -1,3 +1,5 @@
+using System.Reflection.Emit;
+
 namespace FakeItEasy.Creation
 {
     using System;
@@ -104,6 +106,12 @@ namespace FakeItEasy.Creation
             public IFakeOptionsBuilder<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
             {
                 this.Options.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
+                return this;
+            }
+
+            public IFakeOptionsBuilder<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+            {
+                this.Options.AdditionalAttributes = customAttributeBuilders;
                 return this;
             }
 
