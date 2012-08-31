@@ -11,3 +11,4 @@ Build*/*
 *.[Cc]ache
 *[Rr][Ee][Ss][Hh][Aa][Rr][Pp][Ee][Rr]*
 /Source/packages
+*.[Dd]ot[Ss]ettings.*
