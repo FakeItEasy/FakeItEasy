@@ -381,24 +381,24 @@
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.String)");
         }
 
-        private static void AssertThatSignatureMismatchExceptionIsThrown(TestDelegate act, string fakeSignature, string invokesSignature)
+        private static void AssertThatSignatureMismatchExceptionIsThrown(TestDelegate act, string fakeSignature, string returnsLazilySignature)
         {
             Assert.That(
                 act,
                 Throws.TypeOf<FakeConfigurationException>()
-                    .With.Message.EqualTo("The faked method has the signature " + fakeSignature + ", but invokes was used with " + invokesSignature + "."));
+                    .With.Message.EqualTo("The faked method has the signature " + fakeSignature + ", but returns lazily was used with " + returnsLazilySignature + "."));
         }
-    }
 
-    public interface IInterface
-    {
-        int RequestOfOne(int i);
-        string RequestOfOne(string s);
-        int RequestOfTwo(int i, int j);
-        string RequestOfTwo(string s, string t);
-        int RequestOfThree(int i, int j, int k);
-        string RequestOfThree(string s, string t, string u);
-        int RequestOfFour(int i, int j, int k, int l);
-        string RequestOfFour(string s, string t, string u, string v);
+        public interface IInterface
+        {
+            int RequestOfOne(int i);
+            string RequestOfOne(string s);
+            int RequestOfTwo(int i, int j);
+            string RequestOfTwo(string s, string t);
+            int RequestOfThree(int i, int j, int k);
+            string RequestOfThree(string s, string t, string u);
+            int RequestOfFour(int i, int j, int k, int l);
+            string RequestOfFour(string s, string t, string u, string v);
+        }
     }
 }

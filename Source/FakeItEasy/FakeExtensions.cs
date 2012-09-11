@@ -6,16 +6,23 @@ namespace FakeItEasy
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using Creation;
-    using Configuration;
-    using Core;
-    using Expressions;
+
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using FakeItEasy.Creation;
+    using FakeItEasy.Expressions;
 
     /// <summary>
     /// Provides extension methods for fake objects.
     /// </summary>
     public static class FakeExtensions
     {
+        private const string NameOfInvokesFeature = "invokes";
+
+        private const string NameOfReturnsLazilyFeature = "returns lazily";
+
+        private const string NameOfThrowsFeature = "throws";
+
         /// <summary>
         /// Specifies NumberOfTimes(1) to the IRepeatConfiguration{TFake}.
         /// </summary>
@@ -155,7 +162,7 @@ namespace FakeItEasy
         {
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method);
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0));
                 });
@@ -178,7 +185,7 @@ namespace FakeItEasy
         {
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method);
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
                 });
@@ -202,7 +209,7 @@ namespace FakeItEasy
         {
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method);
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
                 });
@@ -227,7 +234,7 @@ namespace FakeItEasy
         {
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method);
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
@@ -354,7 +361,7 @@ namespace FakeItEasy
         {
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0));
                 });
@@ -373,7 +380,7 @@ namespace FakeItEasy
         {
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
                 });
@@ -393,7 +400,7 @@ namespace FakeItEasy
         {
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
                 });
@@ -414,7 +421,7 @@ namespace FakeItEasy
         {
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
@@ -449,6 +456,88 @@ namespace FakeItEasy
         /// call gets called.
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <returns>Configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        public static IAfterCallSpecifiedConfiguration Throws<T1>(this IExceptionThrowerConfiguration configuration, Func<T1, Exception> exceptionFactory)
+        {
+            return configuration.Throws(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+
+                    return exceptionFactory(call.GetArgument<T1>(0));
+                });
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <returns>Configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        public static IAfterCallSpecifiedConfiguration Throws<T1, T2>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, Exception> exceptionFactory)
+        {
+            return configuration.Throws(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+
+                    return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
+                });
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <returns>Configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        public static IAfterCallSpecifiedConfiguration Throws<T1, T2, T3>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, T3, Exception> exceptionFactory)
+        {
+            return configuration.Throws(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+
+                    return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
+                });
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <typeparam name="T4">Type of the fourth argument of the faked method call</typeparam>
+        /// <returns>Configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        public static IAfterCallSpecifiedConfiguration Throws<T1, T2, T3, T4>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, T3, T4, Exception> exceptionFactory)
+        {
+            return configuration.Throws(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+
+                    return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
+                });
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
         /// <typeparam name="T">The type of exception to throw.</typeparam>
         /// <returns>Configuration object.</returns>
         public static IAfterCallSpecifiedConfiguration Throws<T>(this IExceptionThrowerConfiguration configuration) where T : Exception, new()
@@ -456,14 +545,14 @@ namespace FakeItEasy
             return configuration.Throws(_ => new T());
         }
 
-        private static void AssertThatSignaturesAreEqual(MethodInfo callMethod, MethodInfo actionMethod)
+        private static void AssertThatSignaturesAreEqual(MethodInfo callMethod, MethodInfo actionMethod, string nameOfFeature)
         {
             if (!SignaturesAreEqual(callMethod, actionMethod))
             {
                 var fakeSignature = BuildSignatureDescription(callMethod);
                 var actionSignature = BuildSignatureDescription(actionMethod);
 
-                throw new FakeConfigurationException("The faked method has the signature ({0}), but invokes was used with ({1}).".FormatInvariant(fakeSignature, actionSignature));
+                throw new FakeConfigurationException("The faked method has the signature ({0}), but {2} was used with ({1}).".FormatInvariant(fakeSignature, actionSignature, nameOfFeature));
             }
         }
 

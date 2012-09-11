@@ -203,6 +203,7 @@
     <Compile Include="SelfInitializedFakes\RecordingManagerTests.cs" />
     <Compile Include="Fake(T)Tests.cs" />
     <Compile Include="Configuration\RecordingRuleBuilderTests.cs" />
+    <Compile Include="ThrowsExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj">
