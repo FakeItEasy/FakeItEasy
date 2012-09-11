@@ -16,6 +16,10 @@ namespace FakeItEasy
     /// </summary>
     public static class FakeExtensions
     {
+        private const string NameOfInvokesFeature = "invokes";
+
+        private const string NameOfReturnsLazilyFeature = "returns lazily";
+
         /// <summary>
         /// Specifies NumberOfTimes(1) to the IRepeatConfiguration{TFake}.
         /// </summary>
@@ -155,7 +159,7 @@ namespace FakeItEasy
         {
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method);
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0));
                 });
@@ -178,7 +182,7 @@ namespace FakeItEasy
         {
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method);
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
                 });
@@ -202,7 +206,7 @@ namespace FakeItEasy
         {
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method);
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
                 });
@@ -227,7 +231,7 @@ namespace FakeItEasy
         {
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method);
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
@@ -354,7 +358,7 @@ namespace FakeItEasy
         {
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0));
                 });
@@ -373,7 +377,7 @@ namespace FakeItEasy
         {
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
                 });
@@ -393,7 +397,7 @@ namespace FakeItEasy
         {
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
                 });
@@ -414,7 +418,7 @@ namespace FakeItEasy
         {
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method);
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
@@ -456,14 +460,14 @@ namespace FakeItEasy
             return configuration.Throws(_ => new T());
         }
 
-        private static void AssertThatSignaturesAreEqual(MethodInfo callMethod, MethodInfo actionMethod)
+        private static void AssertThatSignaturesAreEqual(MethodInfo callMethod, MethodInfo actionMethod, string nameOfFeature)
         {
             if (!SignaturesAreEqual(callMethod, actionMethod))
             {
                 var fakeSignature = BuildSignatureDescription(callMethod);
                 var actionSignature = BuildSignatureDescription(actionMethod);
 
-                throw new FakeConfigurationException("The faked method has the signature ({0}), but invokes was used with ({1}).".FormatInvariant(fakeSignature, actionSignature));
+                throw new FakeConfigurationException("The faked method has the signature ({0}), but {2} was used with ({1}).".FormatInvariant(fakeSignature, actionSignature, nameOfFeature));
             }
         }
 
