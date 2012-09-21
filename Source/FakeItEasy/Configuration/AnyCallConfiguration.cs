@@ -53,6 +53,11 @@ namespace FakeItEasy.Configuration
             return this.VoidConfiguration.AssignsOutAndRefParameters(values);
         }
 
+        public IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(params Func<object>[] values)
+        {
+            return this.VoidConfiguration.AssignsOutAndRefParametersLazily(values);
+        }
+
         public void MustHaveHappened(Repeated repeatConstraint)
         {
             this.VoidConfiguration.MustHaveHappened(repeatConstraint);

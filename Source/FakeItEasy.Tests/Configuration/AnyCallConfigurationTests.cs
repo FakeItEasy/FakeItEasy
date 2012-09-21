@@ -197,6 +197,42 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
+        public void AssignsOutAndRefParametersLazily_delegates_to_configuration_produced_by_factory()
+        {
+            // Arrange
+            var parameters = new Func<object>[] { () => "a", () => "b" };
+
+            var factoryConfig = this.StubVoidConfig();
+            var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
+
+            A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(parameters)).Returns(nextConfig);
+
+            // Act
+            this.configuration.AssignsOutAndRefParametersLazily(parameters);
+
+            // Assert
+            A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(parameters)).MustHaveHappened();
+        }
+
+        [Test]
+        public void AssignsOutAndRefParametersLazily_returns_configuration_produced_by_factory()
+        {
+            // Arrange
+            var parameters = new Func<object>[] { () => "a", () => "b" };
+
+            var factoryConfig = this.StubVoidConfig();
+            var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
+
+            A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(parameters)).Returns(nextConfig);
+
+            // Act
+            var result = this.configuration.AssignsOutAndRefParametersLazily(parameters);
+
+            // Assert
+            Assert.That(result, Is.SameAs(nextConfig));
+        }
+
+        [Test]
         public void Assert_delegates_to_configuration_produced_by_factory()
         {
             // Arrange

@@ -420,6 +420,21 @@
         }
 
         [Test]
+        public void AssignsOutAndRefParametersLazily_should_be_null_guarded()
+        {
+            NullGuardedConstraint.Assert(() =>
+                this.builder.AssignsOutAndRefParametersLazily());
+        }
+
+        [Test]
+        public void AssignsOutAndRefParametersLazily_returns_self()
+        {
+            var result = this.builder.AssignsOutAndRefParametersLazily(() => 1, () => "foo");
+
+            Assert.That(result, Is.SameAs(this.builder));
+        }
+
+        [Test]
         public void Assert_with_void_call_should_assert_on_assertions_produced_by_factory()
         {
             // Arrange

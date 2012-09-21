@@ -34,6 +34,18 @@ namespace FakeItEasy.Configuration
         public virtual ICollection<Action<IFakeObjectCall>> Actions { get; private set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [do evaluate ref and out funcs].
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if [do evaluate ref and out funcs]; otherwise, <c>false</c>.
+        /// </value>
+        internal bool DoEvaluateOutAndRefFuncs
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Values to apply to output and reference variables.
         /// </summary>
         public virtual ICollection<object> OutAndRefParametersValues { get; set; }
@@ -149,7 +161,20 @@ namespace FakeItEasy.Configuration
 
             foreach (var argument in indexes.Zip(this.OutAndRefParametersValues))
             {
-                fakeObjectCall.SetArgumentValue(argument.Item1, argument.Item2);
+                if (this.DoEvaluateOutAndRefFuncs)
+                {
+                    Func<object> getter = argument.Item2 as Func<object>;
+
+                    if (getter != null)
+                    {
+                        object value = getter();
+                        fakeObjectCall.SetArgumentValue(argument.Item1, value);
+                    }
+                }
+                else
+                {
+                    fakeObjectCall.SetArgumentValue(argument.Item1, argument.Item2);
+                }
             }
         }
     }
