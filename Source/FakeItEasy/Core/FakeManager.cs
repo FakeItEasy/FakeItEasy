@@ -98,7 +98,10 @@ namespace FakeItEasy.Core
 
         private IEnumerable<CallRuleMetadata> AllRules
         {
-            get { return this.preUserRules.Concat(this.AllUserRules.Concat(this.postUserRules)); }
+            get 
+            { 
+                return this.preUserRules.Concat( FakeScope.Current.PreMangerRules.Concat( this.AllUserRules.Concat(FakeScope.Current.PostMangerRules.Concat(this.postUserRules)))); 
+            }
         }
 
         /// <summary>
