@@ -3,6 +3,7 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents a scope for fake objects, calls configured within a scope
@@ -20,6 +21,37 @@ namespace FakeItEasy.Core
 
         private FakeScope()
         {
+            this.preManagerRulesField = new LinkedList<CallRuleMetadata>();
+            this.postManagerRulesField = new LinkedList<CallRuleMetadata>();
+        }
+
+        private LinkedList<CallRuleMetadata> preManagerRulesField;
+        private LinkedList<CallRuleMetadata> postManagerRulesField;
+
+        internal virtual IEnumerable<CallRuleMetadata> PreMangerRules
+        {
+            get { return this.preManagerRulesField; }
+        }
+
+        internal virtual IEnumerable<CallRuleMetadata> PostMangerRules
+        {
+            get { return this.postManagerRulesField; }
+        }
+
+        public void AddScopeRuleFirst(IFakeObjectCallRule rule)
+        {
+            Guard.AgainstNull(rule, "rule");
+
+            var newRule = new CallRuleMetadata { Rule = rule };
+            preManagerRulesField.AddFirst(newRule);
+        }
+
+        public void AddScopeRuleLast(IFakeObjectCallRule rule)
+        {
+            Guard.AgainstNull(rule, "rule");
+
+            var newRule = new CallRuleMetadata { Rule = rule };
+            postManagerRulesField.AddLast(newRule);
         }
 
         internal static FakeScope Current { get; set; }
@@ -118,6 +150,16 @@ namespace FakeItEasy.Core
                 this.fakeObjectContainerField = container;
             }
 
+            internal override IEnumerable<CallRuleMetadata> PreMangerRules
+            {
+                get { return this.parentScope.PreMangerRules.Concat(this.preManagerRulesField); }
+            }
+
+            internal override IEnumerable<CallRuleMetadata> PostMangerRules
+            {
+                get { return this.postManagerRulesField.Concat(this.parentScope.PostMangerRules); }
+            }
+
             internal override IFakeObjectContainer FakeObjectContainer
             {
                 get { return this.fakeObjectContainerField; }
@@ -196,7 +238,7 @@ namespace FakeItEasy.Core
             public RootScope()
             {
                 this.fakeObjectContainerField = new DynamicContainer(
-                    ServiceLocator.Current.Resolve<IEnumerable<IDummyDefinition>>(), 
+                    ServiceLocator.Current.Resolve<IEnumerable<IDummyDefinition>>(),
                     ServiceLocator.Current.Resolve<IEnumerable<IFakeConfigurator>>());
             }
 

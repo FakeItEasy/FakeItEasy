@@ -12,5 +12,16 @@ namespace FakeItEasy.Core
     public interface IFakeScope
         : IDisposable, IEnumerable<ICompletedFakeObjectCall>
     {
+        /// <summary>
+        /// Adds a call rule to all fake objects used in scope. The rule is used for all calles in scope including fakes created outside of scope.
+        /// </summary>
+        /// <param name="rule">The rule to add.</param>
+        void AddScopeRuleFirst(IFakeObjectCallRule rule);
+
+        /// <summary>
+        /// Adds a call rule last in the list of scope rules, meaning it has the lowest priority possible.
+        /// </summary>
+        /// <param name="rule">The rule to add.</param>
+        void AddScopeRuleLast(IFakeObjectCallRule rule);
     }
 }

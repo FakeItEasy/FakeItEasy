@@ -137,5 +137,96 @@ namespace FakeItEasy.Tests.Core
                 Assert.That(((IEnumerable)scope).Cast<ICompletedFakeObjectCall>().ToArray().Select(x => x.Method.Name), Is.EquivalentTo(new[] { "Bar", "Baz" }));
             }
         }
+
+        [Test]
+        public void Adding_first_rule_to_scope_affects_all_calles_in_scope()
+        {
+            // Arrange
+            var fake1 = A.Fake<IFoo>();
+            var fake2 = A.Fake<IFoo>();
+
+            int applyCalledNumber = 0;
+            var ruleFirst = new FakeCallRule() { IsApplicableTo = x => true, Apply = x => applyCalledNumber++ };
+            var ruleLast = new FakeCallRule() { IsApplicableTo = x => true };
+
+
+            // Act
+            using (var scope = Fake.CreateScope())
+            {
+                scope.AddScopeRuleFirst(ruleFirst);
+                scope.AddScopeRuleLast(ruleLast);
+                fake1.Bar();
+                fake2.Bar();
+            }
+
+            // Assert
+            Assert.That(ruleFirst.ApplyWasCalled, Is.True);
+            Assert.That(ruleLast.ApplyWasCalled, Is.False);
+            Assert.That(applyCalledNumber, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void Adding_last_rule_to_scope_affects_all_calles_in_scope()
+        {
+            // Arrange
+            var fake1 = A.Fake<IFoo>();
+            var fake2 = A.Fake<IFoo>();
+
+            var ruleLast = new FakeCallRule() { IsApplicableTo = x => true };
+
+
+            // Act
+            using (var scope = Fake.CreateScope())
+            {
+                scope.AddScopeRuleLast(ruleLast);
+                fake1.Bar();
+            }
+
+            // Assert
+            Assert.That(ruleLast.ApplyWasCalled, Is.True);
+        }
+
+        [Test]
+        public void Adding_rule_to_scope_does_not_affect_calles_out_of_scope()
+        {
+            // Arrange
+            var fake1 = A.Fake<IFoo>();
+
+            var rule = new FakeCallRule() { IsApplicableTo = x => true };
+
+            // Act
+            using (var scope = Fake.CreateScope())
+            {
+                scope.AddScopeRuleFirst(rule);
+            }
+
+            fake1.Bar();
+
+            // Assert
+            Assert.That(rule.ApplyWasCalled, Is.False);
+        }
+
+        [Test]
+        public void Adding_rule_to_scope_affects_calles_in_nested_scope()
+        {
+            // Arrange
+            var fake1 = A.Fake<IFoo>();
+
+            var rule = new FakeCallRule() { IsApplicableTo = x => true };
+
+            // Act
+            using (var scope = Fake.CreateScope())
+            {
+                scope.AddScopeRuleFirst(rule);
+
+                using (Fake.CreateScope())
+                {
+                    fake1.Bar();
+                }
+            }
+
+            // Assert
+            Assert.That(rule.ApplyWasCalled, Is.True);
+        }
     }
 }
