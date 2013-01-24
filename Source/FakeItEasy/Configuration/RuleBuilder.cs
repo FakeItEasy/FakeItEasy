@@ -95,6 +95,16 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
+        public virtual IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(params Func<object>[] values)
+        {
+            Guard.AgainstNull(values, "values");
+
+            this.RuleBeingBuilt.DoEvaluateOutAndRefFuncs = true;
+            this.RuleBeingBuilt.OutAndRefParametersValues = values;
+
+            return this;
+        }
+
         public void MustHaveHappened(Repeated repeatConstraint)
         {
             this.manager.RemoveRule(this.RuleBeingBuilt);

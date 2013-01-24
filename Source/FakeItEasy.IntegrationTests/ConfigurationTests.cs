@@ -71,6 +71,30 @@
         }
 
         [Test]
+        public void Output_and_reference_parameters_can_be_configured_lazily()
+        {
+            var fake = A.Fake<IDictionary<string, string>>();
+            string bla = null;
+
+            string value = "bla";
+            Func<object> lazyGetter = () => value;
+
+            fake.Configure()
+                .CallsTo(x => x.TryGetValue("test", out bla))
+                .Returns(true)
+                .AssignsOutAndRefParametersLazily(lazyGetter);
+
+            fake.TryGetValue("test", out bla);
+
+            Assert.That(bla, Is.EqualTo(value));
+
+            bla = null;
+            value = "meh";
+            fake.TryGetValue("test", out bla);
+            Assert.That(bla, Is.EqualTo(value));
+        }
+
+        [Test]
         public void Void_methods_can_be_configured_by_the_all_in_one_syntax()
         {
             // Arrange

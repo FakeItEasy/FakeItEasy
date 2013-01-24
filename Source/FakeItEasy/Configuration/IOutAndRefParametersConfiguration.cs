@@ -1,5 +1,7 @@
 namespace FakeItEasy.Configuration
 {
+    using System;
+
     /// <summary>
     /// Lets the developer configure output values of out and ref parameters.
     /// </summary>
@@ -12,5 +14,14 @@ namespace FakeItEasy.Configuration
         /// <param name="values">The values.</param>
         /// <returns>A configuration object.</returns>
         IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(params object[] values);
+
+        /// <summary>
+        /// Lazily specifies output values for out and ref parameters. Specify the values in the order
+        /// the ref and out parameters appear in the configured call. Parameters other than out and ref
+        /// parameters are ignored.
+        /// </summary>
+        /// <param name="values">The values.</param>
+        /// <returns>A configuration object.</returns>
+        IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(params Func<object>[] values);
     }
 }

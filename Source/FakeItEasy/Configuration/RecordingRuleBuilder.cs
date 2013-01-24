@@ -44,6 +44,11 @@ namespace FakeItEasy.Configuration
             return this.wrappedBuilder.AssignsOutAndRefParameters(values);
         }
 
+        public IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(params Func<object>[] values)
+        {
+            return this.wrappedBuilder.AssignsOutAndRefParametersLazily(values);
+        }
+
         public void MustHaveHappened(Repeated repeatConstraint)
         {
             Guard.AgainstNull(repeatConstraint, "repeatConstraint");
