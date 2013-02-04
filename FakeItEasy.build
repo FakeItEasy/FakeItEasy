@@ -26,7 +26,6 @@
 		<BinariesSource>Source\FakeItEasy\bin\$(Configuration)</BinariesSource>
 		<BinariesSource35>Source\FakeItEasy.Net35\bin\$(Configuration)</BinariesSource35>
 		<BinariesSourceSilverlight>Source\FakeItEasy-SL\Bin\$(Configuration)</BinariesSourceSilverlight>
-		<BinariesSourceSilverlight3>Source\FakeItEasy-SL3\Bin\$(Configuration)</BinariesSourceSilverlight3>
 		<ProjectName>$(MSBuildProjectName)</ProjectName>
 	</PropertyGroup>
 	<PropertyGroup>
@@ -143,7 +142,6 @@
 		<MakeDir Directories="$(NuPackPackageDirectory)\$(VersionNumber)\lib\NET40" />
 		<MakeDir Directories="$(NuPackPackageDirectory)\$(VersionNumber)\lib\NET35" />
 		<MakeDir Directories="$(NuPackPackageDirectory)\$(VersionNumber)\lib\SL4" />
-		<MakeDir Directories="$(NuPackPackageDirectory)\$(VersionNumber)\lib\SL3" />
 		
 		<CreateItem Include="$(BinariesSource)\FakeItEasy.*;">
 			<Output ItemName="fakeItEasyLibFiles" TaskParameter="Include"/>
@@ -154,14 +152,10 @@
 		<CreateItem Include="$(BinariesSourceSilverlight)\FakeItEasy.*;">
 			<Output ItemName="fakeItEasyLibFiles-SL" TaskParameter="Include"/>
 		</CreateItem>
-		<CreateItem Include="$(BinariesSourceSilverlight3)\FakeItEasy.*;">
-			<Output ItemName="fakeItEasyLibFiles-SL3" TaskParameter="Include"/>
-		</CreateItem>
 		
 		<Copy SourceFiles="@(fakeItEasyLibFiles)" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)\lib\NET40" />
 		<Copy SourceFiles="@(fakeItEasyLibFiles35)" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)\lib\NET35" />
 		<Copy SourceFiles="@(fakeItEasyLibFiles-SL)" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)\lib\SL4" />
-		<Copy SourceFiles="@(fakeItEasyLibFiles-SL3)" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)\lib\SL3" />
 		<Copy SourceFiles=".\Resources\Build\FakeItEasy.nuspec" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)" />
 		
 		<!-- Update version number in NuPack file -->
