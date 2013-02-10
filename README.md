@@ -20,6 +20,8 @@
 
 In this example the lollipop instance is used as a stub and the shop instance is used as a mock but there's no need to know the difference, just fake it! Easy!
 
+Available on [NuGet](https://nuget.org/packages/FakeItEasy/).
+
 ##Description
 A .Net dynamic fake framework for creating all types of fake objects, mocks, stubs etc.
 
@@ -31,6 +33,7 @@ Designed for ease of use and for compatibility with both C# and VB.Net.
 
 ##Syntax
 **Creating a fake object:**
+
 You can create fake objects in two ways in FakeItEasy, either by calls to A.Fake-methods.
 
     IFoo foo = A.Fake<IFoo>();
@@ -44,7 +47,7 @@ Or you can create a fake object, that is a wrapper around the faked object, this
 
     A.CallTo(() => foo.Bar()).Returns("test");
 
-**Configuring calls to any method on an object**
+**Configuring calls to any method on an object:**
 
     A.CallTo(foo).Throws(new Exception());
     A.CallTo(foo).WithReturnType<string>().Returns("hello world");
@@ -58,7 +61,7 @@ Or you can create a fake object, that is a wrapper around the faked object, this
     int counter = 0;
     A.CallTo(() => foo.Baz()).Returns(() => counter++);
 
-**Asserting**
+**Assertion:**
 
     A.CallTo(() => foo.Bar()).MustHaveHappened();
     A.CallTo(() => foo.Bar()).MustNotHaveHappened();
@@ -73,7 +76,7 @@ In order to pass arguments to the constructor of fakes of classes you'd use a la
 
     var foo = A.Fake<Foo>(() => new Foo("string passed to constructor"));
 
-**Faking an interface and assigning additional custom attributes to the faked class.**
+**Faking an interface and assigning additional custom attributes to the faked class:**
 
     //Get Constructor for our attribute with no parameters
     var constructor = typeof(FooAttribute).GetConstructor(new Type[0]);
