@@ -57,7 +57,7 @@
 	<Target Name="Rebuild" DependsOnTargets="UpdateVersion;Clean;Build;" />
 	
 	<Target Name="CreateVersionNumber" Condition="$(VersionNumber)==''">
-		<Version VersionFile=".\Resources\Build\VersionNumber.txt" BuildType="Automatic" RevisionType="Increment" >
+		<Version VersionFile=".\Resources\Build\VersionNumber.txt" BuildType="None" RevisionType="None" >
 			<Output TaskParameter="Major" PropertyName="Major" />
 			<Output TaskParameter="Minor" PropertyName="Minor" />
 			<Output TaskParameter="Build" PropertyName="Build" />
@@ -65,6 +65,9 @@
 		</Version>
 		<CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)">
 			<Output TaskParameter="Value" PropertyName="VersionNumber" />
+		</CreateProperty>
+		<CreateProperty Value="$(Major).$(Minor).$(Build)">
+			<Output TaskParameter="Value" PropertyName="AssemblyInformationalVersion" />
 		</CreateProperty>
 	</Target>
 	
@@ -82,6 +85,7 @@
 		<AssemblyInfo OutputFile="%(UpdateVersionFiles.FullPath)" CodeLanguage="CS"
 			AssemblyVersion="$(VersionNumber)"
 			AssemblyFileVersion="$(VersionNumber)"
+            AssemblyInformationalVersion="$(AssemblyInformationalVersion)"
 			AssemblyConfiguration="$(Configuration) built on $(BuildTime)" 
 		/>
 	</Target>
@@ -159,7 +163,7 @@
 		<Copy SourceFiles=".\Resources\Build\FakeItEasy.nuspec" DestinationFolder="$(NuPackPackageDirectory)\$(VersionNumber)" />
 		
 		<!-- Update version number in NuPack file -->
-		<XmlUpdate XmlFileName="$(NuPackPackageDirectory)\$(VersionNumber)\FakeItEasy.nuspec" Xpath="/package/metadata/version"  Value="$(VersionNumber)" />
+		<XmlUpdate XmlFileName="$(NuPackPackageDirectory)\$(VersionNumber)\FakeItEasy.nuspec" Xpath="/package/metadata/version"  Value="$(AssemblyInformationalVersion)" />
 		
 		<!-- Create package file -->
 		<Exec 
