@@ -7,14 +7,16 @@
     <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
     <version>ReplacedByBuild</version>
     <authors>Patrik Hägne</authors>
-	<owners>Patrik Hägne</owners>
-    <description>It's faking amazing! The easy mocking framework for .Net that works great in C# and VB.Net alike. No need
-	to know the difference between a stub, a mock or a spy, everythings a fake! The easy to use, refactoring friendly api makes
-	faking a breeze.</description>
+    <owners>Patrik Hägne</owners>
+    <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
+    <releaseNotes>Enhancement: Support argument matching in Throws (similar to ReturnsLazily and Invokes) (https://github.com/FakeItEasy/FakeItEasy/issues/21/)
+Fixed: Incorrect exception message when ReturnLazily signature does not match (https://github.com/FakeItEasy/FakeItEasy/issues/41/)
+Other: Drop support for Silverlight 3 (https://github.com/FakeItEasy/FakeItEasy/issues/34/)
+Other: Adopt Semantic Versioning 2.0.0-rc.1 (https://github.com/FakeItEasy/FakeItEasy/issues/37/)</releaseNotes>
     <language>en-US</language>
     <dependencies>
       <dependency id="Castle.Core" version="3.1.0.0" />
     </dependencies>
-	<tags>TDD unittesting mocking faking stubbing spy spies doubles</tags>
+    <tags>TDD unittesting mocking faking stubbing spy spies doubles</tags>
   </metadata>
 </package>
