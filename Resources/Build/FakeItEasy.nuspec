@@ -14,9 +14,6 @@ Fixed: Incorrect exception message when ReturnLazily signature does not match (h
 Other: Drop support for Silverlight 3 (https://github.com/FakeItEasy/FakeItEasy/issues/34/)
 Other: Adopt Semantic Versioning 2.0.0-rc.1 (https://github.com/FakeItEasy/FakeItEasy/issues/37/)</releaseNotes>
     <language>en-US</language>
-    <dependencies>
-      <dependency id="Castle.Core" version="3.1.0.0" />
-    </dependencies>
     <tags>TDD unittesting mocking faking stubbing spy spies doubles</tags>
   </metadata>
 </package>
