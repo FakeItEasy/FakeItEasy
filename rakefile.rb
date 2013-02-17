@@ -41,7 +41,7 @@ end
 desc "Execute unit tests"
 nunit :unit => [:build] do |nunit|
 	nunit.command = NUnitConsole
-	nunit.assemblies "Source/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll", "Source/FakeItEasy.Tests/bin/Debug/FakeItEasy.Tests.dll", "Source/FakeItEasy-SL.Tests/Bin/Release/FakeItEasy-SL.Tests.dll"
+	nunit.assemblies "Source/FakeItEasy.Net35.Tests/bin/Debug/FakeItEasy.Net35.Tests.dll", "Source/FakeItEasy.Tests/bin/Debug/FakeItEasy.Tests.dll", "Source/FakeItEasy-SL.Tests/Bin/Debug/FakeItEasy-SL.Tests.dll"
     nunit.options "/result=TestResult.Unit.xml"
 end
 
@@ -55,7 +55,7 @@ end
 desc "Execute specifications"
 mspec :spec => [:build] do |mspec|
     mspec.command = MSpec
-	mspec.assemblies "Source/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
+	mspec.assemblies "Source/FakeItEasy.Specs/bin/Debug/FakeItEasy.Specs.dll"
 end
 
 desc "create the nuget package"
