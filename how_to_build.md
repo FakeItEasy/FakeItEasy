@@ -6,7 +6,7 @@ You can also build the solution using Visual Studio 2010 or later.
 
 ## Prerequisites ##
 
-1. [Install Ruby 1.8.7 or later](http://www.ruby-lang.org/en/downloads/)
+1. Install Ruby 1.8.7 or later. For Windows we recommend using [RubyInstaller](http://rubyinstaller.org/). Other methods of installation are listed on the [Ruby download page](http://www.ruby-lang.org/en/downloads/).
 1. Using a command prompt, update RubyGems to the latest version:
 
     `gem update --system`
