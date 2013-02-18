@@ -26,8 +26,7 @@ assemblyinfo :version do |asm|
   net_version = Version.split("-").first
   asm.version = net_version
   asm.file_version = net_version
-  asm.informational_version = Version
-  asm.custom_attributes = { :AssemblyConfiguration => :Release.to_s + " built on " + Time.now.strftime("%Y-%m-%d %H:%M:%S%z") }
+  asm.custom_attributes = { :AssemblyInformationalVersion => Version, :AssemblyConfiguration => :Release.to_s + " built on " + Time.now.strftime("%Y-%m-%d %H:%M:%S%z") }
   asm.output_file = "Source/VersionAssemblyInfo.cs"
 end
 

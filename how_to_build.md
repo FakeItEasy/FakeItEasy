@@ -19,7 +19,7 @@ At the time of writing the build is only confirmed to work on Windows.
 
     `gem update --system`
 
-1. Install/update the Albacore gem (0.3.5 or later is required):
+1. Install/update the Albacore gem (0.3.4 or later is required):
 
     `gem install albacore`
 
