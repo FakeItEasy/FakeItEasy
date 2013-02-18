@@ -10,5 +10,7 @@ Build*/*
 *.diff
 *.[Cc]ache
 *[Rr][Ee][Ss][Hh][Aa][Rr][Pp][Ee][Rr]*
-/Source/packages
+/Source/packages/*
+!/Source/packages/NUnit.Runners.2.6.2
 *.[Dd]ot[Ss]ettings.*
+TestResult*.xml
