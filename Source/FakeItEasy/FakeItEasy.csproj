@@ -64,6 +64,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="ILRepack">
+      <HintPath>..\packages\ILRepack.1.21.3\lib\ILRepack.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
