@@ -33,37 +33,45 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>Bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\FakeItEasy.xml</DocumentationFile>
+    <DocumentationFile>Bin\Debug\FakeItEasy.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>Bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\FakeItEasy.xml</DocumentationFile>
+    <DocumentationFile>Bin\Release\FakeItEasy.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
+    <Reference Include="Castle.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ILRepack">
+      <HintPath>..\packages\ILRepack.1.21.3\lib\ILRepack.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\InternalsVisibleTo-Signed.cs" />
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="A.cs" />
@@ -72,6 +80,10 @@
     <Compile Include="Configuration\AnyCallCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Configuration\AnyCallConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -155,6 +167,7 @@
     <Compile Include="Configuration\IVoidConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\IWhereConfiguration.cs" />
     <Compile Include="Configuration\RecordedCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -170,6 +183,7 @@
     <Compile Include="Configuration\StartConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\ArgumentConstraintTrap.cs" />
     <Compile Include="Core\ArgumentInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -185,6 +199,7 @@
     <Compile Include="Core\CallWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\DefaultArgumentConstraintManager.cs" />
     <Compile Include="Core\DefaultExceptionThrower.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -197,7 +212,11 @@
     <Compile Include="Core\DefaultFakeWrapperConfigurer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\DefaultFixtureInitializer.cs" />
     <Compile Include="Core\DefaultReturnValueRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\DefaultSutInitializer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\DelegateFakeObjectContainer.cs">
@@ -247,6 +266,16 @@
     <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\IInterceptionListener.cs" />
+    <Compile Include="Core\ISutInitializer.cs" />
+    <Compile Include="Creation\DelegateProxies\DelegateProxyGenerator.cs" />
+    <Compile Include="Creation\ProxyGeneratorSelector.cs" />
+    <Compile Include="DefaultOutputWriter.cs" />
+    <Compile Include="Expressions\ParsedArgumentExpression.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\AggregateArgumentConstraint.cs" />
+    <Compile Include="IArgumentConstraintManager.cs" />
+    <Compile Include="IArgumentConstraintManagerFactory.cs" />
+    <Compile Include="Core\IArgumentConstraintTrapper.cs" />
     <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -289,6 +318,8 @@
     <Compile Include="Core\IFakeObjectContainer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\ITypeCatalogue.cs" />
+    <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
     <Compile Include="Core\IFakeScope.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -304,6 +335,7 @@
     <Compile Include="Core\IInterceptedFakeObjectCall.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IOutputWriter.cs" />
     <Compile Include="Core\IWritableFakeObjectCall.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -385,22 +417,13 @@
     <Compile Include="Creation\ResolvedConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Expressions\ArgumentConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ArgumentConstraintFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ArgumentConstraintScope.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Expressions\CallExpressionParser.cs" />
+    <Compile Include="Expressions\ExpressionArgumentConstraintFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Expressions\ExpressionCallMatcher.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -417,13 +440,7 @@
     <Compile Include="Expressions\IExpressionParser.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Expressions\NotArgumentConstraintScope.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Expressions\ParsedCallExpression.cs" />
-    <Compile Include="Expressions\RootArgumentConstraintScope.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ExtensionSyntax\Full\FullExtensionSyntax.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -455,6 +472,7 @@
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="MustBeImplementedException.cs" />
+    <Compile Include="OutputWriter.cs" />
     <Compile Include="Repeated.cs" />
     <Compile Include="Recorders.cs" />
     <Compile Include="IFileSystem.cs" />
@@ -492,6 +510,8 @@
     <Compile Include="CommonExtensions.cs" />
     <Compile Include="SmellyAttribute.cs" />
     <Compile Include="NextCall.cs" />
+    <Compile Include="StringBuilderOutputWriter.cs" />
+    <Compile Include="UnderTestAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">
@@ -525,7 +545,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

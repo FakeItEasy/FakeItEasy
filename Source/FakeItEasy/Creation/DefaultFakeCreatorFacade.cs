@@ -1,3 +1,5 @@
+using System.Reflection.Emit;
+
 namespace FakeItEasy.Creation
 {
     using System;
@@ -107,6 +109,12 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
+            public IFakeOptionsBuilder<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+            {
+                this.Options.AdditionalAttributes = customAttributeBuilders;
+                return this;
+            }
+
             public IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance)
             {
                 this.Options.WrappedInstance = wrappedInstance;
@@ -122,6 +130,12 @@ namespace FakeItEasy.Creation
             public IFakeOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
             {
                 this.Options.SelfInitializedFakeRecorder = recorder;
+                return this;
+            }
+
+            public IFakeOptionsBuilder<T> OnFakeCreated(Action<T> action)
+            {
+                this.Options.OnFakeCreatedActions.Add(x => action((T)x));
                 return this;
             }
 

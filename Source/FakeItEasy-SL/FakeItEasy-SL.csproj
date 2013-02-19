@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FakeItEasy</RootNamespace>
-    <AssemblyName>FakeItEasy-SL</AssemblyName>
+    <AssemblyName>FakeItEasy</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
@@ -18,6 +18,8 @@
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <!-- This property group is only here to support building this project using the 
        MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
@@ -29,7 +31,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>Bin\Debug</OutputPath>
+    <OutputPath>Bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -37,14 +39,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>Bin\Release</OutputPath>
+    <OutputPath>Bin\Release\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
+    <DocumentationFile>Bin\Release\FakeItEasy.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -56,8 +59,9 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\packages\Castle.Core.2.5.2\lib\SL3\Castle.Core.dll</HintPath>
+    <Reference Include="Castle.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Castle.Core.3.0.0.4001\lib\sl4\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
@@ -117,6 +121,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IAnyCallConfiguration.cs">
       <Link>Configuration\IAnyCallConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs">
+      <Link>Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IArgumentValidationConfiguration.cs">
       <Link>Configuration\IArgumentValidationConfiguration.cs</Link>
@@ -178,6 +185,9 @@
     <Compile Include="..\FakeItEasy\Configuration\IVoidConfiguration.cs">
       <Link>Configuration\IVoidConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IWhereConfiguration.cs">
+      <Link>Configuration\IWhereConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\RecordedCallRule.cs">
       <Link>Configuration\RecordedCallRule.cs</Link>
     </Compile>
@@ -196,6 +206,9 @@
     <Compile Include="..\FakeItEasy\Configure.cs">
       <Link>Configure.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\ArgumentConstraintTrap.cs">
+      <Link>Core\ArgumentConstraintTrap.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentInfo.cs">
       <Link>Core\ArgumentInfo.cs</Link>
     </Compile>
@@ -211,6 +224,9 @@
     <Compile Include="..\FakeItEasy\Core\CallWriter.cs">
       <Link>Core\CallWriter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultArgumentConstraintManager.cs">
+      <Link>Core\DefaultArgumentConstraintManager.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\DefaultExceptionThrower.cs">
       <Link>Core\DefaultExceptionThrower.cs</Link>
     </Compile>
@@ -223,8 +239,14 @@
     <Compile Include="..\FakeItEasy\Core\DefaultFakeWrapperConfigurer.cs">
       <Link>Core\DefaultFakeWrapperConfigurer.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultFixtureInitializer.cs">
+      <Link>Core\DefaultFixtureInitializer.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\DefaultReturnValueRule.cs">
       <Link>Core\DefaultReturnValueRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DefaultSutInitializer.cs">
+      <Link>Core\DefaultSutInitializer.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\DelegateFakeObjectContainer.cs">
       <Link>Core\DelegateFakeObjectContainer.cs</Link>
@@ -272,6 +294,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IArgumentConstraint.cs">
       <Link>Core\IArgumentConstraint.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IArgumentConstraintTrapper.cs">
+      <Link>Core\IArgumentConstraintTrapper.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\ICallCollectionAndCallMatcherAccessor.cs">
       <Link>Core\ICallCollectionAndCallMatcherAccessor.cs</Link>
@@ -330,6 +355,12 @@
     <Compile Include="..\FakeItEasy\Core\IInterceptedFakeObjectCall.cs">
       <Link>Core\IInterceptedFakeObjectCall.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\IInterceptionListener.cs">
+      <Link>Core\IInterceptionListener.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\ISutInitializer.cs">
+      <Link>Core\ISutInitializer.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\IWritableFakeObjectCall.cs">
       <Link>Core\IWritableFakeObjectCall.cs</Link>
     </Compile>
@@ -366,6 +397,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\DefaultFakeCreatorFacade.cs">
       <Link>Creation\DefaultFakeCreatorFacade.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\DelegateProxies\DelegateProxyGenerator.cs">
+      <Link>Creation\DelegateProxies\DelegateProxyGenerator.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\DummyValueCreationSession.cs">
       <Link>Creation\DummyValueCreationSession.cs</Link>
@@ -406,11 +440,17 @@
     <Compile Include="..\FakeItEasy\Creation\ProxyGeneratorResult.cs">
       <Link>Creation\ProxyGeneratorResult.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Creation\ProxyGeneratorSelector.cs">
+      <Link>Creation\ProxyGeneratorSelector.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Creation\ResolvedArgument.cs">
       <Link>Creation\ResolvedArgument.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\ResolvedConstructor.cs">
       <Link>Creation\ResolvedConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\DefaultOutputWriter.cs">
+      <Link>DefaultOutputWriter.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\DummyDefinition.cs">
       <Link>DummyDefinition.cs</Link>
@@ -421,23 +461,17 @@
     <Compile Include="..\FakeItEasy\ExpectationException.cs">
       <Link>ExpectationException.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraint.cs">
-      <Link>Expressions\ArgumentConstraint.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraintFactory.cs">
-      <Link>Expressions\ArgumentConstraintFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraintScope.cs">
-      <Link>Expressions\ArgumentConstraintScope.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs">
-      <Link>Expressions\ArgumentConstraints\EnumerableContainsConstraint.cs</Link>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\AggregateArgumentConstraint.cs">
+      <Link>Expressions\ArgumentConstraints\AggregateArgumentConstraint.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs">
       <Link>Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\CallExpressionParser.cs">
       <Link>Expressions\CallExpressionParser.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ExpressionArgumentConstraintFactory.cs">
+      <Link>Expressions\ExpressionArgumentConstraintFactory.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\ExpressionCallMatcher.cs">
       <Link>Expressions\ExpressionCallMatcher.cs</Link>
@@ -457,14 +491,11 @@
     <Compile Include="..\FakeItEasy\Expressions\IExpressionParser.cs">
       <Link>Expressions\IExpressionParser.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\NotArgumentConstraintScope.cs">
-      <Link>Expressions\NotArgumentConstraintScope.cs</Link>
+    <Compile Include="..\FakeItEasy\Expressions\ParsedArgumentExpression.cs">
+      <Link>Expressions\ParsedArgumentExpression.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\ParsedCallExpression.cs">
       <Link>Expressions\ParsedCallExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Expressions\RootArgumentConstraintScope.cs">
-      <Link>Expressions\RootArgumentConstraintScope.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ExtensionSyntax\Full\FullExtensionSyntax.cs">
       <Link>ExtensionSyntax\Full\FullExtensionSyntax.cs</Link>
@@ -493,6 +524,12 @@
     <Compile Include="..\FakeItEasy\Helpers.cs">
       <Link>Helpers.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\IArgumentConstraintManager.cs">
+      <Link>IArgumentConstraintManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IArgumentConstraintManagerFactory.cs">
+      <Link>IArgumentConstraintManagerFactory.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\IArgumentValueFormatter.cs">
       <Link>IArgumentValueFormatter.cs</Link>
     </Compile>
@@ -505,14 +542,14 @@
     <Compile Include="..\FakeItEasy\IFileSystem.cs">
       <Link>IFileSystem.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ImportsModule.cs">
-      <Link>ImportsModule.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\IoC\DictionaryContainer.cs">
       <Link>IoC\DictionaryContainer.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IoC\Module.cs">
       <Link>IoC\Module.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IOutputWriter.cs">
+      <Link>IOutputWriter.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IRepeatSpecification.cs">
       <Link>IRepeatSpecification.cs</Link>
@@ -531,6 +568,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\OrderedAssertion.cs">
       <Link>OrderedAssertion.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\OutputWriter.cs">
+      <Link>OutputWriter.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
@@ -571,6 +611,12 @@
     <Compile Include="..\FakeItEasy\SmellyAttribute.cs">
       <Link>SmellyAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\StringBuilderOutputWriter.cs">
+      <Link>StringBuilderOutputWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\UnderTestAttribute.cs">
+      <Link>UnderTestAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
@@ -601,9 +647,10 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
+      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

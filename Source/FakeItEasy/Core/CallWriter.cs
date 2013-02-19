@@ -17,7 +17,7 @@ namespace FakeItEasy.Core
             this.callComparer = callComparer;
         }
 
-        public virtual void WriteCalls(int indent, IEnumerable<IFakeObjectCall> calls, TextWriter writer)
+        public virtual void WriteCalls(IEnumerable<IFakeObjectCall> calls, IOutputWriter writer)
         {
             if (!calls.Any())
             {
@@ -46,7 +46,7 @@ namespace FakeItEasy.Core
                 }
             }
 
-            WriteCalls(indent, callInfos, writer);
+            WriteCalls(callInfos, writer);
 
             if (callArray.Length > MaxNumberOfCallsToWrite)
             {
@@ -57,12 +57,11 @@ namespace FakeItEasy.Core
             writer.WriteLine();
         }
 
-        private static void WriteCalls(int indent, IEnumerable<CallInfo> callInfos, TextWriter writer)
+        private static void WriteCalls(IEnumerable<CallInfo> callInfos, IOutputWriter writer)
         {
             var lastCall = callInfos.Last();
             var numberOfDigitsInLastCallNumber = lastCall.NumberOfDigitsInCallNumber();
-            var callDescriptionStartColumn = numberOfDigitsInLastCallNumber + 3 + indent;
-
+            
             foreach (var call in callInfos)
             {
                 if (call.CallNumber > 1)
@@ -70,42 +69,30 @@ namespace FakeItEasy.Core
                     writer.WriteLine();
                 }
 
-                WriteIndentation(writer, indent);
                 writer.Write(call.CallNumber);
                 writer.Write(": ");
 
-                WriteIndentation(writer, numberOfDigitsInLastCallNumber - call.NumberOfDigitsInCallNumber());
+                WriteSpaces(writer, numberOfDigitsInLastCallNumber - call.NumberOfDigitsInCallNumber());
 
-                WriteIndentedAtNewLine(writer, call.StringRepresentation, callDescriptionStartColumn);
-
+                using (writer.Indent())
+                {
+                    writer.Write(call.StringRepresentation);
+                }
+                
                 if (call.Repeat > 1)
                 {
                     writer.Write(" repeated ");
                     writer.Write(call.Repeat);
-                    writer.WriteLine(" times");
-                    WriteIndentation(writer, indent);
+                    writer.Write(" times");
+                    writer.WriteLine();
                     writer.Write("...");
                 }
             }
         }
 
-        private static void WriteIndentedAtNewLine(TextWriter writer, string value, int indentLevel)
+        private static void WriteSpaces(IOutputWriter writer, int numberOfSpaces)
         {
-            var lines = value.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-
-            writer.Write(lines[0]);
-
-            for (var i = 1; i < lines.Length; i++)
-            {
-                writer.WriteLine();
-                WriteIndentation(writer, indentLevel);
-                writer.Write(lines[i]);
-            }
-        }
-
-        private static void WriteIndentation(TextWriter writer, int indentLevel)
-        {
-            for (var i = 0; i < indentLevel; i++)
+            for (var i = 0; i < numberOfSpaces; i++)
             {
                 writer.Write(" ");
             }

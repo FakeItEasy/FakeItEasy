@@ -1,9 +1,12 @@
+using System.Reflection.Emit;
+
 namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
+    using Core;
     using FakeItEasy.Configuration;
 
     /// <summary>
@@ -13,8 +16,6 @@ namespace FakeItEasy.Creation
     public interface IFakeOptionsBuilder<T>
         : IHideObjectMembers
     {
-        // IFakeBuilderOptionsBuilder<T> Implementing<TInterface>();
-
         /// <summary>
         /// Specifies arguments for the constructor of the faked class.
         /// </summary>
@@ -39,6 +40,13 @@ namespace FakeItEasy.Creation
         IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance);
 
         /// <summary>
+        /// Specifies that the fake should be created with these additional attributes.
+        /// </summary>
+        /// <param name="customAttributeBuilders">The attributes to build into the proxy</param>
+        /// <returns>Options object</returns>
+        IFakeOptionsBuilder<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders);
+
+            /// <summary>
         /// Sets up the fake to implement the specified interface in addition to the
         /// originally faked class.
         /// </summary>
@@ -48,5 +56,13 @@ namespace FakeItEasy.Creation
         /// <exception cref="ArgumentNullException">The specified type is null.</exception>
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Implements", Justification = "Would be a breaking change, might be changed in a later major version.")]
         IFakeOptionsBuilder<T> Implements(Type interfaceType);
+
+        /// <summary>
+        /// Specifies an action that should be run over the fake object
+        /// once it's created.
+        /// </summary>
+        /// <param name="action">An action to perform.</param>
+        /// <returns>Options object.</returns>
+        IFakeOptionsBuilder<T> OnFakeCreated(Action<T> action);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using NUnit.Framework;
 using FakeItEasy.Tests;
 using FakeItEasy.Core;
@@ -31,6 +32,48 @@ namespace FakeItEasy.IntegrationTests
             // Assert
             Assert.That(enumerator, Is.Not.Null);
             Assert.That(Fake.GetFakeManager(enumerator), Is.Not.Null);
+        }
+
+        [Test]
+        public void Faked_object_with_additional_attributes_should_create_a_type_with_those_attributes()
+        {
+                // Arrange
+                var types = new Type[0];
+                var constructor = typeof (ForTestAttribute).GetConstructor(types);
+                var list = new object[0];
+                var attribute = new CustomAttributeBuilder(constructor, list);
+                var builder = new List<CustomAttributeBuilder>();
+                builder.Add(attribute);
+
+                //Act
+                var fake = A.Fake<IFooAttribute>(a => a.WithAdditionalAttributes(builder));
+
+                //Assert
+                Assert.That(fake.GetType().GetCustomAttributes(typeof (ForTestAttribute), true).Length, Is.EqualTo(1));
+            
+
+        }
+
+        [Test]
+        public void Additional_attributes_should_not_carry_over_to_the_next_fake()
+        {
+
+            // Arrange
+            var types = new Type[0];
+            var constructor = typeof(ForTestAttribute).GetConstructor(types);
+            var list = new object[0];
+            var attribute = new CustomAttributeBuilder(constructor, list);
+            var builder = new List<CustomAttributeBuilder>();
+            builder.Add(attribute);
+            var fake = A.Fake<IFooAttribute>(a => a.WithAdditionalAttributes(builder));
+
+            //Act
+            var secondFake = A.Fake<IFormattable>();
+ 
+            //Assert
+            Assert.That(secondFake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Length, Is.EqualTo(0));
+            
+
         }
 
         [Test]
@@ -101,7 +144,7 @@ namespace FakeItEasy.IntegrationTests
             var thrown = Assert.Throws<FakeConfigurationException>(() =>
                 A.CallTo(() => fake.NonVirtualVoidMethod("", 1)).DoesNothing());
 
-            Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
+            Assert.That(thrown.Message, Is.StringContaining("Non virtual"));
         }
 
         [Test]
@@ -116,37 +159,7 @@ namespace FakeItEasy.IntegrationTests
             var thrown = Assert.Throws<FakeConfigurationException>(() =>
                 A.CallTo(() => fake.NonVirtualFunction("", 1)).Returns(10));
 
-            Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
-        }
-
-        [Test]
-        public void ErrorMessage_when_configuring_void_call_that_can_not_be_configured_through_old_api_should_be_correct()
-        {
-            // Arrange
-            var fake = A.Fake<TypeWithNonConfigurableMethod>();
-
-            // Act
-
-            // Assert
-            var thrown = Assert.Throws<FakeConfigurationException>(() =>
-                A.CallTo(() => fake.NonVirtualVoidMethod("", 1)).DoesNothing());
-
-            Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
-        }
-
-        [Test]
-        public void ErrorMessage_when_configuring_function_call_that_can_not_be_configured_through_old_api_should_be_correct()
-        {
-            // Arrange
-            var fake = A.Fake<TypeWithNonConfigurableMethod>();
-
-            // Act
-
-            // Assert
-            var thrown = Assert.Throws<FakeConfigurationException>(() =>
-                A.CallTo(() => fake.NonVirtualFunction("", 1)).Returns(10));
-
-            Assert.That(thrown.Message, Is.EqualTo("The specified method can not be configured since it can not be intercepted by the current IProxyGenerator."));
+            Assert.That(thrown.Message, Is.StringContaining("Non virtual"));
         }
 
         [Test]
@@ -186,7 +199,7 @@ namespace FakeItEasy.IntegrationTests
             var result = A.CollectionOfFake<IFoo>(10);
 
             // Assert
-            Assert.That(result, Is.InstanceOf<IList<IFoo>>().And.All.InstanceOf<IFoo>().And.All.Matches(new IsProxyConstraint()));
+            Assert.That(result, Is.InstanceOf<IList<IFoo>>().And.All.InstanceOf<IFoo>().And.All.Matches(new IsFakeConstraint()));
         }
 
         [Test]

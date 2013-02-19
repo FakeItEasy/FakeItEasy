@@ -34,13 +34,13 @@ namespace FakeItEasy.Examples
             var comparer = A.Fake<IComparer<string>>();
 
             // Using argument validators.
-            A.CallTo(() => comparer.Compare(A<string>.Ignored, A<string>.That.Matches(s => s == "must be equal to this"))).Returns(-1);
+            A.CallTo(() => comparer.Compare(A<string>._, A<string>.That.Matches(s => s == "must be equal to this"))).Returns(-1);
 
             // Using specific argument values.
             A.CallTo(() => comparer.Compare("a", "b")).Returns(0);
 
             // Mixing actual values and validators.
-            A.CallTo(() => comparer.Compare("a", A<string>.Ignored)).Returns(1);
+            A.CallTo(() => comparer.Compare("a", A<string>._)).Returns(1);
         }
 
         public void Configure_only_calls_that_has_certain_argument_values_using_a_custom_argument_validator()
@@ -49,7 +49,7 @@ namespace FakeItEasy.Examples
 
             // Using the "CustomArgumentValidators.LongerThan" argument validator defined
             // in this project is seamless since it's just an extension method.
-            A.CallTo(() => comparer.Compare(A<string>.That.IsLongerThan(10), A<string>.Ignored)).Returns(-1);
+            A.CallTo(() => comparer.Compare(A<string>.That.IsLongerThan(10), A<string>._)).Returns(-1);
         }
     }
 }

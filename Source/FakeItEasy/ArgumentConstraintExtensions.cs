@@ -2,9 +2,9 @@ namespace FakeItEasy
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using FakeItEasy.Expressions;
-    using FakeItEasy.Expressions.ArgumentConstraints;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// Provides validation extension to the Argumentscope{T} class.
@@ -12,122 +12,213 @@ namespace FakeItEasy
     public static class ArgumentConstraintExtensions
     {
         /// <summary>
-        /// Validates that an argument is null.
+        /// Constrains an argument so that it must be null (Nothing in VB).
         /// </summary>
         /// <typeparam name="T">The type of the argument.</typeparam>
-        /// <param name="scope">The scope of the constraint.</param>
-        /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> IsNull<T>(this ArgumentConstraintScope<T> scope) where T : class
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static T IsNull<T>(this IArgumentConstraintManager<T> manager) where T : class
         {
-            return scope.CreateConstraint(x => x == null, "NULL");
+            return manager.Matches(x => x == null, x => x.Write("NULL"));
         }
 
         /// <summary>
-        /// Validates that the string argument contains the specified text.
+        /// Constrains the string argument to contain the specified text.
         /// </summary>
-        /// <param name="scope">The scope of the constraint.</param>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <param name="value">The string the argument string should contain.</param>
-        /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<string> Contains(this ArgumentConstraintScope<string> scope, string value)
+        /// <returns>A dummy argument value.</returns>
+        public static string Contains(this IArgumentConstraintManager<string> manager, string value)
         {
-            return scope.CreateConstraint(x => x != null && x.Contains(value), "String that contains \"{0}\"", value);
+            return manager.NullCheckedMatches(x => x.Contains(value), x => x.Write("string that contains ").WriteArgumentValue(value));
         }
 
         /// <summary>
-        /// Validates that the collection argument contains the specified value.
+        /// Constrains the sequence so that it must contain the specified value.
         /// </summary>
-        /// <param name="scope">The scope of the constraint.</param>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <param name="value">The value the collection should contain.</param>
-        /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> Contains<T>(this ArgumentConstraintScope<T> scope, object value) where T : IEnumerable
+        /// <typeparam name="T">The type of sequence.</typeparam>
+        /// <returns>A dummy argument value.</returns>
+        public static T Contains<T>(this IArgumentConstraintManager<T> manager, object value) where T : IEnumerable
         {
-            return new EnumerableContainsConstraint<T>(scope, value);
+            return manager.NullCheckedMatches(
+                x => x.Cast<object>().Contains(value),
+                x => x.Write("sequence that contains the value ").WriteArgumentValue(value));
         }
 
         /// <summary>
-        /// Validates that the string argument starts with the specified text.
+        /// Constrains the string so that it must start with the specified value.
         /// </summary>
-        /// <param name="scope">The scope of the constraint.</param>
-        /// <param name="value">The string the argument string should start with.</param>
-        /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<string> StartsWith(this ArgumentConstraintScope<string> scope, string value)
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="value">The value the string should start with.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static string StartsWith(this IArgumentConstraintManager<string> manager, string value)
         {
-            return scope.CreateConstraint(x => x != null && x.StartsWith(value, StringComparison.Ordinal), "String that starts with \"{0}\"", value);
+            return manager.NullCheckedMatches(x => x.StartsWith(value, StringComparison.Ordinal), x => x.Write("string that starts with ").WriteArgumentValue(value));
         }
 
         /// <summary>
-        /// Validates that the string argument is null or the empty string.
+        /// Constrains the string so that it must be null or empty.
         /// </summary>
-        /// <param name="scope">The scope of the constraint.</param>
-        /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<string> IsNullOrEmpty(this ArgumentConstraintScope<string> scope)
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static string IsNullOrEmpty(this IArgumentConstraintManager<string> manager)
         {
-            return scope.CreateConstraint(x => string.IsNullOrEmpty(x), "(NULL or string.Empty)");
+            return manager.Matches(x => string.IsNullOrEmpty(x), "NULL or string.Empty");
         }
 
         /// <summary>
-        /// Validates that the argument is greater than the specified value.
+        /// Constrains argument value so that it must be greater than the specified value.
         /// </summary>
-        /// <typeparam name="T">The type of the argument.</typeparam>
-        /// <param name="scope">The scope of the constraint.</param>
-        /// <param name="value">The value that the argument has to be greatere than.</param>
-        /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> IsGreaterThan<T>(this ArgumentConstraintScope<T> scope, T value) where T : IComparable
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="value">The value the string should start with.</param>
+        /// <typeparam name="T">The type of argument to constrain.</typeparam>
+        /// <returns>A dummy argument value.</returns>
+        public static T IsGreaterThan<T>(this IArgumentConstraintManager<T> manager, T value) where T : IComparable
         {
-            return scope.CreateConstraint(x => x.CompareTo(value) > 0, "Greater than {0}", value);
+            return manager.Matches(x => x.CompareTo(value) > 0, x => x.Write("greater than ").WriteArgumentValue(value));
         }
 
         /// <summary>
         /// The tested argument collection should contain the same elements as the
         /// as the specified collection.
         /// </summary>
-        /// <typeparam name="T">The type of collection.</typeparam>
-        /// <param name="scope">The scope of the constraint.</param>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <param name="value">The sequence to test against.</param>
-        /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> IsSameSequenceAs<T>(this ArgumentConstraintScope<T> scope, IEnumerable value) where T : IEnumerable
+        /// <typeparam name="T">The type of argument to constrain.</typeparam>
+        /// <returns>A dummy argument value.</returns>
+        public static T IsSameSequenceAs<T>(this IArgumentConstraintManager<T> manager, IEnumerable value) where T : IEnumerable
         {
-            return scope.CreateConstraint(
-                x => x != null && x.Cast<object>().SequenceEqual(value.Cast<object>()), 
-                "specified sequence");
+            return manager.NullCheckedMatches(
+                x => x.Cast<object>().SequenceEqual(value.Cast<object>()), 
+                x => x.Write("specified sequence"));
         }
 
         /// <summary>
         /// Tests that the IEnumerable contains no items.
         /// </summary>
         /// <typeparam name="T">The type of argument.</typeparam>
-        /// <param name="scope">The scope of the constraint.</param>
-        /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> IsEmpty<T>(this ArgumentConstraintScope<T> scope) where T : IEnumerable
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static T IsEmpty<T>(this IArgumentConstraintManager<T> manager) where T : IEnumerable
         {
-            return scope.CreateConstraint(
-                         x => x != null && !x.Cast<object>().Any(), 
-                         "empty collection");
+            return manager.NullCheckedMatches(
+                x => !x.Cast<object>().Any(), 
+                x => x.Write("empty collection"));
         }
 
         /// <summary>
         /// Tests that the passed in argument is equal to the specified value.
         /// </summary>
         /// <typeparam name="T">The type of the argument.</typeparam>
-        /// <param name="scope">The scope of the constraint.</param>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <param name="value">The value to compare to.</param>
-        /// <returns>An argument constraint.</returns>
-        public static ArgumentConstraint<T> IsEqualTo<T>(this ArgumentConstraintScope<T> scope, T value)
+        /// <returns>A dummy argument value.</returns>
+        public static T IsEqualTo<T>(this IArgumentConstraintManager<T> manager, T value)
         {
-            return scope.CreateConstraint(
-                         x => Equals(value, x), 
-                         "equal to {0}", 
-                         value);
+            return manager.Matches(
+                x => Equals(value, x),
+                x => x.Write("equal to ").WriteArgumentValue(value));
         }
 
-        private static ArgumentConstraint<T> CreateConstraint<T>(this ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string description)
+        /// <summary>
+        /// Constrains the argument to be of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of argument in the method signature.</typeparam>
+        /// <param name="manager">The constraint manager.</param>
+        /// <param name="type">The type to constrain the argument with.</param>
+        /// <returns>A dummy value.</returns>
+        public static T IsInstanceOf<T>(this IArgumentConstraintManager<T> manager, Type type)
         {
-            return ArgumentConstraint.Create(scope, predicate, description);
+            return manager.NullCheckedMatches(x => type.IsAssignableFrom(x.GetType()), x => x.Write("Instance of ").Write(type.FullName));
         }
 
-        private static ArgumentConstraint<T> CreateConstraint<T>(this ArgumentConstraintScope<T> scope, Func<T, bool> predicate, string descriptionFormat, params object[] args)
+        /// <summary>
+        /// Constrains the argument with a predicate.
+        /// </summary>
+        /// <param name="scope">
+        /// The constraint manager.
+        /// </param>
+        /// <param name="predicate">
+        /// The predicate that should constrain the argument.
+        /// </param>
+        /// <param name="description">
+        /// A human readable description of the constraint.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of argument in the method signature.
+        /// </typeparam>
+        /// <returns>
+        /// A dummy argument value.
+        /// </returns>
+        public static T Matches<T>(this IArgumentConstraintManager<T> scope, Func<T, bool> predicate, string description)
         {
-            return ArgumentConstraint.Create(scope, predicate, descriptionFormat.FormatInvariant(args));
+            return scope.Matches(predicate, x => x.Write(description));
+        }
+
+        /// <summary>
+        /// Constrains the argument with a predicate.
+        /// </summary>
+        /// <param name="manager">
+        /// The constraint manager.
+        /// </param>
+        /// <param name="predicate">
+        /// The predicate that should constrain the argument.
+        /// </param>
+        /// <param name="descriptionFormat">
+        /// A human readable description of the constraint format string.
+        /// </param>
+        /// <param name="args">
+        /// Arguments for the format string.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of argument in the method signature.
+        /// </typeparam>
+        /// <returns>
+        /// A dummy argument value.
+        /// </returns>
+        public static T Matches<T>(this IArgumentConstraintManager<T> manager, Func<T, bool> predicate, string descriptionFormat, params object[] args)
+        {
+            return manager.Matches(predicate, x => x.Write(string.Format(descriptionFormat, args)));
+        }
+
+        /// <summary>
+        /// Constrains the argument with a predicate.
+        /// </summary>
+        /// <param name="scope">
+        /// The constraint manager.
+        /// </param>
+        /// <param name="predicate">
+        /// The predicate that should constrain the argument.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of argument in the method signature.
+        /// </typeparam>
+        /// <returns>
+        /// A dummy argument value.
+        /// </returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for Linq expressions.")]
+        public static T Matches<T>(this IArgumentConstraintManager<T> scope, Expression<Func<T, bool>> predicate)
+        {
+            return scope.Matches(predicate.Compile(), predicate.ToString());
+        }
+
+        /// <summary>
+        /// Constrains the argument to be not null (Nothing in VB) and to match
+        /// the specified predicate.
+        /// </summary>
+        /// <typeparam name="T">The type of the argument to constrain.</typeparam>
+        /// <param name="manager">The constraint manager.</param>
+        /// <param name="predicate">The predicate that constrains non null values.</param>
+        /// <param name="descriptionWriter">An action that writes a description of the constraint
+        /// to the output.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static T NullCheckedMatches<T>(this IArgumentConstraintManager<T> manager, Func<T, bool> predicate, Action<IOutputWriter> descriptionWriter)
+        {
+            return manager.Matches(
+                x => ((object)x) != null && predicate(x),
+                descriptionWriter);
         }
     }
 }

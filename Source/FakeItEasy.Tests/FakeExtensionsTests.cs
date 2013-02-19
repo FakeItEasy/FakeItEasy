@@ -1,16 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using FakeItEasy.Configuration;
-using FakeItEasy.Core;
-using FakeItEasy.Expressions;
-using FakeItEasy.Tests.TestHelpers;
-using NUnit.Framework;
-
 namespace FakeItEasy.Tests
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using FakeItEasy.Creation;
+    using FakeItEasy.Expressions;
+    using TestHelpers;
+    using NUnit.Framework;
+
     [TestFixture]
     public class FakeExtensionsTests
         : ConfigurableServiceLocatorTestBase
@@ -102,12 +103,12 @@ namespace FakeItEasy.Tests
 
             var matcher = A.Fake<ICallMatcher>();
 
-            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>.Ignored.Argument)).Returns(false);
-            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>.That.Matches(x => x.Method.Name == "Baz").Argument)).Returns(true);
-            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>.That.Matches(x => x.Method.Name == "Biz").Argument)).Returns(true);
+            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>._)).Returns(false);
+            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>.That.Matches(x => x.Method.Name == "Baz", "Method named Baz"))).Returns(true);
+            A.CallTo(() => matcher.Matches(A<IFakeObjectCall>.That.Matches(x => x.Method.Name == "Biz", "Method named Biz"))).Returns(true);
 
             var factory = A.Fake<IExpressionCallMatcherFactory>();
-            A.CallTo(() => factory.CreateCallMathcer(A<LambdaExpression>.Ignored)).Returns(matcher);
+            A.CallTo(() => factory.CreateCallMathcer(A<LambdaExpression>._)).Returns(matcher);
 
             // Act
             IEnumerable<ICompletedFakeObjectCall> matchingCalls = null;
@@ -189,13 +190,13 @@ namespace FakeItEasy.Tests
             FakeExtensions.ReturnsNextFromSequence(config, sequence);
 
             // Assert
-            var factoryValidator = A<Func<IFakeObjectCall, int>>.That.Matches(x => 
+            Func<Func<IFakeObjectCall, int>> factoryValidator = () => A<Func<IFakeObjectCall, int>>.That.Matches(x => 
             {
                 var producedSequence = new[] { x.Invoke(call), x.Invoke(call), x.Invoke(call) };
                 return producedSequence.SequenceEqual(sequence);
-            });
+            }, "Predicate");
             
-            A.CallTo(() => config.ReturnsLazily(factoryValidator)).MustHaveHappened();
+            A.CallTo(() => config.ReturnsLazily(factoryValidator.Invoke())).MustHaveHappened();
         }
 
         [Test]
@@ -205,7 +206,7 @@ namespace FakeItEasy.Tests
             var config = A.Fake<IReturnValueConfiguration<int>>();
             var returnedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
             
-            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.Ignored)).Returns(returnedConfig);
+            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>._)).Returns(returnedConfig);
 
             // Act
             FakeExtensions.ReturnsNextFromSequence(config, 1, 2, 3);
@@ -275,7 +276,7 @@ namespace FakeItEasy.Tests
         public void WriteCalls_should_throw_when_calls_is_null()
         {
             NullGuardedConstraint.Assert(() =>
-                FakeExtensions.Write(Enumerable.Empty<IFakeObjectCall>(), new StringWriter()));
+                FakeExtensions.Write(Enumerable.Empty<IFakeObjectCall>(), A.Dummy<IOutputWriter>()));
         }
 
         [Test]
@@ -287,13 +288,13 @@ namespace FakeItEasy.Tests
             var callWriter = A.Fake<CallWriter>();
             this.StubResolve<CallWriter>(callWriter);
 
-            var writer = new StringWriter();
+            var writer = A.Dummy<IOutputWriter>();
 
             // Act
             FakeExtensions.Write(calls, writer);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, calls, writer)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(calls, writer)).MustHaveHappened();
         }
 
         [Test]
@@ -321,7 +322,7 @@ namespace FakeItEasy.Tests
             FakeExtensions.WriteToConsole(calls);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, calls, A<TextWriter>.Ignored)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(calls, A<IOutputWriter>._)).MustHaveHappened();
         }
 
         [Test]
@@ -337,7 +338,7 @@ namespace FakeItEasy.Tests
             FakeExtensions.WriteToConsole(calls);
 
             // Assert
-            A.CallTo(() => callWriter.WriteCalls(0, A<IEnumerable<IFakeObjectCall>>.Ignored.Argument, Console.Out)).MustHaveHappened();
+            A.CallTo(() => callWriter.WriteCalls(A<IEnumerable<IFakeObjectCall>>._, A<IOutputWriter>._)).MustHaveHappened();
         }
 
         [Test]
@@ -392,6 +393,153 @@ namespace FakeItEasy.Tests
             // Assert
             NullGuardedConstraint.Assert(() =>
                 FakeExtensions.GetArgument<int>(A.Fake<IFakeObjectCall>(), "foo"));
+        }
+
+        [Test]
+        public void Strict_should_configure_fake_to_throw_expectation_exception()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>(x => x.Strict());
+
+            // Act
+
+            // Assert
+            Assert.That(delegate()
+                            {
+                                foo.Bar();
+                            },
+                            Throws.Exception.InstanceOf<ExpectationException>()
+                            .With.Message.EqualTo("Call to non configured method \"Bar\" of strict fake."));
+        }
+
+        [Test]
+        public void Strict_should_return_configuration_object()
+        {
+            // Arrange
+            var options = A.Fake<IFakeOptionsBuilder<IFoo>>();
+            Any.CallTo(options).WithReturnType<IFakeOptionsBuilder<IFoo>>().Returns(options);
+
+            // Act
+            var result = options.Strict();
+
+            // Assert
+            Assert.That(result, Is.SameAs(options));
+        }
+
+        [Test]
+        public void Strict_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() => 
+                FakeExtensions.Strict(A.Dummy<IFakeOptionsBuilder<IFoo>>()));
+        }
+
+        [Test]
+        public void Where_should_return_configuration_from_configuration()
+        {
+            // Arrange
+            var returnedConfiguration = A.Dummy<IVoidConfiguration>();
+            
+            var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
+            A.CallTo(configuration).WithReturnType<IVoidConfiguration>().Returns(returnedConfiguration);
+
+            // Act
+
+            // Assert
+            Assert.That(configuration.Where(x => true), Is.SameAs(returnedConfiguration));
+        }
+
+        [Test]
+        public void Where_should_pass_writer_that_writes_predicate_as_string()
+        {
+            // Arrange
+            var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
+            
+            // Act
+            configuration.Where(x => true);
+
+            // Assert
+            A.CallTo(() => configuration.Where(
+                A<Func<IFakeObjectCall, bool>>._, 
+                A<Action<IOutputWriter>>.That.Writes("x => True"))).MustHaveHappened();
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Where_should_pass_compiled_predicate_to_configuration(bool predicateReturnValue)
+        {
+            // Arrange
+            var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
+
+            // Act
+            configuration.Where(x => predicateReturnValue);
+
+            // Assert
+            A.CallTo(() => configuration.Where(
+                A<Func<IFakeObjectCall, bool>>.That.Returns(A.Dummy<IFakeObjectCall>(), predicateReturnValue),
+                A<Action<IOutputWriter>>._)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_configure_fake_to_throw_the_specified_exception()
+        {
+            // Arrange
+            var ex = A.Dummy<Exception>();
+            var config = A.Fake<IExceptionThrowerConfiguration>();
+
+            // Act
+            config.Throws(ex);
+
+            // Assert
+            A.CallTo(() => config.Throws(A<Func<IFakeObjectCall, Exception>>.That.Returns(ex))).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_configure_fake_to_throw_the_specified_exception_type()
+        {
+            // Arrange
+            var ex = A.Dummy<Exception>();
+            var config = A.Fake<IExceptionThrowerConfiguration>();
+
+            // Act
+            config.Throws<InvalidOperationException>();
+
+            // Assert
+            A.CallTo(() => config.Throws(FuncThatReturnsExceptionOfType<InvalidOperationException>())).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_configure_fake_to_throw_exceptions_returned_by_the_factory()
+        {
+            // Arrange
+            var exception = A.Dummy<Exception>();
+            var factory = new Func<Exception>(() => exception);
+            var config = A.Fake<IExceptionThrowerConfiguration>();
+
+            // Act
+            config.Throws(factory);
+
+            // Assert
+            A.CallTo(() => config.Throws(A<Func<IFakeObjectCall, Exception>>.That.Returns(exception))).MustHaveHappened();
+        }
+
+        private static Func<IFakeObjectCall, Exception> FuncThatReturnsExceptionOfType<T>()
+        {
+            return A<Func<IFakeObjectCall, Exception>>.That.NullCheckedMatches(x =>
+                {
+                    var result = x.Invoke(null);
+
+                    if (result == null)
+                    {
+                        return false;
+                    }
+
+                    return typeof (T).IsAssignableFrom(result.GetType());
+                }, x => x.Write("function that returns exception of type ").WriteArgumentValue(typeof (T)));
         }
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)

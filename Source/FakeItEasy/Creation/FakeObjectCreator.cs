@@ -22,9 +22,9 @@ namespace FakeItEasy.Creation
             this.configurer = configurer;
         }
 
-        public object CreateFake(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
+        public virtual object CreateFake(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
         {
-            var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, fakeOptions.ArgumentsForConstructor);
+            var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, fakeOptions.ArgumentsForConstructor,fakeOptions.AdditionalAttributes);
 
             if (throwOnFailure)
             {
@@ -105,7 +105,7 @@ namespace FakeItEasy.Creation
             {
                 logger.Debug("Trying with constructor with {0} arguments.", constructor.Arguments.Length);
 
-                var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, constructor.Arguments.Select(x => x.ResolvedValue));
+                var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, constructor.Arguments.Select(x => x.ResolvedValue),fakeOptions.AdditionalAttributes);
 
                 if (result.ProxyWasSuccessfullyGenerated)
                 {

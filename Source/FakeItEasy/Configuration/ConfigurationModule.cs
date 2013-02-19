@@ -52,7 +52,7 @@
                 return this.BuilderFactory.Invoke(callRule, fakeObject);
             }
 
-            public IReturnValueArgumentValidationConfiguration<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule)
+            public IAnyCallConfigurationWithReturnTypeSpecified<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule)
             {
                 var parent = this.BuilderFactory.Invoke(callRule, fakeObject);
                 var configuration = new RuleBuilder.ReturnValueConfiguration<TMember>();
@@ -60,7 +60,7 @@
                 return configuration;
             }
 
-            public IAnyCallConfiguration CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule)
+            public IAnyCallConfigurationWithNoReturnTypeSpecified CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule)
             {
                 return new AnyCallConfiguration(fakeObject, callRule, this.Container.Resolve<IConfigurationFactory>());
             }

@@ -34,6 +34,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,43 +47,38 @@
     <WarningLevel>0</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>3016, 0067</NoWarn>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
+    <Reference Include="Castle.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.5.7.10213\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.mocks, Version=2.5.7.10213, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.5.7.10213\lib\nunit.mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="pnunit.framework">
-      <HintPath>..\packages\NUnit.2.5.7.10213\lib\pnunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.1.12217, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.1\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\InternalsVisibleTo-Signed.cs" />
     <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="..\VersionAssemblyInfo.cs" />
+    <Compile Include="ActionOverWriterValueFormatter.cs" />
     <Compile Include="AnyTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\CollectionContainsTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\CollectionIsEmptyTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\EqualToConstraintTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
+    <Compile Include="ArgumentConstraintExtensions\NullCheckedMatchesConstraint.cs" />
+    <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
+    <Compile Include="AutoInitializedFixture.cs" />
+    <Compile Include="Core\ArgumentConstraintTrapTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
+    <Compile Include="Core\DefaultArgumentConstraintManagerTests.cs" />
     <Compile Include="Core\DefaultFixtureInitializerTests.cs" />
+    <Compile Include="Core\DefaultSutInitializerTests.cs" />
     <Compile Include="Core\FakeCallEqualityComparerTests.cs" />
+    <Compile Include="Core\TypeCatalogueInstanceProviderTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidatorTests.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManagerTests.cs">
       <SubType>Code</SubType>
@@ -90,6 +87,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Creation\DefaultFakeObjectCreatorTests.cs" />
+    <Compile Include="Creation\DelegateProxies\DelegateProxyGeneratorTests.cs" />
     <Compile Include="Creation\DummyValueCreationSessionTests.cs" />
     <Compile Include="Creation\ProxyGeneratorResultTests.cs" />
     <Compile Include="Core\DefaultExceptionThrowerTests.cs" />
@@ -108,7 +106,6 @@
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
     <Compile Include="Core\FakeConfiguratorTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
-    <Compile Include="ArgumentConstraintExtensionsTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsInstanceOfTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\IsNullTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\StringContainsTests.cs" />
@@ -121,24 +118,32 @@
     <Compile Include="Core\DynamicContainerTests.cs" />
     <Compile Include="Core\OrderedFakeAsserterFactoryTests.cs" />
     <Compile Include="Core\OrderedFakeAsserterTests.cs" />
+    <Compile Include="Creation\ProxyGeneratorSelectorTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
-    <Compile Include="Expressions\ArgumentConstraintScopeTests.cs" />
-    <Compile Include="Expressions\ArgumentConstraintTests.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\AggregateArgumentConstraintTests.cs" />
     <Compile Include="Expressions\CallExpressionParserTests.cs" />
+    <Compile Include="Expressions\ExpressionArgumentConstraintFactoryTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />
-    <Compile Include="Expressions\NotArgumentConstraintScopeTests.cs" />
-    <Compile Include="Expressions\RootArgumentConstraintScopeTests.cs" />
+    <Compile Include="Builders\BuilderForExpression.cs" />
+    <Compile Include="ForTestAttribute.cs" />
+    <Compile Include="IFooAttribute.cs" />
+    <Compile Include="TestDataBuilder.cs" />
     <Compile Include="Expressions\TypeWithInternalProperty.cs" />
     <Compile Include="FacadedTestBase.cs" />
     <Compile Include="FakeFacadeTests.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="Ignore.cs" />
-    <Compile Include="IsProxyConstraint.cs" />
+    <Compile Include="InvokesExtensionsTests.cs" />
+    <Compile Include="IsFakeConstraint.cs" />
     <Compile Include="LambdaExpressionDummyDefinition.cs" />
+    <Compile Include="OutputWriterTests.cs" />
     <Compile Include="RepeatedTests.cs" />
     <Compile Include="RecordersTests.cs" />
+    <Compile Include="ReturnsLazilyExtensionsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SelfInitializedFakes\CallDataTests.cs" />
     <Compile Include="SelfInitializedFakes\FileStorageTests.cs" />
     <Compile Include="SelfInitializedFakes\RecordingExceptionTests.cs" />
@@ -146,7 +151,6 @@
     <Compile Include="Core\CallWriterTests.cs" />
     <Compile Include="CommonExtensionsTests.cs" />
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
-    <Compile Include="Expressions\ArgumentConstraintFactoryTests.cs" />
     <Compile Include="ArgumentConstraintTestBase.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ExpressionCallRuleTests.cs" />
@@ -189,6 +193,7 @@
     <Compile Include="SelfInitializedFakes\RecordingManagerTests.cs" />
     <Compile Include="Fake(T)Tests.cs" />
     <Compile Include="Configuration\RecordingRuleBuilderTests.cs" />
+    <Compile Include="ThrowsExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj">
@@ -219,6 +224,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

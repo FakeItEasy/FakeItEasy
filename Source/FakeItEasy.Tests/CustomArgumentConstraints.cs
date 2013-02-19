@@ -1,5 +1,6 @@
 namespace FakeItEasy.Tests
 {
+    using System;
     using System.Collections;
     using System.Globalization;
     using System.Linq;
@@ -10,38 +11,78 @@ namespace FakeItEasy.Tests
     
     public static class CustomArgumentConstraints
     {
-        public static ArgumentConstraint<T> IsThisSequence<T>(this ArgumentConstraintScope<T> scope, T collection) where T : IEnumerable
+        public static T IsThisSequence<T>(this IArgumentConstraintManager<T> scope, T collection) where T : IEnumerable
         {
-            return ArgumentConstraint.Create(scope, x => x.Cast<object>().SequenceEqual(collection.Cast<object>()), "This sequence: " + collection.Cast<object>().ToCollectionString(x => x.ToString(), ", "));
+            return scope.Matches(
+                x => x.Cast<object>().SequenceEqual(collection.Cast<object>()), 
+                "This sequence: " + collection.Cast<object>().ToCollectionString(x => x.ToString(), ", "));
         }
 
-        public static ArgumentConstraint<T> IsThisSequence<T>(this ArgumentConstraintScope<T> scope, params object[] collection) where T : IEnumerable
+        public static T IsThisSequence<T>(this IArgumentConstraintManager<T> scope, params object[] collection) where T : IEnumerable
         {
-            return ArgumentConstraint.Create(scope, x => x != null && x.Cast<object>().SequenceEqual(collection.Cast<object>()), "This sequence: " + collection.ToCollectionString(x => x.ToString(), ", "));
+            return scope.Matches(x => x != null && x.Cast<object>().SequenceEqual(collection.Cast<object>()), "This sequence: " + collection.ToCollectionString(x => x.ToString(), ", "));
         }
 
         
-        public static ArgumentConstraint<Expression> ProducesValue(this ArgumentConstraintScope<Expression> scope, object expectedValue)
+        public static Expression ProducesValue(this IArgumentConstraintManager<Expression> scope, object expectedValue)
         {
-            return ArgumentConstraint.Create(scope, x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x)), 
+            return scope.Matches(x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x)), 
 			                                string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
         }
 
-        public static ArgumentConstraint<FakeManager> Fakes(this ArgumentConstraintScope<FakeManager> scope, object fakedObject)
+        internal static ParsedArgumentExpression ProducesValue(this IArgumentConstraintManager<ParsedArgumentExpression> scope, object expectedValue)
         {
-            return ArgumentConstraint.Create(scope, x => x.Equals(Fake.GetFakeManager(fakedObject)), "Specified FakeObject");
+            return scope.Matches(x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x.Expression)),
+                                            string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
         }
 
-        internal static ArgumentConstraint<FakeOptions> IsEmpty(this ArgumentConstraintScope<FakeOptions> scope)
+        public static FakeManager Fakes(this IArgumentConstraintManager<FakeManager> scope, object fakedObject)
         {
-            return ArgumentConstraint.Create(scope,
+            return scope.Matches(x => x.Equals(Fake.GetFakeManager(fakedObject)), "Specified FakeObject");
+        }
+
+        internal static FakeOptions IsEmpty(this IArgumentConstraintManager<FakeOptions> scope)
+        {
+            return scope.NullCheckedMatches(
                 x => 
                 {
-                    return x.AdditionalInterfacesToImplement == null
+                    return !x.AdditionalInterfacesToImplement.Any()
                         && x.ArgumentsForConstructor == null
                         && x.SelfInitializedFakeRecorder == null
                         && x.WrappedInstance == null;
-                }, "Empty fake options");
+                },
+                x => x.Write("empty fake options"));
+        }
+
+        internal static Action<IOutputWriter> Writes(this IArgumentConstraintManager<Action<IOutputWriter>> manager, string expectedValue)
+        {
+            return manager.NullCheckedMatches(
+                x =>
+                    {
+                        var writer = new StringBuilderOutputWriter();
+                        x.Invoke(writer);
+
+                        return string.Equals(writer.Builder.ToString(), expectedValue, StringComparison.Ordinal);
+                    },
+                x => x.Write("action that writes ").WriteArgumentValue(expectedValue).Write(" to output."));
+        }
+
+        internal static Func<T1, T> Returns<T1, T>(this IArgumentConstraintManager<Func<T1, T>> manager, T expectedValue)
+        {
+            return manager.Returns(default(T1), expectedValue);
+        }
+
+        internal static Func<T1, T> Returns<T1, T>(this IArgumentConstraintManager<Func<T1, T>> manager, T1 inputValue, T expectedValue)
+        {
+            return manager.NullCheckedMatches(
+                x =>
+                {
+                    return object.Equals(x.Invoke(inputValue), expectedValue);
+                },
+                x =>
+                {
+                    x.Write("a function that returns ").WriteArgumentValue(expectedValue);
+                });
         }
     }
 }

@@ -8,6 +8,7 @@
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.CastleDynamicProxy;
+    using FakeItEasy.Creation.DelegateProxies;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
     using FakeItEasy.SelfInitializedFakes;
@@ -37,10 +38,10 @@
                     });
 
             container.RegisterSingleton(c =>
-                new ArgumentConstraintFactory());
+                new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
 
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>(), c.Resolve<ICallExpressionParser>())));
+                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>(), c.Resolve<ICallExpressionParser>())));
 
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
@@ -91,7 +92,9 @@
                                                              return new DefaultFakeAndDummyManager(session, fakeCreator, c.Resolve<IFakeWrapperConfigurer>());
                                                          });
 
-            container.RegisterSingleton<IProxyGenerator>(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
+            container.RegisterSingleton<CastleDynamicProxyGenerator>(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
+            
+            container.RegisterSingleton<IProxyGenerator>(c => new ProxyGeneratorSelector(new DelegateProxyGenerator(), c.Resolve<CastleDynamicProxyGenerator>()));
             
             container.RegisterSingleton(
                 c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
@@ -108,11 +111,19 @@
 
             container.RegisterSingleton<IFakeScopeFactory>(c => new FakeScopeFactory());
 
-            container.Register<IFixtureInitializer>(c => new DefaultFixtureInitializer(c.Resolve<IFakeAndDummyManager>()));
+            container.Register<IFixtureInitializer>(c => new DefaultFixtureInitializer(c.Resolve<IFakeAndDummyManager>(), c.Resolve<ISutInitializer>()));
 
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
             container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IProxyGenerator>()));
+
+            container.Register<IArgumentConstraintTrapper>(c => new ArgumentConstraintTrap());
+
+            container.Register<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
+
+            container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write));
+
+            container.Register<ISutInitializer>(c => new DefaultSutInitializer(c.Resolve<IFakeAndDummyManager>()));
         }
 
         private class ExpressionCallMatcherFactory
@@ -124,7 +135,7 @@
             {
                 return new ExpressionCallMatcher(
                     callSpecification, 
-                    this.Container.Resolve<ArgumentConstraintFactory>(), 
+                    this.Container.Resolve<ExpressionArgumentConstraintFactory>(), 
                     this.Container.Resolve<MethodInfoManager>(),
                     this.Container.Resolve<ICallExpressionParser>());
             }
@@ -159,5 +170,15 @@
                 return result != null;
             }
         }
+
+        private class ArgumentConstraintManagerFactory
+            : IArgumentConstraintManagerFactory
+        {
+            public IArgumentConstraintManager<T> Create<T>()
+            {
+                return new DefaultArgumentConstraintManager<T>(ArgumentConstraintTrap.ReportTrappedConstraint);
+            }
+        }
+
     }
 }

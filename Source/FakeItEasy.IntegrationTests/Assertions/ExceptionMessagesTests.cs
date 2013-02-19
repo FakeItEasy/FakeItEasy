@@ -62,9 +62,9 @@ namespace FakeItEasy.IntegrationTests.Assertions
     FakeItEasy.Tests.IFoo.Bar("""")
   Expected to find it at least twice but found it #0 times among the calls:
     1: FakeItEasy.Tests.IFoo.Bar(
-           argument1: 1,
-           argument2: 2,
-           argument3: ""three"") repeated 2 times
+          argument1: 1,
+          argument2: 2,
+          argument3: ""three"") repeated 2 times
     ...
     3: FakeItEasy.Tests.IFoo.Bar()
 
@@ -82,7 +82,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             var thrown = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Bar(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
+                A.CallTo(() => foo.Bar(A<object>._, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
 
             Assert.That(thrown.Message, Is.EqualTo(@"
 
@@ -105,7 +105,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             var thrown = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Baz(A<object>.Ignored, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
+                A.CallTo(() => foo.Baz(A<object>._, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
 
             Assert.That(thrown.Message, Is.EqualTo(@"
 

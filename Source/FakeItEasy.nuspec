@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>FakeItEasy</id>
+    <title>Fake it Easy!</title>
+    <projectUrl>http://code.google.com/p/fakeiteasy/</projectUrl>
+    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+    <version>0.0.0</version>
+    <authors>Patrik Hägne</authors>
+    <owners>Patrik Hägne</owners>
+    <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
+    <releaseNotes>TBD</releaseNotes>
+    <language>en-US</language>
+    <tags>TDD unittesting mocking faking stubbing spy spies doubles</tags>
+  </metadata>
+  <files>
+    <file src="FakeItEasy.Net35\Bin\Release\Merged\FakeItEasy.dll" target="lib\net35" />
+    <file src="FakeItEasy.Net35\Bin\Release\Merged\FakeItEasy.xml" target="lib\net35" />
+    <file src="FakeItEasy\Bin\Release\Merged\FakeItEasy.dll" target="lib\net40" />
+    <file src="FakeItEasy\Bin\Release\Merged\FakeItEasy.xml" target="lib\net40" />
+    <file src="FakeItEasy-SL\Bin\Release\Merged\FakeItEasy.dll" target="lib\sl40" />
+    <file src="FakeItEasy-SL\Bin\Release\Merged\FakeItEasy.xml" target="lib\sl40" />
+  </files>
+</package>

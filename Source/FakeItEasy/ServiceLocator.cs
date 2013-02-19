@@ -2,8 +2,8 @@
 {
     using System;
     using System.Diagnostics;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.IoC;
+    using Configuration;
+    using IoC;
 
     internal abstract class ServiceLocator
     {

@@ -132,7 +132,38 @@
         }
 
         [Test]
-        public void Should_throw_when_expression_is_not_method_or_property_getter()
+        public void Should_return_parsed_expression_with_argument_names_set_when_calling_instance_method()
+        {
+            // Arrange
+            var argumentOne = new object();
+            var argumentTwo = new object();
+
+            var foo = A.Fake<IFoo>();
+            var call = Call(() => foo.Bar(argumentOne, argumentTwo));
+
+            // Act
+            var result = this.parser.Parse(call);
+
+            // Assert
+            Assert.That(result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name), Is.EquivalentTo(new[] { "argument", "argument2" }));
+        }
+
+        [Test]
+        public void Should_return_parsed_expresssion_with_argument_names_set_when_calling_indexed_property_getter()
+        {
+            // Arrange
+            var foo = A.Fake<IList<string>>();
+            var call = Call(() => foo[10]);
+
+            // Act
+            var result = this.parser.Parse(call);
+
+            // Assert
+            Assert.That(result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Single(), Is.EqualTo("index"));
+        }
+
+        [Test]
+        public void Should_throw_when_expression_is_not_method_or_property_getter_or_invokation()
         {
             // Arrange
             var instance = new TypeWithPublicField();
@@ -145,6 +176,26 @@
                         Throws.ArgumentException.With.Message.EqualTo(
                             "The specified expression is not a method call or property getter."));
         }
+
+        [Test]
+        public void Should_parse_invokation_expression_correctly()
+        {
+            // Arrange
+            var d = new IntFunction((x, y) => 10);
+
+            var call = Call(() => d("foo", "bar"));
+
+            // Act
+            var result = this.parser.Parse(call);
+
+            // Assert
+            Assert.That(result.CalledMethod.Name, Is.EqualTo("Invoke"));
+            Assert.That(result.Arguments, Is.EquivalentTo(new object[] { "foo", "bar"}));
+            Assert.That(result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name), Is.EquivalentTo(new[] { "argument1", "argument2"}));
+            Assert.That(result.CallTarget, Is.SameAs(d));
+        }
+
+        public delegate int IntFunction(string argument1, object argument2);
 
         private class TypeWithPublicField
         {

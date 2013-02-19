@@ -1,91 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Tests;
-using FakeItEasy.ExtensionSyntax;
-using FakeItEasy.Core;
-
-namespace FakeItEasy.IntegrationTests
+﻿namespace FakeItEasy.IntegrationTests
 {
+    using System;
+    using System.Collections.Generic;
+    using Core;
+    using ExtensionSyntax;
+    using NUnit.Framework;
+    using Tests;
+
+   
+    public class BaseClass
+    {
+        public bool WasCalled;
+
+        public virtual void DoSomething()
+        {
+            WasCalled = true;
+        }
+
+        public virtual int ReturnSomething()
+        {
+            this.WasCalled = true;
+            return 10;
+        }
+    }
+
     [TestFixture]
     public class ConfigurationTests
     {
-        [Test]
-        public void Faked_object_configured_to_call_back_performs_callback_when_called()
-        {
-            var foo = A.Fake<IFoo>();
-
-            bool wasCalled = false;
-
-            foo.Configure().CallsTo(x => x.Bar()).Invokes(x => wasCalled = true);
-            
-            foo.Bar();
-
-            Assert.That(wasCalled, Is.True);
-        }
-
-        [Test]
-        public void Faked_object_configured_to_perform_several_call_backs_and_return_value_does_all()
-        {
-            var foo = A.Fake<IFoo>();
-            
-            bool firstWasCalled = false;
-            bool secondWasCalled = false;
-
-            foo.Configure()
-                .CallsTo(x => x.Baz())
-                .Invokes(x => firstWasCalled = true)
-                .Invokes(x => secondWasCalled = true)
-                .Returns(10);
-
-            var result = foo.Baz();
-
-            Assert.That(firstWasCalled);
-            Assert.That(secondWasCalled);
-            Assert.That(result, Is.EqualTo(10));
-        }
-
-        [Test]
-        public void Faked_object_configured_to_call_base_method_should_call_base_method()
-        {
-            var fake = A.Fake<BaseClass>();
-
-            fake.DoSomething();
-
-            Assert.That(fake.WasCalled, Is.False);
-
-            fake.Configure().CallsTo(x => x.DoSomething()).CallsBaseMethod();
-            fake.DoSomething();
-
-            Assert.That(fake.WasCalled, Is.True);
-        }
-
-        [Test]
-        public void Faked_object_configured_to_call_base_method_should_return_value_from_base_method()
-        {
-            var fake = A.Fake<BaseClass>();
-
-            fake.Configure().CallsTo(x => x.ReturnSomething()).CallsBaseMethod();
-            
-            Assert.That(fake.ReturnSomething(), Is.EqualTo(10));
-        }
-
-        [Test]
-        public void Faked_object_configured_to_call_base_method_invokes_configured_invokations_also()
-        {
-            var fake = A.Fake<BaseClass>();
-
-            bool wasCalled = false;
-
-            fake.Configure().CallsTo(x => x.ReturnSomething()).Invokes(x => wasCalled = true).CallsBaseMethod();
-            
-            fake.ReturnSomething();
-
-            Assert.That(wasCalled, Is.True);
-        }
-
         [Test]
         public void Function_call_can_be_configured_using_predicate_to_validate_arguments()
         {
@@ -136,7 +77,7 @@ namespace FakeItEasy.IntegrationTests
             var foo = A.Fake<IFoo>();
             
             // Act
-            A.CallTo(() => foo.Bar(A<string>.Ignored, A<string>.Ignored)).Throws(new FormatException());
+            A.CallTo(() => foo.Bar(A<string>._, A<string>._)).Throws(new FormatException());
             
             // Assert
             Assert.Throws<FormatException>(() =>
@@ -188,19 +129,64 @@ namespace FakeItEasy.IntegrationTests
             }
         }
 
-        public class BaseClass
+        [Test]
+        public void Should_be_able_to_specify_predicates_when_configuring_any_call_on_an_object()
         {
-            public bool WasCalled;
+            // Arrange
+            var foo = A.Fake<IFoo>();
 
-            public virtual void DoSomething()
+            // Act
+            A.CallTo(foo).Where(x => x.Method.Name.Equals("Bar")).Throws(new Exception());
+            A.CallTo(() => foo.Bar()).Throws(new Exception());
+            
+            // Assert
+            Assert.DoesNotThrow(() => foo.Baz());
+            Assert.Throws<Exception>(foo.Bar);
+        }
+
+        [Test]
+        public void Should_be_able_to_configure_indexed_properties()
+        {
+            // Arrange
+            var fake = A.Fake<IIndexed>(x => x.Strict());
+
+            A.CallTo(() => fake[10]).Returns("ten");
+            
+            // Act
+            
+            // Assert
+            Assert.That(fake[10], Is.EqualTo("ten"));
+        }
+
+        [Test]
+        public void Should_be_able_to_intercept_protected_method()
+        {
+            // Arrange
+            var fake = A.Fake<TypeWithProtectedMethod>();
+
+            // Act
+            A.CallTo(fake).WithReturnType<int>().Where(x => x.Method.Name == "ProtectedMethod").Returns(20);
+
+            // Assert
+            Assert.That(fake.CallsProtectedMethod(), Is.EqualTo(20));
+        }
+
+        public class TypeWithProtectedMethod
+        {
+            public int CallsProtectedMethod()
             {
-                WasCalled = true;
+                return this.ProtectedMethod();
             }
 
-            public virtual int ReturnSomething()
+            protected virtual int ProtectedMethod()
             {
                 return 10;
             }
+        }
+
+        public interface IIndexed
+        {
+            string this[int index] { get; }
         }
     }
 }

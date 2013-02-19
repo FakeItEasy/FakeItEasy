@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests.Core
     [TestFixture]
     public class DefaultFakeObjectCallFormatterTests
     {
-        private DefaultFakeObjectCallFormatter formatter;
+        [UnderTest] private DefaultFakeObjectCallFormatter formatter;
         [Fake] internal ArgumentValueFormatter ArgumentFormatter;
         [Fake] internal IFakeManagerAccessor FakeManagerAccessor;
 
@@ -17,8 +17,6 @@ namespace FakeItEasy.Tests.Core
         public void SetUp()
         {
             Fake.InitializeFixture(this);
-
-            this.formatter = new DefaultFakeObjectCallFormatter(this.ArgumentFormatter, this.FakeManagerAccessor);
         }
 
         [Test]
@@ -75,7 +73,7 @@ namespace FakeItEasy.Tests.Core
             var call = CreateFakeCall(
                 typeof(ITypeWithMethodThatTakesArguments).GetMethod("MoreThanTwo", new[] { typeof(string), typeof(string), typeof(string) }),
                 "one", "two", "three");
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(A<object>.Ignored))
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(A<object>._))
                 .ReturnsLazily(x => x.GetArgument<object>(0).ToString());
 
             // Act

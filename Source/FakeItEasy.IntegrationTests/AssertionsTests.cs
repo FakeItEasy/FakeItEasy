@@ -45,8 +45,6 @@ namespace FakeItEasy.IntegrationTests
                     A.CallTo(() => foo.Baz()).MustHaveHappened();
                 }
             }
-
-            
         }
 
         [Test]
@@ -87,6 +85,11 @@ namespace FakeItEasy.IntegrationTests
                 },
                 Throws.Exception.TypeOf<InvalidOperationException>());
             }
+        }
+
+        public interface ITypeWithWriteOnlyProperty
+        {
+            object SetOnly { set; }
         }
     }
 }

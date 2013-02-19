@@ -5,12 +5,12 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     using System.Linq;
 
     [TestFixture]
-    public class CollectionIsEmptyTests
+    internal class CollectionIsEmptyTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
-        protected override FakeItEasy.Expressions.ArgumentConstraint<IEnumerable<object>> CreateConstraint(FakeItEasy.Expressions.ArgumentConstraintScope<IEnumerable<object>> scope)
+        protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)
         {
-            return scope.IsEmpty();
+            scope.IsEmpty();
         }
 
         protected override IEnumerable<object> InvalidValues

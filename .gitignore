@@ -1,0 +1,16 @@
+*.csproj.user
+*.vbproj.user
+[Oo]bj
+[Bb]in
+*.ncb
+*.suo
+*.orig
+ILMerge.exe
+Build*/*
+*.diff
+*.[Cc]ache
+*[Rr][Ee][Ss][Hh][Aa][Rr][Pp][Ee][Rr]*
+/Source/packages/*
+!/Source/packages/NUnit.Runners.2.6.2
+*.[Dd]ot[Ss]ettings.*
+TestResult*.xml

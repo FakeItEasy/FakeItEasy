@@ -48,7 +48,7 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration(this.manager, rule);
         }
 
-        public IAnyCallConfiguration AnyCall()
+        public IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall()
         {
             var rule = new AnyCallCallRule();
             this.manager.AddRuleFirst(rule);

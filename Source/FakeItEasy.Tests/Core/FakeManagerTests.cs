@@ -271,7 +271,7 @@
         {
             var fake = this.CreateFakeManager<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>.Ignored.Argument)).Returns(true);
+            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>._)).Returns(true);
 
             using (Fake.CreateScope())
             {
@@ -280,7 +280,7 @@
 
             (fake.Object as IFoo).Bar();
 
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored.Argument)).MustNotHaveHappened();
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).MustNotHaveHappened();
         }
 
         [Test]
@@ -316,7 +316,7 @@
         {
             var foo = A.Fake<IFoo>();
 
-            Assert.That(foo.ChildFoo, new IsProxyConstraint());
+            Assert.That(foo.ChildFoo, new IsFakeConstraint());
         }
 
         [Test]
@@ -502,8 +502,8 @@
             // Arrange
             var fake = A.Fake<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>.Ignored.Argument)).Returns(true);
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored.Argument)).Invokes(x => x.Arguments.Get<IInterceptedFakeObjectCall>(0).DoNotRecordCall());
+            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>._)).Returns(true);
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).Invokes(x => x.Arguments.Get<IInterceptedFakeObjectCall>(0).DoNotRecordCall());
             
             Fake.GetFakeManager(fake).AddRuleFirst(rule);
 
@@ -563,7 +563,7 @@
 
             eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(call)).Now;
 
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>.Ignored.Argument)).MustHaveHappened();
+            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).MustHaveHappened();
         }
 
         [Test]
@@ -579,6 +579,104 @@
 
             // Assert
             Assert.That(manager.AllUserRules, Is.Empty);
+        }
+
+        [Test]
+        public void Should_invoke_listener_when_call_is_intercepted()
+        {
+            // Arrange
+            var interceptedCall = A.Dummy<IWritableFakeObjectCall>();
+
+            var listener = A.Fake<IInterceptionListener>();
+            var manager = new RaisableFakeManager();
+
+            manager.AddInterceptionListener(listener);
+
+            // Act
+            manager.RaiseCallIntercepted(new CallInterceptedEventArgs(interceptedCall));
+
+            // Assert
+            A.CallTo(() => listener.OnBeforeCallIntercepted(interceptedCall)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_invoke_listener_after_call_has_been_intercepted()
+        {
+            // Arrange
+            var interceptedCall = A.Fake<IWritableFakeObjectCall>(x => x.Implements(typeof(ICompletedFakeObjectCall)));
+            A.CallTo(() => interceptedCall.AsReadOnly()).Returns((ICompletedFakeObjectCall)interceptedCall);
+
+            var listener = A.Fake<IInterceptionListener>();
+            var manager = new RaisableFakeManager();
+
+            var selectedRule = A.Fake<IFakeObjectCallRule>();
+            A.CallTo(() => selectedRule.IsApplicableTo(interceptedCall)).Returns(true);
+
+            manager.AddRuleFirst(selectedRule);
+            manager.AddInterceptionListener(listener);
+
+            // Act
+            manager.RaiseCallIntercepted(new CallInterceptedEventArgs(interceptedCall));
+
+            // Assert
+            A.CallTo(() => listener.OnAfterCallIntercepted((ICompletedFakeObjectCall)interceptedCall, selectedRule)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_invoke_listener_after_call_has_been_intercepted_when_application_of_rule_throws()
+        {
+            // Arrange
+            var interceptedCall = A.Fake<IWritableFakeObjectCall>(x => x.Implements(typeof(ICompletedFakeObjectCall)));
+            A.CallTo(() => interceptedCall.AsReadOnly()).Returns((ICompletedFakeObjectCall)interceptedCall);
+
+            var listener = A.Fake<IInterceptionListener>();
+            var manager = new RaisableFakeManager();
+
+            var selectedRule = A.Fake<IFakeObjectCallRule>();
+            A.CallTo(() => selectedRule.IsApplicableTo(interceptedCall)).Returns(true);
+            A.CallTo(() => selectedRule.Apply(A<IInterceptedFakeObjectCall>._)).Throws(new Exception());
+
+            manager.AddRuleFirst(selectedRule);
+            manager.AddInterceptionListener(listener);
+
+            // Act
+            try
+            {
+                manager.RaiseCallIntercepted(new CallInterceptedEventArgs(interceptedCall));
+            } 
+            catch
+            {
+            }
+
+            // Assert
+            A.CallTo(() => listener.OnAfterCallIntercepted((ICompletedFakeObjectCall)interceptedCall, selectedRule)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Should_invoke_listeners_in_correct_order()
+        {
+            // Arrange
+            var manager = new RaisableFakeManager();
+            var listener1 = A.Fake<IInterceptionListener>();
+            var listener2 = A.Fake<IInterceptionListener>();
+
+            // Act
+            manager.AddInterceptionListener(listener1);
+            manager.AddInterceptionListener(listener2);
+
+            // Assert
+            using (var scope = Fake.CreateScope())
+            {
+                manager.RaiseCallIntercepted(new CallInterceptedEventArgs(A.Dummy<IWritableFakeObjectCall>()));
+
+                using (scope.OrderedAssertions())
+                {
+                    A.CallTo(() => listener2.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened();
+                    A.CallTo(() => listener1.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened();
+                    A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened();
+                    A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened();
+                }
+            }
         }
 
         private class FakedProxyWithManagerSpecified
@@ -613,6 +711,23 @@
             {
                 this.Foo = foo;
                 this.FormatProvider = formatProvider;
+            }
+        }
+
+        private class RaisableFakeManager
+            : FakeManager
+        {
+            ICallInterceptedEventRaiser raiser;
+
+            public RaisableFakeManager()
+            {
+                this.raiser = A.Fake<ICallInterceptedEventRaiser>();
+                this.AttachProxy(typeof(object), new object(), this.raiser);
+            }
+
+            public void RaiseCallIntercepted(CallInterceptedEventArgs eventArgs)
+            {
+                this.raiser.CallWasIntercepted += Raise.With(eventArgs).Now;
             }
         }
     }

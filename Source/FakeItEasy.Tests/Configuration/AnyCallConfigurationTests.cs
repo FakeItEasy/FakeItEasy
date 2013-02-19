@@ -4,29 +4,16 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using NUnit.Framework;
+    using ExceptionFactory = System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception>;
 
     [TestFixture]
-    public class AnyCallConfigurationTests
+    internal class AnyCallConfigurationTests : AutoInitializedFixture
     {
-        private IConfigurationFactory configurationFactory;
-        private FakeManager fakeObject;
-        private AnyCallCallRule callRule;
-        private AnyCallConfiguration configuration;
-
-        [SetUp]
-        public void SetUp()
-        {
-            this.configurationFactory = A.Fake<IConfigurationFactory>();
-            this.fakeObject = new FakeManager();
-            this.callRule = new AnyCallCallRule();
-
-            this.configuration = this.CreateConfiguration();
-        }
-
-        private AnyCallConfiguration CreateConfiguration()
-        {
-            return new AnyCallConfiguration(this.fakeObject, this.callRule, this.configurationFactory);
-        }
+        [Fake] IConfigurationFactory configurationFactory;
+        [Fake] FakeManager fakeObject;
+        [Fake] AnyCallCallRule callRule;
+        
+        [UnderTest] AnyCallConfiguration configuration;
 
         [Test]
         public void WithReturnType_should_return_configuration_from_factory()
@@ -82,30 +69,31 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
-        public void Throws_delegates_to_configuration_produced_by_factory()
+        public void ThrowsLazily_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
             var factoryConfig = this.StubVoidConfig();
-            var ex = new Exception();
-
+            
+            var exceptionFactory = A.Dummy<ExceptionFactory>();
+            
             // Act
-            this.configuration.Throws(ex);
+            this.configuration.Throws(exceptionFactory);
 
             // Assert
-            A.CallTo(() => factoryConfig.Throws(ex)).MustHaveHappened();
+            A.CallTo(() => factoryConfig.Throws(exceptionFactory)).MustHaveHappened();
         }
 
         [Test]
-        public void Throws_returns_configuration_produced_by_factory()
+        public void ThrowsLazily_returns_configuration_produced_by_factory()
         {
             // Arrange
             var factoryConfig = this.StubVoidConfig();
             var throwsConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
 
-            A.CallTo(() => factoryConfig.Throws(A<Exception>.Ignored)).Returns(throwsConfig);
+            A.CallTo(() => factoryConfig.Throws(A<ExceptionFactory>._)).Returns(throwsConfig);
 
             // Act
-            var result = this.configuration.Throws(new Exception());
+            var result = this.configuration.Throws(A.Dummy<ExceptionFactory>());
 
             // Assert
             Assert.That(result, Is.SameAs(throwsConfig));
@@ -218,7 +206,57 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration.MustHaveHappened(Repeated.AtLeast.Twice);
 
             // Assert
-            A.CallTo(() => factoryConfig.MustHaveHappened(A<Repeated>.Ignored)).MustHaveHappened();
+            A.CallTo(() => factoryConfig.MustHaveHappened(A<Repeated>._)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Where_should_apply_where_predicate_on_rule()
+        {
+            // Arrange
+            Func<IFakeObjectCall, bool> predicate = x => true;
+            Action<IOutputWriter> writer = x => { };
+
+            // Act
+            this.configuration.Where(predicate, writer);
+
+            // Assert
+            A.CallTo(() => this.callRule.ApplyWherePredicate(predicate, writer)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Where_should_return_self()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.That(this.configuration.Where(x => true, x => { }), Is.SameAs(this.configuration));
+        }
+
+        [Test]
+        public void WhenArgumentsMatch_should_delegate_to_buildable_rule()
+        {
+            // Arrange
+            Func<ArgumentCollection, bool> predicate = x => true;
+            
+            // Act
+            this.configuration.WhenArgumentsMatch(predicate);
+            
+            // Assert
+            A.CallTo(() => this.callRule.UsePredicateToValidateArguments(predicate))
+                .MustHaveHappened();
+        }
+
+        [Test]
+        public void WhenArgumentsMatch_should_return_self()
+        {
+            // Arrange
+            
+            // Act
+            
+            // Assert
+            Assert.That(this.configuration.WhenArgumentsMatch(x => true), Is.SameAs(this.configuration));
         }
 
         private IVoidArgumentValidationConfiguration StubVoidConfig()
@@ -232,10 +270,10 @@ namespace FakeItEasy.Tests.Configuration
 
         private IReturnValueArgumentValidationConfiguration<T> StubReturnConfig<T>()
         {
-            var result = A.Fake<IReturnValueArgumentValidationConfiguration<T>>();
+            var result = A.Fake<IAnyCallConfigurationWithReturnTypeSpecified<T>>();
 
             A.CallTo(() => this.configurationFactory.CreateConfiguration<T>(this.fakeObject, this.callRule)).Returns(result);
-
+            
             return result;
         }
     }

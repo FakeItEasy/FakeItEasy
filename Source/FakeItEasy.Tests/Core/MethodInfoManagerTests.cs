@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using FakeItEasy.Core;
@@ -123,9 +124,64 @@ namespace FakeItEasy.Tests.Core
             Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(BaseType), first, second), Is.False);
         }
 
+        [Test]
+        public void Should_return_true_when_method_is_explicit_implementation_of_interface_method()
+        {
+            // Arrange
+            var explicitImplementation = typeof(InterfaceImplementorWithExplicitImplementation).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic).Single(x => x.Name == "FakeItEasy.Tests.Core.MethodInfoManagerTests.IInterface.Foo");
+            var interfaceMethod = this.GetMethod<IInterface>(x => x.Foo());
+
+            var manager = this.CreateManager();
+
+            // Act
+
+            // Assert
+            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(InterfaceImplementorWithExplicitImplementation), explicitImplementation, interfaceMethod));
+        }
+
+        [Test]
+        public void Should_return_false_when_same_method_is_invoked_on_generic_type_with_different_type_arguments()
+        {
+            // Arrange
+            var first = this.GetMethod<GenericType<int>>(x => x.Foo());
+            var second = this.GetMethod<GenericType<string>>(x => x.Foo());
+            var manager = this.CreateManager();
+
+            // Act
+
+            // Assert
+            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(GenericType<int>), first, second), Is.False);
+        }
+
+        [Test]
+        public void Should_return_method_from_sub_type_when_getting_non_virtual_method_on_base_type()
+        {
+            // Arrange
+            var method = this.GetMethod<SubType>(x => x.DoSomething("foo"));
+            var baseMethod = this.GetMethod<BaseType>(x => x.DoSomething("foo"));
+
+            var manager = this.CreateManager();
+
+            // Act, Assert
+            Assert.That(manager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(typeof (SubType), method).Name, Is.EqualTo("DoSomething"));
+        }
+
         public interface IInterface
         {
             void Foo();
+        }
+
+        public class InterfaceImplementorWithExplicitImplementation
+            : IInterface
+        {
+            public void Foo()
+            {
+            }
+
+            void IInterface.Foo()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public class InterfaceImplementor
@@ -185,5 +241,13 @@ namespace FakeItEasy.Tests.Core
 
             }
         }
+
+        public class GenericType<T>
+        {
+            public void Foo()
+            {
+            }
+        }
     }
 }
+

@@ -30,7 +30,7 @@
 
             using (Fake.CreateScope())
             {
-                A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(A<Action<IFakeOptionsBuilder<IFoo>>>.Ignored)).Returns(foo);
+                A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(A<Action<IFakeOptionsBuilder<IFoo>>>._)).Returns(foo);
 
                 var fake = new Fake<IFoo>();
 
@@ -125,7 +125,7 @@
             // Arrange
             var fake = new Fake<IFoo>();
 
-            var callConfig = A.Fake<IAnyCallConfiguration>();
+            var callConfig = A.Fake<IAnyCallConfigurationWithNoReturnTypeSpecified>();
             var config = A.Fake<IStartConfiguration<IFoo>>();
 
             A.CallTo(() => config.AnyCall()).Returns(callConfig);

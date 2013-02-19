@@ -88,5 +88,17 @@ namespace FakeItEasy.Tests
 
             Assert.That(eventArgs, Is.EqualTo(EventArgs.Empty));
         }
+
+        [Test]
+        public void Should_not_fail_when_raising_event_that_has_no_registered_listeners()
+        {
+            // Arrange
+            this.foo = A.Fake<IFoo>();
+            
+            // Act
+
+            // Assert
+            Assert.That(() => { foo.SomethingHappened += Raise.WithEmpty().Now; }, Throws.Nothing);
+        }
     }
 }

@@ -111,7 +111,7 @@
         {
             var exception = new FormatException();
 
-            this.builder.Throws(exception);
+            this.builder.Throws(x => exception);
 
             Assert.Throws<FormatException>(() =>
                 this.ruleProducedByFactory.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
@@ -120,7 +120,7 @@
         [Test]
         public void Throws_returns_configuration()
         {
-            var result = this.builder.Throws(new Exception());
+            var result = this.builder.Throws(A.Dummy<Func<IFakeObjectCall, Exception>>());
 
             Assert.That(result, Is.EqualTo(this.builder));
         }
@@ -132,7 +132,7 @@
             
             var exception = new FormatException();
 
-            returnConfig.Throws(exception);
+            returnConfig.Throws(x => exception);
             
             var thrown = Assert.Throws<FormatException>(() =>
                 this.ruleProducedByFactory.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
@@ -140,11 +140,48 @@
         }
 
         [Test]
+        public void Should_pass_call_to_interceptor_when_throwing_exception()
+        {
+            // Arrange
+            var factory = A.Fake<Func<IFakeObjectCall, Exception>>();
+            var call = A.Fake<IInterceptedFakeObjectCall>();
+
+            // Act
+            this.builder.Throws(factory);
+
+            // Assert
+            Assert.Catch(() =>
+               this.ruleProducedByFactory.Applicator(call));
+
+            A.CallTo(() => factory(call)).MustHaveHappened();
+
+        }
+
+        [Test]
+        public void Should_pass_call_to_interceptor_when_throwing_exception_specified_in_return_value_configuration()
+        {
+            // Arrange
+            var config = this.CreateTestableReturnConfiguration();
+            var factory = A.Fake<Func<IFakeObjectCall, Exception>>();
+            var call = A.Fake<IInterceptedFakeObjectCall>();
+
+            // Act
+            config.Throws(factory);
+
+            // Assert
+            Assert.Catch(() =>
+               this.ruleProducedByFactory.Applicator(call));
+
+            A.CallTo(() => factory(call)).MustHaveHappened();
+
+        }
+
+        [Test]
         public void Throws_called_from_return_value_configuration_returns_parent_configuration()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
 
-            var result = returnConfig.Throws(new Exception()) as RuleBuilder;
+            var result = returnConfig.Throws(_ => new Exception()) as RuleBuilder;
 
             Assert.That(result, Is.EqualTo(this.builder));
         }
@@ -392,9 +429,7 @@
             this.builder.MustHaveHappened(Repeated.Exactly.Times(99));
 
             // Assert
-            var repeatMatcher = A<Func<int, bool>>.That.Matches(x => x.Invoke(99) == true);
-
-            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", repeatMatcher, "exactly 99 times")).MustHaveHappened();
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>.That.Matches(x => x.Invoke(99)), "exactly 99 times")).MustHaveHappened();
         }
 
         [Test]
@@ -421,9 +456,7 @@
             returnConfig.MustHaveHappened(Repeated.Exactly.Times(99));
 
             // Assert
-            var repeatMatcher = A<Func<int, bool>>.That.Matches(x => x.Invoke(99) == true);
-
-            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>.Ignored, "call description", repeatMatcher, "exactly 99 times")).MustHaveHappened();
+            A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>.That.Matches(x => x.Invoke(99)), "exactly 99 times")).MustHaveHappened();
         }
 
         [Test]
@@ -438,6 +471,34 @@
 
             // Assert
             Assert.That(this.fakeManager.Rules, Is.Empty);
+        }
+
+        [Test]
+        public void Where_should_apply_where_predicate_to_built_rule()
+        {
+            // Arrange
+            Func<IFakeObjectCall, bool> predicate = x => true;
+            Action<IOutputWriter> writer = x => { };
+
+            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
+
+            // Act
+            returnConfig.Where(predicate, writer);
+            
+            // Assert
+            A.CallTo(() => this.ruleProducedByFactory.ApplyWherePredicate(predicate, writer)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Where_should_return_the_configuration_object()
+        {
+            // Arrange
+            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
+
+            // Act
+
+            // Assert
+            Assert.That(returnConfig.Where(x => true, x => { }), Is.SameAs(returnConfig));
         }
 
         private RuleBuilder.ReturnValueConfiguration<int> CreateTestableReturnConfiguration()

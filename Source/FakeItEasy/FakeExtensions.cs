@@ -3,11 +3,13 @@ namespace FakeItEasy
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
+
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
 
     /// <summary>
@@ -15,6 +17,12 @@ namespace FakeItEasy
     /// </summary>
     public static class FakeExtensions
     {
+        private const string NameOfInvokesFeature = "invokes";
+
+        private const string NameOfReturnsLazilyFeature = "returns lazily";
+
+        private const string NameOfThrowsFeature = "throws";
+
         /// <summary>
         /// Specifies NumberOfTimes(1) to the IRepeatConfiguration{TFake}.
         /// </summary>
@@ -139,17 +147,111 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Specifies a function used to produce a return value when the configured call is made.
+        /// The function will be called each time this call is made and can return different values
+        /// each time.
+        /// </summary>
+        /// <param name="valueProducer">A function that produces the return value.</param>
+        /// <param name="configuration">The configuration to extend.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="TReturnType">The type of the return value.</typeparam>
+        /// <returns>A configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="valueProducer"/> do not match</exception>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
+            ReturnsLazily<TReturnType, T1>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, TReturnType> valueProducer)
+        {
+            return configuration.ReturnsLazily(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+
+                    return valueProducer(call.GetArgument<T1>(0));
+                });
+        }
+
+        /// <summary>
+        /// Specifies a function used to produce a return value when the configured call is made.
+        /// The function will be called each time this call is made and can return different values
+        /// each time.
+        /// </summary>
+        /// <param name="valueProducer">A function that produces the return value.</param>
+        /// <param name="configuration">The configuration to extend.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="TReturnType">The type of the return value.</typeparam>
+        /// <returns>A configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="valueProducer"/> do not match</exception>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
+            ReturnsLazily<TReturnType, T1, T2>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, TReturnType> valueProducer)
+        {
+            return configuration.ReturnsLazily(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+
+                    return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
+                });
+        }
+
+        /// <summary>
+        /// Specifies a function used to produce a return value when the configured call is made.
+        /// The function will be called each time this call is made and can return different values
+        /// each time.
+        /// </summary>
+        /// <param name="valueProducer">A function that produces the return value.</param>
+        /// <param name="configuration">The configuration to extend.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <typeparam name="TReturnType">The type of the return value.</typeparam>
+        /// <returns>A configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="valueProducer"/> do not match</exception>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
+            ReturnsLazily<TReturnType, T1, T2, T3>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, TReturnType> valueProducer)
+        {
+            return configuration.ReturnsLazily(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+
+                    return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
+                });
+        }
+
+        /// <summary>
+        /// Specifies a function used to produce a return value when the configured call is made.
+        /// The function will be called each time this call is made and can return different values
+        /// each time.
+        /// </summary>
+        /// <param name="valueProducer">A function that produces the return value.</param>
+        /// <param name="configuration">The configuration to extend.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <typeparam name="T4">Type of the fourth argument of the faked method call</typeparam>
+        /// <typeparam name="TReturnType">The type of the return value.</typeparam>
+        /// <returns>A configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="valueProducer"/> do not match</exception>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
+            ReturnsLazily<TReturnType, T1, T2, T3, T4>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, T4, TReturnType> valueProducer)
+        {
+            return configuration.ReturnsLazily(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+
+                    return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
+                });
+        }
+
+        /// <summary>
         /// Writes the calls in the collection to the specified text writer.
         /// </summary>
         /// <param name="calls">The calls to write.</param>
         /// <param name="writer">The writer to write the calls to.</param>
-        public static void Write<T>(this IEnumerable<T> calls, TextWriter writer) where T : IFakeObjectCall
+        public static void Write<T>(this IEnumerable<T> calls, IOutputWriter writer) where T : IFakeObjectCall
         {
             Guard.AgainstNull(calls, "calls");
             Guard.AgainstNull(writer, "writer");
 
             var callWriter = ServiceLocator.Current.Resolve<CallWriter>();
-            callWriter.WriteCalls(0, calls.Cast<IFakeObjectCall>(), writer);
+            callWriter.WriteCalls(calls.Cast<IFakeObjectCall>(), writer);
         }
 
         /// <summary>
@@ -158,7 +260,7 @@ namespace FakeItEasy
         /// <param name="calls">The calls to write.</param>
         public static void WriteToConsole<T>(this IEnumerable<T> calls) where T : IFakeObjectCall
         {
-            calls.Write(Console.Out);
+            calls.Write(new DefaultOutputWriter(Console.Write));
         }
 
         /// <summary>
@@ -192,6 +294,276 @@ namespace FakeItEasy
             Guard.AgainstNull(argumentName, "argumentName");
 
             return call.Arguments.Get<T>(argumentName);
+        }
+
+        /// <summary>
+        /// Makes the fake strict, this means that any call to the fake
+        /// that has not been explicitly configured will throw an exception.
+        /// </summary>
+        /// <typeparam name="T">The type of fake object.</typeparam>
+        /// <param name="options">The configuration.</param>
+        /// <returns>A configuration object.</returns>
+        public static IFakeOptionsBuilder<T> Strict<T>(this IFakeOptionsBuilder<T> options)
+        {
+            Guard.AgainstNull(options, "options");
+
+            Action<IFakeObjectCall> thrower = c =>
+                {
+                    throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(c.Method.Name));
+                };
+
+            return options.OnFakeCreated(
+                x => A.CallTo(x).Invokes(thrower));
+        }
+
+        /// <summary>
+        /// Applies a predicate to constrain which calls will be considered for interception.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The return type of the where method.
+        /// </typeparam>
+        /// <param name="configuration">
+        /// The configuration object to extend.
+        /// </param>
+        /// <param name="predicate">
+        /// A predicate for a fake object call.
+        /// </param>
+        /// to the output.
+        /// <returns>
+        /// The configuration object.
+        /// </returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for expressions.")]
+        public static T Where<T>(this IWhereConfiguration<T> configuration, Expression<Func<IFakeObjectCall, bool>> predicate)
+        {
+            return configuration.Where(predicate.Compile(), x => x.Write(predicate.ToString()));
+        }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made. This overload can also be used to fake calls with arguments when they don't need to be accessed.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action"/> to invoke</param>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        public static TFake Invokes<TFake>(this ICallbackConfiguration<TFake> configuration, Action actionToInvoke)
+        {
+            return configuration.Invokes(call => actionToInvoke());
+        }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action{T1}"/> to invoke</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        public static TFake Invokes<TFake, T1>(this ICallbackConfiguration<TFake> configuration, Action<T1> actionToInvoke)
+        {
+            return configuration.Invokes(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
+
+                    actionToInvoke(call.GetArgument<T1>(0));
+                });
+        }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action{T1,T2}"/> to invoke</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        public static TFake Invokes<TFake, T1, T2>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2> actionToInvoke)
+        {
+            return configuration.Invokes(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
+
+                    actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
+                });
+        }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action{T1,T2,T3}"/> to invoke</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        public static TFake Invokes<TFake, T1, T2, T3>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2, T3> actionToInvoke)
+        {
+            return configuration.Invokes(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
+
+                    actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
+                });
+        }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action{T1,T2,T3,T4}"/> to invoke</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <typeparam name="T4">Type of the fourth argument of the faked method call</typeparam>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        public static TFake Invokes<TFake, T1, T2, T3, T4>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2, T3, T4> actionToInvoke)
+        {
+            return configuration.Invokes(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
+
+                    actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
+                });
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exception">The exception to throw when a call that matches is invoked.</param>
+        /// <returns>Configuration object.</returns>
+        public static IAfterCallSpecifiedConfiguration Throws(this IExceptionThrowerConfiguration configuration, Exception exception)
+        {
+            return configuration.Throws(_ => exception);
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <returns>Configuration object.</returns>
+        public static IAfterCallSpecifiedConfiguration Throws(this IExceptionThrowerConfiguration configuration, Func<Exception> exceptionFactory)
+        {
+            return configuration.Throws(_ => exceptionFactory());
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <returns>Configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        public static IAfterCallSpecifiedConfiguration Throws<T1>(this IExceptionThrowerConfiguration configuration, Func<T1, Exception> exceptionFactory)
+        {
+            return configuration.Throws(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+
+                    return exceptionFactory(call.GetArgument<T1>(0));
+                });
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <returns>Configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        public static IAfterCallSpecifiedConfiguration Throws<T1, T2>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, Exception> exceptionFactory)
+        {
+            return configuration.Throws(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+
+                    return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
+                });
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <returns>Configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        public static IAfterCallSpecifiedConfiguration Throws<T1, T2, T3>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, T3, Exception> exceptionFactory)
+        {
+            return configuration.Throws(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+
+                    return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
+                });
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <typeparam name="T4">Type of the fourth argument of the faked method call</typeparam>
+        /// <returns>Configuration object.</returns>
+        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        public static IAfterCallSpecifiedConfiguration Throws<T1, T2, T3, T4>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, T3, T4, Exception> exceptionFactory)
+        {
+            return configuration.Throws(call =>
+                {
+                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+
+                    return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
+                });
+        }
+
+        /// <summary>
+        /// Throws the specified exception when the currently configured
+        /// call gets called.
+        /// </summary>
+        /// <param name="configuration">The configuration to use.</param>
+        /// <typeparam name="T">The type of exception to throw.</typeparam>
+        /// <returns>Configuration object.</returns>
+        public static IAfterCallSpecifiedConfiguration Throws<T>(this IExceptionThrowerConfiguration configuration) where T : Exception, new()
+        {
+            return configuration.Throws(_ => new T());
+        }
+
+        private static void AssertThatSignaturesAreEqual(MethodInfo callMethod, MethodInfo actionMethod, string nameOfFeature)
+        {
+            if (!SignaturesAreEqual(callMethod, actionMethod))
+            {
+                var fakeSignature = BuildSignatureDescription(callMethod);
+                var actionSignature = BuildSignatureDescription(actionMethod);
+
+                throw new FakeConfigurationException("The faked method has the signature ({0}), but {2} was used with ({1}).".FormatInvariant(fakeSignature, actionSignature, nameOfFeature));
+            }
+        }
+
+        private static bool SignaturesAreEqual(MethodInfo methodOne, MethodInfo methodTwo)
+        {
+            return methodOne.GetParameters().Select(x => x.ParameterType).SequenceEqual(methodTwo.GetParameters().Select(x => x.ParameterType));
+        }
+
+        private static string BuildSignatureDescription(MethodInfo method)
+        {
+            return method.GetParameters().ToCollectionString(x => x.ParameterType.FullName, ", ");
         }
     }
 }

@@ -82,7 +82,7 @@ namespace FakeItEasy.Core
 
                 if (this.RegisteredEventHandlers.TryGetValue(key, out result))
                 {
-                    result = Delegate.Combine(handler, handler);
+                    result = Delegate.Combine(result, handler);
                 }
                 else
                 {
@@ -99,15 +99,23 @@ namespace FakeItEasy.Core
                 if (this.RegisteredEventHandlers.TryGetValue(key, out registration))
                 {
                     registration = Delegate.Remove(registration, handler);
-                    this.RegisteredEventHandlers[key] = registration;
+
+                    if (registration != null)
+                    {
+                        this.RegisteredEventHandlers[key] = registration;
+                    }
+                    else
+                    {
+                        this.RegisteredEventHandlers.Remove(key);
+                    }
                 }
             }
 
             private void RaiseEvent(EventCall call)
             {
-                var raiseMethod = this.RegisteredEventHandlers[call.Event];
+                Delegate raiseMethod = null;
 
-                if (raiseMethod != null)
+                if (this.RegisteredEventHandlers.TryGetValue(call.Event, out raiseMethod))
                 {
                     var arguments = call.EventHandler.Target as IEventRaiserArguments;
 

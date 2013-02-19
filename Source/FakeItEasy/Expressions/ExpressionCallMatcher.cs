@@ -23,8 +23,9 @@
         /// </summary>
         /// <param name="callSpecification">The call specification.</param>
         /// <param name="constraintFactory">The constraint factory.</param>
+        /// <param name="callExpressionParser">A parser to use to parse call expressions.</param>
         /// <param name="methodInfoManager">The method infor manager to use.</param>
-        public ExpressionCallMatcher(LambdaExpression callSpecification, ArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, ICallExpressionParser callExpressionParser)
+        public ExpressionCallMatcher(LambdaExpression callSpecification, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, ICallExpressionParser callExpressionParser)
         {
             this.methodInfoManager = methodInfoManager;
             
@@ -81,16 +82,16 @@
             this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValdiators);
         }
 
-        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<Expression> argumentExpressions, ArgumentConstraintFactory constraintFactory)
+        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<ParsedArgumentExpression> argumentExpressions, ExpressionArgumentConstraintFactory constraintFactory)
         {
-            if (argumentExpressions != null)
+            if (argumentExpressions == null)
             {
-                return
-                    from argument in argumentExpressions
-                    select constraintFactory.GetArgumentConstraint(argument);
+                return Enumerable.Empty<IArgumentConstraint>();    
             }
 
-            return Enumerable.Empty<IArgumentConstraint>();
+            return
+                from argument in argumentExpressions
+                select constraintFactory.GetArgumentConstraint(argument);
         }
 
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
@@ -114,7 +115,7 @@
                     firstArgument = false;
                 }
 
-                result.Append(constraint.ConstraintDescription);
+                constraint.WriteDescription(new StringBuilderOutputWriter(result));
             }
 
             result.Append(")");
@@ -127,15 +128,10 @@
 
         private bool ArgumentsMatchesArgumentConstraints(ArgumentCollection argumentCollection)
         {
-            foreach (var argumentConstraintPair in argumentCollection.AsEnumerable().Zip(this.argumentConstraints))
-            {
-                if (!argumentConstraintPair.Item2.IsValid(argumentConstraintPair.Item1))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return argumentCollection
+                .AsEnumerable()
+                .Zip(this.argumentConstraints, (x, y) => new { ArgumentValue = x, Constraint = y })
+                .All(x => x.Constraint.IsValid(x.ArgumentValue));
         }
 
         private class PredicatedArgumentConstraint
@@ -154,6 +150,11 @@
             public override string ToString()
             {
                 return "<Predicated>";
+            }
+
+            public void WriteDescription(IOutputWriter writer)
+            {
+                writer.Write(this.ConstraintDescription);
             }
         }
     }

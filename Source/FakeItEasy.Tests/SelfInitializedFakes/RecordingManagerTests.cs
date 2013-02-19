@@ -143,7 +143,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
                 recorder.RecordCall(callToRecord);
             }
 
-            A.CallTo(() => this.callStorage.Save(A<IEnumerable<CallData>>.That.Matches(c => this.CallDataMatchesCall(c.Single(), callToRecord)).Argument))
+            A.CallTo(() => this.callStorage.Save(A<IEnumerable<CallData>>.That.Matches(c => this.CallDataMatchesCall(c.Single(), callToRecord))))
                 .MustHaveHappened();
         }
 
@@ -157,7 +157,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             
             }
 
-            A.CallTo(() => this.callStorage.Save(A<IEnumerable<CallData>>.That.IsThisSequence().Argument))
+            A.CallTo(() => this.callStorage.Save(A<IEnumerable<CallData>>.That.IsThisSequence()))
                 .MustHaveHappened();
         }
 
