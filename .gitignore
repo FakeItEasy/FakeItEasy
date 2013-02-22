@@ -11,6 +11,7 @@ Build*/*
 *.[Cc]ache
 *[Rr][Ee][Ss][Hh][Aa][Rr][Pp][Ee][Rr]*
 /Source/packages/*
-!/Source/packages/NUnit.Runners.2.6.2
+!/Source/packages/NUnit.Runners.*
+!/Source/packages/StyleCop.MSBuild.*
 *.[Dd]ot[Ss]ettings.*
 TestResult*.xml
