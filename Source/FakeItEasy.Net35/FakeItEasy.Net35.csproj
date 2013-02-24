@@ -616,6 +616,7 @@
   <ItemGroup>
     <None Include="FakeItEasy.snk" />
     <None Include="packages.config" />
+    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\FakeItEasy\Creation\CastleDynamicProxy\DynamicProxyResources.resx">
