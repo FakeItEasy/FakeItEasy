@@ -11,9 +11,6 @@
     <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
     <releaseNotes>TBD</releaseNotes>
     <language>en-US</language>
-    <dependencies>
-      <dependency id="Castle.Core" version="3.1.0.0" />
-    </dependencies>
     <tags>TDD unittesting mocking faking stubbing spy spies doubles</tags>
   </metadata>
   <files>
