@@ -7,7 +7,7 @@ namespace FakeItEasy.Core
         : IFakeObjectCall
     {
         /// <summary>
-        /// The value set to be returned from the call.
+        /// Gets the value set to be returned from the call.
         /// </summary>
         object ReturnValue { get; }
     }

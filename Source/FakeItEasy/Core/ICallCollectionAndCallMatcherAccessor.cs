@@ -9,7 +9,7 @@ namespace FakeItEasy.Core
         : ICallMatcherAccessor
     {
         /// <summary>
-        /// A set of calls.
+        /// Gets the set of calls.
         /// </summary>
         IEnumerable<ICompletedFakeObjectCall> Calls { get; }
     }

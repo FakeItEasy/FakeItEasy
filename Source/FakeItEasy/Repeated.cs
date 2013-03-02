@@ -9,6 +9,7 @@ namespace FakeItEasy
     /// fake object calls.
     /// </summary>
     /// <example><code>A.CallTo(() => foo.Bar()).Assert(Happened.Once.Exactly);</code></example>
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
     public abstract class Repeated
     {
         /// <summary>

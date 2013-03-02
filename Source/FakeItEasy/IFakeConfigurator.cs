@@ -9,7 +9,7 @@ namespace FakeItEasy
     public interface IFakeConfigurator
     {
         /// <summary>
-        /// The type the instance provides configuration for.
+        /// Gets the type the instance provides configuration for.
         /// </summary>
         Type ForType { get; }
 

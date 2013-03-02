@@ -29,7 +29,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         }
 
         /// <summary>
-        /// A human readable description of the call.
+        /// Gets a human readable description of the call.
         /// </summary>
         /// <value></value>
         public string Description
@@ -38,7 +38,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         }
 
         /// <summary>
-        /// The value set to be returned from the call.
+        /// Gets the value set to be returned from the call.
         /// </summary>
         public object ReturnValue
         {
@@ -46,17 +46,17 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         }
 
         /// <summary>
-        /// The method that's called.
+        /// Gets the method that's called.
         /// </summary>
         public MethodInfo Method { get; private set; }
 
         /// <summary>
-        /// The arguments used in the call.
+        /// Gets the arguments used in the call.
         /// </summary>
         public ArgumentCollection Arguments { get; private set; }
 
         /// <summary>
-        /// The faked object the call is performed on.
+        /// Gets the faked object the call is performed on.
         /// </summary>
         public object FakedObject
         {

@@ -9,12 +9,12 @@ namespace FakeItEasy
     public interface IArgumentValueFormatter
     {
         /// <summary>
-        /// The type of arguments this formatter works on.
+        /// Gets the type of arguments this formatter works on.
         /// </summary>
         Type ForType { get; }
 
         /// <summary>
-        /// The priority of the formatter, when two formatters are
+        /// Gets the priority of the formatter, when two formatters are
         /// registered for the same type the one with the highest
         /// priority is used.
         /// </summary>
