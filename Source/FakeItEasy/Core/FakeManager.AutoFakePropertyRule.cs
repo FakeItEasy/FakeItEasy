@@ -3,6 +3,7 @@
     using System;
     using FakeItEasy.Creation;
 
+    /// <content>Auto fake property rule.</content>
     public partial class FakeManager
     {
         [Serializable]

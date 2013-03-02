@@ -1,11 +1,10 @@
-using System.Reflection.Emit;
-
 namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
+    using System.Reflection.Emit;
 
     /// <summary>
     /// An interface to be implemented by classes that can generate proxies for FakeItEasy.
@@ -13,27 +12,28 @@ namespace FakeItEasy.Creation
     public interface IProxyGenerator
     {
         /// <summary>
-        /// Generates a proxy of the specifed type and returns a result object containing information
+        /// Generates a proxy of the specified type and returns a result object containing information
         /// about the success of the generation and the proxy if it was generated.
         /// </summary>
         /// <param name="typeOfProxy">The type of proxy to generate.</param>
         /// <param name="additionalInterfacesToImplement">Interfaces to be implemented by the proxy.</param>
         /// <param name="argumentsForConstructor">Arguments to pass to the constructor of the type in <paramref name="typeOfProxy" />.</param>
-        /// <returns>A result containging the generated proxy.</returns>
+        /// <param name="customAttributeBuilders">The custom attribute builders.</param>
+        /// <returns>A result containing the generated proxy.</returns>
         ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders);
 
         /// <summary>
-        /// Generates a proxy of the specifed type and returns a result object containing information
+        /// Generates a proxy of the specified type and returns a result object containing information
         /// about the success of the generation and the proxy if it was generated.
         /// </summary>
         /// <param name="typeOfProxy">The type of proxy to generate.</param>
         /// <param name="additionalInterfacesToImplement">Interfaces to be implemented by the proxy.</param>
         /// <param name="argumentsForConstructor">Arguments to pass to the constructor of the type in <paramref name="typeOfProxy" />.</param>
-        /// <returns>A result containging the generated proxy.</returns>
+        /// <returns>A result containing the generated proxy.</returns>
         ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor);
 
         /// <summary>
-        /// Gets a value indicating if the specified member can be intercepted by the proxy generator.
+        /// Gets a value indicating whether the specified member can be intercepted by the proxy generator.
         /// </summary>
         /// <param name="method">The member to test.</param>
         /// <param name="callTarget">The instance the method will be called on.</param>

@@ -34,7 +34,7 @@
         }
 
         /// <summary>
-        /// Gets wether this interceptor is applicable to the specified
+        /// Gets whether this interceptor is applicable to the specified
         /// call, if true is returned the Apply-method of the interceptor will
         /// be called.
         /// </summary>

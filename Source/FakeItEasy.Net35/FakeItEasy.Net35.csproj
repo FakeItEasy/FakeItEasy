@@ -56,6 +56,9 @@
     <Compile Include="..\FakeItEasy\A.cs">
       <Link>A.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\A.of.T.cs">
+      <Link>A.of.T.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Any.cs">
       <Link>Any.cs</Link>
     </Compile>
@@ -488,6 +491,9 @@
     <Compile Include="..\FakeItEasy\Fake.cs">
       <Link>Fake.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Fake.of.T.cs">
+      <Link>Fake.of.T.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\FakeAttribute.cs">
       <Link>FakeAttribute.cs</Link>
     </Compile>
@@ -559,6 +565,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Raise.of.TEventArgs.cs">
+      <Link>Raise.of.TEventArgs.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Recorders.cs">
       <Link>Recorders.cs</Link>

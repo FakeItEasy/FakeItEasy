@@ -8,7 +8,7 @@ namespace FakeItEasy.Creation
 
     internal class FakeObjectCreator
     {
-        private static readonly Logger logger = Log.GetLogger<FakeObjectCreator>();
+        private static readonly Logger Logger = Log.GetLogger<FakeObjectCreator>();
         private readonly IFakeObjectConfigurator configurer;
         private readonly IFakeManagerAccessor fakeManagerAttacher;
         private readonly IProxyGenerator proxyGenerator;
@@ -24,7 +24,7 @@ namespace FakeItEasy.Creation
 
         public virtual object CreateFake(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
         {
-            var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, fakeOptions.ArgumentsForConstructor,fakeOptions.AdditionalAttributes);
+            var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, fakeOptions.ArgumentsForConstructor, fakeOptions.AdditionalAttributes);
 
             if (throwOnFailure)
             {
@@ -48,7 +48,7 @@ namespace FakeItEasy.Creation
 
         private static ResolvedConstructor[] ResolveConstructors(Type typeOfFake, IDummyValueCreationSession session)
         {
-            logger.Debug("Resolving constructors for type {0}.", typeOfFake);
+            Logger.Debug("Resolving constructors for type {0}.", typeOfFake);
 
             return (from constructor in GetUsableConstructorsInOrder(typeOfFake)
                     let constructorAndArguments = ResolveConstructorArguments(constructor, session)
@@ -64,7 +64,7 @@ namespace FakeItEasy.Creation
 
         private static ResolvedConstructor ResolveConstructorArguments(ConstructorInfo constructor, IDummyValueCreationSession session)
         {
-            logger.Debug("Beginning to resolve constructor with {0} arguments.", constructor.GetParameters().Length);
+            Logger.Debug("Beginning to resolve constructor with {0} arguments.", constructor.GetParameters().Length);
 
             var resolvedArguments = new List<ResolvedArgument>();
 
@@ -74,12 +74,12 @@ namespace FakeItEasy.Creation
 
                 var resolvedArgument = new ResolvedArgument
                                            {
-                                               WasResolved = session.TryResolveDummyValue(argument.ParameterType, out result), 
-                                               ResolvedValue = result, 
+                                               WasResolved = session.TryResolveDummyValue(argument.ParameterType, out result),
+                                               ResolvedValue = result,
                                                ArgumentType = argument.ParameterType
                                            };
 
-                logger.Debug("Was able to resolve {0}: {1}.", argument.ParameterType, resolvedArgument.WasResolved);
+                Logger.Debug("Was able to resolve {0}: {1}.", argument.ParameterType, resolvedArgument.WasResolved);
                 resolvedArguments.Add(resolvedArgument);
             }
 
@@ -103,9 +103,9 @@ namespace FakeItEasy.Creation
 
             foreach (var constructor in constructors.Where(x => x.WasSuccessfullyResolved))
             {
-                logger.Debug("Trying with constructor with {0} arguments.", constructor.Arguments.Length);
+                Logger.Debug("Trying with constructor with {0} arguments.", constructor.Arguments.Length);
 
-                var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, constructor.Arguments.Select(x => x.ResolvedValue),fakeOptions.AdditionalAttributes);
+                var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, constructor.Arguments.Select(x => x.ResolvedValue), fakeOptions.AdditionalAttributes);
 
                 if (result.ProxyWasSuccessfullyGenerated)
                 {
@@ -113,7 +113,7 @@ namespace FakeItEasy.Creation
                 }
                 else
                 {
-                    logger.Debug("Setting reason for failure of constructor to {0}.", result.ReasonForFailure);
+                    Logger.Debug("Setting reason for failure of constructor to {0}.", result.ReasonForFailure);
                     constructor.ReasonForFailure = result.ReasonForFailure;
                 }
             }

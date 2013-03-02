@@ -19,12 +19,12 @@
         private Func<ArgumentCollection, bool> argumentsPredicate;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExpressionCallMatcher"/> class.
+        /// Initializes a new instance of the <see cref="ExpressionCallMatcher" /> class.
         /// </summary>
         /// <param name="callSpecification">The call specification.</param>
         /// <param name="constraintFactory">The constraint factory.</param>
+        /// <param name="methodInfoManager">The method info manager to use.</param>
         /// <param name="callExpressionParser">A parser to use to parse call expressions.</param>
-        /// <param name="methodInfoManager">The method infor manager to use.</param>
         public ExpressionCallMatcher(LambdaExpression callSpecification, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, ICallExpressionParser callExpressionParser)
         {
             this.methodInfoManager = methodInfoManager;
@@ -48,7 +48,7 @@
         private MethodInfo Method { get; set; }
 
         /// <summary>
-        /// Matcheses the specified call against the expression.
+        /// Matches the specified call against the expression.
         /// </summary>
         /// <param name="call">The call to match.</param>
         /// <returns>True if the call is matched by the expression.</returns>

@@ -78,6 +78,9 @@
     <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="A.of.T.cs" />
+    <Compile Include="Raise.of.TEventArgs.cs" />
+    <Compile Include="Fake.of.T.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Configuration\AnyCallConfiguration.cs">
       <SubType>Code</SubType>

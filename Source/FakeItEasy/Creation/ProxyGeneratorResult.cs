@@ -43,7 +43,7 @@ namespace FakeItEasy.Creation
         }
 
         /// <summary>
-        /// Gets a value indicating if the proxy was successfully created.
+        /// Gets a value indicating whether the proxy was successfully created.
         /// </summary>
         public bool ProxyWasSuccessfullyGenerated { get; private set; }
 

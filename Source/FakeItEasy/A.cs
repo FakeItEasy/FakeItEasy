@@ -39,7 +39,7 @@ namespace FakeItEasy
         /// Creates a fake object of the type T.
         /// </summary>
         /// <typeparam name="T">The type of fake object to create.</typeparam>
-        /// <param name="options">A lambda where options for the built fake object cna be specified.</param>
+        /// <param name="options">A lambda where options for the built fake object can be specified.</param>
         /// <returns>A fake object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specifie the type of fake.")]
@@ -75,7 +75,7 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Gets a value indicating if the two objects are equal.
+        /// Gets a value indicating whether the two objects are equal.
         /// </summary>
         /// <param name="objA">The first object to compare.</param>
         /// <param name="objB">The second object to compare.</param>
@@ -88,10 +88,10 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Gets a value indicating if the two objects are the same reference.
+        /// Gets a value indicating whether the two objects are the same reference.
         /// </summary>
-        /// <param name="objA">The obj A.</param>
-        /// <param name="objB">The obj B.</param>
+        /// <param name="objA">The object A.</param>
+        /// <param name="objB">The object B.</param>
         /// <returns>True if the objects are the same reference.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Uses the same naming as the framework")]
@@ -103,7 +103,7 @@ namespace FakeItEasy
         /// <summary>
         /// Configures a call to a faked object.
         /// </summary>
-        /// <param name="callSpecification">An expression where the configured memeber is called.</param>
+        /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
         public static IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
         {
@@ -112,7 +112,7 @@ namespace FakeItEasy
 
         /// <summary>
         /// Gets a configuration object allowing for further configuration of
-        /// any calll to the specified faked object.
+        /// any call to the specified faked object.
         /// </summary>
         /// <param name="fake">
         /// The fake to configure.
@@ -129,50 +129,12 @@ namespace FakeItEasy
         /// Configures a call to a faked object.
         /// </summary>
         /// <typeparam name="T">The type of member on the faked object to configure.</typeparam>
-        /// <param name="callSpecification">An expression where the configured memeber is called.</param>
+        /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
-        }
-    }
-
-    /// <summary>
-    /// Provides an api entry point for constraining arguments of fake object calls.
-    /// </summary>
-    /// <typeparam name="T">The type of argument to validate.</typeparam>
-    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A", Justification = "It is spelled correctly.")]
-    public static class A<T>
-    {
-        /// <summary>
-        /// Gets an argument constraint object that will be used to constrain a method call argument.
-        /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
-        public static IArgumentConstraintManager<T> That
-        {
-            get { return ServiceLocator.Current.Resolve<IArgumentConstraintManagerFactory>().Create<T>(); }
-        }
-
-        /// <summary>
-        /// Gets a constraint that considers any value of an argument as valid. (This is a shortcut for the "Ignored"-property.)
-        /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "_", Justification = "Some trickery is allowed, isn't it?")]
-        [SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "But it's kinda cool right?")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static T _
-        {
-            get { return Ignored; }
-        }
-
-        /// <summary>
-        /// Gets a constraint that considers any value of an argument as valid.
-        /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
-        public static T Ignored
-        {
-            get { return That.Matches(x => true, x => x.Write("Ignored")); }
         }
     }
 }

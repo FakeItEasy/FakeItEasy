@@ -1,5 +1,4 @@
-﻿
-#if DEBUG
+﻿#if DEBUG
 
 namespace FakeItEasy
 {

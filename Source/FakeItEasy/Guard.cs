@@ -26,7 +26,7 @@ namespace FakeItEasy
         /// <summary>
         /// Throws an exception if the specified argument is not in the given range.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of the argument.</typeparam>
         /// <param name="argument">The argument.</param>
         /// <param name="lowerBound">The lower bound.</param>
         /// <param name="upperBound">The upper bound.</param>

@@ -8,7 +8,7 @@ namespace FakeItEasy
     /// Provides syntax for specifying the number of times a call must have been repeated when asserting on 
     /// fake object calls.
     /// </summary>
-    /// <example>A.CallTo(() => foo.Bar()).Assert(Happened.Once.Exactly);</example>
+    /// <example><code>A.CallTo(() => foo.Bar()).Assert(Happened.Once.Exactly);</code></example>
     public abstract class Repeated
     {
         /// <summary>

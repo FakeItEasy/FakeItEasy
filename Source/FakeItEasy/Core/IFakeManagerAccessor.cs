@@ -10,11 +10,11 @@ namespace FakeItEasy.Core
     internal interface IFakeManagerAccessor
     {
         /// <summary>
-        /// Attaches a fakemanager to the specified proxy, listening to
+        /// Attaches a <see cref="FakeManager"/> to the specified proxy, listening to
         /// the event raiser.
         /// </summary>
-        /// <param name="proxy">The proxy to attach to.</param>
         /// <param name="typeOfFake">The type of the fake object proxy.</param>
+        /// <param name="proxy">The proxy to attach to.</param>
         /// <param name="eventRaiser">The event raiser to listen to.</param>
         void AttachFakeManagerToProxy(Type typeOfFake, object proxy, ICallInterceptedEventRaiser eventRaiser);
 
@@ -22,7 +22,7 @@ namespace FakeItEasy.Core
         /// Gets the fake manager associated with the proxy.
         /// </summary>
         /// <param name="proxy">The proxy to get the manager from.</param>
-        /// <returns>A fake manager</returns>
+        /// <returns>A fake manager.</returns>
         FakeManager GetFakeManager(object proxy);
     }
 }

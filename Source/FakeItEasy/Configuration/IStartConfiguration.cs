@@ -31,7 +31,7 @@
         IVoidArgumentValidationConfiguration CallsTo(Expression<Action<TFake>> callSpecification);
 
         /// <summary>
-        /// Configures the behavior of the fake object whan a call is made to any method on the
+        /// Configures the behavior of the fake object when a call is made to any method on the
         /// object.
         /// </summary>
         /// <returns>A configuration object.</returns>

@@ -105,7 +105,6 @@
             var setter = GetSutSetter(fixture);
             if (setter != null)
             {
-
                 var sut = this.sutInitializer.CreateSut(setter.MemberType, result.Add);
                 setter.Setter(sut);
             }
