@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.ExtensionSyntax;
-using FakeItEasy.Core;
-using System.Diagnostics;
-
 namespace FakeItEasy.Examples
 {
+    using FakeItEasy.Examples.ExampleObjects;
+
     public class RaisingEvents
     {
         public void Rasing_event_specifying_both_sender_and_event_arguments()

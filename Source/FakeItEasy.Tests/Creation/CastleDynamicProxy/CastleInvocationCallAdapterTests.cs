@@ -1,14 +1,21 @@
-﻿using System;
-using System.Reflection;
-using Castle.DynamicProxy;
-using FakeItEasy.Creation.CastleDynamicProxy;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
+﻿namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
+    using System;
+    using System.Reflection;
+    using Castle.DynamicProxy;
+    using FakeItEasy.Creation.CastleDynamicProxy;
+    using NUnit.Framework;
+
     [TestFixture]
     public class CastleInvocationCallAdapterTests
     {
+        private MethodInfo[] objectMethods = new MethodInfo[]
+            {
+                typeof(object).GetMethod("Equals", new Type[] { typeof(object) }),
+                typeof(object).GetMethod("GetHashCode", new Type[] { }),
+                typeof(object).GetMethod("ToString", new Type[] { })
+            };
+
         [Test]
         public void CallBaseMethod_should_call_Proceed_on_invokation()
         {
@@ -37,12 +44,5 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             A.CallTo(() => invocation.SetArgumentValue(0, "test")).MustHaveHappened();
         }
-
-        private MethodInfo[] objectMethods = new MethodInfo[]
-            {
-                typeof(object).GetMethod("Equals", new Type[] { typeof(object) }),
-                typeof(object).GetMethod("GetHashCode", new Type[] { }),
-                typeof(object).GetMethod("ToString", new Type[] { })
-            };
     }
 }

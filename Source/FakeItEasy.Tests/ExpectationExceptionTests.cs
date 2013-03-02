@@ -1,7 +1,7 @@
-using NUnit.Framework;
-
 namespace FakeItEasy.Tests
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class ExpectationExceptionTests
         : ExceptionContractTests<ExpectationException>

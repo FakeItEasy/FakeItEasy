@@ -1,9 +1,9 @@
-﻿using FakeItEasy.Core;
-using FakeItEasy.SelfInitializedFakes;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.SelfInitializedFakes
+﻿namespace FakeItEasy.Tests.SelfInitializedFakes
 {
+    using FakeItEasy.Core;
+    using FakeItEasy.SelfInitializedFakes;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SelfInitializationRuleTests
     {
@@ -15,11 +15,6 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             this.wrappedRule = A.Fake<IFakeObjectCallRule>();
             this.recorder = A.Fake<ISelfInitializingFakeRecorder>();
-        }
-
-        private SelfInitializationRule CreateRule()
-        {
-            return new SelfInitializationRule(this.wrappedRule, this.recorder);
         }
 
         [TestCase(true)]
@@ -58,7 +53,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             // Arrange
             A.CallTo(() => this.recorder.IsRecording).Returns(true);
             var call = this.CreateFakeCall();
-            
+
             // Act
             var rule = this.CreateRule();
             rule.Apply(call);
@@ -72,7 +67,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             // Arrange
             A.CallTo(() => this.recorder.IsRecording).Returns(true);
-            
+
             var call = this.CreateFakeCall();
             var frozenCall = call.AsReadOnly();
 
@@ -97,6 +92,11 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             Assert.That(rule.NumberOfTimesToCall, Is.EqualTo(numberOfTimesToCallWrappedRule));
         }
 
+        private SelfInitializationRule CreateRule()
+        {
+            return new SelfInitializationRule(this.wrappedRule, this.recorder);
+        }
+
         private IInterceptedFakeObjectCall CreateFakeCall()
         {
             var call = A.Fake<IInterceptedFakeObjectCall>();
@@ -107,6 +107,5 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 
             return call;
         }
-
     }
 }

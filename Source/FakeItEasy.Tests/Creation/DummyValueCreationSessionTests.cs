@@ -200,18 +200,6 @@ namespace FakeItEasy.Tests.Creation
                 .AssignsOutAndRefParameters(value);
         }
 
-        private class TypeWithDefaultConstructorThatThrows
-        {
-            public TypeWithDefaultConstructorThatThrows()
-            {
-                throw new Exception();
-            }
-        }
-
-        private static class TypeThatCanNotBeInstantiated
-        {
-        }
-
         public class ClassWithDefaultConstructor
         {
         }
@@ -232,8 +220,6 @@ namespace FakeItEasy.Tests.Creation
 
         public class TypeWithMultipleConstructorsOfDifferentWidth
         {
-            public bool WidestConstructorWasCalled;
-
             public TypeWithMultipleConstructorsOfDifferentWidth()
             {
             }
@@ -245,6 +231,20 @@ namespace FakeItEasy.Tests.Creation
             public TypeWithMultipleConstructorsOfDifferentWidth(string argument1, string argument2)
             {
                 this.WidestConstructorWasCalled = true;
+            }
+
+            public bool WidestConstructorWasCalled { get; set; }
+        }
+
+        private static class TypeThatCanNotBeInstantiated
+        {
+        }
+
+        private class TypeWithDefaultConstructorThatThrows
+        {
+            public TypeWithDefaultConstructorThatThrows()
+            {
+                throw new Exception();
             }
         }
     }

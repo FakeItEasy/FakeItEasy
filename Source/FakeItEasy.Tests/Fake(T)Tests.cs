@@ -14,15 +14,6 @@
         private IFakeCreatorFacade fakeCreator;
         private IStartConfigurationFactory startConfigurationFactory;
 
-        protected override void OnSetUp()
-        {
-            this.fakeCreator = A.Fake<IFakeCreatorFacade>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeCreatorFacade>()));
-            this.startConfigurationFactory = A.Fake<IStartConfigurationFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<IStartConfigurationFactory>()));
-
-            this.StubResolve<IFakeCreatorFacade>(this.fakeCreator);
-            this.StubResolve<IStartConfigurationFactory>(this.startConfigurationFactory);
-        }
-        
         [Test]
         public void Constructor_sets_fake_object_returned_from_fake_creator_to_FakedObject_property()
         {
@@ -42,7 +33,7 @@
         public void Constructor_that_takes_options_should_be_null_guarded()
         {
             Action<IFakeOptionsBuilder<Foo>> options = x => { };
-            
+
             NullGuardedConstraint.Assert(() =>
                 new Fake<Foo>(options));
         }
@@ -63,14 +54,6 @@
                 var fake = new Fake<AbstractTypeWithNoDefaultConstructor>(options);
 
                 Assert.That(fake.FakedObject, Is.SameAs(fakeReturnedFromFactory));
-            }
-        }
-
-        public abstract class AbstractTypeWithNoDefaultConstructor
-        {
-            protected AbstractTypeWithNoDefaultConstructor(IFoo foo)
-            {
-
             }
         }
 
@@ -136,6 +119,22 @@
 
             // Assert
             Assert.That(result, Is.SameAs(callConfig));
+        }
+
+        protected override void OnSetUp()
+        {
+            this.fakeCreator = A.Fake<IFakeCreatorFacade>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeCreatorFacade>()));
+            this.startConfigurationFactory = A.Fake<IStartConfigurationFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<IStartConfigurationFactory>()));
+
+            this.StubResolve<IFakeCreatorFacade>(this.fakeCreator);
+            this.StubResolve<IStartConfigurationFactory>(this.startConfigurationFactory);
+        }
+
+        public abstract class AbstractTypeWithNoDefaultConstructor
+        {
+            protected AbstractTypeWithNoDefaultConstructor(IFoo foo)
+            {
+            }
         }
     }
 }

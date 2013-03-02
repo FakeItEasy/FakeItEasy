@@ -1,9 +1,9 @@
-using System;
-using FakeItEasy.Tests;
-using NUnit.Framework;
-
 namespace FakeItEasy.Core
 {
+    using System;
+    using FakeItEasy.Tests;
+    using NUnit.Framework;
+
     [TestFixture]
     public class FakeConfiguratorTests
     {
@@ -43,7 +43,7 @@ namespace FakeItEasy.Core
             var configurator = new TestableConfigurator<IFoo>() as IFakeConfigurator;
 
             var thrown = Assert.Throws<ArgumentException>(() =>
-                configurator.ConfigureFake(""));
+                configurator.ConfigureFake(string.Empty));
             Assert.That(thrown.Message, Is.StringStarting("The FakeItEasy.Core.FakeConfiguratorTests+TestableConfigurator`1[FakeItEasy.Tests.IFoo] can only configure fakes of the type 'FakeItEasy.Tests.IFoo'."));
             Assert.That(thrown.ParamName, Is.EqualTo("fakeObject"));
         }
@@ -51,13 +51,12 @@ namespace FakeItEasy.Core
         private class TestableConfigurator<T>
             : FakeConfigurator<T>
         {
-            public T InstancePassedToConfigureFake;
+            public T InstancePassedToConfigureFake { get; set; }
 
             public override void ConfigureFake(T fakeObject)
             {
                 this.InstancePassedToConfigureFake = fakeObject;
             }
         }
-
     }
 }

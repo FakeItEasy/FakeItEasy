@@ -21,10 +21,10 @@ namespace FakeItEasy.Tests
         public void The_facade_class_should_contain_instance_methods_mirroring_the_static_methods_of_the_facaded_class()
         {
             var nonMirroredMethods =
-                from facadedMethod in FacadedType.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                where !IsExcluedMethod(facadedMethod)
-                where (from facadeMethod in FacadeType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                       where NameSignatureAndReturnTypeEquals(facadedMethod, facadeMethod)
+                from facadedMethod in this.FacadedType.GetMethods(BindingFlags.Static | BindingFlags.Public)
+                where !this.IsExcluedMethod(facadedMethod)
+                where (from facadeMethod in this.FacadeType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                       where this.NameSignatureAndReturnTypeEquals(facadedMethod, facadeMethod)
                        select facadeMethod).Count() == 0
                 select facadedMethod;
 
@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests
             return
                 object.Equals(method1.ReturnType, method2.ReturnType)
                 && string.Equals(method1.Name, method2.Name)
-                && AllArgumentsEquals(method1, method2);
+                && this.AllArgumentsEquals(method1, method2);
         }
 
         private bool AllArgumentsEquals(MethodInfo method1, MethodInfo method2)

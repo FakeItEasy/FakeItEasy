@@ -9,11 +9,20 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
     [TestFixture]
     public class CallDataTests
     {
+        private MethodInfo DummyMethodInfo
+        {
+            get
+            {
+                return typeof(IFoo).GetMethod("Bar", new Type[] { });
+            }
+        }
+
         [Test]
         public void CallData_should_be_serializable()
         {
             // Arrange
             var data = new CallData(this.DummyMethodInfo, Enumerable.Empty<object>(), new object());
+
             // Act
 
             // Assert
@@ -35,14 +44,5 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             // Assert
             Assert.That(data, Is.BinarySerializable);
         }
-
-        private MethodInfo DummyMethodInfo
-        {
-            get
-            {
-                return typeof(IFoo).GetMethod("Bar", new Type[] { });
-            }
-        }
     }
-
 }

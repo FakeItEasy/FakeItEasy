@@ -8,8 +8,7 @@ namespace FakeItEasy.Tests
         
         [SetUp]
         public void SetUp()
-        {
-            
+        {            
             this.replacedServiceLocator = ServiceLocator.Current;
             ServiceLocator.Current = A.Fake<ServiceLocator>(x => x.Wrapping(ServiceLocator.Current));
 

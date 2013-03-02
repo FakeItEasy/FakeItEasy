@@ -1,19 +1,14 @@
-﻿using System.Collections.Generic;
-using FakeItEasy.Configuration;
-using FakeItEasy.Core;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.Core
+﻿namespace FakeItEasy.Tests.Core
 {
+    using System.Collections.Generic;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
+
     [TestFixture]
     public class HelpersTests
         : ConfigurableServiceLocatorTestBase
     {
-        protected override void OnSetUp()
-        {
-            
-        }
-
         [Test]
         public void GetDescription_should_render_method_name_and_empty_arguments_list_when_call_has_no_arguments()
         {
@@ -41,48 +36,18 @@ namespace FakeItEasy.Tests.Core
         [Test]
         public void GetDescription_should_render_string_empty_when_string_is_empty()
         {
-            var call = CreateFakeCallToFooDotBar("", 123);
+            var call = CreateFakeCallToFooDotBar(string.Empty, 123);
 
             Assert.That(Helpers.GetDescription(call), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<string.Empty>, 123)"));
         }
 
-        private class Base
+        protected override void OnSetUp()
         {
-            public virtual void BaseMethod()
-            { 
-            
-            }
-
-            public void BaseNonVirtualMethod()
-            {
-            
-            }
-        }
-
-        private class Middle
-            : Base, IHideObjectMembers
-        {
- 
-        }
-
-
-        private class Derived
-            : Middle
-        {
-            public override void BaseMethod()
-            {
-                base.BaseMethod();
-            }
-
-            public new void BaseNonVirtualMethod()
-            { }
         }
 
         private static FakeCall CreateFakeCallToFooDotBar(object argument1, object argument2)
-        { 
-            var call = FakeCall.Create<IFoo>("Bar", new[] { typeof(object), typeof(object) },
-                new[] { argument1, argument2 });
-
+        {
+            var call = FakeCall.Create<IFoo>("Bar", new[] { typeof(object), typeof(object) }, new[] { argument1, argument2 });
             return call;
         }
 
@@ -93,6 +58,35 @@ namespace FakeItEasy.Tests.Core
                 CreateFakeCallToFooDotBar("abc", 123),
                 CreateFakeCallToFooDotBar("def", 456)
             };
+        }
+
+        private class Base
+        {
+            public virtual void BaseMethod()
+            {
+            }
+
+            public void BaseNonVirtualMethod()
+            {
+            }
+        }
+
+        private class Middle
+            : Base, IHideObjectMembers
+        {
+        }
+
+        private class Derived
+            : Middle
+        {
+            public override void BaseMethod()
+            {
+                base.BaseMethod();
+            }
+
+            public new void BaseNonVirtualMethod()
+            {
+            }
         }
     }
 }

@@ -1,21 +1,15 @@
-﻿using System;
-using FakeItEasy.Core;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.Core
+﻿namespace FakeItEasy.Tests.Core
 {
+    using System;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DelegateFakeObjectContainerTests
     {
         [SetUp]
         public void SetUp()
-        { 
-        
-        }
-
-        private DelegateFakeObjectContainer CreateContainer()
         {
-            return new DelegateFakeObjectContainer();
         }
 
         [Test]
@@ -67,6 +61,11 @@ namespace FakeItEasy.Tests.Core
             var container = this.CreateContainer();
 
             container.ConfigureFake(typeof(IFoo), fake);
+        }
+
+        private DelegateFakeObjectContainer CreateContainer()
+        {
+            return new DelegateFakeObjectContainer();
         }
     }
 }

@@ -1,29 +1,23 @@
-﻿using System;
-using FakeItEasy.Core;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests
+﻿namespace FakeItEasy.Tests
 {
+    using System;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
+
     [TestFixture]
     public class RaiseTests
     {
-        IFoo foo;
-        object sender;
-        EventArgs eventArguments;
+        private IFoo foo;
+        private object sender;
+        private EventArgs eventArguments;
 
         [SetUp]
         public void SetUp()
         {
             this.foo = A.Fake<IFoo>();
-            foo.SomethingHappened += new EventHandler(foo_SomethingHappened);
+            this.foo.SomethingHappened += new EventHandler(this.Foo_SomethingHappened);
             this.sender = null;
             this.eventArguments = null;
-        }
-
-        void foo_SomethingHappened(object sender, EventArgs e)
-        {
-            this.sender = sender;
-            this.eventArguments = e;
         }
 
         [Test]
@@ -60,7 +54,7 @@ namespace FakeItEasy.Tests
             var arguments = new EventArgs();
 
             this.foo.SomethingHappened += Raise.With(arguments).Now;
-             
+
             Assert.That(this.eventArguments, Is.SameAs(arguments));
         }
 
@@ -68,8 +62,8 @@ namespace FakeItEasy.Tests
         public void Now_should_throw_when_called_directly()
         {
             var raiser = new Raise<EventArgs>(null, EventArgs.Empty);
-            
-            Assert.Throws<NotSupportedException>(() => 
+
+            Assert.Throws<NotSupportedException>(() =>
                 raiser.Now(null, null));
         }
 
@@ -94,11 +88,17 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             this.foo = A.Fake<IFoo>();
-            
+
             // Act
 
             // Assert
             Assert.That(() => { foo.SomethingHappened += Raise.WithEmpty().Now; }, Throws.Nothing);
+        }
+
+        private void Foo_SomethingHappened(object sender, EventArgs e)
+        {
+            this.sender = sender;
+            this.eventArguments = e;
         }
     }
 }

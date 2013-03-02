@@ -32,18 +32,19 @@
                 .AssignsOutAndRefParameters("reason");
 
             // Act, Assert
-            Assert.That(() =>
-                            {
-                                this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(method, instance);
-                            },
-                        Throws.Exception.InstanceOf<FakeConfigurationException>()
-                            .With.Message.EqualTo(
+            var expectedMessage =
 @"
 
   The current proxy generator can not intercept the specified method for the following reason:
     - reason
 
-"));
+";
+            Assert.That(
+                () =>
+                {
+                    this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(method, instance);
+                },
+                Throws.Exception.InstanceOf<FakeConfigurationException>().With.Message.EqualTo(expectedMessage));
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-
-namespace FakeItEasy.Core.Tests
+﻿namespace FakeItEasy.Core.Tests
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class DummyDefinitionTests
     {
@@ -24,7 +24,6 @@ namespace FakeItEasy.Core.Tests
 
         public class SomeType
         {
-        
         }
 
         public class TestableFakeDefinition : DummyDefinition<SomeType>

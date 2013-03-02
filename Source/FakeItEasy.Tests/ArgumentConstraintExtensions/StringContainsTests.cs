@@ -1,17 +1,15 @@
-using System.Collections.Generic;
-using FakeItEasy.Core;
-using FakeItEasy.Tests;
-using NUnit.Framework;
-
 namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     internal class StringContainsTests
         : ArgumentConstraintTestBase<string>
     {
         protected override IEnumerable<object> InvalidValues
         {
-            get { return new object[] { "foo", "baz", "biz", "", null, "lorem ipsum" }; }
+            get { return new object[] { "foo", "baz", "biz", string.Empty, null, "lorem ipsum" }; }
         }
 
         protected override IEnumerable<object> ValidValues

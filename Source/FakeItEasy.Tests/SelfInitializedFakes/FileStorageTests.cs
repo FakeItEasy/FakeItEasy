@@ -21,11 +21,6 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => this.fileSystem.Open(A<string>._, A<FileMode>._)).Returns(new MemoryStream());
         }
 
-        private FileStorage CreateStorage(string fileName)
-        {
-            return new FileStorage(fileName, this.fileSystem);   
-        }
-
         [Test]
         public void Load_should_deserialize_calls_from_file()
         {
@@ -102,6 +97,11 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => this.fileSystem.Create("c:\\file.dat")).MustHaveHappened();
         }
 
+        private FileStorage CreateStorage(string fileName)
+        {
+            return new FileStorage(fileName, this.fileSystem);
+        }
+
         private byte[] SerializeCalls(IEnumerable<CallData> calls)
         {
             var formatter = new BinaryFormatter();
@@ -125,7 +125,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 
         private CallData CreateDummyCallData()
         {
-            return new CallData(typeof(IFoo).GetMethod("Bar", new Type[] { }), new object[] {}, null);
+            return new CallData(typeof(IFoo).GetMethod("Bar", new Type[] { }), new object[] { }, null);
         }
 
         private class CallDataComparer

@@ -8,13 +8,13 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
-    
+
     public static class CustomArgumentConstraints
     {
         public static T IsThisSequence<T>(this IArgumentConstraintManager<T> scope, T collection) where T : IEnumerable
         {
             return scope.Matches(
-                x => x.Cast<object>().SequenceEqual(collection.Cast<object>()), 
+                x => x.Cast<object>().SequenceEqual(collection.Cast<object>()),
                 "This sequence: " + collection.Cast<object>().ToCollectionString(x => x.ToString(), ", "));
         }
 
@@ -23,28 +23,29 @@ namespace FakeItEasy.Tests
             return scope.Matches(x => x != null && x.Cast<object>().SequenceEqual(collection.Cast<object>()), "This sequence: " + collection.ToCollectionString(x => x.ToString(), ", "));
         }
 
-        
         public static Expression ProducesValue(this IArgumentConstraintManager<Expression> scope, object expectedValue)
         {
-            return scope.Matches(x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x)), 
-			                                string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
-        }
-
-        internal static ParsedArgumentExpression ProducesValue(this IArgumentConstraintManager<ParsedArgumentExpression> scope, object expectedValue)
-        {
-            return scope.Matches(x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x.Expression)),
-                                            string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
+            return scope.Matches(
+                x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x)),
+                string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
         }
 
         public static FakeManager Fakes(this IArgumentConstraintManager<FakeManager> scope, object fakedObject)
         {
             return scope.Matches(x => x.Equals(Fake.GetFakeManager(fakedObject)), "Specified FakeObject");
         }
+        
+        internal static ParsedArgumentExpression ProducesValue(this IArgumentConstraintManager<ParsedArgumentExpression> scope, object expectedValue)
+        {
+            return scope.Matches(
+                x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x.Expression)),
+                string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
+        }
 
         internal static FakeOptions IsEmpty(this IArgumentConstraintManager<FakeOptions> scope)
         {
             return scope.NullCheckedMatches(
-                x => 
+                x =>
                 {
                     return !x.AdditionalInterfacesToImplement.Any()
                         && x.ArgumentsForConstructor == null
@@ -58,12 +59,12 @@ namespace FakeItEasy.Tests
         {
             return manager.NullCheckedMatches(
                 x =>
-                    {
-                        var writer = new StringBuilderOutputWriter();
-                        x.Invoke(writer);
+                {
+                    var writer = new StringBuilderOutputWriter();
+                    x.Invoke(writer);
 
-                        return string.Equals(writer.Builder.ToString(), expectedValue, StringComparison.Ordinal);
-                    },
+                    return string.Equals(writer.Builder.ToString(), expectedValue, StringComparison.Ordinal);
+                },
                 x => x.Write("action that writes ").WriteArgumentValue(expectedValue).Write(" to output."));
         }
 

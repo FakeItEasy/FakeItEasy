@@ -4,7 +4,7 @@
 
     public class AssertingOnSetOnlyPropertiesSpecs
     {
-        static ISetOnly setOnly;
+        private static ISetOnly setOnly;
 
         Establish context = () => setOnly = A.Fake<ISetOnly>();
 

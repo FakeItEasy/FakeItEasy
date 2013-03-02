@@ -68,6 +68,10 @@
     <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
     <Compile Include="AutoInitializedFixture.cs" />
+    <Compile Include="ArgumentConstraintTestBase.of.T.cs" />
+    <Compile Include="ACallToTests.cs" />
+    <Compile Include="GenericATests.cs" />
+    <Compile Include="DummyException.cs" />
     <Compile Include="Core\ArgumentConstraintTrapTests.cs" />
     <Compile Include="Core\ArgumentValueFormatterTests.cs" />
     <Compile Include="Core\DefaultArgumentConstraintManagerTests.cs" />
@@ -85,6 +89,7 @@
     <Compile Include="Creation\DefaultFakeObjectCreatorTests.cs" />
     <Compile Include="Creation\DelegateProxies\DelegateProxyGeneratorTests.cs" />
     <Compile Include="Creation\DummyValueCreationSessionTests.cs" />
+    <Compile Include="Creation\FakeOptionsConstraints.cs" />
     <Compile Include="Creation\ProxyGeneratorResultTests.cs" />
     <Compile Include="Core\DefaultExceptionThrowerTests.cs" />
     <Compile Include="Core\DefaultFakeManagerAccessorTests.cs" />
@@ -154,6 +159,7 @@
     <Compile Include="Core\MethodInfoManagerTests.cs" />
     <Compile Include="IoC\DictionaryContainerTests.cs" />
     <Compile Include="TestCases.cs" />
+    <Compile Include="TestHelpers\MethodInfoDummyDefinition.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="Core\FakeManagerTests.cs" />
     <Compile Include="Core\HelpersTests.cs" />

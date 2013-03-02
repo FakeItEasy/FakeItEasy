@@ -3,7 +3,6 @@ namespace FakeItEasy.Tests.Core
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.IO;
     using System.Linq;
     using FakeItEasy.Core;
     using NUnit.Framework;
@@ -13,33 +12,23 @@ namespace FakeItEasy.Tests.Core
     {
         private List<IFakeObjectCall> calls;
         private StringBuilderOutputWriter writer;
-        
-        [Fake] internal IFakeObjectCallFormatter callFormatter;
-        [Fake] public IEqualityComparer<IFakeObjectCall> CallComparer;
+
+        [Fake]
+        public IEqualityComparer<IFakeObjectCall> CallComparer { get; set; }
+
+        [Fake]
+        internal IFakeObjectCallFormatter CallFormatter { get; set; }
 
         [SetUp]
         public void SetUp()
         {
             Fake.InitializeFixture(this);
 
-            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>._))
+            A.CallTo(() => this.CallFormatter.GetDescription(A<IFakeObjectCall>._))
                 .Returns("Default call description");
 
             this.calls = new List<IFakeObjectCall>();
             this.writer = new StringBuilderOutputWriter();
-        }
-
-        private CallWriter CreateWriter()
-        {
-            return new CallWriter(this.callFormatter, this.CallComparer);
-        }
-
-        private void StubCalls(int numberOfCalls)
-        {
-            for (int i = 0; i < numberOfCalls; i++)
-            {
-                this.calls.Add(A.Fake<IFakeObjectCall>());
-            }
         }
 
         [Test]
@@ -51,7 +40,7 @@ namespace FakeItEasy.Tests.Core
             foreach (var call in this.calls)
             {
                 var boundCallNumber = callNumber;
-                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("Fake call " + boundCallNumber.ToString());
+                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("Fake call " + boundCallNumber.ToString());
                 callNumber++;
             }
 
@@ -59,8 +48,8 @@ namespace FakeItEasy.Tests.Core
             writer.WriteCalls(this.calls, this.writer);
 
             var message = this.writer.Builder.ToString();
-            
-            Assert.That(message,  Is.StringContaining(@"1:  Fake call 1
+            var expectedMessage =
+@"1:  Fake call 1
 2:  Fake call 2
 3:  Fake call 3
 4:  Fake call 4
@@ -69,7 +58,9 @@ namespace FakeItEasy.Tests.Core
 7:  Fake call 7
 8:  Fake call 8
 9:  Fake call 9
-10: Fake call 10"));
+10: Fake call 10";
+
+            Assert.That(message, Is.StringContaining(expectedMessage));
         }
 
         [Test]
@@ -78,21 +69,24 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             this.StubCalls(10);
 
-            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>._)).Returns("Fake call");
-            A.CallTo(() => this.callFormatter.GetDescription(this.calls[9])).Returns("Other call");
+            A.CallTo(() => this.CallFormatter.GetDescription(A<IFakeObjectCall>._)).Returns("Fake call");
+            A.CallTo(() => this.CallFormatter.GetDescription(this.calls[9])).Returns("Other call");
 
             A.CallTo(() => this.CallComparer.Equals(A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]), A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]))).Returns(true);
-            
+
             var writer = this.CreateWriter();
-            
+
             // Act
             writer.WriteCalls(this.calls, this.writer);
 
             // Assert
             var message = this.writer.Builder.ToString();
-            Assert.That(message, Is.StringContaining(@"1:  Fake call repeated 9 times
+            var expectedMessage =
+@"1:  Fake call repeated 9 times
 ...
-10: Other call"));
+10: Other call";
+
+            Assert.That(message, Is.StringContaining(expectedMessage));
         }
 
         [Test]
@@ -102,23 +96,25 @@ namespace FakeItEasy.Tests.Core
 
             foreach (var call in this.calls.Where((x, i) => i % 2 == 0))
             {
-                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("odd");
+                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("odd");
             }
 
             foreach (var call in this.calls.Where((x, i) => i % 2 != 0))
             {
-                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("even");
+                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("even");
             }
 
             var writer = this.CreateWriter();
             writer.WriteCalls(this.calls, this.writer);
-            
-            var message =this.writer.Builder.ToString();
 
-            Assert.That(message, Is.StringContaining(@"1: odd
+            var message = this.writer.Builder.ToString();
+            var expectedMessage =
+@"1: odd
 2: even
 3: odd
-4: even"));
+4: even";
+
+            Assert.That(message, Is.StringContaining(expectedMessage));
         }
 
         [Test]
@@ -128,18 +124,20 @@ namespace FakeItEasy.Tests.Core
 
             foreach (var call in this.calls)
             {
-                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns(string.Format(CultureInfo.InvariantCulture, "Fake call {0}", Guid.NewGuid()));
+                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns(string.Format(CultureInfo.InvariantCulture, "Fake call {0}", Guid.NewGuid()));
             }
 
-            A.CallTo(() => this.callFormatter.GetDescription(this.calls[18])).Returns("Last call");
+            A.CallTo(() => this.CallFormatter.GetDescription(this.calls[18])).Returns("Last call");
 
             var writer = this.CreateWriter();
             writer.WriteCalls(this.calls, this.writer);
 
             var message = this.writer.Builder.ToString();
+            var expectedMessage =
+@"19: Last call
+... Found 11 more calls not displayed here.";
 
-            Assert.That(message, Is.StringContaining(@"19: Last call
-... Found 11 more calls not displayed here."));
+            Assert.That(message, Is.StringContaining(expectedMessage));
         }
 
         [Test]
@@ -148,15 +146,16 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             this.StubCalls(10);
 
-            var callIndex = 0;
-            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>._)).ReturnsLazily(() =>
+            var text =
 @"first line
-second line" + ++callIndex);
-            
-            var writer = this.CreateWriter();
-            
-            // Act
+second line";
 
+            var callIndex = 0;
+            A.CallTo(() => this.CallFormatter.GetDescription(A<IFakeObjectCall>._)).ReturnsLazily(() => text + ++callIndex);
+
+            var writer = this.CreateWriter();
+
+            // Act
             using (this.writer.Indent())
             {
                 writer.WriteCalls(this.calls, this.writer);
@@ -165,9 +164,15 @@ second line" + ++callIndex);
             // Assert
             var message = this.writer.Builder.ToString();
 
-            Assert.That(message, Is.StringContaining(@"1:  first line
-    second line").And.StringContaining(@"10: first line
-    second line"));
+            var expectedText1 =
+@"1:  first line
+    second line";
+
+            var expectedText2 =
+@"10: first line
+    second line";
+
+            Assert.That(message, Is.StringContaining(expectedText1).And.StringContaining(expectedText2));
         }
 
         [Test]
@@ -180,7 +185,7 @@ second line" + ++callIndex);
 
             // Act
             writer.WriteCalls(this.calls, this.writer);
-            
+
             // Assert
             Assert.That(this.writer.Builder.ToString(), Is.StringEnding(Environment.NewLine));
         }
@@ -196,6 +201,19 @@ second line" + ++callIndex);
 
             // Assert
             Assert.That(this.writer.Builder.ToString(), Is.Empty);
+        }
+
+        private CallWriter CreateWriter()
+        {
+            return new CallWriter(this.CallFormatter, this.CallComparer);
+        }
+
+        private void StubCalls(int numberOfCalls)
+        {
+            for (int i = 0; i < numberOfCalls; i++)
+            {
+                this.calls.Add(A.Fake<IFakeObjectCall>());
+            }
         }
     }
 }

@@ -8,11 +8,6 @@ namespace FakeItEasy.Tests.Configuration
     [TestFixture]
     public class RecordedCallRuleTests
     {
-        private RecordedCallRule CreateRule()
-        {
-            return new RecordedCallRule(A.Fake<MethodInfoManager>());
-        }
-
         [Test]
         public void UsePredicateToValidateArguments_should_set_predicate_to_IsApplicableToArguments()
         {
@@ -26,15 +21,21 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
+
         public void DescriptionOfValidCall_should_be_recorded_call()
         {
             // Arrange
             var rule = this.CreateRule();
-            
+
             // Act
-            
+
             // Assert
             Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("Recorded call"));
+        }
+        
+        private RecordedCallRule CreateRule()
+        {
+            return new RecordedCallRule(A.Fake<MethodInfoManager>());
         }
     }
 }

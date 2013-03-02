@@ -11,11 +11,11 @@
         public void Should_zip_correctly()
         {
             // Arrange
-            var letters = new[] {"a", "b", "c"};
-            var numbers = new[] {1, 2};
+            var letters = new[] { "a", "b", "c" };
+            var numbers = new[] { 1, 2 };
 
             // Act
-            var zipped = letters.Zip(numbers, (f, s) => new {Letter = f, Number = s}).ToList();
+            var zipped = letters.Zip(numbers, (f, s) => new { Letter = f, Number = s }).ToList();
 
             // Assert
             Assert.That(zipped, Has.Count.EqualTo(2));

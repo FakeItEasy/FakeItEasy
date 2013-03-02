@@ -1,10 +1,10 @@
-﻿using System;
-using FakeItEasy.Configuration;
-using FakeItEasy.ExtensionSyntax;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.ExtensionSyntax
+﻿namespace FakeItEasy.Tests.ExtensionSyntax
 {
+    using System;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.ExtensionSyntax;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ExtensionSyntaxTests
         : ConfigurableServiceLocatorTestBase
@@ -33,7 +33,7 @@ namespace FakeItEasy.Tests.ExtensionSyntax
         public void Configure_should_throw_when_FakedObject_is_not_a_faked_object()
         {
             Assert.Throws<ArgumentException>(() =>
-                "".Configure());
+                string.Empty.Configure());
         }
 
         [Test]
@@ -45,7 +45,6 @@ namespace FakeItEasy.Tests.ExtensionSyntax
 
         protected override void OnSetUp()
         {
-            
         }
     }
 }

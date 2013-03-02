@@ -1,7 +1,6 @@
 ﻿namespace FakeItEasy.Tests.Core
 {
     using System;
-    using System.Collections.Generic;
     using System.Reflection;
     using FakeItEasy.Core;
     using NUnit.Framework;
@@ -15,7 +14,7 @@
         private FakeCallEqualityComparer comparer;
         private IFakeObjectCall firstCall;
         private IFakeObjectCall secondCall;
-        
+
         [SetUp]
         public void SetUp()
         {
@@ -31,7 +30,7 @@
             // Arrange
 
             // Act
-            
+
             // Assert
             Assert.That(this.comparer.Equals(this.firstCall, this.secondCall), Is.True);
         }
@@ -55,7 +54,7 @@
         {
             // Arrang
             A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new object[] { new object() }, EqualsMethod));
-            
+
             // Act
             var result = this.comparer.Equals(this.firstCall, this.secondCall);
 
@@ -84,15 +83,14 @@
             // Act
 
             // Assert
-            Assert.That(this.comparer.GetHashCode(this.firstCall), 
-                Is.EqualTo(this.comparer.GetHashCode(this.secondCall)));
+            Assert.That(this.comparer.GetHashCode(this.firstCall), Is.EqualTo(this.comparer.GetHashCode(this.secondCall)));
         }
 
         [Test]
         public void Should_not_fail_when_getting_hash_code_where_arguments_contains_null()
         {
             // Arrange
-            A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new object[] {null}, EqualsMethod));
+            A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new object[] { null }, EqualsMethod));
 
             // Act
 

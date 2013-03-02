@@ -1,16 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using NUnit.Framework;
-using FakeItEasy.Tests;
-using FakeItEasy.Core;
-using FakeItEasy.Configuration;
-
 namespace FakeItEasy.IntegrationTests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using FakeItEasy.Tests;
+    using NUnit.Framework;
+
     [TestFixture]
     public class GeneralTests
     {
+        public interface ITypeWithFakeableProperties
+        {
+            IEnumerable<object> Collection { get; }
+
+            IFoo Foo { get; }
+        }
+
         [Test]
         public void Faked_object_with_fakeable_properties_should_have_fake_as_default_value()
         {
@@ -37,27 +44,24 @@ namespace FakeItEasy.IntegrationTests
         [Test]
         public void Faked_object_with_additional_attributes_should_create_a_type_with_those_attributes()
         {
-                // Arrange
-                var types = new Type[0];
-                var constructor = typeof (ForTestAttribute).GetConstructor(types);
-                var list = new object[0];
-                var attribute = new CustomAttributeBuilder(constructor, list);
-                var builder = new List<CustomAttributeBuilder>();
-                builder.Add(attribute);
+            // Arrange
+            var types = new Type[0];
+            var constructor = typeof(ForTestAttribute).GetConstructor(types);
+            var list = new object[0];
+            var attribute = new CustomAttributeBuilder(constructor, list);
+            var builder = new List<CustomAttributeBuilder>();
+            builder.Add(attribute);
 
-                //Act
-                var fake = A.Fake<IFooAttribute>(a => a.WithAdditionalAttributes(builder));
+            // Act
+            var fake = A.Fake<IFooAttribute>(a => a.WithAdditionalAttributes(builder));
 
-                //Assert
-                Assert.That(fake.GetType().GetCustomAttributes(typeof (ForTestAttribute), true).Length, Is.EqualTo(1));
-            
-
+            // Assert
+            Assert.That(fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Length, Is.EqualTo(1));
         }
 
         [Test]
         public void Additional_attributes_should_not_carry_over_to_the_next_fake()
         {
-
             // Arrange
             var types = new Type[0];
             var constructor = typeof(ForTestAttribute).GetConstructor(types);
@@ -67,13 +71,11 @@ namespace FakeItEasy.IntegrationTests
             builder.Add(attribute);
             var fake = A.Fake<IFooAttribute>(a => a.WithAdditionalAttributes(builder));
 
-            //Act
+            // Act
             var secondFake = A.Fake<IFormattable>();
- 
-            //Assert
-            Assert.That(secondFake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Length, Is.EqualTo(0));
-            
 
+            // Assert
+            Assert.That(secondFake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Length, Is.EqualTo(0));
         }
 
         [Test]
@@ -93,8 +95,9 @@ namespace FakeItEasy.IntegrationTests
             {
                 var thrown = Assert.Throws<FakeCreationException>(() =>
                     A.Fake<NonResolvableType>());
-                
-                Assert.That(thrown.Message, Is.EqualTo(@"
+
+                var expectedMessage =
+ @"
   Failed to create fake of type ""FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType"".
 
   Below is a list of reasons for failure per attempted constructor:
@@ -107,28 +110,8 @@ namespace FakeItEasy.IntegrationTests
       Types marked with * could not be resolved, register them in the current
       IFakeObjectContainer to enable these constructors.
 
-"));
-            }   
-        }
-
-        public class NonResolvableType
-        {
-            public NonResolvableType(IFoo foo, NoInstanceType bar)
-            {
-
-            }
-
-            protected NonResolvableType(NoInstanceType bar)
-            {
-
-            }
-        }
-
-        public class NoInstanceType
-        {
-            private NoInstanceType()
-            {
-
+";
+                Assert.That(thrown.Message, Is.EqualTo(expectedMessage));
             }
         }
 
@@ -142,7 +125,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Assert
             var thrown = Assert.Throws<FakeConfigurationException>(() =>
-                A.CallTo(() => fake.NonVirtualVoidMethod("", 1)).DoesNothing());
+                A.CallTo(() => fake.NonVirtualVoidMethod(string.Empty, 1)).DoesNothing());
 
             Assert.That(thrown.Message, Is.StringContaining("Non virtual"));
         }
@@ -157,7 +140,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Assert
             var thrown = Assert.Throws<FakeConfigurationException>(() =>
-                A.CallTo(() => fake.NonVirtualFunction("", 1)).Returns(10));
+                A.CallTo(() => fake.NonVirtualFunction(string.Empty, 1)).Returns(10));
 
             Assert.That(thrown.Message, Is.StringContaining("Non virtual"));
         }
@@ -194,7 +177,7 @@ namespace FakeItEasy.IntegrationTests
         public void FakeCollection_should_return_list_where_all_objects_are_fakes()
         {
             // Arrange
-            
+
             // Act
             var result = A.CollectionOfFake<IFoo>(10);
 
@@ -220,30 +203,41 @@ namespace FakeItEasy.IntegrationTests
                 foo.Baz());
         }
 
+        public class NonResolvableType
+        {
+            public NonResolvableType(IFoo foo, NoInstanceType bar)
+            {
+            }
+
+            protected NonResolvableType(NoInstanceType bar)
+            {
+            }
+        }
+
+        public class NoInstanceType
+        {
+            private NoInstanceType()
+            {
+            }
+        }
+
         public class FakeableClass
         {
             public virtual void Foo()
-            { }
+            {
+            }
         }
 
         public class TypeWithNonConfigurableMethod
         {
             public void NonVirtualVoidMethod(string argument, int otherArgument)
             {
-                
             }
 
             public int NonVirtualFunction(string argument, int otherArgument)
             {
                 return 1;
             }
-        }
-        
-       
-        public interface ITypeWithFakeableProperties
-        {
-            IEnumerable<object> Collection { get; }
-            IFoo Foo { get; }
         }
     }
 }

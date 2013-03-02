@@ -5,49 +5,31 @@
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using NUnit.Framework;
-    
+
     [TestFixture]
     public class RuleBuilderTests
     {
-        RuleBuilder builder;
-        FakeManager fakeManager;
-        [Fake] IFakeAsserter asserter;
-        [Fake] BuildableCallRule ruleProducedByFactory;
-        
+        private RuleBuilder builder;
+        private FakeManager fakeManager;
+
+        [Fake]
+        private IFakeAsserter asserter;
+
+        [Fake]
+        private BuildableCallRule ruleProducedByFactory;
+
+        private IFakeObjectCallRuleWithDescription RuleWithDescription
+        {
+            get { return (IFakeObjectCallRuleWithDescription)this.ruleProducedByFactory; }
+        }
+
         [SetUp]
         public void SetUp()
         {
             this.OnSetUp();
         }
 
-        protected virtual void OnSetUp()
-        {
-            Fake.InitializeFixture(this);
-            
-            this.fakeManager = new FakeManager();
-            
-            this.builder = this.CreateBuilder();
-        }
-
-        private RuleBuilder CreateBuilder()
-        {
-            return this.CreateBuilder(this.ruleProducedByFactory);
-        }
-
-        private RuleBuilder CreateBuilder(BuildableCallRule ruleBeingBuilt)
-        {
-            return new RuleBuilder(ruleBeingBuilt, this.fakeManager, x => this.asserter);
-        }
-
-        private IFakeObjectCallRuleWithDescription RuleWithDescription
-        {
-            get
-            {
-                return (IFakeObjectCallRuleWithDescription)this.ruleProducedByFactory;
-            }
-        }
-     
-        [Test] 
+        [Test]
         public void Returns_called_with_value_sets_applicator_to_a_function_that_applies_that_value_to_interceptor()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -60,8 +42,8 @@
             A.CallTo(() => call.SetReturnValue(10)).MustHaveHappened();
         }
 
-        [Test] public void 
-        Returns_called_with_value_returns_parent_configuration()
+        [Test]
+        public void Returns_called_with_value_returns_parent_configuration()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
 
@@ -129,11 +111,11 @@
         public void Throws_called_from_return_value_configuration_configures_interceptor_so_that_the_specified_exception_is_thrown_when_apply_is_called()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
-            
+
             var exception = new FormatException();
 
             returnConfig.Throws(x => exception);
-            
+
             var thrown = Assert.Throws<FormatException>(() =>
                 this.ruleProducedByFactory.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
             Assert.That(thrown, Is.SameAs(exception));
@@ -154,7 +136,6 @@
                this.ruleProducedByFactory.Applicator(call));
 
             A.CallTo(() => factory(call)).MustHaveHappened();
-
         }
 
         [Test]
@@ -173,7 +154,6 @@
                this.ruleProducedByFactory.Applicator(call));
 
             A.CallTo(() => factory(call)).MustHaveHappened();
-
         }
 
         [Test]
@@ -198,7 +178,7 @@
         public void NumberOfTimes_throws_when_number_of_times_is_not_a_positive_integer(
             [Values(0, -1, -100, int.MinValue)]int numberOftimes)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => 
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
                 this.builder.NumberOfTimes(numberOftimes));
         }
 
@@ -209,7 +189,7 @@
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
             Any.CallTo(call).Throws(new AssertionException("Applicator should do nothing."));
-            
+
             this.builder.RuleBeingBuilt.Applicator(call);
         }
 
@@ -263,7 +243,7 @@
             Action<IFakeObjectCall> action = x => { };
 
             returnConfig.Invokes(action);
-           
+
             A.CallTo(() => this.builder.RuleBeingBuilt.Actions.Add(action)).MustHaveHappened();
         }
 
@@ -347,7 +327,7 @@
             var builtRule = A.Fake<BuildableCallRule>();
 
             var config = this.CreateBuilder(builtRule);
-            
+
             Assert.That(config.WhenArgumentsMatch(x => true), Is.SameAs(config));
         }
 
@@ -369,11 +349,11 @@
             var config = this.CreateBuilder(builtRule);
 
             var returnConfig = new RuleBuilder.ReturnValueConfiguration<bool>() { ParentConfiguration = config };
-            
+
             Func<ArgumentCollection, bool> predicate = x => true;
-            
+
             returnConfig.WhenArgumentsMatch(predicate);
-           
+
             A.CallTo(() => builtRule.UsePredicateToValidateArguments(predicate)).MustHaveHappened();
         }
 
@@ -394,8 +374,6 @@
                 returnConfig.WhenArgumentsMatch(x => true));
         }
 
-       
-
         [Test]
         public void AssignsOutAndRefParameters_should_be_null_guarded()
         {
@@ -407,14 +385,14 @@
         public void AssignsOutAndRefParameters_should_set_values_to_rule()
         {
             this.builder.AssignsOutAndRefParameters(1, "foo");
-            
+
             Assert.That(this.ruleProducedByFactory.OutAndRefParametersValues, Is.EquivalentTo(new object[] { 1, "foo" }));
         }
 
         [Test]
         public void AssignsOutAndRefParameters_returns_self()
         {
-            var result =this.builder.AssignsOutAndRefParameters(1, "foo");
+            var result = this.builder.AssignsOutAndRefParameters(1, "foo");
 
             Assert.That(result, Is.SameAs(this.builder));
         }
@@ -484,7 +462,7 @@
 
             // Act
             returnConfig.Where(predicate, writer);
-            
+
             // Assert
             A.CallTo(() => this.ruleProducedByFactory.ApplyWherePredicate(predicate, writer)).MustHaveHappened();
         }
@@ -501,9 +479,13 @@
             Assert.That(returnConfig.Where(x => true, x => { }), Is.SameAs(returnConfig));
         }
 
-        private RuleBuilder.ReturnValueConfiguration<int> CreateTestableReturnConfiguration()
+        protected virtual void OnSetUp()
         {
-            return new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
+            Fake.InitializeFixture(this);
+
+            this.fakeManager = new FakeManager();
+
+            this.builder = this.CreateBuilder();
         }
 
         private static Expression<Func<TFake, TMember>> CreateExpression<TFake, TMember>(Expression<Func<TFake, TMember>> expression) where TFake : class
@@ -515,6 +497,21 @@
             where TFake : class
         {
             return expression;
+        }
+
+        private RuleBuilder CreateBuilder()
+        {
+            return this.CreateBuilder(this.ruleProducedByFactory);
+        }
+
+        private RuleBuilder CreateBuilder(BuildableCallRule ruleBeingBuilt)
+        {
+            return new RuleBuilder(ruleBeingBuilt, this.fakeManager, x => this.asserter);
+        }
+
+        private RuleBuilder.ReturnValueConfiguration<int> CreateTestableReturnConfiguration()
+        {
+            return new RuleBuilder.ReturnValueConfiguration<int>() { ParentConfiguration = this.builder };
         }
     }
 }

@@ -12,6 +12,30 @@ namespace FakeItEasy.Tests.Core
         private ArgumentValueFormatter formatter;
         private List<IArgumentValueFormatter> registeredTypeFormatters;
 
+        private object[] specificCases = TestCases.Create(
+            new
+            {
+                LessSpecific = typeof(object),
+                MoreSpecific = typeof(DateTime),
+                Value = (object)new DateTime(2000, 1, 1)
+            },
+            new
+            {
+                LessSpecific = typeof(object),
+                MoreSpecific = typeof(Stream),
+                Value = (object)new MemoryStream()
+            },
+            new
+            {
+                LessSpecific = typeof(object),
+                MoreSpecific = typeof(IFoo),
+                Value = (object)A.Fake<IFoo>()
+            }).AsTestCaseSource();
+
+        private interface ISomeInterface
+        {
+        }
+
         [SetUp]
         public void SetUp()
         {
@@ -70,27 +94,6 @@ namespace FakeItEasy.Tests.Core
             Assert.That(result, Is.EqualTo("stream"));
         }
 
-        private object[] specificCases = TestCases.Create(
-            new
-            {
-                LessSpecific = typeof(object),
-                MoreSpecific = typeof(DateTime),
-                Value = (object)new DateTime(2000, 1, 1)
-            },
-            new
-            {
-                LessSpecific = typeof(object),
-                MoreSpecific = typeof(Stream),
-                Value = (object)new MemoryStream()
-            },
-            new
-            {
-                LessSpecific = typeof(object),
-                MoreSpecific = typeof(IFoo),
-                Value = (object)A.Fake<IFoo>()
-            }
-            ).AsTestCaseSource();
-
         [TestCaseSource("specificCases")]
         public void Should_favour_most_specific_formatter_when_more_than_one_is_applicable(Type lessSpecific, Type moreSpecific, object value)
         {
@@ -145,15 +148,14 @@ namespace FakeItEasy.Tests.Core
             this.registeredTypeFormatters.Add(formatter);
         }
 
-        private interface ISomeInterface
-        { }
-
         private class SomeInterfaceImplementor
             : ISomeInterface
-        { }
+        {
+        }
 
         private class SomeInterfaceImplementorDescendant
             : SomeInterfaceImplementor
-        { }
+        {
+        }
     }
 }
