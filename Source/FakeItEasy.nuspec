@@ -3,13 +3,13 @@
   <metadata>
     <id>FakeItEasy</id>
     <title>Fake it Easy!</title>
-    <projectUrl>http://code.google.com/p/fakeiteasy/</projectUrl>
-    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+    <projectUrl>https://github.com/FakeItEasy/FakeItEasy/</projectUrl>
+    <licenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</licenseUrl>
     <version>0.0.0</version>
     <authors>Patrik Hägne</authors>
     <owners>Patrik Hägne</owners>
     <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
-    <releaseNotes>TBD</releaseNotes>
+    <releaseNotes>Enhancement: Remove package dependency on Castle.Core - https://github.com/FakeItEasy/FakeItEasy/issues/16/</releaseNotes>
     <language>en-US</language>
     <tags>TDD unittesting mocking faking stubbing spy spies doubles</tags>
   </metadata>
