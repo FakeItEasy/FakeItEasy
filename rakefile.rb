@@ -3,7 +3,7 @@ require 'fileutils'
 
 version = IO.read("Source/Version.txt")
 nunit_command = "Source/packages/NUnit.Runners.2.6.2/tools/nunit-console.exe"
-mspec_command = "Source/packages/Machine.Specifications.0.5.8/tools/mspec-clr4.exe"
+mspec_command = "Source/packages/Machine.Specifications.0.5.11/tools/mspec-clr4.exe"
 nuget_command = "Source/.nuget/NuGet.exe"
 
 Albacore.configure do |config|
