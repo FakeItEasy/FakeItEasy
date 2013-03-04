@@ -9,7 +9,7 @@
     <authors>Patrik Hägne</authors>
     <owners>Patrik Hägne</owners>
     <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
-    <releaseNotes>Enhancement: Remove package dependency on Castle.Core - https://github.com/FakeItEasy/FakeItEasy/issues/16/</releaseNotes>
+    <releaseNotes>TBD</releaseNotes>
     <language>en-US</language>
     <tags>TDD unittesting mocking faking stubbing spy spies doubles</tags>
   </metadata>
