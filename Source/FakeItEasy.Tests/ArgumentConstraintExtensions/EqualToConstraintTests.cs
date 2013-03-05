@@ -2,17 +2,11 @@
 {
     using System.Collections.Generic;
     using NUnit.Framework;
-    using System.Linq;
 
     [TestFixture]
     internal class EqualToConstraintTests
         : ArgumentConstraintTestBase<object>
     {
-        protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
-        {
-            scope.IsEqualTo(10);
-        }
-
         protected override IEnumerable<object> InvalidValues
         {
             get 
@@ -32,6 +26,11 @@
         protected override string ExpectedDescription
         {
             get { return "equal to 10"; }
+        }
+
+        protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
+        {
+            scope.IsEqualTo(10);
         }
     }
 }

@@ -93,9 +93,9 @@
                                                          });
 
             container.RegisterSingleton<CastleDynamicProxyGenerator>(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
-            
+
             container.RegisterSingleton<IProxyGenerator>(c => new ProxyGeneratorSelector(new DelegateProxyGenerator(), c.Resolve<CastleDynamicProxyGenerator>()));
-            
+
             container.RegisterSingleton(
                 c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
 
@@ -134,8 +134,8 @@
             public ICallMatcher CreateCallMathcer(LambdaExpression callSpecification)
             {
                 return new ExpressionCallMatcher(
-                    callSpecification, 
-                    this.Container.Resolve<ExpressionArgumentConstraintFactory>(), 
+                    callSpecification,
+                    this.Container.Resolve<ExpressionArgumentConstraintFactory>(),
                     this.Container.Resolve<MethodInfoManager>(),
                     this.Container.Resolve<ICallExpressionParser>());
             }
@@ -179,6 +179,5 @@
                 return new DefaultArgumentConstraintManager<T>(ArgumentConstraintTrap.ReportTrappedConstraint);
             }
         }
-
     }
 }

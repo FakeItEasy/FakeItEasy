@@ -1,18 +1,11 @@
-using FakeItEasy.Configuration;
-using FakeItEasy.Core;
-using NUnit.Framework;
-
 namespace FakeItEasy.Tests
 {
-	[TestFixture]
+    using NUnit.Framework;
+
+    [TestFixture]
     public class AnyTests
         : ConfigurableServiceLocatorTestBase
     {
-        protected override void OnSetUp()
-        {
-
-        }
-
         [Test]
         public void Static_equals_delegates_to_static_method_on_object()
         {
@@ -22,9 +15,13 @@ namespace FakeItEasy.Tests
         [Test]
         public void Static_ReferenceEquals_delegates_to_static_method_on_object()
         {
-            var s = "";
+            var s = string.Empty;
 
             Assert.That(Any.ReferenceEquals(s, s), Is.True);
+        }
+
+        protected override void OnSetUp()
+        {
         }
     }
 }

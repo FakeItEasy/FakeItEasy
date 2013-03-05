@@ -1,16 +1,21 @@
 ﻿namespace FakeItEasy.Tests.Creation
 {
-    using NUnit.Framework;
+    using System;
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.DelegateProxies;
-    using System;
+    using NUnit.Framework;
 
     [TestFixture]
     public class ProxyGeneratorSelectorTests
     {
-        [Fake] DelegateProxyGenerator delegateProxyGenerator;
-        [Fake] IProxyGenerator defaultProxyGenerator;
-        [UnderTest] ProxyGeneratorSelector selector;
+        [Fake]
+        private DelegateProxyGenerator delegateProxyGenerator;
+        
+        [Fake]
+        private IProxyGenerator defaultProxyGenerator;
+
+        [UnderTest]
+        private ProxyGeneratorSelector selector;
 
         [SetUp]
         public void SetUp()
@@ -22,15 +27,15 @@
         public void Should_delegate_calls_to_delegate_generator_when_generating_delegate_proxy()
         {
             // Arrange
-            var additionalInterfaces = new Type[] {};
-            var argumentsForConstructor = new object[] {};
+            var additionalInterfaces = new Type[] { };
+            var argumentsForConstructor = new object[] { };
 
             var expected = A.Dummy<ProxyGeneratorResult>();
             A.CallTo(() => this.delegateProxyGenerator.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor))
                 .Returns(expected);
 
             // Act
-            var result = this.selector.GenerateProxy(typeof (Action), additionalInterfaces, argumentsForConstructor);
+            var result = this.selector.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor);
 
             // Assert
             Assert.That(result, Is.SameAs(expected));
@@ -95,6 +100,5 @@
             Assert.That(result, Is.True);
             Assert.That(output, Is.EqualTo("reason"));
         }
-
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
 
+    /// <content>Property setter rule.</content>
     public partial class FakeManager
     {
         [Serializable]

@@ -15,14 +15,6 @@
         private CastleDynamicProxyInterceptionValidator validator;
         private MethodInfoManager methodInfoManager;
 
-        [SetUp]
-        public void SetUp()
-        {
-            this.methodInfoManager = new MethodInfoManager();
-
-            this.validator = new CastleDynamicProxyInterceptionValidator(this.methodInfoManager);
-        }
-
         private object[] nonInterceptableMembers = new[]
         {
             NonInterceptableTestCase.Create(() => new object().GetType(), "Non virtual methods can not be intercepted."),
@@ -35,6 +27,14 @@
         {
             InterceptionTestCase.Create(() => new object().ToString())
         };
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.methodInfoManager = new MethodInfoManager();
+
+            this.validator = new CastleDynamicProxyInterceptionValidator(this.methodInfoManager);
+        }
 
         [TestCaseSource("nonInterceptableMembers")]
         public void Should_fail_for_non_interceptable_methods(NonInterceptableTestCase testCase)

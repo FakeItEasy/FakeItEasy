@@ -5,9 +5,9 @@
 
     public class ConfigSpecifications<T>
     {
-        protected static T fake;
+        Establish context = () => Fake = A.Fake<T>();
 
-        Establish context = () => fake = A.Fake<T>();
+        protected static T Fake { get; set; }
     }
 
     public class when_configuring_callback
@@ -17,8 +17,8 @@
 
         Because of = () =>
         {
-            A.CallTo(() => fake.Bar()).Invokes(x => wasCalled = true);
-            fake.Bar();
+            A.CallTo(() => Fake.Bar()).Invokes(x => wasCalled = true);
+            Fake.Bar();
         };
 
         It should_invoke_the_callback = () => wasCalled.ShouldBeTrue();
@@ -33,12 +33,12 @@
 
         Because of = () =>
         {
-            A.CallTo(() => fake.Baz())
+            A.CallTo(() => Fake.Baz())
                 .Invokes(x => firstWasCalled = true)
                 .Invokes(x => secondWasCalled = true)
                 .Returns(10);
 
-            returnValue = fake.Baz();
+            returnValue = Fake.Baz();
         };
 
         It should_call_the_first_callback = () => firstWasCalled.ShouldBeTrue();
@@ -54,22 +54,22 @@
 
         Because of = () =>
         {
-            A.CallTo(() => fake.ReturnSomething()).Invokes(x => callbackWasInvoked = true).CallsBaseMethod();
-            returnValue = fake.ReturnSomething();
+            A.CallTo(() => Fake.ReturnSomething()).Invokes(x => callbackWasInvoked = true).CallsBaseMethod();
+            returnValue = Fake.ReturnSomething();
         };
 
-        It shuld_have_called_the_base_method = () => fake.WasCalled.ShouldBeTrue();
+        It shuld_have_called_the_base_method = () => Fake.WasCalled.ShouldBeTrue();
         It should_return_value_from_base_method = () => returnValue.ShouldEqual(10);
         It should_invoke_the_callback = () => callbackWasInvoked.ShouldBeTrue();
     }
 
     public class BaseClass
     {
-        public bool WasCalled;
+        public bool WasCalled { get; set; }
 
         public virtual void DoSomething()
         {
-            WasCalled = true;
+            this.WasCalled = true;
         }
 
         public virtual int ReturnSomething()

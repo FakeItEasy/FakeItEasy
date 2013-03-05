@@ -1,5 +1,7 @@
 namespace FakeItEasy.Examples
 {
+    using FakeItEasy.Examples.ExampleObjects;
+
     public class Asserting
     {
         public void Asserting_on_calls()

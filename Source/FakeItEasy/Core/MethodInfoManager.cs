@@ -7,19 +7,19 @@ namespace FakeItEasy.Core
     using System.Reflection;
     
     /// <summary>
-    /// Handles comparisons of MethodInfos.
+    /// Handles comparisons of instances of <see cref="MethodInfo"/>.
     /// </summary>
     internal class MethodInfoManager
     {
-        private static readonly Dictionary<TypeMethodInfoPair, MethodInfo> methodCache = new Dictionary<TypeMethodInfoPair, MethodInfo>();
+        private static readonly Dictionary<TypeMethodInfoPair, MethodInfo> MethodCache = new Dictionary<TypeMethodInfoPair, MethodInfo>();
 
         /// <summary>
-        /// Gets a value indicating if the two method infos would invoke the same method
+        /// Gets a value indicating whether the two instances of <see cref="MethodInfo"/> would invoke the same method
         /// if invoked on an instance of the target type.
         /// </summary>
-        /// <param name="target">The type of target for invokation.</param>
-        /// <param name="first">The first MethodInfo.</param>
-        /// <param name="second">The second MethodInfo.</param>
+        /// <param name="target">The type of target for invocation.</param>
+        /// <param name="first">The first <see cref="MethodInfo"/>.</param>
+        /// <param name="second">The second <see cref="MethodInfo"/>.</param>
         /// <returns>True if the same method would be invoked.</returns>
         public virtual bool WillInvokeSameMethodOnTarget(Type target, MethodInfo first, MethodInfo second)
         {
@@ -39,12 +39,12 @@ namespace FakeItEasy.Core
             MethodInfo result = null;
             var key = new TypeMethodInfoPair { Type = type, MethodInfo = method };
 
-            lock (methodCache)
+            lock (MethodCache)
             {
-                if (!methodCache.TryGetValue(key, out result))
+                if (!MethodCache.TryGetValue(key, out result))
                 {
                     result = FindMethodOnTypeThatWillBeInvokedByMethodInfo(type, method);
-                    methodCache.Add(key, result);
+                    MethodCache.Add(key, result);
                 }
             }
 

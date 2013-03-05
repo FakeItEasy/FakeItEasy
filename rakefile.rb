@@ -24,9 +24,14 @@ end
 desc "Update version number"
 assemblyinfo :version do |asm|
   net_version = version.split("-").first
-  asm.version = net_version
-  asm.file_version = net_version
-  asm.custom_attributes = { :AssemblyInformationalVersion => version, :AssemblyConfiguration => :Release.to_s + " built on " + Time.now.strftime("%Y-%m-%d %H:%M:%S%z") }
+  
+  # not using asm.version and asm.file_version due to StyleCop violations
+  asm.custom_attributes = {
+    :AssemblyVersion => net_version,
+    :AssemblyFileVersion => net_version,
+    :AssemblyInformationalVersion => version,
+    :AssemblyConfiguration => :Release.to_s + " built on " + Time.now.strftime("%Y-%m-%d %H:%M:%S%z")
+  }
   asm.output_file = "Source/VersionAssemblyInfo.cs"
 end
 

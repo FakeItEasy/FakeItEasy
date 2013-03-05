@@ -25,7 +25,7 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var proxy = A.Fake<ITaggable>();
-            
+
             // Act
             this.accessor.AttachFakeManagerToProxy(typeof(object), proxy, A.Dummy<ICallInterceptedEventRaiser>());
 
@@ -99,7 +99,8 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            Assert.That(() => this.accessor.GetFakeManager(proxy),
+            Assert.That(
+                () => this.accessor.GetFakeManager(proxy),
                 Throws.ArgumentException.With.Message.EqualTo("The specified object is not recognized as a fake object."));
         }
     }

@@ -3,26 +3,26 @@ namespace FakeItEasy.Tests.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using NUnit.Framework;
-    using FakeItEasy.Configuration;
 
     [TestFixture]
     public class RecordingCallRuleTests
     {
-        IFoo fakedObject;
-        FakeManager fakeObject;
-        RecordedCallRule recordedRule;
-        FakeAsserter.Factory asserterFactory;
-        IEnumerable<IFakeObjectCall> argumentUsedForAsserterFactory;
-        IFakeAsserter asserter;
-        IFakeObjectCallFormatter callFormatter;
+        private IFoo fakedObject;
+        private FakeManager fakeObject;
+        private RecordedCallRule recordedRule;
+        private FakeAsserter.Factory asserterFactory;
+        private IEnumerable<IFakeObjectCall> argumentUsedForAsserterFactory;
+        private IFakeAsserter asserter;
+        private IFakeObjectCallFormatter callFormatter;
         
         [SetUp]
         public void SetUp()
         {
             this.fakedObject = A.Fake<IFoo>();
-            this.fakeObject = Fake.GetFakeManager(fakedObject);
+            this.fakeObject = Fake.GetFakeManager(this.fakedObject);
             this.recordedRule = A.Fake<RecordedCallRule>(x => x.WithArgumentsForConstructor(() => new RecordedCallRule(A.Fake<MethodInfoManager>())));
             this.callFormatter = A.Fake<IFakeObjectCallFormatter>();
 
@@ -39,11 +39,6 @@ namespace FakeItEasy.Tests.Configuration
         public void TearDown()
         {
             this.argumentUsedForAsserterFactory = null;
-        }
-
-        private RecordingCallRule<IFoo> CreateRule()
-        {
-            return new RecordingCallRule<IFoo>(this.fakeObject, this.recordedRule, this.asserterFactory, this.callFormatter);
         }
 
         [Test]
@@ -144,6 +139,11 @@ namespace FakeItEasy.Tests.Configuration
             var rule = this.CreateRule();
 
             Assert.That(rule.NumberOfTimesToCall, Is.EqualTo(1));
+        }
+
+        private RecordingCallRule<IFoo> CreateRule()
+        {
+            return new RecordingCallRule<IFoo>(this.fakeObject, this.recordedRule, this.asserterFactory, this.callFormatter);
         }
     }
 }

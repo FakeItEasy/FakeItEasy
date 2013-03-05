@@ -19,7 +19,7 @@
         /// it to the output.
         /// </summary>
         /// <param name="value">The value to write.</param>
-        /// <returns>The writer for method chainging.</returns>
+        /// <returns>The writer for method chaining.</returns>
         IOutputWriter WriteArgumentValue(object value);
 
         /// <summary>

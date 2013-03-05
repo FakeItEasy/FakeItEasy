@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Tests;
-
-namespace FakeItEasy.IntegrationTests.Assertions
+﻿namespace FakeItEasy.IntegrationTests.Assertions
 {
+    using System;
+    using FakeItEasy.Tests;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ExceptionMessagesTests
     {
@@ -25,9 +22,10 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.Biz();
 
             var exception = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.AtLeast.Twice));
+                A.CallTo(() => foo.Bar(string.Empty)).MustHaveHappened(Repeated.AtLeast.Twice));
 
-            Assert.That(exception.Message, Is.EqualTo(@"
+            var expectedMessage =
+@"
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar("""")
@@ -39,7 +37,8 @@ namespace FakeItEasy.IntegrationTests.Assertions
     5: FakeItEasy.Tests.IFoo.ToString()
     6: FakeItEasy.Tests.IFoo.Biz()
 
-"));
+";
+            Assert.That(exception.Message, Is.EqualTo(expectedMessage));
         }
 
         [Test]
@@ -52,11 +51,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.Bar(1, 2, "three");
             foo.Bar();
 
-
             var exception = Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => foo.Bar("")).MustHaveHappened(Repeated.AtLeast.Twice));
-            
-            Assert.That(exception.Message, Is.EqualTo(@"
+                A.CallTo(() => foo.Bar(string.Empty)).MustHaveHappened(Repeated.AtLeast.Twice));
+
+            var expectedMessage =
+@"
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar("""")
@@ -68,7 +67,8 @@ namespace FakeItEasy.IntegrationTests.Assertions
     ...
     3: FakeItEasy.Tests.IFoo.Bar()
 
-"));
+";
+            Assert.That(exception.Message, Is.EqualTo(expectedMessage));
         }
         
         [Test]
@@ -84,14 +84,17 @@ namespace FakeItEasy.IntegrationTests.Assertions
             var thrown = Assert.Throws<ExpectationException>(() =>
                 A.CallTo(() => foo.Bar(A<object>._, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
 
-            Assert.That(thrown.Message, Is.EqualTo(@"
+            var expectedMessage =
+@"
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar(<Ignored>, <Starts with ""lorem"">)
   Expected to find it at least twice but found it #1 times among the calls:
     1: FakeItEasy.Tests.IFoo.Bar(argument: System.Object, argument2: ""lorem ipsum"")
 
-"));
+";
+
+            Assert.That(thrown.Message, Is.EqualTo(expectedMessage));
         }
 
         [Test]
@@ -107,14 +110,17 @@ namespace FakeItEasy.IntegrationTests.Assertions
             var thrown = Assert.Throws<ExpectationException>(() =>
                 A.CallTo(() => foo.Baz(A<object>._, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
 
-            Assert.That(thrown.Message, Is.EqualTo(@"
+            var expectedMessage =
+@"
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Baz(<Ignored>, <Starts with ""lorem"">)
   Expected to find it at least twice but found it #1 times among the calls:
     1: FakeItEasy.Tests.IFoo.Baz(argument: System.Object, argument2: ""lorem ipsum"")
 
-"));
+";
+
+            Assert.That(thrown.Message, Is.EqualTo(expectedMessage));
         }
     }
 }

@@ -20,8 +20,8 @@
         /// Called when the interception has been completed and rules has been
         /// applied.
         /// </summary>
-        /// <param name="ruleThatWasApplied">The rule that was applied to the call.</param>
         /// <param name="call">The intercepted call.</param>
+        /// <param name="ruleThatWasApplied">The rule that was applied to the call.</param>
         void OnAfterCallIntercepted(ICompletedFakeObjectCall call, IFakeObjectCallRule ruleThatWasApplied);
     }
 }

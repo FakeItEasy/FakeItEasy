@@ -10,7 +10,7 @@
     internal class DummyValueCreationSession
         : IDummyValueCreationSession
     {
-        private static readonly Logger logger = Log.GetLogger<DummyValueCreationSession>();
+        private static readonly Logger Logger = Log.GetLogger<DummyValueCreationSession>();
 
         private readonly ResolveStrategy[] availableStrategies;
         private readonly HashSet<Type> isInProcessOfResolving;
@@ -74,7 +74,7 @@
             ResolveStrategy cachedStrategy;
             if (this.strategyToUseForType.TryGetValue(typeOfDummy, out cachedStrategy))
             {
-                logger.Debug("Using cached strategy {0} for type {1}.", cachedStrategy.GetType(), typeOfDummy);
+                Logger.Debug("Using cached strategy {0} for type {1}.", cachedStrategy.GetType(), typeOfDummy);
                 return cachedStrategy.TryCreateDummyValue(typeOfDummy, out result);
             }
 
@@ -82,7 +82,7 @@
             {
                 if (this.availableStrategies[i].TryCreateDummyValue(typeOfDummy, out result))
                 {
-                    logger.Debug("Using strategy {0} for type {1}.", this.availableStrategies[i].GetType(), typeOfDummy);
+                    Logger.Debug("Using strategy {0} for type {1}.", this.availableStrategies[i].GetType(), typeOfDummy);
                     this.strategyToUseForType.Add(typeOfDummy, this.availableStrategies[i]);
                     return true;
                 }
@@ -92,8 +92,6 @@
             result = null;
             return false;
         }
-
-        #region Strategies
 
         private class ResolveByActivatingValueTypeStrategy
             : ResolveStrategy
@@ -210,7 +208,5 @@
                 return false;
             }
         }
-
-        #endregion Strategies
     }
 }

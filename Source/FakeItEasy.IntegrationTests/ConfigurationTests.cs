@@ -7,26 +7,14 @@
     using NUnit.Framework;
     using Tests;
 
-   
-    public class BaseClass
-    {
-        public bool WasCalled;
-
-        public virtual void DoSomething()
-        {
-            WasCalled = true;
-        }
-
-        public virtual int ReturnSomething()
-        {
-            this.WasCalled = true;
-            return 10;
-        }
-    }
-
     [TestFixture]
     public class ConfigurationTests
     {
+        public interface IIndexed
+        {
+            string this[int index] { get; }
+        }
+
         [Test]
         public void Function_call_can_be_configured_using_predicate_to_validate_arguments()
         {
@@ -48,8 +36,8 @@
             fake.Configure()
                 .CallsTo(x => x.Bar(null, null))
                 .WhenArgumentsMatch(x => true)
-                .Throws(new Exception());            
-            
+                .Throws(new Exception());
+
             Assert.Throws<Exception>(() =>
                 fake.Bar("something", "else"));
         }
@@ -59,7 +47,7 @@
         {
             var fake = A.Fake<IDictionary<string, string>>();
             string bla = null;
-            
+
             fake.Configure()
                 .CallsTo(x => x.TryGetValue("test", out bla))
                 .Returns(true)
@@ -75,10 +63,10 @@
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            
+
             // Act
             A.CallTo(() => foo.Bar(A<string>._, A<string>._)).Throws(new FormatException());
-            
+
             // Assert
             Assert.Throws<FormatException>(() =>
                 foo.Bar("any", "thing"));
@@ -89,10 +77,10 @@
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            
+
             // Act
             A.CallTo(() => foo.Baz(null, null)).WithAnyArguments().Returns(99);
-            
+
             // Assert
             Assert.That(foo.Baz("any", "thing"), Is.EqualTo(99));
         }
@@ -106,7 +94,7 @@
             // Act
             Any.CallTo(foo).WithReturnType<int>().Returns(10);
             Any.CallTo(foo).WithReturnType<string>().Returns("foo");
-            
+
             // Assert
             Assert.That(foo.SomeProperty, Is.EqualTo(10));
             Assert.That(foo.Baz(), Is.EqualTo(10));
@@ -138,7 +126,7 @@
             // Act
             A.CallTo(foo).Where(x => x.Method.Name.Equals("Bar")).Throws(new Exception());
             A.CallTo(() => foo.Bar()).Throws(new Exception());
-            
+
             // Assert
             Assert.DoesNotThrow(() => foo.Baz());
             Assert.Throws<Exception>(foo.Bar);
@@ -151,9 +139,9 @@
             var fake = A.Fake<IIndexed>(x => x.Strict());
 
             A.CallTo(() => fake[10]).Returns("ten");
-            
+
             // Act
-            
+
             // Assert
             Assert.That(fake[10], Is.EqualTo("ten"));
         }
@@ -182,11 +170,6 @@
             {
                 return 10;
             }
-        }
-
-        public interface IIndexed
-        {
-            string this[int index] { get; }
         }
     }
 }

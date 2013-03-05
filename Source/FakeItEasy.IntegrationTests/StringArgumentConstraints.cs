@@ -1,8 +1,5 @@
 namespace FakeItEasy.IntegrationTests
 {
-    using FakeItEasy.Expressions;
-    using FakeItEasy.Core;
-    
     public static class StringArgumentConstraints
     {
         public static string StartsWith(this IArgumentConstraintManager<string> scope, string beginning)

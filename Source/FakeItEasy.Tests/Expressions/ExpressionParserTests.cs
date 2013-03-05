@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests.Expressions
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FakeItEasy.Expressions;
     using NUnit.Framework;
@@ -43,7 +42,6 @@ namespace FakeItEasy.Tests.Expressions
 
             Assert.That(thrown.Message, Is.EqualTo("The specified call is not made on a fake object."));
         }
-
   
         private static Expression<Func<T>> CreateCall<T>(Expression<Func<T>> expression)
         {

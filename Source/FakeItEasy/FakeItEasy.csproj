@@ -37,6 +37,7 @@
     </TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,6 +79,9 @@
     <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="A.of.T.cs" />
+    <Compile Include="Raise.of.TEventArgs.cs" />
+    <Compile Include="Fake.of.T.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
     <Compile Include="Configuration\AnyCallConfiguration.cs">
       <SubType>Code</SubType>

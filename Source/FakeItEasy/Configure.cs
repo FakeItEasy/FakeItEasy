@@ -1,8 +1,8 @@
 namespace FakeItEasy
 {
     using System;
-    using FakeItEasy.Configuration;
     using System.Linq.Expressions;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Expressions;
 
     /// <summary>

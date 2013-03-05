@@ -9,8 +9,8 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
-    using TestHelpers;
     using NUnit.Framework;
+    using TestHelpers;
 
     [TestFixture]
     public class FakeExtensionsTests
@@ -37,9 +37,9 @@ namespace FakeItEasy.Tests
         public void Twice_should_call_NumberOfTimes_with_2_as_argument()
         {
             var repeatConfig = A.Fake<IRepeatConfiguration>();
-            
+
             repeatConfig.Twice();
-            
+
             A.CallTo(() => repeatConfig.NumberOfTimes(2)).MustHaveHappened();
         }
 
@@ -83,7 +83,6 @@ namespace FakeItEasy.Tests
             Expression<Action<IFoo>> callSpecification = x => x.Bar();
             var calls = this.CreateFakeCallCollection(callSpecification);
 
-
             // Act
             using (Fake.CreateScope())
             {
@@ -118,7 +117,7 @@ namespace FakeItEasy.Tests
                 this.StubResolve<IExpressionCallMatcherFactory>(factory);
                 matchingCalls = calls.Matching<IFoo>(x => x.Bar());
             }
-            
+
             // Assert
             Assert.That(matchingCalls.Count(), Is.EqualTo(2));
             Assert.That(matchingCalls.Any(x => x.Method.Name == "Baz"));
@@ -144,7 +143,7 @@ namespace FakeItEasy.Tests
             // Arrange
 
             // Act
-            
+
             // Assert
             NullGuardedConstraint.Assert(() =>
                 A.Fake<IAssertConfiguration>().MustHaveHappened());
@@ -190,12 +189,14 @@ namespace FakeItEasy.Tests
             FakeExtensions.ReturnsNextFromSequence(config, sequence);
 
             // Assert
-            Func<Func<IFakeObjectCall, int>> factoryValidator = () => A<Func<IFakeObjectCall, int>>.That.Matches(x => 
-            {
-                var producedSequence = new[] { x.Invoke(call), x.Invoke(call), x.Invoke(call) };
-                return producedSequence.SequenceEqual(sequence);
-            }, "Predicate");
-            
+            Func<Func<IFakeObjectCall, int>> factoryValidator = () => A<Func<IFakeObjectCall, int>>.That.Matches(
+                x =>
+                {
+                    var producedSequence = new[] { x.Invoke(call), x.Invoke(call), x.Invoke(call) };
+                    return producedSequence.SequenceEqual(sequence);
+                },
+                "Predicate");
+
             A.CallTo(() => config.ReturnsLazily(factoryValidator.Invoke())).MustHaveHappened();
         }
 
@@ -205,7 +206,7 @@ namespace FakeItEasy.Tests
             // Arrange
             var config = A.Fake<IReturnValueConfiguration<int>>();
             var returnedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
-            
+
             A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>._)).Returns(returnedConfig);
 
             // Act
@@ -220,9 +221,9 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var expectedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
-            var config = A.Fake <IReturnValueConfiguration<int>>();
+            var config = A.Fake<IReturnValueConfiguration<int>>();
             A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.That.Matches(x => x.Invoke(null) == 10))).Returns(expectedConfig);
-            
+
             // Act
             var returned = FakeExtensions.Returns(config, 10);
 
@@ -238,7 +239,7 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() => 
+            NullGuardedConstraint.Assert(() =>
                 A.Fake<IReturnValueConfiguration<string>>().Returns(null));
         }
 
@@ -284,7 +285,7 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var calls = A.CollectionOfFake<IFakeObjectCall>(2);
-            
+
             var callWriter = A.Fake<CallWriter>();
             this.StubResolve<CallWriter>(callWriter);
 
@@ -404,12 +405,9 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            Assert.That(delegate()
-                            {
-                                foo.Bar();
-                            },
-                            Throws.Exception.InstanceOf<ExpectationException>()
-                            .With.Message.EqualTo("Call to non configured method \"Bar\" of strict fake."));
+            Assert.That(
+                () => foo.Bar(),
+                Throws.Exception.InstanceOf<ExpectationException>().With.Message.EqualTo("Call to non configured method \"Bar\" of strict fake."));
         }
 
         [Test]
@@ -434,7 +432,7 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() => 
+            NullGuardedConstraint.Assert(() =>
                 FakeExtensions.Strict(A.Dummy<IFakeOptionsBuilder<IFoo>>()));
         }
 
@@ -443,7 +441,7 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var returnedConfiguration = A.Dummy<IVoidConfiguration>();
-            
+
             var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
             A.CallTo(configuration).WithReturnType<IVoidConfiguration>().Returns(returnedConfiguration);
 
@@ -458,13 +456,13 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var configuration = A.Fake<IWhereConfiguration<IVoidConfiguration>>();
-            
+
             // Act
             configuration.Where(x => true);
 
             // Assert
             A.CallTo(() => configuration.Where(
-                A<Func<IFakeObjectCall, bool>>._, 
+                A<Func<IFakeObjectCall, bool>>._,
                 A<Action<IOutputWriter>>.That.Writes("x => True"))).MustHaveHappened();
         }
 
@@ -529,7 +527,8 @@ namespace FakeItEasy.Tests
 
         private static Func<IFakeObjectCall, Exception> FuncThatReturnsExceptionOfType<T>()
         {
-            return A<Func<IFakeObjectCall, Exception>>.That.NullCheckedMatches(x =>
+            return A<Func<IFakeObjectCall, Exception>>.That.NullCheckedMatches(
+                x =>
                 {
                     var result = x.Invoke(null);
 
@@ -538,8 +537,9 @@ namespace FakeItEasy.Tests
                         return false;
                     }
 
-                    return typeof (T).IsAssignableFrom(result.GetType());
-                }, x => x.Write("function that returns exception of type ").WriteArgumentValue(typeof (T)));
+                    return typeof(T).IsAssignableFrom(result.GetType());
+                },
+                x => x.Write("function that returns exception of type ").WriteArgumentValue(typeof(T)));
         }
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)
@@ -548,4 +548,3 @@ namespace FakeItEasy.Tests
         }
     }
 }
-

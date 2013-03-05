@@ -13,7 +13,7 @@ namespace FakeItEasy
     {
         /// <summary>
         /// Gets a configuration object allowing for further configuration of
-        /// any calll to the specified faked object.
+        /// any call to the specified faked object.
         /// </summary>
         /// <param name="fakedObject">The faked object to configure.</param>
         /// <returns>A configuration object.</returns>
@@ -24,7 +24,7 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Gets a value indicating if the two objects are equal.
+        /// Gets a value indicating whether the two objects are equal.
         /// </summary>
         /// <param name="objA">The first object to compare.</param>
         /// <param name="objB">The second object to compare.</param>
@@ -37,10 +37,10 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Gets a value indicating if the two objects are the same reference.
+        /// Gets a value indicating whether the two objects are the same reference.
         /// </summary>
-        /// <param name="objA">The obj A.</param>
-        /// <param name="objB">The obj B.</param>
+        /// <param name="objA">The object A.</param>
+        /// <param name="objB">The object B.</param>
         /// <returns>True if the objects are the same reference.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Using the same names as the hidden method.")]

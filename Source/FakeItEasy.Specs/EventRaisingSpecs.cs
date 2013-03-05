@@ -5,15 +5,14 @@
 
     public class EventRaisingSpecs
     {
-        protected static ITypeWithEvent typeWithEvent;
-
-        Establish context = () => 
-            typeWithEvent = A.Fake<ITypeWithEvent>();
+        Establish context = () => TypeWithEvent = A.Fake<ITypeWithEvent>();
 
         public interface ITypeWithEvent
         {
             event EventHandler<SomethingHappenedEventArgs> SomethingHappened;
         }
+
+        protected static ITypeWithEvent TypeWithEvent { get; set; }
 
         public class SomethingHappenedEventArgs
             : EventArgs
@@ -29,7 +28,7 @@
         static Exception exception;
 
         Because of = () =>
-            exception = Catch.Exception(() => typeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now);
+            exception = Catch.Exception(() => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now);
 
         It should_not_throw = () => exception.ShouldBeNull();
     }
@@ -43,17 +42,16 @@
 
         private Establish context = () =>
         {
-            typeWithEvent.SomethingHappened += (sender, e) =>
+            TypeWithEvent.SomethingHappened += (sender, e) =>
             {
                 RaisingEventWithSubscriber.sender = sender;
                 raisedWithArgs = e;
             };
         };
 
-        Because of = () =>
-            typeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs() {Message = "message"}).Now;
+        Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs() { Message = "message" }).Now;
 
-        It should_pass_the_sender = () => sender.ShouldBeTheSameAs(typeWithEvent);
+        It should_pass_the_sender = () => sender.ShouldBeTheSameAs(TypeWithEvent);
 
         It should_pass_the_event_arguments = () => raisedWithArgs.Message = "message";
     }
@@ -65,13 +63,13 @@
         static int firstWasRaisedNumberOfTimes;
         static int secondWasRaisedNumberOfTimes;
 
-        Establish context = () => 
+        Establish context = () =>
         {
-            typeWithEvent.SomethingHappened += (s, e) => firstWasRaisedNumberOfTimes++;
-            typeWithEvent.SomethingHappened += (s, e) => secondWasRaisedNumberOfTimes++;
+            TypeWithEvent.SomethingHappened += (s, e) => firstWasRaisedNumberOfTimes++;
+            TypeWithEvent.SomethingHappened += (s, e) => secondWasRaisedNumberOfTimes++;
         };
 
-        Because of = () => typeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now;
+        Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now;
 
         It should_invoke_the_first_handler = () => firstWasRaisedNumberOfTimes.ShouldEqual(1);
 

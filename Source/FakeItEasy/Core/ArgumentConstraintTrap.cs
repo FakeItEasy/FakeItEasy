@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
+    using System;
+    using System.Collections.Generic;
+
     internal class ArgumentConstraintTrap
         : IArgumentConstraintTrapper
     {
         private static List<IArgumentConstraint> trappedConstraints;
+
+        public static void ReportTrappedConstraint(IArgumentConstraint constraint)
+        {
+            if (trappedConstraints != null)
+            {
+                trappedConstraints.Add(constraint);
+            }
+        }
         
         public IEnumerable<IArgumentConstraint> TrapConstraints(Action actionThatProducesConstraint)
         {
@@ -18,14 +26,6 @@ namespace FakeItEasy.Core
             trappedConstraints = null;
             
             return result;
-        }
-
-        public static void ReportTrappedConstraint(IArgumentConstraint constraint)
-        {
-            if (trappedConstraints != null)
-            {
-                trappedConstraints.Add(constraint);
-            }
         }
     }
 }

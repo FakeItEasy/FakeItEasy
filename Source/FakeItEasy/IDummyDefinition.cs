@@ -8,7 +8,7 @@ namespace FakeItEasy
     public interface IDummyDefinition
     {
         /// <summary>
-        /// The type of fake object the definition is for.
+        /// Gets the type of fake object the definition is for.
         /// </summary>
         Type ForType { get; }
 

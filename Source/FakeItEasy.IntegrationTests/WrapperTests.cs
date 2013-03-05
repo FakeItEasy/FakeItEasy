@@ -20,7 +20,7 @@ namespace FakeItEasy.IntegrationTests
 
             Assert.That(wrapper.CanRead, Is.False);
             Assert.That(stream.CanRead, Is.True);
-            Assert.That(CanRead(wrapper), Is.False);
+            Assert.That(this.CanRead(wrapper), Is.False);
         }
 
         [Test]

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using FakeItEasy.Core;
-
-namespace FakeItEasy.IntegrationTests
+﻿namespace FakeItEasy.IntegrationTests
 {
+    using System;
+    using System.Collections.Generic;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ContainerTests
     {
@@ -51,21 +51,16 @@ namespace FakeItEasy.IntegrationTests
         private class DictionaryContainer
             : IFakeObjectContainer
         {
-            public IDictionary<Type, object> RegisteredTypes;
+            public IDictionary<Type, object> RegisteredTypes { get; set; }
 
             public bool TryCreateDummyObject(Type typeOfFakeObject, out object fakeObject)
             {
                 return this.RegisteredTypes.TryGetValue(typeOfFakeObject, out fakeObject);
             }
 
-
             public void ConfigureFake(Type typeOfFakeObject, object fakeObject)
             {
-                
             }
         }
-
-        
-
     }
 }

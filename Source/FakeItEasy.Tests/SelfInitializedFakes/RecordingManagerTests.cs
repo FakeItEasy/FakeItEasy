@@ -1,18 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using FakeItEasy.Core;
-using FakeItEasy.SelfInitializedFakes;
-using FakeItEasy.Tests.TestHelpers;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.SelfInitializedFakes
+﻿namespace FakeItEasy.Tests.SelfInitializedFakes
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using FakeItEasy.Core;
+    using FakeItEasy.SelfInitializedFakes;
+    using FakeItEasy.Tests.TestHelpers;
+    using NUnit.Framework;
+
     [TestFixture]
     public class RecordingManagerTests
     {
         private ICallStorage callStorage;
         private List<CallData> recordedCalls;
+
+        public interface ITypeWithOutAndRef
+        {
+            int Foo(int a, string b, out int c, ref string d);
+
+            int Bar(int a, string b, out int c, ref string d);
+        }
+
+        private MethodInfo TypeWithOutAndRefFooMethod
+        {
+            get { return typeof(ITypeWithOutAndRef).GetMethod("Foo"); }
+        }
+
+        private MethodInfo TypeWithOutAndRefBarMethod
+        {
+            get { return typeof(ITypeWithOutAndRef).GetMethod("Bar"); }
+        }
 
         [SetUp]
         public void SetUp()
@@ -23,20 +40,15 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => this.callStorage.Load()).Returns(this.recordedCalls);
         }
 
-        private RecordingManager CreateRecorder()
-        {
-            return new RecordingManager(this.callStorage);
-        }
-
         [Test]
         public void ApplyCall_should_apply_values_from_recorded_call()
         {
-            this.recordedCalls.Add(new CallData(TypeWithOutAndRefFooMethod, new object[] {10, "20" }, 10));
+            this.recordedCalls.Add(new CallData(this.TypeWithOutAndRefFooMethod, new object[] { 10, "20" }, 10));
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => call.Method).Returns(TypeWithOutAndRefFooMethod);
-            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, TypeWithOutAndRefFooMethod));
-            
+            A.CallTo(() => call.Method).Returns(this.TypeWithOutAndRefFooMethod);
+            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, this.TypeWithOutAndRefFooMethod));
+
             var recorder = this.CreateRecorder();
 
             recorder.ApplyNext(call);
@@ -49,12 +61,12 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         [Test]
         public void ApplyCall_should_apply_each_recorded_call_once_only_then_use_next_existing_call()
         {
-            this.recordedCalls.Add(new CallData(TypeWithOutAndRefFooMethod, new object[] { 10, "20" }, 10));
-            this.recordedCalls.Add(new CallData(TypeWithOutAndRefFooMethod, new object[] { 100, "200" }, 100));
+            this.recordedCalls.Add(new CallData(this.TypeWithOutAndRefFooMethod, new object[] { 10, "20" }, 10));
+            this.recordedCalls.Add(new CallData(this.TypeWithOutAndRefFooMethod, new object[] { 100, "200" }, 100));
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => call.Method).Returns(TypeWithOutAndRefFooMethod);
-            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, TypeWithOutAndRefFooMethod));
+            A.CallTo(() => call.Method).Returns(this.TypeWithOutAndRefFooMethod);
+            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, this.TypeWithOutAndRefFooMethod));
 
             var recorder = this.CreateRecorder();
 
@@ -99,7 +111,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             // Arrange
             var method = ExpressionHelper.GetMethod<IFoo>(x => x.Bar());
             this.recordedCalls.Add(new CallData(method, Enumerable.Empty<object>(), null));
-            
+
             var call = this.CreateFakeCall(method);
 
             // Act
@@ -123,7 +135,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 
             // Act
             var recorder = this.CreateRecorder();
-            
+
             // Assert
             var thrown = Assert.Throws<RecordingException>(() =>
                 recorder.ApplyNext(call));
@@ -135,7 +147,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             var callToRecord = A.Fake<ICompletedFakeObjectCall>();
             A.CallTo(() => callToRecord.Method).Returns(this.TypeWithOutAndRefFooMethod);
-            A.CallTo(() => callToRecord.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", 3, "4" }, TypeWithOutAndRefFooMethod));
+            A.CallTo(() => callToRecord.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", 3, "4" }, this.TypeWithOutAndRefFooMethod));
             A.CallTo(() => callToRecord.ReturnValue).Returns(10);
 
             using (var recorder = this.CreateRecorder())
@@ -153,12 +165,16 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => this.callStorage.Load()).Returns(null);
 
             using (var recorder = this.CreateRecorder())
-            { 
-            
+            {
             }
 
             A.CallTo(() => this.callStorage.Save(A<IEnumerable<CallData>>.That.IsThisSequence()))
                 .MustHaveHappened();
+        }
+
+        private RecordingManager CreateRecorder()
+        {
+            return new RecordingManager(this.callStorage);
         }
 
         private IInterceptedFakeObjectCall CreateFakeCall(MethodInfo method)
@@ -174,28 +190,6 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             return callData.Method.Equals(recordedCall.Method)
                 && callData.OutputArguments.SequenceEqual(new object[] { 3, "4" })
                 && callData.ReturnValue.Equals(10);
-        }
-
-        private MethodInfo TypeWithOutAndRefFooMethod
-        {
-            get
-            {
-                return typeof(ITypeWithOutAndRef).GetMethod("Foo");
-            }
-        }
-
-        private MethodInfo TypeWithOutAndRefBarMethod
-        {
-            get
-            {
-                return typeof(ITypeWithOutAndRef).GetMethod("Bar");
-            }
-        }
-
-        public interface ITypeWithOutAndRef
-        {
-            int Foo(int a, string b, out int c, ref string d);
-            int Bar(int a, string b, out int c, ref string d);
         }
 
         public abstract class TypeThatTakesCollectionArgument

@@ -1,6 +1,5 @@
 ﻿namespace FakeItEasy.Tests.Core
 {
-    using System.Text;
     using FakeItEasy.Core;
     using NUnit.Framework;
 
@@ -22,7 +21,7 @@
         public bool Should_add_constraint_that_is_validated_by_the_specified_predicate(bool predicateIsValid)
         {
             // Arrange
-            
+
             // Act
             this.constraintManager.Matches(x => predicateIsValid, x => x.Write("foo"));
 
@@ -44,6 +43,7 @@
                     return true;
                 },
                 x => x.Write("foo"));
+
             // Assert
             this.createdConstraint.IsValid("argument");
             Assert.That(argumentPassedToDelegate, Is.EqualTo("argument"));
@@ -141,6 +141,5 @@
             this.createdConstraint.WriteDescription(writer);
             Assert.That(writer.Builder.ToString(), Is.EqualTo("<foo>"));
         }
-
     }
 }

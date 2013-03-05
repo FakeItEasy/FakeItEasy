@@ -5,7 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// A IFakeObjectContainer implementation that uses mef to load IFakeDefinitions and
+    /// A IFakeObjectContainer implementation that uses MEF to load IFakeDefinitions and
     /// IFakeConfigurations.
     /// </summary>
     public class DynamicContainer
@@ -15,8 +15,10 @@
         private readonly IDictionary<Type, IDummyDefinition> registeredDummyDefinitions;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicContainer"/> class.
+        /// Initializes a new instance of the <see cref="DynamicContainer" /> class.
         /// </summary>
+        /// <param name="dummyDefinitions">The dummy definitions.</param>
+        /// <param name="fakeConfigurators">The fake configurators.</param>
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurators", Justification = "This is the correct spelling.")]
         public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurator> fakeConfigurators)
         {

@@ -10,7 +10,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Writes a description of calls the rule is applicable to.
         /// </summary>
-        /// <param name="writer"></param>
+        /// <param name="writer">The writer.</param>
         void WriteDescriptionOfValidCall(IOutputWriter writer);
     }
 }

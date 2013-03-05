@@ -6,8 +6,8 @@
     internal class DefaultOutputWriter
         : IOutputWriter
     {
-        private readonly Action<char> output;
         private const string IndentString = "  ";
+        private readonly Action<char> output;
         private string currentIndent;
         private WriteState writerState;
 
@@ -17,7 +17,6 @@
             this.currentIndent = string.Empty;
             this.writerState = new DefaultWriterState(this);
         }
-
 
         public IOutputWriter Write(string value)
         {
@@ -83,7 +82,6 @@
                 this.previousIndentString = previousIndentString;
             }
 
-
             [SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly", Justification = "This is not used to dispose any unmanaged resources.")]
             public void Dispose()
             {
@@ -93,11 +91,11 @@
 
         private abstract class WriteState
         {
-            protected readonly DefaultOutputWriter writer;
+            protected readonly DefaultOutputWriter Writer;
 
             public WriteState(DefaultOutputWriter writer)
             {
-                this.writer = writer;
+                this.Writer = writer;
             }
 
             public abstract void Write(char c);
@@ -115,12 +113,12 @@
             {
                 if (c.Equals('\r') || c.Equals('\n'))
                 {
-                    this.writer.writerState = new IndentNextNonNewLineCharacterWriterState(this.writer);
-                    this.writer.writerState.Write(c);
+                    this.Writer.writerState = new IndentNextNonNewLineCharacterWriterState(this.Writer);
+                    this.Writer.writerState.Write(c);
                 }
                 else
                 {
-                    this.writer.output.Invoke(c);
+                    this.Writer.output.Invoke(c);
                 }
             }
         }
@@ -137,11 +135,11 @@
             {
                 if (!c.Equals('\r') && !c.Equals('\n'))
                 {
-                    this.writer.writerState = new DefaultWriterState(this.writer);
-                    this.writer.AppendIndent();
+                    this.Writer.writerState = new DefaultWriterState(this.Writer);
+                    this.Writer.AppendIndent();
                 }
-                
-                this.writer.output.Invoke(c);
+
+                this.Writer.output.Invoke(c);
             }
         }
     }

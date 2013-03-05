@@ -8,11 +8,6 @@ namespace FakeItEasy.Tests.Configuration
     [TestFixture]
     public class AnyCallCallRuleTests
     {
-        private AnyCallCallRule CreateRule()
-        {
-            return new AnyCallCallRule();
-        }
-
         [TestCase(typeof(int), Result = true)]
         [TestCase(typeof(string), Result = false)]
         [TestCase(null, Result = true)]
@@ -72,6 +67,11 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("Any call with return type System.String to the fake object."));
+        }
+
+        private AnyCallCallRule CreateRule()
+        {
+            return new AnyCallCallRule();
         }
     }
 }

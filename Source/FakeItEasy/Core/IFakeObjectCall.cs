@@ -8,17 +8,17 @@ namespace FakeItEasy.Core
     public interface IFakeObjectCall
     {
         /// <summary>
-        /// The method that's called.
+        /// Gets the method that's called.
         /// </summary>
         MethodInfo Method { get; }
 
         /// <summary>
-        /// The arguments used in the call.
+        /// Gets the arguments used in the call.
         /// </summary>
         ArgumentCollection Arguments { get; }
 
         /// <summary>
-        /// The faked object the call is performed on.
+        /// Gets the faked object the call is performed on.
         /// </summary>
         object FakedObject { get; }
     }

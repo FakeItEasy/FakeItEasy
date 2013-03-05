@@ -26,30 +26,6 @@
             return this.GetArgumentConstraintFromExpression(argument.Expression);
         }
 
-        private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression)
-        {
-            object expressionValue = null;
-
-            var trappedConstraints = this.argumentConstraintTrapper.TrapConstraints(() =>
-            {
-                expressionValue = InvokeExpression(expression);
-            });
-
-            return TryCreateConstraintFromTrappedConstraints(trappedConstraints.ToArray()) ?? CreateEqualityConstraint(expressionValue);
-        }
-
-        IArgumentConstraint CreateParamArrayConstraint(NewArrayExpression expression)
-        {
-            var result = new List<IArgumentConstraint>();
-
-            foreach (var argumentExpression in expression.Expressions)
-            {
-                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression));
-            }
-
-            return new AggregateArgumentConstraint(result);
-        }
-
         private static IArgumentConstraint TryCreateConstraintFromTrappedConstraints(ICollection<IArgumentConstraint> trappedConstraints)
         {
             return trappedConstraints.FirstOrDefault();
@@ -73,6 +49,30 @@
         private static object InvokeExpression(Expression expression)
         {
             return Expression.Lambda(expression).Compile().DynamicInvoke();
+        }
+
+        private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression)
+        {
+            object expressionValue = null;
+
+            var trappedConstraints = this.argumentConstraintTrapper.TrapConstraints(() =>
+            {
+                expressionValue = InvokeExpression(expression);
+            });
+
+            return TryCreateConstraintFromTrappedConstraints(trappedConstraints.ToArray()) ?? CreateEqualityConstraint(expressionValue);
+        }
+
+        private IArgumentConstraint CreateParamArrayConstraint(NewArrayExpression expression)
+        {
+            var result = new List<IArgumentConstraint>();
+
+            foreach (var argumentExpression in expression.Expressions)
+            {
+                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression));
+            }
+
+            return new AggregateArgumentConstraint(result);
         }
     }
 }

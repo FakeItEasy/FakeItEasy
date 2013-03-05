@@ -7,11 +7,6 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     internal class CollectionContainsTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
-        protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)
-        {
-            scope.Contains(10);
-        }
-
         protected override IEnumerable<object> InvalidValues
         {
             get
@@ -25,7 +20,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
         protected override IEnumerable<object> ValidValues
         {
-            get 
+            get
             {
                 yield return new object[] { 10 };
                 yield return new object[] { 10, 11 };
@@ -35,10 +30,15 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
         protected override string ExpectedDescription
         {
-            get 
+            get
             {
                 return "sequence that contains the value 10";
             }
+        }
+        
+        protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)
+        {
+            scope.Contains(10);
         }
     }
 }

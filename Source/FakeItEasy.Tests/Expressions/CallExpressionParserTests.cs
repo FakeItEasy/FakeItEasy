@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -12,6 +13,8 @@
     public class CallExpressionParserTests
     {
         private CallExpressionParser parser;
+
+        public delegate int IntFunction(string argument1, object argument2);
 
         [SetUp]
         public void SetUp()
@@ -24,7 +27,7 @@
         {
             // Arrange
             var call = Call(() => string.Empty.Equals(null));
-            
+
             // Act
             var result = this.parser.Parse(call);
 
@@ -37,7 +40,7 @@
         {
             // Arrange
             var call = Call(() => string.Empty.Length);
-            
+
             // Act
             var result = this.parser.Parse(call);
 
@@ -172,9 +175,9 @@
             // Act
 
             // Assert
-            Assert.That(delegate { this.parser.Parse(call); },
-                        Throws.ArgumentException.With.Message.EqualTo(
-                            "The specified expression is not a method call or property getter."));
+            Assert.That(
+                () => this.parser.Parse(call),
+                Throws.ArgumentException.With.Message.EqualTo("The specified expression is not a method call or property getter."));
         }
 
         [Test]
@@ -190,16 +193,9 @@
 
             // Assert
             Assert.That(result.CalledMethod.Name, Is.EqualTo("Invoke"));
-            Assert.That(result.Arguments, Is.EquivalentTo(new object[] { "foo", "bar"}));
-            Assert.That(result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name), Is.EquivalentTo(new[] { "argument1", "argument2"}));
+            Assert.That(result.Arguments, Is.EquivalentTo(new object[] { "foo", "bar" }));
+            Assert.That(result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name), Is.EquivalentTo(new[] { "argument1", "argument2" }));
             Assert.That(result.CallTarget, Is.SameAs(d));
-        }
-
-        public delegate int IntFunction(string argument1, object argument2);
-
-        private class TypeWithPublicField
-        {
-            public int PublicField = 1;
         }
 
         private static MethodInfo GetMethod<T>(string methodName, params Type[] argumentTypes)
@@ -224,6 +220,12 @@
         private static LambdaExpression Call<T>(Expression<Func<T>> callExpression)
         {
             return callExpression;
+        }
+
+        private class TypeWithPublicField
+        {
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Testing only.")]
+            public int PublicField = 1;
         }
     }
 }

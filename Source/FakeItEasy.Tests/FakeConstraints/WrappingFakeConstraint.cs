@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using FakeItEasy.Core;
-using NUnit.Framework.Constraints;
-
-namespace FakeItEasy.Tests.FakeConstraints
+﻿namespace FakeItEasy.Tests.FakeConstraints
 {
+    using System.Linq;
+    using FakeItEasy.Core;
+    using NUnit.Framework.Constraints;
+
     internal class WrappingFakeConstraint
         : Constraint
     {

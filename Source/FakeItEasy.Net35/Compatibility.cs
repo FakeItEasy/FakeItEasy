@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     // Minimal implementation for compatibility with .net 3.5,
@@ -33,29 +34,33 @@
             this.entries.Add(Tuple.Create(new WeakReference(key), value));
         }
 
-        private void Purge()
-        {
-            this.entries = (from entry in this.entries
-                            where entry.Item1.IsAlive
-                            select entry).ToList();
-        }
-
         private static bool KeyEquals(TKey key, WeakReference keyReference)
         {
             var strongKeyReference = keyReference.Target;
 
             return strongKeyReference != null && object.ReferenceEquals(key, strongKeyReference);
         }
+
+        private void Purge()
+        {
+            this.entries = (from entry in this.entries
+                            where entry.Item1.IsAlive
+                            select entry).ToList();
+        }
     }
 }
 
 namespace System.ComponentModel.Composition
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     public class InheritedExportAttribute
         : Attribute
     {
     }
 
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     public class ImportManyAttribute
         : Attribute
     {
@@ -64,6 +69,9 @@ namespace System.ComponentModel.Composition
 
 namespace System
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     public static class Tuple
     {
         public static Tuple<T1, T2> Create<T1, T2>(T1 item1, T2 item2)
@@ -72,6 +80,7 @@ namespace System
         }
     }
 
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     public class Tuple<T1, T2>
     {
         public Tuple(T1 item1, T2 item2)
@@ -89,7 +98,9 @@ namespace System
 namespace System.Linq
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     public static class EnumerableExtensions
     {
         public static IEnumerable<TReturn> Zip<T, T2, TReturn>(this IEnumerable<T> sequence, IEnumerable<T2> otherSequence, Func<T, T2, TReturn> selector)
@@ -102,7 +113,7 @@ namespace System.Linq
         {
             private readonly IEnumerable<TFirst> firstCollection;
             private readonly IEnumerable<TSecond> secondCollection;
-            readonly Func<TFirst, TSecond, TReturn> selector;
+            private readonly Func<TFirst, TSecond, TReturn> selector;
 
             public ZipEnumerable(IEnumerable<TFirst> firstCollection, IEnumerable<TSecond> secondCollection, Func<TFirst, TSecond, TReturn> selector)
             {
@@ -124,9 +135,9 @@ namespace System.Linq
             private class ZipEnumerator
                 : IEnumerator<TReturn>
             {
+                private readonly Func<TFirst, TSecond, TReturn> selector;
                 private IEnumerable<TFirst> firstCollection;
                 private IEnumerable<TSecond> secondCollection;
-                readonly Func<TFirst, TSecond, TReturn> selector;
                 private IEnumerator<TFirst> firsts;
                 private IEnumerator<TSecond> seconds;
 

@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
 namespace FakeItEasy.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
     public static class TestCases
     {
         public static object[] AsTestCaseSource<T>(this IEnumerable<T> cases, Func<T, object[]> caseProjection)

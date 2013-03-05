@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Core;
-using System.Diagnostics;
-
 namespace FakeItEasy.Examples
 {
+    using System;
+    using System.Linq;
+    using FakeItEasy.Examples.ExampleObjects;
+
     public class Scopes
     {
         public void Getting_calls_in_scope()
@@ -62,7 +59,6 @@ namespace FakeItEasy.Examples
         public void Nesting_scopes()
         {
             // Scopes can be nested however deep you'd like:
-
             var factory = new Fake<IWidgetFactory>();
 
             using (Fake.CreateScope())

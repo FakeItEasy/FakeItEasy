@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using FakeItEasy.Tests;
-
 namespace FakeItEasy.IntegrationTests.Assertions
 {
+    using FakeItEasy.Tests;
+    using NUnit.Framework;
+
     [TestFixture]
     public class RepeatIntegrationTests
     {
@@ -34,11 +30,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
         public void Assert_happened_once_exactly_should_fail_when_call_never_happened()
         {
             // Arrange
-            
+
             // Act
 
             // Assert
-            Assert.Throws<ExpectationException>(() => 
+            Assert.Throws<ExpectationException>(() =>
                 A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Exactly.Once));
         }
 
@@ -62,7 +58,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Arrange
 
             // Act
-            
+
             // Assert
             Assert.Throws<ExpectationException>(() =>
                 A.CallTo(() => this.foo.Bar()).MustHaveHappened());
@@ -102,9 +98,9 @@ namespace FakeItEasy.IntegrationTests.Assertions
             this.foo.Bar();
 
             // Act
-            
+
             // Assert
-            A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.AtLeast.Times(3));
+            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.AtLeast.Times(3));
         }
 
         [Test]
@@ -113,7 +109,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Arrange
 
             // Act
-            
+
             // Assert
             A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Never);
         }
@@ -122,7 +118,8 @@ namespace FakeItEasy.IntegrationTests.Assertions
         public void Assert_happened_never_should_fail_when_a_call_has_been_made()
         {
             // Arrange
-            foo.Bar();
+            this.foo.Bar();
+
             // Act
 
             // Assert

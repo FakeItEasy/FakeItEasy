@@ -1,12 +1,12 @@
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using FakeItEasy.Core;
-using FakeItEasy.Expressions;
-
 namespace FakeItEasy.Tests.TestHelpers
 {
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Reflection;
+    using FakeItEasy.Core;
+    using FakeItEasy.Expressions;
+
     internal static class ExpressionHelper
     {
         public static Expression<Action<T>> CreateExpression<T>(Expression<Action<T>> expression)
@@ -59,6 +59,12 @@ namespace FakeItEasy.Tests.TestHelpers
             return GetArgumentExpression((LambdaExpression)callSpecification, argumentIndex);
         }
 
+        public static MethodInfo GetMethod<T>(Expression<Action<T>> methodAccess)
+        {
+            var methodExpression = methodAccess.Body as MethodCallExpression;
+            return methodExpression.Method;
+        }
+
         private static ExpressionCallRule.Factory GetCallRuleFactory()
         {
             return ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>();
@@ -105,7 +111,6 @@ namespace FakeItEasy.Tests.TestHelpers
             return property.GetGetMethod(true);
         }
 
-
         private static MethodCallExpression GetMethodExpression(LambdaExpression callSpecification)
         {
             return callSpecification.Body as MethodCallExpression;
@@ -114,7 +119,7 @@ namespace FakeItEasy.Tests.TestHelpers
         private static ArgumentCollection CreateArgumentCollection<TFake>(TFake fake, LambdaExpression callSpecification)
         {
             var methodCall = callSpecification.Body as MethodCallExpression;
-            
+
             MethodInfo method = null;
             object[] arguments = null;
 
@@ -133,15 +138,8 @@ namespace FakeItEasy.Tests.TestHelpers
                 method = property.GetGetMethod(true);
                 arguments = new object[] { };
             }
-            
+
             return new ArgumentCollection(arguments, method);
-
-        }
-
-        public static MethodInfo GetMethod<T>(Expression<Action<T>> methodAccess)
-        {
-            var methodExpression = methodAccess.Body as MethodCallExpression;
-            return methodExpression.Method;
         }
     }
 }

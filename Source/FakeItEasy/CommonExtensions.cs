@@ -26,7 +26,7 @@
 
         /// <summary>
         /// Gets an enumerable of tuples where the first value of each tuple is a value
-        /// from the first collection and the second value of each tuple is the value at the same postion
+        /// from the first collection and the second value of each tuple is the value at the same position
         /// from the second collection.
         /// </summary>
         /// <typeparam name="TFirst">The type of values in the first collection.</typeparam>
@@ -44,8 +44,8 @@
         /// </summary>
         /// <typeparam name="T">The type of items in the collection.</typeparam>
         /// <param name="items">The items to join.</param>
-        /// <param name="separator">Separator to insert between each item.</param>
         /// <param name="stringConverter">A function that converts from an item to a string value.</param>
+        /// <param name="separator">Separator to insert between each item.</param>
         /// <returns>A string representation of the collection.</returns>
         public static string ToCollectionString<T>(this IEnumerable<T> items, Func<T, string> stringConverter, string separator)
         {
@@ -94,8 +94,6 @@
 
             return builder;
         }
-
-
 
         public static void Debug(this Logger logger, string message)
         {

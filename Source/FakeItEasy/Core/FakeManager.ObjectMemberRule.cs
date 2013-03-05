@@ -4,13 +4,14 @@
     using System.Collections.Generic;
     using FakeItEasy.Creation;
 
+    /// <content>Object member rule.</content>
     public partial class FakeManager
     {
         [Serializable]
         private class ObjectMemberRule
             : IFakeObjectCallRule
         {
-            private static readonly List<RuntimeMethodHandle> objectMethodsMethodHandles =
+            private static readonly List<RuntimeMethodHandle> ObjectMethodsMethodHandles =
                 new List<RuntimeMethodHandle>
                     {
                         typeof(object).GetMethod("Equals", new[] { typeof(object) }).MethodHandle, 
@@ -50,12 +51,12 @@
 
             private static bool IsObjetMethod(IFakeObjectCall fakeObjectCall)
             {
-                return objectMethodsMethodHandles.Contains(fakeObjectCall.Method.MethodHandle);
+                return ObjectMethodsMethodHandles.Contains(fakeObjectCall.Method.MethodHandle);
             }
 
             private bool TryHandleGetHashCode(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                if (!fakeObjectCall.Method.MethodHandle.Equals(objectMethodsMethodHandles[2]))
+                if (!fakeObjectCall.Method.MethodHandle.Equals(ObjectMethodsMethodHandles[2]))
                 {
                     return false;
                 }
@@ -67,7 +68,7 @@
 
             private bool TryHandleToString(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                if (!fakeObjectCall.Method.MethodHandle.Equals(objectMethodsMethodHandles[1]))
+                if (!fakeObjectCall.Method.MethodHandle.Equals(ObjectMethodsMethodHandles[1]))
                 {
                     return false;
                 }
@@ -79,7 +80,7 @@
 
             private bool TryHandleEquals(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                if (!fakeObjectCall.Method.MethodHandle.Equals(objectMethodsMethodHandles[0]))
+                if (!fakeObjectCall.Method.MethodHandle.Equals(ObjectMethodsMethodHandles[0]))
                 {
                     return false;
                 }

@@ -26,38 +26,7 @@ namespace FakeItEasy.Tests.Configuration
             this.OnSetUp();
         }
 
-        private void OnSetUp()
-        {
-            this.configurationFactory = A.Fake<IConfigurationFactory>();
-            this.expressionParser = A.Fake<IExpressionParser>();
-            this.callExpressionParser = new CallExpressionParser();
-            this.interceptionAsserter = A.Fake<IInterceptionAsserter>();
-
-            Expression<Action<IFoo>> dummyExpression = x => x.Bar();
-            this.ruleReturnedFromFactory = ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>().Invoke(dummyExpression);
-            this.ruleFactory = x =>
-                {
-                    return this.ruleReturnedFromFactory;
-                };
-
-            this.fakeObjectReturnedFromParser = new FakeManager();
-
-            A.CallTo(() => this.expressionParser.GetFakeManagerCallIsMadeOn(A<LambdaExpression>._)).ReturnsLazily(x => this.fakeObjectReturnedFromParser);
-
-            this.configurationManager = this.CreateManager();
-        }
-
-        private FakeConfigurationManager CreateManager()
-        {
-            return new FakeConfigurationManager(
-                this.configurationFactory, 
-                this.expressionParser, 
-                this.ruleFactory,
-                this.callExpressionParser, 
-                this.interceptionAsserter);
-        }
-
-        //Callto
+        // Callto
         [Test]
         public void CallTo_with_void_call_should_call_configuration_factory_with_fake_object()
         {
@@ -90,8 +59,8 @@ namespace FakeItEasy.Tests.Configuration
             // Arrange
             var foo = A.Fake<IFoo>();
             var returnedConfiguration = A.Fake<IVoidArgumentValidationConfiguration>();
-            
-            A.CallTo(() => 
+
+            A.CallTo(() =>
                 this.configurationFactory.CreateConfiguration(this.fakeObjectReturnedFromParser, this.ruleReturnedFromFactory))
                 .Returns(returnedConfiguration);
 
@@ -120,6 +89,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var foo = A.Fake<IFoo>();
+
             // Act
 
             // Assert
@@ -160,7 +130,7 @@ namespace FakeItEasy.Tests.Configuration
             // Arrange
             var foo = A.Fake<IFoo>();
             var returnedConfiguration = A.Fake<IAnyCallConfigurationWithReturnTypeSpecified<int>>();
-            
+
             A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(this.fakeObjectReturnedFromParser, this.ruleReturnedFromFactory)).Returns(returnedConfiguration);
 
             // Act
@@ -192,7 +162,7 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             NullGuardedConstraint.Assert(() =>
-                this.configurationManager.CallTo(() => "".Length));
+                this.configurationManager.CallTo(() => string.Empty.Length));
         }
 
         [Test]
@@ -276,6 +246,37 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             Assert.That(manager.AllUserRules.Single().Rule, Is.InstanceOf<AnyCallCallRule>());
+        }
+
+        private void OnSetUp()
+        {
+            this.configurationFactory = A.Fake<IConfigurationFactory>();
+            this.expressionParser = A.Fake<IExpressionParser>();
+            this.callExpressionParser = new CallExpressionParser();
+            this.interceptionAsserter = A.Fake<IInterceptionAsserter>();
+
+            Expression<Action<IFoo>> dummyExpression = x => x.Bar();
+            this.ruleReturnedFromFactory = ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>().Invoke(dummyExpression);
+            this.ruleFactory = x =>
+            {
+                return this.ruleReturnedFromFactory;
+            };
+
+            this.fakeObjectReturnedFromParser = new FakeManager();
+
+            A.CallTo(() => this.expressionParser.GetFakeManagerCallIsMadeOn(A<LambdaExpression>._)).ReturnsLazily(x => this.fakeObjectReturnedFromParser);
+
+            this.configurationManager = this.CreateManager();
+        }
+
+        private FakeConfigurationManager CreateManager()
+        {
+            return new FakeConfigurationManager(
+                this.configurationFactory,
+                this.expressionParser,
+                this.ruleFactory,
+                this.callExpressionParser,
+                this.interceptionAsserter);
         }
     }
 }

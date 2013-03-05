@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using NUnit.Framework;
@@ -8,12 +9,18 @@ namespace FakeItEasy.Tests.Core
     [TestFixture]
     public class DefaultFixtureInitializerTests
     {
-        [UnderTest] private DefaultFixtureInitializer initializer;
-        
-        [Fake] private IFakeAndDummyManager fakeAndDummyManager;
-        [Fake] private IFoo fakeReturnedFromFakeAndDummyManager;
-        [Fake] private ISutInitializer sutInitializer;
-        
+        [UnderTest]
+        private DefaultFixtureInitializer initializer;
+
+        [Fake]
+        private IFakeAndDummyManager fakeAndDummyManager;
+
+        [Fake]
+        private IFoo fakeReturnedFromFakeAndDummyManager;
+
+        [Fake]
+        private ISutInitializer sutInitializer;
+
         private FixtureType fixture;
 
         [SetUp]
@@ -22,61 +29,52 @@ namespace FakeItEasy.Tests.Core
             this.OnSetUp();
         }
 
-        protected virtual void OnSetUp()
-        {
-            Fake.InitializeFixture(this);
-            
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>._)).Returns(this.fakeReturnedFromFakeAndDummyManager);
-
-            this.fixture = new FixtureType();
-        }
-
         [Test]
         public void Should_set_public_property_that_is_attributed()
         {
             // Arrange
-            
+
             // Act
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(fixture.FooProperty, Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
+            Assert.That(this.fixture.FooProperty, Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
         }
 
         [Test]
         public void Should_not_set_untagged_property()
         {
             // Arrange
-            
+
             // Act
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(fixture.NonFakedProperty, Is.Null);
+            Assert.That(this.fixture.NonFakedProperty, Is.Null);
         }
 
         [Test]
         public void Should_set_private_property_that_is_tagged()
         {
             // Arrange
-            
+
             // Act
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(fixture.GetValueOfPrivateFakeProperty(), Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
+            Assert.That(this.fixture.GetValueOfPrivateFakeProperty(), Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
         }
 
         [Test]
         public void Should_set_private_field_that_is_tagged()
         {
             // Arrange
-            
+
             // Act
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(fixture.GetValueOfPrivateFakeField(), Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
+            Assert.That(this.fixture.GetValueOfPrivateFakeField(), Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
         }
 
         [Test]
@@ -88,7 +86,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(fixture.PublicFakeField, Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
+            Assert.That(this.fixture.PublicFakeField, Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
         }
 
         [Test]
@@ -100,7 +98,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(fixture.NonFakeField, Is.Null);
+            Assert.That(this.fixture.NonFakeField, Is.Null);
         }
 
         [Test]
@@ -111,14 +109,14 @@ namespace FakeItEasy.Tests.Core
 
             A.CallTo(() => this.sutInitializer.CreateSut(A<Type>._, A<Action<Type, object>>._))
                 .Returns(sut);
-            
+
             var fixture = new SutFixture();
 
             // Act
             this.initializer.InitializeFakes(fixture);
-            
+
             // Assert
-            Assert.That(fixture.sut, Is.SameAs(sut));
+            Assert.That(fixture.Sut, Is.SameAs(sut));
         }
 
         [Test]
@@ -137,7 +135,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(fixture);
 
             // Assert
-            Assert.That(fixture.foo, Is.SameAs(fake));
+            Assert.That(fixture.Foo, Is.SameAs(fake));
         }
 
         [Test]
@@ -148,39 +146,57 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            Assert.That(() =>
-                {
-                    this.initializer.InitializeFakes(new SutFixtureWithTwoSutMembers());
-                },
-                Throws.InstanceOf<InvalidOperationException>()
-                .With.Message.EqualTo("A fake fixture can only contain one member marked \"under test\"."));
+            Assert.That(
+                () => this.initializer.InitializeFakes(new SutFixtureWithTwoSutMembers()),
+                Throws.InstanceOf<InvalidOperationException>().With.Message.EqualTo("A fake fixture can only contain one member marked \"under test\"."));
         }
-        
+
+        protected virtual void OnSetUp()
+        {
+            Fake.InitializeFixture(this);
+
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>._)).Returns(this.fakeReturnedFromFakeAndDummyManager);
+
+            this.fixture = new FixtureType();
+        }
+
         public class Sut
         {
             public Sut(IFoo foo)
-            {  
+            {
             }
         }
 
         public class SutFixture
         {
             [Fake]
-            public IFoo foo;
-            
-            [UnderTest] 
-            public Sut sut;
+            public IFoo Foo { get; set; }
+
+            [UnderTest]
+            public Sut Sut { get; set; }
         }
 
         public class SutFixtureWithTwoSutMembers
         {
-            [UnderTest] public Sut sut;
+            [UnderTest]
+            public Sut Sut { get; set; }
 
-            [UnderTest] public Sut sut2;
+            [UnderTest]
+            public Sut Sut2 { get; set; }
         }
 
         public class FixtureType
         {
+            [Fake]
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Testing only.")]
+            public IFoo PublicFakeField;
+
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Testing only.")]
+            public IFoo NonFakeField;
+
+            [Fake]
+            private IFoo privateFakeField;
+
             [Fake]
             public IFoo FooProperty { get; set; }
 
@@ -188,14 +204,6 @@ namespace FakeItEasy.Tests.Core
 
             [Fake]
             private IFoo PriveFakeProperty { get; set; }
-
-            [Fake]
-            private IFoo privateFakeField;
-
-            [Fake]
-            public IFoo PublicFakeField;
-
-            public IFoo NonFakeField;
 
             public IFoo GetValueOfPrivateFakeProperty()
             {

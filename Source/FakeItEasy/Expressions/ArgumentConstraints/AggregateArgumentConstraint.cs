@@ -9,7 +9,7 @@
     internal class AggregateArgumentConstraint
         : IArgumentConstraint
     {
-        IArgumentConstraint[] constraintsField;
+        private IArgumentConstraint[] constraintsField;
 
         public AggregateArgumentConstraint(IEnumerable<IArgumentConstraint> constraints)
         {
@@ -18,7 +18,7 @@
 
         public IEnumerable<IArgumentConstraint> Constraints
         {
-            get { return this.constraintsField;}
+            get { return this.constraintsField; }
         }
 
         public void WriteDescription(IOutputWriter writer)
@@ -54,9 +54,8 @@
             }
 
             return enumerable.Cast<object>()
-                .Zip(this.Constraints, (x, y) => new {Value = x, Constraint = y})
+                .Zip(this.Constraints, (x, y) => new { Value = x, Constraint = y })
                 .All(x => x.Constraint.IsValid(x.Value));
         }
     }
-
 }

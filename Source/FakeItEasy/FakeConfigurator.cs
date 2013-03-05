@@ -13,7 +13,7 @@ namespace FakeItEasy
         : IFakeConfigurator
     {
         /// <summary>
-        /// The type the instance provides configuration for.
+        /// Gets the type the instance provides configuration for.
         /// </summary>
         /// <value></value>
         public Type ForType

@@ -8,7 +8,7 @@
     using System.Reflection;
 
     /// <summary>
-    /// Access all types in all assemblies in the same directory as the FakeItEasy dll.
+    /// Access all types in all assemblies in the same directory as the FakeItEasy assembly.
     /// </summary>
     public class ApplicationDirectoryAssembliesTypeCatalogue
         : ITypeCatalogue
@@ -38,7 +38,6 @@
         {
             return GetAllAssembliesInApplicationDirectory().Concat(GetAllAsembliesInAppDomain()).Distinct();
         }
-
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
         private static IEnumerable<Assembly> GetAllAssembliesInApplicationDirectory()

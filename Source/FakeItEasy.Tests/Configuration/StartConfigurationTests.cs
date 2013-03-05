@@ -2,10 +2,8 @@ namespace FakeItEasy.Tests.Configuration
 {
     using System;
     using System.Linq.Expressions;
-    using System.Reflection;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
@@ -27,32 +25,10 @@ namespace FakeItEasy.Tests.Configuration
             this.OnSetUp();
         }
 
-        protected virtual void OnSetUp()
-        {
-            this.fakeObject = A.Fake<FakeManager>();
-            this.rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());
-            this.ruleFactory = x =>
-                {
-                    this.argumentToRuleFactory = x;
-                    return this.rule;
-                };
-
-            this.configurationFactory = A.Fake<IConfigurationFactory>();
-
-            this.expressionParser = A.Fake<ICallExpressionParser>();
-
-            this.interceptionAsserter = A.Fake<IInterceptionAsserter>();
-        }
-
         [TearDown]
         public void TearDown()
         {
             this.argumentToRuleFactory = null;
-        }
-
-        private StartConfiguration<T> CreateConfiguration<T>()
-        {
-            return new StartConfiguration<T>(this.fakeObject, this.ruleFactory, this.configurationFactory, this.expressionParser, this.interceptionAsserter);
         }
 
         [Test]
@@ -71,7 +47,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = configuration.CallsTo(callSpecification);
 
             // Assert
-            Assert.That(argumentToRuleFactory, Is.SameAs(callSpecification));
+            Assert.That(this.argumentToRuleFactory, Is.SameAs(callSpecification));
             Assert.That(result, Is.SameAs(returnedConfiguration));
         }
 
@@ -80,7 +56,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var configuration = this.CreateConfiguration<IFoo>();
-            
+
             // Act
             configuration.CallsTo(x => x.Bar());
 
@@ -129,7 +105,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = configuration.CallsTo(callSpecification);
 
             // Assert
-            Assert.That(argumentToRuleFactory, Is.SameAs(callSpecification));
+            Assert.That(this.argumentToRuleFactory, Is.SameAs(callSpecification));
             Assert.That(result, Is.SameAs(returnedConfiguration));
         }
 
@@ -176,7 +152,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var returnedConfig = A.Fake<IAnyCallConfigurationWithNoReturnTypeSpecified>();
-            
+
             A.CallTo(() => this.configurationFactory.CreateAnyCallConfiguration(this.fakeObject, A<AnyCallCallRule>.That.Not.IsNull())).Returns(returnedConfig);
 
             var configuration = this.CreateConfiguration<int>();
@@ -228,6 +204,28 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(
                 parsedExpression.CalledMethod,
                 "fake")).MustHaveHappened();
+        }
+
+        protected virtual void OnSetUp()
+        {
+            this.fakeObject = A.Fake<FakeManager>();
+            this.rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());
+            this.ruleFactory = x =>
+            {
+                this.argumentToRuleFactory = x;
+                return this.rule;
+            };
+
+            this.configurationFactory = A.Fake<IConfigurationFactory>();
+
+            this.expressionParser = A.Fake<ICallExpressionParser>();
+
+            this.interceptionAsserter = A.Fake<IInterceptionAsserter>();
+        }
+
+        private StartConfiguration<T> CreateConfiguration<T>()
+        {
+            return new StartConfiguration<T>(this.fakeObject, this.ruleFactory, this.configurationFactory, this.expressionParser, this.interceptionAsserter);
         }
     }
 }

@@ -1,13 +1,20 @@
-using System;
-using FakeItEasy.Core;
-using FakeItEasy.ExtensionSyntax;
-using NUnit.Framework;
-
 namespace FakeItEasy.Tests.Core
 {
+    using System;
+    using FakeItEasy.Core;
+    using FakeItEasy.ExtensionSyntax;
+    using NUnit.Framework;
+
     [TestFixture]
     public class WrappedObjectRuleTests
     {
+        public interface ITypeWithOutAndRefArguments
+        {
+            void MethodWithReferenceArgument(ref int argument);
+
+            void MethodWithOutArgument(out int argument);
+        }
+
         [Test]
         public void IsApplicableTo_should_return_true()
         {
@@ -99,17 +106,12 @@ namespace FakeItEasy.Tests.Core
             return new WrappedObjectRule(wrapped);
         }
 
-        public interface ITypeWithOutAndRefArguments
-        {
-            void MethodWithReferenceArgument(ref int argument);
-            void MethodWithOutArgument(out int argument);
-        }
-
         public class TypeThatImplementsInterfaceWithOutAndRefArguments
             : ITypeWithOutAndRefArguments
         {
-            public int ReferenceArgumentThatWillBeApplied;
-            public int OutArgumentThatWillBeApplied;
+            public int ReferenceArgumentThatWillBeApplied { get; set; }
+
+            public int OutArgumentThatWillBeApplied { get; set; }
 
             public void MethodWithReferenceArgument(ref int argument)
             {

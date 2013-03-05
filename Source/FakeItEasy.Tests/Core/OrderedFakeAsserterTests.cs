@@ -2,7 +2,6 @@ namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using FakeItEasy.Core;
     using NUnit.Framework;
 
@@ -15,11 +14,6 @@ namespace FakeItEasy.Tests.Core
         public void SetUp()
         {
             this.callWriter = A.Fake<CallWriter>();
-        }
-
-        private OrderedFakeAsserter CreateAsserter(IEnumerable<IFakeObjectCall> calls)
-        {
-            return new OrderedFakeAsserter(calls, this.callWriter);
         }
 
         [Test]
@@ -80,7 +74,6 @@ namespace FakeItEasy.Tests.Core
                 orderedAsserter.AssertWasCalled(secondCallPredicate, "foo", x => x == 1, "foo"));
         }
 
-
         [Test]
         [SetCulture("en-US")]
         public void Should_throw_exception_with_correct_message()
@@ -109,8 +102,14 @@ namespace FakeItEasy.Tests.Core
   The calls where found but not in the correct order among the calls:
     list of calls";
 
-            Assert.That(() => orderedAsserter.AssertWasCalled(secondCallPredicate, "second call description", x => x == 1, "second repeat description"),
+            Assert.That(
+                () => orderedAsserter.AssertWasCalled(secondCallPredicate, "second call description", x => x == 1, "second repeat description"),
                 Throws.Exception.With.Message.EqualTo(expectedMessage));
+        }
+
+        private OrderedFakeAsserter CreateAsserter(IEnumerable<IFakeObjectCall> calls)
+        {
+            return new OrderedFakeAsserter(calls, this.callWriter);
         }
     }
 }

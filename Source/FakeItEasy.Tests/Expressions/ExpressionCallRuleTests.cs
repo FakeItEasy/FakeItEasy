@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq.Expressions;
-using FakeItEasy.Core;
-using FakeItEasy.Expressions;
-using FakeItEasy.Tests.TestHelpers;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.Expressions
+﻿namespace FakeItEasy.Tests.Expressions
 {
+    using System;
+    using System.Linq.Expressions;
+    using FakeItEasy.Core;
+    using FakeItEasy.Expressions;
+    using FakeItEasy.Tests.TestHelpers;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ExpressionCallRuleTests
     {
@@ -19,17 +19,6 @@ namespace FakeItEasy.Tests.Expressions
             
             this.callMatcher = A.Fake<ExpressionCallMatcher>();
         }
-
-        private ExpressionCallRule CreateRule<T>(Expression<Action<T>> callSpecification)
-        {
-            return new ExpressionCallRule(this.callMatcher) { Applicator = x => { } };
-        }
-
-        private ExpressionCallRule CreateRule<T, TReturn>(Expression<Func<T, TReturn>> expression)
-        {
-            return new ExpressionCallRule(this.callMatcher);
-        }
-
 
         [Test]
         public void IsApplicableTo_should_pass_call_to_call_matcher()
@@ -64,7 +53,6 @@ namespace FakeItEasy.Tests.Expressions
             NullGuardedConstraint.Assert(() =>
                 new ExpressionCallRule(this.callMatcher));
         }
-
       
         [Test]
         public void Apply_should_call_the_applicator_with_the_incoming_call()
@@ -72,7 +60,7 @@ namespace FakeItEasy.Tests.Expressions
             IInterceptedFakeObjectCall callPassedToApplicator = null;
             var callPassedToRule = FakeCall.Create<IFoo>("Bar");
 
-            var rule = CreateRule<IFoo>(x => x.Bar());
+            var rule = this.CreateRule<IFoo>(x => x.Bar());
             rule.Applicator = x => callPassedToApplicator = x;
 
             rule.Apply(callPassedToRule);
@@ -83,7 +71,7 @@ namespace FakeItEasy.Tests.Expressions
         [Test]
         public void NumberOfTimesToCall_should_be_settable_and_gettable()
         {
-            var rule = CreateRule<IFoo>(x => x.Bar());
+            var rule = this.CreateRule<IFoo>(x => x.Bar());
             rule.NumberOfTimesToCall = 10;
 
             Assert.That(rule.NumberOfTimesToCall, Is.EqualTo(10));
@@ -94,7 +82,7 @@ namespace FakeItEasy.Tests.Expressions
         {
             A.CallTo(() => this.callMatcher.DescriptionOfMatchingCall).Returns("foo");
 
-            var rule = CreateRule<IFoo>(x => x.Bar());
+            var rule = this.CreateRule<IFoo>(x => x.Bar());
 
             Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("foo"));
         }
@@ -104,11 +92,21 @@ namespace FakeItEasy.Tests.Expressions
         {
             Func<ArgumentCollection, bool> predicate = x => true;
 
-            var rule = CreateRule<IFoo>(x => x.Bar());
+            var rule = this.CreateRule<IFoo>(x => x.Bar());
 
             rule.UsePredicateToValidateArguments(predicate);
 
             A.CallTo(() => this.callMatcher.UsePredicateToValidateArguments(predicate)).MustHaveHappened();
+        }
+
+        private ExpressionCallRule CreateRule<T>(Expression<Action<T>> callSpecification)
+        {
+            return new ExpressionCallRule(this.callMatcher) { Applicator = x => { } };
+        }
+
+        private ExpressionCallRule CreateRule<T, TReturn>(Expression<Func<T, TReturn>> expression)
+        {
+            return new ExpressionCallRule(this.callMatcher);
         }
     }
 }

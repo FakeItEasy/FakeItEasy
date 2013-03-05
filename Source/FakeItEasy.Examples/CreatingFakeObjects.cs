@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FakeItEasy.Examples
+﻿namespace FakeItEasy.Examples
 {
+    using FakeItEasy.Examples.ExampleObjects;
+
     public class CreatingFakeObjects
     {
         public void Creating_an_interface_fake()

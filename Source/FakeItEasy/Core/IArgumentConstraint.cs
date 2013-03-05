@@ -6,7 +6,7 @@ namespace FakeItEasy.Core
     internal interface IArgumentConstraint
     {
         /// <summary>
-        /// Writes a description of the arguemnt constraint to the specified writer.
+        /// Writes a description of the argument constraint to the specified writer.
         /// </summary>
         /// <param name="writer">
         /// The writer.

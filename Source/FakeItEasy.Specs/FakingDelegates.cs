@@ -27,7 +27,7 @@
 
                 A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Throws(expectedException);
 
-                typeof (FormatException).ShouldBeThrownBy(() => fakedDelegate(null));
+                typeof(FormatException).ShouldBeThrownBy(() => fakedDelegate(null));
             };
 
         It should_be_able_to_configure_delegate_without_specifying_invokes_method = () =>

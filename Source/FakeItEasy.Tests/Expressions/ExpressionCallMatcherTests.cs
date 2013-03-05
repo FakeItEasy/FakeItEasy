@@ -5,8 +5,8 @@ namespace FakeItEasy.Tests.Expressions
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
-    using TestHelpers;
     using NUnit.Framework;
+    using TestHelpers;
 
     [TestFixture]
     public class ExpressionCallMatcherTests
@@ -21,31 +21,10 @@ namespace FakeItEasy.Tests.Expressions
             this.constraintFactory = A.Fake<ExpressionArgumentConstraintFactory>();
             var validator = A.Fake<IArgumentConstraint>();
             A.CallTo(() => validator.IsValid(A<object>._)).Returns(true);
-            A.CallTo(() => constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).Returns(validator);
+            A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).Returns(validator);
 
             this.methodInfoManager = A.Fake<MethodInfoManager>();
             this.parser = new CallExpressionParser();
-        }
-
-        private ExpressionCallMatcher CreateMatcher<TFake, TMember>(Expression<Func<TFake, TMember>> callSpecification)
-        {
-            return CreateMatcher((LambdaExpression)callSpecification);
-        }
-
-        private ExpressionCallMatcher CreateMatcher<TFake>(Expression<Action<TFake>> callSpecification)
-        {
-            return CreateMatcher((LambdaExpression)callSpecification);
-        }
-
-        private ExpressionCallMatcher CreateMatcher(LambdaExpression callSpecification)
-        {
-            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager, this.parser);
-        }
-
-        private void StubMethodInfoManagerToReturn(bool returnValue)
-        {
-            A.CallTo(() => this.methodInfoManager.WillInvokeSameMethodOnTarget(A<Type>._, A<MethodInfo>._, A<MethodInfo>._))
-                .Returns(returnValue);
         }
 
         [Test]
@@ -127,7 +106,6 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._))
                 .Returns(validator);
             
-
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(argument1, argument2));
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(argument1, argument2));
 
@@ -223,6 +201,27 @@ namespace FakeItEasy.Tests.Expressions
             matcher.Matches(call);
 
             A.CallTo(() => this.methodInfoManager.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), getter, getter)).MustHaveHappened();
+        }
+
+        private ExpressionCallMatcher CreateMatcher<TFake, TMember>(Expression<Func<TFake, TMember>> callSpecification)
+        {
+            return this.CreateMatcher((LambdaExpression)callSpecification);
+        }
+
+        private ExpressionCallMatcher CreateMatcher<TFake>(Expression<Action<TFake>> callSpecification)
+        {
+            return this.CreateMatcher((LambdaExpression)callSpecification);
+        }
+
+        private ExpressionCallMatcher CreateMatcher(LambdaExpression callSpecification)
+        {
+            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager, this.parser);
+        }
+
+        private void StubMethodInfoManagerToReturn(bool returnValue)
+        {
+            A.CallTo(() => this.methodInfoManager.WillInvokeSameMethodOnTarget(A<Type>._, A<MethodInfo>._, A<MethodInfo>._))
+                .Returns(returnValue);
         }
     }
 }

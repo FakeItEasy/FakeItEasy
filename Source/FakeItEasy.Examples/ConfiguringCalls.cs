@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy.Tests;
-
 namespace FakeItEasy.Examples
 {
+    using System;
+    using System.Collections.Generic;
+    using FakeItEasy.Examples.ExampleObjects;
+
     public class ConfiguringCalls
     {
         public void Setting_return_value()

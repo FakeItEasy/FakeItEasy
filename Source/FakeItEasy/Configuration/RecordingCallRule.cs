@@ -7,6 +7,7 @@ namespace FakeItEasy.Configuration
     /// A call rule that "sits and waits" for the next call, when
     /// that call occurs the recorded rule is added for that call.
     /// </summary>
+    /// <typeparam name="TFake">The type of the fake.</typeparam>
     internal class RecordingCallRule<TFake>
         : IFakeObjectCallRule
     {

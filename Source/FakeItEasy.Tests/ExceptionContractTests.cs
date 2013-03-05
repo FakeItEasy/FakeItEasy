@@ -1,10 +1,10 @@
-﻿using System;
-using System.Reflection;
-using System.Runtime.Serialization;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests
+﻿namespace FakeItEasy.Tests
 {
+    using System;
+    using System.Reflection;
+    using System.Runtime.Serialization;
+    using NUnit.Framework;
+
     public abstract class ExceptionContractTests<T> where T : Exception
     {
         private T exception;
@@ -15,13 +15,11 @@ namespace FakeItEasy.Tests
             this.exception = this.CreateException();
         }
 
-        protected abstract T CreateException();
-
         [Test]
         public void Exception_should_provide_serialization_constructor()
         {
             // Arrange
-            
+
             // Act
             var constructor = typeof(T).GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(SerializationInfo), typeof(StreamingContext) }, null);
 
@@ -94,7 +92,7 @@ namespace FakeItEasy.Tests
             var innerException = new Exception();
 
             // Act
-            var exception = (T)constructor.Invoke(new object[] { "", innerException });
+            var exception = (T)constructor.Invoke(new object[] { string.Empty, innerException });
 
             // Assert
             Assert.That(exception.InnerException, Is.EqualTo(innerException));
@@ -113,6 +111,8 @@ namespace FakeItEasy.Tests
             Assert.That(constructor, Is.Not.Null, "Exception classes should provide a public default constructor.");
         }
 
+        protected abstract T CreateException();
+
         private ConstructorInfo GetMessageAndInnerExceptionConstructor()
         {
             return typeof(T).GetConstructor(new[] { typeof(string), typeof(Exception) });
@@ -121,32 +121,6 @@ namespace FakeItEasy.Tests
         private ConstructorInfo GetMessageOnlyConstructor()
         {
             return typeof(T).GetConstructor(new[] { typeof(string) });
-        }
-    }
-
-    [Serializable]
-    public class DummyException
-        : Exception
-    {
-        public DummyException()
-        {
-
-        }
-
-        public DummyException(string message)
-            : base(message)
-        { 
-        
-        }
-
-        public DummyException(string message, Exception innerException)
-            : base(message, innerException)
-        { }
-
-        protected DummyException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            
         }
     }
 }

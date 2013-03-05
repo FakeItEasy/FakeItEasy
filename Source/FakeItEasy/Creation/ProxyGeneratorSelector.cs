@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
-
-namespace FakeItEasy.Creation
+﻿namespace FakeItEasy.Creation
 {
     using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
     using FakeItEasy.Creation.DelegateProxies;
 
     internal class ProxyGeneratorSelector
         : IProxyGenerator
     {
-        readonly DelegateProxyGenerator delegateProxyGenerator;
-        readonly IProxyGenerator defaultProxyGenerator;
+        private readonly DelegateProxyGenerator delegateProxyGenerator;
+        private readonly IProxyGenerator defaultProxyGenerator;
 
         public ProxyGeneratorSelector(DelegateProxyGenerator delegateProxyGenerator, IProxyGenerator defaultProxyGenerator)
         {
@@ -22,16 +21,14 @@ namespace FakeItEasy.Creation
         {
             var generator = this.SelectProxyGenerator(typeOfProxy);
 
-            return generator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement,
-                                                             argumentsForConstructor);
+            return generator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
         }
 
         public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, System.Collections.Generic.IEnumerable<Type> additionalInterfacesToImplement, System.Collections.Generic.IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
         {
             var generator = this.SelectProxyGenerator(typeOfProxy);
 
-            return generator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement,
-                                                             argumentsForConstructor,customAttributeBuilders);
+            return generator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, customAttributeBuilders);
         }
 
         public bool MethodCanBeInterceptedOnInstance(System.Reflection.MethodInfo method, object callTarget, out string failReason)
@@ -41,14 +38,14 @@ namespace FakeItEasy.Creation
             return generator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
-        private IProxyGenerator SelectProxyGenerator(Type typeOfProxy)
-        {
-            return IsDelegateType(typeOfProxy) ? this.delegateProxyGenerator : this.defaultProxyGenerator;
-        }
-
         private static bool IsDelegateType(Type typeOfProxy)
         {
             return typeOfProxy.IsSubclassOf(typeof(Delegate));
+        }
+
+        private IProxyGenerator SelectProxyGenerator(Type typeOfProxy)
+        {
+            return IsDelegateType(typeOfProxy) ? this.delegateProxyGenerator : this.defaultProxyGenerator;
         }
     }
 }

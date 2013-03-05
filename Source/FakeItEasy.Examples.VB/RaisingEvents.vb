@@ -1,5 +1,5 @@
 Imports FakeItEasy
-
+Imports FakeItEasy.Examples.ExampleObjects
 
 Public Class RaisingEvents
     Public Sub Raising_an_event()
