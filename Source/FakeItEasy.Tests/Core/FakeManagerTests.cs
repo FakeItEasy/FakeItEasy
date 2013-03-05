@@ -22,36 +22,6 @@
             this.createdFakes = new List<object>();
         }
 
-        private FakeManager CreateFakeManager<T>()
-        {
-            var result = A.Fake<T>();
-            
-            this.MakeSureThatWeakReferenceDoesNotGetCollected(result);
-            
-            return Fake.GetFakeManager(result);
-        }
-
-        private static void AddFakeRule<T>(T fakedObject, FakeCallRule rule) where T : class
-        {
-            Fake.GetFakeManager(fakedObject).AddRuleFirst(rule);
-        }
-
-        private static void AddFakeRule<T>(T fakedObject, Action<FakeCallRule> ruleConfiguration) where T : class
-        {
-            var rule = new FakeCallRule();
-            ruleConfiguration(rule);
-
-            AddFakeRule(fakedObject, rule);
-        }
-
-        private static FakeCallRule CreateApplicableInterception()
-        {
-            return new FakeCallRule
-            {
-                IsApplicableTo = x => true
-            };
-        }
-
         [Test]
         public void Calls_configured_in_a_child_context_does_not_exist_outside_that_context()
         {
@@ -60,7 +30,7 @@
 
             using (Fake.CreateScope())
             {
-                fake.AddRuleFirst(rule);    
+                fake.AddRuleFirst(rule);
             }
 
             Assert.That(fake.Rules, Has.None.EqualTo(rule));
@@ -77,7 +47,7 @@
             foo.SomethingHappened -= listener;
 
             foo.SomethingHappened += Raise.With(EventArgs.Empty).Now;
-            
+
             Assert.That(called, Is.False);
         }
 
@@ -155,7 +125,6 @@
         [Test]
         public void An_applicable_action_should_be_called_its_specified_number_of_times_before_the_next_applicable_action_is_called()
         {
-
             var fake = this.CreateFakeManager<IFoo>();
 
             var applicableTwice = new FakeCallRule
@@ -168,7 +137,7 @@
 
             fake.AddRuleFirst(nextApplicable);
             fake.AddRuleFirst(applicableTwice);
-            
+
             ((IFoo)fake.Object).Bar();
             ((IFoo)fake.Object).Bar();
             Assert.That(nextApplicable.ApplyWasCalled, Is.False);
@@ -235,7 +204,9 @@
             {
                 fake.Bar();
             }
-            catch { }
+            catch
+            {
+            }
 
             // Assert
             Assert.That(manager.RecordedCallsInScope.Count(), Is.EqualTo(1));
@@ -260,7 +231,7 @@
         public void RecordedCalls_returns_calls_made_in_scope_and_any_inner_scopes()
         {
             var foo = A.Fake<IFoo>();
-            
+
             foo.Baz();
 
             using (Fake.CreateScope())
@@ -334,10 +305,9 @@
         {
             // Arrange
             var foo = A.Fake<Foo>();
-            
 
             // Act
-            
+
             // Assert
             Assert.That(foo.InternalVirtualFakeableProperty, Is.SameAs(foo.InternalVirtualFakeableProperty));
         }
@@ -392,7 +362,7 @@
             var fake = this.CreateFakeManager<IFoo>();
 
             // Act
-            
+
             // Assert
             NullGuardedConstraint.Assert(() =>
                 fake.RemoveRule(ExpressionHelper.CreateRule<IFoo>(x => x.Bar())));
@@ -404,7 +374,7 @@
             // Arrange
             var fake = this.CreateFakeManager<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
-            
+
             // Act
             fake.AddRuleLast(rule);
 
@@ -418,7 +388,7 @@
             // Arrange
             var fake = this.CreateFakeManager<IFoo>();
             var rule = A.Fake<IFakeObjectCallRule>();
-            
+
             // Act
             fake.AddRuleFirst(A.Fake<IFakeObjectCallRule>());
             fake.AddRuleLast(rule);
@@ -439,24 +409,6 @@
             this.Should_set_default_return_value_when_object_method_has_not_been_configured(typeof(object).GetMethod("GetHashCode"), x => x.GetHashCode());
         }
 
-        private void Should_set_default_return_value_when_object_method_has_not_been_configured(MethodInfo interceptedMethod, Func<FakeManager, object> expectedValue)
-        {
-            // Arrange
-            var manager = new FakeManager();
-
-            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
-            A.CallTo(() => interceptedCall.Method).Returns(interceptedMethod);
-            
-            var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
-            manager.AttachProxy(typeof(IFoo), A.Fake<IFoo>(), eventRaiser);
-            
-            // Act
-            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
-
-            // Assert
-            A.CallTo(() => interceptedCall.SetReturnValue(expectedValue.Invoke(manager))).MustHaveHappened();
-        }
-
         [Test]
         public void Should_return_false_for_equals_method_when_fake_managers_are_not_the_same()
         {
@@ -465,14 +417,14 @@
             var proxyPassedToEquals = new FakedProxyWithManagerSpecified { FakeManager = new FakeManager() };
 
             var equalsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
-            
+
             var interceptedCall = A.Fake<IWritableFakeObjectCall>();
             A.CallTo(() => interceptedCall.Method).Returns(equalsMethod);
             A.CallTo(() => interceptedCall.FakedObject).Returns(proxyPassedToEquals);
             A.CallTo(() => interceptedCall.Arguments).Returns(new ArgumentCollection(new object[] { proxyPassedToEquals }, interceptedCall.Method));
 
             var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
-            
+
             interceptingProxy.FakeManager.AttachProxy(typeof(FakedProxyWithManagerSpecified), interceptingProxy, eventRaiser);
 
             // Act
@@ -505,7 +457,7 @@
             // Assert
             A.CallTo(() => interceptedCall.SetReturnValue(true)).MustHaveHappened();
         }
-        
+
         [Test]
         public void Call_should_not_be_recorded_when_DoNotRecordCall_has_been_called()
         {
@@ -514,7 +466,7 @@
             var rule = A.Fake<IFakeObjectCallRule>();
             A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>._)).Returns(true);
             A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).Invokes(x => x.Arguments.Get<IInterceptedFakeObjectCall>(0).DoNotRecordCall());
-            
+
             Fake.GetFakeManager(fake).AddRuleFirst(rule);
 
             // Act
@@ -556,7 +508,7 @@
         public void AttachProxy_should_configure_manager_to_intercept_calls()
         {
             var fake = this.CreateFakeManager<IFoo>();
-            //var proxy = this.CreateProxyResult<IFoo>();
+            ////var proxy = this.CreateProxyResult<IFoo>();
             var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
 
             var call = A.Fake<IWritableFakeObjectCall>();
@@ -653,7 +605,7 @@
             try
             {
                 manager.RaiseCallIntercepted(new CallInterceptedEventArgs(interceptedCall));
-            } 
+            }
             catch
             {
             }
@@ -689,9 +641,70 @@
             }
         }
 
+        private static void AddFakeRule<T>(T fakedObject, FakeCallRule rule) where T : class
+        {
+            Fake.GetFakeManager(fakedObject).AddRuleFirst(rule);
+        }
+
+        private static void AddFakeRule<T>(T fakedObject, Action<FakeCallRule> ruleConfiguration) where T : class
+        {
+            var rule = new FakeCallRule();
+            ruleConfiguration(rule);
+
+            AddFakeRule(fakedObject, rule);
+        }
+
+        private static FakeCallRule CreateApplicableInterception()
+        {
+            return new FakeCallRule
+            {
+                IsApplicableTo = x => true
+            };
+        }
+
+        private FakeManager CreateFakeManager<T>()
+        {
+            var result = A.Fake<T>();
+
+            this.MakeSureThatWeakReferenceDoesNotGetCollected(result);
+
+            return Fake.GetFakeManager(result);
+        }
+
+        private void Should_set_default_return_value_when_object_method_has_not_been_configured(MethodInfo interceptedMethod, Func<FakeManager, object> expectedValue)
+        {
+            // Arrange
+            var manager = new FakeManager();
+
+            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
+            A.CallTo(() => interceptedCall.Method).Returns(interceptedMethod);
+
+            var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
+            manager.AttachProxy(typeof(IFoo), A.Fake<IFoo>(), eventRaiser);
+
+            // Act
+            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
+
+            // Assert
+            A.CallTo(() => interceptedCall.SetReturnValue(expectedValue.Invoke(manager))).MustHaveHappened();
+        }
+
         private void MakeSureThatWeakReferenceDoesNotGetCollected<T>(T result)
         {
             this.createdFakes.Add(result);
+        }
+
+        public class TypeWithNoDefaultConstructorButAllArgumentsFakeable
+        {
+            public TypeWithNoDefaultConstructorButAllArgumentsFakeable(IFoo foo, IFormatProvider formatProvider)
+            {
+                this.Foo = foo;
+                this.FormatProvider = formatProvider;
+            }
+
+            public IFoo Foo { get; set; }
+
+            public IFormatProvider FormatProvider { get; set; }
         }
 
         private class FakedProxyWithManagerSpecified
@@ -699,14 +712,8 @@
         {
             public FakeManager FakeManager
             {
-                get
-                {
-                    return (FakeManager)this.Tag;
-                }
-                set
-                {
-                    this.Tag = value;
-                }
+                get { return (FakeManager)this.Tag; }
+                set { this.Tag = value; }
             }
 
             public object Tag
@@ -716,23 +723,10 @@
             }
         }
 
-        
-        public class TypeWithNoDefaultConstructorButAllArgumentsFakeable
-        {
-            public IFoo Foo;
-            public IFormatProvider FormatProvider;
-
-            public TypeWithNoDefaultConstructorButAllArgumentsFakeable(IFoo foo, IFormatProvider formatProvider)
-            {
-                this.Foo = foo;
-                this.FormatProvider = formatProvider;
-            }
-        }
-
         private class RaisableFakeManager
             : FakeManager
         {
-            ICallInterceptedEventRaiser raiser;
+            private ICallInterceptedEventRaiser raiser;
 
             public RaisableFakeManager()
             {
