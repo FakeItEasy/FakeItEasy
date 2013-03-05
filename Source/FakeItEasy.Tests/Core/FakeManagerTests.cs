@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;
@@ -13,11 +14,20 @@
     public class FakeManagerTests
     {
         private static readonly IFakeObjectCallRule NonApplicableInterception = new FakeCallRule { IsApplicableTo = x => false };
+        private List<object> createdFakes;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.createdFakes = new List<object>();
+        }
 
         private FakeManager CreateFakeManager<T>()
         {
             var result = A.Fake<T>();
-
+            
+            this.MakeSureThatWeakReferenceDoesNotGetCollected(result);
+            
             return Fake.GetFakeManager(result);
         }
 
@@ -677,6 +687,11 @@
                     A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened();
                 }
             }
+        }
+
+        private void MakeSureThatWeakReferenceDoesNotGetCollected<T>(T result)
+        {
+            this.createdFakes.Add(result);
         }
 
         private class FakedProxyWithManagerSpecified
