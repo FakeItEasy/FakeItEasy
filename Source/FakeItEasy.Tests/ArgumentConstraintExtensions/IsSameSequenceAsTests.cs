@@ -28,17 +28,17 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
             }
         }
 
-        protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<int>> scope)
-        {
-            scope.IsSameSequenceAs(new int[] {1, 2, 3});
-        }
-
         protected override string ExpectedDescription
         {
             get
             {
                 return "specified sequence";
             }
+        }
+
+        protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<int>> scope)
+        {
+            scope.IsSameSequenceAs(new int[] { 1, 2, 3 });
         }
     }
 }

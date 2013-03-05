@@ -1,18 +1,13 @@
 namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
     using System.Collections.Generic;
-    using NUnit.Framework;
     using System.Linq;
+    using NUnit.Framework;
 
     [TestFixture]
     internal class CollectionIsEmptyTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
-        protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)
-        {
-            scope.IsEmpty();
-        }
-
         protected override IEnumerable<object> InvalidValues
         {
             get 
@@ -40,6 +35,11 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
             {
                 return "empty collection";
             }
+        }
+
+        protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)
+        {
+            scope.IsEmpty();
         }
     }
 }

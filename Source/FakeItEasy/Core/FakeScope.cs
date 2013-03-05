@@ -6,7 +6,7 @@ namespace FakeItEasy.Core
 
     /// <summary>
     /// Represents a scope for fake objects, calls configured within a scope
-    /// are only valid within that scope. Only calls made wihtin a scope
+    /// are only valid within that scope. Only calls made within a scope
     /// are accessible from within a scope so for example asserts will only
     /// assert on those calls done within the scope.
     /// </summary>
@@ -39,7 +39,7 @@ namespace FakeItEasy.Core
         /// Creates a new scope and sets it as the current scope, using the specified
         /// container as the container for the new scope.
         /// </summary>
-        /// <param name="container">The container to usee for the new scope.</param>
+        /// <param name="container">The container to use for the new scope.</param>
         /// <returns>The created scope.</returns>
         public static IFakeScope Create(IFakeObjectContainer container)
         {
@@ -156,7 +156,7 @@ namespace FakeItEasy.Core
             protected override void OnDispose()
             {
                 this.RemoveRulesConfiguredInScope();
-                Current = this.parentScope;
+                FakeScope.Current = this.parentScope;
             }
 
             protected override void OnAddInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call)

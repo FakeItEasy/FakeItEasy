@@ -6,9 +6,9 @@ namespace FakeItEasy.Configuration
 
     /// <summary>
     /// Hides standard Object members to make fluent interfaces
-    /// easier to read. Found in the source of Autofac: http://code.google.com/p/autofac/
-    /// Based on blog post by @kzu here:
-    /// http://www.clariusconsulting.net/blogs/kzu/archive/2008/03/10/58301.aspx
+    /// easier to read. Found in the source of Autofac: <see cref="!:http://code.google.com/p/autofac/"/>
+    /// Based on blog post here:
+    /// <see cref="!:http://www.clariusconsulting.net/blogs/kzu/archive/2008/03/10/58301.aspx"/>
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IHideObjectMembers
@@ -44,7 +44,7 @@ namespace FakeItEasy.Configuration
         /// <summary>
         /// Gets the type.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The exact runtime type of the current instance.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Hides object member.")]
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "GetType", Justification = "Uses the name of the method to intercept.")]

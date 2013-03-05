@@ -1,25 +1,24 @@
-using System;
-using FakeItEasy.Configuration;
-using FakeItEasy.Core;
-using NUnit.Framework;
-
 namespace FakeItEasy.Tests.Configuration
 {
+    using System;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
 
     [TestFixture]
     public class BuildableCallRuleTests
     {
         private TestableCallRule rule;
 
+        private interface IOutAndRef
+        {
+            void OutAndRef(object input, out int first, string input2, ref string second, string input3);
+        }
+
         [SetUp]
         public void SetUp()
         {
             this.rule = this.CreateRule();
-        }
-
-        private TestableCallRule CreateRule()
-        {
-            return new TestableCallRule();
         }
 
         [Test]
@@ -28,14 +27,14 @@ namespace FakeItEasy.Tests.Configuration
             // Arrange
             bool firstWasCalled = false;
             bool secondWasCalled = false;
-            rule.Actions.Add(x => firstWasCalled = true);
-            rule.Actions.Add(x => secondWasCalled = true);
+            this.rule.Actions.Add(x => firstWasCalled = true);
+            this.rule.Actions.Add(x => secondWasCalled = true);
 
             this.rule.Applicator = x => { };
 
             // Act
             this.rule.Apply(A.Fake<IInterceptedFakeObjectCall>());
-            
+
             // Assert
             Assert.That(firstWasCalled, Is.True);
             Assert.That(secondWasCalled, Is.True);
@@ -44,8 +43,6 @@ namespace FakeItEasy.Tests.Configuration
         [Test]
         public void Apply_should_pass_the_call_to_specified_actions()
         {
-            
-
             var call = A.Fake<IInterceptedFakeObjectCall>();
             IFakeObjectCall passedCall = null;
 
@@ -60,8 +57,6 @@ namespace FakeItEasy.Tests.Configuration
         [Test]
         public void Apply_should_call_CallBaseMethod_on_intercepted_call_when_CallBaseMethod_is_set_to_true()
         {
-            
-
             var call = A.Fake<IInterceptedFakeObjectCall>();
 
             this.rule.Applicator = x => { };
@@ -71,18 +66,15 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => call.CallBaseMethod()).MustHaveHappened();
         }
 
-
         [Test]
         public void Apply_should_set_ref_and_out_parameters_when_specified()
         {
             // Arrange
-            
-
             this.rule.OutAndRefParametersValues = new object[] { 1, "foo" };
             this.rule.Applicator = x => { };
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            
+
             A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod("OutAndRef"));
 
             // Act
@@ -95,14 +87,12 @@ namespace FakeItEasy.Tests.Configuration
         [Test]
         public void Apply_should_throw_when_OutAndRefParametersValues_length_differes_from_the_number_of_out_and_ref_parameters_in_the_call()
         {
-            
-
             this.rule.OutAndRefParametersValues = new object[] { 1, "foo", "bar" };
             this.rule.Applicator = x => { };
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
             A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod("OutAndRef"));
-            
+
             var ex = Assert.Throws<InvalidOperationException>(() =>
                 this.rule.Apply(call));
             Assert.That(ex.Message, Is.EqualTo("The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call."));
@@ -113,7 +103,6 @@ namespace FakeItEasy.Tests.Configuration
         public bool Apply_should_return_return_value_from_on_is_applicable_to_when_no_where_predicate_is_set(bool resultFromOnIsApplicableTo)
         {
             // Arrange
-            
             this.rule.ReturnValueFromOnIsApplicableTo = resultFromOnIsApplicableTo;
 
             // Act
@@ -126,7 +115,6 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_return_false_when_a_predicate_fails_and_on_is_applicable_to_passes()
         {
             // Arrange
-            
             this.rule.ReturnValueFromOnIsApplicableTo = true;
 
             this.rule.ApplyWherePredicate(x => true, x => { });
@@ -143,7 +131,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             this.rule.ApplyWherePredicate(x => false, x => { });
-            
+
             // Act
             this.rule.IsApplicableTo(A.Dummy<IFakeObjectCall>());
 
@@ -155,7 +143,6 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_return_true_when_on_is_applicable_to_is_true_and_all_where_predicates_returns_true()
         {
             // Arrange
-            
             this.rule.ReturnValueFromOnIsApplicableTo = true;
 
             this.rule.ApplyWherePredicate(x => true, x => { });
@@ -174,11 +161,10 @@ namespace FakeItEasy.Tests.Configuration
             var call = A.Fake<IFakeObjectCall>();
             A.CallTo(() => call.ToString()).Returns("foo");
 
-            
             this.rule.ApplyWherePredicate(x => x.ToString() == "foo", x => { });
 
             // Act
-            
+
             // Assert
             Assert.That(this.rule.IsApplicableTo(call), Is.True);
         }
@@ -186,8 +172,7 @@ namespace FakeItEasy.Tests.Configuration
         [Test]
         public void Should_write_description_of_valid_call_by_calling_the_description_property()
         {
-            // Arrange
-            
+            // Arrange           
             this.rule.DescriptionOfValidCallReturnValue = "description";
 
             var writer = new StringBuilderOutputWriter();
@@ -208,43 +193,52 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.ApplyWherePredicate(x => true, x => x.Write("description of second where"));
 
             var descriptionWriter = new StringBuilderOutputWriter();
-            
+
             // Act
             this.rule.WriteDescriptionOfValidCall(descriptionWriter);
 
             // Assert
-            Assert.That(descriptionWriter.Builder.ToString(),
-                Is.EqualTo(@"description
+            var expectedDescription =
+@"description
   where description of first where
-  and description of second where"));
+  and description of second where";
+
+            Assert.That(descriptionWriter.Builder.ToString(), Is.EqualTo(expectedDescription));
         }
 
-        private interface IOutAndRef
+        private TestableCallRule CreateRule()
         {
-            void OutAndRef(object input, out int first, string input2, ref string second, string input3);
+            return new TestableCallRule();
         }
 
         private class TestableCallRule
             : BuildableCallRule
         {
-            public bool ReturnValueFromOnIsApplicableTo = true;
-            public string DescriptionOfValidCallReturnValue = string.Empty;
-            public bool OnIsApplicableToWasCalled = false;
+            public TestableCallRule()
+            {
+                this.ReturnValueFromOnIsApplicableTo = true;
+                this.DescriptionOfValidCallReturnValue = string.Empty;
+            }
+
+            public bool ReturnValueFromOnIsApplicableTo { get; set; }
+
+            public string DescriptionOfValidCallReturnValue { get; set; }
+
+            public bool OnIsApplicableToWasCalled { get; set; }
+
+            public override string DescriptionOfValidCall
+            {
+                get { return this.DescriptionOfValidCallReturnValue; }
+            }
+
+            public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
+            {
+            }
 
             protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
                 this.OnIsApplicableToWasCalled = true;
                 return this.ReturnValueFromOnIsApplicableTo;
-            }
-
-            public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
-            {
-                
-            }
-
-            public override string DescriptionOfValidCall
-            {
-                get { return this.DescriptionOfValidCallReturnValue; }
             }
         }
     }

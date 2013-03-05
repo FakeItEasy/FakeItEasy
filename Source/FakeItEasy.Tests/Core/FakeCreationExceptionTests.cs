@@ -2,17 +2,11 @@ namespace FakeItEasy.Tests.Core
 {
     using FakeItEasy.Core;
     using NUnit.Framework;
-    using FakeItEasy.Creation;
 
     [TestFixture]
     public class FakeCreationExceptionTests
         : ExceptionContractTests<FakeCreationException>
     {
-        protected override FakeCreationException CreateException()
-        {
-            return new FakeCreationException();
-        }
-
         [Test]
         [SetCulture("en-US")]
         public void DefaultConstructor_should_set_correct_error_message()
@@ -24,6 +18,11 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             Assert.That(exception.Message, Is.EqualTo("Unable to create fake object."));
+        }
+
+        protected override FakeCreationException CreateException()
+        {
+            return new FakeCreationException();
         }
     }
 }

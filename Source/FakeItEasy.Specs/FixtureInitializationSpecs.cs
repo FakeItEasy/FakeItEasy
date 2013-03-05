@@ -1,21 +1,16 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System;
-    using Tests;
     using Machine.Specifications;
+    using Tests;
 
     public class when_initializing_fixture
-    {
-        public static ExampleFixture Fixture;
-
-        Establish context = () =>
-            {
-                Fixture = new ExampleFixture();
-            };
+    {        
+        Establish context = () => Fixture = new ExampleFixture();
 
         Because of = () => Fake.InitializeFixture(Fixture);
 
-        It should_set_sut = () => 
+        It should_set_sut = () =>
             Fixture.Sut.ShouldNotBeNull();
 
         It should_use_the_same_instance_when_more_than_one_dependency_is_of_the_same_type = () =>
@@ -26,11 +21,16 @@
 
         It should_inject_fake_when_not_available_in_fixture = () =>
             Fixture.Sut.ServiceProvider.ShouldNotBeNull();
-        
+
+        public static ExampleFixture Fixture { get; set; }
+
         public class ExampleFixture
         {
-            [Fake] public IFoo Foo;
-            [UnderTest] public SutExample Sut;
+            [Fake]
+            public IFoo Foo { get; set; }
+
+            [UnderTest]
+            public SutExample Sut { get; set; }
         }
 
         public class SutExample
@@ -48,6 +48,5 @@
 
             public IFoo Foo2 { get; set; }
         }
-        
     }
 }

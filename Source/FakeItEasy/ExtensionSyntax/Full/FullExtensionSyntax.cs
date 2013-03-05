@@ -15,10 +15,10 @@
         /// Configures the behavior of the fake object when a call that matches the specified
         /// call happens.
         /// </summary>
-        /// <typeparam name="TMember">The type of the return value of the member.</typeparam>
-        /// <param name="callSpecification">An expression that specifies the calls to configure.</param>
-        /// <param name="fakedObject">The faked object to configure.</param>
         /// <typeparam name="TFake">The type of fake object to configure.</typeparam>
+        /// <typeparam name="TMember">The type of the return value of the member.</typeparam>
+        /// <param name="fakedObject">The faked object to configure.</param>
+        /// <param name="callSpecification">An expression that specifies the calls to configure.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TFake, TMember>(this TFake fakedObject, Expression<Func<TFake, TMember>> callSpecification)

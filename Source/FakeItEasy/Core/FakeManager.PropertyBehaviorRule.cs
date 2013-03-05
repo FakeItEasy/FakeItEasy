@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Reflection;
 
+    /// <content>Property behavior rule.</content>
     public partial class FakeManager
     {
         private class PropertyBehaviorRule

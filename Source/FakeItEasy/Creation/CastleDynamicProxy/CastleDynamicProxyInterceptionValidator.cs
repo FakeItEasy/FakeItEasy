@@ -42,7 +42,7 @@
 
             if (!method.IsVirtual)
             {
-                return "Non virtual methods can not be intercepted.";    
+                return "Non virtual methods can not be intercepted.";
             }
 
             return null;
@@ -57,6 +57,7 @@
                 invokedMehtod = this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(
                     callTarget.GetType(), method);
             }
+
             return invokedMehtod;
         }
     }

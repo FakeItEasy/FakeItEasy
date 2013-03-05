@@ -9,12 +9,12 @@ namespace FakeItEasy.Core
     internal interface IEventRaiserArguments
     {
         /// <summary>
-        /// The sender of the event.
+        /// Gets the sender of the event.
         /// </summary>
         object Sender { get; }
 
         /// <summary>
-        /// The event arguments of the event.
+        /// Gets the event arguments of the event.
         /// </summary>
         EventArgs EventArguments { get; }
     }

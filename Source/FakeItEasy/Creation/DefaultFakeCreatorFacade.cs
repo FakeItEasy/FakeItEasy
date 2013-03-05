@@ -1,16 +1,15 @@
-using System.Reflection.Emit;
-
 namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection.Emit;
     using FakeItEasy.Core;
     using FakeItEasy.SelfInitializedFakes;
 
     /// <summary>
-    /// Default implementation ofthe IFakeCreator-interface.
+    /// Default implementation of the IFakeCreator-interface.
     /// </summary>
     internal class DefaultFakeCreatorFacade
         : IFakeCreatorFacade
@@ -69,7 +68,7 @@ namespace FakeItEasy.Creation
         /// <typeparam name="T">The type of dummy to create.</typeparam>
         /// <returns>The created dummy.</returns>
         /// <exception cref="FakeCreationException">Was unable to generate the fake in the current configuration and
-        /// no dummy was registered in the container for the specifed type..</exception>
+        /// no dummy was registered in the container for the specified type..</exception>
         public T CreateDummy<T>()
         {
             return (T)this.fakeAndDummyManager.CreateDummy(typeof(T));

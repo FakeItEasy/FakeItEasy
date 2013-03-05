@@ -16,13 +16,13 @@ namespace FakeItEasy.Core
     [Serializable]
     public partial class FakeManager
     {
-        private static readonly Logger logger = Log.GetLogger<FakeManager>();
+        private static readonly Logger Logger = Log.GetLogger<FakeManager>();
         private readonly LinkedList<CallRuleMetadata> allUserRulesField;
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
         private readonly List<ICompletedFakeObjectCall> recordedCallsField;
-        private WeakReference objectReference;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
+        private WeakReference objectReference;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeManager"/> class.
@@ -49,7 +49,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// A delegate responsible for creating FakeObject instances.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An instance of <see cref="FakeManager"/>.</returns>
         [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "Valid pattern for factory delegates.")]
         public delegate FakeManager Factory();
 
@@ -58,12 +58,16 @@ namespace FakeItEasy.Core
         /// </summary>
         public virtual object Object
         {
-            get { return this.objectReference.Target; }
+            get
+            {
+                return this.objectReference.Target;
+            }
+
             private set
             {
                 this.objectReference = new WeakReference(value);
             }
-        }        
+        }
 
         /// <summary>
         /// Gets the faked type.
@@ -160,7 +164,7 @@ namespace FakeItEasy.Core
 
         private static void ApplyRule(CallRuleMetadata rule, IInterceptedFakeObjectCall fakeObjectCall)
         {
-            logger.Debug("Applying rule {0}.", rule.Rule.ToString());
+            Logger.Debug("Applying rule {0}.", rule.Rule.ToString());
             rule.CalledNumberOfTimes++;
             rule.Rule.Apply(fakeObjectCall);
         }
@@ -186,7 +190,7 @@ namespace FakeItEasy.Core
             finally
             {
                 var readonlyCall = fakeObjectCall.AsReadOnly();
-        
+
                 if (!interceptedCall.IgnoreCallInRecording)
                 {
                     FakeScope.Current.AddInterceptedCall(this, readonlyCall);
@@ -217,7 +221,7 @@ namespace FakeItEasy.Core
         {
             this.Intercept(e.Call);
         }
-        
+
         private class InterceptedCallAdapter
             : IInterceptedFakeObjectCall
         {

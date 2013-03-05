@@ -1,20 +1,23 @@
-using FakeItEasy.Core;
-
 namespace FakeItEasy.Tests.Creation
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Creation;
-    using FakeItEasy.Expressions;
     using FakeItEasy.SelfInitializedFakes;
     using NUnit.Framework;
-    
+
     [TestFixture]
     public class DefaultFakeCreatorTests
     {
         private IFakeAndDummyManager fakeAndDummyManager;
         private DefaultFakeCreatorFacade creator;
+        private object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>>>(
+                x => x.Wrapping(A.Fake<Foo>()),
+                x => x.Implements(typeof(Foo)),
+                x => x.WithArgumentsForConstructor(() => new Foo()),
+                x => x.WithArgumentsForConstructor(new object[] { A.Fake<IServiceProvider>() }),
+                x => x.Wrapping(A.Fake<Foo>()).RecordedBy(A.Fake<ISelfInitializingFakeRecorder>()))
+            .AsTestCaseSource(x => x);
 
         [SetUp]
         public void SetUp()
@@ -23,7 +26,7 @@ namespace FakeItEasy.Tests.Creation
 
             this.creator = new DefaultFakeCreatorFacade(this.fakeAndDummyManager);
 
-            ConfigureDefaultValuesForFakeAndDummyManager();
+            this.ConfigureDefaultValuesForFakeAndDummyManager();
         }
 
         [Test]
@@ -31,33 +34,38 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var serviceProvider = A.Fake<IServiceProvider>();
-            
+
             // Act
             this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => new Foo(serviceProvider)));
-            
+
             // Assert
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.HasArgumentsForConstructor(new object[] { serviceProvider }))).MustHaveHappened();
         }
-        
+
         [Test]
         public void CreateFake_should_pass_all_interfaces_from_implements_to_fake_and_dummy_manager()
         {
             // Arrange
-            
+
             // Act
             this.creator.CreateFake<IFoo>(x => x.Implements(typeof(IFormatProvider)).Implements(typeof(IFormattable)));
-            
+
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.Matches(x => 
-                x.AdditionalInterfacesToImplement.Contains(typeof(IFormatProvider)) && 
-                x.AdditionalInterfacesToImplement.Contains(typeof(IFormattable)), "IFormatProvider and IFormattable"))).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(
+                    A<Type>._,
+                    A<FakeOptions>.That.Matches(
+                        x =>
+                            x.AdditionalInterfacesToImplement.Contains(typeof(IFormatProvider)) &&
+                            x.AdditionalInterfacesToImplement.Contains(typeof(IFormattable)),
+                        "IFormatProvider and IFormattable")))
+                .MustHaveHappened();
         }
 
         [Test]
         public void CreateFake_should_throw_when_arguments_for_constructor_is_set_by_expression_that_is_not_a_constructor_call()
         {
             // Arrange
-            
+
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
                 this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => CreateFoo())));
@@ -116,20 +124,6 @@ namespace FakeItEasy.Tests.Creation
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>._)).MustHaveHappened();
         }
 
-        private static Foo CreateFoo()
-        {
-            return A.Fake<Foo>();
-        }
-
-        private object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>>>(
-            x => x.Wrapping(A.Fake<Foo>()),
-            x => x.Implements(typeof(Foo)),
-            x => x.WithArgumentsForConstructor(() => new Foo()),
-            x => x.WithArgumentsForConstructor(new object[] { A.Fake<IServiceProvider>() }),
-            x => x.Wrapping(A.Fake<Foo>()).RecordedBy(A.Fake<ISelfInitializingFakeRecorder>())
-        ).AsTestCaseSource(x => x);
-            
-        
         [TestCaseSource("optionBuilderCalls")]
         public void CreateFake_should_pass_options_builder_that_returns_itself_for_any_call(Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>> call)
         {
@@ -161,7 +155,7 @@ namespace FakeItEasy.Tests.Creation
         public void CreateFake_should_be_null_guarded()
         {
             // Arrange, Act, Assert
-            NullGuardedConstraint.Assert(() => 
+            NullGuardedConstraint.Assert(() =>
                 this.creator.CreateFake<IFoo>(x => x.Wrapping(A.Fake<IFoo>())));
         }
 
@@ -185,7 +179,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Act
             var result = this.creator.CollectionOfFake<IFoo>(10);
-            
+
             // Assert
             Assert.That(result, Has.All.InstanceOf<IFoo>().And.All.InstanceOf<ITaggable>());
         }
@@ -203,30 +197,17 @@ namespace FakeItEasy.Tests.Creation
             Assert.That(result, Has.Count.EqualTo(numberOfFakes));
         }
 
+        private static Foo CreateFoo()
+        {
+            return A.Fake<Foo>();
+        }
+
         private void ConfigureDefaultValuesForFakeAndDummyManager()
         {
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>._))
                 .Returns(A.Fake<IFoo>());
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(Foo), A<FakeOptions>._))
                 .Returns(A.Fake<Foo>());
-        }
-    }
-
-    public static class FakeOptionsConstraints
-    {
-        internal static FakeOptions HasRecorder(this IArgumentConstraintManager<FakeOptions> scope, ISelfInitializingFakeRecorder recorder)
-        {
-            return scope.Matches(x => recorder.Equals(x.SelfInitializedFakeRecorder), "Specified recorder");
-        }
-
-        internal static FakeOptions HasArgumentsForConstructor(this IArgumentConstraintManager<FakeOptions> scope, IEnumerable<object> argumentsForConstructor)
-        {
-            return scope.Matches(x => argumentsForConstructor.SequenceEqual(x.ArgumentsForConstructor), "Constructor arguments ({0})".FormatInvariant(string.Join(", ", argumentsForConstructor.Select(x => x.ToString()).ToArray())));
-        }
-
-        internal static FakeOptions Wraps(this IArgumentConstraintManager<FakeOptions> scope, object wrappedInstance)
-        {
-            return scope.Matches(x => object.ReferenceEquals(x.WrappedInstance, wrappedInstance), "Wraps {0}".FormatInvariant(wrappedInstance));
         }
     }
 }

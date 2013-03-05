@@ -1,43 +1,44 @@
-﻿using System.Reflection.Emit;
-
-namespace FakeItEasy.Creation.DelegateProxies
+﻿namespace FakeItEasy.Creation.DelegateProxies
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Reflection.Emit;
     using FakeItEasy.Core;
 
     internal class DelegateProxyGenerator
         : IProxyGenerator
     {
-        public virtual ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement,
-                                                  IEnumerable<object> argumentsForConstructor)
+        public virtual ProxyGeneratorResult GenerateProxy(
+            Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
         {
-            if (!typeof (Delegate).IsAssignableFrom(typeOfProxy))
+            if (!typeof(Delegate).IsAssignableFrom(typeOfProxy))
             {
                 return
                     new ProxyGeneratorResult("The delegate proxy generator can only create proxies for delegate types.");
             }
 
-
             var invokeMethod = typeOfProxy.GetMethod("Invoke");
 
             var eventRaiser = new DelegateCallInterceptedEventRaiser();
-            
+
             var proxy = CreateDelegateProxy(typeOfProxy, invokeMethod, eventRaiser);
-            
+
             eventRaiser.Method = invokeMethod;
             eventRaiser.Instance = proxy;
 
             return new ProxyGeneratorResult(proxy, eventRaiser);
         }
 
-        public virtual ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement,
-                                          IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders )
+        public virtual ProxyGeneratorResult GenerateProxy(
+            Type typeOfProxy,
+            IEnumerable<Type> additionalInterfacesToImplement,
+            IEnumerable<object> argumentsForConstructor,
+            IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
         {
-            return GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
+            return this.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
         }
 
         public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
@@ -52,7 +53,7 @@ namespace FakeItEasy.Creation.DelegateProxies
             return true;
         }
 
-        static Delegate CreateDelegateProxy(Type typeOfProxy, MethodInfo invokeMethod, DelegateCallInterceptedEventRaiser eventRaiser)
+        private static Delegate CreateDelegateProxy(Type typeOfProxy, MethodInfo invokeMethod, DelegateCallInterceptedEventRaiser eventRaiser)
         {
             var delegateMethod = invokeMethod;
 
@@ -61,12 +62,11 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             var body = CreateBodyExpression(delegateMethod, eventRaiser, parameterExpressions);
 
-            return Expression.Lambda(typeOfProxy,
-                                     body,
-                                     parameterExpressions).Compile();
+            return Expression.Lambda(typeOfProxy, body, parameterExpressions).Compile();
         }
 
-        static Expression CreateBodyExpression(MethodInfo delegateMethod, DelegateCallInterceptedEventRaiser eventRaiser, Expression[] parameterExpressions)
+        private static Expression CreateBodyExpression(
+            MethodInfo delegateMethod, DelegateCallInterceptedEventRaiser eventRaiser, Expression[] parameterExpressions)
         {
             var parameterExpressionsCastToObject =
                 parameterExpressions.Select(x => Expression.Convert(x, typeof(object))).Cast<Expression>().ToArray();
@@ -74,12 +74,9 @@ namespace FakeItEasy.Creation.DelegateProxies
             Expression body = Expression.Call(
                 Expression.Constant(eventRaiser),
                 DelegateCallInterceptedEventRaiser.RaiseMethod,
-                new Expression[]
-                    {
-                        Expression.NewArrayInit(typeof (object), parameterExpressionsCastToObject)
-                    });
+                new Expression[] { Expression.NewArrayInit(typeof(object), parameterExpressionsCastToObject) });
 
-            if (!delegateMethod.ReturnType.Equals(typeof (void)))
+            if (!delegateMethod.ReturnType.Equals(typeof(void)))
             {
                 body = Expression.Convert(body, delegateMethod.ReturnType);
             }
@@ -87,23 +84,23 @@ namespace FakeItEasy.Creation.DelegateProxies
             return body;
         }
 
-        class DelegateCallInterceptedEventRaiser : ICallInterceptedEventRaiser
+        private class DelegateCallInterceptedEventRaiser : ICallInterceptedEventRaiser
         {
             public static readonly MethodInfo RaiseMethod =
-                typeof (DelegateCallInterceptedEventRaiser).GetMethod("Raise");
+                typeof(DelegateCallInterceptedEventRaiser).GetMethod("Raise");
+
+            public event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
 
             public MethodInfo Method { get; set; }
 
             public Delegate Instance { get; set; }
 
-            public event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
-
-// ReSharper disable UnusedMember.Local
+            // ReSharper disable UnusedMember.Local
             public object Raise(object[] arguments)
-// ReSharper restore UnusedMember.Local
+            // ReSharper restore UnusedMember.Local
             {
                 var call = new DelegateFakeObjectCall(this.Instance, this.Method, arguments);
-                
+
                 this.RaiseCallWasIntercepted(call);
 
                 return call.ReturnValue;
@@ -120,10 +117,10 @@ namespace FakeItEasy.Creation.DelegateProxies
             }
         }
 
-        class DelegateFakeObjectCall
+        private class DelegateFakeObjectCall
             : IWritableFakeObjectCall, ICompletedFakeObjectCall
         {
-            readonly Delegate instance;
+            private readonly Delegate instance;
 
             public DelegateFakeObjectCall(Delegate instance, MethodInfo method, object[] arguments)
             {
@@ -133,6 +130,15 @@ namespace FakeItEasy.Creation.DelegateProxies
             }
 
             public object ReturnValue { get; private set; }
+
+            public MethodInfo Method { get; private set; }
+
+            public ArgumentCollection Arguments { get; private set; }
+
+            public object FakedObject
+            {
+                get { return this.instance; }
+            }
 
             public void SetReturnValue(object value)
             {
@@ -152,15 +158,6 @@ namespace FakeItEasy.Creation.DelegateProxies
             public ICompletedFakeObjectCall AsReadOnly()
             {
                 return this;
-            }
-
-            public MethodInfo Method { get; private set; }
-
-            public ArgumentCollection Arguments { get; private set; }
-
-            public object FakedObject
-            {
-                get { return this.instance; }
             }
         }
     }

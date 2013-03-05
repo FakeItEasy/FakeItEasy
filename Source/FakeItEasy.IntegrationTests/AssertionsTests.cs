@@ -1,27 +1,33 @@
-using NUnit.Framework;
-using FakeItEasy.Tests;
-using System;
-using FakeItEasy.Core;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace FakeItEasy.IntegrationTests
 {
+    using System;
+    using System.Linq;
+    using FakeItEasy.Core;
+    using FakeItEasy.Tests;
+    using NUnit.Framework;
+
     [TestFixture]
     public class AssertionsTests
     {
+        public interface ITypeWithWriteOnlyProperty
+        {
+            object SetOnly { set; }
+        }
+
         [Test]
         public void Method_that_is_configured_to_throw_should_still_be_recorded()
         {
             var fake = A.Fake<IFoo>();
-            
+
             A.CallTo(() => fake.Bar()).Throws(new Exception()).Once();
 
             try
             {
                 fake.Bar();
             }
-            catch { }
+            catch
+            {
+            }
 
             A.CallTo(() => fake.Bar()).MustHaveHappened();
         }
@@ -33,7 +39,7 @@ namespace FakeItEasy.IntegrationTests
             {
                 // Arrange
                 var foo = A.Fake<IFoo>();
-               
+
                 // Act
                 foo.Bar();
                 foo.Baz();
@@ -54,21 +60,22 @@ namespace FakeItEasy.IntegrationTests
             {
                 // Arrange
                 var foo = A.Fake<IFoo>();
-                
+
                 // Act
                 foo.Baz();
                 foo.Bar();
-                
+
                 // Assert       
-                Assert.That(() =>
-                {
-                    using (scope.OrderedAssertions())
+                Assert.That(
+                    () =>
                     {
-                        A.CallTo(() => foo.Bar()).MustHaveHappened();
-                        A.CallTo(() => foo.Baz()).MustHaveHappened();
-                    }
-                },
-                Throws.Exception.InstanceOf<ExpectationException>());
+                        using (scope.OrderedAssertions())
+                        {
+                            A.CallTo(() => foo.Bar()).MustHaveHappened();
+                            A.CallTo(() => foo.Baz()).MustHaveHappened();
+                        }
+                    },
+                    Throws.Exception.InstanceOf<ExpectationException>());
             }
         }
 
@@ -79,17 +86,15 @@ namespace FakeItEasy.IntegrationTests
             using (var outerScope = Enumerable.Empty<ICompletedFakeObjectCall>().OrderedAssertions())
             {
                 // Act, Assert
-                Assert.That(() => 
-                {
-                    using (Enumerable.Empty<ICompletedFakeObjectCall>().OrderedAssertions()) { }
-                },
-                Throws.Exception.TypeOf<InvalidOperationException>());
+                Assert.That(
+                    () =>
+                    {
+                        using (Enumerable.Empty<ICompletedFakeObjectCall>().OrderedAssertions())
+                        {
+                        }
+                    },
+                    Throws.Exception.TypeOf<InvalidOperationException>());
             }
-        }
-
-        public interface ITypeWithWriteOnlyProperty
-        {
-            object SetOnly { set; }
         }
     }
 }

@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using NUnit.Framework;
-
 namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     internal class ComparableGreaterThanTests
         : ArgumentConstraintTestBase<int>

@@ -10,19 +10,14 @@ namespace FakeItEasy.Tests.Core
     [TestFixture]
     public class MethodInfoManagerTests
     {
-        private MethodInfoManager CreateManager()
+        public interface IInterface
         {
-            return new MethodInfoManager();
+            void Foo();
         }
 
-        private MethodInfo GetMethod<T>(Expression<Action<T>> methodSpecification)
+        public interface IHaveAGenericMethod
         {
-            return ((MethodCallExpression)methodSpecification.Body).Method;
-        }
-
-        private MethodInfo GetMethod<T, TReturn>(Expression<Func<T, TReturn>> methodSpecification)
-        {
-            return ((MethodCallExpression)methodSpecification.Body).Method;
+            void GenericMethod<T>();
         }
 
         [Test]
@@ -163,12 +158,22 @@ namespace FakeItEasy.Tests.Core
             var manager = this.CreateManager();
 
             // Act, Assert
-            Assert.That(manager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(typeof (SubType), method).Name, Is.EqualTo("DoSomething"));
+            Assert.That(manager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(typeof(SubType), method).Name, Is.EqualTo("DoSomething"));
         }
 
-        public interface IInterface
+        private MethodInfoManager CreateManager()
         {
-            void Foo();
+            return new MethodInfoManager();
+        }
+
+        private MethodInfo GetMethod<T>(Expression<Action<T>> methodSpecification)
+        {
+            return ((MethodCallExpression)methodSpecification.Body).Method;
+        }
+
+        private MethodInfo GetMethod<T, TReturn>(Expression<Func<T, TReturn>> methodSpecification)
+        {
+            return ((MethodCallExpression)methodSpecification.Body).Method;
         }
 
         public class InterfaceImplementorWithExplicitImplementation
@@ -193,12 +198,6 @@ namespace FakeItEasy.Tests.Core
             }
         }
 
-
-        public interface IHaveAGenericMethod
-        {
-            void GenericMethod<T>();
-        }
-
         public class HaveAGenericMethod
             : IHaveAGenericMethod
         {
@@ -208,18 +207,15 @@ namespace FakeItEasy.Tests.Core
             }
         }
 
-
         public class BaseType
             : IEquatable<BaseType>
         {
             public virtual void DoSomething()
             {
-
             }
 
             public void DoSomething(string a)
             {
-
             }
 
             public T GetDefault<T>()
@@ -238,7 +234,6 @@ namespace FakeItEasy.Tests.Core
         {
             public override void DoSomething()
             {
-
             }
         }
 
@@ -250,4 +245,3 @@ namespace FakeItEasy.Tests.Core
         }
     }
 }
-

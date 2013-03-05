@@ -34,6 +34,7 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,7 +65,10 @@
     <Compile Include="ConfiguringCalls.cs" />
     <Compile Include="CreatingFakeObjects.cs" />
     <Compile Include="CustomArgumentValidators.cs" />
-    <Compile Include="ExampleObjects.cs" />
+    <Compile Include="ExampleObjects\ClassThatTakesConstructorArguments.cs" />
+    <Compile Include="ExampleObjects\WidgetEventArgs.cs" />
+    <Compile Include="ExampleObjects\IWidget.cs" />
+    <Compile Include="ExampleObjects\IWidgetFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaisingEvents.cs" />
     <Compile Include="Scopes.cs" />

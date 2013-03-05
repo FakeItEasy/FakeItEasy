@@ -8,11 +8,6 @@
     public class NextCallTests
         : ConfigurableServiceLocatorTestBase
     {
-        protected override void OnSetUp()
-        {
-            A.Fake<IConfigurationFactory>();
-        }
-
         [Test]
         public void To_should_be_properly_guarded()
         {
@@ -47,6 +42,11 @@
             // Assert
             Assert.That(result, Is.SameAs(builder));
             Assert.That(fake.Rules, Has.Some.SameAs(recordingRule));
+        }
+
+        protected override void OnSetUp()
+        {
+            A.Fake<IConfigurationFactory>();
         }
 
         private RecordingRuleBuilder CreateFakeVisualBasicRuleBuilder()

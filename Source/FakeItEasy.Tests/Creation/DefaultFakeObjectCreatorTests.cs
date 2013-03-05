@@ -1,19 +1,17 @@
-using System.Reflection.Emit;
-
 namespace FakeItEasy.Tests.Creation
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection.Emit;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-    using FakeItEasy.Expressions;
     using NUnit.Framework;
 
     [TestFixture]
     public class FakeObjectCreatorTests
     {
-        private static readonly Logger logger = Log.GetLogger<FakeObjectCreatorTests>();
+        private static readonly Logger Logger = Log.GetLogger<FakeObjectCreatorTests>();
 
         private IProxyGenerator proxyGenerator;
         private FakeObjectCreator fakeObjectCreator;
@@ -36,8 +34,8 @@ namespace FakeItEasy.Tests.Creation
         public void Should_return_fake_when_successful()
         {
             // Arrange
-            var argumentsForConstructor = new object[] {};
-            
+            var argumentsForConstructor = new object[] { };
+
             var options = new FakeOptions
             {
                 AdditionalInterfacesToImplement = new Type[] { },
@@ -55,7 +53,7 @@ namespace FakeItEasy.Tests.Creation
             // Assert
             Assert.That(createdFake, Is.SameAs(proxy));
         }
-        
+
         [Test]
         public void Should_attach_fake_manager_to_proxy_when_successful()
         {
@@ -86,7 +84,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Act
             this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: true);
-            
+
             // Assert
             A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(IFoo), "fail reason"))
                 .MustHaveHappened();
@@ -122,7 +120,7 @@ namespace FakeItEasy.Tests.Creation
         public void Should_try_with_resolved_constructors_in_correct_order()
         {
             using (var scope = Fake.CreateScope())
-            { 
+            {
                 // Arrange
                 var session = A.Fake<IDummyValueCreationSession>();
                 StubSessionWithDummyValue<int>(session, 1);
@@ -134,7 +132,7 @@ namespace FakeItEasy.Tests.Creation
                 {
                     AdditionalInterfacesToImplement = new Type[] { }
                 };
-                
+
                 // Act
                 this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
 
@@ -193,7 +191,7 @@ namespace FakeItEasy.Tests.Creation
                 .Returns(new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>()));
             A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1), A<IEnumerable<CustomAttributeBuilder>>._))
                 .Returns(new ProxyGeneratorResult(new object(), A.Dummy<ICallInterceptedEventRaiser>()));
-                
+
             // Act
             var createdFake = this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
 
@@ -223,7 +221,7 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var session = A.Fake<IDummyValueCreationSession>();
             StubSessionWithDummyValue<int>(session, 1);
-            StubProxyGeneratorToFail();
+            this.StubProxyGeneratorToFail();
 
             var options = FakeOptions.Empty;
 
@@ -240,9 +238,9 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionToFailForType<int>(session);            
+            StubSessionToFailForType<int>(session);
             StubSessionWithDummyValue<string>(session, "dummy");
-            
+
             this.StubProxyGeneratorToFail("failed");
 
             // Act
@@ -283,8 +281,8 @@ namespace FakeItEasy.Tests.Creation
                     }
                 }
             };
-            
-            A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeof(TypeWithMultipleConstructors), "failed", ConstructorsEquivalentTo(expectedConstructors)))
+
+            A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeof(TypeWithMultipleConstructors), "failed", this.ConstructorsEquivalentTo(expectedConstructors)))
                 .MustHaveHappened();
         }
 
@@ -293,58 +291,14 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var proxy = A.Fake<IFoo>(x => x.Implements(typeof(ITaggable)));
-            A.CallTo(() =>
-                this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<CustomAttributeBuilder>>._)
-            ).Returns(new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>()));
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<CustomAttributeBuilder>>._))
+                .Returns(new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>()));
 
             // Act
             this.fakeObjectCreator.CreateFake(typeof(IFoo), FakeOptions.Empty, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
 
             // Assert
             A.CallTo(() => this.configurer.ConfigureFake(typeof(IFoo), proxy)).MustHaveHappened();
-        }
-
-        private IEnumerable<ResolvedConstructor> ConstructorsEquivalentTo(IEnumerable<ResolvedConstructor> constructors)
-        {
-            return A<IEnumerable<ResolvedConstructor>>.That.Matches(x => 
-            {
-                if (x.Count() != constructors.Count())
-                {
-                    logger.Debug("Unequal number of constructors.");
-                    return false;
-                }                
-
-                foreach (var constructorPair in x.Zip(constructors))
-                {
-                    if (!string.Equals(constructorPair.Item1.ReasonForFailure, constructorPair.Item2.ReasonForFailure))
-                    {
-                        logger.Debug("Not the same reason for failure.");
-                        return false;
-                    }
-
-                    if (constructorPair.Item1.Arguments.Length != constructorPair.Item2.Arguments.Length)
-                    {
-                        logger.Debug("Unequal number of arguments.");
-                        return false;
-                    }
-
-                    foreach (var argumentPair in constructorPair.Item1.Arguments.Zip(constructorPair.Item2.Arguments))
-                    {
-                        var isEqual =
-                            object.Equals(argumentPair.Item1.ArgumentType, argumentPair.Item2.ArgumentType)
-                            && object.Equals(argumentPair.Item1.ResolvedValue, argumentPair.Item2.ResolvedValue)
-                            && argumentPair.Item1.WasResolved == argumentPair.Item2.WasResolved;
-
-                        if (!isEqual)
-                        {
-                            logger.Debug("Arguments differ.");
-                            return false;
-                        }
-                    }
-                }
-
-                return true;
-            }, "Matching constructor");
         }
 
         private static void StubSessionToFailForType<T>(IDummyValueCreationSession session)
@@ -360,6 +314,51 @@ namespace FakeItEasy.Tests.Creation
             A.CallTo(() => session.TryResolveDummyValue(typeof(T), out outResult))
                 .Returns(true)
                 .AssignsOutAndRefParameters(dummyValue);
+        }
+
+        private IEnumerable<ResolvedConstructor> ConstructorsEquivalentTo(IEnumerable<ResolvedConstructor> constructors)
+        {
+            return A<IEnumerable<ResolvedConstructor>>.That.Matches(
+                x =>
+                {
+                    if (x.Count() != constructors.Count())
+                    {
+                        Logger.Debug("Unequal number of constructors.");
+                        return false;
+                    }
+
+                    foreach (var constructorPair in x.Zip(constructors))
+                    {
+                        if (!string.Equals(constructorPair.Item1.ReasonForFailure, constructorPair.Item2.ReasonForFailure))
+                        {
+                            Logger.Debug("Not the same reason for failure.");
+                            return false;
+                        }
+
+                        if (constructorPair.Item1.Arguments.Length != constructorPair.Item2.Arguments.Length)
+                        {
+                            Logger.Debug("Unequal number of arguments.");
+                            return false;
+                        }
+
+                        foreach (var argumentPair in constructorPair.Item1.Arguments.Zip(constructorPair.Item2.Arguments))
+                        {
+                            var isEqual =
+                                object.Equals(argumentPair.Item1.ArgumentType, argumentPair.Item2.ArgumentType)
+                                && object.Equals(argumentPair.Item1.ResolvedValue, argumentPair.Item2.ResolvedValue)
+                                && argumentPair.Item1.WasResolved == argumentPair.Item2.WasResolved;
+
+                            if (!isEqual)
+                            {
+                                Logger.Debug("Arguments differ.");
+                                return false;
+                            }
+                        }
+                    }
+
+                    return true;
+                },
+                "Matching constructor");
         }
 
         private void StubProxyGeneratorToFail(string failReason)

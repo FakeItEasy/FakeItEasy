@@ -21,7 +21,7 @@ namespace FakeItEasy.Core
         }
 
         /// <summary>
-        /// Gets a value indicating if a dummy argument value was successfully
+        /// Gets a value indicating whether a dummy argument value was successfully
         /// resolved.
         /// </summary>
         public bool WasSuccessfullyResolved { get; private set; }

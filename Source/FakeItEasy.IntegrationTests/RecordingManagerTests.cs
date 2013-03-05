@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using FakeItEasy.SelfInitializedFakes;
-using NUnit.Framework;
-
 namespace FakeItEasy.IntegrationTests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using FakeItEasy.SelfInitializedFakes;
+    using NUnit.Framework;
+
     [TestFixture]
     public class RecordingManagerTests
     {
@@ -54,8 +54,7 @@ namespace FakeItEasy.IntegrationTests
             {
                 var realReader = new WebReader();
                 var fakeReader = A.Fake<WebReader>(x => x.Wrapping(realReader).RecordedBy(recorder));
-                
-                
+                                
                 for (int i = 0; i < 30; i++)
                 {
                     fakeReader.Download(new Uri("http://www.sembo.se/"));
@@ -81,7 +80,7 @@ namespace FakeItEasy.IntegrationTests
         private class Storage
             : ICallStorage
         {
-            public List<CallData> RecordedCalls;
+            public List<CallData> RecordedCalls { get; set; }
 
             public IEnumerable<CallData> Load()
             {

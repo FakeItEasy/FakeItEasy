@@ -4,7 +4,7 @@ namespace FakeItEasy
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// An exception thrown when an expection is not met (when asserting on fake object calls).
+    /// An exception thrown when an expectation is not met (when asserting on fake object calls).
     /// </summary>
     [Serializable]
     public class ExpectationException

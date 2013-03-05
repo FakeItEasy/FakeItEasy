@@ -51,7 +51,6 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             
-
             // Act
             this.builder.MustHaveHappened();
 
@@ -79,7 +78,6 @@ namespace FakeItEasy.Tests.Configuration
                 this.builder.MustHaveHappened(Repeated.AtLeast.Once));
         }
 
-        //
         [Test]
         public void WhenArgumentsMatches_from_should_be_null_guarded()
         {

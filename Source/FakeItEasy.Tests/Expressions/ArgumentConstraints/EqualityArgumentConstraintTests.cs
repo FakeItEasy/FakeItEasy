@@ -1,28 +1,17 @@
-﻿using FakeItEasy.Expressions.ArgumentConstraints;
-
-namespace FakeItEasy.Tests.ExpressionsConstraints
+﻿namespace FakeItEasy.Tests.ExpressionsConstraints
 {
     using System;
     using System.Collections.Generic;
-    using FakeItEasy.Expressions;
+    using FakeItEasy.Expressions.ArgumentConstraints;
     using NUnit.Framework;
 
     [TestFixture]
     internal class EqualityArgumentConstraintTests
         : ArgumentConstraintTestBase
     {
-        [SetUp]
-        public void SetUp()
-        {
-            this.constraintField = new EqualityArgumentConstraint(1);
-        }
-
         protected override IEnumerable<object> InvalidValues
         {
-            get 
-            {
-                return new[] { null, new object(), Guid.NewGuid(), "FOO", " foo " }; 
-            }
+            get { return new[] { null, new object(), Guid.NewGuid(), "FOO", " foo " }; }
         }
 
         protected override IEnumerable<object> ValidValues
@@ -35,10 +24,16 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
             get { return "1"; }
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            this.ConstraintField = new EqualityArgumentConstraint(1);
+        }
+
         [Test]
         public override void Constraint_should_provide_correct_description()
         {
-            Assert.That(this.constraintField.ToString(), Is.EqualTo("1"));
+            Assert.That(this.ConstraintField.ToString(), Is.EqualTo("1"));
         }
 
         [Test]

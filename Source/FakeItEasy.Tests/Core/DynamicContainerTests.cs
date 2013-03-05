@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using System.Linq;
-
-namespace FakeItEasy.Core.Tests
+﻿namespace FakeItEasy.Core.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DynamicContainerTests
     {
@@ -26,11 +25,6 @@ namespace FakeItEasy.Core.Tests
         public void TearDown()
         {
             this.scope.Dispose();
-        }
-
-        private DynamicContainer CreateContainer()
-        {
-            return new DynamicContainer(this.availableDummyDefinitions, this.availableConfigurers);
         }
 
         [Test]
@@ -101,12 +95,17 @@ namespace FakeItEasy.Core.Tests
             // Arrange
             this.availableConfigurers.Add(new ConfigurationForTypeWithDummyDefintion());
             this.availableConfigurers.Add(new DuplicateConfigurationForTypeWithDummyDefintion());
-            
+
             // Act
 
             // Assert
             Assert.DoesNotThrow(() =>
                 this.CreateContainer());
+        }
+
+        private DynamicContainer CreateContainer()
+        {
+            return new DynamicContainer(this.availableDummyDefinitions, this.availableConfigurers);
         }
 
         public class ConfigurationForTypeWithDummyDefintion : FakeConfigurator<TypeWithDummyDefinition>
@@ -145,12 +144,12 @@ namespace FakeItEasy.Core.Tests
 
         public class TypeWithDummyDefinition
         {
+            public virtual bool WasConfigured { get; set; }
+
             public void Bar()
             {
                 throw new NotImplementedException();
             }
-
-            public virtual bool WasConfigured { get; set; }
         }
     }
 }

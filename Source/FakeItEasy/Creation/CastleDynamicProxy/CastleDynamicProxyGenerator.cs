@@ -1,6 +1,4 @@
-﻿using System.Reflection.Emit;
-
-namespace FakeItEasy.Creation.CastleDynamicProxy
+﻿namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +6,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
+    using System.Reflection.Emit;
     using System.Security.Permissions;
     using Castle.DynamicProxy;
     using Castle.DynamicProxy.Generators;
@@ -17,8 +16,8 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         : IProxyGenerator
     {
         private static readonly Logger Logger = Log.GetLogger<CastleDynamicProxyGenerator>();
-        private static readonly ProxyGenerationOptions proxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
-        private static readonly ProxyGenerator proxyGenerator = new ProxyGenerator();
+        private static readonly ProxyGenerationOptions ProxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
+        private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
         private readonly CastleDynamicProxyInterceptionValidator interceptionValidator;
 
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "No field initialization.")]
@@ -32,16 +31,15 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             this.interceptionValidator = interceptionValidator;
         }
 
-        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders )
+        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
         {
-
-            proxyGenerationOptions.AdditionalAttributes.Clear();
+            ProxyGenerationOptions.AdditionalAttributes.Clear();
             foreach (CustomAttributeBuilder builder in customAttributeBuilders)
             {
-                proxyGenerationOptions.AdditionalAttributes.Add(builder);
+                ProxyGenerationOptions.AdditionalAttributes.Add(builder);
             }
 
-            return GenerateProxy(typeOfProxy,additionalInterfacesToImplement,argumentsForConstructor);
+            return this.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
         }
 
         public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
@@ -85,13 +83,13 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             try
             {
                 var proxy = DoGenerateProxy(
-                    typeOfProxy, 
-                    additionalInterfacesToImplement, 
-                    argumentsForConstructor, 
+                    typeOfProxy,
+                    additionalInterfacesToImplement,
+                    argumentsForConstructor,
                     interceptor);
 
                 return new ProxyGeneratorResult(
-                    generatedProxy: proxy, 
+                    generatedProxy: proxy,
                     callInterceptedEventRaiser: interceptor);
             }
             catch (Exception ex)
@@ -127,7 +125,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             if (typeOfProxy.IsInterface)
             {
-                allInterfacesToImplement = new[] { typeOfProxy } .Concat(allInterfacesToImplement);
+                allInterfacesToImplement = new[] { typeOfProxy }.Concat(allInterfacesToImplement);
                 typeOfProxy = typeof(object);
             }
 
@@ -138,11 +136,11 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         {
             var argumentsArray = GetConstructorArgumentsArray(argumentsForConstructor);
 
-            return proxyGenerator.CreateClassProxy(
-                typeOfProxy, 
-                allInterfacesToImplement.ToArray(), 
-                proxyGenerationOptions, 
-                argumentsArray, 
+            return ProxyGenerator.CreateClassProxy(
+                typeOfProxy,
+                allInterfacesToImplement.ToArray(),
+                ProxyGenerationOptions,
+                argumentsArray,
                 interceptor);
         }
 
@@ -160,7 +158,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         private class InterceptEverythingHook
             : IProxyGenerationHook
         {
-            private static readonly int hashCode = typeof(InterceptEverythingHook).GetHashCode();
+            private static readonly int HashCode = typeof(InterceptEverythingHook).GetHashCode();
 
             public void MethodsInspected()
             {
@@ -177,7 +175,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             public override int GetHashCode()
             {
-                return hashCode;
+                return HashCode;
             }
 
             public override bool Equals(object obj)
@@ -191,8 +189,8 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         private class ProxyInterceptor
             : IInterceptor, ICallInterceptedEventRaiser
         {
-            private static readonly MethodInfo tagGetMethod = typeof(ITaggable).GetProperty("Tag").GetGetMethod();
-            private static readonly MethodInfo tagSetMethod = typeof(ITaggable).GetProperty("Tag").GetSetMethod();
+            private static readonly MethodInfo TagGetMethod = typeof(ITaggable).GetProperty("Tag").GetGetMethod();
+            private static readonly MethodInfo TagSetMethod = typeof(ITaggable).GetProperty("Tag").GetSetMethod();
 
             private object tag;
 
@@ -200,11 +198,11 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             public void Intercept(IInvocation invocation)
             {
-                if (invocation.Method.Equals(tagGetMethod))
+                if (invocation.Method.Equals(TagGetMethod))
                 {
                     invocation.ReturnValue = this.tag;
                 }
-                else if (invocation.Method.Equals(tagSetMethod))
+                else if (invocation.Method.Equals(TagSetMethod))
                 {
                     this.tag = invocation.Arguments[0];
                 }

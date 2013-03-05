@@ -4,8 +4,6 @@
 
     public abstract class TestDataBuilder<TSubject, TBuilder> where TBuilder : TestDataBuilder<TSubject, TBuilder>
     {
-        protected abstract TSubject Build();
-
         protected TestDataBuilder()
         {
         }
@@ -24,6 +22,13 @@
             return Build(x => { });
         }
 
+        public static implicit operator TSubject(TestDataBuilder<TSubject, TBuilder> builder)
+        {
+            return builder.Build();
+        }
+
+        protected abstract TSubject Build();
+
         protected TBuilder Do(Action<TBuilder> action)
         {
             action((TBuilder)this);
@@ -33,11 +38,6 @@
         private static TBuilder CreateBuilderInstance()
         {
             return (TBuilder)Activator.CreateInstance(typeof(TBuilder), nonPublic: true);
-        }
-
-        public static implicit operator TSubject(TestDataBuilder<TSubject, TBuilder> builder)
-        {
-            return builder.Build();
         }
     }
 }

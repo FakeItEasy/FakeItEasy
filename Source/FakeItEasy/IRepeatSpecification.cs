@@ -1,8 +1,11 @@
 ﻿namespace FakeItEasy
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Provides properties and methods to specify repeat.
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
     public interface IRepeatSpecification
     {
         /// <summary>

@@ -6,6 +6,7 @@ namespace FakeItEasy.Core
     using System.Linq;
     using System.Reflection;
 
+    /// <content>Event rule.</content>
     public partial class FakeManager
     {
         [Serializable]
@@ -153,8 +154,8 @@ namespace FakeItEasy.Core
                 {
                     return
                         (from e in eventAdderOrRemover.DeclaringType.GetEvents()
-                         where Equals(e.GetAddMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
-                             || Equals(e.GetRemoveMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
+                         where object.Equals(e.GetAddMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
+                             || object.Equals(e.GetRemoveMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
                          select e).SingleOrDefault();
                 }
 

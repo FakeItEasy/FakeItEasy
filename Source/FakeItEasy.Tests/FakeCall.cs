@@ -15,29 +15,13 @@ namespace FakeItEasy.Tests
             this.Arguments = ArgumentCollection.Empty;
         }
 
-        public MethodInfo Method
-        {
-            get;
-            set;
-        }
+        public MethodInfo Method { get; set; }
 
-        public ArgumentCollection Arguments
-        {
-            get;
-            set;
-        }
+        public ArgumentCollection Arguments { get; set; }
 
-        public object ReturnValue
-        {
-            get;
-            private set;
-        }
+        public object ReturnValue { get; private set; }
 
-        public object FakedObject
-        {
-            get;
-            set;
-        }
+        public object FakedObject { get; set; }
 
         public string Description
         {
@@ -47,7 +31,7 @@ namespace FakeItEasy.Tests
         public static FakeCall Create<T>(string methodName, Type[] parameterTypes, object[] arguments) where T : class
         {
             var method = typeof(T).GetMethod(methodName, parameterTypes);
-            
+
             return new FakeCall
             {
                 Method = method,
@@ -73,17 +57,14 @@ namespace FakeItEasy.Tests
 
         public void CallBaseMethod()
         {
-            
         }
 
         public void SetArgumentValue(int index, object value)
         {
-            
         }
 
         public void DoNotRecordCall()
         {
-
         }
     }
 }

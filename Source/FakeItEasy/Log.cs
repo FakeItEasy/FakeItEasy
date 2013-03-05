@@ -1,5 +1,3 @@
-using FakeItEasy.Core;
-
 namespace FakeItEasy
 {
     using System;

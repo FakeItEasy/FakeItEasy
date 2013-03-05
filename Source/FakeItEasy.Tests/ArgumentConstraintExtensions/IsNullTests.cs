@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.ArgumentValidationExtensions
+﻿namespace FakeItEasy.Tests.ArgumentValidationExtensions
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     internal class IsNullTests
         : ArgumentConstraintTestBase<object>
@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
 
         protected override IEnumerable<object> InvalidValues
         {
-            get { return new object[] { "", "foo", "bar" }; }
+            get { return new object[] { string.Empty, "foo", "bar" }; }
         }
 
         protected override string ExpectedDescription
@@ -27,5 +27,4 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
             scope.IsNull();
         }
     }
-
 }

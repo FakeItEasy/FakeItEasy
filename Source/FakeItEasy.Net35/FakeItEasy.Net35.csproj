@@ -14,6 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +56,9 @@
   <ItemGroup>
     <Compile Include="..\FakeItEasy\A.cs">
       <Link>A.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\A.of.T.cs">
+      <Link>A.of.T.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Any.cs">
       <Link>Any.cs</Link>
@@ -488,6 +492,9 @@
     <Compile Include="..\FakeItEasy\Fake.cs">
       <Link>Fake.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Fake.of.T.cs">
+      <Link>Fake.of.T.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\FakeAttribute.cs">
       <Link>FakeAttribute.cs</Link>
     </Compile>
@@ -560,6 +567,9 @@
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Raise.of.TEventArgs.cs">
+      <Link>Raise.of.TEventArgs.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Recorders.cs">
       <Link>Recorders.cs</Link>
     </Compile>
@@ -616,6 +626,7 @@
   <ItemGroup>
     <None Include="FakeItEasy.snk" />
     <None Include="packages.config" />
+    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\FakeItEasy\Creation\CastleDynamicProxy\DynamicProxyResources.resx">

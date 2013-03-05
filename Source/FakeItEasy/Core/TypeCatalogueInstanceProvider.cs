@@ -6,7 +6,7 @@
     using System.Linq;
 
     /// <summary>
-    /// Providesinstances from type catalogues.
+    /// Provides instances from type catalogues.
     /// </summary>
     internal class TypeCatalogueInstanceProvider
     {

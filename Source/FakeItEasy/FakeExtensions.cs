@@ -48,8 +48,9 @@ namespace FakeItEasy
         /// Specifies that a call to the configured call should be applied no matter what arguments
         /// are used in the call to the faked object.
         /// </summary>
+        /// <typeparam name="TInterface">The type of the interface.</typeparam>
         /// <param name="configuration">The configuration.</param>
-        /// <returns>A configuration object</returns>
+        /// <returns>A configuration object.</returns>
         public static TInterface WithAnyArguments<TInterface>(this IArgumentValidationConfiguration<TInterface> configuration)
         {
             return configuration.WhenArgumentsMatch(x => true);
@@ -120,8 +121,9 @@ namespace FakeItEasy
         /// <summary>
         /// Specifies the value to return when the configured call is made.
         /// </summary>
-        /// <param name="value">The value to return.</param>
+        /// <typeparam name="T">The type of the return value.</typeparam>
         /// <param name="configuration">The configuration to extend.</param>
+        /// <param name="value">The value to return.</param>
         /// <returns>A configuration object.</returns>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<T> configuration, T value)
         {
@@ -135,8 +137,9 @@ namespace FakeItEasy
         /// The function will be called each time this call is made and can return different values
         /// each time.
         /// </summary>
-        /// <param name="valueProducer">A function that produces the return value.</param>
+        /// <typeparam name="T">The type of the return value.</typeparam>
         /// <param name="configuration">The configuration to extend.</param>
+        /// <param name="valueProducer">A function that produces the return value.</param>
         /// <returns>A configuration object.</returns>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this IReturnValueConfiguration<T> configuration, Func<T> valueProducer)
         {
@@ -151,12 +154,12 @@ namespace FakeItEasy
         /// The function will be called each time this call is made and can return different values
         /// each time.
         /// </summary>
-        /// <param name="valueProducer">A function that produces the return value.</param>
-        /// <param name="configuration">The configuration to extend.</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
         /// <typeparam name="TReturnType">The type of the return value.</typeparam>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <param name="configuration">The configuration to extend.</param>
+        /// <param name="valueProducer">A function that produces the return value.</param>
         /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="valueProducer"/> do not match</exception>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer" /> do not match.</exception>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, TReturnType> valueProducer)
         {
@@ -173,13 +176,13 @@ namespace FakeItEasy
         /// The function will be called each time this call is made and can return different values
         /// each time.
         /// </summary>
-        /// <param name="valueProducer">A function that produces the return value.</param>
         /// <param name="configuration">The configuration to extend.</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
-        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <param name="valueProducer">A function that produces the return value.</param>
         /// <typeparam name="TReturnType">The type of the return value.</typeparam>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="valueProducer"/> do not match</exception>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, TReturnType> valueProducer)
         {
@@ -196,14 +199,14 @@ namespace FakeItEasy
         /// The function will be called each time this call is made and can return different values
         /// each time.
         /// </summary>
-        /// <param name="valueProducer">A function that produces the return value.</param>
         /// <param name="configuration">The configuration to extend.</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
-        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
-        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <param name="valueProducer">A function that produces the return value.</param>
         /// <typeparam name="TReturnType">The type of the return value.</typeparam>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
         /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="valueProducer"/> do not match</exception>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2, T3>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, TReturnType> valueProducer)
         {
@@ -220,15 +223,15 @@ namespace FakeItEasy
         /// The function will be called each time this call is made and can return different values
         /// each time.
         /// </summary>
-        /// <param name="valueProducer">A function that produces the return value.</param>
         /// <param name="configuration">The configuration to extend.</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
-        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
-        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
-        /// <typeparam name="T4">Type of the fourth argument of the faked method call</typeparam>
+        /// <param name="valueProducer">A function that produces the return value.</param>
         /// <typeparam name="TReturnType">The type of the return value.</typeparam>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
+        /// <typeparam name="T4">Type of the fourth argument of the faked method call.</typeparam>
         /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="valueProducer"/> do not match</exception>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2, T3, T4>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, T4, TReturnType> valueProducer)
         {
@@ -243,6 +246,7 @@ namespace FakeItEasy
         /// <summary>
         /// Writes the calls in the collection to the specified text writer.
         /// </summary>
+        /// <typeparam name="T">The type of the calls.</typeparam>
         /// <param name="calls">The calls to write.</param>
         /// <param name="writer">The writer to write the calls to.</param>
         public static void Write<T>(this IEnumerable<T> calls, IOutputWriter writer) where T : IFakeObjectCall
@@ -257,6 +261,7 @@ namespace FakeItEasy
         /// <summary>
         /// Writes all calls in the collection to the console.
         /// </summary>
+        /// <typeparam name="T">The type of the calls.</typeparam>
         /// <param name="calls">The calls to write.</param>
         public static void WriteToConsole<T>(this IEnumerable<T> calls) where T : IFakeObjectCall
         {
@@ -341,9 +346,10 @@ namespace FakeItEasy
         /// <summary>
         /// Executes the specified action when a matching call is being made. This overload can also be used to fake calls with arguments when they don't need to be accessed.
         /// </summary>
-        /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action"/> to invoke</param>
         /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action" /> to invoke.</param>
+        /// <returns>The fake object.</returns>
         public static TFake Invokes<TFake>(this ICallbackConfiguration<TFake> configuration, Action actionToInvoke)
         {
             return configuration.Invokes(call => actionToInvoke());
@@ -353,10 +359,11 @@ namespace FakeItEasy
         /// Executes the specified action when a matching call is being made.
         /// </summary>
         /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1}"/> to invoke</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <param name="actionToInvoke">The <see cref="Action{T1}"/> to invoke.</param>
         /// <typeparam name="TFake">The type of fake object.</typeparam>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+        /// <returns>The fake object.</returns>
         public static TFake Invokes<TFake, T1>(this ICallbackConfiguration<TFake> configuration, Action<T1> actionToInvoke)
         {
             return configuration.Invokes(call =>
@@ -371,11 +378,12 @@ namespace FakeItEasy
         /// Executes the specified action when a matching call is being made.
         /// </summary>
         /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1,T2}"/> to invoke</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
-        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <param name="actionToInvoke">The <see cref="Action{T1,T2}"/> to invoke.</param>
         /// <typeparam name="TFake">The type of fake object.</typeparam>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+        /// <returns>The fake object.</returns>
         public static TFake Invokes<TFake, T1, T2>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2> actionToInvoke)
         {
             return configuration.Invokes(call =>
@@ -390,12 +398,13 @@ namespace FakeItEasy
         /// Executes the specified action when a matching call is being made.
         /// </summary>
         /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1,T2,T3}"/> to invoke</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
-        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
-        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <param name="actionToInvoke">The <see cref="Action{T1,T2,T3}"/> to invoke.</param>
         /// <typeparam name="TFake">The type of fake object.</typeparam>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+        /// <returns>The fake object.</returns>
         public static TFake Invokes<TFake, T1, T2, T3>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2, T3> actionToInvoke)
         {
             return configuration.Invokes(call =>
@@ -410,13 +419,14 @@ namespace FakeItEasy
         /// Executes the specified action when a matching call is being made.
         /// </summary>
         /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1,T2,T3,T4}"/> to invoke</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
-        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
-        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
-        /// <typeparam name="T4">Type of the fourth argument of the faked method call</typeparam>
+        /// <param name="actionToInvoke">The <see cref="Action{T1,T2,T3,T4}"/> to invoke.</param>
         /// <typeparam name="TFake">The type of fake object.</typeparam>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="actionToInvoke"/> do not match</exception>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
+        /// <typeparam name="T4">Type of the fourth argument of the faked method call.</typeparam>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+        /// <returns>The fake object.</returns>
         public static TFake Invokes<TFake, T1, T2, T3, T4>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2, T3, T4> actionToInvoke)
         {
             return configuration.Invokes(call =>
@@ -457,9 +467,9 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public static IAfterCallSpecifiedConfiguration Throws<T1>(this IExceptionThrowerConfiguration configuration, Func<T1, Exception> exceptionFactory)
         {
             return configuration.Throws(call =>
@@ -476,10 +486,10 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
-        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public static IAfterCallSpecifiedConfiguration Throws<T1, T2>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, Exception> exceptionFactory)
         {
             return configuration.Throws(call =>
@@ -496,11 +506,11 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
-        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
-        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public static IAfterCallSpecifiedConfiguration Throws<T1, T2, T3>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, T3, Exception> exceptionFactory)
         {
             return configuration.Throws(call =>
@@ -517,12 +527,12 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
-        /// <typeparam name="T1">Type of the first argument of the faked method call</typeparam>
-        /// <typeparam name="T2">Type of the second argument of the faked method call</typeparam>
-        /// <typeparam name="T3">Type of the third argument of the faked method call</typeparam>
-        /// <typeparam name="T4">Type of the fourth argument of the faked method call</typeparam>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
+        /// <typeparam name="T4">Type of the fourth argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
-        /// <exception cref="FakeConfigurationException"> when the signatures of the faked method and the <paramref name="exceptionFactory"/> do not match</exception>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public static IAfterCallSpecifiedConfiguration Throws<T1, T2, T3, T4>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
             return configuration.Throws(call =>

@@ -8,6 +8,7 @@
     /// Manages attaching of argument constraints.
     /// </summary>
     /// <typeparam name="T">The type of argument to constrain.</typeparam>
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
     public interface IArgumentConstraintManager<T>
     {
         /// <summary>

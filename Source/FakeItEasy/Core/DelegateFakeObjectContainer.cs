@@ -54,7 +54,7 @@
         /// <summary>
         /// Registers the specified fake delegate.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of the return value of the method that <paramref name="fakeDelegate"/> encapsulates.</typeparam>
         /// <param name="fakeDelegate">The fake delegate.</param>
         public void Register<T>(Func<T> fakeDelegate)
         {

@@ -1,15 +1,23 @@
-using System;
-using FakeItEasy.Core;
-
 namespace FakeItEasy.Tests
 {
-    public class FakeCallRule
-    : IFakeObjectCallRule
+    using System;
+    using FakeItEasy.Core;
+
+    public class FakeCallRule : IFakeObjectCallRule
     {
-        public Func<IFakeObjectCall, bool> IsApplicableTo;
-        public Action<IInterceptedFakeObjectCall> Apply;
-        public bool ApplyWasCalled;
-        public bool IsApplicableToWasCalled;
+        public Func<IFakeObjectCall, bool> IsApplicableTo { get; set; }
+
+        public Action<IInterceptedFakeObjectCall> Apply { get; set; }
+
+        public bool ApplyWasCalled { get; set; }
+
+        public bool IsApplicableToWasCalled { get; set; }
+
+        public int? NumberOfTimesToCall { get; set; }
+
+        public bool MayNotBeCalledMoreThanTheNumberOfTimesSpecified { get; set; }
+
+        public bool MustGetCalled { get; set; }
 
         bool IFakeObjectCallRule.IsApplicableTo(IFakeObjectCall invocation)
         {
@@ -25,26 +33,6 @@ namespace FakeItEasy.Tests
             {
                 this.Apply(invocation);
             }
-        }
-
-        public int? NumberOfTimesToCall
-        {
-            get;
-            set;
-        }
-
-
-        public bool MayNotBeCalledMoreThanTheNumberOfTimesSpecified
-        {
-            get;
-            set;
-        }
-
-
-        public bool MustGetCalled
-        {
-            get;
-            set;
         }
     }
 }

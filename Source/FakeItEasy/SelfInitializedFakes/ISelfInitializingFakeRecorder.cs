@@ -10,7 +10,7 @@
         : IDisposable
     {
         /// <summary>
-        /// Gets a value indicating if the recorder is currently recording.
+        /// Gets a value indicating whether the recorder is currently recording.
         /// </summary>
         bool IsRecording { get; }
 

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using IoC;
 
@@ -10,6 +11,7 @@
     /// of the silverlight project.
     /// </summary>
     [Conditional("Near_a_tree_by_a_river_theres_a_hole_in_the_ground")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     public class SerializableAttribute
         : Attribute
     {
@@ -20,11 +22,13 @@
     /// of the silverlight project.
     /// </summary>
     [Conditional("Near_a_tree_by_a_river_theres_a_hole_in_the_ground")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     public class NonSerializedAttribute
         : Attribute
     {
     }
 
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     internal class ImportsModule : Module
     {
         public override void RegisterDependencies(DictionaryContainer container)

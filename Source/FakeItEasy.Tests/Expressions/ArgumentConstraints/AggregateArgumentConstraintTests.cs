@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Text;
-    using FakeItEasy.Core;
     using FakeItEasy.Expressions.ArgumentConstraints;
     using NUnit.Framework;
 
@@ -10,12 +9,6 @@
     internal class AggregateArgumentConstraintTests
         : ArgumentConstraintTestBase
     {
-        [SetUp]
-        public void SetUp()
-        {
-            this.constraintField = new AggregateArgumentConstraint(new[] { new EqualityArgumentConstraint("foo"), new EqualityArgumentConstraint("bar") });
-        }
-
         public interface ITypeWithPaldkf
         {
             void Method(string firstArgument, params object[] args);
@@ -29,8 +22,8 @@
                     {
                         new object(),
                         null,
-                        new[] {"one", "two"},
-                        new[] {"foo", "bar", "biz"}
+                        new[] { "one", "two" },
+                        new[] { "foo", "bar", "biz" }
                     };
             }
         }
@@ -41,8 +34,8 @@
             {
                 return new object[]
                     {
-                        new[] {"foo", "bar"},
-                        new List<string>(new[] {"foo", "bar"})
+                        new[] { "foo", "bar" },
+                        new List<string>(new[] { "foo", "bar" })
                     };
             }
         }
@@ -52,12 +45,18 @@
             get { return "[\"foo\", \"bar\"]"; }
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            this.ConstraintField = new AggregateArgumentConstraint(new[] { new EqualityArgumentConstraint("foo"), new EqualityArgumentConstraint("bar") });
+        }
+
         [Test]
         public override void Constraint_should_provide_correct_description()
         {
             var output = new StringBuilder();
 
-            this.constraintField.WriteDescription(new StringBuilderOutputWriter(output));
+            this.ConstraintField.WriteDescription(new StringBuilderOutputWriter(output));
 
             Assert.That(output.ToString(), Is.EqualTo(this.ExpectedDescription));
         }

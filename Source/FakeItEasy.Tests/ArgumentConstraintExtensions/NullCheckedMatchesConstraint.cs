@@ -7,11 +7,6 @@
     internal class NullCheckedMatchesConstraint
         : ArgumentConstraintTestBase<object>
     {
-        protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
-        {
-            scope.NullCheckedMatches(x => x is string, x => x.Write("is of type string"));
-        }
-
         protected override IEnumerable<object> InvalidValues
         {
             get
@@ -34,6 +29,11 @@
         protected override string ExpectedDescription
         {
             get { return "is of type string"; }
+        }
+
+        protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
+        {
+            scope.NullCheckedMatches(x => x is string, x => x.Write("is of type string"));
         }
     }
 }

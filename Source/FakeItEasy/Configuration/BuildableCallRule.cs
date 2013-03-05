@@ -22,30 +22,30 @@ namespace FakeItEasy.Configuration
         }
 
         /// <summary>
-        /// An action that is called by the Apply method to apply this
+        /// Gets or sets an action that is called by the Apply method to apply this
         /// rule to a fake object call.
         /// </summary>
         public virtual Action<IInterceptedFakeObjectCall> Applicator { get; set; }
 
         /// <summary>
-        /// A collection of actions that should be invoked when the configured
+        /// Gets a collection of actions that should be invoked when the configured
         /// call is made.
         /// </summary>
         public virtual ICollection<Action<IFakeObjectCall>> Actions { get; private set; }
 
         /// <summary>
-        /// Values to apply to output and reference variables.
+        /// Gets or sets values to apply to output and reference variables.
         /// </summary>
         public virtual ICollection<object> OutAndRefParametersValues { get; set; }
 
         /// <summary>
-        /// Gets or sets wether the base mehtod of the fake object call should be
+        /// Gets or sets a value indicating whether the base method of the fake object call should be
         /// called when the fake object call is made.
         /// </summary>
         public virtual bool CallBaseMethod { get; set; }
 
         /// <summary>
-        /// The number of times the configured rule should be used.
+        /// Gets or sets the number of times the configured rule should be used.
         /// </summary>
         public virtual int? NumberOfTimesToCall { get; set; }
 

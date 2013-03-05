@@ -1,16 +1,14 @@
-﻿using System;
-using FakeItEasy.Tests;
-
-namespace FakeItEasy
+﻿namespace FakeItEasy
 {
-    class SyntaxTests
+    using System;
+    using FakeItEasy.Tests;
+
+    internal class SyntaxTests
     {
         public void Test()
         {
             var foo = A.Fake<Foo>();
 
-            
-            
             Any.CallTo(foo).Throws(new ArgumentNullException());
 
             A.CallTo(() => foo.Bar())
@@ -26,18 +24,16 @@ namespace FakeItEasy
                 .Returns("test")
                 .Twice();
 
-            
             A.CallTo(() => foo.Baz())
                 .Throws(new ArgumentNullException("test"));
 
-            
             A.CallTo(() => foo.Bar())
                 .ReturnsLazily(x => "test");
 
-            //A.CallTo(() => foo).Baz()).RemoveCallConfigurations();
-            //A.CallTo(() => foo).RemoveFakeObjectConfigurations();
+            ////A.CallTo(() => foo).Baz()).RemoveCallConfigurations();
+            ////A.CallTo(() => foo).RemoveFakeObjectConfigurations();
 
-            //// Expectations
+            // Expectations
             A.CallTo(() => foo.Bar())
                 .Returns("test")
                 .Once();
@@ -50,23 +46,22 @@ namespace FakeItEasy
 
             A.CallTo(() => foo.Bar(A<string>._, A<int>.That.Matches(p => p > 10)))
                 .Returns("foo");
-            
 
             foo = A.Fake<Foo>();
-            //A.CallTo(() => foo).Event(x => x.SomethingHappened += null)
-            //foo.SomethingHappened += new EventHandler(foo_SomethingHappened);
-            //Fake.VerifySetExpectations(foo);
-            
-            //A.CallTo(() => foo).Event(x => x.SomethingHappened += null).Throws(new ArgumentNullException());
-            //A.CallTo(() => foo).Event(x => x.SomethingHappened += null).Raise(sender, EventArgs.Empty);
+            ////A.CallTo(() => foo).Event(x => x.SomethingHappened += null)
+            ////foo.SomethingHappened += new EventHandler(foo_SomethingHappened);
+            ////Fake.VerifySetExpectations(foo);
 
-            //var t = foo.SomethingHappened;
-            //foo.SomethingHappened += new EventManager<EventArgs>().Raise;
-            //var raiser = Raise.With(foo, EventArgs.Empty);
-            //foo.SomethingHappened += raiser.Now;
-            //var f = foo.SomethingHappened;
-            //foo.SomethingHappened += Raise.With(foo, EventArgs.Empty).Now;
-            //foo.SomethingHappened += Raise.With(EventArgs.Empty).Now;
+            ////A.CallTo(() => foo).Event(x => x.SomethingHappened += null).Throws(new ArgumentNullException());
+            ////A.CallTo(() => foo).Event(x => x.SomethingHappened += null).Raise(sender, EventArgs.Empty);
+
+            ////var t = foo.SomethingHappened;
+            ////foo.SomethingHappened += new EventManager<EventArgs>().Raise;
+            ////var raiser = Raise.With(foo, EventArgs.Empty);
+            ////foo.SomethingHappened += raiser.Now;
+            ////var f = foo.SomethingHappened;
+            ////foo.SomethingHappened += Raise.With(foo, EventArgs.Empty).Now;
+            ////foo.SomethingHappened += Raise.With(EventArgs.Empty).Now;
         }
     }
 }

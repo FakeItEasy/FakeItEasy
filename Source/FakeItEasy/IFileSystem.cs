@@ -16,7 +16,7 @@ namespace FakeItEasy
         Stream Open(string fileName, FileMode mode);
 
         /// <summary>
-        /// Gets a value indicating if the specified file exists.
+        /// Gets a value indicating whether the specified file exists.
         /// </summary>
         /// <param name="fileName">The path and name of the file to check.</param>
         /// <returns>True if the file exists.</returns>

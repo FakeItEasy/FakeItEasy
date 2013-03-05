@@ -11,7 +11,7 @@ namespace FakeItEasy.Creation
     public interface ITaggable
     {
         /// <summary>
-        /// Gets or sets the tag for the taggable object.
+        /// Gets or sets the tag.
         /// </summary>
         object Tag { get; set; }
     }

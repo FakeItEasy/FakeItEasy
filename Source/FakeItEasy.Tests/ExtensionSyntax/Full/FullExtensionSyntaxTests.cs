@@ -1,25 +1,17 @@
-﻿using System;
-using System.Linq.Expressions;
-using FakeItEasy.Configuration;
-using FakeItEasy.Core;
-using NUnit.Framework;
-using ES = FakeItEasy.ExtensionSyntax.Full;
-
-namespace FakeItEasy.Tests.ExtensionSyntax.Full
+﻿namespace FakeItEasy.Tests.ExtensionSyntax.Full
 {
+    using System;
+    using System.Linq.Expressions;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
+    using ES = FakeItEasy.ExtensionSyntax.Full;
+
     [TestFixture]
     public class FullExtensionSyntaxTests : ConfigurableServiceLocatorTestBase
     {
-        IStartConfigurationFactory fakeConfigurationFactory;
-        IStartConfiguration<IFoo> fakeConfiguration;
-
-        protected override void OnSetUp()
-        {
-            this.fakeConfiguration = A.Fake<IStartConfiguration<IFoo>>();
-            this.fakeConfigurationFactory = A.Fake<IStartConfigurationFactory>();
-            A.CallTo(() => this.fakeConfigurationFactory.CreateConfiguration<IFoo>(A<FakeManager>._))
-                .Returns(this.fakeConfiguration);       
-        }
+        private IStartConfigurationFactory fakeConfigurationFactory;
+        private IStartConfiguration<IFoo> fakeConfiguration;
 
         [Test]
         public void CallsTo_for_return_value_methods_should_be_null_guarded()
@@ -93,6 +85,14 @@ namespace FakeItEasy.Tests.ExtensionSyntax.Full
         {
             NullGuardedConstraint.Assert(() =>
                 ES.FullExtensionSyntax.AnyCall(A.Fake<IFoo>()));
+        }
+
+        protected override void OnSetUp()
+        {
+            this.fakeConfiguration = A.Fake<IStartConfiguration<IFoo>>();
+            this.fakeConfigurationFactory = A.Fake<IStartConfigurationFactory>();
+            A.CallTo(() => this.fakeConfigurationFactory.CreateConfiguration<IFoo>(A<FakeManager>._))
+                .Returns(this.fakeConfiguration);
         }
     }
 }

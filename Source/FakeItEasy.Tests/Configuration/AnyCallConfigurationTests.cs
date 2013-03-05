@@ -9,11 +9,17 @@ namespace FakeItEasy.Tests.Configuration
     [TestFixture]
     internal class AnyCallConfigurationTests : AutoInitializedFixture
     {
-        [Fake] IConfigurationFactory configurationFactory;
-        [Fake] FakeManager fakeObject;
-        [Fake] AnyCallCallRule callRule;
-        
-        [UnderTest] AnyCallConfiguration configuration;
+        [Fake]
+        private IConfigurationFactory configurationFactory;
+
+        [Fake]
+        private FakeManager fakeObject;
+
+        [Fake]
+        private AnyCallCallRule callRule;
+
+        [UnderTest]
+        private AnyCallConfiguration configuration;
 
         [Test]
         public void WithReturnType_should_return_configuration_from_factory()
@@ -32,7 +38,7 @@ namespace FakeItEasy.Tests.Configuration
         public void WithReturnType_should_set_the_type_to_the_configured_rule()
         {
             // Arrange
-            
+
             // Act
             this.configuration.WithReturnType<string>();
 
@@ -73,9 +79,9 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var factoryConfig = this.StubVoidConfig();
-            
+
             var exceptionFactory = A.Dummy<ExceptionFactory>();
-            
+
             // Act
             this.configuration.Throws(exceptionFactory);
 
@@ -239,10 +245,10 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             Func<ArgumentCollection, bool> predicate = x => true;
-            
+
             // Act
             this.configuration.WhenArgumentsMatch(predicate);
-            
+
             // Assert
             A.CallTo(() => this.callRule.UsePredicateToValidateArguments(predicate))
                 .MustHaveHappened();
@@ -252,9 +258,9 @@ namespace FakeItEasy.Tests.Configuration
         public void WhenArgumentsMatch_should_return_self()
         {
             // Arrange
-            
+
             // Act
-            
+
             // Assert
             Assert.That(this.configuration.WhenArgumentsMatch(x => true), Is.SameAs(this.configuration));
         }
@@ -273,7 +279,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = A.Fake<IAnyCallConfigurationWithReturnTypeSpecified<T>>();
 
             A.CallTo(() => this.configurationFactory.CreateConfiguration<T>(this.fakeObject, this.callRule)).Returns(result);
-            
+
             return result;
         }
     }

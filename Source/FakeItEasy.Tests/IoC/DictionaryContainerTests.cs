@@ -1,23 +1,18 @@
-﻿using FakeItEasy.IoC;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.IoC
+﻿namespace FakeItEasy.Tests.IoC
 {
+    using FakeItEasy.IoC;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DictionaryContainerTests
     {
-        private DictionaryContainer CreateContainer()
-        {
-            return new DictionaryContainer();
-        }
-
         [Test]
         public void Register_registers_resolver_to_resolve_each_time_resolve_is_called()
         {
             int calledNumberOfTimes = 0;
 
             var container = this.CreateContainer();
-            container.Register<IFoo>(x => 
+            container.Register<IFoo>(x =>
                 {
                     calledNumberOfTimes++;
                     return A.Fake<IFoo>();
@@ -45,6 +40,11 @@ namespace FakeItEasy.Tests.IoC
             container.Resolve<IFoo>();
 
             Assert.That(calledNumberOfTimes, Is.EqualTo(1));
+        }
+
+        private DictionaryContainer CreateContainer()
+        {
+            return new DictionaryContainer();
         }
     }
 }

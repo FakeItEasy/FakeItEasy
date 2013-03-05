@@ -7,7 +7,7 @@ namespace FakeItEasy
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Provides validation extension to the Argumentscope{T} class.
+    /// Provides validation extensions for <see cref="IArgumentConstraintManager"/>.
     /// </summary>
     public static class ArgumentConstraintExtensions
     {
@@ -118,7 +118,7 @@ namespace FakeItEasy
         public static T IsEqualTo<T>(this IArgumentConstraintManager<T> manager, T value)
         {
             return manager.Matches(
-                x => Equals(value, x),
+                x => object.Equals(value, x),
                 x => x.Write("equal to ").WriteArgumentValue(value));
         }
 

@@ -1,13 +1,12 @@
 namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.CastleDynamicProxy;
     using NUnit.Framework;
-    using System.Collections.Generic;
 
     [TestFixture]
     public class CastleDynamicProxyGeneratorTests
@@ -30,11 +29,16 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             typeof(ClassWithPrivateConstructor)
         };
 
+        public interface IInterfaceType
+        {
+            void Foo(int argument1, int argument2);
+        }
+
         [SetUp]
         public void SetUp()
         {
             this.interceptionValidator = A.Fake<CastleDynamicProxyInterceptionValidator>();
-            
+
             this.generator = new CastleDynamicProxyGenerator(this.interceptionValidator);
         }
 
@@ -68,10 +72,10 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         public void Should_return_proxy_that_is_of_the_specified_type(Type typeOfProxy)
         {
             // Arrange
-            
+
             // Act
             var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
-            
+
             // Assert
             Assert.That(result.GeneratedProxy, Is.InstanceOf(typeOfProxy));
         }
@@ -107,16 +111,16 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var result = this.generator.GenerateProxy(typeThatImplementsInterfaceType, Enumerable.Empty<Type>(), null);
             IWritableFakeObjectCall callMadeToProxy = null;
 
-            result.CallInterceptedEventRaiser.CallWasIntercepted += (sender, e) => 
+            result.CallInterceptedEventRaiser.CallWasIntercepted += (sender, e) =>
                 {
-                    callMadeToProxy = e.Call;    
+                    callMadeToProxy = e.Call;
                 };
-            
+
             var proxy = (IInterfaceType)result.GeneratedProxy;
 
             // Act
             proxy.Foo(1, 2);
-            
+
             // Assert
             Assert.That(callMadeToProxy, Is.Not.Null);
             Assert.That(callMadeToProxy.Arguments, Is.EquivalentTo(new object[] { 1, 2 }));
@@ -158,12 +162,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var result = this.generator.GenerateProxy(typeof(SealedType), A.Dummy<IEnumerable<Type>>(), A.Dummy<IEnumerable<object>>());
 
             // Assert
-            Assert.That(result.ReasonForFailure, Is.EqualTo("The type of proxy \"FakeItEasy.Tests.Creation.CastleDynamicProxy.CastleDynamicProxyGeneratorTests+SealedType\" is sealed.")); 
-        }
-
-        private sealed class SealedType
-        { 
-        
+            Assert.That(result.ReasonForFailure, Is.EqualTo("The type of proxy \"FakeItEasy.Tests.Creation.CastleDynamicProxy.CastleDynamicProxyGeneratorTests+SealedType\" is sealed."));
         }
 
         [Test]
@@ -291,27 +290,20 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         [Serializable]
         public class TypeWithArgumentsForConstructor
         {
-            public int Argument;
-
             public TypeWithArgumentsForConstructor(int argument)
             {
                 this.Argument = argument;
             }
-        }
-       
-        public interface IInterfaceType
-        {
-            void Foo(int argument1, int argument2);
+
+            public int Argument { get; set; }
         }
 
         [Serializable]
         public abstract class AbstractClass
             : IInterfaceType
         {
-
             public virtual void Foo(int argument1, int argument2)
             {
-                
             }
         }
 
@@ -321,12 +313,10 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         {
             protected ClassWithProtectedConstructor()
             {
-
             }
 
             public virtual void Foo(int argument1, int argument2)
             {
-                
             }
         }
 
@@ -336,12 +326,10 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         {
             internal ClassWithInternalConstructor()
             {
-
             }
 
             public virtual void Foo(int argument1, int argument2)
             {
-                
             }
         }
 
@@ -350,24 +338,14 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         {
             private ClassWithPrivateConstructor()
             {
-
-            }
-        }
-
-        [Serializable]
-        internal class InternalType
-            : IInterfaceType
-        {
-            public virtual void Foo(int argument1, int argument2)
-            {
-                
             }
         }
 
         [Serializable]
         public class TypeWithNoneOfTheObjectMethodsOverridden
-        { }
-        
+        {
+        }
+
         [Serializable]
         public class TypeWithAllOfTheObjectMethodsOverridden
         {
@@ -423,6 +401,19 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
                 get;
                 private set;
             }
+        }
+
+        [Serializable]
+        internal class InternalType
+            : IInterfaceType
+        {
+            public virtual void Foo(int argument1, int argument2)
+            {
+            }
+        }
+
+        private sealed class SealedType
+        {
         }
     }
 }

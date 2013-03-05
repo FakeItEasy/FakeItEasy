@@ -3,11 +3,11 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using FakeItEasy.Creation;
     using System.Runtime.CompilerServices;
+    using FakeItEasy.Creation;
 
     /// <summary>
-    /// Default implementation of the fake manager attacher.
+    /// Default implementation of <see cref="IFakeManagerAccessor"/>.
     /// </summary>
     internal class DefaultFakeManagerAccessor
         : IFakeManagerAccessor
@@ -20,7 +20,7 @@ namespace FakeItEasy.Core
         }
 
         /// <summary>
-        /// Attaches a fakemanager to the specified proxy, listening to
+        /// Attaches a <see cref="FakeManager"/> to the specified proxy, listening to
         /// the event raiser.
         /// </summary>
         /// <param name="typeOfFake">The type of the fake object proxy.</param>
@@ -39,7 +39,7 @@ namespace FakeItEasy.Core
         /// Gets the fake manager associated with the proxy.
         /// </summary>
         /// <param name="proxy">The proxy to get the manager from.</param>
-        /// <returns>A fake manager</returns>
+        /// <returns>A fake manager.</returns>
         public FakeManager GetFakeManager(object proxy)
         {
             Guard.AgainstNull(proxy, "proxy");
@@ -95,6 +95,7 @@ namespace FakeItEasy.Core
 
                     return result;
                 }
+
                 set
                 {
                     Tags.Add(this.taggedInstance, value);

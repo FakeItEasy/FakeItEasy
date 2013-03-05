@@ -5,11 +5,16 @@
 
     internal class BuilderForExpression : TestDataBuilder<Expression, BuilderForExpression>
     {
-        Expression builtExpression;
+        private Expression builtExpression;
 
         public BuilderForExpression()
         {
             this.builtExpression = Expression.Constant(null);
+        }
+
+        public static Expression GetBody<T>(Expression<Func<T>> expression)
+        {
+            return expression.Body;
         }
 
         public BuilderForExpression Constant(object value)
@@ -22,11 +27,6 @@
             return this.Do(x => x.builtExpression = callSpecification.Body);
         }
       
-        public static Expression GetBody<T>(Expression<Func<T>> expression)
-        {
-            return expression.Body;
-        }
-
         protected override Expression Build()
         {
             return this.builtExpression;

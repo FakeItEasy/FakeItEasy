@@ -1,8 +1,6 @@
 namespace FakeItEasy.Examples
 {
     using System.Globalization;
-    using FakeItEasy.Expressions;
-    using FakeItEasy.Core;
 
     public static class CustomArgumentValidators
     {

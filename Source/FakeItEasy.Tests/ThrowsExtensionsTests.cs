@@ -1,14 +1,31 @@
 ﻿namespace FakeItEasy.Tests
 {
     using System;
-
     using FakeItEasy.Configuration;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class ThrowsExtensionsTests
     {
+        public interface IInterface
+        {
+            void ActionOfOne(int i);
+
+            void ActionOfOne(string s);
+
+            void ActionOfTwo(int i, int j);
+
+            void ActionOfTwo(string s, string t);
+
+            void ActionOfThree(int i, int j, int k);
+
+            void ActionOfThree(string s, string t, string u);
+
+            void ActionOfFour(int i, int j, int k, int l);
+
+            void ActionOfFour(string s, string t, string u, string v);
+        }
+
         [Test]
         public void Throws_with_1_argument_should_throw_exception_and_provide_argument_for_consumption()
         {
@@ -375,23 +392,8 @@
 
         private static void AssertThatSignatureMismatchExceptionIsThrown(TestDelegate act, string fakeSignature, string throwsSignature)
         {
-            Assert.That(
-                act,
-                Throws.TypeOf<FakeConfigurationException>()
-                    .With.Message.EqualTo("The faked method has the signature " + fakeSignature + ", but throws was used with " + throwsSignature + "."));
-        }
-
-        public interface IInterface
-        {
-            void ActionOfOne(int i);
-            void ActionOfOne(string s);
-            void ActionOfTwo(int i, int j);
-            void ActionOfTwo(string s, string t);
-            void ActionOfThree(int i, int j, int k);
-            void ActionOfThree(string s, string t, string u);
-            void ActionOfFour(int i, int j, int k, int l);
-            void ActionOfFour(string s, string t, string u, string v);
+            var expectedMessage = "The faked method has the signature " + fakeSignature + ", but throws was used with " + throwsSignature + ".";
+            Assert.That(act, Throws.TypeOf<FakeConfigurationException>().With.Message.EqualTo(expectedMessage));
         }
     }
-
 }

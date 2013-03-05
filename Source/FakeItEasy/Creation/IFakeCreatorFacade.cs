@@ -4,7 +4,7 @@ namespace FakeItEasy.Creation
     using System.Collections.Generic;
 
     /// <summary>
-    /// A facade used by the public api for testability.
+    /// A facade used by the public API for testability.
     /// </summary>
     internal interface IFakeCreatorFacade
     {
@@ -24,7 +24,7 @@ namespace FakeItEasy.Creation
         /// <typeparam name="T">The type of dummy to create.</typeparam>
         /// <returns>The created dummy.</returns>
         /// <exception cref="FakeItEasy.Core.FakeCreationException">Was unable to generate the fake in the current configuration and
-        /// no dummy was registered in the container for the specifed type..</exception>
+        /// no dummy was registered in the container for the specified type..</exception>
         T CreateDummy<T>();
 
         /// <summary>

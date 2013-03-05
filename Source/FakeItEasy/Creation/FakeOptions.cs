@@ -1,11 +1,9 @@
-using System.Reflection.Emit;
-
 namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Core;
+    using System.Reflection.Emit;
     using FakeItEasy.SelfInitializedFakes;
 
     internal class FakeOptions

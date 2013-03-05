@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using FakeItEasy.Core;
-using NUnit.Framework;
-
-namespace FakeItEasy.Tests.Core
+﻿namespace FakeItEasy.Tests.Core
 {
+    using System;
+    using System.Collections;
+    using System.Linq;
+    using FakeItEasy.Core;
+    using NUnit.Framework;
+
     [TestFixture]
     public class FakeScopeTests
     {

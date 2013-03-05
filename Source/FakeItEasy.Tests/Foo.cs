@@ -1,9 +1,11 @@
-using System;
-
 namespace FakeItEasy.Tests
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+
     public class Foo
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Testing only.")]
         public IServiceProvider ServiceProvider;
 
         public Foo(IServiceProvider provider)
@@ -12,7 +14,12 @@ namespace FakeItEasy.Tests
         }
 
         public Foo()
-        { }
+        {
+        }
+
+        public virtual string VirtualProperty { get; set; }
+
+        internal virtual IFoo InternalVirtualFakeableProperty { get; set; }
 
         public virtual void Baz()
         {
@@ -27,18 +34,6 @@ namespace FakeItEasy.Tests
         public virtual string Bar(string baz, int lorem)
         {
             throw new NotImplementedException();
-        }
-
-        public virtual string VirtualProperty
-        {
-            get;
-            set;
-        }
-
-        internal virtual IFoo InternalVirtualFakeableProperty
-        {
-            get;
-            set;
         }
     }
 }

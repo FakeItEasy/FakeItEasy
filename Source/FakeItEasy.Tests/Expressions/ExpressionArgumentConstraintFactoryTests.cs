@@ -20,8 +20,8 @@
         public void SetUp()
         {
             this.trapper = A.Fake<IArgumentConstraintTrapper>();
-            
-            Fake.GetFakeManager(trapper).AddInterceptionListener(new InvokeTrapConstraintsAction());
+
+            Fake.GetFakeManager(this.trapper).AddInterceptionListener(new InvokeTrapConstraintsAction());
 
             this.factory = new ExpressionArgumentConstraintFactory(this.trapper);
         }
@@ -80,11 +80,11 @@
             // Arrange
             int invokedNumberOfTimes = 0;
             var invokation = FuncFromAction(() => invokedNumberOfTimes++);
-            
+
             var expression = BuilderForExpression.GetBody(() => invokation());
 
             this.StubTrapperToReturnNoConstraints();
-            
+
             // Act
             this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.Build(x => x.WithExpression(expression)));
 
@@ -92,7 +92,6 @@
             Assert.That(invokedNumberOfTimes, Is.EqualTo(1));
         }
 
-        
         [Test]
         public void Should_get_aggregate_constraint_when_multiple_items_are_passed_to_param_array()
         {
@@ -112,7 +111,7 @@
             // Assert
             Assert.That(result, Is.InstanceOf<AggregateArgumentConstraint>());
             var aggregate = result as AggregateArgumentConstraint;
-            
+
             Assert.That(aggregate.Constraints.First(), Is.SameAs(constraintForFirst.Single()));
             Assert.That(aggregate.Constraints.Skip(1).First(), Is.InstanceOf<EqualityArgumentConstraint>().And.Property("ExpectedValue").EqualTo("foo"));
             Assert.That(aggregate.Constraints.Skip(2).First(), Is.SameAs(constraintForThird.Single()));
@@ -123,7 +122,7 @@
         {
             // Arrange
             this.StubTrapperToReturnNoConstraints();
-            var someStrings = new[] {"foo", "bar"};
+            var someStrings = new[] { "foo", "bar" };
             var expression = this.FromExpression(() => this.MethodWithParamArray(someStrings));
 
             // Act
@@ -148,6 +147,15 @@
             Assert.That(result, Is.InstanceOf<EqualityArgumentConstraint>());
         }
 
+        private static Func<object> FuncFromAction(Action action)
+        {
+            return () =>
+            {
+                action();
+                return null;
+            };
+        }
+
         private void MethodWithParamArray(params string[] args)
         {
         }
@@ -161,15 +169,6 @@
         {
             A.CallTo(() => this.trapper.TrapConstraints(A<Action>._))
                 .Returns(Enumerable.Empty<IArgumentConstraint>());
-        }
-
-        private static Func<object> FuncFromAction(Action action)
-        {
-            return () =>
-            {
-                action();
-                return null;
-            };
         }
 
         private class InvokeTrapConstraintsAction : IInterceptionListener

@@ -6,6 +6,37 @@
     [TestFixture]
     public class InvokesExtensionsTests
     {
+        public interface IInterface
+        {
+            void Action();
+
+            void ActionOfOne(int i);
+
+            void ActionOfOne(string s);
+
+            void ActionOfTwo(int i, int j);
+
+            void ActionOfTwo(string s, string t);
+
+            void ActionOfThree(int i, int j, int k);
+
+            void ActionOfThree(string s, string t, string u);
+
+            void ActionOfFour(int i, int j, int k, int l);
+
+            void ActionOfFour(string s, string t, string u, string v);
+
+            int Request();
+
+            int RequestOfOne(int i);
+
+            int RequestOfTwo(int i, int j);
+
+            int RequestOfThree(int i, int j, int k);
+
+            int RequestOfFour(int i, int j, int k, int l);
+        }
+
         [Test]
         public void Invokes_should_support_omitting_arguments_when_they_are_not_used()
         {
@@ -474,28 +505,8 @@
 
         private static void AssertThatSignatureMismatchExceptionIsThrown(TestDelegate act, string fakeSignature, string invokesSignature)
         {
-            Assert.That(
-                act,
-                Throws.TypeOf<FakeConfigurationException>()
-                    .With.Message.EqualTo("The faked method has the signature " + fakeSignature + ", but invokes was used with " + invokesSignature + "."));
-        }
-
-        public interface IInterface
-        {
-            void Action();
-            void ActionOfOne(int i);
-            void ActionOfOne(string s);
-            void ActionOfTwo(int i, int j);
-            void ActionOfTwo(string s, string t);
-            void ActionOfThree(int i, int j, int k);
-            void ActionOfThree(string s, string t, string u);
-            void ActionOfFour(int i, int j, int k, int l);
-            void ActionOfFour(string s, string t, string u, string v);
-            int Request();
-            int RequestOfOne(int i);
-            int RequestOfTwo(int i, int j);
-            int RequestOfThree(int i, int j, int k);
-            int RequestOfFour(int i, int j, int k, int l);
+            var expectedMessage = "The faked method has the signature " + fakeSignature + ", but invokes was used with " + invokesSignature + ".";
+            Assert.That(act, Throws.TypeOf<FakeConfigurationException>().With.Message.EqualTo(expectedMessage));
         }
     }
 }

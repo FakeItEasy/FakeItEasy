@@ -2,16 +2,18 @@
 {
     using System;
     using System.Linq;
-    using FakeItEasy.Core;
-    using FakeItEasy.Creation;
-    using NUnit.Framework;
-    using FakeItEasy.Creation.DelegateProxies;
     using System.Reflection;
+    using FakeItEasy.Core;
+    using FakeItEasy.Creation.DelegateProxies;
+    using NUnit.Framework;
 
     [TestFixture]
     public class DelegateProxyGeneratorTests
     {
-        [UnderTest] DelegateProxyGenerator generator;
+        [UnderTest]
+        private DelegateProxyGenerator generator;
+
+        public delegate void DelegateWithOutValue(out string result);
 
         [SetUp]
         public void SetUp()
@@ -44,7 +46,7 @@
 
             // Act
             var result = this.generator.GenerateProxy(nonDelegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>());
-            
+
             // Assert
             Assert.That(result.ProxyWasSuccessfullyGenerated, Is.False);
             Assert.That(result.ReasonForFailure, Is.EqualTo("The delegate proxy generator can only create proxies for delegate types."));
@@ -84,7 +86,7 @@
             // Arrange
             int firstArgument = 0;
             string secondArgument = null;
-            
+
             var proxy = this.GenerateProxy<Action<int, string>>(x =>
                 {
                     firstArgument = x.Arguments.Get<int>(0);
@@ -215,11 +217,9 @@
             Assert.That(reason, Is.Null);
         }
 
-        public delegate void DelegateWithOutValue(out string result);
-
         private T GenerateProxy<T>(Action<IWritableFakeObjectCall> callInterceptor)
         {
-            var result = this.generator.GenerateProxy(typeof (T), Enumerable.Empty<Type>(), Enumerable.Empty<object>());
+            var result = this.generator.GenerateProxy(typeof(T), Enumerable.Empty<Type>(), Enumerable.Empty<object>());
 
             result.CallInterceptedEventRaiser.CallWasIntercepted += (_, e) => callInterceptor(e.Call);
 
