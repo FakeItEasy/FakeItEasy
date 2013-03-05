@@ -34,6 +34,19 @@
             Assert.That(weakHandleToStrong.IsAlive, Is.False);
         }
 
+        [Test]
+        public void Should_not_leak_memory_when_creating_delegate_fakes()
+        {
+            // Arrange
+            var fake = new WeakReference(A.Fake<Action>());
+
+            // Act
+            GC.Collect();
+
+            // Assert
+            Assert.That(fake.Target, Is.Null);
+        }
+
         public class TypeWithStrongReferenceThroughTable
         {
         }
