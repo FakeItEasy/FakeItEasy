@@ -7,7 +7,7 @@ namespace FakeItEasy
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Provides validation extensions for <see cref="IArgumentConstraintManager"/>.
+    /// Provides validation extensions for <see cref="IArgumentConstraintManager{T}"/>.
     /// </summary>
     public static class ArgumentConstraintExtensions
     {
