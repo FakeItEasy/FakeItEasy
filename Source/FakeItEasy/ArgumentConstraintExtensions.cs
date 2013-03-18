@@ -7,7 +7,7 @@ namespace FakeItEasy
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Provides validation extensions for <see cref="IArgumentConstraintManager"/>.
+    /// Provides validation extensions for <see cref="IArgumentConstraintManager{T}"/>.
     /// </summary>
     public static class ArgumentConstraintExtensions
     {
@@ -56,6 +56,17 @@ namespace FakeItEasy
         public static string StartsWith(this IArgumentConstraintManager<string> manager, string value)
         {
             return manager.NullCheckedMatches(x => x.StartsWith(value, StringComparison.Ordinal), x => x.Write("string that starts with ").WriteArgumentValue(value));
+        }
+
+        /// <summary>
+        /// Constrains the string so that it must end with the specified value.
+        /// </summary>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="value">The value the string should end with.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static string EndsWith(this IArgumentConstraintManager<string> manager, string value)
+        {
+            return manager.NullCheckedMatches(x => x.EndsWith(value, StringComparison.Ordinal), x => x.Write("string that ends with ").WriteArgumentValue(value));
         }
 
         /// <summary>
