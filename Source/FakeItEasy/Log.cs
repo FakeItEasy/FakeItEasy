@@ -5,11 +5,12 @@ namespace FakeItEasy
 
     internal static class Log
     {
-#if DEBUG
-        private const bool UseLogging = false;
-#else
-        private const bool UseLogging = false;
-#endif
+        static Log()
+        {
+            UseLogging = false;
+        }
+
+        private static bool UseLogging { get; set; }
 
         public static Logger GetLogger<T>()
         {
@@ -23,7 +24,7 @@ namespace FakeItEasy
             }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Can be instanticated at will.")]
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Can be instantiated at will.")]
         private class ConsoleLogger
             : Logger
         {
