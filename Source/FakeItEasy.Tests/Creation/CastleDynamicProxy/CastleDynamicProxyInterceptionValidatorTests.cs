@@ -9,6 +9,16 @@
     using FakeItEasy.Expressions;
     using NUnit.Framework;
 
+    public interface IAInterface
+    {
+        string Method();
+    }
+
+    public interface IBInterface
+    {
+        string Method();
+    }
+
     [TestFixture]
     public class CastleDynamicProxyInterceptionValidatorTests
     {
@@ -25,7 +35,8 @@
 
         private InterceptionTestCase[] interceptableMethods = new[]
         {
-            InterceptionTestCase.Create(() => new object().ToString())
+            InterceptionTestCase.Create(() => new object().ToString()),
+            InterceptionTestCase.Create(() => ((IBInterface)A.Fake<IAInterface>(builder => builder.Implements(typeof(IBInterface)))).Method())
         };
 
         [SetUp]

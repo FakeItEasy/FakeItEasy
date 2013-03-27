@@ -25,7 +25,11 @@
         {
             if (method.IsFinal)
             {
-                return "Sealed methods can not be intercepted.";
+                var explicitImplementation = method.Name.Contains('.');
+                if (!explicitImplementation)
+                {
+                    return "Sealed methods can not be intercepted.";
+                }
             }
 
             if (method.IsStatic)
