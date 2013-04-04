@@ -33,8 +33,14 @@
             this.interceptionValidator = interceptionValidator;
         }
 
-        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+        public ProxyGeneratorResult GenerateProxy(
+            Type typeOfProxy,
+            IEnumerable<Type> additionalInterfacesToImplement,
+            IEnumerable<object> argumentsForConstructor,
+            IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
         {
+            Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
+
             ProxyGenerationOptions.AdditionalAttributes.Clear();
             foreach (CustomAttributeBuilder builder in customAttributeBuilders)
             {
@@ -200,6 +206,8 @@
 
             public void Intercept(IInvocation invocation)
             {
+                Guard.AgainstNull(invocation, "invocation");
+
                 if (invocation.Method.Equals(TagGetMethod))
                 {
                     invocation.ReturnValue = this.tag;

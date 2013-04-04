@@ -7,10 +7,10 @@ namespace FakeItEasy.Configuration
     using FakeItEasy.Core;
 
     internal class RuleBuilder
-        : IVoidArgumentValidationConfiguration, 
-          IRepeatConfiguration, 
-          IAfterCallSpecifiedConfiguration, 
-          IAfterCallSpecifiedWithOutAndRefParametersConfiguration, 
+        : IVoidArgumentValidationConfiguration,
+          IRepeatConfiguration,
+          IAfterCallSpecifiedConfiguration,
+          IAfterCallSpecifiedWithOutAndRefParametersConfiguration,
           ICallCollectionAndCallMatcherAccessor
     {
         private readonly FakeAsserter.Factory asserterFactory;
@@ -46,7 +46,14 @@ namespace FakeItEasy.Configuration
 
         public void NumberOfTimes(int numberOfTimesToRepeat)
         {
-            Guard.IsInRange(numberOfTimesToRepeat, 1, int.MaxValue, "numberOfTimesToRepeat");
+            if (numberOfTimesToRepeat <= 0)
+            {
+#if SILVERLIGHT
+                throw new ArgumentOutOfRangeException("numberOfTimesToRepeat", "The number of times to repeat is not greater than zero.");
+#else
+                throw new ArgumentOutOfRangeException("numberOfTimesToRepeat", numberOfTimesToRepeat, "The number of times to repeat is not greater than zero.");
+#endif
+            }
 
             this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimesToRepeat;
         }
