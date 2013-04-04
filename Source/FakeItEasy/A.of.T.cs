@@ -1,5 +1,6 @@
 namespace FakeItEasy
 {
+    using System;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
 
@@ -27,6 +28,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "_", Justification = "Some trickery is allowed, isn't it?")]
         [SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "But it's kinda cool right?")]
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [CLSCompliant(false)]
         public static T _
         {
             get { return Ignored; }

@@ -92,8 +92,8 @@
             var foo = A.Fake<IFoo>();
 
             // Act
-            Any.CallTo(foo).WithReturnType<int>().Returns(10);
-            Any.CallTo(foo).WithReturnType<string>().Returns("foo");
+            A.CallTo(foo).WithReturnType<int>().Returns(10);
+            A.CallTo(foo).WithReturnType<string>().Returns("foo");
 
             // Assert
             Assert.That(foo.SomeProperty, Is.EqualTo(10));
@@ -105,7 +105,7 @@
         {
             // Arrange
             var container = A.Fake<IFakeObjectContainer>();
-            Any.CallTo(container).WithReturnType<bool>().Returns(false);
+            A.CallTo(container).WithReturnType<bool>().Returns(false);
 
             using (Fake.CreateScope(container))
             {

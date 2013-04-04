@@ -23,7 +23,9 @@
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "No field initialization.")]
         static CastleDynamicProxyGenerator()
         {
+#pragma warning disable 618
             AttributesToAvoidReplicating.Add(typeof(SecurityPermissionAttribute));
+#pragma warning restore 618
         }
 
         public CastleDynamicProxyGenerator(CastleDynamicProxyInterceptionValidator interceptionValidator)
