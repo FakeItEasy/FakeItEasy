@@ -1,7 +1,7 @@
 require 'albacore'
 require 'fileutils'
 
-version = IO.read("Source/Version.txt")
+version = IO.read("Source/Version.txt").split(/[\s]/, 2).first
 nunit_command = "Source/packages/NUnit.Runners.2.6.2/tools/nunit-console.exe"
 mspec_command = "Source/packages/Machine.Specifications.0.5.11/tools/mspec-clr4.exe"
 nuget_command = "Source/.nuget/NuGet.exe"
@@ -23,7 +23,7 @@ end
 
 desc "Update version number"
 assemblyinfo :version do |asm|
-  net_version = version.split("-").first
+  net_version = version.split(/[^\d.]/, 2).first
   
   # not using asm.version and asm.file_version due to StyleCop violations
   asm.custom_attributes = {
