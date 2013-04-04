@@ -49,6 +49,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>Bin\Debug\FakeItEasy.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -59,6 +60,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>Bin\Release\FakeItEasy.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
@@ -80,6 +82,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="A.of.T.cs" />
+    <Compile Include="ExceptionMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Raise.of.TEventArgs.cs" />
     <Compile Include="Fake.of.T.cs" />
     <Compile Include="Core\ApplicationDirectoryAssembliesTypeCatalogue.cs" />
@@ -465,11 +472,6 @@
     <Compile Include="IFakeConfigurator.cs" />
     <Compile Include="IDummyDefinition.cs" />
     <Compile Include="ArgumentConstraintExtensions.cs" />
-    <Compile Include="ExceptionMessages.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExceptionMessages.resx</DependentUpon>
-    </Compile>
     <Compile Include="MustBeImplementedException.cs" />
     <Compile Include="OutputWriter.cs" />
     <Compile Include="Repeated.cs" />
@@ -519,7 +521,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ExceptionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExceptionMessages1.Designer.cs</LastGenOutput>
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
