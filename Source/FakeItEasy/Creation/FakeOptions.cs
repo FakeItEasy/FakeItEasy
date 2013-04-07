@@ -30,6 +30,8 @@ namespace FakeItEasy.Creation
 
         public ICollection<Action<object>> OnFakeCreatedActions { get; set; }
 
-        public IEnumerable<CustomAttributeBuilder> AdditionalAttributes { get; set; } 
+        public IEnumerable<CustomAttributeBuilder> AdditionalAttributes { get; set; }
+
+        public bool CallsBaseMethod { get; set; }
     }
 }

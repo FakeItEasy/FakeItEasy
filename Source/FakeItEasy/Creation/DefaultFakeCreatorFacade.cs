@@ -138,6 +138,12 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
+            public IFakeOptionsBuilder<T> CallsBaseMethod()
+            {
+                this.Options.CallsBaseMethod = true;
+                return this;
+            }
+
             private static IEnumerable<object> GetConstructorArgumentsFromExpression(Expression<Func<T>> constructorCall)
             {
                 AssertThatExpressionRepresentConstructorCall(constructorCall);

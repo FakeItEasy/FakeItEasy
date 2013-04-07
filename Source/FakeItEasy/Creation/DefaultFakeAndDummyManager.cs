@@ -1,6 +1,7 @@
 namespace FakeItEasy.Creation
 {
     using System;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     /// <summary>
@@ -60,6 +61,11 @@ namespace FakeItEasy.Creation
 
         private void ApplyConfigurationFromOptions(object fake, FakeOptions options)
         {
+            if (options.CallsBaseMethod)
+            {
+                Fake.GetFakeManager(fake).AddRuleFirst(new AnyCallCallRule { CallBaseMethod = true });
+            }
+
             if (options.WrappedInstance != null)
             {
                 this.wrapperConfigurer.ConfigureFakeToWrap(fake, options.WrappedInstance, options.SelfInitializedFakeRecorder);

@@ -12,6 +12,7 @@ namespace FakeItEasy.Tests.Creation
         private IFakeAndDummyManager fakeAndDummyManager;
         private DefaultFakeCreatorFacade creator;
         private object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>>>(
+                x => x.CallsBaseMethod(),
                 x => x.Wrapping(A.Fake<Foo>()),
                 x => x.Implements(typeof(Foo)),
                 x => x.WithArgumentsForConstructor(() => new Foo()),
@@ -69,6 +70,18 @@ namespace FakeItEasy.Tests.Creation
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
                 this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => CreateFoo())));
+        }
+
+        [Test]
+        public void CreateFake_should_pass_call_base_method_option_to_fake_and_dummy_manager()
+        {
+            // Arrange
+
+            // Act
+            var fake = this.creator.CreateFake<IFoo>(x => x.CallsBaseMethod());
+
+            // Assert
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.CallsBaseMethod())).MustHaveHappened();
         }
 
         [Test]
