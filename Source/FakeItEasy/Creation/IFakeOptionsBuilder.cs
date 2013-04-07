@@ -15,6 +15,12 @@ namespace FakeItEasy.Creation
         : IHideObjectMembers
     {
         /// <summary>
+        /// When methods are called the calls will be delegated to the base method of the faked method.
+        /// </summary>
+        /// <returns>Options object.</returns>
+        IFakeOptionsBuilder<T> CallsBaseMethod();
+
+        /// <summary>
         /// Specifies arguments for the constructor of the faked class.
         /// </summary>
         /// <param name="argumentsForConstructor">The arguments to pass to the constructor of the faked class.</param>

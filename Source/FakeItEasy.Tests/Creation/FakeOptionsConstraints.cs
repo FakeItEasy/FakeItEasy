@@ -21,5 +21,10 @@ namespace FakeItEasy.Tests.Creation
         {
             return scope.Matches(x => object.ReferenceEquals(x.WrappedInstance, wrappedInstance), "Wraps {0}".FormatInvariant(wrappedInstance));
         }
+
+        internal static FakeOptions CallsBaseMethod(this IArgumentConstraintManager<FakeOptions> scope)
+        {
+            return scope.Matches(x => x.CallsBaseMethod, "CallsBaseMethod");
+        }
     }
 }
