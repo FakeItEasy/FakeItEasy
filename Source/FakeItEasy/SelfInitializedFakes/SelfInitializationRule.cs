@@ -52,6 +52,8 @@
         /// <param name="fakeObjectCall">The call to apply the interceptor to.</param>
         public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
+            Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
             if (this.recorder.IsRecording)
             {
                 this.wrappedRule.Apply(fakeObjectCall);

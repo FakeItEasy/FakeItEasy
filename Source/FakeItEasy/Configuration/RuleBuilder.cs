@@ -104,6 +104,8 @@ namespace FakeItEasy.Configuration
 
         public void MustHaveHappened(Repeated repeatConstraint)
         {
+            Guard.AgainstNull(repeatConstraint, "repeatConstraint");
+
             this.manager.RemoveRule(this.RuleBeingBuilt);
             var asserter = this.asserterFactory.Invoke(this.Calls.Cast<IFakeObjectCall>());
 

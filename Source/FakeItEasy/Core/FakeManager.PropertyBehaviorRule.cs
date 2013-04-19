@@ -47,6 +47,8 @@
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
+                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
                 if (this.IsPropertyGetter(fakeObjectCall))
                 {
                     fakeObjectCall.SetReturnValue(this.Value);

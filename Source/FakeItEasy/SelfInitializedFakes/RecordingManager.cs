@@ -25,6 +25,8 @@
         /// <param name="storage">The storage.</param>
         public RecordingManager(ICallStorage storage)
         {
+            Guard.AgainstNull(storage, "storage");
+
             this.storage = storage;
 
             var recordedCalls = storage.Load();
@@ -54,6 +56,8 @@
         /// <param name="fakeObjectCall">The call to apply to from recording.</param>
         public void ApplyNext(IInterceptedFakeObjectCall fakeObjectCall)
         {
+            Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
             this.AssertThatCallQueueIsNotEmpty();
 
             var callToApply = this.callQueue.Dequeue();
@@ -71,6 +75,8 @@
         /// <param name="fakeObjectCall">The call to record.</param>
         public virtual void RecordCall(ICompletedFakeObjectCall fakeObjectCall)
         {
+            Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
             var callData = new CallData(fakeObjectCall.Method, GetOutputArgumentsForCall(fakeObjectCall), fakeObjectCall.ReturnValue);
             this.recordedCalls.Add(new CallDataMetadata { HasBeenApplied = true, RecordedCall = callData });
         }

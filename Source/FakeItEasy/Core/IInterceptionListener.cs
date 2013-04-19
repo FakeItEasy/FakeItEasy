@@ -13,15 +13,15 @@
         /// Called when the interception begins but before any call rules
         /// has been applied.
         /// </summary>
-        /// <param name="call">The intercepted call.</param>
-        void OnBeforeCallIntercepted(IFakeObjectCall call);
+        /// <param name="interceptedCall">The intercepted call.</param>
+        void OnBeforeCallIntercepted(IFakeObjectCall interceptedCall);
 
         /// <summary>
         /// Called when the interception has been completed and rules has been
         /// applied.
         /// </summary>
-        /// <param name="call">The intercepted call.</param>
+        /// <param name="interceptedCall">The intercepted call.</param>
         /// <param name="ruleThatWasApplied">The rule that was applied to the call.</param>
-        void OnAfterCallIntercepted(ICompletedFakeObjectCall call, IFakeObjectCallRule ruleThatWasApplied);
+        void OnAfterCallIntercepted(ICompletedFakeObjectCall interceptedCall, IFakeObjectCallRule ruleThatWasApplied);
     }
 }

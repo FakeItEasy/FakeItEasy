@@ -16,7 +16,7 @@
             {
                 get { return null; }
             }
-            
+
             private static IFakeAndDummyManager FakeAndDummyManager
             {
                 get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
@@ -24,14 +24,18 @@
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
+                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
                 return PropertyBehaviorRule.IsPropertyGetter(fakeObjectCall.Method) && TypeIsFakable(fakeObjectCall.Method.ReturnType);
             }
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
+                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
                 var newRule = new CallRuleMetadata
                                   {
-                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeManager) { Value = CreateFake(fakeObjectCall.Method.ReturnType) }, 
+                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeManager) { Value = CreateFake(fakeObjectCall.Method.ReturnType) },
                                       CalledNumberOfTimes = 1
                                   };
 
