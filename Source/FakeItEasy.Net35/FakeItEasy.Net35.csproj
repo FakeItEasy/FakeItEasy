@@ -569,6 +569,9 @@
     <Compile Include="..\FakeItEasy\OutputWriter.cs">
       <Link>OutputWriter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
     </Compile>
@@ -626,6 +629,7 @@
     <Compile Include="..\VersionAssemblyInfo.cs">
       <Link>VersionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Properties\CustomAssemblyInfo.cs" />
     <Compile Include="Compatibility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -641,9 +645,7 @@
       <Link>ExceptionMessages.resx</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <Target Name="AfterBuild">
