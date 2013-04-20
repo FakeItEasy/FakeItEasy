@@ -25,6 +25,7 @@
         /// Registers the dependencies.
         /// </summary>
         /// <param name="container">The container to register the dependencies in.</param>
+        [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "Container configuration.")]
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
         public override void RegisterDependencies(DictionaryContainer container)

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -95,11 +96,16 @@
             return builder;
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "logger", Justification = "Used in Debug config.")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "message", Justification = "Used in Debug config.")]
         public static void Debug(this Logger logger, string message)
         {
             logger.Debug(() => message);
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "logger", Justification = "Used in Debug config.")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "messageFormat", Justification = "Used in Debug config.")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "args", Justification = "Used in Debug config.")]
         public static void Debug(this Logger logger, string messageFormat, params object[] args)
         {
             logger.Debug(() => messageFormat.FormatInvariant(args));
