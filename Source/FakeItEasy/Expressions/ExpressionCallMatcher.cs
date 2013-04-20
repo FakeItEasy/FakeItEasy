@@ -54,6 +54,8 @@
         /// <returns>True if the call is matched by the expression.</returns>
         public virtual bool Matches(IFakeObjectCall call)
         {
+            Guard.AgainstNull(call, "call");
+
             return this.InvokesSameMethodOnTarget(call.FakedObject.GetType(), call.Method, this.Method)
                 && this.ArgumentsMatches(call.Arguments);
         }

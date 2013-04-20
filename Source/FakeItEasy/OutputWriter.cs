@@ -15,6 +15,8 @@
         /// <returns>The writer.</returns>
         public static IOutputWriter WriteLine(this IOutputWriter writer)
         {
+            Guard.AgainstNull(writer, "writer");
+
             writer.Write(Environment.NewLine);
             return writer;
         }
@@ -28,6 +30,8 @@
         /// <returns>The writer.</returns>
         public static IOutputWriter Write(this IOutputWriter writer, string format, params object[] args)
         {
+            Guard.AgainstNull(writer, "writer");
+
             writer.Write(string.Format(CultureInfo.InvariantCulture, format, args));
             return writer;
         }
@@ -40,6 +44,9 @@
         /// <returns>The writer.</returns>
         public static IOutputWriter Write(this IOutputWriter writer, object value)
         {
+            Guard.AgainstNull(writer, "writer");
+            Guard.AgainstNull(value, "value");
+
             writer.Write(value.ToString());
             return writer;
         }

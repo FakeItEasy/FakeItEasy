@@ -14,6 +14,8 @@
         public virtual ProxyGeneratorResult GenerateProxy(
             Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
         {
+            Guard.AgainstNull(typeOfProxy, "typeOfProxy");
+
             if (!typeof(Delegate).IsAssignableFrom(typeOfProxy))
             {
                 return
@@ -43,6 +45,8 @@
 
         public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
         {
+            Guard.AgainstNull(method, "method");
+
             if (method.Name != "Invoke")
             {
                 failReason = "Only the Invoke method can be intercepted on delegates.";

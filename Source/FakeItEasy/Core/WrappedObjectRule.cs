@@ -50,6 +50,8 @@ namespace FakeItEasy.Core
         /// <param name="fakeObjectCall">The call to apply the interceptor to.</param>
         public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
+            Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
             var parameters = fakeObjectCall.Arguments.GetUnderlyingArgumentsArray();
             var valueFromWrappedInstance = fakeObjectCall.Method.Invoke(this.wrappedObject, parameters);
             fakeObjectCall.SetReturnValue(valueFromWrappedInstance);

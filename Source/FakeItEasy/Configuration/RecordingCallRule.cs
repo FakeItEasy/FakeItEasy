@@ -36,6 +36,8 @@ namespace FakeItEasy.Configuration
 
         public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
+            Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
             fakeObjectCall.DoNotRecordCall();
 
             this.recordedRule.ApplicableToMethod = fakeObjectCall.Method;

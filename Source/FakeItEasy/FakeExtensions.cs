@@ -53,6 +53,8 @@ namespace FakeItEasy
         /// <returns>A configuration object.</returns>
         public static TInterface WithAnyArguments<TInterface>(this IArgumentValidationConfiguration<TInterface> configuration)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.WhenArgumentsMatch(x => true);
         }
 
@@ -113,8 +115,9 @@ namespace FakeItEasy
         /// </param>
         public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
         {
-            var queue = new Queue<T>(values);
+            Guard.AgainstNull(configuration, "configuration");
 
+            var queue = new Queue<T>(values);
             configuration.ReturnsLazily(x => queue.Dequeue()).NumberOfTimes(queue.Count);
         }
 
@@ -163,6 +166,8 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, TReturnType> valueProducer)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.ReturnsLazily(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
@@ -186,6 +191,8 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, TReturnType> valueProducer)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.ReturnsLazily(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
@@ -210,6 +217,8 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2, T3>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, TReturnType> valueProducer)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.ReturnsLazily(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
@@ -235,6 +244,8 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2, T3, T4>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, T4, TReturnType> valueProducer)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.ReturnsLazily(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
@@ -340,6 +351,9 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for expressions.")]
         public static T Where<T>(this IWhereConfiguration<T> configuration, Expression<Func<IFakeObjectCall, bool>> predicate)
         {
+            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(predicate, "predicate");
+
             return configuration.Where(predicate.Compile(), x => x.Write(predicate.ToString()));
         }
 
@@ -352,6 +366,8 @@ namespace FakeItEasy
         /// <returns>The fake object.</returns>
         public static TFake Invokes<TFake>(this ICallbackConfiguration<TFake> configuration, Action actionToInvoke)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Invokes(call => actionToInvoke());
         }
 
@@ -366,6 +382,8 @@ namespace FakeItEasy
         /// <returns>The fake object.</returns>
         public static TFake Invokes<TFake, T1>(this ICallbackConfiguration<TFake> configuration, Action<T1> actionToInvoke)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Invokes(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
@@ -386,6 +404,8 @@ namespace FakeItEasy
         /// <returns>The fake object.</returns>
         public static TFake Invokes<TFake, T1, T2>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2> actionToInvoke)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Invokes(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
@@ -407,6 +427,8 @@ namespace FakeItEasy
         /// <returns>The fake object.</returns>
         public static TFake Invokes<TFake, T1, T2, T3>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2, T3> actionToInvoke)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Invokes(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
@@ -429,6 +451,8 @@ namespace FakeItEasy
         /// <returns>The fake object.</returns>
         public static TFake Invokes<TFake, T1, T2, T3, T4>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2, T3, T4> actionToInvoke)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Invokes(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
@@ -446,6 +470,8 @@ namespace FakeItEasy
         /// <returns>Configuration object.</returns>
         public static IAfterCallSpecifiedConfiguration Throws(this IExceptionThrowerConfiguration configuration, Exception exception)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Throws(_ => exception);
         }
 
@@ -458,6 +484,8 @@ namespace FakeItEasy
         /// <returns>Configuration object.</returns>
         public static IAfterCallSpecifiedConfiguration Throws(this IExceptionThrowerConfiguration configuration, Func<Exception> exceptionFactory)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Throws(_ => exceptionFactory());
         }
 
@@ -472,6 +500,8 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public static IAfterCallSpecifiedConfiguration Throws<T1>(this IExceptionThrowerConfiguration configuration, Func<T1, Exception> exceptionFactory)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Throws(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
@@ -492,6 +522,8 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public static IAfterCallSpecifiedConfiguration Throws<T1, T2>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, Exception> exceptionFactory)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Throws(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
@@ -513,6 +545,8 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public static IAfterCallSpecifiedConfiguration Throws<T1, T2, T3>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, T3, Exception> exceptionFactory)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Throws(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
@@ -535,6 +569,8 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public static IAfterCallSpecifiedConfiguration Throws<T1, T2, T3, T4>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Throws(call =>
                 {
                     AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
@@ -550,8 +586,11 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to use.</param>
         /// <typeparam name="T">The type of exception to throw.</typeparam>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "By design.")]
         public static IAfterCallSpecifiedConfiguration Throws<T>(this IExceptionThrowerConfiguration configuration) where T : Exception, new()
         {
+            Guard.AgainstNull(configuration, "configuration");
+
             return configuration.Throws(_ => new T());
         }
 

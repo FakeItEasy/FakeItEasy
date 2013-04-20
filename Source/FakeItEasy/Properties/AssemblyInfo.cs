@@ -19,3 +19,4 @@ using System.Runtime.InteropServices;
 [module: SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "FakeItEasy.Creation.CastleDynamicProxy", Justification = "Should not be mixed with other types.")]
 [module: SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Scope = "type", Target = "FakeItEasy.IFakeConfigurator", MessageId = "Configurator", Justification = "This is the correct spelling.")]
 [module: SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Scope = "type", Target = "FakeItEasy.Core.IFakeObjectConfigurator", MessageId = "Configurator", Justification = "This is the correct spelling.")]
+[assembly: SuppressMessage("Microsoft.Usage", "CA2243:AttributeStringLiteralsShouldParseCorrectly", Justification = "AssemblyInformationalVersion uses SemVer.")]

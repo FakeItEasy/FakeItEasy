@@ -33,6 +33,8 @@
 
         public bool MethodCanBeInterceptedOnInstance(System.Reflection.MethodInfo method, object callTarget, out string failReason)
         {
+            Guard.AgainstNull(callTarget, "callTarget");
+
             var generator = this.SelectProxyGenerator(callTarget.GetType());
 
             return generator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);

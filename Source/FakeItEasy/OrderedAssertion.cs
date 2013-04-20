@@ -37,6 +37,7 @@ namespace FakeItEasy
             return SetOrderedFactoryAsCurrentAndGetResetter(orderedFactory);
         }
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Factory method.")]
         private static IDisposable SetOrderedFactoryAsCurrentAndGetResetter(OrderedFakeAsserterFactory orderedFactory)
         {
             var resetter = new AsserterResetter { ResetTo = currentAsserterFactoryField };
@@ -49,7 +50,7 @@ namespace FakeItEasy
         private static OrderedFakeAsserterFactory CreateOrderedAsserterFactory(IEnumerable<ICompletedFakeObjectCall> calls)
         {
             return new OrderedFakeAsserterFactory(
-                x => new FakeAsserter(x, ServiceLocator.Current.Resolve<CallWriter>()), 
+                x => new FakeAsserter(x, ServiceLocator.Current.Resolve<CallWriter>()),
                 new OrderedFakeAsserter(calls.Cast<IFakeObjectCall>(), ServiceLocator.Current.Resolve<CallWriter>()));
         }
 
