@@ -18,7 +18,7 @@ namespace FakeItEasy
         /// <returns>A configuration object.</returns>
         /// <exception cref="ArgumentException">The specified object is not a faked object.</exception>
         /// <exception cref="ArgumentNullException">The fakedObject parameter was null.</exception>
-        [Obsolete]
+        [Obsolete("Use A.Fake<T>() and A.CallTo() instead.")]
         public static IStartConfiguration<TFake> Fake<TFake>(TFake fakedObject)
         {
             Guard.AgainstNull(fakedObject, "fakedObject");
