@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using FakeItEasy.Core;
@@ -156,7 +157,7 @@
             public override string ToString()
             {
                 return new StringBuilder()
-                    .AppendFormat("Applied: {0}", this.HasBeenApplied)
+                    .AppendFormat(CultureInfo.CurrentCulture, "Applied: {0}", this.HasBeenApplied)
                     .AppendLine()
                     .Append(this.RecordedCall.Method.Name)
                     .Append(" ")

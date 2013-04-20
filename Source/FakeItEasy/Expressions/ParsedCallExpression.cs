@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Expressions
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -30,6 +31,8 @@
             }
         }
 
+        // TODO (adamralph): remove suppression when SL is dropped or add an SL test which uses this
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Used by non-SL test projects.")]
         public IEnumerable<object> Arguments
         {
             get { return this.ArgumentsExpressions.Select(x => x.Value); }
