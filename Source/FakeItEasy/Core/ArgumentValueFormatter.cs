@@ -66,6 +66,9 @@ namespace FakeItEasy.Core
 
             public int Compare(IArgumentValueFormatter x, IArgumentValueFormatter y)
             {
+                Guard.AgainstNull(x, "x");
+                Guard.AgainstNull(y, "y");
+
                 var distanceOfX = this.GetDistanceFromKnownType(x.ForType);
                 var distanceOfY = this.GetDistanceFromKnownType(y.ForType);
 
@@ -113,6 +116,8 @@ namespace FakeItEasy.Core
         {
             protected override string GetStringValue(object argumentValue)
             {
+                Guard.AgainstNull(argumentValue, "argumentValue");
+
                 return argumentValue.ToString();
             }
         }
@@ -122,6 +127,8 @@ namespace FakeItEasy.Core
         {
             protected override string GetStringValue(string argumentValue)
             {
+                Guard.AgainstNull(argumentValue, "argumentValue");
+
                 if (argumentValue.Length == 0)
                 {
                     return "string.Empty";

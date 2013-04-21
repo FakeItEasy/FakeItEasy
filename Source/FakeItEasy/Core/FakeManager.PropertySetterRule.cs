@@ -18,11 +18,15 @@
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
+                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
                 return PropertyBehaviorRule.IsPropertySetter(fakeObjectCall.Method);
             }
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
+                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
                 var newRule = new CallRuleMetadata
                                   {
                                       CalledNumberOfTimes = 1, 

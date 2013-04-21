@@ -8,6 +8,9 @@
     {
         public bool Equals(IFakeObjectCall x, IFakeObjectCall y)
         {
+            Guard.AgainstNull(x, "x");
+            Guard.AgainstNull(y, "y");
+
             return x.Method.Equals(y.Method)
                 && x.FakedObject.Equals(y.FakedObject)
                     && x.Arguments.SequenceEqual(y.Arguments);
@@ -15,6 +18,8 @@
 
         public int GetHashCode(IFakeObjectCall obj)
         {
+            Guard.AgainstNull(obj, "obj");
+
             var result = obj.Method.GetHashCode()
                 ^ obj.FakedObject.GetHashCode();
 

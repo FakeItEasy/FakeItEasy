@@ -20,9 +20,11 @@
 
         public IOutputWriter Write(string value)
         {
-            foreach (var c in value)
+            Guard.AgainstNull(value, "value");
+
+            foreach (var character in value)
             {
-                this.writerState.Write(c);
+                this.writerState.Write(character);
             }
 
             return this;
@@ -55,6 +57,7 @@
             return this;
         }
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Not critical that dispose runs in all exception paths.")]
         public IDisposable Indent()
         {
             var unindenter = new Unindenter(this, this.currentIndent);
@@ -70,7 +73,7 @@
             }
         }
 
-        private class Unindenter
+        private sealed class Unindenter
             : IDisposable
         {
             private readonly DefaultOutputWriter writer;
@@ -82,7 +85,6 @@
                 this.previousIndentString = previousIndentString;
             }
 
-            [SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly", Justification = "This is not used to dispose any unmanaged resources.")]
             public void Dispose()
             {
                 this.writer.currentIndent = this.previousIndentString;

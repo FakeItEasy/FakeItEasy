@@ -24,8 +24,9 @@
 
         public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            var returnValue = ResolveReturnValue(fakeObjectCall);
+            Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
 
+            var returnValue = ResolveReturnValue(fakeObjectCall);
             fakeObjectCall.SetReturnValue(returnValue);
         }
 

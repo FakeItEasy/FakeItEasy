@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
@@ -16,6 +17,7 @@
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
     /// </summary>
+    [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
     internal class RootModule
         : Module
     {
@@ -23,6 +25,9 @@
         /// Registers the dependencies.
         /// </summary>
         /// <param name="container">The container to register the dependencies in.</param>
+        [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "Container configuration.")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
         public override void RegisterDependencies(DictionaryContainer container)
         {
             container.Register(c =>

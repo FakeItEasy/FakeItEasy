@@ -13,7 +13,7 @@ namespace FakeItEasy.Configuration
         : IFakeObjectCallRuleWithDescription
     {
         private List<Tuple<Func<IFakeObjectCall, bool>, Action<IOutputWriter>>> wherePredicates;
-        
+
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
@@ -57,6 +57,8 @@ namespace FakeItEasy.Configuration
 
         public virtual void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
+            Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+
             foreach (var action in this.Actions)
             {
                 action.Invoke(fakeObjectCall);
@@ -88,8 +90,10 @@ namespace FakeItEasy.Configuration
         /// <param name="writer">The writer to write the description to.</param>
         public void WriteDescriptionOfValidCall(IOutputWriter writer)
         {
+            Guard.AgainstNull(writer, "writer");
+
             writer.Write(this.DescriptionOfValidCall);
-            
+
             Func<string> wherePrefix = () =>
             {
                 wherePrefix = () => "and";

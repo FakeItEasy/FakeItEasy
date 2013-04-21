@@ -40,6 +40,8 @@
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
+        [SuppressMessage(
+            "Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFile", Justification = "No alternative exists.")]
         private static IEnumerable<Assembly> GetAllAssembliesInApplicationDirectory()
         {
             var applicationDirectory = Environment.CurrentDirectory;
