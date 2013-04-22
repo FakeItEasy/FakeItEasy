@@ -110,6 +110,9 @@ namespace FakeItEasy.IntegrationTests
       Types marked with * could not be resolved, register them in the current
       IFakeObjectContainer to enable these constructors.
 
+  If either the type or constructor is internal, try adding the following attribute to the assembly:
+    [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2"")]
+
 ";
                 Assert.That(thrown.Message, Is.EqualTo(expectedMessage));
             }
