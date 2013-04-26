@@ -552,12 +552,6 @@
     <Compile Include="..\FakeItEasy\IRepeatSpecification.cs">
       <Link>IRepeatSpecification.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Log.cs">
-      <Link>Log.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Logger.cs">
-      <Link>Logger.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\MustBeImplementedException.cs">
       <Link>MustBeImplementedException.cs</Link>
     </Compile>
