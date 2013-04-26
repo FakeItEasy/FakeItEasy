@@ -15,7 +15,6 @@
     internal class CastleDynamicProxyGenerator
         : IProxyGenerator
     {
-        private static readonly Logger Logger = Log.GetLogger<CastleDynamicProxyGenerator>();
         private static readonly ProxyGenerationOptions ProxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
         private readonly CastleDynamicProxyInterceptionValidator interceptionValidator;
@@ -100,9 +99,8 @@
                     generatedProxy: proxy,
                     callInterceptedEventRaiser: interceptor);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Logger.Debug("Failed to create proxy of type {0}, an exception was thrown:\r\n\r\n{1}\r\n\r\n.", typeOfProxy, ex.Message);
                 return GetResultForFailedProxyGeneration(typeOfProxy, argumentsForConstructor);
             }
         }
@@ -224,7 +222,6 @@
 
             private void RaiseCallWasIntercepted(IInvocation invocation)
             {
-                Logger.Debug("Call was intercepted: {0}.", invocation.Method);
                 var handler = this.CallWasIntercepted;
                 if (handler != null)
                 {

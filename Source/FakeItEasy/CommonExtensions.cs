@@ -96,14 +96,6 @@
             return builder;
         }
 
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "logger", Justification = "Used in Debug config.")]
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "messageFormat", Justification = "Used in Debug config.")]
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "args", Justification = "Used in Debug config.")]
-        public static void Debug(this Logger logger, string messageFormat, params object[] args)
-        {
-            logger.Debug(() => messageFormat.FormatInvariant(args));
-        }
-
         private class ZipEnumerable<TFirst, TSecond>
            : IEnumerable<Tuple<TFirst, TSecond>>
         {

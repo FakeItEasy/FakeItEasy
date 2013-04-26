@@ -10,7 +10,6 @@
     /// </summary>
     internal class TypeCatalogueInstanceProvider
     {
-        private static readonly Logger Logger = Log.GetLogger<TypeCatalogueInstanceProvider>();
         private readonly ITypeCatalogue catalogue;
 
         public TypeCatalogueInstanceProvider(ITypeCatalogue catalogue)
@@ -27,8 +26,6 @@
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Necessary in this case.")]
         public IEnumerable<T> InstantiateAllOfType<T>()
         {
-            Logger.Debug("Getting instances of type {0}.", typeof(T));
-
             var result = new List<T>();
 
             foreach (var type in this.catalogue.GetAvailableTypes().Where(x => typeof(T).IsAssignableFrom(x)))
@@ -39,7 +36,6 @@
                 }
                 catch
                 {
-                    Logger.Debug("Failed to create instance of type {0}.", type);
                 }
             }
 

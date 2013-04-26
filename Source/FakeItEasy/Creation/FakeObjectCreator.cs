@@ -8,7 +8,6 @@ namespace FakeItEasy.Creation
 
     internal class FakeObjectCreator
     {
-        private static readonly Logger Logger = Log.GetLogger<FakeObjectCreator>();
         private readonly IFakeObjectConfigurator configurer;
         private readonly IFakeManagerAccessor fakeManagerAttacher;
         private readonly IProxyGenerator proxyGenerator;
@@ -48,8 +47,6 @@ namespace FakeItEasy.Creation
 
         private static ResolvedConstructor[] ResolveConstructors(Type typeOfFake, IDummyValueCreationSession session)
         {
-            Logger.Debug("Resolving constructors for type {0}.", typeOfFake);
-
             return (from constructor in GetUsableConstructorsInOrder(typeOfFake)
                     let constructorAndArguments = ResolveConstructorArguments(constructor, session)
                     select constructorAndArguments).ToArray();
@@ -64,8 +61,6 @@ namespace FakeItEasy.Creation
 
         private static ResolvedConstructor ResolveConstructorArguments(ConstructorInfo constructor, IDummyValueCreationSession session)
         {
-            Logger.Debug("Beginning to resolve constructor with {0} arguments.", constructor.GetParameters().Length);
-
             var resolvedArguments = new List<ResolvedArgument>();
 
             foreach (var argument in constructor.GetParameters())
@@ -79,7 +74,6 @@ namespace FakeItEasy.Creation
                                                ArgumentType = argument.ParameterType
                                            };
 
-                Logger.Debug("Was able to resolve {0}: {1}.", argument.ParameterType, resolvedArgument.WasResolved);
                 resolvedArguments.Add(resolvedArgument);
             }
 
@@ -103,8 +97,6 @@ namespace FakeItEasy.Creation
 
             foreach (var constructor in constructors.Where(x => x.WasSuccessfullyResolved))
             {
-                Logger.Debug("Trying with constructor with {0} arguments.", constructor.Arguments.Length);
-
                 var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, constructor.Arguments.Select(x => x.ResolvedValue), fakeOptions.AdditionalAttributes);
 
                 if (result.ProxyWasSuccessfullyGenerated)
@@ -113,7 +105,6 @@ namespace FakeItEasy.Creation
                 }
                 else
                 {
-                    Logger.Debug("Setting reason for failure of constructor to {0}.", result.ReasonForFailure);
                     constructor.ReasonForFailure = result.ReasonForFailure;
                 }
             }
