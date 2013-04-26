@@ -11,8 +11,6 @@ namespace FakeItEasy.Tests.Creation
     [TestFixture]
     public class FakeObjectCreatorTests
     {
-        private static readonly Logger Logger = Log.GetLogger<FakeObjectCreatorTests>();
-
         private IProxyGenerator proxyGenerator;
         private FakeObjectCreator fakeObjectCreator;
         private IExceptionThrower thrower;
@@ -323,7 +321,6 @@ namespace FakeItEasy.Tests.Creation
                 {
                     if (x.Count() != constructors.Count())
                     {
-                        Logger.Debug("Unequal number of constructors.");
                         return false;
                     }
 
@@ -331,13 +328,11 @@ namespace FakeItEasy.Tests.Creation
                     {
                         if (!string.Equals(constructorPair.Item1.ReasonForFailure, constructorPair.Item2.ReasonForFailure))
                         {
-                            Logger.Debug("Not the same reason for failure.");
                             return false;
                         }
 
                         if (constructorPair.Item1.Arguments.Length != constructorPair.Item2.Arguments.Length)
                         {
-                            Logger.Debug("Unequal number of arguments.");
                             return false;
                         }
 
@@ -350,7 +345,6 @@ namespace FakeItEasy.Tests.Creation
 
                             if (!isEqual)
                             {
-                                Logger.Debug("Arguments differ.");
                                 return false;
                             }
                         }

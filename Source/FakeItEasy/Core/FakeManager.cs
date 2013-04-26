@@ -16,7 +16,6 @@ namespace FakeItEasy.Core
     [Serializable]
     public partial class FakeManager
     {
-        private static readonly Logger Logger = Log.GetLogger<FakeManager>();
         private readonly LinkedList<CallRuleMetadata> allUserRulesField;
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
@@ -164,7 +163,6 @@ namespace FakeItEasy.Core
 
         private static void ApplyRule(CallRuleMetadata rule, IInterceptedFakeObjectCall fakeObjectCall)
         {
-            Logger.Debug("Applying rule {0}.", rule.Rule.ToString());
             rule.CalledNumberOfTimes++;
             rule.Rule.Apply(fakeObjectCall);
         }

@@ -10,8 +10,6 @@ namespace FakeItEasy.IoC
     internal class DictionaryContainer
         : ServiceLocator
     {
-        private static readonly Logger Logger = Log.GetLogger<DictionaryContainer>();
-
         /// <summary>
         /// The dictionary that stores the registered services.
         /// </summary>
@@ -33,8 +31,6 @@ namespace FakeItEasy.IoC
         [DebuggerStepThrough]
         internal override object Resolve(Type componentType)
         {
-            Logger.Debug("Resolving {0}.", componentType);
-
             Func<DictionaryContainer, object> creator = null;
 
             if (!this.registeredServices.TryGetValue(componentType, out creator))
@@ -53,8 +49,6 @@ namespace FakeItEasy.IoC
         [DebuggerStepThrough]
         internal void Register<T>(Func<DictionaryContainer, T> resolver)
         {
-            Logger.Debug("Registering {0}.", typeof(T));
-
             this.registeredServices.Add(typeof(T), c => resolver.Invoke(c));
         }
 
@@ -66,8 +60,6 @@ namespace FakeItEasy.IoC
         [DebuggerStepThrough]
         internal void RegisterSingleton<T>(Func<DictionaryContainer, T> resolver)
         {
-            Logger.Debug("Registering {0} as singleton.", typeof(T));
-
             var singletonResolver = new SingletonResolver<T>(resolver);
 
             this.Register(singletonResolver.Resolve);
