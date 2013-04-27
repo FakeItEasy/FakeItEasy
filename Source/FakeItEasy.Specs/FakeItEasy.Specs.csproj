@@ -50,6 +50,7 @@
     </Compile>
     <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
     <Compile Include="ConfigurationSpecs.cs" />
+    <Compile Include="OrderedCallMatchingSpecs.cs" />
     <Compile Include="FakingInternalsSpecs.cs" />
     <Compile Include="EventRaisingSpecs.cs" />
     <Compile Include="FixtureInitializationSpecs.cs" />

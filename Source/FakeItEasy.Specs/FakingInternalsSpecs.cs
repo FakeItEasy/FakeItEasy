@@ -7,17 +7,7 @@
     {
         static Exception exception;
 
-        Because of = () =>
-        {
-            try
-            {
-                A.Fake<IInternal>();
-            }
-            catch (Exception ex)
-            {
-                exception = ex;
-            }
-        };
+        Because of = () => exception = Catch.Exception(() => A.Fake<IInternal>());
 
         It should_throw_an_exception_with_a_message_containing_a_hint_at_using_internals_visible_to_attribute =
             () =>
