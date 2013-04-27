@@ -5,67 +5,45 @@ namespace FakeItEasy.Core
     using System.Globalization;
     using System.IO;
 
-    internal class OrderedFakeAsserter
-        : IFakeAsserter
+    internal class OrderedFakeAsserter : IFakeAsserter
     {
-        private readonly List<AssertedCall> assertedCalls;
+        private readonly IEnumerable<IFakeObjectCall> originalCallList;
         private readonly CallWriter callWriter;
         private readonly Queue<IFakeObjectCall> calls;
-        private readonly IEnumerable<IFakeObjectCall> originalCallList;
+        private readonly List<AssertedCall> assertedCalls = new List<AssertedCall>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OrderedFakeAsserter"/> class.
-        /// </summary>
-        /// <param name="calls">The calls.</param>
-        /// <param name="callWriter">The call writer.</param>
         public OrderedFakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
         {
+            Guard.AgainstNull(calls, "calls");
+            Guard.AgainstNull(callWriter, "callWriter");
+
             this.originalCallList = calls;
             this.calls = new Queue<IFakeObjectCall>(calls);
             this.callWriter = callWriter;
-
-            this.assertedCalls = new List<AssertedCall>();
         }
 
-        /// <summary>
-        /// Asserts the was called.
-        /// </summary>
-        /// <param name="callPredicate">The call predicate.</param>
-        /// <param name="callDescription">The call description.</param>
-        /// <param name="repeatPredicate">The repeat predicate.</param>
-        /// <param name="repeatDescription">The repeat description.</param>
-        public virtual void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
+        public virtual void AssertWasCalled(
+            Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
         {
-            this.assertedCalls.Add(new AssertedCall
-                                       {
-                                           CallDescription = callDescription, 
-                                           RepeatDescription = repeatDescription
-                                       });
-
-            this.RemoveCallsToSatisfyRepeatPredicate(callPredicate, repeatPredicate);
-        }
-
-        private void RemoveCallsToSatisfyRepeatPredicate(Func<IFakeObjectCall, bool> callPredicate, Func<int, bool> repeatPredicate)
-        {
-            var numberOfCallsFound = 0;
-
-            while (!repeatPredicate(numberOfCallsFound))
+            this.assertedCalls.Add(new AssertedCall { CallDescription = callDescription, RepeatDescription = repeatDescription });
+            var matchedCallCount = 0;
+            while (!repeatPredicate(matchedCallCount))
             {
                 if (this.calls.Count == 0)
                 {
-                    this.ThrowExceptionWhenAssertionFailed();
+                    ThrowExceptionWhenAssertionFailed(this.assertedCalls, this.callWriter, this.originalCallList);
                 }
 
                 var currentCall = this.calls.Dequeue();
-
                 if (callPredicate(currentCall))
                 {
-                    numberOfCallsFound++;
+                    matchedCallCount++;
                 }
             }
         }
 
-        private void ThrowExceptionWhenAssertionFailed()
+        private static void ThrowExceptionWhenAssertionFailed(
+            List<AssertedCall> assertedCalls, CallWriter callWriter, IEnumerable<IFakeObjectCall> originalCallList)
         {
             var message = new StringBuilderOutputWriter();
 
@@ -79,7 +57,7 @@ namespace FakeItEasy.Core
 
                 using (message.Indent())
                 {
-                    foreach (var call in this.assertedCalls)
+                    foreach (var call in assertedCalls)
                     {
                         message.Write("'");
                         message.Write(call.CallDescription);
@@ -95,7 +73,7 @@ namespace FakeItEasy.Core
 
                 using (message.Indent())
                 {
-                    this.callWriter.WriteCalls(this.originalCallList, message);
+                    callWriter.WriteCalls(originalCallList, message);
                 }
             }
 
