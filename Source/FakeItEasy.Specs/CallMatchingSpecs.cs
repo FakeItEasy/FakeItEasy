@@ -29,60 +29,113 @@
         }
     }
 
-    public class when_failing_to_match_calls
+    public class when_failing_to_match_non_generic_calls
     {
-        private static ITypeWithGenericMethod fake;
+        private static IFoo fake;
         private static Exception exception;
 
-        Establish context = () => fake = A.Fake<ITypeWithGenericMethod>();
+        Establish context = () => fake = A.Fake<IFoo>();
 
         Because of = () =>
         {
-            fake.GenericMethod<int>(1);
-            fake.GenericMethod<bool>(true);
-            exception = Catch.Exception(() => A.CallTo(() => fake.GenericMethod<string>(A<string>.Ignored)).MustHaveHappened());
+            fake.Bar(1);
+            fake.Bar(2);
+            exception = Catch.Exception(() => A.CallTo(() => fake.Bar(3)).MustHaveHappened());
         };
 
-        It should_tell_us_that_the_call_was_not_matched =
-            () => exception.Message.ShouldEqual(
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
 @"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.when_failing_to_match_calls+ITypeWithGenericMethod.GenericMethod(<Ignored>)
+    FakeItEasy.Specs.when_failing_to_match_non_generic_calls+IFoo.Bar(3)
   Expected to find it at least once but found it #0 times among the calls:
-    1: FakeItEasy.Specs.when_failing_to_match_calls+ITypeWithGenericMethod.GenericMethod(t: 1)
-    2: FakeItEasy.Specs.when_failing_to_match_calls+ITypeWithGenericMethod.GenericMethod(t: True)
+    1: FakeItEasy.Specs.when_failing_to_match_non_generic_calls+IFoo.Bar(baz: 1)
+    2: FakeItEasy.Specs.when_failing_to_match_non_generic_calls+IFoo.Bar(baz: 2)
 
 ");
 
-        public interface ITypeWithGenericMethod
+        public interface IFoo
         {
-            void GenericMethod<T>(T t);
+            void Bar(int baz);
         }
     }
 
-    public class when_no_calls
+    public class when_failing_to_match_generic_calls
     {
-        private static ITypeWithGenericMethod fake;
+        private static IFoo fake;
         private static Exception exception;
 
-        Establish context = () => fake = A.Fake<ITypeWithGenericMethod>();
+        Establish context = () => fake = A.Fake<IFoo>();
 
-        Because of = () => exception = Catch.Exception(() => A.CallTo(() => fake.GenericMethod<string>(A<string>.Ignored)).MustHaveHappened());
+        Because of = () =>
+        {
+            fake.Bar<int>(1);
+            fake.Bar<bool>(true);
+            exception = Catch.Exception(() => A.CallTo(() => fake.Bar<string>(A<string>.Ignored)).MustHaveHappened());
+        };
 
-        It should_tell_us_that_the_call_was_not_matched =
-            () => exception.Message.ShouldEqual(
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
 @"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.when_no_calls+ITypeWithGenericMethod.GenericMethod(<Ignored>)
+    FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<System.String>(<Ignored>)
+  Expected to find it at least once but found it #0 times among the calls:
+    1: FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<System.Int32>(baz: 1)
+    2: FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<System.Boolean>(baz: True)
+
+");
+
+        public interface IFoo
+        {
+            void Bar<T>(T baz);
+        }
+    }
+
+    public class when_no_non_generic_calls
+    {
+        private static IFoo fake;
+        private static Exception exception;
+
+        Establish context = () => fake = A.Fake<IFoo>();
+
+        Because of = () => exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened());
+
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
+@"
+
+  Assertion failed for the following call:
+    FakeItEasy.Specs.when_no_non_generic_calls+IFoo.Bar(<Ignored>)
   Expected to find it at least once but no calls were made to the fake object.
 
 ");
 
-        public interface ITypeWithGenericMethod
+        public interface IFoo
         {
-            void GenericMethod<T>(T t);
+            void Bar(int baz);
+        }
+    }
+
+    public class when_no_generic_calls
+    {
+        private static IFoo fake;
+        private static Exception exception;
+
+        Establish context = () => fake = A.Fake<IFoo>();
+
+        Because of = () => exception = Catch.Exception(() => A.CallTo(() => fake.Bar<string>(A<string>.Ignored)).MustHaveHappened());
+
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
+@"
+
+  Assertion failed for the following call:
+    FakeItEasy.Specs.when_no_generic_calls+IFoo.Bar<System.String>(<Ignored>)
+  Expected to find it at least once but no calls were made to the fake object.
+
+");
+
+        public interface IFoo
+        {
+            void Bar<T>(T baz);
         }
     }
 }
