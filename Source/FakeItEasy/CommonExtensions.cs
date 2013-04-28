@@ -5,6 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
 
     /// <summary>
@@ -94,6 +95,17 @@
             }
 
             return builder;
+        }
+
+        public static string GetGenericArgumentsCSharp(this MethodBase method)
+        {
+            var genericArguments = method.GetGenericArguments();
+            if (genericArguments.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            return string.Concat("<", string.Join(",", genericArguments.Select(type => type.FullName).ToArray()), ">");
         }
 
         private class ZipEnumerable<TFirst, TSecond>

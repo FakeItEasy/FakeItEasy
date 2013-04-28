@@ -71,6 +71,8 @@
             result.Append(this.Method.DeclaringType.FullName);
             result.Append(".");
             result.Append(this.Method.Name);
+            result.Append(this.Method.GetGenericArgumentsCSharp());
+            
             this.AppendArgumentsListString(result);
 
             return result.ToString();
