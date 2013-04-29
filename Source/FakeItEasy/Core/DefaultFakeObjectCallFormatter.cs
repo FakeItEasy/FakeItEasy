@@ -86,6 +86,8 @@ namespace FakeItEasy.Core
             {
                 builder.Append(method.Name);
             }
+
+            builder.Append(method.GetGenericArgumentsCSharp());
         }
 
         private static bool IsPropertyGetterOrSetter(MethodInfo method)
@@ -129,7 +131,7 @@ namespace FakeItEasy.Core
                 (from argument in call.Method.GetParameters().Zip(call.Arguments)
                  select new ArgumentValueInfo
                             {
-                                ArgumentName = argument.Item1.Name, 
+                                ArgumentName = argument.Item1.Name,
                                 ArgumentValue = argument.Item2
                             }).ToArray();
         }

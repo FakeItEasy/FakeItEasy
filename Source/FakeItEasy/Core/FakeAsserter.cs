@@ -9,27 +9,45 @@ namespace FakeItEasy.Core
     internal class FakeAsserter : IFakeAsserter
     {
         private readonly CallWriter callWriter;
-        
+        private readonly IEnumerable<IFakeObjectCall> calls;
+
         public FakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
         {
-            this.Calls = calls;
+            Guard.AgainstNull(calls, "calls");
+            Guard.AgainstNull(callWriter, "callWriter");
+
+            this.calls = calls;
             this.callWriter = callWriter;
         }
 
         public delegate IFakeAsserter Factory(IEnumerable<IFakeObjectCall> calls);
 
-        protected IEnumerable<IFakeObjectCall> Calls { get; set; }
-
-        public virtual void AssertWasCalled(Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
+        public virtual void AssertWasCalled(
+            Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
         {
-            var repeat = this.Calls.Count(callPredicate);
-
-            if (!repeatPredicate(repeat))
+            var matchedCallCount = this.calls.Count(callPredicate);
+            if (!repeatPredicate(matchedCallCount))
             {
-                var message = this.CreateExceptionMessage(callDescription, repeatDescription, repeat);
-
+                var message = CreateExceptionMessage(this.calls, this.callWriter, callDescription, repeatDescription, matchedCallCount);
                 throw new ExpectationException(message);
             }
+        }
+
+        private static string CreateExceptionMessage(
+            IEnumerable<IFakeObjectCall> calls, CallWriter callWriter, string callDescription, string repeatDescription, int matchedCallCount)
+        {
+            var writer = new StringBuilderOutputWriter();
+            writer.WriteLine();
+
+            using (writer.Indent())
+            {
+                AppendCallDescription(callDescription, writer);
+                AppendExpectation(calls, repeatDescription, matchedCallCount, writer);
+                AppendCallList(calls, callWriter, writer);
+                writer.WriteLine();
+            }
+
+            return writer.Builder.ToString();
         }
 
         private static void AppendCallDescription(string callDescription, IOutputWriter writer)
@@ -45,29 +63,13 @@ namespace FakeItEasy.Core
             }
         }
 
-        private string CreateExceptionMessage(string callDescription, string repeatDescription, int repeat)
-        {
-            var outputWriter = new StringBuilderOutputWriter();
-            outputWriter.WriteLine();
-
-            using (outputWriter.Indent())
-            {
-                AppendCallDescription(callDescription, outputWriter);
-                this.AppendExpectation(repeatDescription, repeat, outputWriter);
-                this.AppendCallList(outputWriter);
-                outputWriter.WriteLine();
-            }
-
-            return outputWriter.Builder.ToString();
-        }
-
-        private void AppendExpectation(string repeatDescription, int repeat, IOutputWriter writer)
+        private static void AppendExpectation(IEnumerable<IFakeObjectCall> calls, string repeatDescription, int matchedCallCount, IOutputWriter writer)
         {
             writer.Write("Expected to find it {0} ", repeatDescription);
 
-            if (this.Calls.Any())
+            if (calls.Any())
             {
-                writer.Write("but found it #{0} times among the calls:", repeat);
+                writer.Write("but found it #{0} times among the calls:", matchedCallCount);
             }
             else
             {
@@ -77,11 +79,11 @@ namespace FakeItEasy.Core
             writer.WriteLine();
         }
 
-        private void AppendCallList(IOutputWriter writer)
+        private static void AppendCallList(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter, IOutputWriter writer)
         {
             using (writer.Indent())
             {
-                this.callWriter.WriteCalls(this.Calls, writer);
+                callWriter.WriteCalls(calls, writer);
             }
         }
     }
