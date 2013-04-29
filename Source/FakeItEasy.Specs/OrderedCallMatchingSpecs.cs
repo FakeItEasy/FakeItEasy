@@ -5,8 +5,8 @@
 
     public class when_failing_to_match_ordered_non_generic_calls
     {
-        private static IFoo fake;
-        private static Exception exception;
+        static IFoo fake;
+        static Exception exception;
 
         Establish context = () => fake = A.Fake<IFoo>();
 
@@ -40,11 +40,11 @@
             void Bar(int baz);
         }
     }
-    
+
     public class when_failing_to_match_ordered_generic_calls
     {
-        private static IFoo fake;
-        private static Exception exception;
+        static IFoo fake;
+        static Exception exception;
 
         Establish context = () => fake = A.Fake<IFoo>();
 

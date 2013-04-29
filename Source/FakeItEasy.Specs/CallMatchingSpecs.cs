@@ -31,8 +31,8 @@
 
     public class when_failing_to_match_non_generic_calls
     {
-        private static IFoo fake;
-        private static Exception exception;
+        static IFoo fake;
+        static Exception exception;
 
         Establish context = () => fake = A.Fake<IFoo>();
 
@@ -62,8 +62,8 @@
 
     public class when_failing_to_match_generic_calls
     {
-        private static IFoo fake;
-        private static Exception exception;
+        static IFoo fake;
+        static Exception exception;
 
         Establish context = () => fake = A.Fake<IFoo>();
 
@@ -93,8 +93,8 @@
 
     public class when_no_non_generic_calls
     {
-        private static IFoo fake;
-        private static Exception exception;
+        static IFoo fake;
+        static Exception exception;
 
         Establish context = () => fake = A.Fake<IFoo>();
 
@@ -117,8 +117,8 @@
 
     public class when_no_generic_calls
     {
-        private static IFoo fake;
-        private static Exception exception;
+        static IFoo fake;
+        static Exception exception;
 
         Establish context = () => fake = A.Fake<IFoo>();
 
