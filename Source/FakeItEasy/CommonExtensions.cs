@@ -105,7 +105,21 @@
                 return string.Empty;
             }
 
-            return string.Concat("<", string.Join(",", genericArguments.Select(type => type.FullName).ToArray()), ">");
+            return string.Concat("<", string.Join(", ", genericArguments.Select(type => type.FullNameCSharp()).ToArray()), ">");
+        }
+
+        public static string FullNameCSharp(this Type type)
+        {
+            Guard.AgainstNull(type, "type");
+
+            if (!type.IsGenericType)
+            {
+                return type.FullName;
+            }
+
+            var partName = type.FullName.Split('`')[0];
+            var genericArgNames = type.GetGenericArguments().Select(arg => arg.FullNameCSharp()).ToArray();
+            return string.Format(CultureInfo.InvariantCulture, "{0}<{1}>", partName, string.Join(", ", genericArgNames));
         }
 
         private class ZipEnumerable<TFirst, TSecond>

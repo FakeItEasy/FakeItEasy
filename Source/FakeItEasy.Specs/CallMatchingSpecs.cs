@@ -69,25 +69,29 @@
 
         Because of = () =>
         {
-            fake.Bar<int>(1);
-            fake.Bar<bool>(true);
-            exception = Catch.Exception(() => A.CallTo(() => fake.Bar<string>(A<string>.Ignored)).MustHaveHappened());
+            fake.Bar(1, 2D);
+            fake.Bar(new Generic<bool, long>(), 3);
+            exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened());
         };
 
         It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
 @"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<System.String>(<Ignored>)
+    FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<System.String, System.String>(<Ignored>, <Ignored>)
   Expected to find it at least once but found it #0 times among the calls:
-    1: FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<System.Int32>(baz: 1)
-    2: FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<System.Boolean>(baz: True)
+    1: FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<System.Int32, System.Double>(baz1: 1, baz2: 2)
+    2: FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<FakeItEasy.Specs.when_failing_to_match_generic_calls+Generic<System.Boolean, System.Int64>, System.Int32>(baz1: FakeItEasy.Specs.when_failing_to_match_generic_calls+Generic`2[System.Boolean,System.Int64], baz2: 3)
 
 ");
 
         public interface IFoo
         {
-            void Bar<T>(T baz);
+            void Bar<T1, T2>(T1 baz1, T2 baz2);
+        }
+
+        public class Generic<T1, T2>
+        {
         }
     }
 
@@ -122,13 +126,13 @@
 
         Establish context = () => fake = A.Fake<IFoo>();
 
-        Because of = () => exception = Catch.Exception(() => A.CallTo(() => fake.Bar<string>(A<string>.Ignored)).MustHaveHappened());
+        Because of = () => exception = Catch.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened());
 
         It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
 @"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.when_no_generic_calls+IFoo.Bar<System.String>(<Ignored>)
+    FakeItEasy.Specs.when_no_generic_calls+IFoo.Bar<FakeItEasy.Specs.when_no_generic_calls+Generic<System.String>>(<Ignored>)
   Expected to find it at least once but no calls were made to the fake object.
 
 ");
@@ -136,6 +140,10 @@
         public interface IFoo
         {
             void Bar<T>(T baz);
+        }
+
+        public class Generic<T>
+        {
         }
     }
 }

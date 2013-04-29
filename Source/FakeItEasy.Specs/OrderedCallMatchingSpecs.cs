@@ -52,12 +52,12 @@
         {
             using (var scope = Fake.CreateScope())
             {
-                fake.Bar<int>(1);
-                fake.Bar<bool>(true);
+                fake.Bar(1);
+                fake.Bar(new Generic<bool>());
                 using (scope.OrderedAssertions())
                 {
-                    A.CallTo(() => fake.Bar<bool>(A<bool>.Ignored)).MustHaveHappened();
-                    exception = Catch.Exception(() => A.CallTo(() => fake.Bar<int>(A<int>.Ignored)).MustHaveHappened());
+                    A.CallTo(() => fake.Bar(A<Generic<bool>>.Ignored)).MustHaveHappened();
+                    exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened());
                 }
             }
         };
@@ -66,16 +66,20 @@
 @"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.when_failing_to_match_ordered_generic_calls+IFoo.Bar<System.Boolean>(<Ignored>)' repeated at least once
+    'FakeItEasy.Specs.when_failing_to_match_ordered_generic_calls+IFoo.Bar<FakeItEasy.Specs.when_failing_to_match_ordered_generic_calls+Generic<System.Boolean>>(<Ignored>)' repeated at least once
     'FakeItEasy.Specs.when_failing_to_match_ordered_generic_calls+IFoo.Bar<System.Int32>(<Ignored>)' repeated at least once
   The calls where found but not in the correct order among the calls:
     1: FakeItEasy.Specs.when_failing_to_match_ordered_generic_calls+IFoo.Bar<System.Int32>(baz: 1)
-    2: FakeItEasy.Specs.when_failing_to_match_ordered_generic_calls+IFoo.Bar<System.Boolean>(baz: True)
+    2: FakeItEasy.Specs.when_failing_to_match_ordered_generic_calls+IFoo.Bar<FakeItEasy.Specs.when_failing_to_match_ordered_generic_calls+Generic<System.Boolean>>(baz: FakeItEasy.Specs.when_failing_to_match_ordered_generic_calls+Generic`1[System.Boolean])
 ");
 
         public interface IFoo
         {
             void Bar<T>(T baz);
+        }
+
+        public class Generic<T>
+        {
         }
     }
 }
