@@ -1,12 +1,14 @@
-#How to build#
+# How to build
 
-These instructions are *only* for building with Rake, which includes compilation, test execution and packaging. Once you have the prerequisites this is the simplest way to build.
+These instructions are *only* for building with Rake, which includes compilation, test execution and packaging. This is the simplest way to build.
 
-You can also build the solution using Visual Studio 2010 or later.
+You can also build the solution using Visual Studio 2012 or later.
 
-At the time of writing the build is only confirmed to work on Windows.
+*Don't be put off by the prerequisites!* It only takes a few minutes to set them up and only needs to be done once. If you haven't used [Rake](http://rake.rubyforge.org/ "RAKE -- Ruby Make") before then you're in for a real treat!
 
-## Prerequisites ##
+At the time of writing the build is only confirmed to work on Windows using the Microsoft .NET framework.
+
+## Prerequisites
 
 1. Ensure you have .NET framework 3.5 and 4.0/4.5 installed.
 
@@ -19,11 +21,15 @@ At the time of writing the build is only confirmed to work on Windows.
 
     `gem update --system`
 
-1. Install/update the Albacore gem (0.3.4 or later is required):
+1. Install/update Rake (already included in Ruby 1.9 or later):
+
+    `gem install rake`
+
+1. Install/update Albacore (0.3.4 or later is required):
 
     `gem install albacore`
 
-## Building ##
+## Building
 
 Using a command prompt, navigate to your clone root folder and execute:
 
@@ -31,7 +37,7 @@ Using a command prompt, navigate to your clone root folder and execute:
 
 This executes the default build tasks. After the build has completed, the build artifacts will be located in `Build`.
 
-##Extras##
+## Extras
 
 * View the full list of build tasks:
 
@@ -39,8 +45,12 @@ This executes the default build tasks. After the build has completed, the build 
 
 * Run a specific task:
 
-    `rake build`
+    `rake spec`
 
 * Run multiple tasks:
 
-    `rake build nugetpack`
+    `rake spec pack`
+
+* View the full list of rake options:
+
+    `rake -h`
