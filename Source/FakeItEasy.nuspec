@@ -10,9 +10,10 @@
     <authors>Patrik Hägne</authors>
     <owners>Patrik Hägne</owners>
     <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
-    <releaseNotes>TBD</releaseNotes>
+    <releaseNotes>Enhancment: Add generic type arguments to method signatures in exception messages - https://github.com/FakeItEasy/FakeItEasy/issues/100/
+Enhancement: Better error message when faking internals without the InternalsVisibleTo() attribute - https://github.com/FakeItEasy/FakeItEasy/issues/98/</releaseNotes>
     <language>en-US</language>
-    <tags>TDD unittesting mocking faking stubbing spy spies doubles</tags>
+    <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
   </metadata>
   <files>
     <file src="FakeItEasy.Net35\Bin\Release\FakeItEasy.dll" target="lib\net35" />
