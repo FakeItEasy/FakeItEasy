@@ -153,7 +153,7 @@ namespace FakeItEasy
 
             return manager.Matches(
                 x => object.ReferenceEquals(value, x),
-                x => x.Write("equal to ").WriteArgumentValue(value));
+                x => x.Write("same as ").WriteArgumentValue(value));
         }
 
         /// <summary>
