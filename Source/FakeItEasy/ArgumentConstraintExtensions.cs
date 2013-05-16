@@ -139,6 +139,22 @@ namespace FakeItEasy
                 x => object.Equals(value, x),
                 x => x.Write("equal to ").WriteArgumentValue(value));
         }
+        
+        /// <summary>
+        /// Tests that the passed in argument is the same instance (reference) as the specified value.
+        /// </summary>
+        /// <typeparam name="T">The type of the argument.</typeparam>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="value">The reference to compare to.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static T IsSameAs<T>(this IArgumentConstraintManager<T> manager, T value)
+        {
+            Guard.AgainstNull(manager, "manager");
+
+            return manager.Matches(
+                x => object.ReferenceEquals(value, x),
+                x => x.Write("same as ").WriteArgumentValue(value));
+        }
 
         /// <summary>
         /// Constrains the argument to be of the specified type.
