@@ -141,11 +141,11 @@ namespace FakeItEasy
         }
         
         /// <summary>
-        /// Tests that the passed in argument is referentially equal to the specified value.
+        /// Tests that the passed in argument is the same instance (reference) as the specified value.
         /// </summary>
         /// <typeparam name="T">The type of the argument.</typeparam>
         /// <param name="manager">The constraint manager to match the constraint.</param>
-        /// <param name="value">The value to compare to.</param>
+        /// <param name="value">The reference to compare to.</param>
         /// <returns>A dummy argument value.</returns>
         public static T IsSameAs<T>(this IArgumentConstraintManager<T> manager, T value)
         {

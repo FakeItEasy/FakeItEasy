@@ -7,34 +7,40 @@ namespace FakeItEasy.Tests.ArgumentValidationExtensions
     internal class SameAsConstraintTests
         : ArgumentConstraintTestBase<object>
     {
+        private static readonly SomeRefType TheRealThing = new SomeRefType { Value = "Foo" };
+
         protected override IEnumerable<object> InvalidValues
         {
-            get 
+            get
             {
-                yield return new Foo { Bar = "1" };
-                yield return new Foo { Bar = "2" };
+                yield return new SomeRefType { Value = "Foo" };
+                yield return new SomeRefType { Value = "Bar" };
             }
-        }
-        
-        class Foo
-        {
-            public string Bar { get; set; }
         }
 
         protected override IEnumerable<object> ValidValues
         {
-            get { yield return new Foo { Bar = "1" } };
+            get { yield return TheRealThing; }
         }
 
         protected override string ExpectedDescription
         {
-            get { return "same as Foo with Bar of 1"; }
+            get { return "same as Foo"; }
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
         {
-            // huh?
-            scope.IsEqualTo(10);
+            scope.IsSameAs(TheRealThing);
+        }
+
+        private class SomeRefType
+        {
+            public string Value { get; set; }
+
+            public override string ToString()
+            {
+                return this.Value;
+            }
         }
     }
 }
