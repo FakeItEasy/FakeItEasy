@@ -28,6 +28,10 @@ When writing unit tests, use the 3A's pattern (Arrange, Act, Assert) with commen
 
 Pull requests containing tabs will not be accepted. Make sure you set your editor to replace tabs with spaces. Indents for all file types should be 4 characters wide with the exception of Ruby (rakefile.rb) which should have indents 2 characters wide.
 
+## Line Endings
+
+The repository is configured to preserve line endings both on checkout and commit (the equivalent of `autocrlf` set to `false`). This means *you* are responsible for line endings. We recommend that you configure your diff viewer so that it does not ignore line endings. Any [wall of pink](http://www.hanselman.com/blog/YoureJustAnotherCarriageReturnLineFeedInTheWall.aspx) pull requests will not be accepted.
+
 ## Line Width
 
 Try to keep lines of code no longer than 160 characters wide. This isn't a strict rule. Occasionally a line of code can be more readable if allowed to spill over slightly. A good way to remember this rule is to use the 'Column Guides' feature of the [Productivity Power Tools 2012](http://visualstudiogallery.msdn.microsoft.com/3a96a4dc-ba9c-4589-92c5-640e07332afd) extension for Visual Studio.
@@ -47,7 +51,6 @@ Please do not add Resharper suppressions to code using comments. You may tweak y
 ## Making Changes
 
 1. [Fork](http://help.github.com/forking/) the  [FakeItEasy repository](https://github.com/FakeItEasy/FakeItEasy/) on GitHub
-1. Ensure `autoclrf` is set to `true` (`git config --local core.autocrlf true`)
 1. Clone your fork locally
 1. Configure the upstream repo (`git remote add upstream git://github.com/FakeItEasy/FakeItEasy.git`)
 1. Create a local branch (`git checkout -b myBranch`)
