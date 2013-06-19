@@ -7,12 +7,11 @@
     using System.Reflection;
     using FakeItEasy.Core;
 
-    internal class DummyValueCreationSession
-        : IDummyValueCreationSession
+    internal class DummyValueCreationSession : IDummyValueCreationSession
     {
-        private readonly ResolveStrategy[] availableStrategies;
-        private readonly HashSet<Type> isInProcessOfResolving;
-        private readonly Dictionary<Type, ResolveStrategy> strategyToUseForType;
+        private readonly ResolveStrategy[] strategies;
+        private readonly HashSet<Type> typesCurrentlyBeingResolved;
+        private readonly Dictionary<Type, ResolveStrategy> strategyCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DummyValueCreationSession"/> class.
@@ -21,23 +20,22 @@
         /// <param name="fakeObjectCreator">The fake object creator.</param>
         public DummyValueCreationSession(IFakeObjectContainer container, IFakeObjectCreator fakeObjectCreator)
         {
-            this.isInProcessOfResolving = new HashSet<Type>();
-            this.strategyToUseForType = new Dictionary<Type, ResolveStrategy>();
-
-            this.availableStrategies = new ResolveStrategy[]
-                                           {
-                                               new ResolveFromContainerSrategy { Container = container }, 
-                                               new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this }, 
-                                               new ResolveByActivatingValueTypeStrategy(), 
-                                               new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy { Session = this }
-                                           };
+            this.typesCurrentlyBeingResolved = new HashSet<Type>();
+            this.strategyCache = new Dictionary<Type, ResolveStrategy>();
+            this.strategies = new ResolveStrategy[]
+                {
+                    new ResolveFromContainerSrategy { Container = container }, 
+                    new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this }, 
+                    new ResolveByActivatingValueTypeStrategy(), 
+                    new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy { Session = this }
+                };
         }
 
         public bool TryResolveDummyValue(Type typeOfDummy, out object result)
         {
+            result = default(object);
             if (!this.EnsureThatResolvedTypeIsNotRecursive(typeOfDummy))
             {
-                result = null;
                 return false;
             }
 
@@ -47,66 +45,65 @@
                 return true;
             }
 
-            result = null;
             return false;
         }
 
         private bool EnsureThatResolvedTypeIsNotRecursive(Type typeOfDummy)
         {
-            if (this.isInProcessOfResolving.Contains(typeOfDummy))
+            if (this.typesCurrentlyBeingResolved.Contains(typeOfDummy))
             {
                 return false;
             }
 
-            this.isInProcessOfResolving.Add(typeOfDummy);
+            this.typesCurrentlyBeingResolved.Add(typeOfDummy);
             return true;
         }
 
         private void OnSuccessfulResolve(Type typeOfDummy)
         {
-            this.isInProcessOfResolving.Remove(typeOfDummy);
+            this.typesCurrentlyBeingResolved.Remove(typeOfDummy);
         }
 
         private bool TryResolveDummyValueWithAllAvailableStrategies(Type typeOfDummy, out object result)
         {
+            result = default(object);
+
             ResolveStrategy cachedStrategy;
-            if (this.strategyToUseForType.TryGetValue(typeOfDummy, out cachedStrategy))
+            if (this.strategyCache.TryGetValue(typeOfDummy, out cachedStrategy))
             {
                 return cachedStrategy.TryCreateDummyValue(typeOfDummy, out result);
             }
 
-            for (var i = 0; i < this.availableStrategies.Length; i++)
+            foreach (var strategy in this.strategies)
             {
-                if (this.availableStrategies[i].TryCreateDummyValue(typeOfDummy, out result))
+                if (strategy.TryCreateDummyValue(typeOfDummy, out result))
                 {
-                    this.strategyToUseForType.Add(typeOfDummy, this.availableStrategies[i]);
+                    this.strategyCache.Add(typeOfDummy, strategy);
                     return true;
                 }
             }
 
-            this.strategyToUseForType.Add(typeOfDummy, new UnableToResolveStrategy());
-            result = null;
+            this.strategyCache.Add(typeOfDummy, new UnableToResolveStrategy());
             return false;
         }
 
-        private class ResolveByActivatingValueTypeStrategy
-            : ResolveStrategy
+        private class ResolveByActivatingValueTypeStrategy : ResolveStrategy
         {
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
+                result = default(object);
+
                 if (typeOfDummy.IsValueType && !typeOfDummy.Equals(typeof(void)))
                 {
                     result = Activator.CreateInstance(typeOfDummy);
                     return true;
                 }
 
-                result = null;
                 return false;
             }
         }
 
-        private class ResolveByCreatingFakeStrategy
-            : ResolveStrategy
+        private class ResolveByCreatingFakeStrategy : ResolveStrategy
         {
             public IFakeObjectCreator FakeCreator { get; set; }
 
@@ -118,24 +115,23 @@
             }
         }
 
-        private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy
-            : ResolveStrategy
+        private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy : ResolveStrategy
         {
             public DummyValueCreationSession Session { get; set; }
 
             [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try method.")]
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
+                result = default(object);
                 if (typeof(Delegate).IsAssignableFrom(typeOfDummy))
                 {
-                    result = null;
                     return false;
                 }
 
                 foreach (var constructor in GetConstructorsInOrder(typeOfDummy))
                 {
-                    var argumentTypes = constructor.GetParameters().Select(x => x.ParameterType);
-                    var resolvedArguments = this.ResolveAllTypes(argumentTypes);
+                    var parameterTypes = constructor.GetParameters().Select(x => x.ParameterType);
+                    var resolvedArguments = this.ResolveAllTypes(parameterTypes);
 
                     if (resolvedArguments != null)
                     {
@@ -150,7 +146,6 @@
                     }
                 }
 
-                result = null;
                 return false;
             }
 
@@ -179,8 +174,7 @@
             }
         }
 
-        private class ResolveFromContainerSrategy
-            : ResolveStrategy
+        private class ResolveFromContainerSrategy : ResolveStrategy
         {
             public IFakeObjectContainer Container { get; set; }
 
@@ -195,12 +189,11 @@
             public abstract bool TryCreateDummyValue(Type typeOfDummy, out object result);
         }
 
-        private class UnableToResolveStrategy
-            : ResolveStrategy
+        private class UnableToResolveStrategy : ResolveStrategy
         {
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
-                result = null;
+                result = default(object);
                 return false;
             }
         }
