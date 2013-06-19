@@ -103,7 +103,6 @@
         private static bool ReferencesFakeItEasy(Assembly inspectedAssembly)
         {
             return inspectedAssembly.GetReferencedAssemblies().Any(r => r.FullName == fakeItEasyAssembly.FullName);
-            ////return inspectedAssembly.GetReferencedAssemblies().Any(r => r.Equals(fakeItEasyAssembly));
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
