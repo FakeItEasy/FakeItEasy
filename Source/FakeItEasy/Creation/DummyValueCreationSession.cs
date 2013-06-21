@@ -4,11 +4,20 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+#if NET40
+    using System.Linq.Expressions;
+#endif
     using System.Reflection;
+#if NET40
+    using System.Threading.Tasks;
+#endif
     using FakeItEasy.Core;
 
     internal class DummyValueCreationSession : IDummyValueCreationSession
     {
+#if NET40
+        private static readonly MethodInfo GenericFromResultMethodDefinition = CreateGenericFromResultMethodDefinition();
+#endif
         private readonly ResolveStrategy[] strategies;
         private readonly HashSet<Type> typesCurrentlyBeingResolved;
         private readonly Dictionary<Type, ResolveStrategy> strategyCache;
@@ -39,7 +48,11 @@
                 return false;
             }
 
+#if NET40
+            if (this.TryResolveDummyValueWithAllAvailableStrategiesAndTaskWrapper(typeOfDummy, out result))
+#else
             if (this.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy, out result))
+#endif
             {
                 this.OnSuccessfulResolve(typeOfDummy);
                 return true;
@@ -47,6 +60,22 @@
 
             return false;
         }
+
+#if NET40
+        private static MethodInfo CreateGenericFromResultMethodDefinition()
+        {
+            Expression<Action> templateExpression = () => FromResult(new object());
+            var templateMethod = (templateExpression.Body as MethodCallExpression).Method;
+            return templateMethod.GetGenericMethodDefinition();
+        }
+
+        private static Task<T> FromResult<T>(T result)
+        {
+            var source = new TaskCompletionSource<T>();
+            source.SetResult(result);
+            return source.Task;
+        }
+#endif
 
         private bool EnsureThatResolvedTypeIsNotRecursive(Type typeOfDummy)
         {
@@ -63,6 +92,35 @@
         {
             this.typesCurrentlyBeingResolved.Remove(typeOfDummy);
         }
+
+#if NET40
+        private bool TryResolveDummyValueWithAllAvailableStrategiesAndTaskWrapper(Type typeOfDummy, out object result)
+        {
+            result = default(object);
+
+            if (typeOfDummy == typeof(Task))
+            {
+                result = Task.Factory.StartNew(() => { });
+                return true;
+            }
+
+            if (typeOfDummy.IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Task<>))
+            {
+                var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
+                object taskResult;
+                if (!this.TryResolveDummyValueWithAllAvailableStrategies(typeOfTaskResult, out taskResult))
+                {
+                    return false;
+                }
+
+                var method = GenericFromResultMethodDefinition.MakeGenericMethod(typeOfTaskResult);
+                result = method.Invoke(null, new[] { taskResult });
+                return true;
+            }
+
+            return this.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy, out result);
+        }
+#endif
 
         private bool TryResolveDummyValueWithAllAvailableStrategies(Type typeOfDummy, out object result)
         {
