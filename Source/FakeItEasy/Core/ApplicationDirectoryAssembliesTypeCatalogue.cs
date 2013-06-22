@@ -13,7 +13,7 @@
     public class ApplicationDirectoryAssembliesTypeCatalogue
         : ITypeCatalogue
     {
-        private static Assembly fakeItEasyAssembly = Assembly.GetExecutingAssembly();
+        private static readonly Assembly FakeItEasyAssembly = Assembly.GetExecutingAssembly();
         private readonly List<Type> availableTypes;
 
         /// <summary>
@@ -35,36 +35,29 @@
             return this.availableTypes;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
         private static IEnumerable<Assembly> GetAllAvailableAssemblies()
         {
-            return LoadAssemblyFilesWithFakeItEasyReferences()
-                .Concat(GetAssembliesInAppDomainWithFakeItEasyReferences())
-                .Concat(new[] { fakeItEasyAssembly })
-                .Distinct();
-        }
+            var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-        private static IEnumerable<Assembly> GetAssembliesInAppDomainWithFakeItEasyReferences()
-        {
-            return GetAllAssembliesInAppDomain().Where(ReferencesFakeItEasy);
-        }
+            var assembliesInAppDomainWithFakeItEasyReferences = appDomainAssemblies.Where(ReferencesFakeItEasy);
 
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
-        private static IEnumerable<Assembly> LoadAssemblyFilesWithFakeItEasyReferences()
-        {
             // Find the paths of already loaded assemblies so we don't double scan them. Checking Assembly.IsDynamic would be preferable
             // to the business with the Namespace, but the former isn't available in .NET 3.5. Exclude the ReflectionOnly assemblies because
             // we want to be able to fully load them if we need to.
             var loadedAssemblyPaths = new HashSet<string>(
-                GetAllAssembliesInAppDomain()
+                appDomainAssemblies
                     .Where(a => !a.ReflectionOnly && a.ManifestModule.GetType().Namespace != "System.Reflection.Emit")
                     .Select(a => a.Location),
                 StringComparer.OrdinalIgnoreCase);
 
+            var assembliesFromDirectoryFilesWithFakeItEasyReferences = new List<Assembly>();
             var applicationDirectory = Environment.CurrentDirectory;
-            var result = new LinkedList<Assembly>();
 
             foreach (var assemblyFile in Directory.GetFiles(applicationDirectory, "*.dll"))
             {
+                // Skip assemblies already in the application domain. This is an optimization that can be fooled by test runners that
+                // make shadow copies of the assemblies, but it's a start.
                 if (loadedAssemblyPaths.Contains(assemblyFile))
                 {
                     continue;
@@ -77,14 +70,15 @@
                 }
                 catch (BadImageFormatException)
                 {
-                    // the assembly may not be managed, so move on
+                    // The assembly may not be managed, so move on.
                 }
 
                 if (inspectedAssembly != null && ReferencesFakeItEasy(inspectedAssembly))
                 {
                     try
                     {
-                        result.AddLast(Assembly.Load(inspectedAssembly.GetName()));
+                        // A reflection-only loaded assembly can't be scanned for types, so fully load it before saving it.
+                        assembliesFromDirectoryFilesWithFakeItEasyReferences.Add(Assembly.Load(inspectedAssembly.GetName()));
                     }
                     catch
                     {
@@ -92,17 +86,15 @@
                 }
             }
 
-            return result;
-        }
-
-        private static IEnumerable<Assembly> GetAllAssembliesInAppDomain()
-        {
-            return AppDomain.CurrentDomain.GetAssemblies();
+            return assembliesFromDirectoryFilesWithFakeItEasyReferences
+                .Concat(assembliesInAppDomainWithFakeItEasyReferences)
+                .Concat(new[] { FakeItEasyAssembly })
+                .Distinct();
         }
 
         private static bool ReferencesFakeItEasy(Assembly inspectedAssembly)
         {
-            return inspectedAssembly.GetReferencedAssemblies().Any(r => r.FullName == fakeItEasyAssembly.FullName);
+            return inspectedAssembly.GetReferencedAssemblies().Any(r => r.FullName == FakeItEasyAssembly.FullName);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
