@@ -100,7 +100,9 @@
 
             if (typeOfDummy == typeof(Task))
             {
-                result = Task.Factory.StartNew(() => { });
+                var task = Task.Factory.StartNew(() => { });
+                task.Wait();
+                result = task;
                 return true;
             }
 
