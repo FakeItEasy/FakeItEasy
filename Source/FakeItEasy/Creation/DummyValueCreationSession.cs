@@ -100,9 +100,9 @@
 
             if (typeOfDummy == typeof(Task))
             {
-                var task = Task.Factory.StartNew(() => { });
-                task.Wait();
-                result = task;
+                var source = new TaskCompletionSource<object>();
+                source.SetResult(default(object));
+                result = source.Task;
                 return true;
             }
 
