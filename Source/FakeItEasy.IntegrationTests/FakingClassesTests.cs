@@ -3,6 +3,7 @@ namespace FakeItEasy.IntegrationTests
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using System.Runtime.Serialization.Formatters.Binary;
     using Core;
     using NUnit.Framework;
@@ -74,6 +75,17 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
+        public void Should_be_able_to_get_types_from_external_assembly_in_directory()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.That(this.catalogue.GetAvailableTypes().Select(type => type.FullName), Has.Some.EqualTo("FakeItEasy.IntegrationTests.External.GuidValueFormatter"));
+        }
+
+        [Test]
         public void Should_not_be_able_to_get_types_from_assembly_that_does_not_reference_fakeiteasy()
         {
             // Arrange
@@ -81,7 +93,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes(), Has.None.EqualTo(typeof(A)));
+            Assert.That(this.catalogue.GetAvailableTypes(), Has.None.EqualTo(typeof(string)));
         }
     }
 }
