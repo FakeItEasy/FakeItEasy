@@ -25,6 +25,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Tests", "FakeItEasy.Tests\FakeItEasy.Tests.csproj", "{0E26272D-045A-47C2-8928-BD9B980115D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.IntegrationTests", "FakeItEasy.IntegrationTests\FakeItEasy.IntegrationTests.csproj", "{C291B61B-0729-4DC5-B8E4-147A8E3F801F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{30396678-D653-4C67-A507-1749424A24CD} = {30396678-D653-4C67-A507-1749424A24CD}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FakeItEasy.IntegrationTests.VB", "FakeItEasy.IntegrationTests.VB\FakeItEasy.IntegrationTests.VB.vbproj", "{69A27B0A-710B-4CEC-B159-56E34C788665}"
 EndProject
@@ -39,6 +42,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net35", "FakeItEasy.Net35\FakeItEasy.Net35.csproj", "{9F875DD4-9C9A-4E8A-9C13-EFEE41C749F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net35.Tests", "FakeItEasy.Net35.Tests\FakeItEasy.Net35.Tests.csproj", "{E029C5AB-EC90-45B0-BBD9-29A60864B137}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.IntegrationTests.External", "FakeItEasy.IntegrationTests.External\FakeItEasy.IntegrationTests.External.csproj", "{30396678-D653-4C67-A507-1749424A24CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4B581366-50F5-42E9-87A5-BA7DC4F6E330}"
 	ProjectSection(SolutionItems) = preProject
@@ -96,6 +101,10 @@ Global
 		{E029C5AB-EC90-45B0-BBD9-29A60864B137}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E029C5AB-EC90-45B0-BBD9-29A60864B137}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{E029C5AB-EC90-45B0-BBD9-29A60864B137}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{30396678-D653-4C67-A507-1749424A24CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30396678-D653-4C67-A507-1749424A24CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30396678-D653-4C67-A507-1749424A24CD}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{30396678-D653-4C67-A507-1749424A24CD}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +118,7 @@ Global
 		{C291B61B-0729-4DC5-B8E4-147A8E3F801F} = {D1B4816C-96E9-4B42-8B7C-1A687214FA2C}
 		{69A27B0A-710B-4CEC-B159-56E34C788665} = {D1B4816C-96E9-4B42-8B7C-1A687214FA2C}
 		{FA539A2D-98DC-4300-9A2C-EC6FE38A7392} = {D1B4816C-96E9-4B42-8B7C-1A687214FA2C}
+		{30396678-D653-4C67-A507-1749424A24CD} = {D1B4816C-96E9-4B42-8B7C-1A687214FA2C}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 0.1
