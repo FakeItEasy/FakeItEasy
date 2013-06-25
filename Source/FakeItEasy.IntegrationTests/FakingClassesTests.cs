@@ -60,7 +60,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(DoubleValueFormatter)));
+            Assert.That(this.catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(A)));
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(A)));
+            Assert.That(this.catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(DoubleValueFormatter)));
         }
 
         [Test]
