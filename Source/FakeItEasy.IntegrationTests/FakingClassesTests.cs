@@ -3,6 +3,7 @@ namespace FakeItEasy.IntegrationTests
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using System.Runtime.Serialization.Formatters.Binary;
     using Core;
     using NUnit.Framework;
@@ -43,16 +44,56 @@ namespace FakeItEasy.IntegrationTests
         Justification = "Reviewed. Suppression is OK here."), TestFixture]
     public class ApplicationDirectoryAssembliesTypeCatalogueIntegrationTests
     {
+        private ApplicationDirectoryAssembliesTypeCatalogue catalogue;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetup()
+        {
+            this.catalogue = new ApplicationDirectoryAssembliesTypeCatalogue();
+        }
+
         [Test]
-        public void Should_be_able_to_get_types_from_assembly_in_same_directory()
+        public void Should_be_able_to_get_types_from_fakeiteasy()
         {
             // Arrange
-            var catalogue = new ApplicationDirectoryAssembliesTypeCatalogue();
 
             // Act
 
             // Assert
-            Assert.That(catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(A)));
+            Assert.That(this.catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(A)));
+        }
+
+        [Test]
+        public void Should_be_able_to_get_types_from_assembly_in_app_domain()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.That(this.catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(DoubleValueFormatter)));
+        }
+
+        [Test]
+        public void Should_be_able_to_get_types_from_external_assembly_in_directory()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.That(this.catalogue.GetAvailableTypes().Select(type => type.FullName), Has.Some.EqualTo("FakeItEasy.IntegrationTests.External.GuidValueFormatter"));
+        }
+
+        [Test]
+        public void Should_not_be_able_to_get_types_from_assembly_that_does_not_reference_fakeiteasy()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.That(this.catalogue.GetAvailableTypes(), Has.None.EqualTo(typeof(string)));
         }
     }
 }
