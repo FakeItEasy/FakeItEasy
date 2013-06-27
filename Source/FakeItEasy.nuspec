@@ -10,7 +10,11 @@
     <authors>Patrik Hägne</authors>
     <owners>Patrik Hägne</owners>
     <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
-    <releaseNotes>TBD</releaseNotes>
+    <releaseNotes>New: Automatic faking of async methods - https://github.com/FakeItEasy/FakeItEasy/issues/129/
+New: Improved performance of assembly scanning - https://github.com/FakeItEasy/FakeItEasy/issues/133/
+
+With special thanks to our contributor to this release:
+Blair Conrad - https://github.com/blairconrad/</releaseNotes>
     <language>en-US</language>
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
   </metadata>
