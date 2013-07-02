@@ -10,6 +10,7 @@ Albacore.configure do |config|
   config.log_level = :verbose
 end
 
+
 desc "Execute default tasks"
 task :default => [ :unit, :integ, :spec, :pack ]
 
