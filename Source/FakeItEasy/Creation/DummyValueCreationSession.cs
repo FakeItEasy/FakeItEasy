@@ -33,7 +33,7 @@
             this.strategyCache = new Dictionary<Type, ResolveStrategy>();
             this.strategies = new ResolveStrategy[]
                 {
-                    new ResolveFromContainerSrategy { Container = container }, 
+                    new ResolveFromContainerStrategy { Container = container }, 
                     new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this }, 
                     new ResolveByActivatingValueTypeStrategy(), 
                     new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy { Session = this }
@@ -234,7 +234,7 @@
             }
         }
 
-        private class ResolveFromContainerSrategy : ResolveStrategy
+        private class ResolveFromContainerStrategy : ResolveStrategy
         {
             public IFakeObjectContainer Container { get; set; }
 
