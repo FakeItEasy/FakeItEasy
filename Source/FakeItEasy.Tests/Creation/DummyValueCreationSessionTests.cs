@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Creation
 {
     using System;
+    using System.Threading.Tasks;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using NUnit.Framework;
@@ -12,6 +13,13 @@ namespace FakeItEasy.Tests.Creation
         private IFakeObjectCreator fakeObjectCreator;
         private DummyValueCreationSession session;
 
+        private object[] dummiesInContainer = new object[]
+                                                  {
+                                                      "dummy value",
+                                                      new Task<int>(() => 7),
+                                                      new Task(delegate { })
+                                                  };
+
         [SetUp]
         public void SetUp()
         {
@@ -21,19 +29,19 @@ namespace FakeItEasy.Tests.Creation
             this.session = new DummyValueCreationSession(this.container, this.fakeObjectCreator);
         }
 
-        [Test]
-        public void Should_return_dummy_from_container_when_available()
+        [TestCaseSource("dummiesInContainer")]
+        public void Should_return_dummy_from_container_when_available(object dummyInContainer)
         {
             // Arrange
-            this.StubContainerWithValue<string>("dummy value");
+            this.StubContainerWithValue(dummyInContainer);
 
             // Act
             object dummy;
-            var result = this.session.TryResolveDummyValue(typeof(string), out dummy);
+            var result = this.session.TryResolveDummyValue(dummyInContainer.GetType(), out dummy);
 
             // Assert
             Assert.That(result, Is.True);
-            Assert.That(dummy, Is.EqualTo("dummy value"));
+            Assert.That(dummy, Is.SameAs(dummyInContainer));
         }
 
         [Test]
@@ -98,7 +106,7 @@ namespace FakeItEasy.Tests.Creation
         public void Should_be_able_to_create_class_with_resolvable_constructor_arguments()
         {
             // Arrange
-            this.StubContainerWithValue<string>("dummy string");
+            this.StubContainerWithValue("dummy string");
             this.StubFakeObjectCreatorWithValue(A.Fake<IFoo>());
 
             // Act
@@ -127,7 +135,7 @@ namespace FakeItEasy.Tests.Creation
         public void Should_be_able_to_resolve_same_type_twice_when_successful()
         {
             // Arrange
-            this.StubContainerWithValue<string>("dummy value");
+            this.StubContainerWithValue("dummy value");
 
             object dummy;
             this.session.TryResolveDummyValue(typeof(string), out dummy);
@@ -158,7 +166,7 @@ namespace FakeItEasy.Tests.Creation
         public void Should_favour_the_widest_constructor_when_activating()
         {
             // Arrange
-            this.StubContainerWithValue<string>("dummy value");
+            this.StubContainerWithValue("dummy value");
 
             // Act
             object dummy;
@@ -192,10 +200,10 @@ namespace FakeItEasy.Tests.Creation
                 .AssignsOutAndRefParameters(value);
         }
 
-        private void StubContainerWithValue<T>(T value)
+        private void StubContainerWithValue(object value)
         {
             object output;
-            A.CallTo(() => this.container.TryCreateDummyObject(typeof(T), out output))
+            A.CallTo(() => this.container.TryCreateDummyObject(value.GetType(), out output))
                 .Returns(true)
                 .AssignsOutAndRefParameters(value);
         }
