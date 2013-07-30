@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("1.14.0")]
-[assembly: AssemblyFileVersion("1.14.0")]
-[assembly: AssemblyInformationalVersion("1.14.0-beta01")]
-[assembly: AssemblyConfiguration("Release built on 2013-06-29 02:23:00+0200")]
+[assembly: AssemblyVersion("1.13.1")]
+[assembly: AssemblyFileVersion("1.13.1")]
+[assembly: AssemblyInformationalVersion("1.13.1")]
+[assembly: AssemblyConfiguration("Release built on 2013-07-30 22:29:00+0200")]
