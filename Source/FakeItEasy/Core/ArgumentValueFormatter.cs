@@ -40,74 +40,70 @@ namespace FakeItEasy.Core
             return formatter.GetArgumentValueAsString(argumentValue);
         }
 
-        private IArgumentValueFormatter ResolveTypeFormatter(Type forType)
+        private static int GetDistanceFromKnownType(Type comparedType, Type knownType)
         {
-            return this.GetFormattersThatSupportsTypeOrderedBySpecificity(forType).First();
+            if (knownType.Equals(comparedType))
+            {
+                return 0;
+            }
+
+            if (comparedType.IsInterface && knownType.GetInterfaces().Contains(comparedType))
+            {
+                return 1;
+            }
+
+            var distance = 2;
+            var currentType = knownType.BaseType;
+            while (currentType != null)
+            {
+                if (currentType.Equals(comparedType))
+                {
+                    return distance;
+                }
+
+                distance++;
+                currentType = currentType.BaseType;
+            }
+
+            return int.MaxValue;
         }
 
-        private IEnumerable<IArgumentValueFormatter> GetFormattersThatSupportsTypeOrderedBySpecificity(Type type)
+        private IArgumentValueFormatter ResolveTypeFormatter(Type forType)
         {
             return
                 (from formatter in this.typeFormatters
-                 where formatter.ForType.IsAssignableFrom(type)
+                 where formatter.ForType.IsAssignableFrom(forType)
                  select formatter)
-                    .OrderBy(x => x, new ClosestToThisTypeComparer(type));
+                .Min(f => new RangedFormatter(f, GetDistanceFromKnownType(f.ForType, forType)))
+                .Formatter;
         }
 
-        private class ClosestToThisTypeComparer
-            : IComparer<IArgumentValueFormatter>
+        /// <summary>
+        /// Holds a formatter as well as the distance between a type to be formatted
+        /// and the type for which the formatted is registered.
+        /// </summary>
+        private class RangedFormatter : IComparable<RangedFormatter>
         {
-            private readonly Type knownType;
+            private readonly int distanceFromKnownType;
 
-            public ClosestToThisTypeComparer(Type knownType)
+            public RangedFormatter(IArgumentValueFormatter formatter, int distanceFromKnownType)
             {
-                this.knownType = knownType;
+                this.Formatter = formatter;
+                this.distanceFromKnownType = distanceFromKnownType;
             }
 
-            public int Compare(IArgumentValueFormatter x, IArgumentValueFormatter y)
+            public IArgumentValueFormatter Formatter { get; private set; }
+
+            public int CompareTo(RangedFormatter other)
             {
-                Guard.AgainstNull(x, "x");
-                Guard.AgainstNull(y, "y");
+                Guard.AgainstNull(other, "other");
 
-                var distanceOfX = this.GetDistanceFromKnownType(x.ForType);
-                var distanceOfY = this.GetDistanceFromKnownType(y.ForType);
-
-                if (distanceOfX == distanceOfY)
+                if (other.distanceFromKnownType == this.distanceFromKnownType)
                 {
-                    return y.Priority.CompareTo(x.Priority);
+                    return other.Formatter.Priority.CompareTo(this.Formatter.Priority);
                 }
 
-                return distanceOfX.CompareTo(distanceOfY);
-            }
-
-            private int GetDistanceFromKnownType(Type comparedType)
-            {
-                var distance = 0;
-                var currentType = this.knownType;
-
-                if (this.IsInterfaceImplementedByKnownType(comparedType))
-                {
-                    return 0;
-                }
-
-                while (currentType != null)
-                {
-                    if (currentType.Equals(comparedType))
-                    {
-                        return distance;
-                    }
-
-                    distance++;
-                    currentType = currentType.BaseType;
-                }
-
-                return int.MaxValue;
-            }
-
-            private bool IsInterfaceImplementedByKnownType(Type comparedType)
-            {
-                return comparedType.IsInterface &&
-                    this.knownType.GetInterfaces().Contains(comparedType);
+                return this.distanceFromKnownType.CompareTo(other.distanceFromKnownType);
             }
         }
 

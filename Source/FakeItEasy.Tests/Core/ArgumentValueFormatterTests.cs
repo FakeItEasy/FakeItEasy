@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using FakeItEasy.Core;
@@ -127,6 +128,20 @@ namespace FakeItEasy.Tests.Core
         public string Should_format_string_values_correct_by_default(string value)
         {
             return this.formatter.GetArgumentValueAsString(value);
+        }
+
+        [Test]
+        public void Should_prefer_exact_type_formatter_to_interface_formatter()
+        {
+            // Arrange
+            this.AddTypeFormatter(typeof(IEnumerable), "an enumerable", 0);
+            this.AddTypeFormatter(typeof(string), "a string", 0);
+
+            // Act
+            var result = this.formatter.GetArgumentValueAsString("string value");
+
+            // Assert
+            Assert.That(result, Is.EqualTo("a string"));
         }
 
         private void AddTypeFormatter<T>(string formattedValue)
