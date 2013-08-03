@@ -57,7 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" />
-    <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="DoubleArgumentValueFormatter.cs" />
     <Compile Include="StringArgumentConstraints.cs" />
     <Compile Include="AssertionsTests.cs" />
