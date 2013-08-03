@@ -621,9 +621,6 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\VersionAssemblyInfo.cs">
-      <Link>VersionAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Properties\CustomAssemblyInfo.cs" />
     <Compile Include="Compatibility.cs" />
   </ItemGroup>

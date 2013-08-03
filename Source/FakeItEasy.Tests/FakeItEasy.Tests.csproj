@@ -59,7 +59,6 @@
   <ItemGroup>
     <Compile Include="..\InternalsVisibleTo-Signed.cs" />
     <Compile Include="..\SharedAssemblyInfo.cs" />
-    <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="ActionOverWriterValueFormatter.cs" />
     <Compile Include="AnyTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\CollectionContainsTests.cs" />
