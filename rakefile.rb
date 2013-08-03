@@ -1,7 +1,7 @@
 require 'albacore'
 require 'fileutils'
 
-version = IO.read("Source/Version.txt").split(/[\s]/, 2).first
+version = IO.read("Source/SharedAssemblyInfo.cs")[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 nunit_command = "Source/packages/NUnit.Runners.2.6.2/tools/nunit-console.exe"
 mspec_command = "Source/packages/Machine.Specifications.0.5.11/tools/mspec-clr4.exe"
 nuget_command = "Source/.nuget/NuGet.exe"
@@ -21,22 +21,8 @@ msbuild :clean do |msb|
   msb.solution = "Source/FakeItEasy.sln"
 end
 
-desc "Update version number"
-assemblyinfo :version do |asm|
-  net_version = version.split(/[^\d.]/, 2).first
-  
-  # not using asm.version and asm.file_version due to StyleCop violations
-  asm.custom_attributes = {
-    :AssemblyVersion => net_version,
-    :AssemblyFileVersion => net_version,
-    :AssemblyInformationalVersion => version,
-    :AssemblyConfiguration => :Release.to_s + " built on " + Time.now.strftime("%Y-%m-%d %H:%M:%S%z")
-  }
-  asm.output_file = "Source/VersionAssemblyInfo.cs"
-end
-
 desc "Build solution"
-msbuild :build => [:clean, :version] do |msb|
+msbuild :build => [:clean] do |msb|
   msb.properties = { :configuration => :Release }
   msb.targets = [ :Build ]
   msb.solution = "Source/FakeItEasy.sln"

@@ -73,7 +73,6 @@
   <ItemGroup>
     <Compile Include="..\InternalsVisibleTo-Signed.cs" />
     <Compile Include="..\SharedAssemblyInfo.cs" />
-    <Compile Include="..\VersionAssemblyInfo.cs" />
     <Compile Include="A.cs" />
     <Compile Include="Any.cs" />
     <Compile Include="ArgumentValueFormatter.cs" />
