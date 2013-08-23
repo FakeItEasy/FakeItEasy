@@ -24,10 +24,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DocumentationFile>Bin\Debug\FakeItEasy.xml</DocumentationFile>
     <CodeAnalysisRuleSet>..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +34,7 @@
     <OutputPath>Bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>0</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <DocumentationFile>Bin\Release\FakeItEasy.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CodeAnalysisRuleSet>..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
