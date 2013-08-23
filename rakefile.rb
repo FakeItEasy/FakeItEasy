@@ -21,6 +21,21 @@ msbuild :clean do |msb|
   msb.solution = "Source/FakeItEasy.sln"
 end
 
+desc "Update versieon number"
+assemblyinfo :set_version, :new_version do |asm, args|
+  puts "args were #{args}"
+  net_version = args.new_version.split(/[^\d.]/, 2).first
+  
+  # not using asm.version and asm.file_version due to StyleCop violations
+  asm.custom_attributes = {
+    :AssemblyVersion => net_version,
+    :AssemblyFileVersion => net_version,
+    :AssemblyInformationalVersion => args.new_version
+  }
+  asm.input_file = "Source/SharedAssemblyInfo.cs"
+  asm.output_file = "Source/SharedAssemblyInfo.cs"
+end
+
 desc "Build solution"
 msbuild :build => [:clean] do |msb|
   msb.properties = { :configuration => :Release }
