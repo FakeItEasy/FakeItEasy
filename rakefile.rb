@@ -21,7 +21,7 @@ msbuild :clean do |msb|
   msb.solution = "Source/FakeItEasy.sln"
 end
 
-desc "Update versieon number"
+desc "Update version number"
 assemblyinfo :set_version, :new_version do |asm, args|
   puts "args were #{args}"
   net_version = args.new_version.split(/[^\d.]/, 2).first
