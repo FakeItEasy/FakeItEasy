@@ -8,6 +8,7 @@
     // Minimal implementation for compatibility with .net 3.5,
     // has potential memory leaks and performance issues but should
     // be fine for this particular use.
+#pragma warning disable 1591
     public class ConditionalWeakTable<TKey, TValue>
     {
         private List<Tuple<WeakReference, TValue>> entries = new List<Tuple<WeakReference, TValue>>();
@@ -189,4 +190,5 @@ namespace System.Linq
             }
         }
     }
+#pragma warning restore 1591
 }
