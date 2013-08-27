@@ -22,6 +22,9 @@ In this example the lollipop instance is used as a stub and the shop instance is
 
 Available on [NuGet](https://nuget.org/packages/FakeItEasy/).
 
+##Documentation
+Full documentation is avilable on [GitHub](https://github.com/FakeItEasy/FakeItEasy/wiki).
+
 ##Description
 A .Net dynamic fake framework for creating all types of fake objects, mocks, stubs etc.
 
@@ -74,7 +77,11 @@ Or you can create a fake object, that is a wrapper around the faked object, this
 
 In order to pass arguments to the constructor of fakes of classes you'd use a lambda expression rather than the common method of passing object arrays representing the arguments. The expression will actually never be invoked so the constructor call in the following example will not be invoked but the arguments will be extracted from it.
 
-    var foo = A.Fake<Foo>(() => new Foo("string passed to constructor"));
+    var foo = A.Fake<Foo>(x => x.WithArgumentsForConstructor(() => new Foo("string passed to constructor")));
+
+    // Specifying arguments for constructor using IEnumerable<object>.
+    var foo = A.Fake<Foo>(x => x.WithArgumentsForConstructor(new object[] { "foo" }));
+
 
 **Faking an interface and assigning additional custom attributes to the faked class:**
 
