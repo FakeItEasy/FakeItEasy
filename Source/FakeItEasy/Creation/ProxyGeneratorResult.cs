@@ -1,5 +1,7 @@
 namespace FakeItEasy.Creation
 {
+    using System;
+
     /// <summary>
     /// Contains the result of a call to TryCreateProxy of IProxyGenerator.
     /// </summary>
@@ -18,6 +20,27 @@ namespace FakeItEasy.Creation
             Guard.AgainstNull(reasonForFailure, "reasonForFailure");
 
             this.ReasonForFailure = reasonForFailure;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProxyGeneratorResult"/> class. 
+        /// Creates a new instance representing a failed proxy
+        /// generation attempt due to an exception being caught.
+        /// </summary>
+        /// <param name="reasonForFailure">
+        /// The reason the proxy generation failed.
+        /// </param>
+        /// <param name="exception">
+        /// The exception thrown from the creation attempt.
+        /// </param>
+        public ProxyGeneratorResult(string reasonForFailure, Exception exception)
+        {
+            Guard.AgainstNull(reasonForFailure, "reasonForFailure");
+            Guard.AgainstNull(exception, "exception");
+
+            this.ReasonForFailure = reasonForFailure + System.Environment.NewLine +
+                "An exception was caught during this call. Its message was:" + System.Environment.NewLine +
+                exception.Message;
         }
 
         /// <summary>

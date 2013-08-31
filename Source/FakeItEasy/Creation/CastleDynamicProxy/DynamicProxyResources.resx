@@ -130,6 +130,6 @@
     <value>The type of proxy must be an interface or a class but it was {0}.</value>
   </data>
   <data name="ProxyTypeWithNoDefaultConstructorMessage" xml:space="preserve">
-    <value>No default constructor was found on the type {0}.</value>
+    <value>No usable default constructor was found on the type {0}.</value>
   </data>
 </root>

@@ -1,5 +1,6 @@
 namespace FakeItEasy.Tests.Creation
 {
+    using System;
     using FakeItEasy.Creation;
     using NUnit.Framework;
 
@@ -19,6 +20,18 @@ namespace FakeItEasy.Tests.Creation
         }
 
         [Test]
+        public void Should_set_that_proxy_was_not_successfully_created_when_constructor_with_error_message_and_exception_is_used()
+        {
+            // Arrange
+
+            // Act
+            var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new Exception("exception message"));
+
+            // Assert
+            Assert.That(result.ProxyWasSuccessfullyGenerated, Is.False);
+        }
+
+        [Test]
         public void Should_set_that_proxy_was_successfully_created_when_constructor_with_proxy_and_raiser_is_used()
         {
             // Arrange
@@ -31,7 +44,7 @@ namespace FakeItEasy.Tests.Creation
         }
 
         [Test]
-        public void Should_set_reason_for_failure_when_using_constructor_with_reason()
+        public void Should_set_reason_for_failure_when_constructor_with_reason_is_used()
         {
             // Arrange
 
@@ -40,6 +53,18 @@ namespace FakeItEasy.Tests.Creation
 
             // Assert
             Assert.That(result.ReasonForFailure, Is.EqualTo("reason"));
+        }
+
+        [Test]
+        public void Should_set_reason_for_failure_when_constructor_with_reason_and_exception_is_used()
+        {
+            // Arrange
+
+            // Act
+            var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new Exception("exception message"));
+
+            // Assert
+            Assert.That(result.ReasonForFailure, Is.EqualTo("reason\r\nAn exception was caught during this call. Its message was:\r\nexception message"));
         }
 
         [Test]
