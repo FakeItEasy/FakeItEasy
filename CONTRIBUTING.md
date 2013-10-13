@@ -8,11 +8,13 @@ Before starting work on a new bug, feature, etc. ensure that an [issue](https://
 
 ## Tests
 
-All features should be described by MSpec feature tests in the `FakeItEasy.Specs` project.
+All features should be described by [MSpec](https://github.com/machine/machine.specifications) feature tests in the `FakeItEasy.Specs` project.
 
 There should also be a high level of unit test coverage. Our target is 95% unit test coverage (the actual coverage is 93% at the time of writing). Any new code that is added should have a similar level of coverage.
 
-When writing unit tests, use the 3A's pattern (Arrange, Act, Assert) with comments indicating each part. E.g.
+When writing unit tests, use the 3A's pattern (Arrange, Act, Assert) with comments indicating each part.
+New or changed tests should use [FluentAssertions](https://github.com/dennisdoomen/fluentassertions) for the assertion phase.
+E.g.
 
     // Arrange
     var dummy = A.Fake<IFoo>();
@@ -22,7 +24,9 @@ When writing unit tests, use the 3A's pattern (Arrange, Act, Assert) with commen
     var result = A.Dummy<IFoo>();
 
     // Assert
-    Assert.That(result, Is.SameAs(dummy));
+    result.Should().BeSameAs(dummy));
+
+Whenever FluentAssertions are introduced into a test file, all tests in the file should be converted to use FluentAssertions.
 
 ## Spaces not Tabs
 

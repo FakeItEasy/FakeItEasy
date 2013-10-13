@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -167,14 +168,13 @@ namespace FakeItEasy.Tests.Core
 that spans a couple of lines.";
 
             // Act, Assert
-            var ex = Assert.Throws<FakeCreationException>(() => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason));
-            var expectedMessage =
-@"
+            this.thrower.Invoking(y=>y.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason))
+                .ShouldThrow<FakeCreationException>()
+                .WithMessage(@"
   Failed to create fake of type ""System.String"" with the specified arguments for the constructor:
     a reason
     that spans a couple of lines.
-";
-            Assert.That(ex.Message, Is.EqualTo(expectedMessage));
+");
         }
 
         [TestCaseSource("resolvedConstructorsTestCases")]
@@ -184,12 +184,10 @@ that spans a couple of lines.";
             // Arrange
 
             // Act
-            var ex = Assert.Throws<FakeCreationException>(() =>
-                this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
-                    typeOfFake, reasonForFailureOfUnspecifiedConstructor, resolvedConstructors));
-
-            // Assert
-            Assert.That(ex.Message, Is.EqualTo(expectedMessage));
+            this.thrower.Invoking(y => y.ThrowFailedToGenerateProxyWithResolvedConstructors(
+                    typeOfFake, reasonForFailureOfUnspecifiedConstructor, resolvedConstructors))
+            .ShouldThrow<FakeCreationException>()
+            .WithMessage(expectedMessage);
         }
     }
 }

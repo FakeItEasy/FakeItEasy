@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests.Creation
 {
     using System;
     using FakeItEasy.Creation;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -16,7 +17,7 @@ namespace FakeItEasy.Tests.Creation
             var result = new ProxyGeneratorResult(reasonForFailure: "reason");
 
             // Assert
-            Assert.That(result.ProxyWasSuccessfullyGenerated, Is.False);
+            result.ProxyWasSuccessfullyGenerated.Should().BeFalse();
         }
 
         [Test]
@@ -28,7 +29,7 @@ namespace FakeItEasy.Tests.Creation
             var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new Exception("exception message"));
 
             // Assert
-            Assert.That(result.ProxyWasSuccessfullyGenerated, Is.False);
+            result.ProxyWasSuccessfullyGenerated.Should().BeFalse();
         }
 
         [Test]
@@ -40,7 +41,7 @@ namespace FakeItEasy.Tests.Creation
             var result = new ProxyGeneratorResult(A.Fake<ITaggable>(), A.Fake<ICallInterceptedEventRaiser>());
 
             // Assert
-            Assert.That(result.ProxyWasSuccessfullyGenerated, Is.True);
+            result.ProxyWasSuccessfullyGenerated.Should().BeTrue();
         }
 
         [Test]
@@ -52,7 +53,7 @@ namespace FakeItEasy.Tests.Creation
             var result = new ProxyGeneratorResult(reasonForFailure: "reason");
 
             // Assert
-            Assert.That(result.ReasonForFailure, Is.EqualTo("reason"));
+            result.ReasonForFailure.Should().Be("reason");
         }
 
         [Test]
@@ -64,7 +65,7 @@ namespace FakeItEasy.Tests.Creation
             var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new Exception("exception message"));
 
             // Assert
-            Assert.That(result.ReasonForFailure, Is.EqualTo("reason\r\nAn exception was caught during this call. Its message was:\r\nexception message"));
+            result.ReasonForFailure.Should().Be("reason\r\nAn exception was caught during this call. Its message was:\r\nexception message");
         }
 
         [Test]
@@ -77,7 +78,7 @@ namespace FakeItEasy.Tests.Creation
             var result = new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>());
 
             // Assert
-            Assert.That(result.GeneratedProxy, Is.EqualTo(proxy));
+            result.GeneratedProxy.Should().Be(proxy);
         }
 
         [Test]
@@ -90,7 +91,7 @@ namespace FakeItEasy.Tests.Creation
             var result = new ProxyGeneratorResult(A.Dummy<ITaggable>(), eventRaiser);
 
             // Assert
-            Assert.That(result.CallInterceptedEventRaiser, Is.EqualTo(eventRaiser));
+            result.CallInterceptedEventRaiser.Should().Be(eventRaiser);
         }
 
         [Test]
