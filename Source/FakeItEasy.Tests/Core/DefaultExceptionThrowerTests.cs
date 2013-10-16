@@ -167,10 +167,12 @@ namespace FakeItEasy.Tests.Core
 @"a reason
 that spans a couple of lines.";
 
-            // Act, Assert
-            this.thrower.Invoking(y=>y.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason))
-                .ShouldThrow<FakeCreationException>()
-                .WithMessage(@"
+            // Act
+            Action act = () => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason);
+
+            // Assert
+            act.ShouldThrow<FakeCreationException>()
+            .WithMessage(@"
   Failed to create fake of type ""System.String"" with the specified arguments for the constructor:
     a reason
     that spans a couple of lines.
@@ -184,10 +186,11 @@ that spans a couple of lines.";
             // Arrange
 
             // Act
-            this.thrower.Invoking(y => y.ThrowFailedToGenerateProxyWithResolvedConstructors(
-                    typeOfFake, reasonForFailureOfUnspecifiedConstructor, resolvedConstructors))
-            .ShouldThrow<FakeCreationException>()
-            .WithMessage(expectedMessage);
+            Action act = () => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
+                    typeOfFake, reasonForFailureOfUnspecifiedConstructor, resolvedConstructors);
+
+            // Assert
+            act.ShouldThrow<FakeCreationException>().WithMessage(expectedMessage);
         }
     }
 }
