@@ -38,9 +38,12 @@ namespace FakeItEasy.Creation
             Guard.AgainstNull(reasonForFailure, "reasonForFailure");
             Guard.AgainstNull(exception, "exception");
 
-            this.ReasonForFailure = reasonForFailure + System.Environment.NewLine +
-                "An exception was caught during this call. Its message was:" + System.Environment.NewLine +
-                exception.Message;
+            this.ReasonForFailure = string.Concat(
+                reasonForFailure,
+                Environment.NewLine,
+                "An exception was caught during this call. Its message was:",
+                Environment.NewLine,
+                exception.Message);
         }
 
         /// <summary>
