@@ -3,8 +3,8 @@
   <metadata>
     <id>FakeItEasy</id>
     <title>Fake it Easy!</title>
-    <projectUrl>https://github.com/FakeItEasy/FakeItEasy/</projectUrl>
-    <iconUrl>https://raw.github.com/FakeItEasy/FakeItEasy/master/Resources/fakeiteasy_128x128.png</iconUrl>
+    <projectUrl>http://fakeiteasy.github.io/</projectUrl>
+    <iconUrl>http://fakeiteasy.github.io/img/talkingladies.png</iconUrl>
     <licenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</licenseUrl>
     <version>0.0.0</version>
     <authors>Patrik Hägne</authors>
