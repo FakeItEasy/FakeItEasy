@@ -99,25 +99,25 @@
                     generatedProxy: proxy,
                     callInterceptedEventRaiser: interceptor);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return GetResultForFailedProxyGeneration(typeOfProxy, argumentsForConstructor);
+                return GetResultForFailedProxyGeneration(typeOfProxy, argumentsForConstructor, e);
             }
         }
 
-        private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
+        private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, Exception e)
         {
             if (argumentsForConstructor != null)
             {
-                return new ProxyGeneratorResult(DynamicProxyResources.ArgumentsForConstructorDoesNotMatchAnyConstructorMessage);
+                return new ProxyGeneratorResult(DynamicProxyResources.ArgumentsForConstructorDoesNotMatchAnyConstructorMessage, e);
             }
 
-            return GetProxyResultForNoDefaultConstructor(typeOfProxy);
+            return GetProxyResultForNoDefaultConstructor(typeOfProxy, e);
         }
 
-        private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy)
+        private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy, Exception e)
         {
-            return new ProxyGeneratorResult(string.Format(CultureInfo.CurrentCulture, DynamicProxyResources.ProxyTypeWithNoDefaultConstructorMessage, typeOfProxy));
+            return new ProxyGeneratorResult(string.Format(CultureInfo.CurrentCulture, DynamicProxyResources.ProxyTypeWithNoDefaultConstructorMessage, typeOfProxy), e);
         }
 
         private static ProxyGeneratorResult GetProxyResultForValueType(Type typeOfProxy)

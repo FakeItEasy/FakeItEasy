@@ -157,7 +157,7 @@ The following constructors failed:
     <value>No constructor matching the specified arguments was found on the type {0}.</value>
   </data>
   <data name="NoDefaultConstructorMessage" xml:space="preserve">
-    <value>Can not generate fake object for the class since no default constructor was found, specify a constructor call.</value>
+    <value>Can not generate fake object for the class since no usable default constructor was found, specify a constructor call.</value>
   </data>
   <data name="NonConstructorExpressionMessage" xml:space="preserve">
     <value>Only expression of the type ExpressionType.New (constructor calls) are accepted.</value>

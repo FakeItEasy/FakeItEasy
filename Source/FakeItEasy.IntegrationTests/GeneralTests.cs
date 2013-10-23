@@ -102,16 +102,16 @@ namespace FakeItEasy.IntegrationTests
 
   Below is a list of reasons for failure per attempted constructor:
     No constructor arguments failed:
-      No default constructor was found on the type FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType.
+      No usable default constructor was found on the type FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType.
+      An exception was caught during this call. Its message was:
+      Can not instantiate proxy of class: FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType.
+      Could not find a parameterless constructor.
     The following constructors were not tried:
       (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
       (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
 
       Types marked with * could not be resolved, register them in the current
       IFakeObjectContainer to enable these constructors.
-
-  If either the type or constructor is internal, try adding the following attribute to the assembly:
-    [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2"")]
 
 ";
                 Assert.That(thrown.Message, Is.EqualTo(expectedMessage));

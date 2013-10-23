@@ -4,7 +4,9 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FluentAssertions;
     using NUnit.Framework;
+    using TestHelpers;
 
     [TestFixture]
     internal class DefaultExceptionThrowerTests
@@ -23,9 +25,6 @@ namespace FakeItEasy.Tests.Core
   Below is a list of reasons for failure per attempted constructor:
     No constructor arguments failed:
       reason
-
-  If either the type or constructor is internal, try adding the following attribute to the assembly:
-    [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7"")]
 
 "
             },
@@ -81,9 +80,6 @@ namespace FakeItEasy.Tests.Core
 
       Types marked with * could not be resolved, register them in the current
       IFakeObjectContainer to enable these constructors.
-
-  If either the type or constructor is internal, try adding the following attribute to the assembly:
-    [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7"")]
 
 "
             },
@@ -155,9 +151,6 @@ namespace FakeItEasy.Tests.Core
       Types marked with * could not be resolved, register them in the current
       IFakeObjectContainer to enable these constructors.
 
-  If either the type or constructor is internal, try adding the following attribute to the assembly:
-    [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7"")]
-
 "
             }).AsTestCaseSource();
 
@@ -175,19 +168,19 @@ namespace FakeItEasy.Tests.Core
 @"a reason
 that spans a couple of lines.";
 
-            // Act, Assert
-            var ex = Assert.Throws<FakeCreationException>(() => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason));
-            var expectedMessage =
+            // Act
+            var exception = Record.Exception(
+                () => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason));
+            
+            // Assert
+            var expectedMessage = 
 @"
   Failed to create fake of type ""System.String"" with the specified arguments for the constructor:
     a reason
     that spans a couple of lines.
-
-  If either the type or constructor is internal, try adding the following attribute to the assembly:
-    [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7"")]
-
 ";
-            Assert.That(ex.Message, Is.EqualTo(expectedMessage));
+
+            Assert<FakeCreationException>(exception, expectedMessage);
         }
 
         [TestCaseSource("resolvedConstructorsTestCases")]
@@ -197,12 +190,20 @@ that spans a couple of lines.";
             // Arrange
 
             // Act
-            var ex = Assert.Throws<FakeCreationException>(() =>
-                this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
+            var exception = Record.Exception(
+                () => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
                     typeOfFake, reasonForFailureOfUnspecifiedConstructor, resolvedConstructors));
 
             // Assert
-            Assert.That(ex.Message, Is.EqualTo(expectedMessage));
+            Assert<FakeCreationException>(exception, expectedMessage);
+        }
+
+        private static void Assert<T>(Exception exception, string expectedMessage) where T : Exception
+        {
+            exception.Should()
+                .NotBeNull()
+                .And.BeOfType<T>()
+                .And.Subject.As<T>().Message.Should().Be(expectedMessage);
         }
     }
 }
