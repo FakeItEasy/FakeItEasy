@@ -179,6 +179,7 @@
     <Compile Include="Core\MethodInfoManagerTests.cs" />
     <Compile Include="IoC\DictionaryContainerTests.cs" />
     <Compile Include="TestCases.cs" />
+    <Compile Include="TestHelpers\Record.cs" />
     <Compile Include="TestHelpers\MethodInfoDummyDefinition.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="Core\FakeManagerTests.cs" />

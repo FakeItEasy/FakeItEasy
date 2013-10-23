@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Core
     using FakeItEasy.Creation;
     using FluentAssertions;
     using NUnit.Framework;
+    using TestHelpers;
 
     [TestFixture]
     internal class DefaultExceptionThrowerTests
@@ -168,15 +169,18 @@ namespace FakeItEasy.Tests.Core
 that spans a couple of lines.";
 
             // Act
-            Action act = () => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason);
-
+            var exception = Record.Exception(
+                () => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason));
+            
             // Assert
-            act.ShouldThrow<FakeCreationException>()
-            .WithMessage(@"
+            var expectedMessage = 
+@"
   Failed to create fake of type ""System.String"" with the specified arguments for the constructor:
     a reason
     that spans a couple of lines.
-");
+";
+
+            Assert<FakeCreationException>(exception, expectedMessage);
         }
 
         [TestCaseSource("resolvedConstructorsTestCases")]
@@ -186,11 +190,20 @@ that spans a couple of lines.";
             // Arrange
 
             // Act
-            Action act = () => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
-                    typeOfFake, reasonForFailureOfUnspecifiedConstructor, resolvedConstructors);
+            var exception = Record.Exception(
+                () => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
+                    typeOfFake, reasonForFailureOfUnspecifiedConstructor, resolvedConstructors));
 
             // Assert
-            act.ShouldThrow<FakeCreationException>().WithMessage(expectedMessage);
+            Assert<FakeCreationException>(exception, expectedMessage);
+        }
+
+        private static void Assert<T>(Exception exception, string expectedMessage) where T : Exception
+        {
+            exception.Should()
+                .NotBeNull()
+                .And.BeOfType<T>()
+                .And.Subject.As<T>().Message.Should().Be(expectedMessage);
         }
     }
 }
