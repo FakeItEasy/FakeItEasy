@@ -23,7 +23,7 @@ In this example the lollipop instance is used as a stub and the shop instance is
 Available on [NuGet](https://nuget.org/packages/FakeItEasy/).
 
 ##Documentation
-Full documentation is avilable on [GitHub](https://github.com/FakeItEasy/FakeItEasy/wiki).
+Full documentation is available on [GitHub](https://github.com/FakeItEasy/FakeItEasy/wiki).
 
 ##Description
 A .Net dynamic fake framework for creating all types of fake objects, mocks, stubs etc.
