@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.15.0")]
 [assembly: AssemblyFileVersion("1.15.0")]
-[assembly: AssemblyInformationalVersion("1.15.0-beta")]
+[assembly: AssemblyInformationalVersion("1.15.0-beta01")]
 
 [assembly: AssemblyCompany("Patrik Hägne")]
 [assembly: AssemblyProduct("FakeItEasy")]
