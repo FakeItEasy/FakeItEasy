@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
     <id>FakeItEasy</id>
@@ -13,11 +13,7 @@
     <releaseNotes>New: Expose DynamicProxy exception messages when fake creation fails - https://github.com/FakeItEasy/FakeItEasy/issues/178
 New: Using Castle.Core 3.2.1 - https://github.com/FakeItEasy/FakeItEasy/issues/178
 Fixed: Misleading exception message when failing to fake an inaccessible type - https://github.com/FakeItEasy/FakeItEasy/issues/157
-Fixed: ArgumentValueFormatter.ResolveTypeFormatter should prefer exact type match over interface implementation - https://github.com/FakeItEasy/FakeItEasy/issues/142
-
-With special thanks for contributions to this release from:
-Jason Finch - https://github.com/jafin
-Jonathan Channon - https://github.com/jchannon</releaseNotes>
+Fixed: ArgumentValueFormatter.ResolveTypeFormatter should prefer exact type match over interface implementation - https://github.com/FakeItEasy/FakeItEasy/issues/142</releaseNotes>
     <language>en-US</language>
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
   </metadata>
