@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.14.0")]
 [assembly: AssemblyFileVersion("1.14.0")]
-[assembly: AssemblyInformationalVersion("1.14.0-beta01")]
+[assembly: AssemblyInformationalVersion("1.14.0")]
 
 [assembly: AssemblyCompany("Patrik Hägne")]
 [assembly: AssemblyProduct("FakeItEasy")]
@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: NeutralResourcesLanguage("en-US")]
 [assembly: CLSCompliant(true)]
 
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
+// Setting ComVisible to false makes the types in this assembly not visible
+// to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
