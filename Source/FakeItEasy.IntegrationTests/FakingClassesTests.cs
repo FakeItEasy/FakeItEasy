@@ -53,6 +53,44 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
+        public void Should_warn_of_duplicate_input_assemblies_with_different_paths()
+        {
+            string actualMessage;
+
+            // Arrange
+            var originalDirectory = Environment.CurrentDirectory;
+            var originalStandardOut = Console.Out;
+
+            try
+            {
+                // FakeItEasy.IntegrationTests.External has copies of many of the assemblies used in these
+                // tests as well. By changing the working directory before creating the
+                // ApplicationDirectoryAssembliesTypeCatalogue, the scanning will get those assemblies
+                // from the current AppDomain as well as the other path.
+                Environment.CurrentDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\FakeItEasy.IntegrationTests.External\bin\Debug");
+                using (var messageStream = new MemoryStream())
+                using (var messageWriter = new StreamWriter(messageStream))
+                {
+                    Console.SetOut(messageWriter);
+
+                    // Act
+                    new ApplicationDirectoryAssembliesTypeCatalogue();
+                    actualMessage = messageWriter.Encoding.GetString(messageStream.GetBuffer());
+                }
+            }
+            finally
+            {
+                Console.SetOut(originalStandardOut);
+                Environment.CurrentDirectory = originalDirectory;
+            }
+
+            // Assert
+            const string ExpectedMessagePattern = @"Warning: FakeItEasy failed to load assembly '[^']+FakeItEasy.IntegrationTests.External\\bin\\Debug\\FakeItEasy.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
+  API restriction: The assembly '[^']+FakeItEasy.IntegrationTests.External\\bin\\Debug\\FakeItEasy.dll' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain.";
+            Assert.That(actualMessage, Is.StringMatching(ExpectedMessagePattern));
+        }
+
+        [Test]
         public void Should_be_able_to_get_types_from_fakeiteasy()
         {
             // Arrange
