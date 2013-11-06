@@ -6,6 +6,7 @@ namespace FakeItEasy.IntegrationTests
     using System.Linq;
     using System.Runtime.Serialization.Formatters.Binary;
     using Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -85,9 +86,9 @@ namespace FakeItEasy.IntegrationTests
             }
 
             // Assert
-            const string ExpectedMessagePattern = @"Warning: FakeItEasy failed to load assembly '[^']+FakeItEasy.IntegrationTests.External\\bin\\Debug\\FakeItEasy.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
-  API restriction: The assembly '[^']+FakeItEasy.IntegrationTests.External\\bin\\Debug\\FakeItEasy.dll' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain.";
-            Assert.That(actualMessage, Is.StringMatching(ExpectedMessagePattern));
+            const string ExpectedMessagePattern = @"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\Debug\FakeItEasy.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
+  API restriction: The assembly '*FakeItEasy.IntegrationTests.External\bin\Debug\FakeItEasy.dll' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain.*";
+            actualMessage.Should().Match(ExpectedMessagePattern);
         }
 
         [Test]
@@ -98,7 +99,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(A)));
+            this.catalogue.GetAvailableTypes().Should().Contain(typeof(A));
         }
 
         [Test]
@@ -109,7 +110,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(DoubleValueFormatter)));
+            this.catalogue.GetAvailableTypes().Should().Contain(typeof(DoubleValueFormatter));
         }
 
         [Test]
@@ -120,7 +121,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes().Select(type => type.FullName), Has.Some.EqualTo("FakeItEasy.IntegrationTests.External.GuidValueFormatter"));
+            this.catalogue.GetAvailableTypes().Select(type => type.FullName).Should().Contain("FakeItEasy.IntegrationTests.External.GuidValueFormatter");
         }
 
         [Test]
@@ -131,7 +132,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes(), Has.None.EqualTo(typeof(string)));
+            this.catalogue.GetAvailableTypes().Should().NotContain(typeof(string));
         }
     }
 }
