@@ -42,9 +42,5 @@
             Assert.Throws<ArgumentNullException>(() =>
                 FakeItEasy.ExtensionSyntax.Syntax.Configure((IFoo)null));
         }
-
-        protected override void OnSetUp()
-        {
-        }
     }
 }

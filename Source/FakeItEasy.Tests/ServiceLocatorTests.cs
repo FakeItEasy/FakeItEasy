@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -11,6 +12,7 @@
     [TestFixture]
     public class ServiceLocatorTests
     {
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private Type[] singletonTypes = new Type[]
         {
             typeof(IExpressionCallMatcherFactory),
@@ -18,12 +20,10 @@
             typeof(IProxyGenerator)
         };
 
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Used reflectively.")]
         private IEnumerable<Type> NonSingletonTypes
         {
-            get
-            {
-                return Enumerable.Empty<Type>();
-            }
+            get { return Enumerable.Empty<Type>(); }
         }
 
         [Test]

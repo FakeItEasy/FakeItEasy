@@ -8,14 +8,21 @@ namespace FakeItEasy.Tests.Creation
     [TestFixture]
     public class DefaultFakeAndDummyManagerTests
     {
-        [Fake] private IDummyValueCreationSession dummySession;
-        [Fake] private FakeObjectCreator fakeCreator;
-        [Fake] private IFakeWrapperConfigurer wrapperConfigurer;
-        
+#pragma warning disable 649
+        [Fake]
+        private IDummyValueCreationSession dummySession;
+
+        [Fake]
+        private FakeObjectCreator fakeCreator;
+
+        [Fake]
+        private IFakeWrapperConfigurer wrapperConfigurer;
+#pragma warning restore 649
+
         private DefaultFakeAndDummyManager manager;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             Fake.InitializeFixture(this);
 
@@ -30,17 +37,17 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             object invokedWithFake = null;
-            
+
             var options = new FakeOptions();
 
             options.OnFakeCreatedActions.Add(x => invokedWithFake = x);
 
             var fake = A.Dummy<IFoo>();
 
-            A.CallTo(() => 
+            A.CallTo(() =>
                 this.fakeCreator.CreateFake(typeof(IFoo), options, this.dummySession, true))
                 .Returns(fake);
-            
+
             // Act
             this.manager.CreateFake(typeof(IFoo), options);
 

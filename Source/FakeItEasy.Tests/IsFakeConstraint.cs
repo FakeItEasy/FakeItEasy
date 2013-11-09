@@ -11,6 +11,8 @@ namespace FakeItEasy.Tests
 
         public override void WriteDescriptionTo(NUnit.Framework.Constraints.MessageWriter writer)
         {
+            Guard.AgainstNull(writer, "writer");
+
             writer.WriteExpectedValue("Proxy");
         }
     }

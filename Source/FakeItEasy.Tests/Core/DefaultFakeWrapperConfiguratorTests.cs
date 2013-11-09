@@ -12,7 +12,7 @@
         private DefaultFakeWrapperConfigurer wrapperConfigurator;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.faked = A.Fake<IFoo>();
 

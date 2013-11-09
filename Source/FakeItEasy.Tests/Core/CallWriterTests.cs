@@ -20,7 +20,7 @@ namespace FakeItEasy.Tests.Core
         internal IFakeObjectCallFormatter CallFormatter { get; set; }
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             Fake.InitializeFixture(this);
 
@@ -40,12 +40,12 @@ namespace FakeItEasy.Tests.Core
             foreach (var call in this.calls)
             {
                 var boundCallNumber = callNumber;
-                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("Fake call " + boundCallNumber.ToString());
+                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("Fake call " + boundCallNumber.ToString(CultureInfo.CurrentCulture));
                 callNumber++;
             }
 
-            var writer = this.CreateWriter();
-            writer.WriteCalls(this.calls, this.writer);
+            var callWriter = this.CreateWriter();
+            callWriter.WriteCalls(this.calls, this.writer);
 
             var message = this.writer.Builder.ToString();
             var expectedMessage =
@@ -74,10 +74,10 @@ namespace FakeItEasy.Tests.Core
 
             A.CallTo(() => this.CallComparer.Equals(A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]), A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]))).Returns(true);
 
-            var writer = this.CreateWriter();
+            var callWriter = this.CreateWriter();
 
             // Act
-            writer.WriteCalls(this.calls, this.writer);
+            callWriter.WriteCalls(this.calls, this.writer);
 
             // Assert
             var message = this.writer.Builder.ToString();
@@ -104,8 +104,8 @@ namespace FakeItEasy.Tests.Core
                 A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("even");
             }
 
-            var writer = this.CreateWriter();
-            writer.WriteCalls(this.calls, this.writer);
+            var callWriter = this.CreateWriter();
+            callWriter.WriteCalls(this.calls, this.writer);
 
             var message = this.writer.Builder.ToString();
             var expectedMessage =
@@ -129,8 +129,8 @@ namespace FakeItEasy.Tests.Core
 
             A.CallTo(() => this.CallFormatter.GetDescription(this.calls[18])).Returns("Last call");
 
-            var writer = this.CreateWriter();
-            writer.WriteCalls(this.calls, this.writer);
+            var callWriter = this.CreateWriter();
+            callWriter.WriteCalls(this.calls, this.writer);
 
             var message = this.writer.Builder.ToString();
             var expectedMessage =
@@ -141,7 +141,7 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void WriteCalls_should_indent_values_with_newlines_correctly()
+        public void WriteCalls_should_indent_values_with_new_lines_correctly()
         {
             // Arrange
             this.StubCalls(10);
@@ -153,12 +153,12 @@ second line";
             var callIndex = 0;
             A.CallTo(() => this.CallFormatter.GetDescription(A<IFakeObjectCall>._)).ReturnsLazily(() => text + ++callIndex);
 
-            var writer = this.CreateWriter();
+            var callWriter = this.CreateWriter();
 
             // Act
             using (this.writer.Indent())
             {
-                writer.WriteCalls(this.calls, this.writer);
+                callWriter.WriteCalls(this.calls, this.writer);
             }
 
             // Assert
@@ -181,10 +181,10 @@ second line";
             // Arrange
             this.StubCalls(1);
 
-            var writer = this.CreateWriter();
+            var callWriter = this.CreateWriter();
 
             // Act
-            writer.WriteCalls(this.calls, this.writer);
+            callWriter.WriteCalls(this.calls, this.writer);
 
             // Assert
             Assert.That(this.writer.Builder.ToString(), Is.StringEnding(Environment.NewLine));
@@ -194,10 +194,10 @@ second line";
         public void Should_write_nothing_if_call_list_is_empty()
         {
             // Arrange
-            var writer = this.CreateWriter();
+            var callWriter = this.CreateWriter();
 
             // Act
-            writer.WriteCalls(Enumerable.Empty<IFakeObjectCall>(), this.writer);
+            callWriter.WriteCalls(Enumerable.Empty<IFakeObjectCall>(), this.writer);
 
             // Assert
             Assert.That(this.writer.Builder.ToString(), Is.Empty);

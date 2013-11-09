@@ -17,7 +17,7 @@
         private List<object> createdFakes;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.createdFakes = new List<object>();
         }
@@ -52,7 +52,7 @@
         }
 
         [Test]
-        public void Method_call_should_return_default_value_when_theres_no_matching_interception_and_return_type_is_value_type()
+        public void Method_call_should_return_default_value_when_there_is_no_matching_interception_and_return_type_is_value_type()
         {
             var fake = this.CreateFakeManager<IFoo>();
             var result = ((IFoo)fake.Object).Baz();
@@ -61,7 +61,7 @@
         }
 
         [Test]
-        public void Method_call_should_not_set_return_value_when_theres_no_matching_interception_and_return_type_is_void()
+        public void Method_call_should_not_set_return_value_when_there_is_no_matching_interception_and_return_type_is_void()
         {
             var fake = this.CreateFakeManager<IFoo>();
             ((IFoo)fake.Object).Bar();
@@ -104,7 +104,7 @@
         }
 
         [Test]
-        public void The_latest_added_rule_should_be_called_for_ever_when_no_number_of_times_is_specified()
+        public void The_latest_added_rule_should_be_called_forever_when_no_number_of_times_is_specified()
         {
             var fake = this.CreateFakeManager<IFoo>();
 
@@ -184,8 +184,9 @@
         {
             var fake = this.CreateFakeManager<IFoo>();
 
-            ((IFoo)fake.Object).Bar();
-            var i = ((IFoo)fake.Object)[1];
+            var foo = (IFoo)fake.Object;
+            foo.Bar();
+            Record.Exception(() => foo[1]);
 
             Assert.That(fake.RecordedCallsInScope, Has.Some.Matches<IFakeObjectCall>(x => x.Method.Name == "Bar"));
             Assert.That(fake.RecordedCallsInScope, Has.Some.Matches<IFakeObjectCall>(x => x.Method.Name == "get_Item"));
@@ -197,16 +198,10 @@
             // Arrange
             var fake = A.Fake<IFoo>();
             var manager = Fake.GetFakeManager(fake);
-            A.CallTo(() => fake.Bar()).Throws(new Exception());
+            A.CallTo(() => fake.Bar()).Throws(new InvalidOperationException());
 
             // Act
-            try
-            {
-                fake.Bar();
-            }
-            catch
-            {
-            }
+            Record.Exception(() => fake.Bar());
 
             // Assert
             Assert.That(manager.RecordedCallsInScope.Count(), Is.EqualTo(1));
@@ -596,26 +591,20 @@
 
             var selectedRule = A.Fake<IFakeObjectCallRule>();
             A.CallTo(() => selectedRule.IsApplicableTo(interceptedCall)).Returns(true);
-            A.CallTo(() => selectedRule.Apply(A<IInterceptedFakeObjectCall>._)).Throws(new Exception());
+            A.CallTo(() => selectedRule.Apply(A<IInterceptedFakeObjectCall>._)).Throws(new InvalidOperationException());
 
             manager.AddRuleFirst(selectedRule);
             manager.AddInterceptionListener(listener);
 
             // Act
-            try
-            {
-                manager.RaiseCallIntercepted(new CallInterceptedEventArgs(interceptedCall));
-            }
-            catch
-            {
-            }
+            Record.Exception(() => manager.RaiseCallIntercepted(new CallInterceptedEventArgs(interceptedCall)));
 
             // Assert
             A.CallTo(() => listener.OnAfterCallIntercepted((ICompletedFakeObjectCall)interceptedCall, selectedRule)).MustHaveHappened();
         }
 
         [Test]
-        public void Should_invoke_listeners_in_correct_order()
+        public void Should_invoke_listeners_in_the_correct_order()
         {
             // Arrange
             var manager = new RaisableFakeManager();
@@ -641,33 +630,15 @@
             }
         }
 
-        private static void AddFakeRule<T>(T fakedObject, FakeCallRule rule) where T : class
-        {
-            Fake.GetFakeManager(fakedObject).AddRuleFirst(rule);
-        }
-
-        private static void AddFakeRule<T>(T fakedObject, Action<FakeCallRule> ruleConfiguration) where T : class
-        {
-            var rule = new FakeCallRule();
-            ruleConfiguration(rule);
-
-            AddFakeRule(fakedObject, rule);
-        }
-
         private static FakeCallRule CreateApplicableInterception()
         {
-            return new FakeCallRule
-            {
-                IsApplicableTo = x => true
-            };
+            return new FakeCallRule { IsApplicableTo = x => true };
         }
 
         private FakeManager CreateFakeManager<T>()
         {
             var result = A.Fake<T>();
-
             this.MakeSureThatWeakReferenceDoesNotGetCollected(result);
-
             return Fake.GetFakeManager(result);
         }
 
@@ -723,7 +694,7 @@
             }
         }
 
-        private class RaisableFakeManager
+        private sealed class RaisableFakeManager
             : FakeManager
         {
             private ICallInterceptedEventRaiser raiser;

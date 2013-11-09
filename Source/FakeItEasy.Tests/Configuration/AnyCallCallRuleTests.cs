@@ -11,11 +11,11 @@ namespace FakeItEasy.Tests.Configuration
         [TestCase(typeof(int), Result = true)]
         [TestCase(typeof(string), Result = false)]
         [TestCase(null, Result = true)]
-        public bool IsApplicableTo_should_check_the_ApplicableToMembersWithReturnType_property(Type typeSetToProperty)
+        public bool IsApplicableTo_should_check_the_ApplicableToMembersWithReturnType_property(Type type)
         {
             // Arrange
             var rule = this.CreateRule();
-            rule.ApplicableToMembersWithReturnType = typeSetToProperty;
+            rule.ApplicableToMembersWithReturnType = type;
 
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Baz());
 

@@ -46,7 +46,7 @@
         }
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.ConstraintField = new AggregateArgumentConstraint(new[] { new EqualityArgumentConstraint("foo"), new EqualityArgumentConstraint("bar") });
         }

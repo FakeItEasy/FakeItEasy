@@ -2,9 +2,9 @@
 {
     public class DoubleValueFormatter : ArgumentValueFormatter<double>
     {
-        protected override string GetStringValue(double value)
+        protected override string GetStringValue(double argumentValue)
         {
-            return "[" + value + "]";
+            return "[" + argumentValue + "]";
         }
     }
 }

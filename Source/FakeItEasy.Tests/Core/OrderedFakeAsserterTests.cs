@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests.Core
         private CallWriter callWriter;
         
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.callWriter = A.Fake<CallWriter>();
         }

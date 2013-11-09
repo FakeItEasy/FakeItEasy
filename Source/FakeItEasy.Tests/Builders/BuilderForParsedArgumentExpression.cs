@@ -22,9 +22,9 @@
             return this.Do(x => x.expression = BuilderForExpression.Build(expressionBuilder));
         }
 
-        public BuilderForParsedArgumentExpression WithExpression(Expression expression)
+        public BuilderForParsedArgumentExpression WithExpression(Expression newExpression)
         {
-            return this.Do(x => x.expression = expression);
+            return this.Do(x => x.expression = newExpression);
         }
 
         public BuilderForParsedArgumentExpression WithConstantExpression(object value)

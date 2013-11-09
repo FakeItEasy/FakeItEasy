@@ -7,13 +7,13 @@ namespace FakeItEasy.Tests
         : ArgumentConstraintTestBase
     {
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.CreateConstraint(new DefaultArgumentConstraintManager<T>(x => this.ConstraintField = x));
-            this.OnSetUp();
+            this.OnSetup();
         }
 
-        protected virtual void OnSetUp()
+        protected virtual void OnSetup()
         {
         }
 

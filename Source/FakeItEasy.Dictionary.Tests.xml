@@ -1,0 +1,14 @@
+<!-- NOTE (adamarlph): For more info see: http://msdn.microsoft.com/en-us/library/bb514188.aspx -->
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>Interceptable</Word>
+      <Word>Taggable</Word>
+      <Word>Sut</Word>
+      <Word>Fakeable</Word>
+      <Word>Facaded</Word>
+      <Word>Baz</Word>
+      <Word>Bazz</Word>
+    </Recognized>
+  </Words>
+</Dictionary>

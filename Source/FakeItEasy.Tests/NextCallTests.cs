@@ -44,7 +44,7 @@
             Assert.That(fake.Rules, Has.Some.SameAs(recordingRule));
         }
 
-        protected override void OnSetUp()
+        protected override void OnSetup()
         {
             A.Fake<IConfigurationFactory>();
         }

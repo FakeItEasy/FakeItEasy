@@ -16,7 +16,7 @@ namespace FakeItEasy.Tests.Expressions
         private CallExpressionParser parser;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.constraintFactory = A.Fake<ExpressionArgumentConstraintFactory>();
             var validator = A.Fake<IArgumentConstraint>();

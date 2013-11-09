@@ -1,31 +1,32 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Machine.Specifications;
 
-    public class when_matching_calls_with_param_arrays
+    public class when_matching_calls_with_parameter_arrays
     {
-        static ITypeWithParamArray fake;
+        static ITypeWithParameterArray fake;
 
-        Establish context = () => fake = A.Fake<ITypeWithParamArray>();
+        Establish context = () => fake = A.Fake<ITypeWithParameterArray>();
 
-        Because of = () => fake.MethodWithParamArray("foo", "bar", "baz");
+        Because of = () => fake.MethodWithParameterArray("foo", "bar", "baz");
 
         It should_be_able_to_match_the_call =
-            () => A.CallTo(() => fake.MethodWithParamArray("foo", "bar", "baz")).MustHaveHappened();
+            () => A.CallTo(() => fake.MethodWithParameterArray("foo", "bar", "baz")).MustHaveHappened();
 
         It should_be_able_to_match_the_call_with_argument_constraints =
-            () => A.CallTo(() => fake.MethodWithParamArray(A<string>._, A<string>._, A<string>._)).MustHaveHappened();
+            () => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, A<string>._, A<string>._)).MustHaveHappened();
 
         It should_be_able_to_match_the_call_mixing_constraints_and_values =
-            () => A.CallTo(() => fake.MethodWithParamArray(A<string>._, "bar", A<string>._)).MustHaveHappened();
+            () => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, "bar", A<string>._)).MustHaveHappened();
 
         It should_be_able_to_match_using_array_syntax =
-            () => A.CallTo(() => fake.MethodWithParamArray("foo", A<string[]>.That.IsSameSequenceAs(new[] { "bar", "baz" }))).MustHaveHappened();
+            () => A.CallTo(() => fake.MethodWithParameterArray("foo", A<string[]>.That.IsSameSequenceAs(new[] { "bar", "baz" }))).MustHaveHappened();
 
-        public interface ITypeWithParamArray
+        public interface ITypeWithParameterArray
         {
-            void MethodWithParamArray(string arg, params string[] args);
+            void MethodWithParameterArray(string arg, params string[] args);
         }
     }
 

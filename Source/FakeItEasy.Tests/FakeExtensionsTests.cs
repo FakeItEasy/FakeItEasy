@@ -13,8 +13,7 @@ namespace FakeItEasy.Tests
     using TestHelpers;
 
     [TestFixture]
-    public class FakeExtensionsTests
-        : ConfigurableServiceLocatorTestBase
+    public class FakeExtensionsTests : ConfigurableServiceLocatorTestBase
     {
         [Test]
         public void Once_should_call_NumberOfTimes_with_1_as_argument()
@@ -500,7 +499,6 @@ namespace FakeItEasy.Tests
         public void Should_configure_fake_to_throw_the_specified_exception_type()
         {
             // Arrange
-            var ex = A.Dummy<Exception>();
             var config = A.Fake<IExceptionThrowerConfiguration>();
 
             // Act

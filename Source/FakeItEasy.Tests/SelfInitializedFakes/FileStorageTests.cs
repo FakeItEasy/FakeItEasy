@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         private IFileSystem fileSystem;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.fileSystem = A.Fake<IFileSystem>();
             A.CallTo(() => this.fileSystem.FileExists(A<string>._)).Returns(true);
@@ -32,9 +32,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
                 };
 
             var serializedCalls = this.SerializeCalls(calls);
-
-            A.CallTo(() => this.fileSystem.Open("c:\\file.dat", FileMode.Open))
-                .ReturnsLazily(x => new MemoryStream(serializedCalls));
+            A.CallTo(() => this.fileSystem.Open("c:\\file.dat", FileMode.Open)).ReturnsLazily(x => new MemoryStream(serializedCalls));
 
             // Act
             var storage = this.CreateStorage("c:\\file.dat");
@@ -48,8 +46,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         public void Load_should_return_null_when_file_does_not_exist()
         {
             // Arrange
-            A.CallTo(() => this.fileSystem.FileExists("c:\\file.dat"))
-                .Returns(false);
+            A.CallTo(() => this.fileSystem.FileExists("c:\\file.dat")).Returns(false);
 
             // Act
             var storage = this.CreateStorage("c:\\file.dat");
@@ -69,8 +66,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
                 from index in Enumerable.Range(1, 2)
                 select this.CreateDummyCallData();
 
-            A.CallTo(() => this.fileSystem.Open("c:\\file.dat", FileMode.Truncate))
-                .Returns(fileStream);
+            A.CallTo(() => this.fileSystem.Open("c:\\file.dat", FileMode.Truncate)).Returns(fileStream);
 
             // Act
             var storage = this.CreateStorage("c:\\file.dat");
@@ -86,8 +82,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         public void Save_should_create_file_when_it_does_not_exist()
         {
             // Arrange
-            A.CallTo(() => this.fileSystem.FileExists("c:\\file.dat"))
-                .Returns(false);
+            A.CallTo(() => this.fileSystem.FileExists("c:\\file.dat")).Returns(false);
 
             // Act
             var storage = this.CreateStorage("c:\\file.dat");
@@ -104,22 +99,18 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 
         private byte[] SerializeCalls(IEnumerable<CallData> calls)
         {
-            var formatter = new BinaryFormatter();
-
             using (var stream = new MemoryStream())
             {
-                formatter.Serialize(stream, calls);
+                new BinaryFormatter().Serialize(stream, calls);
                 return stream.GetBuffer();
             }
         }
 
         private IEnumerable<CallData> DeserializeCalls(byte[] serializedCalls)
         {
-            var formatter = new BinaryFormatter();
-
             using (var stream = new MemoryStream(serializedCalls))
             {
-                return (IEnumerable<CallData>)formatter.Deserialize(stream);
+                return (IEnumerable<CallData>)new BinaryFormatter().Deserialize(stream);
             }
         }
 
@@ -128,15 +119,21 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             return new CallData(typeof(IFoo).GetMethod("Bar", new Type[] { }), new object[] { }, null);
         }
 
-        private class CallDataComparer
-            : IEqualityComparer<CallData>
+        private class CallDataComparer : IEqualityComparer<CallData>
         {
             public bool Equals(CallData x, CallData y)
             {
-                return
-                    object.Equals(x.Method, y.Method)
-                    && x.OutputArguments.SequenceEqual(y.OutputArguments)
-                    && object.Equals(x.ReturnValue, y.ReturnValue);
+                if (x == null)
+                {
+                    return y == null;
+                }
+
+                if (y == null)
+                {
+                    return false;
+                }
+
+                return object.Equals(x.Method, y.Method) && x.OutputArguments.SequenceEqual(y.OutputArguments) && object.Equals(x.ReturnValue, y.ReturnValue);
             }
 
             public int GetHashCode(CallData obj)

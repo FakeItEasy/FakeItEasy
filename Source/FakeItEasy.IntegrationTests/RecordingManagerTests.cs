@@ -2,6 +2,7 @@ namespace FakeItEasy.IntegrationTests
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -11,7 +12,9 @@ namespace FakeItEasy.IntegrationTests
     [TestFixture]
     public class RecordingManagerTests
     {
-        [Test, Explicit]
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "No exception is thrown.")]
+        [Test]
+        [Explicit]
         public void Second_pass_should_use_recorded_values_from_previous_pass()
         {
             var storage = new Storage();
@@ -54,7 +57,7 @@ namespace FakeItEasy.IntegrationTests
             {
                 var realReader = new WebReader();
                 var fakeReader = A.Fake<WebReader>(x => x.Wrapping(realReader).RecordedBy(recorder));
-                                
+
                 for (int i = 0; i < 30; i++)
                 {
                     fakeReader.Download(new Uri("http://www.sembo.se/"));
@@ -66,10 +69,16 @@ namespace FakeItEasy.IntegrationTests
 
         public class WebReader
         {
-            public virtual string Download(Uri url)
+            [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "No exception is thrown.")]
+            public virtual string Download(Uri uri)
             {
-                Console.WriteLine("Downloading " + url.AbsoluteUri);
-                using (var stream = new WebClient().OpenRead(url))
+                if (uri == null)
+                {
+                    throw new ArgumentNullException("uri");
+                }
+
+                Console.WriteLine("Downloading " + uri.AbsoluteUri);
+                using (var stream = new WebClient().OpenRead(uri))
                 using (var reader = new StreamReader(stream))
                 {
                     return reader.ReadToEnd();

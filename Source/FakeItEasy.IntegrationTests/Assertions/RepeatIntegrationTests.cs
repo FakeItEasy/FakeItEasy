@@ -9,7 +9,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
         private IFoo foo;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.foo = A.Fake<IFoo>();
         }

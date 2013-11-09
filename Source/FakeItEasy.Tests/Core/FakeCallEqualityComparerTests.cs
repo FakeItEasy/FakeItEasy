@@ -16,7 +16,7 @@
         private IFakeObjectCall secondCall;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.firstCall = CreateFakedFakeObjectCall();
             this.secondCall = MakeEqualCopy(this.firstCall);

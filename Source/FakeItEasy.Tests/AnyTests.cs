@@ -20,7 +20,7 @@ namespace FakeItEasy.Tests
             Assert.That(Any.ReferenceEquals(s, s), Is.True);
         }
 
-        protected override void OnSetUp()
+        protected override void OnSetup()
         {
         }
     }

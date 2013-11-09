@@ -25,7 +25,7 @@
         }
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.ConstraintField = new EqualityArgumentConstraint(1);
         }

@@ -36,10 +36,9 @@
             fake.Configure()
                 .CallsTo(x => x.Bar(null, null))
                 .WhenArgumentsMatch(x => true)
-                .Throws(new Exception());
+                .Throws(new InvalidOperationException());
 
-            Assert.Throws<Exception>(() =>
-                fake.Bar("something", "else"));
+            Assert.Throws<InvalidOperationException>(() => fake.Bar("something", "else"));
         }
 
         [Test]
@@ -124,12 +123,12 @@
             var foo = A.Fake<IFoo>();
 
             // Act
-            A.CallTo(foo).Where(x => x.Method.Name.Equals("Bar")).Throws(new Exception());
-            A.CallTo(() => foo.Bar()).Throws(new Exception());
+            A.CallTo(foo).Where(x => x.Method.Name.Equals("Bar")).Throws(new InvalidOperationException());
+            A.CallTo(() => foo.Bar()).Throws(new InvalidOperationException());
 
             // Assert
             Assert.DoesNotThrow(() => foo.Baz());
-            Assert.Throws<Exception>(foo.Bar);
+            Assert.Throws<InvalidOperationException>(foo.Bar);
         }
 
         [Test]

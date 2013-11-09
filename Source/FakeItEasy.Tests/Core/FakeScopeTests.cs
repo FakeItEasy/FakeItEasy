@@ -57,7 +57,7 @@
         }
 
         [Test]
-        public void Call_instercepted_in_child_scope_should_be_visible_in_parent_scope()
+        public void Call_intercepted_in_child_scope_should_be_visible_in_parent_scope()
         {
             var fake = A.Fake<IFoo>();
 
@@ -83,7 +83,7 @@
             {
                 using (Fake.CreateScope())
                 {
-                    Any.CallTo(fake).Throws(new Exception());
+                    Any.CallTo(fake).Throws(new InvalidOperationException());
                 }
 
                 fake.Bar();

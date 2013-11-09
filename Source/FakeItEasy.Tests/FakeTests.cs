@@ -4,8 +4,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class FakeTests
-        : FacadedTestBase
+    public class FakeTests : FacadedTestBase
     {
         protected override Type FacadedType
         {

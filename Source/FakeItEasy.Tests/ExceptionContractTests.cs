@@ -10,7 +10,7 @@
         private T exception;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.exception = this.CreateException();
         }
@@ -47,10 +47,10 @@
             var constructor = this.GetMessageOnlyConstructor();
 
             // Act
-            var exception = (T)constructor.Invoke(new object[] { "A message" });
+            var result = (T)constructor.Invoke(new object[] { "A message" });
 
             // Assert
-            Assert.That(exception.Message, Is.StringStarting("A message"));
+            Assert.That(result.Message, Is.StringStarting("A message"));
         }
 
         [Test]
@@ -78,10 +78,10 @@
             var constructor = this.GetMessageAndInnerExceptionConstructor();
 
             // Act
-            var exception = (T)constructor.Invoke(new object[] { "A message", new Exception() });
+            var result = (T)constructor.Invoke(new object[] { "A message", new InvalidOperationException() });
 
             // Assert
-            Assert.That(exception.Message, Is.EqualTo("A message"));
+            Assert.That(result.Message, Is.EqualTo("A message"));
         }
 
         [Test]
@@ -89,13 +89,13 @@
         {
             // Arrange
             var constructor = this.GetMessageAndInnerExceptionConstructor();
-            var innerException = new Exception();
+            var innerException = new InvalidOperationException();
 
             // Act
-            var exception = (T)constructor.Invoke(new object[] { string.Empty, innerException });
+            var result = (T)constructor.Invoke(new object[] { string.Empty, innerException });
 
             // Assert
-            Assert.That(exception.InnerException, Is.EqualTo(innerException));
+            Assert.That(result.InnerException, Is.EqualTo(innerException));
         }
 
         [Test]

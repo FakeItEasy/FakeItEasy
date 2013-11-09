@@ -117,7 +117,7 @@ namespace FakeItEasy.Configuration
             this.wherePredicates.Add(Tuple.Create(predicate, descriptionWriter));
         }
 
-        public abstract void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate);
+        public abstract void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate);
 
         protected abstract bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall);
 

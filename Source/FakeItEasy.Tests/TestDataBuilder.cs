@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     public abstract class TestDataBuilder<TSubject, TBuilder> where TBuilder : TestDataBuilder<TSubject, TBuilder>
     {
@@ -10,10 +11,10 @@
 
         public static TSubject Build(Action<TBuilder> buildAction)
         {
+            Guard.AgainstNull(buildAction, "buildAction");
+
             var builder = CreateBuilderInstance();
-
             buildAction.Invoke(builder);
-
             return builder.Build();
         }
 
@@ -22,8 +23,11 @@
             return Build(x => { });
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates", Justification = "Not required.")]
         public static implicit operator TSubject(TestDataBuilder<TSubject, TBuilder> builder)
         {
+            Guard.AgainstNull(builder, "builder");
+
             return builder.Build();
         }
 
@@ -31,6 +35,8 @@
 
         protected TBuilder Do(Action<TBuilder> action)
         {
+            Guard.AgainstNull(action, "action");
+
             action((TBuilder)this);
             return (TBuilder)this;
         }

@@ -8,6 +8,7 @@
     [TestFixture]
     public class ProxyGeneratorSelectorTests
     {
+#pragma warning disable 649
         [Fake]
         private DelegateProxyGenerator delegateProxyGenerator;
         
@@ -16,9 +17,10 @@
 
         [UnderTest]
         private ProxyGeneratorSelector selector;
+#pragma warning restore 649
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             Fake.InitializeFixture(this);
         }
@@ -66,7 +68,6 @@
             var fake = new Func<int>(() => 10);
             var invoke = fake.GetType().GetMethod("Invoke");
 
-            var expected = A.Dummy<ProxyGeneratorResult>();
             string reason = null;
             A.CallTo(() => this.delegateProxyGenerator.MethodCanBeInterceptedOnInstance(invoke, fake, out reason))
                 .Returns(true).AssignsOutAndRefParameters("reason");
@@ -87,7 +88,6 @@
             var fake = new object();
             var getHashCode = fake.GetType().GetMethod("GetHashCode");
 
-            var expected = A.Dummy<ProxyGeneratorResult>();
             string reason = null;
             A.CallTo(() => this.defaultProxyGenerator.MethodCanBeInterceptedOnInstance(getHashCode, fake, out reason))
                 .Returns(true).AssignsOutAndRefParameters("reason");

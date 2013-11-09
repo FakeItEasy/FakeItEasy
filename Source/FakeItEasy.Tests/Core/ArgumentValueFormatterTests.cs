@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.Core
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using FakeItEasy.Core;
     using NUnit.Framework;
@@ -13,6 +14,7 @@ namespace FakeItEasy.Tests.Core
         private ArgumentValueFormatter formatter;
         private List<IArgumentValueFormatter> registeredTypeFormatters;
 
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] specificCases = TestCases.Create(
             new
             {
@@ -33,12 +35,8 @@ namespace FakeItEasy.Tests.Core
                 Value = (object)A.Fake<IFoo>()
             }).AsTestCaseSource();
 
-        private interface ISomeInterface
-        {
-        }
-
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.registeredTypeFormatters = new List<IArgumentValueFormatter>();
 
@@ -96,7 +94,7 @@ namespace FakeItEasy.Tests.Core
         }
 
         [TestCaseSource("specificCases")]
-        public void Should_favour_most_specific_formatter_when_more_than_one_is_applicable(Type lessSpecific, Type moreSpecific, object value)
+        public void Should_favor_most_specific_formatter_when_more_than_one_is_applicable(Type lessSpecific, Type moreSpecific, object value)
         {
             // Arrange
             this.AddTypeFormatter(lessSpecific, "less specific");
@@ -161,16 +159,6 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => formatter.GetArgumentValueAsString(A<object>._)).Returns(formattedValue);
             A.CallTo(() => formatter.Priority).Returns(priority);
             this.registeredTypeFormatters.Add(formatter);
-        }
-
-        private class SomeInterfaceImplementor
-            : ISomeInterface
-        {
-        }
-
-        private class SomeInterfaceImplementorDescendant
-            : SomeInterfaceImplementor
-        {
         }
     }
 }

@@ -4,7 +4,7 @@ namespace FakeItEasy.Examples
 
     public class RaisingEvents
     {
-        public void Rasing_event_specifying_both_sender_and_event_arguments()
+        public void Raising_event_specifying_both_sender_and_event_arguments()
         {
             var widget = A.Fake<IWidget>();
             widget.WidgetBroke += Raise.With(widget, new WidgetEventArgs("widget name")).Now;

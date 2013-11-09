@@ -16,9 +16,9 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
-            this.rule = this.CreateRule();
+            this.rule = new TestableCallRule();
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
-        public void Apply_should_throw_when_OutAndRefParametersValues_length_differes_from_the_number_of_out_and_ref_parameters_in_the_call()
+        public void Apply_should_throw_when_OutAndRefParametersValues_length_differs_from_the_number_of_out_and_ref_parameters_in_the_call()
         {
             this.rule.OutAndRefParametersValues = new object[] { 1, "foo", "bar" };
             this.rule.Applicator = x => { };
@@ -100,7 +100,7 @@ namespace FakeItEasy.Tests.Configuration
 
         [TestCase(true, Result = true)]
         [TestCase(false, Result = false)]
-        public bool Apply_should_return_return_value_from_on_is_applicable_to_when_no_where_predicate_is_set(bool resultFromOnIsApplicableTo)
+        public bool Apply_should_return_return_value_from_on_is_applicable_to_when_a_where_predicate_is_not_set(bool resultFromOnIsApplicableTo)
         {
             // Arrange
             this.rule.ReturnValueFromOnIsApplicableTo = resultFromOnIsApplicableTo;
@@ -127,7 +127,7 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
-        public void Should_not_call_OnIsApplicableTo_when_any_where_predicate_returns_false()
+        public void Should_not_call_OnIsApplicableTo_when_a_where_predicate_returns_false()
         {
             // Arrange
             this.rule.ApplyWherePredicate(x => false, x => { });
@@ -204,11 +204,6 @@ namespace FakeItEasy.Tests.Configuration
   and description of second where";
 
             Assert.That(descriptionWriter.Builder.ToString(), Is.EqualTo(expectedDescription));
-        }
-
-        private TestableCallRule CreateRule()
-        {
-            return new TestableCallRule();
         }
 
         private class TestableCallRule

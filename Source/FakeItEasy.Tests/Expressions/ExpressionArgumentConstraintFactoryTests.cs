@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Core;
@@ -17,7 +18,7 @@
         private ExpressionArgumentConstraintFactory factory;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.trapper = A.Fake<IArgumentConstraintTrapper>();
 
@@ -41,7 +42,7 @@
         }
 
         [Test]
-        public void Should_return_equality_constraint_when_trapper_doesnt_produce_any_constraint()
+        public void Should_return_equality_constraint_when_trapper_does_not_produce_any_constraint()
         {
             // Arrange
             A.CallTo(() => this.trapper.TrapConstraints(A<Action>._))
@@ -59,9 +60,9 @@
         {
             // Arrange
             bool wasInvoked = false;
-            var invokation = FuncFromAction(() => wasInvoked = true);
+            var invocation = FuncFromAction(() => wasInvoked = true);
 
-            var expression = BuilderForExpression.GetBody(() => invokation());
+            var expression = BuilderForExpression.GetBody(() => invocation());
 
             // Act
             this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.Build(x => x.WithExpression(expression)));
@@ -79,9 +80,9 @@
         {
             // Arrange
             int invokedNumberOfTimes = 0;
-            var invokation = FuncFromAction(() => invokedNumberOfTimes++);
+            var invocation = FuncFromAction(() => invokedNumberOfTimes++);
 
-            var expression = BuilderForExpression.GetBody(() => invokation());
+            var expression = BuilderForExpression.GetBody(() => invocation());
 
             this.StubTrapperToReturnNoConstraints();
 
@@ -93,7 +94,7 @@
         }
 
         [Test]
-        public void Should_get_aggregate_constraint_when_multiple_items_are_passed_to_param_array()
+        public void Should_get_aggregate_constraint_when_multiple_items_are_passed_to_parameters_array()
         {
             // Arrange
             var constraintForFirst = A.CollectionOfFake<IArgumentConstraint>(1);
@@ -118,7 +119,7 @@
         }
 
         [Test]
-        public void Should_get_equality_constraint_when_array_is_passed_to_param_array()
+        public void Should_get_equality_constraint_when_array_is_passed_to_parameters_array()
         {
             // Arrange
             this.StubTrapperToReturnNoConstraints();
@@ -133,11 +134,10 @@
         }
 
         [Test]
-        public void Should_get_equality_constraint_when_null_is_passed_to_param_array()
+        public void Should_get_equality_constraint_when_null_is_passed_to_parameters_array()
         {
             // Arrange
             this.StubTrapperToReturnNoConstraints();
-            var someStrings = default(string[]);
             var expression = this.FromExpression(() => this.MethodWithParamArray(null));
 
             // Act
@@ -156,6 +156,7 @@
             };
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "args", Justification = "Required for testing.")]
         private void MethodWithParamArray(params string[] args)
         {
         }
@@ -179,6 +180,8 @@
 
             public void OnAfterCallIntercepted(ICompletedFakeObjectCall call, IFakeObjectCallRule ruleThatWasApplied)
             {
+                Guard.AgainstNull(call, "call");
+
                 if (call.Method.Name.Equals("TrapConstraints"))
                 {
                     call.GetArgument<Action>(0).Invoke();

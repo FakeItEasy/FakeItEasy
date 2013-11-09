@@ -1,30 +1,40 @@
 namespace FakeItEasy.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using NUnit.Framework;
     using NUnit.Framework.Constraints;
 
+    [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Disposed in teardown.")]
     [TestFixture]
     public class NullGuardedConstraintTests
     {
         private NullGuardedConstraint constraint;
         private MessageWriter writer;
 
-        public static void UnguardedStaticMethod(string a)
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "text", Justification = "Required for testing.")]
+        public static void UnguardedStaticMethod(string text)
         {
         }
 
-        public static void UnguardedMethodThatThrowsException(string a)
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "text", Justification = "Required for testing.")]
+        public static void UnguardedMethodThatThrowsException(string text)
         {
-            throw new ApplicationException();
+            throw new InvalidOperationException();
         }
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.constraint = new NullGuardedConstraint();
             this.writer = new TextMessageWriter();
+        }
+
+        [TearDown]
+        public void Teardown()
+        {
+            this.writer.Dispose();
         }
 
         [Test]
@@ -67,7 +77,7 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void Matches_should_return_ture_when_null_argument_is_valid_and_its_specified_as_null()
+        public void Matches_should_return_true_when_null_argument_is_valid_and_its_specified_as_null()
         {
             var call = ToExpression(() => this.FirstArgumentMayBeNull(null, "foo"));
             Assert.That(this.constraint.Matches(call), Is.True);
@@ -116,7 +126,7 @@ namespace FakeItEasy.Tests
         {
             this.WriteConstraintMessageToWriter(() => UnguardedMethodThatThrowsException("foo"));
 
-            Assert.That(this.writer.ToString(), Is.StringContaining("(<NULL>) threw unexpected System.ApplicationException."));
+            Assert.That(this.writer.ToString(), Is.StringContaining("(<NULL>) threw unexpected System.InvalidOperationException."));
         }
 
         [Test]
@@ -148,7 +158,7 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void Mathces_should_return_false_when_throwing_permutation_throws_unexpected_exception()
+        public void Matches_should_return_false_when_throwing_permutation_throws_unexpected_exception()
         {
             var call = ToExpression(() => UnguardedMethodThatThrowsException("foo"));
             Assert.That(this.constraint.Matches(call), Is.False);
@@ -191,14 +201,17 @@ namespace FakeItEasy.Tests
             this.constraint.WriteMessageTo(this.writer);
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "a", Justification = "Required for testing.")]
         private void UnguardedMethod(string a)
         {
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "a", Justification = "Required for testing.")]
         private void UnguardedMethodWithNullableArgument(int? a)
         {
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "a", Justification = "Required for testing.")]
         private void GuardedMethodWithValueTypeArgument(int a, string b)
         {
             if (b == null)
@@ -207,6 +220,8 @@ namespace FakeItEasy.Tests
             }
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "a", Justification = "Required for testing.")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "b", Justification = "Required for testing.")]
         private void UnguardedMethod(string a, string b)
         {
         }
@@ -227,6 +242,7 @@ namespace FakeItEasy.Tests
             }
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "Required for testing.")]
         private void GuardedWithWrongName(string a)
         {
             if (a == null)
@@ -235,6 +251,7 @@ namespace FakeItEasy.Tests
             }
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "nullIsValid", Justification = "Required for testing.")]
         private void FirstArgumentMayBeNull(string nullIsValid, string nullIsNotValid)
         {
             if (nullIsNotValid == null)
@@ -243,6 +260,7 @@ namespace FakeItEasy.Tests
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Created in an expression.")]
         private class ClassWithProperlyGuardedConstructor
         {
             public ClassWithProperlyGuardedConstructor(string a)
@@ -254,12 +272,16 @@ namespace FakeItEasy.Tests
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Created in an expression.")]
         private class ClassWithNonProperlyGuardedConstructor
         {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "a", Justification = "Required for testing.")]
             public ClassWithNonProperlyGuardedConstructor(string a)
             {
             }
 
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "a", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "b", Justification = "Required for testing.")]
             public ClassWithNonProperlyGuardedConstructor(string a, string b)
             {
             }

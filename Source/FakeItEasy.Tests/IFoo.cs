@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     public interface IFoo
     {
@@ -10,6 +11,7 @@ namespace FakeItEasy.Tests
 
         string ReadOnlyProperty { get; }
 
+        [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Required for testing.")]
         string WriteOnlyProperty { set; }
 
         IFoo ChildFoo { get; }

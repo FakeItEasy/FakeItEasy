@@ -28,7 +28,7 @@
         }
 
         [Test]
-        public void Should_load_configurations_from_executing_assemlby_using_default_container()
+        public void Should_load_configurations_from_executing_assembly_using_default_container()
         {
             // Arrange
 

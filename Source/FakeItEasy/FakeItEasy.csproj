@@ -62,7 +62,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
     <DebugSymbols>true</DebugSymbols>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
@@ -548,6 +548,7 @@
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\FakeItEasy.Dictionary.xml">
       <Link>Properties\FakeItEasy.Dictionary.xml</Link>
+      <SubType>Designer</SubType>
     </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

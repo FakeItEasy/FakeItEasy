@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.IntegrationTests
 {
+    using System.Diagnostics.CodeAnalysis;
     using Machine.Specifications;
 
     public class AssertingOnSetOnlyPropertiesSpecs
@@ -22,8 +23,10 @@
 
         public interface ISetOnly
         {
+            [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Required for testing.")]
             int MyProperty { set; }
 
+            [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Required for testing.")]
             bool MyProperty2 { set; }
         }
     }

@@ -10,7 +10,7 @@
         private IArgumentConstraint createdConstraint;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.createdConstraint = null;
             this.constraintManager = new DefaultArgumentConstraintManager<string>(x => this.createdConstraint = x);

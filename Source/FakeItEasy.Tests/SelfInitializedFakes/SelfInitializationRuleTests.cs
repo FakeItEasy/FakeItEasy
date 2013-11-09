@@ -11,7 +11,7 @@
         private ISelfInitializingFakeRecorder recorder;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.wrappedRule = A.Fake<IFakeObjectCallRule>();
             this.recorder = A.Fake<ISelfInitializingFakeRecorder>();

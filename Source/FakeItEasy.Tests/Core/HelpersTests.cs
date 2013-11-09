@@ -1,13 +1,9 @@
 ﻿namespace FakeItEasy.Tests.Core
 {
-    using System.Collections.Generic;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
     using NUnit.Framework;
 
     [TestFixture]
-    public class HelpersTests
-        : ConfigurableServiceLocatorTestBase
+    public class HelpersTests : ConfigurableServiceLocatorTestBase
     {
         [Test]
         public void GetDescription_should_render_method_name_and_empty_arguments_list_when_call_has_no_arguments()
@@ -41,52 +37,9 @@
             Assert.That(Helpers.GetDescription(call), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<string.Empty>, 123)"));
         }
 
-        protected override void OnSetUp()
-        {
-        }
-
         private static FakeCall CreateFakeCallToFooDotBar(object argument1, object argument2)
         {
-            var call = FakeCall.Create<IFoo>("Bar", new[] { typeof(object), typeof(object) }, new[] { argument1, argument2 });
-            return call;
-        }
-
-        private IEnumerable<IFakeObjectCall> GetStubCalls()
-        {
-            return new List<IFakeObjectCall> 
-            {
-                CreateFakeCallToFooDotBar("abc", 123),
-                CreateFakeCallToFooDotBar("def", 456)
-            };
-        }
-
-        private class Base
-        {
-            public virtual void BaseMethod()
-            {
-            }
-
-            public void BaseNonVirtualMethod()
-            {
-            }
-        }
-
-        private class Middle
-            : Base, IHideObjectMembers
-        {
-        }
-
-        private class Derived
-            : Middle
-        {
-            public override void BaseMethod()
-            {
-                base.BaseMethod();
-            }
-
-            public new void BaseNonVirtualMethod()
-            {
-            }
+            return FakeCall.Create<IFoo>("Bar", new[] { typeof(object), typeof(object) }, new[] { argument1, argument2 });
         }
     }
 }

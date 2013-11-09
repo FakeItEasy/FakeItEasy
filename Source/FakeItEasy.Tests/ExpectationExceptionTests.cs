@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests
     {
         protected override ExpectationException CreateException()
         {
-            return new ExpectationException("fo");
+            return new ExpectationException("foo");
         }
     }
 }

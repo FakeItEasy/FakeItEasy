@@ -20,13 +20,13 @@ namespace FakeItEasy.Tests.Configuration
         private IInterceptionAsserter interceptionAsserter;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
-            this.OnSetUp();
+            this.OnSetup();
         }
 
         [TearDown]
-        public void TearDown()
+        public void Teardown()
         {
             this.argumentToRuleFactory = null;
         }
@@ -206,7 +206,7 @@ namespace FakeItEasy.Tests.Configuration
                 "fake")).MustHaveHappened();
         }
 
-        protected virtual void OnSetUp()
+        protected virtual void OnSetup()
         {
             this.fakeObject = A.Fake<FakeManager>();
             this.rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());

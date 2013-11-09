@@ -7,26 +7,26 @@ namespace FakeItEasy.Tests
         private ServiceLocator replacedServiceLocator;
         
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {            
             this.replacedServiceLocator = ServiceLocator.Current;
             ServiceLocator.Current = A.Fake<ServiceLocator>(x => x.Wrapping(ServiceLocator.Current));
 
-            this.OnSetUp();
+            this.OnSetup();
         }
 
         [TearDown]
-        public void TearDown()
+        public void Teardown()
         {
             ServiceLocator.Current = this.replacedServiceLocator;
-            this.OnTearDown();
+            this.OnTeardown();
         }
 
-        protected virtual void OnSetUp()
+        protected virtual void OnSetup()
         {
         }
 
-        protected virtual void OnTearDown()
+        protected virtual void OnTeardown()
         {
         }
 

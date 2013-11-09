@@ -11,10 +11,7 @@ namespace FakeItEasy.Tests
 
         protected virtual Type FacadeType
         {
-            get
-            {
-                return Type.GetType(this.FacadedType.FullName + "Facade, " + this.FacadedType.Assembly.FullName, true);
-            }
+            get { return Type.GetType(this.FacadedType.FullName + "Facade, " + this.FacadedType.Assembly.FullName, true); }
         }
 
         [Test]

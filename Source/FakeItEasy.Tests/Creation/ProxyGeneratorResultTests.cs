@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
 
             // Act
-            var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new Exception("exception message"));
+            var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new InvalidOperationException("exception message"));
 
             // Assert
             result.ProxyWasSuccessfullyGenerated.Should().BeFalse();
@@ -62,7 +62,7 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
 
             // Act
-            var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new Exception("exception message"));
+            var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new InvalidOperationException("exception message"));
 
             // Assert
             result.ReasonForFailure.Should().Be("reason\r\nAn exception was caught during this call. Its message was:\r\nexception message");

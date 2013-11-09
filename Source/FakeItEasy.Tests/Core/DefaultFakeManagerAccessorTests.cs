@@ -12,7 +12,7 @@ namespace FakeItEasy.Tests.Core
         private FakeManager managerToReturnFromFactory;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.managerFactory = () => this.managerToReturnFromFactory;
             this.managerToReturnFromFactory = A.Fake<FakeManager>();

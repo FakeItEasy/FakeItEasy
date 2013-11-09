@@ -3,7 +3,10 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -35,7 +38,11 @@
         [Test]
         public void Constructor_should_throw_when_number_of_arguments_does_not_match_number_of_argument_names()
         {
-            Assert.Throws<ArgumentException>(() => new ArgumentCollection(new object[] { 1, 2 }, new[] { "first", "second", "third" }));
+            // act
+            var exception = Record.Exception(() => new ArgumentCollection(new object[] { 1, 2 }, new[] { "first", "second", "third" }));
+
+            // assert
+            exception.Should().BeOfType<ArgumentException>();
         }
 
         [Test]
@@ -114,7 +121,7 @@
         private ArgumentCollection CreateFakeArgumentList(params object[] arguments)
         {
             return this.CreateFakeArgumentList(
-                Enumerable.Range(0, arguments.Length).Select(x => x.ToString()).ToArray(),
+                Enumerable.Range(0, arguments.Length).Select(x => x.ToString(CultureInfo.CurrentCulture)).ToArray(),
                 arguments);
         }
     }

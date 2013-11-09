@@ -1,7 +1,9 @@
 ﻿namespace FakeItEasy.Tests
 {
-    [System.AttributeUsage(System.AttributeTargets.Class)]
-    public class ForTestAttribute : System.Attribute
+    using System;
+
+    [AttributeUsage(AttributeTargets.Class)]
+    public sealed class ForTestAttribute : Attribute
     {
     }
 }

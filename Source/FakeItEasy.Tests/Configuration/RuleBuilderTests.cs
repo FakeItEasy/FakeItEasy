@@ -12,11 +12,13 @@
         private RuleBuilder builder;
         private FakeManager fakeManager;
 
+#pragma warning disable 649
         [Fake]
         private IFakeAsserter asserter;
 
         [Fake]
         private BuildableCallRule ruleProducedByFactory;
+#pragma warning restore 649
 
         private IFakeObjectCallRuleWithDescription RuleWithDescription
         {
@@ -24,9 +26,9 @@
         }
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
-            this.OnSetUp();
+            this.OnSetup();
         }
 
         [Test]
@@ -55,8 +57,6 @@
         [Test]
         public void Returns_with_call_function_applies_value_returned_from_function()
         {
-            var config = this.CreateTestableReturnConfiguration();
-
             var returnConfig = this.CreateTestableReturnConfiguration();
             var call = A.Fake<IInterceptedFakeObjectCall>();
             A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(
@@ -161,7 +161,7 @@
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
 
-            var result = returnConfig.Throws(_ => new Exception()) as RuleBuilder;
+            var result = returnConfig.Throws(_ => new InvalidOperationException()) as RuleBuilder;
 
             Assert.That(result, Is.EqualTo(this.builder));
         }
@@ -176,10 +176,10 @@
 
         [Test]
         public void NumberOfTimes_throws_when_number_of_times_is_not_a_positive_integer(
-            [Values(0, -1, -100, int.MinValue)]int numberOftimes)
+            [Values(0, -1, -100, int.MinValue)]int numberOfTimes)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                this.builder.NumberOfTimes(numberOftimes));
+                this.builder.NumberOfTimes(numberOfTimes));
         }
 
         [Test]
@@ -479,7 +479,7 @@
             Assert.That(returnConfig.Where(x => true, x => { }), Is.SameAs(returnConfig));
         }
 
-        protected virtual void OnSetUp()
+        protected virtual void OnSetup()
         {
             Fake.InitializeFixture(this);
 

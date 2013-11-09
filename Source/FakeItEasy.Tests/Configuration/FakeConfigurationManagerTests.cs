@@ -21,9 +21,9 @@ namespace FakeItEasy.Tests.Configuration
         private IInterceptionAsserter interceptionAsserter;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
-            this.OnSetUp();
+            this.OnSetup();
         }
 
         // Callto
@@ -221,7 +221,6 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var fake = A.Fake<IFoo>();
-            var manager = Fake.GetFakeManager(fake);
             var expectedConfiguration = A.Dummy<IAnyCallConfigurationWithNoReturnTypeSpecified>();
             A.CallTo(() => this.configurationFactory.CreateAnyCallConfiguration(
                 A<FakeManager>._, A<AnyCallCallRule>._))
@@ -248,7 +247,7 @@ namespace FakeItEasy.Tests.Configuration
             Assert.That(manager.AllUserRules.Single().Rule, Is.InstanceOf<AnyCallCallRule>());
         }
 
-        private void OnSetUp()
+        private void OnSetup()
         {
             this.configurationFactory = A.Fake<IConfigurationFactory>();
             this.expressionParser = A.Fake<IExpressionParser>();

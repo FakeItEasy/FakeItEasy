@@ -9,6 +9,7 @@ namespace FakeItEasy.Tests.Core
     [TestFixture]
     public class DefaultFixtureInitializerTests
     {
+#pragma warning disable 649
         [UnderTest]
         private DefaultFixtureInitializer initializer;
 
@@ -20,13 +21,14 @@ namespace FakeItEasy.Tests.Core
 
         [Fake]
         private ISutInitializer sutInitializer;
+#pragma warning restore 649
 
         private FixtureType fixture;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
-            this.OnSetUp();
+            this.OnSetup();
         }
 
         [Test]
@@ -110,32 +112,31 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => this.sutInitializer.CreateSut(A<Type>._, A<Action<Type, object>>._))
                 .Returns(sut);
 
-            var fixture = new SutFixture();
+            var sutFixture = new SutFixture();
 
             // Act
-            this.initializer.InitializeFakes(fixture);
+            this.initializer.InitializeFakes(sutFixture);
 
             // Assert
-            Assert.That(fixture.Sut, Is.SameAs(sut));
+            Assert.That(sutFixture.Sut, Is.SameAs(sut));
         }
 
         [Test]
-        public void Should_set_fake_from_sut_initializer_call_back_when_available()
+        public void Should_set_fake_from_sut_initializer_callback_when_available()
         {
             // Arrange
-            var sut = A.Dummy<Sut>();
             var fake = A.Fake<IFoo>();
 
             A.CallTo(() => this.sutInitializer.CreateSut(A<Type>._, A<Action<Type, object>>._))
                 .Invokes(x => x.GetArgument<Action<Type, object>>(1).Invoke(typeof(IFoo), fake));
 
-            var fixture = new SutFixture();
+            var sutFixture = new SutFixture();
 
             // Act
-            this.initializer.InitializeFakes(fixture);
+            this.initializer.InitializeFakes(sutFixture);
 
             // Assert
-            Assert.That(fixture.Foo, Is.SameAs(fake));
+            Assert.That(sutFixture.Foo, Is.SameAs(fake));
         }
 
         [Test]
@@ -151,7 +152,7 @@ namespace FakeItEasy.Tests.Core
                 Throws.InstanceOf<InvalidOperationException>().With.Message.EqualTo("A fake fixture can only contain one member marked \"under test\"."));
         }
 
-        protected virtual void OnSetUp()
+        protected virtual void OnSetup()
         {
             Fake.InitializeFixture(this);
 
@@ -162,6 +163,7 @@ namespace FakeItEasy.Tests.Core
 
         public class Sut
         {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "foo", Justification = "Required for testing.")]
             public Sut(IFoo foo)
             {
             }
@@ -187,29 +189,34 @@ namespace FakeItEasy.Tests.Core
 
         public class FixtureType
         {
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Required for testing.")]
             [Fake]
-            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Testing only.")]
             public IFoo PublicFakeField;
 
-            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Testing only.")]
+            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Required for testing.")]
             public IFoo NonFakeField;
 
+#pragma warning disable 649
             [Fake]
             private IFoo privateFakeField;
+#pragma warning restore 649
 
             [Fake]
             public IFoo FooProperty { get; set; }
 
             public IFoo NonFakedProperty { get; set; }
 
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Required for testing.")]
             [Fake]
             private IFoo PriveFakeProperty { get; set; }
 
+            [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Required for testing.")]
             public IFoo GetValueOfPrivateFakeProperty()
             {
                 return this.PriveFakeProperty;
             }
 
+            [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Required for testing.")]
             public IFoo GetValueOfPrivateFakeField()
             {
                 return this.privateFakeField;

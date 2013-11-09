@@ -9,6 +9,7 @@ namespace FakeItEasy.Tests.Configuration
     [TestFixture]
     internal class AnyCallConfigurationTests : AutoInitializedFixture
     {
+#pragma warning disable 649
         [Fake]
         private IConfigurationFactory configurationFactory;
 
@@ -20,6 +21,7 @@ namespace FakeItEasy.Tests.Configuration
 
         [UnderTest]
         private AnyCallConfiguration configuration;
+#pragma warning restore 649
 
         [Test]
         public void WithReturnType_should_return_configuration_from_factory()
@@ -110,28 +112,28 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var factoryConfig = this.StubVoidConfig();
-            Action<IFakeObjectCall> invokation = x => { };
+            Action<IFakeObjectCall> invocation = x => { };
 
             // Act
-            this.configuration.Invokes(invokation);
+            this.configuration.Invokes(invocation);
 
             // Assert
-            A.CallTo(() => factoryConfig.Invokes(invokation)).MustHaveHappened();
+            A.CallTo(() => factoryConfig.Invokes(invocation)).MustHaveHappened();
         }
 
         [Test]
         public void Invokes_returns_configuration_produced_by_factory()
         {
             // Arrange
-            Action<IFakeObjectCall> invokation = x => { };
+            Action<IFakeObjectCall> invocation = x => { };
 
             var factoryConfig = this.StubVoidConfig();
             var invokesConfig = A.Fake<IVoidConfiguration>();
 
-            A.CallTo(() => factoryConfig.Invokes(invokation)).Returns(invokesConfig);
+            A.CallTo(() => factoryConfig.Invokes(invocation)).Returns(invokesConfig);
 
             // Act
-            var result = this.configuration.Invokes(invokation);
+            var result = this.configuration.Invokes(invocation);
 
             // Assert
             Assert.That(result, Is.SameAs(invokesConfig));

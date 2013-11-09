@@ -31,7 +31,7 @@
         public void ConfigureFakeObject_should_do_nothing()
         {
             var fake = A.Fake<IFoo>();
-            Any.CallTo(fake).Throws(new Exception());
+            Any.CallTo(fake).Throws(new InvalidOperationException());
 
             var container = new NullFakeObjectContainer();
 

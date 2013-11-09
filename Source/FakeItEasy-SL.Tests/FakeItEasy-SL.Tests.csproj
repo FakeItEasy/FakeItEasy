@@ -9,7 +9,7 @@
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FakeItEasy_SL.Tests</RootNamespace>
+    <RootNamespace>FakeItEasy.Tests</RootNamespace>
     <AssemblyName>FakeItEasy-SL.Tests</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
-    <CodeAnalysisRuleSet>..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,7 +48,7 @@
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
     <DebugSymbols>true</DebugSymbols>
@@ -67,8 +67,10 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.Tests.cs">
+      <Link>Properties\CommonAssemblyInfo.Tests.cs</Link>
+    </Compile>
     <Compile Include="Examples.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -78,6 +80,15 @@
       <Project>{E0779E7F-8E25-4367-A7C1-57FCC91AF2FD}</Project>
       <Name>FakeItEasy-SL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\FakeItEasy.Dictionary.Tests.xml">
+      <Link>Properties\FakeItEasy.Dictionary.Tests.xml</Link>
+    </CodeAnalysisDictionary>
+    <CodeAnalysisDictionary Include="..\FakeItEasy.Dictionary.xml">
+      <Link>Properties\FakeItEasy.Dictionary.xml</Link>
+    </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

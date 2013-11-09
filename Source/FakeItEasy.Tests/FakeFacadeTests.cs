@@ -13,7 +13,7 @@ namespace FakeItEasy.Tests
         private FakeFacade facade;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.managerAccessor = A.Fake<IFakeManagerAccessor>();
             this.fakeScopeFactory = A.Fake<IFakeScopeFactory>();
@@ -93,7 +93,7 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void GetCalls_should_return_calls_from_manager_recieved_from_accessor()
+        public void GetCalls_should_return_calls_from_manager_received_from_accessor()
         {
             // Arrange
             var fake = A.Dummy<object>();

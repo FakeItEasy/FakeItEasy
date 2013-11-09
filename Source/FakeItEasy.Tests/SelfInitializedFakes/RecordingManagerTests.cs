@@ -14,25 +14,18 @@
         private ICallStorage callStorage;
         private List<CallData> recordedCalls;
 
-        public interface ITypeWithOutAndRef
-        {
-            int Foo(int a, string b, out int c, ref string d);
-
-            int Bar(int a, string b, out int c, ref string d);
-        }
-
         private MethodInfo TypeWithOutAndRefFooMethod
         {
-            get { return typeof(ITypeWithOutAndRef).GetMethod("Foo"); }
+            get { return typeof(IOutputAndRef).GetMethod("Foo"); }
         }
 
         private MethodInfo TypeWithOutAndRefBarMethod
         {
-            get { return typeof(ITypeWithOutAndRef).GetMethod("Bar"); }
+            get { return typeof(IOutputAndRef).GetMethod("Bar"); }
         }
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.recordedCalls = new List<CallData>();
 

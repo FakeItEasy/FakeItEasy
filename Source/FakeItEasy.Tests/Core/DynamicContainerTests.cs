@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using NUnit.Framework;
 
     [TestFixture]
@@ -13,7 +14,7 @@
         private IDisposable scope;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.scope = Fake.CreateScope(new NullFakeObjectContainer());
 
@@ -22,7 +23,7 @@
         }
 
         [TearDown]
-        public void TearDown()
+        public void Teardown()
         {
             this.scope.Dispose();
         }
@@ -53,7 +54,7 @@
         [Test]
         public void ConfigureFake_should_apply_configuration_for_registered_configuration()
         {
-            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyDefintion());
+            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyDefinition());
 
             var container = this.CreateContainer();
 
@@ -67,13 +68,12 @@
         [Test]
         public void ConfigureFake_should_do_nothing_when_fake_type_has_no_configuration_specified()
         {
-            var container = this.CreateContainer();
-
-            var fake = A.Fake<TypeWithDummyDefinition>();
+            this.CreateContainer();
+            A.Fake<TypeWithDummyDefinition>();
         }
 
         [Test]
-        public void Should_not_fail_when_more_than_one_defintion_exists_for_a_given_type()
+        public void Should_not_fail_when_more_than_one_definition_exists_for_a_given_type()
         {
             // Arrange
             this.availableDummyDefinitions.Add(new DummyDefinitionForTypeWithDefinition());
@@ -93,8 +93,8 @@
         public void Should_not_fail_when_more_than_one_configurator_exists_for_a_given_type()
         {
             // Arrange
-            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyDefintion());
-            this.availableConfigurers.Add(new DuplicateConfigurationForTypeWithDummyDefintion());
+            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyDefinition());
+            this.availableConfigurers.Add(new DuplicateConfigurationForTypeWithDummyDefinition());
 
             // Act
 
@@ -108,7 +108,7 @@
             return new DynamicContainer(this.availableDummyDefinitions, this.availableConfigurers);
         }
 
-        public class ConfigurationForTypeWithDummyDefintion : FakeConfigurator<TypeWithDummyDefinition>
+        public class ConfigurationForTypeWithDummyDefinition : FakeConfigurator<TypeWithDummyDefinition>
         {
             public override void ConfigureFake(TypeWithDummyDefinition fakeObject)
             {
@@ -116,7 +116,7 @@
             }
         }
 
-        public class DuplicateConfigurationForTypeWithDummyDefintion : FakeConfigurator<TypeWithDummyDefinition>
+        public class DuplicateConfigurationForTypeWithDummyDefinition : FakeConfigurator<TypeWithDummyDefinition>
         {
             public override void ConfigureFake(TypeWithDummyDefinition fakeObject)
             {
@@ -124,8 +124,7 @@
             }
         }
 
-        public class DummyDefinitionForTypeWithDefinition
-            : DummyDefinition<TypeWithDummyDefinition>
+        public class DummyDefinitionForTypeWithDefinition : DummyDefinition<TypeWithDummyDefinition>
         {
             protected override TypeWithDummyDefinition CreateDummy()
             {
@@ -133,8 +132,7 @@
             }
         }
 
-        public class DuplicateDummyDefinitionForTypeWithDefinition
-            : DummyDefinition<TypeWithDummyDefinition>
+        public class DuplicateDummyDefinitionForTypeWithDefinition : DummyDefinition<TypeWithDummyDefinition>
         {
             protected override TypeWithDummyDefinition CreateDummy()
             {
@@ -146,6 +144,7 @@
         {
             public virtual bool WasConfigured { get; set; }
 
+            [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for testing.")]
             public void Bar()
             {
                 throw new NotImplementedException();

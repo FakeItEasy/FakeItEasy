@@ -2,6 +2,7 @@ namespace FakeItEasy.IntegrationTests
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection.Emit;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -53,14 +54,14 @@ namespace FakeItEasy.IntegrationTests
             builder.Add(attribute);
 
             // Act
-            var fake = A.Fake<IFooAttribute>(a => a.WithAdditionalAttributes(builder));
+            var fake = A.Fake<IEmpty>(a => a.WithAdditionalAttributes(builder));
 
             // Assert
             Assert.That(fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Length, Is.EqualTo(1));
         }
 
         [Test]
-        public void Additional_attributes_should_not_carry_over_to_the_next_fake()
+        public void Additional_attributes_should_not_be_added_to_the_next_fake()
         {
             // Arrange
             var types = new Type[0];
@@ -69,7 +70,7 @@ namespace FakeItEasy.IntegrationTests
             var attribute = new CustomAttributeBuilder(constructor, list);
             var builder = new List<CustomAttributeBuilder>();
             builder.Add(attribute);
-            var fake = A.Fake<IFooAttribute>(a => a.WithAdditionalAttributes(builder));
+            A.Fake<IEmpty>(a => a.WithAdditionalAttributes(builder));
 
             // Act
             var secondFake = A.Fake<IFormattable>();
@@ -89,7 +90,7 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
-        public void ErrorMessage_when_type_can_not_be_faked_should_specify_non_resolvable_constructor_arguments()
+        public void ErrorMessage_when_type_cannot_be_faked_should_specify_non_resolvable_constructor_arguments()
         {
             using (Fake.CreateScope())
             {
@@ -119,7 +120,7 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
-        public void ErrorMessage_when_configuring_void_call_that_can_not_be_configured_should_be_correct()
+        public void ErrorMessage_when_configuring_void_call_that_cannot_be_configured_should_be_correct()
         {
             // Arrange
             var fake = A.Fake<TypeWithNonConfigurableMethod>();
@@ -134,7 +135,7 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
-        public void ErrorMessage_when_configuring_function_call_that_can_not_be_configured_should_be_correct()
+        public void ErrorMessage_when_configuring_function_call_that_cannot_be_configured_should_be_correct()
         {
             // Arrange
             var fake = A.Fake<TypeWithNonConfigurableMethod>();
@@ -193,25 +194,26 @@ namespace FakeItEasy.IntegrationTests
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-
-            // Act
-            A.CallTo(() => foo.Baz()).Throws(new Exception());
+            A.CallTo(() => foo.Baz()).Throws(new InvalidOperationException());
             A.CallTo(() => foo.Baz()).ReturnsNextFromSequence(1, 2);
 
             foo.Baz();
             foo.Baz();
 
+            // Act
             // Assert
-            Assert.Throws<Exception>(() =>
-                foo.Baz());
+            Assert.Throws<InvalidOperationException>(() => foo.Baz());
         }
 
         public class NonResolvableType
         {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "foo", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "bar", Justification = "Required for testing.")]
             public NonResolvableType(IFoo foo, NoInstanceType bar)
             {
             }
 
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "bar", Justification = "Required for testing.")]
             protected NonResolvableType(NoInstanceType bar)
             {
             }
@@ -233,10 +235,14 @@ namespace FakeItEasy.IntegrationTests
 
         public class TypeWithNonConfigurableMethod
         {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "otherArgument", Justification = "Required for testing.")]
             public void NonVirtualVoidMethod(string argument, int otherArgument)
             {
             }
 
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "otherArgument", Justification = "Required for testing.")]
             public int NonVirtualFunction(string argument, int otherArgument)
             {
                 return 1;

@@ -14,10 +14,10 @@
     {
         private CallExpressionParser parser;
 
-        public delegate int IntFunction(string argument1, object argument2);
+        private delegate int IntFunction(string argument1, object argument2);
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.parser = new CallExpressionParser();
         }
@@ -121,7 +121,7 @@
         }
 
         [Test]
-        public void Should_return_parsed_expresssion_with_arguments_set_when_calling_indexed_property_getter()
+        public void Should_return_parsed_expression_with_arguments_set_when_calling_indexed_property_getter()
         {
             // Arrange
             var foo = A.Fake<IList<string>>();
@@ -152,7 +152,7 @@
         }
 
         [Test]
-        public void Should_return_parsed_expresssion_with_argument_names_set_when_calling_indexed_property_getter()
+        public void Should_return_parsed_expression_with_argument_names_set_when_calling_indexed_property_getter()
         {
             // Arrange
             var foo = A.Fake<IList<string>>();
@@ -166,7 +166,7 @@
         }
 
         [Test]
-        public void Should_throw_when_expression_is_not_method_or_property_getter_or_invokation()
+        public void Should_throw_when_expression_is_not_method_or_property_getter_or_invocation()
         {
             // Arrange
             var instance = new TypeWithPublicField();
@@ -181,7 +181,7 @@
         }
 
         [Test]
-        public void Should_parse_invokation_expression_correctly()
+        public void Should_parse_invocation_expression_correctly()
         {
             // Arrange
             var d = new IntFunction((x, y) => 10);
@@ -224,7 +224,7 @@
 
         private class TypeWithPublicField
         {
-            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Testing only.")]
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Required for testing.")]
             public int PublicField = 1;
         }
     }

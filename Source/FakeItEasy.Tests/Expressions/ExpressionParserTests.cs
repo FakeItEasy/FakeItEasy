@@ -12,7 +12,7 @@ namespace FakeItEasy.Tests.Expressions
         private ExpressionParser parser;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.parser = new ExpressionParser(new CallExpressionParser());
         }

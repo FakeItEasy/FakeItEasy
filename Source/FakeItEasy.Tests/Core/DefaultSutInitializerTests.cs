@@ -9,7 +9,11 @@
     [TestFixture]
     public class DefaultSutInitializerTests
     {
-        [Fake] private IFakeAndDummyManager fakeManager;
+#pragma warning disable 649
+        [Fake]
+        private IFakeAndDummyManager fakeManager;
+#pragma warning restore 649
+
         private DefaultSutInitializer sutInitializer;
 
         private static IsFakeConstraint IsFake
@@ -18,12 +22,12 @@
         }
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             Fake.InitializeFixture(this);
 
             this.sutInitializer = new DefaultSutInitializer(this.fakeManager);
-        }       
+        }
 
         [Test]
         public void Should_produce_sut_with_fakes_for_all_dependencies()
@@ -34,11 +38,11 @@
 
             // Act
             var sut = (TypeWithFakeableDependencies)this.sutInitializer.CreateSut(typeof(TypeWithFakeableDependencies), (x, y) => { });
-            
+
             // Assert
             Assert.That(sut.FooDependency, IsFake);
             Assert.That(sut.FooDependency2, IsFake);
-            Assert.That(sut.ObjectDependency, IsFake);
+            Assert.That(sut.Dependency, IsFake);
         }
 
         [Test]
@@ -63,7 +67,7 @@
             this.StubFakeManagerWithFake<object>();
 
             // Act
-            var sut = (TypeWithFakeableDependencies)this.sutInitializer.CreateSut(typeof(TypeWithFakeableDependencies), (x, y) => { });
+            this.sutInitializer.CreateSut(typeof(TypeWithFakeableDependencies), (x, y) => { });
 
             // Assert
             A.CallTo(() => this.fakeManager.CreateFake(A<Type>._, A<FakeOptions>.That.Not.IsEmpty())).MustNotHaveHappened();
@@ -83,7 +87,7 @@
 
             // Assert
             Assert.That(createdFakes[typeof(IFoo)], Is.SameAs(sut.FooDependency));
-            Assert.That(createdFakes[typeof(object)], Is.SameAs(sut.ObjectDependency));
+            Assert.That(createdFakes[typeof(object)], Is.SameAs(sut.Dependency));
         }
 
         private void StubFakeManagerWithFake<T>()
@@ -99,19 +103,19 @@
 
             public TypeWithFakeableDependencies(
                 IFoo fooDependency,
-                IFoo fooDependency2, 
-                object objectDependency)
+                IFoo fooDependency2,
+                object dependency)
             {
                 this.FooDependency = fooDependency;
                 this.FooDependency2 = fooDependency2;
-                this.ObjectDependency = objectDependency;
+                this.Dependency = dependency;
             }
 
             public IFoo FooDependency { get; set; }
 
             public IFoo FooDependency2 { get; set; }
 
-            public object ObjectDependency { get; set; }
+            public object Dependency { get; set; }
         }
     }
 }
