@@ -15,7 +15,7 @@
         private DelegateProxyGenerator generator;
 #pragma warning restore 649
 
-        private delegate void DelegateWithoutValue(out string result);
+        private delegate void DelegateWithOutputValue(out string result);
 
         [SetUp]
         public void Setup()
@@ -136,7 +136,7 @@
         public void Should_return_proxy_where_out_parameter_can_be_set()
         {
             // Arrange
-            var proxy = this.GenerateProxy<DelegateWithoutValue>(x =>
+            var proxy = this.GenerateProxy<DelegateWithOutputValue>(x =>
                 {
                     x.SetArgumentValue(0, "Foo");
                 });
