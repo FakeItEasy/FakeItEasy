@@ -77,7 +77,9 @@
     <Compile Include="..\CommonAssemblyInfo.Tests.cs">
       <Link>Properties\CommonAssemblyInfo.Tests.cs</Link>
     </Compile>
+    <Compile Include="ApplicationDirectoryAssembliesTypeCatalogueTests.cs" />
     <Compile Include="DoubleArgumentValueFormatter.cs" />
+    <Compile Include="FakingClassesTests.cs" />
     <Compile Include="StringArgumentConstraints.cs" />
     <Compile Include="AssertionsTests.cs" />
     <Compile Include="Assertions\ExceptionMessagesTests.cs" />

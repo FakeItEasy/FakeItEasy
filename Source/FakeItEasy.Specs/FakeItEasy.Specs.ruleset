@@ -3,6 +3,7 @@
   <Include Path="..\..\..\..\..\..\code\personal\fakeiteasy\source\fakeiteasy.ruleset" Action="Default" />
   <Include Path="..\..\..\..\..\..\code\personal\fakeiteasy\source\fakeiteasy.tests.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1016" Action="None" />
     <Rule Id="CA1034" Action="None" />
     <Rule Id="CA1303" Action="None" />
     <Rule Id="CA1707" Action="None" />

@@ -39,8 +39,7 @@
             Assert.That(guid, Is.EqualTo(new Guid("{1BBF2162-93CC-476b-BA8E-B52C4A5FEDEC}")));
         }
 
-        public class GuidDefinition
-            : DummyDefinition<Guid>
+        public class GuidDefinition : DummyDefinition<Guid>
         {
             protected override Guid CreateDummy()
             {
@@ -48,8 +47,7 @@
             }
         }
 
-        private class DictionaryContainer
-            : IFakeObjectContainer
+        private class DictionaryContainer : IFakeObjectContainer
         {
             public IDictionary<Type, object> RegisteredTypes { get; set; }
 
