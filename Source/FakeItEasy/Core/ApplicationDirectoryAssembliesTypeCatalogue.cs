@@ -76,6 +76,11 @@
                     // The assembly may not be managed, so move on.
                     continue;
                 }
+                catch (Exception e)
+                {
+                    WarnFailedToLoadAssembly(assemblyFile, e);
+                    continue;
+                }
 
                 if (!ReferencesFakeItEasy(assembly))
                 {
@@ -101,6 +106,20 @@
         private static bool ReferencesFakeItEasy(Assembly inspectedAssembly)
         {
             return inspectedAssembly.GetReferencedAssemblies().Any(r => r.FullName == FakeItEasyAssembly.FullName);
+        }
+
+        private static void WarnFailedToLoadAssembly(string assemblyFile, Exception e)
+        {
+            var outputWriter = new DefaultOutputWriter(Console.Write);
+            outputWriter.Write(
+                "Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.",
+                assemblyFile);
+            outputWriter.WriteLine();
+            using (outputWriter.Indent())
+            {
+                outputWriter.Write(e.Message);
+                outputWriter.WriteLine();
+            }
         }
     }
 }

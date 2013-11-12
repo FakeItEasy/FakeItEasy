@@ -6,6 +6,7 @@ namespace FakeItEasy.IntegrationTests
     using System.Linq;
     using System.Runtime.Serialization.Formatters.Binary;
     using Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -53,6 +54,45 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
+        public void Should_warn_of_duplicate_input_assemblies_with_different_paths()
+        {
+            string actualMessage;
+
+            // Arrange
+            var originalDirectory = Environment.CurrentDirectory;
+            var originalStandardOut = Console.Out;
+
+            try
+            {
+                // FakeItEasy.IntegrationTests.External has copies of many of the assemblies used in these
+                // tests as well. By changing the working directory before creating the
+                // ApplicationDirectoryAssembliesTypeCatalogue, the scanning will get those assemblies
+                // from the current AppDomain as well as the other path.
+                Environment.CurrentDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\FakeItEasy.IntegrationTests.External\bin\Debug");
+                using (var messageStream = new MemoryStream())
+                using (var messageWriter = new StreamWriter(messageStream))
+                {
+                    Console.SetOut(messageWriter);
+
+                    // Act
+                    new ApplicationDirectoryAssembliesTypeCatalogue();
+                    messageWriter.Flush();
+                    actualMessage = messageWriter.Encoding.GetString(messageStream.GetBuffer());
+                }
+            }
+            finally
+            {
+                Console.SetOut(originalStandardOut);
+                Environment.CurrentDirectory = originalDirectory;
+            }
+
+            // Assert
+            const string ExpectedMessagePattern = @"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\Debug\FakeItEasy.IntegrationTests.External.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
+  API restriction: The assembly '*FakeItEasy.IntegrationTests.External\bin\Debug\FakeItEasy.IntegrationTests.External.dll' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain.*";
+            actualMessage.Should().Match(ExpectedMessagePattern);
+        }
+
+        [Test]
         public void Should_be_able_to_get_types_from_fakeiteasy()
         {
             // Arrange
@@ -60,7 +100,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(A)));
+            this.catalogue.GetAvailableTypes().Should().Contain(typeof(A));
         }
 
         [Test]
@@ -71,7 +111,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes(), Has.Some.EqualTo(typeof(DoubleValueFormatter)));
+            this.catalogue.GetAvailableTypes().Should().Contain(typeof(DoubleValueFormatter));
         }
 
         [Test]
@@ -82,7 +122,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes().Select(type => type.FullName), Has.Some.EqualTo("FakeItEasy.IntegrationTests.External.GuidValueFormatter"));
+            this.catalogue.GetAvailableTypes().Select(type => type.FullName).Should().Contain("FakeItEasy.IntegrationTests.External.GuidValueFormatter");
         }
 
         [Test]
@@ -93,7 +133,7 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(this.catalogue.GetAvailableTypes(), Has.None.EqualTo(typeof(string)));
+            this.catalogue.GetAvailableTypes().Should().NotContain(typeof(string));
         }
     }
 }
