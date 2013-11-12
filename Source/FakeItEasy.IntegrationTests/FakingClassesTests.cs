@@ -76,6 +76,7 @@ namespace FakeItEasy.IntegrationTests
 
                     // Act
                     new ApplicationDirectoryAssembliesTypeCatalogue();
+                    messageWriter.Flush();
                     actualMessage = messageWriter.Encoding.GetString(messageStream.GetBuffer());
                 }
             }
@@ -86,8 +87,8 @@ namespace FakeItEasy.IntegrationTests
             }
 
             // Assert
-            const string ExpectedMessagePattern = @"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\Debug\FakeItEasy.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
-  API restriction: The assembly '*FakeItEasy.IntegrationTests.External\bin\Debug\FakeItEasy.dll' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain.*";
+            const string ExpectedMessagePattern = @"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\Debug\FakeItEasy.IntegrationTests.External.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
+  API restriction: The assembly '*FakeItEasy.IntegrationTests.External\bin\Debug\FakeItEasy.IntegrationTests.External.dll' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain.*";
             actualMessage.Should().Match(ExpectedMessagePattern);
         }
 
