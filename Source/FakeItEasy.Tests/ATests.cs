@@ -6,17 +6,10 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class ATests
-        : ConfigurableServiceLocatorTestBase
+    public class ATests : ConfigurableServiceLocatorTestBase
     {
         private IFakeCreatorFacade fakeCreator;
         private IDisposable scope;
-
-        [TearDown]
-        public void TearDown()
-        {
-            this.scope.Dispose();
-        }
 
         [Test]
         public void Static_equals_delegates_to_static_method_on_object()
@@ -92,13 +85,18 @@
             Assert.That(result, Is.SameAs(returnedFromCreator));
         }
 
-        protected override void OnSetUp()
+        protected override void OnSetup()
         {
+            base.OnSetup();
             this.fakeCreator = A.Fake<IFakeCreatorFacade>();
-
             this.StubResolve<IFakeCreatorFacade>(this.fakeCreator);
-
             this.scope = Fake.CreateScope();
+        }
+
+        protected override void OnTeardown()
+        {
+            this.scope.Dispose();
+            base.OnTeardown();
         }
     }
 }

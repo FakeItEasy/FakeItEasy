@@ -1,5 +1,6 @@
 namespace FakeItEasy.IntegrationTests
 {
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FakeItEasy.Tests;
     using NUnit.Framework;
@@ -12,7 +13,7 @@ namespace FakeItEasy.IntegrationTests
         {
             var container = new DelegateFakeObjectContainer();
             container.Register<string>(() => "dummy");
-            
+
             using (Fake.CreateScope(container))
             {
                 Assert.That(A.Dummy<string>(), Is.EqualTo("dummy"));
@@ -33,11 +34,11 @@ namespace FakeItEasy.IntegrationTests
         {
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
-                Assert.Throws<FakeCreationException>(() =>
-                    A.Dummy<NonInstance>());
+                Assert.Throws<FakeCreationException>(() => A.Dummy<NonInstance>());
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Required for testing.")]
         private class NonInstance
         {
             private NonInstance()

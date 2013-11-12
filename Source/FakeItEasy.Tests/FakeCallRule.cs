@@ -3,7 +3,7 @@ namespace FakeItEasy.Tests
     using System;
     using FakeItEasy.Core;
 
-    public class FakeCallRule : IFakeObjectCallRule
+    public sealed class FakeCallRule : IFakeObjectCallRule
     {
         public Func<IFakeObjectCall, bool> IsApplicableTo { get; set; }
 

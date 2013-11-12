@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -17,55 +18,56 @@ namespace FakeItEasy.Tests.Core
 
         public interface IHaveAGenericMethod
         {
+            [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Required for testing.")]
             void GenericMethod<T>();
         }
 
         [Test]
         public void Matches_returns_false_when_methods_are_not_the_same()
         {
-            var first = this.GetMethod<BaseType>(x => x.DoSomething());
-            var second = this.GetMethod<BaseType>(x => x.ToString());
+            var first = this.GetMethod<Base>(x => x.DoSomething());
+            var second = this.GetMethod<Base>(x => x.ToString());
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(BaseType), first, second), Is.False);
+            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second), Is.False);
         }
 
         [Test]
-        public void WillInvokeSameMethodOnTarget_should_return_true_when_both_methods_are_same()
+        public void Will_invoke_same_method_on_target_when_both_methods_are_same()
         {
-            var first = this.GetMethod<BaseType>(x => x.DoSomething());
-            var second = this.GetMethod<BaseType>(x => x.DoSomething());
+            var first = this.GetMethod<Base>(x => x.DoSomething());
+            var second = this.GetMethod<Base>(x => x.DoSomething());
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(BaseType), first, second), Is.True);
+            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second), Is.True);
         }
 
         [Test]
-        public void WillInvokeSameMethodOnTarget_should_return_true_when_first_is_method_on_sub_type()
+        public void Will_invoke_same_method_on_target_when_first_is_method_on_derived_type()
         {
-            var first = this.GetMethod<SubType>(x => x.DoSomething());
-            var second = this.GetMethod<BaseType>(x => x.DoSomething());
+            var first = this.GetMethod<Derived>(x => x.DoSomething());
+            var second = this.GetMethod<Base>(x => x.DoSomething());
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(SubType), first, second), Is.True);
+            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Derived), first, second), Is.True);
         }
 
         [Test]
-        public void WillInvokeSameMethodOnTarget_should_return_true_when_first_is_method_on_base_type()
+        public void Will_invoke_same_method_on_target_when_first_is_method_on_base_type()
         {
-            var first = this.GetMethod<BaseType>(x => x.DoSomething());
-            var second = this.GetMethod<SubType>(x => x.DoSomething());
+            var first = this.GetMethod<Base>(x => x.DoSomething());
+            var second = this.GetMethod<Derived>(x => x.DoSomething());
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(BaseType), first, second), Is.True);
+            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second), Is.True);
         }
 
         [Test]
-        public void WillInvokeSameMethodOnTarget_should_return_false_when_calls_are_to_same_method_but_with_different_generic_arguments()
+        public void Will_not_invoke_same_method_on_target_when_calls_are_to_same_method_but_with_different_generic_arguments()
         {
             var first = this.GetMethod<IHaveAGenericMethod>(x => x.GenericMethod<string>());
             var second = this.GetMethod<IHaveAGenericMethod>(x => x.GenericMethod<int>());
@@ -76,18 +78,18 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void WillInvokeSameMethodOnTarget_should_return_true_when_first_points_to_interface_method_and_second_to_implementing_method()
+        public void Will_invoke_same_method_on_target_when_first_points_to_interface_method_and_second_to_implementing_method()
         {
             var first = this.GetMethod<IInterface>(x => x.Foo());
-            var second = this.GetMethod<InterfaceImplementor>(x => x.Foo());
+            var second = this.GetMethod<Concrete>(x => x.Foo());
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(InterfaceImplementor), first, second), Is.True);
+            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Concrete), first, second), Is.True);
         }
 
         [Test]
-        public void WillInvokeSameMethodOnTarget_should_return_true_when_one_points_to_interface_method_with_generic_argument_and_second_points_to_implementor()
+        public void Will_invoke_same_method_on_target_when_one_points_to_interface_method_with_generic_argument_and_second_to_implementing_method()
         {
             var first = this.GetMethod<IHaveAGenericMethod>(x => x.GenericMethod<int>());
             var second = this.GetMethod<HaveAGenericMethod>(x => x.GenericMethod<int>());
@@ -98,7 +100,7 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void WillInvokeSameMethodOnTarget_should_return_false_when_one_points_to_interface_method_with_generic_argument_and_second_points_to_implementor_but_with_different_type_argument()
+        public void Will_not_invoke_same_method_on_target_when_one_points_to_interface_method_with_generic_argument_and_second_to_implementing_method_but_with_different_type_argument()
         {
             var first = this.GetMethod<IHaveAGenericMethod>(x => x.GenericMethod<int>());
             var second = this.GetMethod<HaveAGenericMethod>(x => x.GenericMethod<string>());
@@ -109,21 +111,21 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void WillInvokeSameMethodOnTarget_should_return_false_when_calls_are_to_same_method_but_to_different_overloads()
+        public void Will_not_invoke_same_method_on_target_when_calls_are_to_same_method_but_to_different_overloads()
         {
-            var first = this.GetMethod<BaseType>(x => x.DoSomething());
-            var second = this.GetMethod<BaseType>(x => x.DoSomething("a"));
+            var first = this.GetMethod<Base>(x => x.DoSomething());
+            var second = this.GetMethod<Base>(x => x.DoSomething("a"));
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(BaseType), first, second), Is.False);
+            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second), Is.False);
         }
 
         [Test]
         public void Should_return_true_when_method_is_explicit_implementation_of_interface_method()
         {
             // Arrange
-            var explicitImplementation = typeof(InterfaceImplementorWithExplicitImplementation).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic).Single(x => x.Name == "FakeItEasy.Tests.Core.MethodInfoManagerTests.IInterface.Foo");
+            var explicitImplementation = typeof(ConcreteWithExplicitImplementation).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic).Single(x => x.Name == "FakeItEasy.Tests.Core.MethodInfoManagerTests.IInterface.Foo");
             var interfaceMethod = this.GetMethod<IInterface>(x => x.Foo());
 
             var manager = this.CreateManager();
@@ -131,7 +133,7 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(InterfaceImplementorWithExplicitImplementation), explicitImplementation, interfaceMethod));
+            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(ConcreteWithExplicitImplementation), explicitImplementation, interfaceMethod));
         }
 
         [Test]
@@ -149,16 +151,15 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void Should_return_method_from_sub_type_when_getting_non_virtual_method_on_base_type()
+        public void Should_return_method_from_derived_type_when_getting_non_virtual_method_on_base_type()
         {
             // Arrange
-            var method = this.GetMethod<SubType>(x => x.DoSomething("foo"));
-            var baseMethod = this.GetMethod<BaseType>(x => x.DoSomething("foo"));
+            var method = this.GetMethod<Derived>(x => x.DoSomething("foo"));
 
             var manager = this.CreateManager();
 
             // Act, Assert
-            Assert.That(manager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(typeof(SubType), method).Name, Is.EqualTo("DoSomething"));
+            Assert.That(manager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(typeof(Derived), method).Name, Is.EqualTo("DoSomething"));
         }
 
         private MethodInfoManager CreateManager()
@@ -171,13 +172,7 @@ namespace FakeItEasy.Tests.Core
             return ((MethodCallExpression)methodSpecification.Body).Method;
         }
 
-        private MethodInfo GetMethod<T, TReturn>(Expression<Func<T, TReturn>> methodSpecification)
-        {
-            return ((MethodCallExpression)methodSpecification.Body).Method;
-        }
-
-        public class InterfaceImplementorWithExplicitImplementation
-            : IInterface
+        public class ConcreteWithExplicitImplementation : IInterface
         {
             public void Foo()
             {
@@ -189,8 +184,7 @@ namespace FakeItEasy.Tests.Core
             }
         }
 
-        public class InterfaceImplementor
-            : IInterface
+        public class Concrete : IInterface
         {
             public void Foo()
             {
@@ -198,8 +192,7 @@ namespace FakeItEasy.Tests.Core
             }
         }
 
-        public class HaveAGenericMethod
-            : IHaveAGenericMethod
+        public class HaveAGenericMethod : IHaveAGenericMethod
         {
             public void GenericMethod<T>()
             {
@@ -207,14 +200,14 @@ namespace FakeItEasy.Tests.Core
             }
         }
 
-        public class BaseType
-            : IEquatable<BaseType>
+        public class Base : IEquatable<Base>
         {
             public virtual void DoSomething()
             {
             }
 
-            public void DoSomething(string a)
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "text", Justification = "Required for testing.")]
+            public void DoSomething(string text)
             {
             }
 
@@ -223,14 +216,14 @@ namespace FakeItEasy.Tests.Core
                 return default(T);
             }
 
-            public bool Equals(BaseType other)
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "other", Justification = "Required for testing.")]
+            public bool Equals(Base other)
             {
                 return true;
             }
         }
 
-        public class SubType
-            : BaseType
+        public class Derived : Base
         {
             public override void DoSomething()
             {

@@ -1,12 +1,14 @@
 namespace FakeItEasy.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using NUnit.Framework;
 
     [TestFixture]
     public class RepeatedTests
     {
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] descriptionTestCases = TestCases.Create(
             new RepeatDescriptionTestCase()
             {
@@ -235,6 +237,8 @@ namespace FakeItEasy.Tests
         [TestCaseSource("descriptionTestCases")]
         public void Should_provide_expected_description(Func<Repeated> repeated, string expectedDescription)
         {
+            Guard.AgainstNull(repeated, "repeated");
+
             // Arrange
             var repeatedInstance = repeated.Invoke();
 
@@ -247,8 +251,10 @@ namespace FakeItEasy.Tests
 
         private class RepeatDescriptionTestCase
         {
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Used reflecively.")]
             public Func<Repeated> Repeat { get; set; }
 
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Used reflecively.")]
             public string ExpectedDescription { get; set; }
         }
     }

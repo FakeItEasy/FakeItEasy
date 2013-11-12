@@ -1,6 +1,8 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Reflection;
     using FakeItEasy.Core;
     using NUnit.Framework;
@@ -8,8 +10,10 @@ namespace FakeItEasy.Tests.Core
     [TestFixture]
     public class DefaultFakeObjectCallFormatterTests
     {
+#pragma warning disable 649
         [UnderTest]
         private DefaultFakeObjectCallFormatter formatter;
+#pragma warning restore 649
 
         public interface ITypeWithMethodThatTakesArguments
         {
@@ -20,12 +24,12 @@ namespace FakeItEasy.Tests.Core
 
         [Fake]
         internal ArgumentValueFormatter ArgumentFormatter { get; set; }
-        
+
         [Fake]
         internal IFakeManagerAccessor FakeManagerAccessor { get; set; }
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             Fake.InitializeFixture(this);
         }
@@ -190,9 +194,12 @@ namespace FakeItEasy.Tests.Core
         {
             public string NormalProperty { get; set; }
 
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "index", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "value", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for testing.")]
             public string this[int index]
             {
-                get { return index.ToString(); }
+                get { return index.ToString(CultureInfo.InvariantCulture); }
                 set { }
             }
         }

@@ -5,7 +5,7 @@ namespace FakeItEasy.Tests
 
     public class Foo
     {
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Testing only.")]
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Required for testing.")]
         public IServiceProvider ServiceProvider;
 
         public Foo(IServiceProvider provider)
@@ -31,7 +31,7 @@ namespace FakeItEasy.Tests
             throw new NotImplementedException();
         }
 
-        public virtual string Bar(string baz, int lorem)
+        public virtual string Bar(string baz, int bazz)
         {
             throw new NotImplementedException();
         }

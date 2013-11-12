@@ -4,7 +4,7 @@
 
     public class Examples
     {
-        public void Test_that_nothing_blows_up_thats_all()
+        public void Test_that_nothing_blows_up()
         {
             var foo = A.Fake<System.IDisposable>();
 

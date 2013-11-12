@@ -13,7 +13,7 @@ namespace FakeItEasy.Tests.Configuration
         private RecordedCallRule rule;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.wrappedBuilder = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() => 
                 new RuleBuilder(A.Fake<BuildableCallRule>(), A.Fake<FakeManager>(), c => A.Fake<IFakeAsserter>())));

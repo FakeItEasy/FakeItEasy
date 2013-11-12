@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -86,7 +87,7 @@
         }
 
         [Test]
-        public void Calls_to_returns_fake_configuraion_for_the_faked_object_when_function_call_is_specified()
+        public void Calls_to_returns_fake_configuration_for_the_faked_object_when_function_call_is_specified()
         {
             Expression<Func<IFoo, int>> callSpecification = x => x.Baz();
 
@@ -121,7 +122,7 @@
             Assert.That(result, Is.SameAs(callConfig));
         }
 
-        protected override void OnSetUp()
+        protected override void OnSetup()
         {
             this.fakeCreator = A.Fake<IFakeCreatorFacade>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeCreatorFacade>()));
             this.startConfigurationFactory = A.Fake<IStartConfigurationFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<IStartConfigurationFactory>()));
@@ -132,6 +133,7 @@
 
         public abstract class AbstractTypeWithNoDefaultConstructor
         {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "foo", Justification = "Required for testing.")]
             protected AbstractTypeWithNoDefaultConstructor(IFoo foo)
             {
             }

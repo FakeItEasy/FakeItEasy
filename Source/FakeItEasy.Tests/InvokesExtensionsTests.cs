@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.Tests
 {
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using NUnit.Framework;
 
@@ -10,31 +11,31 @@
         {
             void Action();
 
-            void ActionOfOne(int i);
+            void ActionOfOne(int number);
 
-            void ActionOfOne(string s);
+            void ActionOfOne(string text);
 
-            void ActionOfTwo(int i, int j);
+            void ActionOfTwo(int number1, int number2);
 
-            void ActionOfTwo(string s, string t);
+            void ActionOfTwo(string text1, string text2);
 
-            void ActionOfThree(int i, int j, int k);
+            void ActionOfThree(int number1, int number2, int number3);
 
-            void ActionOfThree(string s, string t, string u);
+            void ActionOfThree(string text1, string text2, string text3);
 
-            void ActionOfFour(int i, int j, int k, int l);
+            void ActionOfFour(int number1, int number2, int number3, int number4);
 
-            void ActionOfFour(string s, string t, string u, string v);
+            void ActionOfFour(string text1, string text2, string text3, string text4);
 
             int Request();
 
-            int RequestOfOne(int i);
+            int RequestOfOne(int number);
 
-            int RequestOfTwo(int i, int j);
+            int RequestOfTwo(int number1, int number2);
 
-            int RequestOfThree(int i, int j, int k);
+            int RequestOfThree(int number1, int number2, int number3);
 
-            int RequestOfFour(int i, int j, int k, int l);
+            int RequestOfFour(int number1, int number2, int number3, int number4);
         }
 
         [Test]
@@ -122,7 +123,6 @@
         {
             const int ReturnValue = 0;
             const int Argument = 5;
-            int? collectedArgument = null;
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfOne(A<int>._))

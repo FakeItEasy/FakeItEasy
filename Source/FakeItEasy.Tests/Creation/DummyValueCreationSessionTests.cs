@@ -1,6 +1,8 @@
 namespace FakeItEasy.Tests.Creation
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Threading.Tasks;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -13,15 +15,16 @@ namespace FakeItEasy.Tests.Creation
         private IFakeObjectCreator fakeObjectCreator;
         private DummyValueCreationSession session;
 
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] dummiesInContainer = new object[]
-                                                  {
-                                                      "dummy value",
-                                                      new Task<int>(() => 7),
-                                                      new Task(delegate { })
-                                                  };
+            {
+                "dummy value",
+                new Task<int>(() => 7),
+                new Task(delegate { })
+            };
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.container = A.Fake<IFakeObjectContainer>();
             this.fakeObjectCreator = A.Fake<IFakeObjectCreator>();
@@ -32,6 +35,8 @@ namespace FakeItEasy.Tests.Creation
         [TestCaseSource("dummiesInContainer")]
         public void Should_return_dummy_from_container_when_available(object dummyInContainer)
         {
+            Guard.AgainstNull(dummyInContainer, "dummyInContainer");
+
             // Arrange
             this.StubContainerWithValue(dummyInContainer);
 
@@ -45,7 +50,7 @@ namespace FakeItEasy.Tests.Creation
         }
 
         [Test]
-        public void Should_return_false_when_type_can_not_be_created()
+        public void Should_return_false_when_type_cannot_be_created()
         {
             // Arrange
 
@@ -163,7 +168,7 @@ namespace FakeItEasy.Tests.Creation
         }
 
         [Test]
-        public void Should_favour_the_widest_constructor_when_activating()
+        public void Should_favor_the_widest_constructor_when_activating()
         {
             // Arrange
             this.StubContainerWithValue("dummy value");
@@ -214,6 +219,8 @@ namespace FakeItEasy.Tests.Creation
 
         public class TypeWithResolvableConstructorArguments<T1, T2>
         {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument1", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument2", Justification = "Required for testing.")]
             public TypeWithResolvableConstructorArguments(T1 argument1, T2 argument2)
             {
             }
@@ -221,6 +228,7 @@ namespace FakeItEasy.Tests.Creation
 
         public class TypeWithCircularDependency
         {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "circular", Justification = "Required for testing.")]
             public TypeWithCircularDependency(TypeWithCircularDependency circular)
             {
             }
@@ -232,10 +240,13 @@ namespace FakeItEasy.Tests.Creation
             {
             }
 
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument1", Justification = "Required for testing.")]
             public TypeWithMultipleConstructorsOfDifferentWidth(string argument1)
             {
             }
 
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument1", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument2", Justification = "Required for testing.")]
             public TypeWithMultipleConstructorsOfDifferentWidth(string argument1, string argument2)
             {
                 this.WidestConstructorWasCalled = true;
@@ -252,7 +263,7 @@ namespace FakeItEasy.Tests.Creation
         {
             public TypeWithDefaultConstructorThatThrows()
             {
-                throw new Exception();
+                throw new InvalidOperationException();
             }
         }
     }

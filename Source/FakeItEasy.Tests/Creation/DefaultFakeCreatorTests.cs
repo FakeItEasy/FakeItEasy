@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Creation
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using FakeItEasy.Creation;
     using FakeItEasy.SelfInitializedFakes;
@@ -11,6 +12,8 @@ namespace FakeItEasy.Tests.Creation
     {
         private IFakeAndDummyManager fakeAndDummyManager;
         private DefaultFakeCreatorFacade creator;
+
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>>>(
                 x => x.Wrapping(A.Fake<Foo>()),
                 x => x.Implements(typeof(Foo)),
@@ -20,12 +23,10 @@ namespace FakeItEasy.Tests.Creation
             .AsTestCaseSource(x => x);
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.fakeAndDummyManager = A.Fake<IFakeAndDummyManager>();
-
             this.creator = new DefaultFakeCreatorFacade(this.fakeAndDummyManager);
-
             this.ConfigureDefaultValuesForFakeAndDummyManager();
         }
 
@@ -127,6 +128,8 @@ namespace FakeItEasy.Tests.Creation
         [TestCaseSource("optionBuilderCalls")]
         public void CreateFake_should_pass_options_builder_that_returns_itself_for_any_call(Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>> call)
         {
+            Guard.AgainstNull(call, "call");
+
             // Arrange
             IFakeOptionsBuilder<Foo> builderPassedToAction = null;
 

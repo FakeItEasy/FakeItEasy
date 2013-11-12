@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Machine.Specifications;
 
     public class when_failing_to_match_ordered_non_generic_calls

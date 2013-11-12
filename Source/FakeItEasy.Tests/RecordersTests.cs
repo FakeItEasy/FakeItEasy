@@ -24,7 +24,7 @@ namespace FakeItEasy.Tests
             Assert.That(recorder, Is.SameAs(recordingManager));
         }
 
-        protected override void OnSetUp()
+        protected override void OnSetup()
         {
         }
     }

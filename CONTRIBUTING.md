@@ -46,7 +46,7 @@ Try to keep your coding style in line with the existing code. It might not exact
 
 ## Code Analysis
 
-Try and avoid introducing new code analysis warnings. Currently the codebase has quite a few warnings, which we would like to address, and we would like to avoid the addition of new warnings.
+Try and avoid introducing new code analysis warnings. Currently the codebase has quite a few warnings, which we would like to address, and we would like to avoid the addition of new warnings. Any code analysis rule changes or suppressions must be clearly justified.
 
 ## Resharper Artifacts
 
@@ -60,6 +60,8 @@ Please do not add Resharper suppressions to code using comments. You may tweak y
 1. Create a local branch (`git checkout -b myBranch`)
 1. Work on your feature
 1. Rebase if required (see below)
+1. Run code analysis on the solution to ensure you have not introduced any violations
+1. Execute rake to ensure the build succeeds (see ['How to build'](https://github.com/FakeItEasy/FakeItEasy/blob/master/how_to_build.md "How to build"))  
 1. Push the branch up to GitHub (`git push origin myBranch`)
 1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub
 

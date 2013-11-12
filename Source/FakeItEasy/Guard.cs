@@ -15,12 +15,19 @@ namespace FakeItEasy
         /// <param name="argumentName">Name of the argument.</param>
         /// <exception cref="ArgumentNullException">The specified argument was null.</exception>
         [DebuggerStepThrough]
-        public static void AgainstNull(object argument, string argumentName)
+        public static void AgainstNull([ValidatedNotNull]object argument, string argumentName)
         {
             if (argument == null)
             {
                 throw new ArgumentNullException(argumentName);
             }
+        }
+
+        /// <summary>
+        /// When applied to a parameter, this attribute provides an indication to code analysis that the argument has been null checked.
+        /// </summary>
+        private sealed class ValidatedNotNullAttribute : Attribute
+        {
         }
     }
 }

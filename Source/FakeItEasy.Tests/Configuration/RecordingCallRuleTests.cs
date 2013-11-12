@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.Configuration
         private IFakeObjectCallFormatter callFormatter;
         
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.fakedObject = A.Fake<IFoo>();
             this.fakeObject = Fake.GetFakeManager(this.fakedObject);
@@ -36,7 +36,7 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [TearDown]
-        public void TearDown()
+        public void Teardown()
         {
             this.argumentUsedForAsserterFactory = null;
         }

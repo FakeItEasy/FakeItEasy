@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -25,6 +26,7 @@
         private CastleDynamicProxyInterceptionValidator validator;
         private MethodInfoManager methodInfoManager;
 
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] nonInterceptableMembers = new[]
         {
             NonInterceptableTestCase.Create(() => new object().GetType(), "Non virtual methods can not be intercepted."),
@@ -33,6 +35,7 @@
             NonInterceptableTestCase.Create(() => new TypeWithSealedOverride().ToString(), "Sealed methods can not be intercepted.")
         };
 
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private InterceptionTestCase[] interceptableMethods = new[]
         {
             InterceptionTestCase.Create(() => new object().ToString()),
@@ -40,7 +43,7 @@
         };
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.methodInfoManager = new MethodInfoManager();
 
@@ -50,6 +53,8 @@
         [TestCaseSource("nonInterceptableMembers")]
         public void Should_fail_for_non_interceptable_methods(NonInterceptableTestCase testCase)
         {
+            Guard.AgainstNull(testCase, "testCase");
+
             // Arrange
             string reason = null;
 
@@ -64,6 +69,8 @@
         [TestCaseSource("interceptableMethods")]
         public void Should_succeed_for_interceptable_methods(InterceptionTestCase testCase)
         {
+            Guard.AgainstNull(testCase, "testCase");
+
             // Arrange
             string reason = null;
 
@@ -81,35 +88,34 @@
 
             public MethodInfo Method { get; private set; }
 
+            [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Needs to be callable with an expression.")]
             public static InterceptionTestCase Create(Expression<Action> expression)
             {
                 return Create<InterceptionTestCase>(expression);
             }
 
-            protected static T Create<T>(Expression<Action> expression) where T : InterceptionTestCase, new()
+            protected static T Create<T>(LambdaExpression expression) where T : InterceptionTestCase, new()
             {
                 var parser = new CallExpressionParser();
                 var parsed = parser.Parse(expression);
 
                 return new T()
-                           {
-                               Method = parsed.CalledMethod,
-                               Target = parsed.CallTarget
-                           };
+                {
+                    Method = parsed.CalledMethod,
+                    Target = parsed.CallTarget
+                };
             }
         }
 
-        public class NonInterceptableTestCase
-            : InterceptionTestCase
+        public class NonInterceptableTestCase : InterceptionTestCase
         {
             public string FailReason { get; private set; }
 
+            [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Needs to be callable with an expression.")]
             public static NonInterceptableTestCase Create(Expression<Action> expression, string failReason)
             {
                 var result = InterceptionTestCase.Create<NonInterceptableTestCase>(expression);
-                
                 result.FailReason = failReason;
-
                 return result;
             }
         }

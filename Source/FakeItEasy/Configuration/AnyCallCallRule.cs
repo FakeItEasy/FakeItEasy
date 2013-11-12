@@ -28,9 +28,9 @@ namespace FakeItEasy.Configuration
             }
         }
 
-        public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
+        public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate)
         {
-            this.argumentsPredicate = argumentsPredicate;
+            this.argumentsPredicate = predicate;
         }
 
         protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)

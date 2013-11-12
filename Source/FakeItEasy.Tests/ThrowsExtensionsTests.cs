@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using NUnit.Framework;
 
@@ -9,21 +10,21 @@
     {
         public interface IInterface
         {
-            void ActionOfOne(int i);
+            void ActionOfOne(int number);
 
-            void ActionOfOne(string s);
+            void ActionOfOne(string text);
 
-            void ActionOfTwo(int i, int j);
+            void ActionOfTwo(int number1, int number2);
 
-            void ActionOfTwo(string s, string t);
+            void ActionOfTwo(string text1, string text2);
 
-            void ActionOfThree(int i, int j, int k);
+            void ActionOfThree(int number1, int number2, int number3);
 
-            void ActionOfThree(string s, string t, string u);
+            void ActionOfThree(string text1, string text2, string text3);
 
-            void ActionOfFour(int i, int j, int k, int l);
+            void ActionOfFour(int number1, int number2, int number3, int number4);
 
-            void ActionOfFour(string s, string t, string u, string v);
+            void ActionOfFour(string text1, string text2, string text3, string text4);
         }
 
         [Test]
@@ -31,7 +32,7 @@
         {
             const int Argument = 2;
             int? collectedArgument = null;
-            var exceptionToThrow = new Exception();
+            var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.ActionOfOne(Argument)).Throws((int i) =>
@@ -51,7 +52,7 @@
         {
             const string Argument = "Argument";
             string collectedArgument = null;
-            var exceptionToThrow = new Exception();
+            var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.ActionOfOne(Argument)).Throws((string s) =>
@@ -95,7 +96,7 @@
             const int SecondArgument = 5;
             int? firstCollectedArgument = null;
             int? secondCollectedArgument = null;
-            var exceptionToThrow = new Exception();
+            var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.ActionOfTwo(FirstArgument, SecondArgument)).Throws((int i, int j) =>
@@ -119,7 +120,7 @@
             const string SecondArgument = "Second Argument";
             string firstCollectedArgument = null;
             string secondCollectedArgument = null;
-            var exceptionToThrow = new Exception();
+            var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.ActionOfTwo(FirstArgument, SecondArgument)).Throws((string s, string t) =>
@@ -178,7 +179,7 @@
             int? firstCollectedArgument = null;
             int? secondCollectedArgument = null;
             int? thirdCollectedArgument = null;
-            var exceptionToThrow = new Exception();
+            var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.ActionOfThree(FirstArgument, SecondArgument, ThirdArgument)).Throws((int i, int j, int k) =>
@@ -206,7 +207,7 @@
             string firstCollectedArgument = null;
             string secondCollectedArgument = null;
             string thirdCollectedArgument = null;
-            var exceptionToThrow = new Exception();
+            var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.ActionOfThree(FirstArgument, SecondArgument, ThirdArgument)).Throws((string s, string t, string u) =>
@@ -280,7 +281,7 @@
             int? secondCollectedArgument = null;
             int? thirdCollectedArgument = null;
             int? fourthCollectedArgument = null;
-            var exceptionToThrow = new Exception();
+            var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.ActionOfFour(FirstArgument, SecondArgument, ThirdArgument, FourthArgument))
@@ -313,7 +314,7 @@
             string secondCollectedArgument = null;
             string thirdCollectedArgument = null;
             string fourthCollectedArgument = null;
-            var exceptionToThrow = new Exception();
+            var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.ActionOfFour(FirstArgument, SecondArgument, ThirdArgument, FourthArgument))

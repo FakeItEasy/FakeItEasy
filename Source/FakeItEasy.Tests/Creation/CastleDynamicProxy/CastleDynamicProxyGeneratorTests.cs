@@ -2,10 +2,13 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.CastleDynamicProxy;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -14,6 +17,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         private CastleDynamicProxyGenerator generator;
         private CastleDynamicProxyInterceptionValidator interceptionValidator;
 
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] supportedTypes = new object[] 
         {
             typeof(IInterfaceType),
@@ -23,6 +27,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             typeof(InternalType)
         };
 
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] notSupportedTypes = new object[] 
         {
             typeof(int),
@@ -35,7 +40,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         }
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.interceptionValidator = A.Fake<CastleDynamicProxyInterceptionValidator>();
 
@@ -43,7 +48,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         }
 
         [TestCaseSource("supportedTypes")]
-        public void Should_return_proxy_that_implements_ITaggable(Type typeOfProxy)
+        public void Should_return_proxy_that_can_be_tagged(Type typeOfProxy)
         {
             // Arrange
 
@@ -93,7 +98,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         }
 
         [TestCaseSource("notSupportedTypes")]
-        public void Should_return_result_with_ProxyWasSuccessfullyGenerated_set_to_false_when_proxy_can_not_be_generated(Type typeOfProxy)
+        public void Should_return_result_with_ProxyWasSuccessfullyGenerated_set_to_false_when_proxy_cannot_be_generated(Type typeOfProxy)
         {
             // Arrange
 
@@ -142,7 +147,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
         [Test]
         [SetCulture("en-US")]
-        public void Should_specify_that_value_types_can_not_be_generated()
+        public void Should_specify_that_value_types_cannot_be_generated()
         {
             // Arrange
 
@@ -154,7 +159,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         }
 
         [Test]
-        public void Should_specify_that_sealed_types_can_not_be_generated()
+        public void Should_specify_that_sealed_types_cannot_be_generated()
         {
             // Arrange
 
@@ -253,17 +258,14 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         public void Should_fail_when_arguments_for_constructor_is_passed_with_interface_proxy()
         {
             // Arrange
+            var arguments = new object[] { "no constructor on interface " };
 
-            // Act, Assert
-            var ex = Assert.Throws<ArgumentException>(() =>
-                {
-                    var result = this.generator.GenerateProxy(
-                        typeof(IInterfaceType),
-                        Enumerable.Empty<Type>(),
-                        new object[] { "no constructor on interface " });
-                });
+            // Act
+            var ex = Record.Exception(() => this.generator.GenerateProxy(typeof(IInterfaceType), Enumerable.Empty<Type>(), arguments));
 
-            Assert.That(ex.Message, Is.EqualTo("Arguments for constructor specified for interface type."));
+            // Assert
+            ex.Should().BeOfType<ArgumentException>();
+            ex.Message.Should().Be("Arguments for constructor specified for interface type.");
         }
 
         [TestCaseSource("supportedTypes")]
@@ -274,12 +276,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             // Act
             var proxy = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null);
-
-            proxy.CallInterceptedEventRaiser.CallWasIntercepted += (s, e) =>
-                {
-                    wasCalled = true;
-                };
-
+            proxy.CallInterceptedEventRaiser.CallWasIntercepted += (s, e) => wasCalled = true;
             proxy.GeneratedProxy.ToString();
 
             // Assert
@@ -352,68 +349,6 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         {
             private ClassWithPrivateConstructor()
             {
-            }
-        }
-
-        [Serializable]
-        public class TypeWithNoneOfTheObjectMethodsOverridden
-        {
-        }
-
-        [Serializable]
-        public class TypeWithAllOfTheObjectMethodsOverridden
-        {
-            public override bool Equals(object obj)
-            {
-                return base.Equals(obj);
-            }
-
-            public override int GetHashCode()
-            {
-                return base.GetHashCode();
-            }
-
-            public override string ToString()
-            {
-                return base.ToString();
-            }
-        }
-
-        [Serializable]
-        public class TypeWithNonVirtualProperty
-        {
-            public int Foo { get; set; }
-        }
-
-        [Serializable]
-        public class TypeWithInternalInterceptableProperties
-        {
-            internal virtual string ReadOnly
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            internal virtual string WriteOnly
-            {
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            internal virtual string Normal
-            {
-                get;
-                set;
-            }
-
-            internal virtual string ReadOnlyAutomatic
-            {
-                get;
-                private set;
             }
         }
 

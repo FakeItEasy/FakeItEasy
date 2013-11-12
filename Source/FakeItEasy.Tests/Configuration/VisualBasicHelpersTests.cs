@@ -11,11 +11,10 @@ namespace FakeItEasy.Tests.Configuration
         {
             var fake = A.Fake<IFoo>();
 
-            NextCall.To(fake).WithAnyArguments().Throws(new ApplicationException());
+            NextCall.To(fake).WithAnyArguments().Throws(new InvalidOperationException());
             fake.Baz(null, null);
 
-            Assert.Throws<ApplicationException>(() =>
-                fake.Baz("foo", "bar"));
+            Assert.Throws<InvalidOperationException>(() => fake.Baz("foo", "bar"));
         }
     }
 }

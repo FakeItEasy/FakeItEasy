@@ -78,9 +78,9 @@
             return result.ToString();
         }
 
-        public virtual void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
+        public virtual void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate)
         {
-            this.argumentsPredicate = argumentsPredicate;
+            this.argumentsPredicate = predicate;
 
             var numberOfValdiators = this.argumentConstraints.Count();
             this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValdiators);

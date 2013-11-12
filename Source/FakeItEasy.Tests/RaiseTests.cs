@@ -12,7 +12,7 @@
         private EventArgs eventArguments;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.foo = A.Fake<IFoo>();
             this.foo.SomethingHappened += new EventHandler(this.Foo_SomethingHappened);
@@ -21,7 +21,7 @@
         }
 
         [Test]
-        public void Raise_with_sender_and_arguments_should_raise_event_with_specified_sender()
+        public void Raising_with_sender_and_arguments_should_raise_event_with_specified_sender()
         {
             object senderToUse = new object();
             this.foo.SomethingHappened += Raise.With(senderToUse, EventArgs.Empty).Now;
@@ -30,7 +30,7 @@
         }
 
         [Test]
-        public void Raise_with_sender_and_arguments_should_raise_event_with_specified_arguments()
+        public void Raising_with_sender_and_arguments_should_raise_event_with_specified_arguments()
         {
             var arguments = new EventArgs();
 
@@ -40,16 +40,15 @@
         }
 
         [Test]
-        public void Raise_with_arguments_only_should_raise_event_with_fake_as_sender()
+        public void Raising_with_arguments_only_should_raise_event_with_fake_as_sender()
         {
-            object senderToUse = new object();
             this.foo.SomethingHappened += Raise.With(EventArgs.Empty).Now;
 
             Assert.That(this.sender, Is.SameAs(this.foo));
         }
 
         [Test]
-        public void Raise_with_arguments_only_should_raise_event_with_specified_arguments()
+        public void Raising_with_arguments_only_should_raise_event_with_specified_arguments()
         {
             var arguments = new EventArgs();
 
@@ -74,7 +73,7 @@
         }
 
         [Test]
-        public void WithEmpty_should_return_raise_object_with_event_args_emtpy_set()
+        public void WithEmpty_should_return_raise_object_with_event_args_empty_set()
         {
             var result = Raise.WithEmpty();
 
@@ -95,9 +94,9 @@
             Assert.That(() => { foo.SomethingHappened += Raise.WithEmpty().Now; }, Throws.Nothing);
         }
 
-        private void Foo_SomethingHappened(object sender, EventArgs e)
+        private void Foo_SomethingHappened(object newSender, EventArgs e)
         {
-            this.sender = sender;
+            this.sender = newSender;
             this.eventArguments = e;
         }
     }

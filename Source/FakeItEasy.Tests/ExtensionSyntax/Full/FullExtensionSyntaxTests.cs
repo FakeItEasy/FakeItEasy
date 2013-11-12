@@ -21,7 +21,7 @@
         }
 
         [Test]
-        public void CallsTo_for_return_value_methods_should_return_fake_configuartion_from_factory()
+        public void CallsTo_for_return_value_methods_should_return_fake_configuration_from_factory()
         {
             var fake = A.Fake<IFoo>();
 
@@ -87,7 +87,7 @@
                 ES.FullExtensionSyntax.AnyCall(A.Fake<IFoo>()));
         }
 
-        protected override void OnSetUp()
+        protected override void OnSetup()
         {
             this.fakeConfiguration = A.Fake<IStartConfiguration<IFoo>>();
             this.fakeConfigurationFactory = A.Fake<IStartConfigurationFactory>();

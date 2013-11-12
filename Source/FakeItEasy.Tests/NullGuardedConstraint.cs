@@ -58,11 +58,15 @@ namespace FakeItEasy.Tests
 
         public override void WriteDescriptionTo(MessageWriter writer)
         {
+            Guard.AgainstNull(writer, "writer");
+
             writer.WritePredicate(CommonExtensions.FormatInvariant("Calls to {0} should be null guarded.", this.state.ToString()));
         }
 
         public override void WriteActualValueTo(MessageWriter writer)
         {
+            Guard.AgainstNull(writer, "writer");
+
             writer.WriteLine("When called with the following arguments the method did not throw the apporpriate exception:");
 
             foreach (var failingCall in this.state.GetFailingCallsDescriptions())
@@ -103,13 +107,11 @@ namespace FakeItEasy.Tests
         private abstract class ConstraintState
         {
             protected readonly IEnumerable<ArgumentInfo> ValidArguments;
-            private MethodBase method;
             private IEnumerable<CallThatShouldThrow> unguardedCalls;
 
-            protected ConstraintState(IEnumerable<ArgumentInfo> arguments, MethodBase method)
+            protected ConstraintState(IEnumerable<ArgumentInfo> arguments)
             {
                 this.ValidArguments = arguments;
-                this.method = method;
             }
 
             protected abstract string CallDescription { get; }
@@ -338,7 +340,7 @@ namespace FakeItEasy.Tests
             private MethodInfo method;
 
             public MethodCallConstraintState(MethodCallExpression expression)
-                : base(GetExpressionArguments(expression), expression.Method)
+                : base(GetExpressionArguments(expression))
             {
                 this.method = expression.Method;
                 this.target = NullGuardedConstraint.GetValueProducedByExpression(expression.Object);
@@ -366,7 +368,7 @@ namespace FakeItEasy.Tests
             private ConstructorInfo constructorInfo;
 
             public ConstructorCallConstraintState(NewExpression expression)
-                : base(GetArgumentInfos(expression), expression.Constructor)
+                : base(GetArgumentInfos(expression))
             {
                 this.constructorInfo = expression.Constructor;
             }

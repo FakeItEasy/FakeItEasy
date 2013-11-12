@@ -87,8 +87,8 @@ namespace FakeItEasy.Tests.TestHelpers
             A.CallTo(() => result.FakedObject).Returns(fakedObject);
             A.CallTo(() => frozen.FakedObject).Returns(fakedObject);
 
-            A.CallTo(() => result.Arguments).Returns(CreateArgumentCollection(fakedObject, callSpecification));
-            A.CallTo(() => frozen.Arguments).Returns(CreateArgumentCollection(fakedObject, callSpecification));
+            A.CallTo(() => result.Arguments).Returns(CreateArgumentCollection(callSpecification));
+            A.CallTo(() => frozen.Arguments).Returns(CreateArgumentCollection(callSpecification));
 
             A.CallTo(() => frozen.ReturnValue)
                 .ReturnsLazily(x => Fake.GetCalls(result).Matching<IInterceptedFakeObjectCall>(c => c.SetReturnValue(A<object>._)).Last().Arguments[0]);
@@ -111,12 +111,7 @@ namespace FakeItEasy.Tests.TestHelpers
             return property.GetGetMethod(true);
         }
 
-        private static MethodCallExpression GetMethodExpression(LambdaExpression callSpecification)
-        {
-            return callSpecification.Body as MethodCallExpression;
-        }
-
-        private static ArgumentCollection CreateArgumentCollection<TFake>(TFake fake, LambdaExpression callSpecification)
+        private static ArgumentCollection CreateArgumentCollection(LambdaExpression callSpecification)
         {
             var methodCall = callSpecification.Body as MethodCallExpression;
 

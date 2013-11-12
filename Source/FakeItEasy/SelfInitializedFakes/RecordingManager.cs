@@ -13,8 +13,7 @@
     /// using self initialized fakes.
     /// </summary>
     [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "Implements the Disposable method to support the using statement only.")]
-    public class RecordingManager
-        : ISelfInitializingFakeRecorder
+    public class RecordingManager : ISelfInitializingFakeRecorder
     {
         private readonly Queue<CallDataMetadata> callQueue;
         private readonly List<CallDataMetadata> recordedCalls;

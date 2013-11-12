@@ -36,6 +36,7 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <CodeAnalysisCulture>en-US</CodeAnalysisCulture>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,7 +46,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
@@ -56,8 +57,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>618</WarningsNotAsErrors>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
@@ -74,8 +76,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\InternalsVisibleTo-Signed.cs" />
-    <Compile Include="..\SharedAssemblyInfo.cs" />
+    <Compile Include="..\CommonAssemblyInfo.Tests.cs">
+      <Link>Properties\CommonAssemblyInfo.Tests.cs</Link>
+    </Compile>
+    <Compile Include="..\InternalsVisibleTo-Signed.cs">
+      <Link>Properties\InternalsVisibleTo-Signed.cs</Link>
+    </Compile>
     <Compile Include="ActionOverWriterValueFormatter.cs" />
     <Compile Include="AnyTests.cs" />
     <Compile Include="ArgumentConstraintExtensions\CollectionContainsTests.cs" />
@@ -123,7 +129,6 @@
     <Compile Include="ArgumentConstraintExtensions\StringStartsWithTests.cs" />
     <Compile Include="Core\CallInterceptedEventArgsTests.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfiguratorTests.cs" />
-    <Compile Include="Core\DefaultReturnValueRuleTests.cs" />
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
     <Compile Include="Core\FakeConfiguratorTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
@@ -149,7 +154,8 @@
     <Compile Include="Expressions\ExpressionParserTests.cs" />
     <Compile Include="Builders\BuilderForExpression.cs" />
     <Compile Include="ForTestAttribute.cs" />
-    <Compile Include="IFooAttribute.cs" />
+    <Compile Include="IEmpty.cs" />
+    <Compile Include="IOutputAndRef.cs" />
     <Compile Include="TestDataBuilder.cs" />
     <Compile Include="Expressions\TypeWithInternalProperty.cs" />
     <Compile Include="FacadedTestBase.cs" />
@@ -204,11 +210,9 @@
     <Compile Include="NullGuardedConstraintTests.cs" />
     <Compile Include="IFoo.cs" />
     <Compile Include="NullGuardedConstraint.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaiseTests.cs" />
     <Compile Include="ServiceLocatorTests.cs" />
     <Compile Include="SyntaxTests.cs" />
-    <Compile Include="TestHelpers\ReflectionHelper.cs" />
     <Compile Include="Configuration\RecordedCallRuleTests.cs" />
     <Compile Include="Configuration\RecordingCallRuleTests.cs" />
     <Compile Include="NextCallTests.cs" />
@@ -227,6 +231,7 @@
   <ItemGroup>
     <None Include="FakeItEasy.snk" />
     <None Include="packages.config" />
+    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -244,6 +249,16 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\FakeItEasy.Dictionary.Tests.xml">
+      <Link>Properties\FakeItEasy.Dictionary.Tests.xml</Link>
+    </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\FakeItEasy.Dictionary.xml">
+      <Link>Properties\FakeItEasy.Dictionary.xml</Link>
+    </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

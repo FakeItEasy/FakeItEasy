@@ -10,13 +10,15 @@
     [TestFixture]
     public class DelegateProxyGeneratorTests
     {
+#pragma warning disable 649
         [UnderTest]
         private DelegateProxyGenerator generator;
+#pragma warning restore 649
 
-        public delegate void DelegateWithOutValue(out string result);
+        private delegate void DelegateWithOutputValue(out string result);
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             Fake.InitializeFixture(this);
         }
@@ -25,7 +27,7 @@
         [TestCase(typeof(Action))]
         [TestCase(typeof(EventHandler<EventArgs>))]
         [TestCase(typeof(Predicate<object>))]
-        public void Should_be_successfull_with_delegate_types(Type delegateType)
+        public void Should_be_successful_with_delegate_types(Type delegateType)
         {
             // Arrange
 
@@ -102,7 +104,7 @@
         }
 
         [Test]
-        public void Should_return_proxy_that_can_not_be_configured_to_call_base_method()
+        public void Should_return_proxy_that_cannot_be_configured_to_call_base_method()
         {
             // Arrange
             var proxy = this.GenerateProxy<Action>(x =>
@@ -134,7 +136,7 @@
         public void Should_return_proxy_where_out_parameter_can_be_set()
         {
             // Arrange
-            var proxy = this.GenerateProxy<DelegateWithOutValue>(x =>
+            var proxy = this.GenerateProxy<DelegateWithOutputValue>(x =>
                 {
                     x.SetArgumentValue(0, "Foo");
                 });

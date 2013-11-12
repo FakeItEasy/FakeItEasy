@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using NUnit.Framework;
 
@@ -9,23 +10,23 @@
     {
         public interface IInterface
         {
-            int RequestOfOne(int i);
+            int RequestOfOne(int number);
 
-            string RequestOfOne(string s);
+            string RequestOfOne(string text);
 
-            int RequestOfTwo(int i, int j);
+            int RequestOfTwo(int number1, int number2);
 
-            string RequestOfTwo(string s, string t);
+            string RequestOfTwo(string text1, string text2);
 
-            int RequestOfThree(int i, int j, int k);
+            int RequestOfThree(int number1, int number2, int number3);
 
-            string RequestOfThree(string s, string t, string u);
+            string RequestOfThree(string text1, string text2, string text3);
 
-            int RequestOfFour(int i, int j, int k, int l);
+            int RequestOfFour(int number1, int number2, int number3, int number4);
 
-            string RequestOfFour(string s, string t, string u, string v);
+            string RequestOfFour(string text1, string text2, string text3, string text4);
         }
-        
+
         [Test]
         public void ReturnsLazily_with_1_argument_should_use_returns_lazily_with_action_having_1_argument()
         {

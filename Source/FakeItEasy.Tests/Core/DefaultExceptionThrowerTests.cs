@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FluentAssertions;
@@ -13,6 +14,7 @@ namespace FakeItEasy.Tests.Core
     {
         private DefaultExceptionThrower thrower;
 
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] resolvedConstructorsTestCases = TestCases.Create(
             new
             {
@@ -155,7 +157,7 @@ namespace FakeItEasy.Tests.Core
             }).AsTestCaseSource();
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.thrower = new DefaultExceptionThrower();
         }
@@ -171,9 +173,9 @@ that spans a couple of lines.";
             // Act
             var exception = Record.Exception(
                 () => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason));
-            
+
             // Assert
-            var expectedMessage = 
+            var expectedMessage =
 @"
   Failed to create fake of type ""System.String"" with the specified arguments for the constructor:
     a reason

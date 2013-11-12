@@ -11,7 +11,7 @@
         private DefaultInterceptionAsserter interceptionAsserter;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.proxyGenerator = A.Fake<IProxyGenerator>();
 

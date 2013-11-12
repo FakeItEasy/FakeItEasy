@@ -26,7 +26,7 @@
             A.CallTo(() => factory.SubFactory.Create()).Returns(A.Fake<IWidget>());
         }
 
-        public void Create_a_fake_object_that_has_an_api_for_configuring_the_faked_instance()
+        public void Create_a_fake_object_that_has_methods_for_configuring_the_faked_instance()
         {
             var fake = new Fake<IWidgetFactory>();
 

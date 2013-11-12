@@ -1,6 +1,7 @@
 namespace FakeItEasy.IntegrationTests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Tests;
@@ -11,6 +12,7 @@ namespace FakeItEasy.IntegrationTests
     {
         public interface ITypeWithWriteOnlyProperty
         {
+            [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Required for testing.")]
             object SetOnly { set; }
         }
 
@@ -19,13 +21,13 @@ namespace FakeItEasy.IntegrationTests
         {
             var fake = A.Fake<IFoo>();
 
-            A.CallTo(() => fake.Bar()).Throws(new Exception()).Once();
+            A.CallTo(() => fake.Bar()).Throws(new InvalidOperationException()).Once();
 
             try
             {
                 fake.Bar();
             }
-            catch
+            catch (InvalidOperationException)
             {
             }
 

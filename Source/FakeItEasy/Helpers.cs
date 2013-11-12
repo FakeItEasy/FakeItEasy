@@ -31,13 +31,6 @@
             return lambda.DynamicInvoke();
         }
 
-#if DEBUG
-        internal static T DebugValue<T>(T value)
-        {
-            return value;
-        }
-#endif
-
         private static string GetParametersString(IFakeObjectCall fakeObjectCall)
         {
             return fakeObjectCall.Arguments.ToCollectionString(x => GetArgumentAsString(x), ", ");

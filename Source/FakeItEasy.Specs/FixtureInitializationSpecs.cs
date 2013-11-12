@@ -1,11 +1,12 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Machine.Specifications;
     using Tests;
 
     public class when_initializing_fixture
-    {        
+    {
         Establish context = () => Fixture = new ExampleFixture();
 
         Because of = () => Fake.InitializeFixture(Fixture);

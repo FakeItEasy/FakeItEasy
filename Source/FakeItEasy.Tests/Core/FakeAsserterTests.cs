@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -12,7 +14,7 @@
         private CallWriter callWriter;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.calls = new List<IFakeObjectCall>();
             this.callWriter = A.Fake<CallWriter>();
@@ -47,7 +49,7 @@
 
             var asserter = this.CreateAsserter();
 
-            asserter.AssertWasCalled(x => this.calls.IndexOf(x) == 0, string.Empty,  x => { numberPassedToRepeatPredicate = x; return true; }, string.Empty);
+            asserter.AssertWasCalled(x => this.calls.IndexOf(x) == 0, string.Empty, x => { numberPassedToRepeatPredicate = x; return true; }, string.Empty);
 
             Assert.That(numberPassedToRepeatPredicate, Is.EqualTo(1));
         }
@@ -92,8 +94,7 @@
 
             var asserter = this.CreateAsserter();
 
-            var message = this.GetExceptionMessage(() =>
-                asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
+            this.GetExceptionMessage(() => asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
 
             A.CallTo(() => this.callWriter.WriteCalls(A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls), A<IOutputWriter>._)).MustHaveHappened();
         }
@@ -152,16 +153,10 @@
 
         private string GetExceptionMessage(Action failingAssertion)
         {
-            try
-            {
-                failingAssertion();
-            }
-            catch (ExpectationException ex)
-            {
-                return ex.Message;
-            }
-
-            throw new AssertionException("No ExpectationException was thrown.");
+            var exception = Record.Exception(failingAssertion);
+            exception.Should().NotBeNull();
+            exception.Should().BeOfType<ExpectationException>();
+            return exception.Message;
         }
     }
 }

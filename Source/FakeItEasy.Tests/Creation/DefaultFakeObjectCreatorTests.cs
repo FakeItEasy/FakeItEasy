@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection.Emit;
     using FakeItEasy.Core;
@@ -18,7 +19,7 @@ namespace FakeItEasy.Tests.Creation
         private IFakeObjectConfigurator configurer;
 
         [SetUp]
-        public void SetUp()
+        public void Setup()
         {
             this.proxyGenerator = A.Fake<IProxyGenerator>();
             this.thrower = A.Fake<IExceptionThrower>();
@@ -32,17 +33,19 @@ namespace FakeItEasy.Tests.Creation
         public void Should_return_fake_when_successful()
         {
             // Arrange
-            var argumentsForConstructor = new object[] { };
-
             var options = new FakeOptions
             {
                 AdditionalInterfacesToImplement = new Type[] { },
-                ArgumentsForConstructor = new object[] { }
+                ArgumentsForConstructor = new object[] { },
             };
 
             var proxy = A.Fake<IFoo>();
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), options.AdditionalInterfacesToImplement, options.ArgumentsForConstructor, A<IEnumerable<CustomAttributeBuilder>>._))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(
+                    typeof(IFoo),
+                    options.AdditionalInterfacesToImplement,
+                    options.ArgumentsForConstructor,
+                    A<IEnumerable<CustomAttributeBuilder>>._))
                 .Returns(new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>()));
 
             // Act
@@ -59,7 +62,11 @@ namespace FakeItEasy.Tests.Creation
             var proxy = A.Fake<IFoo>();
             var eventRaiser = A.Fake<ICallInterceptedEventRaiser>();
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<CustomAttributeBuilder>>._))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(
+                    typeof(IFoo),
+                    A<IEnumerable<Type>>._,
+                    A<IEnumerable<object>>._,
+                    A<IEnumerable<CustomAttributeBuilder>>._))
                 .Returns(new ProxyGeneratorResult(proxy, eventRaiser));
 
             // Act
@@ -115,7 +122,7 @@ namespace FakeItEasy.Tests.Creation
         }
 
         [Test]
-        public void Should_try_with_resolved_constructors_in_correct_order()
+        public void Should_try_with_resolved_constructors_incorrect_order()
         {
             using (var scope = Fake.CreateScope())
             {
@@ -285,11 +292,15 @@ namespace FakeItEasy.Tests.Creation
         }
 
         [Test]
-        public void Should_pass_created_fake_to_configurer()
+        public void Should_pass_created_fake_to_configurator()
         {
             // Arrange
             var proxy = A.Fake<IFoo>(x => x.Implements(typeof(ITaggable)));
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(IFoo), A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<CustomAttributeBuilder>>._))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(
+                    typeof(IFoo),
+                    A<IEnumerable<Type>>._,
+                    A<IEnumerable<object>>._,
+                    A<IEnumerable<CustomAttributeBuilder>>._))
                 .Returns(new ProxyGeneratorResult(proxy, A.Dummy<ICallInterceptedEventRaiser>()));
 
             // Act
@@ -372,10 +383,13 @@ namespace FakeItEasy.Tests.Creation
             {
             }
 
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument1", Justification = "Required for testing.")]
             public TypeWithMultipleConstructors(string argument1)
             {
             }
 
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument1", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument2", Justification = "Required for testing.")]
             public TypeWithMultipleConstructors(int argument1, int argument2)
             {
             }
@@ -383,6 +397,8 @@ namespace FakeItEasy.Tests.Creation
 
         public class TypeWithConstructorThatTakesDifferentTypes
         {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument1", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument2", Justification = "Required for testing.")]
             public TypeWithConstructorThatTakesDifferentTypes(int argument1, string argument2)
             {
             }
@@ -390,6 +406,7 @@ namespace FakeItEasy.Tests.Creation
 
         public class TypeWithProtectedConstructor
         {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument", Justification = "Required for testing.")]
             protected TypeWithProtectedConstructor(int argument)
             {
             }

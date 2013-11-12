@@ -47,6 +47,7 @@
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">Event args for the event.</param>
         [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "Must be visible to provide the event raising syntax.")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "sender", Justification = "Unused parameter.")]
         public void Now(object sender, TEventArgs e)
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);

@@ -5,9 +5,9 @@
 
     public class GuidValueFormatter : ArgumentValueFormatter<Guid>
     {
-        protected override string GetStringValue(Guid value)
+        protected override string GetStringValue(Guid argumentValue)
         {
-            return value.ToString("B");
+            return argumentValue.ToString("B");
         }
     }
 }

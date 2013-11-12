@@ -6,7 +6,7 @@
     /// <summary>
     /// Used to tag fields and properties that will be initialized as a SUT through the Fake.Initialize-method.
     /// </summary>
-    [SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes", Justification = "Users should be able to subclass this attribute to be able to adjust naming.")]
+    [SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes", Justification = "Allows consumers to create their own testing DSL.")]
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class UnderTestAttribute : Attribute
     {

@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.Tests
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using FakeItEasy.Core;
@@ -72,12 +73,14 @@
             Assert.That(result.ToString(), Is.EqualTo("<Ignored>"));
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "ignored", Justification = "Required for testing.")]
         private static IArgumentConstraint GetIgnoredConstraint<T>()
         {
             var trap = ServiceLocator.Current.Resolve<IArgumentConstraintTrapper>();
             return trap.TrapConstraints(() => { var ignored = A<string>.Ignored; }).Single();
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "ignored", Justification = "Required for testing.")]
         private static IArgumentConstraint GetUnderscoreConstraint<T>()
         {
             var trap = ServiceLocator.Current.Resolve<IArgumentConstraintTrapper>();

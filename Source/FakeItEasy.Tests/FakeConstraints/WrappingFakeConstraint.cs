@@ -18,6 +18,8 @@
 
         public override void WriteDescriptionTo(MessageWriter writer)
         {
+            Guard.AgainstNull(writer, "writer");
+
             writer.WritePredicate("A fake object wrapper.");
         }
     }

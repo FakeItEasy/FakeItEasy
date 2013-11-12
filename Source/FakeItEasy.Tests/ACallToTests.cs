@@ -45,7 +45,7 @@
             Assert.That(result, Is.SameAs(configuration));
         }
 
-        protected override void OnSetUp()
+        protected override void OnSetup()
         {
             this.configurationManager = A.Fake<IFakeConfigurationManager>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeConfigurationManager>()));
             this.StubResolve<IFakeConfigurationManager>(this.configurationManager);
