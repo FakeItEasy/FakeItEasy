@@ -6,7 +6,7 @@ namespace FakeItEasy.Tests.TestHelpers
     /// <summary>
     /// Records actions for a test.
     /// </summary>
-    internal static class Record
+    public static class Record
     {
         /// <summary>
         /// Invokes <paramref name="action"/> and records any exception that's raised.
@@ -16,6 +16,8 @@ namespace FakeItEasy.Tests.TestHelpers
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Required for testing.")]
         public static Exception Exception(Action action)
         {
+            Guard.AgainstNull(action, "action");
+
             try
             {
                 action();
@@ -35,6 +37,8 @@ namespace FakeItEasy.Tests.TestHelpers
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Required for testing.")]
         public static Exception Exception(Func<object> function)
         {
+            Guard.AgainstNull(function, "function");
+
             try
             {
                 function();
