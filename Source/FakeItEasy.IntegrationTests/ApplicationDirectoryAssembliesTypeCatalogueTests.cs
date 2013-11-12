@@ -9,7 +9,8 @@ namespace FakeItEasy.IntegrationTests
     using FluentAssertions;
     using NUnit.Framework;
 
-    public class ApplicationDirectoryAssembliesTypeCatalogueIntegrationTests
+    [TestFixture]
+    public class ApplicationDirectoryAssembliesTypeCatalogueTests
     {
         private ApplicationDirectoryAssembliesTypeCatalogue catalogue;
 
