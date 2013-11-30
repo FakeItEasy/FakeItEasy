@@ -100,6 +100,22 @@
         }
 
         [Test]
+        public void Should_be_able_to_configure_returns_lazily_when_out_and_ref_modifiers_not_provided()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            int outArg = 3;
+            int refArg = 4;
+
+            // Act
+            A.CallTo(() => foo.MethodWithOutputAndReference(out outArg, ref refArg))
+             .ReturnsLazily((int x, int y) => x + y);
+
+            // Assert
+            Assert.That(foo.MethodWithOutputAndReference(out outArg, ref refArg), Is.EqualTo(7));
+        }
+
+        [Test]
         public void A_fake_should_be_passed_to_the_container_to_be_configured_when_created()
         {
             // Arrange

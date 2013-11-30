@@ -170,7 +170,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0));
                 });
@@ -195,7 +195,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
                 });
@@ -221,7 +221,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
                 });
@@ -248,7 +248,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
@@ -386,7 +386,7 @@ namespace FakeItEasy
 
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0));
                 });
@@ -408,7 +408,7 @@ namespace FakeItEasy
 
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
                 });
@@ -431,7 +431,7 @@ namespace FakeItEasy
 
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
                 });
@@ -455,7 +455,7 @@ namespace FakeItEasy
 
             return configuration.Invokes(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.Method, NameOfInvokesFeature);
 
                     actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
@@ -504,7 +504,7 @@ namespace FakeItEasy
 
             return configuration.Throws(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
 
                     return exceptionFactory(call.GetArgument<T1>(0));
                 });
@@ -526,7 +526,7 @@ namespace FakeItEasy
 
             return configuration.Throws(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
 
                     return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
                 });
@@ -549,7 +549,7 @@ namespace FakeItEasy
 
             return configuration.Throws(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
 
                     return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
                 });
@@ -573,7 +573,7 @@ namespace FakeItEasy
 
             return configuration.Throws(call =>
                 {
-                    AssertThatSignaturesAreEqual(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+                    AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
 
                     return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
@@ -594,20 +594,38 @@ namespace FakeItEasy
             return configuration.Throws(_ => new T());
         }
 
-        private static void AssertThatSignaturesAreEqual(MethodInfo callMethod, MethodInfo actionMethod, string nameOfFeature)
+        private static void AssertThatValueProducerSignatureSatisfiesCallSignature(MethodInfo callMethod, MethodInfo valueProducerMethod, string nameOfFeature)
         {
-            if (!SignaturesAreEqual(callMethod, actionMethod))
+            if (!IsCallSignatureSatisfiedByValueProducerSignature(callMethod, valueProducerMethod))
             {
                 var fakeSignature = BuildSignatureDescription(callMethod);
-                var actionSignature = BuildSignatureDescription(actionMethod);
+                var actionSignature = BuildSignatureDescription(valueProducerMethod);
 
                 throw new FakeConfigurationException("The faked method has the signature ({0}), but {2} was used with ({1}).".FormatInvariant(fakeSignature, actionSignature, nameOfFeature));
             }
         }
 
-        private static bool SignaturesAreEqual(MethodInfo methodOne, MethodInfo methodTwo)
+        private static bool IsCallSignatureSatisfiedByValueProducerSignature(MethodInfo callMethod, MethodInfo valueProducerMethod)
         {
-            return methodOne.GetParameters().Select(x => x.ParameterType).SequenceEqual(methodTwo.GetParameters().Select(x => x.ParameterType));
+            var callMethodParameterTypes = callMethod.GetParameters().Select(p => p.ParameterType).ToList();
+            var valueProducerMethodParameterTypes = valueProducerMethod.GetParameters().Select(p => p.ParameterType).ToList();
+
+            if (callMethodParameterTypes.Count != valueProducerMethodParameterTypes.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < callMethodParameterTypes.Count; i++)
+            {
+                if ((callMethodParameterTypes[i] != valueProducerMethodParameterTypes[i]) &&
+                    (!callMethodParameterTypes[i].IsByRef ||
+                     callMethodParameterTypes[i].GetElementType() != valueProducerMethodParameterTypes[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static string BuildSignatureDescription(MethodInfo method)

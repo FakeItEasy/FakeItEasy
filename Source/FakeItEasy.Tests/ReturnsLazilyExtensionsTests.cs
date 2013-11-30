@@ -14,17 +14,35 @@
 
             string RequestOfOne(string text);
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
+            string RequestOfOneWithOutput(out string text);
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required for testing.")]
+            string RequestOfOneWithReference(ref string text);
+
             int RequestOfTwo(int number1, int number2);
 
             string RequestOfTwo(string text1, string text2);
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required for testing.")]
+            string RequestOfTwoWithOutputAndReference(out string text1, ref string text2);
 
             int RequestOfThree(int number1, int number2, int number3);
 
             string RequestOfThree(string text1, string text2, string text3);
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required for testing.")]
+            string RequestOfThreeWithOutputAndReference(out string text1, ref string text2, string text3);
+
             int RequestOfFour(int number1, int number2, int number3, int number4);
 
             string RequestOfFour(string text1, string text2, string text3, string text4);
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required for testing.")]
+            string RequestOfFourWithOutputAndReference(string text1, string text2, ref string text3, out string text4);
         }
 
         [Test]
@@ -64,6 +82,52 @@
 
             Assert.That(result, Is.EqualTo(ReturnValue));
             Assert.That(collectedArgument, Is.EqualTo(Argument));
+        }
+
+        [Test]
+        public void ReturnsLazily_with_1_argument_should_support_out_parameter()
+        {
+            // Arrange
+            const string ReturnValue = "Result";
+            string argument = "argument";
+            string collectedArgument = null;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfOneWithOutput(out argument)).ReturnsLazily((string s) =>
+            {
+                collectedArgument = s;
+                return ReturnValue;
+            });
+            
+            // Act
+            var result = fake.RequestOfOneWithOutput(out argument);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(ReturnValue));
+            Assert.That(collectedArgument, Is.EqualTo(argument));
+        }
+
+        [Test]
+        public void ReturnsLazily_with_1_argument_should_support_ref_parameter()
+        {
+            // Arrange
+            const string ReturnValue = "Result";
+            string argument = "argument";
+            string collectedArgument = null;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfOneWithReference(ref argument)).ReturnsLazily((string s) =>
+            {
+                collectedArgument = s;
+                return ReturnValue;
+            });
+
+            // Act
+            var result = fake.RequestOfOneWithReference(ref argument);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(ReturnValue));
+            Assert.That(collectedArgument, Is.EqualTo(argument));
         }
 
         [Test]
@@ -138,6 +202,36 @@
             Assert.That(result, Is.EqualTo(ReturnValue));
             Assert.That(firstCollectedArgument, Is.EqualTo(FirstArgument));
             Assert.That(secondCollectedArgument, Is.EqualTo(SecondArgument));
+        }
+
+        [Test]
+        public void ReturnsLazily_with_2_arguments_should_support_out_and_ref()
+        {
+            // Arrange
+            const string ReturnValue = "Result";
+            string firstArgument = "first argument";
+            string secondArgument = "second argument";
+
+            string firstCollectedArgument = null;
+            string secondCollectedArgument = null;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfTwoWithOutputAndReference(out firstArgument, ref secondArgument))
+                .ReturnsLazily((string s, string t) =>
+                {
+                    firstCollectedArgument = s;
+                    secondCollectedArgument = t;
+
+                    return ReturnValue;
+                });
+
+            // Act
+            var result = fake.RequestOfTwoWithOutputAndReference(out firstArgument, ref secondArgument);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(ReturnValue));
+            Assert.That(firstCollectedArgument, Is.EqualTo(firstArgument));
+            Assert.That(secondCollectedArgument, Is.EqualTo(secondArgument));
         }
 
         [Test]
@@ -230,6 +324,40 @@
             Assert.That(result, Is.EqualTo(ReturnValue));
             Assert.That(firstCollectedArgument, Is.EqualTo(FirstArgument));
             Assert.That(secondCollectedArgument, Is.EqualTo(SecondArgument));
+            Assert.That(thirdCollectedArgument, Is.EqualTo(ThirdArgument));
+        }
+
+        [Test]
+        public void ReturnsLazily_with_3_arguments_should_support_out_and_ref()
+        {
+            // Arrange
+            string firstArgument = "first argument";
+            string secondArgument = "second argument";
+            const string ThirdArgument = "third argument";
+            const string ReturnValue = "Result";
+
+            string firstCollectedArgument = null;
+            string secondCollectedArgument = null;
+            string thirdCollectedArgument = null;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfThreeWithOutputAndReference(out firstArgument, ref secondArgument, A<string>._))
+                .ReturnsLazily((string s, string t, string u) =>
+                {
+                    firstCollectedArgument = s;
+                    secondCollectedArgument = t;
+                    thirdCollectedArgument = u;
+
+                    return ReturnValue;
+                });
+            
+            // Act
+            var result = fake.RequestOfThreeWithOutputAndReference(out firstArgument, ref secondArgument, ThirdArgument);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(ReturnValue));
+            Assert.That(firstCollectedArgument, Is.EqualTo(firstArgument));
+            Assert.That(secondCollectedArgument, Is.EqualTo(secondArgument));
             Assert.That(thirdCollectedArgument, Is.EqualTo(ThirdArgument));
         }
 
@@ -343,6 +471,44 @@
             Assert.That(secondCollectedArgument, Is.EqualTo(SecondArgument));
             Assert.That(thirdCollectedArgument, Is.EqualTo(ThirdArgument));
             Assert.That(fourthCollectedArgument, Is.EqualTo(FourthArgument));
+        }
+
+        [Test]
+        public void ReturnsLazily_with_4_arguments_should_support_out_and_ref()
+        {
+            // Arrange
+            const string FirstArgument = "first argument";
+            const string SecondArgument = "second argument";
+            string thirdArgument = "third argument";
+            string fourthArgument = "fourth argument";
+            const string ReturnValue = "Result";
+
+            string firstCollectedArgument = null;
+            string secondCollectedArgument = null;
+            string thirdCollectedArgument = null;
+            string fourthCollectedArgument = null;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfFourWithOutputAndReference(A<string>._, A<string>._, ref thirdArgument, out fourthArgument))
+                .ReturnsLazily((string s, string t, string u, string v) =>
+                {
+                    firstCollectedArgument = s;
+                    secondCollectedArgument = t;
+                    thirdCollectedArgument = u;
+                    fourthCollectedArgument = v;
+
+                    return ReturnValue;
+                });
+
+            // Act
+            var result = fake.RequestOfFourWithOutputAndReference(FirstArgument, SecondArgument, ref thirdArgument, out fourthArgument);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(ReturnValue));
+            Assert.That(firstCollectedArgument, Is.EqualTo(FirstArgument));
+            Assert.That(secondCollectedArgument, Is.EqualTo(SecondArgument));
+            Assert.That(thirdCollectedArgument, Is.EqualTo(thirdArgument));
+            Assert.That(fourthCollectedArgument, Is.EqualTo(fourthArgument));
         }
 
         [Test]
