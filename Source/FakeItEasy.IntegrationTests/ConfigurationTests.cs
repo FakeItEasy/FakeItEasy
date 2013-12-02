@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using Core;
     using ExtensionSyntax;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
     using Tests;
 
@@ -18,43 +20,54 @@
         [Test]
         public void Function_call_can_be_configured_using_predicate_to_validate_arguments()
         {
+            // Arrange
             var fake = A.Fake<IFoo>();
 
+            // Act
             fake.Configure()
                 .CallsTo(x => x.Baz(null, null))
                 .WhenArgumentsMatch(x => true)
                 .Returns(100);
 
-            Assert.That(fake.Baz("something", "else"), Is.EqualTo(100));
+            // Assert
+            fake.Baz("something", "else").Should().Be(100);
         }
 
         [Test]
         public void Void_call_can_be_configured_using_predicate_to_validate_arguments()
         {
+            // Arrange
             var fake = A.Fake<IFoo>();
 
+            // Act
             fake.Configure()
                 .CallsTo(x => x.Bar(null, null))
                 .WhenArgumentsMatch(x => true)
                 .Throws(new InvalidOperationException());
 
-            Assert.Throws<InvalidOperationException>(() => fake.Bar("something", "else"));
+            // Assert
+            var exception = Record.Exception(() => fake.Bar("something", "else"));
+            exception.Should()
+                .NotBeNull()
+                .And.BeOfType<InvalidOperationException>();
         }
 
         [Test]
         public void Output_and_reference_parameters_can_be_configured()
         {
+            // Arrange
             var fake = A.Fake<IDictionary<string, string>>();
-            string bla = null;
+            string outputParameter = null;
 
+            // Act
             fake.Configure()
-                .CallsTo(x => x.TryGetValue("test", out bla))
+                .CallsTo(x => x.TryGetValue("test", out outputParameter))
                 .Returns(true)
                 .AssignsOutAndRefParameters("bla");
 
-            fake.TryGetValue("test", out bla);
-
-            Assert.That(bla, Is.EqualTo("bla"));
+            // Assert
+            fake.TryGetValue("test", out outputParameter);
+            outputParameter.Should().Be("bla");
         }
 
         [Test]
@@ -67,8 +80,10 @@
             A.CallTo(() => foo.Bar(A<string>._, A<string>._)).Throws(new FormatException());
 
             // Assert
-            Assert.Throws<FormatException>(() =>
-                foo.Bar("any", "thing"));
+            var exception = Record.Exception(() => foo.Bar("any", "thing"));
+            exception.Should()
+                .NotBeNull()
+                .And.BeOfType<FormatException>();
         }
 
         [Test]
@@ -81,7 +96,7 @@
             A.CallTo(() => foo.Baz(null, null)).WithAnyArguments().Returns(99);
 
             // Assert
-            Assert.That(foo.Baz("any", "thing"), Is.EqualTo(99));
+            foo.Baz("any", "thing").Should().Be(99);
         }
 
         [Test]
@@ -95,8 +110,8 @@
             A.CallTo(foo).WithReturnType<string>().Returns("foo");
 
             // Assert
-            Assert.That(foo.SomeProperty, Is.EqualTo(10));
-            Assert.That(foo.Baz(), Is.EqualTo(10));
+            foo.SomeProperty.Should().Be(10);
+            foo.Baz().Should().Be(10);
         }
 
         [Test]
@@ -112,7 +127,7 @@
              .ReturnsLazily((int x, int y) => x + y);
 
             // Assert
-            Assert.That(foo.MethodWithOutputAndReference(out outArg, ref refArg), Is.EqualTo(7));
+            foo.MethodWithOutputAndReference(out outArg, ref refArg).Should().Be(7);
         }
 
         [Test]
@@ -143,8 +158,13 @@
             A.CallTo(() => foo.Bar()).Throws(new InvalidOperationException());
 
             // Assert
-            Assert.DoesNotThrow(() => foo.Baz());
-            Assert.Throws<InvalidOperationException>(foo.Bar);
+            var bazException = Record.Exception(() => foo.Baz());
+            var barException = Record.Exception(() => foo.Bar());
+
+            bazException.Should().BeNull();
+            barException.Should()
+                .NotBeNull().And
+                .BeOfType<InvalidOperationException>();
         }
 
         [Test]
@@ -153,12 +173,11 @@
             // Arrange
             var fake = A.Fake<IIndexed>(x => x.Strict());
 
+            // Act
             A.CallTo(() => fake[10]).Returns("ten");
 
-            // Act
-
             // Assert
-            Assert.That(fake[10], Is.EqualTo("ten"));
+            fake[10].Should().Be("ten");
         }
 
         [Test]
@@ -171,7 +190,7 @@
             A.CallTo(fake).WithReturnType<int>().Where(x => x.Method.Name == "ProtectedMethod").Returns(20);
 
             // Assert
-            Assert.That(fake.CallsProtectedMethod(), Is.EqualTo(20));
+            fake.CallsProtectedMethod().Should().Be(20);
         }
 
         public class TypeWithProtectedMethod
