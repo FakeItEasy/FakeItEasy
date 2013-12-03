@@ -28,6 +28,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Arrange
             var originalDirectory = Environment.CurrentDirectory;
+            var originalDirectoryName = new DirectoryInfo(originalDirectory).Name;
             var originalStandardOut = Console.Out;
             Exception exception;
 
@@ -37,7 +38,10 @@ namespace FakeItEasy.IntegrationTests
                 // tests as well. By changing the working directory before creating the
                 // ApplicationDirectoryAssembliesTypeCatalogue, the scanning will get those assemblies
                 // from the current AppDomain as well as the other path.
-                Environment.CurrentDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, @"..\..\..\FakeItEasy.IntegrationTests.External\bin\Debug");
+                Environment.CurrentDirectory = Path.Combine(
+                                                            Environment.CurrentDirectory,
+                                                            Path.Combine(@"..\..\..\FakeItEasy.IntegrationTests.External\bin", originalDirectoryName));
+
                 using (var messageStream = new MemoryStream())
                 using (var messageWriter = new StreamWriter(messageStream))
                 {
@@ -58,9 +62,11 @@ namespace FakeItEasy.IntegrationTests
             // Assert
             exception.Should().BeNull();
 
-            const string ExpectedMessagePattern = @"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\Debug\FakeItEasy.IntegrationTests.External.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
-  API restriction: The assembly '*FakeItEasy.IntegrationTests.External\bin\Debug\FakeItEasy.IntegrationTests.External.dll' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain.*";
-            actualMessage.Should().Match(ExpectedMessagePattern);
+            string expectedMessagePattern = string.Format(
+                                                          @"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\{0}\FakeItEasy.IntegrationTests.External.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
+  API restriction: The assembly '*FakeItEasy.IntegrationTests.External\bin\{0}\FakeItEasy.IntegrationTests.External.dll' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain.*",
+                                                          originalDirectoryName);
+            actualMessage.Should().Match(expectedMessagePattern);
         }
 
         [Test]
