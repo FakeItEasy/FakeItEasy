@@ -10,7 +10,9 @@
     <authors>Patrik Hägne</authors>
     <owners>Patrik Hägne</owners>
     <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
-    <releaseNotes>TBD</releaseNotes>
+    <releaseNotes>New: Better handling of ReturnsLazily, Throws, and Invokes convenience methods when used with out and ref parameters - https://github.com/FakeItEasy/FakeItEasy/issues/168
+Fixed: .NET 3.5 and Silverlight assemblies are still using Castle 3.2.0 - https://github.com/FakeItEasy/FakeItEasy/issues/195
+Fixed: Unable to run multiple test assemblies in a single app domain - https://github.com/FakeItEasy/FakeItEasy/issues/189</releaseNotes>
     <language>en-US</language>
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
   </metadata>
