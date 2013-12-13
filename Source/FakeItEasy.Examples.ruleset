@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="FakeItEasy Examples" ToolsVersion="11.0">
-  <Include Path="..\..\..\..\..\..\Code\Personal\FakeItEasy\Source\fakeiteasy.ruleset" Action="Default" />
+  <Include Path="fakeiteasy.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1014" Action="None" />
     <Rule Id="CA1020" Action="None" />
