@@ -21,13 +21,9 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
     `gem update --system`
 
-1. Install/update Rake (already included in Ruby 1.9 or later):
+1. Install/update Rake, Albacore and Zip:
 
-    `gem install rake`
-
-1. Install/update Albacore (0.3.4 or later is required):
-
-    `gem install albacore`
+    `gem install rake albacore zip`
 
 ## Building
 
