@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Tests
 {
     using System;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -16,7 +17,7 @@
             writer.WriteLine();
 
             // Assert
-            FakeExtensions.MustHaveHappened(A.CallTo(() => writer.Write(Environment.NewLine)));
+            A.CallTo(() => writer.Write(Environment.NewLine)).MustHaveHappened();
         }
 
         [Test]
@@ -29,7 +30,7 @@
             var result = writer.WriteLine();
 
             // Assert
-            Assert.That(result, Is.SameAs(writer));
+            result.Should().BeSameAs(writer);
         }
     }
 }

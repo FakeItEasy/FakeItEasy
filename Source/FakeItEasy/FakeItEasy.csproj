@@ -84,6 +84,21 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="A.of.T.cs" />
+    <Compile Include="TwiceExtensions.cs" />
+    <Compile Include="WriteExtensions.cs" />
+    <Compile Include="MustNotHaveHappenedExtensions.cs" />
+    <Compile Include="ReturnsNextFromSequenceExtensions.cs" />
+    <Compile Include="ReturnsLazilyExtensions.cs" />
+    <Compile Include="WithAnyArgumentsExtensions.cs" />
+    <Compile Include="MustHaveHappenedExtensions.cs" />
+    <Compile Include="MatchingExtensions.cs" />
+    <Compile Include="ThrowsExtensions.cs" />
+    <Compile Include="InvokesExtensions.cs" />
+    <Compile Include="WhereExtensions.cs" />
+    <Compile Include="StrictExtensions.cs" />
+    <Compile Include="GetArgumentExtensions.cs" />
+    <Compile Include="ReturnsExtensions.cs" />
+    <Compile Include="OnceExtensions.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -479,7 +494,7 @@
     <Compile Include="IFileSystem.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="ExpectationException.cs" />
-    <Compile Include="FakeExtensions.cs" />
+    <Compile Include="ValueProducerSignatureHelper.cs" />
     <Compile Include="ArgumentCollection.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Fake.cs" />

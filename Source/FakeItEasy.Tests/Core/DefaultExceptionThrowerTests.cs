@@ -182,7 +182,9 @@ that spans a couple of lines.";
     that spans a couple of lines.
 ";
 
-            Assert<FakeCreationException>(exception, expectedMessage);
+            exception.Should()
+                .BeAnExceptionOfType<FakeCreationException>()
+                .WithMessage(expectedMessage);
         }
 
         [TestCaseSource("resolvedConstructorsTestCases")]
@@ -197,15 +199,9 @@ that spans a couple of lines.";
                     typeOfFake, reasonForFailureOfUnspecifiedConstructor, resolvedConstructors));
 
             // Assert
-            Assert<FakeCreationException>(exception, expectedMessage);
-        }
-
-        private static void Assert<T>(Exception exception, string expectedMessage) where T : Exception
-        {
             exception.Should()
-                .NotBeNull()
-                .And.BeOfType<T>()
-                .And.Subject.As<T>().Message.Should().Be(expectedMessage);
+                .BeAnExceptionOfType<FakeCreationException>()
+                .WithMessage(expectedMessage);
         }
     }
 }

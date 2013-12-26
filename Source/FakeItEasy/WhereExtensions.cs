@@ -1,0 +1,31 @@
+namespace FakeItEasy
+{
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq.Expressions;
+
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+
+    /// <summary>
+    /// Provides a Where extension method matching calls to fake objects.
+    /// </summary>
+    public static class WhereExtensions
+    {
+        /// <summary>
+        /// Applies a predicate to constrain which calls will be considered for interception.
+        /// </summary>
+        /// <typeparam name="T">The return type of the where method.</typeparam>
+        /// <param name="configuration">The configuration object to extend.</param>
+        /// <param name="predicate">A predicate for a fake object call.</param>
+        /// <returns>The configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for expressions.")]
+        public static T Where<T>(this IWhereConfiguration<T> configuration, Expression<Func<IFakeObjectCall, bool>> predicate)
+        {
+            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(predicate, "predicate");
+
+            return configuration.Where(predicate.Compile(), x => x.Write(predicate.ToString()));
+        }
+    }
+}
