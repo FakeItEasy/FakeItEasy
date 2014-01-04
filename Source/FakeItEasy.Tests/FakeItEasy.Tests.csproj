@@ -96,6 +96,18 @@
     <Compile Include="AutoInitializedFixture.cs" />
     <Compile Include="ArgumentConstraintTestBase.of.T.cs" />
     <Compile Include="ACallToTests.cs" />
+    <Compile Include="OnceExtensionsTests.cs" />
+    <Compile Include="WriteExtensionsTests.cs" />
+    <Compile Include="MustNotHaveHappenedExtensionsTests.cs" />
+    <Compile Include="ReturnsNextFromSequenceExtensionsTests.cs" />
+    <Compile Include="WithAnyArgumentsExtensionsTests.cs" />
+    <Compile Include="MustHaveHappenedExtensionsTests.cs" />
+    <Compile Include="MatchingExtensionsTests.cs" />
+    <Compile Include="WhereExtensionsTests.cs" />
+    <Compile Include="StrictExtensionsTests.cs" />
+    <Compile Include="GetArgumentExtensionsTests.cs" />
+    <Compile Include="ReturnsExtensionsTests.cs" />
+    <Compile Include="TwiceExtensionsTests.cs" />
     <Compile Include="GenericATests.cs" />
     <Compile Include="DummyException.cs" />
     <Compile Include="Core\ArgumentConstraintTrapTests.cs" />
@@ -185,6 +197,7 @@
     <Compile Include="Core\MethodInfoManagerTests.cs" />
     <Compile Include="IoC\DictionaryContainerTests.cs" />
     <Compile Include="TestCases.cs" />
+    <Compile Include="TestHelpers\ObjectAssertionsExtensions.cs" />
     <Compile Include="TestHelpers\Record.cs" />
     <Compile Include="TestHelpers\MethodInfoDummyDefinition.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
@@ -204,7 +217,6 @@
     <Compile Include="ExtensionSyntax\ExtensionSyntaxTests.cs" />
     <Compile Include="FakeCall.cs" />
     <Compile Include="FakeCallRule.cs" />
-    <Compile Include="FakeExtensionsTests.cs" />
     <Compile Include="Core\FakeScopeTests.cs" />
     <Compile Include="FakeTests.cs" />
     <Compile Include="NullGuardedConstraintTests.cs" />

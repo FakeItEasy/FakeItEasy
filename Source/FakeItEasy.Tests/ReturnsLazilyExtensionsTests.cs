@@ -2,7 +2,9 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -48,7 +50,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_1_argument_should_use_returns_lazily_with_action_having_1_argument()
+        public void With_1_argument_should_use_returns_lazily_with_action_having_1_argument()
         {
             // Arrange
             const int Argument = 2;
@@ -71,7 +73,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_1_argument_should_support_overloads()
+        public void With_1_argument_should_support_overloads()
         {
             // Arrange
             const string Argument = "argument";
@@ -93,7 +95,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_1_argument_should_support_out_parameter()
+        public void With_1_argument_should_support_out_parameter()
         {
             // Arrange
             const string ReturnValue = "Result";
@@ -116,7 +118,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_1_argument_should_support_ref_parameter()
+        public void With_1_argument_should_support_ref_parameter()
         {
             // Arrange
             const string ReturnValue = "Result";
@@ -139,7 +141,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_1_argument_should_throw_exception_when_argument_count_does_not_match()
+        public void With_1_argument_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -152,7 +154,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_1_argument_should_throw_exception_when_argument_type_does_not_match()
+        public void With_1_argument_should_throw_exception_when_argument_type_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -165,7 +167,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_2_arguments_should_use_returns_lazily_with_action_having_2_arguments()
+        public void With_2_arguments_should_use_returns_lazily_with_action_having_2_arguments()
         {
             // Arrange
             const int FirstArgument = 5;
@@ -195,7 +197,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_2_arguments_should_support_overloads()
+        public void With_2_arguments_should_support_overloads()
         {
             // Arrange
             const string FirstArgument = "first argument";
@@ -225,7 +227,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_2_arguments_should_support_out_and_ref()
+        public void With_2_arguments_should_support_out_and_ref()
         {
             // Arrange
             const string ReturnValue = "Result";
@@ -255,7 +257,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_2_arguments_should_throw_exception_when_argument_count_does_not_match()
+        public void With_2_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -268,7 +270,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_2_arguments_should_throw_exception_when_first_argument_type_does_not_match()
+        public void With_2_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -281,7 +283,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_2_arguments_should_throw_exception_when_second_argument_type_does_not_match()
+        public void With_2_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -294,7 +296,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_3_arguments_should_use_returns_lazily_with_action_having_3_arguments()
+        public void With_3_arguments_should_use_returns_lazily_with_action_having_3_arguments()
         {
             // Arrange
             const int FirstArgument = 5;
@@ -328,7 +330,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_3_arguments_should_support_overloads()
+        public void With_3_arguments_should_support_overloads()
         {
             // Arrange
             const string FirstArgument = "first argument";
@@ -362,7 +364,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_3_arguments_should_support_out_and_ref()
+        public void With_3_arguments_should_support_out_and_ref()
         {
             // Arrange
             string firstArgument = "first argument";
@@ -396,7 +398,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_3_arguments_should_throw_exception_when_argument_count_does_not_match()
+        public void With_3_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -409,7 +411,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_3_arguments_should_throw_exception_when_first_argument_type_does_not_match()
+        public void With_3_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -422,7 +424,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_3_arguments_should_throw_exception_when_second_argument_type_does_not_match()
+        public void With_3_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -435,7 +437,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_3_arguments_should_throw_exception_when_third_argument_type_does_not_match()
+        public void With_3_arguments_should_throw_exception_when_third_argument_type_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -448,7 +450,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_4_arguments_should_use_returns_lazily_with_action_having_4_arguments()
+        public void With_4_arguments_should_use_returns_lazily_with_action_having_4_arguments()
         {
             // Arrange
             const int FirstArgument = 5;
@@ -486,7 +488,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_4_arguments_should_support_overloads()
+        public void With_4_arguments_should_support_overloads()
         {
             // Arrange
             const string FirstArgument = "first argument";
@@ -524,7 +526,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_4_arguments_should_support_out_and_ref()
+        public void With_4_arguments_should_support_out_and_ref()
         {
             // Arrange
             const string FirstArgument = "first argument";
@@ -562,7 +564,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_4_arguments_should_throw_exception_when_argument_count_does_not_match()
+        public void With_4_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -575,7 +577,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_4_arguments_should_throw_exception_when_first_argument_type_does_not_match()
+        public void With_4_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -588,7 +590,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_4_arguments_should_throw_exception_when_second_argument_type_does_not_match()
+        public void With_4_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -601,7 +603,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_4_arguments_should_throw_exception_when_third_argument_type_does_not_match()
+        public void With_4_arguments_should_throw_exception_when_third_argument_type_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -614,7 +616,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_with_4_arguments_should_throw_exception_when_fourth_argument_type_does_not_match()
+        public void With_4_arguments_should_throw_exception_when_fourth_argument_type_does_not_match()
         {
             // Arrange
             var fake = A.Fake<IInterface>();
@@ -626,6 +628,36 @@
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.String)");
         }
 
+        [Test]
+        public void Curried_ReturnsLazily_returns_value_from_curried_function()
+        {
+            // Arrange
+            var config = A.Fake<IReturnValueConfiguration<int>>();
+            int currentValue = 10;
+
+            // Act
+            config.ReturnsLazily(() => currentValue);
+
+            // Assert
+            var curriedFunction = Fake.GetCalls(config).Single().Arguments.Get<Func<IFakeObjectCall, int>>(0);
+
+            curriedFunction.Invoke(A.Dummy<IFakeObjectCall>()).Should().Be(currentValue);
+            currentValue = 20;
+            curriedFunction.Invoke(A.Dummy<IFakeObjectCall>()).Should().Be(currentValue);
+        }
+
+        [Test]
+        public void Curried_ReturnsLazily_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                A.Fake<IReturnValueConfiguration<int>>().ReturnsLazily(() => 10));
+        }
+        
         private static void AssertThatSignatureMismatchExceptionIsThrown(Action act, string fakeSignature, string returnsLazilySignature)
         {
             // Arrange
