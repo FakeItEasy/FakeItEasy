@@ -4,7 +4,11 @@ First of all, thank you for wanting to contribute to FakeItEasy! We really appre
 
 ## Preparation
 
-Before starting work on a new bug, feature, etc. ensure that an [issue](https://github.com/FakeItEasy/FakeItEasy/issues) has been raised. Indicate your intention to work on the issue by writing a comment against it. This will prevent duplication of effort. If the issue is a new feature, it's usually best to propose a design in the issue comments.
+Before starting work on a functional change, i.e. a new feature, a change to an existing feature or a bug, please ensure an [issue](https://github.com/FakeItEasy/FakeItEasy/issues) has been raised. Indicate your intention to work on the issue by writing a comment against it. This will prevent duplication of effort. If the change is non-trivial, it's usually best to propose a design in the issue comments.
+
+It is not necessary to raise an issue for non-functional changes, e.g. refactoring, adding tests, reformatting code, documentation, updating packages, etc.
+
+The coordinators will usually assign a priority to each issue from 1 (highest) to 3 (lowest) using the P1, P2 and P3 labels. Feel free to work on any issue you like but bear in mind that the higher the priority of an issue, the earlier the coordinators will direct attention to any comments or pull requests relating to it.
 
 ## Tests
 
