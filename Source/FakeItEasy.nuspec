@@ -19,7 +19,7 @@
     <file src="FakeItEasy.Net35\Bin\Release\FakeItEasy.xml" target="lib\net35" />
     <file src="FakeItEasy\Bin\Release\FakeItEasy.dll" target="lib\net40" />
     <file src="FakeItEasy\Bin\Release\FakeItEasy.xml" target="lib\net40" />
-    <file src="FakeItEasy-SL\Bin\Release\FakeItEasy.dll" target="lib\sl40" />
-    <file src="FakeItEasy-SL\Bin\Release\FakeItEasy.xml" target="lib\sl40" />
+    <file src="FakeItEasy-SL\Bin\Release\FakeItEasy.dll" target="lib\sl50" />
+    <file src="FakeItEasy-SL\Bin\Release\FakeItEasy.xml" target="lib\sl50" />
   </files>
 </package>
