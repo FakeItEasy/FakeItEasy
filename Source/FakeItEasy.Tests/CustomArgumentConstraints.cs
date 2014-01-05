@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests
         public static Expression ProducesValue(this IArgumentConstraintManager<Expression> scope, object expectedValue)
         {
             return scope.Matches(
-                x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x)),
+                x => object.Equals(expectedValue, x.Evaluate()),
                 string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
         }
 
@@ -38,7 +38,7 @@ namespace FakeItEasy.Tests
         internal static ParsedArgumentExpression ProducesValue(this IArgumentConstraintManager<ParsedArgumentExpression> scope, object expectedValue)
         {
             return scope.Matches(
-                x => object.Equals(expectedValue, Helpers.GetValueProducedByExpression(x.Expression)),
+                x => object.Equals(expectedValue, x.Expression.Evaluate()),
                 string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
         }
 

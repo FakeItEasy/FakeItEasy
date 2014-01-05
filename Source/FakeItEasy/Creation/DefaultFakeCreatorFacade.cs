@@ -141,12 +141,7 @@ namespace FakeItEasy.Creation
             private static IEnumerable<object> GetConstructorArgumentsFromExpression(Expression<Func<T>> constructorCall)
             {
                 AssertThatExpressionRepresentConstructorCall(constructorCall);
-
-                var constructorArguments =
-                    from argument in ((NewExpression)constructorCall.Body).Arguments
-                    select Helpers.GetValueProducedByExpression(argument);
-
-                return constructorArguments;
+                return ((NewExpression)constructorCall.Body).Arguments.Select(argument => argument.Evaluate());
             }
 
             private static void AssertThatExpressionRepresentConstructorCall(Expression<Func<T>> constructorCall)

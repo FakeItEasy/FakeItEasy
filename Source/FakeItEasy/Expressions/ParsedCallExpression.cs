@@ -23,12 +23,7 @@
 
         public object CallTarget
         {
-            get
-            {
-                return this.CallTargetExpression != null
-                           ? Helpers.GetValueProducedByExpression(this.CallTargetExpression)
-                           : null;
-            }
+            get { return this.CallTargetExpression != null ? this.CallTargetExpression.Evaluate() : null; }
         }
 
         // TODO (adamralph): remove suppression when SL is dropped or add an SL test which uses this
