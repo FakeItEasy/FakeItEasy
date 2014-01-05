@@ -12,7 +12,7 @@
     <RootNamespace>FakeItEasy</RootNamespace>
     <AssemblyName>FakeItEasy</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
@@ -21,6 +21,11 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <CodeAnalysisCulture>en-US</CodeAnalysisCulture>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
   </PropertyGroup>
   <!-- This property group is only here to support building this project using the 
        MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
@@ -713,7 +718,7 @@
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <Target Name="AfterBuild">
-    <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.12.0803\ILmerge.exe&quot; /keyfile:FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0&quot; /internalize:&quot;$(SolutionDir)ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
+    <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.12.0803\ILmerge.exe&quot; /keyfile:FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0&quot; /internalize:&quot;$(SolutionDir)ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
   </Target>
   <PropertyGroup>
     <StyleCopMSBuildTargetsFile>..\packages\StyleCop.MSBuild.4.7.44.1\tools\StyleCop.targets</StyleCopMSBuildTargetsFile>
