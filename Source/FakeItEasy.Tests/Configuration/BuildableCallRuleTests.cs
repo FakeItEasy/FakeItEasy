@@ -1,18 +1,48 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
+    using TestHelpers;
 
     [TestFixture]
     public class BuildableCallRuleTests
     {
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
+        private object[] defaultReturnValueCases = TestCases.Create(
+            new
+            {
+                MethodName = "IntReturn",
+                ExpectedReturnValue = (object)0
+            },
+            new
+            {
+                MethodName = "StringReturn",
+                ExpectedReturnValue = (object)null
+            },
+            new
+            {
+                MethodName = "SelfReturn",
+                ExpectedReturnValue = (object)null
+            }).AsTestCaseSource();
+
         private TestableCallRule rule;
 
         private interface IOutAndRef
         {
             void OutAndRef(object input, out int first, string input2, ref string second, string input3);
+        }
+
+        private interface IHaveDifferentReturnValues
+        {
+            int IntReturn();
+
+            string StringReturn();
+
+            IHaveDifferentReturnValues SelfReturn();
         }
 
         [SetUp]
@@ -36,8 +66,8 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.Apply(A.Fake<IInterceptedFakeObjectCall>());
 
             // Assert
-            Assert.That(firstWasCalled, Is.True);
-            Assert.That(secondWasCalled, Is.True);
+            firstWasCalled.Should().BeTrue();
+            secondWasCalled.Should().BeTrue();
         }
 
         [Test]
@@ -51,7 +81,7 @@ namespace FakeItEasy.Tests.Configuration
 
             this.rule.Apply(call);
 
-            Assert.That(passedCall, Is.SameAs(call));
+            passedCall.Should().BeSameAs(call);
         }
 
         [Test]
@@ -87,15 +117,33 @@ namespace FakeItEasy.Tests.Configuration
         [Test]
         public void Apply_should_throw_when_OutAndRefParametersValues_length_differs_from_the_number_of_out_and_ref_parameters_in_the_call()
         {
+            // Arrange
             this.rule.OutAndRefParametersValues = new object[] { 1, "foo", "bar" };
             this.rule.Applicator = x => { };
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
             A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod("OutAndRef"));
 
-            var ex = Assert.Throws<InvalidOperationException>(() =>
+            var exception = Record.Exception(() =>
                 this.rule.Apply(call));
-            Assert.That(ex.Message, Is.EqualTo("The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call."));
+
+            exception.Should().BeAnExceptionOfType<InvalidOperationException>()
+                .WithMessage("The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call.");
+        }
+
+        [TestCaseSource("defaultReturnValueCases")]
+        public void Apply_should_set_return_value_to_default_value_when_applicator_is_not_set(string methodName, object expectedResponse)
+        {
+            // Arrange
+            var call = A.Fake<IInterceptedFakeObjectCall>();
+            A.CallTo(() => call.Method).Returns(typeof(IHaveDifferentReturnValues).GetMethod(methodName));
+
+            // Act
+            this.rule.Apply(call);
+
+            // Assert
+            A.CallTo(() => call.SetReturnValue(expectedResponse))
+                .MustHaveHappened();
         }
 
         [TestCase(true, Result = true)]
@@ -106,13 +154,14 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.ReturnValueFromOnIsApplicableTo = resultFromOnIsApplicableTo;
 
             // Act
+            var result = this.rule.IsApplicableTo(null);
 
             // Assert
-            return this.rule.IsApplicableTo(null);
+            return result;
         }
 
         [Test]
-        public void Apply_should_return_false_when_a_predicate_fails_and_on_is_applicable_to_passes()
+        public void IsApplicableTo_should_return_false_when_a_predicate_fails_and_on_is_applicable_to_passes()
         {
             // Arrange
             this.rule.ReturnValueFromOnIsApplicableTo = true;
@@ -121,9 +170,10 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.ApplyWherePredicate(x => false, x => { });
 
             // Act
+            var isThisRuleApplicable = this.rule.IsApplicableTo(A.Dummy<IFakeObjectCall>());
 
             // Assert
-            Assert.That(this.rule.IsApplicableTo(A.Dummy<IFakeObjectCall>()), Is.False);
+            isThisRuleApplicable.Should().BeFalse();
         }
 
         [Test]
@@ -136,7 +186,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.IsApplicableTo(A.Dummy<IFakeObjectCall>());
 
             // Assert
-            Assert.That(this.rule.OnIsApplicableToWasCalled, Is.False);
+            this.rule.OnIsApplicableToWasCalled.Should().BeFalse();
         }
 
         [Test]
@@ -164,9 +214,10 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.ApplyWherePredicate(x => x.ToString() == "foo", x => { });
 
             // Act
+            var isApplicableTo = this.rule.IsApplicableTo(call);
 
             // Assert
-            Assert.That(this.rule.IsApplicableTo(call), Is.True);
+            isApplicableTo.Should().BeTrue();
         }
 
         [Test]
@@ -181,7 +232,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.WriteDescriptionOfValidCall(writer);
 
             // Assert
-            Assert.That(writer.Builder.ToString(), Is.EqualTo(@"description"));
+            writer.Builder.ToString().Should().Be("description");
         }
 
         [Test]
@@ -203,7 +254,7 @@ namespace FakeItEasy.Tests.Configuration
   where description of first where
   and description of second where";
 
-            Assert.That(descriptionWriter.Builder.ToString(), Is.EqualTo(expectedDescription));
+            descriptionWriter.Builder.ToString().Should().Be(expectedDescription);
         }
 
         private class TestableCallRule
