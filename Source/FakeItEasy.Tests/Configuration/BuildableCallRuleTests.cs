@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using NUnit.Framework;
@@ -8,11 +9,38 @@ namespace FakeItEasy.Tests.Configuration
     [TestFixture]
     public class BuildableCallRuleTests
     {
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
+        private object[] defaultReturnValueCases = TestCases.Create(
+            new
+            {
+                MethodName = "IntReturn",
+                ExpectedReturnValue = (object)0
+            },
+            new
+            {
+                MethodName = "StringReturn",
+                ExpectedReturnValue = (object)null
+            },
+            new
+            {
+                MethodName = "SelfReturn",
+                ExpectedReturnValue = (object)null
+            }).AsTestCaseSource();
+
         private TestableCallRule rule;
 
         private interface IOutAndRef
         {
             void OutAndRef(object input, out int first, string input2, ref string second, string input3);
+        }
+
+        private interface IHaveDifferentReturnValues
+        {
+            int IntReturn();
+
+            string StringReturn();
+
+            IHaveDifferentReturnValues SelfReturn();
         }
 
         [SetUp]
@@ -96,6 +124,21 @@ namespace FakeItEasy.Tests.Configuration
             var ex = Assert.Throws<InvalidOperationException>(() =>
                 this.rule.Apply(call));
             Assert.That(ex.Message, Is.EqualTo("The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call."));
+        }
+
+        [TestCaseSource("defaultReturnValueCases")]
+        public void Apply_should_set_return_value_to_default_value_when_applicator_is_not_set(string methodName, object expectedResponse)
+        {
+            // Arrange
+            var call = A.Fake<IInterceptedFakeObjectCall>();
+            A.CallTo(() => call.Method).Returns(typeof(IHaveDifferentReturnValues).GetMethod(methodName));
+
+            // Act
+            this.rule.Apply(call);
+
+            // Assert
+            A.CallTo(() => call.SetReturnValue(expectedResponse))
+                .MustHaveHappened();
         }
 
         [TestCase(true, Result = true)]

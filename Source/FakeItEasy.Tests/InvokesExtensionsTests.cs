@@ -1,6 +1,5 @@
 ﻿namespace FakeItEasy.Tests
 {
-    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using NUnit.Framework;
 
@@ -62,6 +61,21 @@
             fake.Action();
 
             Assert.That(actionIsInvoked, Is.True);
+        }
+
+        [Test]
+        public void Invokes_with_no_argument_and_no_returns_should_return_default_return_value()
+        {
+            // Arrange
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.Request())
+                .Invokes(() => { });
+
+            // Act
+            var result = fake.Request();
+
+            // Assert
+            Assert.That(result, Is.EqualTo(default(int)));
         }
 
         [Test]
