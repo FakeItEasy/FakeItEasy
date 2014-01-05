@@ -1,7 +1,10 @@
 ﻿namespace FakeItEasy.Tests
 {
+    using System;
     using FakeItEasy.Configuration;
+    using FluentAssertions;
     using NUnit.Framework;
+    using TestHelpers;
 
     [TestFixture]
     public class InvokesExtensionsTests
@@ -40,27 +43,35 @@
         [Test]
         public void Invokes_should_support_omitting_arguments_when_they_are_not_used()
         {
+            // Arrange
             bool actionIsInvoked = false;
 
             var fake = A.Fake<IInterface>();
+            
+            // Act
             A.CallTo(() => fake.ActionOfOne(A<int>._))
                 .Invokes(() => actionIsInvoked = true);
-            fake.ActionOfOne(5);
 
-            Assert.That(actionIsInvoked, Is.True);
+            // Assert
+            fake.ActionOfOne(5);
+            actionIsInvoked.Should().BeTrue();
         }
 
         [Test]
         public void Invokes_with_no_argument_should_use_invokes_with_action_having_no_arguments()
         {
+            // Arrange
             bool actionIsInvoked = false;
 
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.Action())
                 .Invokes(() => actionIsInvoked = true);
+            
+            // Assert
             fake.Action();
-
-            Assert.That(actionIsInvoked, Is.True);
+            actionIsInvoked.Should().BeTrue();
         }
 
         [Test]
@@ -68,92 +79,116 @@
         {
             // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.Request())
                 .Invokes(() => { });
 
-            // Act
-            var result = fake.Request();
-
             // Assert
-            Assert.That(result, Is.EqualTo(default(int)));
+            var result = fake.Request();
+            result.Should().Be(default(int));
         }
 
         [Test]
         public void Invokes_with_no_argument_should_support_return_value()
         {
+            // Arrange
             const int ReturnValue = 0;
 
             var fake = A.Fake<IInterface>();
+            
+            // Act
             A.CallTo(() => fake.Request())
                 .Invokes(() => { })
                 .Returns(ReturnValue);
-            var result = fake.Request();
 
-            Assert.That(result, Is.EqualTo(ReturnValue));
+            // Assert
+            var result = fake.Request();
+            result.Should().Be(ReturnValue);
         }
 
         [Test]
         public void Invokes_with_1_argument_should_use_invokes_with_action_having_1_argument()
         {
+            // Arrange
             const int Argument = 5;
             bool actionIsInvoked = false;
             int? collectedArgument = null;
 
             var fake = A.Fake<IInterface>();
+            
+            // Act
             A.CallTo(() => fake.ActionOfOne(A<int>._))
                 .Invokes((int i) =>
                              {
                                  actionIsInvoked = true;
                                  collectedArgument = i;
                              });
+
+            // Assert
             fake.ActionOfOne(Argument);
 
-            Assert.That(actionIsInvoked, Is.True);
-            Assert.That(collectedArgument, Is.EqualTo(Argument));
+            actionIsInvoked.Should().BeTrue();
+            collectedArgument.Should().Be(Argument);
         }
 
         [Test]
         public void Invokes_with_1_argument_should_support_overloads()
         {
+            // Arrange
             const string Argument = "argument";
             bool actionIsInvoked = false;
             string collectedArgument = null;
 
             var fake = A.Fake<IInterface>();
+            
+            // Act
             A.CallTo(() => fake.ActionOfOne(A<string>._))
                 .Invokes((string s) =>
                             {
                                 actionIsInvoked = true;
                                 collectedArgument = s;
                             });
+            
+            // Assert
             fake.ActionOfOne(Argument);
 
-            Assert.That(actionIsInvoked, Is.True);
-            Assert.That(collectedArgument, Is.EqualTo(Argument));
+            actionIsInvoked.Should().BeTrue();
+            collectedArgument.Should().Be(Argument);
         }
 
         [Test]
         public void Invokes_with_1_argument_should_support_return_value()
         {
+            // Arrange
             const int ReturnValue = 0;
             const int Argument = 5;
 
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.RequestOfOne(A<int>._))
                 .Invokes((int i) => { })
                 .Returns(ReturnValue);
+
+            // Assert
             var result = fake.RequestOfOne(Argument);
 
-            Assert.That(result, Is.EqualTo(ReturnValue));
+            result.Should().Be(ReturnValue);
         }
 
         [Test]
         public void Invokes_with_1_argument_should_throw_exception_when_argument_count_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfTwo(A<int>._, A<int>._))
                 .Invokes((int i) => { });
-            TestDelegate act = () => fake.ActionOfTwo(5, 8);
+
+            // Assert
+            Action act = () => fake.ActionOfTwo(5, 8);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32)");
         }
@@ -161,10 +196,15 @@
         [Test]
         public void Invokes_with_1_argument_should_throw_exception_when_argument_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfOne(A<int>._))
                 .Invokes((string s) => { });
-            TestDelegate act = () => fake.ActionOfOne(5);
+
+            // Assert
+            Action act = () => fake.ActionOfOne(5);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32)", "(System.String)");
         }
@@ -172,6 +212,7 @@
         [Test]
         public void Invokes_with_2_arguments_should_use_invokes_with_action_having_2_arguments()
         {
+            // Arrange
             const int FirstArgument = 5;
             const int SecondArgument = 8;
 
@@ -180,6 +221,8 @@
             int? secondCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
+            
+            // Act
             A.CallTo(() => fake.ActionOfTwo(A<int>._, A<int>._))
                 .Invokes((int i, int j) =>
                              {
@@ -187,16 +230,19 @@
                                  firstCollectedArgument = i;
                                  secondCollectedArgument = j;
                              });
+
+            // Assert
             fake.ActionOfTwo(FirstArgument, SecondArgument);
 
-            Assert.That(actionIsInvoked, Is.True);
-            Assert.That(firstCollectedArgument, Is.EqualTo(FirstArgument));
-            Assert.That(secondCollectedArgument, Is.EqualTo(SecondArgument));
+            actionIsInvoked.Should().BeTrue();
+            firstCollectedArgument.Should().Be(FirstArgument);
+            secondCollectedArgument.Should().Be(SecondArgument);
         }
 
         [Test]
         public void Invokes_with_2_arguments_should_support_overloads()
         {
+            // Arrange
             const string FirstArgument = "first argument";
             const string SecondArgument = "second argument";
 
@@ -205,6 +251,8 @@
             string secondCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
+            
+            // Act
             A.CallTo(() => fake.ActionOfTwo(A<string>._, A<string>._))
                 .Invokes((string s, string t) =>
                             {
@@ -212,34 +260,46 @@
                                 firstCollectedArgument = s;
                                 secondCollectedArgument = t;
                             });
+
+            // Assert
             fake.ActionOfTwo(FirstArgument, SecondArgument);
 
-            Assert.That(actionIsInvoked, Is.True);
-            Assert.That(firstCollectedArgument, Is.EqualTo(FirstArgument));
-            Assert.That(secondCollectedArgument, Is.EqualTo(SecondArgument));
+            actionIsInvoked.Should().BeTrue();
+            firstCollectedArgument.Should().Be(FirstArgument);
+            secondCollectedArgument.Should().Be(SecondArgument);
         }
 
         [Test]
         public void Invokes_with_2_arguments_should_support_return_value()
         {
+            // Arrange
             const int ReturnValue = 0;
 
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.RequestOfTwo(A<int>._, A<int>._))
                 .Invokes((int i, int j) => { })
                 .Returns(ReturnValue);
+
+            // Assert
             var result = fake.RequestOfTwo(5, 8);
 
-            Assert.That(result, Is.EqualTo(ReturnValue));
+            result.Should().Be(ReturnValue);
         }
 
         [Test]
         public void Invokes_with_2_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfOne(A<int>._))
                 .Invokes((int i, int j) => { });
-            TestDelegate act = () => fake.ActionOfOne(5);
+
+            // Assert
+            Action act = () => fake.ActionOfOne(5);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32)", "(System.Int32, System.Int32)");
         }
@@ -247,10 +307,15 @@
         [Test]
         public void Invokes_with_2_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfTwo(A<int>._, A<int>._))
                 .Invokes((string s, int i) => { });
-            TestDelegate act = () => fake.ActionOfTwo(5, 8);
+
+            // Assert
+            Action act = () => fake.ActionOfTwo(5, 8);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.String, System.Int32)");
         }
@@ -258,10 +323,15 @@
         [Test]
         public void Invokes_with_2_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfTwo(A<int>._, A<int>._))
                 .Invokes((int i, string s) => { });
-            TestDelegate act = () => fake.ActionOfTwo(5, 8);
+
+            // Assert
+            Action act = () => fake.ActionOfTwo(5, 8);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32, System.String)");
         }
@@ -269,6 +339,7 @@
         [Test]
         public void Invokes_with_3_arguments_should_use_invokes_with_action_having_3_arguments()
         {
+            // Arrange
             const int FirstArgument = 5;
             const int SecondArgument = 8;
             const int ThirdArgument = 13;
@@ -279,6 +350,8 @@
             int? thirdCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfThree(A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, int j, int k) =>
                              {
@@ -287,17 +360,20 @@
                                  secondCollectedArgument = j;
                                  thirdCollectedArgument = k;
                              });
+
+            // Assert
             fake.ActionOfThree(FirstArgument, SecondArgument, ThirdArgument);
 
-            Assert.That(actionIsInvoked, Is.True);
-            Assert.That(firstCollectedArgument, Is.EqualTo(FirstArgument));
-            Assert.That(secondCollectedArgument, Is.EqualTo(SecondArgument));
-            Assert.That(thirdCollectedArgument, Is.EqualTo(ThirdArgument));
+            actionIsInvoked.Should().BeTrue();
+            firstCollectedArgument.Should().Be(FirstArgument);
+            secondCollectedArgument.Should().Be(SecondArgument);
+            thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
         [Test]
         public void Invokes_with_3_arguments_should_support_overloads()
         {
+            // Arrange
             const string FirstArgument = "first argument";
             const string SecondArgument = "second argument";
             const string ThirdArgument = "third argument";
@@ -308,6 +384,8 @@
             string thirdCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfThree(A<string>._, A<string>._, A<string>._))
                 .Invokes((string s, string t, string u) =>
                             {
@@ -316,35 +394,47 @@
                                 secondCollectedArgument = t;
                                 thirdCollectedArgument = u;
                             });
+
+            // Assert
             fake.ActionOfThree(FirstArgument, SecondArgument, ThirdArgument);
 
-            Assert.That(actionIsInvoked, Is.True);
-            Assert.That(firstCollectedArgument, Is.EqualTo(FirstArgument));
-            Assert.That(secondCollectedArgument, Is.EqualTo(SecondArgument));
-            Assert.That(thirdCollectedArgument, Is.EqualTo(ThirdArgument));
+            actionIsInvoked.Should().BeTrue();
+            firstCollectedArgument.Should().Be(FirstArgument);
+            secondCollectedArgument.Should().Be(SecondArgument);
+            thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
         [Test]
         public void Invokes_with_3_arguments_should_support_return_value()
         {
+            // Arrange
             const int ReturnValue = 0;
 
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.RequestOfThree(A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, int j, int k) => { })
                 .Returns(ReturnValue);
+
+            // Assert
             var result = fake.RequestOfThree(5, 8, 13);
 
-            Assert.That(result, Is.EqualTo(ReturnValue));
+            result.Should().Be(ReturnValue);
         }
 
         [Test]
         public void Invokes_with_3_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfTwo(A<int>._, A<int>._))
                 .Invokes((int i, int j, int k) => { });
-            TestDelegate act = () => fake.ActionOfTwo(5, 8);
+
+            // Assert
+            Action act = () => fake.ActionOfTwo(5, 8);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32)");
         }
@@ -352,10 +442,15 @@
         [Test]
         public void Invokes_with_3_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+            
+            // Act
             A.CallTo(() => fake.ActionOfThree(A<int>._, A<int>._, A<int>._))
                 .Invokes((string s, int i, int j) => { });
-            TestDelegate act = () => fake.ActionOfThree(5, 8, 13);
+
+            // Assert
+            Action act = () => fake.ActionOfThree(5, 8, 13);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.String, System.Int32, System.Int32)");
         }
@@ -363,10 +458,15 @@
         [Test]
         public void Invokes_with_3_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+            
+            // Act
             A.CallTo(() => fake.ActionOfThree(A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, string s, int j) => { });
-            TestDelegate act = () => fake.ActionOfThree(5, 8, 13);
+
+            // Assert
+            Action act = () => fake.ActionOfThree(5, 8, 13);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32)");
         }
@@ -374,10 +474,15 @@
         [Test]
         public void Invokes_with_3_arguments_should_throw_exception_when_third_argument_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+            
+            // Act
             A.CallTo(() => fake.ActionOfThree(A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, int j, string s) => { });
-            TestDelegate act = () => fake.ActionOfThree(5, 8, 13);
+            
+            // Assert
+            Action act = () => fake.ActionOfThree(5, 8, 13);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.String)");
         }
@@ -385,6 +490,7 @@
         [Test]
         public void Invokes_with_4_arguments_should_use_invokes_with_action_having_4_arguments()
         {
+            // Arrange
             const int FirstArgument = 5;
             const int SecondArgument = 8;
             const int ThirdArgument = 13;
@@ -397,6 +503,8 @@
             int? fourthCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfFour(A<int>._, A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, int j, int k, int l) =>
                              {
@@ -406,18 +514,21 @@
                                  thirdCollectedArgument = k;
                                  fourthCollectedArgument = l;
                              });
+
+            // Assert
             fake.ActionOfFour(FirstArgument, SecondArgument, ThirdArgument, FourthArgument);
 
-            Assert.That(actionIsInvoked, Is.True);
-            Assert.That(firstCollectedArgument, Is.EqualTo(FirstArgument));
-            Assert.That(secondCollectedArgument, Is.EqualTo(SecondArgument));
-            Assert.That(thirdCollectedArgument, Is.EqualTo(ThirdArgument));
-            Assert.That(fourthCollectedArgument, Is.EqualTo(FourthArgument));
+            actionIsInvoked.Should().BeTrue();
+            firstCollectedArgument.Should().Be(FirstArgument);
+            secondCollectedArgument.Should().Be(SecondArgument);
+            thirdCollectedArgument.Should().Be(ThirdArgument);
+            fourthCollectedArgument.Should().Be(FourthArgument);
         }
 
         [Test]
         public void Invokes_with_4_arguments_should_support_overloads()
         {
+            // Arrange
             const string FirstArgument = "first argument";
             const string SecondArgument = "second argument";
             const string ThirdArgument = "third argument";
@@ -430,6 +541,8 @@
             string fourthCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfFour(A<string>._, A<string>._, A<string>._, A<string>._))
                 .Invokes((string s, string t, string u, string v) =>
                 {
@@ -439,36 +552,48 @@
                     thirdCollectedArgument = u;
                     fourthCollectedArgument = v;
                 });
+
+            // Assert
             fake.ActionOfFour(FirstArgument, SecondArgument, ThirdArgument, FourthArgument);
 
-            Assert.That(actionIsInvoked, Is.True);
-            Assert.That(firstCollectedArgument, Is.EqualTo(FirstArgument));
-            Assert.That(secondCollectedArgument, Is.EqualTo(SecondArgument));
-            Assert.That(thirdCollectedArgument, Is.EqualTo(ThirdArgument));
-            Assert.That(fourthCollectedArgument, Is.EqualTo(FourthArgument));
+            actionIsInvoked.Should().BeTrue();
+            firstCollectedArgument.Should().Be(FirstArgument);
+            secondCollectedArgument.Should().Be(SecondArgument);
+            thirdCollectedArgument.Should().Be(ThirdArgument);
+            fourthCollectedArgument.Should().Be(FourthArgument);
         }
 
         [Test]
         public void Invokes_with_4_arguments_should_support_return_value()
         {
+            // Arrange
             const int ReturnValue = 0;
 
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.RequestOfFour(A<int>._, A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, int j, int k, int l) => { })
                 .Returns(ReturnValue);
+
+            // Assert
             var result = fake.RequestOfFour(5, 8, 13, 21);
 
-            Assert.That(result, Is.EqualTo(ReturnValue));
+            result.Should().Be(ReturnValue);
         }
 
         [Test]
         public void Invokes_with_4_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfThree(A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, int j, int k, int l) => { });
-            TestDelegate act = () => fake.ActionOfThree(5, 8, 13);
+
+            // Assert
+            Action act = () => fake.ActionOfThree(5, 8, 13);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.Int32)");
         }
@@ -476,10 +601,15 @@
         [Test]
         public void Invokes_with_4_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfFour(A<int>._, A<int>._, A<int>._, A<int>._))
                 .Invokes((string s, int i, int j, int k) => { });
-            TestDelegate act = () => fake.ActionOfFour(5, 8, 13, 20);
+
+            // Assert
+            Action act = () => fake.ActionOfFour(5, 8, 13, 20);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.String, System.Int32, System.Int32, System.Int32)");
         }
@@ -487,10 +617,15 @@
         [Test]
         public void Invokes_with_4_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Acct
             A.CallTo(() => fake.ActionOfFour(A<int>._, A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, string s, int j, int k) => { });
-            TestDelegate act = () => fake.ActionOfFour(5, 8, 13, 20);
+
+            // Assert
+            Action act = () => fake.ActionOfFour(5, 8, 13, 20);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32, System.Int32)");
         }
@@ -498,10 +633,15 @@
         [Test]
         public void Invokes_with_4_arguments_should_throw_exception_when_third_argument_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfFour(A<int>._, A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, int j, string s, int k) => { });
-            TestDelegate act = () => fake.ActionOfFour(5, 8, 13, 20);
+
+            // Assert
+            Action act = () => fake.ActionOfFour(5, 8, 13, 20);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.String, System.Int32)");
         }
@@ -509,18 +649,27 @@
         [Test]
         public void Invokes_with_4_arguments_should_throw_exception_when_fourth_argument_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
+
+            // Act
             A.CallTo(() => fake.ActionOfFour(A<int>._, A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, int j, int k, string s) => { });
-            TestDelegate act = () => fake.ActionOfFour(5, 8, 13, 20);
+
+            // Assert
+            Action act = () => fake.ActionOfFour(5, 8, 13, 20);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.String)");
         }
 
-        private static void AssertThatSignatureMismatchExceptionIsThrown(TestDelegate act, string fakeSignature, string invokesSignature)
+        private static void AssertThatSignatureMismatchExceptionIsThrown(Action act, string fakeSignature, string invokesSignature)
         {
             var expectedMessage = "The faked method has the signature " + fakeSignature + ", but invokes was used with " + invokesSignature + ".";
-            Assert.That(act, Throws.TypeOf<FakeConfigurationException>().With.Message.EqualTo(expectedMessage));
+            
+            var exception = Record.Exception(act);
+
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                .WithMessage(expectedMessage);
         }
     }
 }
