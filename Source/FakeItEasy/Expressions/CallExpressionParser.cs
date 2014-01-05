@@ -26,7 +26,7 @@
 
         private static ParsedCallExpression ParseInvokationExpression(InvocationExpression expression)
         {
-            var target = Helpers.GetValueProducedByExpression(expression.Expression);
+            var target = expression.Expression.Evaluate();
             var method = target.GetType().GetMethod("Invoke");
 
             var argumentsExpressions = from argument in expression.Arguments.Zip(method.GetParameters(), (x, y) => new { Expression = x, ParameterInfo = y })

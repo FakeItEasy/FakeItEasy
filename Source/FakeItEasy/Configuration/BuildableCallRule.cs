@@ -17,12 +17,7 @@ namespace FakeItEasy.Configuration
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
-            this.Applicator =
-                fakeObjectCall =>
-                {
-                    var returnValue = Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType);
-                    fakeObjectCall.SetReturnValue(returnValue);
-                };
+            this.Applicator = call => call.SetReturnValue(call.Method.ReturnType.GetDefaultValue());
             this.wherePredicates = new List<Tuple<Func<IFakeObjectCall, bool>, Action<IOutputWriter>>>();
         }
 

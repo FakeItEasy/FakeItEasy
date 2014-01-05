@@ -10,22 +10,21 @@
         public static string GetDescription(this IFakeObjectCall fakeObjectCall)
         {
             var method = fakeObjectCall.Method;
-
             return "{0}.{1}({2})".FormatInvariant(method.DeclaringType.FullName, method.Name, GetParametersString(fakeObjectCall));
         }
 
         [DebuggerStepThrough]
-        public static object GetDefaultValueOfType(Type type)
+        public static object GetDefaultValue(this Type type)
         {
             return type.IsValueType && !type.Equals(typeof(void)) ? Activator.CreateInstance(type) : null;
         }
 
         /// <summary>
-        /// Gets the value produced by the specified expression when compiled and invoked.
+        /// Evaluates an expression by compiling it into a delegate and invoking the delegate.
         /// </summary>
-        /// <param name="expression">The expression to get the value from.</param>
-        /// <returns>The value produced by the expression.</returns>
-        public static object GetValueProducedByExpression(Expression expression)
+        /// <param name="expression">The expression to be evaluated.</param>
+        /// <returns>The value returned from the delegate compiled from the expression.</returns>
+        public static object Evaluate(this Expression expression)
         {
             var lambda = Expression.Lambda(expression).Compile();
             return lambda.DynamicInvoke();

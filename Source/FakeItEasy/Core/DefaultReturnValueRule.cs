@@ -11,7 +11,7 @@
         {
             get { return null; }
         }
-        
+
         private static IFakeAndDummyManager FakeManager
         {
             get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
@@ -32,11 +32,10 @@
 
         private static object ResolveReturnValue(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            object result = null;
-
+            object result;
             if (!FakeManager.TryCreateDummy(fakeObjectCall.Method.ReturnType, out result))
             {
-                result = Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType);
+                return fakeObjectCall.Method.ReturnType.GetDefaultValue();
             }
 
             return result;

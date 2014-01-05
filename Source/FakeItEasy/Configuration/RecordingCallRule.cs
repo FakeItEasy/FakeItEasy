@@ -54,7 +54,7 @@ namespace FakeItEasy.Configuration
 
             this.fakeManager.AddRuleFirst(this.recordedRule);
 
-            fakeObjectCall.SetReturnValue(Helpers.GetDefaultValueOfType(fakeObjectCall.Method.ReturnType));
+            fakeObjectCall.SetReturnValue(fakeObjectCall.Method.ReturnType.GetDefaultValue());
         }
 
         private void DoAssertion(IFakeObjectCall fakeObjectCall)

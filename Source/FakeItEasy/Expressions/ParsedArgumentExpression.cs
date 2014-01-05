@@ -15,7 +15,7 @@
 
         public object Value
         {
-            get { return Helpers.GetValueProducedByExpression(this.Expression); }
+            get { return this.Expression.Evaluate(); }
         }
 
         public ParameterInfo ArgumentInformation { get; private set; }

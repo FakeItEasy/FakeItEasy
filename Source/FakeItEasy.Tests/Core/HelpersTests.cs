@@ -10,7 +10,7 @@
         {
             var call = FakeCall.Create<object>("GetType");
 
-            Assert.That(Helpers.GetDescription(call), Is.EqualTo("System.Object.GetType()"));
+            Assert.That(call.GetDescription(), Is.EqualTo("System.Object.GetType()"));
         }
 
         [Test]
@@ -18,7 +18,7 @@
         {
             var call = CreateFakeCallToFooDotBar("abc", 123);
 
-            Assert.That(Helpers.GetDescription(call), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(\"abc\", 123)"));
+            Assert.That(call.GetDescription(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(\"abc\", 123)"));
         }
 
         [Test]
@@ -26,7 +26,7 @@
         {
             var call = CreateFakeCallToFooDotBar(null, 123);
 
-            Assert.That(Helpers.GetDescription(call), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<NULL>, 123)"));
+            Assert.That(call.GetDescription(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<NULL>, 123)"));
         }
 
         [Test]
@@ -34,7 +34,7 @@
         {
             var call = CreateFakeCallToFooDotBar(string.Empty, 123);
 
-            Assert.That(Helpers.GetDescription(call), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<string.Empty>, 123)"));
+            Assert.That(call.GetDescription(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<string.Empty>, 123)"));
         }
 
         private static FakeCall CreateFakeCallToFooDotBar(object argument1, object argument2)

@@ -123,7 +123,7 @@ namespace FakeItEasy.Tests.TestHelpers
                 method = methodCall.Method;
                 arguments =
                     (from argument in methodCall.Arguments
-                     select Helpers.GetValueProducedByExpression(argument)).ToArray();
+                     select argument.Evaluate()).ToArray();
             }
             else
             {
