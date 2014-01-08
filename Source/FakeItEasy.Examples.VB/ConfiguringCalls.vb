@@ -8,6 +8,12 @@ Public Class ConfiguringCalls
         NextCall.To(widget).Throws(New NotSupportedException()) : widget.Repair()
     End Sub
 
+    Public Sub Configuring_a_sub_using_lambda_subs()
+        Dim widget = A.Fake(Of IWidget)()
+
+        A.CallTo(Sub() widget.Repair()).DoesNothing()
+    End Sub
+
     Public Sub Configuring_a_function_to_return_a_value()
         Dim factory = A.Fake(Of IWidgetFactory)()
 
