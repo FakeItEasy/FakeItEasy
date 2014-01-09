@@ -12,7 +12,10 @@
     <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
     <releaseNotes>New: Support for Windows Store test projects - https://github.com/FakeItEasy/FakeItEasy/issues/214/
 Fixed: Exception thrown by fake method returning a value type and configured with only Invokes() - https://github.com/FakeItEasy/FakeItEasy/issues/114/
-Other: Switch from Silverlight 4 to Silverlight 5 - https://github.com/FakeItEasy/FakeItEasy/issues/218/</releaseNotes>
+Other: Switch from Silverlight 4 to Silverlight 5 - https://github.com/FakeItEasy/FakeItEasy/issues/218/
+
+With special thanks for contributions to this release from:
+Julian Lettner - https://github.com/yln/</releaseNotes>
     <language>en-US</language>
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
   </metadata>
