@@ -15,6 +15,7 @@ Fixed: Exception thrown by fake method returning a value type and configured wit
 Other: Switch from Silverlight 4 to Silverlight 5 - https://github.com/FakeItEasy/FakeItEasy/issues/218/
 
 With special thanks for contributions to this release from:
+Kai Eichinger - https://github.com/cH40z-Lord/
 Julian Lettner - https://github.com/yln/</releaseNotes>
     <language>en-US</language>
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
