@@ -43,18 +43,22 @@ msbuild :build => [:clean] do |msb|
   msb.solution = "Source/FakeItEasy.sln"
 end
 
+task :create_output_folder do
+  FileUtils.mkpath "Build"
+end
+
 desc "Execute unit tests"
-nunit :unit => [:build] do |nunit|
+nunit :unit => [:build, :create_output_folder] do |nunit|
   nunit.command = nunit_command
   nunit.assemblies "Source/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll", "Source/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll", "Source/FakeItEasy-SL.Tests/Bin/Release/FakeItEasy-SL.Tests.dll"
-  nunit.options "/result=TestResult.Unit.xml"
+  nunit.options "/result=Build/TestResult.Unit.xml"
 end
 
 desc "Execute integration tests"
-nunit :integ => [:build] do |nunit|
+nunit :integ => [:build, :create_output_folder] do |nunit|
   nunit.command = nunit_command
   nunit.assemblies "Source/FakeItEasy.IntegrationTests/bin/Release/FakeItEasy.IntegrationTests.dll", "Source/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"
-  nunit.options "/result=TestResult.Integration.xml"
+  nunit.options "/result=Build/TestResult.Integration.xml"
 end
 
 desc "Execute specifications"
@@ -64,8 +68,7 @@ mspec :spec => [:build] do |mspec|
 end
 
 desc "create the nuget package"
-exec :pack => [:build] do |cmd|
-  FileUtils.mkpath "Build"
+exec :pack => [:build, :create_output_folder] do |cmd|
   cmd.command = nuget_command
   cmd.parameters "pack Source/FakeItEasy.nuspec -Version " + version + " -OutputDirectory Build"
 end
