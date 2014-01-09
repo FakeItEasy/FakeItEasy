@@ -63,7 +63,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs" />
     <Compile Include="Asserting.cs" />
     <Compile Include="ConfiguringCalls.cs" />
     <Compile Include="CreatingFakeObjects.cs" />

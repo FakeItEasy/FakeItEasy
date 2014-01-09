@@ -72,8 +72,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\InternalsVisibleTo-Signed.cs" />
-    <Compile Include="..\SharedAssemblyInfo.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="A.cs" />
     <Compile Include="Any.cs" />
     <Compile Include="ArgumentValueFormatter.cs" />
@@ -498,7 +499,6 @@
     <Compile Include="ArgumentCollection.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Fake.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Raise.cs" />
     <Compile Include="RootModule.cs" />
     <Compile Include="SelfInitializedFakes\CallData.cs">

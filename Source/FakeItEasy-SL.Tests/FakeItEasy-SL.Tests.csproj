@@ -73,9 +73,6 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.Tests.cs">
-      <Link>Properties\CommonAssemblyInfo.Tests.cs</Link>
-    </Compile>
     <Compile Include="Examples.cs" />
   </ItemGroup>
   <ItemGroup>

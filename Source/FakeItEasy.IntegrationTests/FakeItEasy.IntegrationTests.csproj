@@ -75,9 +75,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.Tests.cs">
-      <Link>Properties\CommonAssemblyInfo.Tests.cs</Link>
-    </Compile>
     <Compile Include="ApplicationDirectoryAssembliesTypeCatalogueTests.cs" />
     <Compile Include="DoubleArgumentValueFormatter.cs" />
     <Compile Include="FakingClassesTests.cs" />

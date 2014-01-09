@@ -65,9 +65,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.Tests.cs">
-      <Link>Properties\CommonAssemblyInfo.Tests.cs</Link>
-    </Compile>
     <Compile Include="GuidValueFormatter.cs" />
   </ItemGroup>
   <ItemGroup>

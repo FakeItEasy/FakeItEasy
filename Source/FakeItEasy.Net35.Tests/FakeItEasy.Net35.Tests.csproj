@@ -49,9 +49,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.Tests.cs">
-      <Link>Properties\CommonAssemblyInfo.Tests.cs</Link>
-    </Compile>
     <Compile Include="ConditionalWeakTableTests.cs" />
     <Compile Include="ZipTests.cs" />
   </ItemGroup>
