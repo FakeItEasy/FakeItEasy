@@ -6,8 +6,11 @@ GEM
       rake
       rubyzip (~> 1.0)
     mini_portile (0.5.2)
+    nokogiri (1.6.1)
+      mini_portile (~> 0.5.0)
     nokogiri (1.6.1-x86-mingw32)
       mini_portile (~> 0.5.0)
+    nuget (2.7.41115.310)
     rake (10.1.1)
     rubyzip (1.1.0)
     zip (2.0.2)
@@ -17,5 +20,6 @@ PLATFORMS
 
 DEPENDENCIES
   albacore (~> 1.0.rc)
+  nuget
   rake
   zip
