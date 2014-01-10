@@ -3,9 +3,12 @@
   <Include Path="..\fakeiteasy.ruleset" Action="Default" />
   <Include Path="..\fakeiteasy.tests.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1014" Action="None" />
     <Rule Id="CA1016" Action="None" />
+    <Rule Id="CA1017" Action="None" />
     <Rule Id="CA1034" Action="None" />
     <Rule Id="CA1303" Action="None" />
+    <Rule Id="CA1405" Action="None" />
     <Rule Id="CA1707" Action="None" />
     <Rule Id="CA1709" Action="None" />
     <Rule Id="CA1823" Action="None" />

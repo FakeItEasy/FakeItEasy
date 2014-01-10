@@ -64,9 +64,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.Tests.cs">
-      <Link>Properties\CommonAssemblyInfo.Tests.cs</Link>
-    </Compile>
     <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
     <Compile Include="AsyncAwaitSpecs.cs" />
     <Compile Include="ConfigurationSpecs.cs" />
