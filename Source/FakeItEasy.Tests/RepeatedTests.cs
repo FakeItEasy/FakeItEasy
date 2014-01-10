@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using NUnit.Framework;
+    using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class RepeatedTests
