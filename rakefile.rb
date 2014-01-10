@@ -5,7 +5,7 @@ assembly_info = "Source/CommonAssemblyInfo.cs"
 version = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 nunit_command = "Source/packages/NUnit.Runners.2.6.2/tools/nunit-console.exe"
 mspec_command = "Source/packages/Machine.Specifications.0.5.11/tools/mspec-clr4.exe"
-nuget_command = "Source/.nuget/NuGet.exe"
+nuget_command = "Source/packages/NuGet.CommandLine.2.7.3/tools/NuGet.exe"
 solution = "Source/FakeItEasy.sln"
 unit_tests = ["Source/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll", "Source/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll", "Source/FakeItEasy-SL.Tests/Bin/Release/FakeItEasy-SL.Tests.dll"]
 integration_tests = ["Source/FakeItEasy.IntegrationTests/bin/Release/FakeItEasy.IntegrationTests.dll", "Source/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"]
@@ -19,6 +19,12 @@ end
 
 desc "Execute default tasks"
 task :default => [ :unit, :integ, :spec, :pack ]
+
+desc "Restore NuGet packages"
+exec :restore do |cmd|
+  cmd.command = nuget_command
+  cmd.parameters "restore #{solution}"
+end
 
 desc "Clean solution"
 msbuild :clean do |msb|
@@ -44,7 +50,7 @@ assemblyinfo :set_version, :new_version do |asm, args|
 end
 
 desc "Build solution"
-msbuild :build => [:clean] do |msb|
+msbuild :build => [:clean, :restore] do |msb|
   msb.properties = { :configuration => :Release }
   msb.targets = [ :Build ]
   msb.solution = solution
