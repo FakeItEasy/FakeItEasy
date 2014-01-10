@@ -20,16 +20,24 @@ At the time of writing the build is only confirmed to work on Windows using the 
 1. Using a command prompt, update RubyGems to the latest version:
 
     `gem update --system`
+	
+1. Using a command prompt, install bundler:
 
-1. Install/update Rake, Albacore and Zip:
+    `gem install bundler`	
 
-    `gem install rake albacore zip`
+1. Using a command prompt, navigate to your clone root folder and execute:
+
+    `bundle install`
 
 ## Building
 
 Using a command prompt, navigate to your clone root folder and execute:
 
 `rake`
+
+or use bundler which checks if you have the necessary build dependencies:
+
+`bundle exec rake`
 
 This executes the default build tasks. After the build has completed, the build artifacts will be located in `Build`.
 
