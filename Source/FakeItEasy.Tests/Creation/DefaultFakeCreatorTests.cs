@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Creation
     using FakeItEasy.Creation;
     using FakeItEasy.SelfInitializedFakes;
     using NUnit.Framework;
+    using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class DefaultFakeCreatorTests
