@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Creation
     using FakeItEasy.Creation;
     using FakeItEasy.SelfInitializedFakes;
     using NUnit.Framework;
+    using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class DefaultFakeCreatorTests
@@ -128,7 +129,7 @@ namespace FakeItEasy.Tests.Creation
         [TestCaseSource("optionBuilderCalls")]
         public void CreateFake_should_pass_options_builder_that_returns_itself_for_any_call(Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>> call)
         {
-            Guard.ArgumentNotNull(call, "call");
+            Guard.AgainstNull(call, "call");
 
             // Arrange
             IFakeOptionsBuilder<Foo> builderPassedToAction = null;

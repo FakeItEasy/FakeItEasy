@@ -7,6 +7,7 @@ namespace FakeItEasy.Tests.Creation
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using NUnit.Framework;
+    using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class DummyValueCreationSessionTests
@@ -35,7 +36,7 @@ namespace FakeItEasy.Tests.Creation
         [TestCaseSource("dummiesInContainer")]
         public void Should_return_dummy_from_container_when_available(object dummyInContainer)
         {
-            Guard.ArgumentNotNull(dummyInContainer, "dummyInContainer");
+            Guard.AgainstNull(dummyInContainer, "dummyInContainer");
 
             // Arrange
             this.StubContainerWithValue(dummyInContainer);

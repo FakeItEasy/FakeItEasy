@@ -9,6 +9,7 @@
     using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Expressions;
     using NUnit.Framework;
+    using Guard = FakeItEasy.Guard;
 
     public interface IAInterface
     {
@@ -53,7 +54,7 @@
         [TestCaseSource("nonInterceptableMembers")]
         public void Should_fail_for_non_interceptable_methods(NonInterceptableTestCase testCase)
         {
-            Guard.ArgumentNotNull(testCase, "testCase");
+            Guard.AgainstNull(testCase, "testCase");
 
             // Arrange
             string reason = null;
@@ -69,7 +70,7 @@
         [TestCaseSource("interceptableMethods")]
         public void Should_succeed_for_interceptable_methods(InterceptionTestCase testCase)
         {
-            Guard.ArgumentNotNull(testCase, "testCase");
+            Guard.AgainstNull(testCase, "testCase");
 
             // Arrange
             string reason = null;

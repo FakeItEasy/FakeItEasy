@@ -10,6 +10,7 @@
     using FakeItEasy.Expressions.ArgumentConstraints;
     using FakeItEasy.Tests.Builders;
     using NUnit.Framework;
+    using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class ExpressionArgumentConstraintFactoryTests
@@ -180,7 +181,7 @@
 
             public void OnAfterCallIntercepted(ICompletedFakeObjectCall call, IFakeObjectCallRule ruleThatWasApplied)
             {
-                Guard.ArgumentNotNull(call, "call");
+                Guard.AgainstNull(call, "call");
 
                 if (call.Method.Name.Equals("TrapConstraints"))
                 {

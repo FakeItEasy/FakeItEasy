@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using NUnit.Framework;
+    using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class RepeatedTests
@@ -237,7 +238,7 @@ namespace FakeItEasy.Tests
         [TestCaseSource("descriptionTestCases")]
         public void Should_provide_expected_description(Func<Repeated> repeated, string expectedDescription)
         {
-            Guard.ArgumentNotNull(repeated, "repeated");
+            Guard.AgainstNull(repeated, "repeated");
 
             // Arrange
             var repeatedInstance = repeated.Invoke();
