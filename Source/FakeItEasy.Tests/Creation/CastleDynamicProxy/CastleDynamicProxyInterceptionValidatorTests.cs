@@ -53,7 +53,7 @@
         [TestCaseSource("nonInterceptableMembers")]
         public void Should_fail_for_non_interceptable_methods(NonInterceptableTestCase testCase)
         {
-            Guard.AgainstNull(testCase, "testCase");
+            Guard.ArgumentNotNull(testCase, "testCase");
 
             // Arrange
             string reason = null;
@@ -69,7 +69,7 @@
         [TestCaseSource("interceptableMethods")]
         public void Should_succeed_for_interceptable_methods(InterceptionTestCase testCase)
         {
-            Guard.AgainstNull(testCase, "testCase");
+            Guard.ArgumentNotNull(testCase, "testCase");
 
             // Arrange
             string reason = null;

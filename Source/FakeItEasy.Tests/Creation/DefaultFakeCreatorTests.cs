@@ -128,7 +128,7 @@ namespace FakeItEasy.Tests.Creation
         [TestCaseSource("optionBuilderCalls")]
         public void CreateFake_should_pass_options_builder_that_returns_itself_for_any_call(Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>> call)
         {
-            Guard.AgainstNull(call, "call");
+            Guard.ArgumentNotNull(call, "call");
 
             // Arrange
             IFakeOptionsBuilder<Foo> builderPassedToAction = null;

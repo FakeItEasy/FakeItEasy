@@ -180,7 +180,7 @@
 
             public void OnAfterCallIntercepted(ICompletedFakeObjectCall call, IFakeObjectCallRule ruleThatWasApplied)
             {
-                Guard.AgainstNull(call, "call");
+                Guard.ArgumentNotNull(call, "call");
 
                 if (call.Method.Name.Equals("TrapConstraints"))
                 {

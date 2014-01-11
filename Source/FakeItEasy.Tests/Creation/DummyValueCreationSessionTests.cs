@@ -35,7 +35,7 @@ namespace FakeItEasy.Tests.Creation
         [TestCaseSource("dummiesInContainer")]
         public void Should_return_dummy_from_container_when_available(object dummyInContainer)
         {
-            Guard.AgainstNull(dummyInContainer, "dummyInContainer");
+            Guard.ArgumentNotNull(dummyInContainer, "dummyInContainer");
 
             // Arrange
             this.StubContainerWithValue(dummyInContainer);

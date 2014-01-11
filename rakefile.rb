@@ -3,8 +3,8 @@ require 'fileutils'
 
 assembly_info = "Source/CommonAssemblyInfo.cs"
 version = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
-nunit_command = "Source/packages/NUnit.Runners.2.6.2/tools/nunit-console.exe"
-mspec_command = "Source/packages/Machine.Specifications.0.5.11/tools/mspec-clr4.exe"
+nunit_command = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
+mspec_command = "Source/packages/Machine.Specifications.0.6.2/tools/mspec-clr4.exe"
 nuget_command = "Source/packages/NuGet.CommandLine.2.7.3/tools/NuGet.exe"
 solution = "Source/FakeItEasy.sln"
 unit_tests = ["Source/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll", "Source/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll", "Source/FakeItEasy-SL.Tests/Bin/Release/FakeItEasy-SL.Tests.dll"]
