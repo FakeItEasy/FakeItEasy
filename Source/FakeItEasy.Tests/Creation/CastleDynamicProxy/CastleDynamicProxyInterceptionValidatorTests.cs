@@ -9,6 +9,7 @@
     using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Expressions;
     using NUnit.Framework;
+    using Guard = FakeItEasy.Guard;
 
     public interface IAInterface
     {

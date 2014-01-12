@@ -7,6 +7,7 @@ namespace FakeItEasy.Tests.Creation
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using NUnit.Framework;
+    using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class DummyValueCreationSessionTests

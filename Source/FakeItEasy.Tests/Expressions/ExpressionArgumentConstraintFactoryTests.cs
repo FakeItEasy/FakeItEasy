@@ -10,6 +10,7 @@
     using FakeItEasy.Expressions.ArgumentConstraints;
     using FakeItEasy.Tests.Builders;
     using NUnit.Framework;
+    using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class ExpressionArgumentConstraintFactoryTests
