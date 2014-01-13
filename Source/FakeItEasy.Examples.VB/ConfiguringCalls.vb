@@ -8,7 +8,7 @@ Public Class ConfiguringCalls
         NextCall.To(widget).Throws(New NotSupportedException()) : widget.Repair()
     End Sub
 
-    Public Sub Configuring_a_sub_using_lambda_subs()
+    Public Sub Configuring_a_sub_using_lambda()
         Dim widget = A.Fake(Of IWidget)()
 
         A.CallTo(Sub() widget.Repair()).DoesNothing()
