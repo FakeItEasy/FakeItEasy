@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfiguringCalls.vb" />
+    <Compile Include="AssertingCalls.vb" />
     <Compile Include="RaisingEvents.vb" />
   </ItemGroup>
   <ItemGroup>

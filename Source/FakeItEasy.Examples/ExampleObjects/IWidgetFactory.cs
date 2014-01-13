@@ -7,5 +7,7 @@ namespace FakeItEasy.Examples.ExampleObjects
         IWidgetFactory SubFactory { get; set; }
 
         IWidget Create();
+
+        IWidget CreateWithColor(string colorName);
     }
 }
