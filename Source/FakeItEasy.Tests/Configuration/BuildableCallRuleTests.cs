@@ -160,8 +160,9 @@ namespace FakeItEasy.Tests.Configuration
             return result;
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "andOn", Justification = "False positive")]
         [Test]
-        public void IsApplicableTo_should_return_false_when_a_predicate_fails_and_on_is_applicable_to_passes()
+        public void IsApplicableTo_should_return_false_when_a_predicate_fails_and_OnIsApplicableTo_passes()
         {
             // Arrange
             this.rule.ReturnValueFromOnIsApplicableTo = true;
