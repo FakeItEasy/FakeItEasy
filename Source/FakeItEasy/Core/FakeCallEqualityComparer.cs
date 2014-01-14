@@ -16,18 +16,26 @@
                     && x.Arguments.SequenceEqual(y.Arguments);
         }
 
+        // NOTE (adamralph): based on http://stackoverflow.com/a/263416/49241
         public int GetHashCode(IFakeObjectCall obj)
         {
             Guard.AgainstNull(obj, "obj");
 
-            var result = obj.Method.GetHashCode();
-
-            foreach (var argument in obj.Arguments)
+            var hash = 17;
+            unchecked
             {
-                result = argument != null ? result ^ argument.GetHashCode() : 0;
+                hash = (hash * 23) + (obj.Method == null ? 0 : obj.Method.GetHashCode());
+
+                if (obj.Arguments != null)
+                {
+                    foreach (var argument in obj.Arguments)
+                    {
+                        hash = (hash * 23) + (argument == null ? 0 : argument.GetHashCode());
+                    }
+                }
             }
 
-            return result;
+            return hash;
         }
     }
 }
