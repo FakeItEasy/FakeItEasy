@@ -3,6 +3,8 @@
     using System;
     using System.Reflection;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -96,6 +98,21 @@
 
             // Assert
             Assert.DoesNotThrow(() => this.comparer.GetHashCode(this.firstCall));
+        }
+
+        [Test]
+        public void Should_not_fail_getting_hash_code_when_fake_is_strict()
+        {
+            // arrange
+            var call = A.Fake<IFakeObjectCall>();
+            A.CallTo(() => call.FakedObject).Returns(A.Fake<IFoo>(o => o.Strict()));
+            var sut = new FakeCallEqualityComparer();
+
+            // act
+            var exception = Record.Exception(() => sut.GetHashCode(call));
+
+            // assert
+            exception.Should().BeNull();
         }
 
         private static IFakeObjectCall CreateFakedFakeObjectCall()
