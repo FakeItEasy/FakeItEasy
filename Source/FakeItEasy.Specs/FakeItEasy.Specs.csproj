@@ -75,6 +75,7 @@
     <Compile Include="FixtureInitializationSpecs.cs" />
     <Compile Include="FakingDelegates.cs" />
     <Compile Include="CallMatchingSpecs.cs" />
+    <Compile Include="StrictFakeSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj">

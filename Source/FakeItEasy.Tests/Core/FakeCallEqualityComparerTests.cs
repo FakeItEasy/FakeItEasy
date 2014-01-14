@@ -3,6 +3,8 @@
     using System;
     using System.Reflection;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -32,7 +34,7 @@
             // Act
 
             // Assert
-            Assert.That(this.comparer.Equals(this.firstCall, this.secondCall), Is.True);
+            this.comparer.Equals(this.firstCall, this.secondCall).Should().BeTrue();
         }
 
         [Test]
@@ -46,7 +48,7 @@
             var result = this.comparer.Equals(this.firstCall, this.secondCall);
 
             // Assert
-            Assert.That(result, Is.False);
+            result.Should().BeFalse();
         }
 
         [Test]
@@ -59,7 +61,7 @@
             var result = this.comparer.Equals(this.firstCall, this.secondCall);
 
             // Assert
-            Assert.That(result, Is.False);
+            result.Should().BeFalse();
         }
 
         [Test]
@@ -72,7 +74,7 @@
             var result = this.comparer.Equals(this.firstCall, this.secondCall);
 
             // Assert
-            Assert.That(result, Is.False);
+            result.Should().BeFalse();
         }
 
         [Test]
@@ -83,7 +85,7 @@
             // Act
 
             // Assert
-            Assert.That(this.comparer.GetHashCode(this.firstCall), Is.EqualTo(this.comparer.GetHashCode(this.secondCall)));
+            this.comparer.GetHashCode(this.firstCall).Should().Be(this.comparer.GetHashCode(this.secondCall));
         }
 
         [Test]
@@ -93,9 +95,25 @@
             A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new object[] { null }, EqualsMethod));
 
             // Act
+            var exception = Record.Exception(() => this.comparer.GetHashCode(this.firstCall));
 
             // Assert
-            Assert.DoesNotThrow(() => this.comparer.GetHashCode(this.firstCall));
+            exception.Should().BeNull();
+        }
+
+        [Test]
+        public void Should_not_fail_getting_hash_code_when_fake_is_strict()
+        {
+            // arrange
+            var call = A.Fake<IFakeObjectCall>();
+            A.CallTo(() => call.FakedObject).Returns(A.Fake<IFoo>(o => o.Strict()));
+            var sut = new FakeCallEqualityComparer();
+
+            // act
+            var exception = Record.Exception(() => sut.GetHashCode(call));
+
+            // assert
+            exception.Should().BeNull();
         }
 
         private static IFakeObjectCall CreateFakedFakeObjectCall()

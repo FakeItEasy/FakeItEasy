@@ -12,7 +12,7 @@
             Guard.AgainstNull(y, "y");
 
             return x.Method.Equals(y.Method)
-                && x.FakedObject.Equals(y.FakedObject)
+                && object.ReferenceEquals(x.FakedObject, y.FakedObject)
                     && x.Arguments.SequenceEqual(y.Arguments);
         }
 
@@ -20,8 +20,7 @@
         {
             Guard.AgainstNull(obj, "obj");
 
-            var result = obj.Method.GetHashCode()
-                ^ obj.FakedObject.GetHashCode();
+            var result = obj.Method.GetHashCode();
 
             foreach (var argument in obj.Arguments)
             {
