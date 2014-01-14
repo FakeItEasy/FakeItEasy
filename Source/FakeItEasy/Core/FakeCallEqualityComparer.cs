@@ -12,7 +12,7 @@
             Guard.AgainstNull(y, "y");
 
             return x.Method.Equals(y.Method)
-                && x.FakedObject.Equals(y.FakedObject)
+                && object.ReferenceEquals(x.FakedObject, y.FakedObject)
                     && x.Arguments.SequenceEqual(y.Arguments);
         }
 
