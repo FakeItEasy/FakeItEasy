@@ -6,7 +6,7 @@
     <title>FakeItEasy</title>
     <authors>Patrik Hägne, FakeItEasy contributors</authors>
     <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
-    <releaseNotes>TBD</releaseNotes>
+    <releaseNotes>New: Upgrade to Castle.Core 3.2.2 - https://github.com/FakeItEasy/FakeItEasy/issues/236/</releaseNotes>
     <language>en-US</language>
     <projectUrl>http://fakeiteasy.github.io/</projectUrl>
     <iconUrl>http://fakeiteasy.github.io/img/talkingladies.png</iconUrl>
