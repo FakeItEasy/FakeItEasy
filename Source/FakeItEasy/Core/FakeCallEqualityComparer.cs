@@ -16,18 +16,24 @@
                     && x.Arguments.SequenceEqual(y.Arguments);
         }
 
+        // NOTE (adamralph): based on http://stackoverflow.com/a/263416/49241
         public int GetHashCode(IFakeObjectCall obj)
         {
+            // TODO (adamralph): we should also guard against null obj.Method and obj.Arguments
+            // I think the best way is to switch to https://www.nuget.org/packages/LiteGuard.Source/
             Guard.AgainstNull(obj, "obj");
 
-            var result = obj.Method.GetHashCode();
-
-            foreach (var argument in obj.Arguments)
+            var hash = 17;
+            unchecked
             {
-                result = argument != null ? result ^ argument.GetHashCode() : 0;
+                hash = (hash * 23) + obj.Method.GetHashCode();
+                foreach (var argument in obj.Arguments.Where(arg => arg != null))
+                {
+                    hash = (hash * 23) + argument.GetHashCode();
+                }
             }
 
-            return result;
+            return hash;
         }
     }
 }
