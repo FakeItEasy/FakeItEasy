@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Castle.Core.Internal;
 
     /// <summary>
     /// Access all types in all assemblies in the same directory as the FakeItEasy assembly.
@@ -48,8 +49,8 @@
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
         private static IEnumerable<Assembly> GetAllAvailableAssemblies()
         {
-            var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(ReferencesFakeItEasy);
+            Assembly[] appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            IEnumerable<Assembly> appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(ReferencesFakeItEasy);
 
             // Find the paths of already loaded assemblies so we don't double scan them.
             // Checking Assembly.IsDynamic would be preferable to the business with the Namespace, but the former isn't available in .NET 3.5.
@@ -62,9 +63,19 @@
 
             var folderAssembliesReferencingFakeItEasy = new List<Assembly>();
 
+            IEnumerable<string> filesToScan;
+            if (appDomainAssemblies.Any(a => a.HasAttribute<DisableFakeItEasyExtensionDirectoryScanAttribute>()))
+            {
+                filesToScan = Enumerable.Empty<string>();
+            }
+            else
+            {
+                filesToScan = Directory.GetFiles(Environment.CurrentDirectory, "*.dll");
+            }
+
             // Skip assemblies already in the application domain.
             // This is an optimization that can be fooled by test runners that make shadow copies of the assemblies, but it's a start.
-            foreach (var assemblyFile in Directory.GetFiles(Environment.CurrentDirectory, "*.dll").Except(loadedAssemblyPaths))
+            foreach (var assemblyFile in filesToScan.Except(loadedAssemblyPaths))
             {
                 Assembly assembly = null;
                 try
