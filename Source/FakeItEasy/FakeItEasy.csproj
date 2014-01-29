@@ -86,6 +86,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="A.of.T.cs" />
+    <Compile Include="Core\DisableFakeItEasyExtensionDirectoryScanAttribute.cs" />
     <Compile Include="TwiceExtensions.cs" />
     <Compile Include="WriteExtensions.cs" />
     <Compile Include="MustNotHaveHappenedExtensions.cs" />
