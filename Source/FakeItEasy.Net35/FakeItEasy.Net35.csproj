@@ -453,6 +453,9 @@
     <Compile Include="..\FakeItEasy\Creation\ResolvedConstructor.cs">
       <Link>Creation\ResolvedConstructor.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\DefaultBootstrapper.cs">
+      <Link>DefaultBootstrapper.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\DefaultOutputWriter.cs">
       <Link>DefaultOutputWriter.cs</Link>
     </Compile>

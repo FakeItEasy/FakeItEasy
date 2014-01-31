@@ -18,10 +18,11 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationDirectoryAssembliesTypeCatalogue"/> class.
         /// </summary>
+        /// <param name="assemblyFilesToScan">The extra assembly files to scan for extension points.</param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Defensive and performed on best effort basis.")]
-        public ApplicationDirectoryAssembliesTypeCatalogue()
+        public ApplicationDirectoryAssembliesTypeCatalogue(IEnumerable<string> assemblyFilesToScan)
         {
-            foreach (var assembly in GetAllAvailableAssemblies())
+            foreach (var assembly in GetAllAvailableAssemblies(assemblyFilesToScan))
             {
                 try
                 {
@@ -46,7 +47,7 @@
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
-        private static IEnumerable<Assembly> GetAllAvailableAssemblies()
+        private static IEnumerable<Assembly> GetAllAvailableAssemblies(IEnumerable<string> assemblyFilesToScan)
         {
             var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(ReferencesFakeItEasy);
@@ -64,7 +65,7 @@
 
             // Skip assemblies already in the application domain.
             // This is an optimization that can be fooled by test runners that make shadow copies of the assemblies, but it's a start.
-            foreach (var assemblyFile in Directory.GetFiles(Environment.CurrentDirectory, "*.dll").Except(loadedAssemblyPaths))
+            foreach (var assemblyFile in assemblyFilesToScan.Except(loadedAssemblyPaths))
             {
                 Assembly assembly = null;
                 try

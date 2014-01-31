@@ -18,7 +18,7 @@ namespace FakeItEasy.IntegrationTests
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
-            this.catalogue = new ApplicationDirectoryAssembliesTypeCatalogue();
+            this.catalogue = new ApplicationDirectoryAssembliesTypeCatalogue(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
         }
 
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "No exception is thrown.")]
@@ -39,9 +39,9 @@ namespace FakeItEasy.IntegrationTests
                 // tests as well. By changing the working directory before creating the
                 // ApplicationDirectoryAssembliesTypeCatalogue, the scanning will get those assemblies
                 // from the current AppDomain as well as the other path.
-                Environment.CurrentDirectory = Path.Combine(
-                                                            Environment.CurrentDirectory,
-                                                            Path.Combine(@"..\..\..\FakeItEasy.IntegrationTests.External\bin", originalDirectoryName));
+                var directoryToScan = Path.Combine(
+                    Environment.CurrentDirectory,
+                    Path.Combine(@"..\..\..\FakeItEasy.IntegrationTests.External\bin", originalDirectoryName));
 
                 using (var messageStream = new MemoryStream())
                 using (var messageWriter = new StreamWriter(messageStream))
@@ -49,7 +49,7 @@ namespace FakeItEasy.IntegrationTests
                     Console.SetOut(messageWriter);
 
                     // Act
-                    exception = Record.Exception(() => new ApplicationDirectoryAssembliesTypeCatalogue());
+                    exception = Record.Exception(() => new ApplicationDirectoryAssembliesTypeCatalogue(Directory.GetFiles(directoryToScan, "*.dll")));
                     messageWriter.Flush();
                     actualMessage = messageWriter.Encoding.GetString(messageStream.GetBuffer());
                 }
@@ -57,7 +57,6 @@ namespace FakeItEasy.IntegrationTests
             finally
             {
                 Console.SetOut(originalStandardOut);
-                Environment.CurrentDirectory = originalDirectory;
             }
 
             // Assert
