@@ -219,6 +219,12 @@
     <Compile Include="..\FakeItEasy\Core\ArgumentValueFormatter.cs">
       <Link>Core\ArgumentValueFormatter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\AssemblyHelpers.cs">
+      <Link>Core\AssemblyHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\BootstrapperLocator.cs">
+      <Link>Core\BootstrapperLocator.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\CallInterceptedEventArgs.cs">
       <Link>Core\CallInterceptedEventArgs.cs</Link>
     </Compile>
@@ -551,6 +557,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\IArgumentValueFormatter.cs">
       <Link>IArgumentValueFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IBootstrapper.cs">
+      <Link>IBootstrapper.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IDummyDefinition.cs">
       <Link>IDummyDefinition.cs</Link>
