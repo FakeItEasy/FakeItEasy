@@ -1,7 +1,5 @@
 ﻿namespace FakeItEasy
 {
-    using System;
-    using System.Diagnostics;
     using System.Linq.Expressions;
     using FakeItEasy.Core;
 
@@ -11,12 +9,6 @@
         {
             var method = fakeObjectCall.Method;
             return "{0}.{1}({2})".FormatInvariant(method.DeclaringType.FullName, method.Name, GetParametersString(fakeObjectCall));
-        }
-
-        [DebuggerStepThrough]
-        public static object GetDefaultValue(this Type type)
-        {
-            return type.IsValueType && !type.Equals(typeof(void)) ? Activator.CreateInstance(type) : null;
         }
 
         /// <summary>

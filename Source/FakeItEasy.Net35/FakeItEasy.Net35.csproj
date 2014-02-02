@@ -651,6 +651,9 @@
     <Compile Include="..\FakeItEasy\TwiceExtensions.cs">
       <Link>TwiceExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\TypeExtensions.cs">
+      <Link>TypeExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\UnderTestAttribute.cs">
       <Link>UnderTestAttribute.cs</Link>
     </Compile>
