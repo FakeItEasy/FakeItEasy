@@ -99,7 +99,7 @@
     <Compile Include="MustHaveHappenedExtensions.cs" />
     <Compile Include="MatchingExtensions.cs" />
     <Compile Include="ThrowsExtensions.cs" />
-    <Compile Include="InvokesExtensions.cs" />
+    <Compile Include="CallbackConfigurationExtensions.cs" />
     <Compile Include="WhereExtensions.cs" />
     <Compile Include="StrictExtensions.cs" />
     <Compile Include="FakeObjectCallExtensions.cs" />

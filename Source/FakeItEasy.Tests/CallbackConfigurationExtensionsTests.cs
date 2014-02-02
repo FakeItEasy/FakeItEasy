@@ -7,7 +7,7 @@
     using TestHelpers;
 
     [TestFixture]
-    public class InvokesExtensionsTests
+    public class CallbackConfigurationExtensionsTests
     {
         public interface IInterface
         {

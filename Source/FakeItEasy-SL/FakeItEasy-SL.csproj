@@ -105,6 +105,9 @@
     <Compile Include="..\FakeItEasy\ArgumentConstraintExtensions.cs">
       <Link>ArgumentConstraintExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\CallbackConfigurationExtensions.cs">
+      <Link>CallbackConfigurationExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
       <Link>EnumerableExtensions.cs</Link>
     </Compile>
@@ -587,9 +590,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\IFileSystem.cs">
       <Link>IFileSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\InvokesExtensions.cs">
-      <Link>InvokesExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IoC\DictionaryContainer.cs">
       <Link>IoC\DictionaryContainer.cs</Link>

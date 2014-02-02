@@ -81,6 +81,9 @@
     <Compile Include="..\FakeItEasy\ArgumentValueFormatter.cs">
       <Link>ArgumentValueFormatter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\CallbackConfigurationExtensions.cs">
+      <Link>CallbackConfigurationExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallCallRule.cs">
       <Link>Configuration\AnyCallCallRule.cs</Link>
     </Compile>
@@ -542,9 +545,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\ImportsModule.cs">
       <Link>ImportsModule.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\InvokesExtensions.cs">
-      <Link>InvokesExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IoC\DictionaryContainer.cs">
       <Link>IoC\DictionaryContainer.cs</Link>

@@ -5,9 +5,9 @@ namespace FakeItEasy
     using FakeItEasy.Configuration;
 
     /// <summary>
-    /// Provides the Invokes extension method for configuring calls to fake objects.
+    /// Provides extension methods for <see cref="ICallbackConfiguration{TFake}"/>.
     /// </summary>
-    public static class InvokesExtensions
+    public static class CallbackConfigurationExtensions
     {
         private const string NameOfInvokesFeature = "invokes";
 
