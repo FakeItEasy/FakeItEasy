@@ -81,9 +81,6 @@
     <Compile Include="..\FakeItEasy\ArgumentValueFormatter.cs">
       <Link>ArgumentValueFormatter.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\CommonExtensions.cs">
-      <Link>CommonExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallCallRule.cs">
       <Link>Configuration\AnyCallCallRule.cs</Link>
     </Compile>
@@ -449,6 +446,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\DummyDefinition.cs">
       <Link>DummyDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
+      <Link>EnumerableExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ExceptionMessages.Designer.cs">
       <Link>ExceptionMessages.Designer.cs</Link>

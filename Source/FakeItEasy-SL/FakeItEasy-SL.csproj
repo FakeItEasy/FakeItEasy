@@ -105,6 +105,9 @@
     <Compile Include="..\FakeItEasy\ArgumentConstraintExtensions.cs">
       <Link>ArgumentConstraintExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
+      <Link>EnumerableExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
       <Link>MethodBaseExtensions.cs</Link>
     </Compile>
@@ -128,9 +131,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\ArgumentValueFormatter.cs">
       <Link>ArgumentValueFormatter.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\CommonExtensions.cs">
-      <Link>CommonExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\MatchingExtensions.cs">
       <Link>MatchingExtensions.cs</Link>

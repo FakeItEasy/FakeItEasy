@@ -6,7 +6,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class CommonExtensionsTests
+    public class EnumerableExtensionsTests
     {
         [Test]
         public void Zip_returns_an_enumerable_of_tuples_paired_in_order()
@@ -14,7 +14,7 @@
             var strings = new List<string>() { "a", "b", "c" };
             var ints = Enumerable.Range(1, int.MaxValue);
 
-            var result = CommonExtensions.Zip(strings, ints).Select(x => x.Item1 + x.Item2.ToString(CultureInfo.CurrentCulture));
+            var result = strings.Zip(ints).Select(x => x.Item1 + x.Item2.ToString(CultureInfo.CurrentCulture));
 
             Assert.That(result, Is.EquivalentTo(new[] { "a1", "b2", "c3" }));
         }

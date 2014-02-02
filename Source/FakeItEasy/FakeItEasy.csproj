@@ -528,7 +528,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ServiceLocator.cs" />
-    <Compile Include="CommonExtensions.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="SmellyAttribute.cs" />
     <Compile Include="NextCall.cs" />
     <Compile Include="StringBuilderOutputWriter.cs" />

@@ -3,13 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
 
     /// <summary>
-    /// Provides extension methods for the common uses.
+    /// Provides extension methods for generic usage of <see cref="IEnumerable{T}"/>.
     /// </summary>
-    internal static class CommonExtensions
+    internal static class EnumerableExtensions
     {
         /// <summary>
         /// Gets an enumerable of tuples where the first value of each tuple is a value
