@@ -14,19 +14,6 @@
     internal static class CommonExtensions
     {
         /// <summary>
-        /// Replaces the format item in a specified System.String with the text equivalent
-        /// of the value of a corresponding System.Object instance in a specified array using
-        /// invariant culture as <see cref="IFormatProvider" />.
-        /// </summary>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="arguments">An <see cref="Object" /> array containing zero or more objects to format.</param>
-        /// <returns>The formatted string.</returns>
-        public static string FormatInvariant(this string format, params object[] arguments)
-        {
-            return string.Format(CultureInfo.InvariantCulture, format, arguments);
-        }
-
-        /// <summary>
         /// Gets an enumerable of tuples where the first value of each tuple is a value
         /// from the first collection and the second value of each tuple is the value at the same position
         /// from the second collection.

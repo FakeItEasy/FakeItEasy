@@ -639,6 +639,9 @@
     <Compile Include="..\FakeItEasy\StringBuilderOutputWriter.cs">
       <Link>StringBuilderOutputWriter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\StringExtensions.cs">
+      <Link>StringExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\ThrowsExtensions.cs">
       <Link>ThrowsExtensions.cs</Link>
     </Compile>

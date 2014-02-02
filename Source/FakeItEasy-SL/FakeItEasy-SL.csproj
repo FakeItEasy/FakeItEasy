@@ -105,6 +105,9 @@
     <Compile Include="..\FakeItEasy\ArgumentConstraintExtensions.cs">
       <Link>ArgumentConstraintExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\StringExtensions.cs">
+      <Link>StringExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\WhereExtensions.cs">
       <Link>WhereExtensions.cs</Link>
     </Compile>
