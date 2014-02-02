@@ -64,17 +64,6 @@
             return sequence.ToLookup(keySelector).ToDictionary(x => x.Key, x => x.First());
         }
 
-        public static string GetGenericArgumentsCSharp(this MethodBase method)
-        {
-            var genericArguments = method.GetGenericArguments();
-            if (genericArguments.Length == 0)
-            {
-                return string.Empty;
-            }
-
-            return string.Concat("<", string.Join(", ", genericArguments.Select(type => type.FullNameCSharp()).ToArray()), ">");
-        }
-
         private class ZipEnumerable<TFirst, TSecond>
            : IEnumerable<Tuple<TFirst, TSecond>>
         {

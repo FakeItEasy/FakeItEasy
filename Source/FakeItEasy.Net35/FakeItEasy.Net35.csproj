@@ -561,6 +561,9 @@
     <Compile Include="..\FakeItEasy\MatchingExtensions.cs">
       <Link>MatchingExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
+      <Link>MethodBaseExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\MustBeImplementedException.cs">
       <Link>MustBeImplementedException.cs</Link>
     </Compile>
