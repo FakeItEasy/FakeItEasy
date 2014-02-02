@@ -100,7 +100,7 @@
     <Compile Include="MatchingExtensionsTests.cs" />
     <Compile Include="WhereExtensionsTests.cs" />
     <Compile Include="StrictExtensionsTests.cs" />
-    <Compile Include="GetArgumentExtensionsTests.cs" />
+    <Compile Include="FakeObjectCallExtensionsTests.cs" />
     <Compile Include="ReturnsExtensionsTests.cs" />
     <Compile Include="TwiceExtensionsTests.cs" />
     <Compile Include="GenericATests.cs" />
@@ -197,7 +197,6 @@
     <Compile Include="TestHelpers\MethodInfoDummyDefinition.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="Core\FakeManagerTests.cs" />
-    <Compile Include="Core\HelpersTests.cs" />
     <Compile Include="Core\NullFakeObjectContainerTests.cs" />
     <Compile Include="CustomArgumentConstraints.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapterTests.cs" />

@@ -5,9 +5,9 @@ namespace FakeItEasy
     using FakeItEasy.Core;
 
     /// <summary>
-    /// Provides the GetArgument extension methods for getting arguments from fake object calls.
+    /// Provides extension methods for <see cref="IFakeObjectCall"/>.
     /// </summary>
-    public static class GetArgumentExtensions
+    public static class FakeObjectCallExtensions
     {
         /// <summary>
         /// Gets the argument at the specified index in the arguments collection
@@ -40,6 +40,38 @@ namespace FakeItEasy
             Guard.AgainstNull(argumentName, "argumentName");
 
             return call.Arguments.Get<T>(argumentName);
+        }
+
+        /// <summary>
+        /// Gets the description of a call to a fake object.
+        /// </summary>
+        /// <param name="fakeObjectCall">The call to describe.</param>
+        /// <returns>A description of the call.</returns>
+        internal static string GetDescription(this IFakeObjectCall fakeObjectCall)
+        {
+            var method = fakeObjectCall.Method;
+            return "{0}.{1}({2})".FormatInvariant(method.DeclaringType.FullName, method.Name, GetParametersString(fakeObjectCall));
+        }
+
+        private static string GetParametersString(IFakeObjectCall fakeObjectCall)
+        {
+            return fakeObjectCall.Arguments.ToCollectionString(x => GetArgumentAsString(x), ", ");
+        }
+
+        private static string GetArgumentAsString(object argument)
+        {
+            if (argument == null)
+            {
+                return "<NULL>";
+            }
+
+            var stringArgument = argument as string;
+            if (stringArgument != null)
+            {
+                return stringArgument.Length > 0 ? string.Concat("\"", stringArgument, "\"") : "<string.Empty>";
+            }
+
+            return argument.ToString();
         }
     }
 }

@@ -102,7 +102,7 @@
     <Compile Include="InvokesExtensions.cs" />
     <Compile Include="WhereExtensions.cs" />
     <Compile Include="StrictExtensions.cs" />
-    <Compile Include="GetArgumentExtensions.cs" />
+    <Compile Include="FakeObjectCallExtensions.cs" />
     <Compile Include="ReturnsExtensions.cs" />
     <Compile Include="OnceExtensions.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">

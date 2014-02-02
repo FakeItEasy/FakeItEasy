@@ -513,8 +513,8 @@
     <Compile Include="..\FakeItEasy\FakeFacade.cs">
       <Link>FakeFacade.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\GetArgumentExtensions.cs">
-      <Link>GetArgumentExtensions.cs</Link>
+    <Compile Include="..\FakeItEasy\FakeObjectCallExtensions.cs">
+      <Link>FakeObjectCallExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Guard.cs">
       <Link>Guard.cs</Link>
