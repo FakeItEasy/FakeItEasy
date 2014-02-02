@@ -498,7 +498,7 @@
     <Compile Include="Repeated.cs" />
     <Compile Include="Recorders.cs" />
     <Compile Include="IFileSystem.cs" />
-    <Compile Include="Helpers.cs" />
+    <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="ExpectationException.cs" />
     <Compile Include="ValueProducerSignatureHelper.cs" />
     <Compile Include="ArgumentCollection.cs" />

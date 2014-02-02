@@ -1,9 +1,11 @@
 ﻿namespace FakeItEasy
 {
     using System.Linq.Expressions;
-    using FakeItEasy.Core;
 
-    internal static class Helpers
+    /// <summary>
+    /// Provides extension methods for <see cref="Expression"/>.
+    /// </summary>
+    internal static class ExpressionExtensions
     {
         /// <summary>
         /// Evaluates an expression by compiling it into a delegate and invoking the delegate.

@@ -108,6 +108,9 @@
     <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
       <Link>EnumerableExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\ExpressionExtensions.cs">
+      <Link>ExpressionExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\FakeObjectCallExtensions.cs">
       <Link>FakeObjectCallExtensions.cs</Link>
     </Compile>
@@ -566,9 +569,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Guard.cs">
       <Link>Guard.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Helpers.cs">
-      <Link>Helpers.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IArgumentConstraintManager.cs">
       <Link>IArgumentConstraintManager.cs</Link>
