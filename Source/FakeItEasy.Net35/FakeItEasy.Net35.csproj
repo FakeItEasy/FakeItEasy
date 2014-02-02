@@ -84,6 +84,9 @@
     <Compile Include="..\FakeItEasy\CallbackConfigurationExtensions.cs">
       <Link>CallbackConfigurationExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\CompletedFakeObjectCallExtensions.cs">
+      <Link>CompletedFakeObjectCallExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallCallRule.cs">
       <Link>Configuration\AnyCallCallRule.cs</Link>
     </Compile>
@@ -557,9 +560,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\IRepeatSpecification.cs">
       <Link>IRepeatSpecification.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\MatchingExtensions.cs">
-      <Link>MatchingExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
       <Link>MethodBaseExtensions.cs</Link>

@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests
     using TestHelpers;
 
     [TestFixture]
-    public class MatchingExtensionsTests : ConfigurableServiceLocatorTestBase
+    public class CompletedFakeObjectCallExtensionsTests : ConfigurableServiceLocatorTestBase
     {
         [Test]
         public void Matching_should_pass_call_specification_to_matcher_factory()

@@ -10,9 +10,9 @@ namespace FakeItEasy
     using FakeItEasy.Expressions;
 
     /// <summary>
-    /// Provides a Matching extension method for fake objects calls.
+    /// Provides extension methods for <see cref="ICompletedFakeObjectCall"/>.
     /// </summary>
-    public static class MatchingExtensions
+    public static class CompletedFakeObjectCallExtensions
     {
         /// <summary>
         /// Filters to contain only the calls that matches the call specification.

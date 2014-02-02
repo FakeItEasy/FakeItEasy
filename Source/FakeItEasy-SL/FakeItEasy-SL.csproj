@@ -108,6 +108,9 @@
     <Compile Include="..\FakeItEasy\CallbackConfigurationExtensions.cs">
       <Link>CallbackConfigurationExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\CompletedFakeObjectCallExtensions.cs">
+      <Link>CompletedFakeObjectCallExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
       <Link>EnumerableExtensions.cs</Link>
     </Compile>
@@ -140,9 +143,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\ArgumentValueFormatter.cs">
       <Link>ArgumentValueFormatter.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\MatchingExtensions.cs">
-      <Link>MatchingExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallCallRule.cs">
       <Link>Configuration\AnyCallCallRule.cs</Link>

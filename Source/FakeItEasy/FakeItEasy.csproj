@@ -97,7 +97,6 @@
     <Compile Include="ReturnsLazilyExtensions.cs" />
     <Compile Include="WithAnyArgumentsExtensions.cs" />
     <Compile Include="MustHaveHappenedExtensions.cs" />
-    <Compile Include="MatchingExtensions.cs" />
     <Compile Include="ThrowsExtensions.cs" />
     <Compile Include="CallbackConfigurationExtensions.cs" />
     <Compile Include="WhereExtensions.cs" />
@@ -488,6 +487,7 @@
     </Compile>
     <Compile Include="IRepeatSpecification.cs" />
     <Compile Include="OrderedAssertion.cs" />
+    <Compile Include="CompletedFakeObjectCallExtensions.cs" />
     <Compile Include="FakeConfigurator.cs" />
     <Compile Include="DummyDefinition.cs" />
     <Compile Include="IFakeConfigurator.cs" />
