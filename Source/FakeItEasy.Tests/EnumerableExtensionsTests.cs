@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -16,7 +17,7 @@
 
             var result = strings.Zip(ints).Select(x => x.Item1 + x.Item2.ToString(CultureInfo.CurrentCulture));
 
-            Assert.That(result, Is.EquivalentTo(new[] { "a1", "b2", "c3" }));
+            result.Should().BeEquivalentTo(new[] { "a1", "b2", "c3" });
         }
     }
 }
