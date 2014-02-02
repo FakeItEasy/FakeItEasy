@@ -92,11 +92,10 @@
     <Compile Include="StringExtensions.cs" />
     <Compile Include="TwiceExtensions.cs" />
     <Compile Include="WriteExtensions.cs" />
-    <Compile Include="MustNotHaveHappenedExtensions.cs" />
     <Compile Include="ReturnsNextFromSequenceExtensions.cs" />
     <Compile Include="ReturnsLazilyExtensions.cs" />
     <Compile Include="WithAnyArgumentsExtensions.cs" />
-    <Compile Include="MustHaveHappenedExtensions.cs" />
+    <Compile Include="AssertConfigurationExtensions.cs" />
     <Compile Include="ThrowsExtensions.cs" />
     <Compile Include="CallbackConfigurationExtensions.cs" />
     <Compile Include="WhereExtensions.cs" />

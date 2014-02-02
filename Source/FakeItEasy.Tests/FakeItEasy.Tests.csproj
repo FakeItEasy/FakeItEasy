@@ -93,10 +93,9 @@
     <Compile Include="ACallToTests.cs" />
     <Compile Include="OnceExtensionsTests.cs" />
     <Compile Include="WriteExtensionsTests.cs" />
-    <Compile Include="MustNotHaveHappenedExtensionsTests.cs" />
     <Compile Include="ReturnsNextFromSequenceExtensionsTests.cs" />
     <Compile Include="WithAnyArgumentsExtensionsTests.cs" />
-    <Compile Include="MustHaveHappenedExtensionsTests.cs" />
+    <Compile Include="AssertConfigurationExtensionsTests.cs" />
     <Compile Include="CompletedFakeObjectCallExtensionsTests.cs" />
     <Compile Include="WhereExtensionsTests.cs" />
     <Compile Include="StrictExtensionsTests.cs" />

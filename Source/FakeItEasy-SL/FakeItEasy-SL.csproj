@@ -105,6 +105,9 @@
     <Compile Include="..\FakeItEasy\ArgumentConstraintExtensions.cs">
       <Link>ArgumentConstraintExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\AssertConfigurationExtensions.cs">
+      <Link>AssertConfigurationExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\CallbackConfigurationExtensions.cs">
       <Link>CallbackConfigurationExtensions.cs</Link>
     </Compile>
@@ -605,12 +608,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\MustBeImplementedException.cs">
       <Link>MustBeImplementedException.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\MustHaveHappenedExtensions.cs">
-      <Link>MustHaveHappenedExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\MustNotHaveHappenedExtensions.cs">
-      <Link>MustNotHaveHappenedExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\NextCall.cs">
       <Link>NextCall.cs</Link>
