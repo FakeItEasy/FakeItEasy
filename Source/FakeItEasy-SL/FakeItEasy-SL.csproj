@@ -156,9 +156,6 @@
     <Compile Include="..\FakeItEasy\WhereConfigurationExtensions.cs">
       <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\WriteExtensions.cs">
-      <Link>WriteExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\ArgumentValueFormatter.cs">
       <Link>ArgumentValueFormatter.cs</Link>
     </Compile>

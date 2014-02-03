@@ -90,7 +90,6 @@
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="StringBuilderExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
-    <Compile Include="WriteExtensions.cs" />
     <Compile Include="ReturnValueConfigurationExtensions.cs" />
     <Compile Include="ArgumentValidationConfigurationExtensions.cs" />
     <Compile Include="AssertConfigurationExtensions.cs" />
