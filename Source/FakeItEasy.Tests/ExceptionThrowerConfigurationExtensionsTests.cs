@@ -9,7 +9,7 @@
     using TestHelpers;
 
     [TestFixture]
-    public class ThrowsExtensionsTests : ConfigurableServiceLocatorTestBase
+    public class ExceptionThrowerConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
     {
         public interface IInterface
         {

@@ -94,7 +94,7 @@
     <Compile Include="ReturnValueConfigurationExtensions.cs" />
     <Compile Include="WithAnyArgumentsExtensions.cs" />
     <Compile Include="AssertConfigurationExtensions.cs" />
-    <Compile Include="ThrowsExtensions.cs" />
+    <Compile Include="ExceptionThrowerConfigurationExtensions.cs" />
     <Compile Include="CallbackConfigurationExtensions.cs" />
     <Compile Include="WhereExtensions.cs" />
     <Compile Include="FakeOptionsBuilderExtensions.cs" />

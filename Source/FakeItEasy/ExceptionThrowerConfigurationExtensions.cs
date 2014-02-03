@@ -6,9 +6,9 @@ namespace FakeItEasy
     using FakeItEasy.Configuration;
 
     /// <summary>
-    /// Provides the Throws extension methods for configuring fake object call behavior.
+    /// Provides the extension methods for <see cref="IExceptionThrowerConfiguration"/>.
     /// </summary>
-    public static class ThrowsExtensions
+    public static class ExceptionThrowerConfigurationExtensions
     {
         private const string NameOfThrowsFeature = "throws";
 

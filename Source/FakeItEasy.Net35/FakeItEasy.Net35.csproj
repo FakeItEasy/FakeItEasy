@@ -462,6 +462,9 @@
     <Compile Include="..\FakeItEasy\ExceptionMessages.Designer.cs">
       <Link>ExceptionMessages.Designer.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\ExceptionThrowerConfigurationExtensions.cs">
+      <Link>ExceptionThrowerConfigurationExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\ExpectationException.cs">
       <Link>ExpectationException.cs</Link>
     </Compile>
@@ -638,9 +641,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\StringExtensions.cs">
       <Link>StringExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ThrowsExtensions.cs">
-      <Link>ThrowsExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\TypeExtensions.cs">
       <Link>TypeExtensions.cs</Link>
