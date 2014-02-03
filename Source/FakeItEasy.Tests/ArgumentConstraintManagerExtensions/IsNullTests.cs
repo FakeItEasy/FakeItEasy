@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.ArgumentValidationExtensions
+﻿namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
     using NUnit.Framework;

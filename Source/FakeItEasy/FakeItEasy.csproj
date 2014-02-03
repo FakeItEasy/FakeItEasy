@@ -488,7 +488,7 @@
     <Compile Include="DummyDefinition.cs" />
     <Compile Include="IFakeConfigurator.cs" />
     <Compile Include="IDummyDefinition.cs" />
-    <Compile Include="ArgumentConstraintExtensions.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions.cs" />
     <Compile Include="MustBeImplementedException.cs" />
     <Compile Include="OutputWriterExtensions.cs" />
     <Compile Include="Repeated.cs" />

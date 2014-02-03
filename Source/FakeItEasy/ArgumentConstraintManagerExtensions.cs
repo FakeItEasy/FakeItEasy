@@ -10,7 +10,7 @@ namespace FakeItEasy
     /// <summary>
     /// Provides validation extensions for <see cref="IArgumentConstraintManager{T}"/>.
     /// </summary>
-    public static class ArgumentConstraintExtensions
+    public static class ArgumentConstraintManagerExtensions
     {
         /// <summary>
         /// Constrains an argument so that it must be null (Nothing in VB).

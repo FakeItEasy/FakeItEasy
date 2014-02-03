@@ -75,8 +75,8 @@
     <Compile Include="..\FakeItEasy\ArgumentCollection.cs">
       <Link>ArgumentCollection.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ArgumentConstraintExtensions.cs">
-      <Link>ArgumentConstraintExtensions.cs</Link>
+    <Compile Include="..\FakeItEasy\ArgumentConstraintManagerExtensions.cs">
+      <Link>ArgumentConstraintManagerExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ArgumentValueFormatter.cs">
       <Link>ArgumentValueFormatter.cs</Link>

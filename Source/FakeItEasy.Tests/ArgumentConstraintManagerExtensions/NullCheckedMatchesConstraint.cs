@@ -1,36 +1,39 @@
-﻿namespace FakeItEasy.Tests.ArgumentValidationExtensions
+﻿namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
-    internal class EqualToConstraintTests
+    internal class NullCheckedMatchesConstraint
         : ArgumentConstraintTestBase<object>
     {
         protected override IEnumerable<object> InvalidValues
         {
-            get 
+            get
             {
-                yield return 9;
-                yield return 11;
                 yield return null;
-                yield return "foo";
+                yield return new object();
             }
         }
 
         protected override IEnumerable<object> ValidValues
         {
-            get { yield return 10; }
+            get 
+            {
+                yield return "Foo";
+                yield return string.Empty;
+                yield return "Bar";
+            }
         }
 
         protected override string ExpectedDescription
         {
-            get { return "equal to 10"; }
+            get { return "is of type string"; }
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
         {
-            scope.IsEqualTo(10);
+            scope.NullCheckedMatches(x => x is string, x => x.Write("is of type string"));
         }
     }
 }
