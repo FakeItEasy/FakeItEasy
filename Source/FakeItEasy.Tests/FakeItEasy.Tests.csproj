@@ -93,7 +93,7 @@
     <Compile Include="ACallToTests.cs" />
     <Compile Include="RepeatConfigurationExtensionsTests.cs" />
     <Compile Include="WriteExtensionsTests.cs" />
-    <Compile Include="WithAnyArgumentsExtensionsTests.cs" />
+    <Compile Include="ArgumentValidationConfigurationExtensionsTests.cs" />
     <Compile Include="AssertConfigurationExtensionsTests.cs" />
     <Compile Include="CompletedFakeObjectCallExtensionsTests.cs" />
     <Compile Include="WhereConfigurationExtensionsTests.cs" />

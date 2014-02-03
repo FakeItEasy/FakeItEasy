@@ -105,6 +105,9 @@
     <Compile Include="..\FakeItEasy\ArgumentConstraintManagerExtensions.cs">
       <Link>ArgumentConstraintManagerExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\ArgumentValidationConfigurationExtensions.cs">
+      <Link>ArgumentValidationConfigurationExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\AssertConfigurationExtensions.cs">
       <Link>AssertConfigurationExtensions.cs</Link>
     </Compile>
@@ -152,9 +155,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\WhereConfigurationExtensions.cs">
       <Link>WhereConfigurationExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\WithAnyArgumentsExtensions.cs">
-      <Link>WithAnyArgumentsExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\WriteExtensions.cs">
       <Link>WriteExtensions.cs</Link>

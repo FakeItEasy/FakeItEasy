@@ -92,7 +92,7 @@
     <Compile Include="StringExtensions.cs" />
     <Compile Include="WriteExtensions.cs" />
     <Compile Include="ReturnValueConfigurationExtensions.cs" />
-    <Compile Include="WithAnyArgumentsExtensions.cs" />
+    <Compile Include="ArgumentValidationConfigurationExtensions.cs" />
     <Compile Include="AssertConfigurationExtensions.cs" />
     <Compile Include="ExceptionThrowerConfigurationExtensions.cs" />
     <Compile Include="CallbackConfigurationExtensions.cs" />

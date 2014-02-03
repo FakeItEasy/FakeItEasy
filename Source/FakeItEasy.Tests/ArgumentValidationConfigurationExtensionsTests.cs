@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class WithAnyArgumentsExtensionsTests : ConfigurableServiceLocatorTestBase
+    public class ArgumentValidationConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
     {
         [Test]
         public void WithAnyArguments_with_void_call_should_call_when_arguments_match_with_predicate_that_returns_true()

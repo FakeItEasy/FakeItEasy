@@ -1,21 +1,11 @@
 namespace FakeItEasy
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection;
-
     using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
-    using FakeItEasy.Creation;
-    using FakeItEasy.Expressions;
 
     /// <summary>
-    /// Provides a WithAnyArguments extension methods matching calls to fake objects.
+    /// Provides extension methods for <see cref="IArgumentValidationConfiguration{TInterface}"/>.
     /// </summary>
-    public static class WithAnyArgumentsExtensions
+    public static class ArgumentValidationConfigurationExtensions
     {
         /// <summary>
         /// Specifies that a call to the configured call should be applied no matter what arguments
