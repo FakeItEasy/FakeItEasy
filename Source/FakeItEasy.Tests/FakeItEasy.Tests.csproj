@@ -96,7 +96,7 @@
     <Compile Include="WithAnyArgumentsExtensionsTests.cs" />
     <Compile Include="AssertConfigurationExtensionsTests.cs" />
     <Compile Include="CompletedFakeObjectCallExtensionsTests.cs" />
-    <Compile Include="WhereExtensionsTests.cs" />
+    <Compile Include="WhereConfigurationExtensionsTests.cs" />
     <Compile Include="FakeOptionsBuilderExtensionsTests.cs" />
     <Compile Include="FakeObjectCallExtensionsTests.cs" />
     <Compile Include="GenericATests.cs" />

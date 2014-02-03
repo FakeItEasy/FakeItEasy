@@ -8,9 +8,9 @@ namespace FakeItEasy
     using FakeItEasy.Core;
 
     /// <summary>
-    /// Provides a Where extension method matching calls to fake objects.
+    /// Provides extension methods for <see cref="IWhereConfiguration{T}"/>.
     /// </summary>
-    public static class WhereExtensions
+    public static class WhereConfigurationExtensions
     {
         /// <summary>
         /// Applies a predicate to constrain which calls will be considered for interception.

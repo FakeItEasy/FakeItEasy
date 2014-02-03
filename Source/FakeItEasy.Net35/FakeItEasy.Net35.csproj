@@ -651,8 +651,8 @@
     <Compile Include="..\FakeItEasy\ValueProducerSignatureHelper.cs">
       <Link>ValueProducerSignatureHelper.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\WhereExtensions.cs">
-      <Link>WhereExtensions.cs</Link>
+    <Compile Include="..\FakeItEasy\WhereConfigurationExtensions.cs">
+      <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\WithAnyArgumentsExtensions.cs">
       <Link>WithAnyArgumentsExtensions.cs</Link>

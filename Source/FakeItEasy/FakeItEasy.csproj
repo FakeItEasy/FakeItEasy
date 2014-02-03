@@ -96,7 +96,7 @@
     <Compile Include="AssertConfigurationExtensions.cs" />
     <Compile Include="ExceptionThrowerConfigurationExtensions.cs" />
     <Compile Include="CallbackConfigurationExtensions.cs" />
-    <Compile Include="WhereExtensions.cs" />
+    <Compile Include="WhereConfigurationExtensions.cs" />
     <Compile Include="FakeOptionsBuilderExtensions.cs" />
     <Compile Include="FakeObjectCallExtensions.cs" />
     <Compile Include="RepeatConfigurationExtensions.cs" />

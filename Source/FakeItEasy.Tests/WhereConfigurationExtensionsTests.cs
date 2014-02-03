@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests
     using TestHelpers;
 
     [TestFixture]
-    public class WhereExtensionsTests : ConfigurableServiceLocatorTestBase
+    public class WhereConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
     {
         [Test]
         public void Where_should_return_configuration_from_configuration()
