@@ -97,7 +97,7 @@
     <Compile Include="ThrowsExtensions.cs" />
     <Compile Include="CallbackConfigurationExtensions.cs" />
     <Compile Include="WhereExtensions.cs" />
-    <Compile Include="StrictExtensions.cs" />
+    <Compile Include="FakeOptionsBuilderExtensions.cs" />
     <Compile Include="FakeObjectCallExtensions.cs" />
     <Compile Include="RepeatConfigurationExtensions.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">

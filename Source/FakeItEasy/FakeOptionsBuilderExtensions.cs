@@ -6,9 +6,9 @@ namespace FakeItEasy
     using FakeItEasy.Creation;
 
     /// <summary>
-    /// Provides the Strict extension methods for configuring fake objects.
+    /// Provides extension methods for <see cref="IFakeOptionsBuilder{T}"/>.
     /// </summary>
-    public static class StrictExtensions
+    public static class FakeOptionsBuilderExtensions
     {
         /// <summary>
         /// Makes the fake strict, this means that any call to the fake

@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests
     using TestHelpers;
 
     [TestFixture]
-    public class StrictExtensionsTests : ConfigurableServiceLocatorTestBase
+    public class FakeOptionsBuilderExtensionsTests : ConfigurableServiceLocatorTestBase
     {
         [Test]
         public void Strict_should_configure_fake_to_throw_expectation_exception()

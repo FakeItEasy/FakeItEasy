@@ -528,6 +528,9 @@
     <Compile Include="..\FakeItEasy\FakeObjectCallExtensions.cs">
       <Link>FakeObjectCallExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\FakeOptionsBuilderExtensions.cs">
+      <Link>FakeOptionsBuilderExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Guard.cs">
       <Link>Guard.cs</Link>
     </Compile>
@@ -626,9 +629,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\SmellyAttribute.cs">
       <Link>SmellyAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\StrictExtensions.cs">
-      <Link>StrictExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\StringBuilderExtensions.cs">
       <Link>StringBuilderExtensions.cs</Link>
