@@ -126,6 +126,9 @@
     <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
       <Link>MethodBaseExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\RepeatConfigurationExtensions.cs">
+      <Link>RepeatConfigurationExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\StringBuilderExtensions.cs">
       <Link>StringBuilderExtensions.cs</Link>
     </Compile>
@@ -612,9 +615,6 @@
     <Compile Include="..\FakeItEasy\NextCall.cs">
       <Link>NextCall.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\OnceExtensions.cs">
-      <Link>OnceExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\OrderedAssertion.cs">
       <Link>OrderedAssertion.cs</Link>
     </Compile>
@@ -680,9 +680,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\ThrowsExtensions.cs">
       <Link>ThrowsExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\TwiceExtensions.cs">
-      <Link>TwiceExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\UnderTestAttribute.cs">
       <Link>UnderTestAttribute.cs</Link>

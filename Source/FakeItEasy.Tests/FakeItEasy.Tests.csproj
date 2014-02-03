@@ -91,7 +91,7 @@
     <Compile Include="AutoInitializedFixture.cs" />
     <Compile Include="ArgumentConstraintTestBase.of.T.cs" />
     <Compile Include="ACallToTests.cs" />
-    <Compile Include="OnceExtensionsTests.cs" />
+    <Compile Include="RepeatConfigurationExtensionsTests.cs" />
     <Compile Include="WriteExtensionsTests.cs" />
     <Compile Include="ReturnsNextFromSequenceExtensionsTests.cs" />
     <Compile Include="WithAnyArgumentsExtensionsTests.cs" />
@@ -101,7 +101,6 @@
     <Compile Include="StrictExtensionsTests.cs" />
     <Compile Include="FakeObjectCallExtensionsTests.cs" />
     <Compile Include="ReturnsExtensionsTests.cs" />
-    <Compile Include="TwiceExtensionsTests.cs" />
     <Compile Include="GenericATests.cs" />
     <Compile Include="DummyException.cs" />
     <Compile Include="Core\ArgumentConstraintTrapTests.cs" />

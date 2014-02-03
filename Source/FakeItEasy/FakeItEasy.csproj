@@ -90,7 +90,6 @@
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="StringBuilderExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
-    <Compile Include="TwiceExtensions.cs" />
     <Compile Include="WriteExtensions.cs" />
     <Compile Include="ReturnsNextFromSequenceExtensions.cs" />
     <Compile Include="ReturnsLazilyExtensions.cs" />
@@ -102,7 +101,7 @@
     <Compile Include="StrictExtensions.cs" />
     <Compile Include="FakeObjectCallExtensions.cs" />
     <Compile Include="ReturnsExtensions.cs" />
-    <Compile Include="OnceExtensions.cs" />
+    <Compile Include="RepeatConfigurationExtensions.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
