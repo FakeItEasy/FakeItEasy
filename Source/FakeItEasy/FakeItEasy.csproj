@@ -91,8 +91,7 @@
     <Compile Include="StringBuilderExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="WriteExtensions.cs" />
-    <Compile Include="ReturnsNextFromSequenceExtensions.cs" />
-    <Compile Include="ReturnsLazilyExtensions.cs" />
+    <Compile Include="ReturnValueConfigurationExtensions.cs" />
     <Compile Include="WithAnyArgumentsExtensions.cs" />
     <Compile Include="AssertConfigurationExtensions.cs" />
     <Compile Include="ThrowsExtensions.cs" />
@@ -100,7 +99,6 @@
     <Compile Include="WhereExtensions.cs" />
     <Compile Include="StrictExtensions.cs" />
     <Compile Include="FakeObjectCallExtensions.cs" />
-    <Compile Include="ReturnsExtensions.cs" />
     <Compile Include="RepeatConfigurationExtensions.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>

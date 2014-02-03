@@ -1,15 +1,30 @@
 namespace FakeItEasy
 {
     using System;
+    using System.Collections.Generic;
 
     using FakeItEasy.Configuration;
 
     /// <summary>
-    /// Provides the ReturnsLazily extension methods for specifying return values of fake object calls.
+    /// Provides extension methods for <see cref="IReturnValueConfiguration{T}"/>.
     /// </summary>
-    public static class ReturnsLazilyExtensions
+    public static class ReturnValueConfigurationExtensions
     {
         private const string NameOfReturnsLazilyFeature = "returns lazily";
+
+        /// <summary>
+        /// Specifies the value to return when the configured call is made.
+        /// </summary>
+        /// <typeparam name="T">The type of the return value.</typeparam>
+        /// <param name="configuration">The configuration to extend.</param>
+        /// <param name="value">The value to return.</param>
+        /// <returns>A configuration object.</returns>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<T> configuration, T value)
+        {
+            Guard.AgainstNull(configuration, "configuration");
+
+            return configuration.ReturnsLazily(x => value);
+        }
 
         /// <summary>
         /// Specifies a function used to produce a return value when the configured call is made.
@@ -128,6 +143,27 @@ namespace FakeItEasy
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
+        }
+
+        /// <summary>
+        /// Configures the call to return the next value from the specified sequence each time it's called. Null will
+        /// be returned when all the values in the sequence has been returned.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of return value.
+        /// </typeparam>
+        /// <param name="configuration">
+        /// The call configuration to extend.
+        /// </param>
+        /// <param name="values">
+        /// The values to return in sequence.
+        /// </param>
+        public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
+        {
+            Guard.AgainstNull(configuration, "configuration");
+
+            var queue = new Queue<T>(values);
+            configuration.ReturnsLazily(x => queue.Dequeue()).NumberOfTimes(queue.Count);
         }
     }
 }

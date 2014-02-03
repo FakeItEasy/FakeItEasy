@@ -594,14 +594,8 @@
     <Compile Include="..\FakeItEasy\Repeated.cs">
       <Link>Repeated.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ReturnsExtensions.cs">
-      <Link>ReturnsExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ReturnsLazilyExtensions.cs">
-      <Link>ReturnsLazilyExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ReturnsNextFromSequenceExtensions.cs">
-      <Link>ReturnsNextFromSequenceExtensions.cs</Link>
+    <Compile Include="..\FakeItEasy\ReturnValueConfigurationExtensions.cs">
+      <Link>ReturnValueConfigurationExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\RootModule.cs">
       <Link>RootModule.cs</Link>

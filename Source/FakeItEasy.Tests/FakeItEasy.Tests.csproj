@@ -93,14 +93,12 @@
     <Compile Include="ACallToTests.cs" />
     <Compile Include="RepeatConfigurationExtensionsTests.cs" />
     <Compile Include="WriteExtensionsTests.cs" />
-    <Compile Include="ReturnsNextFromSequenceExtensionsTests.cs" />
     <Compile Include="WithAnyArgumentsExtensionsTests.cs" />
     <Compile Include="AssertConfigurationExtensionsTests.cs" />
     <Compile Include="CompletedFakeObjectCallExtensionsTests.cs" />
     <Compile Include="WhereExtensionsTests.cs" />
     <Compile Include="StrictExtensionsTests.cs" />
     <Compile Include="FakeObjectCallExtensionsTests.cs" />
-    <Compile Include="ReturnsExtensionsTests.cs" />
     <Compile Include="GenericATests.cs" />
     <Compile Include="DummyException.cs" />
     <Compile Include="Core\ArgumentConstraintTrapTests.cs" />
@@ -173,7 +171,7 @@
     <Compile Include="OutputWriterExtensionsTests.cs" />
     <Compile Include="RepeatedTests.cs" />
     <Compile Include="RecordersTests.cs" />
-    <Compile Include="ReturnsLazilyExtensionsTests.cs">
+    <Compile Include="ReturnValueConfigurationExtensionsTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SelfInitializedFakes\CallDataTests.cs" />
