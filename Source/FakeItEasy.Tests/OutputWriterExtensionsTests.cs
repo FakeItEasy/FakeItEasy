@@ -5,7 +5,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class OutputWriterTests
+    public class OutputWriterExtensionsTests
     {
         [Test]
         public void Should_append_line_break_when_calling_write_line()

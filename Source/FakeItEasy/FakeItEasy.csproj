@@ -492,7 +492,7 @@
     <Compile Include="IDummyDefinition.cs" />
     <Compile Include="ArgumentConstraintExtensions.cs" />
     <Compile Include="MustBeImplementedException.cs" />
-    <Compile Include="OutputWriter.cs" />
+    <Compile Include="OutputWriterExtensions.cs" />
     <Compile Include="Repeated.cs" />
     <Compile Include="Recorders.cs" />
     <Compile Include="IFileSystem.cs" />

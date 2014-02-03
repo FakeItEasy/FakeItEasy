@@ -4,9 +4,9 @@
     using System.Globalization;
 
     /// <summary>
-    /// Provides static methods for the IOutputWriter-interface.
+    /// Provides extensions for <see cref="IOutputWriter"/>.
     /// </summary>
-    public static class OutputWriter
+    public static class OutputWriterExtensions
     {
         /// <summary>
         /// Writes a new line to the writer.
