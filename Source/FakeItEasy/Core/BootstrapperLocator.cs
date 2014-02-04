@@ -5,11 +5,11 @@
 
     /// <summary>
     /// Locate an <see cref="IBootstrapper"/> implementation.
-    /// <para>
+    /// </summary>
+    /// <remarks>
     /// Will search the app domain for a concrete implementation,
     /// and if it can't find one will use the <see cref="DefaultBootstrapper"/>.
-    /// </para>
-    /// </summary>
+    /// </remarks>
     internal static class BootstrapperLocator
     {
         /// <summary>
@@ -26,7 +26,7 @@
             var defaultBootstrapperType = typeof(DefaultBootstrapper);
 
             var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(AssemblyHelpers.ReferencesFakeItEasy);
+            var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 
             var candidateTypes = appDomainAssembliesReferencingFakeItEasy
                 .SelectMany(assembly => assembly.GetExportedTypes())

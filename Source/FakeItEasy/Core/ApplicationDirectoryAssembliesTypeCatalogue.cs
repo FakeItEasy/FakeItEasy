@@ -50,7 +50,7 @@
         private static IEnumerable<Assembly> GetAllAvailableAssemblies(IEnumerable<string> assemblyFilesToScan)
         {
             var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(AssemblyHelpers.ReferencesFakeItEasy);
+            var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 
             // Find the paths of already loaded assemblies so we don't double scan them.
             // Checking Assembly.IsDynamic would be preferable to the business with the Namespace, but the former isn't available in .NET 3.5.
@@ -83,7 +83,7 @@
                     continue;
                 }
 
-                if (!AssemblyHelpers.ReferencesFakeItEasy(assembly))
+                if (!assembly.ReferencesFakeItEasy())
                 {
                     continue;
                 }

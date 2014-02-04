@@ -219,8 +219,8 @@
     <Compile Include="..\FakeItEasy\Core\ArgumentValueFormatter.cs">
       <Link>Core\ArgumentValueFormatter.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\AssemblyHelpers.cs">
-      <Link>Core\AssemblyHelpers.cs</Link>
+    <Compile Include="..\FakeItEasy\Core\AssemblyExtensions.cs">
+      <Link>Core\AssemblyExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\BootstrapperLocator.cs">
       <Link>Core\BootstrapperLocator.cs</Link>
