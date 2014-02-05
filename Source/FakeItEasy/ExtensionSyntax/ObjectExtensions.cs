@@ -5,7 +5,7 @@
     /// <summary>
     /// Provides an extension method for configuring fake objects.
     /// </summary>
-    public static class Syntax
+    public static class ObjectExtensions
     {
         /// <summary>
         /// Gets an object that provides a fluent interface syntax for configuring

@@ -126,6 +126,12 @@
     <Compile Include="..\FakeItEasy\ExpressionExtensions.cs">
       <Link>ExpressionExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\ExtensionSyntax\Full\ObjectExtensions.cs">
+      <Link>ExtensionSyntax\Full\ObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ExtensionSyntax\ObjectExtensions.cs">
+      <Link>ExtensionSyntax\ObjectExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\FakeObjectCallExtensions.cs">
       <Link>FakeObjectCallExtensions.cs</Link>
     </Compile>
@@ -564,12 +570,6 @@
     <Compile Include="..\FakeItEasy\Expressions\ParsedCallExpression.cs">
       <Link>Expressions\ParsedCallExpression.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ExtensionSyntax\Full\FullExtensionSyntax.cs">
-      <Link>ExtensionSyntax\Full\FullExtensionSyntax.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ExtensionSyntax\Syntax.cs">
-      <Link>ExtensionSyntax\Syntax.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Fake.cs">
       <Link>Fake.cs</Link>
     </Compile>
@@ -706,7 +706,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="AfterBuild">

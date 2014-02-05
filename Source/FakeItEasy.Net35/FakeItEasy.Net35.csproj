@@ -510,11 +510,11 @@
     <Compile Include="..\FakeItEasy\Expressions\ParsedCallExpression.cs">
       <Link>Expressions\ParsedCallExpression.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ExtensionSyntax\Full\FullExtensionSyntax.cs">
-      <Link>ExtensionSyntax\Full\FullExtensionSyntax.cs</Link>
+    <Compile Include="..\FakeItEasy\ExtensionSyntax\Full\ObjectExtensions.cs">
+      <Link>ExtensionSyntax\Full\ObjectExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ExtensionSyntax\Syntax.cs">
-      <Link>ExtensionSyntax\Syntax.cs</Link>
+    <Compile Include="..\FakeItEasy\ExtensionSyntax\ObjectExtensions.cs">
+      <Link>ExtensionSyntax\ObjectExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Fake.cs">
       <Link>Fake.cs</Link>

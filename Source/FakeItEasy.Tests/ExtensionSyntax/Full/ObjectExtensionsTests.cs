@@ -4,11 +4,11 @@
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FakeItEasy.ExtensionSyntax.Full;
     using NUnit.Framework;
-    using ES = FakeItEasy.ExtensionSyntax.Full;
 
     [TestFixture]
-    public class FullExtensionSyntaxTests : ConfigurableServiceLocatorTestBase
+    public class ObjectExtensionsTests : ConfigurableServiceLocatorTestBase
     {
         private IStartConfigurationFactory fakeConfigurationFactory;
         private IStartConfiguration<IFoo> fakeConfiguration;
@@ -16,8 +16,7 @@
         [Test]
         public void CallsTo_for_return_value_methods_should_be_null_guarded()
         {
-            NullGuardedConstraint.Assert(() =>
-                ES.FullExtensionSyntax.CallsTo("string", x => x.Length));
+            NullGuardedConstraint.Assert(() => "string".CallsTo(x => x.Length));
         }
 
         [Test]
@@ -28,12 +27,12 @@
             var returnConfig = A.Fake<IReturnValueArgumentValidationConfiguration<int>>();
             A.CallTo(() => this.fakeConfiguration.CallsTo(A<Expression<Func<IFoo, int>>>._))
                 .Returns(returnConfig);
-            
+
             using (Fake.CreateScope())
             {
-                this.StubResolve<IStartConfigurationFactory>(this.fakeConfigurationFactory);            
-                
-                var configuration = ES.FullExtensionSyntax.CallsTo(fake, x => x.Baz());
+                this.StubResolve<IStartConfigurationFactory>(this.fakeConfigurationFactory);
+
+                var configuration = fake.CallsTo(x => x.Baz());
                 Assert.That(configuration, Is.SameAs(returnConfig));
             }
         }
@@ -41,8 +40,7 @@
         [Test]
         public void CallsTo_for_void_methods_should_be_null_guarded()
         {
-            NullGuardedConstraint.Assert(() =>
-                ES.FullExtensionSyntax.CallsTo(A.Fake<IFoo>(), x => x.Bar()));
+            NullGuardedConstraint.Assert(() => A.Fake<IFoo>().CallsTo(x => x.Bar()));
         }
 
         [Test]
@@ -58,7 +56,7 @@
             {
                 this.StubResolve<IStartConfigurationFactory>(this.fakeConfigurationFactory);
 
-                var configuration = ES.FullExtensionSyntax.CallsTo(fake, x => x.Bar());
+                var configuration = fake.CallsTo(x => x.Bar());
                 Assert.That(configuration, Is.SameAs(callConfig));
             }
         }
@@ -75,16 +73,15 @@
             {
                 this.StubResolve<IStartConfigurationFactory>(this.fakeConfigurationFactory);
 
-                var configuration = ES.FullExtensionSyntax.AnyCall(fake);
+                var configuration = fake.AnyCall();
                 Assert.That(configuration, Is.SameAs(callConfig));
-            }            
+            }
         }
 
         [Test]
         public void AnyCall_should_be_null_guarded()
         {
-            NullGuardedConstraint.Assert(() =>
-                ES.FullExtensionSyntax.AnyCall(A.Fake<IFoo>()));
+            NullGuardedConstraint.Assert(() => A.Fake<IFoo>().AnyCall());
         }
 
         protected override void OnSetup()
