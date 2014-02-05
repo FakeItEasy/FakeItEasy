@@ -78,31 +78,26 @@
   <ItemGroup>
     <Compile Include="ActionOverWriterValueFormatter.cs" />
     <Compile Include="AnyTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\CollectionContainsTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\CollectionIsEmptyTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\SameAsConstraintTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\EqualToConstraintTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\IsSameSequenceAsTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\NullCheckedMatchesConstraint.cs" />
-    <Compile Include="ArgumentConstraintExtensions\StringEndsWithTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\CollectionContainsTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\CollectionIsEmptyTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\SameAsConstraintTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\EqualToConstraintTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\IsSameSequenceAsTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\NullCheckedMatchesConstraint.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\StringEndsWithTests.cs" />
     <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
     <Compile Include="AutoInitializedFixture.cs" />
     <Compile Include="ArgumentConstraintTestBase.of.T.cs" />
     <Compile Include="ACallToTests.cs" />
-    <Compile Include="OnceExtensionsTests.cs" />
-    <Compile Include="WriteExtensionsTests.cs" />
-    <Compile Include="MustNotHaveHappenedExtensionsTests.cs" />
-    <Compile Include="ReturnsNextFromSequenceExtensionsTests.cs" />
-    <Compile Include="WithAnyArgumentsExtensionsTests.cs" />
-    <Compile Include="MustHaveHappenedExtensionsTests.cs" />
-    <Compile Include="MatchingExtensionsTests.cs" />
-    <Compile Include="WhereExtensionsTests.cs" />
-    <Compile Include="StrictExtensionsTests.cs" />
-    <Compile Include="GetArgumentExtensionsTests.cs" />
-    <Compile Include="ReturnsExtensionsTests.cs" />
-    <Compile Include="TwiceExtensionsTests.cs" />
+    <Compile Include="RepeatConfigurationExtensionsTests.cs" />
+    <Compile Include="ArgumentValidationConfigurationExtensionsTests.cs" />
+    <Compile Include="AssertConfigurationExtensionsTests.cs" />
+    <Compile Include="CompletedFakeObjectCallExtensionsTests.cs" />
+    <Compile Include="WhereConfigurationExtensionsTests.cs" />
+    <Compile Include="FakeOptionsBuilderExtensionsTests.cs" />
+    <Compile Include="FakeObjectCallExtensionsTests.cs" />
     <Compile Include="GenericATests.cs" />
     <Compile Include="DummyException.cs" />
     <Compile Include="Core\ArgumentConstraintTrapTests.cs" />
@@ -131,17 +126,17 @@
     <Compile Include="Core\FakeAsserterTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ArgumentConstraintExtensions\ComparableGreaterThanTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\StringIsNullOrEmptyTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\StringStartsWithTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\ComparableGreaterThanTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\StringIsNullOrEmptyTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\StringStartsWithTests.cs" />
     <Compile Include="Core\CallInterceptedEventArgsTests.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfiguratorTests.cs" />
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
     <Compile Include="Core\FakeConfiguratorTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\IsInstanceOfTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\IsNullTests.cs" />
-    <Compile Include="ArgumentConstraintExtensions\StringContainsTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\IsInstanceOfTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\IsNullTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\StringContainsTests.cs" />
     <Compile Include="Configuration\AnyCallCallRuleTests.cs" />
     <Compile Include="Configuration\AnyCallConfigurationTests.cs" />
     <Compile Include="Configuration\FakeConfigurationExceptionTests.cs" />
@@ -169,13 +164,13 @@
     <Compile Include="FakeFacadeTests.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="Ignore.cs" />
-    <Compile Include="InvokesExtensionsTests.cs" />
+    <Compile Include="CallbackConfigurationExtensionsTests.cs" />
     <Compile Include="IsFakeConstraint.cs" />
     <Compile Include="LambdaExpressionDummyDefinition.cs" />
-    <Compile Include="OutputWriterTests.cs" />
+    <Compile Include="OutputWriterExtensionsTests.cs" />
     <Compile Include="RepeatedTests.cs" />
     <Compile Include="RecordersTests.cs" />
-    <Compile Include="ReturnsLazilyExtensionsTests.cs">
+    <Compile Include="ReturnValueConfigurationExtensionsTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SelfInitializedFakes\CallDataTests.cs" />
@@ -183,7 +178,7 @@
     <Compile Include="SelfInitializedFakes\RecordingExceptionTests.cs" />
     <Compile Include="SelfInitializedFakes\SelfInitializationRuleTests.cs" />
     <Compile Include="Core\CallWriterTests.cs" />
-    <Compile Include="CommonExtensionsTests.cs" />
+    <Compile Include="EnumerableExtensionsTests.cs" />
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
     <Compile Include="ArgumentConstraintTestBase.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraintTests.cs" />
@@ -197,7 +192,6 @@
     <Compile Include="TestHelpers\MethodInfoDummyDefinition.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="Core\FakeManagerTests.cs" />
-    <Compile Include="Core\HelpersTests.cs" />
     <Compile Include="Core\NullFakeObjectContainerTests.cs" />
     <Compile Include="CustomArgumentConstraints.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapterTests.cs" />
@@ -227,7 +221,7 @@
     <Compile Include="SelfInitializedFakes\RecordingManagerTests.cs" />
     <Compile Include="Fake(T)Tests.cs" />
     <Compile Include="Configuration\RecordingRuleBuilderTests.cs" />
-    <Compile Include="ThrowsExtensionsTests.cs" />
+    <Compile Include="ExceptionThrowerConfigurationExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj">

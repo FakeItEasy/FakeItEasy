@@ -102,26 +102,62 @@
     <Compile Include="..\FakeItEasy\ArgumentCollection.cs">
       <Link>ArgumentCollection.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ArgumentConstraintExtensions.cs">
-      <Link>ArgumentConstraintExtensions.cs</Link>
+    <Compile Include="..\FakeItEasy\ArgumentConstraintManagerExtensions.cs">
+      <Link>ArgumentConstraintManagerExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\WhereExtensions.cs">
-      <Link>WhereExtensions.cs</Link>
+    <Compile Include="..\FakeItEasy\ArgumentValidationConfigurationExtensions.cs">
+      <Link>ArgumentValidationConfigurationExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\WithAnyArgumentsExtensions.cs">
-      <Link>WithAnyArgumentsExtensions.cs</Link>
+    <Compile Include="..\FakeItEasy\AssertConfigurationExtensions.cs">
+      <Link>AssertConfigurationExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\WriteExtensions.cs">
-      <Link>WriteExtensions.cs</Link>
+    <Compile Include="..\FakeItEasy\CallbackConfigurationExtensions.cs">
+      <Link>CallbackConfigurationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\CompletedFakeObjectCallExtensions.cs">
+      <Link>CompletedFakeObjectCallExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
+      <Link>EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ExceptionThrowerConfigurationExtensions.cs">
+      <Link>ExceptionThrowerConfigurationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ExpressionExtensions.cs">
+      <Link>ExpressionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\FakeObjectCallExtensions.cs">
+      <Link>FakeObjectCallExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\FakeOptionsBuilderExtensions.cs">
+      <Link>FakeOptionsBuilderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
+      <Link>MethodBaseExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\OutputWriterExtensions.cs">
+      <Link>OutputWriterExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\RepeatConfigurationExtensions.cs">
+      <Link>RepeatConfigurationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ReturnValueConfigurationExtensions.cs">
+      <Link>ReturnValueConfigurationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\StringBuilderExtensions.cs">
+      <Link>StringBuilderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\StringExtensions.cs">
+      <Link>StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\TypeExtensions.cs">
+      <Link>TypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\WhereConfigurationExtensions.cs">
+      <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ArgumentValueFormatter.cs">
       <Link>ArgumentValueFormatter.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\CommonExtensions.cs">
-      <Link>CommonExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\MatchingExtensions.cs">
-      <Link>MatchingExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallCallRule.cs">
       <Link>Configuration\AnyCallCallRule.cs</Link>
@@ -549,14 +585,8 @@
     <Compile Include="..\FakeItEasy\FakeFacade.cs">
       <Link>FakeFacade.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\GetArgumentExtensions.cs">
-      <Link>GetArgumentExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Guard.cs">
       <Link>Guard.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Helpers.cs">
-      <Link>Helpers.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IArgumentConstraintManager.cs">
       <Link>IArgumentConstraintManager.cs</Link>
@@ -576,9 +606,6 @@
     <Compile Include="..\FakeItEasy\IFileSystem.cs">
       <Link>IFileSystem.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\InvokesExtensions.cs">
-      <Link>InvokesExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\IoC\DictionaryContainer.cs">
       <Link>IoC\DictionaryContainer.cs</Link>
     </Compile>
@@ -594,23 +621,11 @@
     <Compile Include="..\FakeItEasy\MustBeImplementedException.cs">
       <Link>MustBeImplementedException.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\MustHaveHappenedExtensions.cs">
-      <Link>MustHaveHappenedExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\MustNotHaveHappenedExtensions.cs">
-      <Link>MustNotHaveHappenedExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\NextCall.cs">
       <Link>NextCall.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\OnceExtensions.cs">
-      <Link>OnceExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\OrderedAssertion.cs">
       <Link>OrderedAssertion.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\OutputWriter.cs">
-      <Link>OutputWriter.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
@@ -623,15 +638,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Repeated.cs">
       <Link>Repeated.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ReturnsExtensions.cs">
-      <Link>ReturnsExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ReturnsLazilyExtensions.cs">
-      <Link>ReturnsLazilyExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ReturnsNextFromSequenceExtensions.cs">
-      <Link>ReturnsNextFromSequenceExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\RootModule.cs">
       <Link>RootModule.cs</Link>
@@ -663,17 +669,8 @@
     <Compile Include="..\FakeItEasy\SmellyAttribute.cs">
       <Link>SmellyAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\StrictExtensions.cs">
-      <Link>StrictExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\StringBuilderOutputWriter.cs">
       <Link>StringBuilderOutputWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ThrowsExtensions.cs">
-      <Link>ThrowsExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\TwiceExtensions.cs">
-      <Link>TwiceExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\UnderTestAttribute.cs">
       <Link>UnderTestAttribute.cs</Link>
@@ -709,7 +706,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
+      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="AfterBuild">

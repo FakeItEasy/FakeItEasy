@@ -86,21 +86,19 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="A.of.T.cs" />
-    <Compile Include="TwiceExtensions.cs" />
-    <Compile Include="WriteExtensions.cs" />
-    <Compile Include="MustNotHaveHappenedExtensions.cs" />
-    <Compile Include="ReturnsNextFromSequenceExtensions.cs" />
-    <Compile Include="ReturnsLazilyExtensions.cs" />
-    <Compile Include="WithAnyArgumentsExtensions.cs" />
-    <Compile Include="MustHaveHappenedExtensions.cs" />
-    <Compile Include="MatchingExtensions.cs" />
-    <Compile Include="ThrowsExtensions.cs" />
-    <Compile Include="InvokesExtensions.cs" />
-    <Compile Include="WhereExtensions.cs" />
-    <Compile Include="StrictExtensions.cs" />
-    <Compile Include="GetArgumentExtensions.cs" />
-    <Compile Include="ReturnsExtensions.cs" />
-    <Compile Include="OnceExtensions.cs" />
+    <Compile Include="MethodBaseExtensions.cs" />
+    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="StringBuilderExtensions.cs" />
+    <Compile Include="StringExtensions.cs" />
+    <Compile Include="ReturnValueConfigurationExtensions.cs" />
+    <Compile Include="ArgumentValidationConfigurationExtensions.cs" />
+    <Compile Include="AssertConfigurationExtensions.cs" />
+    <Compile Include="ExceptionThrowerConfigurationExtensions.cs" />
+    <Compile Include="CallbackConfigurationExtensions.cs" />
+    <Compile Include="WhereConfigurationExtensions.cs" />
+    <Compile Include="FakeOptionsBuilderExtensions.cs" />
+    <Compile Include="FakeObjectCallExtensions.cs" />
+    <Compile Include="RepeatConfigurationExtensions.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -484,17 +482,18 @@
     </Compile>
     <Compile Include="IRepeatSpecification.cs" />
     <Compile Include="OrderedAssertion.cs" />
+    <Compile Include="CompletedFakeObjectCallExtensions.cs" />
     <Compile Include="FakeConfigurator.cs" />
     <Compile Include="DummyDefinition.cs" />
     <Compile Include="IFakeConfigurator.cs" />
     <Compile Include="IDummyDefinition.cs" />
-    <Compile Include="ArgumentConstraintExtensions.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions.cs" />
     <Compile Include="MustBeImplementedException.cs" />
-    <Compile Include="OutputWriter.cs" />
+    <Compile Include="OutputWriterExtensions.cs" />
     <Compile Include="Repeated.cs" />
     <Compile Include="Recorders.cs" />
     <Compile Include="IFileSystem.cs" />
-    <Compile Include="Helpers.cs" />
+    <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="ExpectationException.cs" />
     <Compile Include="ValueProducerSignatureHelper.cs" />
     <Compile Include="ArgumentCollection.cs" />
@@ -524,7 +523,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ServiceLocator.cs" />
-    <Compile Include="CommonExtensions.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="SmellyAttribute.cs" />
     <Compile Include="NextCall.cs" />
     <Compile Include="StringBuilderOutputWriter.cs" />
