@@ -6,6 +6,14 @@
     /// <summary>
     /// Bootstrapper for FakeItEasy.
     /// </summary>
+    /// <remarks>
+    /// <para>When FakeItEasy is initialized, it scans the executing app domain for implementations
+    /// of this interface. If any are found, one will be instantiated and used to bootstrap
+    /// FakeItEasy. If no implementations are found, then a <see cref="DefaultBootstrapper"/>
+    /// will be used.</para>
+    /// <para>The recommended way to implement IBootstrapper is to extend DefaultBootstrapper 
+    /// and override selected methods.</para>
+    /// </remarks>
     public interface IBootstrapper
     {
         /// <summary>

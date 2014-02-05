@@ -15,8 +15,8 @@
         /// <summary>
         /// Scans app domain assemblies looking for a concrete implementation of
         /// <see cref="IBootstrapper"/> that is not the <see cref="DefaultBootstrapper"/>.
-        /// If none is found, the latter is used. Otherwise, the first matching type
-        /// is instantiated and returned.
+        /// Otherwise, the first matching type is instantiated and returned, or an
+        /// instance of DefaultBootstrapper is used if no other implementation is found.
         /// </summary>
         /// <returns>An instance of the first non-default IBootstrapper implementation found,
         /// or a DefaultBootstrapper.</returns>
