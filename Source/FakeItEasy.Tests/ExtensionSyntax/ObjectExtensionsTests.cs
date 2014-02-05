@@ -6,7 +6,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class ExtensionSyntaxTests
+    public class ObjectExtensionsTests
         : ConfigurableServiceLocatorTestBase
     {
         [Test]
@@ -39,8 +39,7 @@
         [Test]
         public void Configure_should_throw_when_fakedObject_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-                FakeItEasy.ExtensionSyntax.Syntax.Configure((IFoo)null));
+            Assert.Throws<ArgumentNullException>(() => ((IFoo)null).Configure());
         }
     }
 }

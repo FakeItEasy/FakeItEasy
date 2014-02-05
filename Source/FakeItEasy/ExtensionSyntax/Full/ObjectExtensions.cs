@@ -9,7 +9,7 @@
     /// Provides extension methods for configuring and asserting on faked objects
     /// without going through the static methods of the Fake-class.
     /// </summary>
-    public static class FullExtensionSyntax
+    public static class ObjectExtensions
     {
         /// <summary>
         /// Configures the behavior of the fake object when a call that matches the specified

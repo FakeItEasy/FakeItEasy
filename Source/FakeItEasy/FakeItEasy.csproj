@@ -464,10 +464,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Expressions\ParsedCallExpression.cs" />
-    <Compile Include="ExtensionSyntax\Full\FullExtensionSyntax.cs">
+    <Compile Include="ExtensionSyntax\Full\ObjectExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExtensionSyntax\Syntax.cs">
+    <Compile Include="ExtensionSyntax\ObjectExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FakeAttribute.cs" />
