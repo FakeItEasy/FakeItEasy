@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.18.0")]
 [assembly: AssemblyFileVersion("1.18.0")]
-[assembly: AssemblyInformationalVersion("1.18.0-beta01")]
+[assembly: AssemblyInformationalVersion("1.18.0")]
 
 [assembly: AssemblyCompany("Patrik Hägne")]
 [assembly: AssemblyProduct("FakeItEasy")]
