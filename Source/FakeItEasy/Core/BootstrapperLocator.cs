@@ -23,16 +23,15 @@
         public static IBootstrapper FindBootstrapper()
         {
             var bootstrapperInterface = typeof(IBootstrapper);
-            var defaultBootstrapperType = typeof(DefaultBootstrapper);
 
             var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 
             var candidateTypes = appDomainAssembliesReferencingFakeItEasy
                 .SelectMany(assembly => assembly.GetExportedTypes())
-                .Where(type => bootstrapperInterface.IsAssignableFrom(type) && type != defaultBootstrapperType);
+                .Where(type => bootstrapperInterface.IsAssignableFrom(type));
 
-            var bootstrapperType = candidateTypes.FirstOrDefault() ?? defaultBootstrapperType;
+            var bootstrapperType = candidateTypes.FirstOrDefault() ?? typeof(DefaultBootstrapper);
 
             return (IBootstrapper)Activator.CreateInstance(bootstrapperType);
         }

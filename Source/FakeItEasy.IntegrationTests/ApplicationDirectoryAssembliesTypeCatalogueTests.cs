@@ -36,9 +36,8 @@ namespace FakeItEasy.IntegrationTests
             try
             {
                 // FakeItEasy.IntegrationTests.External has copies of many of the assemblies used in these
-                // tests as well. By changing the working directory before creating the
-                // ApplicationDirectoryAssembliesTypeCatalogue, the scanning will get those assemblies
-                // from the current AppDomain as well as the other path.
+                // tests as well. By specifying assembly paths from that directory, the catalog will see
+                // those assemblies in both locations, and should fail to load the duplicates.
                 var directoryToScan = Path.Combine(
                     Environment.CurrentDirectory,
                     Path.Combine(@"..\..\..\FakeItEasy.IntegrationTests.External\bin", originalDirectoryName));
