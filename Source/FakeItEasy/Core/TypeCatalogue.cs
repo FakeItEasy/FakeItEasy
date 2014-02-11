@@ -8,19 +8,25 @@
     using System.Reflection;
 
     /// <summary>
-    /// Access all types in all assemblies in the same directory as the FakeItEasy assembly.
+    /// Provides access to all types in:
+    /// <list type="bullet">
+    ///   <item>FakeItEasy,</item>
+    ///   <item>AppDomain assemblies that reference FakeItEasy, and</item>
+    ///   <item>assembly files whose paths are supplied to the class constructor, and
+    ///   that also reference FakeItEasy.</item>
+    /// </list>
     /// </summary>
-    public class ApplicationDirectoryAssembliesTypeCatalogue : ITypeCatalogue
+    public class TypeCatalogue : ITypeCatalogue
     {
         private static readonly Assembly FakeItEasyAssembly = Assembly.GetExecutingAssembly();
         private readonly List<Type> availableTypes = new List<Type>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationDirectoryAssembliesTypeCatalogue"/> class.
+        /// Initializes a new instance of the <see cref="TypeCatalogue"/> class.
         /// </summary>
-        /// <param name="assemblyFilesToScan">The extra assembly files to scan for extension points.</param>
+        /// <param name="assemblyFilesToScan">The full paths to non-AppDomain assembly files from which to load types.</param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Defensive and performed on best effort basis.")]
-        public ApplicationDirectoryAssembliesTypeCatalogue(IEnumerable<string> assemblyFilesToScan)
+        public TypeCatalogue(IEnumerable<string> assemblyFilesToScan)
         {
             foreach (var assembly in GetAllAvailableAssemblies(assemblyFilesToScan))
             {

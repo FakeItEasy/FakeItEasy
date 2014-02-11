@@ -207,9 +207,6 @@
     <Compile Include="..\FakeItEasy\Configure.cs">
       <Link>Configure.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\ApplicationDirectoryAssembliesTypeCatalogue.cs">
-      <Link>Core\ApplicationDirectoryAssembliesTypeCatalogue.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentConstraintTrap.cs">
       <Link>Core\ArgumentConstraintTrap.cs</Link>
     </Compile>
@@ -383,6 +380,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserterFactory.cs">
       <Link>Core\OrderedFakeAsserterFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\TypeCatalogue.cs">
+      <Link>Core\TypeCatalogue.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\TypeCatalogueInstanceProvider.cs">
       <Link>Core\TypeCatalogueInstanceProvider.cs</Link>

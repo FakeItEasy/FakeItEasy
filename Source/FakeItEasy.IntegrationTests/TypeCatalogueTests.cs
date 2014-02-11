@@ -11,14 +11,14 @@ namespace FakeItEasy.IntegrationTests
     using NUnit.Framework;
 
     [TestFixture]
-    public class ApplicationDirectoryAssembliesTypeCatalogueTests
+    public class TypeCatalogueTests
     {
-        private ApplicationDirectoryAssembliesTypeCatalogue catalogue;
+        private TypeCatalogue catalogue;
 
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
-            this.catalogue = new ApplicationDirectoryAssembliesTypeCatalogue(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
+            this.catalogue = new TypeCatalogue(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
         }
 
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "No exception is thrown.")]
@@ -48,7 +48,7 @@ namespace FakeItEasy.IntegrationTests
                     Console.SetOut(messageWriter);
 
                     // Act
-                    exception = Record.Exception(() => new ApplicationDirectoryAssembliesTypeCatalogue(Directory.GetFiles(directoryToScan, "*.dll")));
+                    exception = Record.Exception(() => new TypeCatalogue(Directory.GetFiles(directoryToScan, "*.dll")));
                     messageWriter.Flush();
                     actualMessage = messageWriter.Encoding.GetString(messageStream.GetBuffer());
                 }

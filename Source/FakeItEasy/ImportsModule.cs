@@ -15,7 +15,7 @@
             container.RegisterSingleton<TypeCatalogueInstanceProvider>(c =>
                 new TypeCatalogueInstanceProvider(c.Resolve<ITypeCatalogue>()));
             container.RegisterSingleton<ITypeCatalogue>(c =>
-                new ApplicationDirectoryAssembliesTypeCatalogue(bootstrapper.GetAssemblyFileNamesToScanForExtensions()));
+                new TypeCatalogue(bootstrapper.GetAssemblyFileNamesToScanForExtensions()));
 
             RegisterEnumerableInstantiatedFromTypeCatalogue<IArgumentValueFormatter>(container);
             RegisterEnumerableInstantiatedFromTypeCatalogue<IDummyDefinition>(container);
