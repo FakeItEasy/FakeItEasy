@@ -8,20 +8,27 @@
     using System.Reflection;
 
     /// <summary>
-    /// Access all types in all assemblies in the same directory as the FakeItEasy assembly.
+    /// Provides access to all types in:
+    /// <list type="bullet">
+    ///   <item>FakeItEasy,</item>
+    ///   <item>AppDomain assemblies that reference FakeItEasy, and</item>
+    ///   <item>assembly files whose paths are supplied to the class constructor, and
+    ///   that also reference FakeItEasy.</item>
+    /// </list>
     /// </summary>
-    public class ApplicationDirectoryAssembliesTypeCatalogue : ITypeCatalogue
+    public class TypeCatalogue : ITypeCatalogue
     {
         private static readonly Assembly FakeItEasyAssembly = Assembly.GetExecutingAssembly();
         private readonly List<Type> availableTypes = new List<Type>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationDirectoryAssembliesTypeCatalogue"/> class.
+        /// Initializes a new instance of the <see cref="TypeCatalogue"/> class.
         /// </summary>
+        /// <param name="assemblyFilesToScan">The full paths to non-AppDomain assembly files from which to load types.</param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Defensive and performed on best effort basis.")]
-        public ApplicationDirectoryAssembliesTypeCatalogue()
+        public TypeCatalogue(IEnumerable<string> assemblyFilesToScan)
         {
-            foreach (var assembly in GetAllAvailableAssemblies())
+            foreach (var assembly in GetAllAvailableAssemblies(assemblyFilesToScan))
             {
                 try
                 {
@@ -46,10 +53,10 @@
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
-        private static IEnumerable<Assembly> GetAllAvailableAssemblies()
+        private static IEnumerable<Assembly> GetAllAvailableAssemblies(IEnumerable<string> assemblyFilesToScan)
         {
             var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(ReferencesFakeItEasy);
+            var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 
             // Find the paths of already loaded assemblies so we don't double scan them.
             // Checking Assembly.IsDynamic would be preferable to the business with the Namespace, but the former isn't available in .NET 3.5.
@@ -64,7 +71,7 @@
 
             // Skip assemblies already in the application domain.
             // This is an optimization that can be fooled by test runners that make shadow copies of the assemblies, but it's a start.
-            foreach (var assemblyFile in Directory.GetFiles(Environment.CurrentDirectory, "*.dll").Except(loadedAssemblyPaths))
+            foreach (var assemblyFile in assemblyFilesToScan.Except(loadedAssemblyPaths))
             {
                 Assembly assembly = null;
                 try
@@ -82,7 +89,7 @@
                     continue;
                 }
 
-                if (!ReferencesFakeItEasy(assembly))
+                if (!assembly.ReferencesFakeItEasy())
                 {
                     continue;
                 }
@@ -101,11 +108,6 @@
                 .Concat(appDomainAssembliesReferencingFakeItEasy)
                 .Concat(new[] { FakeItEasyAssembly })
                 .Distinct();
-        }
-
-        private static bool ReferencesFakeItEasy(Assembly inspectedAssembly)
-        {
-            return inspectedAssembly.GetReferencedAssemblies().Any(r => r.FullName == FakeItEasyAssembly.FullName);
         }
 
         private static void WarnFailedToLoadAssembly(string assemblyFile, Exception e)

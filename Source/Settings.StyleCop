@@ -4,6 +4,7 @@
     <BooleanProperty Name="AutoCheckForUpdate">False</BooleanProperty>
     <CollectionProperty Name="RecognizedWords">
       <Value>Autofac</Value>
+      <Value>bootstrapper</Value>
       <Value>proxied</Value>
     </CollectionProperty>
   </GlobalSettings>

@@ -207,9 +207,6 @@
     <Compile Include="..\FakeItEasy\Configure.cs">
       <Link>Configure.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\ApplicationDirectoryAssembliesTypeCatalogue.cs">
-      <Link>Core\ApplicationDirectoryAssembliesTypeCatalogue.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentConstraintTrap.cs">
       <Link>Core\ArgumentConstraintTrap.cs</Link>
     </Compile>
@@ -218,6 +215,12 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentValueFormatter.cs">
       <Link>Core\ArgumentValueFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\AssemblyExtensions.cs">
+      <Link>Core\AssemblyExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\BootstrapperLocator.cs">
+      <Link>Core\BootstrapperLocator.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\CallInterceptedEventArgs.cs">
       <Link>Core\CallInterceptedEventArgs.cs</Link>
@@ -378,6 +381,9 @@
     <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserterFactory.cs">
       <Link>Core\OrderedFakeAsserterFactory.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\TypeCatalogue.cs">
+      <Link>Core\TypeCatalogue.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\TypeCatalogueInstanceProvider.cs">
       <Link>Core\TypeCatalogueInstanceProvider.cs</Link>
     </Compile>
@@ -452,6 +458,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\ResolvedConstructor.cs">
       <Link>Creation\ResolvedConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\DefaultBootstrapper.cs">
+      <Link>DefaultBootstrapper.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\DefaultOutputWriter.cs">
       <Link>DefaultOutputWriter.cs</Link>
@@ -548,6 +557,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\IArgumentValueFormatter.cs">
       <Link>IArgumentValueFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IBootstrapper.cs">
+      <Link>IBootstrapper.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IDummyDefinition.cs">
       <Link>IDummyDefinition.cs</Link>

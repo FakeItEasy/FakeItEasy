@@ -10,10 +10,12 @@
     {
         public override void RegisterDependencies(DictionaryContainer container)
         {
+            var bootstrapper = BootstrapperLocator.FindBootstrapper();
+
             container.RegisterSingleton<TypeCatalogueInstanceProvider>(c =>
                 new TypeCatalogueInstanceProvider(c.Resolve<ITypeCatalogue>()));
             container.RegisterSingleton<ITypeCatalogue>(c =>
-                new ApplicationDirectoryAssembliesTypeCatalogue());
+                new TypeCatalogue(bootstrapper.GetAssemblyFileNamesToScanForExtensions()));
 
             RegisterEnumerableInstantiatedFromTypeCatalogue<IArgumentValueFormatter>(container);
             RegisterEnumerableInstantiatedFromTypeCatalogue<IDummyDefinition>(container);
