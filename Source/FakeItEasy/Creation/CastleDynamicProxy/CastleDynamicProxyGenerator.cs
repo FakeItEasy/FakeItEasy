@@ -157,7 +157,7 @@
 
         private static IEnumerable<Type> GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
         {
-            return additionalInterfacesToImplement.Concat(new[] { typeof(ITaggable) });
+            return additionalInterfacesToImplement.Concat(typeof(ITaggable));
         }
 
         [Serializable]

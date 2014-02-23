@@ -304,7 +304,7 @@ namespace FakeItEasy.Tests
                     {
                         var permutation = new CallThatShouldThrow();
                         permutation.ArgumentName = argument.Name;
-                        permutation.Arguments = this.ArgumentValues.Take(index).Concat(new object[] { null }).Concat(this.ArgumentValues.Skip(index + 1)).ToArray();
+                        permutation.Arguments = this.ArgumentValues.Take(index).Concat(default(object)).Concat(this.ArgumentValues.Skip(index + 1)).ToArray();
                         result.Add(permutation);
                     }
 
