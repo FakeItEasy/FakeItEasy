@@ -20,14 +20,14 @@
         private readonly List<Type> availableTypes = new List<Type>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeCatalogue"/> class.
+        /// Loads the available types into the <see cref="TypeCatalogue"/>.
         /// </summary>
         /// <param name="extraAssemblyFiles">
         /// The full paths to assemblies from which to load types,
         /// as well as assemblies loaded into the current <see cref="AppDomain"/>.
         /// </param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Defensive and performed on best effort basis.")]
-        public TypeCatalogue(IEnumerable<string> extraAssemblyFiles)
+        public void Load(IEnumerable<string> extraAssemblyFiles)
         {
             foreach (var assembly in GetAllAssemblies(extraAssemblyFiles))
             {

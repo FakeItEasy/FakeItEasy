@@ -18,7 +18,8 @@ namespace FakeItEasy.IntegrationTests
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
-            this.catalogue = new TypeCatalogue(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
+            this.catalogue = new TypeCatalogue();
+            this.catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
         }
 
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "No exception is thrown.")]
@@ -48,7 +49,8 @@ namespace FakeItEasy.IntegrationTests
                     Console.SetOut(messageWriter);
 
                     // Act
-                    exception = Record.Exception(() => new TypeCatalogue(Directory.GetFiles(directoryToScan, "*.dll")));
+                    var catalogue = new TypeCatalogue();
+                    exception = Record.Exception(() => catalogue.Load(Directory.GetFiles(directoryToScan, "*.dll")));
                     messageWriter.Flush();
                     actualMessage = messageWriter.Encoding.GetString(messageStream.GetBuffer());
                 }
