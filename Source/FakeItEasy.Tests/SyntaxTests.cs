@@ -1,8 +1,10 @@
 ﻿namespace FakeItEasy
 {
+    using NUnit.Framework;
     using System;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Tests;
+    using System.Threading.Tasks;
 
     internal class SyntaxTests
     {
@@ -64,6 +66,17 @@
             ////var f = foo.SomethingHappened;
             ////foo.SomethingHappened += Raise.With(foo, EventArgs.Empty).Now;
             ////foo.SomethingHappened += Raise.With(EventArgs.Empty).Now;
+
+            var fakeReturningTask = A.Fake<IFooReturningTask>();
+            A.CallTo(() => fakeReturningTask.MyMethodAsync()).Returns(123);
+
+            Assert.AreEqual(123, fakeReturningTask.MyMethodAsync());
+
         }
+    }
+
+    internal interface IFooReturningTask
+    {
+        Task<int> MyMethodAsync();
     }
 }

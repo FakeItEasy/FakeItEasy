@@ -2,6 +2,9 @@ namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
+#if NET40
+    using System.Threading.Tasks;
+#endif
 
     using FakeItEasy.Configuration;
 
@@ -25,6 +28,18 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(x => value);
         }
+
+#if NET40
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<Task<T>> configuration, T value)
+        {
+            Guard.AgainstNull(configuration, "configuration");
+
+            var taskCompletionSource = new TaskCompletionSource<T>();
+            taskCompletionSource.SetResult(value);
+
+            return configuration.ReturnsLazily(x => taskCompletionSource.Task);
+        }
+#endif
 
         /// <summary>
         /// Specifies a function used to produce a return value when the configured call is made.
