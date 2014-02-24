@@ -70,6 +70,51 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
+        public void Should_warn_of_bad_assembly_files()
+        {
+            // Arrange
+            var badAssemblyFile = Path.GetTempFileName() + ".dll";
+            var expectedMessageFormat =
+@"*Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
+  *{0}*";
+
+            var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, badAssemblyFile);
+            string actualMessage = null;
+
+            using (var stream = new MemoryStream())
+            using (var writer = new StreamWriter(stream))
+            {
+                var catalogue = new TypeCatalogue();
+
+                File.CreateText(badAssemblyFile).Close();
+                try
+                {
+                    var originalStandardOut = Console.Out;
+                    Console.SetOut(writer);
+                    try
+                    {
+                        // Act
+                        catalogue.Load(new[] { badAssemblyFile });
+                    }
+                    finally
+                    {
+                        Console.SetOut(originalStandardOut);
+                    }
+                }
+                finally
+                {
+                    File.Delete(badAssemblyFile);
+                }
+
+                writer.Flush();
+                actualMessage = writer.Encoding.GetString(stream.GetBuffer());
+            }
+
+            // Assert
+            actualMessage.Should().Match(expectedMessage);
+        }
+
+        [Test]
         public void Should_be_able_to_get_types_from_fakeiteasy()
         {
             // Assert
