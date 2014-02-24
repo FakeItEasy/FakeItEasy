@@ -38,8 +38,10 @@
                         this.availableTypes.Add(type);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    WarnFailedToLoadAssembly(assembly.ToString(), ex);
+                    continue;
                 }
             }
         }
@@ -86,9 +88,9 @@
                 {
                     reflectedAssembly = Assembly.ReflectionOnlyLoadFrom(file);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    WarnFailedToLoadAssembly(file, e);
+                    WarnFailedToLoadAssembly(file, ex);
                     continue;
                 }
 
@@ -103,8 +105,9 @@
                 {
                     loadedAssembly = Assembly.Load(reflectedAssembly.GetName());
                 }
-                catch
+                catch (Exception ex)
                 {
+                    WarnFailedToLoadAssembly(file, ex);
                     continue;
                 }
 
@@ -112,12 +115,12 @@
             }
         }
 
-        private static void WarnFailedToLoadAssembly(string file, Exception ex)
+        private static void WarnFailedToLoadAssembly(string assemblyText, Exception ex)
         {
             var writer = new DefaultOutputWriter(Console.Write);
             writer.Write(
                 "Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.",
-                file);
+                assemblyText);
             
             writer.WriteLine();
             using (writer.Indent())
