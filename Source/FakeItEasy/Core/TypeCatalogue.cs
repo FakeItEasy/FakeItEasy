@@ -86,11 +86,6 @@
                 {
                     reflectedAssembly = Assembly.ReflectionOnlyLoadFrom(file);
                 }
-                catch (BadImageFormatException)
-                {
-                    // The assembly may not be managed, so move on.
-                    continue;
-                }
                 catch (Exception e)
                 {
                     WarnFailedToLoadAssembly(file, e);
