@@ -2,7 +2,14 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Threading.Tasks;
     using FakeItEasy.Tests;
+    using NUnit.Framework;
+
+    internal interface IFooReturningTask
+    {
+        Task<int> MyMethodAsync();
+    }
 
     internal class SyntaxTests
     {
@@ -64,6 +71,11 @@
             ////var f = foo.SomethingHappened;
             ////foo.SomethingHappened += Raise.With(foo, EventArgs.Empty).Now;
             ////foo.SomethingHappened += Raise.With(EventArgs.Empty).Now;
+
+            var fakeReturningTask = A.Fake<IFooReturningTask>();
+            A.CallTo(() => fakeReturningTask.MyMethodAsync()).Returns(123);
+
+            Assert.AreEqual(123, fakeReturningTask.MyMethodAsync());
         }
     }
 }
