@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Threading.Tasks;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
@@ -56,6 +57,21 @@
             var expectedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
             var config = A.Fake<IReturnValueConfiguration<int>>();
             A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.That.Matches(x => x.Invoke(null) == 10))).Returns(expectedConfig);
+
+            // Act
+            var returned = config.Returns(10);
+
+            // Assert
+            returned.Should().BeSameAs(expectedConfig);
+        }
+
+        [Test]
+        public void Returns_should_return_configuration_returned_from_passed_in_configuration_task()
+        {
+            // Arrange
+            var expectedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
+            var config = A.Fake<IReturnValueConfiguration<Task<int>>>();
+            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, Task<int>>>.That.Matches(x => x.Invoke(null).Result == 10))).Returns(expectedConfig);
 
             // Act
             var returned = config.Returns(10);
