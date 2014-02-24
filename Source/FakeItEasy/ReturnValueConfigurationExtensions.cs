@@ -30,6 +30,13 @@ namespace FakeItEasy
         }
 
 #if NET40
+        /// <summary>
+        /// Specifies the value to return when the configured call is made.
+        /// </summary>
+        /// <typeparam name="T">The type of the return value.</typeparam>
+        /// <param name="configuration">The configuration to extend.</param>
+        /// <param name="value">The value to return.</param>
+        /// <returns>A configuration object.</returns>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<Task<T>> configuration, T value)
         {
             Guard.AgainstNull(configuration, "configuration");
