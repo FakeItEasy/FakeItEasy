@@ -1,10 +1,15 @@
 ﻿namespace FakeItEasy
 {
-    using NUnit.Framework;
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using FakeItEasy.Tests;
     using System.Threading.Tasks;
+    using FakeItEasy.Tests;
+    using NUnit.Framework;
+
+    internal interface IFooReturningTask
+    {
+        Task<int> MyMethodAsync();
+    }
 
     internal class SyntaxTests
     {
@@ -71,12 +76,6 @@
             A.CallTo(() => fakeReturningTask.MyMethodAsync()).Returns(123);
 
             Assert.AreEqual(123, fakeReturningTask.MyMethodAsync());
-
         }
-    }
-
-    internal interface IFooReturningTask
-    {
-        Task<int> MyMethodAsync();
     }
 }
