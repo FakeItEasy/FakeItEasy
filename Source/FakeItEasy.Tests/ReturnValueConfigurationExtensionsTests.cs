@@ -95,7 +95,7 @@
         }
 
         [Test]
-        public void ReturnsLazily_should_support_return_of_task()
+        public void ReturnsLazily_with_task_of_t_return_type_should_support_func_of_t_valueProducer()
         {
             // Arrange
             const int ReturnValue = 5;

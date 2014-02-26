@@ -43,10 +43,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, "configuration");
 
-            var taskCompletionSource = new TaskCompletionSource<T>();
-            taskCompletionSource.SetResult(value);
-
-            return configuration.ReturnsLazily(x => taskCompletionSource.Task);
+            return configuration.ReturnsLazily(() => value);
         }
 #endif
 
