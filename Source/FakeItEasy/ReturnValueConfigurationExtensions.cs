@@ -67,6 +67,28 @@ namespace FakeItEasy
             return configuration.ReturnsLazily(x => valueProducer());
         }
 
+#if NET40
+        /// <summary>
+        /// Specifies a function used to produce a return value when the configured call is made.
+        /// The function will be called each time this call is made and can return different values
+        /// each time.
+        /// </summary>
+        /// <typeparam name="T">The type of the return value.</typeparam>
+        /// <param name="configuration">The configuration to extend.</param>
+        /// <param name="valueProducer">A function that produces the return value.</param>
+        /// <returns>A configuration object.</returns>
+        public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this IReturnValueConfiguration<Task<T>> configuration, Func<T> valueProducer)
+        {
+            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(valueProducer, "valueProducer");
+
+            var taskCompletionSource = new TaskCompletionSource<T>();
+            taskCompletionSource.SetResult(valueProducer());
+
+            return configuration.ReturnsLazily(x => taskCompletionSource.Task);
+        }
+#endif
+
         /// <summary>
         /// Specifies a function used to produce a return value when the configured call is made.
         /// The function will be called each time this call is made and can return different values

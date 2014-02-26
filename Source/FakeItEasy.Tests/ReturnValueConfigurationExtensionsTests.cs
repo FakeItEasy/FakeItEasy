@@ -15,6 +15,8 @@
     {
         public interface IInterface
         {
+            Task<int> RequestOfTask();
+
             int RequestOfOne(int number);
 
             string RequestOfOne(string text);
@@ -90,6 +92,22 @@
             // Assert
             NullGuardedConstraint.Assert(() =>
                 A.Fake<IReturnValueConfiguration<string>>().Returns(null));
+        }
+
+        [Test]
+        public void ReturnsLazily_should_support_return_of_task()
+        {
+            // Arrange
+            const int ReturnValue = 5;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfTask()).ReturnsLazily(() => ReturnValue);
+
+            // Act
+            var result = fake.RequestOfTask();
+
+            // Assert
+            result.Result.Should().Be(ReturnValue);
         }
 
         [Test]
