@@ -124,7 +124,23 @@ namespace FakeItEasy.Core
 
                     var sender = arguments.Sender ?? this.FakeManager.Object;
 
-                    raiseMethod.DynamicInvoke(sender, arguments.EventArguments);
+                    try
+                    {
+                        raiseMethod.DynamicInvoke(sender, arguments.EventArguments);
+                    }
+                    catch (TargetInvocationException ex)
+                    {
+                        if (ex.InnerException != null)
+                        {
+                            // Exceptions thrown by event handlers should propagate outward as is, not
+                            // be wrapped in a TargetInvocationException.
+                            // Rethrowing the original (inner) exception in this way will truncate the stack
+                            // trace a little, but that can't be helped.
+                            throw ex.InnerException;
+                        }
+
+                        throw;
+                    }
                 }
             }
 

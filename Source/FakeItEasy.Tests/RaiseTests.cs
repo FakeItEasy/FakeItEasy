@@ -2,6 +2,8 @@
 {
     using System;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -92,6 +94,21 @@
 
             // Assert
             Assert.That(() => { foo.SomethingHappened += Raise.WithEmpty().Now; }, Throws.Nothing);
+        }
+
+        [Test]
+        public void Should_propagate_exception_thrown_by_event_handler()
+        {
+            // Arrange
+            this.foo = A.Fake<IFoo>();
+            this.foo.SomethingHappened += (s, e) => { throw new NotImplementedException(); };
+
+            // Act
+            Action action = () => this.foo.SomethingHappened += Raise.WithEmpty().Now;
+            var exception = Record.Exception(action);
+
+            // Assert
+            exception.Should().BeAnExceptionOfType<NotImplementedException>();
         }
 
         private void Foo_SomethingHappened(object newSender, EventArgs e)
