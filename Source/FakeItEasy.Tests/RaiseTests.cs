@@ -136,7 +136,8 @@
             var exception = Record.Exception(action);
 
             // Assert
-            exception.Should().BeAnExceptionOfType<NotImplementedException>();
+            exception.Should().BeAnExceptionOfType<NotImplementedException>()
+                .And.StackTrace.Should().Contain("FakeItEasy.Tests.RaiseTests");
         }
 
         private void Foo_SomethingHappened(object newSender, EventArgs e)

@@ -50,6 +50,22 @@ namespace FakeItEasy.Core
                 this.HandleEventCall(eventCall);
             }
 
+            /// <summary>
+            /// Preserves the stack trace of an existing exception when rethrown via <c>throw</c> or <c>throw ex</c>.
+            /// </summary>
+            /// <remarks>Nicked from
+            /// http://weblogs.asp.net/fmarguerie/archive/2008/01/02/rethrowing-exceptions-and-preserving-the-full-call-stack-trace.aspx.
+            /// </remarks>
+            /// <param name="exception">The exception whose stack trace needs preserving.</param>
+            [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "URL in remarks.")]
+            private static void PreserveStackTrace(Exception exception)
+            {
+                var preserveStackTrace = typeof(Exception).GetMethod(
+                                                                "InternalPreserveStackTrace",
+                                                                BindingFlags.Instance | BindingFlags.NonPublic);
+                preserveStackTrace.Invoke(exception, null);
+            }
+
             private void HandleEventCall(EventCall eventCall)
             {
                 if (eventCall.IsEventRegistration())
@@ -134,8 +150,7 @@ namespace FakeItEasy.Core
                         {
                             // Exceptions thrown by event handlers should propagate outward as is, not
                             // be wrapped in a TargetInvocationException.
-                            // Rethrowing the original (inner) exception in this way will truncate the stack
-                            // trace a little, but that can't be helped.
+                            PreserveStackTrace(ex.InnerException);
                             throw ex.InnerException;
                         }
 
