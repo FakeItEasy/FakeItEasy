@@ -40,7 +40,7 @@
                 }
                 catch (Exception ex)
                 {
-                    WarnFailedToLoadAssembly(assembly.ToString(), ex);
+                    WarnFailedToGetTypes(assembly, ex);
                     continue;
                 }
             }
@@ -115,13 +115,26 @@
             }
         }
 
-        private static void WarnFailedToLoadAssembly(string assemblyText, Exception ex)
+        private static void WarnFailedToLoadAssembly(string path, Exception ex)
+        {
+            Write(
+                ex,
+                "Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.",
+                path);
+        }
+
+        private static void WarnFailedToGetTypes(Assembly assembly, Exception ex)
+        {
+            Write(
+                ex,
+                "Warning: FakeItEasy failed to get types from assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.",
+                assembly);
+        }
+
+        private static void Write(Exception ex, string messageFormat, params object[] messageArgs)
         {
             var writer = new DefaultOutputWriter(Console.Write);
-            writer.Write(
-                "Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.",
-                assemblyText);
-            
+            writer.Write(messageFormat, messageArgs);
             writer.WriteLine();
             using (writer.Indent())
             {
