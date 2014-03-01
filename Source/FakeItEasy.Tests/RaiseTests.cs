@@ -129,7 +129,7 @@
         {
             // Arrange
             this.foo = A.Fake<IFoo>();
-            this.foo.SomethingHappened += (s, e) => { throw new NotImplementedException(); };
+            this.foo.SomethingHappened += this.Foo_SomethingHappenedThrows;
 
             // Act
             Action action = () => this.foo.SomethingHappened += Raise.WithEmpty().Now;
@@ -137,13 +137,18 @@
 
             // Assert
             exception.Should().BeAnExceptionOfType<NotImplementedException>()
-                .And.StackTrace.Should().Contain("FakeItEasy.Tests.RaiseTests");
+                .And.StackTrace.Should().Contain("FakeItEasy.Tests.RaiseTests.Foo_SomethingHappenedThrows");
         }
 
         private void Foo_SomethingHappened(object newSender, EventArgs e)
         {
             this.sender = newSender;
             this.eventArguments = e;
+        }
+
+        private void Foo_SomethingHappenedThrows(object newSender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
