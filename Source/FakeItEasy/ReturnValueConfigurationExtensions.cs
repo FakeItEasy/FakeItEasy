@@ -3,6 +3,7 @@ namespace FakeItEasy
     using System;
     using System.Collections.Generic;
 #if NET40
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
 #endif
 
@@ -37,6 +38,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="value">The value to return.</param>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of Task<T> return values.")]
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<Task<T>> configuration, T value)
         {
             Guard.AgainstNull(configuration, "configuration");
