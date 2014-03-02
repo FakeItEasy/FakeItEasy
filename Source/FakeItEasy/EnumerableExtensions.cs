@@ -63,6 +63,11 @@
             return sequence.ToLookup(keySelector).ToDictionary(x => x.Key, x => x.First());
         }
 
+        public static IEnumerable<T> Concat<T>(this IEnumerable<T> source, T item)
+        {
+            return source.Concat(new[] { item });
+        }
+
         private class ZipEnumerable<TFirst, TSecond>
            : IEnumerable<Tuple<TFirst, TSecond>>
         {

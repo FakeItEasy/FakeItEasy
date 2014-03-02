@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
 
@@ -11,9 +10,8 @@
     /// Provides access to all types in:
     /// <list type="bullet">
     ///   <item>FakeItEasy,</item>
-    ///   <item>AppDomain assemblies that reference FakeItEasy, and</item>
-    ///   <item>assembly files whose paths are supplied to the class constructor, and
-    ///   that also reference FakeItEasy.</item>
+    ///   <item>assemblies loaded into the current <see cref="AppDomain"/> that reference FakeItEasy and</item>
+    ///   <item>assemblies whose paths are supplied to the constructor, that also reference FakeItEasy.</item>
     /// </list>
     /// </summary>
     public class TypeCatalogue : ITypeCatalogue
@@ -22,13 +20,16 @@
         private readonly List<Type> availableTypes = new List<Type>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeCatalogue"/> class.
+        /// Loads the available types into the <see cref="TypeCatalogue"/>.
         /// </summary>
-        /// <param name="assemblyFilesToScan">The full paths to non-AppDomain assembly files from which to load types.</param>
+        /// <param name="extraAssemblyFiles">
+        /// The full paths to assemblies from which to load types,
+        /// as well as assemblies loaded into the current <see cref="AppDomain"/>.
+        /// </param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Defensive and performed on best effort basis.")]
-        public TypeCatalogue(IEnumerable<string> assemblyFilesToScan)
+        public void Load(IEnumerable<string> extraAssemblyFiles)
         {
-            foreach (var assembly in GetAllAvailableAssemblies(assemblyFilesToScan))
+            foreach (var assembly in GetAllAssemblies(extraAssemblyFiles))
             {
                 try
                 {
@@ -37,8 +38,10 @@
                         this.availableTypes.Add(type);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    WarnFailedToGetTypes(assembly, ex);
+                    continue;
                 }
             }
         }
@@ -53,74 +56,90 @@
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
-        private static IEnumerable<Assembly> GetAllAvailableAssemblies(IEnumerable<string> assemblyFilesToScan)
+        private static IEnumerable<Assembly> GetAllAssemblies(IEnumerable<string> extraAssemblyFiles)
         {
-            var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 
             // Find the paths of already loaded assemblies so we don't double scan them.
-            // Checking Assembly.IsDynamic would be preferable to the business with the Namespace, but the former isn't available in .NET 3.5.
+            // Checking Assembly.IsDynamic would be preferable to the business with the Namespace
+            // but the former isn't available in .NET 3.5.
             // Exclude the ReflectionOnly assemblies because we want to be able to fully load them if we need to.
-            var loadedAssemblyPaths = new HashSet<string>(
-                appDomainAssemblies
+            var loadedAssemblyFiles = new HashSet<string>(
+                loadedAssemblies
                     .Where(a => !a.ReflectionOnly && a.ManifestModule.GetType().Namespace != "System.Reflection.Emit")
                     .Select(a => a.Location),
                 StringComparer.OrdinalIgnoreCase);
 
-            var folderAssembliesReferencingFakeItEasy = new List<Assembly>();
-
             // Skip assemblies already in the application domain.
-            // This is an optimization that can be fooled by test runners that make shadow copies of the assemblies, but it's a start.
-            foreach (var assemblyFile in assemblyFilesToScan.Except(loadedAssemblyPaths))
-            {
-                Assembly assembly = null;
-                try
-                {
-                    assembly = Assembly.ReflectionOnlyLoadFrom(assemblyFile);
-                }
-                catch (BadImageFormatException)
-                {
-                    // The assembly may not be managed, so move on.
-                    continue;
-                }
-                catch (Exception e)
-                {
-                    WarnFailedToLoadAssembly(assemblyFile, e);
-                    continue;
-                }
-
-                if (!assembly.ReferencesFakeItEasy())
-                {
-                    continue;
-                }
-
-                try
-                {
-                    // A reflection-only loaded assembly can't be scanned for types, so fully load it before saving it.
-                    folderAssembliesReferencingFakeItEasy.Add(Assembly.Load(assembly.GetName()));
-                }
-                catch
-                {
-                }
-            }
-
-            return folderAssembliesReferencingFakeItEasy
-                .Concat(appDomainAssembliesReferencingFakeItEasy)
-                .Concat(new[] { FakeItEasyAssembly })
+            // This optimization can be fooled by test runners that make shadow copies of the assemblies but it's a start.
+            return GetAssemblies(extraAssemblyFiles.Except(loadedAssemblyFiles))
+                .Concat(loadedAssembliesReferencingFakeItEasy)
+                .Concat(FakeItEasyAssembly)
                 .Distinct();
         }
 
-        private static void WarnFailedToLoadAssembly(string assemblyFile, Exception e)
+        private static IEnumerable<Assembly> GetAssemblies(IEnumerable<string> files)
         {
-            var outputWriter = new DefaultOutputWriter(Console.Write);
-            outputWriter.Write(
-                "Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.",
-                assemblyFile);
-            outputWriter.WriteLine();
-            using (outputWriter.Indent())
+            foreach (var file in files)
             {
-                outputWriter.Write(e.Message);
-                outputWriter.WriteLine();
+                Assembly reflectedAssembly = null;
+                try
+                {
+                    reflectedAssembly = Assembly.ReflectionOnlyLoadFrom(file);
+                }
+                catch (Exception ex)
+                {
+                    WarnFailedToLoadAssembly(file, ex);
+                    continue;
+                }
+
+                if (!reflectedAssembly.ReferencesFakeItEasy())
+                {
+                    continue;
+                }
+
+                // A reflection-only loaded assembly can't be scanned for types, so fully load it before saving it.
+                Assembly loadedAssembly = null;
+                try
+                {
+                    loadedAssembly = Assembly.Load(reflectedAssembly.GetName());
+                }
+                catch (Exception ex)
+                {
+                    WarnFailedToLoadAssembly(file, ex);
+                    continue;
+                }
+
+                yield return loadedAssembly;
+            }
+        }
+
+        private static void WarnFailedToLoadAssembly(string path, Exception ex)
+        {
+            Write(
+                ex,
+                "Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.",
+                path);
+        }
+
+        private static void WarnFailedToGetTypes(Assembly assembly, Exception ex)
+        {
+            Write(
+                ex,
+                "Warning: FakeItEasy failed to get types from assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.",
+                assembly);
+        }
+
+        private static void Write(Exception ex, string messageFormat, params object[] messageArgs)
+        {
+            var writer = new DefaultOutputWriter(Console.Write);
+            writer.Write(messageFormat, messageArgs);
+            writer.WriteLine();
+            using (writer.Indent())
+            {
+                writer.Write(ex.Message);
+                writer.WriteLine();
             }
         }
     }
