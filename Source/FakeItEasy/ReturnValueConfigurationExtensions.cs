@@ -4,6 +4,7 @@ namespace FakeItEasy
     using System.Collections.Generic;
 #if NET40
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Threading.Tasks;
 #endif
 
@@ -208,5 +209,36 @@ namespace FakeItEasy
             var queue = new Queue<T>(values);
             configuration.ReturnsLazily(x => queue.Dequeue()).NumberOfTimes(queue.Count);
         }
+
+#if NET40
+        /// <summary>
+        /// Configures the call to return the next value from the specified sequence each time it's called. Null will
+        /// be returned when all the values in the sequence has been returned.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of return value.
+        /// </typeparam>
+        /// <param name="configuration">
+        /// The call configuration to extend.
+        /// </param>
+        /// <param name="values">
+        /// The values to return in sequence.
+        /// </param>
+        public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<Task<T>> configuration, params T[] values)
+        {
+            Guard.AgainstNull(configuration, "configuration");
+
+            var taskValues = values.Select(value =>
+            {
+                var tsc = new TaskCompletionSource<T>();
+                tsc.SetResult(value);
+                return tsc.Task;
+            });
+
+            var queue = new Queue<Task<T>>(taskValues);
+
+            configuration.ReturnsLazily(x => queue.Dequeue()).NumberOfTimes(queue.Count);
+        }
+#endif
     }
 }

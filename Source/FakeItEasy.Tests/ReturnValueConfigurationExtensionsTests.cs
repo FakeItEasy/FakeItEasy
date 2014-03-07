@@ -743,6 +743,27 @@
         }
 
         [Test]
+        public void ReturnsNextFromSequence_should_call_returns_with_factory_that_returns_next_from_sequence_for_each_call_task()
+        {
+            // Arrange
+            var sequence = new[] { 1, 2, 3 };
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfTask()).ReturnsNextFromSequence(sequence);
+
+            // Act
+            var firstInvocationValue = fake.RequestOfTask();
+            var secondInvocationValue = fake.RequestOfTask();
+            var thirdInvocationValue = fake.RequestOfTask();
+            var fourthInvocationValue = fake.RequestOfTask();
+
+            // Assert
+            Assert.AreEqual(sequence[0], firstInvocationValue.Result);
+            Assert.AreEqual(sequence[1], secondInvocationValue.Result);
+            Assert.AreEqual(sequence[2], thirdInvocationValue.Result);
+            Assert.AreEqual(default(int), fourthInvocationValue.Result);
+        }
+
+        [Test]
         public void ReturnsNextFromSequence_should_set_repeat_to_the_number_of_values_in_sequence()
         {
             // Arrange
