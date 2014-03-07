@@ -19,6 +19,8 @@
 
             int RequestOfOne(int number);
 
+            Task<int> RequestOfOneTask(int number);
+
             string RequestOfOne(string text);
 
             [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
@@ -29,6 +31,8 @@
 
             int RequestOfTwo(int number1, int number2);
 
+            Task<int> RequestOfTwoTask(int number, int str);
+
             string RequestOfTwo(string text1, string text2);
 
             [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
@@ -37,6 +41,8 @@
 
             int RequestOfThree(int number1, int number2, int number3);
 
+            Task<int> RequestOfThreeTask(int number, int number2, int number3);
+
             string RequestOfThree(string text1, string text2, string text3);
 
             [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
@@ -44,6 +50,8 @@
             string RequestOfThreeWithOutputAndReference(out string text1, ref string text2, string text3);
 
             int RequestOfFour(int number1, int number2, int number3, int number4);
+
+            Task<int> RequestOfFourTask(int number1, int number2, int number3, int number4);
 
             string RequestOfFour(string text1, string text2, string text3, string text4);
 
@@ -228,6 +236,23 @@
         }
 
         [Test]
+        public void ReturnsLazily_with_task_of_t_return_type_with_1_argument_should_support_func_of_t_valueProducer()
+        {
+            // Arrange
+            const int Argument1 = 2;
+            const int ReturnValue = 5;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfOneTask(Argument1)).ReturnsLazily((int argument) => ReturnValue);
+
+            // Act
+            var result = fake.RequestOfOneTask(Argument1);
+
+            // Assert
+            result.Result.Should().Be(ReturnValue);
+        }
+
+        [Test]
         public void ReturnsLazily_with_2_arguments_should_use_returns_lazily_ReturnsLazily_with_action_having_2_arguments()
         {
             // Arrange
@@ -354,6 +379,24 @@
 
             // Act, Assert
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32, System.String)");
+        }
+
+        [Test]
+        public void ReturnsLazily_with_task_of_t_return_type_with_2_argument_should_support_func_of_t_valueProducer()
+        {
+            // Arrange
+            const int Argument1 = 1;
+            const int Argument2 = 2;
+            const int ReturnValue = 5;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfTwoTask(Argument1, Argument2)).ReturnsLazily((int argument1, int argument2) => ReturnValue);
+
+            // Act
+            var result = fake.RequestOfTwoTask(Argument1, Argument2);
+
+            // Assert
+            result.Result.Should().Be(ReturnValue);
         }
 
         [Test]
@@ -508,6 +551,25 @@
 
             // Act, Assert
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32)");
+        }
+
+        [Test]
+        public void ReturnsLazily_with_task_of_t_return_type_with_3_argument_should_support_func_of_t_valueProducer()
+        {
+            // Arrange
+            const int Argument1 = 1;
+            const int Argument2 = 2;
+            const int Argument3 = 3;
+            const int ReturnValue = 5;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfThreeTask(Argument1, Argument2, Argument3)).ReturnsLazily((int argument1, int argument2, int argument3) => ReturnValue);
+
+            // Act
+            var result = fake.RequestOfThreeTask(Argument1, Argument2, Argument3);
+
+            // Assert
+            result.Result.Should().Be(ReturnValue);
         }
 
         [Test]
@@ -687,6 +749,26 @@
 
             // Act, Assert
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.String)");
+        }
+
+        [Test]
+        public void ReturnsLazily_with_task_of_t_return_type_with_4_argument_should_support_func_of_t_valueProducer()
+        {
+            // Arrange
+            const int Argument1 = 1;
+            const int Argument2 = 2;
+            const int Argument3 = 3;
+            const int Argument4 = 4;
+            const int ReturnValue = 5;
+
+            var fake = A.Fake<IInterface>();
+            A.CallTo(() => fake.RequestOfFourTask(Argument1, Argument2, Argument3, Argument4)).ReturnsLazily((int argument1, int argument2, int argument3, int argument4) => ReturnValue);
+
+            // Act
+            var result = fake.RequestOfFourTask(Argument1, Argument2, Argument3, Argument4);
+
+            // Assert
+            result.Result.Should().Be(ReturnValue);
         }
 
         [Test]
