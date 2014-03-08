@@ -137,7 +137,7 @@
 
                 if (typeOfDummy == typeof(Task))
                 {
-                    result = FromResult(default(object));
+                    result = TaskHelper.FromResult(default(object));
                     return true;
                 }
 
@@ -160,16 +160,9 @@
 
             private static MethodInfo CreateGenericFromResultMethodDefinition()
             {
-                Expression<Action> templateExpression = () => FromResult(new object());
+                Expression<Action> templateExpression = () => TaskHelper.FromResult(new object());
                 var templateMethod = ((MethodCallExpression)templateExpression.Body).Method;
                 return templateMethod.GetGenericMethodDefinition();
-            }
-
-            private static Task<T> FromResult<T>(T result)
-            {
-                var source = new TaskCompletionSource<T>();
-                source.SetResult(result);
-                return source.Task;
             }
         }   
 #endif

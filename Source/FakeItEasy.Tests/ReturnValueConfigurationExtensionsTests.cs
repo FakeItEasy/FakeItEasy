@@ -839,10 +839,10 @@
             var fourthInvocationValue = fake.RequestOfTask();
 
             // Assert
-            Assert.AreEqual(sequence[0], firstInvocationValue.Result);
-            Assert.AreEqual(sequence[1], secondInvocationValue.Result);
-            Assert.AreEqual(sequence[2], thirdInvocationValue.Result);
-            Assert.AreEqual(default(int), fourthInvocationValue.Result);
+            firstInvocationValue.Result.Should().Be(sequence[0]);
+            secondInvocationValue.Result.Should().Be(sequence[1]);
+            thirdInvocationValue.Result.Should().Be(sequence[2]);
+            fourthInvocationValue.Result.Should().Be(default(int));
         }
 
         [Test]

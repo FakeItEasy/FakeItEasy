@@ -4,7 +4,10 @@ namespace FakeItEasy
     using System.Collections.Generic;
 #if NET40
     using System.Diagnostics.CodeAnalysis;
+#endif
     using System.Linq;
+#if NET40
+
     using System.Threading.Tasks;
 #endif
 
@@ -80,10 +83,7 @@ namespace FakeItEasy
             Guard.AgainstNull(configuration, "configuration");
             Guard.AgainstNull(valueProducer, "valueProducer");
 
-            var taskCompletionSource = new TaskCompletionSource<T>();
-            taskCompletionSource.SetResult(valueProducer());
-
-            return configuration.ReturnsLazily(x => taskCompletionSource.Task);
+            return configuration.ReturnsLazily(x => TaskHelper.FromResult(valueProducer()));
         }
 #endif
 
@@ -131,10 +131,9 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
             {
-                var taskCompletionSource = new TaskCompletionSource<TReturnType>();
-                taskCompletionSource.SetResult(valueProducer(call.GetArgument<T1>(0)));
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
-                return taskCompletionSource.Task;
+                return TaskHelper.FromResult(valueProducer(call.GetArgument<T1>(0)));
             });
         }
 #endif
@@ -186,9 +185,7 @@ namespace FakeItEasy
             {
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
-                var taskCompletionSource = new TaskCompletionSource<TReturnType>();
-                taskCompletionSource.SetResult(valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1)));
-                return taskCompletionSource.Task;
+                return TaskHelper.FromResult(valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1)));
             });
         }
 #endif
@@ -242,9 +239,7 @@ namespace FakeItEasy
                 {
                     ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
-                    var taskCompletionSource = new TaskCompletionSource<TReturnType>();
-                    taskCompletionSource.SetResult(valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2)));
-                    return taskCompletionSource.Task;
+                    return TaskHelper.FromResult(valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2)));
                 });
         }
 #endif
@@ -300,15 +295,13 @@ namespace FakeItEasy
                 {
                     ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
 
-                    var taskCompletionSource = new TaskCompletionSource<TReturnType>();
-                    taskCompletionSource.SetResult(valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3)));
-                    return taskCompletionSource.Task;
+                    return TaskHelper.FromResult(valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3)));
                 });
         }
 #endif
 
         /// <summary>
-        /// Configures the call to return the next value from the specified sequence each time it's called. Null will
+        /// Configures the call to return the next value from the specified sequence each time it's called. Default of T will
         /// be returned when all the values in the sequence has been returned.
         /// </summary>
         /// <typeparam name="T">
@@ -330,7 +323,7 @@ namespace FakeItEasy
 
 #if NET40
         /// <summary>
-        /// Configures the call to return the next value from the specified sequence each time it's called. Null will
+        /// Configures the call to return the next value from the specified sequence each time it's called. Default of T will
         /// be returned when all the values in the sequence has been returned.
         /// </summary>
         /// <typeparam name="T">
@@ -346,12 +339,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, "configuration");
 
-            var taskValues = values.Select(value =>
-            {
-                var tsc = new TaskCompletionSource<T>();
-                tsc.SetResult(value);
-                return tsc.Task;
-            });
+            var taskValues = values.Select(value => TaskHelper.FromResult(value));
 
             var queue = new Queue<Task<T>>(taskValues);
 
