@@ -1,8 +1,7 @@
 ﻿namespace FakeItEasy
 {
-    using System;
     using System.Collections.Generic;
-    using System.IO;
+    using System.Linq;
 
     /// <summary>
     /// The default bootstrapper, used to initialize FakeItEasy unless another 
@@ -17,13 +16,13 @@
         /// <see cref="IDummyDefinition"/>s, <see cref="IArgumentValueFormatter"/>s, and 
         /// <see cref="IFakeConfigurator"/>s.
         /// </summary>
-        /// <remark>This implementation returns the absolute paths of all the DLLs in the
-        /// <see cref="System.Environment.CurrentDirectory"/>.
-        /// </remark>
-        /// <returns>A list of absolute paths of to assemblies to scan for extension points.</returns>
+        /// <returns>
+        /// An empty list, but may be overridden to provide a list of absolute paths
+        /// to assemblies to scan for extension points.
+        /// </returns>
         public virtual IEnumerable<string> GetAssemblyFileNamesToScanForExtensions()
         {
-            return Directory.GetFiles(Environment.CurrentDirectory, "*.dll");
+            return Enumerable.Empty<string>();
         }
     }
 }
