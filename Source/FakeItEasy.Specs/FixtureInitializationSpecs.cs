@@ -2,8 +2,9 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using FakeItEasy.Tests;
+    using FluentAssertions;
     using Machine.Specifications;
-    using Tests;
 
     public class when_initializing_fixture
     {
@@ -12,16 +13,16 @@
         Because of = () => Fake.InitializeFixture(Fixture);
 
         It should_set_sut = () =>
-            Fixture.Sut.ShouldNotBeNull();
+            Fixture.Sut.Should().NotBeNull();
 
         It should_use_the_same_instance_when_more_than_one_dependency_is_of_the_same_type = () =>
-            Fixture.Sut.Foo.ShouldBeTheSameAs(Fixture.Sut.Foo2);
+            Fixture.Sut.Foo.Should().BeSameAs(Fixture.Sut.Foo2);
 
         It should_inject_fake_from_fixture = () =>
-            Fixture.Sut.Foo.ShouldBeTheSameAs(Fixture.Foo);
+            Fixture.Sut.Foo.Should().BeSameAs(Fixture.Foo);
 
         It should_inject_fake_when_not_available_in_fixture = () =>
-            Fixture.Sut.ServiceProvider.ShouldNotBeNull();
+            Fixture.Sut.ServiceProvider.Should().NotBeNull();
 
         public static ExampleFixture Fixture { get; set; }
 

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using FluentAssertions;
     using Machine.Specifications;
 
     public class when_failing_to_match_ordered_non_generic_calls
@@ -25,7 +26,7 @@
             }
         };
 
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
 @"
 
   Assertion failed for the following calls:
@@ -63,7 +64,7 @@
             }
         };
 
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
 @"
 
   Assertion failed for the following calls:

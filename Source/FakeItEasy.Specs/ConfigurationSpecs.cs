@@ -1,7 +1,8 @@
 ﻿namespace FakeItEasy.Specs
 {
+    using FakeItEasy.Tests;
+    using FluentAssertions;
     using Machine.Specifications;
-    using Tests;
 
     public class ConfigSpecifications<T>
     {
@@ -21,7 +22,7 @@
             Fake.Bar();
         };
 
-        It should_invoke_the_callback = () => wasCalled.ShouldBeTrue();
+        It should_invoke_the_callback = () => wasCalled.Should().BeTrue();
     }
 
     public class when_configuring_multiple_callbacks
@@ -41,9 +42,9 @@
             returnValue = Fake.Baz();
         };
 
-        It should_call_the_first_callback = () => firstWasCalled.ShouldBeTrue();
-        It should_call_the_second_callback = () => secondWasCalled.ShouldBeTrue();
-        It should_return_the_configured_value = () => returnValue.ShouldEqual(10);
+        It should_call_the_first_callback = () => firstWasCalled.Should().BeTrue();
+        It should_call_the_second_callback = () => secondWasCalled.Should().BeTrue();
+        It should_return_the_configured_value = () => returnValue.Should().Be(10);
     }
 
     public class when_configuring_to_call_base_method
@@ -58,9 +59,9 @@
             returnValue = Fake.ReturnSomething();
         };
 
-        It shuld_have_called_the_base_method = () => Fake.WasCalled.ShouldBeTrue();
-        It should_return_value_from_base_method = () => returnValue.ShouldEqual(10);
-        It should_invoke_the_callback = () => callbackWasInvoked.ShouldBeTrue();
+        It shuld_have_called_the_base_method = () => Fake.WasCalled.Should().BeTrue();
+        It should_return_value_from_base_method = () => returnValue.Should().Be(10);
+        It should_invoke_the_callback = () => callbackWasInvoked.Should().BeTrue();
     }
 
     public class BaseClass
