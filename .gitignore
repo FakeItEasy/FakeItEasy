@@ -14,15 +14,6 @@ Build*/*
 Thumbs.db
 
 /Source/packages/*
-
-!/Source/packages/StyleCop.MSBuild.*
-/Source/packages/StyleCop.MSBuild.*/*
-/Source/packages/StyleCop.MSBuild.*/*.*
-!/Source/packages/StyleCop.MSBuild.*/tools
-/Source/packages/StyleCop.MSBuild.*/tools/*
-/Source/packages/StyleCop.MSBuild.*/tools/*.*
-!/Source/packages/StyleCop.MSBuild.*/tools/StyleCop.Targets
-
 !/Source/packages/NuGet.CommandLine.*
 /Source/packages/NuGet.CommandLine.*/*
 /Source/packages/NuGet.CommandLine.*/*.*
