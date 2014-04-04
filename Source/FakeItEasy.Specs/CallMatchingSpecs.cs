@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using FluentAssertions;
     using Machine.Specifications;
 
     public class when_matching_calls_with_parameter_arrays
@@ -44,7 +45,7 @@
             exception = Catch.Exception(() => A.CallTo(() => fake.Bar(3)).MustHaveHappened());
         };
 
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
 @"
 
   Assertion failed for the following call:
@@ -75,7 +76,7 @@
             exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened());
         };
 
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
 @"
 
   Assertion failed for the following call:
@@ -105,7 +106,7 @@
 
         Because of = () => exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened());
 
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
 @"
 
   Assertion failed for the following call:
@@ -129,7 +130,7 @@
 
         Because of = () => exception = Catch.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened());
 
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.ShouldEqual(
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
 @"
 
   Assertion failed for the following call:

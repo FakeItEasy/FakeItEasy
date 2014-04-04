@@ -1,9 +1,9 @@
 require 'albacore'
 require 'fileutils'
 
-nuget_command = "Source/packages/NuGet.CommandLine.2.7.3/tools/NuGet.exe"
+nuget_command = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
 nunit_command = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
-mspec_command = "Source/packages/Machine.Specifications.0.6.2/tools/mspec-clr4.exe"
+mspec_command = "Source/packages/Machine.Specifications.0.8.0/tools/mspec-clr4.exe"
 
 solution      = "Source/FakeItEasy.sln"
 assembly_info = "Source/CommonAssemblyInfo.cs"

@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System.Threading.Tasks;
+    using FluentAssertions;
     using Machine.Specifications;
 
     public interface IFooAsyncAwaitService
@@ -24,7 +25,7 @@
 
         Because of = () => task = foo.QueryAsync();
 
-        It should_return = () => task.IsCompleted.ShouldBeTrue();
+        It should_return = () => task.IsCompleted.Should().BeTrue();
     }
 
     public class when_calling_defined_void_method
@@ -41,7 +42,7 @@
 
         Because of = () => task = foo.CommandAsync();
 
-        It should_return = () => task.IsCompleted.ShouldBeTrue();
+        It should_return = () => task.IsCompleted.Should().BeTrue();
     }
 
     public class when_calling_undefined_method_with_return_value
@@ -53,7 +54,7 @@
 
         Because of = () => task = foo.QueryAsync();
 
-        It should_return = () => task.IsCompleted.ShouldBeTrue();
+        It should_return = () => task.IsCompleted.Should().BeTrue();
     }
 
     public class when_calling_undefined_void_method
@@ -65,7 +66,7 @@
 
         Because of = () => task = foo.CommandAsync();
 
-        It should_return = () => task.IsCompleted.ShouldBeTrue();
+        It should_return = () => task.IsCompleted.Should().BeTrue();
     }
 
     public class FooAsyncAwait

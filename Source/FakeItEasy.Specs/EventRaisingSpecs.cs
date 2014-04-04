@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.IntegrationTests
 {
     using System;
+    using FluentAssertions;
     using Machine.Specifications;
 
     public class EventRaisingSpecs
@@ -30,7 +31,7 @@
         Because of = () =>
             exception = Catch.Exception(() => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now);
 
-        It should_not_throw = () => exception.ShouldBeNull();
+        It should_not_throw = () => exception.Should().BeNull();
     }
 
     [Subject(typeof(Raise), "with subscribers")]
@@ -51,7 +52,7 @@
 
         Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs() { Message = "message" }).Now;
 
-        It should_pass_the_sender = () => sender.ShouldBeTheSameAs(TypeWithEvent);
+        It should_pass_the_sender = () => sender.Should().BeSameAs(TypeWithEvent);
 
         It should_pass_the_event_arguments = () => raisedWithArgs.Message = "message";
     }
@@ -71,8 +72,8 @@
 
         Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now;
 
-        It should_invoke_the_first_handler = () => firstWasRaisedNumberOfTimes.ShouldEqual(1);
+        It should_invoke_the_first_handler = () => firstWasRaisedNumberOfTimes.Should().Be(1);
 
-        It should_invoke_the_second_handler = () => secondWasRaisedNumberOfTimes.ShouldEqual(1);
+        It should_invoke_the_second_handler = () => secondWasRaisedNumberOfTimes.Should().Be(1);
     }
 }
