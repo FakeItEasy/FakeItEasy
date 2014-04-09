@@ -27,6 +27,8 @@ namespace FakeItEasy.Creation
         /// no dummy was registered in the container for the specified type..</exception>
         T CreateDummy<T>();
 
+	    object CreateDummy(Type t);
+
         /// <summary>
         /// Creates a collection of fakes of the specified type.
         /// </summary>
