@@ -74,18 +74,6 @@ namespace FakeItEasy
             return FakeCreator.CreateDummy<T>();
         }
 
-		/// <summary>
-		/// Gets a dummy object of the specified type. The value of a dummy object
-		/// should be irrelevant. Dummy objects should not be configured.
-		/// </summary>
-		/// <param name="t">The type of dummy to return.</param>
-		/// <returns>A dummy object of the specified type.</returns>
-		/// <exception cref="ArgumentException">Dummies of the specified type can not be created.</exception>
-	    public static object Dummy(Type t)
-	    {
-		    return FakeCreator.CreateDummy(t);
-	    }
-
         /// <summary>
         /// Gets a value indicating whether the two objects are equal.
         /// </summary>
