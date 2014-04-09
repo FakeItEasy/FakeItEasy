@@ -70,6 +70,20 @@
         }
 
         [Test]
+        public void DummyNonGeneric_should_return_dummy_from_fake_creator()
+        {
+            // Arrange
+            var dummy = A.Fake<IFoo>();
+            A.CallTo(() => this.fakeCreator.CreateDummy(typeof(IFoo))).Returns(dummy);
+
+            // Act
+            var result = A.Dummy(typeof(IFoo));
+
+            // Assert
+            Assert.That(result, Is.SameAs(dummy));
+        }
+
+        [Test]
         public void CollectionOfFakes_should_delegate_to_fake_creator()
         {
             // Arrange            

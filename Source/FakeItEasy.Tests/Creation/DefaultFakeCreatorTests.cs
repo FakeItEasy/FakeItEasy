@@ -156,6 +156,20 @@ namespace FakeItEasy.Tests.Creation
         }
 
         [Test]
+        public void CreateDummyNonGeneric_should_delegate_to_fake_and_dummy_manager()
+        {
+            // Arrange
+            var dummy = A.Fake<IFoo>();
+            A.CallTo(() => this.fakeAndDummyManager.CreateDummy(typeof(IFoo))).Returns(dummy);
+
+            // Act
+            var result = this.creator.CreateDummy(typeof(IFoo));
+
+            // Assert
+            Assert.That(result, Is.SameAs(dummy));
+        }
+
+        [Test]
         public void CreateFake_should_be_null_guarded()
         {
             // Arrange, Act, Assert
