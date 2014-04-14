@@ -45,7 +45,7 @@ release_issue_body = <<-eos
 - [ ] push to origin branch, create PR to upstream master
 - [ ] use `rake create_milestone[new_version]` to
     - create a new milestone for the next release
-    - create new issue (like ths one) for the next release, adding it to the new milestone
+    - create new issue (like this one) for the next release, adding it to the new milestone
 - [ ] close all issues on this milestone
 - [ ] close this milestone
 
