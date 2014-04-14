@@ -1,7 +1,6 @@
 ﻿namespace FakeItEasy.IntegrationTests
 {
     using System.Collections;
-    using FakeItEasy.Core;
     using FluentAssertions;
     using NUnit.Framework;
 
@@ -14,7 +13,7 @@
             // Arrange
             
             // Act
-            var fakeList = A.Fake<IList>(); // to make sure we've initialized FakeItEasy
+            A.Fake<IList>(); // to make sure we've initialized FakeItEasy
 
             // Assert
             TestingBootstrapper.WasInstantiated.Should().BeTrue();
