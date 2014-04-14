@@ -302,8 +302,8 @@ namespace FakeItEasy
 #endif
 
         /// <summary>
-        /// Configures the call to return the next value from the specified sequence each time it's called. Default of T will
-        /// be returned when all the values in the sequence has been returned.
+        /// Configures the call to return the next value from the specified sequence each time it's called.
+        /// After the sequence has been exhausted, the call will revert to the previously configured behavior.
         /// </summary>
         /// <typeparam name="T">The type of return value.</typeparam>
         /// <param name="configuration">The call configuration to extend.</param>
@@ -320,8 +320,7 @@ namespace FakeItEasy
         /// <summary>
         /// Configures the call to return a <see cref="Task{T}"/> with a <see cref="Task{T}.Result"/> of
         /// the next value from the specified sequence each time it's called.
-        /// A <see cref="Task{T}"/> with a <see cref="Task{T}.Result"/> of the default of <typeparamref name="T"/>
-        /// will be returned when all the values in the sequence have been returned.
+        /// After the sequence has been exhausted, the call will revert to the previously configured behavior.
         /// Each <see cref="Task{T}"/> returned from the configured call will have a <see cref="Task.Status"/> of <see cref="TaskStatus.RanToCompletion"/>.
         /// </summary>
         /// <typeparam name="T">The type of the result produced by each <see cref="Task{T}"/>.</typeparam>
