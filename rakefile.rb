@@ -27,8 +27,8 @@ specs = [
 ]
 
 repo = 'FakeItEasy/FakeItEasy'
-new_issue_labels = ['0 - Backlog', 'P2', 'build', 'documentation']
-new_issue_body = <<-eos
+release_issue_labels = ['0 - Backlog', 'P2', 'build', 'documentation']
+release_issue_body = <<-eos
 **Ready** when all other issues forming part of the release are **Done**.
 
 - [ ] run code analysis in VS in *Release* mode and address violations (send a regular PR which must be merged before continuing)
@@ -78,8 +78,8 @@ task :vars do
   put_var_array("unit_tests", unit_tests)
   put_var_array("integration_tests", integration_tests)
   put_var_array("specs", specs)
-  put_var_array("new_issue_labels", new_issue_labels)
-  put_var_array("new_issue_body", new_issue_body.lines)
+  put_var_array("release_issue_labels", release_issue_labels)
+  put_var_array("release_issue_body", release_issue_body.lines)
 end
 
 desc "Restore NuGet packages"
@@ -155,18 +155,18 @@ task :create_milestone, :milestone_version do |t, args|
   release_description = args.milestone_version + ' release'
 
   milestone = client.create_milestone(
-                                      repo,
-                                      args.milestone_version,
-                                      :description => release_description
-                                      )
+    repo,
+    args.milestone_version,
+    :description => release_description
+    )
 
   client.create_issue(
-                           repo,
-                           release_description,
-                           new_issue_body,
-                           :labels => new_issue_labels,
-                           :milestone => milestone.number
-                           )
+    repo,
+    release_description,
+    release_issue_body,
+    :labels => release_issue_labels,
+    :milestone => milestone.number
+    )
 end
 
 def put_var_array(name, values)
