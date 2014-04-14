@@ -31,7 +31,7 @@
 
             int RequestOfTwo(int number1, int number2);
 
-            Task<int> RequestOfTwoTask(int number, int str);
+            Task<int> RequestOfTwoTask(int number, int text);
 
             string RequestOfTwo(string text1, string text2);
 
