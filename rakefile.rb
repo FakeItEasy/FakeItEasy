@@ -26,6 +26,34 @@ specs = [
   "Source/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
 ]
 
+repo = 'FakeItEasy/FakeItEasy'
+release_issue_labels = ['0 - Backlog', 'P2', 'build', 'documentation']
+release_issue_body = <<-eos
+**Ready** when all other issues forming part of the release are **Done**.
+
+- [ ] run code analysis in VS in *Release* mode and address violations (send a regular PR which must be merged before continuing)
+- [ ] check build, create release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases) including releaseNotes,
+       mentioning non-owner contributors, if any
+- [ ] push NuGet package
+- [ ] copy release notes from GitHub to NuGet
+- [ ] de-list pre-release NuGet packages if present
+- [ ] update website with contributors list (if in place)
+- [ ] tweet, mentioning contributors and post link as comment here for easy retweeting ;-)
+- [ ] post tweet in JabbR ([fakeiteasy][1] and [general-chat][2]) and Gitter ([FakeItEasy/FakeItEasy][3])
+- [ ] post links to the NuGet and GitHub release in each issue in this milestone, with thanks to contributors
+- [ ] use `rake set_version[new_version]` to change CommonAssemblyInfo.cs to expected minor version (of form _xx.yy.zz_)
+- [ ] push to origin branch, create PR to upstream master
+- [ ] use `rake create_milestone[new_version]` to
+    - create a new milestone for the next release
+    - create new issue (like this one) for the next release, adding it to the new milestone
+- [ ] close all issues on this milestone
+- [ ] close this milestone
+
+[1]: https://jabbr.net/#/rooms/fakeiteasy
+[2]: https://jabbr.net/#/rooms/general-chat
+[3]: https://gitter.im/FakeItEasy/FakeItEasy
+eos
+
 Albacore.configure do |config|
   config.log_level = :verbose
 end
@@ -44,18 +72,14 @@ task :vars do
   puts "version:       #{version}"
   puts "nuspec:        #{nuspec}"
   puts "output_folder: #{output_folder}"
-  
-  puts "unit_tests:"
-  puts unit_tests.map {|x| "  " + x }
+  puts "repo:          #{repo}"
   puts ""
 
-  puts "integration_tests:"
-  puts integration_tests.map {|x| "  " + x }
-  puts ""
-
-  puts "specs:"
-  puts specs.map {|x| "  " + x }
-  puts ""
+  put_var_array("unit_tests", unit_tests)
+  put_var_array("integration_tests", integration_tests)
+  put_var_array("specs", specs)
+  put_var_array("release_issue_labels", release_issue_labels)
+  put_var_array("release_issue_body", release_issue_body.lines)
 end
 
 desc "Restore NuGet packages"
@@ -74,7 +98,6 @@ end
 
 desc "Update version number"
 assemblyinfo :set_version, :new_version do |asm, args|
-  puts "args were #{args}"
   net_version = args.new_version.split(/[^\d.]/, 2).first
   
   # not using asm.version and asm.file_version due to StyleCop violations
@@ -122,4 +145,32 @@ desc "create the nuget package"
 exec :pack => [:build, :create_output_folder] do |cmd|
   cmd.command = nuget_command
   cmd.parameters "pack #{nuspec} -Version #{version} -OutputDirectory #{output_folder}"
+end
+
+desc "create new milestone and release issue"
+task :create_milestone, :milestone_version do |t, args|
+  require 'octokit'
+  client = Octokit::Client.new(:netrc => true)
+
+  release_description = args.milestone_version + ' release'
+
+  milestone = client.create_milestone(
+    repo,
+    args.milestone_version,
+    :description => release_description
+    )
+
+  client.create_issue(
+    repo,
+    release_description,
+    release_issue_body,
+    :labels => release_issue_labels,
+    :milestone => milestone.number
+    )
+end
+
+def put_var_array(name, values)
+  puts "#{name}:"
+  puts values.map {|x| "  " + x }
+  puts ""
 end
