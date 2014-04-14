@@ -28,6 +28,16 @@ namespace FakeItEasy.Creation
         T CreateDummy<T>();
 
         /// <summary>
+        /// Creates a dummy object, this can be a fake object or an object resolved
+        /// from the current IFakeObjectContainer.
+        /// </summary>
+        /// <param name="t">The type of dummy to create.</param>
+        /// <returns>The created dummy.</returns>
+        /// <exception cref="FakeItEasy.Core.FakeCreationException">Was unable to generate the fake in the current configuration and
+        /// no dummy was registered in the container for the specified type..</exception>
+        object CreateDummy(Type t);
+
+        /// <summary>
         /// Creates a collection of fakes of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of fakes to create.</typeparam>

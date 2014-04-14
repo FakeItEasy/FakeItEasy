@@ -74,6 +74,19 @@ namespace FakeItEasy.Creation
             return (T)this.fakeAndDummyManager.CreateDummy(typeof(T));
         }
 
+        /// <summary>
+        /// Creates a dummy object, this can be a fake object or an object resolved
+        /// from the current IFakeObjectContainer.
+        /// </summary>
+        /// <param name="t">The type of dummy to create.</param>
+        /// <returns>The created dummy.</returns>
+        /// <exception cref="FakeCreationException">Was unable to generate the fake in the current configuration and
+        /// no dummy was registered in the container for the specified type..</exception>
+        public object CreateDummy(Type t)
+        {
+            return this.fakeAndDummyManager.CreateDummy(t);
+        }
+
         private static FakeOptions BuildFakeOptions<T>(Action<IFakeOptionsBuilder<T>> options)
         {
             var builder = new FakeOptionsBuilder<T>();
