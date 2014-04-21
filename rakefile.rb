@@ -32,8 +32,8 @@ release_issue_body = <<-eos
 **Ready** when all other issues forming part of the release are **Done**.
 
 - [ ] run code analysis in VS in *Release* mode and address violations (send a regular PR which must be merged before continuing)
-- [ ] check build, create release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases) including releaseNotes,
-       mentioning non-owner contributors, if any
+- [ ] check build, update draft release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases)
+       including release notes, mentioning non-owner contributors, if any
 - [ ] push NuGet package
 - [ ] copy release notes from GitHub to NuGet
 - [ ] de-list pre-release NuGet packages if present
@@ -46,12 +46,23 @@ release_issue_body = <<-eos
 - [ ] use `rake create_milestone[new_version]` to
     - create a new milestone for the next release
     - create new issue (like this one) for the next release, adding it to the new milestone
+    - create a new draft GitHub Release 
 - [ ] close all issues on this milestone
 - [ ] close this milestone
 
 [1]: https://jabbr.net/#/rooms/fakeiteasy
 [2]: https://jabbr.net/#/rooms/general-chat
 [3]: https://gitter.im/FakeItEasy/FakeItEasy
+eos
+
+release_body = <<-eos
+* **Changed**: _&lt;description&gt;_ - _#&lt;issue number&gt;_
+* **New**: _&lt;description&gt;_ - _#&lt;issue number&gt;_
+* **Fixed**: _&lt;description&gt;_ - _#&lt;issue number&gt;_
+
+With special thanks for contributions to this release from:
+
+* _&lt;user's actual name&gt;_ - _@&lt;github_userid&gt;_
 eos
 
 Albacore.configure do |config|
@@ -80,6 +91,7 @@ task :vars do
   put_var_array("specs", specs)
   put_var_array("release_issue_labels", release_issue_labels)
   put_var_array("release_issue_body", release_issue_body.lines)
+  put_var_array("release_body", release_body.lines)
 end
 
 desc "Restore NuGet packages"
@@ -147,7 +159,7 @@ exec :pack => [:build, :create_output_folder] do |cmd|
   cmd.parameters "pack #{nuspec} -Version #{version} -OutputDirectory #{output_folder}"
 end
 
-desc "create new milestone and release issue"
+desc "create new milestone, release issue and release"
 task :create_milestone, :milestone_version do |t, args|
   require 'octokit'
   client = Octokit::Client.new(:netrc => true)
@@ -166,6 +178,14 @@ task :create_milestone, :milestone_version do |t, args|
     release_issue_body,
     :labels => release_issue_labels,
     :milestone => milestone.number
+    )
+
+  client.create_release(
+    repo,
+    args.milestone_version,
+    :name => args.milestone_version,
+    :draft => true,
+    :body => release_body
     )
 end
 
