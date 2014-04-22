@@ -91,7 +91,7 @@ namespace FakeItEasy.Core
 
         private static MethodInfo GetMethodOnInterfaceTypeImplementedByMethod(Type type, MethodInfo method)
         {
-            Type reflectedType = method.ReflectedType;
+            var reflectedType = method.ReflectedType;
 
             if (reflectedType.IsInterface)
             {
