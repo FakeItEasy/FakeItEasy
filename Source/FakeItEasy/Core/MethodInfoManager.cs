@@ -91,14 +91,21 @@ namespace FakeItEasy.Core
 
         private static MethodInfo GetMethodOnInterfaceTypeImplementedByMethod(Type type, MethodInfo method)
         {
+            Type reflectedType = method.ReflectedType;
+
+            if (reflectedType.IsInterface)
+            {
+                return null;
+            }
+
             var allInterfaces =
                 from i in type.GetInterfaces()
-                where TypeImplementsInterface(method.ReflectedType, i)
+                where TypeImplementsInterface(reflectedType, i)
                 select i;
 
             foreach (var interfaceType in allInterfaces)
             {
-                var interfaceMap = method.ReflectedType.GetInterfaceMap(interfaceType);
+                var interfaceMap = reflectedType.GetInterfaceMap(interfaceType);
 
                 var foundMethod =
                     (from methodTargetPair in interfaceMap.InterfaceMethods.Zip(interfaceMap.TargetMethods)

@@ -5,6 +5,7 @@ namespace FakeItEasy.IntegrationTests
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 
     [TestFixture]
@@ -14,6 +15,21 @@ namespace FakeItEasy.IntegrationTests
         {
             [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Required for testing.")]
             object SetOnly { set; }
+        }
+
+        public interface ISomething
+        {
+            void SomethingMethod();
+        }
+
+        public interface ISomethingBaz : ISomething
+        {
+            void BazMethod();
+        }
+
+        public interface ISomethingQux : ISomething
+        {
+            void QuxMethod();
         }
 
         [Test]
@@ -97,6 +113,32 @@ namespace FakeItEasy.IntegrationTests
                     },
                     Throws.Exception.TypeOf<InvalidOperationException>());
             }
+        }
+
+        // Reported as issue 182 (https://github.com/FakeItEasy/FakeItEasy/issues/182).
+        [Test]
+        public void Should_throw_ExpectationException_when_ordered_assertion_is_not_met_and_interfaces_have_common_parent()
+        {
+            // Arrange
+            Exception exception;
+            var baz = A.Fake<ISomethingBaz>();
+            var qux = A.Fake<ISomethingQux>();
+
+            using (var scope = Fake.CreateScope())
+            {
+                // Act
+                qux.QuxMethod();
+                baz.BazMethod();
+
+                using (scope.OrderedAssertions())
+                {
+                    A.CallTo(() => qux.QuxMethod()).MustHaveHappened();
+                    exception = Record.Exception(() => A.CallTo(() => qux.QuxMethod()).MustHaveHappened());
+                }
+            }
+
+            // Assert
+            Assert.That(exception, Is.InstanceOf<ExpectationException>());
         }
     }
 }
