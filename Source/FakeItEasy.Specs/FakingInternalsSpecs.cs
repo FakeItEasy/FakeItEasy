@@ -13,7 +13,7 @@
         It should_throw_an_exception_with_a_message_containing_a_hint_at_using_internals_visible_to_attribute =
             () =>
             {
-                exception.Message.Should().Contain("Make the type public, or internal and mark your assembly with");
+                exception.Message.Should().Contain("Make it public, or internal and mark your assembly with");
                 exception.Message.Should().Contain("[assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2\")]");
             };
 
