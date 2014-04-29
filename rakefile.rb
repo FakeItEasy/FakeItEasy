@@ -171,13 +171,13 @@ task :create_milestone, :milestone_version do |t, args|
 
   release_description = args.milestone_version + ' release'
 
-  puts "Creating milestone #{args.milestone_version}..."
+  puts "Creating milestone '#{args.milestone_version}'..."
   milestone = client.create_milestone(
     repo,
     args.milestone_version,
     :description => release_description
     )
-  puts "Created milestone #{args.milestone_version}..."
+  puts "Created milestone '#{args.milestone_version}'."
 
   puts "Creating issue '#{release_description}'..."
   issue = client.create_issue(
@@ -218,7 +218,7 @@ def get_temp_ssl_cert_file(ssl_cert_file_url)
     return nil
   end
   
-  puts "Environment variable SSL_CERT_FILE is not set. Attempting to download a cert file..."
+  puts "Environment variable SSL_CERT_FILE is not set. Downloading a cert file from '#{ssl_cert_file_url}'..."
 
   require 'open-uri'
   require 'tempfile'
@@ -230,6 +230,6 @@ def get_temp_ssl_cert_file(ssl_cert_file_url)
 
   ENV["SSL_CERT_FILE"] = file.path
 
-  puts "Downloaded cert file to #{ENV['SSL_CERT_FILE']}."
+  puts "Downloaded cert file to '#{ENV['SSL_CERT_FILE']}'."
   return file
 end
