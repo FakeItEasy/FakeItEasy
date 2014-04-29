@@ -76,24 +76,7 @@ task :default => [ :vars, :unit, :integ, :spec, :pack ]
 
 desc "Print all variables"
 task :vars do
-  puts "nuget_command:     #{nuget_command}"
-  puts "nunit_command:     #{nunit_command}"
-  puts "mspec_command:     #{mspec_command}"
-  puts "solution:          #{solution}"
-  puts "assembly_info:     #{assembly_info}"
-  puts "version:           #{version}"
-  puts "nuspec:            #{nuspec}"
-  puts "output_folder:     #{output_folder}"
-  puts "repo:              #{repo}"
-  puts "ssl_cert_file_url: #{ssl_cert_file_url}"
-  puts ""
-
-  put_var_array("unit_tests", unit_tests)
-  put_var_array("integration_tests", integration_tests)
-  put_var_array("specs", specs)
-  put_var_array("release_issue_labels", release_issue_labels)
-  put_var_array("release_issue_body", release_issue_body.lines)
-  put_var_array("release_body", release_body.lines)
+  print_vars(local_variables.sort.map { |name| [name.to_s, (eval name.to_s)] })  
 end
 
 desc "Restore NuGet packages"
@@ -200,10 +183,40 @@ task :create_milestone, :milestone_version do |t, args|
   puts "Created release '#{args.milestone_version}'."
 end
 
-def put_var_array(name, values)
-  puts "#{name}:"
-  puts values.map {|x| "  " + x }
-  puts ""
+def highlight(text)
+  return "\e[33m#{text}\e[0m"
+end
+
+def print_vars(variables)
+  
+  scalars = []
+  vectors = []
+
+  variables.each { |name, value|
+    if value.respond_to?('each')
+      vectors << [name, value.map { |v| v.to_s }]
+    else
+      string_value = value.to_s
+      lines = string_value.lines
+      if lines.length > 1
+        vectors << [name, lines]
+      else
+        scalars << [name, string_value]
+      end
+    end
+  }
+
+  scalar_name_column_width = scalars.map { |s| s[0].length }.max
+  scalars.each { |name, value| 
+    puts "#{highlight(name)}:#{' ' * (scalar_name_column_width - name.length)} #{value}"
+  }
+
+  puts
+  vectors.each { |name, value| 
+    puts "#{highlight(name)}:"
+    puts value.map {|v| "  " + v }
+    puts ""
+  }
 end
 
 # Get a temporary SSL cert file if necessary.
