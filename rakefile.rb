@@ -32,8 +32,8 @@ release_issue_body = <<-eos
 **Ready** when all other issues forming part of the release are **Done**.
 
 - [ ] run code analysis in VS in *Release* mode and address violations (send a regular PR which must be merged before continuing)
-- [ ] check build, create release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases) including releaseNotes,
-       mentioning non-owner contributors, if any
+- [ ] check build, update draft release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases)
+       including release notes, mentioning non-owner contributors, if any
 - [ ] push NuGet package
 - [ ] copy release notes from GitHub to NuGet
 - [ ] de-list pre-release NuGet packages if present
@@ -46,6 +46,7 @@ release_issue_body = <<-eos
 - [ ] use `rake create_milestone[new_version]` to
     - create a new milestone for the next release
     - create new issue (like this one) for the next release, adding it to the new milestone
+    - create a new draft GitHub Release 
 - [ ] close all issues on this milestone
 - [ ] close this milestone
 
@@ -53,6 +54,18 @@ release_issue_body = <<-eos
 [2]: https://jabbr.net/#/rooms/general-chat
 [3]: https://gitter.im/FakeItEasy/FakeItEasy
 eos
+
+release_body = <<-eos
+* **Changed**: _&lt;description&gt;_ - _#&lt;issue number&gt;_
+* **New**: _&lt;description&gt;_ - _#&lt;issue number&gt;_
+* **Fixed**: _&lt;description&gt;_ - _#&lt;issue number&gt;_
+
+With special thanks for contributions to this release from:
+
+* _&lt;user's actual name&gt;_ - _@&lt;github_userid&gt;_
+eos
+
+ssl_cert_file_url = "http://curl.haxx.se/ca/cacert.pem"
 
 Albacore.configure do |config|
   config.log_level = :verbose
@@ -63,23 +76,7 @@ task :default => [ :vars, :unit, :integ, :spec, :pack ]
 
 desc "Print all variables"
 task :vars do
-  puts "nuget_command: #{nuget_command}"
-  puts "nunit_command: #{nunit_command}"
-  puts "mspec_command: #{mspec_command}"
-  
-  puts "solution:      #{solution}"
-  puts "assembly_info: #{assembly_info}"
-  puts "version:       #{version}"
-  puts "nuspec:        #{nuspec}"
-  puts "output_folder: #{output_folder}"
-  puts "repo:          #{repo}"
-  puts ""
-
-  put_var_array("unit_tests", unit_tests)
-  put_var_array("integration_tests", integration_tests)
-  put_var_array("specs", specs)
-  put_var_array("release_issue_labels", release_issue_labels)
-  put_var_array("release_issue_body", release_issue_body.lines)
+  print_vars(local_variables.sort.map { |name| [name.to_s, (eval name.to_s)] })  
 end
 
 desc "Restore NuGet packages"
@@ -147,30 +144,105 @@ exec :pack => [:build, :create_output_folder] do |cmd|
   cmd.parameters "pack #{nuspec} -Version #{version} -OutputDirectory #{output_folder}"
 end
 
-desc "create new milestone and release issue"
+desc "create new milestone, release issue and release"
 task :create_milestone, :milestone_version do |t, args|
   require 'octokit'
+
+  ssl_cert_file = get_temp_ssl_cert_file(ssl_cert_file_url)
+
   client = Octokit::Client.new(:netrc => true)
 
   release_description = args.milestone_version + ' release'
 
+  puts "Creating milestone '#{args.milestone_version}'..."
   milestone = client.create_milestone(
     repo,
     args.milestone_version,
     :description => release_description
     )
+  puts "Created milestone '#{args.milestone_version}'."
 
-  client.create_issue(
+  puts "Creating issue '#{release_description}'..."
+  issue = client.create_issue(
     repo,
     release_description,
     release_issue_body,
     :labels => release_issue_labels,
     :milestone => milestone.number
     )
+  puts "Created issue \##{issue.number} '#{release_description}'."
+
+  puts "Creating release '#{args.milestone_version}'..."
+  client.create_release(
+    repo,
+    args.milestone_version,
+    :name => args.milestone_version,
+    :draft => true,
+    :body => release_body
+    )
+  puts "Created release '#{args.milestone_version}'."
 end
 
-def put_var_array(name, values)
-  puts "#{name}:"
-  puts values.map {|x| "  " + x }
-  puts ""
+def highlight(text)
+  return "\e[33m#{text}\e[0m"
+end
+
+def print_vars(variables)
+  
+  scalars = []
+  vectors = []
+
+  variables.each { |name, value|
+    if value.respond_to?('each')
+      vectors << [name, value.map { |v| v.to_s }]
+    else
+      string_value = value.to_s
+      lines = string_value.lines
+      if lines.length > 1
+        vectors << [name, lines]
+      else
+        scalars << [name, string_value]
+      end
+    end
+  }
+
+  scalar_name_column_width = scalars.map { |s| s[0].length }.max
+  scalars.each { |name, value| 
+    puts "#{highlight(name)}:#{' ' * (scalar_name_column_width - name.length)} #{value}"
+  }
+
+  puts
+  vectors.each { |name, value| 
+    puts "#{highlight(name)}:"
+    puts value.map {|v| "  " + v }
+    puts ""
+  }
+end
+
+# Get a temporary SSL cert file if necessary.
+# If ENV["SSL_CERT_FILE"] is set, will return nil.
+# Otherwise, attempts to download a known
+# SSL cert file, sets ENV["SSL_CERT_FILE"]
+# to point at it, and returns the file (mostly so it will
+# stay in scope while it's needed).
+def get_temp_ssl_cert_file(ssl_cert_file_url)
+  ssl_cert_file_path = ENV["SSL_CERT_FILE"]
+  if ssl_cert_file_path
+    return nil
+  end
+  
+  puts "Environment variable SSL_CERT_FILE is not set. Downloading a cert file from '#{ssl_cert_file_url}'..."
+
+  require 'open-uri'
+  require 'tempfile'
+
+  file = Tempfile.new('ssl_cert_file')
+  file.binmode
+  file << open(ssl_cert_file_url).read
+  file.close
+
+  ENV["SSL_CERT_FILE"] = file.path
+
+  puts "Downloaded cert file to '#{ENV['SSL_CERT_FILE']}'."
+  return file
 end
