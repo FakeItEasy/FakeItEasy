@@ -183,10 +183,6 @@ task :create_milestone, :milestone_version do |t, args|
   puts "Created release '#{args.milestone_version}'."
 end
 
-def highlight(text)
-  return "\e[33m#{text}\e[0m"
-end
-
 def print_vars(variables)
   
   scalars = []
@@ -208,12 +204,12 @@ def print_vars(variables)
 
   scalar_name_column_width = scalars.map { |s| s[0].length }.max
   scalars.each { |name, value| 
-    puts "#{highlight(name)}:#{' ' * (scalar_name_column_width - name.length)} #{value}"
+    puts "#{name}:#{' ' * (scalar_name_column_width - name.length)} #{value}"
   }
 
   puts
   vectors.each { |name, value| 
-    puts "#{highlight(name)}:"
+    puts "#{name}:"
     puts value.map {|v| "  " + v }
     puts ""
   }
