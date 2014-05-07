@@ -18,6 +18,14 @@
         private It should_return_the_value_to_the_getter_with_same_indices =
             () => subject[17, true].Should().BeEquivalentTo("hippo", "lemur");
 
+        private It should_return_the_same_instance_each_time_the_getter_is_called_with_those_indices =
+            () => ReferenceEquals(subject[17, true], subject[17, true])
+                .Should().BeTrue("property getters should return the same object every time");
+
+        private It should_return_the_same_instance_each_time_the_getter_is_called_with_other_indices =
+            () => ReferenceEquals(subject[18, false], subject[18, false])
+                .Should().BeTrue("property getters should return the same object every time");
+
         public interface IFoo
         {
             [SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays", Justification = "Required for testing.")]
