@@ -29,8 +29,11 @@
 
                 var newRule = new CallRuleMetadata
                                   {
-                                      CalledNumberOfTimes = 1, 
-                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeManager) { Value = fakeObjectCall.Arguments[0] }
+                                      CalledNumberOfTimes = 1,
+                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeManager)
+                                                 {
+                                                     Value = fakeObjectCall.Arguments[fakeObjectCall.Arguments.Count - 1]
+                                                 }
                                   };
 
                 this.FakeManager.allUserRulesField.AddFirst(newRule);
