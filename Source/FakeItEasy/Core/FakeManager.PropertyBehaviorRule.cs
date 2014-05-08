@@ -25,6 +25,8 @@
 
             public object Value { get; set; }
 
+            public object[] Indices { get; set; }
+
             public int? NumberOfTimesToCall
             {
                 get { return null; }
@@ -74,12 +76,15 @@
 
             private bool IsPropertySetter(IFakeObjectCall fakeObjectCall)
             {
-                return this.propertySetter != null && this.propertySetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition());
+                return this.propertySetter != null &&
+                       this.propertySetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition());
             }
 
             private bool IsPropertyGetter(IFakeObjectCall fakeObjectCall)
             {
-                return this.propertyGetter != null && this.propertyGetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition());
+                return this.propertyGetter != null &&
+                       this.propertyGetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition()) &&
+                       this.Indices.SequenceEqual(fakeObjectCall.Arguments);
             }
         }
     }

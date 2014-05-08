@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+    using System.Linq;
 
     /// <content>Property setter rule.</content>
     public partial class FakeManager
@@ -32,6 +33,7 @@
                                       CalledNumberOfTimes = 1,
                                       Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeManager)
                                                  {
+                                                     Indices = fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1).ToArray(),
                                                      Value = fakeObjectCall.Arguments[fakeObjectCall.Arguments.Count - 1]
                                                  }
                                   };
