@@ -34,7 +34,7 @@
                                       Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeManager)
                                                  {
                                                      Indices = fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1).ToArray(),
-                                                     Value = fakeObjectCall.Arguments[fakeObjectCall.Arguments.Count - 1]
+                                                     Value = fakeObjectCall.Arguments.Last()
                                                  }
                                   };
 
