@@ -1,6 +1,9 @@
 ﻿namespace FakeItEasy.IntegrationTests.Assertions
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Tests;
     using NUnit.Framework;
 
@@ -121,6 +124,18 @@
 ";
 
             Assert.That(thrown.Message, Is.EqualTo(expectedMessage));
+        }
+
+        [Test]
+        public void Should_give_pretty_message_when_trying_to_fake_extension_method()
+        {
+            // Arrange
+            var fake = A.Fake<List<int>>();
+
+            // Assert
+            var thrown = Assert.Throws<FakeConfigurationException>(() => A.CallTo(() => fake.Any()));
+
+            Assert.AreEqual(thrown.Message, "\r\n\r\n  The current proxy generator can not intercept the specified method for the following reason:\r\n    - Method is static\r\n\r\n");
         }
     }
 }

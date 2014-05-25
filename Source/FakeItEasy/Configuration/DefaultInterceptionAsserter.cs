@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.Configuration
 {
+    using System;
     using System.Reflection;
     using System.Text;
     using Creation;
@@ -16,8 +17,22 @@
 
         public void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget)
         {
-            string failReason;
-            if (!this.proxyGenerator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason))
+            string failReason = string.Empty;
+            bool canBeIntercepted = false;
+
+            try
+            {
+                canBeIntercepted = this.proxyGenerator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
+            }
+            catch (ArgumentNullException)
+            {
+                if (method.IsStatic)
+                {
+                    failReason = "Method is static";
+                }
+            }
+
+            if (!canBeIntercepted)
             {
                 var message = new StringBuilder()
                     .AppendLine()
