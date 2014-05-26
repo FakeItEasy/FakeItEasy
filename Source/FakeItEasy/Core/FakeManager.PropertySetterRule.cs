@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+    using System.Linq;
 
     /// <content>Property setter rule.</content>
     public partial class FakeManager
@@ -29,8 +30,12 @@
 
                 var newRule = new CallRuleMetadata
                                   {
-                                      CalledNumberOfTimes = 1, 
-                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeManager) { Value = fakeObjectCall.Arguments[0] }
+                                      CalledNumberOfTimes = 1,
+                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeManager)
+                                                 {
+                                                     Indices = fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1).ToArray(),
+                                                     Value = fakeObjectCall.Arguments.Last()
+                                                 }
                                   };
 
                 this.FakeManager.allUserRulesField.AddFirst(newRule);

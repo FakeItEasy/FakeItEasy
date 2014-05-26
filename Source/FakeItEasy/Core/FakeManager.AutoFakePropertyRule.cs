@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+    using System.Linq;
     using FakeItEasy.Creation;
 
     /// <content>Auto fake property rule.</content>
@@ -35,7 +36,11 @@
 
                 var newRule = new CallRuleMetadata
                                   {
-                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeManager) { Value = CreateFake(fakeObjectCall.Method.ReturnType) },
+                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeManager)
+                                      {
+                                          Value = CreateFake(fakeObjectCall.Method.ReturnType),
+                                          Indices = fakeObjectCall.Arguments.ToArray(),
+                                      },
                                       CalledNumberOfTimes = 1
                                   };
 
