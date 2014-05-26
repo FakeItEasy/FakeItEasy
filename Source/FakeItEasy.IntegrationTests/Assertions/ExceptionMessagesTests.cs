@@ -135,7 +135,9 @@
             // Assert
             var thrown = Assert.Throws<FakeConfigurationException>(() => A.CallTo(() => fake.Any()));
 
-            Assert.AreEqual(thrown.Message, "\r\n\r\n  The current proxy generator can not intercept the specified method for the following reason:\r\n    - Method is static\r\n\r\n");
+            Assert.AreEqual(
+                "\r\n\r\n  The current proxy generator can not intercept the specified method for the following reason:\r\n    - Extension methods can not be intercepted since they're static.\r\n\r\n",
+                thrown.Message);
         }
     }
 }
