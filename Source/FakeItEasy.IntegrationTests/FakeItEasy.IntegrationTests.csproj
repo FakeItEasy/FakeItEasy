@@ -74,6 +74,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionMessagesTests.cs" />
     <Compile Include="TypeCatalogueTests.cs" />
     <Compile Include="BootstrapperLocatorTests.cs" />
     <Compile Include="DoubleArgumentValueFormatter.cs" />

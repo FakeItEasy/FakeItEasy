@@ -33,16 +33,14 @@
 
         public bool MethodCanBeInterceptedOnInstance(System.Reflection.MethodInfo method, object callTarget, out string failReason)
         {
-            Guard.AgainstNull(callTarget, "callTarget");
-
-            var generator = this.SelectProxyGenerator(callTarget.GetType());
+            var generator = this.SelectProxyGenerator(callTarget == null ? null : callTarget.GetType());
 
             return generator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
         private static bool IsDelegateType(Type typeOfProxy)
         {
-            return typeOfProxy.IsSubclassOf(typeof(Delegate));
+            return typeOfProxy != null && typeOfProxy.IsSubclassOf(typeof(Delegate));
         }
 
         private IProxyGenerator SelectProxyGenerator(Type typeOfProxy)
