@@ -32,8 +32,11 @@ release_issue_body = <<-eos
 **Ready** when all other issues forming part of the release are **Done**.
 
 - [ ] run code analysis in VS in *Release* mode and address violations (send a regular PR which must be merged before continuing)
-- [ ] check build, update draft release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases)
-       including release notes, mentioning non-owner contributors, if any
+- [ ] check build
+-  edit draft release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases):
+    - [ ] complete release notes, mentioning non-owner contributors, if any
+    - [ ] attach nupkg
+    - [ ] publish the release
 - [ ] push NuGet package
 - [ ] copy release notes from GitHub to NuGet
 - [ ] de-list pre-release NuGet packages if present
