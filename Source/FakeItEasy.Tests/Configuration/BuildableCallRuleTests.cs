@@ -100,7 +100,7 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_set_ref_and_out_parameters_when_specified()
         {
             // Arrange
-            this.rule.OutAndRefParametersValues = new object[] { 1, "foo" };
+            this.rule.OutAndRefParametersValues = () => { return new object[] { 1, "foo" }; };
             this.rule.Applicator = x => { };
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
@@ -118,7 +118,7 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_throw_when_OutAndRefParametersValues_length_differs_from_the_number_of_out_and_ref_parameters_in_the_call()
         {
             // Arrange
-            this.rule.OutAndRefParametersValues = new object[] { 1, "foo", "bar" };
+            this.rule.OutAndRefParametersValues = () => { return new object[] { 1, "foo", "bar" }; };
             this.rule.Applicator = x => { };
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
