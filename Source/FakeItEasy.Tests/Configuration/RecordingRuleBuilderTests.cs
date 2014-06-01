@@ -185,5 +185,21 @@ namespace FakeItEasy.Tests.Configuration
             // Assert
             Assert.That(returned, Is.SameAs(config));
         }
+
+        [Test]
+        public void AssignsOutAndRefParametersLazily_delegates_to_wrapped_builder()
+        {
+            // Arrange
+            Func<object[]> arguments = () => { return new object[] { "foo", "bar" }; };
+
+            var config = A.Fake<IAfterCallSpecifiedConfiguration>();
+            A.CallTo(() => this.wrappedBuilder.AssignsOutAndRefParametersLazily(arguments)).Returns(config);
+
+            // Act
+            var returned = this.builder.AssignsOutAndRefParametersLazily(arguments);
+
+            // Assert
+            Assert.That(returned, Is.SameAs(config));
+        }
     }
 }
