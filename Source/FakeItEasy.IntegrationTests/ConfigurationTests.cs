@@ -76,17 +76,18 @@
             // Arrange
             var fake = A.Fake<IDictionary<string, string>>();
             string outputParameter = null;
-            string lazyResult = null;
 
             // Act
             fake.Configure()
                 .CallsTo(x => x.TryGetValue("test", out outputParameter))
                 .ReturnsLazily((string key, string value) =>
                 {
-                    lazyResult = key == "test" ? "foo" : "bar";
                     return key == "test";
                 })
-                .AssignsOutAndRefParametersLazily(() => { return new object[] { lazyResult }; });
+                .AssignsOutAndRefParametersLazily((x) =>
+                {
+                    return new object[] { (x.Arguments.Get<string>("key") == "test") ? "foo" : "bar" };
+                });
 
             // Assert
             fake.TryGetValue("test", out outputParameter);

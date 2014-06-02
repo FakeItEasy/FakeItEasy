@@ -386,7 +386,7 @@
         {
             this.builder.AssignsOutAndRefParameters(1, "foo");
 
-            Assert.That(this.ruleProducedByFactory.OutAndRefParametersValues(), Is.EquivalentTo(new object[] { 1, "foo" }));
+            Assert.That(this.ruleProducedByFactory.OutAndRefParametersValues(null), Is.EquivalentTo(new object[] { 1, "foo" }));
         }
 
         [Test]
@@ -407,15 +407,15 @@
         [Test]
         public void AssignsOutAndRefParametersLazily_should_set_values_to_rule()
         {
-            this.builder.AssignsOutAndRefParametersLazily(() => { return new object[] { 1, "foo" }; });
+            this.builder.AssignsOutAndRefParametersLazily(call => new object[] { 1, "foo" });
 
-            Assert.That(this.ruleProducedByFactory.OutAndRefParametersValues(), Is.EquivalentTo(new object[] { 1, "foo" }));
+            Assert.That(this.ruleProducedByFactory.OutAndRefParametersValues(null), Is.EquivalentTo(new object[] { 1, "foo" }));
         }
 
         [Test]
         public void AssignsOutAndRefParametersLazily_returns_self()
         {
-            var result = this.builder.AssignsOutAndRefParametersLazily(() => { return new object[] { 1, "foo" }; });
+            var result = this.builder.AssignsOutAndRefParametersLazily(call => new object[] { 1, "foo" });
 
             Assert.That(result, Is.SameAs(this.builder));
         }

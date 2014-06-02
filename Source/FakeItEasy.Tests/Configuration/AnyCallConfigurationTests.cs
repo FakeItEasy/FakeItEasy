@@ -169,51 +169,15 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
-        public void AssignsOutAndRefParameters_delegates_to_configuration_produced_by_factory()
-        {
-            // Arrange
-            var parameters = new object[] { "a", "b" };
-
-            var factoryConfig = this.StubVoidConfig();
-            var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
-
-            A.CallTo(() => factoryConfig.AssignsOutAndRefParameters(parameters)).Returns(nextConfig);
-
-            // Act
-            this.configuration.AssignsOutAndRefParameters(parameters);
-
-            // Assert
-            A.CallTo(() => factoryConfig.AssignsOutAndRefParameters(parameters)).MustHaveHappened();
-        }
-
-        [Test]
-        public void AssignsOutAndRefParameters_returns_configuration_produced_by_factory()
-        {
-            // Arrange
-            var parameters = new object[] { "a", "b" };
-
-            var factoryConfig = this.StubVoidConfig();
-            var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
-
-            A.CallTo(() => factoryConfig.AssignsOutAndRefParameters(parameters)).Returns(nextConfig);
-
-            // Act
-            var result = this.configuration.AssignsOutAndRefParameters(parameters);
-
-            // Assert
-            Assert.That(result, Is.SameAs(nextConfig));
-        }
-
-        [Test]
         public void AssignsOutAndRefParametersLazily_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
-            Func<object[]> parameters = () => { return new object[] { "a", "b" }; };
+            Func<IFakeObjectCall, object[]> parameters = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
             var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
 
-            A.CallTo(() => factoryConfig.AssignsOutAndRefParameters(parameters)).Returns(nextConfig);
+            A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(parameters)).Returns(nextConfig);
 
             // Act
             this.configuration.AssignsOutAndRefParametersLazily(parameters);
@@ -226,7 +190,7 @@ namespace FakeItEasy.Tests.Configuration
         public void AssignsOutAndRefParametersLazily_returns_configuration_produced_by_factory()
         {
             // Arrange
-            Func<object[]> parameters = () => { return new object[] { "a", "b" }; };
+            Func<IFakeObjectCall, object[]> parameters = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
             var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
