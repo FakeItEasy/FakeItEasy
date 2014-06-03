@@ -174,13 +174,13 @@ namespace FakeItEasy.Tests.Configuration
         public void AssignsOutAndRefParametersLazily_delegates_to_wrapped_builder()
         {
             // Arrange
-            Func<IFakeObjectCall, object[]> arguments = x => new object[] { "foo", "bar" };
+            Func<IFakeObjectCall, object[]> valueProducer = x => new object[] { "foo", "bar" };
 
             var config = A.Fake<IAfterCallSpecifiedConfiguration>();
-            A.CallTo(() => this.wrappedBuilder.AssignsOutAndRefParametersLazily(arguments)).Returns(config);
+            A.CallTo(() => this.wrappedBuilder.AssignsOutAndRefParametersLazily(valueProducer)).Returns(config);
 
             // Act
-            var returned = this.builder.AssignsOutAndRefParametersLazily(arguments);
+            var returned = this.builder.AssignsOutAndRefParametersLazily(valueProducer);
 
             // Assert
             Assert.That(returned, Is.SameAs(config));

@@ -36,7 +36,7 @@ namespace FakeItEasy.Configuration
         /// <summary>
         /// Gets or sets a function that provides values to apply to output and reference variables.
         /// </summary>
-        public virtual Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValues { get; set; }
+        public virtual Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProvider { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the base method of the fake object call should be
@@ -65,7 +65,7 @@ namespace FakeItEasy.Configuration
             }
 
             this.Applicator.Invoke(fakeObjectCall);
-            this.ApplyOutAndRefParametersValues(fakeObjectCall);
+            this.ApplyOutAndRefParametersValueProvider(fakeObjectCall);
 
             if (this.CallBaseMethod)
             {
@@ -137,15 +137,15 @@ namespace FakeItEasy.Configuration
             return indexes;
         }
 
-        private void ApplyOutAndRefParametersValues(IInterceptedFakeObjectCall fakeObjectCall)
+        private void ApplyOutAndRefParametersValueProvider(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            if (this.OutAndRefParametersValues == null)
+            if (this.OutAndRefParametersValueProvider == null)
             {
                 return;
             }
 
             var indexes = GetIndexesOfOutAndRefParameters(fakeObjectCall);
-            var values = this.OutAndRefParametersValues(fakeObjectCall);
+            var values = this.OutAndRefParametersValueProvider(fakeObjectCall);
             if (values.Count != indexes.Count)
             {
                 throw new InvalidOperationException(ExceptionMessages.NumberOfOutAndRefParametersDoesNotMatchCall);

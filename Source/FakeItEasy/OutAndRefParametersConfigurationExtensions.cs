@@ -1,16 +1,5 @@
 namespace FakeItEasy
 {
-    using System;
-    using System.Collections.Generic;
-#if NET40
-    using System.Diagnostics.CodeAnalysis;
-#endif
-    using System.Linq;
-#if NET40
-
-    using System.Threading.Tasks;
-#endif
-
     using FakeItEasy.Configuration;
 
     /// <summary>
@@ -19,8 +8,9 @@ namespace FakeItEasy
     public static class OutAndRefParametersConfigurationExtensions
     {
         /// <summary>
-        /// Specifies output values for out and ref parameters. Specify the values in the order
-        /// the ref and out parameters has in the configured call, any non out and ref parameters are ignored.
+        /// Specifies output values for out and ref parameters. The values should appear 
+        /// in the same order as the out and ref parameters in the configured call.
+        /// Any non out and ref parameters are ignored.
         /// </summary>
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="values">The values.</param>

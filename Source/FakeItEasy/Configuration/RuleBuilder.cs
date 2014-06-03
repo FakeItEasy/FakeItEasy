@@ -97,7 +97,7 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(valueProducer, "valueProducer");
 
-            this.RuleBeingBuilt.OutAndRefParametersValues = valueProducer;
+            this.RuleBeingBuilt.OutAndRefParametersValueProvider = valueProducer;
 
             return this;
         }
