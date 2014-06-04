@@ -65,7 +65,7 @@ namespace FakeItEasy.Configuration
             }
 
             this.Applicator.Invoke(fakeObjectCall);
-            this.ApplyOutAndRefParametersValueProvider(fakeObjectCall);
+            this.ApplyOutAndRefParametersValueProducer(fakeObjectCall);
 
             if (this.CallBaseMethod)
             {
@@ -137,7 +137,7 @@ namespace FakeItEasy.Configuration
             return indexes;
         }
 
-        private void ApplyOutAndRefParametersValueProvider(IInterceptedFakeObjectCall fakeObjectCall)
+        private void ApplyOutAndRefParametersValueProducer(IInterceptedFakeObjectCall fakeObjectCall)
         {
             if (this.OutAndRefParametersValueProducer == null)
             {
