@@ -1,6 +1,7 @@
 namespace FakeItEasy.Configuration
 {
     using System;
+    using System.Collections.Generic;
     using FakeItEasy.Core;
 
     internal class RecordingRuleBuilder
@@ -39,9 +40,9 @@ namespace FakeItEasy.Configuration
             return this.wrappedBuilder.CallsBaseMethod();
         }
 
-        public IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(params object[] values)
+        public IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
         {
-            return this.wrappedBuilder.AssignsOutAndRefParameters(values);
+            return this.wrappedBuilder.AssignsOutAndRefParametersLazily(valueProducer);
         }
 
         public void MustHaveHappened(Repeated repeatConstraint)

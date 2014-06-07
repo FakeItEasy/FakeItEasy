@@ -597,6 +597,9 @@
     <Compile Include="..\FakeItEasy\OrderedAssertion.cs">
       <Link>OrderedAssertion.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\OutAndRefParametersConfigurationExtensions.cs">
+      <Link>OutAndRefParametersConfigurationExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\OutputWriterExtensions.cs">
       <Link>OutputWriterExtensions.cs</Link>
     </Compile>

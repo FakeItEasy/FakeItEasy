@@ -1,6 +1,7 @@
 namespace FakeItEasy.Configuration
 {
     using System;
+    using System.Collections.Generic;
     using FakeItEasy.Core;
 
     internal class AnyCallConfiguration
@@ -48,9 +49,9 @@ namespace FakeItEasy.Configuration
             return this.VoidConfiguration.CallsBaseMethod();
         }
 
-        public IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(params object[] values)
+        public IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
         {
-            return this.VoidConfiguration.AssignsOutAndRefParameters(values);
+            return this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
         }
 
         public void MustHaveHappened(Repeated repeatConstraint)

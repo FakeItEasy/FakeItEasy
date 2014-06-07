@@ -15,7 +15,7 @@ namespace FakeItEasy.Tests.Configuration
         [SetUp]
         public void Setup()
         {
-            this.wrappedBuilder = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() => 
+            this.wrappedBuilder = A.Fake<RuleBuilder>(x => x.WithArgumentsForConstructor(() =>
                 new RuleBuilder(A.Fake<BuildableCallRule>(), A.Fake<FakeManager>(), c => A.Fake<IFakeAsserter>())));
 
             this.rule = A.Fake<RecordedCallRule>();
@@ -38,7 +38,7 @@ namespace FakeItEasy.Tests.Configuration
         public void MustHaveHappened_should_set_IsAssertion_to_true_of_recorded_rule()
         {
             // Arrange
-            
+
             // Act
             this.builder.MustHaveHappened();
 
@@ -50,7 +50,7 @@ namespace FakeItEasy.Tests.Configuration
         public void MustHaveHappened_should_set_applicator_to_empty_action()
         {
             // Arrange
-            
+
             // Act
             this.builder.MustHaveHappened();
 
@@ -132,10 +132,10 @@ namespace FakeItEasy.Tests.Configuration
 
             var config = A.Fake<IAfterCallSpecifiedConfiguration>();
             A.CallTo(() => this.wrappedBuilder.Throws(exceptionFactory)).Returns(config);
-            
+
             // Act
             var returned = this.builder.Throws(exceptionFactory);
-            
+
             // Assert
             Assert.That(returned, Is.SameAs(config));
         }
@@ -171,16 +171,16 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
-        public void AssignsOutAndRefParameters_delegates_to_wrapped_builder()
+        public void AssignsOutAndRefParametersLazily_delegates_to_wrapped_builder()
         {
             // Arrange
-            var arguments = new object[] { "foo", "bar" };
+            Func<IFakeObjectCall, object[]> valueProducer = x => new object[] { "foo", "bar" };
 
             var config = A.Fake<IAfterCallSpecifiedConfiguration>();
-            A.CallTo(() => this.wrappedBuilder.AssignsOutAndRefParameters(arguments)).Returns(config);
+            A.CallTo(() => this.wrappedBuilder.AssignsOutAndRefParametersLazily(valueProducer)).Returns(config);
 
             // Act
-            var returned = this.builder.AssignsOutAndRefParameters(arguments);
+            var returned = this.builder.AssignsOutAndRefParametersLazily(valueProducer);
 
             // Assert
             Assert.That(returned, Is.SameAs(config));

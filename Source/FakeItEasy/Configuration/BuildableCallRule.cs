@@ -34,9 +34,9 @@ namespace FakeItEasy.Configuration
         public virtual ICollection<Action<IFakeObjectCall>> Actions { get; private set; }
 
         /// <summary>
-        /// Gets or sets values to apply to output and reference variables.
+        /// Gets or sets a function that provides values to apply to output and reference variables.
         /// </summary>
-        public virtual ICollection<object> OutAndRefParametersValues { get; set; }
+        public virtual Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProducer { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the base method of the fake object call should be
@@ -65,7 +65,7 @@ namespace FakeItEasy.Configuration
             }
 
             this.Applicator.Invoke(fakeObjectCall);
-            this.ApplyOutAndRefParametersValues(fakeObjectCall);
+            this.ApplyOutAndRefParametersValueProducer(fakeObjectCall);
 
             if (this.CallBaseMethod)
             {
@@ -137,21 +137,21 @@ namespace FakeItEasy.Configuration
             return indexes;
         }
 
-        private void ApplyOutAndRefParametersValues(IInterceptedFakeObjectCall fakeObjectCall)
+        private void ApplyOutAndRefParametersValueProducer(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            if (this.OutAndRefParametersValues == null)
+            if (this.OutAndRefParametersValueProducer == null)
             {
                 return;
             }
 
             var indexes = GetIndexesOfOutAndRefParameters(fakeObjectCall);
-
-            if (this.OutAndRefParametersValues.Count != indexes.Count)
+            var values = this.OutAndRefParametersValueProducer(fakeObjectCall);
+            if (values.Count != indexes.Count)
             {
                 throw new InvalidOperationException(ExceptionMessages.NumberOfOutAndRefParametersDoesNotMatchCall);
             }
 
-            foreach (var argument in indexes.Zip(this.OutAndRefParametersValues))
+            foreach (var argument in indexes.Zip(values))
             {
                 fakeObjectCall.SetArgumentValue(argument.Item1, argument.Item2);
             }

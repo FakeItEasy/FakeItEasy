@@ -169,36 +169,36 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
-        public void AssignsOutAndRefParameters_delegates_to_configuration_produced_by_factory()
+        public void AssignsOutAndRefParametersLazily_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
-            var parameters = new object[] { "a", "b" };
+            Func<IFakeObjectCall, object[]> valueProducer = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
             var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
 
-            A.CallTo(() => factoryConfig.AssignsOutAndRefParameters(parameters)).Returns(nextConfig);
+            A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(valueProducer)).Returns(nextConfig);
 
             // Act
-            this.configuration.AssignsOutAndRefParameters(parameters);
+            this.configuration.AssignsOutAndRefParametersLazily(valueProducer);
 
             // Assert
-            A.CallTo(() => factoryConfig.AssignsOutAndRefParameters(parameters)).MustHaveHappened();
+            A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(valueProducer)).MustHaveHappened();
         }
 
         [Test]
-        public void AssignsOutAndRefParameters_returns_configuration_produced_by_factory()
+        public void AssignsOutAndRefParametersLazily_returns_configuration_produced_by_factory()
         {
             // Arrange
-            var parameters = new object[] { "a", "b" };
+            Func<IFakeObjectCall, object[]> valueProducer = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
             var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
 
-            A.CallTo(() => factoryConfig.AssignsOutAndRefParameters(parameters)).Returns(nextConfig);
+            A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(valueProducer)).Returns(nextConfig);
 
             // Act
-            var result = this.configuration.AssignsOutAndRefParameters(parameters);
+            var result = this.configuration.AssignsOutAndRefParametersLazily(valueProducer);
 
             // Assert
             Assert.That(result, Is.SameAs(nextConfig));

@@ -93,11 +93,11 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public virtual IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(params object[] values)
+        public virtual IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
         {
-            Guard.AgainstNull(values, "values");
+            Guard.AgainstNull(valueProducer, "valueProducer");
 
-            this.RuleBeingBuilt.OutAndRefParametersValues = values;
+            this.RuleBeingBuilt.OutAndRefParametersValueProducer = valueProducer;
 
             return this;
         }
