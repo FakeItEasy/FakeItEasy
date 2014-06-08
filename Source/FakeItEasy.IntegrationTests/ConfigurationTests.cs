@@ -53,24 +53,6 @@
         }
 
         [Test]
-        public void Output_and_reference_parameters_can_be_configured()
-        {
-            // Arrange
-            var fake = A.Fake<IDictionary<string, string>>();
-            string outputParameter = null;
-
-            // Act
-            fake.Configure()
-                .CallsTo(x => x.TryGetValue("test", out outputParameter))
-                .Returns(true)
-                .AssignsOutAndRefParameters("bla");
-
-            // Assert
-            fake.TryGetValue("test", out outputParameter);
-            outputParameter.Should().Be("bla");
-        }
-
-        [Test]
         public void Output_and_reference_parameters_can_be_configured_lazily()
         {
             // Arrange
