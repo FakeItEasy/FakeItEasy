@@ -14,6 +14,7 @@
     [TestFixture]
     public class OutAndRefParametersConfigurationExtensionsTests
     {
+        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Required for testing.", Scope = "type")]
         public interface IInterface
         {
             void RequestOfOne(out int numberOut);
@@ -109,6 +110,7 @@
         [Test]
         public void AssignsOutAndRefParametersLazily_with_1_argument_should_throw_exception_when_argument_count_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
             int fakeOut;
             A.CallTo(() => fake.RequestOfTwo(5, out fakeOut))
@@ -123,6 +125,7 @@
         [Test]
         public void AssignsOutAndRefParametersLazily_with_1_argument_should_throw_exception_when_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
             int fakeOut;
             A.CallTo(() => fake.RequestOfOne(out fakeOut))
@@ -191,6 +194,7 @@
         [Test]
         public void AssignsOutAndRefParametersLazily_with_2_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
             int fakeOut;
             A.CallTo(() => fake.RequestOfThree(A<int>._, A<int>._, out fakeOut))
@@ -205,6 +209,7 @@
         [Test]
         public void AssignsOutAndRefParametersLazily_with_2_arguments_should_throw_exception_when_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
             int fakeOut;
             A.CallTo(() => fake.RequestOfTwo(A<int>._, out fakeOut))
@@ -281,6 +286,7 @@
         [Test]
         public void AssignsOutAndRefParametersLazily_with_3_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
             int fakeOut;
             A.CallTo(() => fake.RequestOfFour(A<int>._, A<int>._, A<int>._, out fakeOut))
@@ -295,6 +301,7 @@
         [Test]
         public void AssignsOutAndRefParametersLazily_with_3_arguments_should_throw_exception_when_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
             int fakeOut;
             A.CallTo(() => fake.RequestOfThree(A<int>._, A<int>._, out fakeOut))
@@ -379,6 +386,7 @@
         [Test]
         public void AssignsOutAndRefParametersLazily_with_4_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
             int fakeOut;
             A.CallTo(() => fake.RequestOfTwo(A<int>._, out fakeOut))
@@ -393,6 +401,7 @@
         [Test]
         public void AssignsOutAndRefParametersLazily_with_4_arguments_should_throw_exception_when_type_does_not_match()
         {
+            // Arrange
             var fake = A.Fake<IInterface>();
             int fakeOut;
             A.CallTo(() => fake.RequestOfFour(A<int>._, A<int>._, A<int>._, out fakeOut))
@@ -408,9 +417,11 @@
         {
             // Arrange
             var expectedMessage = "The faked method has the signature " + fakeSignature + ", but assigns out and ref parameters lazily was used with " + outAndRefSignature + ".";
-            
+
+            // Act
             var exception = Record.Exception(act);
 
+            // Assert
             exception.Should().BeOfType<FakeConfigurationException>();
             exception.Message.Should().Be(expectedMessage);
         }
