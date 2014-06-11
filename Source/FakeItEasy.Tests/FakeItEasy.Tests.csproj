@@ -87,6 +87,7 @@
     <Compile Include="ArgumentConstraintManagerExtensions\StringEndsWithTests.cs" />
     <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
     <Compile Include="DefaultBootstrapperTests.cs" />
+    <Compile Include="OutAndRefParametersConfigurationExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
     <Compile Include="AutoInitializedFixture.cs" />
