@@ -72,6 +72,7 @@
     <Compile Include="FixtureInitializationSpecs.cs" />
     <Compile Include="FakingDelegates.cs" />
     <Compile Include="CallMatchingSpecs.cs" />
+    <Compile Include="AssignsOutAndRefParametersSpecs.cs" />
     <Compile Include="PropertySpecs.cs" />
     <Compile Include="StrictFakeSpecs.cs" />
   </ItemGroup>
