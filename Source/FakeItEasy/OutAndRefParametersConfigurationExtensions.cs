@@ -19,7 +19,8 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="values">The values.</param>
         /// <returns>A configuration object.</returns>
-        public static IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(this IOutAndRefParametersConfiguration configuration, params object[] values)
+        public static IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(
+            this IOutAndRefParametersConfiguration configuration, params object[] values)
         {
             Guard.AgainstNull(configuration, "configuration");
             Guard.AgainstNull(values, "values");
@@ -37,15 +38,18 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the output values.</param>
         /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
-        public static IAfterCallSpecifiedConfiguration
-            AssignsOutAndRefParametersLazily<T1>(this IOutAndRefParametersConfiguration configuration, Func<T1, object[]> valueProducer)
+        /// <exception cref="FakeConfigurationException">
+        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+        /// </exception>
+        public static IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1>(
+            this IOutAndRefParametersConfiguration configuration, Func<T1, object[]> valueProducer)
         {
             Guard.AgainstNull(configuration, "configuration");
 
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                    call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
 
                 return valueProducer(call.GetArgument<T1>(0));
             });
@@ -62,15 +66,19 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the output values.</param>
         /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+        /// <exception cref="FakeConfigurationException">
+        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+        /// </exception>
         public static IAfterCallSpecifiedConfiguration
-            AssignsOutAndRefParametersLazily<T1, T2>(this IOutAndRefParametersConfiguration configuration, Func<T1, T2, object[]> valueProducer)
+            AssignsOutAndRefParametersLazily<T1, T2>(
+            this IOutAndRefParametersConfiguration configuration, Func<T1, T2, object[]> valueProducer)
         {
             Guard.AgainstNull(configuration, "configuration");
 
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                    call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
 
                 return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
             });
@@ -88,15 +96,19 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the output values.</param>
         /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+        /// <exception cref="FakeConfigurationException">
+        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+        /// </exception>
         public static IAfterCallSpecifiedConfiguration
-            AssignsOutAndRefParametersLazily<T1, T2, T3>(this IOutAndRefParametersConfiguration configuration, Func<T1, T2, T3, object[]> valueProducer)
+            AssignsOutAndRefParametersLazily<T1, T2, T3>(
+            this IOutAndRefParametersConfiguration configuration, Func<T1, T2, T3, object[]> valueProducer)
         {
             Guard.AgainstNull(configuration, "configuration");
 
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                    call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
 
                 return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
             });
@@ -115,17 +127,21 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the output values.</param>
         /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
-        public static IAfterCallSpecifiedConfiguration
-            AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(this IOutAndRefParametersConfiguration configuration, Func<T1, T2, T3, T4, object[]> valueProducer)
+        /// <exception cref="FakeConfigurationException">
+        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+        /// </exception>
+        public static IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(
+            this IOutAndRefParametersConfiguration configuration, Func<T1, T2, T3, T4, object[]> valueProducer)
         {
             Guard.AgainstNull(configuration, "configuration");
 
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                    call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
+                return valueProducer(
+                    call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
             });
         }
     }
