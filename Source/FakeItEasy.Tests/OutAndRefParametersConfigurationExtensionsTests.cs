@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Threading.Tasks;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
@@ -47,7 +46,9 @@
             // Arrange
             var expectedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration>();
             var config = A.Fake<IOutAndRefParametersConfiguration>();
-            A.CallTo(() => config.AssignsOutAndRefParametersLazily(A<Func<IFakeObjectCall, ICollection<object>>>.That.Matches(x => (int)x.Invoke(null).First() == 10))).Returns(expectedConfig);
+            A.CallTo(() => config.AssignsOutAndRefParametersLazily(
+                    A<Func<IFakeObjectCall, ICollection<object>>>.That.Matches(x => (int)x.Invoke(null).First() == 10)))
+                .Returns(expectedConfig);
 
             // Act
             var returned = config.AssignsOutAndRefParameters(10);
@@ -122,7 +123,12 @@
             int fakeOut;
             A.CallTo(() => fake.RequestOfTwo(5, out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((int io) => { throw new InvalidOperationException("assigns out and ref parameters lazily action should not be executed"); });
+                .AssignsOutAndRefParametersLazily((int io) =>
+                {
+                    throw new InvalidOperationException(
+                        "assigns out and ref parameters lazily action should not be executed");
+                });
+
             Action act = () => fake.RequestOfTwo(5, out fakeOut);
 
             // Act, Assert
@@ -137,7 +143,12 @@
             int fakeOut;
             A.CallTo(() => fake.RequestOfOne(out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((string s) => { throw new InvalidOperationException("assigns out and ref parameters lazily action should not be executed"); });
+                .AssignsOutAndRefParametersLazily((string s) =>
+                {
+                    throw new InvalidOperationException(
+                        "assigns out and ref parameters lazily action should not be executed");
+                });
+
             Action act = () => fake.RequestOfOne(out fakeOut);
 
             // Act, Assert
@@ -206,11 +217,17 @@
             int fakeOut;
             A.CallTo(() => fake.RequestOfThree(A<int>._, A<int>._, out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((int i, int io) => { throw new InvalidOperationException("assigns out and ref parameters lazily action should not be executed"); });
+                .AssignsOutAndRefParametersLazily((int i, int io) =>
+                {
+                    throw new InvalidOperationException(
+                        "assigns out and ref parameters lazily action should not be executed");
+                });
+
             Action act = () => fake.RequestOfThree(5, 8, out fakeOut);
 
             // Act, Assert
-            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32&)", "(System.Int32, System.Int32)");
+            AssertThatSignatureMismatchExceptionIsThrown(
+                act, "(System.Int32, System.Int32, System.Int32&)", "(System.Int32, System.Int32)");
         }
 
         [Test]
@@ -221,11 +238,17 @@
             int fakeOut;
             A.CallTo(() => fake.RequestOfTwo(A<int>._, out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((string s, int io) => { throw new InvalidOperationException("assigns out and ref parameters lazily action should not be executed"); });
+                .AssignsOutAndRefParametersLazily((string s, int io) =>
+                {
+                    throw new InvalidOperationException(
+                        "assigns out and ref parameters lazily action should not be executed");
+                });
+
             Action act = () => fake.RequestOfTwo(5, out fakeOut);
 
             // Act, Assert
-            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32&)", "(System.String, System.Int32)");
+            AssertThatSignatureMismatchExceptionIsThrown(
+                act, "(System.Int32, System.Int32&)", "(System.String, System.Int32)");
         }
 
         [Test]
@@ -298,11 +321,19 @@
             int fakeOut;
             A.CallTo(() => fake.RequestOfFour(A<int>._, A<int>._, A<int>._, out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((int i1, int i2, int io) => { throw new InvalidOperationException("assigns out and ref parameters lazily action should not be executed"); });
+                .AssignsOutAndRefParametersLazily((int i1, int i2, int io) =>
+                {
+                    throw new InvalidOperationException(
+                        "assigns out and ref parameters lazily action should not be executed");
+                });
+
             Action act = () => fake.RequestOfFour(5, 8, 9, out fakeOut);
 
             // Act, Assert
-            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32&)", "(System.Int32, System.Int32, System.Int32)");
+            AssertThatSignatureMismatchExceptionIsThrown(
+                act,
+                "(System.Int32, System.Int32, System.Int32, System.Int32&)",
+                "(System.Int32, System.Int32, System.Int32)");
         }
 
         [Test]
@@ -313,11 +344,17 @@
             int fakeOut;
             A.CallTo(() => fake.RequestOfThree(A<int>._, A<int>._, out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((string s1, string s2, int io) => { throw new InvalidOperationException("assigns out and ref parameters lazily action should not be executed"); });
+                .AssignsOutAndRefParametersLazily((string s1, string s2, int io) =>
+                {
+                    throw new InvalidOperationException(
+                        "assigns out and ref parameters lazily action should not be executed");
+                });
+
             Action act = () => fake.RequestOfThree(5, 8, out fakeOut);
 
             // Act, Assert
-            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32&)", "(System.String, System.String, System.Int32)");
+            AssertThatSignatureMismatchExceptionIsThrown(
+                act, "(System.Int32, System.Int32, System.Int32&)", "(System.String, System.String, System.Int32)");
         }
 
         [Test]
@@ -398,11 +435,17 @@
             int fakeOut;
             A.CallTo(() => fake.RequestOfTwo(A<int>._, out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((int i1, int i2, int i3, int io) => { throw new InvalidOperationException("assigns out and ref parameters lazily action should not be executed"); });
+                .AssignsOutAndRefParametersLazily((int i1, int i2, int i3, int io) =>
+                {
+                    throw new InvalidOperationException(
+                        "assigns out and ref parameters lazily action should not be executed");
+                });
+
             Action act = () => fake.RequestOfTwo(5, out fakeOut);
 
             // Act, Assert
-            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32&)", "(System.Int32, System.Int32, System.Int32, System.Int32)");
+            AssertThatSignatureMismatchExceptionIsThrown(
+                act, "(System.Int32, System.Int32&)", "(System.Int32, System.Int32, System.Int32, System.Int32)");
         }
 
         [Test]
@@ -413,17 +456,31 @@
             int fakeOut;
             A.CallTo(() => fake.RequestOfFour(A<int>._, A<int>._, A<int>._, out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((string s1, string s2, string s3, int io) => { throw new InvalidOperationException("assigns out and ref parameters lazily action should not be executed"); });
+                .AssignsOutAndRefParametersLazily((string s1, string s2, string s3, int io) =>
+                {
+                    throw new InvalidOperationException(
+                        "assigns out and ref parameters lazily action should not be executed");
+                });
+            
             Action act = () => fake.RequestOfFour(5, 8, 4, out fakeOut);
 
             // Act, Assert
-            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32&)", "(System.String, System.String, System.String, System.Int32)");
+            AssertThatSignatureMismatchExceptionIsThrown(
+                act,
+                "(System.Int32, System.Int32, System.Int32, System.Int32&)",
+                "(System.String, System.String, System.String, System.Int32)");
         }
 
-        private static void AssertThatSignatureMismatchExceptionIsThrown(Action act, string fakeSignature, string outAndRefSignature)
+        private static void AssertThatSignatureMismatchExceptionIsThrown(
+            Action act, string fakeSignature, string outAndRefSignature)
         {
             // Arrange
-            var expectedMessage = "The faked method has the signature " + fakeSignature + ", but assigns out and ref parameters lazily was used with " + outAndRefSignature + ".";
+            var expectedMessage =
+                "The faked method has the signature " +
+                fakeSignature +
+                ", but assigns out and ref parameters lazily was used with " +
+                outAndRefSignature +
+                ".";
 
             // Act
             var exception = Record.Exception(act);
