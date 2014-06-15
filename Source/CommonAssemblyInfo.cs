@@ -5,9 +5,9 @@ using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("1.22.0")]
-[assembly: AssemblyFileVersion("1.22.0")]
-[assembly: AssemblyInformationalVersion("1.22.0")]
+[assembly: AssemblyVersion("999.999.999")]
+[assembly: AssemblyFileVersion("999.999.999")]
+[assembly: AssemblyInformationalVersion("999.999.999")]
 
 [assembly: AssemblyCompany("Patrik Hägne")]
 [assembly: AssemblyProduct("FakeItEasy")]
