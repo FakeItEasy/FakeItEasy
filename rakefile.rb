@@ -44,9 +44,12 @@ release_issue_body = <<-eos
 - [ ] tweet, mentioning contributors and post link as comment here for easy retweeting ;-)
 - [ ] post tweet in JabbR ([fakeiteasy][1] and [general-chat][2]) and Gitter ([FakeItEasy/FakeItEasy][3])
 - [ ] post links to the NuGet and GitHub release in each issue in this milestone, with thanks to contributors
-- [ ] use `rake set_version[new_version]` to change CommonAssemblyInfo.cs to expected minor version (of form _xx.yy.zz_)
-- [ ] push to origin branch, create PR to upstream master
-- [ ] use `rake create_milestone[new_version]` to
+- [ ] use `rake set_version[new_version]` to 
+    - create a new branch
+    - change CommonAssemblyInfo.cs to expected minor version (of form _xx.yy.zz_)
+    - push to origin
+    - create PR to upstream master
+- [ ] use `rake create_milestone` to
     - create a new milestone for the next release
     - create new issue (like this one) for the next release, adding it to the new milestone
     - create a new draft GitHub Release 
@@ -97,14 +100,59 @@ msbuild :clean do |msb|
 end
 
 desc "Update version number"
-assemblyinfo :set_version, :new_version do |asm, args|
-  net_version = args.new_version.split(/[^\d.]/, 2).first
+task :set_version, :new_version do |asm, args|
+  current_branch = `git rev-parse --abbrev-ref HEAD`.strip()
+  
+  if current_branch != 'master'
+    fail("ERROR: Current branch is '#{current_branch}'. Must be on branch 'master' to set new version.")
+  end if
+
+  new_version = args.new_version
+  new_branch = "set-version-to-" + new_version
+
+  require 'octokit'
+
+  ssl_cert_file = get_temp_ssl_cert_file(ssl_cert_file_url)
+
+  client = Octokit::Client.new(:netrc => true)
+
+  puts "Creating branch '#{new_branch}'..."
+  `git checkout -b #{new_branch}`
+  puts "Created branch '#{new_branch}'."
+
+  puts "Setting version to '#{new_version}' in '#{assemblyinfo}'..."
+  Rake::Task["set_version_in_assemblyinfo"].invoke(new_version)
+  puts "Set version to '#{new_version}' in '#{assembly_info}'."
+
+  puts "Committing '#{assembly_info}'..."
+  `git commit -m "setting version to #{new_version}" #{assembly_info}`
+  puts "Committed '#{assembly_info}'."
+
+  puts "Pushing '#{new_branch}' to origin..."
+  `git push origin #{new_branch}"`
+  puts "Pushed '#{new_branch}' to origin."
+
+  puts "Creating pull request..."
+  pull_request = client.create_pull_request(
+    repo,
+    "master",
+    "#{client::user.login}:#{new_branch}",
+    "set version to #{new_version} for next release",
+    "preparing for #{new_version}"
+  )
+  puts "Created pull request \##{pull_request.number} '#{pull_request.title}'."
+end
+
+desc "Update assembly info"
+assemblyinfo :set_version_in_assemblyinfo, :new_version do |asm, args|
+  new_version = args.new_version
+  net_version = new_version.split(/[^\d.]/, 2).first
   
   # not using asm.version and asm.file_version due to StyleCop violations
   asm.custom_attributes = {
     :AssemblyVersion => net_version,
     :AssemblyFileVersion => net_version,
-    :AssemblyInformationalVersion => args.new_version
+    :AssemblyInformationalVersion => new_version
   }
   asm.input_file = assembly_info
   asm.output_file = assembly_info
@@ -148,22 +196,22 @@ exec :pack => [:build, :create_output_folder] do |cmd|
 end
 
 desc "create new milestone, release issue and release"
-task :create_milestone, :milestone_version do |t, args|
+task :create_milestone do |t|
   require 'octokit'
 
   ssl_cert_file = get_temp_ssl_cert_file(ssl_cert_file_url)
 
   client = Octokit::Client.new(:netrc => true)
 
-  release_description = args.milestone_version + ' release'
+  release_description = version + ' release'
 
-  puts "Creating milestone '#{args.milestone_version}'..."
+  puts "Creating milestone '#{version}'..."
   milestone = client.create_milestone(
     repo,
-    args.milestone_version,
+    version,
     :description => release_description
     )
-  puts "Created milestone '#{args.milestone_version}'."
+  puts "Created milestone '#{version}'."
 
   puts "Creating issue '#{release_description}'..."
   issue = client.create_issue(
@@ -175,15 +223,15 @@ task :create_milestone, :milestone_version do |t, args|
     )
   puts "Created issue \##{issue.number} '#{release_description}'."
 
-  puts "Creating release '#{args.milestone_version}'..."
+  puts "Creating release '#{version}'..."
   client.create_release(
     repo,
-    args.milestone_version,
-    :name => args.milestone_version,
+    version,
+    :name => version,
     :draft => true,
     :body => release_body
     )
-  puts "Created release '#{args.milestone_version}'."
+  puts "Created release '#{version}'."
 end
 
 def print_vars(variables)
