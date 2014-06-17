@@ -24,6 +24,8 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
         protected override void CreateConstraint(IArgumentConstraintManager<string> scope)
         {
+            FakeItEasy.Guard.AgainstNull(scope, "scope");
+
             scope.Matches(x => x == null || x == "foo", x => x.Write("string that is \"foo\" or is empty"));
         }
     }
