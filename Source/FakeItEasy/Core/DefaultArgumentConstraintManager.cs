@@ -71,7 +71,7 @@
 
             bool IArgumentConstraint.IsValid(object argument)
             {
-                return this.predicate.Invoke((T)argument);
+                return (argument == null || argument is T) && this.predicate.Invoke((T)argument);
             }
         }
     }
