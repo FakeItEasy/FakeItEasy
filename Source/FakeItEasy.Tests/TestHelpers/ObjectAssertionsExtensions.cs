@@ -11,7 +11,7 @@
     public static class ObjectAssertionsExtensions
     {
         /// <summary>
-        /// Verifies that the passed-in assertion refers to a <see cref="ReferenceTypeAssertions.Subject"/>
+        /// Verifies that the passed-in assertion refers to a <see cref="ReferenceTypeAssertions{TSubject, TAssertions}.Subject"/>
         /// that is not null and matches the expected type.
         /// </summary>
         /// <typeparam name="TExpectedException">The expected exception type.</typeparam>
@@ -23,7 +23,7 @@
             Guard.AgainstNull(assertion, "assertion");
 
             assertion
-                .NotBeNull().And
+                .NotBeNull("because it must be a valid exception").And
                 .BeOfType<TExpectedException>();
 
             var exception = (TExpectedException)assertion.Subject;
@@ -31,7 +31,7 @@
         }
 
         /// <summary>
-        /// A convenient extension so we can access the <see cref="ExceptionAssertions"/> constructor.
+        /// A convenient extension so we can access the <see cref="ExceptionAssertions{TException}"/> constructor.
         /// </summary>
         /// <typeparam name="TException">The type of exception to require.</typeparam>
         private class MyExceptionAssertions<TException> : ExceptionAssertions<TException> where TException : Exception

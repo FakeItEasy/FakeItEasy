@@ -97,6 +97,35 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
+        public void Should_fail_when_calls_to_same_method_on_different_instances_did_not_happen_in_specified_order()
+        {
+            // Arrange
+            Exception exception;
+
+            using (var scope = Fake.CreateScope())
+            {
+                var fooOne = A.Fake<IFoo>();
+                var fooTwo = A.Fake<IFoo>();
+
+                // Act
+                fooOne.Bar();
+                fooTwo.Bar();
+
+                exception = Record.Exception(() =>
+                {
+                    using (scope.OrderedAssertions())
+                    {
+                        A.CallTo(() => fooTwo.Bar()).MustHaveHappened();
+                        A.CallTo(() => fooOne.Bar()).MustHaveHappened();
+                    }
+                });
+            }
+
+            // Assert
+            exception.Should().BeAnExceptionOfType<ExpectationException>();
+        }
+
+        [Test]
         public void Should_throw_when_starting_new_ordered_assertions_scope_when_one_is_already_opened()
         {
             // Arrange
