@@ -3,7 +3,6 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using FakeItEasy.Core;
 
     internal class RuleBuilder
@@ -188,7 +187,8 @@ namespace FakeItEasy.Configuration
 
             public bool Matches(IFakeObjectCall call)
             {
-                return this.builder.RuleBeingBuilt.IsApplicableTo(call);
+                return this.builder.RuleBeingBuilt.IsApplicableTo(call) &&
+                       ReferenceEquals(this.builder.manager.Object, call.FakedObject);
             }
 
             public override string ToString()
