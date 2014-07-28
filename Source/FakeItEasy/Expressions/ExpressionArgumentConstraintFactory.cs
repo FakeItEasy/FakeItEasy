@@ -23,6 +23,11 @@
                 return this.CreateParamArrayConstraint((NewArrayExpression)argument.Expression);
             }
 
+            if (IsOutArgument(argument))
+            {
+                return new OutArgumentConstraint();
+            }
+
             return this.GetArgumentConstraintFromExpression(argument.Expression);
         }
 
@@ -39,6 +44,11 @@
         private static bool IsTaggedWithParamArrayAttribute(ParsedArgumentExpression argument)
         {
             return argument.ArgumentInformation.GetCustomAttributes(typeof(ParamArrayAttribute), true).Any();
+        }
+
+        private static bool IsOutArgument(ParsedArgumentExpression argument)
+        {
+            return argument.ArgumentInformation.IsOut;
         }
 
         private static IArgumentConstraint CreateEqualityConstraint(object expressionValue)

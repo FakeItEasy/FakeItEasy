@@ -89,6 +89,7 @@
     <Compile Include="Core\AssemblyExtensions.cs" />
     <Compile Include="Core\BootstrapperLocator.cs" />
     <Compile Include="DefaultBootstrapper.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\OutArgumentConstraint.cs" />
     <Compile Include="IBootstrapper.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />

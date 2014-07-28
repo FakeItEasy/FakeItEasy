@@ -489,6 +489,9 @@
     <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs">
       <Link>Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\OutArgumentConstraint.cs">
+      <Link>Expressions\ArgumentConstraints\OutArgumentConstraint.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Expressions\CallExpressionParser.cs">
       <Link>Expressions\CallExpressionParser.cs</Link>
     </Compile>

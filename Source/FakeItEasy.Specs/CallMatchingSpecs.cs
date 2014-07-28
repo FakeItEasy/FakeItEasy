@@ -1,6 +1,8 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using FluentAssertions;
     using Machine.Specifications;
@@ -147,5 +149,63 @@
         public class Generic<T>
         {
         }
+    }
+
+    public class when_matching_a_call_with_an_out_parameter
+    {
+        private static IDictionary<string, string> subject;
+
+        private Establish context = () =>
+        {
+            subject = A.Fake<IDictionary<string, string>>();
+        };
+
+        private Because of =
+            () =>
+            {
+                string outString = "a constraint string";
+                A.CallTo(() => subject.TryGetValue("any key", out outString))
+                    .Returns(true);
+            };
+
+        private It should_match_without_regard_to_out_parameter_value = () =>
+        {
+            string outString = "a different string";
+
+            subject.TryGetValue("any key", out outString)
+                .Should().BeTrue();
+        };
+    }
+
+    public class when_failing_to_match_a_call_with_an_out_parameter
+    {
+        private static Exception exception;
+
+        private static IDictionary<string, string> subject;
+
+        private Establish context = () =>
+        {
+            subject = A.Fake<IDictionary<string, string>>();
+        };
+
+        private Because of =
+            () =>
+            {
+                string outString = null;
+
+                exception =
+                    Catch.Exception(
+                        () => A.CallTo(() => subject.TryGetValue("any key", out outString))
+                            .MustHaveHappened());
+            };
+
+        private It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
+            @"
+
+  Assertion failed for the following call:
+    System.Collections.Generic.IDictionary`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]].TryGetValue(""any key"", <out parameter>)
+  Expected to find it at least once but no calls were made to the fake object.
+
+");
     }
 }
