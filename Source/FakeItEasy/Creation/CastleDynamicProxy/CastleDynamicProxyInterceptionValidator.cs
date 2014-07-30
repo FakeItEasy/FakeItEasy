@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.Creation.CastleDynamicProxy
 {
+    using System;
     using System.Linq;
     using System.Reflection;
     using Core;
@@ -23,6 +24,11 @@
 
         private static string GetReasonForWhyMethodCanNotBeIntercepted(MethodInfo method)
         {
+            if (IsDynamicProxyType(method.DeclaringType))
+            {
+                return null;
+            }
+
             if (method.IsFinal)
             {
                 var explicitImplementation = method.Name.Contains('.');
@@ -49,20 +55,34 @@
                 return "Non virtual methods can not be intercepted.";
             }
 
+            if (!Castle.DynamicProxy.Internal.InternalsUtil.IsAccessible(method))
+            {
+                return string.Concat(
+                    "Methods not accessible to ",
+                    Castle.DynamicProxy.ModuleScope.DEFAULT_ASSEMBLY_NAME,
+                    " can not be intercepted.");
+            }
+
             return null;
+        }
+
+        private static bool IsDynamicProxyType(Type declaringType)
+        {
+            return declaringType != null &&
+                   declaringType.Assembly.Name() == Castle.DynamicProxy.ModuleScope.DEFAULT_ASSEMBLY_NAME;
         }
 
         private MethodInfo GetInvokedMethod(MethodInfo method, object callTarget)
         {
-            var invokedMehtod = method;
+            var invokedMethod = method;
 
             if (callTarget != null)
             {
-                invokedMehtod = this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(
+                invokedMethod = this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(
                     callTarget.GetType(), method);
             }
 
-            return invokedMehtod;
+            return invokedMethod;
         }
     }
 }
