@@ -187,6 +187,8 @@ namespace FakeItEasy.Configuration
 
             public bool Matches(IFakeObjectCall call)
             {
+                Guard.AgainstNull(call, "call");
+
                 return this.builder.RuleBeingBuilt.IsApplicableTo(call) &&
                        ReferenceEquals(this.builder.manager.Object, call.FakedObject);
             }
