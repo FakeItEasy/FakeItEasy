@@ -175,6 +175,15 @@
             subject.TryGetValue("any key", out outString)
                 .Should().BeTrue();
         };
+
+        private It should_assign_the_constraint_value_to_the_out_parameter = () =>
+        {
+            string outString = "a different string";
+
+            subject.TryGetValue("any key", out outString);
+
+            outString.Should().Be("a constraint string");
+        };
     }
 
     public class when_failing_to_match_a_call_with_an_out_parameter
