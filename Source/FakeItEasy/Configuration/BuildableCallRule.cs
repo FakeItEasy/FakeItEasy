@@ -36,7 +36,7 @@ namespace FakeItEasy.Configuration
         /// <summary>
         /// Gets or sets a function that provides values to apply to output and reference variables.
         /// </summary>
-        public virtual Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProducer { get; set; }
+        public Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProducer { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the base method of the fake object call should be

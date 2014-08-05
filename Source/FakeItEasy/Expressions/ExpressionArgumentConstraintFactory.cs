@@ -25,10 +25,18 @@
 
             if (IsOutArgument(argument))
             {
-                return new OutArgumentConstraint();
+                return new OutArgumentConstraint(argument.Value);
             }
 
-            return this.GetArgumentConstraintFromExpression(argument.Expression);
+            var constraint = this.GetArgumentConstraintFromExpression(argument.Expression);
+
+            if (IsRefArgument(argument))
+            {
+                var equalityArgumentConstraint = (EqualityArgumentConstraint)constraint;
+                constraint = new RefArgumentConstraint(equalityArgumentConstraint);
+            }
+
+            return constraint;
         }
 
         private static IArgumentConstraint TryCreateConstraintFromTrappedConstraints(ICollection<IArgumentConstraint> trappedConstraints)
@@ -49,6 +57,11 @@
         private static bool IsOutArgument(ParsedArgumentExpression argument)
         {
             return argument.ArgumentInformation.IsOut;
+        }
+
+        private static bool IsRefArgument(ParsedArgumentExpression argument)
+        {
+            return argument.ArgumentInformation.ParameterType.IsByRef;
         }
 
         private static IArgumentConstraint CreateEqualityConstraint(object expressionValue)

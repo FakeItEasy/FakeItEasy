@@ -7,6 +7,7 @@
     using System.Reflection;
     using System.Text;
     using FakeItEasy.Core;
+    using FakeItEasy.Expressions.ArgumentConstraints;
 
     /// <summary>
     /// Handles the matching of fake object calls to expressions.
@@ -84,6 +85,26 @@
 
             var numberOfValdiators = this.argumentConstraints.Count();
             this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValdiators);
+        }
+
+        public Func<IFakeObjectCall, ICollection<object>> GetOutAndRefParametersValueProducer()
+        {
+            var values = new List<object>();
+            foreach (var constraint in this.argumentConstraints)
+            {
+                var valueProvidingConstraint = constraint as IArgumentValueProvider;
+                if (valueProvidingConstraint != null)
+                {
+                    values.Add(valueProvidingConstraint.Value);
+                }
+            }
+
+            if (values.Any())
+            {
+                return call => values;
+            }
+
+            return null;
         }
 
         private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<ParsedArgumentExpression> argumentExpressions, ExpressionArgumentConstraintFactory constraintFactory)
