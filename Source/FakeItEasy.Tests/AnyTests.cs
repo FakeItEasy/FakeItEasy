@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests
     public class AnyTests
         : ConfigurableServiceLocatorTestBase
     {
+#pragma warning disable 618
         [Test]
         public void Static_equals_delegates_to_static_method_on_object()
         {
@@ -19,6 +20,7 @@ namespace FakeItEasy.Tests
 
             Assert.That(Any.ReferenceEquals(s, s), Is.True);
         }
+#pragma warning restore 618
 
         protected override void OnSetup()
         {

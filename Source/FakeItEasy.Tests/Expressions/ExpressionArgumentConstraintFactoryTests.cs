@@ -33,7 +33,10 @@
         {
             // Arrange
             var constraint = A.Dummy<IArgumentConstraint>();
+
+#pragma warning disable 618
             Any.CallTo(this.trapper).WithReturnType<IEnumerable<IArgumentConstraint>>().Returns(new[] { constraint });
+#pragma warning restore 618
 
             // Act
             var result = this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.BuildWithDefaults());
