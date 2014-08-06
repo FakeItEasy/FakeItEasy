@@ -23,7 +23,19 @@
                 return this.CreateParamArrayConstraint((NewArrayExpression)argument.Expression);
             }
 
-            return this.GetArgumentConstraintFromExpression(argument.Expression);
+            if (IsOutArgument(argument))
+            {
+                return new OutArgumentConstraint(argument.Value);
+            }
+
+            var constraint = this.GetArgumentConstraintFromExpression(argument.Expression);
+
+            if (IsRefArgument(argument))
+            {
+                constraint = new RefArgumentConstraint(constraint, argument.Value);
+            }
+
+            return constraint;
         }
 
         private static IArgumentConstraint TryCreateConstraintFromTrappedConstraints(ICollection<IArgumentConstraint> trappedConstraints)
@@ -39,6 +51,16 @@
         private static bool IsTaggedWithParamArrayAttribute(ParsedArgumentExpression argument)
         {
             return argument.ArgumentInformation.GetCustomAttributes(typeof(ParamArrayAttribute), true).Any();
+        }
+
+        private static bool IsOutArgument(ParsedArgumentExpression argument)
+        {
+            return argument.ArgumentInformation.IsOut;
+        }
+
+        private static bool IsRefArgument(ParsedArgumentExpression argument)
+        {
+            return argument.ArgumentInformation.ParameterType.IsByRef;
         }
 
         private static IArgumentConstraint CreateEqualityConstraint(object expressionValue)

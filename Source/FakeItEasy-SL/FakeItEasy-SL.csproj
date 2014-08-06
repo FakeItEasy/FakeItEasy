@@ -129,6 +129,15 @@
     <Compile Include="..\FakeItEasy\ExpressionExtensions.cs">
       <Link>ExpressionExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\IArgumentValueProvider.cs">
+      <Link>Expressions\ArgumentConstraints\IArgumentValueProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\OutArgumentConstraint.cs">
+      <Link>Expressions\ArgumentConstraints\OutArgumentConstraint.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\RefArgumentConstraint.cs">
+      <Link>Expressions\ArgumentConstraints\RefArgumentConstraint.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\ExtensionSyntax\Full\ObjectExtensions.cs">
       <Link>ExtensionSyntax\Full\ObjectExtensions.cs</Link>
     </Compile>
@@ -712,7 +721,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
+      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="AfterBuild">
