@@ -3,7 +3,6 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using Core;
 
     /// <summary>
@@ -25,7 +24,7 @@ namespace FakeItEasy.Configuration
         /// Gets or sets an action that is called by the Apply method to apply this
         /// rule to a fake object call.
         /// </summary>
-        public virtual Action<IInterceptedFakeObjectCall> Applicator { get; set; }
+        public Action<IInterceptedFakeObjectCall> Applicator { get; set; }
 
         /// <summary>
         /// Gets a collection of actions that should be invoked when the configured
@@ -42,7 +41,7 @@ namespace FakeItEasy.Configuration
         /// Gets or sets a value indicating whether the base method of the fake object call should be
         /// called when the fake object call is made.
         /// </summary>
-        public virtual bool CallBaseMethod { get; set; }
+        public bool CallBaseMethod { get; set; }
 
         /// <summary>
         /// Gets or sets the number of times the configured rule should be used.

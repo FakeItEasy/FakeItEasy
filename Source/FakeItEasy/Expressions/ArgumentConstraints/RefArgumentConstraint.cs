@@ -4,32 +4,27 @@
 
     internal class RefArgumentConstraint : IArgumentConstraint, IArgumentValueProvider
     {
-        private readonly EqualityArgumentConstraint baseConstraint;
+        private readonly IArgumentConstraint baseConstraint;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RefArgumentConstraint" /> class by
-        /// wrapping an existing <see cref="IArgumentConstraint"/>. <see cref="Value"/> will be provided
-        /// by the <paramref name="baseConstraint"/>'s <see cref="EqualityArgumentConstraint.ExpectedValue"/>
+        /// wrapping an existing <see cref="IArgumentConstraint"/>.
         /// </summary>
         /// <param name="baseConstraint">The original constraint, which will be used for argument validation.</param>
-        public RefArgumentConstraint(EqualityArgumentConstraint baseConstraint)
+        /// <param name="value">The value to be used when implicitly assigning values to a call's ref parameter.</param>
+        public RefArgumentConstraint(IArgumentConstraint baseConstraint, object value)
         {
             Guard.AgainstNull(baseConstraint, "baseConstraint");
 
             this.baseConstraint = baseConstraint;
+            this.Value = value;
         }
 
         /// <summary>
         /// Gets the value that was used when specifying the constraint.
-        /// Used for implicit assignment of out parameter values, not for matching.
-        /// Since the called method has no access to the incoming parameter value,
-        /// there's no use in accepting or rejecting calls based on the 
-        /// incoming parameter value.
+        /// Used for implicit assignment of ref parameter values.
         /// </summary>
-        public object Value
-        {
-            get { return this.baseConstraint.ExpectedValue; }
-        }
+        public object Value { get; private set; }
 
         public void WriteDescription(IOutputWriter writer)
         {

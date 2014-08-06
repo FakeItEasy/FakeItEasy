@@ -32,8 +32,7 @@
 
             if (IsRefArgument(argument))
             {
-                var equalityArgumentConstraint = (EqualityArgumentConstraint)constraint;
-                constraint = new RefArgumentConstraint(equalityArgumentConstraint);
+                constraint = new RefArgumentConstraint(constraint, argument.Value);
             }
 
             return constraint;
