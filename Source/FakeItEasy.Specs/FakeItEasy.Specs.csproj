@@ -74,6 +74,7 @@
     <Compile Include="CallMatchingSpecs.cs" />
     <Compile Include="AssignsOutAndRefParametersSpecs.cs" />
     <Compile Include="PropertySpecs.cs" />
+    <Compile Include="CallsBaseMethodsFakeSpecs.cs" />
     <Compile Include="StrictFakeSpecs.cs" />
   </ItemGroup>
   <ItemGroup>

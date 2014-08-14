@@ -21,13 +21,28 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(options, "options");
 
-            Action<IFakeObjectCall> thrower = c =>
+            Action<IFakeObjectCall> thrower = call =>
                 {
-                    throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(c.Method.Name));
+                    throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(call.Method.Name));
                 };
 
             return options.OnFakeCreated(
-                x => A.CallTo(x).Invokes(thrower));
+                fake => A.CallTo(fake).Invokes(thrower));
+        }
+
+        /// <summary>
+        /// Makes the fake default to calling base methods, so long as they aren't abstract.
+        /// </summary>
+        /// <typeparam name="T">The type of fake object.</typeparam>
+        /// <param name="options">The configuration.</param>
+        /// <returns>A configuration object.</returns>
+        public static IFakeOptionsBuilder<T> CallsBaseMethods<T>(this IFakeOptionsBuilder<T> options)
+        {
+            Guard.AgainstNull(options, "options");
+
+            return options.OnFakeCreated(fake => A.CallTo(fake)
+                                                  .Where(call => !call.Method.IsAbstract)
+                                                  .CallsBaseMethod());
         }
     }
 }
