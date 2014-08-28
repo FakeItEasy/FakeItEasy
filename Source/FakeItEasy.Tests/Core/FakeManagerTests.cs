@@ -46,7 +46,7 @@
             foo.SomethingHappened += listener;
             foo.SomethingHappened -= listener;
 
-            foo.SomethingHappened += Raise.With(EventArgs.Empty).Now;
+            foo.SomethingHappened += Raise.With(EventArgs.Empty);
 
             Assert.That(called, Is.False);
         }
@@ -423,7 +423,7 @@
             interceptingProxy.FakeManager.AttachProxy(typeof(FakedProxyWithManagerSpecified), interceptingProxy, eventRaiser);
 
             // Act
-            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
+            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall));
 
             // Assert
             A.CallTo(() => interceptedCall.SetReturnValue(false)).MustHaveHappened();
@@ -447,7 +447,7 @@
             interceptingProxy.FakeManager.AttachProxy(typeof(FakedProxyWithManagerSpecified), interceptingProxy, eventRaiser);
 
             // Act
-            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
+            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall));
 
             // Assert
             A.CallTo(() => interceptedCall.SetReturnValue(true)).MustHaveHappened();
@@ -518,7 +518,7 @@
 
             fake.AddRuleFirst(rule);
 
-            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(call)).Now;
+            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(call));
 
             A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).MustHaveHappened();
         }
@@ -654,7 +654,7 @@
             manager.AttachProxy(typeof(IFoo), A.Fake<IFoo>(), eventRaiser);
 
             // Act
-            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall)).Now;
+            eventRaiser.CallWasIntercepted += Raise.With(new CallInterceptedEventArgs(interceptedCall));
 
             // Assert
             A.CallTo(() => interceptedCall.SetReturnValue(expectedValue.Invoke(manager))).MustHaveHappened();
@@ -707,7 +707,7 @@
 
             public void RaiseCallIntercepted(CallInterceptedEventArgs eventArgs)
             {
-                this.raiser.CallWasIntercepted += Raise.With(eventArgs).Now;
+                this.raiser.CallWasIntercepted += Raise.With(eventArgs);
             }
         }
     }

@@ -42,6 +42,26 @@
         }
 
         /// <summary>
+        /// Converts a raiser into a <see cref="EventHandler{TEventArgs}"/>
+        /// </summary>
+        /// <param name="raiser">The raiser to convert.</param>
+        /// <returns>The new event handler</returns>
+        public static implicit operator EventHandler<TEventArgs>(Raise<TEventArgs> raiser)
+        {
+            return raiser.Now;
+        }
+
+        /// <summary>
+        /// Converts a raiser into a <see cref="EventHandler"/>
+        /// </summary>
+        /// <param name="raiser">The raiser to convert.</param>
+        /// <returns>The new event handler</returns>
+        public static implicit operator EventHandler(Raise<TEventArgs> raiser)
+        {
+            return raiser.NowNonGeneric;
+        }
+
+        /// <summary>
         /// Register this event handler to an event on a faked object in order to raise that event.
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
@@ -49,6 +69,16 @@
         [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "Must be visible to provide the event raising syntax.")]
         [SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "sender", Justification = "Unused parameter.")]
         public void Now(object sender, TEventArgs e)
+        {
+            throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
+        }
+
+        /// <summary>
+        /// Register this event handler to an event on a faked object in order to raise that event.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">Event args for the event.</param>
+        private void NowNonGeneric(object sender, EventArgs e)
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
         }

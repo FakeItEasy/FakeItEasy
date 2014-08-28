@@ -29,7 +29,7 @@
             object senderToUse = new object();
             
             // Act
-            this.foo.SomethingHappened += Raise.With(senderToUse, EventArgs.Empty).Now;
+            this.foo.SomethingHappened += Raise.With(senderToUse, EventArgs.Empty);
 
             // Assert
             this.sender.Should().Be(senderToUse);
@@ -42,7 +42,7 @@
             var arguments = new EventArgs();
 
             // Act
-            this.foo.SomethingHappened += Raise.With(this.foo, arguments).Now;
+            this.foo.SomethingHappened += Raise.With(this.foo, arguments);
 
             // Assert
             this.eventArguments.Should().BeSameAs(arguments);
@@ -54,7 +54,7 @@
             // Arrange
 
             // Act
-            this.foo.SomethingHappened += Raise.With(EventArgs.Empty).Now;
+            this.foo.SomethingHappened += Raise.With(EventArgs.Empty);
 
             // Assert
             this.sender.Should().BeSameAs(this.foo);
@@ -67,23 +67,10 @@
             var arguments = new EventArgs();
 
             // Act
-            this.foo.SomethingHappened += Raise.With(arguments).Now;
+            this.foo.SomethingHappened += Raise.With(arguments);
 
             // Assert
             this.eventArguments.Should().BeSameAs(arguments);
-        }
-
-        [Test]
-        public void Now_should_throw_when_called_directly()
-        {
-            // Arrange
-            var raiser = new Raise<EventArgs>(null, EventArgs.Empty);
-
-            // Act
-            var exception = Record.Exception(() => raiser.Now(null, null));
-
-            // Assert
-            exception.Should().BeAnExceptionOfType<NotSupportedException>();
         }
 
         [Test]
@@ -118,7 +105,7 @@
             this.foo = A.Fake<IFoo>();
 
             // Act
-            var exception = Record.Exception(() => { foo.SomethingHappened += Raise.WithEmpty().Now; });
+            var exception = Record.Exception(() => { foo.SomethingHappened += Raise.WithEmpty(); });
 
             // Assert
             exception.Should().BeNull();
@@ -132,7 +119,7 @@
             this.foo.SomethingHappened += this.Foo_SomethingHappenedThrows;
 
             // Act
-            Action action = () => this.foo.SomethingHappened += Raise.WithEmpty().Now;
+            Action action = () => this.foo.SomethingHappened += Raise.WithEmpty();
             var exception = Record.Exception(action);
 
             // Assert

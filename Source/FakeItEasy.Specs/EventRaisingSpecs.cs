@@ -29,7 +29,7 @@
         static Exception exception;
 
         Because of = () =>
-            exception = Catch.Exception(() => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now);
+            exception = Catch.Exception(() => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()));
 
         It should_not_throw = () => exception.Should().BeNull();
     }
@@ -50,7 +50,7 @@
             };
         };
 
-        Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs() { Message = "message" }).Now;
+        Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs() { Message = "message" });
 
         It should_pass_the_sender = () => sender.Should().BeSameAs(TypeWithEvent);
 
@@ -70,7 +70,7 @@
             TypeWithEvent.SomethingHappened += (s, e) => secondWasRaisedNumberOfTimes++;
         };
 
-        Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now;
+        Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs());
 
         It should_invoke_the_first_handler = () => firstWasRaisedNumberOfTimes.Should().Be(1);
 

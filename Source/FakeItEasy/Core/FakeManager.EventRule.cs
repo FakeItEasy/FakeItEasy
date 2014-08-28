@@ -207,7 +207,8 @@ namespace FakeItEasy.Core
 
                     return declaringType.IsGenericType
                         && declaringType.GetGenericTypeDefinition() == typeof(Raise<>)
-                            && this.EventHandler.Method.Name.Equals("Now");
+                            && (this.EventHandler.Method.Name.Equals("Now") ||
+                            this.EventHandler.Method.Name.Equals("NowNonGeneric"));
                 }
 
                 public bool IsEventRegistration()
