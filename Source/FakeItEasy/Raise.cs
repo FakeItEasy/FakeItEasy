@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
@@ -8,6 +9,12 @@
     /// </summary>
     public static class Raise
     {
+        /// <summary>
+        /// Holds a copy of all the arguments passed to (Delegate) event handlers.
+        /// May move. May be expanded to hold ALL event handlers' arguments.
+        /// </summary>
+        public static readonly Dictionary<object, object[]> EventHandlerArguments = new Dictionary<object, object[]>();
+
         /// <summary>
         /// Raises an event on a faked object by attaching the event handler produced by the method
         /// to the event that is to be raised.
@@ -20,6 +27,17 @@
         public static Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e) where TEventArgs : EventArgs
         {
             return new Raise<TEventArgs>(sender, e);
+        }
+
+        /// <summary>
+        /// Raises an event with non-standard signature.
+        /// </summary>
+        /// <param name="arguments">The arguments to send to the event handlers.</param>
+        /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/></typeparam>
+        /// <returns>A new object that knows how to raise events.</returns>
+        public static RaiseDelegate<TEventHandler> Event<TEventHandler>(params object[] arguments)
+        {
+            return new RaiseDelegate<TEventHandler>(arguments);
         }
 
         /// <summary>
@@ -46,6 +64,36 @@
         public static Raise<EventArgs> WithEmpty()
         {
             return new Raise<EventArgs>(null, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Creates a new RaiseDelegate object.
+        /// </summary>
+        /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/></typeparam>
+        public class RaiseDelegate<TEventHandler>
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RaiseDelegate{TEventHandler}"/> class.
+            /// </summary>
+            /// <param name="arguments">The arguments to be sent to the event handler.</param>
+            public RaiseDelegate(object[] arguments)
+            {
+                this.EventArguments = arguments;
+            }
+
+            private object[] EventArguments { get; set; }
+
+            /// <summary>
+            /// Converts the RaiseDelegate to a <c>TEventHandler</c>.
+            /// </summary>
+            /// <param name="raiser">The RaiseDelegate to convert.</param>
+            /// <returns>A new <c>TEventHandler</c> that can be attached to an event.</returns>
+            public static implicit operator TEventHandler(RaiseDelegate<TEventHandler> raiser)
+            {
+                var fakeHandler = A.Fake<TEventHandler>();
+                EventHandlerArguments[fakeHandler] = raiser.EventArguments;
+                return fakeHandler;
+            }
         }
     }
 }

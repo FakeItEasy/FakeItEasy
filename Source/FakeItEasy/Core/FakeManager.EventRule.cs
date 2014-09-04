@@ -146,24 +146,32 @@ namespace FakeItEasy.Core
                 if (this.RegisteredEventHandlers.TryGetValue(call.Event, out raiseMethod))
                 {
                     var arguments = call.EventHandler.Target as IEventRaiserArguments;
-
-                    var sender = arguments.Sender ?? this.FakeManager.Object;
-
-                    try
+                    if (arguments != null)
                     {
-                        raiseMethod.DynamicInvoke(sender, arguments.EventArguments);
-                    }
-                    catch (TargetInvocationException ex)
-                    {
-                        if (ex.InnerException != null)
+                        var sender = arguments.Sender ?? this.FakeManager.Object;
+
+                        try
                         {
-                            // Exceptions thrown by event handlers should propagate outward as is, not
-                            // be wrapped in a TargetInvocationException.
-                            TryPreserveStackTrace(ex.InnerException);
-                            throw ex.InnerException;
+                            raiseMethod.DynamicInvoke(sender, arguments.EventArguments);
                         }
+                        catch (TargetInvocationException ex)
+                        {
+                            if (ex.InnerException != null)
+                            {
+                                // Exceptions thrown by event handlers should propagate outward as is, not
+                                // be wrapped in a TargetInvocationException.
+                                TryPreserveStackTrace(ex.InnerException);
+                                throw ex.InnerException;
+                            }
 
-                        throw;
+                            throw;
+                        }
+                    }
+                    else
+                    {
+                        object[] args;
+                        Raise.EventHandlerArguments.TryGetValue(call.EventHandler, out args);
+                        raiseMethod.DynamicInvoke(args);
                     }
                 }
             }
@@ -203,6 +211,11 @@ namespace FakeItEasy.Core
 
                 public bool IsEventRaiser()
                 {
+                    if (Raise.EventHandlerArguments.ContainsKey(this.EventHandler))
+                    {
+                        return true;
+                    }
+
                     var declaringType = this.EventHandler.Method.DeclaringType;
 
                     return declaringType.IsGenericType

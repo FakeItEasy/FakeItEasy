@@ -11,6 +11,8 @@
         public interface ITypeWithEvent
         {
             event EventHandler<SomethingHappenedEventArgs> SomethingHappened;
+
+            event Action<int> SomethingHappenedThatJustNeedsAnInt;
         }
 
         protected static ITypeWithEvent TypeWithEvent { get; set; }
@@ -55,6 +57,25 @@
         It should_pass_the_sender = () => sender.Should().BeSameAs(TypeWithEvent);
 
         It should_pass_the_event_arguments = () => raisedWithArgs.Message = "message";
+    }
+
+    [Subject(typeof(Raise), "nonstandard event")]
+    public class RaisingNonstandardEvent
+        : EventRaisingSpecs
+    {
+        static int argument;
+
+        private Establish context = () =>
+        {
+            TypeWithEvent.SomethingHappenedThatJustNeedsAnInt += i =>
+            {
+                RaisingNonstandardEvent.argument = i;
+            };
+        };
+
+        Because of = () => TypeWithEvent.SomethingHappenedThatJustNeedsAnInt += Raise.Event<Action<int>>(19);
+
+        private It should_pass_the_arguments = () => argument.Should().Be(19);
     }
 
     [Subject(typeof(Raise), "With multiple subscribers")]
