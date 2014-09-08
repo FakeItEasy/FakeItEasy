@@ -618,6 +618,9 @@
     <Compile Include="..\FakeItEasy\Raise.of.TEventArgs.cs">
       <Link>Raise.of.TEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\RaiseDelegate.cs">
+      <Link>RaiseDelegate.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Recorders.cs">
       <Link>Recorders.cs</Link>
     </Compile>

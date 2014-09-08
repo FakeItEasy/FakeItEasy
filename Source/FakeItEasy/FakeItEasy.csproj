@@ -95,6 +95,7 @@
     <Compile Include="IBootstrapper.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
+    <Compile Include="RaiseDelegate.cs" />
     <Compile Include="TaskHelper.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="StringBuilderExtensions.cs" />

@@ -56,7 +56,7 @@ Public Class RaisingEventsTests
     End Sub
 
     <Test()>
-    Public Sub Raise_EventHandler_with_now_sends_good_arguaSendernts()
+    Public Sub Raise_EventHandler_with_now_sends_good_arguments()
         'Arrange
         Dim target = A.Fake(Of IHaveEvents)()
         Dim eventArgs = New EventArgs()
@@ -87,7 +87,7 @@ Public Class RaisingEventsTests
     End Sub
 
     <Test()>
-    Public Sub Raise_EventHandler_without_now_sends_good_arguaSendernts()
+    Public Sub Raise_EventHandler_without_now_sends_good_arguments()
         'Arrange
         Dim target = A.Fake(Of IHaveEvents)()
         Dim eventArgs = New EventArgs()
@@ -118,7 +118,7 @@ Public Class RaisingEventsTests
     End Sub
 
     <Test()>
-    Public Sub Raise_EventHandlerOfT_with_now_sends_good_arguaSendernts()
+    Public Sub Raise_EventHandlerOfT_with_now_sends_good_arguments()
         'Arrange
         Dim target = A.Fake(Of IHaveEvents)()
         Dim eventArgs As EventArgs = New MyEventArgs()
@@ -149,7 +149,7 @@ Public Class RaisingEventsTests
     End Sub
 
     <Test()>
-    Public Sub Raise_EventHandlerOfT_without_now_sends_good_arguaSendernts()
+    Public Sub Raise_EventHandlerOfT_without_now_sends_good_arguments()
         'Arrange
         Dim target = A.Fake(Of IHaveEvents)()
         Dim eventArgs = New MyEventArgs()

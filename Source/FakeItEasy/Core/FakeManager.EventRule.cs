@@ -66,8 +66,8 @@ namespace FakeItEasy.Core
                 try
                 {
                     var preserveStackTrace = typeof(Exception).GetMethod(
-                        "InternalPreserveStackTrace",
-                        BindingFlags.Instance | BindingFlags.NonPublic);
+                                                                    "InternalPreserveStackTrace",
+                                                                    BindingFlags.Instance | BindingFlags.NonPublic);
                     preserveStackTrace.Invoke(exception, null);
                 }
                 catch
@@ -145,25 +145,16 @@ namespace FakeItEasy.Core
 
                 if (this.RegisteredEventHandlers.TryGetValue(call.Event, out raiseMethod))
                 {
-                    var eventRaiserArguments = call.EventHandler.Target as IEventRaiserArguments;
-                    var arguments = new object[0];
-                    if (eventRaiserArguments != null)
+                    var arguments = new List<object>();
+
+                    if (!this.CanFillArgumentsFromExplicitEventRaiser(call, arguments))
                     {
-                        var sender = eventRaiserArguments.Sender ?? this.FakeManager.Object;
-                        arguments = new object[] { sender, eventRaiserArguments.EventArguments };
-                    }
-                    else
-                    {
-                        Func<object, object[]> argumentListBuilder;
-                        if (Raise.EventHandlerArguments.TryGetValue(call.EventHandler, out argumentListBuilder))
-                        {
-                            arguments = argumentListBuilder(this.FakeManager.Object);
-                        }
+                        this.FillArgumentsFromImplicitEventRaiser(call, arguments);
                     }
 
                     try
                     {
-                        raiseMethod.DynamicInvoke(arguments);
+                        raiseMethod.DynamicInvoke(arguments.ToArray());
                     }
                     catch (TargetInvocationException ex)
                     {
@@ -178,6 +169,30 @@ namespace FakeItEasy.Core
                         throw;
                     }
                 }
+            }
+
+            private void FillArgumentsFromImplicitEventRaiser(EventCall call, List<object> arguments)
+            {
+                Func<object, object[]> argumentListBuilder;
+                if (Raise.EventHandlerArguments.TryGetValue(call.EventHandler, out argumentListBuilder))
+                {
+                    arguments.AddRange(argumentListBuilder(this.FakeManager.Object));
+                }
+            }
+
+            private bool CanFillArgumentsFromExplicitEventRaiser(EventCall call, List<object> arguments)
+            {
+                var eventRaiserArguments = call.EventHandler.Target as IEventRaiserArguments;
+
+                if (eventRaiserArguments == null)
+                {
+                    return false;
+                }
+
+                var sender = eventRaiserArguments.Sender ?? this.FakeManager.Object;
+                arguments.Add(sender);
+                arguments.Add(eventRaiserArguments.EventArguments);
+                return true;
             }
 
             private class EventCall
@@ -215,21 +230,27 @@ namespace FakeItEasy.Core
 
                 public bool IsEventRaiser()
                 {
-                    if (Raise.EventHandlerArguments.ContainsKey(this.EventHandler))
-                    {
-                        return true;
-                    }
-
-                    var declaringType = this.EventHandler.Method.DeclaringType;
-
-                    return declaringType.IsGenericType
-                        && declaringType.GetGenericTypeDefinition() == typeof(Raise<>)
-                            && this.EventHandler.Method.Name.Equals("Now");
+                    return this.IsImplicitEventRaiser() || this.IsExplicitEventRaiserUsingNow();
                 }
 
                 public bool IsEventRegistration()
                 {
                     return this.Event.GetAddMethod().Equals(this.CallingMethod);
+                }
+
+                private bool IsExplicitEventRaiserUsingNow()
+                {
+                    var declaringType = this.EventHandler.Method.DeclaringType;
+
+                    return declaringType != null
+                           && declaringType.IsGenericType
+                           && declaringType.GetGenericTypeDefinition() == typeof(Raise<>)
+                           && this.EventHandler.Method.Name.Equals("Now");
+                }
+
+                private bool IsImplicitEventRaiser()
+                {
+                    return Raise.EventHandlerArguments.ContainsKey(this.EventHandler);
                 }
             }
         }

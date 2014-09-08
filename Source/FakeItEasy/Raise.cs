@@ -13,7 +13,7 @@
         /// Holds a copy of all the arguments passed to (Delegate) event handlers.
         /// May move. May be expanded to hold ALL event handlers' arguments.
         /// </summary>
-        public static readonly Dictionary<object, Func<object, object[]>> EventHandlerArguments = new Dictionary<object, Func<object, object[]>>();
+        internal static readonly Dictionary<object, Func<object, object[]>> EventHandlerArguments = new Dictionary<object, Func<object, object[]>>();
 
         /// <summary>
         /// Raises an event on a faked object by attaching the event handler produced by the method
@@ -64,38 +64,6 @@
         public static Raise<EventArgs> WithEmpty()
         {
             return new Raise<EventArgs>(null, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Creates a new RaiseDelegate object.
-        /// </summary>
-        /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/></typeparam>
-        public class RaiseDelegate<TEventHandler>
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="RaiseDelegate{TEventHandler}"/> class.
-            /// </summary>
-            /// <param name="arguments">The arguments to be sent to the event handler.</param>
-            public RaiseDelegate(object[] arguments)
-            {
-                this.EventArguments = arguments;
-                this.EventHandler = A.Fake<TEventHandler>();
-                Raise.EventHandlerArguments[this.EventHandler] = fake => this.EventArguments;
-            }
-
-            private TEventHandler EventHandler { get; set; }
-
-            private object[] EventArguments { get; set; }
-
-            /// <summary>
-            /// Converts the RaiseDelegate to a <c>TEventHandler</c>.
-            /// </summary>
-            /// <param name="raiser">The RaiseDelegate to convert.</param>
-            /// <returns>A new <c>TEventHandler</c> that can be attached to an event.</returns>
-            public static implicit operator TEventHandler(RaiseDelegate<TEventHandler> raiser)
-            {
-                return raiser.EventHandler;
-            }
         }
     }
 }

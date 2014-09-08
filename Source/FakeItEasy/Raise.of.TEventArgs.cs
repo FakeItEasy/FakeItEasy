@@ -20,7 +20,6 @@
         {
             this.sender = sender;
             this.eventArguments = e;
-            Raise.EventHandlerArguments[new EventHandler(this.Now)] = fake => new[] { sender ?? fake, e };
         }
 
         /// <summary>
@@ -49,7 +48,10 @@
         /// <returns>The new event handler</returns>
         public static implicit operator EventHandler<TEventArgs>(Raise<TEventArgs> raiser)
         {
-            return raiser.Now;
+            var eventHandler = new EventHandler<TEventArgs>(raiser.Now);
+            Raise.EventHandlerArguments[eventHandler] =
+                fake => new[] { raiser.sender ?? fake, raiser.eventArguments };
+            return eventHandler;
         }
 
         /// <summary>
@@ -59,7 +61,9 @@
         /// <returns>The new event handler</returns>
         public static implicit operator EventHandler(Raise<TEventArgs> raiser)
         {
-            return raiser.Now;
+            var eventHandler = new EventHandler(raiser.Now);
+            Raise.EventHandlerArguments[eventHandler] = fake => new[] { raiser.sender ?? fake, raiser.eventArguments };
+            return eventHandler;
         }
 
         /// <summary>
