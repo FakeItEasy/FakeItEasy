@@ -66,8 +66,8 @@ namespace FakeItEasy.Core
                 try
                 {
                     var preserveStackTrace = typeof(Exception).GetMethod(
-                                                                    "InternalPreserveStackTrace",
-                                                                    BindingFlags.Instance | BindingFlags.NonPublic);
+                        "InternalPreserveStackTrace",
+                        BindingFlags.Instance | BindingFlags.NonPublic);
                     preserveStackTrace.Invoke(exception, null);
                 }
                 catch
@@ -145,33 +145,37 @@ namespace FakeItEasy.Core
 
                 if (this.RegisteredEventHandlers.TryGetValue(call.Event, out raiseMethod))
                 {
-                    var arguments = call.EventHandler.Target as IEventRaiserArguments;
-                    if (arguments != null)
+                    var eventRaiserArguments = call.EventHandler.Target as IEventRaiserArguments;
+                    var arguments = new object[0];
+                    if (eventRaiserArguments != null)
                     {
-                        var sender = arguments.Sender ?? this.FakeManager.Object;
-
-                        try
-                        {
-                            raiseMethod.DynamicInvoke(sender, arguments.EventArguments);
-                        }
-                        catch (TargetInvocationException ex)
-                        {
-                            if (ex.InnerException != null)
-                            {
-                                // Exceptions thrown by event handlers should propagate outward as is, not
-                                // be wrapped in a TargetInvocationException.
-                                TryPreserveStackTrace(ex.InnerException);
-                                throw ex.InnerException;
-                            }
-
-                            throw;
-                        }
+                        var sender = eventRaiserArguments.Sender ?? this.FakeManager.Object;
+                        arguments = new object[] { sender, eventRaiserArguments.EventArguments };
                     }
                     else
                     {
-                        object[] args;
-                        Raise.EventHandlerArguments.TryGetValue(call.EventHandler, out args);
-                        raiseMethod.DynamicInvoke(args);
+                        Func<object, object[]> argumentListBuilder;
+                        if (Raise.EventHandlerArguments.TryGetValue(call.EventHandler, out argumentListBuilder))
+                        {
+                            arguments = argumentListBuilder(this.FakeManager.Object);
+                        }
+                    }
+
+                    try
+                    {
+                        raiseMethod.DynamicInvoke(arguments);
+                    }
+                    catch (TargetInvocationException ex)
+                    {
+                        if (ex.InnerException != null)
+                        {
+                            // Exceptions thrown by event handlers should propagate outward as is, not
+                            // be wrapped in a TargetInvocationException.
+                            TryPreserveStackTrace(ex.InnerException);
+                            throw ex.InnerException;
+                        }
+
+                        throw;
                     }
                 }
             }
@@ -220,8 +224,7 @@ namespace FakeItEasy.Core
 
                     return declaringType.IsGenericType
                         && declaringType.GetGenericTypeDefinition() == typeof(Raise<>)
-                            && (this.EventHandler.Method.Name.Equals("Now") ||
-                            this.EventHandler.Method.Name.Equals("NowNonGeneric"));
+                            && this.EventHandler.Method.Name.Equals("Now");
                 }
 
                 public bool IsEventRegistration()

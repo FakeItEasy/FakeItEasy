@@ -20,6 +20,7 @@
         {
             this.sender = sender;
             this.eventArguments = e;
+            Raise.EventHandlerArguments[new EventHandler(this.Now)] = fake => new[] { sender ?? fake, e };
         }
 
         /// <summary>
@@ -58,7 +59,7 @@
         /// <returns>The new event handler</returns>
         public static implicit operator EventHandler(Raise<TEventArgs> raiser)
         {
-            return raiser.NowNonGeneric;
+            return raiser.Now;
         }
 
         /// <summary>
@@ -78,7 +79,7 @@
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">Event args for the event.</param>
-        private void NowNonGeneric(object sender, EventArgs e)
+        private void Now(object sender, EventArgs e)
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
         }

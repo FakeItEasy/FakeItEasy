@@ -22,7 +22,7 @@ Public Class IndexedPropertyTests
         Dim fetchedValue = target.IndexedProperty(3)
 
         'Assert
-        AssertionExtensions.Should(ReferenceEquals(fetchedValue, initialValue)).BeTrue()
+        ReferenceEquals(fetchedValue, initialValue).Should().BeTrue()
     End Sub
 
     <Test()> _
@@ -37,7 +37,7 @@ Public Class IndexedPropertyTests
         Dim fetchedValue = target.IndexedProperty(4)
 
         'Assert
-        AssertionExtensions.Should(ReferenceEquals(fetchedValue, initialValue)).BeFalse()
+        ReferenceEquals(fetchedValue, initialValue).Should().BeFalse()
     End Sub
 
 End Class

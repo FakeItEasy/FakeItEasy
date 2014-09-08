@@ -59,6 +59,29 @@
         It should_pass_the_event_arguments = () => raisedWithArgs.Message = "message";
     }
 
+    [Subject(typeof(Raise), "with subscribers and using Now")]
+    public class RaisingEventWithSubscriberUsingNow
+        : EventRaisingSpecs
+    {
+        static SomethingHappenedEventArgs raisedWithArgs;
+        static object sender;
+
+        private Establish context = () =>
+        {
+            TypeWithEvent.SomethingHappened += (sender, e) =>
+            {
+                RaisingEventWithSubscriberUsingNow.sender = sender;
+                raisedWithArgs = e;
+            };
+        };
+
+        Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs() { Message = "message" }).Now;
+
+        It should_pass_the_sender = () => sender.Should().BeSameAs(TypeWithEvent);
+
+        It should_pass_the_event_arguments = () => raisedWithArgs.Message = "message";
+    }
+
     [Subject(typeof(Raise), "nonstandard event")]
     public class RaisingNonstandardEvent
         : EventRaisingSpecs

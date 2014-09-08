@@ -13,7 +13,7 @@
         /// Holds a copy of all the arguments passed to (Delegate) event handlers.
         /// May move. May be expanded to hold ALL event handlers' arguments.
         /// </summary>
-        public static readonly Dictionary<object, object[]> EventHandlerArguments = new Dictionary<object, object[]>();
+        public static readonly Dictionary<object, Func<object, object[]>> EventHandlerArguments = new Dictionary<object, Func<object, object[]>>();
 
         /// <summary>
         /// Raises an event on a faked object by attaching the event handler produced by the method
@@ -79,7 +79,11 @@
             public RaiseDelegate(object[] arguments)
             {
                 this.EventArguments = arguments;
+                this.EventHandler = A.Fake<TEventHandler>();
+                Raise.EventHandlerArguments[this.EventHandler] = fake => this.EventArguments;
             }
+
+            private TEventHandler EventHandler { get; set; }
 
             private object[] EventArguments { get; set; }
 
@@ -90,9 +94,7 @@
             /// <returns>A new <c>TEventHandler</c> that can be attached to an event.</returns>
             public static implicit operator TEventHandler(RaiseDelegate<TEventHandler> raiser)
             {
-                var fakeHandler = A.Fake<TEventHandler>();
-                EventHandlerArguments[fakeHandler] = raiser.EventArguments;
-                return fakeHandler;
+                return raiser.EventHandler;
             }
         }
     }
