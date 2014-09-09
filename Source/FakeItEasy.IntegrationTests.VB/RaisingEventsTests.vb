@@ -173,7 +173,7 @@ Public Class RaisingEventsTests
         AddHandler target.ObjectEvent, AddressOf HandlesObjectEvent
 
         ' Act
-        AddHandler target.ObjectEvent, Raise.Event(Of IHaveEvents.ObjectEventEventHandler)(anObject)
+        AddHandler target.ObjectEvent, Raise.With(Of IHaveEvents.ObjectEventEventHandler)(anObject)
 
         ' Assert
         ReferenceEquals(capturedObject, anObject).Should().BeTrue()

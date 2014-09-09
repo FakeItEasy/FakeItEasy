@@ -155,7 +155,7 @@
             TypeWithEvent.EventStarted += time => capturedTime = time;
         };
 
-        private Because of = () => TypeWithEvent.EventStarted += Raise.Event<TimedEvent>(raisedWithTime);
+        private Because of = () => TypeWithEvent.EventStarted += Raise.With<TimedEvent>(raisedWithTime);
 
         It should_pass_the_arguments = () => capturedTime.Should().Be(raisedWithTime);
     }
@@ -180,7 +180,7 @@
             };
         };
 
-        private Because of = () => TypeWithEvent.ActionEvent += Raise.Event<Action<int, string>>(raisedWithInt, raisedWithString);
+        private Because of = () => TypeWithEvent.ActionEvent += Raise.With<Action<int, string>>(raisedWithInt, raisedWithString);
 
         It should_pass_the_first_argument = () => capturedInt.Should().Be(raisedWithInt);
 
