@@ -183,12 +183,30 @@
                     {
                         return false;
                     }
+        
+                    
+                    var funcType = typeof(Func<>).MakeGenericType(typeOfLazyResult);
+        
+                    var method = CreateGenericFromResultMethodDefinition().MakeGenericMethod(typeOfLazyResult);
+                    var func = method.Invoke(null, new[] { lazyResult });
 
-                    result = typeOfDummy.GetConstructor(new[] { typeOfLazyResult, typeof(bool) }).Invoke(new object[] { lazyResult, false });
+                    result = typeOfDummy.GetConstructor(new[] { funcType, typeof(bool) }).Invoke(new object[] { func, false });
                     return true;
                 }
 
                 return false;
+            }
+
+            private static MethodInfo CreateGenericFromResultMethodDefinition()
+            {
+                Expression<Action> templateExpression = () => CreateFunc<object>(null);
+                var templateMethod = ((MethodCallExpression)templateExpression.Body).Method;
+                return templateMethod.GetGenericMethodDefinition();
+            }
+
+            private static Func<T> CreateFunc<T>(T value)
+            {
+                return () => value;
             }
         }   
 #endif
