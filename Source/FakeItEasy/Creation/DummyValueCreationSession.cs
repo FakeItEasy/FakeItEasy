@@ -33,6 +33,7 @@
                     new ResolveFromContainerStrategy { Container = container }, 
 #if NET40
                     new ResolveByCreatingTaskStrategy { Session = this }, 
+                    new ResolveByCreatingLazyStrategy { Session = this },
 #endif
                     new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this }, 
                     new ResolveByActivatingValueTypeStrategy(), 
@@ -163,6 +164,31 @@
                 Expression<Action> templateExpression = () => TaskHelper.FromResult(new object());
                 var templateMethod = ((MethodCallExpression)templateExpression.Body).Method;
                 return templateMethod.GetGenericMethodDefinition();
+            }
+        }   
+        
+        private class ResolveByCreatingLazyStrategy : ResolveStrategy
+        {
+            public DummyValueCreationSession Session { get; set; }
+
+            public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
+            {
+                result = default(object);
+
+                if (typeOfDummy.IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Lazy<>))
+                {
+                    var typeOfLazyResult = typeOfDummy.GetGenericArguments()[0];
+                    object lazyResult;
+                    if (!this.Session.TryResolveDummyValue(typeOfLazyResult, out lazyResult))
+                    {
+                        return false;
+                    }
+
+                    result = typeOfDummy.GetConstructor(new[] { typeOfLazyResult, typeof(bool) }).Invoke(new object[] { lazyResult, false });
+                    return true;
+                }
+
+                return false;
             }
         }   
 #endif
