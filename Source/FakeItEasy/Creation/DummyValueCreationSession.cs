@@ -184,7 +184,6 @@
                         return false;
                     }
         
-                    
                     var funcType = typeof(Func<>).MakeGenericType(typeOfLazyResult);
         
                     var method = CreateGenericFromResultMethodDefinition().MakeGenericMethod(typeOfLazyResult);
