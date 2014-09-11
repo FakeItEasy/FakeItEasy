@@ -198,6 +198,23 @@ namespace FakeItEasy.Tests.Creation
             Assert.That(result, Is.False);
         }
 
+        [Test]
+        public void Should_be_able_to_create_lazy_wrapper()
+        {
+            // Arrange
+            var fake = A.Fake<IFoo>();
+            this.StubFakeObjectCreatorWithValue<IFoo>(fake);
+
+            // Act
+            object dummy;
+            var result = this.session.TryResolveDummyValue(typeof(Lazy<IFoo>), out dummy);
+
+            // Assert
+            Assert.That(result, Is.True);
+            Assert.That(dummy, Is.InstanceOf<Lazy<IFoo>>());
+            Assert.That(((Lazy<IFoo>)dummy).Value, Is.SameAs(fake));
+        }
+
         private void StubFakeObjectCreatorWithValue<T>(T value)
         {
             object output;
