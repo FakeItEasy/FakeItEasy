@@ -10,5 +10,11 @@ Public Class RaisingEvents
 
         ' Raise with the C# syntax
         AddHandler widget.WidgetBroke, AddressOf Raise.With(New WidgetEventArgs("foo")).Now
+
+        ' Raise with the shorter syntax and omitting Go, works only for EventHandler(Of T).
+        AddHandler widget.WidgetBroke, Raise.With(New WidgetEventArgs("foo"))
+
+        ' Raise with the C# syntax and omitting Now
+        AddHandler widget.WidgetBroke, AddressOf Raise.With(New WidgetEventArgs("foo")).ToString
     End Sub
 End Class
