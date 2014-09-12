@@ -14,7 +14,12 @@ namespace FakeItEasy.Core
         private class EventRule
             : IFakeObjectCallRule
         {
-            [NonSerialized] private Dictionary<object, Delegate> registeredEventHandlersField;
+            [NonSerialized]
+            private readonly EventHandlerArgumentProviderMap eventHandlerArgumentProviderMap =
+                ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+
+            [NonSerialized]
+            private Dictionary<object, Delegate> registeredEventHandlersField;
 
             public FakeManager FakeManager { get; set; }
 
@@ -147,9 +152,9 @@ namespace FakeItEasy.Core
                 {
                     var arguments = new List<object>();
 
-                    if (!this.CanFillArgumentsFromExplicitEventRaiser(call, arguments))
+                    if (!this.CanFillArgumentsFromImplicitEventRaiser(call, arguments))
                     {
-                        this.FillArgumentsFromImplicitEventRaiser(call, arguments);
+                        this.FillArgumentsFromExplicitEventRaiser(call, arguments);
                     }
 
                     try
@@ -171,32 +176,38 @@ namespace FakeItEasy.Core
                 }
             }
 
-            private void FillArgumentsFromImplicitEventRaiser(EventCall call, List<object> arguments)
+            private bool CanFillArgumentsFromImplicitEventRaiser(EventCall call, List<object> arguments)
             {
                 Func<object, object[]> argumentListBuilder;
-                if (Raise.EventHandlerArguments.TryGetValue(call.EventHandler, out argumentListBuilder))
+
+                if (this.eventHandlerArgumentProviderMap.TryGetArgumentProviderFor(call.EventHandler, out argumentListBuilder))
                 {
                     arguments.AddRange(argumentListBuilder(this.FakeManager.Object));
+                    return true;
                 }
+
+                return false;
             }
 
-            private bool CanFillArgumentsFromExplicitEventRaiser(EventCall call, List<object> arguments)
+            private void FillArgumentsFromExplicitEventRaiser(EventCall call, List<object> arguments)
             {
                 var eventRaiserArguments = call.EventHandler.Target as IEventRaiserArguments;
 
                 if (eventRaiserArguments == null)
                 {
-                    return false;
+                    return;
                 }
 
                 var sender = eventRaiserArguments.Sender ?? this.FakeManager.Object;
                 arguments.Add(sender);
                 arguments.Add(eventRaiserArguments.EventArguments);
-                return true;
             }
 
             private class EventCall
             {
+                private EventHandlerArgumentProviderMap eventHandlerArgumentProviderMap =
+                               ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+
                 private EventCall()
                 {
                 }
@@ -250,7 +261,7 @@ namespace FakeItEasy.Core
 
                 private bool IsImplicitEventRaiser()
                 {
-                    return Raise.EventHandlerArguments.ContainsKey(this.EventHandler);
+                    return this.eventHandlerArgumentProviderMap.Contains(this.EventHandler);
                 }
             }
         }

@@ -127,6 +127,24 @@
                 .And.StackTrace.Should().Contain("FakeItEasy.Tests.RaiseTests.Foo_SomethingHappenedThrows");
         }
 
+        [Test]
+        public void Should_not_leak_handlers_when_raising_without_now()
+        {
+            // Arrange
+            var eventHandlerArgumentProvider = ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+
+            this.foo = A.Fake<IFoo>();
+            this.foo.SomethingHappened += this.Foo_SomethingHappened;
+
+            EventHandler raisingHandler = Raise.WithEmpty(); // EventHandler to force the implicit conversion
+
+            // Act
+            this.foo.SomethingHappened += raisingHandler;
+
+            // Assert
+            eventHandlerArgumentProvider.Contains(raisingHandler).Should().BeFalse();
+        }
+
         private void Foo_SomethingHappened(object newSender, EventArgs e)
         {
             this.sender = newSender;

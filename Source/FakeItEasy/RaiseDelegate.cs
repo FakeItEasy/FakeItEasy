@@ -40,7 +40,8 @@
         /// <returns>A new <c>TEventHandler</c> that can be attached to an event.</returns>
         public static implicit operator TEventHandler(RaiseDelegate<TEventHandler> raiser)
         {
-            Raise.EventHandlerArguments[raiser.EventHandler] = fake => raiser.EventArguments;
+            var providerMap = ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+            providerMap.AddArgumentProvider(raiser.EventHandler, fake => raiser.EventArguments);
             return raiser.EventHandler;
         }
 

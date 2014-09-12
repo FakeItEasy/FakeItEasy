@@ -10,12 +10,6 @@
     public static class Raise
     {
         /// <summary>
-        /// Holds a copy of all the arguments passed to (Delegate) event handlers.
-        /// May move. May be expanded to hold ALL event handlers' arguments.
-        /// </summary>
-        internal static readonly Dictionary<object, Func<object, object[]>> EventHandlerArguments = new Dictionary<object, Func<object, object[]>>();
-
-        /// <summary>
         /// Raises an event with non-standard signature.
         /// </summary>
         /// <param name="arguments">The arguments to send to the event handlers.</param>

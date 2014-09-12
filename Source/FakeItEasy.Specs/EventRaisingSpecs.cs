@@ -34,7 +34,6 @@
         public class SomethingHappenedEventArgs
             : EventArgs
         {
-            public string Message { get; set; }
         }
     }
 

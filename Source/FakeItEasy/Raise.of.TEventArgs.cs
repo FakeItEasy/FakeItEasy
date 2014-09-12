@@ -49,8 +49,8 @@
         public static implicit operator EventHandler<TEventArgs>(Raise<TEventArgs> raiser)
         {
             var eventHandler = new EventHandler<TEventArgs>(raiser.Now);
-            Raise.EventHandlerArguments[eventHandler] =
-                fake => new[] { raiser.sender ?? fake, raiser.eventArguments };
+            var providerMap = ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+            providerMap.AddArgumentProvider(eventHandler, fake => new[] { raiser.sender ?? fake, raiser.eventArguments });
             return eventHandler;
         }
 
@@ -62,7 +62,8 @@
         public static implicit operator EventHandler(Raise<TEventArgs> raiser)
         {
             var eventHandler = new EventHandler(raiser.Now);
-            Raise.EventHandlerArguments[eventHandler] = fake => new[] { raiser.sender ?? fake, raiser.eventArguments };
+            var providerMap = ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+            providerMap.AddArgumentProvider(eventHandler, fake => new[] { raiser.sender ?? fake, raiser.eventArguments });
             return eventHandler;
         }
 
