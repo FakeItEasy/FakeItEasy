@@ -120,6 +120,9 @@
     <Compile Include="..\FakeItEasy\Core\AssemblyExtensions.cs">
       <Link>Core\AssemblyExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\EventHandlerArgumentProviderMap.cs">
+      <Link>Core\EventHandlerArgumentProviderMap.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
       <Link>EnumerableExtensions.cs</Link>
     </Compile>
@@ -158,6 +161,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\OutputWriterExtensions.cs">
       <Link>OutputWriterExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\RaiseDelegate.cs">
+      <Link>RaiseDelegate.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\RepeatConfigurationExtensions.cs">
       <Link>RepeatConfigurationExtensions.cs</Link>

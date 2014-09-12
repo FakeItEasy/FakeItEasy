@@ -88,6 +88,7 @@
     <Compile Include="A.of.T.cs" />
     <Compile Include="Core\AssemblyExtensions.cs" />
     <Compile Include="Core\BootstrapperLocator.cs" />
+    <Compile Include="Core\EventHandlerArgumentProviderMap.cs" />
     <Compile Include="DefaultBootstrapper.cs" />
     <Compile Include="Expressions\ArgumentConstraints\IArgumentValueProvider.cs" />
     <Compile Include="Expressions\ArgumentConstraints\OutArgumentConstraint.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="IBootstrapper.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
+    <Compile Include="RaiseDelegate.cs" />
     <Compile Include="TaskHelper.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="StringBuilderExtensions.cs" />
