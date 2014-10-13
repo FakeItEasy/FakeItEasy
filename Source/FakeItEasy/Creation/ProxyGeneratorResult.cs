@@ -1,6 +1,7 @@
 namespace FakeItEasy.Creation
 {
     using System;
+    using System.Reflection;
 
     /// <summary>
     /// Contains the result of a call to TryCreateProxy of IProxyGenerator.
@@ -38,12 +39,21 @@ namespace FakeItEasy.Creation
             Guard.AgainstNull(reasonForFailure, "reasonForFailure");
             Guard.AgainstNull(exception, "exception");
 
+            if (exception is TargetInvocationException && exception.InnerException != null)
+            {
+                exception = exception.InnerException;
+            }
+
             this.ReasonForFailure = string.Concat(
                 reasonForFailure,
                 Environment.NewLine,
-                "An exception was caught during this call. Its message was:",
+                "An exception of type ",
+                exception.GetType(),
+                " was caught during this call. Its message was:",
                 Environment.NewLine,
-                exception.Message);
+                exception.Message,
+                Environment.NewLine,
+                exception.StackTrace);
         }
 
         /// <summary>

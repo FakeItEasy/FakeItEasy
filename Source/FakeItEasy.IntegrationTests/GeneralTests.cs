@@ -99,14 +99,6 @@ namespace FakeItEasy.IntegrationTests
 
                 var expectedMessage =
  @"
-  Failed to create fake of type ""FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType"".
-
-  Below is a list of reasons for failure per attempted constructor:
-    No constructor arguments failed:
-      No usable default constructor was found on the type FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType.
-      An exception was caught during this call. Its message was:
-      Can not instantiate proxy of class: FakeItEasy.IntegrationTests.GeneralTests+NonResolvableType.
-      Could not find a parameterless constructor.
     The following constructors were not tried:
       (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
       (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
@@ -115,7 +107,7 @@ namespace FakeItEasy.IntegrationTests
       IFakeObjectContainer to enable these constructors.
 
 ";
-                Assert.That(thrown.Message, Is.EqualTo(expectedMessage));
+                Assert.That(thrown.Message, Is.StringContaining(expectedMessage));
             }
         }
 

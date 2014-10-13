@@ -211,7 +211,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var result = this.generator.GenerateProxy(type, Enumerable.Empty<Type>(), null, A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
-            result.ReasonForFailure.Should().Be("No usable default constructor was found on the type System.AppDomainInitializerInfo.\r\nAn exception was caught during this call. Its message was:\r\nCan not create proxy for type System.AppDomainInitializerInfo because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7\")] attribute, because assembly mscorlib is strong-named.");
+            result.ReasonForFailure.Should().StartWith("No usable default constructor was found on the type System.AppDomainInitializerInfo.\r\nAn exception of type Castle.DynamicProxy.Generators.GeneratorException was caught during this call. Its message was:\r\nCan not create proxy for type System.AppDomainInitializerInfo because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7\")] attribute, because assembly mscorlib is strong-named.");
         }
 
         [TestCaseSource("supportedTypes")]
@@ -269,7 +269,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
                 A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
-            result.ReasonForFailure.Should().Be("No constructor matches the passed arguments for constructor.\r\nAn exception was caught during this call. Its message was:\r\nCan not instantiate proxy of class: FakeItEasy.Tests.Creation.CastleDynamicProxy.CastleDynamicProxyGeneratorTests+TypeWithArgumentsForConstructor.\r\nCould not find a constructor that would match given arguments:\r\nSystem.String\r\n");
+            result.ReasonForFailure.Should().StartWith("No constructor matches the passed arguments for constructor.\r\nAn exception of type Castle.DynamicProxy.InvalidProxyConstructorArgumentsException was caught during this call. Its message was:\r\nCan not instantiate proxy of class: FakeItEasy.Tests.Creation.CastleDynamicProxy.CastleDynamicProxyGeneratorTests+TypeWithArgumentsForConstructor.\r\nCould not find a constructor that would match given arguments:\r\nSystem.String\r\n");
         }
 
         [Test]
