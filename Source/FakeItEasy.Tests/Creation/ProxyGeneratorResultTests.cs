@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.Creation
     using System;
     using System.Reflection;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
 
@@ -27,7 +28,9 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
 
             // Act
-            var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new InvalidOperationException("exception message"));
+            var result = new ProxyGeneratorResult(
+                reasonForFailure: "reason",
+                exception: new InvalidOperationException("exception message"));
 
             // Assert
             result.ProxyWasSuccessfullyGenerated.Should().BeFalse();
@@ -63,10 +66,19 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
 
             // Act
-            var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new InvalidOperationException("exception message"));
+            var result = new ProxyGeneratorResult(
+                reasonForFailure: "reason",
+                exception: new InvalidOperationException("exception message"));
 
             // Assert
-            result.ReasonForFailure.Should().StartWith("reason\r\nAn exception of type System.InvalidOperationException was caught during this call. Its message was:\r\nexception message");
+            var expectedReason = new[]
+            {
+                "reason",
+                "An exception of type System.InvalidOperationException was caught during this call. Its message was:",
+                "exception message"
+            }.AsTextBlock();
+
+            result.ReasonForFailure.Should().StartWith(expectedReason);
         }
 
         [Test]
@@ -75,10 +87,19 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
 
             // Act
-            var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new TargetInvocationException(new InvalidOperationException("target invocation inner exception message")));
+            var result = new ProxyGeneratorResult(
+                reasonForFailure: "reason",
+                exception: new TargetInvocationException(new InvalidOperationException("target invocation inner exception message")));
 
             // Assert
-            result.ReasonForFailure.Should().StartWith("reason\r\nAn exception of type System.InvalidOperationException was caught during this call. Its message was:\r\ntarget invocation inner exception message");
+            var expectedReason = new[]
+            {
+                "reason",
+                "An exception of type System.InvalidOperationException was caught during this call. Its message was:",
+                "target invocation inner exception message"
+            }.AsTextBlock();
+
+            result.ReasonForFailure.Should().StartWith(expectedReason);
         }
 
         [Test]
@@ -87,10 +108,19 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
 
             // Act
-            var result = new ProxyGeneratorResult(reasonForFailure: "reason", exception: new TargetInvocationException("target invocation exception message", null));
+            var result = new ProxyGeneratorResult(
+                reasonForFailure: "reason",
+                exception: new TargetInvocationException("target invocation exception message", null));
 
             // Assert
-            result.ReasonForFailure.Should().StartWith("reason\r\nAn exception of type System.Reflection.TargetInvocationException was caught during this call. Its message was:\r\ntarget invocation exception message");
+            var expectedReason = new[]
+            {
+                "reason",
+                "An exception of type System.Reflection.TargetInvocationException was caught during this call. Its message was:",
+                "target invocation exception message"
+            }.AsTextBlock();
+
+            result.ReasonForFailure.Should().StartWith(expectedReason);
         }
 
         [Test]

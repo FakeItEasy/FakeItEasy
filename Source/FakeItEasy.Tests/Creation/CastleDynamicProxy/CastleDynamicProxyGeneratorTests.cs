@@ -14,11 +14,8 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     [TestFixture]
     public class CastleDynamicProxyGeneratorTests
     {
-        private CastleDynamicProxyGenerator generator;
-        private CastleDynamicProxyInterceptionValidator interceptionValidator;
-
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] supportedTypes = new object[] 
+        private readonly object[] supportedTypes =
         {
             typeof(IInterfaceType),
             typeof(AbstractClass),
@@ -28,11 +25,14 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         };
 
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] notSupportedTypes = new object[] 
+        private readonly object[] notSupportedTypes =
         {
             typeof(int),
             typeof(ClassWithPrivateConstructor)
         };
+
+        private CastleDynamicProxyGenerator generator;
+        private CastleDynamicProxyInterceptionValidator interceptionValidator;
 
         public interface IInterfaceType
         {
@@ -66,7 +66,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var tag = new object();
 
             // Act
-            var proxy = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, A.Dummy<IFakeCallProcessorProvider>()).GeneratedProxy as ITaggable;
+            var proxy = (ITaggable)this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, A.Dummy<IFakeCallProcessorProvider>()).GeneratedProxy;
             proxy.Tag = tag;
 
             // Assert

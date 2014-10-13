@@ -7,6 +7,8 @@ namespace FakeItEasy.IntegrationTests
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -22,10 +24,14 @@ namespace FakeItEasy.IntegrationTests
         [Test]
         public void Faked_object_with_fakeable_properties_should_have_fake_as_default_value()
         {
+            // Arrange
+
+            // Act
             var fake = A.Fake<ITypeWithFakeableProperties>();
 
-            Assert.That(fake.Collection, Is.Not.Null);
-            Assert.That(fake.Foo, Is.Not.Null);
+            // Assert
+            fake.Collection.Should().NotBeNull();
+            fake.Foo.Should().NotBeNull();
         }
 
         [Test]
@@ -38,8 +44,8 @@ namespace FakeItEasy.IntegrationTests
             var enumerator = fake.GetEnumerator();
 
             // Assert
-            Assert.That(enumerator, Is.Not.Null);
-            Assert.That(Fake.GetFakeManager(enumerator), Is.Not.Null);
+            enumerator.Should().NotBeNull();
+            Fake.GetFakeManager(enumerator).Should().NotBeNull();
         }
 
         [Test]
@@ -57,7 +63,7 @@ namespace FakeItEasy.IntegrationTests
             var fake = A.Fake<IEmpty>(a => a.WithAdditionalAttributes(builder));
 
             // Assert
-            Assert.That(fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Length, Is.EqualTo(1));
+            fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().HaveCount(1);
         }
 
         [Test]
@@ -76,29 +82,41 @@ namespace FakeItEasy.IntegrationTests
             var secondFake = A.Fake<IFormattable>();
 
             // Assert
-            Assert.That(secondFake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Length, Is.EqualTo(0));
+            secondFake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().BeEmpty();
         }
 
         [Test]
         public void Should_not_be_able_to_fake_Uri_when_no_container_is_used()
         {
+            // Arrange
+
+            // Act
+            Exception exception;
+
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
-                Assert.Throws<FakeCreationException>(() =>
-                    A.Fake<Guid>());
+                exception = Record.Exception(() => A.Fake<Guid>());
             }
+
+            // Assert
+            exception.Should().BeAnExceptionOfType<FakeCreationException>();
         }
 
         [Test]
         public void ErrorMessage_when_type_cannot_be_faked_should_specify_non_resolvable_constructor_arguments()
         {
+            // Arrange
+
+            // Act
+            Exception exception;
+
             using (Fake.CreateScope())
             {
-                var thrown = Assert.Throws<FakeCreationException>(() =>
-                    A.Fake<NonResolvableType>());
+                exception = Record.Exception(() => A.Fake<NonResolvableType>());
+            }
 
-                var expectedMessage =
- @"
+            // Assert
+            const string ExpectedMessage = @"
     The following constructors were not tried:
       (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
       (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
@@ -107,8 +125,9 @@ namespace FakeItEasy.IntegrationTests
       IFakeObjectContainer to enable these constructors.
 
 ";
-                Assert.That(thrown.Message, Is.StringContaining(expectedMessage));
-            }
+            exception.Should()
+                .BeAnExceptionOfType<FakeCreationException>().And
+                .Message.Should().Contain(ExpectedMessage);
         }
 
         [Test]
@@ -118,12 +137,12 @@ namespace FakeItEasy.IntegrationTests
             var fake = A.Fake<TypeWithNonConfigurableMethod>();
 
             // Act
-
-            // Assert
-            var thrown = Assert.Throws<FakeConfigurationException>(() =>
+            var exception = Record.Exception(() =>
                 A.CallTo(() => fake.NonVirtualVoidMethod(string.Empty, 1)).DoesNothing());
 
-            Assert.That(thrown.Message, Is.StringContaining("Non virtual"));
+            // Assert
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
+                .Message.Should().Contain("Non virtual");
         }
 
         [Test]
@@ -133,12 +152,12 @@ namespace FakeItEasy.IntegrationTests
             var fake = A.Fake<TypeWithNonConfigurableMethod>();
 
             // Act
-
-            // Assert
-            var thrown = Assert.Throws<FakeConfigurationException>(() =>
+            var exception = Record.Exception(() =>
                 A.CallTo(() => fake.NonVirtualFunction(string.Empty, 1)).Returns(10));
 
-            Assert.That(thrown.Message, Is.StringContaining("Non virtual"));
+            // Asssert
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
+                .Message.Should().Contain("Non virtual");
         }
 
         [Test]
@@ -150,9 +169,10 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(fake, Is.InstanceOf<IFoo>());
-            Assert.That(fake, Is.InstanceOf<IFormattable>());
-            Assert.That(fake, Is.InstanceOf<FakeableClass>());
+            fake.Should()
+                .BeAssignableTo<IFoo>().And
+                .BeAssignableTo<IFormattable>().And
+                .BeAssignableTo<FakeableClass>();
         }
 
         [Test]
@@ -164,9 +184,10 @@ namespace FakeItEasy.IntegrationTests
             // Act
 
             // Assert
-            Assert.That(fake, Is.InstanceOf<IFoo>());
-            Assert.That(fake, Is.InstanceOf<IFormattable>());
-            Assert.That(fake, Is.InstanceOf<IFormatProvider>());
+            fake.Should()
+                .BeAssignableTo<IFoo>().And
+                .BeAssignableTo<IFormattable>().And
+                .BeAssignableTo<IFormatProvider>();
         }
 
         [Test]
@@ -178,7 +199,8 @@ namespace FakeItEasy.IntegrationTests
             var result = A.CollectionOfFake<IFoo>(10);
 
             // Assert
-            Assert.That(result, Is.InstanceOf<IList<IFoo>>().And.All.InstanceOf<IFoo>().And.All.Matches(new IsFakeConstraint()));
+            result.Should().BeAssignableTo<IList<IFoo>>().And
+                .OnlyContain(foo => foo != null && Fake.GetFakeManager(foo) != null);
         }
 
         [Test]
@@ -193,8 +215,10 @@ namespace FakeItEasy.IntegrationTests
             foo.Baz();
 
             // Act
+            var exception = Record.Exception(() => foo.Baz());
+
             // Assert
-            Assert.Throws<InvalidOperationException>(() => foo.Baz());
+            exception.Should().BeAnExceptionOfType<InvalidOperationException>();
         }
 
         public class NonResolvableType
