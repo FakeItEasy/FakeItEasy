@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests
+﻿namespace FakeItEasy.Specs
 {
     using System;
     using FluentAssertions;
@@ -10,15 +10,16 @@
 
         public interface ITypeWithEvent
         {
-            event EventHandler<SomethingHappenedEventArgs> SomethingHappened;
+            event EventHandler<SomethingHappenedEventArgs> GenericEventHandler;
+            
+            event EventHandler EventHandler;
         }
 
-        protected static ITypeWithEvent TypeWithEvent { get; set; }
+        protected static ITypeWithEvent TypeWithEvent { get; private set; }
 
         public class SomethingHappenedEventArgs
             : EventArgs
         {
-            public string Message { get; set; }
         }
     }
 
@@ -29,32 +30,113 @@
         static Exception exception;
 
         Because of = () =>
-            exception = Catch.Exception(() => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now);
+            exception = Catch.Exception(() => TypeWithEvent.EventHandler += Raise.With(new SomethingHappenedEventArgs()));
 
         It should_not_throw = () => exception.Should().BeNull();
     }
 
     [Subject(typeof(Raise), "with subscribers")]
-    public class RaisingEventWithSubscriber
+    public class RaisingEventHandlerWithSubscriber
         : EventRaisingSpecs
     {
-        static SomethingHappenedEventArgs raisedWithArgs;
-        static object sender;
+        static EventArgs raisedWithArgs;
+        static EventArgs capturedArgs;
+        static object capturedSender;
 
-        private Establish context = () =>
+        Establish context = () =>
         {
-            TypeWithEvent.SomethingHappened += (sender, e) =>
+            raisedWithArgs = new EventArgs();
+            TypeWithEvent.EventHandler += (sender, e) =>
             {
-                RaisingEventWithSubscriber.sender = sender;
-                raisedWithArgs = e;
+                capturedSender = sender;
+                capturedArgs = e;
             };
         };
 
-        Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs() { Message = "message" }).Now;
+        Because of = () => TypeWithEvent.EventHandler += Raise.With(raisedWithArgs);
 
-        It should_pass_the_sender = () => sender.Should().BeSameAs(TypeWithEvent);
+        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
 
-        It should_pass_the_event_arguments = () => raisedWithArgs.Message = "message";
+        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
+    }
+
+    [Subject(typeof(Raise), "with subscribers and using Now")]
+    public class RaisingEventHandlerWithSubscriberUsingNow
+        : EventRaisingSpecs
+    {
+        static EventArgs raisedWithArgs;
+        static EventArgs capturedArgs;
+        static object capturedSender;
+
+        Establish context = () =>
+        {
+            raisedWithArgs = new EventArgs();
+            TypeWithEvent.EventHandler += (sender, e) =>
+            {
+                capturedSender = sender;
+                capturedArgs = e;
+            };
+        };
+
+#pragma warning disable 618
+        Because of = () => TypeWithEvent.EventHandler += Raise.With(raisedWithArgs).Now;
+#pragma warning restore 618
+
+        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
+
+        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
+    }
+
+    [Subject(typeof(Raise), "with subscribers")]
+    public class RaisingGenericEventHandlerWithSubscriber
+        : EventRaisingSpecs
+    {
+        static SomethingHappenedEventArgs raisedWithArgs;
+        static SomethingHappenedEventArgs capturedArgs;
+        static object capturedSender;
+
+        Establish context = () =>
+        {
+            raisedWithArgs = new SomethingHappenedEventArgs();
+            TypeWithEvent.GenericEventHandler += (sender, e) =>
+            {
+                capturedSender = sender;
+                capturedArgs = e;
+            };
+        };
+
+        Because of = () => TypeWithEvent.GenericEventHandler += Raise.With(raisedWithArgs);
+
+        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
+
+        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
+    }
+
+    [Subject(typeof(Raise), "with subscribers and using Now")]
+    public class RaisingGenericEventHandlerWithSubscriberUsingNow
+        : EventRaisingSpecs
+    {
+        static SomethingHappenedEventArgs raisedWithArgs;
+        static SomethingHappenedEventArgs capturedArgs;
+        static object capturedSender;
+
+        Establish context = () =>
+        {
+            raisedWithArgs = new SomethingHappenedEventArgs();
+            TypeWithEvent.GenericEventHandler += (sender, e) =>
+            {
+                capturedSender = sender;
+                capturedArgs = e;
+            };
+        };
+
+#pragma warning disable 618
+        Because of = () => TypeWithEvent.GenericEventHandler += Raise.With(raisedWithArgs).Now;
+#pragma warning restore 618
+
+        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
+
+        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
     }
 
     [Subject(typeof(Raise), "With multiple subscribers")]
@@ -66,11 +148,11 @@
 
         Establish context = () =>
         {
-            TypeWithEvent.SomethingHappened += (s, e) => firstWasRaisedNumberOfTimes++;
-            TypeWithEvent.SomethingHappened += (s, e) => secondWasRaisedNumberOfTimes++;
+            TypeWithEvent.EventHandler += (s, e) => firstWasRaisedNumberOfTimes++;
+            TypeWithEvent.EventHandler += (s, e) => secondWasRaisedNumberOfTimes++;
         };
 
-        Because of = () => TypeWithEvent.SomethingHappened += Raise.With(new SomethingHappenedEventArgs()).Now;
+        Because of = () => TypeWithEvent.EventHandler += Raise.With(new SomethingHappenedEventArgs());
 
         It should_invoke_the_first_handler = () => firstWasRaisedNumberOfTimes.Should().Be(1);
 

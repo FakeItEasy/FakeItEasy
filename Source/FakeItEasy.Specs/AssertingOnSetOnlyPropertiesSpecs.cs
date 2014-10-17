@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests
+﻿namespace FakeItEasy.Specs
 {
     using System.Diagnostics.CodeAnalysis;
     using Machine.Specifications;

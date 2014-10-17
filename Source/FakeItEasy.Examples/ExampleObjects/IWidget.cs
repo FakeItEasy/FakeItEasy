@@ -6,6 +6,8 @@ namespace FakeItEasy.Examples.ExampleObjects
     {
         event EventHandler<WidgetEventArgs> WidgetBroke;
 
+        event EventHandler WidgetRunning;
+
         string Name { get; set; }
 
         void Repair();

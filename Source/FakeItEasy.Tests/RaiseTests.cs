@@ -17,7 +17,7 @@
         public void Setup()
         {
             this.foo = A.Fake<IFoo>();
-            this.foo.SomethingHappened += new EventHandler(this.Foo_SomethingHappened);
+            this.foo.SomethingHappened += this.Foo_SomethingHappened;
             this.sender = null;
             this.eventArguments = null;
         }
@@ -26,10 +26,10 @@
         public void Raising_with_sender_and_arguments_should_raise_event_with_specified_sender()
         {
             // Arrange
-            object senderToUse = new object();
+            var senderToUse = new object();
             
             // Act
-            this.foo.SomethingHappened += Raise.With(senderToUse, EventArgs.Empty).Now;
+            this.foo.SomethingHappened += Raise.With(senderToUse, EventArgs.Empty);
 
             // Assert
             this.sender.Should().Be(senderToUse);
@@ -42,7 +42,7 @@
             var arguments = new EventArgs();
 
             // Act
-            this.foo.SomethingHappened += Raise.With(this.foo, arguments).Now;
+            this.foo.SomethingHappened += Raise.With(this.foo, arguments);
 
             // Assert
             this.eventArguments.Should().BeSameAs(arguments);
@@ -54,7 +54,7 @@
             // Arrange
 
             // Act
-            this.foo.SomethingHappened += Raise.With(EventArgs.Empty).Now;
+            this.foo.SomethingHappened += Raise.With(EventArgs.Empty);
 
             // Assert
             this.sender.Should().BeSameAs(this.foo);
@@ -67,7 +67,7 @@
             var arguments = new EventArgs();
 
             // Act
-            this.foo.SomethingHappened += Raise.With(arguments).Now;
+            this.foo.SomethingHappened += Raise.With(arguments);
 
             // Assert
             this.eventArguments.Should().BeSameAs(arguments);
@@ -80,7 +80,9 @@
             var raiser = new Raise<EventArgs>(null, EventArgs.Empty);
 
             // Act
+#pragma warning disable 618
             var exception = Record.Exception(() => raiser.Now(null, null));
+#pragma warning restore 618
 
             // Assert
             exception.Should().BeAnExceptionOfType<NotSupportedException>();
@@ -92,7 +94,9 @@
             // Arrange
 
             // Act
+#pragma warning disable 618
             var methodName = Raise.With(EventArgs.Empty).Go.Method.Name;
+#pragma warning restore 618
 
             // Assert
             methodName.Should().Be("Now");
@@ -118,7 +122,7 @@
             this.foo = A.Fake<IFoo>();
 
             // Act
-            var exception = Record.Exception(() => { foo.SomethingHappened += Raise.WithEmpty().Now; });
+            var exception = Record.Exception(() => { foo.SomethingHappened += Raise.WithEmpty(); });
 
             // Assert
             exception.Should().BeNull();
@@ -132,7 +136,7 @@
             this.foo.SomethingHappened += this.Foo_SomethingHappenedThrows;
 
             // Act
-            Action action = () => this.foo.SomethingHappened += Raise.WithEmpty().Now;
+            Action action = () => this.foo.SomethingHappened += Raise.WithEmpty();
             var exception = Record.Exception(action);
 
             // Assert
