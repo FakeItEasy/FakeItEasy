@@ -69,13 +69,13 @@ namespace FakeItEasy.Tests.Creation
 
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
-            A.CallTo(() => this.fakeCallProcessorProviderFactory(A<Type>._, A<IEnumerable<Action<object>>>._)).Returns(fakeCallProcessorProvider);
+            A.CallTo(() => this.fakeCallProcessorProviderFactory(A<Type>._, A<FakeOptions>._)).Returns(fakeCallProcessorProvider);
 
             // Act
             this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(IFoo), options.OnFakeConfigurationActions)).MustHaveHappened();
+            A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(IFoo), options)).MustHaveHappened();
 
             A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<CustomAttributeBuilder>>._, fakeCallProcessorProvider))
                 .MustHaveHappened();
@@ -100,7 +100,7 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(TypeWithMultipleConstructors), options.OnFakeConfigurationActions))
+            A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(TypeWithMultipleConstructors), options))
                 .MustHaveHappened(Repeated.Exactly.Times(3));
         }
 
