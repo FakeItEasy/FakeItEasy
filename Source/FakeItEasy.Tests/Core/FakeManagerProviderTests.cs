@@ -1,10 +1,10 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;
+    using FakeItEasy.Creation;
+    using FakeItEasy.SelfInitializedFakes;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -19,13 +19,16 @@ namespace FakeItEasy.Tests.Core
         private IFakeManagerAccessor fakeManagerAccessor = null;
 
         [Fake]
-        private IFakeObjectConfigurator configurer = null;
+        private IFakeObjectConfigurator fakeObjectConfigurator = null;
+
+        [Fake]
+        private IFakeWrapperConfigurer wrapperConfigurer = null;
 
         [Fake]
         private Type typeOfFake = null;
 
         [Fake]
-        private IEnumerable<Action<object>> onFakeConfigurationActions = null;
+        private FakeOptions fakeOptions = null;
 
         [UnderTest]
         private FakeManagerProvider fakeManagerProvider = null;
@@ -50,8 +53,9 @@ namespace FakeItEasy.Tests.Core
             var onFakeConfigurationAction1 = A.Fake<Action<object>>();
             var onFakeConfigurationAction2 = A.Fake<Action<object>>();
 
-            A.CallTo(() => this.onFakeConfigurationActions.GetEnumerator())
-                    .Returns(new[] { onFakeConfigurationAction1, onFakeConfigurationAction2 }.AsEnumerable().GetEnumerator());
+            this.fakeOptions.WrappedInstance = new object();
+            this.fakeOptions.SelfInitializedFakeRecorder = A.Fake<ISelfInitializingFakeRecorder>();
+            this.fakeOptions.OnFakeConfigurationActions = new[] { onFakeConfigurationAction1, onFakeConfigurationAction2 };
 
             // Act
             var fakeCallProcessor = this.fakeManagerProvider.Fetch(this.proxy);
@@ -63,7 +67,10 @@ namespace FakeItEasy.Tests.Core
 
             A.CallTo(() => this.fakeManagerAccessor.TagProxy(this.proxy, this.fakeManager)).MustHaveHappened();
 
-            A.CallTo(() => this.configurer.ConfigureFake(this.typeOfFake, this.proxy)).MustHaveHappened();
+            A.CallTo(() => this.fakeObjectConfigurator.ConfigureFake(this.typeOfFake, this.proxy)).MustHaveHappened();
+
+            A.CallTo(() => this.wrapperConfigurer.ConfigureFakeToWrap(this.proxy, this.fakeOptions.WrappedInstance, this.fakeOptions.SelfInitializedFakeRecorder))
+                .MustHaveHappened();
 
             A.CallTo(() => onFakeConfigurationAction1(this.proxy)).MustHaveHappened();
             A.CallTo(() => onFakeConfigurationAction2(this.proxy)).MustHaveHappened();

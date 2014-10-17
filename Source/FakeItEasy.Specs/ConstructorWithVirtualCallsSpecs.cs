@@ -146,6 +146,21 @@
         };
     }
 
+    public class when_faking_a_class_which_calls_virtual_member_in_constructor_with_Wrapping_fake_option
+    {
+        static SimpleVirtualCallInConstructor fake;
+
+        Because of = () =>
+            fake = A.Fake<SimpleVirtualCallInConstructor>(
+                    o => o.Wrapping(new SimpleVirtualCallInConstructor()));
+
+        It should_delegate_to_the_wrapped_instance_inside_and_outside_of_the_constructor_call = () =>
+        {
+            fake.VirtualMethodValueDuringConstructorCall.Should().Be("implementation value");
+            fake.VirtualMethod(null).Should().Be("implementation value");
+        };
+    }
+
     public class when_faking_a_class_which_calls_virtual_property_members_in_constructor
     {
         static FakedClass fake;

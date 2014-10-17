@@ -1,10 +1,10 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using System.Collections.Generic;
+    using FakeItEasy.Creation;
 
     internal static class FakeCallProcessorProvider
     {
-        public delegate IFakeCallProcessorProvider Factory(Type typeOfFake, IEnumerable<Action<object>> onFakeConfigurationActions);
+        public delegate IFakeCallProcessorProvider Factory(Type typeOfFake, FakeOptions fakeOptions);
     }
 }
