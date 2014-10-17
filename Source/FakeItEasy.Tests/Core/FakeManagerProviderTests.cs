@@ -1,6 +1,8 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
@@ -22,6 +24,9 @@ namespace FakeItEasy.Tests.Core
         [Fake]
         private Type typeOfFake = null;
 
+        [Fake]
+        private IEnumerable<Action<object>> onFakeConfigurationActions = null;
+
         [UnderTest]
         private FakeManagerProvider fakeManagerProvider = null;
 
@@ -42,6 +47,11 @@ namespace FakeItEasy.Tests.Core
         public void Fetch_should_create_a_fake_manager_and_tag_and_configure_the_fake()
         {
             // Arrange
+            var onFakeConfigurationAction1 = A.Fake<Action<object>>();
+            var onFakeConfigurationAction2 = A.Fake<Action<object>>();
+
+            A.CallTo(() => this.onFakeConfigurationActions.GetEnumerator())
+                    .Returns(new[] { onFakeConfigurationAction1, onFakeConfigurationAction2 }.AsEnumerable().GetEnumerator());
 
             // Act
             var fakeCallProcessor = this.fakeManagerProvider.Fetch(this.proxy);
@@ -54,6 +64,9 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => this.fakeManagerAccessor.TagProxy(this.proxy, this.fakeManager)).MustHaveHappened();
 
             A.CallTo(() => this.configurer.ConfigureFake(this.typeOfFake, this.proxy)).MustHaveHappened();
+
+            A.CallTo(() => onFakeConfigurationAction1(this.proxy)).MustHaveHappened();
+            A.CallTo(() => onFakeConfigurationAction2(this.proxy)).MustHaveHappened();
         }
 
         [Test]

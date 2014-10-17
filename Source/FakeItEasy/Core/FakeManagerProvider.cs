@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Implementation of <see cref="IFakeCallProcessorProvider"/>, which returns a <see cref="FakeManager"/> as "call processor" lazily (on
@@ -26,6 +27,9 @@ namespace FakeItEasy.Core
         [NonSerialized]
         private readonly Type typeOfFake;
 
+        [NonSerialized]
+        private readonly IEnumerable<Action<object>> onFakeConfigurationActions;
+
         // We want to lock accesses to initializedFakeManager to guarantee thread-safety (see IFakeCallProcessorProvider documentation):
         private readonly object initializedFakeManagerLock = new object();
 
@@ -35,17 +39,20 @@ namespace FakeItEasy.Core
                 FakeManager.Factory fakeManagerFactory,
                 IFakeManagerAccessor fakeManagerAccessor,
                 IFakeObjectConfigurator configurer,
-                Type typeOfFake)
+                Type typeOfFake,
+                IEnumerable<Action<object>> onFakeConfigurationActions)
         {
             Guard.AgainstNull(fakeManagerFactory, "fakeManagerFactory");
             Guard.AgainstNull(fakeManagerAccessor, "fakeManagerAccessor");
             Guard.AgainstNull(configurer, "configurer");
             Guard.AgainstNull(typeOfFake, "typeOfFake");
+            Guard.AgainstNull(onFakeConfigurationActions, "onFakeConfigurationActions");
 
             this.fakeManagerFactory = fakeManagerFactory;
             this.fakeManagerAccessor = fakeManagerAccessor;
             this.configurer = configurer;
             this.typeOfFake = typeOfFake;
+            this.onFakeConfigurationActions = onFakeConfigurationActions;
         }
 
         public IFakeCallProcessor Fetch(object proxy)
@@ -73,6 +80,11 @@ namespace FakeItEasy.Core
                     this.fakeManagerAccessor.TagProxy(proxy, this.initializedFakeManager);
 
                     this.configurer.ConfigureFake(this.typeOfFake, proxy);
+
+                    foreach (var onFakeConfigurationAction in this.onFakeConfigurationActions)
+                    {
+                        onFakeConfigurationAction(proxy);
+                    }
                 }
             }
         }

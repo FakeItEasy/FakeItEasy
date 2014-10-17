@@ -126,6 +126,12 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
+            public IFakeOptionsBuilder<T> OnFakeConfiguration(Action<T> action)
+            {
+                this.Options.OnFakeConfigurationActions.Add(x => action((T)x));
+                return this;
+            }
+
             public IFakeOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
             {
                 this.Options.SelfInitializedFakeRecorder = recorder;

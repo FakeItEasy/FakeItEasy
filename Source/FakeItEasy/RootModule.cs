@@ -57,7 +57,7 @@
                 (Type fakeObjectType, object proxy) => new FakeManager(fakeObjectType, proxy));
 
             container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
-                (typeOfFake) => new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeObjectContainer>(), typeOfFake));
+                (typeOfFake, onFakeConfigurationActions) => new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeObjectContainer>(), typeOfFake, onFakeConfigurationActions));
 
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
                 new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), c.Resolve<IFakeManagerAccessor>()));
