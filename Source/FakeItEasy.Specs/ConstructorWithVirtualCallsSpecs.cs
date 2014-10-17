@@ -39,6 +39,22 @@
             A.CallTo(() => fake.VirtualMethod("call in constructor")).MustHaveHappened();
     }
 
+    public class when_faking_a_class_which_calls_virtual_member_in_constructor_with_changed_configuration_before_the_constructor
+    {
+        static SimpleVirtualCallInConstructor fake;
+
+        Because of = () => 
+            fake = A.Fake<SimpleVirtualCallInConstructor>(
+                    o => o.OnFakeConfiguration(
+                        f => A.CallTo(() => f.VirtualMethod(A<string>._)).Returns("configured value in fake options")));
+
+        It should_return_the_configured_value_inside_and_outside_of_the_constructor_call = () =>
+        {
+            fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured value in fake options");
+            fake.VirtualMethod(null).Should().Be("configured value in fake options");
+        };
+    }
+
     public class when_faking_a_class_which_calls_virtual_member_in_constructor_within_fake_scope_which_configures_the_fake
     {
         static IFakeObjectContainer fakeObjectContainer;
@@ -75,6 +91,59 @@
 
         It should_return_default_value_outside_of_scope = () => 
             virtualMethodValueOutsideOfScope.Should().Be(string.Empty);
+    }
+
+    public class when_faking_a_class_which_calls_virtual_member_in_constructor_with_CallsBaseMethods_option
+    {
+        static SimpleVirtualCallInConstructor fake;
+
+        Because of = () => fake = A.Fake<SimpleVirtualCallInConstructor>(o => o.CallsBaseMethods());
+
+        It should_call_base_method_inside_and_outside_of_the_constructor_call = () =>
+        {
+            fake.VirtualMethodValueDuringConstructorCall.Should().Be("implementation value");
+            fake.VirtualMethod(null).Should().Be("implementation value");
+        };
+    }
+
+    public class when_faking_a_class_which_calls_virtual_member_in_constructor_with_Strict_option
+    {
+        static Exception exception;
+
+        Because of = () => exception = Catch.Exception(() => A.Fake<SimpleVirtualCallInConstructor>(o => o.Strict()));
+
+        It should_throw_an_exception_during_the_constructor_call_because_of_the_unconfigured_call = () => 
+            exception
+                .Should()
+                .BeAnExceptionOfType<FakeCreationException>()
+                .WithMessage(
+                    "\r\n  Failed to create fake of type \"FakeItEasy.Specs.SimpleVirtualCallInConstructor\".\r\n\r\n" +
+                    "  Below is a list of reasons for failure per attempted constructor:\r\n" +
+                    "    No constructor arguments failed:\r\n" +
+                    "      No usable default constructor was found on the type FakeItEasy.Specs.SimpleVirtualCallInConstructor.\r\n" +
+                    "      An exception was caught during this call. Its message was:\r\n" +
+                    "      Exception has been thrown by the target of an invocation.\r\n\r\n");
+    }
+
+    // This spec proves that we can configure methods of a strict fake and it applies to calls in the constructor (the 
+    // counterpart to the previous scenario with an un-configured strict fake):
+    public class when_faking_a_class_which_calls_virtual_member_in_constructor_with_Strict_option_plus_overridden_configuration
+    {
+        static SimpleVirtualCallInConstructor fake;
+
+        Because of = () =>
+            fake = A.Fake<SimpleVirtualCallInConstructor>(
+                    o =>
+                    {
+                        o.Strict();
+                        o.OnFakeConfiguration(f => A.CallTo(() => f.VirtualMethod(A<string>._)).Returns("configured value of strict fake"));
+                    });
+
+        It should_return_the_configured_value_inside_and_outside_of_the_constructor_call = () =>
+        {
+            fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured value of strict fake");
+            fake.VirtualMethod(null).Should().Be("configured value of strict fake");
+        };
     }
 
     public class when_faking_a_class_which_calls_virtual_property_members_in_constructor
@@ -129,6 +198,62 @@
             public virtual IInterface InterfaceProperty { get; set; }
 
             public string InterfacePropertyMethodResultDuringConstructorCall { get; private set; }
+        }
+    }
+
+    // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
+    public class when_faking_a_class_with_a_failing_default_constructor_which_calls_virtual_member
+    {
+        static Action<FakedClass> onFakeConfiguration;
+        static Action<FakedClass> onFakeCreated;
+        static FakedClass fake;
+
+        Establish context = () =>
+        {
+            onFakeConfiguration = A.Fake<Action<FakedClass>>();
+            onFakeCreated = A.Fake<Action<FakedClass>>();
+        };
+
+        Because of = () =>
+            fake = A.Fake<FakedClass>(
+                    o =>
+                    {
+                        o.OnFakeConfiguration(onFakeConfiguration);
+                        o.OnFakeCreated(onFakeCreated);
+                    });
+
+        It should_have_instantiated_the_fake_with_the_second_constructor = () =>
+            fake.SecondConstructorCalled.Should().BeTrue();
+
+        It should_use_a_fake_manager_which_did_not_receive_the_default_constructor_call = () =>
+            fake.DefaultConstructorCalled.Should().BeFalse("because the default constructor was called on a *different* fake object");
+
+        It should_call_OnFakeConfiguration_for_both_fakes = () =>
+            A.CallTo(() => onFakeConfiguration(A<FakedClass>._)).MustHaveHappened(Repeated.Exactly.Twice);
+
+        It should_call_OnFakeCreated_only_for_the_second_one = () =>
+            A.CallTo(() => onFakeCreated(fake)).MustHaveHappened(Repeated.Exactly.Once);
+
+        public class FakedClass
+        {
+            [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "This anti-pattern is part of the the tested scenario.")]
+            public FakedClass()
+            {
+                this.DefaultConstructorCalled = true;
+
+                throw new InvalidOperationException();
+            }
+
+            [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "This anti-pattern is part of the the tested scenario.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "someInterface", Justification = "This is just a dummy argument.")]
+            public FakedClass(IDisposable someInterface)
+            {
+                this.SecondConstructorCalled = true;
+            }
+
+            public virtual bool DefaultConstructorCalled { get; set; }
+
+            public virtual bool SecondConstructorCalled { get; set; }
         }
     }
 }

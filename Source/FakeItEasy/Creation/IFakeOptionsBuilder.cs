@@ -56,8 +56,18 @@ namespace FakeItEasy.Creation
         IFakeOptionsBuilder<T> Implements(Type interfaceType);
 
         /// <summary>
-        /// Specifies an action that should be run over the fake object
-        /// once it's created.
+        /// Specifies an action that should be run over the fake object for the initial configuration (during the creation of the fake proxy).
+        /// </summary>
+        /// <param name="action">An action to perform.</param>
+        /// <returns>Options object.</returns>
+        /// <remarks>
+        /// Note that this method might be called when the fake is not be fully constructed yet. Use the fake instance to set up
+        /// behavior, but to not rely on its state.
+        /// </remarks>
+        IFakeOptionsBuilder<T> OnFakeConfiguration(Action<T> action);
+
+        /// <summary>
+        /// Specifies an action that should be run over the fake object after it has been successfully created.
         /// </summary>
         /// <param name="action">An action to perform.</param>
         /// <returns>Options object.</returns>
