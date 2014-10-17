@@ -86,6 +86,7 @@
     <Compile Include="ArgumentConstraintManagerExtensions\NullCheckedMatchesConstraint.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\StringEndsWithTests.cs" />
     <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
+    <Compile Include="Core\LazyFakeManagerProviderTests.cs" />
     <Compile Include="DefaultBootstrapperTests.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -131,7 +132,6 @@
     <Compile Include="ArgumentConstraintManagerExtensions\ComparableGreaterThanTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\StringIsNullOrEmptyTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\StringStartsWithTests.cs" />
-    <Compile Include="Core\CallInterceptedEventArgsTests.cs" />
     <Compile Include="Core\DefaultFakeWrapperConfiguratorTests.cs" />
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
     <Compile Include="Core\FakeConfiguratorTests.cs" />

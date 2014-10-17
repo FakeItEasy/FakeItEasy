@@ -216,4 +216,7 @@ The following constructors failed:
   
 </value>
   </data>
+  <data name="FakeManagerWasInitializedWithDifferentProxyMessage" xml:space="preserve">
+    <value>The fake manager was initialized for a different proxy.</value>
+  </data>
 </root>

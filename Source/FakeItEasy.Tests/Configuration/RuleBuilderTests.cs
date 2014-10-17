@@ -509,7 +509,7 @@
         {
             Fake.InitializeFixture(this);
 
-            this.fakeManager = new FakeManager();
+            this.fakeManager = A.Fake<FakeManager>(o => o.CallsBaseMethods());
 
             this.builder = this.CreateBuilder();
         }

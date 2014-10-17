@@ -8,45 +8,37 @@ namespace FakeItEasy.Tests.Core
     public class DefaultFakeManagerAccessorTests
     {
         private DefaultFakeManagerAccessor accessor;
-        private FakeManager.Factory managerFactory;
-        private FakeManager managerToReturnFromFactory;
 
         [SetUp]
         public void Setup()
         {
-            this.managerFactory = () => this.managerToReturnFromFactory;
-            this.managerToReturnFromFactory = A.Fake<FakeManager>();
-
-            this.accessor = new DefaultFakeManagerAccessor(this.managerFactory);
+            this.accessor = new DefaultFakeManagerAccessor();
         }
 
         [Test]
-        public void Should_set_manager_from_proxy_to_tag()
+        public void TagProxy_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            NullGuardedConstraint.Assert(() =>
+                this.accessor.TagProxy(A.Fake<object>(), A.Fake<FakeManager>()));
+        }
+
+        [Test]
+        public void Should_set_fake_manager_to_tag()
         {
             // Arrange
             var proxy = A.Fake<ITaggable>();
+            var fakeManager = A.Fake<FakeManager>();
 
             // Act
-            this.accessor.AttachFakeManagerToProxy(typeof(object), proxy, A.Dummy<ICallInterceptedEventRaiser>());
+            this.accessor.TagProxy(proxy, fakeManager);
 
             // Assert
-            Assert.That(proxy.Tag, Is.EqualTo(this.managerToReturnFromFactory));
-        }
-
-        [Test]
-        public void Should_set_proxy_and_event_raiser_to_manager()
-        {
-            // Arrange
-            this.managerToReturnFromFactory = A.Fake<FakeManager>();
-
-            var proxy = A.Dummy<ITaggable>();
-            var eventRaiser = A.Dummy<ICallInterceptedEventRaiser>();
-
-            // Act
-            this.accessor.AttachFakeManagerToProxy(typeof(object), proxy, eventRaiser);
-
-            // Assert
-            A.CallTo(() => this.managerToReturnFromFactory.AttachProxy(typeof(object), proxy, eventRaiser)).MustHaveHappened();
+            Assert.That(proxy.Tag, Is.SameAs(fakeManager));
         }
 
         [Test]
@@ -54,17 +46,18 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var proxy = A.Fake<ITaggable>();
-            proxy.Tag = this.managerToReturnFromFactory;
+            var fakeManager = A.Fake<FakeManager>();
+            proxy.Tag = fakeManager;
 
             // Act
             var result = this.accessor.GetFakeManager(proxy);
 
             // Assert
-            Assert.That(result, Is.SameAs(this.managerToReturnFromFactory));
+            Assert.That(result, Is.SameAs(fakeManager));
         }
 
         [Test]
-        public void Should_be_null_guarded()
+        public void GetFakeManager_should_be_null_guarded()
         {
             // Arrange
 
@@ -80,21 +73,37 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var proxy = new object();
-            this.accessor.AttachFakeManagerToProxy(typeof(object), proxy, A.Dummy<ICallInterceptedEventRaiser>());
+            var fakeManager = A.Fake<FakeManager>();
+            this.accessor.TagProxy(proxy, fakeManager);
 
             // Act
             var manager = this.accessor.GetFakeManager(proxy);
 
             // Assert
-            Assert.That(manager, Is.SameAs(this.managerToReturnFromFactory));
+            Assert.That(manager, Is.SameAs(fakeManager));
         }
 
         [Test]
-        public void Should_fail_when_getting_manager_from_object_where_a_manager_has_not_been_attached()
+        public void Should_fail_when_getting_manager_from_object_where_a_fake_manager_has_not_been_attached()
         {
             // Arrange
             var proxy = A.Fake<ITaggable>();
             proxy.Tag = null;
+
+            // Act
+
+            // Assert
+            Assert.That(
+                () => this.accessor.GetFakeManager(proxy),
+                Throws.ArgumentException.With.Message.EqualTo("The specified object is not recognized as a fake object."));
+        }
+
+        [Test]
+        public void Should_fail_when_getting_manager_from_object_where_a_wrong_typed_fake_manager_has_been_attached()
+        {
+            // Arrange
+            var proxy = A.Fake<ITaggable>();
+            proxy.Tag = new object();
 
             // Act
 

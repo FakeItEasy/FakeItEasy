@@ -5,6 +5,7 @@ namespace FakeItEasy.Creation
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Reflection.Emit;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// An interface to be implemented by classes that can generate proxies for FakeItEasy.
@@ -19,8 +20,9 @@ namespace FakeItEasy.Creation
         /// <param name="additionalInterfacesToImplement">Interfaces to be implemented by the proxy.</param>
         /// <param name="argumentsForConstructor">Arguments to pass to the constructor of the type in <paramref name="typeOfProxy" />.</param>
         /// <param name="customAttributeBuilders">The custom attribute builders.</param>
+        /// <param name="lazyInterceptionSinkProvider">The interception sink provider.</param>
         /// <returns>A result containing the generated proxy.</returns>
-        ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders);
+        ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders, ILazyInterceptionSinkProvider lazyInterceptionSinkProvider);
 
         /// <summary>
         /// Generates a proxy of the specified type and returns a result object containing information
@@ -29,8 +31,9 @@ namespace FakeItEasy.Creation
         /// <param name="typeOfProxy">The type of proxy to generate.</param>
         /// <param name="additionalInterfacesToImplement">Interfaces to be implemented by the proxy.</param>
         /// <param name="argumentsForConstructor">Arguments to pass to the constructor of the type in <paramref name="typeOfProxy" />.</param>
+        /// <param name="lazyInterceptionSinkProvider">The interception sink provider.</param>
         /// <returns>A result containing the generated proxy.</returns>
-        ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor);
+        ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, ILazyInterceptionSinkProvider lazyInterceptionSinkProvider);
 
         /// <summary>
         /// Gets a value indicating whether the specified member can be intercepted by the proxy generator.

@@ -36,9 +36,11 @@
             Type typeOfProxy,
             IEnumerable<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
-            IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+            IEnumerable<CustomAttributeBuilder> customAttributeBuilders,
+            ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
         {
             Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
+            Guard.AgainstNull(lazyInterceptionSinkProvider, "lazyInterceptionSinkProvider");
 
             ProxyGenerationOptions.AdditionalAttributes.Clear();
             foreach (CustomAttributeBuilder builder in customAttributeBuilders)
@@ -46,13 +48,14 @@
                 ProxyGenerationOptions.AdditionalAttributes.Add(builder);
             }
 
-            return this.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
+            return this.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, lazyInterceptionSinkProvider);
         }
 
-        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
+        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
         {
             Guard.AgainstNull(typeOfProxy, "typeOfProxy");
             Guard.AgainstNull(additionalInterfacesToImplement, "additionalInterfacesToImplement");
+            Guard.AgainstNull(lazyInterceptionSinkProvider, "lazyInterceptionSinkProvider");
 
             if (typeOfProxy.IsValueType)
             {
@@ -66,7 +69,7 @@
 
             GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
 
-            return CreateProxyGeneratorResult(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
+            return CreateProxyGeneratorResult(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, lazyInterceptionSinkProvider);
         }
 
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
@@ -83,26 +86,27 @@
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate since the method tries to create a proxy and returns a result object where success is reported.")]
-        private static ProxyGeneratorResult CreateProxyGeneratorResult(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor)
+        private static ProxyGeneratorResult CreateProxyGeneratorResult(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
         {
-            var interceptor = new ProxyInterceptor();
+            var interceptor = new ProxyInterceptor(lazyInterceptionSinkProvider);
+            object proxy;
 
             try
             {
-                var proxy = DoGenerateProxy(
+                proxy = DoGenerateProxy(
                     typeOfProxy,
                     additionalInterfacesToImplement,
                     argumentsForConstructor,
                     interceptor);
-
-                return new ProxyGeneratorResult(
-                    generatedProxy: proxy,
-                    callInterceptedEventRaiser: interceptor);
             }
             catch (Exception e)
             {
                 return GetResultForFailedProxyGeneration(typeOfProxy, argumentsForConstructor, e);
             }
+
+            lazyInterceptionSinkProvider.EnsureInitialized(proxy);
+
+            return new ProxyGeneratorResult(generatedProxy: proxy);
         }
 
         private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, Exception e)
@@ -193,14 +197,20 @@
 
         [Serializable]
         private class ProxyInterceptor
-            : IInterceptor, ICallInterceptedEventRaiser
+            : IInterceptor
         {
             private static readonly MethodInfo TagGetMethod = typeof(ITaggable).GetProperty("Tag").GetGetMethod();
             private static readonly MethodInfo TagSetMethod = typeof(ITaggable).GetProperty("Tag").GetSetMethod();
 
+            [NonSerialized]
+            private readonly ILazyInterceptionSinkProvider lazyInterceptionSinkProvider;
+
             private object tag;
 
-            public event EventHandler<CallInterceptedEventArgs> CallWasIntercepted;
+            public ProxyInterceptor(ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
+            {
+                this.lazyInterceptionSinkProvider = lazyInterceptionSinkProvider;
+            }
 
             public void Intercept(IInvocation invocation)
             {
@@ -216,17 +226,8 @@
                 }
                 else
                 {
-                    this.RaiseCallWasIntercepted(invocation);
-                }
-            }
-
-            private void RaiseCallWasIntercepted(IInvocation invocation)
-            {
-                var handler = this.CallWasIntercepted;
-                if (handler != null)
-                {
                     var call = new CastleInvocationCallAdapter(invocation);
-                    handler.Invoke(this, new CallInterceptedEventArgs(call));
+                    this.lazyInterceptionSinkProvider.Fetch(invocation.Proxy).Process(call);
                 }
             }
         }

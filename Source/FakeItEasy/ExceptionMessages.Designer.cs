@@ -184,6 +184,15 @@ namespace FakeItEasy {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The fake manager was initialized for a different proxy..
+        /// </summary>
+        internal static string FakeManagerWasInitializedWithDifferentProxyMessage {
+            get {
+                return ResourceManager.GetString("FakeManagerWasInitializedWithDifferentProxyMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only abstract classes can be faked using the A.Fake-method that takes an enumerable of objects as arguments for constructor, use the overload that takes an expression instead..
         /// </summary>
         internal static string FakingNonAbstractClassWithArgumentsForConstructor {

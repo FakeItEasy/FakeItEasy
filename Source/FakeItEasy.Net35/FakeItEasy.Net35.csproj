@@ -222,9 +222,6 @@
     <Compile Include="..\FakeItEasy\Core\BootstrapperLocator.cs">
       <Link>Core\BootstrapperLocator.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\CallInterceptedEventArgs.cs">
-      <Link>Core\CallInterceptedEventArgs.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\CallRuleMetadata.cs">
       <Link>Core\CallRuleMetadata.cs</Link>
     </Compile>
@@ -360,6 +357,12 @@
     <Compile Include="..\FakeItEasy\Core\IInterceptionListener.cs">
       <Link>Core\IInterceptionListener.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\IInterceptionSink.cs">
+      <Link>Core\IInterceptionSink.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\ILazyInterceptionSinkProvider.cs">
+      <Link>Core\ILazyInterceptionSinkProvider.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\ISutInitializer.cs">
       <Link>Core\ISutInitializer.cs</Link>
     </Compile>
@@ -368,6 +371,12 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IWritableFakeObjectCall.cs">
       <Link>Core\IWritableFakeObjectCall.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\LazyFakeManagerProvider.cs">
+      <Link>Core\LazyFakeManagerProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\LazyInterceptionSinkProvider.cs">
+      <Link>Core\LazyInterceptionSinkProvider.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\MethodInfoManager.cs">
       <Link>Core\MethodInfoManager.cs</Link>
@@ -419,9 +428,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\FakeOptions.cs">
       <Link>Creation\FakeOptions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Creation\ICallInterceptedEventRaiser.cs">
-      <Link>Creation\ICallInterceptedEventRaiser.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\IDummyValueCreationSession.cs">
       <Link>Creation\IDummyValueCreationSession.cs</Link>

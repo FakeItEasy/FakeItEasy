@@ -88,6 +88,10 @@
     <Compile Include="A.of.T.cs" />
     <Compile Include="Core\AssemblyExtensions.cs" />
     <Compile Include="Core\BootstrapperLocator.cs" />
+    <Compile Include="Core\IInterceptionSink.cs" />
+    <Compile Include="Core\LazyFakeManagerProvider.cs" />
+    <Compile Include="Core\ILazyInterceptionSinkProvider.cs" />
+    <Compile Include="Core\LazyInterceptionSinkProvider.cs" />
     <Compile Include="DefaultBootstrapper.cs" />
     <Compile Include="Expressions\ArgumentConstraints\IArgumentValueProvider.cs" />
     <Compile Include="Expressions\ArgumentConstraints\OutArgumentConstraint.cs" />
@@ -220,9 +224,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\ArgumentValueFormatter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\CallInterceptedEventArgs.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\CallRuleMetadata.cs">
@@ -411,9 +412,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Creation\FakeOptions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\ICallInterceptedEventRaiser.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Creation\IDummyValueCreationSession.cs">

@@ -120,6 +120,18 @@
     <Compile Include="..\FakeItEasy\Core\AssemblyExtensions.cs">
       <Link>Core\AssemblyExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\IInterceptionSink.cs">
+      <Link>Core\IInterceptionSink.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\ILazyInterceptionSinkProvider.cs">
+      <Link>Core\ILazyInterceptionSinkProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\LazyFakeManagerProvider.cs">
+      <Link>Core\LazyFakeManagerProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\LazyInterceptionSinkProvider.cs">
+      <Link>Core\LazyInterceptionSinkProvider.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
       <Link>EnumerableExtensions.cs</Link>
     </Compile>
@@ -302,9 +314,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentValueFormatter.cs">
       <Link>Core\ArgumentValueFormatter.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\CallInterceptedEventArgs.cs">
-      <Link>Core\CallInterceptedEventArgs.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\CallRuleMetadata.cs">
       <Link>Core\CallRuleMetadata.cs</Link>
@@ -497,9 +506,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\FakeOptions.cs">
       <Link>Creation\FakeOptions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Creation\ICallInterceptedEventRaiser.cs">
-      <Link>Creation\ICallInterceptedEventRaiser.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\IDummyValueCreationSession.cs">
       <Link>Creation\IDummyValueCreationSession.cs</Link>

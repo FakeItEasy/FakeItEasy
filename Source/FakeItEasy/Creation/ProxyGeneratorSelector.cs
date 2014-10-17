@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
+    using FakeItEasy.Core;
     using FakeItEasy.Creation.DelegateProxies;
 
     internal class ProxyGeneratorSelector
@@ -17,18 +18,18 @@
             this.defaultProxyGenerator = defaultProxyGenerator;
         }
 
-        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, System.Collections.Generic.IEnumerable<Type> additionalInterfacesToImplement, System.Collections.Generic.IEnumerable<object> argumentsForConstructor)
+        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, System.Collections.Generic.IEnumerable<Type> additionalInterfacesToImplement, System.Collections.Generic.IEnumerable<object> argumentsForConstructor, ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
         {
             var generator = this.SelectProxyGenerator(typeOfProxy);
 
-            return generator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor);
+            return generator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, lazyInterceptionSinkProvider);
         }
 
-        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, System.Collections.Generic.IEnumerable<Type> additionalInterfacesToImplement, System.Collections.Generic.IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<CustomAttributeBuilder> customAttributeBuilders, ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
         {
             var generator = this.SelectProxyGenerator(typeOfProxy);
 
-            return generator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, customAttributeBuilders);
+            return generator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, customAttributeBuilders, lazyInterceptionSinkProvider);
         }
 
         public bool MethodCanBeInterceptedOnInstance(System.Reflection.MethodInfo method, object callTarget, out string failReason)

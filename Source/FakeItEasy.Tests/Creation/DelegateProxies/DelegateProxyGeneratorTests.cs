@@ -32,7 +32,7 @@
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>());
+            var result = this.generator.GenerateProxy(delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<ILazyInterceptionSinkProvider>());
 
             // Assert
             Assert.That(result.ProxyWasSuccessfullyGenerated, Is.True);
@@ -47,7 +47,7 @@
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(nonDelegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>());
+            var result = this.generator.GenerateProxy(nonDelegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<ILazyInterceptionSinkProvider>());
 
             // Assert
             Assert.That(result.ProxyWasSuccessfullyGenerated, Is.False);
@@ -63,10 +63,24 @@
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>());
+            var result = this.generator.GenerateProxy(delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<ILazyInterceptionSinkProvider>());
 
             // Assert
             Assert.That(result.GeneratedProxy.GetType(), Is.EqualTo(delegateType));
+        }
+
+        [Test]
+        public void Should_ensure_interception_sink_is_initialized_but_not_fetched_when_no_method_on_fake_is_called()
+        {
+            // Arrange
+            var lazyInterceptionSinkProvider = A.Fake<ILazyInterceptionSinkProvider>();
+
+            // Act
+            var proxyGeneratorResult = this.generator.GenerateProxy(typeof(Action), Enumerable.Empty<Type>(), null, lazyInterceptionSinkProvider);
+
+            // Assert
+            A.CallTo(() => lazyInterceptionSinkProvider.Fetch(A<object>._)).MustNotHaveHappened();
+            A.CallTo(() => lazyInterceptionSinkProvider.EnsureInitialized(proxyGeneratorResult.GeneratedProxy)).MustHaveHappened();
         }
 
         [Test]
@@ -83,7 +97,7 @@
         }
 
         [Test]
-        public void Should_return_proxy_that_raises_event_with_arguments_passed_to_proxy()
+        public void Should_return_proxy_that_calls_interception_sink_with_arguments_passed_to_proxy()
         {
             // Arrange
             int firstArgument = 0;
@@ -219,11 +233,15 @@
             Assert.That(reason, Is.Null);
         }
 
-        private T GenerateProxy<T>(Action<IWritableFakeObjectCall> callInterceptor)
+        private T GenerateProxy<T>(Action<IWritableFakeObjectCall> interceptionSinkAction)
         {
-            var result = this.generator.GenerateProxy(typeof(T), Enumerable.Empty<Type>(), Enumerable.Empty<object>());
+            var lazyInterceptionSinkProvider = A.Fake<ILazyInterceptionSinkProvider>();
 
-            result.CallInterceptedEventRaiser.CallWasIntercepted += (_, e) => callInterceptor(e.Call);
+            var result = this.generator.GenerateProxy(typeof(T), Enumerable.Empty<Type>(), Enumerable.Empty<object>(), lazyInterceptionSinkProvider);
+
+            var interceptionSink = A.Fake<IInterceptionSink>();
+            A.CallTo(() => lazyInterceptionSinkProvider.Fetch(A<object>._)).Returns(interceptionSink);
+            A.CallTo(() => interceptionSink.Process(A<IWritableFakeObjectCall>._)).Invokes(interceptionSinkAction);
 
             return (T)result.GeneratedProxy;
         }
