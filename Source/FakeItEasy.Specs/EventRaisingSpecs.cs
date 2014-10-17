@@ -79,7 +79,9 @@
             };
         };
 
+#pragma warning disable 618
         Because of = () => TypeWithEvent.EventHandler += Raise.With(raisedWithArgs).Now;
+#pragma warning restore 618
 
         It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
 
@@ -129,7 +131,9 @@
             };
         };
 
+#pragma warning disable 618
         Because of = () => TypeWithEvent.GenericEventHandler += Raise.With(raisedWithArgs).Now;
+#pragma warning restore 618
 
         It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
 

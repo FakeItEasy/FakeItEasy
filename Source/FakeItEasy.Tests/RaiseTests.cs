@@ -80,7 +80,9 @@
             var raiser = new Raise<EventArgs>(null, EventArgs.Empty);
 
             // Act
+#pragma warning disable 618
             var exception = Record.Exception(() => raiser.Now(null, null));
+#pragma warning restore 618
 
             // Assert
             exception.Should().BeAnExceptionOfType<NotSupportedException>();
@@ -92,7 +94,9 @@
             // Arrange
 
             // Act
+#pragma warning disable 618
             var methodName = Raise.With(EventArgs.Empty).Go.Method.Name;
+#pragma warning restore 618
 
             // Assert
             methodName.Should().Be("Now");
