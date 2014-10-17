@@ -17,7 +17,7 @@
         public void Setup()
         {
             this.foo = A.Fake<IFoo>();
-            this.foo.SomethingHappened += new EventHandler(this.Foo_SomethingHappened);
+            this.foo.SomethingHappened += this.Foo_SomethingHappened;
             this.sender = null;
             this.eventArguments = null;
         }
@@ -26,7 +26,7 @@
         public void Raising_with_sender_and_arguments_should_raise_event_with_specified_sender()
         {
             // Arrange
-            object senderToUse = new object();
+            var senderToUse = new object();
             
             // Act
             this.foo.SomethingHappened += Raise.With(senderToUse, EventArgs.Empty);

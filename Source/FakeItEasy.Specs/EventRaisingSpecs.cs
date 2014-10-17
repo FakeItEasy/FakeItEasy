@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests
+﻿namespace FakeItEasy.Specs
 {
     using System;
     using FluentAssertions;
@@ -15,12 +15,11 @@
             event EventHandler EventHandler;
         }
 
-        protected static ITypeWithEvent TypeWithEvent { get; set; }
+        protected static ITypeWithEvent TypeWithEvent { get; private set; }
 
         public class SomethingHappenedEventArgs
             : EventArgs
         {
-            public string Message { get; set; }
         }
     }
 
@@ -96,7 +95,7 @@
         static SomethingHappenedEventArgs capturedArgs;
         static object capturedSender;
 
-        private Establish context = () =>
+        Establish context = () =>
         {
             raisedWithArgs = new SomethingHappenedEventArgs();
             TypeWithEvent.GenericEventHandler += (sender, e) =>

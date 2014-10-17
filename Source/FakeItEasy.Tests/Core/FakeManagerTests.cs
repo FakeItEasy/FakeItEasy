@@ -254,7 +254,7 @@
                 fake.AddRuleFirst(rule);
             }
 
-            (fake.Object as IFoo).Bar();
+            ((IFoo)fake.Object).Bar();
 
             A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).MustNotHaveHappened();
         }
@@ -665,19 +665,6 @@
             this.createdFakes.Add(result);
         }
 
-        public class TypeWithNoDefaultConstructorButAllArgumentsFakeable
-        {
-            public TypeWithNoDefaultConstructorButAllArgumentsFakeable(IFoo foo, IFormatProvider formatProvider)
-            {
-                this.Foo = foo;
-                this.FormatProvider = formatProvider;
-            }
-
-            public IFoo Foo { get; set; }
-
-            public IFormatProvider FormatProvider { get; set; }
-        }
-
         private class FakedProxyWithManagerSpecified
             : ITaggable
         {
@@ -697,7 +684,7 @@
         private sealed class RaisableFakeManager
             : FakeManager
         {
-            private ICallInterceptedEventRaiser raiser;
+            private readonly ICallInterceptedEventRaiser raiser;
 
             public RaisableFakeManager()
             {
