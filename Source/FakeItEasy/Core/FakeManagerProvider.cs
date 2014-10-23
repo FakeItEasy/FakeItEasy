@@ -3,17 +3,30 @@ namespace FakeItEasy.Core
     using System;
 
     /// <summary>
-    /// Implementation of <see cref="IFakeCallProcessorProvider"/>, which returns a <see cref="FakeManager"/> as "call processor" lazily (on 
+    /// Implementation of <see cref="IFakeCallProcessorProvider"/>, which returns a <see cref="FakeManager"/> as "call processor" lazily (on
     /// the first call of <see cref="Fetch"/> or <see cref="EnsureInitialized"/>).
     /// </summary>
+    /// <remarks>
+    /// Note that we just need to serialize the <see cref="FakeManager"/> + the lock (an "empty", *new* object will be deserialized)
+    /// because <see cref="IFakeCallProcessorProvider"/> doesn't require serializability before the first call of <see cref="Fetch"/> or
+    /// <see cref="EnsureInitialized "/> (see remarks section of <see cref="IFakeCallProcessorProvider"/>).
+    /// </remarks>
+    [Serializable]
     internal class FakeManagerProvider : IFakeCallProcessorProvider
     {
+        [NonSerialized]
         private readonly FakeManager.Factory fakeManagerFactory;
+
+        [NonSerialized]
         private readonly IFakeManagerAccessor fakeManagerAccessor;
+
+        [NonSerialized]
         private readonly IFakeObjectConfigurator configurer;
+
+        [NonSerialized]
         private readonly Type typeOfFake;
 
-        // We want to lock accesses to initializedFakeManager because to guarantee thread-safety (see IFakeCallProcessorProvider documentation):
+        // We want to lock accesses to initializedFakeManager to guarantee thread-safety (see IFakeCallProcessorProvider documentation):
         private readonly object initializedFakeManagerLock = new object();
 
         private FakeManager initializedFakeManager;

@@ -1,9 +1,9 @@
 namespace FakeItEasy.IntegrationTests
 {
     using System;
-    using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
-    using Core;
+    using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -19,22 +19,36 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
-        public void Should_be_able_to_serialize_a_fake()
+        public void Should_be_able_to_use_a_fake_after_binary_deserializing_it()
         {
-            // arrange
+            // Arrange
             var person = A.Fake<Person>();
 
-            var formatter = new BinaryFormatter();
-            using (var stream = new MemoryStream())
-            {
-                // act
-                formatter.Serialize(stream, person);
-            }
+            // Act
+            var deserializedPerson = BinarySerializationHelper.SerializeAndDeserialize(person);
+
+            // Assert
+            deserializedPerson.Name.Should().Be(string.Empty, "because the default behavior should work");
+        }
+
+        [Test]
+        public void Should_be_able_to_change_the_configuration_of_a_fake_after_binary_deserializing_it()
+        {
+            // Arrange
+            var person = A.Fake<Person>();
+
+            // Act
+            var deserializedPerson = BinarySerializationHelper.SerializeAndDeserialize(person);
+
+            // Assert
+            A.CallTo(() => deserializedPerson.Name).Returns("Eric Cartman");
+            deserializedPerson.Name.Should().Be("Eric Cartman");
         }
 
         [Serializable]
         public class Person
         {
+            public virtual string Name { get; set; }
         }
     }
 }

@@ -98,6 +98,7 @@
     <Compile Include="ArgumentValidationConfigurationExtensionsTests.cs" />
     <Compile Include="AssertConfigurationExtensionsTests.cs" />
     <Compile Include="CompletedFakeObjectCallExtensionsTests.cs" />
+    <Compile Include="TestHelpers\BinarySerializationHelper.cs" />
     <Compile Include="WhereConfigurationExtensionsTests.cs" />
     <Compile Include="FakeOptionsBuilderExtensionsTests.cs" />
     <Compile Include="FakeObjectCallExtensionsTests.cs" />

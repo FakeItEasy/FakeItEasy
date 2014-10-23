@@ -202,7 +202,6 @@
             private static readonly MethodInfo TagGetMethod = typeof(ITaggable).GetProperty("Tag").GetGetMethod();
             private static readonly MethodInfo TagSetMethod = typeof(ITaggable).GetProperty("Tag").GetSetMethod();
 
-            [NonSerialized]
             private readonly IFakeCallProcessorProvider fakeCallProcessorProvider;
 
             private object tag;

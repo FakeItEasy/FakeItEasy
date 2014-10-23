@@ -4,7 +4,6 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Runtime.Serialization.Formatters.Binary;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.CastleDynamicProxy;
@@ -151,20 +150,16 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         public void Serialized_proxies_should_deserialize_to_an_object(Type typeOfProxy)
         {
             // Arrange
-            var result = this.generator.GenerateProxy(typeOfProxy, new Type[] { }, null, A.Dummy<IFakeCallProcessorProvider>());
+            // Here we can't use A.Dummy<IFakeCallProcessorProvider>() because the EnsureInitialized() call within GenerateProxy()
+            // triggers the Castle issue #65 (https://github.com/castleproject/Core/issues/65)
+            var result = this.generator.GenerateProxy(typeOfProxy, new Type[] { }, null, new SerializableFakeCallProcessorProvider());
             var proxy = result.GeneratedProxy;
-            var serializer = new BinaryFormatter();
-            using (var stream = new System.IO.MemoryStream())
-            {
-                // Act
-                serializer.Serialize(stream, proxy);
-                stream.Seek(0, System.IO.SeekOrigin.Begin);
 
-                var deserializedProxy = serializer.Deserialize(stream);
+            // Act
+            var deserializedProxy = BinarySerializationHelper.SerializeAndDeserialize(proxy);
 
-                // Assert
-                deserializedProxy.Should().NotBeNull();
-            }
+            // Assert
+            deserializedProxy.Should().NotBeNull();
         }
 
         [Test]
@@ -398,6 +393,19 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
         private sealed class SealedType
         {
+        }
+
+        [Serializable]
+        private class SerializableFakeCallProcessorProvider : IFakeCallProcessorProvider
+        {
+            public IFakeCallProcessor Fetch(object proxy)
+            {
+                throw new NotSupportedException();
+            }
+
+            public void EnsureInitialized(object proxy)
+            {
+            }
         }
     }
 }

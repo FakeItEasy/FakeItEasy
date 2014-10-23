@@ -1,7 +1,9 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Reflection;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
 
@@ -96,6 +98,27 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             act.ShouldThrow<ArgumentException>().WithMessage("The fake manager was initialized for a different proxy.*");
+        }
+
+        [Test]
+        public void Should_be_able_to_serialize_and_deserialize_initialized_provider_and_fetch_should_still_work()
+        {
+            // Arrange
+            this.fakeManagerProvider.EnsureInitialized(this.proxy);
+
+            // Act
+            var deserializedFakeManagerProvider = BinarySerializationHelper.SerializeAndDeserialize(this.fakeManagerProvider);
+            var deserializedFakeManager = GetInitializedFakeManager(deserializedFakeManagerProvider);
+            Action act = () => deserializedFakeManagerProvider.Fetch(deserializedFakeManager.Object);
+
+            // Assert
+            act.ShouldNotThrow();
+        }
+
+        private static FakeManager GetInitializedFakeManager(FakeManagerProvider fakeManagerProvider)
+        {
+            var fieldInfo = fakeManagerProvider.GetType().GetField("initializedFakeManager", BindingFlags.NonPublic | BindingFlags.Instance);
+            return (FakeManager)fieldInfo.GetValue(fakeManagerProvider);
         }
     }
 }

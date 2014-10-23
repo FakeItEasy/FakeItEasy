@@ -6,8 +6,15 @@ namespace FakeItEasy.Core
     /// <see cref="EnsureInitialized"/>.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Note that the implementation of this interface must be thread-safe and guarantee the one-time-initialization property when accessing 
     /// the interface methods concurrently (could happen when using this provider in spawned threads in a proxy base constructor).
+    /// </para>
+    /// <para>
+    /// An implementation of this interface should also be serializable and the deserialized object should behave like the original one
+    /// *after* it has been initialized (i.e. after the first call of <see cref="Fetch"/> or <see cref="EnsureInitialized "/>) because 
+    /// we don't need to serialize a fake before it has been initialized (returned to the user).
+    /// </para>
     /// </remarks>
     public interface IFakeCallProcessorProvider
     {
