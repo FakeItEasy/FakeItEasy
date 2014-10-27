@@ -133,6 +133,8 @@
             container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write));
 
             container.Register<ISutInitializer>(c => new DefaultSutInitializer(c.Resolve<IFakeAndDummyManager>()));
+
+            container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
         }
 
         private class ExpressionCallMatcherFactory

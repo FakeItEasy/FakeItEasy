@@ -16,10 +16,18 @@
         private readonly TEventArgs eventArguments;
         private readonly object sender;
 
-        internal Raise(object sender, TEventArgs e)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Raise{TEventArgs}"/> class.
+        /// </summary>
+        /// <param name="sender">The sender of the event, or <c>null</c> if the fake is to be used as sender.</param>
+        /// <param name="e">The event data.</param>
+        /// <param name="argumentProviderMap">A map from event handlers to supplied arguments to use when raising.</param>
+        internal Raise(object sender, TEventArgs e, EventHandlerArgumentProviderMap argumentProviderMap)
         {
             this.sender = sender;
             this.eventArguments = e;
+
+            argumentProviderMap.AddArgumentProvider((EventHandler<TEventArgs>)this, this);
         }
 
         /// <summary>
@@ -29,16 +37,6 @@
         public EventHandler<TEventArgs> Go
         {
             get { return this.Now; }
-        }
-
-        object IEventRaiserArguments.Sender
-        {
-            get { return this.sender; }
-        }
-
-        EventArgs IEventRaiserArguments.EventArguments
-        {
-            get { return this.eventArguments; }
         }
 
         /// <summary>
@@ -61,6 +59,11 @@
         public static implicit operator EventHandler(Raise<TEventArgs> raiser)
         {
             return raiser.Now;
+        }
+
+        object[] IEventRaiserArguments.GetEventArguments(object fake)
+        {
+            return new[] { this.sender ?? fake, this.eventArguments };
         }
 
         /// <summary>

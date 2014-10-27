@@ -77,7 +77,7 @@
         public void Now_should_throw_when_called_directly()
         {
             // Arrange
-            var raiser = new Raise<EventArgs>(null, EventArgs.Empty);
+            var raiser = new Raise<EventArgs>(null, EventArgs.Empty, ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>());
 
             // Act
             var exception = Record.Exception(() => raiser.Now(null, null));
@@ -102,13 +102,14 @@
         public void WithEmpty_should_return_raise_object_with_event_args_empty_set()
         {
             // Arrange
-            var result = Raise.WithEmpty();
+            this.foo = A.Fake<IFoo>();
+            this.foo.SomethingHappened += this.Foo_SomethingHappened;
 
             // Act
-            var eventArgs = (result as IEventRaiserArguments).EventArguments;
+            this.foo.SomethingHappened += Raise.WithEmpty();
 
             // Assert
-            eventArgs.Should().Be(EventArgs.Empty);
+            this.eventArguments.Should().Be(EventArgs.Empty);
         }
 
         [Test]
@@ -138,6 +139,24 @@
             // Assert
             exception.Should().BeAnExceptionOfType<NotImplementedException>()
                 .And.StackTrace.Should().Contain("FakeItEasy.Tests.RaiseTests.Foo_SomethingHappenedThrows");
+        }
+
+        [Test]
+        public void Should_not_leak_handlers_when_raising()
+        {
+            // Arrange
+            var eventHandlerArgumentProvider = ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+
+            this.foo = A.Fake<IFoo>();
+            this.foo.SomethingHappened += this.Foo_SomethingHappened;
+
+            EventHandler raisingHandler = Raise.WithEmpty(); // EventHandler to force the implicit conversion
+
+            // Act
+            this.foo.SomethingHappened += raisingHandler;
+
+            // Assert
+            eventHandlerArgumentProvider.Contains(raisingHandler).Should().BeFalse();
         }
 
         private void Foo_SomethingHappened(object newSender, EventArgs e)
