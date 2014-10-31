@@ -21,7 +21,7 @@ namespace FakeItEasy.Core
             [NonSerialized]
             private Dictionary<object, Delegate> registeredEventHandlersField;
 
-            public FakeManager FakeManager { get; set; }
+            public FakeManager FakeManager { private get; set; }
 
             public int? NumberOfTimesToCall
             {
@@ -111,7 +111,7 @@ namespace FakeItEasy.Core
 
             private void AddHandler(object key, Delegate handler)
             {
-                Delegate result = null;
+                Delegate result;
 
                 if (this.RegisteredEventHandlers.TryGetValue(key, out result))
                 {
@@ -127,7 +127,7 @@ namespace FakeItEasy.Core
 
             private void RemoveHandler(object key, Delegate handler)
             {
-                Delegate registration = null;
+                Delegate registration;
 
                 if (this.RegisteredEventHandlers.TryGetValue(key, out registration))
                 {
@@ -146,7 +146,7 @@ namespace FakeItEasy.Core
 
             private void RaiseEvent(EventCall call)
             {
-                Delegate raiseMethod = null;
+                Delegate raiseMethod;
 
                 if (this.RegisteredEventHandlers.TryGetValue(call.Event, out raiseMethod))
                 {
@@ -183,11 +183,11 @@ namespace FakeItEasy.Core
                 {
                 }
 
-                public EventInfo Event { get; set; }
+                public EventInfo Event { get; private set; }
 
-                public MethodInfo CallingMethod { get; set; }
+                public Delegate EventHandler { get; private set; }
 
-                public Delegate EventHandler { get; set; }
+                private MethodInfo CallingMethod { get; set; }
 
                 private EventHandlerArgumentProviderMap EventHandlerArgumentProviderMap { get; set; }
 

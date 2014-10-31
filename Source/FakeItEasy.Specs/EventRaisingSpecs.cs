@@ -58,8 +58,7 @@
         }
     }
 
-    [Subject(typeof(Raise), "eventhandler with no subscribers")]
-    public class RaisingEventWithNoSubscriber
+    public class when_raising_event_handler_with_no_subscribers
         : EventRaisingSpecs
     {
         static Exception exception;
@@ -70,8 +69,7 @@
         It should_not_throw = () => exception.Should().BeNull();
     }
 
-    [Subject(typeof(Raise), "eventhandler with subscriber")]
-    public class RaisingEventHandlerWithSubscriber
+    public class when_raising_event_handler_passing_arguments
         : EventRaisingSpecs
     {
         static EventArgs raisedWithArgs;
@@ -90,13 +88,12 @@
 
         Because of = () => TypeWithEvent.EventHandler += Raise.With(raisedWithArgs);
 
-        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
+        It should_pass_the_fake_as_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
 
         It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
     }
 
-    [Subject(typeof(Raise), "eventhandler with subscriber specifying sender and args")]
-    public class RaisingEventHandlerWithSubscriberSpecifyingSenderAndArgs
+    public class when_raising_event_handler_passing_sender_and_arguments
         : EventRaisingSpecs
     {
         static EventArgs raisedWithArgs;
@@ -123,7 +120,7 @@
     }
 
     [Subject(typeof(Raise), "eventhandler with subscriber using WithEmpty")]
-    public class RaisingEventHandlerWithSubscriberUsingWithEmpty
+    public class when_raising_event_handler_using_WithEmpty
         : EventRaisingSpecs
     {
         static EventArgs capturedArgs;
@@ -140,13 +137,12 @@
 
         Because of = () => TypeWithEvent.EventHandler += Raise.WithEmpty();
 
-        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
+        It should_pass_the_fake_as_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
 
         It should_pass_empty_event_arguments = () => capturedArgs.Should().Be(EventArgs.Empty);
     }
 
-    [Subject(typeof(Raise), "generic eventhandler with subscriber")]
-    public class RaisingGenericEventHandlerWithSubscriber
+    public class when_raising_generic_event_handler_passing_arguments
         : EventRaisingSpecs
     {
         static SomethingHappenedEventArgs raisedWithArgs;
@@ -165,13 +161,12 @@
 
         Because of = () => TypeWithEvent.GenericEventHandler += Raise.With(raisedWithArgs);
 
-        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
+        It should_pass_the_fake_as_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
 
         It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
     }
 
-    [Subject(typeof(Raise), "generic eventhandler with subscriber specifying sender and args")]
-    public class RaisingGenericEventHandlerWithSubscriberSpecifyingSenderAndArgs
+    public class when_raising_generic_event_handler_passing_sender_and_arguments
         : EventRaisingSpecs
     {
         static SomethingHappenedEventArgs raisedWithArgs;
@@ -197,8 +192,7 @@
         It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
     }
 
-    [Subject(typeof(Raise), "derived eventhandler with subscriber specifying sender and args")]
-    public class RaisingDerivedEventHandlerWithSubscriberSpecifyingSenderAndArgs
+    public class when_raising_derived_event_handler_passing_sender_and_arguments
         : EventRaisingSpecs
     {
         static SomethingHappenedEventArgs raisedWithArgs;
@@ -224,8 +218,7 @@
         It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
     }
 
-    [Subject(typeof(Raise), "delegate with subscriber")]
-    public class RaisingDelegateEventSubscriber
+    public class when_raising_delegate_event_passing_arguments
         : EventRaisingSpecs
     {
         static ArrayList raisedWithList;
@@ -242,8 +235,7 @@
         It should_pass_the_argument = () => ((object)capturedList).Should().BeSameAs(raisedWithList);
     }
 
-    [Subject(typeof(Raise), "action with subscriber")]
-    public class RaisingActionEventSubscriber
+    public class when_raising_action_event_passing_arguments
         : EventRaisingSpecs
     {
         static int raisedWithInt;
@@ -269,8 +261,7 @@
         It should_pass_the_second_argument = () => capturedString.Should().Be(raisedWithString);
     }
 
-    [Subject(typeof(Raise), "delegate with subscriber specifying argument of derived type")]
-    public class RaisingDelegateEventSubscriberSpecifyingDerivedArgument
+    public class when_raising_delegate_event_passing_derived_arguments
         : EventRaisingSpecs
     {
         static ArrayList raisedWithList;
@@ -294,8 +285,7 @@
         }
     }
 
-    [Subject(typeof(Raise), "delegate with subscriber specifying invalid argument")]
-    public class RaisingDelegateEventSubscriberSpecifyingInvalidArgument
+    public class when_raising_delegate_event_passing_invalid_argument_type
         : EventRaisingSpecs
     {
         private const string ExpectedMessage =
@@ -320,8 +310,7 @@
                 .Message.Should().Be(ExpectedMessage);
     }
 
-    [Subject(typeof(Raise), "delegate with subscriber specifying null for value argument")]
-    public class RaisingDelegateEventSubscriberSpecifyingNullForValueArgument
+    public class when_raising_delegate_event_passing_null_for_value_type_argument
         : EventRaisingSpecs
     {
         private const string ExpectedMessage = 
@@ -346,8 +335,7 @@
                 .Message.Should().Be(ExpectedMessage);
     }
 
-    [Subject(typeof(Raise), "eventhandler with multiple subscribers")]
-    public class RaisingEventHandlerWithMultipleSubscribers
+    public class when_raising_event_handler_with_multiple_subscribers
         : EventRaisingSpecs
     {
         static int firstWasRaisedNumberOfTimes;

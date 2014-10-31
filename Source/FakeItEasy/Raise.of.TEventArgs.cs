@@ -13,7 +13,7 @@
         : IEventRaiserArguments where TEventArgs : EventArgs
     {
         private readonly TEventArgs eventArguments;
-        private readonly object sender;
+        private readonly object eventSender;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Raise{TEventArgs}"/> class.
@@ -23,7 +23,7 @@
         /// <param name="argumentProviderMap">A map from event handlers to supplied arguments to use when raising.</param>
         internal Raise(object sender, TEventArgs e, EventHandlerArgumentProviderMap argumentProviderMap)
         {
-            this.sender = sender;
+            this.eventSender = sender;
             this.eventArguments = e;
 
             argumentProviderMap.AddArgumentProvider((EventHandler<TEventArgs>)this, this);
@@ -53,16 +53,14 @@
 
         object[] IEventRaiserArguments.GetEventArguments(object fake)
         {
-            return new[] { this.sender ?? fake, this.eventArguments };
+            return new[] { this.eventSender ?? fake, this.eventArguments };
         }
 
-        [SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "sender", Justification = "Unused parameter.")]
         private void Now(object sender, TEventArgs e)
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
         }
 
-        [SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "sender", Justification = "Unused parameter.")]
         private void Now(object sender, EventArgs e)
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);

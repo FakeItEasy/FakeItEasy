@@ -3,7 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
     using Machine.Specifications;
 
-    public class AssertingOnSetOnlyPropertiesSpecs
+    public class when_asserting_on_set_only_properties
     {
         private static ISetOnly setOnly;
 
@@ -15,11 +15,9 @@
                 setOnly.MyProperty2 = false;
             };
 
-        It should_be_able_to_assert_whith_argument_constraint = () =>
-            {
-                A.CallTo(setOnly).Where(x => x.Method.Name == "set_MyProperty")
-                    .WhenArgumentsMatch(x => x.Get<int>(0) == 1).MustHaveHappened();
-            };
+        It should_be_able_to_assert_with_argument_constraint =
+            () => A.CallTo(setOnly).Where(x => x.Method.Name == "set_MyProperty")
+                .WhenArgumentsMatch(x => x.Get<int>(0) == 1).MustHaveHappened();
 
         public interface ISetOnly
         {
