@@ -56,8 +56,8 @@
             container.RegisterSingleton<FakeManager.Factory>(c =>
                 (Type fakeObjectType, object proxy) => new FakeManager(fakeObjectType, proxy));
 
-            container.RegisterSingleton<LazyInterceptionSinkProvider.Factory>(c =>
-                (typeOfFake) => new LazyFakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeObjectContainer>(), typeOfFake));
+            container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
+                (typeOfFake) => new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeObjectContainer>(), typeOfFake));
 
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
                 new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), c.Resolve<IFakeManagerAccessor>()));
@@ -93,7 +93,7 @@
 
             container.Register<IFakeAndDummyManager>(c =>
                                                          {
-                                                             var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<LazyInterceptionSinkProvider.Factory>());
+                                                             var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<FakeCallProcessorProvider.Factory>());
                                                              var session = new DummyValueCreationSession(c.Resolve<IFakeObjectContainer>(), new SessionFakeObjectCreator { Creator = fakeCreator });
 
                                                              return new DefaultFakeAndDummyManager(session, fakeCreator, c.Resolve<IFakeWrapperConfigurer>());

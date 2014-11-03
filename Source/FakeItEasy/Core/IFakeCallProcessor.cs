@@ -4,7 +4,7 @@
     /// Represents the target of intercepted calls of a fake proxy. An implementation of this interface receives calls, gets its arguments
     /// and can provide return values.
     /// </summary>
-    public interface IInterceptionSink
+    public interface IFakeCallProcessor
     {
         /// <summary>
         /// Processes an intercepted call of a fake proxy.

@@ -590,9 +590,9 @@
             return new FakeCallRule { IsApplicableTo = x => true };
         }
 
-        private static void ProcessFakeObjectCall(IInterceptionSink fakeManager, IWritableFakeObjectCall interceptedCall)
+        private static void ProcessFakeObjectCall(IFakeCallProcessor fakeCallProcessor, IWritableFakeObjectCall interceptedCall)
         {
-            fakeManager.Process(interceptedCall);
+            fakeCallProcessor.Process(interceptedCall);
         }
 
         private FakeManager CreateFakeManager<T>()

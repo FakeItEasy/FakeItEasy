@@ -37,10 +37,10 @@
             IEnumerable<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
             IEnumerable<CustomAttributeBuilder> customAttributeBuilders,
-            ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
+            IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
-            Guard.AgainstNull(lazyInterceptionSinkProvider, "lazyInterceptionSinkProvider");
+            Guard.AgainstNull(fakeCallProcessorProvider, "fakeCallProcessorProvider");
 
             ProxyGenerationOptions.AdditionalAttributes.Clear();
             foreach (CustomAttributeBuilder builder in customAttributeBuilders)
@@ -48,14 +48,14 @@
                 ProxyGenerationOptions.AdditionalAttributes.Add(builder);
             }
 
-            return this.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, lazyInterceptionSinkProvider);
+            return this.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
         }
 
-        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
+        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             Guard.AgainstNull(typeOfProxy, "typeOfProxy");
             Guard.AgainstNull(additionalInterfacesToImplement, "additionalInterfacesToImplement");
-            Guard.AgainstNull(lazyInterceptionSinkProvider, "lazyInterceptionSinkProvider");
+            Guard.AgainstNull(fakeCallProcessorProvider, "fakeCallProcessorProvider");
 
             if (typeOfProxy.IsValueType)
             {
@@ -69,7 +69,7 @@
 
             GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
 
-            return CreateProxyGeneratorResult(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, lazyInterceptionSinkProvider);
+            return CreateProxyGeneratorResult(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
         }
 
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
@@ -86,9 +86,9 @@
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate since the method tries to create a proxy and returns a result object where success is reported.")]
-        private static ProxyGeneratorResult CreateProxyGeneratorResult(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
+        private static ProxyGeneratorResult CreateProxyGeneratorResult(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            var interceptor = new ProxyInterceptor(lazyInterceptionSinkProvider);
+            var interceptor = new ProxyInterceptor(fakeCallProcessorProvider);
             object proxy;
 
             try
@@ -104,7 +104,7 @@
                 return GetResultForFailedProxyGeneration(typeOfProxy, argumentsForConstructor, e);
             }
 
-            lazyInterceptionSinkProvider.EnsureInitialized(proxy);
+            fakeCallProcessorProvider.EnsureInitialized(proxy);
 
             return new ProxyGeneratorResult(generatedProxy: proxy);
         }
@@ -203,13 +203,13 @@
             private static readonly MethodInfo TagSetMethod = typeof(ITaggable).GetProperty("Tag").GetSetMethod();
 
             [NonSerialized]
-            private readonly ILazyInterceptionSinkProvider lazyInterceptionSinkProvider;
+            private readonly IFakeCallProcessorProvider fakeCallProcessorProvider;
 
             private object tag;
 
-            public ProxyInterceptor(ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
+            public ProxyInterceptor(IFakeCallProcessorProvider fakeCallProcessorProvider)
             {
-                this.lazyInterceptionSinkProvider = lazyInterceptionSinkProvider;
+                this.fakeCallProcessorProvider = fakeCallProcessorProvider;
             }
 
             public void Intercept(IInvocation invocation)
@@ -227,7 +227,7 @@
                 else
                 {
                     var call = new CastleInvocationCallAdapter(invocation);
-                    this.lazyInterceptionSinkProvider.Fetch(invocation.Proxy).Process(call);
+                    this.fakeCallProcessorProvider.Fetch(invocation.Proxy).Process(call);
                 }
             }
         }

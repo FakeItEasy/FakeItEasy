@@ -8,15 +8,15 @@ namespace FakeItEasy.Creation
 
     internal class FakeObjectCreator
     {
-        private readonly LazyInterceptionSinkProvider.Factory lazyInterceptionSinkProviderFactory;
+        private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
         private readonly IProxyGenerator proxyGenerator;
         private readonly IExceptionThrower thrower;
 
-        public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, LazyInterceptionSinkProvider.Factory lazyInterceptionSinkProviderFactory)
+        public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
         {
             this.proxyGenerator = proxyGenerator;
             this.thrower = thrower;
-            this.lazyInterceptionSinkProviderFactory = lazyInterceptionSinkProviderFactory;
+            this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
         }
 
         public virtual object CreateFake(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
@@ -110,14 +110,14 @@ namespace FakeItEasy.Creation
 
         private ProxyGeneratorResult GenerateProxy(Type typeOfFake, FakeOptions fakeOptions, IEnumerable<object> argumentsForConstructor)
         {
-            var lazyInterceptionSinkProvider = this.lazyInterceptionSinkProviderFactory(typeOfFake);
+            var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake);
 
             return this.proxyGenerator.GenerateProxy(
                     typeOfFake,
                     fakeOptions.AdditionalInterfacesToImplement,
                     argumentsForConstructor,
                     fakeOptions.AdditionalAttributes,
-                    lazyInterceptionSinkProvider);
+                    fakeCallProcessorProvider);
         }
     }
 }

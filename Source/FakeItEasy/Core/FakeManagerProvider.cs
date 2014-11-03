@@ -3,21 +3,22 @@ namespace FakeItEasy.Core
     using System;
 
     /// <summary>
-    /// Implementation of <see cref="ILazyInterceptionSinkProvider"/>, which returns a <see cref="FakeManager"/> as interception sink.
+    /// Implementation of <see cref="IFakeCallProcessorProvider"/>, which returns a <see cref="FakeManager"/> as "call processor" lazily (on 
+    /// the first call of <see cref="Fetch"/> or <see cref="EnsureInitialized"/>).
     /// </summary>
-    internal class LazyFakeManagerProvider : ILazyInterceptionSinkProvider
+    internal class FakeManagerProvider : IFakeCallProcessorProvider
     {
         private readonly FakeManager.Factory fakeManagerFactory;
         private readonly IFakeManagerAccessor fakeManagerAccessor;
         private readonly IFakeObjectConfigurator configurer;
         private readonly Type typeOfFake;
 
-        // We want to lock accesses to initializedFakeManager because to guarantee thread-safety (see ILazyInterceptionSinkProvider documentation):
+        // We want to lock accesses to initializedFakeManager because to guarantee thread-safety (see IFakeCallProcessorProvider documentation):
         private readonly object initializedFakeManagerLock = new object();
 
         private FakeManager initializedFakeManager;
 
-        public LazyFakeManagerProvider(
+        public FakeManagerProvider(
                 FakeManager.Factory fakeManagerFactory,
                 IFakeManagerAccessor fakeManagerAccessor,
                 IFakeObjectConfigurator configurer,
@@ -34,7 +35,7 @@ namespace FakeItEasy.Core
             this.typeOfFake = typeOfFake;
         }
 
-        public IInterceptionSink Fetch(object proxy)
+        public IFakeCallProcessor Fetch(object proxy)
         {
             Guard.AgainstNull(proxy, "proxy");
 

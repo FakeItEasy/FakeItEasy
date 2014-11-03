@@ -12,7 +12,7 @@
         : IProxyGenerator
     {
         public virtual ProxyGeneratorResult GenerateProxy(
-            Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
+            Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             Guard.AgainstNull(typeOfProxy, "typeOfProxy");
 
@@ -24,14 +24,14 @@
 
             var invokeMethod = typeOfProxy.GetMethod("Invoke");
 
-            var eventRaiser = new DelegateCallInterceptedEventRaiser(lazyInterceptionSinkProvider);
+            var eventRaiser = new DelegateCallInterceptedEventRaiser(fakeCallProcessorProvider);
 
             var proxy = CreateDelegateProxy(typeOfProxy, invokeMethod, eventRaiser);
 
             eventRaiser.Method = invokeMethod;
             eventRaiser.Instance = proxy;
 
-            lazyInterceptionSinkProvider.EnsureInitialized(proxy);
+            fakeCallProcessorProvider.EnsureInitialized(proxy);
 
             return new ProxyGeneratorResult(proxy);
         }
@@ -41,9 +41,9 @@
             IEnumerable<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
             IEnumerable<CustomAttributeBuilder> customAttributeBuilders,
-            ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
+            IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            return this.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, lazyInterceptionSinkProvider);
+            return this.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
         }
 
         public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
@@ -96,11 +96,11 @@
             public static readonly MethodInfo RaiseMethod =
                 typeof(DelegateCallInterceptedEventRaiser).GetMethod("Raise");
 
-            private readonly ILazyInterceptionSinkProvider lazyInterceptionSinkProvider;
+            private readonly IFakeCallProcessorProvider fakeCallProcessorProvider;
 
-            public DelegateCallInterceptedEventRaiser(ILazyInterceptionSinkProvider lazyInterceptionSinkProvider)
+            public DelegateCallInterceptedEventRaiser(IFakeCallProcessorProvider fakeCallProcessorProvider)
             {
-                this.lazyInterceptionSinkProvider = lazyInterceptionSinkProvider;
+                this.fakeCallProcessorProvider = fakeCallProcessorProvider;
             }
 
             public MethodInfo Method { get; set; }
@@ -113,7 +113,7 @@
             {
                 var call = new DelegateFakeObjectCall(this.Instance, this.Method, arguments);
 
-                this.lazyInterceptionSinkProvider.Fetch(this.Instance).Process(call);
+                this.fakeCallProcessorProvider.Fetch(this.Instance).Process(call);
 
                 return call.ReturnValue;
             }

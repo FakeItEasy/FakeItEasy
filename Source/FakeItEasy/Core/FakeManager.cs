@@ -12,7 +12,7 @@ namespace FakeItEasy.Core
     /// by using the AddRule-method.
     /// </summary>
     [Serializable]
-    public partial class FakeManager : IInterceptionSink
+    public partial class FakeManager : IFakeCallProcessor
     {
         private readonly LinkedList<CallRuleMetadata> allUserRulesField;
         private readonly CallRuleMetadata[] postUserRules;
@@ -150,8 +150,8 @@ namespace FakeItEasy.Core
         }
 
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes",
-            Justification = "Explicit implementation to be able to make the IInterceptionSink interface internal.")]
-        void IInterceptionSink.Process(IWritableFakeObjectCall fakeObjectCall)
+            Justification = "Explicit implementation to be able to make the IFakeCallProcessor interface internal.")]
+        void IFakeCallProcessor.Process(IWritableFakeObjectCall fakeObjectCall)
         {
             foreach (var listener in this.interceptionListeners)
             {

@@ -88,10 +88,10 @@
     <Compile Include="A.of.T.cs" />
     <Compile Include="Core\AssemblyExtensions.cs" />
     <Compile Include="Core\BootstrapperLocator.cs" />
-    <Compile Include="Core\IInterceptionSink.cs" />
-    <Compile Include="Core\LazyFakeManagerProvider.cs" />
-    <Compile Include="Core\ILazyInterceptionSinkProvider.cs" />
-    <Compile Include="Core\LazyInterceptionSinkProvider.cs" />
+    <Compile Include="Core\IFakeCallProcessor.cs" />
+    <Compile Include="Core\FakeManagerProvider.cs" />
+    <Compile Include="Core\IFakeCallProcessorProvider.cs" />
+    <Compile Include="Core\FakeCallProcessorProvider.cs" />
     <Compile Include="DefaultBootstrapper.cs" />
     <Compile Include="Expressions\ArgumentConstraints\IArgumentValueProvider.cs" />
     <Compile Include="Expressions\ArgumentConstraints\OutArgumentConstraint.cs" />

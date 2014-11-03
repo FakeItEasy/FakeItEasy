@@ -32,14 +32,14 @@
             // Arrange
             var additionalInterfaces = new Type[] { };
             var argumentsForConstructor = new object[] { };
-            var lazyInterceptionSinkProvider = A.Fake<ILazyInterceptionSinkProvider>();
+            var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             var expected = A.Dummy<ProxyGeneratorResult>();
-            A.CallTo(() => this.delegateProxyGenerator.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, lazyInterceptionSinkProvider))
+            A.CallTo(() => this.delegateProxyGenerator.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider))
                 .Returns(expected);
 
             // Act
-            var result = this.selector.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, lazyInterceptionSinkProvider);
+            var result = this.selector.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider);
 
             // Assert
             Assert.That(result, Is.SameAs(expected));
@@ -51,14 +51,14 @@
             // Arrange
             var additionalInterfaces = new Type[] { };
             var argumentsForConstructor = new object[] { };
-            var lazyInterceptionSinkProvider = A.Fake<ILazyInterceptionSinkProvider>();
+            var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             var expected = A.Dummy<ProxyGeneratorResult>();
-            A.CallTo(() => this.defaultProxyGenerator.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, lazyInterceptionSinkProvider))
+            A.CallTo(() => this.defaultProxyGenerator.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider))
                 .Returns(expected);
 
             // Act
-            var result = this.selector.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, lazyInterceptionSinkProvider);
+            var result = this.selector.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider);
 
             // Assert
             Assert.That(result, Is.SameAs(expected));

@@ -264,6 +264,9 @@
     <Compile Include="..\FakeItEasy\Core\FakeCallEqualityComparer.cs">
       <Link>Core\FakeCallEqualityComparer.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeCallProcessorProvider.cs">
+      <Link>Core\FakeCallProcessorProvider.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeCreationException.cs">
       <Link>Core\FakeCreationException.cs</Link>
     </Compile>
@@ -284,6 +287,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeManager.PropertySetterRule.cs">
       <Link>Core\FakeManager.PropertySetterRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeManagerProvider.cs">
+      <Link>Core\FakeManagerProvider.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeScope.cs">
       <Link>Core\FakeScope.cs</Link>
@@ -317,6 +323,12 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeAsserter.cs">
       <Link>Core\IFakeAsserter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeCallProcessor.cs">
+      <Link>Core\IFakeCallProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeCallProcessorProvider.cs">
+      <Link>Core\IFakeCallProcessorProvider.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeManagerAccessor.cs">
       <Link>Core\IFakeManagerAccessor.cs</Link>
@@ -357,12 +369,6 @@
     <Compile Include="..\FakeItEasy\Core\IInterceptionListener.cs">
       <Link>Core\IInterceptionListener.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\IInterceptionSink.cs">
-      <Link>Core\IInterceptionSink.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\ILazyInterceptionSinkProvider.cs">
-      <Link>Core\ILazyInterceptionSinkProvider.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\ISutInitializer.cs">
       <Link>Core\ISutInitializer.cs</Link>
     </Compile>
@@ -371,12 +377,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IWritableFakeObjectCall.cs">
       <Link>Core\IWritableFakeObjectCall.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\LazyFakeManagerProvider.cs">
-      <Link>Core\LazyFakeManagerProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\LazyInterceptionSinkProvider.cs">
-      <Link>Core\LazyInterceptionSinkProvider.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\MethodInfoManager.cs">
       <Link>Core\MethodInfoManager.cs</Link>

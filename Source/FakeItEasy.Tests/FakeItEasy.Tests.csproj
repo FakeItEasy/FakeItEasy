@@ -86,7 +86,7 @@
     <Compile Include="ArgumentConstraintManagerExtensions\NullCheckedMatchesConstraint.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\StringEndsWithTests.cs" />
     <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
-    <Compile Include="Core\LazyFakeManagerProviderTests.cs" />
+    <Compile Include="Core\FakeManagerProviderTests.cs" />
     <Compile Include="DefaultBootstrapperTests.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

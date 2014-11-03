@@ -120,17 +120,17 @@
     <Compile Include="..\FakeItEasy\Core\AssemblyExtensions.cs">
       <Link>Core\AssemblyExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\IInterceptionSink.cs">
-      <Link>Core\IInterceptionSink.cs</Link>
+    <Compile Include="..\FakeItEasy\Core\FakeCallProcessorProvider.cs">
+      <Link>Core\FakeCallProcessorProvider.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\ILazyInterceptionSinkProvider.cs">
-      <Link>Core\ILazyInterceptionSinkProvider.cs</Link>
+    <Compile Include="..\FakeItEasy\Core\FakeManagerProvider.cs">
+      <Link>Core\FakeManagerProvider.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\LazyFakeManagerProvider.cs">
-      <Link>Core\LazyFakeManagerProvider.cs</Link>
+    <Compile Include="..\FakeItEasy\Core\IFakeCallProcessor.cs">
+      <Link>Core\IFakeCallProcessor.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\LazyInterceptionSinkProvider.cs">
-      <Link>Core\LazyInterceptionSinkProvider.cs</Link>
+    <Compile Include="..\FakeItEasy\Core\IFakeCallProcessorProvider.cs">
+      <Link>Core\IFakeCallProcessorProvider.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
       <Link>EnumerableExtensions.cs</Link>

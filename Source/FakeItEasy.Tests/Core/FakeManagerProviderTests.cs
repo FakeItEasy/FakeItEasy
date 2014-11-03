@@ -6,7 +6,7 @@ namespace FakeItEasy.Tests.Core
     using NUnit.Framework;
 
     [TestFixture]
-    public class LazyFakeManagerProviderTests
+    public class FakeManagerProviderTests
     {
         [Fake]
         private FakeManager.Factory fakeManagerFactory = null;
@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.Core
         private Type typeOfFake = null;
 
         [UnderTest]
-        private LazyFakeManagerProvider lazyFakeManagerProvider = null;
+        private FakeManagerProvider fakeManagerProvider = null;
 
         private object proxy;
         private FakeManager fakeManager;
@@ -42,10 +42,10 @@ namespace FakeItEasy.Tests.Core
             // Arrange
 
             // Act
-            var interceptionSink = this.lazyFakeManagerProvider.Fetch(this.proxy);
+            var fakeCallProcessor = this.fakeManagerProvider.Fetch(this.proxy);
 
             // Assert
-            interceptionSink.Should().BeSameAs(this.fakeManager);
+            fakeCallProcessor.Should().BeSameAs(this.fakeManager);
 
             A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappened();
 
@@ -60,13 +60,13 @@ namespace FakeItEasy.Tests.Core
             // Arrange
 
             // Act
-            var interceptionSink1 = this.lazyFakeManagerProvider.Fetch(this.proxy);
-            var interceptionSink2 = this.lazyFakeManagerProvider.Fetch(this.proxy);
-            var interceptionSink3 = this.lazyFakeManagerProvider.Fetch(this.proxy);
+            var fakeCallProcessor1 = this.fakeManagerProvider.Fetch(this.proxy);
+            var fakeCallProcessor2 = this.fakeManagerProvider.Fetch(this.proxy);
+            var fakeCallProcessor3 = this.fakeManagerProvider.Fetch(this.proxy);
 
             // Assert
-            interceptionSink1.Should().BeSameAs(interceptionSink2);
-            interceptionSink2.Should().BeSameAs(interceptionSink3);
+            fakeCallProcessor1.Should().BeSameAs(fakeCallProcessor2);
+            fakeCallProcessor2.Should().BeSameAs(fakeCallProcessor3);
 
             A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappened(Repeated.Exactly.Once);
         }
@@ -77,9 +77,9 @@ namespace FakeItEasy.Tests.Core
             // Arrange
 
             // Act
-            this.lazyFakeManagerProvider.EnsureInitialized(this.proxy);
-            this.lazyFakeManagerProvider.EnsureInitialized(this.proxy);
-            this.lazyFakeManagerProvider.EnsureInitialized(this.proxy);
+            this.fakeManagerProvider.EnsureInitialized(this.proxy);
+            this.fakeManagerProvider.EnsureInitialized(this.proxy);
+            this.fakeManagerProvider.EnsureInitialized(this.proxy);
 
             // Assert
             A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappened(Repeated.Exactly.Once);
@@ -89,10 +89,10 @@ namespace FakeItEasy.Tests.Core
         public void Fetch_should_throw_if_the_wrong_proxy_object_was_specified()
         {
             // Arrange
-            this.lazyFakeManagerProvider.EnsureInitialized(this.proxy);
+            this.fakeManagerProvider.EnsureInitialized(this.proxy);
 
             // Act
-            Action act = () => this.lazyFakeManagerProvider.Fetch(new object());
+            Action act = () => this.fakeManagerProvider.Fetch(new object());
 
             // Assert
             act.ShouldThrow<ArgumentException>().WithMessage("The fake manager was initialized for a different proxy.*");
