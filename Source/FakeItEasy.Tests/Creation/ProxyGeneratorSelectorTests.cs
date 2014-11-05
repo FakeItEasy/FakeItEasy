@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Tests.Creation
 {
     using System;
+    using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.DelegateProxies;
     using NUnit.Framework;
@@ -31,13 +32,14 @@
             // Arrange
             var additionalInterfaces = new Type[] { };
             var argumentsForConstructor = new object[] { };
+            var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             var expected = A.Dummy<ProxyGeneratorResult>();
-            A.CallTo(() => this.delegateProxyGenerator.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor))
+            A.CallTo(() => this.delegateProxyGenerator.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider))
                 .Returns(expected);
 
             // Act
-            var result = this.selector.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor);
+            var result = this.selector.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider);
 
             // Assert
             Assert.That(result, Is.SameAs(expected));
@@ -49,13 +51,14 @@
             // Arrange
             var additionalInterfaces = new Type[] { };
             var argumentsForConstructor = new object[] { };
+            var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             var expected = A.Dummy<ProxyGeneratorResult>();
-            A.CallTo(() => this.defaultProxyGenerator.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor))
+            A.CallTo(() => this.defaultProxyGenerator.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider))
                 .Returns(expected);
 
             // Act
-            var result = this.selector.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor);
+            var result = this.selector.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider);
 
             // Assert
             Assert.That(result, Is.SameAs(expected));

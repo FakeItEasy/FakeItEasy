@@ -54,7 +54,10 @@
             container.Register<FakeAsserter.Factory>(c => x => OrderedAssertion.CurrentAsserterFactory.Invoke(x));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
-                () => new FakeManager());
+                (Type fakeObjectType, object proxy) => new FakeManager(fakeObjectType, proxy));
+
+            container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
+                (typeOfFake) => new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeObjectContainer>(), typeOfFake));
 
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
                 new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), c.Resolve<IFakeManagerAccessor>()));
@@ -90,23 +93,24 @@
 
             container.Register<IFakeAndDummyManager>(c =>
                                                          {
-                                                             var fakeContainer = c.Resolve<IFakeObjectContainer>();
-                                                             var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<IFakeManagerAccessor>(), fakeContainer);
-                                                             var session = new DummyValueCreationSession(fakeContainer, new SessionFakeObjectCreator { Creator = fakeCreator });
+                                                             var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<FakeCallProcessorProvider.Factory>());
+                                                             var session = new DummyValueCreationSession(c.Resolve<IFakeObjectContainer>(), new SessionFakeObjectCreator { Creator = fakeCreator });
 
                                                              return new DefaultFakeAndDummyManager(session, fakeCreator, c.Resolve<IFakeWrapperConfigurer>());
                                                          });
 
             container.RegisterSingleton<CastleDynamicProxyGenerator>(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
 
-            container.RegisterSingleton<IProxyGenerator>(c => new ProxyGeneratorSelector(new DelegateProxyGenerator(), c.Resolve<CastleDynamicProxyGenerator>()));
+            container.RegisterSingleton<DelegateProxyGenerator>(c => new DelegateProxyGenerator());
+
+            container.RegisterSingleton<IProxyGenerator>(c => new ProxyGeneratorSelector(c.Resolve<DelegateProxyGenerator>(), c.Resolve<CastleDynamicProxyGenerator>()));
 
             container.RegisterSingleton(
                 c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
 
             container.RegisterSingleton<IExceptionThrower>(c => new DefaultExceptionThrower());
 
-            container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor(c.Resolve<FakeManager.Factory>()));
+            container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
 
             container.Register<IFakeWrapperConfigurer>(c =>
                 new DefaultFakeWrapperConfigurer());

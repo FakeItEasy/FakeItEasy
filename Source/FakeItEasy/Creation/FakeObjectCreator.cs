@@ -8,22 +8,20 @@ namespace FakeItEasy.Creation
 
     internal class FakeObjectCreator
     {
-        private readonly IFakeObjectConfigurator configurer;
-        private readonly IFakeManagerAccessor fakeManagerAttacher;
+        private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
         private readonly IProxyGenerator proxyGenerator;
         private readonly IExceptionThrower thrower;
 
-        public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, IFakeManagerAccessor fakeManagerAttacher, IFakeObjectConfigurator configurer)
+        public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
         {
             this.proxyGenerator = proxyGenerator;
             this.thrower = thrower;
-            this.fakeManagerAttacher = fakeManagerAttacher;
-            this.configurer = configurer;
+            this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
         }
 
         public virtual object CreateFake(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
         {
-            var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, fakeOptions.ArgumentsForConstructor, fakeOptions.AdditionalAttributes);
+            var result = this.GenerateProxy(typeOfFake, fakeOptions, fakeOptions.ArgumentsForConstructor);
 
             if (throwOnFailure)
             {
@@ -35,14 +33,7 @@ namespace FakeItEasy.Creation
                 result = this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, fakeOptions, session, result.ReasonForFailure, throwOnFailure);
             }
 
-            if (result != null)
-            {
-                this.fakeManagerAttacher.AttachFakeManagerToProxy(typeOfFake, result.GeneratedProxy, result.CallInterceptedEventRaiser);
-                this.configurer.ConfigureFake(typeOfFake, result.GeneratedProxy);
-                return result.GeneratedProxy;
-            }
-
-            return null;
+            return result != null ? result.GeneratedProxy : null;
         }
 
         private static ResolvedConstructor[] ResolveConstructors(Type typeOfFake, IDummyValueCreationSession session)
@@ -97,7 +88,7 @@ namespace FakeItEasy.Creation
 
             foreach (var constructor in constructors.Where(x => x.WasSuccessfullyResolved))
             {
-                var result = this.proxyGenerator.GenerateProxy(typeOfFake, fakeOptions.AdditionalInterfacesToImplement, constructor.Arguments.Select(x => x.ResolvedValue), fakeOptions.AdditionalAttributes);
+                var result = this.GenerateProxy(typeOfFake, fakeOptions, constructor.Arguments.Select(x => x.ResolvedValue));
 
                 if (result.ProxyWasSuccessfullyGenerated)
                 {
@@ -115,6 +106,18 @@ namespace FakeItEasy.Creation
             }
 
             return null;
+        }
+
+        private ProxyGeneratorResult GenerateProxy(Type typeOfFake, FakeOptions fakeOptions, IEnumerable<object> argumentsForConstructor)
+        {
+            var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake);
+
+            return this.proxyGenerator.GenerateProxy(
+                    typeOfFake,
+                    fakeOptions.AdditionalInterfacesToImplement,
+                    argumentsForConstructor,
+                    fakeOptions.AdditionalAttributes,
+                    fakeCallProcessorProvider);
         }
     }
 }

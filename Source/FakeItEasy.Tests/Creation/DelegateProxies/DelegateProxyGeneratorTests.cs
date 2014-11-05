@@ -32,7 +32,7 @@
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>());
+            var result = this.generator.GenerateProxy(delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             Assert.That(result.ProxyWasSuccessfullyGenerated, Is.True);
@@ -47,7 +47,7 @@
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(nonDelegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>());
+            var result = this.generator.GenerateProxy(nonDelegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             Assert.That(result.ProxyWasSuccessfullyGenerated, Is.False);
@@ -63,10 +63,24 @@
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>());
+            var result = this.generator.GenerateProxy(delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             Assert.That(result.GeneratedProxy.GetType(), Is.EqualTo(delegateType));
+        }
+
+        [Test]
+        public void Should_ensure_fake_call_processor_is_initialized_but_not_fetched_when_no_method_on_fake_is_called()
+        {
+            // Arrange
+            var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
+
+            // Act
+            var proxyGeneratorResult = this.generator.GenerateProxy(typeof(Action), Enumerable.Empty<Type>(), null, fakeCallProcessorProvider);
+
+            // Assert
+            A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).MustNotHaveHappened();
+            A.CallTo(() => fakeCallProcessorProvider.EnsureInitialized(proxyGeneratorResult.GeneratedProxy)).MustHaveHappened();
         }
 
         [Test]
@@ -83,7 +97,7 @@
         }
 
         [Test]
-        public void Should_return_proxy_that_raises_event_with_arguments_passed_to_proxy()
+        public void Should_return_proxy_that_exposes_arguments_passed_to_proxy()
         {
             // Arrange
             int firstArgument = 0;
@@ -219,11 +233,15 @@
             Assert.That(reason, Is.Null);
         }
 
-        private T GenerateProxy<T>(Action<IWritableFakeObjectCall> callInterceptor)
+        private T GenerateProxy<T>(Action<IWritableFakeObjectCall> fakeCallProcessorAction)
         {
-            var result = this.generator.GenerateProxy(typeof(T), Enumerable.Empty<Type>(), Enumerable.Empty<object>());
+            var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
-            result.CallInterceptedEventRaiser.CallWasIntercepted += (_, e) => callInterceptor(e.Call);
+            var result = this.generator.GenerateProxy(typeof(T), Enumerable.Empty<Type>(), Enumerable.Empty<object>(), fakeCallProcessorProvider);
+
+            var fakeCallProcessor = A.Fake<IFakeCallProcessor>();
+            A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).Returns(fakeCallProcessor);
+            A.CallTo(() => fakeCallProcessor.Process(A<IWritableFakeObjectCall>._)).Invokes(fakeCallProcessorAction);
 
             return (T)result.GeneratedProxy;
         }

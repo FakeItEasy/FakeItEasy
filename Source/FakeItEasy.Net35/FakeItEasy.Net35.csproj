@@ -222,9 +222,6 @@
     <Compile Include="..\FakeItEasy\Core\BootstrapperLocator.cs">
       <Link>Core\BootstrapperLocator.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\CallInterceptedEventArgs.cs">
-      <Link>Core\CallInterceptedEventArgs.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\CallRuleMetadata.cs">
       <Link>Core\CallRuleMetadata.cs</Link>
     </Compile>
@@ -267,6 +264,9 @@
     <Compile Include="..\FakeItEasy\Core\FakeCallEqualityComparer.cs">
       <Link>Core\FakeCallEqualityComparer.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeCallProcessorProvider.cs">
+      <Link>Core\FakeCallProcessorProvider.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeCreationException.cs">
       <Link>Core\FakeCreationException.cs</Link>
     </Compile>
@@ -287,6 +287,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeManager.PropertySetterRule.cs">
       <Link>Core\FakeManager.PropertySetterRule.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeManagerProvider.cs">
+      <Link>Core\FakeManagerProvider.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeScope.cs">
       <Link>Core\FakeScope.cs</Link>
@@ -320,6 +323,12 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeAsserter.cs">
       <Link>Core\IFakeAsserter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeCallProcessor.cs">
+      <Link>Core\IFakeCallProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeCallProcessorProvider.cs">
+      <Link>Core\IFakeCallProcessorProvider.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeManagerAccessor.cs">
       <Link>Core\IFakeManagerAccessor.cs</Link>
@@ -419,9 +428,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\FakeOptions.cs">
       <Link>Creation\FakeOptions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Creation\ICallInterceptedEventRaiser.cs">
-      <Link>Creation\ICallInterceptedEventRaiser.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\IDummyValueCreationSession.cs">
       <Link>Creation\IDummyValueCreationSession.cs</Link>

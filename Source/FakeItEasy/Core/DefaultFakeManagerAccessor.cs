@@ -12,29 +12,6 @@ namespace FakeItEasy.Core
     internal class DefaultFakeManagerAccessor
         : IFakeManagerAccessor
     {
-        private readonly FakeManager.Factory managerFactory;
-
-        public DefaultFakeManagerAccessor(FakeManager.Factory managerFactory)
-        {
-            this.managerFactory = managerFactory;
-        }
-
-        /// <summary>
-        /// Attaches a <see cref="FakeManager"/> to the specified proxy, listening to
-        /// the event raiser.
-        /// </summary>
-        /// <param name="typeOfFake">The type of the fake object proxy.</param>
-        /// <param name="proxy">The proxy to attach to.</param>
-        /// <param name="eventRaiser">The event raiser to listen to.</param>
-        public void AttachFakeManagerToProxy(Type typeOfFake, object proxy, ICallInterceptedEventRaiser eventRaiser)
-        {
-            var manager = this.managerFactory.Invoke();
-
-            TagProxy(proxy, manager);
-
-            manager.AttachProxy(typeOfFake, proxy, eventRaiser);
-        }
-
         /// <summary>
         /// Gets the fake manager associated with the proxy.
         /// </summary>
@@ -56,8 +33,11 @@ namespace FakeItEasy.Core
             return result;
         }
 
-        private static void TagProxy(object proxy, FakeManager manager)
+        public void TagProxy(object proxy, FakeManager manager)
         {
+            Guard.AgainstNull(proxy, "proxy");
+            Guard.AgainstNull(manager, "manager");
+
             var taggable = AsTaggable(proxy);
 
             taggable.Tag = manager;

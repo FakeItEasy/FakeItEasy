@@ -54,18 +54,12 @@ namespace FakeItEasy.Creation
         /// <param name="generatedProxy">
         /// The proxy that was generated.
         /// </param>
-        /// <param name="callInterceptedEventRaiser">
-        /// An event raiser that raises
-        /// events when calls are intercepted to the proxy.
-        /// </param>
-        public ProxyGeneratorResult(object generatedProxy, ICallInterceptedEventRaiser callInterceptedEventRaiser)
+        public ProxyGeneratorResult(object generatedProxy)
         {
             Guard.AgainstNull(generatedProxy, "generatedProxy");
-            Guard.AgainstNull(callInterceptedEventRaiser, "callInterceptedEventRaiser");
 
             this.ProxyWasSuccessfullyGenerated = true;
             this.GeneratedProxy = generatedProxy;
-            this.CallInterceptedEventRaiser = callInterceptedEventRaiser;
         }
 
         /// <summary>
@@ -77,12 +71,6 @@ namespace FakeItEasy.Creation
         /// Gets the generated proxy when it was successfully created.
         /// </summary>
         public object GeneratedProxy { get; private set; }
-
-        /// <summary>
-        /// Gets the event raiser that raises events when calls to the proxy are
-        /// intercepted.
-        /// </summary>
-        public ICallInterceptedEventRaiser CallInterceptedEventRaiser { get; private set; }
 
         /// <summary>
         /// Gets the reason for failure when the generation was not successful.

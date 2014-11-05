@@ -261,7 +261,7 @@ namespace FakeItEasy.Tests.Configuration
                 return this.ruleReturnedFromFactory;
             };
 
-            this.fakeObjectReturnedFromParser = new FakeManager();
+            this.fakeObjectReturnedFromParser = A.Fake<FakeManager>(o => o.CallsBaseMethods());
 
             A.CallTo(() => this.expressionParser.GetFakeManagerCallIsMadeOn(A<LambdaExpression>._)).ReturnsLazily(x => this.fakeObjectReturnedFromParser);
 

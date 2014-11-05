@@ -6,6 +6,7 @@
       <Value>Autofac</Value>
       <Value>bootstrapper</Value>
       <Value>proxied</Value>
+      <Value>serializability</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>
