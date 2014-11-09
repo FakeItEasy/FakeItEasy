@@ -10,7 +10,7 @@ namespace FakeItEasy.Creation
     /// <summary>
     /// An interface to be implemented by classes that can generate proxies for FakeItEasy.
     /// </summary>
-    public interface IProxyGenerator
+    internal interface IProxyGenerator
     {
         /// <summary>
         /// Generates a proxy of the specified type and returns a result object containing information
