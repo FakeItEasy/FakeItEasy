@@ -16,7 +16,7 @@ namespace FakeItEasy.Core
     /// we don't need to serialize a fake before it has been initialized (returned to the user).
     /// </para>
     /// </remarks>
-    public interface IFakeCallProcessorProvider
+    internal interface IFakeCallProcessorProvider
     {
         /// <summary>
         /// Create and initialize a new <see cref="IFakeCallProcessor"/> for <paramref name="proxy"/>.
