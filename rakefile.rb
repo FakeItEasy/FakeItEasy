@@ -39,7 +39,7 @@ release_issue_body = <<-eos
     - [ ] publish the release
 - [ ] push NuGet package
 - [ ] copy release notes from GitHub to NuGet
-- [ ] de-list pre-release NuGet packages if present
+- [ ] de-list pre-release or superseded buggy NuGet packages if present
 - [ ] update website with contributors list (if in place)
 - [ ] tweet, mentioning contributors and post link as comment here for easy retweeting ;-)
 - [ ] post tweet in JabbR ([fakeiteasy][1] and [general-chat][2]) and Gitter ([FakeItEasy/FakeItEasy][3])
