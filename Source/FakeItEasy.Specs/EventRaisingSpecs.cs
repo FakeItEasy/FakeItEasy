@@ -145,31 +145,6 @@
         It should_pass_empty_event_arguments = () => capturedArgs.Should().Be(EventArgs.Empty);
     }
 
-    [Subject(typeof(Raise), "eventhandler with subscriber and using Now")]
-    public class RaisingEventHandlerWithSubscriberUsingNow
-        : EventRaisingSpecs
-    {
-        static EventArgs raisedWithArgs;
-        static EventArgs capturedArgs;
-        static object capturedSender;
-
-        Establish context = () =>
-        {
-            raisedWithArgs = new EventArgs();
-            TypeWithEvent.EventHandler += (sender, e) =>
-            {
-                capturedSender = sender;
-                capturedArgs = e;
-            };
-        };
-
-        Because of = () => TypeWithEvent.EventHandler += Raise.With(raisedWithArgs).Now;
-
-        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
-
-        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
-    }
-
     [Subject(typeof(Raise), "generic eventhandler with subscriber")]
     public class RaisingGenericEventHandlerWithSubscriber
         : EventRaisingSpecs
@@ -222,29 +197,6 @@
         It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
     }
 
-    [Subject(typeof(Raise), "generic eventhandler with subscriber and using Now")]
-    public class RaisingGenericEventHandlerWithSubscriberUsingNow
-        : EventRaisingSpecs
-    {
-        static SomethingHappenedEventArgs raisedWithArgs;
-        static SomethingHappenedEventArgs capturedArgs;
-        static object capturedSender;
-
-        Establish context = () =>
-        {
-            raisedWithArgs = new SomethingHappenedEventArgs();
-            TypeWithEvent.GenericEventHandler += (sender, e) =>
-            {
-                capturedSender = sender;
-                capturedArgs = e;
-            };
-        };
-
-        Because of = () => TypeWithEvent.GenericEventHandler += Raise.With(raisedWithArgs).Now;
-
-        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
-    }
-
     [Subject(typeof(Raise), "derived eventhandler with subscriber specifying sender and args")]
     public class RaisingDerivedEventHandlerWithSubscriberSpecifyingSenderAndArgs
         : EventRaisingSpecs
@@ -268,31 +220,6 @@
         Because of = () => TypeWithEvent.DerivedEventHandler += Raise.With<DerivedArgsEventHandler>(raisedWithSender, raisedWithArgs);
 
         It should_pass_the_sender = () => capturedSender.Should().BeSameAs(raisedWithSender);
-
-        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
-    }
-
-    [Subject(typeof(Raise), "derived eventhandler with subscriber and using Now")]
-    public class RaisingDerivedEventHandlerWithSubscriberUsingNow
-        : EventRaisingSpecs
-    {
-        static SomethingHappenedEventArgs raisedWithArgs;
-        static SomethingHappenedEventArgs capturedArgs;
-        static object capturedSender;
-
-        Establish context = () =>
-        {
-            raisedWithArgs = new SomethingHappenedEventArgs();
-            TypeWithEvent.DerivedEventHandler += (sender, e) =>
-            {
-                capturedSender = sender;
-                capturedArgs = e;
-            };
-        };
-
-        Because of = () => TypeWithEvent.DerivedEventHandler += Raise.With(raisedWithArgs).Now;
-
-        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
 
         It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
     }

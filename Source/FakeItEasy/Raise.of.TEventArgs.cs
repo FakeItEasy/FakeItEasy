@@ -1,7 +1,6 @@
 ﻿namespace FakeItEasy
 {
     using System;
-    using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
 
@@ -31,15 +30,6 @@
         }
 
         /// <summary>
-        /// Gets a generic event handler to attach to the event to raise.
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public EventHandler<TEventArgs> Go
-        {
-            get { return this.Now; }
-        }
-
-        /// <summary>
         /// Converts a raiser into an <see cref="EventHandler{TEventArgs}"/>
         /// </summary>
         /// <param name="raiser">The raiser to convert.</param>
@@ -66,23 +56,12 @@
             return new[] { this.sender ?? fake, this.eventArguments };
         }
 
-        /// <summary>
-        /// Register this event handler to an event on a faked object in order to raise that event.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">Event args for the event.</param>
-        [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "Must be visible to provide the event raising syntax.")]
         [SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "sender", Justification = "Unused parameter.")]
-        public void Now(object sender, TEventArgs e)
+        private void Now(object sender, TEventArgs e)
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
         }
 
-        /// <summary>
-        /// Register this event handler to an event on a faked object in order to raise that event.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">Event args for the event.</param>
         [SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "sender", Justification = "Unused parameter.")]
         private void Now(object sender, EventArgs e)
         {

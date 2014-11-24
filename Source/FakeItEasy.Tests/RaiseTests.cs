@@ -74,31 +74,6 @@
         }
 
         [Test]
-        public void Now_should_throw_when_called_directly()
-        {
-            // Arrange
-            var raiser = new Raise<EventArgs>(null, EventArgs.Empty, ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>());
-
-            // Act
-            var exception = Record.Exception(() => raiser.Now(null, null));
-
-            // Assert
-            exception.Should().BeAnExceptionOfType<NotSupportedException>();
-        }
-
-        [Test]
-        public void Go_should_return_handler_with_Now_as_method()
-        {
-            // Arrange
-
-            // Act
-            var methodName = Raise.With(EventArgs.Empty).Go.Method.Name;
-
-            // Assert
-            methodName.Should().Be("Now");
-        }
-
-        [Test]
         public void WithEmpty_should_return_raise_object_with_event_args_empty_set()
         {
             // Arrange
