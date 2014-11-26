@@ -1,5 +1,4 @@
 require 'albacore'
-require 'fileutils'
 
 nuget_command = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
 nunit_command = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
@@ -9,7 +8,9 @@ solution      = "Source/FakeItEasy.sln"
 assembly_info = "Source/CommonAssemblyInfo.cs"
 version       = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 nuspec        = "Source/FakeItEasy.nuspec"
-output_folder = "Build"
+logs          = "artifacts/logs"
+output        = "artifacts/output"
+tests         = "artifacts/tests"
 
 unit_tests = [
   "Source/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
@@ -91,12 +92,15 @@ exec :restore do |cmd|
   cmd.parameters "restore #{solution}"
 end
 
+directory logs
+
 desc "Clean solution"
-msbuild :clean do |msb|
-  FileUtils.rmtree output_folder
+msbuild :clean => [logs] do |msb|
   msb.properties = { :configuration => :Release }
   msb.targets = [ :Clean ]
   msb.solution = solution
+  msb.verbosity = :minimal
+  msb.other_switches = {:nologo => true, :fl => true, :flp => "LogFile=#{logs}/clean.log;Verbosity=Detailed;PerformanceSummary", :nr => false}
 end
 
 desc "Update version number"
@@ -159,40 +163,44 @@ assemblyinfo :set_version_in_assemblyinfo, :new_version do |asm, args|
 end
 
 desc "Build solution"
-msbuild :build => [:clean, :restore] do |msb|
+msbuild :build => [:clean, :restore, logs] do |msb|
   msb.properties = { :configuration => :Release }
   msb.targets = [ :Build ]
   msb.solution = solution
+  msb.verbosity = :minimal
+  msb.other_switches = {:nologo => true, :fl => true, :flp => "LogFile=#{logs}/build.log;Verbosity=Detailed;PerformanceSummary", :nr => false}
 end
 
-task :create_output_folder do
-  FileUtils.mkpath output_folder
-end
+directory tests
 
 desc "Execute unit tests"
-nunit :unit => [:build, :create_output_folder] do |nunit|
+nunit :unit => [:build, tests] do |nunit|
   nunit.command = nunit_command
   nunit.assemblies unit_tests
-  nunit.options "/result=#{output_folder}/TestResult.Unit.xml"
+  nunit.options "/result=#{tests}/TestResult.Unit.xml", "/nologo"
 end
 
 desc "Execute integration tests"
-nunit :integ => [:build, :create_output_folder] do |nunit|
+nunit :integ => [:build, tests] do |nunit|
   nunit.command = nunit_command
   nunit.assemblies integration_tests
-  nunit.options "/result=#{output_folder}/TestResult.Integration.xml"
+  nunit.options "/result=#{tests}/TestResult.Integration.xml", "/nologo"
 end
 
 desc "Execute specifications"
-mspec :spec => [:build] do |mspec|
+mspec :spec => [:build, tests] do |mspec|
   mspec.command = mspec_command
   mspec.assemblies specs
+  mspec.html_output = "#{tests}/TestResult.Specifications.html"
+  mspec.options "--timeinfo", "--progress", "--silent"
 end
 
+directory output
+
 desc "create the nuget package"
-exec :pack => [:build, :create_output_folder] do |cmd|
+exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "pack #{nuspec} -Version #{version} -OutputDirectory #{output_folder}"
+  cmd.parameters "pack #{nuspec} -Version #{version} -OutputDirectory #{output}"
 end
 
 desc "create new milestone, release issue and release"
@@ -259,7 +267,7 @@ def print_vars(variables)
   }
 
   puts
-  vectors.each { |name, value| 
+  vectors.select { |name, value| !['release_body', 'release_issue_body', 'release_issue_labels'].include? name }.each { |name, value| 
     puts "#{name}:"
     puts value.map {|v| "  " + v }
     puts ""
