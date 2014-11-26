@@ -44,16 +44,14 @@ namespace FakeItEasy.Creation
                 exception = exception.InnerException;
             }
 
-            this.ReasonForFailure = string.Concat(
-                reasonForFailure,
-                Environment.NewLine,
-                "An exception of type ",
-                exception.GetType(),
-                " was caught during this call. Its message was:",
-                Environment.NewLine,
-                exception.Message,
-                Environment.NewLine,
-                exception.StackTrace);
+            this.ReasonForFailure =
+                string.Format(
+                    "{0}{1}An exception of type {2} was caught during this call. Its message was:{1}{3}{1}{4}",
+                    reasonForFailure,
+                    Environment.NewLine,
+                    exception.GetType(),
+                    exception.Message,
+                    exception.StackTrace);
         }
 
         /// <summary>
