@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>Bin\Release\FakeItEasy.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
+    <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <CodeAnalysisRuleSet>..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
     <DebugSymbols>true</DebugSymbols>
     <RunCodeAnalysis>false</RunCodeAnalysis>

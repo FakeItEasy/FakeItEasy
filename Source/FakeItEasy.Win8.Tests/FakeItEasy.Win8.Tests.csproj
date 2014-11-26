@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
+    <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Tests.cs" />
