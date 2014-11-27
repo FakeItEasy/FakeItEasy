@@ -60,7 +60,7 @@
     <DocumentationFile>Bin\Release\FakeItEasy.xml</DocumentationFile>
     <CodeAnalysisRuleSet>..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
+    <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <DebugSymbols>true</DebugSymbols>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
