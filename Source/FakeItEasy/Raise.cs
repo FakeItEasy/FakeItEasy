@@ -38,7 +38,7 @@
         /// </returns>
         public static Raise<TEventArgs> With<TEventArgs>(TEventArgs e) where TEventArgs : EventArgs
         {
-            return new Raise<TEventArgs>(null, e, ArgumentProviderMap);
+            return new Raise<TEventArgs>(e, ArgumentProviderMap);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@
         /// </returns>
         public static Raise<EventArgs> WithEmpty()
         {
-            return new Raise<EventArgs>(null, EventArgs.Empty, ArgumentProviderMap);
+            return new Raise<EventArgs>(EventArgs.Empty, ArgumentProviderMap);
         }
 
         /// <summary>
