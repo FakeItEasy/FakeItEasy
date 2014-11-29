@@ -17,7 +17,7 @@
         public void CreateFake_should_return_object_from_protected_function()
         {
             var definition = new TestableFakeDefinition() as IDummyDefinition;
-            var created = definition.CreateDummy();
+            var created = definition.CreateDummyOfType(typeof(SomeType));
 
             Assert.That(created, Is.InstanceOf<SomeType>());
         }

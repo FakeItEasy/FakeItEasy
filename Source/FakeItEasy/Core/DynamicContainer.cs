@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
 
     /// <summary>
     /// A IFakeObjectContainer implementation that uses MEF to load IFakeDefinitions and
@@ -12,7 +13,7 @@
         : IFakeObjectContainer
     {
         private readonly IDictionary<Type, IFakeConfigurator> registeredConfigurators;
-        private readonly IDictionary<Type, IDummyDefinition> registeredDummyDefinitions;
+        private readonly IList<IDummyDefinition> registeredDummyDefinitions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer" /> class.
@@ -22,7 +23,7 @@
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurators", Justification = "This is the correct spelling.")]
         public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurator> fakeConfigurators)
         {
-            this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(dummyDefinitions);
+            this.registeredDummyDefinitions = CreateDummyDefinitionsList(dummyDefinitions);
             this.registeredConfigurators = CreateFakeConfiguratorsDictionary(fakeConfigurators);
         }
 
@@ -35,15 +36,18 @@
         /// <returns>True if a fake object can be created.</returns>
         public bool TryCreateDummyObject(Type typeOfDummy, out object fakeObject)
         {
-            IDummyDefinition dummyDefinition = null;
+            IDummyDefinition dummyDefinition = this.registeredDummyDefinitions
+                .Where(definition => definition.CanCreateDummyOfType(typeOfDummy))
+                .OrderByDescending(definition => definition.Priority)
+                .FirstOrDefault();
 
-            if (!this.registeredDummyDefinitions.TryGetValue(typeOfDummy, out dummyDefinition))
+            if (dummyDefinition == null)
             {
                 fakeObject = null;
                 return false;
             }
 
-            fakeObject = dummyDefinition.CreateDummy();
+            fakeObject = dummyDefinition.CreateDummyOfType(typeOfDummy);
             return true;
         }
 
@@ -67,9 +71,9 @@
             return fakeConfigurers.FirstFromEachKey(x => x.ForType);
         }
 
-        private static IDictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(IEnumerable<IDummyDefinition> dummyDefinitions)
+        private static IList<IDummyDefinition> CreateDummyDefinitionsList(IEnumerable<IDummyDefinition> dummyDefinitions)
         {
-            return dummyDefinitions.FirstFromEachKey(x => x.ForType);
+            return dummyDefinitions.ToList();
         }
     }
 }
