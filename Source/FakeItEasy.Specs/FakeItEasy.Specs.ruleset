@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="FakeItEasy Specs" ToolsVersion="11.0">
+<RuleSet Name="FakeItEasy Specs" ToolsVersion="12.0">
   <Include Path="..\fakeiteasy.ruleset" Action="Default" />
   <Include Path="..\fakeiteasy.tests.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1003" Action="None" />
+    <Rule Id="CA1009" Action="None" />
     <Rule Id="CA1014" Action="None" />
     <Rule Id="CA1016" Action="None" />
     <Rule Id="CA1017" Action="None" />

@@ -3,354 +3,254 @@
     using System;
     using System.Collections;
     using System.Diagnostics.CodeAnalysis;
-
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Machine.Specifications;
 
-    public class EventRaisingSpecs
+    public abstract class EventRaisingSpecs : EventRaisingSpecs<object>
     {
-        Establish context = () => TypeWithEvent = A.Fake<ITypeWithEvent>();
+    }
 
-        public delegate void DelegateEvent(ArrayList eventList);
+    public abstract class EventRaisingSpecs<TArgs> : EventRaisingSpecs<TArgs, object> where TArgs : new()
+    {
+    }
 
-        public delegate void DelegateWithValueArgumentEvent(int count);
-
-        [SuppressMessage("Microsoft.Design", "CA1003:UseGenericEventHandlerInstances",
-            Justification = "Required for testing nonstandard events.")]
-        public delegate void DerivedArgsEventHandler(object sender, SomethingHappenedEventArgs args);
-
-        public interface ITypeWithEvent
+    public abstract class EventRaisingSpecs<TArgs1, TArgs2>
+        where TArgs1 : new()
+        where TArgs2 : new()
+    {
+        Establish context = () =>
         {
-            event EventHandler<SomethingHappenedEventArgs> GenericEventHandler;
-            
-            event EventHandler EventHandler;
+            Fake = A.Fake<IEvents>();
 
-            [SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly",
-                Justification = "Required for testing nonstandard events.")]
-            event DerivedArgsEventHandler DerivedEventHandler;
+            SampleSender = new object();
+            SampleEventArgs1 = new TArgs1();
+            SampleEventArgs2 = new TArgs2();
 
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix",
-                Justification = "Required for testing nonstandard events.")]
-            [SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly",
-                Justification = "Required for testing nonstandard events.")]
-            event Action<int, string> ActionEventHandler;
+            Fake.SubscribedEvent += (sender, e) =>
+            {
+                CapturedSender = sender;
+                CapturedArgs1 = e;
+            };
 
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix",
-                Justification = "Required for testing nonstandard events.")]
-            [SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly",
-                Justification = "Required for testing nonstandard events.")]
-            event DelegateEvent DelegateEventHandler;
+            Fake.GenericEvent += (sender, e) =>
+            {
+                CapturedSender = sender;
+                CapturedArgs1 = e;
+            };
 
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix",
-                Justification = "Required for testing nonstandard events.")]
-            [SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly",
-                Justification = "Required for testing nonstandard events.")]
-            event DelegateWithValueArgumentEvent DelegateWithValueArgumentEventHandler;
+            Fake.CustomEvent += (sender, e) =>
+            {
+                CapturedSender = sender;
+                CapturedArgs1 = e;
+            };
+
+            Fake.ReferenceTypeEvent += arg =>
+            {
+                CapturedArgs1 = arg;
+            };
+
+            Fake.ValueTypeEvent += arg =>
+            {
+                CapturedArgs1 = arg;
+            };
+
+            Fake.ActionEvent += (arg1, arg2) =>
+            {
+                CapturedArgs1 = arg1;
+                CapturedArgs2 = arg2;
+            };
+        };
+
+        public delegate void CustomEventHandler(object sender, CustomEventArgs e);
+
+        public delegate void ReferenceTypeEventHandler(ReferenceType arg);
+
+        public delegate void ValueTypeEventHandler(int arg);
+
+        public interface IEvents
+        {
+            event EventHandler UnsubscribedEvent;
+
+            event EventHandler SubscribedEvent;
+
+            event EventHandler<CustomEventArgs> GenericEvent;
+
+            event CustomEventHandler CustomEvent;
+
+            event ReferenceTypeEventHandler ReferenceTypeEvent;
+
+            event ValueTypeEventHandler ValueTypeEvent;
+
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "Test.")]
+            event Action<int, bool> ActionEvent;
         }
 
-        protected static ITypeWithEvent TypeWithEvent { get; private set; }
+        protected static IEvents Fake { get; private set; }
 
-        public class SomethingHappenedEventArgs
-            : EventArgs
+        protected static object SampleSender { get; set; }
+
+        protected static TArgs1 SampleEventArgs1 { get; set; }
+
+        protected static TArgs2 SampleEventArgs2 { get; set; }
+
+        protected static object CapturedSender { get; private set; }
+
+        protected static object CapturedArgs1 { get; private set; }
+
+        protected static object CapturedArgs2 { get; private set; }
+
+        protected static object CaughtException { get; private set; }
+
+        protected static void CatchException(Action action)
         {
-        }
-    }
-
-    public class when_raising_event_handler_with_no_subscribers
-        : EventRaisingSpecs
-    {
-        static Exception exception;
-
-        Because of = () =>
-            exception = Catch.Exception(() => TypeWithEvent.EventHandler += Raise.With(new SomethingHappenedEventArgs()));
-
-        It should_not_throw = () => exception.Should().BeNull();
-    }
-
-    public class when_raising_event_handler_passing_arguments
-        : EventRaisingSpecs
-    {
-        static EventArgs raisedWithArgs;
-        static EventArgs capturedArgs;
-        static object capturedSender;
-
-        Establish context = () =>
-        {
-            raisedWithArgs = new EventArgs();
-            TypeWithEvent.EventHandler += (sender, e) =>
-            {
-                capturedSender = sender;
-                capturedArgs = e;
-            };
-        };
-
-        Because of = () => TypeWithEvent.EventHandler += Raise.With(raisedWithArgs);
-
-        It should_pass_the_fake_as_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
-
-        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
-    }
-
-    public class when_raising_event_handler_passing_sender_and_arguments
-        : EventRaisingSpecs
-    {
-        static EventArgs raisedWithArgs;
-        static object raisedWithSender;
-        static EventArgs capturedArgs;
-        static object capturedSender;
-
-        Establish context = () =>
-        {
-            raisedWithSender = new object();
-            raisedWithArgs = new EventArgs();
-            TypeWithEvent.EventHandler += (sender, e) =>
-            {
-                capturedSender = sender;
-                capturedArgs = e;
-            };
-        };
-
-        Because of = () => TypeWithEvent.EventHandler += Raise.With(raisedWithSender, raisedWithArgs);
-
-        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(raisedWithSender);
-
-        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
-    }
-
-    [Subject(typeof(Raise), "eventhandler with subscriber using WithEmpty")]
-    public class when_raising_event_handler_using_WithEmpty
-        : EventRaisingSpecs
-    {
-        static EventArgs capturedArgs;
-        static object capturedSender;
-
-        Establish context = () =>
-        {
-            TypeWithEvent.EventHandler += (sender, e) =>
-            {
-                capturedSender = sender;
-                capturedArgs = e;
-            };
-        };
-
-        Because of = () => TypeWithEvent.EventHandler += Raise.WithEmpty();
-
-        It should_pass_the_fake_as_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
-
-        It should_pass_empty_event_arguments = () => capturedArgs.Should().Be(EventArgs.Empty);
-    }
-
-    public class when_raising_generic_event_handler_passing_arguments
-        : EventRaisingSpecs
-    {
-        static SomethingHappenedEventArgs raisedWithArgs;
-        static SomethingHappenedEventArgs capturedArgs;
-        static object capturedSender;
-
-        Establish context = () =>
-        {
-            raisedWithArgs = new SomethingHappenedEventArgs();
-            TypeWithEvent.GenericEventHandler += (sender, e) =>
-            {
-                capturedSender = sender;
-                capturedArgs = e;
-            };
-        };
-
-        Because of = () => TypeWithEvent.GenericEventHandler += Raise.With(raisedWithArgs);
-
-        It should_pass_the_fake_as_sender = () => capturedSender.Should().BeSameAs(TypeWithEvent);
-
-        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
-    }
-
-    public class when_raising_generic_event_handler_passing_sender_and_arguments
-        : EventRaisingSpecs
-    {
-        static SomethingHappenedEventArgs raisedWithArgs;
-        static object raisedWithSender;
-        static SomethingHappenedEventArgs capturedArgs;
-        static object capturedSender;
-
-        Establish context = () =>
-        {
-            raisedWithSender = new object();
-            raisedWithArgs = new SomethingHappenedEventArgs();
-            TypeWithEvent.GenericEventHandler += (sender, e) =>
-            {
-                capturedSender = sender;
-                capturedArgs = e;
-            };
-        };
-
-        Because of = () => TypeWithEvent.GenericEventHandler += Raise.With(raisedWithSender, raisedWithArgs);
-
-        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(raisedWithSender);
-
-        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
-    }
-
-    public class when_raising_derived_event_handler_passing_sender_and_arguments
-        : EventRaisingSpecs
-    {
-        static SomethingHappenedEventArgs raisedWithArgs;
-        static object raisedWithSender;
-        static SomethingHappenedEventArgs capturedArgs;
-        static object capturedSender;
-
-        Establish context = () =>
-        {
-            raisedWithArgs = new SomethingHappenedEventArgs();
-            raisedWithSender = new object();
-            TypeWithEvent.DerivedEventHandler += (sender, e) =>
-            {
-                capturedSender = sender;
-                capturedArgs = e;
-            };
-        };
-
-        Because of = () => TypeWithEvent.DerivedEventHandler += Raise.With<DerivedArgsEventHandler>(raisedWithSender, raisedWithArgs);
-
-        It should_pass_the_sender = () => capturedSender.Should().BeSameAs(raisedWithSender);
-
-        It should_pass_the_event_arguments = () => capturedArgs.Should().BeSameAs(raisedWithArgs);
-    }
-
-    public class when_raising_delegate_event_passing_arguments
-        : EventRaisingSpecs
-    {
-        static ArrayList raisedWithList;
-        static ArrayList capturedList;
-
-        Establish context = () =>
-        {
-            raisedWithList = new ArrayList();
-            TypeWithEvent.DelegateEventHandler += list => capturedList = list;
-        };
-
-        Because of = () => TypeWithEvent.DelegateEventHandler += Raise.With<DelegateEvent>(raisedWithList);
-
-        It should_pass_the_argument = () => ((object)capturedList).Should().BeSameAs(raisedWithList);
-    }
-
-    public class when_raising_action_event_passing_arguments
-        : EventRaisingSpecs
-    {
-        static int raisedWithInt;
-        static string raisedWithString;
-        static int capturedInt;
-        static string capturedString;
-
-        Establish context = () =>
-        {
-            raisedWithInt = 19;
-            raisedWithString = "raisedWithString";
-            TypeWithEvent.ActionEventHandler += (i, s) =>
-            {
-                capturedInt = i;
-                capturedString = s;
-            };
-        };
-
-        Because of = () => TypeWithEvent.ActionEventHandler += Raise.With<Action<int, string>>(raisedWithInt, raisedWithString);
-
-        It should_pass_the_first_argument = () => capturedInt.Should().Be(raisedWithInt);
-
-        It should_pass_the_second_argument = () => capturedString.Should().Be(raisedWithString);
-    }
-
-    public class when_raising_delegate_event_passing_derived_arguments
-        : EventRaisingSpecs
-    {
-        static ArrayList raisedWithList;
-        static ArrayList capturedList;
-
-        Establish context = () =>
-        {
-            TypeWithEvent.DelegateEventHandler += list => { capturedList = list; };
-        };
-
-        Because of = () =>
-        {
-            raisedWithList = new MyArrayList();
-            TypeWithEvent.DelegateEventHandler += Raise.With<DelegateEvent>(raisedWithList);
-        };
-
-        It should_pass_the_argument = () => ((object)capturedList).Should().BeSameAs(raisedWithList);
-
-        private class MyArrayList : ArrayList
-        {
+            CaughtException = Catch.Exception(action);
         }
     }
 
-    public class when_raising_delegate_event_passing_invalid_argument_type
-        : EventRaisingSpecs
+    public class CustomEventArgs : EventArgs
+    {
+    }
+
+    public class ReferenceType
+    {
+    }
+
+    public class DerivedReferenceType : ReferenceType
+    {
+    }
+
+    public class when_raising_unsubscribed_event : EventRaisingSpecs
+    {
+        Because of = () => CatchException(() => Fake.UnsubscribedEvent += Raise.WithEmpty());
+
+        It should_not_throw = () => CaughtException.Should().BeNull();
+    }
+
+    public class when_raising_event_using_WithEmpty : EventRaisingSpecs
+    {
+        Because of = () => Fake.SubscribedEvent += Raise.WithEmpty();
+
+        It should_pass_the_fake_as_sender = () => CapturedSender.Should().BeSameAs(Fake);
+
+        It should_pass_empty_event_arguments = () => CapturedArgs1.Should().Be(EventArgs.Empty);
+    }
+
+    public class when_raising_event_passing_arguments : EventRaisingSpecs<EventArgs>
+    {
+        Because of = () => Fake.SubscribedEvent += Raise.With(SampleEventArgs1);
+
+        It should_pass_the_fake_as_sender = () => CapturedSender.Should().BeSameAs(Fake);
+
+        It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
+    }
+
+    public class when_raising_event_passing_sender_and_arguments : EventRaisingSpecs<EventArgs>
+    {
+        Because of = () => Fake.SubscribedEvent += Raise.With(SampleSender, SampleEventArgs1);
+
+        It should_pass_the_sender = () => CapturedSender.Should().BeSameAs(SampleSender);
+
+        It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
+    }
+
+    public class when_raising_event_with_multiple_subscribers : EventRaisingSpecs
+    {
+        static int handler1InvocationCount;
+        static int handler2InvocationCount;
+
+        Establish context = () =>
+        {
+            Fake.SubscribedEvent += (s, e) => handler1InvocationCount++;
+            Fake.SubscribedEvent += (s, e) => handler2InvocationCount++;
+        };
+
+        Because of = () => Fake.SubscribedEvent += Raise.WithEmpty();
+
+        It should_invoke_the_first_handler_once = () => handler1InvocationCount.Should().Be(1);
+
+        It should_invoke_the_second_handler_once = () => handler2InvocationCount.Should().Be(1);
+    }
+
+    public class when_raising_generic_event_passing_arguments : EventRaisingSpecs<CustomEventArgs>
+    {
+        Because of = () => Fake.GenericEvent += Raise.With(SampleEventArgs1);
+
+        It should_pass_the_fake_as_sender = () => CapturedSender.Should().BeSameAs(Fake);
+
+        It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
+    }
+
+    public class when_raising_generic_event_passing_sender_and_arguments : EventRaisingSpecs<CustomEventArgs>
+    {
+        Because of = () => Fake.GenericEvent += Raise.With(SampleSender, SampleEventArgs1);
+
+        It should_pass_the_sender = () => CapturedSender.Should().BeSameAs(SampleSender);
+
+        It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
+    }
+
+    public class when_raising_custom_event_passing_sender_and_arguments : EventRaisingSpecs<CustomEventArgs>
+    {
+        Because of = () => Fake.CustomEvent += Raise.With<CustomEventHandler>(SampleSender, SampleEventArgs1);
+
+        It should_pass_the_sender = () => CapturedSender.Should().BeSameAs(SampleSender);
+
+        It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
+    }
+
+    public class when_raising_reference_type_event_passing_arguments : EventRaisingSpecs<ReferenceType>
+    {
+        Because of = () => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(SampleEventArgs1);
+
+        It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
+    }
+
+    public class when_raising_reference_type_event_passing_derived_arguments : EventRaisingSpecs<DerivedReferenceType>
+    {
+        Because of = () => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(SampleEventArgs1);
+
+        It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
+    }
+
+    public class when_raising_reference_type_event_passing_invalid_argument_type : EventRaisingSpecs
     {
         private const string ExpectedMessage =
-            "The event has the signature (System.Collections.ArrayList), but the provided arguments have types " +
-            "(System.Collections.Hashtable).";
+            "The event has the signature (FakeItEasy.Specs.ReferenceType), " +
+            "but the provided arguments have types (System.Collections.Hashtable).";
 
-        static Exception exception;
-
-        Establish context = () =>
-        {
-            TypeWithEvent.DelegateEventHandler += list => { };
-        };
-
-        Because of = () =>
-        {
-            exception = Catch.Exception(() =>
-                TypeWithEvent.DelegateEventHandler += Raise.With<DelegateEvent>(new Hashtable()));
-        };
+        Because of = () => CatchException(() =>
+            Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(new Hashtable()));
 
         It should_fail_with_good_message = () =>
-            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
+            CaughtException.Should().BeAnExceptionOfType<FakeConfigurationException>().And
                 .Message.Should().Be(ExpectedMessage);
     }
 
-    public class when_raising_delegate_event_passing_null_for_value_type_argument
-        : EventRaisingSpecs
+    public class when_raising_value_type_event_passing_null_argument : EventRaisingSpecs
     {
-        private const string ExpectedMessage = 
-            "The event has the signature (System.Int32), but the provided arguments have types " +
-            "(<NULL>).";
-
-        static Exception exception;
-
-        Establish context = () =>
-        {
-            TypeWithEvent.DelegateWithValueArgumentEventHandler += list => { };
-        };
-
-        Because of = () =>
-        {
-            exception = Catch.Exception(() =>
-                TypeWithEvent.DelegateWithValueArgumentEventHandler += Raise.With<DelegateWithValueArgumentEvent>((object)null));
-        };
+        Because of = () => CatchException(() =>
+            Fake.ValueTypeEvent += Raise.With<ValueTypeEventHandler>((object)null));
 
         It should_fail_with_good_message = () =>
-            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
-                .Message.Should().Be(ExpectedMessage);
+            CaughtException.Should().BeAnExceptionOfType<FakeConfigurationException>()
+            .And.Message.Should().Be(
+                "The event has the signature (System.Int32), but the provided arguments have types (<NULL>).");
     }
 
-    public class when_raising_event_handler_with_multiple_subscribers
-        : EventRaisingSpecs
+    public class when_raising_action_event_passing_arguments : EventRaisingSpecs<int, bool>
     {
-        static int firstWasRaisedNumberOfTimes;
-        static int secondWasRaisedNumberOfTimes;
-
         Establish context = () =>
         {
-            TypeWithEvent.EventHandler += (s, e) => firstWasRaisedNumberOfTimes++;
-            TypeWithEvent.EventHandler += (s, e) => secondWasRaisedNumberOfTimes++;
+            SampleEventArgs1 = 19;
+            SampleEventArgs2 = true;
         };
 
-        Because of = () => TypeWithEvent.EventHandler += Raise.With(new SomethingHappenedEventArgs());
+        Because of = () => Fake.ActionEvent += Raise.With<Action<int, bool>>(SampleEventArgs1, SampleEventArgs2);
 
-        It should_invoke_the_first_handler = () => firstWasRaisedNumberOfTimes.Should().Be(1);
+        It should_pass_the_first_argument = () => CapturedArgs1.Should().Be(SampleEventArgs1);
 
-        It should_invoke_the_second_handler = () => secondWasRaisedNumberOfTimes.Should().Be(1);
+        It should_pass_the_second_argument = () => CapturedArgs2.Should().Be(SampleEventArgs2);
     }
 }
