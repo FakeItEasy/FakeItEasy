@@ -103,6 +103,49 @@ msbuild :clean => [logs] do |msb|
   msb.parameters = ["/nologo", "/fl", "/flp:LogFile=#{logs}/clean.log;Verbosity=Detailed;PerformanceSummary", "/nr:false"]
 end
 
+desc "Build solution"
+msbuild :build => [:clean, :restore, logs] do |msb|
+  msb.properties = { :configuration => :Release }
+  msb.targets = [ :Build ]
+  msb.solution = solution
+  msb.verbosity = :minimal
+  msb.parameters = ["/nologo", "/fl", "/flp:LogFile=#{logs}/build.log;Verbosity=Detailed;PerformanceSummary", "/nr:false"]
+end
+
+directory tests
+
+desc "Execute unit tests"
+nunit :unit => [:build, tests] do |nunit|
+  nunit.command = nunit_command
+  nunit.assemblies unit_tests
+  nunit.results_path = "#{tests}/TestResult.Unit.xml"
+  nunit.no_logo
+end
+
+desc "Execute integration tests"
+nunit :integ => [:build, tests] do |nunit|
+  nunit.command = nunit_command
+  nunit.assemblies integration_tests
+  nunit.results_path = "#{tests}/TestResult.Integration.xml"
+  nunit.no_logo
+end
+
+desc "Execute specifications"
+mspec :spec => [:build, tests] do |mspec|
+  mspec.command = mspec_command
+  mspec.assemblies specs
+  mspec.results_path = { :html => "#{tests}/TestResult.Specifications.html" }
+  mspec.parameters = ["--timeinfo", "--progress", "--silent"]
+end
+
+directory output
+
+desc "create the nuget package"
+exec :pack => [:build, output] do |cmd|
+  cmd.command = nuget_command
+  cmd.parameters = ["pack", nuspec, "-Version", version, "-OutputDirectory", output]
+end
+
 desc "Update version number"
 task :set_version, :new_version do |asm, args|
   current_branch = `git rev-parse --abbrev-ref HEAD`.strip()
@@ -160,49 +203,6 @@ assemblyinfo :set_version_in_assemblyinfo, :new_version do |asm, args|
   }
   asm.input_file = assembly_info
   asm.output_file = assembly_info
-end
-
-desc "Build solution"
-msbuild :build => [:clean, :restore, logs] do |msb|
-  msb.properties = { :configuration => :Release }
-  msb.targets = [ :Build ]
-  msb.solution = solution
-  msb.verbosity = :minimal
-  msb.parameters = ["/nologo", "/fl", "/flp:LogFile=#{logs}/build.log;Verbosity=Detailed;PerformanceSummary", "/nr:false"]
-end
-
-directory tests
-
-desc "Execute unit tests"
-nunit :unit => [:build, tests] do |nunit|
-  nunit.command = nunit_command
-  nunit.assemblies unit_tests
-  nunit.results_path = "#{tests}/TestResult.Unit.xml"
-  nunit.no_logo
-end
-
-desc "Execute integration tests"
-nunit :integ => [:build, tests] do |nunit|
-  nunit.command = nunit_command
-  nunit.assemblies integration_tests
-  nunit.results_path = "#{tests}/TestResult.Integration.xml"
-  nunit.no_logo
-end
-
-desc "Execute specifications"
-mspec :spec => [:build, tests] do |mspec|
-  mspec.command = mspec_command
-  mspec.assemblies specs
-  mspec.results_path = { :html => "#{tests}/TestResult.Specifications.html" }
-  mspec.parameters = ["--timeinfo", "--progress", "--silent"]
-end
-
-directory output
-
-desc "create the nuget package"
-exec :pack => [:build, output] do |cmd|
-  cmd.command = nuget_command
-  cmd.parameters = ["pack", nuspec, "-Version", version, "-OutputDirectory", output]
 end
 
 desc "create new milestone, release issue and release"
