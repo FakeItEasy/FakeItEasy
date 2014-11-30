@@ -13,7 +13,7 @@
         : IFakeObjectContainer
     {
         private readonly IDictionary<Type, IFakeConfigurator> registeredConfigurators;
-        private readonly IList<IDummyDefinition> registeredDummyDefinitions;
+        private readonly Cache<Type, IDummyDefinition> registeredDummyDefinitions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer" /> class.
@@ -23,7 +23,8 @@
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurators", Justification = "This is the correct spelling.")]
         public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurator> fakeConfigurators)
         {
-            this.registeredDummyDefinitions = CreateDummyDefinitionsList(dummyDefinitions);
+            var dummyDefinitionsList = CreateDummyDefinitionsList(dummyDefinitions);
+            this.registeredDummyDefinitions = new Cache<Type, IDummyDefinition>(type => GetDummyDefinition(type, dummyDefinitionsList));
             this.registeredConfigurators = CreateFakeConfiguratorsDictionary(fakeConfigurators);
         }
 
@@ -36,10 +37,7 @@
         /// <returns>True if a fake object can be created.</returns>
         public bool TryCreateDummyObject(Type typeOfDummy, out object fakeObject)
         {
-            IDummyDefinition dummyDefinition = this.registeredDummyDefinitions
-                .Where(definition => definition.CanCreateDummyOfType(typeOfDummy))
-                .OrderByDescending(definition => definition.Priority)
-                .FirstOrDefault();
+            var dummyDefinition = this.registeredDummyDefinitions[typeOfDummy];
 
             if (dummyDefinition == null)
             {
@@ -64,6 +62,15 @@
             {
                 configurator.ConfigureFake(fakeObject);
             }
+        }
+
+        private static IDummyDefinition GetDummyDefinition(Type typeOfDummy, IEnumerable<IDummyDefinition> dummyDefinitions)
+        {
+            IDummyDefinition dummyDefinition = dummyDefinitions
+                .Where(definition => definition.CanCreateDummyOfType(typeOfDummy))
+                .OrderByDescending(definition => definition.Priority)
+                .FirstOrDefault();
+            return dummyDefinition;
         }
 
         private static IDictionary<Type, IFakeConfigurator> CreateFakeConfiguratorsDictionary(IEnumerable<IFakeConfigurator> fakeConfigurers)

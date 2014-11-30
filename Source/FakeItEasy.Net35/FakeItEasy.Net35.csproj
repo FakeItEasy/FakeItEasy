@@ -216,6 +216,9 @@
     <Compile Include="..\FakeItEasy\Core\BootstrapperLocator.cs">
       <Link>Core\BootstrapperLocator.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\Cache.cs">
+      <Link>Core\Cache.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\CallRuleMetadata.cs">
       <Link>Core\CallRuleMetadata.cs</Link>
     </Compile>
@@ -687,6 +690,7 @@
     <Compile Include="..\FakeItEasy\WhereConfigurationExtensions.cs">
       <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
+    <Compile Include="ConcurrentDictionary.cs" />
     <Compile Include="Properties\CustomAssemblyInfo.cs" />
     <Compile Include="Compatibility.cs" />
   </ItemGroup>
