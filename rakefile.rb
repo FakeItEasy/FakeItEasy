@@ -89,7 +89,7 @@ end
 desc "Restore NuGet packages"
 exec :restore do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "restore #{solution}"
+  cmd.parameters = ["restore", solution]
 end
 
 directory logs
@@ -202,7 +202,7 @@ directory output
 desc "create the nuget package"
 exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "pack #{nuspec} -Version #{version} -OutputDirectory #{output}"
+  cmd.parameters = ["pack", nuspec, "-Version", version, "-OutputDirectory", output]
 end
 
 desc "create new milestone, release issue and release"
