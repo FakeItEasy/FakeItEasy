@@ -206,7 +206,7 @@ assemblyinfo :set_version_in_assemblyinfo, :new_version do |asm, args|
 end
 
 desc "create new milestone, release issue and release"
-task :create_milestone do |t|
+task :create_milestone do
   require 'octokit'
 
   ssl_cert_file = get_temp_ssl_cert_file(ssl_cert_file_url)
