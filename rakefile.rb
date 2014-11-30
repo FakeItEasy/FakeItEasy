@@ -100,7 +100,7 @@ msbuild :clean => [logs] do |msb|
   msb.targets = [ :Clean ]
   msb.solution = solution
   msb.verbosity = :minimal
-  msb.other_switches = {:nologo => true, :fl => true, :flp => "LogFile=#{logs}/clean.log;Verbosity=Detailed;PerformanceSummary", :nr => false}
+  msb.parameters = ["/nologo", "/fl", "/flp:LogFile=#{logs}/clean.log;Verbosity=Detailed;PerformanceSummary", "/nr:false"]
 end
 
 desc "Update version number"
@@ -168,7 +168,7 @@ msbuild :build => [:clean, :restore, logs] do |msb|
   msb.targets = [ :Build ]
   msb.solution = solution
   msb.verbosity = :minimal
-  msb.other_switches = {:nologo => true, :fl => true, :flp => "LogFile=#{logs}/build.log;Verbosity=Detailed;PerformanceSummary", :nr => false}
+  msb.parameters = ["/nologo", "/fl", "/flp:LogFile=#{logs}/build.log;Verbosity=Detailed;PerformanceSummary", "/nr:false"]
 end
 
 directory tests
@@ -177,22 +177,24 @@ desc "Execute unit tests"
 nunit :unit => [:build, tests] do |nunit|
   nunit.command = nunit_command
   nunit.assemblies unit_tests
-  nunit.options "/result=#{tests}/TestResult.Unit.xml", "/nologo"
+  nunit.results_path = "#{tests}/TestResult.Unit.xml"
+  nunit.no_logo
 end
 
 desc "Execute integration tests"
 nunit :integ => [:build, tests] do |nunit|
   nunit.command = nunit_command
   nunit.assemblies integration_tests
-  nunit.options "/result=#{tests}/TestResult.Integration.xml", "/nologo"
+  nunit.results_path = "#{tests}/TestResult.Integration.xml"
+  nunit.no_logo
 end
 
 desc "Execute specifications"
 mspec :spec => [:build, tests] do |mspec|
   mspec.command = mspec_command
   mspec.assemblies specs
-  mspec.html_output = "#{tests}/TestResult.Specifications.html"
-  mspec.options "--timeinfo", "--progress", "--silent"
+  mspec.results_path = { :html => "#{tests}/TestResult.Specifications.html" }
+  mspec.parameters = ["--timeinfo", "--progress", "--silent"]
 end
 
 directory output
