@@ -29,9 +29,13 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
     `gem update --system`
 
-1. Install/update Rake, Albacore and Zip:
+1. Install/update Rake:
 
-    `gem install rake albacore zip`
+    `gem install rake`
+
+1. Install Albacore 1.0.0:
+
+    `gem install albacore -v 1.0.0`
 
 ## Building
 
