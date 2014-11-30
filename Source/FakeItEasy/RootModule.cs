@@ -134,7 +134,7 @@
 
             container.Register<ISutInitializer>(c => new DefaultSutInitializer(c.Resolve<IFakeAndDummyManager>()));
 
-            container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
+            container.RegisterSingleton(c => new EventHandlerArgumentProviders());
         }
 
         private class ExpressionCallMatcherFactory

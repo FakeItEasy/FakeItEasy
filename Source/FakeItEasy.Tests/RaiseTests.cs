@@ -120,7 +120,7 @@
         public void Should_not_leak_handlers_when_raising()
         {
             // Arrange
-            var eventHandlerArgumentProvider = ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+            var eventHandlerArgumentProvider = ServiceLocator.Current.Resolve<EventHandlerArgumentProviders>();
 
             this.foo = A.Fake<IFoo>();
             this.foo.SomethingHappened += this.Foo_SomethingHappened;
@@ -131,7 +131,7 @@
             this.foo.SomethingHappened += raisingHandler;
 
             // Assert
-            eventHandlerArgumentProvider.Contains(raisingHandler).Should().BeFalse();
+            eventHandlerArgumentProvider.ContainsKey(raisingHandler).Should().BeFalse();
         }
 
         private void Foo_SomethingHappened(object newSender, EventArgs e)

@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicatorNotSetExceptionMessage" xml:space="preserve">
     <value>The Apply method of the ExpressionInterceptor may no be called before the Applicator property has been set.</value>
@@ -162,8 +162,8 @@ The following constructors failed:
   <data name="NonConstructorExpressionMessage" xml:space="preserve">
     <value>Only expression of the type ExpressionType.New (constructor calls) are accepted.</value>
   </data>
-  <data name="NowCalledDirectly" xml:space="preserve">
-    <value>The Now-method on the event raise is not meant to be called directly, only use it to register to an event on a fake object that you want to be raised.</value>
+  <data name="EventHandlerCalledDirectly" xml:space="preserve">
+    <value>The handler on the event raise is not meant to be called directly, only use it to register to an event on a fake object that you want to be raised.</value>
   </data>
   <data name="NumberOfOutAndRefParametersDoesNotMatchCall" xml:space="preserve">
     <value>The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call.</value>

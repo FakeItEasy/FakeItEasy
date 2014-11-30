@@ -92,8 +92,9 @@
     <Compile Include="Core\FakeManagerProvider.cs" />
     <Compile Include="Core\IFakeCallProcessorProvider.cs" />
     <Compile Include="Core\FakeCallProcessorProvider.cs" />
-    <Compile Include="Core\EventHandlerArgumentProviderMap.cs" />
+    <Compile Include="Core\EventHandlerArgumentProviders.cs" />
     <Compile Include="DefaultBootstrapper.cs" />
+    <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="Expressions\ArgumentConstraints\IArgumentValueProvider.cs" />
     <Compile Include="Expressions\ArgumentConstraints\OutArgumentConstraint.cs" />
     <Compile Include="Expressions\ArgumentConstraints\RefArgumentConstraint.cs" />
@@ -323,7 +324,7 @@
     <Compile Include="Core\ICompletedFakeObjectCall.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\IEventRaiserArguments.cs">
+    <Compile Include="Core\IArgumentProvider.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\IExceptionThrower.cs">
