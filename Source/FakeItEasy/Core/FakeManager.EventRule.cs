@@ -10,147 +10,103 @@ namespace FakeItEasy.Core
     public partial class FakeManager
     {
         [Serializable]
-        [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Would provide no benefit since there is no place from where to call the Dispose-method.")]
-        private class EventRule
-            : IFakeObjectCallRule
+        private class EventRule : IFakeObjectCallRule
         {
             [NonSerialized]
-            private readonly EventHandlerArgumentProviderMap eventHandlerArgumentProviderMap =
-                ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+            private readonly EventHandlerArgumentProviders argumentProviders =
+                ServiceLocator.Current.Resolve<EventHandlerArgumentProviders>();
+
+            private readonly FakeManager fakeManager;
 
             [NonSerialized]
-            private Dictionary<object, Delegate> registeredEventHandlersField;
+            private readonly Dictionary<object, Delegate> eventHandlers = new Dictionary<object, Delegate>();
 
-            public FakeManager FakeManager { private get; set; }
+            public EventRule(FakeManager fakeManager)
+            {
+                Guard.AgainstNull(fakeManager, "fakeManager");
+
+                this.fakeManager = fakeManager;
+            }
 
             public int? NumberOfTimesToCall
             {
                 get { return null; }
             }
 
-            private Dictionary<object, Delegate> RegisteredEventHandlers
-            {
-                get
-                {
-                    if (this.registeredEventHandlersField == null)
-                    {
-                        this.registeredEventHandlersField = new Dictionary<object, Delegate>();
-                    }
-
-                    return this.registeredEventHandlersField;
-                }
-            }
-
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
                 Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
 
-                return EventCall.GetEvent(fakeObjectCall.Method) != null;
+                return GetEvent(fakeObjectCall.Method) != null;
             }
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                var eventCall = EventCall.GetEventCall(fakeObjectCall, this.eventHandlerArgumentProviderMap);
+                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
 
-                this.HandleEventCall(eventCall);
-            }
-
-            /// <summary>
-            /// Attempts to preserve the stack trace of an existing exception when rethrown via <c>throw</c> or <c>throw ex</c>.
-            /// </summary>
-            /// <remarks>Nicked from
-            /// http://weblogs.asp.net/fmarguerie/archive/2008/01/02/rethrowing-exceptions-and-preserving-the-full-call-stack-trace.aspx.
-            /// If reduced trust context (for example) precludes
-            /// invoking internal members on <see cref="Exception"/>, the stack trace will not be preserved.
-            /// </remarks>
-            /// <param name="exception">The exception whose stack trace needs preserving.</param>
-            [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "URL in remarks.")]
-            [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try method.")]
-            private static void TryPreserveStackTrace(Exception exception)
-            {
-                try
+                var eventInfo = GetEvent(fakeObjectCall.Method);
+                var eventHandler = (Delegate)fakeObjectCall.Arguments[0];
+                if (eventInfo.GetAddMethod() == fakeObjectCall.Method)
                 {
-                    var preserveStackTrace = typeof(Exception).GetMethod(
-                                                                    "InternalPreserveStackTrace",
-                                                                    BindingFlags.Instance | BindingFlags.NonPublic);
-                    preserveStackTrace.Invoke(exception, null);
-                }
-                catch
-                {
-                }
-            }
-
-            private void HandleEventCall(EventCall eventCall)
-            {
-                if (eventCall.IsEventRegistration())
-                {
-                    if (eventCall.IsEventRaiser())
+                    if (this.argumentProviders.ContainsKey(eventHandler))
                     {
-                        this.RaiseEvent(eventCall);
+                        this.RaiseEvent(eventInfo, eventHandler);
                     }
                     else
                     {
-                        this.AddEventListener(eventCall);
+                        this.AddHandler(eventInfo, eventHandler);
                     }
                 }
                 else
                 {
-                    this.RemoveEventListener(eventCall);
+                    this.RemoveHandler(eventInfo, eventHandler);
                 }
             }
 
-            private void RemoveEventListener(EventCall call)
+            private static EventInfo GetEvent(MethodInfo method)
             {
-                this.RemoveHandler(call.Event, call.EventHandler);
-            }
-
-            private void AddEventListener(EventCall call)
-            {
-                this.AddHandler(call.Event, call.EventHandler);
+                var baseDefinition = method.GetBaseDefinition();
+                return
+                    method.DeclaringType.GetEvents().SingleOrDefault(e =>
+                        e.GetAddMethod().GetBaseDefinition() == baseDefinition ||
+                        e.GetRemoveMethod().GetBaseDefinition() == baseDefinition);
             }
 
             private void AddHandler(object key, Delegate handler)
             {
-                Delegate result;
+                Delegate result = this.eventHandlers.TryGetValue(key, out result)
+                    ? Delegate.Combine(result, handler)
+                    : handler;
 
-                if (this.RegisteredEventHandlers.TryGetValue(key, out result))
-                {
-                    result = Delegate.Combine(result, handler);
-                }
-                else
-                {
-                    result = handler;
-                }
-
-                this.RegisteredEventHandlers[key] = result;
+                this.eventHandlers[key] = result;
             }
 
             private void RemoveHandler(object key, Delegate handler)
             {
                 Delegate registration;
-
-                if (this.RegisteredEventHandlers.TryGetValue(key, out registration))
+                if (this.eventHandlers.TryGetValue(key, out registration))
                 {
                     registration = Delegate.Remove(registration, handler);
 
                     if (registration != null)
                     {
-                        this.RegisteredEventHandlers[key] = registration;
+                        this.eventHandlers[key] = registration;
                     }
                     else
                     {
-                        this.RegisteredEventHandlers.Remove(key);
+                        this.eventHandlers.Remove(key);
                     }
                 }
             }
 
-            private void RaiseEvent(EventCall call)
+            private void RaiseEvent(EventInfo eventInfo, Delegate eventHandler)
             {
                 Delegate raiseMethod;
-
-                if (this.RegisteredEventHandlers.TryGetValue(call.Event, out raiseMethod))
+                if (this.eventHandlers.TryGetValue(eventInfo, out raiseMethod))
                 {
-                    var arguments = this.GetArgumentsFromEventRaiser(call);
+                    IArgumentProvider provider;
+                    this.argumentProviders.TryRemove(eventHandler, out provider);
+                    var arguments = provider.GetArguments(this.fakeManager.Object);
 
                     try
                     {
@@ -158,71 +114,16 @@ namespace FakeItEasy.Core
                     }
                     catch (TargetInvocationException ex)
                     {
+                        // Exceptions thrown by event handlers should propagate outward as is, not
+                        // be wrapped in a TargetInvocationException.
                         if (ex.InnerException != null)
                         {
-                            // Exceptions thrown by event handlers should propagate outward as is, not
-                            // be wrapped in a TargetInvocationException.
-                            TryPreserveStackTrace(ex.InnerException);
+                            ex.InnerException.TryPreserveStackTrace();
                             throw ex.InnerException;
                         }
 
                         throw;
                     }
-                }
-            }
-
-            private object[] GetArgumentsFromEventRaiser(EventCall call)
-            {
-                var argumentListBuilder = this.eventHandlerArgumentProviderMap.TakeArgumentProviderFor(call.EventHandler);
-                return argumentListBuilder.GetEventArguments(this.FakeManager.Object);
-            }
-
-            private class EventCall
-            {
-                private EventCall()
-                {
-                }
-
-                public EventInfo Event { get; private set; }
-
-                public Delegate EventHandler { get; private set; }
-
-                private MethodInfo CallingMethod { get; set; }
-
-                private EventHandlerArgumentProviderMap EventHandlerArgumentProviderMap { get; set; }
-
-                public static EventCall GetEventCall(
-                    IFakeObjectCall fakeObjectCall,
-                    EventHandlerArgumentProviderMap eventHandlerArgumentProviderMap)
-                {
-                    var eventInfo = GetEvent(fakeObjectCall.Method);
-
-                    return new EventCall
-                               {
-                                   Event = eventInfo, 
-                                   CallingMethod = fakeObjectCall.Method, 
-                                   EventHandler = (Delegate)fakeObjectCall.Arguments[0],
-                                   EventHandlerArgumentProviderMap = eventHandlerArgumentProviderMap
-                               };
-                }
-
-                public static EventInfo GetEvent(MethodInfo eventAdderOrRemover)
-                {
-                    return
-                        (from e in eventAdderOrRemover.DeclaringType.GetEvents()
-                         where object.Equals(e.GetAddMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
-                             || object.Equals(e.GetRemoveMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
-                         select e).SingleOrDefault();
-                }
-
-                public bool IsEventRaiser()
-                {
-                    return this.EventHandlerArgumentProviderMap.Contains(this.EventHandler);
-                }
-
-                public bool IsEventRegistration()
-                {
-                    return this.Event.GetAddMethod().Equals(this.CallingMethod);
                 }
             }
         }

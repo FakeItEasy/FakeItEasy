@@ -258,8 +258,8 @@
     <Compile Include="..\FakeItEasy\Core\DynamicContainer.cs">
       <Link>Core\DynamicContainer.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\EventHandlerArgumentProviderMap.cs">
-      <Link>Core\EventHandlerArgumentProviderMap.cs</Link>
+    <Compile Include="..\FakeItEasy\Core\EventHandlerArgumentProviders.cs">
+      <Link>Core\EventHandlerArgumentProviders.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeAsserter.cs">
       <Link>Core\FakeAsserter.cs</Link>
@@ -318,8 +318,8 @@
     <Compile Include="..\FakeItEasy\Core\ICompletedFakeObjectCall.cs">
       <Link>Core\ICompletedFakeObjectCall.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\IEventRaiserArguments.cs">
-      <Link>Core\IEventRaiserArguments.cs</Link>
+    <Compile Include="..\FakeItEasy\Core\IArgumentProvider.cs">
+      <Link>Core\IArgumentProvider.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IExceptionThrower.cs">
       <Link>Core\IExceptionThrower.cs</Link>
@@ -479,6 +479,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
       <Link>EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ExceptionExtensions.cs">
+      <Link>ExceptionExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ExceptionMessages.Designer.cs">
       <Link>ExceptionMessages.Designer.cs</Link>
@@ -693,6 +696,7 @@
     <Compile Include="..\FakeItEasy\WhereConfigurationExtensions.cs">
       <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
+    <Compile Include="ConcurrentDictionary.cs" />
     <Compile Include="Properties\CustomAssemblyInfo.cs" />
     <Compile Include="Compatibility.cs" />
   </ItemGroup>

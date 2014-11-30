@@ -10,8 +10,8 @@
     /// </summary>
     public static class Raise
     {
-        private static readonly EventHandlerArgumentProviderMap ArgumentProviderMap =
-            ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+        private static readonly EventHandlerArgumentProviders ArgumentProviders =
+            ServiceLocator.Current.Resolve<EventHandlerArgumentProviders>();
 
         /// <summary>
         /// Raises an event on a faked object by attaching the event handler produced by the method
@@ -24,7 +24,7 @@
         [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "Must be visible to provide the event raising syntax.")]
         public static Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e) where TEventArgs : EventArgs
         {
-            return new Raise<TEventArgs>(sender, e, ArgumentProviderMap);
+            return new Raise<TEventArgs>(sender, e, ArgumentProviders);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@
         /// </returns>
         public static Raise<TEventArgs> With<TEventArgs>(TEventArgs e) where TEventArgs : EventArgs
         {
-            return new Raise<TEventArgs>(null, e, ArgumentProviderMap);
+            return new Raise<TEventArgs>(null, e, ArgumentProviders);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@
         /// </returns>
         public static Raise<EventArgs> WithEmpty()
         {
-            return new Raise<EventArgs>(null, EventArgs.Empty, ArgumentProviderMap);
+            return new Raise<EventArgs>(null, EventArgs.Empty, ArgumentProviders);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@
         /// <returns>A new object that knows how to raise events.</returns>
         public static TEventHandler With<TEventHandler>(params object[] arguments)
         {
-            return new DelegateRaiser<TEventHandler>(arguments, ArgumentProviderMap);
+            return new DelegateRaiser<TEventHandler>(arguments, ArgumentProviders);
         }
     }
 }

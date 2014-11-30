@@ -90,6 +90,9 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy.Net35\ConcurrentDictionary.cs">
+      <Link>ConcurrentDictionary.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\A.cs">
       <Link>A.cs</Link>
     </Compile>
@@ -126,17 +129,23 @@
     <Compile Include="..\FakeItEasy\Core\FakeManagerProvider.cs">
       <Link>Core\FakeManagerProvider.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\IArgumentProvider.cs">
+      <Link>Core\IArgumentProvider.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeCallProcessor.cs">
       <Link>Core\IFakeCallProcessor.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeCallProcessorProvider.cs">
       <Link>Core\IFakeCallProcessorProvider.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\EventHandlerArgumentProviderMap.cs">
-      <Link>Core\EventHandlerArgumentProviderMap.cs</Link>
+    <Compile Include="..\FakeItEasy\Core\EventHandlerArgumentProviders.cs">
+      <Link>Core\EventHandlerArgumentProviders.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\EnumerableExtensions.cs">
       <Link>EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\ExceptionExtensions.cs">
+      <Link>ExceptionExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ExceptionThrowerConfigurationExtensions.cs">
       <Link>ExceptionThrowerConfigurationExtensions.cs</Link>
@@ -412,9 +421,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\ICompletedFakeObjectCall.cs">
       <Link>Core\ICompletedFakeObjectCall.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\IEventRaiserArguments.cs">
-      <Link>Core\IEventRaiserArguments.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IExceptionThrower.cs">
       <Link>Core\IExceptionThrower.cs</Link>
@@ -733,7 +739,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="AfterBuild">
