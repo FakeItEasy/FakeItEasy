@@ -258,6 +258,9 @@
     <Compile Include="..\FakeItEasy\Core\DynamicContainer.cs">
       <Link>Core\DynamicContainer.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\EventHandlerArgumentProviderMap.cs">
+      <Link>Core\EventHandlerArgumentProviderMap.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeAsserter.cs">
       <Link>Core\FakeAsserter.cs</Link>
     </Compile>
@@ -623,6 +626,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Raise.of.TEventArgs.cs">
       <Link>Raise.of.TEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\DelegateRaiser.cs">
+      <Link>DelegateRaiser.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Recorders.cs">
       <Link>Recorders.cs</Link>

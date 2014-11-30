@@ -1,7 +1,6 @@
 ﻿namespace FakeItEasy
 {
     using System;
-    using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
 
@@ -14,31 +13,20 @@
         : IEventRaiserArguments where TEventArgs : EventArgs
     {
         private readonly TEventArgs eventArguments;
-        private readonly object sender;
-
-        internal Raise(object sender, TEventArgs e)
-        {
-            this.sender = sender;
-            this.eventArguments = e;
-        }
+        private readonly object eventSender;
 
         /// <summary>
-        /// Gets a generic event handler to attach to the event to raise.
+        /// Initializes a new instance of the <see cref="Raise{TEventArgs}"/> class.
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public EventHandler<TEventArgs> Go
+        /// <param name="sender">The sender of the event, or <c>null</c> if the fake is to be used as sender.</param>
+        /// <param name="e">The event data.</param>
+        /// <param name="argumentProviderMap">A map from event handlers to supplied arguments to use when raising.</param>
+        internal Raise(object sender, TEventArgs e, EventHandlerArgumentProviderMap argumentProviderMap)
         {
-            get { return this.Now; }
-        }
+            this.eventSender = sender;
+            this.eventArguments = e;
 
-        object IEventRaiserArguments.Sender
-        {
-            get { return this.sender; }
-        }
-
-        EventArgs IEventRaiserArguments.EventArguments
-        {
-            get { return this.eventArguments; }
+            argumentProviderMap.AddArgumentProvider((EventHandler<TEventArgs>)this, this);
         }
 
         /// <summary>
@@ -63,24 +51,16 @@
             return raiser.Now;
         }
 
-        /// <summary>
-        /// Register this event handler to an event on a faked object in order to raise that event.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">Event args for the event.</param>
-        [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "Must be visible to provide the event raising syntax.")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "sender", Justification = "Unused parameter.")]
-        public void Now(object sender, TEventArgs e)
+        object[] IEventRaiserArguments.GetEventArguments(object fake)
+        {
+            return new[] { this.eventSender ?? fake, this.eventArguments };
+        }
+
+        private void Now(object sender, TEventArgs e)
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
         }
 
-        /// <summary>
-        /// Register this event handler to an event on a faked object in order to raise that event.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">Event args for the event.</param>
-        [SuppressMessage("Microsoft.Maintainability", "CA1500:VariableNamesShouldNotMatchFieldNames", MessageId = "sender", Justification = "Unused parameter.")]
         private void Now(object sender, EventArgs e)
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);

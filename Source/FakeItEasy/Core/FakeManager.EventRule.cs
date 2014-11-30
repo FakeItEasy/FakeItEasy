@@ -14,9 +14,14 @@ namespace FakeItEasy.Core
         private class EventRule
             : IFakeObjectCallRule
         {
-            [NonSerialized] private Dictionary<object, Delegate> registeredEventHandlersField;
+            [NonSerialized]
+            private readonly EventHandlerArgumentProviderMap eventHandlerArgumentProviderMap =
+                ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
 
-            public FakeManager FakeManager { get; set; }
+            [NonSerialized]
+            private Dictionary<object, Delegate> registeredEventHandlersField;
+
+            public FakeManager FakeManager { private get; set; }
 
             public int? NumberOfTimesToCall
             {
@@ -45,7 +50,7 @@ namespace FakeItEasy.Core
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                var eventCall = EventCall.GetEventCall(fakeObjectCall);
+                var eventCall = EventCall.GetEventCall(fakeObjectCall, this.eventHandlerArgumentProviderMap);
 
                 this.HandleEventCall(eventCall);
             }
@@ -106,7 +111,7 @@ namespace FakeItEasy.Core
 
             private void AddHandler(object key, Delegate handler)
             {
-                Delegate result = null;
+                Delegate result;
 
                 if (this.RegisteredEventHandlers.TryGetValue(key, out result))
                 {
@@ -122,7 +127,7 @@ namespace FakeItEasy.Core
 
             private void RemoveHandler(object key, Delegate handler)
             {
-                Delegate registration = null;
+                Delegate registration;
 
                 if (this.RegisteredEventHandlers.TryGetValue(key, out registration))
                 {
@@ -141,17 +146,15 @@ namespace FakeItEasy.Core
 
             private void RaiseEvent(EventCall call)
             {
-                Delegate raiseMethod = null;
+                Delegate raiseMethod;
 
                 if (this.RegisteredEventHandlers.TryGetValue(call.Event, out raiseMethod))
                 {
-                    var arguments = call.EventHandler.Target as IEventRaiserArguments;
-
-                    var sender = arguments.Sender ?? this.FakeManager.Object;
+                    var arguments = this.GetArgumentsFromEventRaiser(call);
 
                     try
                     {
-                        raiseMethod.DynamicInvoke(sender, arguments.EventArguments);
+                        raiseMethod.DynamicInvoke(arguments);
                     }
                     catch (TargetInvocationException ex)
                     {
@@ -168,19 +171,29 @@ namespace FakeItEasy.Core
                 }
             }
 
+            private object[] GetArgumentsFromEventRaiser(EventCall call)
+            {
+                var argumentListBuilder = this.eventHandlerArgumentProviderMap.TakeArgumentProviderFor(call.EventHandler);
+                return argumentListBuilder.GetEventArguments(this.FakeManager.Object);
+            }
+
             private class EventCall
             {
                 private EventCall()
                 {
                 }
 
-                public EventInfo Event { get; set; }
+                public EventInfo Event { get; private set; }
 
-                public MethodInfo CallingMethod { get; set; }
+                public Delegate EventHandler { get; private set; }
 
-                public Delegate EventHandler { get; set; }
+                private MethodInfo CallingMethod { get; set; }
 
-                public static EventCall GetEventCall(IFakeObjectCall fakeObjectCall)
+                private EventHandlerArgumentProviderMap EventHandlerArgumentProviderMap { get; set; }
+
+                public static EventCall GetEventCall(
+                    IFakeObjectCall fakeObjectCall,
+                    EventHandlerArgumentProviderMap eventHandlerArgumentProviderMap)
                 {
                     var eventInfo = GetEvent(fakeObjectCall.Method);
 
@@ -188,7 +201,8 @@ namespace FakeItEasy.Core
                                {
                                    Event = eventInfo, 
                                    CallingMethod = fakeObjectCall.Method, 
-                                   EventHandler = (Delegate)fakeObjectCall.Arguments[0]
+                                   EventHandler = (Delegate)fakeObjectCall.Arguments[0],
+                                   EventHandlerArgumentProviderMap = eventHandlerArgumentProviderMap
                                };
                 }
 
@@ -203,11 +217,7 @@ namespace FakeItEasy.Core
 
                 public bool IsEventRaiser()
                 {
-                    var declaringType = this.EventHandler.Method.DeclaringType;
-
-                    return declaringType.IsGenericType
-                        && declaringType.GetGenericTypeDefinition() == typeof(Raise<>)
-                            && this.EventHandler.Method.Name.Equals("Now");
+                    return this.EventHandlerArgumentProviderMap.Contains(this.EventHandler);
                 }
 
                 public bool IsEventRegistration()

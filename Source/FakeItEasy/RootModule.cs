@@ -99,7 +99,7 @@
                                                              return new DefaultFakeAndDummyManager(session, fakeCreator, c.Resolve<IFakeWrapperConfigurer>());
                                                          });
 
-            container.RegisterSingleton<CastleDynamicProxyGenerator>(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
+            container.RegisterSingleton(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
 
             container.RegisterSingleton<DelegateProxyGenerator>(c => new DelegateProxyGenerator());
 
@@ -133,12 +133,14 @@
             container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write));
 
             container.Register<ISutInitializer>(c => new DefaultSutInitializer(c.Resolve<IFakeAndDummyManager>()));
+
+            container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
         }
 
         private class ExpressionCallMatcherFactory
             : IExpressionCallMatcherFactory
         {
-            public DictionaryContainer Container { get; set; }
+            public DictionaryContainer Container { private get; set; }
 
             public ICallMatcher CreateCallMathcer(LambdaExpression callSpecification)
             {
@@ -171,7 +173,7 @@
         private class SessionFakeObjectCreator
             : IFakeObjectCreator
         {
-            public FakeObjectCreator Creator { get; set; }
+            public FakeObjectCreator Creator { private get; set; }
 
             public bool TryCreateFakeObject(Type typeOfFake, DummyValueCreationSession session, out object result)
             {
