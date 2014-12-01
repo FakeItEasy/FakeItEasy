@@ -155,6 +155,15 @@
         It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
     }
 
+    public class when_raising_event_passing_arguments_and_null_sender : EventRaisingSpecs<EventArgs>
+    {
+        Because of = () => Fake.SubscribedEvent += Raise.With(null, SampleEventArgs1);
+
+        It should_pass_null_as_the_sender = () => CapturedSender.Should().BeNull();
+
+        It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
+    }
+
     public class when_raising_event_with_multiple_subscribers : EventRaisingSpecs
     {
         static int handler1InvocationCount;
@@ -187,6 +196,15 @@
         Because of = () => Fake.GenericEvent += Raise.With(SampleSender, SampleEventArgs1);
 
         It should_pass_the_sender = () => CapturedSender.Should().BeSameAs(SampleSender);
+
+        It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
+    }
+
+    public class when_raising_generic_event_passing_arguments_and_null_sender : EventRaisingSpecs<CustomEventArgs>
+    {
+        Because of = () => Fake.GenericEvent += Raise.With(null, SampleEventArgs1);
+
+        It should_pass_null_as_the_sender = () => CapturedSender.Should().BeNull();
 
         It should_pass_the_event_arguments = () => CapturedArgs1.Should().BeSameAs(SampleEventArgs1);
     }
