@@ -14,7 +14,7 @@
     {
         private readonly TEventArgs eventArguments;
         private readonly object eventSender;
-        private readonly bool isSenderTheFake;
+        private readonly bool hasSender;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Raise{TEventArgs}"/> class.
@@ -25,8 +25,8 @@
         internal Raise(object sender, TEventArgs e, EventHandlerArgumentProviderMap argumentProviderMap)
         {
             this.eventSender = sender;
+            this.hasSender = true;
             this.eventArguments = e;
-            this.isSenderTheFake = false;
             argumentProviderMap.AddArgumentProvider((EventHandler<TEventArgs>)this, this);
         }
 
@@ -38,8 +38,8 @@
         /// <param name="argumentProviderMap">A map from event handlers to supplied arguments to use when raising.</param>
         internal Raise(TEventArgs e, EventHandlerArgumentProviderMap argumentProviderMap)
         {
+            this.hasSender = false;
             this.eventArguments = e;
-            this.isSenderTheFake = true;
             argumentProviderMap.AddArgumentProvider((EventHandler<TEventArgs>)this, this);
         }
 
@@ -67,7 +67,7 @@
 
         object[] IEventRaiserArguments.GetEventArguments(object fake)
         {
-            return new[] { this.isSenderTheFake ? fake : this.eventSender, this.eventArguments };
+            return new[] { this.hasSender ? this.eventSender : fake, this.eventArguments };
         }
 
         private void Now(object sender, TEventArgs e)
