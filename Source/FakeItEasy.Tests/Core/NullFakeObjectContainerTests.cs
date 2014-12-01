@@ -32,9 +32,7 @@
         {
             var fake = A.Fake<IFoo>();
 
-#pragma warning disable 618
-            Any.CallTo(fake).Throws(new InvalidOperationException());
-#pragma warning restore 618
+            A.CallTo(fake).Throws(new InvalidOperationException());
 
             var container = new NullFakeObjectContainer();
 

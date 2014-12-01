@@ -140,9 +140,7 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator.CreateFake(typeof(IFoo), FakeOptions.Empty, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
 
             // Assert
-#pragma warning disable 618
-            Any.CallTo(this.thrower).MustNotHaveHappened();
-#pragma warning restore 618
+            A.CallTo(this.thrower).MustNotHaveHappened();
         }
 
         [Test]

@@ -69,9 +69,6 @@
     <Compile Include="..\FakeItEasy\A.of.T.cs">
       <Link>A.of.T.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Any.cs">
-      <Link>Any.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\ArgumentCollection.cs">
       <Link>ArgumentCollection.cs</Link>
     </Compile>
@@ -203,9 +200,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\StartConfiguration.cs">
       <Link>Configuration\StartConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Configure.cs">
-      <Link>Configure.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentConstraintTrap.cs">
       <Link>Core\ArgumentConstraintTrap.cs</Link>

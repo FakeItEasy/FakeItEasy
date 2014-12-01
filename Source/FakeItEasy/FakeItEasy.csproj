@@ -77,7 +77,6 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="A.cs" />
-    <Compile Include="Any.cs" />
     <Compile Include="ArgumentValueFormatter.cs" />
     <Compile Include="Configuration\AnyCallCallRule.cs">
       <SubType>Code</SubType>
