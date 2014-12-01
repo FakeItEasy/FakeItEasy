@@ -189,9 +189,7 @@
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
 
-#pragma warning disable 618
-            Any.CallTo(call).Throws(new AssertionException("Applicator should do nothing."));
-#pragma warning restore 618
+            A.CallTo(call).Throws(new AssertionException("Applicator should do nothing."));
 
             this.builder.RuleBeingBuilt.Applicator(call);
         }

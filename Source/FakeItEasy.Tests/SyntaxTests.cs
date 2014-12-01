@@ -11,10 +11,6 @@
         {
             var foo = A.Fake<Foo>();
 
-#pragma warning disable 618
-            Any.CallTo(foo).Throws(new ArgumentNullException());
-#pragma warning restore 618
-
             A.CallTo(() => foo.Bar())
                 .Returns("1");
 
