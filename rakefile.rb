@@ -1,16 +1,17 @@
 require 'albacore'
 
-nuget_command = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
-nunit_command = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
-mspec_command = "Source/packages/Machine.Specifications.0.8.0/tools/mspec-clr4.exe"
+nuget_command  = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
+nunit_command  = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
+mspec_command  = "Source/packages/Machine.Specifications.0.8.0/tools/mspec-clr4.exe"
 
-solution      = "Source/FakeItEasy.sln"
-assembly_info = "Source/CommonAssemblyInfo.cs"
-version       = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
-nuspec        = "Source/FakeItEasy.nuspec"
-logs          = "artifacts/logs"
-output        = "artifacts/output"
-tests         = "artifacts/tests"
+solution       = "Source/FakeItEasy.sln"
+assembly_info  = "Source/CommonAssemblyInfo.cs"
+version        = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
+version_suffix = ENV["VERSION_SUFFIX"]
+nuspec         = "Source/FakeItEasy.nuspec"
+logs           = "artifacts/logs"
+output         = "artifacts/output"
+tests          = "artifacts/tests"
 
 unit_tests = [
   "Source/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
@@ -33,6 +34,8 @@ release_issue_body = <<-eos
 **Ready** when all other issues forming part of the release are **Done**.
 
 - [ ] run code analysis in VS in *Release* mode and address violations (send a regular PR which must be merged before continuing)
+- [ ] if necessary, change `VERSION_SUFFIX` on [CI Server](http://teamcity.codebetter.com/admin/editBuildParams.html?id=buildType:bt929)
+      to appropriate "-beta123" or "" (for non-betas) value and initiate a build
 - [ ] check build
 -  edit draft release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases):
     - [ ] complete release notes, mentioning non-owner contributors, if any
@@ -150,12 +153,11 @@ end
 desc "Update assembly info"
 assemblyinfo :set_version_in_assemblyinfo, :new_version do |asm, args|
   new_version = args.new_version
-  net_version = new_version.split(/[^\d.]/, 2).first
   
   # not using asm.version and asm.file_version due to StyleCop violations
   asm.custom_attributes = {
-    :AssemblyVersion => net_version,
-    :AssemblyFileVersion => net_version,
+    :AssemblyVersion => new_version,
+    :AssemblyFileVersion => new_version,
     :AssemblyInformationalVersion => new_version
   }
   asm.input_file = assembly_info
@@ -200,7 +202,7 @@ directory output
 desc "create the nuget package"
 exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "pack #{nuspec} -Version #{version} -OutputDirectory #{output}"
+  cmd.parameters "pack #{nuspec} -Version #{version}#{version_suffix} -OutputDirectory #{output}"
 end
 
 desc "create new milestone, release issue and release"
