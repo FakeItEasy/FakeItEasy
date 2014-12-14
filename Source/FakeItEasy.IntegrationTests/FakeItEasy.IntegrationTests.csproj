@@ -92,7 +92,6 @@
     <Compile Include="ContainerTests.cs" />
     <Compile Include="DummyTests.cs" />
     <Compile Include="GeneralTests.cs" />
-    <Compile Include="RecordingManagerTests.cs" />
     <Compile Include="WrapperTests.cs" />
   </ItemGroup>
   <ItemGroup>
