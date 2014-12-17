@@ -1,5 +1,6 @@
 namespace FakeItEasy.IntegrationTests
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FakeItEasy.Tests;
@@ -38,12 +39,61 @@ namespace FakeItEasy.IntegrationTests
             }
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CanCreateDummyOfType",
+            Justification = "That's really the name of the method.")]
+        [Test]
+        public void Definition_for_type_should_be_cached_after_first_use()
+        {
+            var firstDummy = A.Dummy<Dummy>();
+
+            var secondDummy = A.Dummy<Dummy>();
+
+            Assert.That(secondDummy.Count, Is.EqualTo(firstDummy.Count), "CanCreateDummyOfType was called the wrong number of times.");
+        }
+
+        public class Dummy
+        {
+            private readonly int count;
+
+            public Dummy(int count)
+            {
+                this.count = count;
+            }
+
+            public int Count
+            {
+                get { return this.count; }
+            }
+        }
+
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Required for testing.")]
         private class NonInstance
         {
             private NonInstance()
             {
             }
+        }
+    }
+
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
+    public class DummyTestsDummyDefinition : IDummyDefinition
+    {
+        private static int timesCanCreateDummyOfTypeWasCalled = 0;
+
+        public int Priority
+        {
+            get { return 0; }
+        }
+
+        public bool CanCreateDummyOfType(Type type)
+        {
+            ++timesCanCreateDummyOfTypeWasCalled;
+            return type == typeof(DummyTests.Dummy);
+        }
+
+        public object CreateDummyOfType(Type type)
+        {
+            return new DummyTests.Dummy(timesCanCreateDummyOfTypeWasCalled);
         }
     }
 }

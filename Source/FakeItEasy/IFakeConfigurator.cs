@@ -4,14 +4,23 @@ namespace FakeItEasy
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Provides configurations for fake objects of a specific type.
+    /// Provides configuration for certain types of fake objects.
     /// </summary>
     public interface IFakeConfigurator
     {
         /// <summary>
-        /// Gets the type the instance provides configuration for.
+        /// Gets the priority of the fake configurator. When multiple configurators that
+        /// apply to the same type are registered, the one with the highest
+        /// priority is used.
         /// </summary>
-        Type ForType { get; }
+        int Priority { get; }
+
+        /// <summary>
+        /// Whether or not this object can configure a fake of type <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type">The type of fake to configure.</param>
+        /// <returns><c>true</c> if this object can configure a fake of type <paramref name="type"/>. Otherwise <c>false</c>.</returns>
+        bool CanConfigureFakeOfType(Type type);
 
         /// <summary>
         /// Applies the configuration for the specified fake object.

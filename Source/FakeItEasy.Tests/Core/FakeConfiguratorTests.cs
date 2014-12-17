@@ -8,14 +8,6 @@ namespace FakeItEasy.Core
     public class FakeConfiguratorTests
     {
         [Test]
-        public void ForType_should_return_type_of_type_parameter()
-        {
-            var configurator = new TestableConfigurator<IFoo>();
-
-            Assert.That(configurator.ForType, Is.EqualTo(typeof(IFoo)));
-        }
-
-        [Test]
         public void ConfigureFake_should_call_abstract_method()
         {
             var configurator = new TestableConfigurator<IFoo>();
@@ -44,7 +36,7 @@ namespace FakeItEasy.Core
 
             var thrown = Assert.Throws<ArgumentException>(() =>
                 configurator.ConfigureFake(string.Empty));
-            Assert.That(thrown.Message, Is.StringStarting("The FakeItEasy.Core.FakeConfiguratorTests+TestableConfigurator`1[FakeItEasy.Tests.IFoo] can only configure fakes of the type 'FakeItEasy.Tests.IFoo'."));
+            Assert.That(thrown.Message, Is.StringStarting("The FakeItEasy.Core.FakeConfiguratorTests+TestableConfigurator`1[FakeItEasy.Tests.IFoo] can only configure fakes of type 'FakeItEasy.Tests.IFoo'."));
             Assert.That(thrown.ParamName, Is.EqualTo("fakeObject"));
         }
 

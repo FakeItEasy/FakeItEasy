@@ -13,12 +13,14 @@ namespace FakeItEasy
         : IFakeConfigurator
     {
         /// <summary>
-        /// Gets the type the instance provides configuration for.
+        /// Gets the priority of the fake configurator. When multiple configurators that
+        /// apply to the same type are registered, the one with the highest
+        /// priority is used.
         /// </summary>
-        /// <value></value>
-        public Type ForType
+        /// <remarks>The default implementation returns <c>0</c>.</remarks>
+        public virtual int Priority
         {
-            get { return typeof(T); }
+            get { return 0; }
         }
 
         /// <summary>
@@ -26,6 +28,16 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="fakeObject">The fake object.</param>
         public abstract void ConfigureFake(T fakeObject);
+
+        /// <summary>
+        /// Whether or not this object can configure a fake of type <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type">The type of fake to configure.</param>
+        /// <returns><c>true</c> if <paramref name="type"/> is <typeparamref name="T"/>. Otherwise <c>false</c>.</returns>
+        public bool CanConfigureFakeOfType(Type type)
+        {
+            return type == typeof(T);
+        }
 
         /// <summary>
         /// Applies the configuration for the specified fake object.
@@ -40,17 +52,13 @@ namespace FakeItEasy
             this.ConfigureFake((T)fakeObject);
         }
 
-        /// <summary>
-        /// Asserts the type of the that fake is of correct.
-        /// </summary>
-        /// <param name="fakeObject">The fake object.</param>
         private void AssertThatFakeIsOfCorrectType(object fakeObject)
         {
             if (!(fakeObject is T))
             {
                 var message = string.Format(
                                      CultureInfo.InvariantCulture, 
-                                     "The {0} can only configure fakes of the type '{1}'.", 
+                                     "The {0} can only configure fakes of type '{1}'.", 
                                      this.GetType(), 
                                      typeof(T));
                 throw new ArgumentException(message, "fakeObject");

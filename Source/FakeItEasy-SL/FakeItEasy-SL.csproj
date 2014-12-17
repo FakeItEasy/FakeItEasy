@@ -90,6 +90,9 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy.Net35\ConcurrentDictionary.cs">
+      <Link>ConcurrentDictionary.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\A.cs">
       <Link>A.cs</Link>
     </Compile>
@@ -116,6 +119,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\AssemblyExtensions.cs">
       <Link>Core\AssemblyExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\Cache.cs">
+      <Link>Core\Cache.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeCallProcessorProvider.cs">
       <Link>Core\FakeCallProcessorProvider.cs</Link>

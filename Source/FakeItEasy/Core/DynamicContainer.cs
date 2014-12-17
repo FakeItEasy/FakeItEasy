@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
 
     /// <summary>
     /// A IFakeObjectContainer implementation that uses MEF to load IFakeDefinitions and
@@ -11,8 +12,8 @@
     public class DynamicContainer
         : IFakeObjectContainer
     {
-        private readonly IDictionary<Type, IFakeConfigurator> registeredConfigurators;
-        private readonly IDictionary<Type, IDummyDefinition> registeredDummyDefinitions;
+        private readonly Cache<Type, IFakeConfigurator> registeredConfigurators;
+        private readonly Cache<Type, IDummyDefinition> registeredDummyDefinitions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer" /> class.
@@ -22,8 +23,11 @@
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurators", Justification = "This is the correct spelling.")]
         public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurator> fakeConfigurators)
         {
-            this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(dummyDefinitions);
-            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(fakeConfigurators);
+            this.registeredDummyDefinitions =
+                new Cache<Type, IDummyDefinition>(type => GetDummyDefinition(type, dummyDefinitions));
+
+            this.registeredConfigurators =
+                new Cache<Type, IFakeConfigurator>(type => GetFakeConfigurator(type, fakeConfigurators));
         }
 
         /// <summary>
@@ -35,15 +39,15 @@
         /// <returns>True if a fake object can be created.</returns>
         public bool TryCreateDummyObject(Type typeOfDummy, out object fakeObject)
         {
-            IDummyDefinition dummyDefinition = null;
+            var dummyDefinition = this.registeredDummyDefinitions[typeOfDummy];
 
-            if (!this.registeredDummyDefinitions.TryGetValue(typeOfDummy, out dummyDefinition))
+            if (dummyDefinition == null)
             {
                 fakeObject = null;
                 return false;
             }
 
-            fakeObject = dummyDefinition.CreateDummy();
+            fakeObject = dummyDefinition.CreateDummyOfType(typeOfDummy);
             return true;
         }
 
@@ -54,22 +58,28 @@
         /// <param name="fakeObject">The fake object to configure.</param>
         public void ConfigureFake(Type typeOfFake, object fakeObject)
         {
-            IFakeConfigurator configurator = null;
+            IFakeConfigurator configurator = this.registeredConfigurators[typeOfFake];
 
-            if (this.registeredConfigurators.TryGetValue(typeOfFake, out configurator))
+            if (configurator != null)
             {
                 configurator.ConfigureFake(fakeObject);
             }
         }
 
-        private static IDictionary<Type, IFakeConfigurator> CreateFakeConfiguratorsDictionary(IEnumerable<IFakeConfigurator> fakeConfigurers)
+        private static IDummyDefinition GetDummyDefinition(Type typeOfDummy, IEnumerable<IDummyDefinition> dummyDefinitions)
         {
-            return fakeConfigurers.FirstFromEachKey(x => x.ForType);
+            return dummyDefinitions
+                .Where(definition => definition.CanCreateDummyOfType(typeOfDummy))
+                .OrderByDescending(definition => definition.Priority)
+                .FirstOrDefault();
         }
 
-        private static IDictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(IEnumerable<IDummyDefinition> dummyDefinitions)
+        private static IFakeConfigurator GetFakeConfigurator(Type typeOfFake, IEnumerable<IFakeConfigurator> fakeConfigurators)
         {
-            return dummyDefinitions.FirstFromEachKey(x => x.ForType);
+            return fakeConfigurators
+                .Where(configurator => configurator.CanConfigureFakeOfType(typeOfFake))
+                .OrderByDescending(configurator => configurator.Priority)
+                .FirstOrDefault();
         }
     }
 }
