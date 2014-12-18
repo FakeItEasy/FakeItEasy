@@ -1,7 +1,9 @@
-﻿namespace FakeItEasy.Core.Tests
+﻿namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Globalization;
     using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -19,14 +21,20 @@
         [Test]
         public void CreateDummyOfType_should_guard_against_bad_type_argument()
         {
-            string expectedMessage = "The FakeItEasy.Core.Tests.DummyDefinitionTests+TestableFakeDefinition can only create dummies of type 'FakeItEasy.Core.Tests.DummyDefinitionTests+SomeType'.";
+            string expectedMessage = string.Format(
+                CultureInfo.CurrentCulture,
+                "The {0} can only create dummies of type '{1}'.*",
+                typeof(TestableFakeDefinition),
+                typeof(SomeType));
+
             var definition = new TestableFakeDefinition() as IDummyDefinition;
             
             var exception = Record.Exception(() => definition.CreateDummyOfType(typeof(DummyDefinitionTests)));
 
-            Assert.That(exception, Is.InstanceOf<ArgumentException>());
-            Assert.That(exception.Message, Is.StringStarting(expectedMessage));
-            Assert.That(((ArgumentException)exception).ParamName, Is.EqualTo("type"));
+            exception.Should()
+                .BeAnExceptionOfType<ArgumentException>()
+                .WithMessage(expectedMessage)
+                .And.ParamName.Should().Be("type");
         }
 
         public class SomeType
