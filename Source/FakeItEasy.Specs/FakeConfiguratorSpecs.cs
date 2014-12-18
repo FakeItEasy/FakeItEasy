@@ -44,7 +44,7 @@
 
     public class RobotRunsAmokEventFakeConfigurator : FakeConfigurator<RobotRunsAmokEvent>
     {
-        public override void ConfigureFake(RobotRunsAmokEvent fakeObject)
+        protected override void ConfigureFake(RobotRunsAmokEvent fakeObject)
         {
             if (fakeObject != null)
             {

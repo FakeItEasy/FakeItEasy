@@ -24,12 +24,6 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Configures the fake.
-        /// </summary>
-        /// <param name="fakeObject">The fake object.</param>
-        public abstract void ConfigureFake(T fakeObject);
-
-        /// <summary>
         /// Whether or not this object can configure a fake of type <paramref name="type"/>.
         /// </summary>
         /// <param name="type">The type of fake to configure.</param>
@@ -51,6 +45,12 @@ namespace FakeItEasy
 
             this.ConfigureFake((T)fakeObject);
         }
+
+        /// <summary>
+        /// Configures the fake.
+        /// </summary>
+        /// <param name="fakeObject">The fake object.</param>
+        protected abstract void ConfigureFake(T fakeObject);
 
         private void AssertThatFakeIsOfCorrectType(object fakeObject)
         {

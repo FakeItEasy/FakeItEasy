@@ -45,7 +45,7 @@ namespace FakeItEasy.Core
         {
             public T InstancePassedToConfigureFake { get; set; }
 
-            public override void ConfigureFake(T fakeObject)
+            protected override void ConfigureFake(T fakeObject)
             {
                 this.InstancePassedToConfigureFake = fakeObject;
             }
