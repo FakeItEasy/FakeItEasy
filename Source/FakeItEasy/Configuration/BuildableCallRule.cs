@@ -9,7 +9,7 @@ namespace FakeItEasy.Configuration
     /// Provides the base for rules that can be built using the FakeConfiguration.
     /// </summary>
     internal abstract class BuildableCallRule
-        : IFakeObjectCallRuleWithDescription
+        : IFakeObjectCallRule
     {
         private List<Tuple<Func<IFakeObjectCall, bool>, Action<IOutputWriter>>> wherePredicates;
 

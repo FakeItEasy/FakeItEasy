@@ -340,9 +340,6 @@
     <Compile Include="Core\IFakeObjectCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\IFakeObjectCallRuleWithDescription.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\IFakeObjectConfigurator.cs">
       <SubType>Code</SubType>
     </Compile>

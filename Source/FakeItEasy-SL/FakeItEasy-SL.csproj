@@ -428,9 +428,6 @@
     <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRule.cs">
       <Link>Core\IFakeObjectCallRule.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRuleWithDescription.cs">
-      <Link>Core\IFakeObjectCallRuleWithDescription.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeObjectConfigurator.cs">
       <Link>Core\IFakeObjectConfigurator.cs</Link>
     </Compile>

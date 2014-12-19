@@ -20,11 +20,6 @@
         private BuildableCallRule ruleProducedByFactory;
 #pragma warning restore 649
 
-        private IFakeObjectCallRuleWithDescription RuleWithDescription
-        {
-            get { return (IFakeObjectCallRuleWithDescription)this.ruleProducedByFactory; }
-        }
-
         [SetUp]
         public void Setup()
         {
