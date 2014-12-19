@@ -1,10 +1,11 @@
 require 'albacore'
 
+$msbuild_command = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
 nuget_command  = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
 nunit_command  = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
 mspec_command  = "Source/packages/Machine.Specifications.0.8.0/tools/mspec-clr4.exe"
 
-solution       = "Source/FakeItEasy.sln"
+$solution       = "Source/FakeItEasy.sln"
 assembly_info  = "Source/CommonAssemblyInfo.cs"
 version        = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 version_suffix = ENV["VERSION_SUFFIX"]
@@ -16,7 +17,9 @@ tests          = "artifacts/tests"
 unit_tests = [
   "Source/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
   "Source/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
-  "Source/FakeItEasy-SL.Tests/Bin/Release/FakeItEasy-SL.Tests.dll"
+  "Source/FakeItEasy-SL.Tests/Bin/Release/FakeItEasy-SL.Tests.dll",
+  "Source/FakeItEasy.Win8.Tests/Bin/Release/FakeItEasy.Win8.Tests.dll",
+  "Source/FakeItEasy.Win81.Tests/Bin/Release/FakeItEasy.Win81.Tests.dll",
 ]
 
 integration_tests = [
@@ -92,18 +95,14 @@ end
 desc "Restore NuGet packages"
 exec :restore do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "restore #{solution}"
+  cmd.parameters "restore #{$solution}"
 end
 
 directory logs
 
 desc "Clean solution"
-msbuild :clean => [logs] do |msb|
-  msb.properties = { :configuration => :Release }
-  msb.targets = [ :Clean ]
-  msb.solution = solution
-  msb.verbosity = :minimal
-  msb.other_switches = {:nologo => true, :fl => true, :flp => "LogFile=#{logs}/clean.log;Verbosity=Detailed;PerformanceSummary", :nr => false}
+task :clean => [logs] do
+  run_msbuild "Clean"
 end
 
 desc "Update version number"
@@ -165,12 +164,8 @@ assemblyinfo :set_version_in_assemblyinfo, :new_version do |asm, args|
 end
 
 desc "Build solution"
-msbuild :build => [:clean, :restore, logs] do |msb|
-  msb.properties = { :configuration => :Release }
-  msb.targets = [ :Build ]
-  msb.solution = solution
-  msb.verbosity = :minimal
-  msb.other_switches = {:nologo => true, :fl => true, :flp => "LogFile=#{logs}/build.log;Verbosity=Detailed;PerformanceSummary", :nr => false}
+task :build => [:clean, :restore, logs] do
+  run_msbuild "Build"
 end
 
 directory tests
@@ -274,6 +269,13 @@ def print_vars(variables)
     puts value.map {|v| "  " + v }
     puts ""
   }
+end
+
+def run_msbuild(target)
+  cmd = Exec.new
+  cmd.command = $msbuild_command
+  cmd.parameters "#{$solution} /target:#{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/#{target}.log;Verbosity=Detailed;PerformanceSummary"
+  cmd.execute
 end
 
 # Get a temporary SSL cert file if necessary.
