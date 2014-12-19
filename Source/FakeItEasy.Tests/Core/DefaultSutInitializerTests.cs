@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -15,11 +17,6 @@
 #pragma warning restore 649
 
         private DefaultSutInitializer sutInitializer;
-
-        private static IsFakeConstraint IsFake
-        {
-            get { return new IsFakeConstraint(); }
-        }
 
         [SetUp]
         public void Setup()
@@ -40,9 +37,9 @@
             var sut = (TypeWithFakeableDependencies)this.sutInitializer.CreateSut(typeof(TypeWithFakeableDependencies), (x, y) => { });
 
             // Assert
-            Assert.That(sut.FooDependency, IsFake);
-            Assert.That(sut.FooDependency2, IsFake);
-            Assert.That(sut.Dependency, IsFake);
+            sut.FooDependency.Should().BeAFake();
+            sut.FooDependency2.Should().BeAFake();
+            sut.Dependency.Should().BeAFake();
         }
 
         [Test]
@@ -56,7 +53,7 @@
             var sut = (TypeWithFakeableDependencies)this.sutInitializer.CreateSut(typeof(TypeWithFakeableDependencies), (x, y) => { });
 
             // Assert
-            Assert.That(sut.FooDependency, Is.SameAs(sut.FooDependency2));
+            sut.FooDependency.Should().BeSameAs(sut.FooDependency2);
         }
 
         [Test]
@@ -86,8 +83,8 @@
             var sut = (TypeWithFakeableDependencies)this.sutInitializer.CreateSut(typeof(TypeWithFakeableDependencies), createdFakes.Add);
 
             // Assert
-            Assert.That(createdFakes[typeof(IFoo)], Is.SameAs(sut.FooDependency));
-            Assert.That(createdFakes[typeof(object)], Is.SameAs(sut.Dependency));
+            createdFakes[typeof(IFoo)].Should().BeSameAs(sut.FooDependency);
+            createdFakes[typeof(object)].Should().BeSameAs(sut.Dependency);
         }
 
         private void StubFakeManagerWithFake<T>()
@@ -111,11 +108,11 @@
                 this.Dependency = dependency;
             }
 
-            public IFoo FooDependency { get; set; }
+            public IFoo FooDependency { get; private set; }
 
-            public IFoo FooDependency2 { get; set; }
+            public IFoo FooDependency2 { get; private set; }
 
-            public object Dependency { get; set; }
+            public object Dependency { get; private set; }
         }
     }
 }

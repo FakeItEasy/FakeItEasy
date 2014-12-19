@@ -168,7 +168,6 @@
     <Compile Include="Foo.cs" />
     <Compile Include="Ignore.cs" />
     <Compile Include="CallbackConfigurationExtensionsTests.cs" />
-    <Compile Include="IsFakeConstraint.cs" />
     <Compile Include="LambdaExpressionDummyDefinition.cs" />
     <Compile Include="OutputWriterExtensionsTests.cs" />
     <Compile Include="RepeatedTests.cs" />
