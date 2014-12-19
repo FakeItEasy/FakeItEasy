@@ -203,7 +203,6 @@
     <Compile Include="ATests.cs" />
     <Compile Include="Configuration\BuildableCallRuleTests.cs" />
     <Compile Include="Configuration\RuleBuilderTests.cs" />
-    <Compile Include="ExtensionSyntax\Full\ObjectExtensionsTests.cs" />
     <Compile Include="FakeConstraints\WrappingFakeConstraint.cs" />
     <Compile Include="ExpectationExceptionTests.cs" />
     <Compile Include="ExtensionSyntax\ObjectExtensionsTests.cs" />
