@@ -26,7 +26,7 @@
 
         /// <summary>
         /// Verifies that the passed-in assertion refers to a <see cref="ReferenceTypeAssertions{TSubject, TAssertions}.Subject"/>
-        /// that is not null and matches the expected type.
+        /// that is not null and matches the expected exception type.
         /// </summary>
         /// <typeparam name="TExpectedException">The expected exception type.</typeparam>
         /// <param name="assertion">A FluentAssertions assertion that has been initiated on a subject.</param>
@@ -39,6 +39,26 @@
             assertion
                 .NotBeNull("because it must be a valid exception").And
                 .BeOfType<TExpectedException>();
+
+            var exception = (TExpectedException)assertion.Subject;
+            return new MyExceptionAssertions<TExpectedException>(exception);
+        }
+
+        /// <summary>
+        /// Verifies that the passed-in assertion refers to a <see cref="ReferenceTypeAssertions{TSubject, TAssertions}.Subject"/>
+        /// that is not null and is assignable to the expected exception type.
+        /// </summary>
+        /// <typeparam name="TExpectedException">The expected exception type.</typeparam>
+        /// <param name="assertion">A FluentAssertions assertion that has been initiated on a subject.</param>
+        /// <returns>An <see cref="ExceptionAssertions{T}"/> object that can be further used to assert against the subject.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "BeAn", Justification = "Refers to the two words 'be an'")]
+        public static ExceptionAssertions<TExpectedException> BeAnExceptionAssignableTo<TExpectedException>(this ReferenceTypeAssertions<object, ObjectAssertions> assertion) where TExpectedException : Exception
+        {
+            Guard.AgainstNull(assertion, "assertion");
+
+            assertion
+                .NotBeNull("because it must be a valid exception").And
+                .BeAssignableTo<TExpectedException>();
 
             var exception = (TExpectedException)assertion.Subject;
             return new MyExceptionAssertions<TExpectedException>(exception);

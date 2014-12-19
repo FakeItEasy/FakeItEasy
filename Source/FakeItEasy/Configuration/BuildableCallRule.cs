@@ -11,7 +11,7 @@ namespace FakeItEasy.Configuration
     internal abstract class BuildableCallRule
         : IFakeObjectCallRule
     {
-        private List<Tuple<Func<IFakeObjectCall, bool>, Action<IOutputWriter>>> wherePredicates;
+        private readonly List<Tuple<Func<IFakeObjectCall, bool>, Action<IOutputWriter>>> wherePredicates;
 
         protected BuildableCallRule()
         {
