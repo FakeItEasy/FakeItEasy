@@ -3,7 +3,6 @@ namespace FakeItEasy.Tests.Core
     using System;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
-    using FakeItEasy.ExtensionSyntax;
     using NUnit.Framework;
 
     [TestFixture]
@@ -38,7 +37,7 @@ namespace FakeItEasy.Tests.Core
         public void Apply_should_set_return_value_from_wrapped_object([Values(0, 1, 2, 3, 5, 8)] int returnValue)
         {
             var wrapped = A.Fake<IFoo>();
-            wrapped.Configure().CallsTo(x => x.Baz()).Returns(returnValue);
+            A.CallTo(() => wrapped.Baz()).Returns(returnValue);
 
             var call = FakeCall.Create<IFoo>("Baz", new Type[] { }, new object[] { });
 

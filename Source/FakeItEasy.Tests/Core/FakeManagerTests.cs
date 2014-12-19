@@ -6,7 +6,6 @@
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-    using FakeItEasy.ExtensionSyntax;
     using FakeItEasy.Tests.TestHelpers;
     using NUnit.Framework;
 

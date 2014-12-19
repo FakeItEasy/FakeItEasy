@@ -2,7 +2,6 @@ namespace FakeItEasy.IntegrationTests
 {
     using System.Collections.Generic;
     using System.IO;
-    using FakeItEasy.ExtensionSyntax;
     using NUnit.Framework;
 
     [TestFixture]
@@ -16,7 +15,7 @@ namespace FakeItEasy.IntegrationTests
 
             Assert.IsTrue(wrapper.CanRead);
 
-            wrapper.Configure().CallsTo(x => x.CanRead).Returns(false);
+            A.CallTo(() => wrapper.CanRead).Returns(false);
 
             Assert.That(wrapper.CanRead, Is.False);
             Assert.That(stream.CanRead, Is.True);

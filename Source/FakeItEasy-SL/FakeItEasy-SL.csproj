@@ -153,9 +153,6 @@
     <Compile Include="..\FakeItEasy\Expressions\ArgumentConstraints\RefArgumentConstraint.cs">
       <Link>Expressions\ArgumentConstraints\RefArgumentConstraint.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ExtensionSyntax\ObjectExtensions.cs">
-      <Link>ExtensionSyntax\ObjectExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\FakeObjectCallExtensions.cs">
       <Link>FakeObjectCallExtensions.cs</Link>
     </Compile>

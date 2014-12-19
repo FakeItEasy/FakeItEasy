@@ -525,9 +525,6 @@
     <Compile Include="..\FakeItEasy\Expressions\ParsedCallExpression.cs">
       <Link>Expressions\ParsedCallExpression.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ExtensionSyntax\ObjectExtensions.cs">
-      <Link>ExtensionSyntax\ObjectExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Fake.cs">
       <Link>Fake.cs</Link>
     </Compile>

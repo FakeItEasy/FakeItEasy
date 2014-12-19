@@ -1,7 +1,6 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System.Diagnostics.CodeAnalysis;
-    using ExtensionSyntax;
     using FluentAssertions;
     using Machine.Specifications;
 
@@ -52,8 +51,7 @@
 
         private Because of = () =>
         {
-            subject.Configure()
-                .CallsTo(x => x.MightReturnAKnownValue(out outValue))
+            A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
                 .WithAnyArguments()
                 .AssignsOutAndRefParametersLazily((call) => new object[] { call.Arguments.Get<string>(0) == condition ? knownOutput : "me" });
         };
@@ -80,8 +78,7 @@
 
         private Because of = () =>
         {
-            subject.Configure()
-                .CallsTo(x => x.MightReturnAKnownValue(out outValue))
+            A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
                 .WithAnyArguments()
                 .AssignsOutAndRefParameters(knownOutput);
         };
