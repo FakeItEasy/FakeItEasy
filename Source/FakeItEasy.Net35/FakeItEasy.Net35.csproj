@@ -204,9 +204,6 @@
     <Compile Include="..\FakeItEasy\Core\ArgumentConstraintTrap.cs">
       <Link>Core\ArgumentConstraintTrap.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\ArgumentInfo.cs">
-      <Link>Core\ArgumentInfo.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentValueFormatter.cs">
       <Link>Core\ArgumentValueFormatter.cs</Link>
     </Compile>

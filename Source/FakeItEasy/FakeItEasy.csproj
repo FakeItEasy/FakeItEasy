@@ -221,9 +221,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\ArgumentConstraintTrap.cs" />
-    <Compile Include="Core\ArgumentInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\ArgumentValueFormatter.cs">
       <SubType>Code</SubType>
     </Compile>
