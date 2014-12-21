@@ -1,11 +1,11 @@
 require 'albacore'
 
-$msbuild_command = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
+msbuild_command = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
 nuget_command  = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
 nunit_command  = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
 mspec_command  = "Source/packages/Machine.Specifications.0.8.0/tools/mspec-clr4.exe"
 
-$solution       = "Source/FakeItEasy.sln"
+solution       = "Source/FakeItEasy.sln"
 assembly_info  = "Source/CommonAssemblyInfo.cs"
 version        = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 version_suffix = ENV["VERSION_SUFFIX"]
@@ -95,14 +95,14 @@ end
 desc "Restore NuGet packages"
 exec :restore do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "restore #{$solution}"
+  cmd.parameters "restore #{solution}"
 end
 
 directory logs
 
 desc "Clean solution"
 task :clean => [logs] do
-  run_msbuild "Clean"
+  run_msbuild solution, "Clean", msbuild_command
 end
 
 desc "Update version number"
@@ -165,7 +165,7 @@ end
 
 desc "Build solution"
 task :build => [:clean, :restore, logs] do
-  run_msbuild "Build"
+  run_msbuild solution, "Build", msbuild_command
 end
 
 directory tests
@@ -271,10 +271,10 @@ def print_vars(variables)
   }
 end
 
-def run_msbuild(target)
+def run_msbuild(solution, target, command)
   cmd = Exec.new
-  cmd.command = $msbuild_command
-  cmd.parameters "#{$solution} /target:#{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/#{target}.log;Verbosity=Detailed;PerformanceSummary"
+  cmd.command = command
+  cmd.parameters "#{solution} /target:#{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/#{target}.log;Verbosity=Detailed;PerformanceSummary"
   cmd.execute
 end
 
