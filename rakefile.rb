@@ -126,7 +126,7 @@ task :set_version, :new_version do |asm, args|
   `git checkout -b #{new_branch}`
   puts "Created branch '#{new_branch}'."
 
-  puts "Setting version to '#{new_version}' in '#{assemblyinfo}'..."
+  puts "Setting version to '#{new_version}' in '#{assembly_info}'..."
   Rake::Task["set_version_in_assemblyinfo"].invoke(new_version)
   puts "Set version to '#{new_version}' in '#{assembly_info}'."
 
