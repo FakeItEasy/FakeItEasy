@@ -12,6 +12,20 @@
     {
         /// <summary>
         /// Verifies that the passed-in assertion refers to a <see cref="ReferenceTypeAssertions{TSubject, TAssertions}.Subject"/>
+        /// that is a Fake.
+        /// </summary>
+        /// <param name="assertion">A FluentAssertions assertion that has been initiated on a subject.</param>
+        public static void BeAFake(this ReferenceTypeAssertions<object, ObjectAssertions> assertion)
+        {
+            Guard.AgainstNull(assertion, "assertion");
+
+            assertion
+                .NotBeNull("because fakes aren't null").And
+                .Match(subject => Fake.GetFakeManager(subject) != null, "fakes have a FakeManager");
+        }
+
+        /// <summary>
+        /// Verifies that the passed-in assertion refers to a <see cref="ReferenceTypeAssertions{TSubject, TAssertions}.Subject"/>
         /// that is not null and matches the expected type.
         /// </summary>
         /// <typeparam name="TExpectedException">The expected exception type.</typeparam>

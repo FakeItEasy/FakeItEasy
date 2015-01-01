@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -12,8 +13,10 @@
     public class DynamicContainer
         : IFakeObjectContainer
     {
-        private readonly Cache<Type, IFakeConfigurator> registeredConfigurators;
-        private readonly Cache<Type, IDummyDefinition> registeredDummyDefinitions;
+        private readonly IEnumerable<IDummyDefinition> allDummyDefinitions;
+        private readonly IEnumerable<IFakeConfigurator> allFakeConfigurators;
+        private readonly ConcurrentDictionary<Type, IFakeConfigurator> cachedFakeConfigurators;
+        private readonly ConcurrentDictionary<Type, IDummyDefinition> cachedDummyDefinitions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer" /> class.
@@ -23,11 +26,10 @@
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurators", Justification = "This is the correct spelling.")]
         public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurator> fakeConfigurators)
         {
-            this.registeredDummyDefinitions =
-                new Cache<Type, IDummyDefinition>(type => GetDummyDefinition(type, dummyDefinitions));
-
-            this.registeredConfigurators =
-                new Cache<Type, IFakeConfigurator>(type => GetFakeConfigurator(type, fakeConfigurators));
+            this.allDummyDefinitions = dummyDefinitions.OrderByDescending(definition => definition.Priority).ToArray();
+            this.allFakeConfigurators = fakeConfigurators.OrderByDescending(definition => definition.Priority).ToArray();
+            this.cachedDummyDefinitions = new ConcurrentDictionary<Type, IDummyDefinition>();
+            this.cachedFakeConfigurators = new ConcurrentDictionary<Type, IFakeConfigurator>();
         }
 
         /// <summary>
@@ -39,7 +41,9 @@
         /// <returns>True if a fake object can be created.</returns>
         public bool TryCreateDummyObject(Type typeOfDummy, out object fakeObject)
         {
-            var dummyDefinition = this.registeredDummyDefinitions[typeOfDummy];
+            var dummyDefinition = this.cachedDummyDefinitions.GetOrAdd(
+                typeOfDummy,
+                type => this.allDummyDefinitions.FirstOrDefault(definition => definition.CanCreateDummyOfType(type)));
 
             if (dummyDefinition == null)
             {
@@ -58,28 +62,14 @@
         /// <param name="fakeObject">The fake object to configure.</param>
         public void ConfigureFake(Type typeOfFake, object fakeObject)
         {
-            IFakeConfigurator configurator = this.registeredConfigurators[typeOfFake];
+            var fakeConfigurator = this.cachedFakeConfigurators.GetOrAdd(
+                typeOfFake,
+                type => this.allFakeConfigurators.FirstOrDefault(configurator => configurator.CanConfigureFakeOfType(type)));
 
-            if (configurator != null)
+            if (fakeConfigurator != null)
             {
-                configurator.ConfigureFake(fakeObject);
+                fakeConfigurator.ConfigureFake(fakeObject);
             }
-        }
-
-        private static IDummyDefinition GetDummyDefinition(Type typeOfDummy, IEnumerable<IDummyDefinition> dummyDefinitions)
-        {
-            return dummyDefinitions
-                .Where(definition => definition.CanCreateDummyOfType(typeOfDummy))
-                .OrderByDescending(definition => definition.Priority)
-                .FirstOrDefault();
-        }
-
-        private static IFakeConfigurator GetFakeConfigurator(Type typeOfFake, IEnumerable<IFakeConfigurator> fakeConfigurators)
-        {
-            return fakeConfigurators
-                .Where(configurator => configurator.CanConfigureFakeOfType(typeOfFake))
-                .OrderByDescending(configurator => configurator.Priority)
-                .FirstOrDefault();
         }
     }
 }

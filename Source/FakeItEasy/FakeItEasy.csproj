@@ -87,7 +87,6 @@
     <Compile Include="A.of.T.cs" />
     <Compile Include="Core\AssemblyExtensions.cs" />
     <Compile Include="Core\BootstrapperLocator.cs" />
-    <Compile Include="Core\Cache.cs" />
     <Compile Include="Core\IFakeCallProcessor.cs" />
     <Compile Include="Core\FakeManagerProvider.cs" />
     <Compile Include="Core\IFakeCallProcessorProvider.cs" />

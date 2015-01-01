@@ -216,9 +216,6 @@
     <Compile Include="..\FakeItEasy\Core\BootstrapperLocator.cs">
       <Link>Core\BootstrapperLocator.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\Cache.cs">
-      <Link>Core\Cache.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\CallRuleMetadata.cs">
       <Link>Core\CallRuleMetadata.cs</Link>
     </Compile>
