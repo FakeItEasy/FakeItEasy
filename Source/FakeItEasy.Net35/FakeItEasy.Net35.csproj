@@ -687,6 +687,7 @@
     <Compile Include="..\FakeItEasy\WhereConfigurationExtensions.cs">
       <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
+    <Compile Include="ConcurrentDictionary.cs" />
     <Compile Include="Properties\CustomAssemblyInfo.cs" />
     <Compile Include="Compatibility.cs" />
   </ItemGroup>

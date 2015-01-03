@@ -1,25 +1,40 @@
-﻿namespace FakeItEasy.Core.Tests
+﻿namespace FakeItEasy.Tests.Core
 {
+    using System;
+    using System.Globalization;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
     public class DummyDefinitionTests
     {
         [Test]
-        public void ForType_should_return_the_generic_type_parameter_type()
+        public void CreateDummyOfType_should_return_object_from_CreateDummy()
         {
-            var definition = new TestableFakeDefinition();
+            var definition = new TestableFakeDefinition() as IDummyDefinition;
+            var created = definition.CreateDummyOfType(typeof(SomeType));
 
-            Assert.That(definition.ForType, Is.EqualTo(typeof(SomeType)));
+            Assert.That(created, Is.InstanceOf<SomeType>());
         }
 
         [Test]
-        public void CreateFake_should_return_object_from_protected_function()
+        public void CreateDummyOfType_should_guard_against_bad_type_argument()
         {
-            var definition = new TestableFakeDefinition() as IDummyDefinition;
-            var created = definition.CreateDummy();
+            string expectedMessage = string.Format(
+                CultureInfo.CurrentCulture,
+                "The {0} can only create dummies of type '{1}'.*",
+                typeof(TestableFakeDefinition),
+                typeof(SomeType));
 
-            Assert.That(created, Is.InstanceOf<SomeType>());
+            var definition = new TestableFakeDefinition() as IDummyDefinition;
+            
+            var exception = Record.Exception(() => definition.CreateDummyOfType(typeof(DummyDefinitionTests)));
+
+            exception.Should()
+                .BeAnExceptionOfType<ArgumentException>()
+                .WithMessage(expectedMessage)
+                .And.ParamName.Should().Be("type");
         }
 
         public class SomeType

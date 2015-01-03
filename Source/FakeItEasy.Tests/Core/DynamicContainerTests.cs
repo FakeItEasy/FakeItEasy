@@ -110,7 +110,7 @@
 
         public class ConfigurationForTypeWithDummyDefinition : FakeConfigurator<TypeWithDummyDefinition>
         {
-            public override void ConfigureFake(TypeWithDummyDefinition fakeObject)
+            protected override void ConfigureFake(TypeWithDummyDefinition fakeObject)
             {
                 A.CallTo(() => fakeObject.WasConfigured).Returns(true);
             }
@@ -118,7 +118,7 @@
 
         public class DuplicateConfigurationForTypeWithDummyDefinition : FakeConfigurator<TypeWithDummyDefinition>
         {
-            public override void ConfigureFake(TypeWithDummyDefinition fakeObject)
+            protected override void ConfigureFake(TypeWithDummyDefinition fakeObject)
             {
                 A.CallTo(() => fakeObject.WasConfigured).Returns(true);
             }

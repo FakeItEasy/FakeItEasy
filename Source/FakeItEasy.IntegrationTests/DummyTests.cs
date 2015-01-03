@@ -1,8 +1,11 @@
 namespace FakeItEasy.IntegrationTests
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -12,30 +15,53 @@ namespace FakeItEasy.IntegrationTests
         public void Type_registered_in_container_should_be_returned_when_a_dummy_is_requested()
         {
             var container = new DelegateFakeObjectContainer();
-            container.Register<string>(() => "dummy");
+            container.Register(() => "dummy");
 
+            string dummyString;
             using (Fake.CreateScope(container))
             {
-                Assert.That(A.Dummy<string>(), Is.EqualTo("dummy"));
+                dummyString = A.Dummy<string>();
             }
+
+            dummyString.Should().Be("dummy");
         }
 
         [Test]
         public void Proxy_should_be_returned_when_nothing_is_registered_in_the_container_for_the_type()
         {
+            IFoo dummyFoo;
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
-                Assert.That(A.Dummy<IFoo>(), new IsFakeConstraint());
+                dummyFoo = A.Dummy<IFoo>();
             }
+
+            dummyFoo.Should().BeAFake();
         }
 
         [Test]
         public void Correct_exception_should_be_thrown_when_dummy_is_requested_for_non_fakeable_type_not_in_container()
         {
+            Exception exception;
             using (Fake.CreateScope(new NullFakeObjectContainer()))
             {
-                Assert.Throws<FakeCreationException>(() => A.Dummy<NonInstance>());
+                exception = Record.Exception(() => A.Dummy<NonInstance>());
             }
+
+            exception.Should().BeAnExceptionOfType<FakeCreationException>();
+        }
+
+        [Test]
+        public void Dummy_definitions_are_polled_only_once_per_dummy_type()
+        {
+            A.Dummy<Dummy>();
+            A.Dummy<Dummy>();
+
+            DummyTestsDummyDefinition.CanCreateDummyOfTypeDummyCallCount.Should()
+                .Be(1, "the definition should've been cached after creating the first Dummy");
+        }
+
+        public class Dummy
+        {
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Required for testing.")]
@@ -44,6 +70,33 @@ namespace FakeItEasy.IntegrationTests
             private NonInstance()
             {
             }
+        }
+    }
+
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
+    public class DummyTestsDummyDefinition : IDummyDefinition
+    {
+        public int Priority
+        {
+            get { return 0; }
+        }
+
+        internal static int CanCreateDummyOfTypeDummyCallCount { get; private set; }
+
+        public bool CanCreateDummyOfType(Type type)
+        {
+            if (type != typeof(DummyTests.Dummy))
+            {
+                return false;
+            }
+
+            ++CanCreateDummyOfTypeDummyCallCount;
+            return true;
+        }
+
+        public object CreateDummyOfType(Type type)
+        {
+            return new DummyTests.Dummy();
         }
     }
 }

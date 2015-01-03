@@ -1,8 +1,10 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
 
     /// <summary>
     /// A IFakeObjectContainer implementation that uses MEF to load IFakeDefinitions and
@@ -11,8 +13,10 @@
     public class DynamicContainer
         : IFakeObjectContainer
     {
-        private readonly IDictionary<Type, IFakeConfigurator> registeredConfigurators;
-        private readonly IDictionary<Type, IDummyDefinition> registeredDummyDefinitions;
+        private readonly IEnumerable<IDummyDefinition> allDummyDefinitions;
+        private readonly IEnumerable<IFakeConfigurator> allFakeConfigurators;
+        private readonly ConcurrentDictionary<Type, IFakeConfigurator> cachedFakeConfigurators;
+        private readonly ConcurrentDictionary<Type, IDummyDefinition> cachedDummyDefinitions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer" /> class.
@@ -22,8 +26,10 @@
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurators", Justification = "This is the correct spelling.")]
         public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurator> fakeConfigurators)
         {
-            this.registeredDummyDefinitions = CreateDummyDefinitionsDictionary(dummyDefinitions);
-            this.registeredConfigurators = CreateFakeConfiguratorsDictionary(fakeConfigurators);
+            this.allDummyDefinitions = dummyDefinitions.OrderByDescending(definition => definition.Priority).ToArray();
+            this.allFakeConfigurators = fakeConfigurators.OrderByDescending(definition => definition.Priority).ToArray();
+            this.cachedDummyDefinitions = new ConcurrentDictionary<Type, IDummyDefinition>();
+            this.cachedFakeConfigurators = new ConcurrentDictionary<Type, IFakeConfigurator>();
         }
 
         /// <summary>
@@ -35,15 +41,17 @@
         /// <returns>True if a fake object can be created.</returns>
         public bool TryCreateDummyObject(Type typeOfDummy, out object fakeObject)
         {
-            IDummyDefinition dummyDefinition = null;
+            var dummyDefinition = this.cachedDummyDefinitions.GetOrAdd(
+                typeOfDummy,
+                type => this.allDummyDefinitions.FirstOrDefault(definition => definition.CanCreateDummyOfType(type)));
 
-            if (!this.registeredDummyDefinitions.TryGetValue(typeOfDummy, out dummyDefinition))
+            if (dummyDefinition == null)
             {
                 fakeObject = null;
                 return false;
             }
 
-            fakeObject = dummyDefinition.CreateDummy();
+            fakeObject = dummyDefinition.CreateDummyOfType(typeOfDummy);
             return true;
         }
 
@@ -54,22 +62,14 @@
         /// <param name="fakeObject">The fake object to configure.</param>
         public void ConfigureFake(Type typeOfFake, object fakeObject)
         {
-            IFakeConfigurator configurator = null;
+            var fakeConfigurator = this.cachedFakeConfigurators.GetOrAdd(
+                typeOfFake,
+                type => this.allFakeConfigurators.FirstOrDefault(configurator => configurator.CanConfigureFakeOfType(type)));
 
-            if (this.registeredConfigurators.TryGetValue(typeOfFake, out configurator))
+            if (fakeConfigurator != null)
             {
-                configurator.ConfigureFake(fakeObject);
+                fakeConfigurator.ConfigureFake(fakeObject);
             }
-        }
-
-        private static IDictionary<Type, IFakeConfigurator> CreateFakeConfiguratorsDictionary(IEnumerable<IFakeConfigurator> fakeConfigurers)
-        {
-            return fakeConfigurers.FirstFromEachKey(x => x.ForType);
-        }
-
-        private static IDictionary<Type, IDummyDefinition> CreateDummyDefinitionsDictionary(IEnumerable<IDummyDefinition> dummyDefinitions)
-        {
-            return dummyDefinitions.FirstFromEachKey(x => x.ForType);
         }
     }
 }
