@@ -204,9 +204,6 @@
     <Compile Include="..\FakeItEasy\Core\ArgumentConstraintTrap.cs">
       <Link>Core\ArgumentConstraintTrap.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\ArgumentInfo.cs">
-      <Link>Core\ArgumentInfo.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentValueFormatter.cs">
       <Link>Core\ArgumentValueFormatter.cs</Link>
     </Compile>
@@ -338,9 +335,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRule.cs">
       <Link>Core\IFakeObjectCallRule.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRuleWithDescription.cs">
-      <Link>Core\IFakeObjectCallRuleWithDescription.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeObjectConfigurator.cs">
       <Link>Core\IFakeObjectConfigurator.cs</Link>
@@ -530,12 +524,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Expressions\ParsedCallExpression.cs">
       <Link>Expressions\ParsedCallExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ExtensionSyntax\Full\ObjectExtensions.cs">
-      <Link>ExtensionSyntax\Full\ObjectExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ExtensionSyntax\ObjectExtensions.cs">
-      <Link>ExtensionSyntax\ObjectExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Fake.cs">
       <Link>Fake.cs</Link>

@@ -2,7 +2,7 @@ namespace FakeItEasy.IntegrationTests
 {
     using System.Collections.Generic;
     using System.IO;
-    using FakeItEasy.ExtensionSyntax;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -14,13 +14,13 @@ namespace FakeItEasy.IntegrationTests
             var stream = new MemoryStream();
             var wrapper = A.Fake<Stream>(x => x.Wrapping(stream));
 
-            Assert.IsTrue(wrapper.CanRead);
+            wrapper.CanRead.Should().BeTrue();
 
-            wrapper.Configure().CallsTo(x => x.CanRead).Returns(false);
+            A.CallTo(() => wrapper.CanRead).Returns(false);
 
-            Assert.That(wrapper.CanRead, Is.False);
-            Assert.That(stream.CanRead, Is.True);
-            Assert.That(this.CanRead(wrapper), Is.False);
+            wrapper.CanRead.Should().BeFalse();
+            stream.CanRead.Should().BeTrue();
+            this.CanRead(wrapper).Should().BeFalse();
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace FakeItEasy.IntegrationTests
 
             fake.Add("foo", "bar");
 
-            Assert.That(fake["foo"], Is.EqualTo("bar"));
+            fake["foo"].Should().Be("bar");
             A.CallTo(() => fake.Add("foo", "bar")).MustHaveHappened();
         }
 

@@ -3,7 +3,7 @@ namespace FakeItEasy.Tests.Core
     using System;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
-    using FakeItEasy.ExtensionSyntax;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -23,7 +23,7 @@ namespace FakeItEasy.Tests.Core
         {
             var rule = this.CreateRule();
 
-            Assert.That(rule.IsApplicableTo(A.Fake<IFakeObjectCall>()));
+            rule.IsApplicableTo(A.Fake<IFakeObjectCall>()).Should().BeTrue();
         }
 
         [Test]
@@ -31,21 +31,21 @@ namespace FakeItEasy.Tests.Core
         {
             var rule = this.CreateRule();
 
-            Assert.That(rule.NumberOfTimesToCall, Is.Null);
+            rule.NumberOfTimesToCall.Should().Be(null);
         }
 
         [Test]
         public void Apply_should_set_return_value_from_wrapped_object([Values(0, 1, 2, 3, 5, 8)] int returnValue)
         {
             var wrapped = A.Fake<IFoo>();
-            wrapped.Configure().CallsTo(x => x.Baz()).Returns(returnValue);
+            A.CallTo(() => wrapped.Baz()).Returns(returnValue);
 
             var call = FakeCall.Create<IFoo>("Baz", new Type[] { }, new object[] { });
 
             var rule = this.CreateRule(wrapped);
             rule.Apply(call);
 
-            Assert.That(call.ReturnValue, Is.EqualTo(returnValue));
+            call.ReturnValue.Should().Be(returnValue);
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace FakeItEasy.Tests.Core
         {
             var wrapped = A.Fake<IFoo>();
 
-            var call = FakeCall.Create<IFoo>("Bar", new Type[] { typeof(object), typeof(object) }, new object[] { "foo", "bar" });
+            var call = FakeCall.Create<IFoo>("Bar", new[] { typeof(object), typeof(object) }, new object[] { "foo", "bar" });
 
             var rule = this.CreateRule(wrapped);
             rule.Apply(call);
@@ -65,7 +65,7 @@ namespace FakeItEasy.Tests.Core
         public void Apply_should_assign_reference_arguments()
         {
             // Arrange
-            var wrapped = new TypeThatImplementsInterfaceWithOutputAndRefArguments()
+            var wrapped = new TypeThatImplementsInterfaceWithOutputAndRefArguments
             {
                 ReferenceArgumentThatWillBeApplied = 10
             };
@@ -77,14 +77,14 @@ namespace FakeItEasy.Tests.Core
             rule.Apply(call);
 
             // Assert
-            Assert.That(call.Arguments[0], Is.EqualTo(10));
+            call.Arguments[0].Should().Be(10);
         }
 
         [Test]
         public void Apply_should_assign_out_arguments()
         {
             // Arrange
-            var wrapped = new TypeThatImplementsInterfaceWithOutputAndRefArguments()
+            var wrapped = new TypeThatImplementsInterfaceWithOutputAndRefArguments
             {
                 OutArgumentThatWillBeApplied = 10
             };
@@ -96,7 +96,7 @@ namespace FakeItEasy.Tests.Core
             rule.Apply(call);
 
             // Assert
-            Assert.That(call.Arguments[0], Is.EqualTo(10));
+            call.Arguments[0].Should().Be(10);
         }
 
         private WrappedObjectRule CreateRule()
@@ -109,12 +109,12 @@ namespace FakeItEasy.Tests.Core
             return new WrappedObjectRule(wrapped);
         }
 
-        public class TypeThatImplementsInterfaceWithOutputAndRefArguments
+        private class TypeThatImplementsInterfaceWithOutputAndRefArguments
             : ITypeWithOutputAndRefArguments
         {
-            public int ReferenceArgumentThatWillBeApplied { get; set; }
+            public int ReferenceArgumentThatWillBeApplied { private get; set; }
 
-            public int OutArgumentThatWillBeApplied { get; set; }
+            public int OutArgumentThatWillBeApplied { private get; set; }
 
             public void MethodWithReferenceArgument(ref int argument)
             {

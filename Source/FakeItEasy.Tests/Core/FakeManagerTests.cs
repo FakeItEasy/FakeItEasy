@@ -6,8 +6,8 @@
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-    using FakeItEasy.ExtensionSyntax;
     using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -33,7 +33,7 @@
                 fake.AddRuleFirst(rule);
             }
 
-            Assert.That(fake.Rules, Has.None.EqualTo(rule));
+            fake.Rules.Should().NotContain(rule);
         }
 
         [Test]
@@ -48,7 +48,7 @@
 
             foo.SomethingHappened += Raise.With(EventArgs.Empty);
 
-            Assert.That(called, Is.False);
+            called.Should().BeFalse();
         }
 
         [Test]
@@ -57,7 +57,7 @@
             var fake = this.CreateFakeManager<IFoo>();
             var result = ((IFoo)fake.Object).Baz();
 
-            Assert.That(result, Is.EqualTo(0));
+            result.Should().Be(0);
         }
 
         [Test]
@@ -82,7 +82,7 @@
             // Act
             ((IFoo)fake.Object).Bar();
 
-            Assert.That(interception.ApplyWasCalled, Is.True);
+            interception.ApplyWasCalled.Should().BeTrue();
         }
 
         [Test]
@@ -100,7 +100,7 @@
 
             ((IFoo)fake.Object).Bar();
 
-            Assert.That(interception.ApplyWasCalled, Is.True);
+            interception.ApplyWasCalled.Should().BeTrue();
         }
 
         [Test]
@@ -119,7 +119,7 @@
             foo.Bar();
             foo.Bar();
 
-            Assert.That(firstRule.ApplyWasCalled, Is.False);
+            firstRule.ApplyWasCalled.Should().BeFalse();
         }
 
         [Test]
@@ -140,10 +140,10 @@
 
             ((IFoo)fake.Object).Bar();
             ((IFoo)fake.Object).Bar();
-            Assert.That(nextApplicable.ApplyWasCalled, Is.False);
+            nextApplicable.ApplyWasCalled.Should().BeFalse();
 
             ((IFoo)fake.Object).Bar();
-            Assert.That(nextApplicable.ApplyWasCalled, Is.True);
+            nextApplicable.ApplyWasCalled.Should().BeTrue();
         }
 
         [Test]
@@ -162,7 +162,7 @@
 
             var result = ((IFoo)fake.Object).Baz();
 
-            Assert.That(result, Is.EqualTo(0));
+            result.Should().Be(0);
         }
 
         [Test]
@@ -176,7 +176,7 @@
             fake.AddRuleFirst(one);
             fake.AddRuleFirst(two);
 
-            Assert.That(fake.Rules, Is.EquivalentTo(new[] { one, two }));
+            fake.Rules.Should().BeEquivalentTo(new[] { one, two });
         }
 
         [Test]
@@ -188,8 +188,8 @@
             foo.Bar();
             Record.Exception(() => foo[1]);
 
-            Assert.That(fake.RecordedCallsInScope, Has.Some.Matches<IFakeObjectCall>(x => x.Method.Name == "Bar"));
-            Assert.That(fake.RecordedCallsInScope, Has.Some.Matches<IFakeObjectCall>(x => x.Method.Name == "get_Item"));
+            fake.RecordedCallsInScope.Should().Contain(x => x.Method.Name == "Bar");
+            fake.RecordedCallsInScope.Should().Contain(x => x.Method.Name == "get_Item");
         }
 
         [Test]
@@ -204,7 +204,7 @@
             Record.Exception(() => fake.Bar());
 
             // Assert
-            Assert.That(manager.RecordedCallsInScope.Count(), Is.EqualTo(1));
+            manager.RecordedCallsInScope.Count().Should().Be(1);
         }
 
         [Test]
@@ -218,7 +218,7 @@
             {
                 foo.Baz();
 
-                Assert.That(Fake.GetCalls(foo).Count(), Is.EqualTo(1));
+                Fake.GetCalls(foo).Count().Should().Be(1);
             }
         }
 
@@ -239,7 +239,7 @@
                 }
             }
 
-            Assert.That(Fake.GetCalls(foo).Count(), Is.EqualTo(3));
+            Fake.GetCalls(foo).Count().Should().Be(3);
         }
 
         [Test]
@@ -266,7 +266,7 @@
 
             foo.SomeProperty = 10;
 
-            Assert.That(foo.SomeProperty, Is.EqualTo(10));
+            foo.SomeProperty.Should().Be(10);
         }
 
         [Test]
@@ -275,16 +275,16 @@
             var foo = A.Fake<IFoo>();
 
             A.CallTo(() => foo.SomeProperty).Returns(2);
-            Assert.That(foo.SomeProperty, Is.EqualTo(2));
+            foo.SomeProperty.Should().Be(2);
 
             foo.SomeProperty = 5;
-            Assert.That(foo.SomeProperty, Is.EqualTo(5));
+            foo.SomeProperty.Should().Be(5);
 
             A.CallTo(() => foo.SomeProperty).Returns(20);
-            Assert.That(foo.SomeProperty, Is.EqualTo(20));
+            foo.SomeProperty.Should().Be(20);
 
             foo.SomeProperty = 10;
-            Assert.That(foo.SomeProperty, Is.EqualTo(10));
+            foo.SomeProperty.Should().Be(10);
         }
 
         [Test]
@@ -292,7 +292,7 @@
         {
             var foo = A.Fake<IFoo>();
 
-            Assert.That(foo.ChildFoo, new IsFakeConstraint());
+            foo.ChildFoo.Should().BeAFake();
         }
 
         [Test]
@@ -304,7 +304,7 @@
             // Act
 
             // Assert
-            Assert.That(foo.InternalVirtualFakeableProperty, Is.SameAs(foo.InternalVirtualFakeableProperty));
+            foo.InternalVirtualFakeableProperty.Should().BeSameAs(foo.InternalVirtualFakeableProperty);
         }
 
         [Test]
@@ -318,7 +318,7 @@
             foo.InternalVirtualFakeableProperty = value;
 
             // Assert
-            Assert.That(foo.InternalVirtualFakeableProperty, Is.SameAs(value));
+            foo.InternalVirtualFakeableProperty.Should().BeSameAs(value);
         }
 
         [Test]
@@ -333,7 +333,7 @@
             fake.RemoveRule(rule);
 
             // Assert
-            Assert.That(fake.Rules, Has.None.EqualTo(rule));
+            fake.Rules.Should().NotContain(rule);
         }
 
         [Test]
@@ -347,7 +347,7 @@
             fake.RemoveRule(rule);
 
             // Assert
-            Assert.That(fake.Rules, Has.None.EqualTo(rule));
+            fake.Rules.Should().NotContain(rule);
         }
 
         [Test]
@@ -374,7 +374,7 @@
             fake.AddRuleLast(rule);
 
             // Assert
-            Assert.That(fake.Rules, Has.Some.SameAs(rule));
+            fake.Rules.Should().Contain(r => ReferenceEquals(r, rule));
         }
 
         [Test]
@@ -389,7 +389,7 @@
             fake.AddRuleLast(rule);
 
             // Assert
-            Assert.That(fake.AllUserRules.Last.Value.Rule, Is.SameAs(rule));
+            fake.AllUserRules.Last.Value.Rule.Should().BeSameAs(rule);
         }
 
         [Test]
@@ -461,7 +461,7 @@
             fake.Bar();
 
             // Assert
-            Assert.That(Fake.GetCalls(fake), Is.Empty);
+            Fake.GetCalls(fake).Should().BeEmpty();
         }
 
         [Test]
@@ -474,8 +474,8 @@
             var fakeManager = new FakeManager(typeof(string), proxy);
 
             // Assert
-            Assert.That(fakeManager.FakeObjectType, Is.EqualTo(typeof(string)));
-            Assert.That(fakeManager.Object, Is.SameAs(proxy));
+            fakeManager.FakeObjectType.Should().Be(typeof(string));
+            fakeManager.Object.Should().BeSameAs(proxy);
         }
 
         [Test]
@@ -490,7 +490,7 @@
             manager.ClearUserRules();
 
             // Assert
-            Assert.That(manager.AllUserRules, Is.Empty);
+            manager.AllUserRules.Should().BeEmpty();
         }
 
         [Test]
