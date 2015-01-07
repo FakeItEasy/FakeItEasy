@@ -12,20 +12,6 @@
         private IDisposable scope;
 
         [Test]
-        public void Static_equals_delegates_to_static_method_on_object()
-        {
-            Assert.That(A.Equals("foo", "foo"), Is.True);
-        }
-
-        [Test]
-        public void Static_ReferenceEquals_delegates_to_static_method_on_object()
-        {
-            var s = string.Empty;
-
-            Assert.That(A.ReferenceEquals(s, s), Is.True);
-        }
-
-        [Test]
         public void Fake_without_arguments_should_call_fake_creator_with_empty_action()
         {
             // Arrange
