@@ -50,7 +50,7 @@ Try to keep your coding style in line with the existing code. It might not exact
 
 ## Code Analysis
 
-Try and avoid introducing new code analysis warnings. Currently the codebase has quite a few warnings, which we would like to address, and we would like to avoid the addition of new warnings. Any code analysis rule changes or suppressions must be clearly justified.
+Try to avoid introducing new code analysis warnings. Currently the codebase is free of warnings, and we would like to avoid the addition of new warnings. Any code analysis rule changes or suppressions must be clearly justified.
 
 ## Resharper Artifacts
 
@@ -94,5 +94,5 @@ While working on your feature you may well create several branches, which is fin
 When you're ready to go you should confirm that you are up to date and rebased with upstream/master (see "Handling Updates from upstream/master" above) and then:
 
 1. `git push origin myBranch`
-1. Send a descriptive [pull request](https://help.github.com/articles/using-pull-requests) on GitHub. Make sure you select `FakeItEasy/FakeItEasy` as the *base repo* and `master` as the *base branch*. Select your fork as the *head repo* and your branch as the *head branch*.
+1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub. Make sure you select `FakeItEasy/FakeItEasy` as the *base repo* and `master` as the *base branch*. Select your fork as the *head repo* and your branch as the *head branch*. The pull request should include a description starting with "Fixes #123." (using the real issue number, of course) if it fixes an issue. If there's no issue, be sure to clearly explain the intent of the change.
 1. If GitHub indicates that the pull request can be merged automatically, check that the pull request has built successfully on our [CI server](http://teamcity.codebetter.com/viewType.html?buildTypeId=bt929) (you can either create an account or login as guest). E.g. if your pull request is number 123, you should see a build labelled '123/merge' on the CI server. If the build has failed (red) then there is a problem with your changes and you'll have to fix it before the pull request can be accepted. You can inspect the build logs on the CI server to see what caused the failure.
