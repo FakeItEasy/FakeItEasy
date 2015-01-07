@@ -246,6 +246,9 @@
     <Compile Include="..\FakeItEasy\Core\DelegateFakeObjectContainer.cs">
       <Link>Core\DelegateFakeObjectContainer.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\DelegateRaiser.cs">
+      <Link>Core\DelegateRaiser.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\DynamicContainer.cs">
       <Link>Core\DynamicContainer.cs</Link>
     </Compile>
@@ -380,6 +383,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserterFactory.cs">
       <Link>Core\OrderedFakeAsserterFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\Raise.of.TEventArgs.cs">
+      <Link>Core\Raise.of.TEventArgs.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\TypeCatalogue.cs">
       <Link>Core\TypeCatalogue.cs</Link>
@@ -605,12 +611,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Raise.of.TEventArgs.cs">
-      <Link>Raise.of.TEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\DelegateRaiser.cs">
-      <Link>DelegateRaiser.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Recorders.cs">
       <Link>Recorders.cs</Link>

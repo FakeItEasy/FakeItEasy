@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,6 @@
     using System.Reflection;
 
     using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
 
     /// <summary>
     /// A class exposing an event handler to attach to a delegate-type event of a faked object

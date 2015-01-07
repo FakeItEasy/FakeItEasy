@@ -168,9 +168,6 @@
     <Compile Include="..\FakeItEasy\OutputWriterExtensions.cs">
       <Link>OutputWriterExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\DelegateRaiser.cs">
-      <Link>DelegateRaiser.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\RepeatConfigurationExtensions.cs">
       <Link>RepeatConfigurationExtensions.cs</Link>
     </Compile>
@@ -342,6 +339,9 @@
     <Compile Include="..\FakeItEasy\Core\DelegateFakeObjectContainer.cs">
       <Link>Core\DelegateFakeObjectContainer.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\DelegateRaiser.cs">
+      <Link>Core\DelegateRaiser.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\DynamicContainer.cs">
       <Link>Core\DynamicContainer.cs</Link>
     </Compile>
@@ -463,6 +463,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserterFactory.cs">
       <Link>Core\OrderedFakeAsserterFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\Raise.of.TEventArgs.cs">
+      <Link>Core\Raise.of.TEventArgs.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\WrappedObjectRule.cs">
       <Link>Core\WrappedObjectRule.cs</Link>
@@ -642,9 +645,6 @@
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Raise.of.TEventArgs.cs">
-      <Link>Raise.of.TEventArgs.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Recorders.cs">
       <Link>Recorders.cs</Link>
     </Compile>
@@ -717,7 +717,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="80721425-68e5-48dc-87ea-41d63d0b45fa" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="AfterBuild">

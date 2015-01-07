@@ -99,7 +99,7 @@
     <Compile Include="IBootstrapper.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
-    <Compile Include="DelegateRaiser.cs" />
+    <Compile Include="Core\DelegateRaiser.cs" />
     <Compile Include="TaskHelper.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="StringBuilderExtensions.cs" />
@@ -118,7 +118,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
-    <Compile Include="Raise.of.TEventArgs.cs" />
+    <Compile Include="Core\Raise.of.TEventArgs.cs" />
     <Compile Include="Fake.of.T.cs" />
     <Compile Include="Core\TypeCatalogue.cs" />
     <Compile Include="Configuration\AnyCallConfiguration.cs">
