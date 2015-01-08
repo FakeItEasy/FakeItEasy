@@ -2,7 +2,6 @@ namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
@@ -50,32 +49,6 @@ namespace FakeItEasy
         public static IFakeScope CreateScope(IFakeObjectContainer container)
         {
             return Facade.CreateScope(container);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the two objects are equal.
-        /// </summary>
-        /// <param name="objA">The first object to compare.</param>
-        /// <param name="objB">The second object to compare.</param>
-        /// <returns>True if the two objects are equal.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Using the same names as the hidden method.")]
-        public static new bool Equals(object objA, object objB)
-        {
-            return object.Equals(objA, objB);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the two objects are the same reference.
-        /// </summary>
-        /// <param name="objA">The object A.</param>
-        /// <param name="objB">The object B.</param>
-        /// <returns>True if the objects are the same reference.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "Using the same names as the hidden method.")]
-        public static new bool ReferenceEquals(object objA, object objB)
-        {
-            return object.ReferenceEquals(objA, objB);
         }
 
         /// <summary>

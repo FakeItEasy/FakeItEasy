@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using FakeItEasy.Creation;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -12,31 +13,17 @@
         private IDisposable scope;
 
         [Test]
-        public void Static_equals_delegates_to_static_method_on_object()
-        {
-            Assert.That(A.Equals("foo", "foo"), Is.True);
-        }
-
-        [Test]
-        public void Static_ReferenceEquals_delegates_to_static_method_on_object()
-        {
-            var s = string.Empty;
-
-            Assert.That(A.ReferenceEquals(s, s), Is.True);
-        }
-
-        [Test]
         public void Fake_without_arguments_should_call_fake_creator_with_empty_action()
         {
             // Arrange
             var fake = A.Fake<IFoo>();
-            A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(A<Action<IFakeOptionsBuilder<IFoo>>>._)).Returns(fake);
+            A.CallTo(() => this.fakeCreator.CreateFake(A<Action<IFakeOptionsBuilder<IFoo>>>._)).Returns(fake);
 
             // Act
             var result = A.Fake<IFoo>();
 
             // Assert
-            Assert.That(result, Is.SameAs(fake));
+            result.Should().BeSameAs(fake);
         }
 
         [Test]
@@ -46,13 +33,13 @@
             var fake = A.Fake<IFoo>();
 
             Action<IFakeOptionsBuilder<IFoo>> options = x => { };
-            A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(options)).Returns(fake);
+            A.CallTo(() => this.fakeCreator.CreateFake(options)).Returns(fake);
 
             // Act
-            var result = A.Fake<IFoo>(options);
+            var result = A.Fake(options);
 
             // Assert
-            Assert.That(result, Is.SameAs(fake));
+            result.Should().BeSameAs(fake);
         }
 
         [Test]
@@ -66,7 +53,7 @@
             var result = A.Dummy<IFoo>();
 
             // Assert
-            Assert.That(result, Is.SameAs(dummy));
+            result.Should().BeSameAs(dummy);
         }
 
         [Test]
@@ -79,17 +66,17 @@
             A.CallTo(() => creator.CollectionOfFake<IFoo>(10)).Returns(returnedFromCreator);
 
             // Act
-            var result = A.CollectionOfFake<IFoo>(10);
+            object result = A.CollectionOfFake<IFoo>(10);
 
             // Assert
-            Assert.That(result, Is.SameAs(returnedFromCreator));
+            result.Should().BeSameAs(returnedFromCreator);
         }
 
         protected override void OnSetup()
         {
             base.OnSetup();
             this.fakeCreator = A.Fake<IFakeCreatorFacade>();
-            this.StubResolve<IFakeCreatorFacade>(this.fakeCreator);
+            this.StubResolve(this.fakeCreator);
             this.scope = Fake.CreateScope();
         }
 
