@@ -7,7 +7,7 @@
     /// <summary>
     /// Provides a set of types that are available.
     /// </summary>
-    public interface ITypeCatalogue
+    internal interface ITypeCatalogue
     {
         /// <summary>
         /// Gets a collection of available types.
