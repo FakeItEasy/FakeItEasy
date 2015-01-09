@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		FakeItEasy.Examples.ruleset = FakeItEasy.Examples.ruleset
 		FakeItEasy.nuspec = FakeItEasy.nuspec
 		FakeItEasy.ruleset = FakeItEasy.ruleset
+		FakeItEasy.snk = FakeItEasy.snk
 		FakeItEasy.Tests.ruleset = FakeItEasy.Tests.ruleset
 		ILMerge.Internalize.Exclude.txt = ILMerge.Internalize.Exclude.txt
 		Settings.StyleCop = Settings.StyleCop
