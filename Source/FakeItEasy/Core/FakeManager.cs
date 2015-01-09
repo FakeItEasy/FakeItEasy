@@ -135,7 +135,7 @@ namespace FakeItEasy.Core
         {
             Guard.AgainstNull(rule, "rule");
 
-            var ruleToRemove = this.AllUserRules.Where(x => x.Rule.Equals(rule)).FirstOrDefault();
+            var ruleToRemove = this.AllUserRules.FirstOrDefault(x => x.Rule.Equals(rule));
             this.AllUserRules.Remove(ruleToRemove);
         }
 
@@ -208,7 +208,7 @@ namespace FakeItEasy.Core
 
         private void MoveRuleToFront(IFakeObjectCallRule rule)
         {
-            var metadata = this.AllRules.Where(x => x.Rule.Equals(rule)).Single();
+            var metadata = this.AllRules.Single(x => x.Rule.Equals(rule));
             this.MoveRuleToFront(metadata);
         }
 
