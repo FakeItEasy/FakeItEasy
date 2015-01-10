@@ -1,6 +1,5 @@
-﻿namespace FakeItEasy
+﻿namespace FakeItEasy.Net35.Tests
 {
-    using System;
     using System.Linq;
     using NUnit.Framework;
 

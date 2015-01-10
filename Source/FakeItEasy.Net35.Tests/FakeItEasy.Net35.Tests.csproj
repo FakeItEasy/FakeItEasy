@@ -8,7 +8,7 @@
     <ProjectGuid>{E029C5AB-EC90-45B0-BBD9-29A60864B137}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FakeItEasy</RootNamespace>
+    <RootNamespace>FakeItEasy.Net35.Tests</RootNamespace>
     <AssemblyName>FakeItEasy.Net35.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

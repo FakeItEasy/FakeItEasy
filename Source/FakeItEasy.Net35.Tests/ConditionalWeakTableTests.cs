@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy
+﻿namespace FakeItEasy.Net35.Tests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
