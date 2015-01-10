@@ -1,8 +1,9 @@
-﻿namespace FakeItEasy.Core.Tests
+﻿namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using FakeItEasy.Core;
     using NUnit.Framework;
 
     [TestFixture]

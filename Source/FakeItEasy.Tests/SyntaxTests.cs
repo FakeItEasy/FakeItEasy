@@ -1,9 +1,8 @@
-﻿namespace FakeItEasy
+﻿namespace FakeItEasy.Tests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using FakeItEasy.Tests;
-    
+
     internal class SyntaxTests
     {
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "Required for testing.")]

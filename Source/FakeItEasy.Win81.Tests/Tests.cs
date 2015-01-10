@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests
+﻿namespace FakeItEasy.Win81.Tests
 {
     using FluentAssertions;
     using NUnit.Framework;

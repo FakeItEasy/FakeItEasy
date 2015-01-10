@@ -9,7 +9,7 @@
     <ProjectGuid>{19A3E9ED-D8A6-463A-83E6-D59ABA52F1BF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FakeItEasy.Tests</RootNamespace>
+    <RootNamespace>FakeItEasy.Win8.Tests</RootNamespace>
     <AssemblyName>FakeItEasy.Win8.Tests</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
