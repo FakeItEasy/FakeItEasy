@@ -5,7 +5,7 @@ namespace FakeItEasy.Core
     /// <summary>
     /// Provides access to a set of calls and a call matcher for these calls.
     /// </summary>
-    public interface ICallCollectionAndCallMatcherAccessor
+    internal interface ICallCollectionAndCallMatcherAccessor
         : ICallMatcherAccessor
     {
         /// <summary>

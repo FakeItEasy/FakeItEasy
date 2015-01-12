@@ -3,7 +3,7 @@ namespace FakeItEasy.Core
     /// <summary>
     /// Represents a predicate that matches a fake object call.
     /// </summary>
-    public interface ICallMatcher
+    internal interface ICallMatcher
     {
         /// <summary>
         /// Gets a value indicating whether the call matches the predicate.

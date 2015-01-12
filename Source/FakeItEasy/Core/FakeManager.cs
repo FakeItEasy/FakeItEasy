@@ -26,7 +26,7 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="fakeObjectType">The faked type.</param>
         /// <param name="proxy">The faked proxy object.</param>
-        public FakeManager(Type fakeObjectType, object proxy)
+        internal FakeManager(Type fakeObjectType, object proxy)
         {
             Guard.AgainstNull(fakeObjectType, "fakeObjectType");
             Guard.AgainstNull(proxy, "proxy");
@@ -57,8 +57,7 @@ namespace FakeItEasy.Core
         /// <param name="fakeObjectType">The faked type.</param>
         /// <param name="proxy">The faked proxy object.</param>
         /// <returns>An instance of <see cref="FakeManager"/>.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "Valid pattern for factory delegates.")]
-        public delegate FakeManager Factory(Type fakeObjectType, object proxy);
+        internal delegate FakeManager Factory(Type fakeObjectType, object proxy);
 
         /// <summary>
         /// Gets the faked proxy object.
@@ -136,7 +135,7 @@ namespace FakeItEasy.Core
         {
             Guard.AgainstNull(rule, "rule");
 
-            var ruleToRemove = this.AllUserRules.Where(x => x.Rule.Equals(rule)).FirstOrDefault();
+            var ruleToRemove = this.AllUserRules.FirstOrDefault(x => x.Rule.Equals(rule));
             this.AllUserRules.Remove(ruleToRemove);
         }
 
@@ -209,7 +208,7 @@ namespace FakeItEasy.Core
 
         private void MoveRuleToFront(IFakeObjectCallRule rule)
         {
-            var metadata = this.AllRules.Where(x => x.Rule.Equals(rule)).Single();
+            var metadata = this.AllRules.Single(x => x.Rule.Equals(rule));
             this.MoveRuleToFront(metadata);
         }
 

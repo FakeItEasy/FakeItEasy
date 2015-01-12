@@ -14,7 +14,7 @@
     ///   <item>assemblies whose paths are supplied to the constructor, that also reference FakeItEasy.</item>
     /// </list>
     /// </summary>
-    public class TypeCatalogue : ITypeCatalogue
+    internal class TypeCatalogue : ITypeCatalogue
     {
         private static readonly Assembly FakeItEasyAssembly = Assembly.GetExecutingAssembly();
         private readonly List<Type> availableTypes = new List<Type>();

@@ -29,7 +29,7 @@ namespace FakeItEasy
         /// <param name = "arguments">The arguments.</param>
         /// <param name = "argumentNames">The argument names.</param>
         [DebuggerStepThrough]
-        public ArgumentCollection(object[] arguments, IEnumerable<string> argumentNames)
+        internal ArgumentCollection(object[] arguments, IEnumerable<string> argumentNames)
         {
             Guard.AgainstNull(arguments, "arguments");
             Guard.AgainstNull(argumentNames, "argumentNames");
@@ -49,18 +49,9 @@ namespace FakeItEasy
         /// <param name = "arguments">The arguments.</param>
         /// <param name = "method">The method.</param>
         [DebuggerStepThrough]
-        public ArgumentCollection(object[] arguments, MethodInfo method)
+        internal ArgumentCollection(object[] arguments, MethodInfo method)
             : this(arguments, GetArgumentNames(method))
         {
-        }
-
-        /// <summary>
-        ///   Gets an empty ArgumentList.
-        /// </summary>
-        public static ArgumentCollection Empty
-        {
-            [DebuggerStepThrough]
-            get { return new ArgumentCollection(new object[] { }, new string[] { }); }
         }
 
         /// <summary>
