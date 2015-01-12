@@ -10,18 +10,13 @@ namespace FakeItEasy.Tests
     /// </summary>
     public class FakeCall : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
     {
-        public MethodInfo Method { get; set; }
+        public MethodInfo Method { get; private set; }
 
-        public ArgumentCollection Arguments { get; set; }
+        public ArgumentCollection Arguments { get; private set; }
 
         public object ReturnValue { get; private set; }
 
-        public object FakedObject { get; set; }
-
-        public string Description
-        {
-            get { return this.ToString(); }
-        }
+        public object FakedObject { get; private set; }
 
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "By design.")]
         public static FakeCall Create<T>(string methodName, Type[] parameterTypes, object[] arguments) where T : class
