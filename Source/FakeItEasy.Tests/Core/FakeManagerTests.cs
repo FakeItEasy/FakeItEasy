@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;

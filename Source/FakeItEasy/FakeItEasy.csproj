@@ -492,7 +492,7 @@
     <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="ExpectationException.cs" />
     <Compile Include="ValueProducerSignatureHelper.cs" />
-    <Compile Include="ArgumentCollection.cs" />
+    <Compile Include="Configuration\ArgumentCollection.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Fake.cs" />
     <Compile Include="Raise.cs" />

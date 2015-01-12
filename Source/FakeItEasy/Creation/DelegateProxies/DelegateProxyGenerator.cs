@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Reflection.Emit;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     internal class DelegateProxyGenerator

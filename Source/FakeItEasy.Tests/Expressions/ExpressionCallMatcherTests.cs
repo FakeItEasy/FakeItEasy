@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.Expressions
     using System;
     using System.Linq.Expressions;
     using System.Reflection;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
     using NUnit.Framework;

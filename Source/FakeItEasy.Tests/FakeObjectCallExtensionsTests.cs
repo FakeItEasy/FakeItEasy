@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests
     using System.Collections.Generic;
     using System.Linq;
 
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FluentAssertions;
     using NUnit.Framework;

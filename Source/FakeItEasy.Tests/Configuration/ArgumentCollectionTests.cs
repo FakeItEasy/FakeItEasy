@@ -1,10 +1,11 @@
-﻿namespace FakeItEasy.Tests
+﻿namespace FakeItEasy.Tests.Configuration
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;

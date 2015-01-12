@@ -69,9 +69,6 @@
     <Compile Include="..\FakeItEasy\A.of.T.cs">
       <Link>A.of.T.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ArgumentCollection.cs">
-      <Link>ArgumentCollection.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\ArgumentConstraintManagerExtensions.cs">
       <Link>ArgumentConstraintManagerExtensions.cs</Link>
     </Compile>
@@ -95,6 +92,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallConfiguration.cs">
       <Link>Configuration\AnyCallConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\ArgumentCollection.cs">
+      <Link>Configuration\ArgumentCollection.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\BuildableCallRule.cs">
       <Link>Configuration\BuildableCallRule.cs</Link>

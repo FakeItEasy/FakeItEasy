@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests.TestHelpers
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
 
