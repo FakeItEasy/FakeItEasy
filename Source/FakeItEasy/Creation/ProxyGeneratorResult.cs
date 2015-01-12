@@ -7,7 +7,7 @@ namespace FakeItEasy.Creation
     /// <summary>
     /// Contains the result of a call to TryCreateProxy of IProxyGenerator.
     /// </summary>
-    public sealed class ProxyGeneratorResult
+    internal sealed class ProxyGeneratorResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProxyGeneratorResult"/> class. 
