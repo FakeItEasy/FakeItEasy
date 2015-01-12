@@ -10,6 +10,10 @@ namespace FakeItEasy.Tests
     /// </summary>
     public class FakeCall : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
     {
+        private FakeCall()
+        {
+        }
+
         public MethodInfo Method { get; private set; }
 
         public ArgumentCollection Arguments { get; private set; }
