@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Expressions
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+    using FluentAssertions;
     using NUnit.Framework;
     using TestHelpers;
 
@@ -31,8 +32,10 @@ namespace FakeItEasy.Tests.Expressions
         [Test]
         public void Constructor_should_throw_if_expression_is_not_property_or_method()
         {
-            Assert.Throws<ArgumentException>(() =>
+            var exception = Record.Exception(() =>
                 this.CreateMatcher<Foo, IServiceProvider>(x => x.ServiceProvider));
+
+            exception.Should().BeAnExceptionOfType<ArgumentException>();
         }
 
         [Test]
@@ -43,7 +46,7 @@ namespace FakeItEasy.Tests.Expressions
 
             this.StubMethodInfoManagerToReturn(true);
             
-            Assert.That(matcher.Matches(call), Is.True);
+            matcher.Matches(call).Should().BeTrue();
         }
 
         [Test]
@@ -54,7 +57,7 @@ namespace FakeItEasy.Tests.Expressions
 
             this.StubMethodInfoManagerToReturn(false);
 
-            Assert.That(matcher.Matches(call), Is.False);
+            matcher.Matches(call).Should().BeFalse();
         }
 
         [Test]
@@ -130,7 +133,7 @@ namespace FakeItEasy.Tests.Expressions
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2));
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 3));
 
-            Assert.That(matcher.Matches(call), Is.False);
+            matcher.Matches(call).Should().BeFalse();
         }
 
         [Test]
@@ -144,7 +147,7 @@ namespace FakeItEasy.Tests.Expressions
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 
-            Assert.That(matcher.ToString(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<FOO>, <FOO>)"));
+            matcher.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(<FOO>, <FOO>)");
 
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).MustHaveHappened(Repeated.Exactly.Twice);
         }
@@ -166,7 +169,7 @@ namespace FakeItEasy.Tests.Expressions
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2));
             matcher.Matches(call);
 
-            Assert.That(argumentsPassedToPredicate, Is.EquivalentTo(new object[] { 1, 2 }));
+            argumentsPassedToPredicate.Should().BeEquivalentTo(new object[] { 1, 2 });
         }
 
         [TestCase(true, Result = true)]
@@ -188,7 +191,7 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.UsePredicateToValidateArguments(x => true);
 
-            Assert.That(matcher.ToString(), Is.EqualTo("FakeItEasy.Tests.IFoo.Bar(<Predicated>, <Predicated>)"));
+            matcher.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(<Predicated>, <Predicated>)");
         }
 
         [Test]

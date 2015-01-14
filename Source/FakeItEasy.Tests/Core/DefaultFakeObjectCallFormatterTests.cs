@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Core
     using System.Reflection;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -24,10 +25,10 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Fake]
-        internal ArgumentValueFormatter ArgumentFormatter { get; set; }
+        private ArgumentValueFormatter ArgumentFormatter { get; set; }
 
         [Fake]
-        internal IFakeManagerAccessor FakeManagerAccessor { get; set; }
+        private IFakeManagerAccessor FakeManagerAccessor { get; set; }
 
         [SetUp]
         public void Setup()
@@ -45,7 +46,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            Assert.That(description, Is.StringStarting("System.String.Equals("));
+            description.Should().StartWith("System.String.Equals(");
         }
 
         [Test]
@@ -58,7 +59,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            Assert.That(description, Is.StringEnding("()"));
+            description.Should().EndWith("()");
         }
 
         [Test]
@@ -74,7 +75,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            Assert.That(description, Is.StringEnding("(argument1: \"argument value\", argument2: 1)"));
+            description.Should().EndWith("(argument1: \"argument value\", argument2: 1)");
         }
 
         [Test]
@@ -100,7 +101,7 @@ namespace FakeItEasy.Tests.Core
     two: two,
     three: three)";
 
-            Assert.That(description, Is.StringEnding(expectedDescription));
+            description.Should().EndWith(expectedDescription);
         }
 
         [Test]
@@ -114,7 +115,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            Assert.That(description, Is.EqualTo("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.NormalProperty"));
+            description.Should().Be("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.NormalProperty");
         }
 
         [Test]
@@ -129,7 +130,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            Assert.That(description, Is.EqualTo("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.NormalProperty = \"foo\""));
+            description.Should().Be("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.NormalProperty = \"foo\"");
         }
 
         [Test]
@@ -144,7 +145,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            Assert.That(description, Is.EqualTo("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.Item[index: 0]"));
+            description.Should().Be("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.Item[index: 0]");
         }
 
         [Test]
@@ -160,7 +161,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            Assert.That(description, Is.EqualTo("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.Item[index: 0] = \"argument\""));
+            description.Should().Be("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.Item[index: 0] = \"argument\"");
         }
 
         private IFakeObjectCall CreateFakeCall(MethodInfo method, params object[] arguments)
@@ -191,7 +192,7 @@ namespace FakeItEasy.Tests.Core
                 argument2);
         }
 
-        public class TypeWithProperties
+        private class TypeWithProperties
         {
             public string NormalProperty { get; set; }
 

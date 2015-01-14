@@ -30,15 +30,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         }
 
         /// <summary>
-        /// Gets a human readable description of the call.
-        /// </summary>
-        /// <value></value>
-        public string Description
-        {
-            get { return this.GetDescription(); }
-        }
-
-        /// <summary>
         /// Gets the value set to be returned from the call.
         /// </summary>
         public object ReturnValue
@@ -109,7 +100,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// </returns>
         public override string ToString()
         {
-            return this.Description;
+            return this.GetDescription();
         }
     }
 }
