@@ -186,6 +186,7 @@
     <Compile Include="Configuration\IRepeatConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\IRepeatSpecification.cs" />
     <Compile Include="Configuration\IReturnValueArgumentValidationConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -476,7 +477,6 @@
     <Compile Include="IoC\Module.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IRepeatSpecification.cs" />
     <Compile Include="OrderedAssertion.cs" />
     <Compile Include="CompletedFakeObjectCallExtensions.cs" />
     <Compile Include="FakeConfigurator.cs" />

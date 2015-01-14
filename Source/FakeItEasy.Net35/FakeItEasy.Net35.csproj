@@ -165,6 +165,9 @@
     <Compile Include="..\FakeItEasy\Configuration\IRepeatConfiguration.cs">
       <Link>Configuration\IRepeatConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IRepeatSpecification.cs">
+      <Link>Configuration\IRepeatSpecification.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IReturnValueArgumentValidationConfiguration.cs">
       <Link>Configuration\IReturnValueArgumentValidationConfiguration.cs</Link>
     </Compile>
@@ -587,9 +590,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\IOutputWriter.cs">
       <Link>IOutputWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\IRepeatSpecification.cs">
-      <Link>IRepeatSpecification.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
       <Link>MethodBaseExtensions.cs</Link>
