@@ -33,7 +33,7 @@
 
             var arguments = new ArgumentCollection(new object[] { "foo", "bar" }, method);
 
-            arguments.ArgumentNames.ShouldBeEquivalentTo(new[] { "argument", "argument2" });
+            arguments.ArgumentNames.Should().Equal(new[] { "argument", "argument2" });
         }
 
         [Test]
@@ -92,7 +92,7 @@
                 found.Add(enumerator.Current);
             }
 
-            found.ShouldBeEquivalentTo(new object[] { 1, 2 });
+            found.Should().Equal(new object[] { 1, 2 });
         }
 
         [Test]
@@ -100,7 +100,7 @@
         {
             var arguments = this.CreateFakeArgumentList(1, 2, 3);
 
-            arguments.ShouldBeEquivalentTo(new[] { 1, 2, 3 });
+            arguments.Should().Equal(new[] { 1, 2, 3 });
         }
 
         [Test]
