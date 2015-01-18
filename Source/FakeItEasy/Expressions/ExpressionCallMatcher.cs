@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Text;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions.ArgumentConstraints;
 
@@ -162,11 +163,6 @@
         private class PredicatedArgumentConstraint
             : IArgumentConstraint
         {
-            public string ConstraintDescription
-            {
-                get { return this.ToString(); }
-            }
-
             public bool IsValid(object argument)
             {
                 return true;
@@ -179,7 +175,7 @@
 
             public void WriteDescription(IOutputWriter writer)
             {
-                writer.Write(this.ConstraintDescription);
+                writer.Write(this.ToString());
             }
         }
     }

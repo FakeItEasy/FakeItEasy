@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System.Reflection;
+    using FakeItEasy.Configuration;
 
     /// <summary>
     /// Represents a call to a fake object.

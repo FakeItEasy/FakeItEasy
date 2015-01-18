@@ -1,8 +1,7 @@
-﻿namespace FakeItEasy
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using FakeItEasy.Core;
 
     /// <summary>
     /// A class exposing an event handler to attach to an event of a faked object

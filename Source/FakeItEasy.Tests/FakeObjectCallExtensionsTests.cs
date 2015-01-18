@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests
     using System.Collections.Generic;
     using System.Linq;
 
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FluentAssertions;
     using NUnit.Framework;
@@ -15,7 +16,7 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var call = A.Fake<IFakeObjectCall>();
-            var arguments = new ArgumentCollection(new object[] { 1, 2 }, new string[] { "argument1", "argument2" });
+            var arguments = new ArgumentCollection(new object[] { 1, 2 }, new[] { "argument1", "argument2" });
             A.CallTo(() => call.Arguments).Returns(arguments);
 
             // Act
@@ -30,7 +31,7 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var call = A.Fake<IFakeObjectCall>();
-            var arguments = new ArgumentCollection(new object[] { 1, 2 }, new string[] { "argument1", "argument2" });
+            var arguments = new ArgumentCollection(new object[] { 1, 2 }, new[] { "argument1", "argument2" });
             A.CallTo(() => call.Arguments).Returns(arguments);
 
             // Act
@@ -130,7 +131,7 @@ namespace FakeItEasy.Tests
             var calls = A.CollectionOfFake<IFakeObjectCall>(2);
 
             var callWriter = A.Fake<CallWriter>();
-            this.StubResolve<CallWriter>(callWriter);
+            this.StubResolve(callWriter);
 
             var writer = A.Dummy<IOutputWriter>();
 
@@ -160,7 +161,7 @@ namespace FakeItEasy.Tests
             var calls = A.CollectionOfFake<IFakeObjectCall>(2);
 
             var callWriter = A.Fake<CallWriter>();
-            this.StubResolve<CallWriter>(callWriter);
+            this.StubResolve(callWriter);
 
             // Act
             calls.WriteToConsole();
@@ -176,7 +177,7 @@ namespace FakeItEasy.Tests
             var calls = A.CollectionOfFake<IFakeObjectCall>(2);
 
             var callWriter = A.Fake<CallWriter>();
-            this.StubResolve<CallWriter>(callWriter);
+            this.StubResolve(callWriter);
 
             // Act
             calls.WriteToConsole();

@@ -1,10 +1,11 @@
-﻿namespace FakeItEasy.Tests
+﻿namespace FakeItEasy.Tests.Configuration
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -32,7 +33,7 @@
 
             var arguments = new ArgumentCollection(new object[] { "foo", "bar" }, method);
 
-            Assert.That(arguments.ArgumentNames.SequenceEqual(new string[] { "argument", "argument2" }));
+            arguments.ArgumentNames.Should().Equal(new[] { "argument", "argument2" });
         }
 
         [Test]
@@ -50,7 +51,7 @@
         {
             var arguments = this.CreateFakeArgumentList("foo", "bar");
 
-            Assert.That(arguments.Get<string>(1), Is.EqualTo("bar"));
+            arguments.Get<string>(1).Should().Be("bar");
         }
 
         [Test]
@@ -58,7 +59,7 @@
         {
             var arguments = this.CreateFakeArgumentList(new[] { "foo", "bar" }, 1, 2);
 
-            Assert.That(arguments.Get<int>("bar"), Is.EqualTo(2));
+            arguments.Get<int>("bar").Should().Be(2);
         }
 
         [Test]
@@ -66,8 +67,9 @@
         {
             var arguments = this.CreateFakeArgumentList(new[] { "foo", "bar" }, 1, 2);
 
-            Assert.Throws<ArgumentException>(() =>
-                arguments.Get<int>("unknown"));
+            var exception = Record.Exception(() => arguments.Get<int>("unknown"));
+
+            exception.Should().BeAnExceptionOfType<ArgumentException>();
         }
 
         [Test]
@@ -75,7 +77,7 @@
         {
             var arguments = this.CreateFakeArgumentList(new[] { "foo", "bar" }, 1, 2);
 
-            Assert.That(arguments.Count, Is.EqualTo(2));
+            arguments.Count.Should().Be(2);
         }
 
         [Test]
@@ -90,7 +92,7 @@
                 found.Add(enumerator.Current);
             }
 
-            Assert.That(found, Is.EquivalentTo(new object[] { 1, 2 }));
+            found.Should().Equal(new object[] { 1, 2 });
         }
 
         [Test]
@@ -98,22 +100,24 @@
         {
             var arguments = this.CreateFakeArgumentList(1, 2, 3);
 
-            Assert.That(arguments, Is.EquivalentTo(new[] { 1, 2, 3 }));
+            arguments.Should().Equal(new[] { 1, 2, 3 });
         }
 
         [Test]
-        public void Should_be_serializable()
+        public void Should_be_serializable_when_arguments_are_equatable()
         {
             // Arrange
-            var collection = new ArgumentCollection(new object[] { new object() }, typeof(object).GetMethod("Equals", new[] { typeof(object) }));
+            object collection = new ArgumentCollection(
+                new object[] { "first argument" },
+                typeof(string).GetMethod("Equals", new[] { typeof(string) }));
 
             // Act
 
             // Assert
-            Assert.That(collection, Is.BinarySerializable);
+            collection.Should().BeBinarySerializable();
         }
 
-        private ArgumentCollection CreateFakeArgumentList(string[] argumentNames, params object[] arguments)
+        private ArgumentCollection CreateFakeArgumentList(IEnumerable<string> argumentNames, params object[] arguments)
         {
             return new ArgumentCollection(arguments, argumentNames);
         }

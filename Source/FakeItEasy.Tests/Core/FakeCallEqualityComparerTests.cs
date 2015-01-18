@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reflection;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -55,7 +56,7 @@
         public void Should_return_false_when_argument_differs()
         {
             // Arrang
-            A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new object[] { new object() }, EqualsMethod));
+            A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new[] { new object() }, EqualsMethod));
 
             // Act
             var result = this.comparer.Equals(this.firstCall, this.secondCall);

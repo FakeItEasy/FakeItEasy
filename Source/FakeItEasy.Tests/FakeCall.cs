@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     /// <summary>

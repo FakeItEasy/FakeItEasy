@@ -69,9 +69,6 @@
     <Compile Include="..\FakeItEasy\A.of.T.cs">
       <Link>A.of.T.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ArgumentCollection.cs">
-      <Link>ArgumentCollection.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\ArgumentConstraintManagerExtensions.cs">
       <Link>ArgumentConstraintManagerExtensions.cs</Link>
     </Compile>
@@ -95,6 +92,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallConfiguration.cs">
       <Link>Configuration\AnyCallConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\ArgumentCollection.cs">
+      <Link>Configuration\ArgumentCollection.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\BuildableCallRule.cs">
       <Link>Configuration\BuildableCallRule.cs</Link>
@@ -164,6 +164,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IRepeatConfiguration.cs">
       <Link>Configuration\IRepeatConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IRepeatSpecification.cs">
+      <Link>Configuration\IRepeatSpecification.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IReturnValueArgumentValidationConfiguration.cs">
       <Link>Configuration\IReturnValueArgumentValidationConfiguration.cs</Link>
@@ -245,6 +248,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\DelegateFakeObjectContainer.cs">
       <Link>Core\DelegateFakeObjectContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DelegateRaiser.cs">
+      <Link>Core\DelegateRaiser.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\DynamicContainer.cs">
       <Link>Core\DynamicContainer.cs</Link>
@@ -380,6 +386,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserterFactory.cs">
       <Link>Core\OrderedFakeAsserterFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\Raise.of.TEventArgs.cs">
+      <Link>Core\Raise.of.TEventArgs.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\TypeCatalogue.cs">
       <Link>Core\TypeCatalogue.cs</Link>
@@ -582,9 +591,6 @@
     <Compile Include="..\FakeItEasy\IOutputWriter.cs">
       <Link>IOutputWriter.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\IRepeatSpecification.cs">
-      <Link>IRepeatSpecification.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
       <Link>MethodBaseExtensions.cs</Link>
     </Compile>
@@ -605,12 +611,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Raise.of.TEventArgs.cs">
-      <Link>Raise.of.TEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\DelegateRaiser.cs">
-      <Link>DelegateRaiser.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Recorders.cs">
       <Link>Recorders.cs</Link>

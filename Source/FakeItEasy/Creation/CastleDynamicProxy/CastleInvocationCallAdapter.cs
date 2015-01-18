@@ -4,6 +4,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System.Diagnostics;
     using System.Reflection;
     using Castle.DynamicProxy;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     /// <summary>
@@ -26,15 +27,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             this.Method = invocation.Method;
 
             this.Arguments = new ArgumentCollection(invocation.Arguments, this.Method);
-        }
-
-        /// <summary>
-        /// Gets a human readable description of the call.
-        /// </summary>
-        /// <value></value>
-        public string Description
-        {
-            get { return this.GetDescription(); }
         }
 
         /// <summary>
@@ -108,7 +100,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// </returns>
         public override string ToString()
         {
-            return this.Description;
+            return this.GetDescription();
         }
     }
 }

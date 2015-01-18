@@ -1,10 +1,11 @@
 ﻿namespace FakeItEasy.Tests.Expressions
 {
     using System;
-    using System.Linq.Expressions;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -23,7 +24,7 @@
         {
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar());
 
-            var rule = this.CreateRule<IFoo>();
+            var rule = this.CreateRule();
 
             rule.IsApplicableTo(call);
 
@@ -38,11 +39,11 @@
 
             A.CallTo(() => this.callMatcher.Matches(call)).Returns(callMatcherResult);
 
-            var rule = this.CreateRule<IFoo>();
+            var rule = this.CreateRule();
 
             var result = rule.IsApplicableTo(call);
 
-            Assert.That(result, Is.EqualTo(callMatcherResult));
+            result.Should().Be(callMatcherResult);
         }
 
         [Test]
@@ -58,21 +59,21 @@
             IInterceptedFakeObjectCall callPassedToApplicator = null;
             var callPassedToRule = FakeCall.Create<IFoo>("Bar");
 
-            var rule = this.CreateRule<IFoo>();
+            var rule = this.CreateRule();
             rule.Applicator = x => callPassedToApplicator = x;
 
             rule.Apply(callPassedToRule);
 
-            Assert.That(callPassedToApplicator, Is.SameAs(callPassedToRule));
+            callPassedToApplicator.Should().BeSameAs(callPassedToRule);
         }
 
         [Test]
         public void NumberOfTimesToCall_should_be_settable_and_gettable()
         {
-            var rule = this.CreateRule<IFoo>();
+            var rule = this.CreateRule();
             rule.NumberOfTimesToCall = 10;
 
-            Assert.That(rule.NumberOfTimesToCall, Is.EqualTo(10));
+            rule.NumberOfTimesToCall.Should().Be(10);
         }
 
         [Test]
@@ -80,9 +81,9 @@
         {
             A.CallTo(() => this.callMatcher.DescriptionOfMatchingCall).Returns("foo");
 
-            var rule = this.CreateRule<IFoo>();
+            var rule = this.CreateRule();
 
-            Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("foo"));
+            rule.DescriptionOfValidCall.Should().Be("foo");
         }
 
         [Test]
@@ -90,14 +91,14 @@
         {
             Func<ArgumentCollection, bool> predicate = x => true;
 
-            var rule = this.CreateRule<IFoo>();
+            var rule = this.CreateRule();
 
             rule.UsePredicateToValidateArguments(predicate);
 
             A.CallTo(() => this.callMatcher.UsePredicateToValidateArguments(predicate)).MustHaveHappened();
         }
 
-        private ExpressionCallRule CreateRule<T>()
+        private ExpressionCallRule CreateRule()
         {
             return new ExpressionCallRule(this.callMatcher) { Applicator = x => { } };
         }

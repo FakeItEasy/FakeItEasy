@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests.TestHelpers
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
 
@@ -14,66 +15,30 @@ namespace FakeItEasy.Tests.TestHelpers
             return expression;
         }
 
-        public static Expression<Func<T, TReturn>> CreateExpression<T, TReturn>(Expression<Func<T, TReturn>> expression)
-        {
-            return expression;
-        }
-
-        public static ExpressionCallRule CreateRule<TFake, TReturn>(Expression<Func<TFake, TReturn>> expression)
-        {
-            return GetCallRuleFactory().Invoke(expression);
-        }
-
         public static ExpressionCallRule CreateRule<TFake>(Expression<Action<TFake>> expression)
         {
             return GetCallRuleFactory().Invoke(expression);
         }
 
-        public static ICallMatcher CreateMatcher<TFake, TReturn>(Expression<Func<TFake, TReturn>> expression)
+        public static IInterceptedFakeObjectCall CreateFakeCall<TFake, TReturn>(Expression<Func<TFake, TReturn>> callSpecification)
         {
-            return ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>().CreateCallMathcer(expression);
-        }
-
-        public static ICallMatcher CreateMatcher<TFake>(Expression<Action<TFake>> expression)
-        {
-            return ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>().CreateCallMathcer(expression);
-        }
-
-        public static IInterceptedFakeObjectCall CreateFakeCall<TFake, Treturn>(Expression<Func<TFake, Treturn>> callSpecification)
-        {
-            return CreateFakeCall(A.Fake<TFake>(), (LambdaExpression)callSpecification);
+            return CreateFakeCall(A.Fake<TFake>(), callSpecification);
         }
 
         public static IInterceptedFakeObjectCall CreateFakeCall<TFake>(Expression<Action<TFake>> callSpecification)
         {
-            return CreateFakeCall(A.Fake<TFake>(), (LambdaExpression)callSpecification);
-        }
-
-        public static Expression GetArgumentExpression<T>(Expression<Action<T>> callSpecification, int argumentIndex)
-        {
-            return GetArgumentExpression((LambdaExpression)callSpecification, argumentIndex);
-        }
-
-        public static Expression GetArgumentExpression<T, TReturn>(Expression<Func<T, TReturn>> callSpecification, int argumentIndex)
-        {
-            return GetArgumentExpression((LambdaExpression)callSpecification, argumentIndex);
+            return CreateFakeCall(A.Fake<TFake>(), callSpecification);
         }
 
         public static MethodInfo GetMethod<T>(Expression<Action<T>> methodAccess)
         {
-            var methodExpression = methodAccess.Body as MethodCallExpression;
+            var methodExpression = (MethodCallExpression)methodAccess.Body;
             return methodExpression.Method;
         }
 
         private static ExpressionCallRule.Factory GetCallRuleFactory()
         {
             return ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>();
-        }
-
-        private static Expression GetArgumentExpression(LambdaExpression callSpecification, int argumentIndex)
-        {
-            var methodExpression = callSpecification.Body as MethodCallExpression;
-            return methodExpression.Arguments[argumentIndex];
         }
 
         private static IInterceptedFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)
@@ -106,8 +71,8 @@ namespace FakeItEasy.Tests.TestHelpers
                 return methodExpression.Method;
             }
 
-            var memberExpression = callSpecification.Body as MemberExpression;
-            var property = memberExpression.Member as PropertyInfo;
+            var memberExpression = (MemberExpression)callSpecification.Body;
+            var property = (PropertyInfo)memberExpression.Member;
             return property.GetGetMethod(true);
         }
 
@@ -115,8 +80,8 @@ namespace FakeItEasy.Tests.TestHelpers
         {
             var methodCall = callSpecification.Body as MethodCallExpression;
 
-            MethodInfo method = null;
-            object[] arguments = null;
+            MethodInfo method;
+            object[] arguments;
 
             if (methodCall != null)
             {
@@ -127,8 +92,8 @@ namespace FakeItEasy.Tests.TestHelpers
             }
             else
             {
-                var propertyCall = callSpecification.Body as MemberExpression;
-                var property = propertyCall.Member as PropertyInfo;
+                var propertyCall = (MemberExpression)callSpecification.Body;
+                var property = (PropertyInfo)propertyCall.Member;
 
                 method = property.GetGetMethod(true);
                 arguments = new object[] { };

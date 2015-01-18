@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Reflection.Emit;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     internal class DelegateProxyGenerator
@@ -73,7 +74,7 @@
         }
 
         private static Expression CreateBodyExpression(
-            MethodInfo delegateMethod, DelegateCallInterceptedEventRaiser eventRaiser, Expression[] parameterExpressions)
+            MethodInfo delegateMethod, DelegateCallInterceptedEventRaiser eventRaiser, IEnumerable<Expression> parameterExpressions)
         {
             var parameterExpressionsCastToObject =
                 parameterExpressions.Select(x => Expression.Convert(x, typeof(object))).Cast<Expression>().ToArray();
@@ -103,9 +104,9 @@
                 this.fakeCallProcessorProvider = fakeCallProcessorProvider;
             }
 
-            public MethodInfo Method { get; set; }
+            public MethodInfo Method { private get; set; }
 
-            public Delegate Instance { get; set; }
+            public Delegate Instance { private get; set; }
 
             // ReSharper disable UnusedMember.Local
             public object Raise(object[] arguments)

@@ -3,9 +3,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.SelfInitializedFakes;
     using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -17,11 +19,6 @@
         private MethodInfo TypeWithOutAndRefFooMethod
         {
             get { return typeof(IOutputAndRef).GetMethod("Foo"); }
-        }
-
-        private MethodInfo TypeWithOutAndRefBarMethod
-        {
-            get { return typeof(IOutputAndRef).GetMethod("Bar"); }
         }
 
         [SetUp]
@@ -81,7 +78,7 @@
             var recorder = this.CreateRecorder();
 
             // Assert
-            Assert.That(recorder.IsRecording);
+            recorder.IsRecording.Should().BeTrue();
         }
 
         [Test]
@@ -94,12 +91,12 @@
             var recorder = this.CreateRecorder();
 
             // Assert
-            Assert.That(recorder.IsRecording, Is.False);
+            recorder.IsRecording.Should().BeFalse();
         }
 
         [Test]
         [SetCulture("en-US")]
-        public void ApplyNext_should_throw_when_all_calls_has_been_applied()
+        public void ApplyNext_should_throw_when_all_calls_have_been_applied()
         {
             // Arrange
             var method = ExpressionHelper.GetMethod<IFoo>(x => x.Bar());
@@ -107,15 +104,16 @@
 
             var call = this.CreateFakeCall(method);
 
-            // Act
             var recorder = this.CreateRecorder();
             recorder.ApplyNext(call);
 
-            // Assert
-            var thrown = Assert.Throws<RecordingException>(() =>
-                recorder.ApplyNext(call));
+            // Act
+            var exception = Record.Exception(() => recorder.ApplyNext(call));
 
-            Assert.That(thrown.Message, Is.EqualTo("All the recorded calls has been applied, the recorded sequence is no longer valid."));
+            // Assert
+            exception.Should()
+                .BeAnExceptionOfType<RecordingException>()
+                .WithMessage("All the recorded calls has been applied, the recorded sequence is no longer valid.");
         }
 
         [Test]
@@ -125,14 +123,15 @@
             // Arrange
             this.recordedCalls.Add(new CallData(ExpressionHelper.GetMethod<IFoo>(x => x.Baz()), new object[] { }, null));
             var call = this.CreateFakeCall(ExpressionHelper.GetMethod<IFoo>(x => x.Bar()));
-
-            // Act
             var recorder = this.CreateRecorder();
 
+            // Act
+            var exception = Record.Exception(() => recorder.ApplyNext(call));
+
             // Assert
-            var thrown = Assert.Throws<RecordingException>(() =>
-                recorder.ApplyNext(call));
-            Assert.That(thrown.Message, Is.StringStarting("The method of the call did not match the method of the recorded call, the recorded sequence is no longer valid."));
+            exception.Should()
+                .BeAnExceptionOfType<RecordingException>()
+                .WithMessage("The method of the call did not match the method of the recorded call, the recorded sequence is no longer valid.*");
         }
 
         [Test]
@@ -153,11 +152,11 @@
         }
 
         [Test]
-        public void Dispose_should_call_save_with_empty_collection_when_no_calls_has_been_recorded_and_no_previous_recording_exists()
+        public void Dispose_should_call_save_with_empty_collection_when_no_calls_have_been_recorded_and_no_previous_recording_exists()
         {
             A.CallTo(() => this.callStorage.Load()).Returns(null);
 
-            using (var recorder = this.CreateRecorder())
+            using (this.CreateRecorder())
             {
             }
 
@@ -183,11 +182,6 @@
             return callData.Method.Equals(recordedCall.Method)
                 && callData.OutputArguments.SequenceEqual(new object[] { 3, "4" })
                 && callData.ReturnValue.Equals(10);
-        }
-
-        public abstract class TypeThatTakesCollectionArgument
-        {
-            public abstract int Foo(IEnumerable<object> argument);
         }
     }
 }

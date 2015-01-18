@@ -85,6 +85,7 @@
     <Compile Include="ArgumentConstraintManagerExtensions\NullCheckedMatchesConstraint.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\StringEndsWithTests.cs" />
     <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
+    <Compile Include="Configuration\ArgumentCollectionTests.cs" />
     <Compile Include="Core\FakeManagerProviderTests.cs" />
     <Compile Include="DefaultBootstrapperTests.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensionsTests.cs" />
@@ -198,7 +199,6 @@
     <Compile Include="CustomArgumentConstraints.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapterTests.cs" />
     <Compile Include="Core\WrappedObjectRuleTests.cs" />
-    <Compile Include="ArgumentCollectionTests.cs" />
     <Compile Include="ATests.cs" />
     <Compile Include="Configuration\BuildableCallRuleTests.cs" />
     <Compile Include="Configuration\RuleBuilderTests.cs" />

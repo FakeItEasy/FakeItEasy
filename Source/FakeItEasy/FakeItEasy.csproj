@@ -99,7 +99,7 @@
     <Compile Include="IBootstrapper.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
-    <Compile Include="DelegateRaiser.cs" />
+    <Compile Include="Core\DelegateRaiser.cs" />
     <Compile Include="TaskHelper.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="StringBuilderExtensions.cs" />
@@ -118,7 +118,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
-    <Compile Include="Raise.of.TEventArgs.cs" />
+    <Compile Include="Core\Raise.of.TEventArgs.cs" />
     <Compile Include="Fake.of.T.cs" />
     <Compile Include="Core\TypeCatalogue.cs" />
     <Compile Include="Configuration\AnyCallConfiguration.cs">
@@ -186,6 +186,7 @@
     <Compile Include="Configuration\IRepeatConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\IRepeatSpecification.cs" />
     <Compile Include="Configuration\IReturnValueArgumentValidationConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -476,7 +477,6 @@
     <Compile Include="IoC\Module.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IRepeatSpecification.cs" />
     <Compile Include="OrderedAssertion.cs" />
     <Compile Include="CompletedFakeObjectCallExtensions.cs" />
     <Compile Include="FakeConfigurator.cs" />
@@ -492,7 +492,7 @@
     <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="ExpectationException.cs" />
     <Compile Include="ValueProducerSignatureHelper.cs" />
-    <Compile Include="ArgumentCollection.cs" />
+    <Compile Include="Configuration\ArgumentCollection.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Fake.cs" />
     <Compile Include="Raise.cs" />
