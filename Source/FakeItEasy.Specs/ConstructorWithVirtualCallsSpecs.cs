@@ -121,8 +121,9 @@
                     "  Below is a list of reasons for failure per attempted constructor:\r\n" +
                     "    No constructor arguments failed:\r\n" +
                     "      No usable default constructor was found on the type FakeItEasy.Specs.SimpleVirtualCallInConstructor.\r\n" +
-                    "      An exception was caught during this call. Its message was:\r\n" +
-                    "      Exception has been thrown by the target of an invocation.\r\n\r\n");
+                    "      An exception of type FakeItEasy.ExpectationException was caught during this call. Its message was:\r\n" +
+                    "      Call to non configured method \"VirtualMethod\" of strict fake.\r\n" + 
+                    "*");
     }
 
     // This spec proves that we can configure methods of a strict fake and it applies to calls in the constructor (the 
