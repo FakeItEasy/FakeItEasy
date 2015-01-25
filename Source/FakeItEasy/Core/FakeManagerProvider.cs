@@ -56,11 +56,6 @@ namespace FakeItEasy.Core
             {
                 this.EnsureInitialized(proxy);
 
-                if (!ReferenceEquals(this.initializedFakeManager.Object, proxy))
-                {
-                    throw new ArgumentException(ExceptionMessages.FakeManagerWasInitializedWithDifferentProxyMessage, "proxy");
-                }
-
                 return this.initializedFakeManager;
             }
         }
