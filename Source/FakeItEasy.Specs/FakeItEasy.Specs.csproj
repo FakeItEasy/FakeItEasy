@@ -67,6 +67,8 @@
     <Compile Include="AsyncAwaitSpecs.cs" />
     <Compile Include="ConfigurationSpecs.cs" />
     <Compile Include="ConstructorWithVirtualCallsSpecs.cs" />
+    <Compile Include="DisposableSpecs.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="OrderedCallMatchingSpecs.cs" />
     <Compile Include="FakingInternalsSpecs.cs" />
     <Compile Include="EventRaisingSpecs.cs" />
