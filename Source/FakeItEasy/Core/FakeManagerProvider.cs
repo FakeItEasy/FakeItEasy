@@ -99,9 +99,9 @@ namespace FakeItEasy.Core
                 this.wrapperConfigurer.ConfigureFakeToWrap(proxy, this.fakeOptions.WrappedInstance, this.fakeOptions.SelfInitializedFakeRecorder);
             }
 
-            foreach (var onFakeConfigurationAction in this.fakeOptions.OnFakeConfigurationActions)
+            foreach (var fakeConfigurationAction in this.fakeOptions.FakeConfigurationActions)
             {
-                onFakeConfigurationAction(proxy);
+                fakeConfigurationAction(proxy);
             }
         }
     }

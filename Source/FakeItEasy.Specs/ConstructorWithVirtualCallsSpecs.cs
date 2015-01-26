@@ -45,7 +45,7 @@
 
         Because of = () => 
             fake = A.Fake<SimpleVirtualCallInConstructor>(
-                    o => o.OnFakeConfiguration(
+                    o => o.ConfigureFake(
                         f => A.CallTo(() => f.VirtualMethod(A<string>._)).Returns("configured value in fake options")));
 
         It should_return_the_configured_value_inside_and_outside_of_the_constructor_call = () =>
@@ -137,7 +137,7 @@
                     o =>
                     {
                         o.Strict();
-                        o.OnFakeConfiguration(f => A.CallTo(() => f.VirtualMethod(A<string>._)).Returns("configured value of strict fake"));
+                        o.ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._)).Returns("configured value of strict fake"));
                     });
 
         It should_return_the_configured_value_inside_and_outside_of_the_constructor_call = () =>
@@ -218,37 +218,31 @@
     }
 
     // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
-    public class when_faking_a_class_with_a_failing_default_constructor_which_calls_virtual_member
+    public class when_faking_a_class_whose_first_constructor_fails
     {
         static Action<FakedClass> onFakeConfiguration;
-        static Action<FakedClass> onFakeCreated;
         static FakedClass fake;
 
         Establish context = () =>
         {
             onFakeConfiguration = A.Fake<Action<FakedClass>>();
-            onFakeCreated = A.Fake<Action<FakedClass>>();
         };
 
         Because of = () =>
             fake = A.Fake<FakedClass>(
                     o =>
                     {
-                        o.OnFakeConfiguration(onFakeConfiguration);
-                        o.OnFakeCreated(onFakeCreated);
+                        o.ConfigureFake(onFakeConfiguration);
                     });
 
-        It should_have_instantiated_the_fake_with_the_second_constructor = () =>
+        It should_instantiate_the_fake_with_the_second_constructor = () =>
             fake.SecondConstructorCalled.Should().BeTrue();
 
-        It should_use_a_fake_manager_which_did_not_receive_the_default_constructor_call = () =>
+        It should_use_a_fake_manager_which_did_not_receive_the_first_constructor_call = () =>
             fake.DefaultConstructorCalled.Should().BeFalse("because the default constructor was called on a *different* fake object");
 
-        It should_call_OnFakeConfiguration_for_both_fakes = () =>
+        It should_call_fake_configuration_actions_for_each_constructor = () =>
             A.CallTo(() => onFakeConfiguration(A<FakedClass>._)).MustHaveHappened(Repeated.Exactly.Twice);
-
-        It should_call_OnFakeCreated_only_for_the_second_one = () =>
-            A.CallTo(() => onFakeCreated(fake)).MustHaveHappened(Repeated.Exactly.Once);
 
         public class FakedClass
         {

@@ -64,7 +64,7 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var options = new FakeOptions
             {
-                OnFakeConfigurationActions = new Action<object>[] { },
+                FakeConfigurationActions = new Action<object>[] { },
             };
 
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
@@ -93,7 +93,7 @@ namespace FakeItEasy.Tests.Creation
 
             var options = new FakeOptions
             {
-                OnFakeConfigurationActions = new Action<object>[] { },
+                FakeConfigurationActions = new Action<object>[] { },
             };
 
             // Act

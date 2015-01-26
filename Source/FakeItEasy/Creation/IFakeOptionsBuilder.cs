@@ -62,15 +62,10 @@ namespace FakeItEasy.Creation
         /// <returns>Options object.</returns>
         /// <remarks>
         /// Note that this method might be called when the fake is not be fully constructed yet. Use the fake instance to set up
-        /// behavior, but to not rely on its state.
+        /// behavior, but to not rely on its state. Also, if FakeItEasy has to try multiple constructors in order
+        /// to create the fake (for example, because one or more constructors throw exceptions and must be bypassed),
+        /// <paramref name="action"/> will be called more than once, so it should be side effect-free.
         /// </remarks>
-        IFakeOptionsBuilder<T> OnFakeConfiguration(Action<T> action);
-
-        /// <summary>
-        /// Specifies an action that should be run over the fake object after it has been successfully created.
-        /// </summary>
-        /// <param name="action">An action to perform.</param>
-        /// <returns>Options object.</returns>
-        IFakeOptionsBuilder<T> OnFakeCreated(Action<T> action);
+        IFakeOptionsBuilder<T> ConfigureFake(Action<T> action);
     }
 }

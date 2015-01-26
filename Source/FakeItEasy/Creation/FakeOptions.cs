@@ -11,8 +11,7 @@ namespace FakeItEasy.Creation
         public FakeOptions()
         {
             this.AdditionalInterfacesToImplement = Enumerable.Empty<Type>();
-            this.OnFakeConfigurationActions = new List<Action<object>>();
-            this.OnFakeCreatedActions = new List<Action<object>>();
+            this.FakeConfigurationActions = new List<Action<object>>();
             this.AdditionalAttributes = Enumerable.Empty<CustomAttributeBuilder>();
         }
         
@@ -29,9 +28,7 @@ namespace FakeItEasy.Creation
 
         public IEnumerable<Type> AdditionalInterfacesToImplement { get; set; }
 
-        public ICollection<Action<object>> OnFakeConfigurationActions { get; set; }
-
-        public ICollection<Action<object>> OnFakeCreatedActions { get; set; }
+        public ICollection<Action<object>> FakeConfigurationActions { get; set; }
 
         public IEnumerable<CustomAttributeBuilder> AdditionalAttributes { get; set; } 
     }

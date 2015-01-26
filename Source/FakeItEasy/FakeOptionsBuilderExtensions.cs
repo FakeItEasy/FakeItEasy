@@ -26,7 +26,7 @@ namespace FakeItEasy
                     throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(call.Method.Name));
                 };
 
-            return options.OnFakeConfiguration(fake => A.CallTo(fake).Invokes(thrower));
+            return options.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(options, "options");
 
-            return options.OnFakeConfiguration(fake => A.CallTo(fake)
+            return options.ConfigureFake(fake => A.CallTo(fake)
                                                   .Where(call => !call.Method.IsAbstract)
                                                   .CallsBaseMethod());
         }

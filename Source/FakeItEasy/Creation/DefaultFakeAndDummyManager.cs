@@ -31,11 +31,7 @@ namespace FakeItEasy.Creation
 
         public object CreateFake(Type typeOfFake, FakeOptions options)
         {
-            var result = this.fakeCreator.CreateFake(typeOfFake, options, this.session, throwOnFailure: true);
-
-            InvokeOnFakeCreatedActions(result, options);
-
-            return result;
+            return this.fakeCreator.CreateFake(typeOfFake, options, this.session, throwOnFailure: true);
         }
 
         public bool TryCreateDummy(Type typeOfDummy, out object result)
@@ -52,16 +48,7 @@ namespace FakeItEasy.Creation
                 return false;
             }
 
-            InvokeOnFakeCreatedActions(result, options);
             return true;
-        }
-
-        private static void InvokeOnFakeCreatedActions(object fake, FakeOptions options)
-        {
-            foreach (var a in options.OnFakeCreatedActions)
-            {
-                a.Invoke(fake);
-            }
         }
     }
 }
