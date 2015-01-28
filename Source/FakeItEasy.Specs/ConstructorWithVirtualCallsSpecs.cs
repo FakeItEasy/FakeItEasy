@@ -55,6 +55,18 @@
         };
     }
 
+    public class when_configuring_a_method_called_by_a_constructor_that_is_also_configured_by_a_fake_configurator
+    {
+        static RobotRunsAmokEvent fake = null;
+
+        Because of = () => fake = A.Fake<RobotRunsAmokEvent>(
+            options => options.ConfigureFake(
+                f => A.CallTo(() => f.CalculateTimestamp()).Returns(new DateTime(2000, 1, 1, 0, 0, 0))));
+
+        It should_use_the_configured_behavior_from_the_fake_options =
+            () => fake.Timestamp.Should().Be(new DateTime(2000, 1, 1, 0, 0, 0));
+    }
+
     public class when_faking_a_class_which_calls_virtual_member_in_constructor_within_fake_scope_which_configures_the_fake
     {
         static IFakeObjectContainer fakeObjectContainer;
@@ -160,6 +172,48 @@
             fake.VirtualMethodValueDuringConstructorCall.Should().Be("implementation value");
             fake.VirtualMethod(null).Should().Be("implementation value");
         };
+    }
+
+    public class when_wrapping_an_object_and_configuring_a_method_called_by_constructor
+    {
+        static SimpleVirtualCallInConstructor fake;
+
+        Because of = () =>
+            fake = A.Fake<SimpleVirtualCallInConstructor>(
+                o => o
+                    .Wrapping(new SimpleVirtualCallInConstructor())
+                    .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._))
+                        .Returns("configured in test")));
+
+        It should_use_the_ConfigureFake_behavior =
+            () => fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured in test");
+    }
+
+    public class when_configuring_a_method_called_by_constructor_and_wrapping_an_object
+    {
+        static SimpleVirtualCallInConstructor fake;
+
+        Because of = () =>
+            fake = A.Fake<SimpleVirtualCallInConstructor>(
+                o => o
+                    .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._))
+                        .Returns("configured in test"))
+                    .Wrapping(new SimpleVirtualCallInConstructor()));
+
+        It should_use_the_configured_behavior =
+            () => fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured in test");
+    }
+
+    public class when_wrapping_an_object_with_a_fake_that_has_a_fake_configurator
+    {
+        static RobotRunsAmokEvent fake;
+
+        Because of = () =>
+            fake = A.Fake<RobotRunsAmokEvent>(
+                o => o.Wrapping(new RobotRunsAmokEvent()));
+
+        private It should_delegate_to_the_wrapped_obejct =
+            () => fake.Timestamp.Should().Be(DomainEvent.DefaultTimestamp);
     }
 
     public class when_faking_a_class_which_calls_virtual_property_members_in_constructor
