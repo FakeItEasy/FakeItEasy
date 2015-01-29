@@ -5,7 +5,7 @@
     /// <summary>
     /// Provides extension methods for enumerable collections of <see cref="string"/>.
     /// </summary>
-    internal static class StringEnumerableExtensions
+    public static class StringEnumerableExtensions
     {
         /// <summary>
         /// Joins a number of individual lines with Windows-style newline characters

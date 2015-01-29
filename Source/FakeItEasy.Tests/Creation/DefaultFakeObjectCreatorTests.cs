@@ -7,6 +7,7 @@ namespace FakeItEasy.Tests.Creation
     using System.Reflection.Emit;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -47,7 +48,7 @@ namespace FakeItEasy.Tests.Creation
             var createdFake = this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
 
             // Assert
-            Assert.That(createdFake, Is.SameAs(proxy));
+            createdFake.Should().BeSameAs(proxy);
 
             A.CallTo(() => this.proxyGenerator.GenerateProxy(
                     typeof(IFoo),
@@ -86,8 +87,8 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue<int>(session, 1);
-            StubSessionWithDummyValue<string>(session, "dummy");
+            StubSessionWithDummyValue(session, 1);
+            StubSessionWithDummyValue(session, "dummy");
 
             this.StubProxyGeneratorToFail();
 
@@ -133,7 +134,7 @@ namespace FakeItEasy.Tests.Creation
             var createdFake = this.fakeObjectCreator.CreateFake(typeof(IFoo), FakeOptions.Empty, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
 
             // Assert
-            Assert.That(createdFake, Is.Null);
+            createdFake.Should().BeNull();
         }
 
         [Test]
@@ -156,8 +157,8 @@ namespace FakeItEasy.Tests.Creation
             {
                 // Arrange
                 var session = A.Fake<IDummyValueCreationSession>();
-                StubSessionWithDummyValue<int>(session, 1);
-                StubSessionWithDummyValue<string>(session, "dummy");
+                StubSessionWithDummyValue(session, 1);
+                StubSessionWithDummyValue(session, "dummy");
 
                 this.StubProxyGeneratorToFail();
 
@@ -187,7 +188,7 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue<int>(session, 1);
+            StubSessionWithDummyValue(session, 1);
 
             this.StubProxyGeneratorToFail();
 
@@ -210,7 +211,7 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue<int>(session, 1);
+            StubSessionWithDummyValue(session, 1);
 
             var options = new FakeOptions
             {
@@ -229,7 +230,7 @@ namespace FakeItEasy.Tests.Creation
             var createdFake = this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
 
             // Assert
-            Assert.That(createdFake, Is.SameAs(proxy));
+            createdFake.Should().BeSameAs(proxy);
         }
 
         [Test]
@@ -237,7 +238,7 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue<int>(session, 1);
+            StubSessionWithDummyValue(session, 1);
             StubSessionToFailForType<string>(session);
 
             // Act
@@ -253,7 +254,7 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue<int>(session, 1);
+            StubSessionWithDummyValue(session, 1);
             this.StubProxyGeneratorToFail();
 
             var options = FakeOptions.Empty;
@@ -272,7 +273,7 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var session = A.Fake<IDummyValueCreationSession>();
             StubSessionToFailForType<int>(session);
-            StubSessionWithDummyValue<string>(session, "dummy");
+            StubSessionWithDummyValue(session, "dummy");
 
             this.StubProxyGeneratorToFail("failed");
 

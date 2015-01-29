@@ -42,13 +42,7 @@ namespace FakeItEasy.Creation
         public bool TryCreateFake(Type typeOfFake, FakeOptions options, out object result)
         {
             result = this.fakeCreator.CreateFake(typeOfFake, options, this.session, throwOnFailure: false);
-
-            if (result == null)
-            {
-                return false;
-            }
-
-            return true;
+            return result != null;
         }
     }
 }

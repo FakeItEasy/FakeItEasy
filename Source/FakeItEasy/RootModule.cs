@@ -54,7 +54,7 @@
             container.Register<FakeAsserter.Factory>(c => x => OrderedAssertion.CurrentAsserterFactory.Invoke(x));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
-                (Type fakeObjectType, object proxy) => new FakeManager(fakeObjectType, proxy));
+                (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy));
 
             container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
                 (typeOfFake, fakeOptions) =>
@@ -102,7 +102,7 @@
 
             container.RegisterSingleton(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
 
-            container.RegisterSingleton<DelegateProxyGenerator>(c => new DelegateProxyGenerator());
+            container.RegisterSingleton(c => new DelegateProxyGenerator());
 
             container.RegisterSingleton<IProxyGenerator>(c => new ProxyGeneratorSelector(c.Resolve<DelegateProxyGenerator>(), c.Resolve<CastleDynamicProxyGenerator>()));
 

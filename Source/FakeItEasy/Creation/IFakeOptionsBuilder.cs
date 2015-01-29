@@ -35,6 +35,16 @@ namespace FakeItEasy.Creation
         /// </summary>
         /// <param name="wrappedInstance">The object to delegate calls to.</param>
         /// <returns>Options object.</returns>
+        /// <remarks>
+        /// <para>
+        /// If both <c>Wrapping</c> and <see cref="ConfigureFake"/> are used when creating a fake,
+        /// the <c>ConfigureFake</c> actions will take precedence for the methods they apply to.
+        /// </para>
+        /// <para>
+        /// When a fake is created for a type that has an <see cref="IFakeConfigurator"/>, and <c>Wrapping</c> is 
+        /// used to wrap another object, the <c>Wrapping</c> directive takes precedence.
+        /// </para>
+        /// </remarks>
         IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance);
 
         /// <summary>
@@ -61,10 +71,21 @@ namespace FakeItEasy.Creation
         /// <param name="action">An action to perform.</param>
         /// <returns>Options object.</returns>
         /// <remarks>
-        /// Note that this method might be called when the fake is not be fully constructed yet. Use the fake instance to set up
-        /// behavior, but to not rely on its state. Also, if FakeItEasy has to try multiple constructors in order
+        /// <para>
+        /// Note that this method might be called when the fake is not yet fully constructed, so <paramref name="action"/> should
+        /// use the fake instance to set up behavior, but not rely on the instance's state.
+        /// Also, if FakeItEasy has to try multiple constructors in order
         /// to create the fake (for example, because one or more constructors throw exceptions and must be bypassed),
-        /// <paramref name="action"/> will be called more than once, so it should be side effect-free.
+        /// the <c>action</c> will be called more than once, so it should be side effect-free.
+        /// </para>
+        /// <para>
+        /// If both <see cref="Wrapping"/> and <c>ConfigureFake</c> are used when creating a fake,
+        /// the <c>ConfigureFake</c> actions will take precedence for the methods they apply to.
+        /// </para>
+        /// <para>
+        /// When a fake is created for a type that has an <see cref="IFakeConfigurator"/>, and <c>ConfigureFake</c> is 
+        /// used to configure the fake as well, the <c>ConfigureFake</c> actions take precedence.
+        /// </para>
         /// </remarks>
         IFakeOptionsBuilder<T> ConfigureFake(Action<T> action);
     }
