@@ -13,3 +13,6 @@ A .Net dynamic fake framework for creating all types of fake objects, mocks, stu
 * [Quickstart](https://github.com/FakeItEasy/FakeitEasy/wiki/Quickstart)
 * [Documentation](https://github.com/FakeItEasy/FakeItEasy/wiki)
 * [Package](https://nuget.org/packages/FakeItEasy "FakeItEasy on NuGet")
+
+-
+FakeItEasy logo designed by Vanja Pakaski.
