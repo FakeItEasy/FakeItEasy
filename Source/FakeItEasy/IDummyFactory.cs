@@ -8,9 +8,8 @@ namespace FakeItEasy
     public interface IDummyFactory
     {
         /// <summary>
-        /// Gets the priority of the dummy factory. When multiple factories that
-        /// apply to the same type are registered, the one with the highest
-        /// priority is used.
+        /// Gets the priority of the dummy factory. When multiple factories that apply to the same type are registered,
+        /// the one with the highest priority is used.
         /// </summary>
         int Priority { get; }
 
@@ -18,7 +17,9 @@ namespace FakeItEasy
         /// Whether or not this object can create a dummy of type <paramref name="type"/>.
         /// </summary>
         /// <param name="type">The type of dummy to create.</param>
-        /// <returns><c>true</c> if we can create a dummy of type <paramref name="type"/>. Otherwise <c>false</c>.</returns>
+        /// <returns>
+        /// <c>true</c> if the object can create a dummy of type <paramref name="type"/>. Otherwise <c>false</c>.
+        /// </returns>
         bool CanCreateDummyOfType(Type type);
 
         /// <summary>
