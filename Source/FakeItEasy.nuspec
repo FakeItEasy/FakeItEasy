@@ -8,7 +8,7 @@
     <description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</description>
     <language>en-US</language>
     <projectUrl>http://fakeiteasy.github.io/</projectUrl>
-    <iconUrl>http://fakeiteasy.github.io/img/fakeiteasy_logo_256.png</iconUrl>
+    <iconUrl>http://fakeiteasy.github.io/img/fakeiteasy_logo_256_square.png</iconUrl>
     <licenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</licenseUrl>
     <copyright>Copyright (c) FakeItEasy contributors. (fakeiteasy@hagne.se)</copyright>
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
