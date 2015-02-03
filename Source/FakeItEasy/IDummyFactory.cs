@@ -20,13 +20,13 @@ namespace FakeItEasy
         /// <returns>
         /// <c>true</c> if the object can create a dummy of type <paramref name="type"/>. Otherwise <c>false</c>.
         /// </returns>
-        bool CanCreateDummyOfType(Type type);
+        bool CanCreate(Type type);
 
         /// <summary>
         /// Creates the dummy.
         /// </summary>
         /// <param name="type">The type of dummy to create.</param>
         /// <returns>The dummy object.</returns>
-        object CreateDummyOfType(Type type);
+        object Create(Type type);
     }
 }

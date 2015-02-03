@@ -126,7 +126,7 @@
 
         public class DummyFactoryForTypeWithFactory : DummyFactory<TypeWithDummyFactory>
         {
-            protected override TypeWithDummyFactory CreateDummy()
+            protected override TypeWithDummyFactory Create()
             {
                 return new TypeWithDummyFactory();
             }
@@ -134,7 +134,7 @@
 
         public class DuplicateDummyFactoryForTypeWithFactory : DummyFactory<TypeWithDummyFactory>
         {
-            protected override TypeWithDummyFactory CreateDummy()
+            protected override TypeWithDummyFactory Create()
             {
                 return new TypeWithDummyFactory();
             }

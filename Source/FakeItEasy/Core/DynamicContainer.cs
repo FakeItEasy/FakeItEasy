@@ -43,7 +43,7 @@
         {
             var dummyFactory = this.cachedDummyFactories.GetOrAdd(
                 typeOfDummy,
-                type => this.allDummyFactories.FirstOrDefault(factory => factory.CanCreateDummyOfType(type)));
+                type => this.allDummyFactories.FirstOrDefault(factory => factory.CanCreate(type)));
 
             if (dummyFactory == null)
             {
@@ -51,7 +51,7 @@
                 return false;
             }
 
-            fakeObject = dummyFactory.CreateDummyOfType(typeOfDummy);
+            fakeObject = dummyFactory.Create(typeOfDummy);
             return true;
         }
 

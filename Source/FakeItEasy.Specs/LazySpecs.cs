@@ -44,7 +44,7 @@
                 get { return instance; }
             }
 
-            protected override IFoo CreateDummy()
+            protected override IFoo Create()
             {
                 return instance;
             }

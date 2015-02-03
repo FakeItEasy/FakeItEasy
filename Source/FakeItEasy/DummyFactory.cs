@@ -26,7 +26,7 @@ namespace FakeItEasy
         /// <returns>
         /// <c>true</c> if <paramref name="type"/> is <typeparamref name="T"/>. Otherwise <c>false</c>.
         /// </returns>
-        public bool CanCreateDummyOfType(Type type)
+        public bool CanCreate(Type type)
         {
             return type == typeof(T);
         }
@@ -37,18 +37,18 @@ namespace FakeItEasy
         /// <param name="type">The type of dummy to create.</param>
         /// <returns>The dummy object.</returns>
         /// <exception cref="ArgumentException"><paramref name="type"/> is not <typeparamref name="T"/>.</exception>
-        public object CreateDummyOfType(Type type)
+        public object Create(Type type)
         {
             this.AssertThatFakeIsOfCorrectType(type);
 
-            return this.CreateDummy();
+            return this.Create();
         }
 
         /// <summary>
         /// Creates the dummy.
         /// </summary>
         /// <returns>The dummy object.</returns>
-        protected abstract T CreateDummy();
+        protected abstract T Create();
 
         private void AssertThatFakeIsOfCorrectType(Type type)
         {

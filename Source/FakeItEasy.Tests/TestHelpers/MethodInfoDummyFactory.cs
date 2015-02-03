@@ -5,7 +5,7 @@ namespace FakeItEasy.Tests.TestHelpers
 
     public class MethodInfoDummyFactory : DummyFactory<MethodInfo>
     {
-        protected override MethodInfo CreateDummy()
+        protected override MethodInfo Create()
         {
             return typeof(object).GetMethod("ToString", new Type[] { });
         }

@@ -6,7 +6,7 @@ namespace FakeItEasy.Tests.Core
 
     public class EnumerableOfFakeCallsFactory : DummyFactory<IEnumerable<IFakeObjectCall>>
     {
-        protected override IEnumerable<IFakeObjectCall> CreateDummy()
+        protected override IEnumerable<IFakeObjectCall> Create()
         {
             return Enumerable.Empty<IFakeObjectCall>();
         }

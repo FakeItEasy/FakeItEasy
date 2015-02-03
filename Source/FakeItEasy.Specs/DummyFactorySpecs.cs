@@ -32,12 +32,12 @@
             get { return -3; }
         }
 
-        public bool CanCreateDummyOfType(Type type)
+        public bool CanCreate(Type type)
         {
             return typeof(DomainEvent).IsAssignableFrom(type);
         }
 
-        public object CreateDummyOfType(Type type)
+        public object Create(Type type)
         {
             var dummy = (DomainEvent)Activator.CreateInstance(type);
             dummy.ID = this.nextID++;
@@ -47,7 +47,7 @@
 
     public class RobotRunsAmokEventDummyFactory : DummyFactory<RobotRunsAmokEvent>
     {
-        protected override RobotRunsAmokEvent CreateDummy()
+        protected override RobotRunsAmokEvent Create()
         {
             return new RobotRunsAmokEvent { ID = -17 };
         }

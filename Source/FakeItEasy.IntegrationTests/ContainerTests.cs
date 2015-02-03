@@ -41,7 +41,7 @@
 
         public class GuidFactory : DummyFactory<Guid>
         {
-            protected override Guid CreateDummy()
+            protected override Guid Create()
             {
                 return new Guid("{1BBF2162-93CC-476b-BA8E-B52C4A5FEDEC}");
             }

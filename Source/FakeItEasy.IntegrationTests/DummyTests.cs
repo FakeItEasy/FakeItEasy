@@ -56,7 +56,7 @@ namespace FakeItEasy.IntegrationTests
             A.Dummy<Dummy>();
             A.Dummy<Dummy>();
 
-            DummyTestsDummyFactory.CanCreateDummyOfTypeDummyCallCount.Should()
+            DummyTestsDummyFactory.CanCreateDummyCallCount.Should()
                 .Be(1, "the factory should've been cached after creating the first Dummy");
         }
 
@@ -81,20 +81,20 @@ namespace FakeItEasy.IntegrationTests
             get { return 0; }
         }
 
-        internal static int CanCreateDummyOfTypeDummyCallCount { get; private set; }
+        internal static int CanCreateDummyCallCount { get; private set; }
 
-        public bool CanCreateDummyOfType(Type type)
+        public bool CanCreate(Type type)
         {
             if (type != typeof(DummyTests.Dummy))
             {
                 return false;
             }
 
-            ++CanCreateDummyOfTypeDummyCallCount;
+            ++CanCreateDummyCallCount;
             return true;
         }
 
-        public object CreateDummyOfType(Type type)
+        public object Create(Type type)
         {
             return new DummyTests.Dummy();
         }

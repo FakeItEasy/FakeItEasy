@@ -10,16 +10,16 @@
     public class DummyFactoryTests
     {
         [Test]
-        public void CreateDummyOfType_should_return_object_from_CreateDummy()
+        public void Create_with_type_parameter_should_return_object_from_Create()
         {
             var factory = new TestableFakeFactory() as IDummyFactory;
-            var created = factory.CreateDummyOfType(typeof(SomeType));
+            var created = factory.Create(typeof(SomeType));
 
             Assert.That(created, Is.InstanceOf<SomeType>());
         }
 
         [Test]
-        public void CreateDummyOfType_should_guard_against_bad_type_argument()
+        public void Create_should_guard_against_bad_type_argument()
         {
             string expectedMessage = string.Format(
                 CultureInfo.CurrentCulture,
@@ -29,7 +29,7 @@
 
             var factory = new TestableFakeFactory() as IDummyFactory;
             
-            var exception = Record.Exception(() => factory.CreateDummyOfType(typeof(DummyFactoryTests)));
+            var exception = Record.Exception(() => factory.Create(typeof(DummyFactoryTests)));
 
             exception.Should()
                 .BeAnExceptionOfType<ArgumentException>()
@@ -43,7 +43,7 @@
 
         public class TestableFakeFactory : DummyFactory<SomeType>
         {
-            protected override SomeType CreateDummy()
+            protected override SomeType Create()
             {
                 return new SomeType();
             }
