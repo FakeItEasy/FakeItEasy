@@ -23,7 +23,7 @@
 
         It should_return_a_lazy = () => lazy.Should().NotBeNull();
 
-        It should_return_a_lazy_whose_value_is_a_dummy = () => lazy.Value.Should().Be(FooDefinition.Instance);
+        It should_return_a_lazy_whose_value_is_a_dummy = () => lazy.Value.Should().Be(FooFactory.Instance);
         
         public interface ILazyFactory
         {
@@ -35,9 +35,9 @@
         {
         }
 
-        public class FooDefinition : DummyDefinition<IFoo>, IFoo
+        public class FooFactory : DummyFactory<IFoo>, IFoo
         {
-            private static IFoo instance = new FooDefinition();
+            private static IFoo instance = new FooFactory();
 
             public static IFoo Instance
             {

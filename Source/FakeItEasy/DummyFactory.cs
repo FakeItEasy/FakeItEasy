@@ -4,15 +4,14 @@ namespace FakeItEasy
     using System.Globalization;
 
     /// <summary>
-    /// Represents a definition of how a fake object of the type T should
-    /// be created.
+    /// Represents a factory for creating fake objects of type <typeparamref name="T"/>.
     /// </summary>
     /// <typeparam name="T">The type of fake.</typeparam>
-    public abstract class DummyDefinition<T>
-        : IDummyDefinition
+    public abstract class DummyFactory<T>
+        : IDummyFactory
     {
         /// <summary>
-        /// Gets the priority of the dummy definition. When multiple definitions that
+        /// Gets the priority of the dummy factory. When multiple factories that
         /// apply to the same type are registered, the one with the highest
         /// priority is used.
         /// </summary>

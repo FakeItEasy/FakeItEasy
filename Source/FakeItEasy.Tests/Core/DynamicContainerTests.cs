@@ -8,7 +8,7 @@
     [TestFixture]
     public class DynamicContainerTests
     {
-        private List<IDummyDefinition> availableDummyDefinitions;
+        private List<IDummyFactory> availableDummyFactories;
         private List<IFakeConfigurator> availableConfigurers;
 
         private IDisposable scope;
@@ -19,7 +19,7 @@
             this.scope = Fake.CreateScope(new NullFakeObjectContainer());
 
             this.availableConfigurers = new List<IFakeConfigurator>();
-            this.availableDummyDefinitions = new List<IDummyDefinition>();
+            this.availableDummyFactories = new List<IDummyFactory>();
         }
 
         [TearDown]
@@ -29,38 +29,38 @@
         }
 
         [Test]
-        public void TryCreateFakeObject_should_create_fake_for_type_that_has_definition()
+        public void TryCreateFakeObject_should_create_fake_for_type_that_has_factory()
         {
-            this.availableDummyDefinitions.Add(new DummyDefinitionForTypeWithDefinition());
+            this.availableDummyFactories.Add(new DummyFactoryForTypeWithFactory());
 
             var container = this.CreateContainer();
 
             object fake;
 
-            Assert.That(container.TryCreateDummyObject(typeof(TypeWithDummyDefinition), out fake), Is.True);
-            Assert.That(fake, Is.InstanceOf<TypeWithDummyDefinition>());
+            Assert.That(container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out fake), Is.True);
+            Assert.That(fake, Is.InstanceOf<TypeWithDummyFactory>());
         }
 
         [Test]
-        public void TryCreateFakeObject_should_return_false_when_no_definition_exists()
+        public void TryCreateFakeObject_should_return_false_when_no_factory_exists()
         {
             var container = this.CreateContainer();
 
             object fake;
 
-            Assert.That(container.TryCreateDummyObject(typeof(TypeWithDummyDefinition), out fake), Is.False);
+            Assert.That(container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out fake), Is.False);
         }
 
         [Test]
         public void ConfigureFake_should_apply_configuration_for_registered_configuration()
         {
-            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyDefinition());
+            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyFactory());
 
             var container = this.CreateContainer();
 
-            var fake = A.Fake<TypeWithDummyDefinition>();
+            var fake = A.Fake<TypeWithDummyFactory>();
 
-            container.ConfigureFake(typeof(TypeWithDummyDefinition), fake);
+            container.ConfigureFake(typeof(TypeWithDummyFactory), fake);
 
             Assert.That(fake.WasConfigured, Is.True);
         }
@@ -69,21 +69,21 @@
         public void ConfigureFake_should_do_nothing_when_fake_type_has_no_configuration_specified()
         {
             this.CreateContainer();
-            A.Fake<TypeWithDummyDefinition>();
+            A.Fake<TypeWithDummyFactory>();
         }
 
         [Test]
-        public void Should_not_fail_when_more_than_one_definition_exists_for_a_given_type()
+        public void Should_not_fail_when_more_than_one_factory_exists_for_a_given_type()
         {
             // Arrange
-            this.availableDummyDefinitions.Add(new DummyDefinitionForTypeWithDefinition());
-            this.availableDummyDefinitions.Add(new DuplicateDummyDefinitionForTypeWithDefinition());
+            this.availableDummyFactories.Add(new DummyFactoryForTypeWithFactory());
+            this.availableDummyFactories.Add(new DuplicateDummyFactoryForTypeWithFactory());
 
             var container = this.CreateContainer();
 
             // Act
             object fake = null;
-            var result = container.TryCreateDummyObject(typeof(TypeWithDummyDefinition), out fake);
+            var result = container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out fake);
 
             // Assert
             Assert.That(result, Is.True);
@@ -93,8 +93,8 @@
         public void Should_not_fail_when_more_than_one_configurator_exists_for_a_given_type()
         {
             // Arrange
-            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyDefinition());
-            this.availableConfigurers.Add(new DuplicateConfigurationForTypeWithDummyDefinition());
+            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyFactory());
+            this.availableConfigurers.Add(new DuplicateConfigurationForTypeWithDummyFactory());
 
             // Act
 
@@ -105,42 +105,42 @@
 
         private DynamicContainer CreateContainer()
         {
-            return new DynamicContainer(this.availableDummyDefinitions, this.availableConfigurers);
+            return new DynamicContainer(this.availableDummyFactories, this.availableConfigurers);
         }
 
-        public class ConfigurationForTypeWithDummyDefinition : FakeConfigurator<TypeWithDummyDefinition>
+        public class ConfigurationForTypeWithDummyFactory : FakeConfigurator<TypeWithDummyFactory>
         {
-            protected override void ConfigureFake(TypeWithDummyDefinition fakeObject)
+            protected override void ConfigureFake(TypeWithDummyFactory fakeObject)
             {
                 A.CallTo(() => fakeObject.WasConfigured).Returns(true);
             }
         }
 
-        public class DuplicateConfigurationForTypeWithDummyDefinition : FakeConfigurator<TypeWithDummyDefinition>
+        public class DuplicateConfigurationForTypeWithDummyFactory : FakeConfigurator<TypeWithDummyFactory>
         {
-            protected override void ConfigureFake(TypeWithDummyDefinition fakeObject)
+            protected override void ConfigureFake(TypeWithDummyFactory fakeObject)
             {
                 A.CallTo(() => fakeObject.WasConfigured).Returns(true);
             }
         }
 
-        public class DummyDefinitionForTypeWithDefinition : DummyDefinition<TypeWithDummyDefinition>
+        public class DummyFactoryForTypeWithFactory : DummyFactory<TypeWithDummyFactory>
         {
-            protected override TypeWithDummyDefinition CreateDummy()
+            protected override TypeWithDummyFactory CreateDummy()
             {
-                return new TypeWithDummyDefinition();
+                return new TypeWithDummyFactory();
             }
         }
 
-        public class DuplicateDummyDefinitionForTypeWithDefinition : DummyDefinition<TypeWithDummyDefinition>
+        public class DuplicateDummyFactoryForTypeWithFactory : DummyFactory<TypeWithDummyFactory>
         {
-            protected override TypeWithDummyDefinition CreateDummy()
+            protected override TypeWithDummyFactory CreateDummy()
             {
-                return new TypeWithDummyDefinition();
+                return new TypeWithDummyFactory();
             }
         }
 
-        public class TypeWithDummyDefinition
+        public class TypeWithDummyFactory
         {
             public virtual bool WasConfigured { get; set; }
 

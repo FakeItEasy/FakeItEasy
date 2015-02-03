@@ -3,8 +3,8 @@
     using System.Linq.Expressions;
     using TestHelpers;
 
-    public class LambdaExpressionDummyDefinition
-        : DummyDefinition<LambdaExpression>
+    public class LambdaExpressionDummyFactory
+        : DummyFactory<LambdaExpression>
     {
         protected override LambdaExpression CreateDummy()
         {

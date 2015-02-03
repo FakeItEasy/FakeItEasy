@@ -8,7 +8,7 @@
         [Test]
         public static void CanUseFakeItEasy()
         {
-            var fake = A.Fake<IDummyDefinition>();
+            var fake = A.Fake<IDummyFactory>();
             A.CallTo(() => fake.CreateDummyOfType(typeof(object))).Returns(new object());
             fake.CreateDummyOfType(typeof(object)).Should().NotBeNull();
         }

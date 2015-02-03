@@ -7,28 +7,28 @@
     using System.Linq;
 
     /// <summary>
-    /// A IFakeObjectContainer implementation that uses MEF to load IFakeDefinitions and
+    /// A IFakeObjectContainer implementation that uses MEF to load IDummyFactories and
     /// IFakeConfigurations.
     /// </summary>
     public class DynamicContainer
         : IFakeObjectContainer
     {
-        private readonly IEnumerable<IDummyDefinition> allDummyDefinitions;
+        private readonly IEnumerable<IDummyFactory> allDummyFactories;
         private readonly IEnumerable<IFakeConfigurator> allFakeConfigurators;
         private readonly ConcurrentDictionary<Type, IFakeConfigurator> cachedFakeConfigurators;
-        private readonly ConcurrentDictionary<Type, IDummyDefinition> cachedDummyDefinitions;
+        private readonly ConcurrentDictionary<Type, IDummyFactory> cachedDummyFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer" /> class.
         /// </summary>
-        /// <param name="dummyDefinitions">The dummy definitions.</param>
+        /// <param name="dummyFactories">The dummy factories.</param>
         /// <param name="fakeConfigurators">The fake configurators.</param>
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurators", Justification = "This is the correct spelling.")]
-        public DynamicContainer(IEnumerable<IDummyDefinition> dummyDefinitions, IEnumerable<IFakeConfigurator> fakeConfigurators)
+        public DynamicContainer(IEnumerable<IDummyFactory> dummyFactories, IEnumerable<IFakeConfigurator> fakeConfigurators)
         {
-            this.allDummyDefinitions = dummyDefinitions.OrderByDescending(definition => definition.Priority).ToArray();
-            this.allFakeConfigurators = fakeConfigurators.OrderByDescending(definition => definition.Priority).ToArray();
-            this.cachedDummyDefinitions = new ConcurrentDictionary<Type, IDummyDefinition>();
+            this.allDummyFactories = dummyFactories.OrderByDescending(factory => factory.Priority).ToArray();
+            this.allFakeConfigurators = fakeConfigurators.OrderByDescending(factory => factory.Priority).ToArray();
+            this.cachedDummyFactories = new ConcurrentDictionary<Type, IDummyFactory>();
             this.cachedFakeConfigurators = new ConcurrentDictionary<Type, IFakeConfigurator>();
         }
 
@@ -41,17 +41,17 @@
         /// <returns>True if a fake object can be created.</returns>
         public bool TryCreateDummyObject(Type typeOfDummy, out object fakeObject)
         {
-            var dummyDefinition = this.cachedDummyDefinitions.GetOrAdd(
+            var dummyFactory = this.cachedDummyFactories.GetOrAdd(
                 typeOfDummy,
-                type => this.allDummyDefinitions.FirstOrDefault(definition => definition.CanCreateDummyOfType(type)));
+                type => this.allDummyFactories.FirstOrDefault(factory => factory.CanCreateDummyOfType(type)));
 
-            if (dummyDefinition == null)
+            if (dummyFactory == null)
             {
                 fakeObject = null;
                 return false;
             }
 
-            fakeObject = dummyDefinition.CreateDummyOfType(typeOfDummy);
+            fakeObject = dummyFactory.CreateDummyOfType(typeOfDummy);
             return true;
         }
 

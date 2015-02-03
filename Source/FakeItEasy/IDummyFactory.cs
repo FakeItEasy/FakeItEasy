@@ -3,12 +3,12 @@ namespace FakeItEasy
     using System;
 
     /// <summary>
-    /// Represents a definition of how dummies of certain types should be created.
+    /// Represents a factory for creating dummies of certain types.
     /// </summary>
-    public interface IDummyDefinition
+    public interface IDummyFactory
     {
         /// <summary>
-        /// Gets the priority of the dummy definition. When multiple definitions that
+        /// Gets the priority of the dummy factory. When multiple factories that
         /// apply to the same type are registered, the one with the highest
         /// priority is used.
         /// </summary>

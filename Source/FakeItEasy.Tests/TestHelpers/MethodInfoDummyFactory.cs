@@ -3,7 +3,7 @@ namespace FakeItEasy.Tests.TestHelpers
     using System;
     using System.Reflection;
 
-    public class MethodInfoDummyDefinition : DummyDefinition<MethodInfo>
+    public class MethodInfoDummyFactory : DummyFactory<MethodInfo>
     {
         protected override MethodInfo CreateDummy()
         {

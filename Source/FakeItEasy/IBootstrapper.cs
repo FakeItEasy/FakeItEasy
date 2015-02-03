@@ -18,7 +18,7 @@
     {
         /// <summary>
         /// Provides a list of assembly file names to scan for extension points, such as
-        /// <see cref="IDummyDefinition"/>s, <see cref="IArgumentValueFormatter"/>s, and 
+        /// <see cref="IDummyFactory"/>s, <see cref="IArgumentValueFormatter"/>s, and 
         /// <see cref="IFakeConfigurator"/>s.
         /// </summary>
         /// <returns>A list of absolute paths pointing to assemblies to scan for extension points.</returns>
