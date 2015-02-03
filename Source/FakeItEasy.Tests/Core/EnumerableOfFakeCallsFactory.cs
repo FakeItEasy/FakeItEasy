@@ -4,9 +4,9 @@ namespace FakeItEasy.Tests.Core
     using System.Linq;
     using FakeItEasy.Core;
 
-    public class EnumerableOfFakeCallsDefinition : DummyDefinition<IEnumerable<IFakeObjectCall>>
+    public class EnumerableOfFakeCallsFactory : DummyFactory<IEnumerable<IFakeObjectCall>>
     {
-        protected override IEnumerable<IFakeObjectCall> CreateDummy()
+        protected override IEnumerable<IFakeObjectCall> Create()
         {
             return Enumerable.Empty<IFakeObjectCall>();
         }

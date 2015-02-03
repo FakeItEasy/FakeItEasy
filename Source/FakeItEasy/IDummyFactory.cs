@@ -3,14 +3,13 @@ namespace FakeItEasy
     using System;
 
     /// <summary>
-    /// Represents a definition of how dummies of certain types should be created.
+    /// Represents a factory for creating dummies of certain types.
     /// </summary>
-    public interface IDummyDefinition
+    public interface IDummyFactory
     {
         /// <summary>
-        /// Gets the priority of the dummy definition. When multiple definitions that
-        /// apply to the same type are registered, the one with the highest
-        /// priority is used.
+        /// Gets the priority of the dummy factory. When multiple factories that apply to the same type are registered,
+        /// the one with the highest priority is used.
         /// </summary>
         int Priority { get; }
 
@@ -18,14 +17,16 @@ namespace FakeItEasy
         /// Whether or not this object can create a dummy of type <paramref name="type"/>.
         /// </summary>
         /// <param name="type">The type of dummy to create.</param>
-        /// <returns><c>true</c> if we can create a dummy of type <paramref name="type"/>. Otherwise <c>false</c>.</returns>
-        bool CanCreateDummyOfType(Type type);
+        /// <returns>
+        /// <c>true</c> if the object can create a dummy of type <paramref name="type"/>. Otherwise <c>false</c>.
+        /// </returns>
+        bool CanCreate(Type type);
 
         /// <summary>
         /// Creates the dummy.
         /// </summary>
         /// <param name="type">The type of dummy to create.</param>
         /// <returns>The dummy object.</returns>
-        object CreateDummyOfType(Type type);
+        object Create(Type type);
     }
 }

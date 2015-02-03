@@ -543,8 +543,8 @@
     <Compile Include="..\FakeItEasy\DefaultOutputWriter.cs">
       <Link>DefaultOutputWriter.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\DummyDefinition.cs">
-      <Link>DummyDefinition.cs</Link>
+    <Compile Include="..\FakeItEasy\DummyFactory.cs">
+      <Link>DummyFactory.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ExceptionMessages.Designer.cs">
       <Link>ExceptionMessages.Designer.cs</Link>
@@ -615,8 +615,8 @@
     <Compile Include="..\FakeItEasy\IArgumentValueFormatter.cs">
       <Link>IArgumentValueFormatter.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\IDummyDefinition.cs">
-      <Link>IDummyDefinition.cs</Link>
+    <Compile Include="..\FakeItEasy\IDummyFactory.cs">
+      <Link>IDummyFactory.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IFakeConfigurator.cs">
       <Link>IFakeConfigurator.cs</Link>

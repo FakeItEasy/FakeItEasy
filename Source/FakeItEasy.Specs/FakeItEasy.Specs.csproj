@@ -73,7 +73,7 @@
     <Compile Include="DomainEvents.cs" />
     <Compile Include="FakeConfiguratorSpecs.cs" />
     <Compile Include="LazySpecs.cs" />
-    <Compile Include="DummyDefinitionSpecs.cs" />
+    <Compile Include="DummyFactorySpecs.cs" />
     <Compile Include="OrderedCallMatchingSpecs.cs" />
     <Compile Include="FakingInternalsSpecs.cs" />
     <Compile Include="EventRaisingSpecs.cs" />

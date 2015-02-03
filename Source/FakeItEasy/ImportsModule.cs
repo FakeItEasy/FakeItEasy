@@ -22,7 +22,7 @@
                 });
 
             RegisterEnumerableInstantiatedFromTypeCatalogue<IArgumentValueFormatter>(container);
-            RegisterEnumerableInstantiatedFromTypeCatalogue<IDummyDefinition>(container);
+            RegisterEnumerableInstantiatedFromTypeCatalogue<IDummyFactory>(container);
             RegisterEnumerableInstantiatedFromTypeCatalogue<IFakeConfigurator>(container);
         }
 

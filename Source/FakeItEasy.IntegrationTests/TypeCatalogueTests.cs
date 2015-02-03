@@ -26,7 +26,7 @@ namespace FakeItEasy.IntegrationTests
                 Path.Combine(@"..\..\..\FakeItEasy.IntegrationTests.External\bin", currentDirectoryName));
 
             var expectedMessageFormat =
-@"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\{0}\FakeItEasy.IntegrationTests.External.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
+@"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\{0}\FakeItEasy.IntegrationTests.External.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeConfigurators in that assembly will not be available.
   API restriction: The assembly '*FakeItEasy.IntegrationTests.External\bin\{0}\FakeItEasy.IntegrationTests.External.dll' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain.*";
 
             var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, currentDirectoryName);
@@ -64,7 +64,7 @@ namespace FakeItEasy.IntegrationTests
             // Arrange
             var badAssemblyFile = Path.GetTempFileName() + ".dll";
             var expectedMessageFormat =
-@"*Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyDefinitions, and IFakeConfigurators in that assembly will not be available.
+@"*Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeConfigurators in that assembly will not be available.
   *{0}*";
 
             var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, badAssemblyFile);

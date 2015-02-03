@@ -51,13 +51,13 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
-        public void Dummy_definitions_are_polled_only_once_per_dummy_type()
+        public void Dummy_factories_are_polled_only_once_per_dummy_type()
         {
             A.Dummy<Dummy>();
             A.Dummy<Dummy>();
 
-            DummyTestsDummyDefinition.CanCreateDummyOfTypeDummyCallCount.Should()
-                .Be(1, "the definition should've been cached after creating the first Dummy");
+            DummyTestsDummyFactory.CanCreateDummyCallCount.Should()
+                .Be(1, "the factory should've been cached after creating the first Dummy");
         }
 
         public class Dummy
@@ -74,27 +74,27 @@ namespace FakeItEasy.IntegrationTests
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
-    public class DummyTestsDummyDefinition : IDummyDefinition
+    public class DummyTestsDummyFactory : IDummyFactory
     {
         public int Priority
         {
             get { return 0; }
         }
 
-        internal static int CanCreateDummyOfTypeDummyCallCount { get; private set; }
+        internal static int CanCreateDummyCallCount { get; private set; }
 
-        public bool CanCreateDummyOfType(Type type)
+        public bool CanCreate(Type type)
         {
             if (type != typeof(DummyTests.Dummy))
             {
                 return false;
             }
 
-            ++CanCreateDummyOfTypeDummyCallCount;
+            ++CanCreateDummyCallCount;
             return true;
         }
 
-        public object CreateDummyOfType(Type type)
+        public object Create(Type type)
         {
             return new DummyTests.Dummy();
         }

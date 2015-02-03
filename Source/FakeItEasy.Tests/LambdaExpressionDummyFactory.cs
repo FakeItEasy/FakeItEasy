@@ -3,10 +3,10 @@
     using System.Linq.Expressions;
     using TestHelpers;
 
-    public class LambdaExpressionDummyDefinition
-        : DummyDefinition<LambdaExpression>
+    public class LambdaExpressionDummyFactory
+        : DummyFactory<LambdaExpression>
     {
-        protected override LambdaExpression CreateDummy()
+        protected override LambdaExpression Create()
         {
             return ExpressionHelper.CreateExpression<string>(x => x.Equals(null));
         }

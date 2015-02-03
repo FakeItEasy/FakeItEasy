@@ -127,7 +127,7 @@
     <Compile Include="Core\DefaultExceptionThrowerTests.cs" />
     <Compile Include="Core\DefaultFakeManagerAccessorTests.cs" />
     <Compile Include="Core\DefaultFakeObjectCallFormatterTests.cs" />
-    <Compile Include="Core\EnumerableOfFakeCallsDefinition.cs" />
+    <Compile Include="Core\EnumerableOfFakeCallsFactory.cs" />
     <Compile Include="Core\FakeAsserterTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -146,7 +146,7 @@
     <Compile Include="Configuration\FakeConfigurationExceptionTests.cs" />
     <Compile Include="Configuration\FakeConfigurationManagerTests.cs" />
     <Compile Include="Configuration\StartConfigurationTests.cs" />
-    <Compile Include="Core\DummyDefinitionTests.cs" />
+    <Compile Include="Core\DummyFactoryTests.cs" />
     <Compile Include="Core\DynamicContainerTests.cs" />
     <Compile Include="Core\OrderedFakeAsserterFactoryTests.cs" />
     <Compile Include="Core\OrderedFakeAsserterTests.cs" />
@@ -169,7 +169,7 @@
     <Compile Include="Foo.cs" />
     <Compile Include="Ignore.cs" />
     <Compile Include="CallbackConfigurationExtensionsTests.cs" />
-    <Compile Include="LambdaExpressionDummyDefinition.cs" />
+    <Compile Include="LambdaExpressionDummyFactory.cs" />
     <Compile Include="OutputWriterExtensionsTests.cs" />
     <Compile Include="RepeatedTests.cs" />
     <Compile Include="RecordersTests.cs" />
@@ -192,7 +192,7 @@
     <Compile Include="TestCases.cs" />
     <Compile Include="TestHelpers\ObjectAssertionsExtensions.cs" />
     <Compile Include="TestHelpers\Record.cs" />
-    <Compile Include="TestHelpers\MethodInfoDummyDefinition.cs" />
+    <Compile Include="TestHelpers\MethodInfoDummyFactory.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="Core\FakeManagerTests.cs" />
     <Compile Include="Core\NullFakeObjectContainerTests.cs" />

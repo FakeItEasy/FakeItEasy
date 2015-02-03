@@ -7,29 +7,29 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class DummyDefinitionTests
+    public class DummyFactoryTests
     {
         [Test]
-        public void CreateDummyOfType_should_return_object_from_CreateDummy()
+        public void Create_with_type_parameter_should_return_object_from_Create()
         {
-            var definition = new TestableFakeDefinition() as IDummyDefinition;
-            var created = definition.CreateDummyOfType(typeof(SomeType));
+            var factory = new TestableFakeFactory() as IDummyFactory;
+            var created = factory.Create(typeof(SomeType));
 
             Assert.That(created, Is.InstanceOf<SomeType>());
         }
 
         [Test]
-        public void CreateDummyOfType_should_guard_against_bad_type_argument()
+        public void Create_should_guard_against_bad_type_argument()
         {
             string expectedMessage = string.Format(
                 CultureInfo.CurrentCulture,
                 "The {0} can only create dummies of type '{1}'.*",
-                typeof(TestableFakeDefinition),
+                typeof(TestableFakeFactory),
                 typeof(SomeType));
 
-            var definition = new TestableFakeDefinition() as IDummyDefinition;
+            var factory = new TestableFakeFactory() as IDummyFactory;
             
-            var exception = Record.Exception(() => definition.CreateDummyOfType(typeof(DummyDefinitionTests)));
+            var exception = Record.Exception(() => factory.Create(typeof(DummyFactoryTests)));
 
             exception.Should()
                 .BeAnExceptionOfType<ArgumentException>()
@@ -41,9 +41,9 @@
         {
         }
 
-        public class TestableFakeDefinition : DummyDefinition<SomeType>
+        public class TestableFakeFactory : DummyFactory<SomeType>
         {
-            protected override SomeType CreateDummy()
+            protected override SomeType Create()
             {
                 return new SomeType();
             }

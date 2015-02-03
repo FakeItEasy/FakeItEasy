@@ -39,7 +39,7 @@
         public override void RegisterDependencies(DictionaryContainer container)
         {
             container.RegisterSingleton(c => Enumerable.Empty<IFakeConfigurator>());
-            container.RegisterSingleton(c => Enumerable.Empty<IDummyDefinition>());
+            container.RegisterSingleton(c => Enumerable.Empty<IDummyFactory>());
             container.RegisterSingleton(c => Enumerable.Empty<IArgumentValueFormatter>());
         }
     }
