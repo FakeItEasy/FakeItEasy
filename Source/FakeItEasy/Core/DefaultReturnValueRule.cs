@@ -17,6 +17,17 @@
             get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
         }
 
+        public static object ResolveReturnValue(IInterceptedFakeObjectCall fakeObjectCall)
+        {
+            object result;
+            if (!FakeManager.TryCreateDummy(fakeObjectCall.Method.ReturnType, out result))
+            {
+                return fakeObjectCall.Method.ReturnType.GetDefaultValue();
+            }
+
+            return result;
+        }
+
         public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
             return true;
@@ -28,17 +39,6 @@
 
             var returnValue = ResolveReturnValue(fakeObjectCall);
             fakeObjectCall.SetReturnValue(returnValue);
-        }
-
-        private static object ResolveReturnValue(IInterceptedFakeObjectCall fakeObjectCall)
-        {
-            object result;
-            if (!FakeManager.TryCreateDummy(fakeObjectCall.Method.ReturnType, out result))
-            {
-                return fakeObjectCall.Method.ReturnType.GetDefaultValue();
-            }
-
-            return result;
         }
     }
 }
