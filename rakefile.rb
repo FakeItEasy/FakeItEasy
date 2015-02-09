@@ -3,7 +3,7 @@ require 'albacore'
 msbuild_command = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
 nuget_command  = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
 nunit_command  = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
-mspec_command  = "Source/packages/Machine.Specifications.0.8.0/tools/mspec-clr4.exe"
+mspec_command  = "Source/packages/Machine.Specifications.Runner.Console.0.9.0/tools/mspec-clr4.exe"
 
 solution       = "Source/FakeItEasy.sln"
 assembly_info  = "Source/CommonAssemblyInfo.cs"
