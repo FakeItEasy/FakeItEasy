@@ -62,17 +62,20 @@ namespace FakeItEasy.Tests.Creation
         public void Should_use_new_fake_call_processor_for_the_proxy_generator()
         {
             // Arrange
-            var options = new FakeOptions();
+            var options = new FakeOptions
+            {
+                OnFakeConfigurationActions = new Action<object>[] { },
+            };
 
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
-            A.CallTo(() => this.fakeCallProcessorProviderFactory(A<Type>._)).Returns(fakeCallProcessorProvider);
+            A.CallTo(() => this.fakeCallProcessorProviderFactory(A<Type>._, A<FakeOptions>._)).Returns(fakeCallProcessorProvider);
 
             // Act
             this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(IFoo))).MustHaveHappened();
+            A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(IFoo), options)).MustHaveHappened();
 
             A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<CustomAttributeBuilder>>._, fakeCallProcessorProvider))
                 .MustHaveHappened();
@@ -88,13 +91,16 @@ namespace FakeItEasy.Tests.Creation
 
             this.StubProxyGeneratorToFail();
 
-            var options = new FakeOptions();
+            var options = new FakeOptions
+            {
+                OnFakeConfigurationActions = new Action<object>[] { },
+            };
 
             // Act
             this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(TypeWithMultipleConstructors)))
+            A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(TypeWithMultipleConstructors), options))
                 .MustHaveHappened(Repeated.Exactly.Times(3));
         }
 

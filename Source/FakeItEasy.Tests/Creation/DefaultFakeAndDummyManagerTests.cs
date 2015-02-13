@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests.Creation
 {
     using System;
-    using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using NUnit.Framework;
 
@@ -14,9 +13,6 @@ namespace FakeItEasy.Tests.Creation
 
         [Fake]
         private FakeObjectCreator fakeCreator;
-
-        [Fake]
-        private IFakeWrapperConfigurer wrapperConfigurer;
 #pragma warning restore 649
 
         private DefaultFakeAndDummyManager manager;
@@ -26,10 +22,7 @@ namespace FakeItEasy.Tests.Creation
         {
             Fake.InitializeFixture(this);
 
-            this.manager = new DefaultFakeAndDummyManager(
-                this.dummySession,
-                this.fakeCreator,
-                this.wrapperConfigurer);
+            this.manager = new DefaultFakeAndDummyManager(this.dummySession, this.fakeCreator);
         }
 
         [Test]

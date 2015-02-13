@@ -110,7 +110,7 @@ namespace FakeItEasy.Creation
 
         private ProxyGeneratorResult GenerateProxy(Type typeOfFake, FakeOptions fakeOptions, IEnumerable<object> argumentsForConstructor)
         {
-            var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake);
+            var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, fakeOptions);
 
             return this.proxyGenerator.GenerateProxy(
                     typeOfFake,
