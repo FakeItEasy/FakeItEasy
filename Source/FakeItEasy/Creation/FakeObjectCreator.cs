@@ -19,7 +19,7 @@ namespace FakeItEasy.Creation
             this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
         }
 
-        public virtual object CreateFake(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
+        public object CreateFake(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
         {
             var result = this.GenerateProxy(typeOfFake, fakeOptions, fakeOptions.ArgumentsForConstructor);
 
@@ -56,7 +56,7 @@ namespace FakeItEasy.Creation
 
             foreach (var argument in constructor.GetParameters())
             {
-                object result = null;
+                object result;
 
                 var resolvedArgument = new ResolvedArgument
                                            {
@@ -94,10 +94,8 @@ namespace FakeItEasy.Creation
                 {
                     return result;
                 }
-                else
-                {
-                    constructor.ReasonForFailure = result.ReasonForFailure;
-                }
+
+                constructor.ReasonForFailure = result.ReasonForFailure;
             }
 
             if (throwOnFailure)
@@ -110,7 +108,7 @@ namespace FakeItEasy.Creation
 
         private ProxyGeneratorResult GenerateProxy(Type typeOfFake, FakeOptions fakeOptions, IEnumerable<object> argumentsForConstructor)
         {
-            var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake);
+            var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, fakeOptions);
 
             return this.proxyGenerator.GenerateProxy(
                     typeOfFake,

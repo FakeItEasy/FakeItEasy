@@ -29,7 +29,7 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var options = A.Fake<IFakeOptionsBuilder<IFoo>>();
-            A.CallTo(() => options.OnFakeCreated(A<Action<IFoo>>._)).Returns(options);
+            A.CallTo(() => options.ConfigureFake(A<Action<IFoo>>._)).Returns(options);
 
             // Act
             var result = options.Strict();
@@ -81,7 +81,7 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var options = A.Fake<IFakeOptionsBuilder<IFoo>>();
-            A.CallTo(() => options.OnFakeCreated(A<Action<IFoo>>._)).Returns(options);
+            A.CallTo(() => options.ConfigureFake(A<Action<IFoo>>._)).Returns(options);
 
             // Act
             var result = options.CallsBaseMethods();

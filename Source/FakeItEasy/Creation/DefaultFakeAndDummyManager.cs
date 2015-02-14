@@ -11,13 +11,11 @@ namespace FakeItEasy.Creation
     {
         private readonly FakeObjectCreator fakeCreator;
         private readonly IDummyValueCreationSession session;
-        private readonly IFakeWrapperConfigurer wrapperConfigurer;
 
-        public DefaultFakeAndDummyManager(IDummyValueCreationSession session, FakeObjectCreator fakeCreator, IFakeWrapperConfigurer wrapperConfigurer)
+        public DefaultFakeAndDummyManager(IDummyValueCreationSession session, FakeObjectCreator fakeCreator)
         {
             this.session = session;
             this.fakeCreator = fakeCreator;
-            this.wrapperConfigurer = wrapperConfigurer;
         }
 
         public object CreateDummy(Type typeOfDummy)
@@ -33,11 +31,7 @@ namespace FakeItEasy.Creation
 
         public object CreateFake(Type typeOfFake, FakeOptions options)
         {
-            var result = this.fakeCreator.CreateFake(typeOfFake, options, this.session, throwOnFailure: true);
-
-            this.ApplyConfigurationFromOptions(result, options);
-
-            return result;
+            return this.fakeCreator.CreateFake(typeOfFake, options, this.session, throwOnFailure: true);
         }
 
         public bool TryCreateDummy(Type typeOfDummy, out object result)
@@ -48,27 +42,7 @@ namespace FakeItEasy.Creation
         public bool TryCreateFake(Type typeOfFake, FakeOptions options, out object result)
         {
             result = this.fakeCreator.CreateFake(typeOfFake, options, this.session, throwOnFailure: false);
-
-            if (result == null)
-            {
-                return false;
-            }
-
-            this.ApplyConfigurationFromOptions(result, options);
-            return true;
-        }
-
-        private void ApplyConfigurationFromOptions(object fake, FakeOptions options)
-        {
-            if (options.WrappedInstance != null)
-            {
-                this.wrapperConfigurer.ConfigureFakeToWrap(fake, options.WrappedInstance, options.SelfInitializedFakeRecorder);
-            }
-
-            foreach (var a in options.OnFakeCreatedActions)
-            {
-                a.Invoke(fake);
-            }
+            return result != null;
         }
     }
 }

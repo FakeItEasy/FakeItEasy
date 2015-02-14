@@ -132,9 +132,9 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
-            public IFakeOptionsBuilder<T> OnFakeCreated(Action<T> action)
+            public IFakeOptionsBuilder<T> ConfigureFake(Action<T> action)
             {
-                this.Options.OnFakeCreatedActions.Add(x => action((T)x));
+                this.Options.FakeConfigurationActions.Add(x => action((T)x));
                 return this;
             }
 

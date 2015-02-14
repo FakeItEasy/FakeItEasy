@@ -3,6 +3,8 @@ namespace FakeItEasy.Tests.Core
     using System;
     using System.Reflection;
     using FakeItEasy.Core;
+    using FakeItEasy.Creation;
+    using FakeItEasy.SelfInitializedFakes;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -17,10 +19,16 @@ namespace FakeItEasy.Tests.Core
         private IFakeManagerAccessor fakeManagerAccessor = null;
 
         [Fake]
-        private IFakeObjectConfigurator configurer = null;
+        private IFakeObjectConfigurator fakeObjectConfigurator = null;
+
+        [Fake]
+        private IFakeWrapperConfigurer wrapperConfigurer = null;
 
         [Fake]
         private Type typeOfFake = null;
+
+        [Fake]
+        private FakeOptions fakeOptions = null;
 
         [UnderTest]
         private FakeManagerProvider fakeManagerProvider = null;
@@ -35,11 +43,11 @@ namespace FakeItEasy.Tests.Core
 
             this.proxy = new object();
             this.fakeManager = new FakeManager(typeof(int), this.proxy);
-            A.CallTo(() => this.fakeManagerFactory(A<Type>._, A<object>._)).Returns(this.fakeManager);
+            A.CallTo(() => this.fakeManagerFactory(A<Type>._, this.proxy)).Returns(this.fakeManager);
         }
 
         [Test]
-        public void Fetch_should_create_a_fake_manager_and_tag_and_configure_the_fake()
+        public void Fetch_should_return_a_fake_manager_from_the_factory()
         {
             // Arrange
 
@@ -48,16 +56,68 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             fakeCallProcessor.Should().BeSameAs(this.fakeManager);
-
-            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappened();
-
-            A.CallTo(() => this.fakeManagerAccessor.TagProxy(this.proxy, this.fakeManager)).MustHaveHappened();
-
-            A.CallTo(() => this.configurer.ConfigureFake(this.typeOfFake, this.proxy)).MustHaveHappened();
         }
 
         [Test]
-        public void Fetch_should_create_exactly_one_fake_manager()
+        public void Fetch_should_tag_the_proxy_with_the_manager()
+        {
+            // Arrange
+
+            // Act
+            this.fakeManagerProvider.Fetch(this.proxy);
+
+            // Assert
+            A.CallTo(() => this.fakeManagerAccessor.TagProxy(this.proxy, this.fakeManager)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Fetch_should_configure_the_proxy()
+        {
+            // Arrange
+
+            // Act
+            this.fakeManagerProvider.Fetch(this.proxy);
+
+            // Assert
+            A.CallTo(() => this.fakeObjectConfigurator.ConfigureFake(this.typeOfFake, this.proxy)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Fetch_should_configure_the_proxy_with_all_fake_configuration_actions()
+        {
+            // Arrange
+            var fakeConfigurationAction1 = A.Fake<Action<object>>();
+            var fakeConfigurationAction2 = A.Fake<Action<object>>();
+            this.fakeOptions.FakeConfigurationActions = new[] { fakeConfigurationAction1, fakeConfigurationAction2 };
+
+            // Act
+            this.fakeManagerProvider.Fetch(this.proxy);
+
+            // Assert
+            A.CallTo(() => fakeConfigurationAction1(this.proxy)).MustHaveHappened();
+            A.CallTo(() => fakeConfigurationAction2(this.proxy)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Fetch_should_configure_a_wrapped_proxy_when_making_a_fake_recorder()
+        {
+            // Arrange
+            this.fakeOptions.WrappedInstance = new object();
+            this.fakeOptions.SelfInitializedFakeRecorder = A.Fake<ISelfInitializingFakeRecorder>();
+
+            // Act
+            this.fakeManagerProvider.Fetch(this.proxy);
+
+            // Assert
+            A.CallTo(() => this.wrapperConfigurer.ConfigureFakeToWrap(
+                this.proxy,
+                this.fakeOptions.WrappedInstance,
+                this.fakeOptions.SelfInitializedFakeRecorder))
+                .MustHaveHappened();
+        }
+
+        [Test]
+        public void Fetch_should_create_exactly_one_fake_manager_when_called_repeatedly()
         {
             // Arrange
 
@@ -74,7 +134,7 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void EnsureInitialized_should_create_exactly_one_fake_manager()
+        public void EnsureInitialized_should_create_exactly_one_fake_manager_when_called_repeatedly()
         {
             // Arrange
 
@@ -88,18 +148,18 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void Should_be_able_to_serialize_and_deserialize_initialized_provider_and_fetch_should_still_work()
+        public void Should_be_able_to_fetch_a_serialized_and_deserialized_initialized_provider()
         {
             // Arrange
             this.fakeManagerProvider.EnsureInitialized(this.proxy);
-
-            // Act
             var deserializedFakeManagerProvider = BinarySerializationHelper.SerializeAndDeserialize(this.fakeManagerProvider);
             var deserializedFakeManager = GetInitializedFakeManager(deserializedFakeManagerProvider);
-            Action act = () => deserializedFakeManagerProvider.Fetch(deserializedFakeManager.Object);
+            
+            // Act
+            var exception = Record.Exception(() => deserializedFakeManagerProvider.Fetch(deserializedFakeManager.Object));
 
             // Assert
-            act.ShouldNotThrow();
+            exception.Should().BeNull();
         }
 
         private static FakeManager GetInitializedFakeManager(FakeManagerProvider fakeManagerProvider)
