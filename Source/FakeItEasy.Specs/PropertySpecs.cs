@@ -38,17 +38,17 @@
     {
         private static IHaveInterestingProperties subject;
 
-        private Establish context = () =>
+        Establish context = () =>
         {
             subject = A.Fake<IHaveInterestingProperties>();
         };
 
-        private Because of = () => subject[17, true] = new List<string> { "hippo", "lemur" };
+        Because of = () => subject[17, true] = new List<string> { "hippo", "lemur" };
 
-        private It should_return_the_value_to_the_getter_with_same_indexes =
+        It should_return_the_value_to_the_getter_with_same_indexes =
             () => subject[17, true].Should().BeEquivalentTo("hippo", "lemur");
 
-        private It should_return_the_same_instance_each_time_the_getter_is_called_with_those_indexes =
+        It should_return_the_same_instance_each_time_the_getter_is_called_with_those_indexes =
             () =>
             {
                 var firstResult = subject[17, true];
@@ -57,14 +57,14 @@
                     .Should().BeTrue("property getters should return the same object every time");
             };
 
-        private It should_return_the_default_value_to_getters_with_different_indexes =
+        It should_return_the_default_value_to_getters_with_different_indexes =
             () =>
             {
                 var result = subject[-183, true];
                 result.Should().BeEmpty();
             };
 
-        private It should_return_the_same_instance_each_time_the_getter_is_called_with_other_indexes =
+        It should_return_the_same_instance_each_time_the_getter_is_called_with_other_indexes =
             () =>
             {
                 var firstResult = subject[18, false];
@@ -78,21 +78,21 @@
     {
         private static IHaveInterestingProperties subject;
 
-        private Establish context = () =>
+        Establish context = () =>
         {
             subject = A.Fake<IHaveInterestingProperties>();
         };
 
-        private Because of = () =>
+        Because of = () =>
         {
             subject[17, true] = new List<string> { "hippo", "lemur" };
             subject[17, false] = new List<string> { "corgi", "chicken" };
         };
 
-        private It should_return_the_correct_value_for_the_first_indexes =
+        It should_return_the_correct_value_for_the_first_indexes =
             () => subject[17, true].Should().BeEquivalentTo("hippo", "lemur");
 
-        private It should_return_the_correct_value_for_the_second_indexes =
+        It should_return_the_correct_value_for_the_second_indexes =
             () => subject[17, false].Should().BeEquivalentTo("corgi", "chicken");
     }
 
@@ -102,21 +102,21 @@
         private static IHaveInterestingProperties firstValue;
         private static IHaveInterestingProperties secondValue;
 
-        private Establish context = () =>
+        Establish context = () =>
         {
             subject = A.Fake<IHaveInterestingProperties>();
         };
 
-        private Because of = () =>
+        Because of = () =>
         {
             firstValue = subject.FakeableProperty;
             secondValue = subject.FakeableProperty;
         };
 
-        private It should_not_return_null =
+        It should_not_return_null =
             () => firstValue.Should().NotBeNull();
 
-        private It should_return_the_same_instance_on_a_subsequent_get =
+        It should_return_the_same_instance_on_a_subsequent_get =
             () => secondValue.Should().BeSameAs(firstValue);
     }
 
@@ -126,21 +126,21 @@
         private static UnfakeableClass firstValue;
         private static UnfakeableClass secondValue;
 
-        private Establish context = () =>
+        Establish context = () =>
         {
             subject = A.Fake<IHaveInterestingProperties>();
         };
 
-        private Because of = () =>
+        Because of = () =>
         {
             firstValue = subject.UnfakeableProperty;
             secondValue = subject.UnfakeableProperty;
         };
 
-        private It should_not_return_null_if_dummy_can_be_made =
+        It should_not_return_null_if_dummy_can_be_made =
             () => firstValue.Should().NotBeNull();
 
-        private It should_return_the_same_instance_on_a_subsequent_get =
+        It should_return_the_same_instance_on_a_subsequent_get =
             () => secondValue.Should().BeSameAs(firstValue);
     }
 }
