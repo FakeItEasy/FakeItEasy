@@ -66,14 +66,16 @@
     <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
     <Compile Include="AsyncAwaitSpecs.cs" />
     <Compile Include="ConfigurationSpecs.cs" />
-    <Compile Include="ConstructorWithVirtualCallsSpecs.cs" />
+    <Compile Include="CreationOptionsSpecs.cs" />
     <Compile Include="DisposableSpecs.cs" />
+    <Compile Include="FakeScopeSpecs.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="CreationSpecs.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="FakeConfiguratorSpecs.cs" />
     <Compile Include="LazySpecs.cs" />
     <Compile Include="DummyFactorySpecs.cs" />
+    <Compile Include="MakesVirtualCallInConstructor.cs" />
     <Compile Include="OrderedCallMatchingSpecs.cs" />
     <Compile Include="FakingInternalsSpecs.cs" />
     <Compile Include="EventRaisingSpecs.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="PropertySpecs.cs" />
     <Compile Include="CallsBaseMethodsFakeSpecs.cs" />
     <Compile Include="StrictFakeSpecs.cs" />
+    <Compile Include="UnconfiguredFakeSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj">
