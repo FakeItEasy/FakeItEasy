@@ -6,78 +6,70 @@
     using FluentAssertions;
     using Machine.Specifications;
 
-    public class when_faking_a_class_which_calls_configured_virtual_member_in_constructor
+    public class when_ConfigureFake_is_used_to_configure_a_method
     {
-        static MakesVirtualCallInConstructor fake;
+        private static MakesVirtualCallInConstructor fake;
 
         Because of = () => fake = A.Fake<MakesVirtualCallInConstructor>(options => options.ConfigureFake(
             f => A.CallTo(() => f.VirtualMethod(A<string>._))
                 .Returns("configured value in fake options")));
 
-        private It should_return_the_configured_value_during_the_constructor =
+        It should_return_the_configured_value_during_the_constructor =
             () => fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured value in fake options");
 
-        private It should_return_the_configured_value_after_the_constructor =
+        It should_return_the_configured_value_after_the_constructor =
             () => fake.VirtualMethod(null).Should().Be("configured value in fake options");
     }
 
-    public class when_configuring_a_method_called_by_a_constructor_that_is_also_configured_by_a_fake_configurator
+    public class when_ConfigureFake_is_used_to_configure_a_method_also_configured_by_a_FakeConfigurator
     {
-        static RobotRunsAmokEvent fake = null;
+        static RobotRunsAmokEvent fake;
 
         Because of = () => fake = A.Fake<RobotRunsAmokEvent>(
             options => options.ConfigureFake(
                 f => A.CallTo(() => f.CalculateTimestamp()).Returns(new DateTime(2000, 1, 1, 0, 0, 0))));
 
-        It should_use_the_configured_behavior_from_the_fake_options =
+        It should_use_the_configured_behavior_from_the_ConfigureFake =
             () => fake.Timestamp.Should().Be(new DateTime(2000, 1, 1, 0, 0, 0));
     }
 
-    public class when_configuring_a_method_called_by_a_constructor_to_call_base_method
+    public class when_CallsBaseMethods_is_used_to_configure_a_fake
     {
         static MakesVirtualCallInConstructor fake;
 
         Because of = () => fake = A.Fake<MakesVirtualCallInConstructor>(options => options.CallsBaseMethods());
 
-        It should_call_base_method_during_constructor =
+        It should_call_base_method_during_the_constructor =
             () => fake.VirtualMethodValueDuringConstructorCall.Should().Be("implementation value");
 
-        It should_call_base_method_after_constructor =
+        It should_call_base_method_after_the_constructor =
             () => fake.VirtualMethod(null).Should().Be("implementation value");
     }
 
-    public class when_configuring_a_method_called_by_a_constructor_to_be_strict
+    public class when_Strict_is_used_to_configure_a_fake
     {
-        static Exception exception;
+        private static MakesVirtualCallInConstructor fake;
 
-        Because of = () => exception = Record.Exception(() => A.Fake<MakesVirtualCallInConstructor>(options => options.Strict()));
+        Because of = () => fake = A.Fake<MakesVirtualCallInConstructor>(options => options.Strict());
 
-        private It should_throw_an_exception_during_the_constructor = () =>
+        It should_throw_an_exception_from_a_method_call_during_the_constructor = () =>
         {
-            var expectedMessage = new[]
-            {
-                string.Empty,
-                "  Failed to create fake of type \"FakeItEasy.Specs.MakesVirtualCallInConstructor\".",
-                string.Empty,
-                "  Below is a list of reasons for failure per attempted constructor:",
-                "    No constructor arguments failed:",
-                "      No usable default constructor was found on the type FakeItEasy.Specs.MakesVirtualCallInConstructor.",
-                "      An exception of type FakeItEasy.ExpectationException was caught during this call. Its message was:",
-                "      Call to non configured method \"VirtualMethod\" of strict fake.",
-                "*"
-            }.AsTextBlock();
-
-            exception
+            fake.ExceptionFromVirtualMethodCallInConstructor
                 .Should()
-                .BeAnExceptionOfType<FakeCreationException>()
-                .WithMessage(
-                    expectedMessage);
+                .BeAnExceptionOfType<ExpectationException>()
+                .WithMessage("Call to non configured method \"VirtualMethod\" of strict fake.");
+        };
+
+        It should_throw_an_exception_from_a_method_call_after_the_constructor = () =>
+        {
+            Record.Exception(() => fake.VirtualMethod("call outside constructor"))
+                .Should()
+                .BeAnExceptionOfType<ExpectationException>()
+                .WithMessage("Call to non configured method \"VirtualMethod\" of strict fake.");
         };
     }
 
-    // This spec proves that we can configure methods of a strict fake and it applies to calls in the constructor (the 
-    // counterpart to the previous scenario with an un-configured strict fake):
-    public class when_configuring_a_method_called_by_a_constructor_to_be_strict_and_adding_configuration
+    public class when_Strict_followed_by_ConfigureFake_are_used_to_configure_a_fake
     {
         static MakesVirtualCallInConstructor fake;
 
@@ -94,7 +86,7 @@
             () => fake.VirtualMethod(null).Should().Be("configured value of strict fake");
     }
 
-    public class when_wrapping_an_object_in_a_fake_that_calls_virtual_member_in_constructor
+    public class when_Wrapping_is_used_to_configure_a_fake
     {
         static MakesVirtualCallInConstructor fake;
 
@@ -109,7 +101,7 @@
             () => fake.VirtualMethod(null).Should().Be("implementation value");
     }
 
-    public class when_wrapping_an_object_and_then_configuring_a_method_called_by_constructor
+    public class when_Wrapping_followed_by_ConfigureFake_are_used_to_configure_a_fake
     {
         static MakesVirtualCallInConstructor fake;
 
@@ -126,7 +118,7 @@
             () => fake.VirtualMethod(null).Should().Be("configured in test");
     }
 
-    public class when_configuring_a_method_called_by_constructor_and_then_wrapping_an_object
+    public class when_ConfigureFake_followed_by_Wrapping_are_used_to_configure_a_fake
     {
         static MakesVirtualCallInConstructor fake;
 
@@ -143,7 +135,7 @@
             () => fake.VirtualMethod(null).Should().Be("configured in test");
     }
 
-    public class when_wrapping_an_object_with_a_fake_that_has_a_fake_configurator
+    public class when_Wrapping_is_used_to_configure_a_fake_that_has_a_FakeConfigurator
     {
         static RobotRunsAmokEvent fake;
 
@@ -151,7 +143,7 @@
             fake = A.Fake<RobotRunsAmokEvent>(
                 options => options.Wrapping(new RobotRunsAmokEvent()));
 
-        private It should_delegate_to_the_wrapped_object =
+        It should_delegate_to_the_wrapped_object =
             () => fake.Timestamp.Should().Be(DomainEvent.DefaultTimestamp);
     }
 }
