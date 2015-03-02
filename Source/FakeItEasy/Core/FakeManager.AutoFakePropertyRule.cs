@@ -27,18 +27,24 @@
             {
                 Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
 
-                return PropertyBehaviorRule.IsPropertyGetter(fakeObjectCall.Method) && TypeIsFakable(fakeObjectCall.Method.ReturnType);
+                return PropertyBehaviorRule.IsPropertyGetter(fakeObjectCall.Method);
             }
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
 
+                object theValue;
+                if (!TryCreateFake(fakeObjectCall.Method.ReturnType, out theValue))
+                {
+                    theValue = DefaultReturnValue(fakeObjectCall);
+                }
+
                 var newRule = new CallRuleMetadata
                                   {
                                       Rule = new PropertyBehaviorRule(fakeObjectCall.Method, FakeManager)
                                       {
-                                          Value = CreateFake(fakeObjectCall.Method.ReturnType),
+                                          Value = theValue,
                                           Indices = fakeObjectCall.Arguments.ToArray(),
                                       },
                                       CalledNumberOfTimes = 1
@@ -48,15 +54,14 @@
                 newRule.Rule.Apply(fakeObjectCall);
             }
 
-            private static object CreateFake(Type type)
+            private static bool TryCreateFake(Type type, out object fake)
             {
-                return FakeAndDummyManager.CreateFake(type, FakeOptions.Empty);
+                return FakeAndDummyManager.TryCreateFake(type, FakeOptions.Empty, out fake);
             }
 
-            private static bool TypeIsFakable(Type type)
+            private static object DefaultReturnValue(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                object result = null;
-                return FakeAndDummyManager.TryCreateFake(type, FakeOptions.Empty, out result);
+                return DefaultReturnValueRule.ResolveReturnValue(fakeObjectCall);
             }
         }
     }
