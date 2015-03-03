@@ -5,7 +5,8 @@ namespace FakeItEasy.Specs
 
     public class MakesVirtualCallInConstructor
     {
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes"), SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Required for testing.")]
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Required for testing.")]
+        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Required for testing.")]
         public MakesVirtualCallInConstructor()
         {
             try
@@ -17,6 +18,16 @@ namespace FakeItEasy.Specs
                 this.ExceptionFromVirtualMethodCallInConstructor = e;
             }
         }
+
+        public MakesVirtualCallInConstructor(string argument1, int argument2)
+        {
+            this.ConstructorArgument1 = argument1;
+            this.ConstructorArgument2 = argument2;
+        }
+
+        public string ConstructorArgument1 { get; private set; }
+
+        public int ConstructorArgument2 { get; private set; }
 
         public Exception ExceptionFromVirtualMethodCallInConstructor { get; private set; }
 

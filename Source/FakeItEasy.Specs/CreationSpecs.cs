@@ -54,6 +54,8 @@
 
         public class FakedClass
         {
+            private static ISet<int> parameterListLengthsForAttemptedConstructors = new SortedSet<int>();
+            
             [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "This anti-pattern is part of the the tested scenario.")]
             public FakedClass()
             {
@@ -79,16 +81,14 @@
                 this.WasTwoParameterConstructorCalled = true;
             }
 
-            public virtual bool WasParameterlessConstructorCalled { get; set; }
-
-            public virtual bool WasTwoParameterConstructorCalled { get; set; }
-
             public static ISet<int> ParameterListLengthsForAttemptedConstructors
             {
                 get { return parameterListLengthsForAttemptedConstructors; }
             }
 
-            private static ISet<int> parameterListLengthsForAttemptedConstructors = new SortedSet<int>();  
+            public virtual bool WasParameterlessConstructorCalled { get; set; }
+
+            public virtual bool WasTwoParameterConstructorCalled { get; set; }
         }
     }
 }
