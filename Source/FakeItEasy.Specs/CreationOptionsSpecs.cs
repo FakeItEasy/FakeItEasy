@@ -143,7 +143,7 @@
         private static MakesVirtualCallInConstructor fake;
 
         Because of = () => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
-            .Wrapping(new DerivedMakesVirtualCallInConstructor("derived value"))
+            .Wrapping(new DerivedMakesVirtualCallInConstructor("wrapped value"))
             .CallsBaseMethods());
 
         It should_call_base_method =
@@ -248,8 +248,8 @@
                 .CallsBaseMethods()
                 .Wrapping(new DerivedMakesVirtualCallInConstructor("wrapped value")));
 
-        It should_call_the_base_method = () =>
-            fake.VirtualMethod(null).Should().Be("implementation value");
+        It should_delegate_to_the_wrapped_instance = () =>
+            fake.VirtualMethod(null).Should().Be("wrapped value");
     }
 
     public class when_ConfigureFake_followed_by_Wrapping_are_used_to_configure_a_fake
@@ -260,13 +260,13 @@
             fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                 .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._))
                     .Returns("configured in test"))
-                .Wrapping(new MakesVirtualCallInConstructor()));
+                .Wrapping(new DerivedMakesVirtualCallInConstructor("wrapped value")));
 
-        It should_use_the_configured_behavior_during_the_constructor = () =>
-            fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured in test");
+        It should_delegate_to_the_wrapped_instance_during_the_constructor = () =>
+            fake.VirtualMethodValueDuringConstructorCall.Should().Be("wrapped value");
 
-        It should_use_the_configured_behavior_after_the_constructor = () =>
-            fake.VirtualMethod(null).Should().Be("configured in test");
+        It should_delegate_to_the_wrapped_instance_after_the_constructor = () =>
+            fake.VirtualMethod(null).Should().Be("wrapped value");
     }
 
     public class when_Strict_followed_by_Wrapping_are_used_to_configure_a_fake
@@ -276,12 +276,10 @@
         Because of = () =>
             fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                 .Strict()
-                .Wrapping(new DerivedMakesVirtualCallInConstructor("derived value")));
+                .Wrapping(new DerivedMakesVirtualCallInConstructor("wrapped value")));
 
-        It should_throw_an_exception_from_the_method_call = () =>
-            fake.ExceptionFromVirtualMethodCallInConstructor
-                .Should()
-                .BeAnExceptionOfType<ExpectationException>();
+        It should_delegate_to_the_wrapped_instance = () =>
+            fake.VirtualMethod(null).Should().Be("wrapped value");
     }
 
     public class when_Wrapping_is_used_to_configure_a_fake_twice
