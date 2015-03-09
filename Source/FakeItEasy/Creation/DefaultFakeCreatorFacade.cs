@@ -122,7 +122,7 @@ namespace FakeItEasy.Creation
 
             public IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance)
             {
-                this.Options.WrappedInstance = wrappedInstance;
+                this.Options.Wrapper = new DefaultFakeWrapperConfigurer(wrappedInstance);
                 return this;
             }
 
@@ -139,7 +139,7 @@ namespace FakeItEasy.Creation
 
             public IFakeOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
             {
-                this.Options.SelfInitializedFakeRecorder = recorder;
+                this.Options.Wrapper.Recorder = recorder;
                 return this;
             }
 

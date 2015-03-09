@@ -58,7 +58,7 @@
 
             container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
                 (typeOfFake, fakeOptions) =>
-                    new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeObjectContainer>(), c.Resolve<IFakeWrapperConfigurer>(), typeOfFake, fakeOptions));
+                    new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeObjectContainer>(), typeOfFake, fakeOptions));
 
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
                 new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), c.Resolve<IFakeManagerAccessor>()));
@@ -112,9 +112,6 @@
             container.RegisterSingleton<IExceptionThrower>(c => new DefaultExceptionThrower());
 
             container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
-
-            container.Register<IFakeWrapperConfigurer>(c =>
-                new DefaultFakeWrapperConfigurer());
 
             container.Register(c =>
                 new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeScopeFactory>(), c.Resolve<IFixtureInitializer>()));

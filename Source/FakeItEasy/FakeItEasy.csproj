@@ -355,9 +355,6 @@
     <Compile Include="Core\IFakeScopeFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\IFakeWrapperConfigurer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\IFixtureInitializer.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -16,17 +16,17 @@
         {
             this.faked = A.Fake<IFoo>();
 
-            this.wrapperConfigurator = new DefaultFakeWrapperConfigurer();
+            IFoo wrapped = A.Fake<IFoo>();
+            this.wrapperConfigurator = new DefaultFakeWrapperConfigurer(wrapped);
         }
 
         [Test]
         public void ConfigureFakeToWrap_should_add_WrappedFakeObjectRule_to_fake_object()
         {
             // Arrange
-            var wrapped = A.Fake<IFoo>();
 
             // Act
-            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked, wrapped, null);
+            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked);
 
             // Assert
             Assert.That(Fake.GetFakeManager(this.faked).Rules.ToArray(), Has.Some.InstanceOf<WrappedObjectRule>());
@@ -36,11 +36,10 @@
         public void ConfigureFakeToWrap_should_add_self_initialization_rule_when_recorder_is_specified()
         {
             // Arrange
-            var recorder = A.Fake<ISelfInitializingFakeRecorder>();
-            var wrapped = A.Fake<IFoo>();
+            this.wrapperConfigurator.Recorder = A.Fake<ISelfInitializingFakeRecorder>();
 
             // Act
-            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked, wrapped, recorder);
+            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked);
 
             // Assert
             Assert.That(Fake.GetFakeManager(this.faked).Rules.First(), Is.InstanceOf<SelfInitializationRule>());
@@ -50,10 +49,9 @@
         public void ConfigureFakeToWrap_should_not_add_self_initialization_rule_when_recorder_is_not_specified()
         {
             // Arrange
-            var wrapped = A.Fake<IFoo>();
 
             // Act
-            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked, wrapped, null);
+            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked);
 
             // Assert
             Assert.That(Fake.GetFakeManager(this.faked).Rules, Has.None.InstanceOf<SelfInitializationRule>());

@@ -437,9 +437,6 @@
     <Compile Include="..\FakeItEasy\Core\IFakeScopeFactory.cs">
       <Link>Core\IFakeScopeFactory.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeWrapperConfigurer.cs">
-      <Link>Core\IFakeWrapperConfigurer.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\IFixtureInitializer.cs">
       <Link>Core\IFixtureInitializer.cs</Link>
     </Compile>

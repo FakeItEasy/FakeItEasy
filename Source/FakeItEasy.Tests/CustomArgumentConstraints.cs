@@ -49,8 +49,7 @@ namespace FakeItEasy.Tests
                 {
                     return !x.AdditionalInterfacesToImplement.Any()
                         && x.ArgumentsForConstructor == null
-                        && x.SelfInitializedFakeRecorder == null
-                        && x.WrappedInstance == null;
+                        && x.Wrapper == null;
                 },
                 x => x.Write("empty fake options"));
         }

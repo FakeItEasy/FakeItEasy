@@ -4,10 +4,12 @@ namespace FakeItEasy.Creation
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection.Emit;
-    using FakeItEasy.SelfInitializedFakes;
+    using FakeItEasy.Core;
 
     internal class FakeOptions
     {
+        private DefaultFakeWrapperConfigurer wrapper;
+
         public FakeOptions()
         {
             this.AdditionalInterfacesToImplement = Enumerable.Empty<Type>();
@@ -20,9 +22,19 @@ namespace FakeItEasy.Creation
             get { return new FakeOptions(); }
         }
 
-        public object WrappedInstance { get; set; }
+        public DefaultFakeWrapperConfigurer Wrapper
+        {
+            get
+            {
+                return this.wrapper;
+            }
 
-        public ISelfInitializingFakeRecorder SelfInitializedFakeRecorder { get; set; }
+            set
+            {
+                this.wrapper = value;
+                this.FakeConfigurationActions.Add(fake => this.wrapper.ConfigureFakeToWrap(fake));
+            }
+        }
 
         public IEnumerable<object> ArgumentsForConstructor { get; set; }
 
@@ -30,6 +42,6 @@ namespace FakeItEasy.Creation
 
         public ICollection<Action<object>> FakeConfigurationActions { get; set; }
 
-        public ICollection<CustomAttributeBuilder> AdditionalAttributes { get; set; } 
+        public ICollection<CustomAttributeBuilder> AdditionalAttributes { get; set; }
     }
 }
