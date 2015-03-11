@@ -90,8 +90,10 @@ namespace FakeItEasy.Creation
             {
                 this.additionalInterfacesToImpelement = new List<Type>();
 
-                this.Options = new FakeOptions();
-                this.Options.AdditionalInterfacesToImplement = this.additionalInterfacesToImpelement;
+                this.Options = new FakeOptions
+                {
+                    AdditionalInterfacesToImplement = this.additionalInterfacesToImpelement
+                };
             }
 
             public FakeOptions Options { get; private set; }
@@ -108,7 +110,8 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
-            public IFakeOptionsBuilder<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+            public IFakeOptionsBuilder<T> WithAdditionalAttributes(
+                IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
             {
                 Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
 

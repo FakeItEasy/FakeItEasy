@@ -3,6 +3,7 @@
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.SelfInitializedFakes;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -29,7 +30,8 @@
             this.wrapperConfigurator.ConfigureFakeToWrap(this.faked);
 
             // Assert
-            Assert.That(Fake.GetFakeManager(this.faked).Rules.ToArray(), Has.Some.InstanceOf<WrappedObjectRule>());
+            Fake.GetFakeManager(this.faked).Rules
+                .Should().Contain(item => item.GetType().IsAssignableFrom(typeof(WrappedObjectRule)));
         }
 
         [Test]
@@ -42,7 +44,8 @@
             this.wrapperConfigurator.ConfigureFakeToWrap(this.faked);
 
             // Assert
-            Assert.That(Fake.GetFakeManager(this.faked).Rules.First(), Is.InstanceOf<SelfInitializationRule>());
+            Fake.GetFakeManager(this.faked).Rules.First()
+                .Should().BeOfType<SelfInitializationRule>();
         }
 
         [Test]
@@ -54,7 +57,8 @@
             this.wrapperConfigurator.ConfigureFakeToWrap(this.faked);
 
             // Assert
-            Assert.That(Fake.GetFakeManager(this.faked).Rules, Has.None.InstanceOf<SelfInitializationRule>());
+            Fake.GetFakeManager(this.faked).Rules
+                .Should().NotContain(item => item.GetType().IsAssignableFrom(typeof(SelfInitializationRule)));
         }
     }
 }
