@@ -126,6 +126,11 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
+            public IFakeOptionsBuilder<T> Implements<TInterface>()
+            {
+                return Implements(typeof (TInterface));
+            }
+
             public IFakeOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
             {
                 this.Options.SelfInitializedFakeRecorder = recorder;
