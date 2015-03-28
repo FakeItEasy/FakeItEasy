@@ -26,8 +26,7 @@ namespace FakeItEasy.IntegrationTests
                 Path.Combine(@"..\..\..\FakeItEasy.IntegrationTests.External\bin", currentDirectoryName));
 
             var expectedMessageFormat =
-@"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\{0}\FakeItEasy.IntegrationTests.External.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeConfigurators in that assembly will not be available.
-  API restriction: The assembly '*FakeItEasy.IntegrationTests.External\bin\{0}\FakeItEasy.IntegrationTests.External.dll' has already loaded from a different location. It cannot be loaded from a new location within the same appdomain.*";
+@"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\{0}\FakeItEasy.IntegrationTests.External.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeConfigurators in that assembly will not be available.*";
 
             var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, currentDirectoryName);
             string actualMessage;
