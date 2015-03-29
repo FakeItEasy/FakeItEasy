@@ -128,7 +128,7 @@ namespace FakeItEasy.Creation
 
             public IFakeOptionsBuilder<T> Implements<TInterface>()
             {
-                return Implements(typeof (TInterface));
+                return this.Implements(typeof(TInterface));
             }
 
             public IFakeOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
