@@ -30,6 +30,6 @@
             () => exception.Message.Should().Contain("I don't like being constructed.");
 
         It should_throw_an_exception_whose_message_includes_original_exception_stack_trace =
-            () => exception.Message.Should().Contain("at FakeItEasy.Specs.ClassWhoseConstructorThrows..ctor()");
+            () => exception.Message.Should().Contain("FakeItEasy.Specs.ClassWhoseConstructorThrows..ctor()");
     }
 }
