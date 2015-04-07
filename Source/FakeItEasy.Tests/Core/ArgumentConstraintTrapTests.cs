@@ -1,7 +1,9 @@
 ﻿namespace FakeItEasy.Tests.Core
 {
+    using System.Threading.Tasks;
     using FakeItEasy.Core;
     using NUnit.Framework;
+    using TestHelpers;
 
     [TestFixture]
     public class ArgumentConstraintTrapTests
@@ -52,6 +54,35 @@
 
             // Act, Assert
             Assert.DoesNotThrow(() => ArgumentConstraintTrap.ReportTrappedConstraint(A.Dummy<IArgumentConstraint>()));
+        }
+
+        [Test]
+        public void Should_track_constraints_supplied_in_calls_made_from_different_threads()
+        {
+            var exception = Record.Exception(() =>
+            {
+                var tasks = new Task[12];
+                for (int i = 0; i < tasks.Length; i++)
+                {
+                    var taskNumber = i;
+                    tasks[i] = Task.Factory.StartNew(() =>
+                    {
+                        var constraint = A.Fake<IArgumentConstraint>();
+                        A.CallTo(() => constraint.ToString()).Returns("constraint " + taskNumber);
+
+                        var result = this.trap.TrapConstraints(() =>
+                        {
+                            ArgumentConstraintTrap.ReportTrappedConstraint(constraint);
+                        });
+
+                        Assert.That(result, Is.EqualTo(new[] { constraint }));
+                    });
+                }
+
+                Task.WaitAll(tasks);
+            });
+
+            Assert.That(exception, Is.Null);
         }
     }
 }

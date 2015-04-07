@@ -6,6 +6,7 @@
     internal class ArgumentConstraintTrap
         : IArgumentConstraintTrapper
     {
+        [ThreadStatic]
         private static List<IArgumentConstraint> trappedConstraints;
 
         public static void ReportTrappedConstraint(IArgumentConstraint constraint)
@@ -15,7 +16,7 @@
                 trappedConstraints.Add(constraint);
             }
         }
-        
+
         public IEnumerable<IArgumentConstraint> TrapConstraints(Action actionThatProducesConstraint)
         {
             trappedConstraints = new List<IArgumentConstraint>();
@@ -24,7 +25,7 @@
             actionThatProducesConstraint.Invoke();
 
             trappedConstraints = null;
-            
+
             return result;
         }
     }
