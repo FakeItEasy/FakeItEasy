@@ -2,13 +2,14 @@
 {
     using System.Threading.Tasks;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
     using TestHelpers;
 
     [TestFixture]
     public class ArgumentConstraintTrapTests
     {
-        private ArgumentConstraintTrap trap = new ArgumentConstraintTrap();
+        private readonly ArgumentConstraintTrap trap = new ArgumentConstraintTrap();
 
         [Test]
         public void Should_return_constraints_that_has_been_trapped()
@@ -24,8 +25,8 @@
                                                            ArgumentConstraintTrap.ReportTrappedConstraint(constraint2);
                                                        });
 
-            // Asssert
-            Assert.That(result, Is.EquivalentTo(new[] { constraint1, constraint2 }));
+            // Assert
+            result.Should().BeEquivalentTo(constraint1, constraint2);
         }
 
         [Test]
@@ -43,17 +44,19 @@
                                                            ArgumentConstraintTrap.ReportTrappedConstraint(constraint2);
                                                        });
 
-            // Asssert
-            Assert.That(result, Is.EquivalentTo(new[] { constraint2 }));
+            // Assert
+            result.Should().BeEquivalentTo(constraint2);
         }
 
         [Test]
         public void Should_not_fail_when_reporting_trapped_constraint_outside_call_to_trap_constraints()
         {
-            // Arrange
+            // Act
+            var exception = Record.Exception(
+                () => ArgumentConstraintTrap.ReportTrappedConstraint(A.Dummy<IArgumentConstraint>()));
 
-            // Act, Assert
-            Assert.DoesNotThrow(() => ArgumentConstraintTrap.ReportTrappedConstraint(A.Dummy<IArgumentConstraint>()));
+            // Assert
+            exception.Should().BeNull();
         }
 
         [Test]
@@ -75,14 +78,14 @@
                             ArgumentConstraintTrap.ReportTrappedConstraint(constraint);
                         });
 
-                        Assert.That(result, Is.EqualTo(new[] { constraint }));
+                        result.Should().BeEquivalentTo(constraint);
                     });
                 }
 
                 Task.WaitAll(tasks);
             });
 
-            Assert.That(exception, Is.Null);
+            exception.Should().BeNull();
         }
     }
 }
