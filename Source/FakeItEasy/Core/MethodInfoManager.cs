@@ -53,10 +53,19 @@ namespace FakeItEasy.Core
 
         private static bool HasSameBaseMethod(MethodInfo first, MethodInfo second)
         {
-            var baseOfFirst = first.GetBaseDefinition();
-            var baseOfSecond = second.GetBaseDefinition();
+            var baseOfFirst = GetBaseDefinition(first);
+            var baseOfSecond = GetBaseDefinition(second);
 
             return IsSameMethod(baseOfFirst, baseOfSecond);
+        }
+
+        private static MethodInfo GetBaseDefinition(MethodInfo method)
+        {
+            if (method.IsGenericMethod && !method.IsGenericMethodDefinition)
+            {
+                method = method.GetGenericMethodDefinition();
+            }
+            return method.GetBaseDefinition();
         }
 
         private static bool IsSameMethod(MethodInfo first, MethodInfo second)

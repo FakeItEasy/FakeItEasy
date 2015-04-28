@@ -161,6 +161,21 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
+        public void ErrorMessage_when_configuring_generic_function_call_that_cannot_be_configured_should_be_correct()
+        {
+            // Arrange
+            var fake = A.Fake<TypeWithNonConfigurableMethod>();
+
+            // Act
+            var exception = Record.Exception(() =>
+                A.CallTo(() => fake.GenericNonVirtualFunction<int>(string.Empty, 1)).Returns(10));
+
+            // Asssert
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
+                .Message.Should().Contain("Non virtual");
+        }
+
+        [Test]
         public void Should_be_able_to_generate_class_fake_that_implements_additional_interface()
         {
             // Arrange
@@ -292,6 +307,11 @@ namespace FakeItEasy.IntegrationTests
             public int NonVirtualFunction(string argument, int otherArgument)
             {
                 return 1;
+            }
+
+            public T GenericNonVirtualFunction<T>(string argument, int otherArgument)
+            {
+                return default(T);
             }
         }
     }
