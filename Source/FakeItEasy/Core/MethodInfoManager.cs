@@ -65,6 +65,7 @@ namespace FakeItEasy.Core
             {
                 method = method.GetGenericMethodDefinition();
             }
+
             return method.GetBaseDefinition();
         }
 
