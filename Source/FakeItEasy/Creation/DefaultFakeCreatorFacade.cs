@@ -110,7 +110,10 @@ namespace FakeItEasy.Creation
 
             public IFakeOptionsBuilder<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
             {
+                Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
+
                 this.Options.AdditionalAttributes = customAttributeBuilders;
+
                 return this;
             }
 
