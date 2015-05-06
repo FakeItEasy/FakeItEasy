@@ -397,9 +397,10 @@
                 .WithAdditionalAttributes(customAttributeBuilders2));
         };
 
-        It should_produce_a_fake_that_has_the_last_set_of_attributes =
+        It should_produce_a_fake_that_has_all_of_the_attributes =
             () => fake.GetType().GetCustomAttributes(false)
                 .Select(a => a.GetType()).Should()
+                .Contain(typeof(SubjectAttribute)).And
                 .Contain(typeof(IgnoreAttribute)).And
                 .Contain(typeof(DebuggerStepThroughAttribute));
 
