@@ -358,6 +358,24 @@
         }
     }
 
+    public class when_WithAdditionalAttributes_is_used_to_configure_a_fake_with_a_null_set_of_attributes
+    {
+        private static Exception exception;
+
+        Because of = () => exception = Record.Exception(() =>
+            A.Fake<IInterfaceThatWeWillAddAttributesTo>(options => options
+                .WithAdditionalAttributes(null)));
+
+        private It should_throw_an_argument_null_exception =
+            () => exception.Should().BeAnExceptionOfType<ArgumentNullException>()
+                .WithMessage("*customAttributeBuilders*");
+
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface IInterfaceThatWeWillAddAttributesTo
+        {
+        }
+    }
+
     public class when_WithAdditionalAttributes_is_used_to_configure_a_fake_twice
     {
         private static IInterfaceThatWeWillAddAttributesTo fake;
