@@ -168,7 +168,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Act
             var exception = Record.Exception(() =>
-                A.CallTo(() => fake.GenericNonVirtualFunction<int>(string.Empty, 1)).Returns(10));
+                A.CallTo(() => fake.GenericNonVirtualFunction<int>()).Returns(10));
 
             // Asssert
             exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
@@ -309,7 +309,7 @@ namespace FakeItEasy.IntegrationTests
                 return 1;
             }
 
-            public T GenericNonVirtualFunction<T>(string argument, int otherArgument)
+            public T GenericNonVirtualFunction<T>()
             {
                 return default(T);
             }
