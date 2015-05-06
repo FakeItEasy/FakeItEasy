@@ -112,7 +112,10 @@ namespace FakeItEasy.Creation
             {
                 Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
 
-                this.Options.AdditionalAttributes = customAttributeBuilders;
+                foreach (var customAttributeBuilder in customAttributeBuilders)
+                {
+                    this.Options.AdditionalAttributes.Add(customAttributeBuilder);
+                }
 
                 return this;
             }

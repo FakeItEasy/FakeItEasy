@@ -12,7 +12,7 @@ namespace FakeItEasy.Creation
         {
             this.AdditionalInterfacesToImplement = Enumerable.Empty<Type>();
             this.FakeConfigurationActions = new List<Action<object>>();
-            this.AdditionalAttributes = Enumerable.Empty<CustomAttributeBuilder>();
+            this.AdditionalAttributes = new List<CustomAttributeBuilder>();
         }
         
         public static FakeOptions Empty
@@ -30,6 +30,6 @@ namespace FakeItEasy.Creation
 
         public ICollection<Action<object>> FakeConfigurationActions { get; set; }
 
-        public IEnumerable<CustomAttributeBuilder> AdditionalAttributes { get; set; } 
+        public ICollection<CustomAttributeBuilder> AdditionalAttributes { get; set; } 
     }
 }
