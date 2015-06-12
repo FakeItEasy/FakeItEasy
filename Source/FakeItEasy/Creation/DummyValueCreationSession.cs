@@ -217,7 +217,7 @@
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
                 result = default(object);
-                if (typeof(Delegate).IsAssignableFrom(typeOfDummy))
+                if (typeof(Delegate).IsAssignableFrom(typeOfDummy) || typeOfDummy.IsAbstract)
                 {
                     return false;
                 }
