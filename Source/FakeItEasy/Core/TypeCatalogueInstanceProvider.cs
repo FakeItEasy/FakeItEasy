@@ -28,7 +28,7 @@
         {
             var result = new List<T>();
 
-            foreach (var type in this.catalogue.GetAvailableTypes().Where(x => typeof(T).IsAssignableFrom(x)))
+            foreach (var type in this.catalogue.GetAvailableTypes().Where(x => x.CanBeInstantiatedAs(typeof(T))))
             {
                 try
                 {

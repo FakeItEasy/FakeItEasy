@@ -29,5 +29,11 @@
         {
             return type.IsValueType && !type.Equals(typeof(void)) ? Activator.CreateInstance(type) : null;
         }
+
+        [DebuggerStepThrough]
+        public static bool CanBeInstantiatedAs(this Type type, Type targetType)
+        {
+            return targetType.IsAssignableFrom(type) && !type.IsAbstract;
+        }
     }
 }

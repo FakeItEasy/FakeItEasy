@@ -29,7 +29,7 @@
 
             var candidateTypes = appDomainAssembliesReferencingFakeItEasy
                 .SelectMany(assembly => assembly.GetExportedTypes())
-                .Where(type => bootstrapperInterface.IsAssignableFrom(type));
+                .Where(type => type.CanBeInstantiatedAs(bootstrapperInterface));
 
             var bootstrapperType = candidateTypes.FirstOrDefault() ?? typeof(DefaultBootstrapper);
 
