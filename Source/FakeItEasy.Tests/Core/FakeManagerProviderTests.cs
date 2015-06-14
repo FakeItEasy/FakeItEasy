@@ -84,7 +84,8 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var fakeConfigurationAction1 = A.Fake<Action<object>>();
             var fakeConfigurationAction2 = A.Fake<Action<object>>();
-            this.fakeOptions.FakeConfigurationActions = new[] { fakeConfigurationAction1, fakeConfigurationAction2 };
+            this.fakeOptions.AddFakeConfigurationAction(fakeConfigurationAction1);
+            this.fakeOptions.AddFakeConfigurationAction(fakeConfigurationAction2);
 
             // Act
             this.fakeManagerProvider.Fetch(this.proxy);

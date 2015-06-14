@@ -84,16 +84,9 @@ namespace FakeItEasy.Creation
         private class FakeOptionsBuilder<T>
             : IFakeOptionsBuilderForWrappers<T>
         {
-            private readonly List<Type> additionalInterfacesToImpelement;
-
             public FakeOptionsBuilder()
             {
-                this.additionalInterfacesToImpelement = new List<Type>();
-
-                this.Options = new FakeOptions
-                {
-                    AdditionalInterfacesToImplement = this.additionalInterfacesToImpelement
-                };
+                this.Options = new FakeOptions();
             }
 
             public FakeOptions Options { get; private set; }
@@ -117,7 +110,7 @@ namespace FakeItEasy.Creation
 
                 foreach (var customAttributeBuilder in customAttributeBuilders)
                 {
-                    this.Options.AdditionalAttributes.Add(customAttributeBuilder);
+                    this.Options.AddAttribute(customAttributeBuilder);
                 }
 
                 return this;
@@ -131,7 +124,7 @@ namespace FakeItEasy.Creation
 
             public IFakeOptionsBuilder<T> Implements(Type interfaceType)
             {
-                this.additionalInterfacesToImpelement.Add(interfaceType);
+                this.Options.AddInterfaceToImplement(interfaceType);
                 return this;
             }
 
@@ -148,7 +141,7 @@ namespace FakeItEasy.Creation
 
             public IFakeOptionsBuilder<T> ConfigureFake(Action<T> action)
             {
-                this.Options.FakeConfigurationActions.Add(x => action((T)x));
+                this.Options.AddFakeConfigurationAction(x => action((T)x));
                 return this;
             }
 
