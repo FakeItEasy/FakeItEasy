@@ -241,7 +241,7 @@
     <Compile Include="Core\DefaultFakeObjectCallFormatter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\DefaultFakeWrapperConfigurer.cs">
+    <Compile Include="Core\FakeWrapperConfigurator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\DefaultFixtureInitializer.cs" />

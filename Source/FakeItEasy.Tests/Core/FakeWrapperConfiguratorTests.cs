@@ -7,10 +7,10 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultFakeWrapperConfiguratorTests
+    public class FakeWrapperConfiguratorTests
     {
         private IFoo faked;
-        private DefaultFakeWrapperConfigurer wrapperConfigurator;
+        private FakeWrapperConfigurator wrapperConfigurator;
 
         [SetUp]
         public void Setup()
@@ -18,7 +18,7 @@
             this.faked = A.Fake<IFoo>();
 
             IFoo wrapped = A.Fake<IFoo>();
-            this.wrapperConfigurator = new DefaultFakeWrapperConfigurer(wrapped);
+            this.wrapperConfigurator = new FakeWrapperConfigurator(wrapped);
         }
 
         [Test]

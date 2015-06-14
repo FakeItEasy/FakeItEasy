@@ -8,7 +8,7 @@ namespace FakeItEasy.Creation
 
     internal class FakeOptions
     {
-        private DefaultFakeWrapperConfigurer wrapper;
+        private FakeWrapperConfigurator wrapper;
 
         public FakeOptions()
         {
@@ -22,7 +22,7 @@ namespace FakeItEasy.Creation
             get { return new FakeOptions(); }
         }
 
-        public DefaultFakeWrapperConfigurer Wrapper
+        public FakeWrapperConfigurator Wrapper
         {
             get
             {

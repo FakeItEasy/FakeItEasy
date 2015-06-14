@@ -125,7 +125,7 @@ namespace FakeItEasy.Creation
 
             public IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance)
             {
-                this.Options.Wrapper = new DefaultFakeWrapperConfigurer(wrappedInstance);
+                this.Options.Wrapper = new FakeWrapperConfigurator(wrappedInstance);
                 return this;
             }
 

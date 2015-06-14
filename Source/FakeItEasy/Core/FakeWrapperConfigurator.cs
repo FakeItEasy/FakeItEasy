@@ -5,9 +5,9 @@ namespace FakeItEasy.Core
     /// <summary>
     /// Handles configuring of fake objects to delegate all their calls to a wrapped instance.
     /// </summary>
-    internal class DefaultFakeWrapperConfigurer
+    internal class FakeWrapperConfigurator
     {
-        public DefaultFakeWrapperConfigurer(object wrappedObject)
+        public FakeWrapperConfigurator(object wrappedObject)
         {
             this.WrappedObject = wrappedObject;
         }

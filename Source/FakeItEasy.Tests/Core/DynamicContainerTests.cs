@@ -9,7 +9,7 @@
     public class DynamicContainerTests
     {
         private List<IDummyFactory> availableDummyFactories;
-        private List<IFakeConfigurator> availableConfigurers;
+        private List<IFakeConfigurator> availableConfigurators;
 
         private IDisposable scope;
 
@@ -18,7 +18,7 @@
         {
             this.scope = Fake.CreateScope(new NullFakeObjectContainer());
 
-            this.availableConfigurers = new List<IFakeConfigurator>();
+            this.availableConfigurators = new List<IFakeConfigurator>();
             this.availableDummyFactories = new List<IDummyFactory>();
         }
 
@@ -54,7 +54,7 @@
         [Test]
         public void ConfigureFake_should_apply_configuration_for_registered_configuration()
         {
-            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyFactory());
+            this.availableConfigurators.Add(new ConfigurationForTypeWithDummyFactory());
 
             var container = this.CreateContainer();
 
@@ -93,8 +93,8 @@
         public void Should_not_fail_when_more_than_one_configurator_exists_for_a_given_type()
         {
             // Arrange
-            this.availableConfigurers.Add(new ConfigurationForTypeWithDummyFactory());
-            this.availableConfigurers.Add(new DuplicateConfigurationForTypeWithDummyFactory());
+            this.availableConfigurators.Add(new ConfigurationForTypeWithDummyFactory());
+            this.availableConfigurators.Add(new DuplicateConfigurationForTypeWithDummyFactory());
 
             // Act
 
@@ -105,7 +105,7 @@
 
         private DynamicContainer CreateContainer()
         {
-            return new DynamicContainer(this.availableDummyFactories, this.availableConfigurers);
+            return new DynamicContainer(this.availableDummyFactories, this.availableConfigurators);
         }
 
         public class ConfigurationForTypeWithDummyFactory : FakeConfigurator<TypeWithDummyFactory>
