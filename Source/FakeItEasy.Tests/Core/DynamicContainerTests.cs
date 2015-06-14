@@ -1,8 +1,9 @@
-﻿namespace FakeItEasy.Core.Tests
+﻿namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
+    using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -37,8 +38,8 @@
 
             object fake;
 
-            Assert.That(container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out fake), Is.True);
-            Assert.That(fake, Is.InstanceOf<TypeWithDummyFactory>());
+            container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out fake).Should().BeTrue();
+            fake.Should().BeOfType<TypeWithDummyFactory>();
         }
 
         [Test]
@@ -48,7 +49,7 @@
 
             object fake;
 
-            Assert.That(container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out fake), Is.False);
+            container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out fake).Should().BeFalse();
         }
 
         [Test]
@@ -62,7 +63,7 @@
 
             container.ConfigureFake(typeof(TypeWithDummyFactory), fake);
 
-            Assert.That(fake.WasConfigured, Is.True);
+            fake.WasConfigured.Should().BeTrue();
         }
 
         [Test]
@@ -82,11 +83,11 @@
             var container = this.CreateContainer();
 
             // Act
-            object fake = null;
+            object fake;
             var result = container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out fake);
 
             // Assert
-            Assert.That(result, Is.True);
+            result.Should().BeTrue();
         }
 
         [Test]
@@ -142,12 +143,9 @@
 
         public class TypeWithDummyFactory
         {
-            public virtual bool WasConfigured { get; set; }
-
-            [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for testing.")]
-            public void Bar()
+            public virtual bool WasConfigured
             {
-                throw new NotImplementedException();
+                get { return false; }
             }
         }
     }
