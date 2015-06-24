@@ -9,7 +9,7 @@ namespace FakeItEasy.Tests.Creation
     {
         internal static FakeOptions HasRecorder(this IArgumentConstraintManager<FakeOptions> scope, ISelfInitializingFakeRecorder recorder)
         {
-            return scope.Matches(x => recorder.Equals(x.SelfInitializedFakeRecorder), "Specified recorder");
+            return scope.Matches(x => recorder.Equals(x.Wrapper.Recorder), "Specified recorder");
         }
 
         internal static FakeOptions HasArgumentsForConstructor(this IArgumentConstraintManager<FakeOptions> scope, IEnumerable<object> argumentsForConstructor)
@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.Creation
 
         internal static FakeOptions Wraps(this IArgumentConstraintManager<FakeOptions> scope, object wrappedInstance)
         {
-            return scope.Matches(x => object.ReferenceEquals(x.WrappedInstance, wrappedInstance), "Wraps {0}".FormatInvariant(wrappedInstance));
+            return scope.Matches(x => object.ReferenceEquals(x.Wrapper.WrappedObject, wrappedInstance), "Wraps {0}".FormatInvariant(wrappedInstance));
         }
     }
 }

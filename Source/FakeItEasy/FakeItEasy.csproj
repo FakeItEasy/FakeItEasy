@@ -241,7 +241,7 @@
     <Compile Include="Core\DefaultFakeObjectCallFormatter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\DefaultFakeWrapperConfigurer.cs">
+    <Compile Include="Core\FakeWrapperConfigurator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\DefaultFixtureInitializer.cs" />
@@ -353,9 +353,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\IFakeScopeFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IFakeWrapperConfigurer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\IFixtureInitializer.cs">

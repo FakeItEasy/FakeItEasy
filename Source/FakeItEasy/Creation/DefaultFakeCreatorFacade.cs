@@ -84,14 +84,9 @@ namespace FakeItEasy.Creation
         private class FakeOptionsBuilder<T>
             : IFakeOptionsBuilderForWrappers<T>
         {
-            private readonly List<Type> additionalInterfacesToImpelement;
-
             public FakeOptionsBuilder()
             {
-                this.additionalInterfacesToImpelement = new List<Type>();
-
                 this.Options = new FakeOptions();
-                this.Options.AdditionalInterfacesToImplement = this.additionalInterfacesToImpelement;
             }
 
             public FakeOptions Options { get; private set; }
@@ -108,21 +103,28 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
-            public IFakeOptionsBuilder<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+            public IFakeOptionsBuilder<T> WithAdditionalAttributes(
+                IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
             {
-                this.Options.AdditionalAttributes = customAttributeBuilders;
+                Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
+
+                foreach (var customAttributeBuilder in customAttributeBuilders)
+                {
+                    this.Options.AddAttribute(customAttributeBuilder);
+                }
+
                 return this;
             }
 
             public IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance)
             {
-                this.Options.WrappedInstance = wrappedInstance;
+                this.Options.Wrapper = new FakeWrapperConfigurator(wrappedInstance);
                 return this;
             }
 
             public IFakeOptionsBuilder<T> Implements(Type interfaceType)
             {
-                this.additionalInterfacesToImpelement.Add(interfaceType);
+                this.Options.AddInterfaceToImplement(interfaceType);
                 return this;
             }
 
@@ -133,13 +135,13 @@ namespace FakeItEasy.Creation
 
             public IFakeOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
             {
-                this.Options.SelfInitializedFakeRecorder = recorder;
+                this.Options.Wrapper.Recorder = recorder;
                 return this;
             }
 
             public IFakeOptionsBuilder<T> ConfigureFake(Action<T> action)
             {
-                this.Options.FakeConfigurationActions.Add(x => action((T)x));
+                this.Options.AddFakeConfigurationAction(x => action((T)x));
                 return this;
             }
 

@@ -5,22 +5,28 @@ namespace FakeItEasy.Core
     /// <summary>
     /// Handles configuring of fake objects to delegate all their calls to a wrapped instance.
     /// </summary>
-    internal class DefaultFakeWrapperConfigurer
-        : IFakeWrapperConfigurer
+    internal class FakeWrapperConfigurator
     {
+        public FakeWrapperConfigurator(object wrappedObject)
+        {
+            this.WrappedObject = wrappedObject;
+        }
+
+        public object WrappedObject { get; private set; }
+
+        public ISelfInitializingFakeRecorder Recorder { get; set; }
+
         /// <summary>
         /// Configures the specified faked object to wrap the specified instance.
         /// </summary>
         /// <param name="fakedObject">The faked object to configure.</param>
-        /// <param name="wrappedInstance">The instance to wrap.</param>
-        /// <param name="recorder">The recorder to use, null if no recording should be made.</param>
-        public void ConfigureFakeToWrap(object fakedObject, object wrappedInstance, ISelfInitializingFakeRecorder recorder)
+        public void ConfigureFakeToWrap(object fakedObject)
         {
             var fake = Fake.GetFakeManager(fakedObject);
 
-            var wrapperRule = CreateAndAddWrapperRule(wrappedInstance, fake);
+            var wrapperRule = CreateAndAddWrapperRule(this.WrappedObject, fake);
 
-            AddRecordingRuleWhenRecorderIsSpecified(recorder, fake, wrapperRule);
+            AddRecordingRuleWhenRecorderIsSpecified(this.Recorder, fake, wrapperRule);
         }
 
         private static void AddRecordingRuleWhenRecorderIsSpecified(ISelfInitializingFakeRecorder recorder, FakeManager fake, WrappedObjectRule wrapperRule)

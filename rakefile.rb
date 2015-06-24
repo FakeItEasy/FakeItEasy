@@ -189,7 +189,7 @@ mspec :spec => [:build, tests] do |mspec|
   mspec.command = mspec_command
   mspec.assemblies specs
   mspec.html_output = "#{tests}/TestResult.Specifications.html"
-  mspec.options "--timeinfo", "--progress", "--silent"
+  mspec.options "--timeinfo", "--progress", "--silent", "--exclude", "explicit"
 end
 
 directory output

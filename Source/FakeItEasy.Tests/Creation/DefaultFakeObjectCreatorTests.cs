@@ -32,12 +32,7 @@ namespace FakeItEasy.Tests.Creation
         public void Should_pass_fake_options_to_the_proxy_generator_and_return_the_fake_when_successful()
         {
             // Arrange
-            var options = new FakeOptions
-            {
-                AdditionalInterfacesToImplement = new Type[] { },
-                ArgumentsForConstructor = new object[] { },
-                AdditionalAttributes = new CustomAttributeBuilder[] { }
-            };
+            var options = new FakeOptions();
 
             var proxy = A.Fake<IFoo>();
 
@@ -63,10 +58,7 @@ namespace FakeItEasy.Tests.Creation
         public void Should_use_new_fake_call_processor_for_the_proxy_generator()
         {
             // Arrange
-            var options = new FakeOptions
-            {
-                FakeConfigurationActions = new Action<object>[] { },
-            };
+            var options = new FakeOptions();
 
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
@@ -92,10 +84,7 @@ namespace FakeItEasy.Tests.Creation
 
             this.StubProxyGeneratorToFail();
 
-            var options = new FakeOptions
-            {
-                FakeConfigurationActions = new Action<object>[] { },
-            };
+            var options = new FakeOptions();
 
             // Act
             this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
@@ -162,10 +151,7 @@ namespace FakeItEasy.Tests.Creation
 
                 this.StubProxyGeneratorToFail();
 
-                var options = new FakeOptions
-                {
-                    AdditionalInterfacesToImplement = new Type[] { }
-                };
+                var options = new FakeOptions();
 
                 // Act
                 this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
@@ -194,7 +180,6 @@ namespace FakeItEasy.Tests.Creation
 
             var options = new FakeOptions
             {
-                AdditionalInterfacesToImplement = new Type[] { },
                 ArgumentsForConstructor = new object[] { 2, 2 }
             };
 
@@ -213,10 +198,7 @@ namespace FakeItEasy.Tests.Creation
             var session = A.Fake<IDummyValueCreationSession>();
             StubSessionWithDummyValue(session, 1);
 
-            var options = new FakeOptions
-            {
-                AdditionalInterfacesToImplement = new Type[] { }
-            };
+            var options = new FakeOptions();
 
             var proxy = A.Fake<IFoo>();
 

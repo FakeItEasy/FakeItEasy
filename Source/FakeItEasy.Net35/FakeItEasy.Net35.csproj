@@ -234,8 +234,8 @@
     <Compile Include="..\FakeItEasy\Core\DefaultFakeObjectCallFormatter.cs">
       <Link>Core\DefaultFakeObjectCallFormatter.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\DefaultFakeWrapperConfigurer.cs">
-      <Link>Core\DefaultFakeWrapperConfigurer.cs</Link>
+    <Compile Include="..\FakeItEasy\Core\FakeWrapperConfigurator.cs">
+      <Link>Core\FakeWrapperConfigurator.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\DefaultFixtureInitializer.cs">
       <Link>Core\DefaultFixtureInitializer.cs</Link>
@@ -353,9 +353,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeScopeFactory.cs">
       <Link>Core\IFakeScopeFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeWrapperConfigurer.cs">
-      <Link>Core\IFakeWrapperConfigurer.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFixtureInitializer.cs">
       <Link>Core\IFixtureInitializer.cs</Link>

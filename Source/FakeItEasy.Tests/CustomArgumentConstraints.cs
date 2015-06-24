@@ -4,7 +4,6 @@ namespace FakeItEasy.Tests
     using System.Collections;
     using System.Globalization;
     using System.Linq;
-    using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
@@ -18,24 +17,21 @@ namespace FakeItEasy.Tests
                 "This sequence: " + collection.Cast<object>().ToCollectionString(x => x.ToString(), ", "));
         }
 
-        public static T IsThisSequence<T>(this IArgumentConstraintManager<T> scope, params object[] collection) where T : IEnumerable
-        {
-            return scope.Matches(x => x != null && x.Cast<object>().SequenceEqual(collection.Cast<object>()), "This sequence: " + collection.ToCollectionString(x => x.ToString(), ", "));
-        }
-
-        public static Expression ProducesValue(this IArgumentConstraintManager<Expression> scope, object expectedValue)
+        public static T IsThisSequence<T>(this IArgumentConstraintManager<T> scope, params object[] collection)
+            where T : IEnumerable
         {
             return scope.Matches(
-                x => object.Equals(expectedValue, x.Evaluate()),
-                string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
+                x => x != null && x.Cast<object>().SequenceEqual(collection),
+                "This sequence: " + collection.ToCollectionString(x => x.ToString(), ", "));
         }
 
         public static FakeManager Fakes(this IArgumentConstraintManager<FakeManager> scope, object fake)
         {
             return scope.Matches(x => x.Equals(Fake.GetFakeManager(fake)), "Specified FakeObject");
         }
-        
-        internal static ParsedArgumentExpression ProducesValue(this IArgumentConstraintManager<ParsedArgumentExpression> scope, object expectedValue)
+
+        internal static ParsedArgumentExpression ProducesValue(
+            this IArgumentConstraintManager<ParsedArgumentExpression> scope, object expectedValue)
         {
             return scope.Matches(
                 x => object.Equals(expectedValue, x.Expression.Evaluate()),
@@ -45,17 +41,15 @@ namespace FakeItEasy.Tests
         internal static FakeOptions IsEmpty(this IArgumentConstraintManager<FakeOptions> scope)
         {
             return scope.NullCheckedMatches(
-                x =>
-                {
-                    return !x.AdditionalInterfacesToImplement.Any()
-                        && x.ArgumentsForConstructor == null
-                        && x.SelfInitializedFakeRecorder == null
-                        && x.WrappedInstance == null;
-                },
+                x => !x.AdditionalInterfacesToImplement.Any()
+                     && x.ArgumentsForConstructor == null
+                     && x.Wrapper == null,
                 x => x.Write("empty fake options"));
         }
 
-        internal static Action<IOutputWriter> Writes(this IArgumentConstraintManager<Action<IOutputWriter>> manager, string expectedValue)
+        internal static Action<IOutputWriter> Writes(
+            this IArgumentConstraintManager<Action<IOutputWriter>> manager,
+            string expectedValue)
         {
             return manager.NullCheckedMatches(
                 x =>
@@ -68,18 +62,20 @@ namespace FakeItEasy.Tests
                 x => x.Write("action that writes ").WriteArgumentValue(expectedValue).Write(" to output."));
         }
 
-        internal static Func<T1, T> Returns<T1, T>(this IArgumentConstraintManager<Func<T1, T>> manager, T expectedValue)
+        internal static Func<TInput, TExpected> Returns<TInput, TExpected>(
+            this IArgumentConstraintManager<Func<TInput, TExpected>> manager,
+            TExpected expectedValue)
         {
-            return manager.Returns(default(T1), expectedValue);
+            return manager.Returns(default(TInput), expectedValue);
         }
 
-        internal static Func<T1, T> Returns<T1, T>(this IArgumentConstraintManager<Func<T1, T>> manager, T1 inputValue, T expectedValue)
+        internal static Func<TInput, TExpected> Returns<TInput, TExpected>(
+            this IArgumentConstraintManager<Func<TInput, TExpected>> manager,
+            TInput inputValue,
+            TExpected expectedValue)
         {
             return manager.NullCheckedMatches(
-                x =>
-                {
-                    return object.Equals(x.Invoke(inputValue), expectedValue);
-                },
+                x => object.Equals(x.Invoke(inputValue), expectedValue),
                 x =>
                 {
                     x.Write("a function that returns ").WriteArgumentValue(expectedValue);

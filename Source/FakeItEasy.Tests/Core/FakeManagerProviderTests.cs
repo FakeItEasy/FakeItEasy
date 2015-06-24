@@ -4,7 +4,6 @@ namespace FakeItEasy.Tests.Core
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-    using FakeItEasy.SelfInitializedFakes;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -20,9 +19,6 @@ namespace FakeItEasy.Tests.Core
 
         [Fake]
         private IFakeObjectConfigurator fakeObjectConfigurator = null;
-
-        [Fake]
-        private IFakeWrapperConfigurer wrapperConfigurer = null;
 
         [Fake]
         private Type typeOfFake = null;
@@ -88,7 +84,8 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var fakeConfigurationAction1 = A.Fake<Action<object>>();
             var fakeConfigurationAction2 = A.Fake<Action<object>>();
-            this.fakeOptions.FakeConfigurationActions = new[] { fakeConfigurationAction1, fakeConfigurationAction2 };
+            this.fakeOptions.AddFakeConfigurationAction(fakeConfigurationAction1);
+            this.fakeOptions.AddFakeConfigurationAction(fakeConfigurationAction2);
 
             // Act
             this.fakeManagerProvider.Fetch(this.proxy);
@@ -96,24 +93,6 @@ namespace FakeItEasy.Tests.Core
             // Assert
             A.CallTo(() => fakeConfigurationAction1(this.proxy)).MustHaveHappened();
             A.CallTo(() => fakeConfigurationAction2(this.proxy)).MustHaveHappened();
-        }
-
-        [Test]
-        public void Fetch_should_configure_a_wrapped_proxy_when_making_a_fake_recorder()
-        {
-            // Arrange
-            this.fakeOptions.WrappedInstance = new object();
-            this.fakeOptions.SelfInitializedFakeRecorder = A.Fake<ISelfInitializingFakeRecorder>();
-
-            // Act
-            this.fakeManagerProvider.Fetch(this.proxy);
-
-            // Assert
-            A.CallTo(() => this.wrapperConfigurer.ConfigureFakeToWrap(
-                this.proxy,
-                this.fakeOptions.WrappedInstance,
-                this.fakeOptions.SelfInitializedFakeRecorder))
-                .MustHaveHappened();
         }
 
         [Test]

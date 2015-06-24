@@ -25,9 +25,6 @@ namespace FakeItEasy.Core
         private readonly IFakeObjectConfigurator fakeObjectConfigurator;
 
         [NonSerialized]
-        private readonly IFakeWrapperConfigurer wrapperConfigurer;
-
-        [NonSerialized]
         private readonly Type typeOfFake;
 
         [NonSerialized]
@@ -42,21 +39,18 @@ namespace FakeItEasy.Core
                 FakeManager.Factory fakeManagerFactory,
                 IFakeManagerAccessor fakeManagerAccessor,
                 IFakeObjectConfigurator fakeObjectConfigurator, 
-                IFakeWrapperConfigurer wrapperConfigurer,
                 Type typeOfFake,
                 FakeOptions fakeOptions)
         {
             Guard.AgainstNull(fakeManagerFactory, "fakeManagerFactory");
             Guard.AgainstNull(fakeManagerAccessor, "fakeManagerAccessor");
             Guard.AgainstNull(fakeObjectConfigurator, "fakeObjectConfigurator");
-            Guard.AgainstNull(wrapperConfigurer, "wrapperConfigurer");
             Guard.AgainstNull(typeOfFake, "typeOfFake");
             Guard.AgainstNull(fakeOptions, "fakeOptions");
 
             this.fakeManagerFactory = fakeManagerFactory;
             this.fakeManagerAccessor = fakeManagerAccessor;
             this.fakeObjectConfigurator = fakeObjectConfigurator;
-            this.wrapperConfigurer = wrapperConfigurer;
             this.typeOfFake = typeOfFake;
             this.fakeOptions = fakeOptions;
         }
@@ -93,11 +87,6 @@ namespace FakeItEasy.Core
         private void ApplyInitialConfiguration(object proxy)
         {
             this.fakeObjectConfigurator.ConfigureFake(this.typeOfFake, proxy);
-
-            if (this.fakeOptions.WrappedInstance != null)
-            {
-                this.wrapperConfigurer.ConfigureFakeToWrap(proxy, this.fakeOptions.WrappedInstance, this.fakeOptions.SelfInitializedFakeRecorder);
-            }
 
             foreach (var fakeConfigurationAction in this.fakeOptions.FakeConfigurationActions)
             {
