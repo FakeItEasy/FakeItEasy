@@ -175,7 +175,7 @@
 
             public bool TryCreateFakeObject(Type typeOfFake, DummyValueCreationSession session, out object result)
             {
-                result = this.Creator.CreateFake(typeOfFake, FakeOptions.Empty, session, false);
+                result = this.Creator.CreateFake(typeOfFake, new FakeOptions(), session, false);
                 return result != null;
             }
         }

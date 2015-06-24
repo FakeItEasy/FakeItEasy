@@ -91,7 +91,7 @@
 
                 if (!fakesUsedToCreateSut.TryGetValue(setter.MemberType, out fake))
                 {
-                    fake = this.fakeAndDummyManager.CreateFake(setter.MemberType, FakeOptions.Empty);
+                    fake = this.fakeAndDummyManager.CreateFake(setter.MemberType, new FakeOptions());
                 }
 
                 setter.Setter(fake);

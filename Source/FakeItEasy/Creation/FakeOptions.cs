@@ -7,22 +7,10 @@ namespace FakeItEasy.Creation
 
     internal class FakeOptions
     {
-        private readonly List<Type> additionalInterfacesToImplement;
-        private readonly List<Action<object>> fakeConfigurationActions;
-        private readonly List<CustomAttributeBuilder> additionalAttributes;
+        private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
+        private readonly List<Action<object>> fakeConfigurationActions = new List<Action<object>>();
+        private readonly List<CustomAttributeBuilder> additionalAttributes = new List<CustomAttributeBuilder>();
         private FakeWrapperConfigurator wrapper;
-
-        public FakeOptions()
-        {
-            this.additionalInterfacesToImplement = new List<Type>();
-            this.fakeConfigurationActions = new List<Action<object>>();
-            this.additionalAttributes = new List<CustomAttributeBuilder>();
-        }
-
-        public static FakeOptions Empty
-        {
-            get { return new FakeOptions(); }
-        }
 
         public FakeWrapperConfigurator Wrapper
         {

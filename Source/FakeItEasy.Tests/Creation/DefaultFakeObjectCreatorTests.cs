@@ -120,7 +120,7 @@ namespace FakeItEasy.Tests.Creation
             this.StubProxyGeneratorToFail();
 
             // Act
-            var createdFake = this.fakeObjectCreator.CreateFake(typeof(IFoo), FakeOptions.Empty, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
+            var createdFake = this.fakeObjectCreator.CreateFake(typeof(IFoo), new FakeOptions(), A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
 
             // Assert
             createdFake.Should().BeNull();
@@ -133,7 +133,7 @@ namespace FakeItEasy.Tests.Creation
             this.StubProxyGeneratorToFail();
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(IFoo), FakeOptions.Empty, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
+            this.fakeObjectCreator.CreateFake(typeof(IFoo), new FakeOptions(), A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
 
             // Assert
             A.CallTo(this.thrower).MustNotHaveHappened();
@@ -224,7 +224,7 @@ namespace FakeItEasy.Tests.Creation
             StubSessionToFailForType<string>(session);
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithConstructorThatTakesDifferentTypes), FakeOptions.Empty, session, throwOnFailure: false);
+            this.fakeObjectCreator.CreateFake(typeof(TypeWithConstructorThatTakesDifferentTypes), new FakeOptions(), session, throwOnFailure: false);
 
             // Assert
             A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>.That.Not.IsNull(), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
@@ -239,7 +239,7 @@ namespace FakeItEasy.Tests.Creation
             StubSessionWithDummyValue(session, 1);
             this.StubProxyGeneratorToFail();
 
-            var options = FakeOptions.Empty;
+            var options = new FakeOptions();
 
             // Act
             this.fakeObjectCreator.CreateFake(typeof(TypeWithProtectedConstructor), options, session, throwOnFailure: false);
@@ -260,7 +260,7 @@ namespace FakeItEasy.Tests.Creation
             this.StubProxyGeneratorToFail("failed");
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), FakeOptions.Empty, session, throwOnFailure: true);
+            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), new FakeOptions(), session, throwOnFailure: true);
 
             // Assert
             var expectedConstructors = new[] 
