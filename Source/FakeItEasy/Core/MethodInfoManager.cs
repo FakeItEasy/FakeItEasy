@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -11,7 +12,7 @@ namespace FakeItEasy.Core
     /// </summary>
     internal class MethodInfoManager
     {
-        private static readonly Dictionary<TypeMethodInfoPair, MethodInfo> MethodCache = new Dictionary<TypeMethodInfoPair, MethodInfo>();
+        private static readonly ConcurrentDictionary<TypeMethodInfoPair, MethodInfo> MethodCache = new ConcurrentDictionary<TypeMethodInfoPair, MethodInfo>();
 
         /// <summary>
         /// Gets a value indicating whether the two instances of <see cref="MethodInfo"/> would invoke the same method
@@ -36,17 +37,13 @@ namespace FakeItEasy.Core
 
         public virtual MethodInfo GetMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
         {
-            MethodInfo result = null;
             var key = new TypeMethodInfoPair { Type = type, MethodInfo = method };
 
-            lock (MethodCache)
-            {
-                if (!MethodCache.TryGetValue(key, out result))
-                {
-                    result = FindMethodOnTypeThatWillBeInvokedByMethodInfo(type, method);
-                    MethodCache.Add(key, result);
-                }
-            }
+            MethodInfo result = MethodCache.GetOrAdd(key, k =>
+                FindMethodOnTypeThatWillBeInvokedByMethodInfo(
+                    k.Type, 
+                    k.MethodInfo
+                ));
 
             return result;
         }
