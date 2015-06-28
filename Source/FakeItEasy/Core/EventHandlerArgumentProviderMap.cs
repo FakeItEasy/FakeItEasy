@@ -1,29 +1,24 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
 
     internal class EventHandlerArgumentProviderMap
     {
-        private readonly Dictionary<Delegate, IEventRaiserArguments> map
-            = new Dictionary<Delegate, IEventRaiserArguments>(new EventRaiserDelegateComparer());
+        private readonly ConcurrentDictionary<Delegate, IEventRaiserArguments> map
+            = new ConcurrentDictionary<Delegate, IEventRaiserArguments>(new EventRaiserDelegateComparer());
 
         public void AddArgumentProvider(Delegate eventHandler, IEventRaiserArguments argumentProvider)
         {
-            lock (this.map)
-            {
-                this.map[eventHandler] = argumentProvider;
-            }
+            this.map[eventHandler] = argumentProvider;
         }
 
         public IEventRaiserArguments TakeArgumentProviderFor(Delegate eventHandler)
         {
-            lock (this.map)
-            {
-                var provider = this.map[eventHandler];
-                this.map.Remove(eventHandler);
-                return provider;
-            }
+            IEventRaiserArguments provider;
+            this.map.TryRemove(eventHandler, out provider);
+            return provider;
         }
 
         public bool Contains(Delegate eventHandler)
