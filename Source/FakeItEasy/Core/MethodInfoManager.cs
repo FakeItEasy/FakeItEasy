@@ -2,7 +2,6 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
@@ -37,15 +36,9 @@ namespace FakeItEasy.Core
 
         public virtual MethodInfo GetMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
         {
-            var key = new TypeMethodInfoPair { Type = type, MethodInfo = method };
+            var key = new TypeMethodInfoPair(type, method);
 
-            MethodInfo result = MethodCache.GetOrAdd(key, k =>
-                FindMethodOnTypeThatWillBeInvokedByMethodInfo(
-                    k.Type, 
-                    k.MethodInfo
-                ));
-
-            return result;
+            return MethodCache.GetOrAdd(key, k => FindMethodOnTypeThatWillBeInvokedByMethodInfo(k.Type, k.MethodInfo));
         }
 
         private static bool HasSameBaseMethod(MethodInfo first, MethodInfo second)
@@ -167,12 +160,23 @@ namespace FakeItEasy.Core
 
         private struct TypeMethodInfoPair
         {
-            public MethodInfo MethodInfo;
-            public Type Type;
+            public TypeMethodInfoPair(Type type, MethodInfo methodInfo)
+                : this()
+            {
+                Type = type;
+                MethodInfo = methodInfo;
+            }
+
+            public MethodInfo MethodInfo { get; private set; }
+            
+            public Type Type { get; private set; }
 
             public override int GetHashCode()
             {
-                return this.Type.GetHashCode() ^ this.MethodInfo.GetHashCode();
+                unchecked
+                {
+                    return (Type.GetHashCode() * 23) + MethodInfo.GetHashCode();
+                }
             }
 
             [SuppressMessage("Microsoft.Usage", "CA2231:OverloadOperatorEqualsOnOverridingValueTypeEquals", Justification = "The type is used privately only.")]
@@ -180,7 +184,7 @@ namespace FakeItEasy.Core
             {
                 var other = (TypeMethodInfoPair)obj;
 
-                return this.Type.Equals(other.Type) && this.MethodInfo == other.MethodInfo;
+                return this.Type == other.Type && this.MethodInfo == other.MethodInfo;
             }
         }
     }
