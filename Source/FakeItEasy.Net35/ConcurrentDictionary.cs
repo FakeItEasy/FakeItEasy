@@ -51,13 +51,5 @@
                 return this.dictionary.TryGetValue(key, out value) && this.dictionary.Remove(key);
             }
         }
-
-        public bool ContainsKey(TKey key)
-        {
-            lock (this.dictionary)
-            {
-                return this.dictionary.ContainsKey(key);
-            }
-        }
     }
 }

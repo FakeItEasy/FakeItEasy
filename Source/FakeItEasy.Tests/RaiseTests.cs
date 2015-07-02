@@ -131,7 +131,9 @@
             this.foo.SomethingHappened += raisingHandler;
 
             // Assert
-            eventHandlerArgumentProvider.Contains(raisingHandler).Should().BeFalse();
+            IEventRaiserArgumentProvider ignoredArgumentProvider;
+            eventHandlerArgumentProvider.TryTakeArgumentProviderFor(raisingHandler, out ignoredArgumentProvider)
+                .Should().BeFalse();
         }
 
         private void Foo_SomethingHappened(object newSender, EventArgs e)

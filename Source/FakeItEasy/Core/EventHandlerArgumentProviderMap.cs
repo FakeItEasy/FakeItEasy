@@ -6,24 +6,17 @@
 
     internal class EventHandlerArgumentProviderMap
     {
-        private readonly ConcurrentDictionary<Delegate, IEventRaiserArguments> map
-            = new ConcurrentDictionary<Delegate, IEventRaiserArguments>(new EventRaiserDelegateComparer());
+        private readonly ConcurrentDictionary<Delegate, IEventRaiserArgumentProvider> map
+            = new ConcurrentDictionary<Delegate, IEventRaiserArgumentProvider>(new EventRaiserDelegateComparer());
 
-        public void AddArgumentProvider(Delegate eventHandler, IEventRaiserArguments argumentProvider)
+        public void AddArgumentProvider(Delegate eventHandler, IEventRaiserArgumentProvider argumentProvider)
         {
             this.map[eventHandler] = argumentProvider;
         }
 
-        public IEventRaiserArguments TakeArgumentProviderFor(Delegate eventHandler)
+        public bool TryTakeArgumentProviderFor(Delegate eventHandler, out IEventRaiserArgumentProvider argumentProvider)
         {
-            IEventRaiserArguments provider;
-            this.map.TryRemove(eventHandler, out provider);
-            return provider;
-        }
-
-        public bool Contains(Delegate eventHandler)
-        {
-            return this.map.ContainsKey(eventHandler);
+            return this.map.TryRemove(eventHandler, out argumentProvider);
         }
 
         /// <summary>
