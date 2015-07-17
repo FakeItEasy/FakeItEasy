@@ -6,6 +6,14 @@
     Target = "FakeItEasy.Specs.when_faking_a_disposable_class.#.ctor()",
     Justification = "Required for testing.")]
 
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "Microsoft.Design",
+    "CA1045:DoNotPassTypesByReference",
+    MessageId = "0#",
+    Scope = "member",
+    Target = "FakeItEasy.Specs.when_matching_a_call_with_a_ref_parameter+IHaveInterestingParameters.#CheckYourReferences(System.String&)",
+    Justification = "Required for testing.")]
+
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.
 // Project-level suppressions either have no target or are given 

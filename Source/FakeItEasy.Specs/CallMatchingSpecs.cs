@@ -217,4 +217,51 @@
 
 ");
     }
+
+    public class when_matching_a_call_with_a_ref_parameter
+    {
+        private static IHaveInterestingParameters subject;
+
+        Establish context = () =>
+        {
+            subject = A.Fake<IHaveInterestingParameters>();
+        };
+
+        Because of = () =>
+        {
+            string refString = "a constraint string";
+            A.CallTo(() => subject.CheckYourReferences(ref refString))
+                .Returns(true);
+        };
+
+        It should_match_when_ref_parameter_value_matches = () =>
+        {
+            string refString = "a constraint string";
+
+            subject.CheckYourReferences(ref refString)
+                .Should().BeTrue();
+        };
+
+        It should_not_match_when_ref_parameter_value_does_not_match = () =>
+        {
+            string refString = "a different string";
+
+            subject.CheckYourReferences(ref refString)
+                .Should().BeFalse();
+        };
+
+        It should_assign_the_constraint_value_to_the_ref_parameter = () =>
+        {
+            string refString = "a constraint string";
+
+            subject.CheckYourReferences(ref refString);
+
+            refString.Should().Be("a constraint string");
+        };
+
+        public interface IHaveInterestingParameters
+        {
+            bool CheckYourReferences(ref string refString);
+        }
+    }
 }
