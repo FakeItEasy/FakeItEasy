@@ -4,6 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.InteropServices;
     using FluentAssertions;
     using Machine.Specifications;
 
@@ -262,6 +263,45 @@
         public interface IHaveInterestingParameters
         {
             bool CheckYourReferences(ref string refString);
+        }
+    }
+
+    /// <summary>
+    /// <see cref="OutAttribute"/> can be applied to parameters that are not
+    /// <c>out</c> parameters.
+    /// One example is the array parameter in <see cref="System.IO.Stream.Read"/>.
+    /// Ensure that such parameters are not confused with <c>out</c> parameters.
+    /// </summary>
+    public class when_matching_a_call_with_a_parameter_having_an_out_attribute
+    {
+        private static IHaveInterestingParameters subject;
+
+        Establish context = () =>
+        {
+            subject = A.Fake<IHaveInterestingParameters>();
+        };
+
+        Because of = () =>
+        {
+            A.CallTo(() => subject.Validate("a constraint string"))
+                .Returns(true);
+        };
+
+        It should_match_when_ref_parameter_value_matches = () =>
+        {
+            subject.Validate("a constraint string")
+                .Should().BeTrue();
+        };
+
+        It should_not_match_when_ref_parameter_value_does_not_match = () =>
+        {
+            subject.Validate("a different string")
+                .Should().BeFalse();
+        };
+
+        public interface IHaveInterestingParameters
+        {
+            bool Validate([Out] string value);
         }
     }
 }
