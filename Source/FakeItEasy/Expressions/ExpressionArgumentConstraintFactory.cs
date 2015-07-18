@@ -23,14 +23,15 @@
                 return this.CreateParamArrayConstraint((NewArrayExpression)argument.Expression);
             }
 
-            if (IsOutArgument(argument))
+            var isByRefArgument = IsByRefArgument(argument);
+
+            if (isByRefArgument && IsOutArgument(argument))
             {
                 return new OutArgumentConstraint(argument.Value);
             }
 
             var constraint = this.GetArgumentConstraintFromExpression(argument.Expression);
-
-            if (IsRefArgument(argument))
+            if (isByRefArgument)
             {
                 constraint = new RefArgumentConstraint(constraint, argument.Value);
             }
@@ -58,7 +59,7 @@
             return argument.ArgumentInformation.IsOut;
         }
 
-        private static bool IsRefArgument(ParsedArgumentExpression argument)
+        private static bool IsByRefArgument(ParsedArgumentExpression argument)
         {
             return argument.ArgumentInformation.ParameterType.IsByRef;
         }
