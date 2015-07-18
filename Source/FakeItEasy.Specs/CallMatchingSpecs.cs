@@ -1,9 +1,7 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
     using FluentAssertions;
     using Machine.Specifications;
@@ -156,20 +154,19 @@
     {
         private static IDictionary<string, string> subject;
 
-        private Establish context = () =>
+        Establish context = () =>
         {
             subject = A.Fake<IDictionary<string, string>>();
         };
 
-        private Because of =
-            () =>
+        Because of = () =>
             {
                 string outString = "a constraint string";
                 A.CallTo(() => subject.TryGetValue("any key", out outString))
                     .Returns(true);
             };
 
-        private It should_match_without_regard_to_out_parameter_value = () =>
+        It should_match_without_regard_to_out_parameter_value = () =>
         {
             string outString = "a different string";
 
@@ -177,7 +174,7 @@
                 .Should().BeTrue();
         };
 
-        private It should_assign_the_constraint_value_to_the_out_parameter = () =>
+        It should_assign_the_constraint_value_to_the_out_parameter = () =>
         {
             string outString = "a different string";
 
@@ -193,13 +190,12 @@
 
         private static IDictionary<string, string> subject;
 
-        private Establish context = () =>
+        Establish context = () =>
         {
             subject = A.Fake<IDictionary<string, string>>();
         };
 
-        private Because of =
-            () =>
+        Because of = () =>
             {
                 string outString = null;
 
@@ -209,7 +205,7 @@
                             .MustHaveHappened());
             };
 
-        private It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
             @"
 
   Assertion failed for the following call:
