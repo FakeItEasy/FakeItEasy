@@ -1,15 +1,18 @@
 require 'albacore'
 require 'fileutils'
 
-nuget_command = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
-nunit_command = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
-mspec_command = "Source/packages/Machine.Specifications.0.8.0/tools/mspec-clr4.exe"
+$msbuild_command = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
+nuget_command  = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
+nunit_command  = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
+mspec_command  = "Source/packages/Machine.Specifications.0.8.0/tools/mspec-clr4.exe"
 
-solution      = "Source/FakeItEasy.sln"
-assembly_info = "Source/CommonAssemblyInfo.cs"
-version       = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
-nuspec        = "Source/FakeItEasy.nuspec"
-output_folder = "Build"
+$solution       = "Source/FakeItEasy.sln"
+assembly_info  = "Source/CommonAssemblyInfo.cs"
+version        = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
+nuspec         = "Source/FakeItEasy.nuspec"
+logs           = "artifacts/logs"
+output         = "artifacts/output"
+tests          = "artifacts/tests"
 
 unit_tests = [
   "Source/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
@@ -88,15 +91,14 @@ end
 desc "Restore NuGet packages"
 exec :restore do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "restore #{solution}"
+  cmd.parameters "restore #{$solution}"
 end
 
+directory logs
+
 desc "Clean solution"
-msbuild :clean do |msb|
-  FileUtils.rmtree output_folder
-  msb.properties = { :configuration => :Release }
-  msb.targets = [ :Clean ]
-  msb.solution = solution
+task :clean => [logs] do
+  run_msbuild "Clean"
 end
 
 desc "Update version number"
@@ -159,40 +161,40 @@ assemblyinfo :set_version_in_assemblyinfo, :new_version do |asm, args|
 end
 
 desc "Build solution"
-msbuild :build => [:clean, :restore] do |msb|
-  msb.properties = { :configuration => :Release }
-  msb.targets = [ :Build ]
-  msb.solution = solution
+task :build => [:clean, :restore, logs] do
+  run_msbuild "Build"
 end
 
-task :create_output_folder do
-  FileUtils.mkpath output_folder
-end
+directory tests
 
 desc "Execute unit tests"
-nunit :unit => [:build, :create_output_folder] do |nunit|
+nunit :unit => [:build, tests] do |nunit|
   nunit.command = nunit_command
   nunit.assemblies unit_tests
-  nunit.options "/result=#{output_folder}/TestResult.Unit.xml"
+  nunit.options "/result=#{tests}/TestResult.Unit.xml", "/nologo"
 end
 
 desc "Execute integration tests"
-nunit :integ => [:build, :create_output_folder] do |nunit|
+nunit :integ => [:build, tests] do |nunit|
   nunit.command = nunit_command
   nunit.assemblies integration_tests
-  nunit.options "/result=#{output_folder}/TestResult.Integration.xml"
+  nunit.options "/result=#{tests}/TestResult.Integration.xml", "/nologo"
 end
 
 desc "Execute specifications"
-mspec :spec => [:build] do |mspec|
+mspec :spec => [:build, tests] do |mspec|
   mspec.command = mspec_command
   mspec.assemblies specs
+  mspec.html_output = "#{tests}/TestResult.Specifications.html"
+  mspec.options "--timeinfo", "--progress", "--silent"
 end
 
+directory output
+
 desc "create the nuget package"
-exec :pack => [:build, :create_output_folder] do |cmd|
+exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "pack #{nuspec} -Version #{version} -OutputDirectory #{output_folder}"
+  cmd.parameters "pack #{nuspec} -Version #{version} -OutputDirectory #{output}"
 end
 
 desc "create new milestone, release issue and release"
@@ -264,6 +266,13 @@ def print_vars(variables)
     puts value.map {|v| "  " + v }
     puts ""
   }
+end
+
+def run_msbuild(target)
+  cmd = Exec.new
+  cmd.command = $msbuild_command
+  cmd.parameters "#{$solution} /target:#{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/#{target}.log;Verbosity=Detailed;PerformanceSummary"
+  cmd.execute
 end
 
 # Get a temporary SSL cert file if necessary.

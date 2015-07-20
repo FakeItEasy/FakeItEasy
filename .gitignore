@@ -1,6 +1,6 @@
 [Oo]bj
 [Bb]in
-Build*/*
+artifacts
 
 *.csproj.user
 *.vbproj.user
