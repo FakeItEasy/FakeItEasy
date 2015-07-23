@@ -1,17 +1,18 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
 
     internal class ArgumentValueFormatter
     {
-        private readonly Dictionary<Type, IArgumentValueFormatter> cachedFormatters;
+        private readonly ConcurrentDictionary<Type, IArgumentValueFormatter> cachedFormatters;
         private readonly IEnumerable<IArgumentValueFormatter> typeFormatters;
 
         public ArgumentValueFormatter(IEnumerable<IArgumentValueFormatter> typeFormatters)
         {
-            this.cachedFormatters = new Dictionary<Type, IArgumentValueFormatter>();
+            this.cachedFormatters = new ConcurrentDictionary<Type, IArgumentValueFormatter>();
 
             this.typeFormatters = typeFormatters.Concat(
                 new IArgumentValueFormatter[]
@@ -31,11 +32,7 @@ namespace FakeItEasy.Core
             var argumentType = argumentValue.GetType();
 
             IArgumentValueFormatter formatter;
-            if (!this.cachedFormatters.TryGetValue(argumentType, out formatter))
-            {
-                formatter = this.ResolveTypeFormatter(argumentType);
-                this.cachedFormatters.Add(argumentType, formatter);
-            }
+            formatter = this.cachedFormatters.GetOrAdd(argumentType, this.ResolveTypeFormatter);
 
             return formatter.GetArgumentValueAsString(argumentValue);
         }
