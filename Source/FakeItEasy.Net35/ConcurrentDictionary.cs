@@ -11,6 +11,22 @@
             this.dictionary = new Dictionary<TKey, TValue>();
         }
 
+        public ConcurrentDictionary(IEqualityComparer<TKey> comparer)
+        {
+            this.dictionary = new Dictionary<TKey, TValue>(comparer);
+        }
+
+        public TValue this[TKey key]
+        {
+            set
+            {
+                lock (this.dictionary)
+                {
+                    this.dictionary[key] = value;
+                }
+            }
+        }
+
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
             TValue value;
@@ -26,6 +42,14 @@
             }
 
             return value;
+        }
+
+        public bool TryRemove(TKey key, out TValue value)
+        {
+            lock (this.dictionary)
+            {
+                return this.dictionary.TryGetValue(key, out value) && this.dictionary.Remove(key);
+            }
         }
     }
 }

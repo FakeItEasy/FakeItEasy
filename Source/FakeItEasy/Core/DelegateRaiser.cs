@@ -13,7 +13,7 @@
     /// in order to raise that event.
     /// </summary>
     /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/></typeparam>
-    internal class DelegateRaiser<TEventHandler> : IEventRaiserArguments
+    internal class DelegateRaiser<TEventHandler> : IEventRaiserArgumentProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegateRaiser{TEventHandler}"/> class.
@@ -49,7 +49,7 @@
             return raiser.EventHandler;
         }
 
-        object[] IEventRaiserArguments.GetEventArguments(object fake)
+        object[] IEventRaiserArgumentProvider.GetEventArguments(object fake)
         {
             return this.EventArguments;
         }

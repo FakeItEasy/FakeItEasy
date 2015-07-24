@@ -1,7 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using System.Collections.Generic;
+    using System.Collections.Concurrent;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
@@ -11,7 +11,7 @@ namespace FakeItEasy.Core
     /// </summary>
     internal class MethodInfoManager
     {
-        private static readonly Dictionary<TypeMethodInfoPair, MethodInfo> MethodCache = new Dictionary<TypeMethodInfoPair, MethodInfo>();
+        private static readonly ConcurrentDictionary<TypeMethodInfoPair, MethodInfo> MethodCache = new ConcurrentDictionary<TypeMethodInfoPair, MethodInfo>();
 
         /// <summary>
         /// Gets a value indicating whether the two instances of <see cref="MethodInfo"/> would invoke the same method
@@ -36,19 +36,9 @@ namespace FakeItEasy.Core
 
         public virtual MethodInfo GetMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
         {
-            MethodInfo result = null;
-            var key = new TypeMethodInfoPair { Type = type, MethodInfo = method };
+            var key = new TypeMethodInfoPair(type, method);
 
-            lock (MethodCache)
-            {
-                if (!MethodCache.TryGetValue(key, out result))
-                {
-                    result = FindMethodOnTypeThatWillBeInvokedByMethodInfo(type, method);
-                    MethodCache.Add(key, result);
-                }
-            }
-
-            return result;
+            return MethodCache.GetOrAdd(key, k => FindMethodOnTypeThatWillBeInvokedByMethodInfo(k.Type, k.MethodInfo));
         }
 
         private static bool HasSameBaseMethod(MethodInfo first, MethodInfo second)
@@ -170,12 +160,23 @@ namespace FakeItEasy.Core
 
         private struct TypeMethodInfoPair
         {
-            public MethodInfo MethodInfo;
-            public Type Type;
+            public TypeMethodInfoPair(Type type, MethodInfo methodInfo)
+                : this()
+            {
+                Type = type;
+                MethodInfo = methodInfo;
+            }
+
+            public MethodInfo MethodInfo { get; private set; }
+            
+            public Type Type { get; private set; }
 
             public override int GetHashCode()
             {
-                return this.Type.GetHashCode() ^ this.MethodInfo.GetHashCode();
+                unchecked
+                {
+                    return (Type.GetHashCode() * 23) + MethodInfo.GetHashCode();
+                }
             }
 
             [SuppressMessage("Microsoft.Usage", "CA2231:OverloadOperatorEqualsOnOverridingValueTypeEquals", Justification = "The type is used privately only.")]
@@ -183,7 +184,7 @@ namespace FakeItEasy.Core
             {
                 var other = (TypeMethodInfoPair)obj;
 
-                return this.Type.Equals(other.Type) && this.MethodInfo == other.MethodInfo;
+                return this.Type == other.Type && this.MethodInfo == other.MethodInfo;
             }
         }
     }

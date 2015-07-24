@@ -9,7 +9,7 @@
     /// </summary>
     /// <typeparam name="TEventArgs">The type of the event args.</typeparam>
     public class Raise<TEventArgs>
-        : IEventRaiserArguments where TEventArgs : EventArgs
+        : IEventRaiserArgumentProvider where TEventArgs : EventArgs
     {
         private readonly TEventArgs eventArguments;
         private readonly object eventSender;
@@ -64,7 +64,7 @@
             return raiser.Now;
         }
 
-        object[] IEventRaiserArguments.GetEventArguments(object fake)
+        object[] IEventRaiserArgumentProvider.GetEventArguments(object fake)
         {
             return new[] { this.hasSender ? this.eventSender : fake, this.eventArguments };
         }
