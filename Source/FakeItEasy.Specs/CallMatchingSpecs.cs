@@ -1,9 +1,8 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.InteropServices;
     using FluentAssertions;
     using Machine.Specifications;
 
@@ -155,20 +154,19 @@
     {
         private static IDictionary<string, string> subject;
 
-        private Establish context = () =>
+        Establish context = () =>
         {
             subject = A.Fake<IDictionary<string, string>>();
         };
 
-        private Because of =
-            () =>
+        Because of = () =>
             {
                 string outString = "a constraint string";
                 A.CallTo(() => subject.TryGetValue("any key", out outString))
                     .Returns(true);
             };
 
-        private It should_match_without_regard_to_out_parameter_value = () =>
+        It should_match_without_regard_to_out_parameter_value = () =>
         {
             string outString = "a different string";
 
@@ -176,7 +174,7 @@
                 .Should().BeTrue();
         };
 
-        private It should_assign_the_constraint_value_to_the_out_parameter = () =>
+        It should_assign_the_constraint_value_to_the_out_parameter = () =>
         {
             string outString = "a different string";
 
@@ -192,13 +190,12 @@
 
         private static IDictionary<string, string> subject;
 
-        private Establish context = () =>
+        Establish context = () =>
         {
             subject = A.Fake<IDictionary<string, string>>();
         };
 
-        private Because of =
-            () =>
+        Because of = () =>
             {
                 string outString = null;
 
@@ -208,7 +205,7 @@
                             .MustHaveHappened());
             };
 
-        private It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
+        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
             @"
 
   Assertion failed for the following call:
@@ -216,5 +213,91 @@
   Expected to find it at least once but no calls were made to the fake object.
 
 ");
+    }
+
+    public class when_matching_a_call_with_a_ref_parameter
+    {
+        private static IHaveInterestingParameters subject;
+
+        Establish context = () =>
+        {
+            subject = A.Fake<IHaveInterestingParameters>();
+        };
+
+        Because of = () =>
+        {
+            string refString = "a constraint string";
+            A.CallTo(() => subject.CheckYourReferences(ref refString))
+                .Returns(true);
+        };
+
+        It should_match_when_ref_parameter_value_matches = () =>
+        {
+            string refString = "a constraint string";
+
+            subject.CheckYourReferences(ref refString)
+                .Should().BeTrue();
+        };
+
+        It should_not_match_when_ref_parameter_value_does_not_match = () =>
+        {
+            string refString = "a different string";
+
+            subject.CheckYourReferences(ref refString)
+                .Should().BeFalse();
+        };
+
+        It should_assign_the_constraint_value_to_the_ref_parameter = () =>
+        {
+            string refString = "a constraint string";
+
+            subject.CheckYourReferences(ref refString);
+
+            refString.Should().Be("a constraint string");
+        };
+
+        public interface IHaveInterestingParameters
+        {
+            bool CheckYourReferences(ref string refString);
+        }
+    }
+
+    /// <summary>
+    /// <see cref="OutAttribute"/> can be applied to parameters that are not
+    /// <c>out</c> parameters.
+    /// One example is the array parameter in <see cref="System.IO.Stream.Read"/>.
+    /// Ensure that such parameters are not confused with <c>out</c> parameters.
+    /// </summary>
+    public class when_matching_a_call_with_a_parameter_having_an_out_attribute
+    {
+        private static IHaveInterestingParameters subject;
+
+        Establish context = () =>
+        {
+            subject = A.Fake<IHaveInterestingParameters>();
+        };
+
+        Because of = () =>
+        {
+            A.CallTo(() => subject.Validate("a constraint string"))
+                .Returns(true);
+        };
+
+        It should_match_when_ref_parameter_value_matches = () =>
+        {
+            subject.Validate("a constraint string")
+                .Should().BeTrue();
+        };
+
+        It should_not_match_when_ref_parameter_value_does_not_match = () =>
+        {
+            subject.Validate("a different string")
+                .Should().BeFalse();
+        };
+
+        public interface IHaveInterestingParameters
+        {
+            bool Validate([Out] string value);
+        }
     }
 }
