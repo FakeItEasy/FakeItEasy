@@ -6,7 +6,6 @@ namespace FakeItEasy.Creation
     using System.Linq.Expressions;
     using System.Reflection.Emit;
     using FakeItEasy.Core;
-    using FakeItEasy.SelfInitializedFakes;
 
     /// <summary>
     /// Default implementation of the IFakeCreator-interface.
@@ -82,7 +81,7 @@ namespace FakeItEasy.Creation
         }
 
         private class FakeOptionsBuilder<T>
-            : IFakeOptionsBuilderForWrappers<T>
+            : IFakeOptionsBuilder<T>
         {
             public FakeOptionsBuilder()
             {
@@ -118,8 +117,9 @@ namespace FakeItEasy.Creation
 
             public IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance)
             {
-                this.Options.Wrapper = new FakeWrapperConfigurator(wrappedInstance);
-                return this;
+                var wrapper = new FakeWrapperConfigurator<T>(this, wrappedInstance);
+                this.ConfigureFake(fake => wrapper.ConfigureFakeToWrap(fake));
+                return wrapper;
             }
 
             public IFakeOptionsBuilder<T> Implements(Type interfaceType)
@@ -131,12 +131,6 @@ namespace FakeItEasy.Creation
             public IFakeOptionsBuilder<T> Implements<TInterface>()
             {
                 return this.Implements(typeof(TInterface));
-            }
-
-            public IFakeOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
-            {
-                this.Options.Wrapper.Recorder = recorder;
-                return this;
             }
 
             public IFakeOptionsBuilder<T> ConfigureFake(Action<T> action)

@@ -3,28 +3,12 @@ namespace FakeItEasy.Creation
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
-    using FakeItEasy.Core;
 
     internal class FakeOptions
     {
         private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
         private readonly List<Action<object>> fakeConfigurationActions = new List<Action<object>>();
         private readonly List<CustomAttributeBuilder> additionalAttributes = new List<CustomAttributeBuilder>();
-        private FakeWrapperConfigurator wrapper;
-
-        public FakeWrapperConfigurator Wrapper
-        {
-            get
-            {
-                return this.wrapper;
-            }
-
-            set
-            {
-                this.wrapper = value;
-                this.AddFakeConfigurationAction(fake => this.wrapper.ConfigureFakeToWrap(fake));
-            }
-        }
 
         public IEnumerable<object> ArgumentsForConstructor { get; set; }
 
