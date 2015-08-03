@@ -7,8 +7,6 @@ namespace FakeItEasy.Configuration
 
     internal class RuleBuilder
         : IVoidArgumentValidationConfiguration,
-          IRepeatConfiguration,
-          IAfterCallSpecifiedConfiguration,
           IAfterCallSpecifiedWithOutAndRefParametersConfiguration,
           ICallCollectionAndCallMatcherAccessor
     {

@@ -7,7 +7,10 @@
 
     internal class ParsedCallExpression
     {
-        public ParsedCallExpression(MethodInfo calledMethod, Expression callTargetExpression, IEnumerable<ParsedArgumentExpression> argumentsExpressions)
+        public ParsedCallExpression(
+            MethodInfo calledMethod,
+            Expression callTargetExpression,
+            IEnumerable<ParsedArgumentExpression> argumentsExpressions)
         {
             this.CalledMethod = calledMethod;
             this.CallTargetExpression = callTargetExpression;
@@ -15,8 +18,6 @@
         }
 
         public MethodInfo CalledMethod { get; private set; }
-
-        public Expression CallTargetExpression { get; private set; }
 
         public IEnumerable<ParsedArgumentExpression> ArgumentsExpressions { get; private set; }
 
@@ -29,5 +30,7 @@
         {
             get { return this.ArgumentsExpressions.Select(x => x.Value); }
         }
+
+        private Expression CallTargetExpression { get; set; }
     }
 }
