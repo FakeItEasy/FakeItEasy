@@ -47,11 +47,7 @@ namespace FakeItEasy.Configuration
         {
             if (numberOfTimesToRepeat <= 0)
             {
-#if SILVERLIGHT
-                throw new ArgumentOutOfRangeException("numberOfTimesToRepeat", "The number of times to repeat is not greater than zero.");
-#else
                 throw new ArgumentOutOfRangeException("numberOfTimesToRepeat", numberOfTimesToRepeat, "The number of times to repeat is not greater than zero.");
-#endif
             }
 
             this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimesToRepeat;

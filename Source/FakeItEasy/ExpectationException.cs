@@ -36,7 +36,6 @@ namespace FakeItEasy
         {
         }
 
-#if !SILVERLIGHT
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpectationException"/> class.
         /// </summary>
@@ -51,6 +50,5 @@ namespace FakeItEasy
         protected ExpectationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
-#endif
     }
 }

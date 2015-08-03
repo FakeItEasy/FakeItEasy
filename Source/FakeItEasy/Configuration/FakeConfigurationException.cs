@@ -37,7 +37,6 @@ namespace FakeItEasy.Configuration
         {
         }
 
-#if !SILVERLIGHT
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeConfigurationException"/> class.
         /// </summary>
@@ -53,6 +52,5 @@ namespace FakeItEasy.Configuration
             : base(info, context)
         {
         }
-#endif
     }
 }

@@ -17,9 +17,6 @@ tests          = "artifacts/tests"
 unit_tests = [
   "Source/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
   "Source/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
-  "Source/FakeItEasy-SL.Tests/Bin/Release/FakeItEasy-SL.Tests.dll",
-  "Source/FakeItEasy.Win8.Tests/Bin/Release/FakeItEasy.Win8.Tests.dll",
-  "Source/FakeItEasy.Win81.Tests/Bin/Release/FakeItEasy.Win81.Tests.dll",
 ]
 
 integration_tests = [
