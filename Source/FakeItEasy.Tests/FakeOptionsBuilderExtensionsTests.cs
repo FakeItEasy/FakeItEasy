@@ -28,14 +28,14 @@ namespace FakeItEasy.Tests
         public void Strict_should_return_configuration_object()
         {
             // Arrange
-            var options = A.Fake<IFakeOptionsBuilder<IFoo>>();
-            A.CallTo(() => options.ConfigureFake(A<Action<IFoo>>._)).Returns(options);
+            var optionsBuilder = A.Fake<IFakeOptions<IFoo>>();
+            A.CallTo(() => optionsBuilder.ConfigureFake(A<Action<IFoo>>._)).Returns(optionsBuilder);
 
             // Act
-            var result = options.Strict();
+            var result = optionsBuilder.Strict();
 
             // Assert
-            result.Should().BeSameAs(options);
+            result.Should().BeSameAs(optionsBuilder);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace FakeItEasy.Tests
 
             // Assert
             NullGuardedConstraint.Assert(() =>
-                A.Dummy<IFakeOptionsBuilder<IFoo>>().Strict());
+                A.Dummy<IFakeOptions<IFoo>>().Strict());
         }
 
         [Test]
@@ -80,14 +80,14 @@ namespace FakeItEasy.Tests
         public void CallsBaseMethods_should_return_configuration_object()
         {
             // Arrange
-            var options = A.Fake<IFakeOptionsBuilder<IFoo>>();
-            A.CallTo(() => options.ConfigureFake(A<Action<IFoo>>._)).Returns(options);
+            var optionsBuilder = A.Fake<IFakeOptions<IFoo>>();
+            A.CallTo(() => optionsBuilder.ConfigureFake(A<Action<IFoo>>._)).Returns(optionsBuilder);
 
             // Act
-            var result = options.CallsBaseMethods();
+            var result = optionsBuilder.CallsBaseMethods();
 
             // Assert
-            result.Should().BeSameAs(options);
+            result.Should().BeSameAs(optionsBuilder);
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace FakeItEasy.Tests
 
             // Assert
             NullGuardedConstraint.Assert(() =>
-                A.Dummy<IFakeOptionsBuilder<IFoo>>().CallsBaseMethods());
+                A.Dummy<IFakeOptions<IFoo>>().CallsBaseMethods());
         }
 
         public class ConcreteClass

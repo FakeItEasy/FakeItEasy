@@ -419,10 +419,10 @@
     <Compile Include="Creation\IFakeObjectCreator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Creation\IFakeOptionsBuilder.cs">
+    <Compile Include="Creation\IFakeOptions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Creation\IFakeOptionsBuilderForWrappers.cs">
+    <Compile Include="Creation\IFakeOptionsForWrappers.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Creation\IProxyGenerator.cs">

@@ -22,7 +22,7 @@
 
             using (Fake.CreateScope())
             {
-                A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(A<Action<IFakeOptionsBuilder<IFoo>>>._)).Returns(foo);
+                A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(A<Action<IFakeOptions<IFoo>>>._)).Returns(foo);
 
                 var fake = new Fake<IFoo>();
 
@@ -31,28 +31,28 @@
         }
 
         [Test]
-        public void Constructor_that_takes_options_should_be_null_guarded()
+        public void Constructor_that_takes_options_builder_should_be_null_guarded()
         {
-            Action<IFakeOptionsBuilder<Foo>> options = x => { };
+            Action<IFakeOptions<Foo>> optionsBuilder = x => { };
 
             NullGuardedConstraint.Assert(() =>
-                new Fake<Foo>(options));
+                new Fake<Foo>(optionsBuilder));
         }
 
         [Test]
-        public void Constructor_that_takes_options_should_set_fake_returned_from_factory_to_FakedObject_property()
+        public void Constructor_that_takes_options_builder_should_set_fake_returned_from_factory_to_FakedObject_property()
         {
             var argumentsForConstructor = new object[] { A.Fake<IFoo>() };
             var fakeReturnedFromFactory = A.Fake<AbstractTypeWithNoDefaultConstructor>(x => x.WithArgumentsForConstructor(argumentsForConstructor));
 
-            Action<IFakeOptionsBuilder<AbstractTypeWithNoDefaultConstructor>> options = x => { };
+            Action<IFakeOptions<AbstractTypeWithNoDefaultConstructor>> optionsBuilder = x => { };
 
             using (Fake.CreateScope())
             {
-                A.CallTo(() => this.fakeCreator.CreateFake<AbstractTypeWithNoDefaultConstructor>(options))
+                A.CallTo(() => this.fakeCreator.CreateFake<AbstractTypeWithNoDefaultConstructor>(optionsBuilder))
                     .Returns(fakeReturnedFromFactory);
 
-                var fake = new Fake<AbstractTypeWithNoDefaultConstructor>(options);
+                var fake = new Fake<AbstractTypeWithNoDefaultConstructor>(optionsBuilder);
 
                 Assert.That(fake.FakedObject, Is.SameAs(fakeReturnedFromFactory));
             }

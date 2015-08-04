@@ -15,7 +15,7 @@ namespace FakeItEasy.Tests.Creation
         private DefaultFakeCreatorFacade creator;
 
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>>>(
+        private object[] optionsBuilderCalls = TestCases.Create<Func<IFakeOptions<Foo>, IFakeOptions<Foo>>>(
                 x => x.Wrapping(A.Fake<Foo>()).Implements(typeof(Foo)),
                 x => x.Implements(typeof(Foo)),
                 x => x.WithArgumentsForConstructor(() => new Foo()),
@@ -99,19 +99,19 @@ namespace FakeItEasy.Tests.Creation
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<ProxyOptions>._)).MustHaveHappened();
         }
 
-        [TestCaseSource("optionBuilderCalls")]
-        public void CreateFake_should_pass_options_builder_that_returns_itself_for_any_call(Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>> call)
+        [TestCaseSource("optionsBuilderCalls")]
+        public void CreateFake_should_pass_options_builder_that_returns_itself_for_any_call(Func<IFakeOptions<Foo>, IFakeOptions<Foo>> call)
         {
             Guard.AgainstNull(call, "call");
 
             // Arrange
-            IFakeOptionsBuilder<Foo> builderPassedToAction = null;
+            IFakeOptions<Foo> optionsPassedToAction = null;
 
             // Act
-            this.creator.CreateFake<Foo>(x => { builderPassedToAction = x; });
+            this.creator.CreateFake<Foo>(x => { optionsPassedToAction = x; });
 
             // Assert
-            Assert.That(call.Invoke(builderPassedToAction), Is.SameAs(builderPassedToAction));
+            Assert.That(call.Invoke(optionsPassedToAction), Is.SameAs(optionsPassedToAction));
         }
 
         [Test]

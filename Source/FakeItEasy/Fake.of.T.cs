@@ -26,17 +26,17 @@ namespace FakeItEasy
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Fake{T}"/> class. 
-        /// Creates a new fake object using the specified options.
+        /// Creates a new fake object using options built by <paramref name="optionsBuilder"/>.
         /// </summary>
-        /// <param name="options">
-        /// Options used to create the fake object.
+        /// <param name="optionsBuilder">
+        /// Action that builds options used to create the fake object.
         /// </param>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
-        public Fake(Action<IFakeOptionsBuilder<T>> options)
+        public Fake(Action<IFakeOptions<T>> optionsBuilder)
         {
-            Guard.AgainstNull(options, "options");
+            Guard.AgainstNull(optionsBuilder, "optionsBuilder");
 
-            this.FakedObject = CreateFake(options);
+            this.FakedObject = CreateFake(optionsBuilder);
         }
 
         /// <summary>
@@ -98,9 +98,9 @@ namespace FakeItEasy
             return this.StartConfiguration.AnyCall();
         }
 
-        private static T CreateFake(Action<IFakeOptionsBuilder<T>> options)
+        private static T CreateFake(Action<IFakeOptions<T>> optionsBuilder)
         {
-            return FakeCreator.CreateFake(options);
+            return FakeCreator.CreateFake(optionsBuilder);
         }
     }
 }

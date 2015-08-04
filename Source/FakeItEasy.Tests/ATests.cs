@@ -13,11 +13,11 @@
         private IDisposable scope;
 
         [Test]
-        public void Fake_without_arguments_should_call_fake_creator_with_empty_action()
+        public void Fake_without_arguments_should_call_fake_creator_with_empty_options_builder()
         {
             // Arrange
             var fake = A.Fake<IFoo>();
-            A.CallTo(() => this.fakeCreator.CreateFake(A<Action<IFakeOptionsBuilder<IFoo>>>._)).Returns(fake);
+            A.CallTo(() => this.fakeCreator.CreateFake(A<Action<IFakeOptions<IFoo>>>._)).Returns(fake);
 
             // Act
             var result = A.Fake<IFoo>();
@@ -32,11 +32,11 @@
             // Arrange
             var fake = A.Fake<IFoo>();
 
-            Action<IFakeOptionsBuilder<IFoo>> options = x => { };
-            A.CallTo(() => this.fakeCreator.CreateFake(options)).Returns(fake);
+            Action<IFakeOptions<IFoo>> optionsBuilder = x => { };
+            A.CallTo(() => this.fakeCreator.CreateFake(optionsBuilder)).Returns(fake);
 
             // Act
-            var result = A.Fake(options);
+            var result = A.Fake(optionsBuilder);
 
             // Assert
             result.Should().BeSameAs(fake);

@@ -11,13 +11,13 @@ namespace FakeItEasy.Core
     /// Handles configuring of fake objects to delegate all their calls to a wrapped instance.
     /// </summary>
     /// <typeparam name="T">The type of fake object generated.</typeparam>
-    internal class FakeWrapperConfigurator<T> : IFakeOptionsBuilderForWrappers<T>
+    internal class FakeWrapperConfigurator<T> : IFakeOptionsForWrappers<T>
     {
-        private readonly IFakeOptionsBuilder<T> fakeOptionsBuilder;
+        private readonly IFakeOptions<T> fakeOptions;
 
-        public FakeWrapperConfigurator(IFakeOptionsBuilder<T> fakeOptionsBuilder, object wrappedObject)
+        public FakeWrapperConfigurator(IFakeOptions<T> fakeOptions, object wrappedObject)
         {
-            this.fakeOptionsBuilder = fakeOptionsBuilder;
+            this.fakeOptions = fakeOptions;
             this.WrappedObject = wrappedObject;
         }
 
@@ -25,45 +25,45 @@ namespace FakeItEasy.Core
 
         private object WrappedObject { get; set; }
 
-        public IFakeOptionsBuilder<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+        public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
         {
-            return this.fakeOptionsBuilder.WithArgumentsForConstructor(argumentsForConstructor);
+            return this.fakeOptions.WithArgumentsForConstructor(argumentsForConstructor);
         }
 
-        public IFakeOptionsBuilder<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
+        public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
         {
-            return this.fakeOptionsBuilder.WithArgumentsForConstructor(constructorCall);
+            return this.fakeOptions.WithArgumentsForConstructor(constructorCall);
         }
 
-        public IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance)
+        public IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
         {
-            return this.fakeOptionsBuilder.Wrapping(wrappedInstance);
+            return this.fakeOptions.Wrapping(wrappedInstance);
         }
 
-        public IFakeOptionsBuilder<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+        public IFakeOptions<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
         {
-            return this.fakeOptionsBuilder.WithAdditionalAttributes(customAttributeBuilders);
+            return this.fakeOptions.WithAdditionalAttributes(customAttributeBuilders);
         }
 
-        public IFakeOptionsBuilder<T> Implements(Type interfaceType)
+        public IFakeOptions<T> Implements(Type interfaceType)
         {
-            return this.fakeOptionsBuilder.Implements(interfaceType);
+            return this.fakeOptions.Implements(interfaceType);
         }
 
-        public IFakeOptionsBuilder<T> Implements<TInterface>()
+        public IFakeOptions<T> Implements<TInterface>()
         {
-            return this.fakeOptionsBuilder.Implements<TInterface>();
+            return this.fakeOptions.Implements<TInterface>();
         }
 
-        public IFakeOptionsBuilder<T> ConfigureFake(Action<T> action)
+        public IFakeOptions<T> ConfigureFake(Action<T> action)
         {
-            return this.fakeOptionsBuilder.ConfigureFake(action);
+            return this.fakeOptions.ConfigureFake(action);
         }
 
-        public IFakeOptionsBuilder<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
+        public IFakeOptions<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
         {
             this.Recorder = recorder;
-            return this.fakeOptionsBuilder;
+            return this.fakeOptions;
         }
 
         /// <summary>
