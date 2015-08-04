@@ -43,7 +43,7 @@ namespace FakeItEasy.Tests
             return scope.NullCheckedMatches(
                 x => !x.AdditionalInterfacesToImplement.Any()
                      && x.ArgumentsForConstructor == null
-                     && !x.FakeConfigurationActions.Any()
+                     && !x.ProxyConfigurationActions.Any()
                      && !x.AdditionalAttributes.Any(),
                 x => x.Write("empty fake options"));
         }

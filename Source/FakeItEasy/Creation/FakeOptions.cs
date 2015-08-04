@@ -7,7 +7,7 @@ namespace FakeItEasy.Creation
     internal class FakeOptions
     {
         private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
-        private readonly List<Action<object>> fakeConfigurationActions = new List<Action<object>>();
+        private readonly List<Action<object>> proxyConfigurationActions = new List<Action<object>>();
         private readonly List<CustomAttributeBuilder> additionalAttributes = new List<CustomAttributeBuilder>();
 
         public IEnumerable<object> ArgumentsForConstructor { get; set; }
@@ -17,9 +17,9 @@ namespace FakeItEasy.Creation
             get { return this.additionalInterfacesToImplement; }
         }
 
-        public IEnumerable<Action<object>> FakeConfigurationActions
+        public IEnumerable<Action<object>> ProxyConfigurationActions
         {
-            get { return this.fakeConfigurationActions; }
+            get { return this.proxyConfigurationActions; }
         }
 
         public IEnumerable<CustomAttributeBuilder> AdditionalAttributes
@@ -32,9 +32,9 @@ namespace FakeItEasy.Creation
             this.additionalInterfacesToImplement.Add(interfaceType);
         }
 
-        public void AddFakeConfigurationAction(Action<object> action)
+        public void AddProxyConfigurationAction(Action<object> action)
         {
-            this.fakeConfigurationActions.Add(action);
+            this.proxyConfigurationActions.Add(action);
         }
 
         public void AddAttribute(CustomAttributeBuilder attribute)
