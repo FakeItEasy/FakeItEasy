@@ -6,18 +6,18 @@ namespace FakeItEasy
     using FakeItEasy.Creation;
 
     /// <summary>
-    /// Provides extension methods for <see cref="IFakeOptionsBuilder{T}"/>.
+    /// Provides extension methods for <see cref="IFakeOptions{T}"/>.
     /// </summary>
-    public static class FakeOptionsBuilderExtensions
+    public static class FakeOptionsExtensions
     {
         /// <summary>
-        /// Makes the fake strict, this means that any call to the fake
+        /// Makes the fake strict. This means that any call to the fake
         /// that has not been explicitly configured will throw an exception.
         /// </summary>
         /// <typeparam name="T">The type of fake object.</typeparam>
-        /// <param name="options">The configuration.</param>
-        /// <returns>A configuration object.</returns>
-        public static IFakeOptionsBuilder<T> Strict<T>(this IFakeOptionsBuilder<T> options)
+        /// <param name="options">Options used to create the fake object.</param>
+        /// <returns>An options object.</returns>
+        public static IFakeOptions<T> Strict<T>(this IFakeOptions<T> options)
         {
             Guard.AgainstNull(options, "options");
 
@@ -33,9 +33,9 @@ namespace FakeItEasy
         /// Makes the fake default to calling base methods, so long as they aren't abstract.
         /// </summary>
         /// <typeparam name="T">The type of fake object.</typeparam>
-        /// <param name="options">The configuration.</param>
-        /// <returns>A configuration object.</returns>
-        public static IFakeOptionsBuilder<T> CallsBaseMethods<T>(this IFakeOptionsBuilder<T> options)
+        /// <param name="options">Options used to create the fake object.</param>
+        /// <returns>An options object.</returns>
+        public static IFakeOptions<T> CallsBaseMethods<T>(this IFakeOptions<T> options)
         {
             Guard.AgainstNull(options, "options");
 

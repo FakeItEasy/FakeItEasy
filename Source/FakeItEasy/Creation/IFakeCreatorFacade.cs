@@ -12,10 +12,10 @@ namespace FakeItEasy.Creation
         /// Creates a fake object of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of fake to create.</typeparam>
-        /// <param name="options">Options for the created fake object.</param>
+        /// <param name="optionsBuilder">Action that builds options for the created fake object.</param>
         /// <returns>The created fake object.</returns>
         /// <exception cref="FakeItEasy.Core.FakeCreationException">Was unable to generate the fake in the current configuration.</exception>
-        T CreateFake<T>(Action<IFakeOptionsBuilder<T>> options);
+        T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder);
 
         /// <summary>
         /// Creates a dummy object, this can be a fake object or an object resolved

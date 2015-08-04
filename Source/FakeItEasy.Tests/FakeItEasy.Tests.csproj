@@ -103,7 +103,7 @@
     <Compile Include="TestHelpers\BinarySerializationHelper.cs" />
     <Compile Include="TestHelpers\StringEnumerableExtensions.cs" />
     <Compile Include="WhereConfigurationExtensionsTests.cs" />
-    <Compile Include="FakeOptionsBuilderExtensionsTests.cs" />
+    <Compile Include="FakeOptionsExtensionsTests.cs" />
     <Compile Include="FakeObjectCallExtensionsTests.cs" />
     <Compile Include="GenericATests.cs" />
     <Compile Include="DummyException.cs" />

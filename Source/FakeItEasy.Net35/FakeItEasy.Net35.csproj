@@ -438,11 +438,11 @@
     <Compile Include="..\FakeItEasy\Creation\IFakeObjectCreator.cs">
       <Link>Creation\IFakeObjectCreator.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsBuilder.cs">
-      <Link>Creation\IFakeOptionsBuilder.cs</Link>
+    <Compile Include="..\FakeItEasy\Creation\IFakeOptions.cs">
+      <Link>Creation\IFakeOptions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsBuilderForWrappers.cs">
-      <Link>Creation\IFakeOptionsBuilderForWrappers.cs</Link>
+    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsForWrappers.cs">
+      <Link>Creation\IFakeOptionsForWrappers.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\IProxyGenerator.cs">
       <Link>Creation\IProxyGenerator.cs</Link>
@@ -549,8 +549,8 @@
     <Compile Include="..\FakeItEasy\FakeObjectCallExtensions.cs">
       <Link>FakeObjectCallExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\FakeOptionsBuilderExtensions.cs">
-      <Link>FakeOptionsBuilderExtensions.cs</Link>
+    <Compile Include="..\FakeItEasy\FakeOptionsExtensions.cs">
+      <Link>FakeOptionsExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Guard.cs">
       <Link>Guard.cs</Link>
