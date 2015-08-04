@@ -35,9 +35,9 @@ namespace FakeItEasy.Creation
         {
             Guard.AgainstNull(options, "options");
 
-            var fakeOptions = BuildFakeOptions(options);
+            var proxyOptions = BuildProxyOptions(options);
 
-            return (T)this.fakeAndDummyManager.CreateFake(typeof(T), fakeOptions);
+            return (T)this.fakeAndDummyManager.CreateFake(typeof(T), proxyOptions);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace FakeItEasy.Creation
             return (T)this.fakeAndDummyManager.CreateDummy(typeof(T));
         }
 
-        private static FakeOptions BuildFakeOptions<T>(Action<IFakeOptionsBuilder<T>> options)
+        private static ProxyOptions BuildProxyOptions<T>(Action<IFakeOptionsBuilder<T>> options)
         {
             var builder = new FakeOptionsBuilder<T>();
             options.Invoke(builder);
@@ -85,10 +85,10 @@ namespace FakeItEasy.Creation
         {
             public FakeOptionsBuilder()
             {
-                this.Options = new FakeOptions();
+                this.Options = new ProxyOptions();
             }
 
-            public FakeOptions Options { get; private set; }
+            public ProxyOptions Options { get; private set; }
 
             public IFakeOptionsBuilder<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
             {

@@ -38,7 +38,7 @@ namespace FakeItEasy.Tests
                 string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
         }
 
-        internal static FakeOptions IsEmpty(this IArgumentConstraintManager<FakeOptions> scope)
+        internal static ProxyOptions IsEmpty(this IArgumentConstraintManager<ProxyOptions> scope)
         {
             return scope.NullCheckedMatches(
                 x => !x.AdditionalInterfacesToImplement.Any()

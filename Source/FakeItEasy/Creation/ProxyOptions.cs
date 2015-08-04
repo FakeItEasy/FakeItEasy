@@ -4,7 +4,7 @@ namespace FakeItEasy.Creation
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    internal class FakeOptions
+    internal class ProxyOptions
     {
         private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
         private readonly List<Action<object>> proxyConfigurationActions = new List<Action<object>>();

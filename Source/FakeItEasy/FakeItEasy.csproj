@@ -404,7 +404,7 @@
     <Compile Include="Creation\FakeObjectCreator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Creation\FakeOptions.cs">
+    <Compile Include="Creation\ProxyOptions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Creation\IDummyValueCreationSession.cs">

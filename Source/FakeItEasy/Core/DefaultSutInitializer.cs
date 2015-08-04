@@ -42,7 +42,7 @@
 
         private object CreateFake(Type typeOfFake, Action<Type, object> onFakeCreated)
         {
-            var result = this.fakeManager.CreateFake(typeOfFake, new FakeOptions());
+            var result = this.fakeManager.CreateFake(typeOfFake, new ProxyOptions());
             onFakeCreated.Invoke(typeOfFake, result);
             return result;
         }

@@ -6,7 +6,7 @@ namespace FakeItEasy.Tests.Creation
 
     public static class FakeOptionsConstraints
     {
-        internal static FakeOptions HasArgumentsForConstructor(this IArgumentConstraintManager<FakeOptions> scope, IEnumerable<object> argumentsForConstructor)
+        internal static ProxyOptions HasArgumentsForConstructor(this IArgumentConstraintManager<ProxyOptions> scope, IEnumerable<object> argumentsForConstructor)
         {
             return scope.Matches(x => argumentsForConstructor.SequenceEqual(x.ArgumentsForConstructor), "Constructor arguments ({0})".FormatInvariant(string.Join(", ", argumentsForConstructor.Select(x => x.ToString()).ToArray())));
         }
