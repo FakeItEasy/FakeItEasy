@@ -20,10 +20,10 @@ namespace FakeItEasy.Creation
         /// Creates a fake object of the specified type.
         /// </summary>
         /// <param name="typeOfFake">The type of fake object to generate.</param>
-        /// <param name="options">Options for building the fake object.</param>
+        /// <param name="options">Options for building the proxy that will act as the fake.</param>
         /// <returns>A fake object.</returns>
         /// <exception cref="FakeItEasy.Core.FakeCreationException">The current IProxyGenerator is not able to generate a fake of the specified type.</exception>
-        object CreateFake(Type typeOfFake, FakeOptions options);
+        object CreateFake(Type typeOfFake, ProxyOptions options);
 
         /// <summary>
         /// Tries to create a dummy of the specified type.
@@ -37,9 +37,9 @@ namespace FakeItEasy.Creation
         /// Tries to create a fake object of the specified type.
         /// </summary>
         /// <param name="typeOfFake">The type of fake to create.</param>
-        /// <param name="options">Options for the creation of the fake.</param>
+        /// <param name="options">Options for building the proxy that will act as the fake.</param>
         /// <param name="result">The created fake object when creation is successful.</param>
         /// <returns>A value indicating whether the creation was successful.</returns>
-        bool TryCreateFake(Type typeOfFake, FakeOptions options, out object result);
+        bool TryCreateFake(Type typeOfFake, ProxyOptions options, out object result);
     }
 }
