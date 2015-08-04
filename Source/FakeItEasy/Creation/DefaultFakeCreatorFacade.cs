@@ -135,7 +135,7 @@ namespace FakeItEasy.Creation
 
             public IFakeOptionsBuilder<T> ConfigureFake(Action<T> action)
             {
-                this.Options.AddFakeConfigurationAction(x => action((T)x));
+                this.Options.AddProxyConfigurationAction(proxy => action((T)proxy));
                 return this;
             }
 

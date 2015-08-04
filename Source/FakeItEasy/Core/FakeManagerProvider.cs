@@ -88,9 +88,9 @@ namespace FakeItEasy.Core
         {
             this.fakeObjectConfigurator.ConfigureFake(this.typeOfFake, proxy);
 
-            foreach (var fakeConfigurationAction in this.fakeOptions.FakeConfigurationActions)
+            foreach (var proxyConfigurationAction in this.fakeOptions.ProxyConfigurationActions)
             {
-                fakeConfigurationAction(proxy);
+                proxyConfigurationAction(proxy);
             }
         }
     }
