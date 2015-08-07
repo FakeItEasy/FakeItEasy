@@ -5,6 +5,6 @@ namespace FakeItEasy.Core
 
     internal static class FakeCallProcessorProvider
     {
-        public delegate IFakeCallProcessorProvider Factory(Type typeOfFake, ProxyOptions proxyOptions);
+        public delegate IFakeCallProcessorProvider Factory(Type typeOfFake, IProxyOptions proxyOptions);
     }
 }

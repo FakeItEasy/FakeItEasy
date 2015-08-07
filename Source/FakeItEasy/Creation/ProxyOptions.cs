@@ -4,7 +4,18 @@ namespace FakeItEasy.Creation
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    internal class ProxyOptions
+    internal interface IProxyOptions
+    {
+        IEnumerable<object> ArgumentsForConstructor { get; }
+
+        IEnumerable<Type> AdditionalInterfacesToImplement { get; }
+
+        IEnumerable<Action<object>> ProxyConfigurationActions { get; }
+
+        IEnumerable<CustomAttributeBuilder> AdditionalAttributes { get; }
+    }
+
+    internal class ProxyOptions : IProxyOptions
     {
         private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
         private readonly List<Action<object>> proxyConfigurationActions = new List<Action<object>>();

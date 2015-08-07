@@ -28,7 +28,7 @@ namespace FakeItEasy.Core
         private readonly Type typeOfFake;
 
         [NonSerialized]
-        private readonly ProxyOptions proxyOptions;
+        private readonly IProxyOptions proxyOptions;
 
         // We want to lock accesses to initializedFakeManager to guarantee thread-safety (see IFakeCallProcessorProvider documentation):
         private readonly object initializedFakeManagerLock = new object();
@@ -40,7 +40,7 @@ namespace FakeItEasy.Core
                 IFakeManagerAccessor fakeManagerAccessor,
                 IFakeObjectConfigurator fakeObjectConfigurator, 
                 Type typeOfFake,
-                ProxyOptions proxyOptions)
+                IProxyOptions proxyOptions)
         {
             Guard.AgainstNull(fakeManagerFactory, "fakeManagerFactory");
             Guard.AgainstNull(fakeManagerAccessor, "fakeManagerAccessor");

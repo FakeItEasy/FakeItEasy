@@ -29,7 +29,7 @@ namespace FakeItEasy.Creation
             return result;
         }
 
-        public object CreateFake(Type typeOfFake, ProxyOptions options)
+        public object CreateFake(Type typeOfFake, IProxyOptions options)
         {
             return this.fakeCreator.CreateFake(typeOfFake, options, this.session, throwOnFailure: true);
         }
@@ -39,7 +39,7 @@ namespace FakeItEasy.Creation
             return this.session.TryResolveDummyValue(typeOfDummy, out result);
         }
 
-        public bool TryCreateFake(Type typeOfFake, ProxyOptions options, out object result)
+        public bool TryCreateFake(Type typeOfFake, IProxyOptions options, out object result)
         {
             result = this.fakeCreator.CreateFake(typeOfFake, options, this.session, throwOnFailure: false);
             return result != null;

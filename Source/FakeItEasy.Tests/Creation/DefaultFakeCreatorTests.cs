@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => new Foo(serviceProvider)));
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<ProxyOptions>.That.HasArgumentsForConstructor(new object[] { serviceProvider }))).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<IProxyOptions>.That.HasArgumentsForConstructor(new object[] { serviceProvider }))).MustHaveHappened();
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace FakeItEasy.Tests.Creation
             // Assert
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(
                     A<Type>._,
-                    A<ProxyOptions>.That.Matches(
+                    A<IProxyOptions>.That.Matches(
                         x =>
                             x.AdditionalInterfacesToImplement.Contains(typeof(IFormatProvider)) &&
                             x.AdditionalInterfacesToImplement.Contains(typeof(IFormattable)),
@@ -78,7 +78,7 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var instanceFromManager = A.Fake<IFoo>();
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<ProxyOptions>._)).Returns(instanceFromManager);
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<IProxyOptions>._)).Returns(instanceFromManager);
 
             // Act
             var result = this.creator.CreateFake<IFoo>(x => { });
@@ -96,7 +96,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<IFoo>(x => { });
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<ProxyOptions>._)).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<IProxyOptions>._)).MustHaveHappened();
         }
 
         [TestCaseSource("optionsBuilderCalls")]
@@ -146,7 +146,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(constructorArguments));
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<ProxyOptions>.That.HasArgumentsForConstructor(constructorArguments))).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<IProxyOptions>.That.HasArgumentsForConstructor(constructorArguments))).MustHaveHappened();
         }
 
         [Test]
@@ -181,9 +181,9 @@ namespace FakeItEasy.Tests.Creation
 
         private void ConfigureDefaultValuesForFakeAndDummyManager()
         {
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<ProxyOptions>._))
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<IProxyOptions>._))
                 .Returns(A.Fake<IFoo>());
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(Foo), A<ProxyOptions>._))
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(Foo), A<IProxyOptions>._))
                 .Returns(A.Fake<Foo>());
         }
     }

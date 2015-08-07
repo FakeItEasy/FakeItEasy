@@ -19,7 +19,7 @@ namespace FakeItEasy.Creation
             this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
         }
 
-        public object CreateFake(Type typeOfFake, ProxyOptions proxyOptions, IDummyValueCreationSession session, bool throwOnFailure)
+        public object CreateFake(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueCreationSession session, bool throwOnFailure)
         {
             var result = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
 
@@ -74,7 +74,7 @@ namespace FakeItEasy.Creation
                        };
         }
 
-        private void AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(Type typeOfFake, ProxyGeneratorResult result, ProxyOptions proxyOptions)
+        private void AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(Type typeOfFake, ProxyGeneratorResult result, IProxyOptions proxyOptions)
         {
             if (!result.ProxyWasSuccessfullyGenerated && proxyOptions.ArgumentsForConstructor != null)
             {
@@ -82,7 +82,7 @@ namespace FakeItEasy.Creation
             }
         }
 
-        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, ProxyOptions proxyOptions, IDummyValueCreationSession session, string failReasonForDefaultConstructor, bool throwOnFailure)
+        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueCreationSession session, string failReasonForDefaultConstructor, bool throwOnFailure)
         {
             var constructors = ResolveConstructors(typeOfFake, session);
 
@@ -106,7 +106,7 @@ namespace FakeItEasy.Creation
             return null;
         }
 
-        private ProxyGeneratorResult GenerateProxy(Type typeOfFake, ProxyOptions proxyOptions, IEnumerable<object> argumentsForConstructor)
+        private ProxyGeneratorResult GenerateProxy(Type typeOfFake, IProxyOptions proxyOptions, IEnumerable<object> argumentsForConstructor)
         {
             var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
 

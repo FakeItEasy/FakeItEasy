@@ -67,7 +67,7 @@
             this.sutInitializer.CreateSut(typeof(TypeWithFakeableDependencies), (x, y) => { });
 
             // Assert
-            A.CallTo(() => this.fakeManager.CreateFake(A<Type>._, A<ProxyOptions>.That.Not.IsEmpty())).MustNotHaveHappened();
+            A.CallTo(() => this.fakeManager.CreateFake(A<Type>._, A<IProxyOptions>.That.Not.IsEmpty())).MustNotHaveHappened();
         }
 
         [Test]
@@ -89,7 +89,7 @@
 
         private void StubFakeManagerWithFake<T>()
         {
-            A.CallTo(() => this.fakeManager.CreateFake(typeof(T), A<ProxyOptions>._)).ReturnsLazily(() => A.Fake<T>());
+            A.CallTo(() => this.fakeManager.CreateFake(typeof(T), A<IProxyOptions>._)).ReturnsLazily(() => A.Fake<T>());
         }
 
         public class TypeWithFakeableDependencies
