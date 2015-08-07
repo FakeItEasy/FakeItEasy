@@ -73,32 +73,37 @@ namespace FakeItEasy.Creation
             return (T)this.fakeAndDummyManager.CreateDummy(typeof(T));
         }
 
-        private static ProxyOptions BuildProxyOptions<T>(Action<IFakeOptions<T>> optionsBuilder)
+        private static IProxyOptions BuildProxyOptions<T>(Action<IFakeOptions<T>> optionsBuilder)
         {
             var fakeOptions = new FakeOptions<T>();
             optionsBuilder.Invoke(fakeOptions);
-            return fakeOptions.Options;
+            return fakeOptions.ProxyOptions;
         }
 
         private class FakeOptions<T>
             : IFakeOptions<T>
         {
+            private readonly ProxyOptions proxyOptions;
+
             public FakeOptions()
             {
-                this.Options = new ProxyOptions();
+                this.proxyOptions = new ProxyOptions();
             }
 
-            public ProxyOptions Options { get; private set; }
+            public IProxyOptions ProxyOptions
+            {
+                get { return this.proxyOptions; }
+            }
 
             public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
             {
-                this.Options.ArgumentsForConstructor = argumentsForConstructor;
+                this.proxyOptions.ArgumentsForConstructor = argumentsForConstructor;
                 return this;
             }
 
             public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
             {
-                this.Options.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
+                this.proxyOptions.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
                 return this;
             }
 
@@ -109,7 +114,7 @@ namespace FakeItEasy.Creation
 
                 foreach (var customAttributeBuilder in customAttributeBuilders)
                 {
-                    this.Options.AddAttribute(customAttributeBuilder);
+                    this.proxyOptions.AddAttribute(customAttributeBuilder);
                 }
 
                 return this;
@@ -124,7 +129,7 @@ namespace FakeItEasy.Creation
 
             public IFakeOptions<T> Implements(Type interfaceType)
             {
-                this.Options.AddInterfaceToImplement(interfaceType);
+                this.proxyOptions.AddInterfaceToImplement(interfaceType);
                 return this;
             }
 
@@ -135,7 +140,7 @@ namespace FakeItEasy.Creation
 
             public IFakeOptions<T> ConfigureFake(Action<T> action)
             {
-                this.Options.AddProxyConfigurationAction(proxy => action((T)proxy));
+                this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
                 return this;
             }
 

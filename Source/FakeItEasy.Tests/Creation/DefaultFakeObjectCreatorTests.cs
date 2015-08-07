@@ -62,7 +62,7 @@ namespace FakeItEasy.Tests.Creation
 
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
-            A.CallTo(() => this.fakeCallProcessorProviderFactory(A<Type>._, A<ProxyOptions>._)).Returns(fakeCallProcessorProvider);
+            A.CallTo(() => this.fakeCallProcessorProviderFactory(A<Type>._, A<IProxyOptions>._)).Returns(fakeCallProcessorProvider);
 
             // Act
             this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);

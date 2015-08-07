@@ -5,7 +5,7 @@ namespace FakeItEasy.Creation
     using System.Globalization;
     using System.Reflection.Emit;
 
-    internal class ProxyOptions
+    internal class ProxyOptions : IProxyOptions
     {
         private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
         private readonly List<Action<object>> proxyConfigurationActions = new List<Action<object>>();
