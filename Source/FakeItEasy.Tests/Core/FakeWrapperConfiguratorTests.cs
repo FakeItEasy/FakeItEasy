@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using FakeItEasy.Core;
+    using FakeItEasy.Creation;
     using FakeItEasy.SelfInitializedFakes;
     using FluentAssertions;
     using NUnit.Framework;
@@ -10,7 +11,7 @@
     public class FakeWrapperConfiguratorTests
     {
         private IFoo faked;
-        private FakeWrapperConfigurator wrapperConfigurator;
+        private FakeWrapperConfigurator<IFoo> wrapperConfigurator;
 
         [SetUp]
         public void Setup()
@@ -18,7 +19,7 @@
             this.faked = A.Fake<IFoo>();
 
             IFoo wrapped = A.Fake<IFoo>();
-            this.wrapperConfigurator = new FakeWrapperConfigurator(wrapped);
+            this.wrapperConfigurator = new FakeWrapperConfigurator<IFoo>(A.Fake<IFakeOptionsBuilder<IFoo>>(), wrapped);
         }
 
         [Test]

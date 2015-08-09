@@ -16,7 +16,7 @@ namespace FakeItEasy.Tests.Creation
 
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>>>(
-                x => x.Wrapping(A.Fake<Foo>()),
+                x => x.Wrapping(A.Fake<Foo>()).Implements(typeof(Foo)),
                 x => x.Implements(typeof(Foo)),
                 x => x.WithArgumentsForConstructor(() => new Foo()),
                 x => x.WithArgumentsForConstructor(new object[] { A.Fake<IServiceProvider>() }),
@@ -71,33 +71,6 @@ namespace FakeItEasy.Tests.Creation
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
                 this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => CreateFoo())));
-        }
-
-        [Test]
-        public void CreateFake_should_pass_wrapped_instance_to_manager()
-        {
-            // Arrange
-            var wrapped = A.Fake<IFoo>();
-
-            // Act
-            this.creator.CreateFake<IFoo>(x => x.Wrapping(wrapped));
-
-            // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.Wraps(wrapped))).MustHaveHappened();
-        }
-
-        [Test]
-        public void CreateFake_should_pass_recorder_to_manager()
-        {
-            // Arrange
-            var wrapped = A.Fake<IFoo>();
-            var recorder = A.Fake<ISelfInitializingFakeRecorder>();
-
-            // Act
-            this.creator.CreateFake<IFoo>(x => x.Wrapping(wrapped).RecordedBy(recorder));
-
-            // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.HasRecorder(recorder))).MustHaveHappened();
         }
 
         [Test]
