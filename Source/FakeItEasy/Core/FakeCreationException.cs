@@ -37,7 +37,6 @@ namespace FakeItEasy.Core
         {
         }
 
-#if !SILVERLIGHT
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeCreationException"/> class.
         /// </summary>
@@ -52,6 +51,5 @@ namespace FakeItEasy.Core
         protected FakeCreationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
-#endif
     }
 }

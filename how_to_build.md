@@ -13,8 +13,6 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
 1. Ensure you have .NET framework 3.5 and 4.0/4.5 installed.
 
-1. Install the [Silverlight 4 SDK](http://www.microsoft.com/en-us/download/details.aspx?id=7335) or later.
-
 1. Install Ruby 1.8.7 or later.
 
  For Windows we recommend using [Chocolatey](https://chocolatey.org/). Once you have Chocolatey installed (it takes seconds), just run  

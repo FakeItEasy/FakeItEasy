@@ -5,7 +5,6 @@
 
     internal static class AssemblyExtensions
     {
-#if !SILVERLIGHT
         private static readonly string FakeItEasyAssemblyName = Assembly.GetExecutingAssembly().FullName;
 
         /// <summary>
@@ -19,10 +18,9 @@
 
             return assembly.GetReferencedAssemblies().Any(r => r.FullName == FakeItEasyAssemblyName);
         }
-#endif
 
         /// <summary>
-        /// Gets the simple name of the assembly. Can be used in Silverlight solutions.
+        /// Gets the simple name of the assembly.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         /// <returns>The simple name of the assembly.</returns>

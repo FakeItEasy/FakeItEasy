@@ -37,7 +37,6 @@ namespace FakeItEasy.SelfInitializedFakes
         {
         }
 
-#if !SILVERLIGHT
         /// <summary>
         /// Initializes a new instance of the <see cref="RecordingException"/> class.
         /// </summary>
@@ -53,6 +52,5 @@ namespace FakeItEasy.SelfInitializedFakes
             : base(info, context)
         {
         }
-#endif
     }
 }

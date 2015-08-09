@@ -7,7 +7,6 @@ namespace FakeItEasy
     /// </summary>
     public static class Recorders
     {
-#if !SILVERLIGHT
         /// <summary>
         /// Gets a recorder that records to and loads calls from the specified file.
         /// </summary>
@@ -21,6 +20,5 @@ namespace FakeItEasy
             var managerFactory = ServiceLocator.Current.Resolve<RecordingManager.Factory>();
             return managerFactory.Invoke(storage);
         }
-#endif
     }
 }
