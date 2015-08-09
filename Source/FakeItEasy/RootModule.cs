@@ -173,7 +173,7 @@
 
             public bool TryCreateFakeObject(Type typeOfFake, DummyValueCreationSession session, out object result)
             {
-                result = this.Creator.CreateFake(typeOfFake, new ProxyOptions(), session, false);
+                result = this.Creator.CreateFake(typeOfFake, ProxyOptions.Empty, session, false);
                 return result != null;
             }
         }

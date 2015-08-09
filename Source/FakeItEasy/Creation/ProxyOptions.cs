@@ -2,6 +2,7 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Reflection.Emit;
 
     internal interface IProxyOptions
@@ -15,42 +16,35 @@ namespace FakeItEasy.Creation
         IEnumerable<CustomAttributeBuilder> AdditionalAttributes { get; }
     }
 
-    internal class ProxyOptions : IProxyOptions
+    internal static class ProxyOptions
     {
-        private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
-        private readonly List<Action<object>> proxyConfigurationActions = new List<Action<object>>();
-        private readonly List<CustomAttributeBuilder> additionalAttributes = new List<CustomAttributeBuilder>();
+        public static readonly IProxyOptions Empty = new EmptyProxyOptions();
 
-        public IEnumerable<object> ArgumentsForConstructor { get; set; }
-
-        public IEnumerable<Type> AdditionalInterfacesToImplement
+        private class EmptyProxyOptions : IProxyOptions
         {
-            get { return this.additionalInterfacesToImplement; }
-        }
+            private readonly IEnumerable<Type> additionalInterfacesToImplement = new Type[0];
+            private readonly IEnumerable<Action<object>> proxyConfigurationActions = new Action<object>[0];
+            private readonly IEnumerable<CustomAttributeBuilder> customAttributeBuilders = new CustomAttributeBuilder[0];
 
-        public IEnumerable<Action<object>> ProxyConfigurationActions
-        {
-            get { return this.proxyConfigurationActions; }
-        }
+            public IEnumerable<object> ArgumentsForConstructor
+            {
+                get { return null; }
+            }
 
-        public IEnumerable<CustomAttributeBuilder> AdditionalAttributes
-        {
-            get { return this.additionalAttributes; }
-        }
+            public IEnumerable<Type> AdditionalInterfacesToImplement
+            {
+                get { return this.additionalInterfacesToImplement; }
+            }
 
-        public void AddInterfaceToImplement(Type interfaceType)
-        {
-            this.additionalInterfacesToImplement.Add(interfaceType);
-        }
+            public IEnumerable<Action<object>> ProxyConfigurationActions
+            {
+                get { return this.proxyConfigurationActions; }
+            }
 
-        public void AddProxyConfigurationAction(Action<object> action)
-        {
-            this.proxyConfigurationActions.Add(action);
-        }
-
-        public void AddAttribute(CustomAttributeBuilder attribute)
-        {
-            this.additionalAttributes.Add(attribute);
+            public IEnumerable<CustomAttributeBuilder> AdditionalAttributes
+            {
+                get { return this.customAttributeBuilders; }
+            }
         }
     }
 }
