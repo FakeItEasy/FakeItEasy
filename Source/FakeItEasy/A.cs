@@ -39,13 +39,13 @@ namespace FakeItEasy
         /// Creates a fake object of the type T.
         /// </summary>
         /// <typeparam name="T">The type of fake object to create.</typeparam>
-        /// <param name="options">A lambda where options for the built fake object can be specified.</param>
+        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
         /// <returns>A fake object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specifie the type of fake.")]
-        public static T Fake<T>(Action<IFakeOptionsBuilder<T>> options)
+        public static T Fake<T>(Action<IFakeOptions<T>> optionsBuilder)
         {
-            return FakeCreator.CreateFake(options);
+            return FakeCreator.CreateFake(optionsBuilder);
         }
 
         /// <summary>

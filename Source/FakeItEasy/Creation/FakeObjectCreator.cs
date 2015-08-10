@@ -19,18 +19,18 @@ namespace FakeItEasy.Creation
             this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
         }
 
-        public object CreateFake(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, bool throwOnFailure)
+        public object CreateFake(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueCreationSession session, bool throwOnFailure)
         {
-            var result = this.GenerateProxy(typeOfFake, fakeOptions, fakeOptions.ArgumentsForConstructor);
+            var result = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
 
             if (throwOnFailure)
             {
-                this.AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(typeOfFake, result, fakeOptions);
+                this.AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(typeOfFake, result, proxyOptions);
             }
 
-            if (!result.ProxyWasSuccessfullyGenerated && fakeOptions.ArgumentsForConstructor == null)
+            if (!result.ProxyWasSuccessfullyGenerated && proxyOptions.ArgumentsForConstructor == null)
             {
-                result = this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, fakeOptions, session, result.ReasonForFailure, throwOnFailure);
+                result = this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, session, result.ReasonForFailure, throwOnFailure);
             }
 
             return result != null ? result.GeneratedProxy : null;
@@ -74,21 +74,21 @@ namespace FakeItEasy.Creation
                        };
         }
 
-        private void AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(Type typeOfFake, ProxyGeneratorResult result, FakeOptions fakeOptions)
+        private void AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(Type typeOfFake, ProxyGeneratorResult result, IProxyOptions proxyOptions)
         {
-            if (!result.ProxyWasSuccessfullyGenerated && fakeOptions.ArgumentsForConstructor != null)
+            if (!result.ProxyWasSuccessfullyGenerated && proxyOptions.ArgumentsForConstructor != null)
             {
                 this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeOfFake, result.ReasonForFailure);
             }
         }
 
-        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, FakeOptions fakeOptions, IDummyValueCreationSession session, string failReasonForDefaultConstructor, bool throwOnFailure)
+        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueCreationSession session, string failReasonForDefaultConstructor, bool throwOnFailure)
         {
             var constructors = ResolveConstructors(typeOfFake, session);
 
             foreach (var constructor in constructors.Where(x => x.WasSuccessfullyResolved))
             {
-                var result = this.GenerateProxy(typeOfFake, fakeOptions, constructor.Arguments.Select(x => x.ResolvedValue));
+                var result = this.GenerateProxy(typeOfFake, proxyOptions, constructor.Arguments.Select(x => x.ResolvedValue));
 
                 if (result.ProxyWasSuccessfullyGenerated)
                 {
@@ -106,15 +106,15 @@ namespace FakeItEasy.Creation
             return null;
         }
 
-        private ProxyGeneratorResult GenerateProxy(Type typeOfFake, FakeOptions fakeOptions, IEnumerable<object> argumentsForConstructor)
+        private ProxyGeneratorResult GenerateProxy(Type typeOfFake, IProxyOptions proxyOptions, IEnumerable<object> argumentsForConstructor)
         {
-            var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, fakeOptions);
+            var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
 
             return this.proxyGenerator.GenerateProxy(
                     typeOfFake,
-                    fakeOptions.AdditionalInterfacesToImplement,
+                    proxyOptions.AdditionalInterfacesToImplement,
                     argumentsForConstructor,
-                    fakeOptions.AdditionalAttributes,
+                    proxyOptions.AdditionalAttributes,
                     fakeCallProcessorProvider);
         }
     }

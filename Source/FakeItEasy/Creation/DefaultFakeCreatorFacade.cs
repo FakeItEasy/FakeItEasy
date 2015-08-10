@@ -28,16 +28,16 @@ namespace FakeItEasy.Creation
         /// Creates a fake object of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of fake to create.</typeparam>
-        /// <param name="options">Options for the created fake object.</param>
+        /// <param name="optionsBuilder">Options for the created fake object.</param>
         /// <returns>The created fake object.</returns>
         /// <exception cref="FakeCreationException">Was unable to generate the fake in the current configuration.</exception>
-        public T CreateFake<T>(Action<IFakeOptionsBuilder<T>> options)
+        public T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder)
         {
-            Guard.AgainstNull(options, "options");
+            Guard.AgainstNull(optionsBuilder, "optionsBuilder");
 
-            var fakeOptions = BuildFakeOptions(options);
+            var proxyOptions = BuildProxyOptions(optionsBuilder);
 
-            return (T)this.fakeAndDummyManager.CreateFake(typeof(T), fakeOptions);
+            return (T)this.fakeAndDummyManager.CreateFake(typeof(T), proxyOptions);
         }
 
         /// <summary>
@@ -73,69 +73,88 @@ namespace FakeItEasy.Creation
             return (T)this.fakeAndDummyManager.CreateDummy(typeof(T));
         }
 
-        private static FakeOptions BuildFakeOptions<T>(Action<IFakeOptionsBuilder<T>> options)
+        private static IProxyOptions BuildProxyOptions<T>(Action<IFakeOptions<T>> options)
         {
-            var builder = new FakeOptionsBuilder<T>();
+            var builder = new FakeOptions<T>();
             options.Invoke(builder);
-            return builder.Options;
+            return builder.ProxyOptions;
         }
 
-        private class FakeOptionsBuilder<T>
-            : IFakeOptionsBuilder<T>
+        private class FakeOptions<T>
+            : IFakeOptions<T>, IProxyOptions
         {
-            public FakeOptionsBuilder()
+            private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
+            private readonly List<Action<object>> proxyConfigurationActions = new List<Action<object>>();
+            private readonly List<CustomAttributeBuilder> additionalAttributes = new List<CustomAttributeBuilder>();
+
+            public IEnumerable<object> ArgumentsForConstructor { get; private set; }
+
+            public IEnumerable<Type> AdditionalInterfacesToImplement
             {
-                this.Options = new FakeOptions();
+                get { return this.additionalInterfacesToImplement; }
             }
 
-            public FakeOptions Options { get; private set; }
-
-            public IFakeOptionsBuilder<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+            public IEnumerable<Action<object>> ProxyConfigurationActions
             {
-                this.Options.ArgumentsForConstructor = argumentsForConstructor;
+                get { return this.proxyConfigurationActions; }
+            }
+
+            public IEnumerable<CustomAttributeBuilder> AdditionalAttributes
+            {
+                get { return this.additionalAttributes; }
+            }
+
+            public IProxyOptions ProxyOptions
+            {
+                get { return this; }
+            }
+
+            public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+            {
+                this.ArgumentsForConstructor = argumentsForConstructor;
                 return this;
             }
 
-            public IFakeOptionsBuilder<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
+            public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
             {
-                this.Options.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
+                this.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
                 return this;
             }
 
-            public IFakeOptionsBuilder<T> WithAdditionalAttributes(
+            public IFakeOptions<T> WithAdditionalAttributes(
                 IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
             {
                 Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
 
                 foreach (var customAttributeBuilder in customAttributeBuilders)
                 {
-                    this.Options.AddAttribute(customAttributeBuilder);
+                    this.additionalAttributes.Add(customAttributeBuilder);
                 }
 
                 return this;
             }
 
-            public IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance)
+            public IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
             {
                 var wrapper = new FakeWrapperConfigurator<T>(this, wrappedInstance);
                 this.ConfigureFake(fake => wrapper.ConfigureFakeToWrap(fake));
                 return wrapper;
             }
 
-            public IFakeOptionsBuilder<T> Implements(Type interfaceType)
+            public IFakeOptions<T> Implements(Type interfaceType)
             {
-                this.Options.AddInterfaceToImplement(interfaceType);
+                this.additionalInterfacesToImplement.Add(interfaceType);
                 return this;
             }
 
-            public IFakeOptionsBuilder<T> Implements<TInterface>()
+            public IFakeOptions<T> Implements<TInterface>()
             {
                 return this.Implements(typeof(TInterface));
             }
 
-            public IFakeOptionsBuilder<T> ConfigureFake(Action<T> action)
+            public IFakeOptions<T> ConfigureFake(Action<T> action)
             {
-                this.Options.AddFakeConfigurationAction(x => action((T)x));
+                this.proxyConfigurationActions.Add(x => action((T)x));
                 return this;
             }
 

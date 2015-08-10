@@ -19,7 +19,7 @@
             this.faked = A.Fake<IFoo>();
 
             IFoo wrapped = A.Fake<IFoo>();
-            this.wrapperConfigurator = new FakeWrapperConfigurator<IFoo>(A.Fake<IFakeOptionsBuilder<IFoo>>(), wrapped);
+            this.wrapperConfigurator = new FakeWrapperConfigurator<IFoo>(A.Fake<IFakeOptions<IFoo>>(), wrapped);
         }
 
         [Test]

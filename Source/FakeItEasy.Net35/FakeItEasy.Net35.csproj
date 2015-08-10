@@ -423,8 +423,8 @@
     <Compile Include="..\FakeItEasy\Creation\FakeObjectCreator.cs">
       <Link>Creation\FakeObjectCreator.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Creation\FakeOptions.cs">
-      <Link>Creation\FakeOptions.cs</Link>
+    <Compile Include="..\FakeItEasy\Creation\ProxyOptions.cs">
+      <Link>Creation\ProxyOptions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\IDummyValueCreationSession.cs">
       <Link>Creation\IDummyValueCreationSession.cs</Link>
@@ -438,11 +438,11 @@
     <Compile Include="..\FakeItEasy\Creation\IFakeObjectCreator.cs">
       <Link>Creation\IFakeObjectCreator.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsBuilder.cs">
-      <Link>Creation\IFakeOptionsBuilder.cs</Link>
+    <Compile Include="..\FakeItEasy\Creation\IFakeOptions.cs">
+      <Link>Creation\IFakeOptions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsBuilderForWrappers.cs">
-      <Link>Creation\IFakeOptionsBuilderForWrappers.cs</Link>
+    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsForWrappers.cs">
+      <Link>Creation\IFakeOptionsForWrappers.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\IProxyGenerator.cs">
       <Link>Creation\IProxyGenerator.cs</Link>

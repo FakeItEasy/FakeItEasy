@@ -11,7 +11,7 @@ namespace FakeItEasy.Creation
     /// Provides options for generating fake object.
     /// </summary>
     /// <typeparam name="T">The type of fake object generated.</typeparam>
-    public interface IFakeOptionsBuilder<T>
+    public interface IFakeOptions<T>
         : IHideObjectMembers
     {
         /// <summary>
@@ -19,7 +19,7 @@ namespace FakeItEasy.Creation
         /// </summary>
         /// <param name="argumentsForConstructor">The arguments to pass to the constructor of the faked class.</param>
         /// <returns>Options object.</returns>
-        IFakeOptionsBuilder<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
+        IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
 
         /// <summary>
         /// Specifies arguments for the constructor of the faked class by giving an expression with the call to
@@ -28,7 +28,7 @@ namespace FakeItEasy.Creation
         /// <param name="constructorCall">The constructor call to use when creating a class proxy.</param>
         /// <returns>Options object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
-        IFakeOptionsBuilder<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall);
+        IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall);
 
         /// <summary>
         /// Specifies that the fake should delegate calls to the specified instance.
@@ -45,14 +45,14 @@ namespace FakeItEasy.Creation
         /// used to wrap another object, the <c>Wrapping</c> directive takes precedence.
         /// </para>
         /// </remarks>
-        IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance);
+        IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
 
         /// <summary>
         /// Specifies that the fake should be created with these additional attributes.
         /// </summary>
         /// <param name="customAttributeBuilders">The attributes to build into the proxy.</param>
         /// <returns>Options object.</returns>
-        IFakeOptionsBuilder<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders);
+        IFakeOptions<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders);
 
         /// <summary>
         /// Sets up the fake to implement the specified interface in addition to the
@@ -63,7 +63,7 @@ namespace FakeItEasy.Creation
         /// <exception cref="ArgumentException">The specified type is not an interface.</exception>
         /// <exception cref="ArgumentNullException">The specified type is null.</exception>
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Implements", Justification = "Would be a breaking change, might be changed in a later major version.")]
-        IFakeOptionsBuilder<T> Implements(Type interfaceType);
+        IFakeOptions<T> Implements(Type interfaceType);
 
         /// <summary>
         /// Sets up the fake to implement the specified interface in addition to the
@@ -74,7 +74,7 @@ namespace FakeItEasy.Creation
         /// <exception cref="ArgumentException">The specified type is not an interface.</exception>
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Implements", Justification = "Would be a breaking change, might be changed in a later major version.")]
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to provide a strongly typed fluent API.")]
-        IFakeOptionsBuilder<T> Implements<TInterface>();
+        IFakeOptions<T> Implements<TInterface>();
 
         /// <summary>
         /// Specifies an action that should be run over the fake object for the initial configuration (during the creation of the fake proxy).
@@ -98,6 +98,6 @@ namespace FakeItEasy.Creation
         /// used to configure the fake as well, the <c>ConfigureFake</c> actions take precedence.
         /// </para>
         /// </remarks>
-        IFakeOptionsBuilder<T> ConfigureFake(Action<T> action);
+        IFakeOptions<T> ConfigureFake(Action<T> action);
     }
 }

@@ -56,7 +56,7 @@
 
             private static bool TryCreateFake(Type type, out object fake)
             {
-                return FakeAndDummyManager.TryCreateFake(type, new FakeOptions(), out fake);
+                return FakeAndDummyManager.TryCreateFake(type, ProxyOptions.Empty, out fake);
             }
 
             private static object DefaultReturnValue(IInterceptedFakeObjectCall fakeObjectCall)
