@@ -2,7 +2,7 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
     public interface IHaveAnOut
     {
@@ -10,84 +10,81 @@
         void MightReturnAKnownValue(out string andThisIsWhoReallyDidIt);
     }
 
-    public class when_configuring_a_fake_to_assign_out_and_ref_parameters_lazily_using_func
+    public class AssignsOutAndRefParametersSpecs
     {
-        private static IHaveAnOut subject;
-        private static string outValue;
-        private static string condition = "someone_else";
-        private static string knownOutput = "you";
-
-        private Establish context = () =>
+        [Scenario]
+        public void AssignOutAndRefParametersLazilyUsingFunc(
+            IHaveAnOut subject,
+            string outValue)
         {
-            subject = A.Fake<IHaveAnOut>();
-        };
+            string condition = "someone_else";
+            string knownOutput = "you";
 
-        private Because of = () =>
+            "establish"
+                .x(() => subject = A.Fake<IHaveAnOut>());
+
+            "when configuring a fake to assign out and ref parameters lazily using func"
+                .x(() => A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
+                             .WithAnyArguments()
+                             .AssignsOutAndRefParametersLazily((string value) => new object[] { value == condition ? knownOutput : "me" }));
+
+            "it should assign the conditional value to the out field"
+                .x(() =>
+                    {
+                        string value = condition;
+                        subject.MightReturnAKnownValue(out value);
+                        value.Should().BeEquivalentTo(knownOutput);
+                    });
+        }    
+
+        [Scenario]
+        public void when_configuring_a_fake_to_assign_out_and_ref_parameters_lazily_using_call(
+            IHaveAnOut subject,
+            string outValue)
         {
-            A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
-                .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((string value) => new object[] { value == condition ? knownOutput : "me" });
-        };
+            string condition = "someone_else";
+            string knownOutput = "you";
 
-        private It should_assign_the_conditional_value_to_the_out_field = () =>
+            "establish"
+                .x(() => subject = A.Fake<IHaveAnOut>());
+
+            "when configuring a fake to assign out and ref parameters lazily using call"
+                .x(() => A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
+                             .WithAnyArguments()
+                             .AssignsOutAndRefParametersLazily((call) => new object[] { call.Arguments.Get<string>(0) == condition ? knownOutput : "me" }));
+
+            "it should assign the conditional value to the out field"
+                .x(() =>
+                    {
+                        string value = condition;
+                        subject.MightReturnAKnownValue(out value);
+                        value.Should().BeEquivalentTo(knownOutput);
+                    });
+        }
+
+        [Scenario]
+        public void AssignOutAndRefParametersLazilyUsingCall(
+            IHaveAnOut subject,
+            string outValue)
         {
-            string value = condition;
-            subject.MightReturnAKnownValue(out value);
-            value.Should().BeEquivalentTo(knownOutput);
-        };
-    }
+            string condition = "someone_else";
+            string knownOutput = "you";
 
-    public class when_configuring_a_fake_to_assign_out_and_ref_parameters_lazily_using_call
-    {
-        private static IHaveAnOut subject;
-        private static string outValue;
-        private static string condition = "someone_else";
-        private static string knownOutput = "you";
+            "establish"
+                .x(() => subject = A.Fake<IHaveAnOut>());
 
-        private Establish context = () =>
-        {
-            subject = A.Fake<IHaveAnOut>();
-        };
+            "when configuring a fake to assign out and ref parameters"
+                .x(() => A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
+                             .WithAnyArguments()
+                             .AssignsOutAndRefParameters(knownOutput));
 
-        private Because of = () =>
-        {
-            A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
-                .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((call) => new object[] { call.Arguments.Get<string>(0) == condition ? knownOutput : "me" });
-        };
-
-        private It should_assign_the_conditional_value_to_the_out_field = () =>
-        {
-            string value = condition;
-            subject.MightReturnAKnownValue(out value);
-            value.Should().BeEquivalentTo(knownOutput);
-        };
-    }
-
-    public class when_configuring_a_fake_to_assign_out_and_ref_parameters
-    {
-        private static IHaveAnOut subject;
-        private static string outValue;
-        private static string condition = "someone_else";
-        private static string knownOutput = "you";
-
-        private Establish context = () =>
-        {
-            subject = A.Fake<IHaveAnOut>();
-        };
-
-        private Because of = () =>
-        {
-            A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
-                .WithAnyArguments()
-                .AssignsOutAndRefParameters(knownOutput);
-        };
-
-        private It should_assign_the_conditional_value_to_the_out_field = () =>
-        {
-            string value = condition;
-            subject.MightReturnAKnownValue(out value);
-            value.Should().BeEquivalentTo(knownOutput);
-        };
+            "it should assign the conditional value to the out field"
+                .x(() =>
+                    {
+                        string value = condition;
+                        subject.MightReturnAKnownValue(out value);
+                        value.Should().BeEquivalentTo(knownOutput);
+                    });
+        }
     }
 }

@@ -2,35 +2,37 @@
 {
     using System;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
-    public class when_faking_a_disposable_class
-        : EventRaisingSpecs
+    public class DisposableSpecs
     {
-        static IDisposable fake;
         private static Exception exception;
 
-        Establish context = () =>
+        [Scenario]
+        public void FakingDisposable(
+            IDisposable fake)
         {
-            AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler;
+            "establish"
+                .x(() =>
+                    {
+                        AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler;
 
-            fake = A.Fake<SomeDisposable>();
-        };
+                        fake = A.Fake<SomeDisposable>();
+                    })
+                .Teardown(() => AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionHandler);
 
-        Because of = () =>
-        {
-            fake = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        };
+            "when faking a disposable class"
+                .x(() =>
+                    {
+                        fake = null;
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                    });
 
-        It should_not_throw_when_finalized = () => exception.Should().BeNull();
-
-        Cleanup after = () =>
-        {
-            AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionHandler;
-        };
-
+            "it should not throw when finalized"
+                .x(() => exception.Should().BeNull());
+        }
+        
         private static void UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             exception = (Exception)e.ExceptionObject;

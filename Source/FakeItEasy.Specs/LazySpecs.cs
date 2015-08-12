@@ -4,26 +4,27 @@
     using System.Diagnostics.CodeAnalysis;
 
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
-    public class when_calling_a_method_that_returns_a_lazy
+    public class LazySpecs
     {
-        static ILazyFactory fake;
-        static Lazy<IFoo> lazy;
-        
-        Establish context = () =>
+        [Scenario]
+        public void LazyReturnValue(
+            ILazyFactory fake,
+            Lazy<IFoo> lazy)
         {
-            fake = A.Fake<ILazyFactory>();
-        };
+            "establish"
+                .x(() => fake = A.Fake<ILazyFactory>());
 
-        Because of = () =>
-        {
-            lazy = fake.Create();
-        };
+            "when calling a method that returns a lazy"
+                .x(() => lazy = fake.Create());
 
-        It should_return_a_lazy = () => lazy.Should().NotBeNull();
+            "it should return a lazy"
+                .x(() => lazy.Should().NotBeNull());
 
-        It should_return_a_lazy_whose_value_is_a_dummy = () => lazy.Value.Should().Be(FooFactory.Instance);
+            "it should return a lazy whose value is a dummy"
+                .x(() => lazy.Value.Should().Be(FooFactory.Instance));
+        }
         
         public interface ILazyFactory
         {

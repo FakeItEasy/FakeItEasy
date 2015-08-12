@@ -3,7 +3,7 @@ require 'albacore'
 msbuild_command = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
 nuget_command  = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
 nunit_command  = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
-mspec_command  = "Source/packages/Machine.Specifications.Runner.Console.0.9.0/tools/mspec-clr4.exe"
+xunit_command = "Source/packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 
 solution       = "Source/FakeItEasy.sln"
 assembly_info  = "Source/CommonAssemblyInfo.cs"
@@ -24,9 +24,7 @@ integration_tests = [
   "Source/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"
 ]
 
-specs = [
-  "Source/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
-]
+specs = "Source/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
 
 repo = 'FakeItEasy/FakeItEasy'
 release_issue_labels = ['0 - Backlog', 'P2', 'build', 'documentation']
@@ -182,11 +180,12 @@ nunit :integ => [:build, tests] do |nunit|
 end
 
 desc "Execute specifications"
-mspec :spec => [:build, tests] do |mspec|
-  mspec.command = mspec_command
-  mspec.assemblies specs
-  mspec.html_output = "#{tests}/TestResult.Specifications.html"
-  mspec.options "--timeinfo", "--progress", "--silent", "--exclude", "explicit"
+task :spec => [:build, tests] do
+    xunit = XUnitTestRunner.new
+    xunit.command = xunit_command
+    xunit.assembly = specs
+    xunit.options "-noshadow", "-nologo", "-notrait", "\"explicit=yes\"", "-xml", "#{tests}/TestResult.Specifications.xml"
+    xunit.execute
 end
 
 directory output

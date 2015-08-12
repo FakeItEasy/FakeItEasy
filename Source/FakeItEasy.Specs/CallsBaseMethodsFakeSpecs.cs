@@ -1,7 +1,7 @@
 ﻿namespace FakeItEasy.Specs
 {
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
     public abstract class AbstractBaseClass
     {
@@ -13,33 +13,36 @@
         public abstract string AbstractMethod();
     }
 
-    public class when_concrete_method_is_called_on_fake_that_calls_base_methods
+    public class CallsBaseMethodsFakeSpecs
     {
-        static AbstractBaseClass fake;
-        static string result;
-
-        Establish context = () =>
+        [Scenario]
+        public void ConcreteMethod(
+            AbstractBaseClass fake,
+            string result)
         {
-            fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods());
-        };
+            "establish"
+                .x(() => fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods()));
 
-        Because of = () => result = fake.ConcreteMethod();
+            "when concrete method is called on fake that calls base methods"
+                .x(() => result = fake.ConcreteMethod());
 
-        It should_call_base_method = () => result.Should().Be("result from base method");
-    }
+            "it should call base method"
+                .x(() => result.Should().Be("result from base method"));
+        }
 
-    public class when_abstract_method_is_called_on_fake_that_calls_base_methods
-    {
-        static AbstractBaseClass fake;
-        static string result = "some non-default value";
-
-        Establish context = () =>
+        [Scenario]
+        public void AbstractMethod(
+            AbstractBaseClass fake,
+            string result = "some non-default value")
         {
-            fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods());
-        };
+            "establish"
+                .x(() => fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods()));
 
-        Because of = () => result = fake.AbstractMethod();
+            "when abstract method is called on fake that calls base methods"
+                .x(() => result = fake.AbstractMethod());
 
-        It should_return_default_value = () => result.Should().BeEmpty();
+            "it should return default value"
+                .x(() => result.Should().BeEmpty());
+        }
     }
 }
