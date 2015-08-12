@@ -1,82 +1,107 @@
 ﻿namespace FakeItEasy.Specs
 {
-    using FakeItEasy.Tests;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
-    public class ConfigSpecifications<T>
+    public class ConfigurationSpecs
     {
-        Establish context = () => Fake = A.Fake<T>();
-
-        protected static T Fake { get; set; }
-    }
-
-    public class when_configuring_callback
-        : ConfigSpecifications<IFoo>
-    {
-        private static bool wasCalled;
-
-        Because of = () =>
+        public interface IFoo
         {
-            A.CallTo(() => Fake.Bar()).Invokes(x => wasCalled = true);
-            Fake.Bar();
-        };
+            void Bar();
 
-        It should_invoke_the_callback = () => wasCalled.Should().BeTrue();
-    }
-
-    public class when_configuring_multiple_callbacks
-        : ConfigSpecifications<IFoo>
-    {
-        static bool firstWasCalled;
-        static bool secondWasCalled;
-        static int returnValue;
-
-        Because of = () =>
-        {
-            A.CallTo(() => Fake.Baz())
-                .Invokes(x => firstWasCalled = true)
-                .Invokes(x => secondWasCalled = true)
-                .Returns(10);
-
-            returnValue = Fake.Baz();
-        };
-
-        It should_call_the_first_callback = () => firstWasCalled.Should().BeTrue();
-        It should_call_the_second_callback = () => secondWasCalled.Should().BeTrue();
-        It should_return_the_configured_value = () => returnValue.Should().Be(10);
-    }
-
-    public class when_configuring_to_call_base_method
-        : ConfigSpecifications<BaseClass>
-    {
-        static int returnValue;
-        static bool callbackWasInvoked;
-
-        Because of = () =>
-        {
-            A.CallTo(() => Fake.ReturnSomething()).Invokes(x => callbackWasInvoked = true).CallsBaseMethod();
-            returnValue = Fake.ReturnSomething();
-        };
-
-        It shuld_have_called_the_base_method = () => Fake.WasCalled.Should().BeTrue();
-        It should_return_value_from_base_method = () => returnValue.Should().Be(10);
-        It should_invoke_the_callback = () => callbackWasInvoked.Should().BeTrue();
-    }
-
-    public class BaseClass
-    {
-        public bool WasCalled { get; set; }
-
-        public virtual void DoSomething()
-        {
-            this.WasCalled = true;
+            int Baz();
         }
 
-        public virtual int ReturnSomething()
+        [Scenario]
+        public void Callback(
+            IFoo fake,
+            bool wasCalled)
         {
-            this.WasCalled = true;
-            return 10;
+            "establish"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "when configuring callback"
+                .x(() =>
+                    {
+                        A.CallTo(() => fake.Bar()).Invokes(x => wasCalled = true);
+                        fake.Bar();
+                    });
+
+            "it should invoke the callback"
+                .x(() => wasCalled.Should().BeTrue());
+        }
+
+        [Scenario]
+        public void MultipleCallbacks(
+            IFoo fake,
+            bool firstWasCalled,
+            bool secondWasCalled,
+            int returnValue)
+        {
+            "establish"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "when configuring multiple callback"
+                .x(() =>
+                    {
+                        A.CallTo(() => fake.Baz())
+                            .Invokes(x => firstWasCalled = true)
+                            .Invokes(x => secondWasCalled = true)
+                            .Returns(10);
+
+                        returnValue = fake.Baz();
+                    });
+
+            "it should call the first callback"
+                .x(() => firstWasCalled.Should().BeTrue());
+
+            "it should call the second callback"
+                .x(() => secondWasCalled.Should().BeTrue());
+
+            "it should return the configured value"
+                .x(() => returnValue.Should().Be(10));
+        }
+
+        [Scenario]
+        public void CallBaseMethod(
+            BaseClass fake,
+            int returnValue,
+            bool callbackWasInvoked)
+        {
+            "establish"
+                .x(() => fake = A.Fake<BaseClass>());
+
+            "when configuring to call base method"
+                .x(() =>
+                    {
+                        A.CallTo(() => fake.ReturnSomething()).Invokes(x => callbackWasInvoked = true).CallsBaseMethod();
+                        returnValue = fake.ReturnSomething();
+                    });
+
+            "it shuld have called the base method"
+                .x(() => fake.WasCalled.Should().BeTrue());
+
+            "it should return value from base method"
+                .x(() => returnValue.Should().Be(10));
+
+            "it should invoke the callback"
+                .x(() => callbackWasInvoked.Should().BeTrue());
+        }
+
+        public class BaseClass
+        {
+            public bool WasCalled { get; set; }
+
+            public virtual void DoSomething()
+            {
+                this.WasCalled = true;
+            }
+
+            public virtual int ReturnSomething()
+            {
+                this.WasCalled = true;
+                return 10;
+            }
         }
     }
 }

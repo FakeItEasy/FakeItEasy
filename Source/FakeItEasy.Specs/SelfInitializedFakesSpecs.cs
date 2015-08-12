@@ -6,81 +6,85 @@
     using System.Linq;
     using FakeItEasy.SelfInitializedFakes;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
+    using Xunit;
 
     public interface ILibraryService
     {
         int GetCount(string internationalStandardBookNumber);
     }
 
-    public class when_self_initializing_a_fake
+    public class SelfInitializedFakesSpecs
     {
-        private static InMemoryStorage inMemoryStorage;
-
-        private static ILibraryService realServiceWhileRecording;
-        private static ILibraryService realServiceDuringPlayback;
-
-        private static int count1ForBook1WhileRecording;
-        private static int count1ForBook1DuringPlayback;
-        private static int count2ForBook1DuringPlayback;
-        private static int count1ForBook2DuringPlayback;
-        
-        Establish context = () =>
+        [Scenario]
+        public void SelfInitializing(
+            InMemoryStorage inMemoryStorage, 
+            ILibraryService realServiceWhileRecording, 
+            ILibraryService realServiceDuringPlayback,
+            int count1ForBook1WhileRecording,
+            int count1ForBook1DuringPlayback,
+            int count2ForBook1DuringPlayback,
+            int count1ForBook2DuringPlayback)
         {
-            inMemoryStorage = new InMemoryStorage();
+            "establish"
+                .x(() =>
+                    {
+                        inMemoryStorage = new InMemoryStorage();
 
-            realServiceWhileRecording = A.Fake<ILibraryService>();
-            realServiceDuringPlayback = A.Fake<ILibraryService>();
+                        realServiceWhileRecording = A.Fake<ILibraryService>();
+                        realServiceDuringPlayback = A.Fake<ILibraryService>();
 
-            A.CallTo(() => realServiceWhileRecording.GetCount("9780345813923"))
-                .ReturnsNextFromSequence(11, 10);
-            A.CallTo(() => realServiceWhileRecording.GetCount("9781593078225"))
-                .Returns(3);
-        };
+                        A.CallTo(() => realServiceWhileRecording.GetCount("9780345813923"))
+                            .ReturnsNextFromSequence(11, 10);
+                        A.CallTo(() => realServiceWhileRecording.GetCount("9781593078225"))
+                            .Returns(3);
+                    });
 
-        Because of = () =>
-        {
-            using (var recorder = new RecordingManager(inMemoryStorage))
-            {
-                var fakeService = A.Fake<ILibraryService>(options => options
-                    .Wrapping(realServiceWhileRecording).RecordedBy(recorder));
+            "when self initializing a fake"
+                .x(() =>
+                    {
+                        using (var recorder = new RecordingManager(inMemoryStorage))
+                        {
+                            var fakeService = A.Fake<ILibraryService>(options => options
+                                .Wrapping(realServiceWhileRecording).RecordedBy(recorder));
 
-                count1ForBook1WhileRecording = fakeService.GetCount("9780345813923");
-                fakeService.GetCount("9781593078225");
-                fakeService.GetCount("9780345813923");
-            }
+                            count1ForBook1WhileRecording = fakeService.GetCount("9780345813923");
+                            fakeService.GetCount("9781593078225");
+                            fakeService.GetCount("9780345813923");
+                        }
 
-            using (var recorder = new RecordingManager(inMemoryStorage))
-            {
-                var playbackFakeService = A.Fake<ILibraryService>(options => options
-                    .Wrapping(realServiceDuringPlayback).RecordedBy(recorder));
+                        using (var recorder = new RecordingManager(inMemoryStorage))
+                        {
+                            var playbackFakeService = A.Fake<ILibraryService>(options => options
+                                .Wrapping(realServiceDuringPlayback).RecordedBy(recorder));
 
-                count1ForBook1DuringPlayback = playbackFakeService.GetCount("9780345813923");
-                count1ForBook2DuringPlayback = playbackFakeService.GetCount("9781593078225");
-                count2ForBook1DuringPlayback = playbackFakeService.GetCount("9780345813923");
-            }
-        };
+                            count1ForBook1DuringPlayback = playbackFakeService.GetCount("9780345813923");
+                            count1ForBook2DuringPlayback = playbackFakeService.GetCount("9781593078225");
+                            count2ForBook1DuringPlayback = playbackFakeService.GetCount("9780345813923");
+                        }
+                    });
 
-        It should_forward_calls_to_the_wrapped_service_while_recording =
-            () => A.CallTo(() => realServiceWhileRecording.GetCount("9780345813923"))
-                .MustHaveHappened(Repeated.Exactly.Twice);
+            "it should forward calls to the wrapped service while recording"
+                .x(() => A.CallTo(() => realServiceWhileRecording.GetCount("9780345813923"))
+                             .MustHaveHappened(Repeated.Exactly.Twice));
 
-        It should_return_the_result_while_recording =
-            () => count1ForBook1WhileRecording.Should().Be(11);
+            "it should return the result while recording"
+                .x(() => count1ForBook1WhileRecording.Should().Be(11));
 
-        It should_not_forward_calls_to_the_wrapped_service_during_playback =
-            () => A.CallTo(realServiceDuringPlayback).MustNotHaveHappened();
+            "it should not forward calls to the wrapped service during playback"
+                .x(() => A.CallTo(realServiceDuringPlayback).MustNotHaveHappened());
 
-        It should_return_the_recorded_result_for_the_first_set_of_arguments =
-            () => count1ForBook1DuringPlayback.Should().Be(11);
+            "it should return the recorded result for the first set of arguments"
+                .x(() => count1ForBook1DuringPlayback.Should().Be(11));
 
-        It should_return_the_recorded_result_for_the_second_set_of_arguments =
-            () => count1ForBook2DuringPlayback.Should().Be(3);
+            "it should return the recorded result for the second set of arguments"
+                .x(() => count1ForBook2DuringPlayback.Should().Be(3));
 
-        It should_return_the_second_recorded_result_when_arguments_are_repeated =
-            () => count2ForBook1DuringPlayback.Should().Be(10);
+            "it should return the second recorded result when arguments are repeated"
+                .x(() => count2ForBook1DuringPlayback.Should().Be(10));
+        }
 
-        private class InMemoryStorage : ICallStorage
+        public class InMemoryStorage : ICallStorage
         {
             private IEnumerable<CallData> recordedCalls;
 
@@ -94,58 +98,59 @@
                 this.recordedCalls = calls.ToList();
             }
         }
-    }
-    
-    [Tags("explicit")]
-    public class when_self_initializing_a_fake_with_a_FileRecorder
-    {
-        private static string fileRecorderPath;
 
-        private static ILibraryService realServiceWhileRecording;
-        private static ILibraryService realServiceDuringPlayback;
-
-        private static int countWhileRecording;
-        private static int countDuringPlayback;
-
-        Establish context = () =>
+        [Trait("explicit", "yes")]
+        [Scenario]
+        public void SelfInitializingWithFileRecorder(
+            string fileRecorderPath,
+            ILibraryService realServiceWhileRecording,
+            ILibraryService realServiceDuringPlayback,
+            int countWhileRecording,
+            int countDuringPlayback)
         {
-            fileRecorderPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            "establish"
+                .x(() =>
+                    {
+                        fileRecorderPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
-            realServiceWhileRecording = A.Fake<ILibraryService>();
-            realServiceDuringPlayback = A.Fake<ILibraryService>();
+                        realServiceWhileRecording = A.Fake<ILibraryService>();
+                        realServiceDuringPlayback = A.Fake<ILibraryService>();
 
-            A.CallTo(() => realServiceWhileRecording.GetCount("9780345813923")).Returns(8);
-        };
+                        A.CallTo(() => realServiceWhileRecording.GetCount("9780345813923")).Returns(8);
+                    });
 
-        Because of = () =>
-        {
-            try
-            {
-                using (var recorder = Recorders.FileRecorder(fileRecorderPath))
-                {
-                    var fakeService = A.Fake<ILibraryService>(options => options
-                        .Wrapping(realServiceWhileRecording).RecordedBy(recorder));
-                    countWhileRecording = fakeService.GetCount("9780345813923");
-                }
+            "when self initializing a fake with a FileRecorder"
+                .x(() =>
+                    {
+                        try
+                        {
+                            using (var recorder = Recorders.FileRecorder(fileRecorderPath))
+                            {
+                                var fakeService = A.Fake<ILibraryService>(options => options
+                                    .Wrapping(realServiceWhileRecording).RecordedBy(recorder));
+                                countWhileRecording = fakeService.GetCount("9780345813923");
+                            }
 
-                using (var recorder = Recorders.FileRecorder(fileRecorderPath))
-                {
-                    var playbackFakeService = A.Fake<ILibraryService>(options => options
-                        .Wrapping(realServiceDuringPlayback).RecordedBy(recorder));
+                            using (var recorder = Recorders.FileRecorder(fileRecorderPath))
+                            {
+                                var playbackFakeService = A.Fake<ILibraryService>(options => options
+                                    .Wrapping(realServiceDuringPlayback).RecordedBy(recorder));
 
-                    countDuringPlayback = playbackFakeService.GetCount("9780345813923");
-                }
-            }
-            finally
-            {
-                File.Delete(fileRecorderPath);
-            }
-        };
+                                countDuringPlayback = playbackFakeService.GetCount("9780345813923");
+                            }
+                        }
+                        finally
+                        {
+                            File.Delete(fileRecorderPath);
+                        }
+                    })
+                .Teardown(() => File.Delete(fileRecorderPath));
 
-        It should_return_the_expected_result_while_recording = () => countWhileRecording.Should().Be(8);
+            "it should return the expected result while recording"
+                .x(() => countWhileRecording.Should().Be(8));
 
-        It should_return_the_recorded_result_during_playback = () => countDuringPlayback.Should().Be(8);
-
-        Cleanup after = () => File.Delete(fileRecorderPath);
+            "it should return the recorded result during playback"
+                .x(() => countDuringPlayback.Should().Be(8));
+        }
     }
 }

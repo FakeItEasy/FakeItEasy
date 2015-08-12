@@ -2,34 +2,43 @@
 {
     using System;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
-    public class when_a_fake_configurator_is_defined_for_a_set_of_types
+    public class FakeConfiguratorSpecs
     {
-        private static RobotActivatedEvent fake = null;
+        [Scenario]
+        public void DefinedFakeConfigurator()
+        {
+            RobotActivatedEvent fake = null;
 
-        private Because of = () => { fake = A.Fake<RobotActivatedEvent>(); };
+            "when a fake configurator is defined for a set of types"
+                .x(() => fake = A.Fake<RobotActivatedEvent>());
 
-        private It should_configure_the_fake = () => fake.ID.Should().BeGreaterThan(0);
-    }
+            "it should configure the fake"
+                .x(() => fake.ID.Should().BeGreaterThan(0));
+        }
 
-    public class when_two_fake_configurators_apply_to_the_same_type
-    {
-        private static RobotRunsAmokEvent fake = null;
+        [Scenario]
+        public void FakeConfiguratorPriority(
+            RobotRunsAmokEvent fake)
+        {
+            "when two fake configurators apply to the same type"
+                .x(() => fake = A.Fake<RobotRunsAmokEvent>());
 
-        private Because of = () => { fake = A.Fake<RobotRunsAmokEvent>(); };
+            "it should use the one with higher priority"
+                .x(() => fake.ID.Should().Be(-99));
+        }
 
-        private It should_use_the_one_with_higher_priority = () => fake.ID.Should().Be(-99);
-    }
+        [Scenario]
+        public void DuringConstruction(
+            RobotRunsAmokEvent fake)
+        {
+            "when configuring a method called by a constructor"
+                .x(() => fake = A.Fake<RobotRunsAmokEvent>());
 
-    public class when_configuring_a_method_called_by_a_constructor
-    {
-        private static RobotRunsAmokEvent fake = null;
-
-        private Because of = () => { fake = A.Fake<RobotRunsAmokEvent>(); };
-
-        private It should_use_the_configured_behavior_in_the_constructor =
-            () => fake.Timestamp.Should().Be(RobotRunsAmokEventFakeConfigurator.ConfiguredTimestamp);
+            "it should use the configured behavior in the constructor"
+                .x(() => fake.Timestamp.Should().Be(RobotRunsAmokEventFakeConfigurator.ConfiguredTimestamp));
+        }
     }
 
     public class DomainEventFakeConfigurator : IFakeConfigurator

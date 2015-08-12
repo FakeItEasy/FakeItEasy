@@ -5,7 +5,8 @@
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
+    using Xunit;
 
     public class ClassWhoseConstructorThrows
     {
@@ -15,47 +16,51 @@
         }
     }
 
-    public class when_faking_a_class_whose_constructor_throws
+    public class CreationSpecs
     {
-        private static Exception exception;
+        [Scenario]
+        public void ThrowingConstructor(
+            Exception exception)
+        {
+            "when faking a class whose constructor throws"
+                .x(() => exception = Record.Exception(() => A.Fake<ClassWhoseConstructorThrows>()));
 
-        Because of = () =>
-            exception = Catch.Exception(() => A.Fake<ClassWhoseConstructorThrows>());
+            "it should throw a FakeCreationException"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
 
-        It should_throw_a_FakeCreationException =
-            () => exception.Should().BeOfType<FakeCreationException>();
+            "it should throw an exception whose message includes original exception type"
+                .x(() => exception.Message.Should().Contain("of type System.NotSupportedException"));
 
-        It should_throw_an_exception_whose_message_includes_original_exception_type =
-            () => exception.Message.Should().Contain("of type System.NotSupportedException");
+            "it should throw an exception whose message includes original exception message"
+                .x(() => exception.Message.Should().Contain("I don't like being constructed."));
 
-        It should_throw_an_exception_whose_message_includes_original_exception_message =
-            () => exception.Message.Should().Contain("I don't like being constructed.");
+            "it should throw an exception whose message includes original exception stack trace"
+                .x(() => exception.Message.Should().Contain("FakeItEasy.Specs.ClassWhoseConstructorThrows..ctor()"));
+        }
 
-        It should_throw_an_exception_whose_message_includes_original_exception_stack_trace =
-            () => exception.Message.Should().Contain("FakeItEasy.Specs.ClassWhoseConstructorThrows..ctor()");
-    }
+        // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
+        [Scenario]
+        public void UseSuccessfulConstructor(
+            FakedClass fake)
+        {
+            "when faking a class whose first constructor fails"
+                .x(() => fake = A.Fake<FakedClass>());
 
-    // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
-    public class when_faking_a_class_whose_first_constructor_fails
-    {
-        static FakedClass fake;
+            "it should instantiate the fake using the successful constructor with the longest parameter list"
+                .x(() => fake.WasTwoParameterConstructorCalled.Should().BeTrue());
 
-        Because of = () => fake = A.Fake<FakedClass>();
+            "it should instantiate a fake that does not remember the failing constructor call"
+                .x(() => fake.WasParameterlessConstructorCalled
+                             .Should().BeFalse("because the parameterless constructor was called for a different fake object"));
 
-        It should_instantiate_the_fake_using_the_successful_constructor_with_the_longest_parameter_list = () =>
-            fake.WasTwoParameterConstructorCalled.Should().BeTrue();
-
-        It should_instantiate_a_fake_that_does_not_remember_the_failing_constructor_call = () =>
-            fake.WasParameterlessConstructorCalled
-                .Should().BeFalse("because the parameterless constructor was called for a different fake object");
-
-        It should_only_have_tried_the_parameterless_constructor_and_one_with_the_longest_parameter_list = () =>
-            FakedClass.ParameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2);
+            "it should only have tried the parameterless constructor and one with the longest parameter list"
+                .x(() => FakedClass.ParameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2));
+        }
 
         public class FakedClass
         {
             private static ISet<int> parameterListLengthsForAttemptedConstructors = new SortedSet<int>();
-            
+
             [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "This anti-pattern is part of the the tested scenario.")]
             public FakedClass()
             {

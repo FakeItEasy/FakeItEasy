@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
     public interface IFooAsyncAwaitService
     {
@@ -11,62 +11,77 @@
         Task<int> QueryAsync();
     }
 
-    public class when_calling_defined_method_with_return_value
+    public class AsyncAwaitSpecs
     {
-        static FooAsyncAwait foo;
-        static Task task;
-
-        Establish context = () =>
+        [Scenario]
+        public void DefinedMethodWithReturnValue(
+            FooAsyncAwait foo,
+            Task task)
         {
-            var service = A.Fake<IFooAsyncAwaitService>();
-            A.CallTo(() => service.QueryAsync()).Returns(Task.FromResult(9));
-            foo = new FooAsyncAwait(service);
-        };
+            "establish"
+                .x(() =>
+                    {
+                        var service = A.Fake<IFooAsyncAwaitService>();
+                        A.CallTo(() => service.QueryAsync()).Returns(Task.FromResult(9));
+                        foo = new FooAsyncAwait(service);
+                    });
 
-        Because of = () => task = foo.QueryAsync();
+            "when calling defined method with return value"
+                .x(() => task = foo.QueryAsync());
 
-        It should_return = () => task.IsCompleted.Should().BeTrue();
-    }
+            "it should return"
+                .x(() => task.IsCompleted.Should().BeTrue());
+        }
 
-    public class when_calling_defined_void_method
-    {
-        static FooAsyncAwait foo;
-        static Task task;
-
-        Establish context = () =>
+        [Scenario]
+        public void DefinedVoidMethod(
+            FooAsyncAwait foo,
+            Task task)
         {
-            var service = A.Fake<IFooAsyncAwaitService>();
-            A.CallTo(() => service.CommandAsync()).Returns(Task.FromResult<object>(null));
-            foo = new FooAsyncAwait(service);
-        };
+            "establish"
+                .x(() =>
+                    {
+                        var service = A.Fake<IFooAsyncAwaitService>();
+                        A.CallTo(() => service.CommandAsync()).Returns(Task.FromResult<object>(null));
+                        foo = new FooAsyncAwait(service);
+                    });
 
-        Because of = () => task = foo.CommandAsync();
+            "when calling defined void method"
+                .x(() => task = foo.CommandAsync());
 
-        It should_return = () => task.IsCompleted.Should().BeTrue();
-    }
+            "it should return"
+                .x(() => task.IsCompleted.Should().BeTrue());
+        }
 
-    public class when_calling_undefined_method_with_return_value
-    {
-        static FooAsyncAwait foo;
-        static Task task;
+        [Scenario]
+        public void UndefinedMethodWithReturnValue(
+            FooAsyncAwait foo,
+            Task task)
+        {
+            "establish"
+                .x(() => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>()));
 
-        Establish context = () => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>());
+            "when calling undefined method with return value"
+                .x(() => task = foo.QueryAsync());
 
-        Because of = () => task = foo.QueryAsync();
+            "it should return"
+                .x(() => task.IsCompleted.Should().BeTrue());
+        }
 
-        It should_return = () => task.IsCompleted.Should().BeTrue();
-    }
+        [Scenario]
+        public void UndefinedVoidMethod(
+            FooAsyncAwait foo,
+            Task task)
+        {
+            "establish"
+                .x(() => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>()));
 
-    public class when_calling_undefined_void_method
-    {
-        static FooAsyncAwait foo;
-        static Task task;
+            "when calling undefined void method"
+                .x(() => task = foo.CommandAsync());
 
-        Establish context = () => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>());
-
-        Because of = () => task = foo.CommandAsync();
-
-        It should_return = () => task.IsCompleted.Should().BeTrue();
+            "it should return"
+                .x(() => task.IsCompleted.Should().BeTrue());
+        }
     }
 
     public class FooAsyncAwait

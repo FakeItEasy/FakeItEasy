@@ -1,23 +1,28 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System.Diagnostics.CodeAnalysis;
-    using Machine.Specifications;
+    using Xbehave;
 
-    public class when_asserting_on_set_only_properties
+    public  class AssertingOnSetOnlyPropertiesSpecs
     {
-        private static ISetOnly setOnly;
+        [Scenario]
+        public void SetOnlyProperties(
+            ISetOnly setOnly)
+        {
+            "establish"
+                .x(() => setOnly = A.Fake<ISetOnly>());
 
-        Establish context = () => setOnly = A.Fake<ISetOnly>();
+            "when assertion on set only properties"
+                .x(() =>
+                    { 
+                        setOnly.MyProperty = 1;
+                        setOnly.MyProperty2 = false;
+                    });
 
-        Because of = () =>
-            {
-                setOnly.MyProperty = 1;
-                setOnly.MyProperty2 = false;
-            };
-
-        It should_be_able_to_assert_with_argument_constraint =
-            () => A.CallTo(setOnly).Where(x => x.Method.Name == "set_MyProperty")
-                .WhenArgumentsMatch(x => x.Get<int>(0) == 1).MustHaveHappened();
+            "it should be able to assert with argument constraint"
+                .x(() => A.CallTo(setOnly).Where(x => x.Method.Name == "set_MyProperty")
+                             .WhenArgumentsMatch(x => x.Get<int>(0) == 1).MustHaveHappened());
+        }
 
         public interface ISetOnly
         {
