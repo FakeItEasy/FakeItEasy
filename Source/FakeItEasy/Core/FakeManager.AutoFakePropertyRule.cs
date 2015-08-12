@@ -11,7 +11,7 @@
         private class AutoFakePropertyRule
             : IFakeObjectCallRule
         {
-            public FakeManager FakeManager { get; set; }
+            public FakeManager FakeManager { private get; set; }
 
             public int? NumberOfTimesToCall
             {

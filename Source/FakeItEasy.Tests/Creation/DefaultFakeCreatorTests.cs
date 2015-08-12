@@ -5,23 +5,25 @@ namespace FakeItEasy.Tests.Creation
     using System.Linq;
     using FakeItEasy.Creation;
     using FakeItEasy.SelfInitializedFakes;
+    using FluentAssertions;
     using NUnit.Framework;
+    using TestHelpers;
     using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class DefaultFakeCreatorTests
     {
-        private IFakeAndDummyManager fakeAndDummyManager;
-        private DefaultFakeCreatorFacade creator;
-
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptions<Foo>, IFakeOptions<Foo>>>(
+        private readonly object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptions<Foo>, IFakeOptions<Foo>>>(
                 x => x.Wrapping(A.Fake<Foo>()).Implements(typeof(IFoo)),
                 x => x.Implements(typeof(IFoo)),
                 x => x.WithArgumentsForConstructor(() => new Foo()),
                 x => x.WithArgumentsForConstructor(new object[] { A.Fake<IServiceProvider>() }),
                 x => x.Wrapping(A.Fake<Foo>()).RecordedBy(A.Fake<ISelfInitializingFakeRecorder>()))
             .AsTestCaseSource(x => x);
+
+        private IFakeAndDummyManager fakeAndDummyManager;
+        private DefaultFakeCreatorFacade creator;
 
         [SetUp]
         public void Setup()
@@ -68,9 +70,12 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
 
-            // Act, Assert
-            Assert.Throws<ArgumentException>(() =>
+            // Act
+            var exception = Record.Exception(() =>
                 this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => CreateFoo())));
+
+            // Assert
+            exception.Should().BeAnExceptionOfType<ArgumentException>();
         }
 
         [Test]
@@ -84,7 +89,7 @@ namespace FakeItEasy.Tests.Creation
             var result = this.creator.CreateFake<IFoo>(x => { });
 
             // Assert
-            Assert.That(result, Is.SameAs(instanceFromManager));
+            result.Should().BeSameAs(instanceFromManager);
         }
 
         [Test]
@@ -111,7 +116,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<Foo>(x => { optionsPassedToAction = x; });
 
             // Assert
-            Assert.That(call.Invoke(optionsPassedToAction), Is.SameAs(optionsPassedToAction));
+            call.Invoke(optionsPassedToAction).Should().BeSameAs(optionsPassedToAction);
         }
 
         [Test]
@@ -125,7 +130,7 @@ namespace FakeItEasy.Tests.Creation
             var result = this.creator.CreateDummy<IFoo>();
 
             // Assert
-            Assert.That(result, Is.SameAs(dummy));
+            result.Should().BeSameAs(dummy);
         }
 
         [Test]
@@ -158,7 +163,7 @@ namespace FakeItEasy.Tests.Creation
             var result = this.creator.CollectionOfFake<IFoo>(10);
 
             // Assert
-            Assert.That(result, Has.All.InstanceOf<IFoo>().And.All.InstanceOf<ITaggable>());
+            result.Should().ContainItemsAssignableTo<IFoo>().And.ContainItemsAssignableTo<ITaggable>();
         }
 
         [TestCase(2)]
@@ -171,7 +176,7 @@ namespace FakeItEasy.Tests.Creation
             var result = this.creator.CollectionOfFake<IFoo>(numberOfFakes);
 
             // Assert
-            Assert.That(result, Has.Count.EqualTo(numberOfFakes));
+            result.Should().HaveCount(numberOfFakes);
         }
 
         private static Foo CreateFoo()
