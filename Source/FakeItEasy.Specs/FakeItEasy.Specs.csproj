@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
     <Compile Include="AsyncAwaitSpecs.cs" />
+    <Compile Include="Catch.cs" />
     <Compile Include="ConfigurationSpecs.cs" />
     <Compile Include="CreationOptionsSpecs.cs" />
     <Compile Include="DisposableSpecs.cs" />
@@ -98,7 +99,7 @@
     <Compile Include="EventRaisingSpecs.cs" />
     <Compile Include="FixtureInitializationSpecs.cs" />
     <Compile Include="FakingDelegates.cs" />
-    <Compile Include="CallMatchingSpecs.cs" />
+    <Compile Include="CallMatching.cs" />
     <Compile Include="AssignsOutAndRefParametersSpecs.cs" />
     <Compile Include="PropertySpecs.cs" />
     <Compile Include="CallsBaseMethodsFakeSpecs.cs" />
