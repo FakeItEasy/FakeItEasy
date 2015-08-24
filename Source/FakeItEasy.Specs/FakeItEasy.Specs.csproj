@@ -103,7 +103,7 @@
     <Compile Include="AssignsOutAndRefParametersSpecs.cs" />
     <Compile Include="PropertySpecs.cs" />
     <Compile Include="CallsBaseMethodsFakeSpecs.cs" />
-    <Compile Include="StrictFakeSpecs.cs" />
+    <Compile Include="StrictFake.cs" />
     <Compile Include="UnconfiguredFakeSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
