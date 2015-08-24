@@ -94,7 +94,7 @@
     <Compile Include="Lazy.cs" />
     <Compile Include="DummyFactory.cs" />
     <Compile Include="MakesVirtualCallInConstructor.cs" />
-    <Compile Include="OrderedCallMatchingSpecs.cs" />
+    <Compile Include="OrderedCallMatching.cs" />
     <Compile Include="FakingInternals.cs" />
     <Compile Include="EventRaisingSpecs.cs" />
     <Compile Include="FixtureInitialization.cs" />
