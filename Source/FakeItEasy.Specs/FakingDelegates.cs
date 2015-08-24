@@ -2,61 +2,113 @@
 {
     using System;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
-    public class when_faking_a_delegate_type
+    public class FakingDelegates
     {
-        static Func<string, int> fakedDelegate;
-
-        Establish context = () => fakedDelegate = A.Fake<Func<string, int>>();
-
-        public class when_faking_a_delegate_type_and_invoking_without_configuration
+        [Scenario]
+        public void when_faking_a_delegate_type_and_invoking_without_configuration(
+            Func<string, int> fakedDelegate)
         {
-            Because of = () => fakedDelegate.Invoke("foo");
+            "establish"._(() =>
+            {
+                fakedDelegate = A.Fake<Func<string, int>>();
+            });
 
-            It should_be_possible_to_assert_the_call = () => 
+            "when faking a delegate type"._(() =>
+            {
+                fakedDelegate.Invoke("foo");
+            });
+
+            "it should be possible to assert the call"._(() =>
+            {
                 A.CallTo(() => fakedDelegate.Invoke("foo")).MustHaveHappened();
+            });
 
-            It should_be_possible_to_assert_the_call_without_specifying_invoke_method = () => 
+            "it should be possible to assert the call without specifying invoke method"._(() =>
+            {
                 A.CallTo(() => fakedDelegate("foo")).MustHaveHappened();
+            });
         }
 
-        public class when_faking_a_delegate_type_and_invoking_with_configuration
+        [Scenario]
+        public void when_faking_a_delegate_type_and_invoking_with_configuration(
+            Func<string, int> fakedDelegate,
+            int result)
         {
-            static int result;
+            "establish"._(() =>
+            {
+                fakedDelegate = A.Fake<Func<string, int>>();
+            });
 
-            Establish context = () => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Returns(10);
+            "establish"._(() =>
+            {
+                A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Returns(10);
+            });
 
-            Because of = () => result = fakedDelegate(null);
+            "when faking a delegate type"._(() =>
+            {
+                result = fakedDelegate(null);
+            });
 
-            It should_return_configured_value = () => result.Should().Be(10);
+            "it should return configured value"._(() =>
+            {
+                result.Should().Be(10);
+            });
         }
 
-        public class when_faking_a_delegate_type_and_invoking_with_throwing_configuration
+        [Scenario]
+        public void when_faking_a_delegate_type_and_invoking_with_throwing_configuration(
+            Func<string, int> fakedDelegate,
+            FormatException expectedException,
+            Exception exception)
         {
-            static FormatException expectedException;
-            static Exception exception;
+            "establish"._(() =>
+            {
+                fakedDelegate = A.Fake<Func<string, int>>();
+            });
 
-            Establish context = () =>
+            "establish"._(() =>
             {
                 expectedException = new FormatException();
                 A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Throws(expectedException);
-            };
+            });
 
-            Because of = () => exception = Catch.Exception(() => fakedDelegate(null));
+            "when faking a delegate type"._(() =>
+            {
+                exception = Catch.Exception(() => fakedDelegate(null));
+            });
 
-            It should_throw_the_configured_exception = () => exception.Should().BeSameAs(expectedException);
+            "it should throw the configured exception"._(() =>
+            {
+                exception.Should().BeSameAs(expectedException);
+            });
         }
 
-        public class when_faking_a_delegate_type_and_invoking_with_configuration_without_specifying_invoke_method
+        [Scenario]
+        public void when_faking_a_delegate_type_and_invoking_with_configuration_without_specifying_invoke_method(
+            Func<string, int> fakedDelegate,
+            int result)
         {
-            static int result;
+            "establish"._(() =>
+            {
+                fakedDelegate = A.Fake<Func<string, int>>();
+            });
 
-            Establish context = () => A.CallTo(() => fakedDelegate(A<string>._)).Returns(10);
+            "establish"._(() =>
+            {
+                A.CallTo(() => fakedDelegate(A<string>._)).Returns(10);
+            });
 
-            Because of = () => result = fakedDelegate(null);
+            "when faking a delegate type"._(() =>
+            {
+                result = fakedDelegate(null);
+            });
 
-            It should_return_configured_value = () => result.Should().Be(10);
+            "it should return configured value"._(() =>
+            {
+                result.Should().Be(10);
+            });
         }
     }
 }
