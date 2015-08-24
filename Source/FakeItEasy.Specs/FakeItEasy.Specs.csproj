@@ -87,7 +87,7 @@
     <Compile Include="DisposableSpecs.cs" />
     <Compile Include="FakeScopeSpecs.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="CreationSpecs.cs" />
+    <Compile Include="Creation.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="FakeConfiguratorSpecs.cs" />
     <Compile Include="SelfInitializedFakesSpecs.cs" />
