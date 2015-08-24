@@ -92,7 +92,7 @@
     <Compile Include="FakeConfiguratorSpecs.cs" />
     <Compile Include="SelfInitializedFakesSpecs.cs" />
     <Compile Include="Lazy.cs" />
-    <Compile Include="DummyFactorySpecs.cs" />
+    <Compile Include="DummyFactory.cs" />
     <Compile Include="MakesVirtualCallInConstructor.cs" />
     <Compile Include="OrderedCallMatchingSpecs.cs" />
     <Compile Include="FakingInternalsSpecs.cs" />
