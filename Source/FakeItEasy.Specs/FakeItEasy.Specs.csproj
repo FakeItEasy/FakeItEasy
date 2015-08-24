@@ -79,7 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
+    <Compile Include="AssertingOnSetOnlyProperties.cs" />
     <Compile Include="AsyncAwaitSpecs.cs" />
     <Compile Include="Catch.cs" />
     <Compile Include="ConfigurationSpecs.cs" />
