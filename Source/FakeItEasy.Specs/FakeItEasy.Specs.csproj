@@ -82,7 +82,7 @@
     <Compile Include="AssertingOnSetOnlyProperties.cs" />
     <Compile Include="AsyncAwait.cs" />
     <Compile Include="Catch.cs" />
-    <Compile Include="ConfigurationSpecs.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="CreationOptions.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="FakeScope.cs" />
