@@ -80,7 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertingOnSetOnlyProperties.cs" />
-    <Compile Include="AsyncAwaitSpecs.cs" />
+    <Compile Include="AsyncAwait.cs" />
     <Compile Include="Catch.cs" />
     <Compile Include="ConfigurationSpecs.cs" />
     <Compile Include="CreationOptions.cs" />
