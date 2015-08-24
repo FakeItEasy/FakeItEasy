@@ -97,7 +97,7 @@
     <Compile Include="OrderedCallMatchingSpecs.cs" />
     <Compile Include="FakingInternals.cs" />
     <Compile Include="EventRaisingSpecs.cs" />
-    <Compile Include="FixtureInitializationSpecs.cs" />
+    <Compile Include="FixtureInitialization.cs" />
     <Compile Include="FakingDelegates.cs" />
     <Compile Include="CallMatching.cs" />
     <Compile Include="AssignsOutAndRefParameters.cs" />
