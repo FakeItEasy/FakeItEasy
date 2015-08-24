@@ -95,7 +95,7 @@
     <Compile Include="DummyFactory.cs" />
     <Compile Include="MakesVirtualCallInConstructor.cs" />
     <Compile Include="OrderedCallMatchingSpecs.cs" />
-    <Compile Include="FakingInternalsSpecs.cs" />
+    <Compile Include="FakingInternals.cs" />
     <Compile Include="EventRaisingSpecs.cs" />
     <Compile Include="FixtureInitializationSpecs.cs" />
     <Compile Include="FakingDelegates.cs" />
