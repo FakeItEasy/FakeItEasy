@@ -84,7 +84,7 @@
     <Compile Include="Catch.cs" />
     <Compile Include="ConfigurationSpecs.cs" />
     <Compile Include="CreationOptions.cs" />
-    <Compile Include="DisposableSpecs.cs" />
+    <Compile Include="Disposable.cs" />
     <Compile Include="FakeScopeSpecs.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Creation.cs" />
