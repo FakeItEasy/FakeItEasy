@@ -90,7 +90,7 @@
     <Compile Include="Creation.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="FakeConfigurator.cs" />
-    <Compile Include="SelfInitializedFakesSpecs.cs" />
+    <Compile Include="SelfInitializedFakes.cs" />
     <Compile Include="Lazy.cs" />
     <Compile Include="DummyFactory.cs" />
     <Compile Include="MakesVirtualCallInConstructor.cs" />
