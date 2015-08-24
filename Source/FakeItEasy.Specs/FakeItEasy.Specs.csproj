@@ -96,7 +96,7 @@
     <Compile Include="MakesVirtualCallInConstructor.cs" />
     <Compile Include="OrderedCallMatching.cs" />
     <Compile Include="FakingInternals.cs" />
-    <Compile Include="EventRaisingSpecs.cs" />
+    <Compile Include="EventRaising.cs" />
     <Compile Include="FixtureInitialization.cs" />
     <Compile Include="FakingDelegates.cs" />
     <Compile Include="CallMatching.cs" />
