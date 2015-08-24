@@ -101,7 +101,7 @@
     <Compile Include="FakingDelegates.cs" />
     <Compile Include="CallMatching.cs" />
     <Compile Include="AssignsOutAndRefParametersSpecs.cs" />
-    <Compile Include="PropertySpecs.cs" />
+    <Compile Include="Property.cs" />
     <Compile Include="CallsBaseMethodsFakeSpecs.cs" />
     <Compile Include="StrictFake.cs" />
     <Compile Include="UnconfiguredFakeSpecs.cs" />
