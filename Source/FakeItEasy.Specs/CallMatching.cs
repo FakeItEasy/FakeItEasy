@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using FluentAssertions;
-    using Machine.Specifications;
     using Xbehave;
 
     public partial class CallMatching
