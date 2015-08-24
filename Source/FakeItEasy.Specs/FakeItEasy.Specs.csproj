@@ -100,7 +100,7 @@
     <Compile Include="FixtureInitializationSpecs.cs" />
     <Compile Include="FakingDelegates.cs" />
     <Compile Include="CallMatching.cs" />
-    <Compile Include="AssignsOutAndRefParametersSpecs.cs" />
+    <Compile Include="AssignsOutAndRefParameters.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="CallsBaseMethodsFake.cs" />
     <Compile Include="StrictFake.cs" />
