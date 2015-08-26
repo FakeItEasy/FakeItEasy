@@ -14,11 +14,6 @@
 
     public class CreationOptions
     {
-        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
-        public interface IInterfaceThatWeWillAddAttributesTo
-        {
-        }
-
         [Scenario]
         public void when_ConfigureFake_is_used_to_configure_a_method(
             MakesVirtualCallInConstructor fake)
@@ -443,10 +438,14 @@
             });
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface IInterfaceThatWeWillAddAttributesTo1
+        {
+        }
 
         [Scenario]
         public void when_WithAdditionalAttributes_is_used_to_configure_a_fake(
-            IInterfaceThatWeWillAddAttributesTo fake)
+            IInterfaceThatWeWillAddAttributesTo1 fake)
         {
             "when ConfigureFake is used to configure a method"._(() =>
             {
@@ -454,7 +453,7 @@
                 var attribute = new CustomAttributeBuilder(constructor, new object[0]);
                 var customAttributeBuilders = new List<CustomAttributeBuilder> { attribute };
 
-                fake = A.Fake<IInterfaceThatWeWillAddAttributesTo>(options => options
+                fake = A.Fake<IInterfaceThatWeWillAddAttributesTo1>(options => options
                     .WithAdditionalAttributes(customAttributeBuilders));
             });
 
@@ -464,6 +463,11 @@
             });
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface IInterfaceThatWeWillAddAttributesTo2
+        {
+        }
+
         [Scenario]
         public void when_WithAdditionalAttributes_is_used_to_configure_a_fake_with_a_null_set_of_attributes(
             Exception exception)
@@ -471,7 +475,7 @@
             "when ConfigureFake is used to configure a method"._(() =>
             {
                 exception = Record.Exception(() =>
-                    A.Fake<IInterfaceThatWeWillAddAttributesTo>(options => options
+                    A.Fake<IInterfaceThatWeWillAddAttributesTo2>(options => options
                         .WithAdditionalAttributes(null)));
             });
 
@@ -482,9 +486,14 @@
                                });
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface IInterfaceThatWeWillAddAttributesTo3
+        {
+        }
+
         [Scenario]
         public void when_WithAdditionalAttributes_is_used_to_configure_a_fake_twice(
-            IInterfaceThatWeWillAddAttributesTo fake)
+            IInterfaceThatWeWillAddAttributesTo3 fake)
         {
             "when ConfigureFake is used to configure a method"._(() =>
             {
@@ -498,7 +507,7 @@
                 var attribute3 = new CustomAttributeBuilder(constructor3, new object[0]);
                 var customAttributeBuilders2 = new List<CustomAttributeBuilder> { attribute2, attribute3 };
 
-                fake = A.Fake<IInterfaceThatWeWillAddAttributesTo>(options => options
+                fake = A.Fake<IInterfaceThatWeWillAddAttributesTo3>(options => options
                     .WithAdditionalAttributes(customAttributeBuilders1)
                     .WithAdditionalAttributes(customAttributeBuilders2));
             });
