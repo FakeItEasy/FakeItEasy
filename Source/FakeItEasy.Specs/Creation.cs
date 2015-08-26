@@ -21,30 +21,20 @@
         public void when_faking_a_class_whose_constructor_throws(
             Exception exception)
         {
-            "when faking a class whose constructor throws".x(() =>
-            {
-                exception = Catch.Exception(() => A.Fake<ClassWhoseConstructorThrows>());
-            });
+            "when faking a class whose constructor throws"
+                .x(() => exception = Catch.Exception(() => A.Fake<ClassWhoseConstructorThrows>()));
 
-            "it should throw a FakeCreationException".x(() =>
-            {
-                exception.Should().BeOfType<FakeCreationException>();
-            });
+            "it should throw a FakeCreationException"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
 
-            "it should throw an exception whose message includes original exception type".x(() =>
-            {
-                exception.Message.Should().Contain("of type System.NotSupportedException");
-            });
+            "it should throw an exception whose message includes original exception type"
+                .x(() => exception.Message.Should().Contain("of type System.NotSupportedException"));
 
-            "it should throw an exception whose message includes original exception message".x(() =>
-            {
-                exception.Message.Should().Contain("I don't like being constructed.");
-            });
+            "it should throw an exception whose message includes original exception message"
+                .x(() => exception.Message.Should().Contain("I don't like being constructed."));
 
-            "it should throw an exception whose message includes original exception stack trace".x(() =>
-            {
-                exception.Message.Should().Contain("FakeItEasy.Specs.ClassWhoseConstructorThrows..ctor()");
-            });
+            "it should throw an exception whose message includes original exception stack trace"
+                .x(() => exception.Message.Should().Contain("FakeItEasy.Specs.ClassWhoseConstructorThrows..ctor()"));
         }
 
         // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
@@ -52,26 +42,18 @@
         public void when_faking_a_class_whose_first_constructor_fails(
             FakedClass fake)
         {
-            "when faking a class whose constructor throws".x(() =>
-            {
-                fake = A.Fake<FakedClass>();
-            });
+            "when faking a class whose constructor throws"
+                .x(() => fake = A.Fake<FakedClass>());
 
-            "it should instantiate the fake using the successful constructor with the longest parameter list".x(() =>
-            {
-                fake.WasTwoParameterConstructorCalled.Should().BeTrue();
-            });
+            "it should instantiate the fake using the successful constructor with the longest parameter list"
+                .x(() => fake.WasTwoParameterConstructorCalled.Should().BeTrue());
 
-            "it should instantiate a fake that does not remember the failing constructor call".x(() =>
-            {
-                fake.WasParameterlessConstructorCalled
-                .Should().BeFalse("because the parameterless constructor was called for a different fake object");
-            });
+            "it should instantiate a fake that does not remember the failing constructor call"
+                .x(() => fake.WasParameterlessConstructorCalled
+                             .Should().BeFalse("because the parameterless constructor was called for a different fake object"));
 
-            "it should only have tried the parameterless constructor and one with the longest parameter list".x(() =>
-            {
-                FakedClass.ParameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2);
-            });
+            "it should only have tried the parameterless constructor and one with the longest parameter list"
+                .x(() => FakedClass.ParameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2));
         }
 
         public class FakedClass

@@ -12,35 +12,23 @@
         public void when_matching_calls_with_parameter_arrays(
             ITypeWithParameterArray fake)
         {
-            "establish".x(() =>
-            {
-                fake = A.Fake<ITypeWithParameterArray>();
-            });
+            "establish"
+                .x(() => fake = A.Fake<ITypeWithParameterArray>());
 
-            "when matching calls with parameter arrays".x(() =>
-            {
-                fake.MethodWithParameterArray("foo", "bar", "baz");
-            });
+            "when matching calls with parameter arrays"
+                .x(() => fake.MethodWithParameterArray("foo", "bar", "baz"));
 
-            "it should be able to match the call".x(() =>
-            {
-                A.CallTo(() => fake.MethodWithParameterArray("foo", "bar", "baz")).MustHaveHappened();
-            });
+            "it should be able to match the call"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", "bar", "baz")).MustHaveHappened());
 
-            "it should be able to match the call with argument constraints".x(() =>
-            {
-                A.CallTo(() => fake.MethodWithParameterArray(A<string>._, A<string>._, A<string>._)).MustHaveHappened();
-            });
+            "it should be able to match the call with argument constraints"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, A<string>._, A<string>._)).MustHaveHappened());
 
-            "it should be able to match the call mixing constraints and values".x(() =>
-            {
-                A.CallTo(() => fake.MethodWithParameterArray(A<string>._, "bar", A<string>._)).MustHaveHappened();
-            });
+            "it should be able to match the call mixing constraints and values"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, "bar", A<string>._)).MustHaveHappened());
 
-            "it should be able to match using array syntax".x(() =>
-            {
-                A.CallTo(() => fake.MethodWithParameterArray("foo", A<string[]>.That.IsSameSequenceAs(new[] { "bar", "baz" }))).MustHaveHappened();
-            });
+            "it should be able to match using array syntax"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", A<string[]>.That.IsSameSequenceAs(new[] { "bar", "baz" }))).MustHaveHappened());
         }
 
         public interface ITypeWithParameterArray
@@ -53,22 +41,20 @@
             IFoo fake,
             Exception exception)
         {
-            "establish".x(() =>
-            {
-                fake = A.Fake<IFoo>();
-            });
+            "establish"
+                .x(() => fake = A.Fake<IFoo>());
 
-            "when matching calls with parameter arrays".x(() =>
-            {
-                fake.Bar(1);
-                fake.Bar(2);
-                exception = Catch.Exception(() => A.CallTo(() => fake.Bar(3)).MustHaveHappened());
-            });
+            "when matching calls with parameter arrays"
+                .x(() =>
+                    {
+                        fake.Bar(1);
+                        fake.Bar(2);
+                        exception = Catch.Exception(() => A.CallTo(() => fake.Bar(3)).MustHaveHappened());
+                    });
 
-            "it should tell us that the call was not matched".x(() =>
-            {
-                exception.Message.Should().Be(
-@"
+            "it should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(
+                    @"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatching+IFoo.Bar(3)
@@ -76,8 +62,7 @@
     1: FakeItEasy.Specs.CallMatching+IFoo.Bar(baz: 1)
     2: FakeItEasy.Specs.CallMatching+IFoo.Bar(baz: 2)
 
-");
-            });
+"));
         }
 
         public interface IFoo
@@ -90,22 +75,20 @@
             IGenericFoo fake,
             Exception exception)
         {
-            "establish".x(() =>
-            {
-                fake = A.Fake<IGenericFoo>();
-            });
+            "establish"
+                .x(() => fake = A.Fake<IGenericFoo>());
 
-            "when matching calls with parameter arrays".x(() =>
-            {
-                fake.Bar(1, 2D);
-                fake.Bar(new Generic<bool, long>(), 3);
-                exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened());
-            });
+            "when matching calls with parameter arrays"
+                .x(() =>
+                    {
+                        fake.Bar(1, 2D);
+                        fake.Bar(new Generic<bool, long>(), 3);
+                        exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened());
+                    });
 
-            "it should tell us that the call was not matched".x(() =>
-            {
-                exception.Message.Should().Be(
-@"
+            "it should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(
+                    @"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatching+IGenericFoo.Bar<System.String, System.String>(<Ignored>, <Ignored>)
@@ -113,8 +96,7 @@
     1: FakeItEasy.Specs.CallMatching+IGenericFoo.Bar<System.Int32, System.Double>(baz1: 1, baz2: 2)
     2: FakeItEasy.Specs.CallMatching+IGenericFoo.Bar<FakeItEasy.Specs.CallMatching+Generic<System.Boolean, System.Int64>, System.Int32>(baz1: FakeItEasy.Specs.CallMatching+Generic`2[System.Boolean,System.Int64], baz2: 3)
 
-");
-            });
+"));
         }
 
         public interface IGenericFoo
@@ -131,27 +113,21 @@
             IBarFoo fake,
             Exception exception)
         {
-            "establish".x(() =>
-            {
-                fake = A.Fake<IBarFoo>();
-            });
+            "establish"
+                .x(() => fake = A.Fake<IBarFoo>());
 
-            "when_no_non_generic_calls".x(() =>
-            {
-                exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened());
-            });
+            "when_no_non_generic_calls"
+                .x(() => exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened()));
 
-            "it should tell us that the call was not matched".x(() =>
-            {
-                exception.Message.Should().Be(
-    @"
+            "it should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(
+                    @"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatching+IBarFoo.Bar(<Ignored>)
   Expected to find it at least once but no calls were made to the fake object.
 
-");
-            });
+"));
         }
 
         public interface IBarFoo
@@ -164,27 +140,21 @@
             IGenericBarFoo fake,
             Exception exception)
         {
-            "establish".x(() =>
-            {
-                fake = A.Fake<IGenericBarFoo>();
-            });
+            "establish"
+                .x(() => fake = A.Fake<IGenericBarFoo>());
 
-            "when matching calls with parameter arrays".x(() =>
-            {
-                exception = Catch.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened());
-            });
+            "when matching calls with parameter arrays"
+                .x(() => exception = Catch.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened()));
 
-            "it should tell us that the call was not matched".x(() =>
-            {
-                exception.Message.Should().Be(
-@"
+            "it should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(
+                    @"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatching+IGenericBarFoo.Bar<FakeItEasy.Specs.CallMatching+Generic<System.String>>(<Ignored>)
   Expected to find it at least once but no calls were made to the fake object.
 
-");
-            });
+"));
         }
 
         public interface IGenericBarFoo
@@ -200,34 +170,35 @@
         public void when_matching_a_call_with_an_out_parameter(
             IDictionary<string, string> subject)
         {
-            "establish".x(() =>
-            {
-                subject = A.Fake<IDictionary<string, string>>();
-            });
+            "establish"
+                .x(() => subject = A.Fake<IDictionary<string, string>>());
 
-            "when matching calls with parameter arrays".x(() =>
-            {
-                string outString = "a constraint string";
-                A.CallTo(() => subject.TryGetValue("any key", out outString))
-                    .Returns(true);
-            });
+            "when matching calls with parameter arrays"
+                .x(() =>
+                    {
+                        string outString = "a constraint string";
+                        A.CallTo(() => subject.TryGetValue("any key", out outString))
+                            .Returns(true);
+                    });
 
-            "it should match without regard to out parameter value".x(() =>
-            {
-                string outString = "a different string";
+            "it should match without regard to out parameter value"
+                .x(() =>
+                    {
+                        string outString = "a different string";
 
-                subject.TryGetValue("any key", out outString)
-                    .Should().BeTrue();
-            });
+                        subject.TryGetValue("any key", out outString)
+                            .Should().BeTrue();
+                    });
 
-            "it should assign the constraint value to the out parameter".x(() =>
-            {
-                string outString = "a different string";
+            "it should assign the constraint value to the out parameter"
+                .x(() =>
+                    {
+                        string outString = "a different string";
 
-                subject.TryGetValue("any key", out outString);
+                        subject.TryGetValue("any key", out outString);
 
-                outString.Should().Be("a constraint string");
-            });
+                        outString.Should().Be("a constraint string");
+                    });
 
         }
 
@@ -237,74 +208,73 @@
         {
             Exception exception = null;
 
-            "establish".x(() =>
-            {
-                subject = A.Fake<IDictionary<string, string>>();
-            });
+            "establish"
+                .x(() => subject = A.Fake<IDictionary<string, string>>());
 
-            "when matching calls with parameter arrays".x(() =>
-            {
-                string outString = null;
+            "when matching calls with parameter arrays"
+                .x(() =>
+                    {
+                        string outString = null;
 
-                exception =
-                    Catch.Exception(
-                        () => A.CallTo(() => subject.TryGetValue("any key", out outString))
-                            .MustHaveHappened());
-            });
+                        exception =
+                            Catch.Exception(
+                                () => A.CallTo(() => subject.TryGetValue("any key", out outString))
+                                    .MustHaveHappened());
+                    });
 
-            "it should tell us that the call was not matched".x(() =>
-            {
-                exception.Message.Should().Be(
-            @"
+            "it should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(
+                    @"
 
   Assertion failed for the following call:
     System.Collections.Generic.IDictionary`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]].TryGetValue(""any key"", <out parameter>)
   Expected to find it at least once but no calls were made to the fake object.
 
-");
-            });
+"));
         }
 
         [Scenario]
         public void when_matching_a_call_with_a_ref_parameter(
             IHaveInterestingParameters subject)
         {
-            "establish".x(() =>
-            {
-                subject = A.Fake<IHaveInterestingParameters>();
-            });
+            "establish"
+                .x(() => subject = A.Fake<IHaveInterestingParameters>());
 
-            "when matching calls with parameter arrays".x(() =>
-            {
-                string refString = "a constraint string";
-                A.CallTo(() => subject.CheckYourReferences(ref refString))
-                    .Returns(true);
-            });
+            "when matching calls with parameter arrays"
+                .x(() =>
+                    {
+                        string refString = "a constraint string";
+                        A.CallTo(() => subject.CheckYourReferences(ref refString))
+                            .Returns(true);
+                    });
 
-            "it should match when ref parameter value matches".x(() =>
-            {
-                string refString = "a constraint string";
+            "it should match when ref parameter value matches"
+                .x(() =>
+                    {
+                        string refString = "a constraint string";
 
-                subject.CheckYourReferences(ref refString)
-                    .Should().BeTrue();
-            });
+                        subject.CheckYourReferences(ref refString)
+                            .Should().BeTrue();
+                    });
 
-            "it should not match when ref parameter value does not match".x(() =>
-            {
-                string refString = "a different string";
+            "it should not match when ref parameter value does not match"
+                .x(() =>
+                    {
+                        string refString = "a different string";
 
-                subject.CheckYourReferences(ref refString)
-                    .Should().BeFalse();
-            });
+                        subject.CheckYourReferences(ref refString)
+                            .Should().BeFalse();
+                    });
 
-            "it should assign the constraint value to the ref parameter".x(() =>
-            {
-                string refString = "a constraint string";
+            "it should assign the constraint value to the ref parameter"
+                .x(() =>
+                    {
+                        string refString = "a constraint string";
 
-                subject.CheckYourReferences(ref refString);
+                        subject.CheckYourReferences(ref refString);
 
-                refString.Should().Be("a constraint string");
-            });
+                        refString.Should().Be("a constraint string");
+                    });
         }
 
         public interface IHaveInterestingParameters
@@ -322,28 +292,20 @@
         public void when_matching_a_call_with_a_parameter_having_an_out_attribute(
              ITooHaveInterestingParameters subject)
         {
-            "establish".x(() =>
-            {
-                subject = A.Fake<ITooHaveInterestingParameters>();
-            });
+            "establish"
+                .x(() => subject = A.Fake<ITooHaveInterestingParameters>());
 
-            "when matching calls with parameter arrays".x(() =>
-            {
-                A.CallTo(() => subject.Validate("a constraint string"))
-                    .Returns(true);
-            });
+            "when matching calls with parameter arrays"
+                .x(() => A.CallTo(() => subject.Validate("a constraint string"))
+                             .Returns(true));
 
-            "it should match when ref parameter value matches".x(() =>
-            {
-                subject.Validate("a constraint string")
-                    .Should().BeTrue();
-            });
+            "it should match when ref parameter value matches"
+                .x(() => subject.Validate("a constraint string")
+                             .Should().BeTrue());
 
-            "it should not match when ref parameter value does not match".x(() =>
-            {
-                subject.Validate("a different string")
-                    .Should().BeFalse();
-            });
+            "it should not match when ref parameter value does not match"
+                .x(() => subject.Validate("a different string")
+                             .Should().BeFalse());
         }
        
         public interface ITooHaveInterestingParameters

@@ -10,61 +10,41 @@
         public void when_faking_a_class_with_a_virtual_method(
             MakesVirtualCallInConstructor fake)
         {
-            "when faking a class with a virtual method".x(() =>
-            {
-                fake = A.Fake<MakesVirtualCallInConstructor>();
-            });
+            "when faking a class with a virtual method"
+                .x(() => fake = A.Fake<MakesVirtualCallInConstructor>());
 
-            "it should return a default value when the method is called during the constructor".x(() =>
-            {
-                fake.VirtualMethodValueDuringConstructorCall.Should().Be(string.Empty);
-            });
+            "it should return a default value when the method is called during the constructor"
+                .x(() => fake.VirtualMethodValueDuringConstructorCall.Should().Be(string.Empty));
 
-            "it should return a default value when the method is called after the constructor".x(() =>
-            {
-                fake.VirtualMethod("call after constructor").Should().Be(string.Empty);
-            });
+            "it should return a default value when the method is called after the constructor"
+                .x(() => fake.VirtualMethod("call after constructor").Should().Be(string.Empty));
 
-            "it should record the method call during the constructor".x(() =>
-            {
-                A.CallTo(() => fake.VirtualMethod("call in constructor")).MustHaveHappened();
-            });
+            "it should record the method call during the constructor"
+                .x(() => A.CallTo(() => fake.VirtualMethod("call in constructor")).MustHaveHappened());
 
-            "it should record the method call after the constructor".x(() =>
-            {
-                A.CallTo(() => fake.VirtualMethod("call after constructor")).MustHaveHappened();
-            });
+            "it should record the method call after the constructor"
+                .x(() => A.CallTo(() => fake.VirtualMethod("call after constructor")).MustHaveHappened());
         }
 
         [Scenario]
         public void when_faking_a_class_with_virtual_properties(
             FakedClass fake)
         {
-            "when faking a class with a virtual method".x(() =>
-            {
-                fake = A.Fake<FakedClass>();
-            });
+            "when faking a class with a virtual method"
+                .x(() => fake = A.Fake<FakedClass>());
 
-            "it should return a default value when a reference type property is called during the constructor".x(() =>
-            {
-                fake.StringPropertyValueDuringConstructorCall.Should().Be(string.Empty);
-            });
+            "it should return a default value when a reference type property is called during the constructor"
+                .x(() => fake.StringPropertyValueDuringConstructorCall.Should().Be(string.Empty));
 
-            "it should return a default value when a value type property is called during the constructor".x(() =>
-            {
-                // The test for the default value of a value type is a regression test for https://github.com/FakeItEasy/FakeItEasy/issues/368:
-                fake.ValueTypePropertyValueDuringConstructorCall.Should().Be(0);
-            });
+            // The test for the default value of a value type is a regression test for https://github.com/FakeItEasy/FakeItEasy/issues/368:
+            "it should return a default value when a value type property is called during the constructor"
+                .x(() => fake.ValueTypePropertyValueDuringConstructorCall.Should().Be(0));
 
-            "it should return the value assigned during constructor when a reference type property is gotten after the constructor".x(() =>
-            {
-                fake.StringProperty.Should().Be("value set in constructor");
-            });
+            "it should return the value assigned during constructor when a reference type property is gotten after the constructor"
+                .x(() => fake.StringProperty.Should().Be("value set in constructor"));
 
-            "it should return the value assigned during constructor when a value type property is gotten after the constructor".x(() =>
-            {
-                fake.ValueTypeProperty.Should().Be(123456);
-            });
+            "it should return the value assigned during constructor when a value type property is gotten after the constructor"
+                .x(() => fake.ValueTypeProperty.Should().Be(123456));
         }
 
         public class FakedClass

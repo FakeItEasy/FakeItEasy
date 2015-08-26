@@ -13,25 +13,17 @@
             ILazyFactory fake,
             Lazy<IFoo> lazy)
         {
-            "establish".x(() =>
-            {
-                fake = A.Fake<ILazyFactory>();
-            });
+            "establish"
+                .x(() => fake = A.Fake<ILazyFactory>());
 
-            "when calling a method that returns a lazy".x(() =>
-            {
-                lazy = fake.Create();
-            });
+            "when calling a method that returns a lazy"
+                .x(() => lazy = fake.Create());
 
-            "it should return a lazy".x(() =>
-            {
-                lazy.Should().NotBeNull();
-            });
+            "it should return a lazy"
+                .x(() => lazy.Should().NotBeNull());
 
-            "it should return a lazy whose value is a dummy".x(() =>
-            {
-                lazy.Value.Should().Be(FooFactory.Instance);
-            });
+            "it should return a lazy whose value is a dummy"
+                .x(() => lazy.Value.Should().Be(FooFactory.Instance));
         }
         
         public interface ILazyFactory

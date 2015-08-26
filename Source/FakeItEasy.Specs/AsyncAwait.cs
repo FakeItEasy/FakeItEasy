@@ -18,22 +18,19 @@
             FooAsyncAwait foo,
             Task task)
         {
-            "establish".x(() =>
-            {
-                var service = A.Fake<IFooAsyncAwaitService>();
-                A.CallTo(() => service.QueryAsync()).Returns(Task.FromResult(9));
-                foo = new FooAsyncAwait(service);
-            });
+            "establish"
+                .x(() =>
+                    {
+                        var service = A.Fake<IFooAsyncAwaitService>();
+                        A.CallTo(() => service.QueryAsync()).Returns(Task.FromResult(9));
+                        foo = new FooAsyncAwait(service);
+                    });
 
-            "when calling defined method with return value".x(() =>
-            {
-                task = foo.QueryAsync();
-            });
+            "when calling defined method with return value"
+                .x(() => task = foo.QueryAsync());
 
-            "it should return".x(() =>
-            {
-                task.IsCompleted.Should().BeTrue();
-            });
+            "it should return"
+                .x(() => task.IsCompleted.Should().BeTrue());
         }
 
         [Scenario]
@@ -41,22 +38,19 @@
             FooAsyncAwait foo,
             Task task)
         {
-            "establish".x(() =>
-            {
-                var service = A.Fake<IFooAsyncAwaitService>();
-                A.CallTo(() => service.CommandAsync()).Returns(Task.FromResult<object>(null));
-                foo = new FooAsyncAwait(service);
-            });
+            "establish"
+                .x(() =>
+                    {
+                        var service = A.Fake<IFooAsyncAwaitService>();
+                        A.CallTo(() => service.CommandAsync()).Returns(Task.FromResult<object>(null));
+                        foo = new FooAsyncAwait(service);
+                    });
 
-            "when calling defined method with return value".x(() =>
-            {
-                task = foo.CommandAsync();
-            });
+            "when calling defined method with return value"
+                .x(() => task = foo.CommandAsync());
 
-            "it should return".x(() =>
-            {
-                task.IsCompleted.Should().BeTrue();
-            });
+            "it should return"
+                .x(() => task.IsCompleted.Should().BeTrue());
         }
 
         [Scenario]
@@ -64,20 +58,14 @@
             FooAsyncAwait foo,
             Task task)
         {
-            "establish".x(() =>
-            {
-                foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>());
-            });
+            "establish"
+                .x(() => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>()));
 
-            "when calling defined method with return value".x(() =>
-            {
-                task = foo.QueryAsync();
-            });
+            "when calling defined method with return value"
+                .x(() => task = foo.QueryAsync());
 
-            "it should return".x(() =>
-            {
-                task.IsCompleted.Should().BeTrue();
-            });
+            "it should return"
+                .x(() => task.IsCompleted.Should().BeTrue());
         }
 
         [Scenario]
@@ -85,20 +73,14 @@
             FooAsyncAwait foo,
             Task task)
         {
-            "establish".x(() =>
-            {
-                foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>());
-            });
+            "establish"
+                .x(() => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>()));
 
-            "when calling defined method with return value".x(() =>
-            {
-                task = foo.CommandAsync();
-            });
+            "when calling defined method with return value"
+                .x(() => task = foo.CommandAsync());
 
-            "it should return".x(() =>
-            {
-                task.IsCompleted.Should().BeTrue();
-            });
+            "it should return"
+                .x(() => task.IsCompleted.Should().BeTrue());
         }
     }
 

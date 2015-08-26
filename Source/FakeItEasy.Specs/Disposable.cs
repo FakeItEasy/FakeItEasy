@@ -12,25 +12,25 @@
         public void when_faking_a_disposable_class(
             IDisposable fake)
         {
-            "establish".x(() =>
-            {
-                AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler;
+            "establish"
+                .x(() =>
+                    {
+                        AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler;
 
-                fake = A.Fake<SomeDisposable>();
-            })
-            .Teardown(() => AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionHandler);
+                        fake = A.Fake<SomeDisposable>();
+                    })
+                .Teardown(() => AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionHandler);
 
-            "when faking a disposable class".x(() =>
-            {
-                fake = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-        });
+            "when faking a disposable class"
+                .x(() =>
+                    {
+                        fake = null;
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                    });
 
-            "it should not throw when finalized".x(() =>
-            {
-                exception.Should().BeNull();
-            });
+            "it should not throw when finalized"
+                .x(() => exception.Should().BeNull());
         }
         
         private static void UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)

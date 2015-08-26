@@ -20,20 +20,14 @@
             AbstractBaseClass fake,
             string result)
         {
-            "establish".x(() =>
-            {
-                fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods());
-            });
+            "establish"
+                .x(() => fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods()));
 
-            "when concrete method is called on fake that calls base methods".x(() =>
-            {
-                result = fake.ConcreteMethod();
-            });
+            "when concrete method is called on fake that calls base methods"
+                .x(() => result = fake.ConcreteMethod());
 
-            "it should call base method".x(() =>
-            {
-                result.Should().Be("result from base method");
-            });
+            "it should call base method"
+                .x(() => result.Should().Be("result from base method"));
         }
 
         [Scenario]
@@ -41,20 +35,14 @@
             AbstractBaseClass fake,
             string result = "some non-default value")
         {
-            "establish".x(() =>
-            {
-                fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods());
-            });
+            "establish"
+                .x(() => fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods()));
 
-            "when concrete method is called on fake that calls base methods".x(() =>
-            {
-                result = fake.AbstractMethod();
-            });
+            "when concrete method is called on fake that calls base methods"
+                .x(() => result = fake.AbstractMethod());
 
-            "it should return default value".x(() =>
-            {
-                result.Should().BeEmpty();
-            });
+            "it should return default value"
+                .x(() => result.Should().BeEmpty());
         }
     }
 }

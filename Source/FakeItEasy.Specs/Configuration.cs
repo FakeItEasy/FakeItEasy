@@ -17,18 +17,18 @@
             IFoo fake,
             bool wasCalled)
         {
-            "establish".x(() => fake = A.Fake<IFoo>());
+            "establish"
+                .x(() => fake = A.Fake<IFoo>());
 
-            "when configuring callback".x(() =>
-            {
-                A.CallTo(() => fake.Bar()).Invokes(x => wasCalled = true);
-                fake.Bar();
-            });
+            "when configuring callback"
+                .x(() =>
+                    {
+                        A.CallTo(() => fake.Bar()).Invokes(x => wasCalled = true);
+                        fake.Bar();
+                    });
 
-            "it should invoke the callback".x(() =>
-            {
-                wasCalled.Should().BeTrue();
-            });
+            "it should invoke the callback"
+                .x(() => wasCalled.Should().BeTrue());
         }
 
         [Scenario]
@@ -38,32 +38,28 @@
             bool secondWasCalled,
             int returnValue)
         {
-            "establish".x(() => fake = A.Fake<IFoo>());
+            "establish"
+                .x(() => fake = A.Fake<IFoo>());
 
-            "when configuring callback".x(() =>
-            {
-                A.CallTo(() => fake.Baz())
-                    .Invokes(x => firstWasCalled = true)
-                    .Invokes(x => secondWasCalled = true)
-                    .Returns(10);
+            "when configuring callback"
+                .x(() =>
+                    {
+                        A.CallTo(() => fake.Baz())
+                            .Invokes(x => firstWasCalled = true)
+                            .Invokes(x => secondWasCalled = true)
+                            .Returns(10);
 
-                returnValue = fake.Baz();
-            });
+                        returnValue = fake.Baz();
+                    });
 
-            "it should call the first callback".x(() =>
-            {
-                firstWasCalled.Should().BeTrue();
-            });
+            "it should call the first callback"
+                .x(() => firstWasCalled.Should().BeTrue());
 
-            "it should call the second callback".x(() =>
-            {
-                secondWasCalled.Should().BeTrue();
-            });
+            "it should call the second callback"
+                .x(() => secondWasCalled.Should().BeTrue());
 
-            "it should return the configured value".x(() =>
-            {
-                returnValue.Should().Be(10);
-            });
+            "it should return the configured value"
+                .x(() => returnValue.Should().Be(10));
         }
 
         [Scenario]
@@ -72,28 +68,24 @@
             int returnValue,
             bool callbackWasInvoked)
         {
-            "establish".x(() => fake = A.Fake<BaseClass>());
+            "establish"
+                .x(() => fake = A.Fake<BaseClass>());
 
-            "when configuring callback".x(() =>
-            {
-                A.CallTo(() => fake.ReturnSomething()).Invokes(x => callbackWasInvoked = true).CallsBaseMethod();
-                returnValue = fake.ReturnSomething();
-            });
+            "when configuring callback"
+                .x(() =>
+                    {
+                        A.CallTo(() => fake.ReturnSomething()).Invokes(x => callbackWasInvoked = true).CallsBaseMethod();
+                        returnValue = fake.ReturnSomething();
+                    });
 
-            "it shuld have called the base method".x(() =>
-            {
-                fake.WasCalled.Should().BeTrue();
-            });
+            "it shuld have called the base method"
+                .x(() => fake.WasCalled.Should().BeTrue());
 
-            "it should return value from base method".x(() =>
-            {
-                returnValue.Should().Be(10);
-            });
+            "it should return value from base method"
+                .x(() => returnValue.Should().Be(10));
 
-            "it should invoke the callback".x(() =>
-            {
-                callbackWasInvoked.Should().BeTrue();
-            });
+            "it should invoke the callback"
+                .x(() => callbackWasInvoked.Should().BeTrue());
         }
 
         public class BaseClass

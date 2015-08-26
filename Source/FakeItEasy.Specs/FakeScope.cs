@@ -14,7 +14,8 @@
             string virtualMethodValueInsideOfScope,
             string virtualMethodValueOutsideOfScope)
         {
-            "establish".x(() =>
+            "establish"
+                .x(() =>
                     {
                         fakeObjectContainer = A.Fake<IFakeObjectContainer>();
                         A.CallTo(() => fakeObjectContainer.ConfigureFake(A<Type>._, A<object>._))
@@ -23,7 +24,8 @@
                                 A.CallTo(options).WithReturnType<string>().Returns("configured value in fake scope"));
                     });
 
-            "when configuring a method called by a constructor from within a scope".x(() =>
+            "when configuring a method called by a constructor from within a scope"
+                .x(() =>
                     {
                         using (Fake.CreateScope(fakeObjectContainer))
                         {
@@ -34,11 +36,9 @@
                         virtualMethodValueOutsideOfScope = fake.VirtualMethod(null);
                     });
 
-            "it should call ConfigureFake of the fake scope".x(() =>
-                    {
-                        A.CallTo(() => fakeObjectContainer.ConfigureFake(typeof(MakesVirtualCallInConstructor), fake))
-                            .MustHaveHappened();
-                    });
+            "it should call ConfigureFake of the fake scope"
+                .x(() => A.CallTo(() => fakeObjectContainer.ConfigureFake(typeof(MakesVirtualCallInConstructor), fake))
+                             .MustHaveHappened());
 
             "it should return the configured value within the scope during the constructor"
                 .x(() => fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured value in fake scope"));
