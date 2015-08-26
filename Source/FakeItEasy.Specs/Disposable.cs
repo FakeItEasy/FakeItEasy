@@ -12,7 +12,7 @@
         public void when_faking_a_disposable_class(
             IDisposable fake)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler;
 
@@ -20,14 +20,14 @@
             })
             .Teardown(() => AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionHandler);
 
-            "when faking a disposable class"._(() =>
+            "when faking a disposable class".x(() =>
             {
                 fake = null;
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
         });
 
-            "it should not throw when finalized"._(() =>
+            "it should not throw when finalized".x(() =>
             {
                 exception.Should().BeNull();
             });

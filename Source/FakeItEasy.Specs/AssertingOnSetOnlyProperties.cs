@@ -9,18 +9,18 @@
         public void when_asserting_on_set_only_properties(
             ISetOnly setOnly)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 setOnly = A.Fake<ISetOnly>();
             });
 
-            "when assertion on set only properties"._(() =>
+            "when assertion on set only properties".x(() =>
             { 
                 setOnly.MyProperty = 1;
                 setOnly.MyProperty2 = false;
             });
 
-            "it should be able to assert with argument constraint"._(() =>
+            "it should be able to assert with argument constraint".x(() =>
             {
                 A.CallTo(setOnly).Where(x => x.Method.Name == "set_MyProperty")
                     .WhenArgumentsMatch(x => x.Get<int>(0) == 1).MustHaveHappened();

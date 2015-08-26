@@ -20,19 +20,19 @@
             string condition = "someone_else";
             string knownOutput = "you";
 
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 subject = A.Fake<IHaveAnOut>();
             });
 
-            "when configuring a fake to assign out and ref parameters lazily using func"._(() =>
+            "when configuring a fake to assign out and ref parameters lazily using func".x(() =>
             {
                 A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
                     .WithAnyArguments()
                     .AssignsOutAndRefParametersLazily((string value) => new object[] { value == condition ? knownOutput : "me" });
             });
 
-            "it should assign the conditional value to the out field"._(() =>
+            "it should assign the conditional value to the out field".x(() =>
             {
                 string value = condition;
                 subject.MightReturnAKnownValue(out value);
@@ -48,19 +48,19 @@
             string condition = "someone_else";
             string knownOutput = "you";
 
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 subject = A.Fake<IHaveAnOut>();
             });
 
-            "when configuring a fake to assign out and ref parameters lazily using func"._(() =>
+            "when configuring a fake to assign out and ref parameters lazily using func".x(() =>
             {
                 A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
                     .WithAnyArguments()
                     .AssignsOutAndRefParametersLazily((call) => new object[] { call.Arguments.Get<string>(0) == condition ? knownOutput : "me" });
             });
 
-            "it should assign the conditional value to the out field"._(() =>
+            "it should assign the conditional value to the out field".x(() =>
             {
                 string value = condition;
                 subject.MightReturnAKnownValue(out value);
@@ -76,19 +76,19 @@
             string condition = "someone_else";
             string knownOutput = "you";
 
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 subject = A.Fake<IHaveAnOut>();
             });
 
-            "when configuring a fake to assign out and ref parameters lazily using func"._(() =>
+            "when configuring a fake to assign out and ref parameters lazily using func".x(() =>
             {
                 A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
                     .WithAnyArguments()
                     .AssignsOutAndRefParameters(knownOutput);
             });
 
-            "it should assign the conditional value to the out field"._(() =>
+            "it should assign the conditional value to the out field".x(() =>
             {
                 string value = condition;
                 subject.MightReturnAKnownValue(out value);

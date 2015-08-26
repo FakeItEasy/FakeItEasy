@@ -18,7 +18,7 @@
             IMyInterface fake,
             Exception exception)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 fake = A.Fake<IMyInterface>(o => o.Strict());
                 ////fake = A.Fake<IMyInterface>();
@@ -29,17 +29,17 @@
                 fake.DoIt(Guid.Empty);
             });
 
-            "when asserting must have happened when did not happen"._(() =>
+            "when asserting must have happened when did not happen".x(() =>
             {
                 exception = Record.Exception(() => A.CallTo(() => fake.DoIt(Guid.Empty)).MustHaveHappened(Repeated.Exactly.Once));
             });
 
-            "it should throw an expectation exception"._(() =>
+            "it should throw an expectation exception".x(() =>
             {
                 exception.Should().BeAnExceptionOfType<ExpectationException>();
             });
 
-            "it should have an exception message containing the name of the method"._(() =>
+            "it should have an exception message containing the name of the method".x(() =>
             {
                 exception.Message.Should().Contain("DoIt");
             });

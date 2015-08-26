@@ -20,17 +20,17 @@
             AbstractBaseClass fake,
             string result)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods());
             });
 
-            "when concrete method is called on fake that calls base methods"._(() =>
+            "when concrete method is called on fake that calls base methods".x(() =>
             {
                 result = fake.ConcreteMethod();
             });
 
-            "it should call base method"._(() =>
+            "it should call base method".x(() =>
             {
                 result.Should().Be("result from base method");
             });
@@ -41,17 +41,17 @@
             AbstractBaseClass fake,
             string result = "some non-default value")
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods());
             });
 
-            "when concrete method is called on fake that calls base methods"._(() =>
+            "when concrete method is called on fake that calls base methods".x(() =>
             {
                 result = fake.AbstractMethod();
             });
 
-            "it should return default value"._(() =>
+            "it should return default value".x(() =>
             {
                 result.Should().BeEmpty();
             });

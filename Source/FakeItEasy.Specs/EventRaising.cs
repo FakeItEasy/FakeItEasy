@@ -117,12 +117,12 @@
         public void when_raising_unsubscribed_event(
             Exception caughtException)
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 caughtException = Record.Exception(() => Fake.UnsubscribedEvent += Raise.WithEmpty());
             });
 
-            "it should not throw"._(() =>
+            "it should not throw".x(() =>
             {
                 caughtException.Should().BeNull();
             });
@@ -131,17 +131,17 @@
         [Scenario]
         public void when_raising_event_using_WithEmpty()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.SubscribedEvent += Raise.WithEmpty();
             });
 
-            "it should pass the fake as sender"._(() =>
+            "it should pass the fake as sender".x(() =>
             {
                 CapturedSender.Should().BeSameAs(Fake);
             });
 
-            "it should pass empty event arguments"._(() =>
+            "it should pass empty event arguments".x(() =>
             {
                 CapturedArgs1.Should().Be(EventArgs.Empty);
             });
@@ -150,17 +150,17 @@
         [Scenario]
         public void when_raising_event_passing_arguments()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.SubscribedEvent += Raise.With(EventArgs);
             });
 
-            "it should pass the fake as sender"._(() =>
+            "it should pass the fake as sender".x(() =>
             {
                 CapturedSender.Should().BeSameAs(Fake);
             });
 
-            "it should pass the event arguments"._(() =>
+            "it should pass the event arguments".x(() =>
             {
                 CapturedArgs1.Should().BeSameAs(EventArgs);
             });
@@ -169,17 +169,17 @@
         [Scenario]
         public void when_raising_event_passing_sender_and_arguments()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.SubscribedEvent += Raise.With(SampleSender, EventArgs);
             });
 
-            "it should pass the sender"._(() =>
+            "it should pass the sender".x(() =>
             {
                 CapturedSender.Should().BeSameAs(SampleSender);
             });
 
-            "it should pass the event arguments"._(() =>
+            "it should pass the event arguments".x(() =>
             {
                 CapturedArgs1.Should().BeSameAs(EventArgs);
             });
@@ -188,17 +188,17 @@
         [Scenario]
         public void when_raising_event_passing_arguments_and_null_sender()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.SubscribedEvent += Raise.With(null, EventArgs);
             });
 
-            "it should pass null as the sender"._(() =>
+            "it should pass null as the sender".x(() =>
             {
                 CapturedSender.Should().BeNull();
             });
 
-            "it should pass the event arguments"._(() =>
+            "it should pass the event arguments".x(() =>
             {
                 CapturedArgs1.Should().BeSameAs(EventArgs);
             });
@@ -209,23 +209,23 @@
             int handler1InvocationCount,
             int handler2InvocationCount)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 Fake.SubscribedEvent += (s, e) => handler1InvocationCount++;
                 Fake.SubscribedEvent += (s, e) => handler2InvocationCount++;
             });
 
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.SubscribedEvent += Raise.WithEmpty();
             });
 
-            "it should invoke the first handler once"._(() =>
+            "it should invoke the first handler once".x(() =>
             {
                 handler1InvocationCount.Should().Be(1);
             });
 
-            "it should invoke the second handler once"._(() =>
+            "it should invoke the second handler once".x(() =>
             {
                 handler2InvocationCount.Should().Be(1);
             });
@@ -234,17 +234,17 @@
         [Scenario]
         public void when_raising_generic_event_passing_arguments()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.GenericEvent += Raise.With(CustomEventArgs);
             });
 
-            "it should pass the fake as sender"._(() =>
+            "it should pass the fake as sender".x(() =>
             {
                 CapturedSender.Should().BeSameAs(Fake);
             });
 
-            "it should pass the event arguments"._(() =>
+            "it should pass the event arguments".x(() =>
             {
                 CapturedArgs1.Should().BeSameAs(CustomEventArgs);
             });
@@ -253,17 +253,17 @@
         [Scenario]
         public void when_raising_generic_event_passing_sender_and_arguments()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.GenericEvent += Raise.With(SampleSender, CustomEventArgs);
             });
 
-            "it should pass the sender"._(() =>
+            "it should pass the sender".x(() =>
             {
                 CapturedSender.Should().BeSameAs(SampleSender);
             });
 
-            "it should pass the event arguments"._(() =>
+            "it should pass the event arguments".x(() =>
             {
                 CapturedArgs1.Should().BeSameAs(CustomEventArgs);
             });
@@ -272,17 +272,17 @@
         [Scenario]
         public void when_raising_generic_event_passing_arguments_and_null_sender()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.GenericEvent += Raise.With(null, CustomEventArgs);
             });
 
-            "it should pass null as the sender"._(() =>
+            "it should pass null as the sender".x(() =>
             {
                 CapturedSender.Should().BeNull();
             });
 
-            "it should pass the event arguments"._(() =>
+            "it should pass the event arguments".x(() =>
             {
                 CapturedArgs1.Should().BeSameAs(CustomEventArgs);
             });
@@ -291,17 +291,17 @@
         [Scenario]
         public void when_raising_custom_event_passing_sender_and_arguments()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.CustomEvent += Raise.With<CustomEventHandler>(SampleSender, CustomEventArgs);
             });
 
-            "it should pass the sender"._(() =>
+            "it should pass the sender".x(() =>
             {
                 CapturedSender.Should().BeSameAs(SampleSender);
             });
 
-            "it should pass the event arguments"._(() =>
+            "it should pass the event arguments".x(() =>
             {
                 CapturedArgs1.Should().BeSameAs(CustomEventArgs);
             });
@@ -310,12 +310,12 @@
         [Scenario]
         public void when_raising_reference_type_event_passing_arguments()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(ReferenceTypeEventArgs);
             });
 
-            "it should pass the event arguments"._(() =>
+            "it should pass the event arguments".x(() =>
             {
                 CapturedArgs1.Should().BeSameAs(ReferenceTypeEventArgs);
             });
@@ -324,12 +324,12 @@
         [Scenario]
         public void when_raising_reference_type_event_passing_derived_arguments()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(DerivedReferenceTypeEventArgs);
             });
 
-            "it should pass the event arguments"._(() =>
+            "it should pass the event arguments".x(() =>
             {
                 CapturedArgs1.Should().BeSameAs(DerivedReferenceTypeEventArgs);
             });
@@ -338,13 +338,13 @@
         [Scenario]
         public void when_raising_reference_type_event_passing_invalid_argument_type()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 CatchException(() =>
             Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(new Hashtable()));
             });
 
-            "it should fail with good message"._(() =>
+            "it should fail with good message".x(() =>
             {
                 const string ExpectedMessage =
             "The event has the signature (FakeItEasy.Specs.ReferenceType), " +
@@ -358,13 +358,13 @@
         [Scenario]
         public void when_raising_value_type_event_passing_null_argument()
         {
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 CatchException(() =>
                     Fake.ValueTypeEvent += Raise.With<ValueTypeEventHandler>((object)null));
             });
 
-            "it should fail with good message"._(() =>
+            "it should fail with good message".x(() =>
             {
                 CaughtException.Should().BeAnExceptionOfType<FakeConfigurationException>()
             .And.Message.Should().Be(
@@ -378,17 +378,17 @@
             int eventArgs1 = 19;
             bool eventArgs2 = true;
 
-            "when raising unsubscribed event"._(() =>
+            "when raising unsubscribed event".x(() =>
             {
                 Fake.ActionEvent += Raise.With<Action<int, bool>>(eventArgs1, eventArgs2);
             });
 
-            "it should pass the first argument"._(() =>
+            "it should pass the first argument".x(() =>
             {
                 CapturedArgs1.Should().Be(eventArgs1);
             });
 
-            "it should pass the second argument"._(() =>
+            "it should pass the second argument".x(() =>
             {
                 CapturedArgs2.Should().Be(eventArgs2);
             });

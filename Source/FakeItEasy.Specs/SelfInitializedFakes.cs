@@ -26,7 +26,7 @@
             int count2ForBook1DuringPlayback,
             int count1ForBook2DuringPlayback)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 inMemoryStorage = new InMemoryStorage();
 
@@ -39,7 +39,7 @@
                     .Returns(3);
             });
 
-            "when self initializing a fake"._(() =>
+            "when self initializing a fake".x(() =>
             {
                 using (var recorder = new RecordingManager(inMemoryStorage))
                 {
@@ -62,33 +62,33 @@
                 }
             });
 
-            "it should forward calls to the wrapped service while recording"._(() =>
+            "it should forward calls to the wrapped service while recording".x(() =>
             {
                 A.CallTo(() => realServiceWhileRecording.GetCount("9780345813923"))
                 .MustHaveHappened(Repeated.Exactly.Twice);
             });
 
-            "it should return the result while recording"._(() =>
+            "it should return the result while recording".x(() =>
             {
                 count1ForBook1WhileRecording.Should().Be(11);
             });
 
-            "it should not forward calls to the wrapped service during playback"._(() =>
+            "it should not forward calls to the wrapped service during playback".x(() =>
             {
                 A.CallTo(realServiceDuringPlayback).MustNotHaveHappened();
             });
 
-            "it should return the recorded result for the first set of arguments"._(() =>
+            "it should return the recorded result for the first set of arguments".x(() =>
             {
                 count1ForBook1DuringPlayback.Should().Be(11);
             });
 
-            "it should return the recorded result for the second set of arguments"._(() =>
+            "it should return the recorded result for the second set of arguments".x(() =>
             {
                 count1ForBook2DuringPlayback.Should().Be(3);
             });
 
-            "it should return the second recorded result when arguments are repeated"._(() =>
+            "it should return the second recorded result when arguments are repeated".x(() =>
             {
                 count2ForBook1DuringPlayback.Should().Be(10);
             });
@@ -118,7 +118,7 @@
             int countWhileRecording,
             int countDuringPlayback)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 fileRecorderPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
@@ -128,7 +128,7 @@
                 A.CallTo(() => realServiceWhileRecording.GetCount("9780345813923")).Returns(8);
             });
 
-            "when self initializing a fake"._(() =>
+            "when self initializing a fake".x(() =>
             {
                 try
                 {
@@ -154,12 +154,12 @@
             })
             .Teardown(() => File.Delete(fileRecorderPath));
 
-            "it should return the expected result while recording"._(() =>
+            "it should return the expected result while recording".x(() =>
             {
                 countWhileRecording.Should().Be(8);
             });
 
-            "it should return the recorded result during playback"._(() =>
+            "it should return the recorded result during playback".x(() =>
             {
                 countDuringPlayback.Should().Be(8);
             });

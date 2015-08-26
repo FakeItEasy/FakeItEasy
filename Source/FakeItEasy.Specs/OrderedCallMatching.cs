@@ -11,12 +11,12 @@
             IFoo fake,
             Exception exception)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 fake = A.Fake<IFoo>();
             });
 
-            "when failing to match ordered non generic calls"._(() =>
+            "when failing to match ordered non generic calls".x(() =>
             {
                 using (var scope = Fake.CreateScope())
                 {
@@ -30,7 +30,7 @@
                 }
             });
 
-            "it should tell us that the call was not matched"._(() =>
+            "it should tell us that the call was not matched".x(() =>
             {
                 exception.Message.Should().Be(
 @"
@@ -55,12 +55,12 @@
             IGenericFoo fake,
             Exception exception)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 fake = A.Fake<IGenericFoo>();
             });
 
-            "when failing to match ordered non generic calls"._(() =>
+            "when failing to match ordered non generic calls".x(() =>
             {
                 using (var scope = Fake.CreateScope())
                 {
@@ -74,7 +74,7 @@
                 }
             });
 
-            "it should tell us that the call was not matched"._(() =>
+            "it should tell us that the call was not matched".x(() =>
             {
                 exception.Message.Should().Be(
 @"

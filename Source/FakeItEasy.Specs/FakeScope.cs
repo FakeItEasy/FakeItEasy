@@ -14,7 +14,7 @@
             string virtualMethodValueInsideOfScope,
             string virtualMethodValueOutsideOfScope)
         {
-            "establish"._(() =>
+            "establish".x(() =>
                     {
                         fakeObjectContainer = A.Fake<IFakeObjectContainer>();
                         A.CallTo(() => fakeObjectContainer.ConfigureFake(A<Type>._, A<object>._))
@@ -23,7 +23,7 @@
                                 A.CallTo(options).WithReturnType<string>().Returns("configured value in fake scope"));
                     });
 
-            "when configuring a method called by a constructor from within a scope"._(() =>
+            "when configuring a method called by a constructor from within a scope".x(() =>
                     {
                         using (Fake.CreateScope(fakeObjectContainer))
                         {
@@ -34,20 +34,20 @@
                         virtualMethodValueOutsideOfScope = fake.VirtualMethod(null);
                     });
 
-            "it should call ConfigureFake of the fake scope"._(() =>
+            "it should call ConfigureFake of the fake scope".x(() =>
                     {
                         A.CallTo(() => fakeObjectContainer.ConfigureFake(typeof(MakesVirtualCallInConstructor), fake))
                             .MustHaveHappened();
                     });
 
             "it should return the configured value within the scope during the constructor"
-                ._(() => fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured value in fake scope"));
+                .x(() => fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured value in fake scope"));
 
             "it should return the configured value within the scope after the constructor"
-                ._(() => virtualMethodValueInsideOfScope.Should().Be("configured value in fake scope"));
+                .x(() => virtualMethodValueInsideOfScope.Should().Be("configured value in fake scope"));
 
             "it should return default value outside the scope"
-                ._(() => virtualMethodValueOutsideOfScope.Should().Be(string.Empty));
+                .x(() => virtualMethodValueOutsideOfScope.Should().Be(string.Empty));
         }
     }
 }

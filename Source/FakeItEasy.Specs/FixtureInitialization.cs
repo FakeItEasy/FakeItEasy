@@ -10,32 +10,32 @@
         [Scenario]
         public void when_initializing_fixture()
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 Fixture = new ExampleFixture();
             });
 
-            "when initializing fixture"._(() =>
+            "when initializing fixture".x(() =>
             {
                 Fake.InitializeFixture(Fixture);
             });
 
-            "it should set sut"._(() =>
+            "it should set sut".x(() =>
             {
                 Fixture.Sut.Should().NotBeNull();
             });
 
-            "it should use the same instance when more than one dependency is of the same type"._(() =>
+            "it should use the same instance when more than one dependency is of the same type".x(() =>
             {
                 Fixture.Sut.Foo.Should().BeSameAs(Fixture.Sut.Foo2);
             });
 
-            "it should inject fake from fixture"._(() =>
+            "it should inject fake from fixture".x(() =>
             {
                 Fixture.Sut.Foo.Should().BeSameAs(Fixture.Foo);
             });
 
-            "it should inject fake when not available in fixture"._(() =>
+            "it should inject fake when not available in fixture".x(() =>
             {
                 Fixture.Sut.ServiceProvider.Should().NotBeNull();
             });

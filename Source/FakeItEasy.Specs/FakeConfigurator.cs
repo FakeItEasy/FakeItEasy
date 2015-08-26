@@ -12,10 +12,10 @@
             RobotActivatedEvent fake = null;
 
             "when a fake configurator is defined for a set of types"
-                ._(() => fake = A.Fake<RobotActivatedEvent>());
+                .x(() => fake = A.Fake<RobotActivatedEvent>());
 
             "it should configure the fake"
-                ._(() => fake.ID.Should().BeGreaterThan(0));
+                .x(() => fake.ID.Should().BeGreaterThan(0));
         }
 
         [Scenario]
@@ -23,10 +23,10 @@
             RobotRunsAmokEvent fake)
         {
             "when a fake configurator is defined for a set of types"
-                ._(() => fake = A.Fake<RobotRunsAmokEvent>());
+                .x(() => fake = A.Fake<RobotRunsAmokEvent>());
 
             "it should use the one with higher priority"
-                ._(() => fake.ID.Should().Be(-99));
+                .x(() => fake.ID.Should().Be(-99));
         }
 
         [Scenario]
@@ -34,10 +34,10 @@
             RobotRunsAmokEvent fake)
         {
             "when a fake configurator is defined for a set of types"
-                ._(() => fake = A.Fake<RobotRunsAmokEvent>());
+                .x(() => fake = A.Fake<RobotRunsAmokEvent>());
 
             "it should use the configured behavior in the constructor"
-                ._(() => fake.Timestamp.Should().Be(RobotRunsAmokEventFakeConfigurator.ConfiguredTimestamp));
+                .x(() => fake.Timestamp.Should().Be(RobotRunsAmokEventFakeConfigurator.ConfiguredTimestamp));
         }
     }
 

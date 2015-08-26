@@ -10,22 +10,22 @@
         public void when_faking_a_delegate_type_and_invoking_without_configuration(
             Func<string, int> fakedDelegate)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 fakedDelegate = A.Fake<Func<string, int>>();
             });
 
-            "when faking a delegate type"._(() =>
+            "when faking a delegate type".x(() =>
             {
                 fakedDelegate.Invoke("foo");
             });
 
-            "it should be possible to assert the call"._(() =>
+            "it should be possible to assert the call".x(() =>
             {
                 A.CallTo(() => fakedDelegate.Invoke("foo")).MustHaveHappened();
             });
 
-            "it should be possible to assert the call without specifying invoke method"._(() =>
+            "it should be possible to assert the call without specifying invoke method".x(() =>
             {
                 A.CallTo(() => fakedDelegate("foo")).MustHaveHappened();
             });
@@ -36,22 +36,22 @@
             Func<string, int> fakedDelegate,
             int result)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 fakedDelegate = A.Fake<Func<string, int>>();
             });
 
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Returns(10);
             });
 
-            "when faking a delegate type"._(() =>
+            "when faking a delegate type".x(() =>
             {
                 result = fakedDelegate(null);
             });
 
-            "it should return configured value"._(() =>
+            "it should return configured value".x(() =>
             {
                 result.Should().Be(10);
             });
@@ -63,23 +63,23 @@
             FormatException expectedException,
             Exception exception)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 fakedDelegate = A.Fake<Func<string, int>>();
             });
 
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 expectedException = new FormatException();
                 A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Throws(expectedException);
             });
 
-            "when faking a delegate type"._(() =>
+            "when faking a delegate type".x(() =>
             {
                 exception = Catch.Exception(() => fakedDelegate(null));
             });
 
-            "it should throw the configured exception"._(() =>
+            "it should throw the configured exception".x(() =>
             {
                 exception.Should().BeSameAs(expectedException);
             });
@@ -90,22 +90,22 @@
             Func<string, int> fakedDelegate,
             int result)
         {
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 fakedDelegate = A.Fake<Func<string, int>>();
             });
 
-            "establish"._(() =>
+            "establish".x(() =>
             {
                 A.CallTo(() => fakedDelegate(A<string>._)).Returns(10);
             });
 
-            "when faking a delegate type"._(() =>
+            "when faking a delegate type".x(() =>
             {
                 result = fakedDelegate(null);
             });
 
-            "it should return configured value"._(() =>
+            "it should return configured value".x(() =>
             {
                 result.Should().Be(10);
             });
