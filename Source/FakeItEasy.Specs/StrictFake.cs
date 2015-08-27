@@ -14,7 +14,7 @@
     public class StrictFake
     {
         [Scenario]
-        public void Repeated(
+        public void RepeatedAssertion(
             IMyInterface fake,
             Exception exception)
         {
