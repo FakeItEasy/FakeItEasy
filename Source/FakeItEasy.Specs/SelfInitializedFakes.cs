@@ -17,7 +17,7 @@
     public class SelfInitializedFakes
     {
         [Scenario]
-        public void when_self_initializing_a_fake(
+        public void SelfInitializing(
             InMemoryStorage inMemoryStorage, 
             ILibraryService realServiceWhileRecording, 
             ILibraryService realServiceDuringPlayback,
@@ -99,9 +99,9 @@
             }
         }
 
-        [Trait("exxplicit", "yes")]
+        [Trait("explicit", "yes")]
         [Scenario]
-        public void when_self_initializing_a_fake_with_a_FileRecorder(
+        public void SelfInitializingWithFileRecorder(
             string fileRecorderPath,
             ILibraryService realServiceWhileRecording,
             ILibraryService realServiceDuringPlayback,

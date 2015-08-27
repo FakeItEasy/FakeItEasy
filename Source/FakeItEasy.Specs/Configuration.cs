@@ -13,7 +13,7 @@
         }
 
         [Scenario]
-        public void when_configuring_callback(
+        public void Callback(
             IFoo fake,
             bool wasCalled)
         {
@@ -32,7 +32,7 @@
         }
 
         [Scenario]
-        public void when_configuring_multiple_callbacks(
+        public void MultipleCallbacks(
             IFoo fake,
             bool firstWasCalled,
             bool secondWasCalled,
@@ -63,7 +63,7 @@
         }
 
         [Scenario]
-        public void when_configuring_to_call_base_method(
+        public void CallBaseMethod(
             BaseClass fake,
             int returnValue,
             bool callbackWasInvoked)

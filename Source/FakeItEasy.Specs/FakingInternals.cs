@@ -22,7 +22,7 @@
     public class FakingInternals
     {
         [Scenario]
-        public void when_trying_to_fake_invisible_internals(
+        public void InvisibleInternals(
             Exception exception)
         {
             "when trying to fake invisible internals"
@@ -37,7 +37,7 @@
         }
    
         [Scenario]
-        public void when_trying_to_fake_generic_type_with_internal_type_parameters(
+        public void GenericTypeWithInternalTypeParameters(
             Exception exception)
         {
             "when trying to fake generic type with internal type parameters"
@@ -52,7 +52,7 @@
         }
    
         [Scenario]
-        public void when_trying_to_override_internal_method_on_type(
+        public void OverrideInternalMethod(
             TypeWithInternalMethod fake, 
             Exception exception)
         {

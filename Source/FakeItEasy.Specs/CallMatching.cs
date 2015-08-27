@@ -6,10 +6,10 @@
     using FluentAssertions;
     using Xbehave;
 
-    public partial class CallMatching
+    public class CallMatching
     {
         [Scenario]
-        public void when_matching_calls_with_parameter_arrays(
+        public void ParameterArrays(
             ITypeWithParameterArray fake)
         {
             "establish"
@@ -37,7 +37,7 @@
         }
    
         [Scenario]
-        public void when_failing_to_match_non_generic_calls(
+        public void FailingMatchOfNonGenericCalls(
             IFoo fake,
             Exception exception)
         {
@@ -71,7 +71,7 @@
         }
 
         [Scenario]
-        public void when_failing_to_match_generic_calls(
+        public void FailingMatchOfGenericCalls(
             IGenericFoo fake,
             Exception exception)
         {
@@ -109,7 +109,7 @@
         }
 
         [Scenario]
-        public void when_no_non_generic_calls(
+        public void NoNonGeneriCalls(
             IBarFoo fake,
             Exception exception)
         {
@@ -136,7 +136,7 @@
         }
 
         [Scenario]
-        public void when_no_generic_calls(
+        public void NoGenericCalls(
             IGenericBarFoo fake,
             Exception exception)
         {
@@ -167,7 +167,7 @@
         }
 
         [Scenario]
-        public void when_matching_a_call_with_an_out_parameter(
+        public void OutParameter(
             IDictionary<string, string> subject)
         {
             "establish"
@@ -203,7 +203,7 @@
         }
 
         [Scenario]
-        public void when_failing_to_match_a_call_with_an_out_parameter(
+        public void FailingMatchOfOutParameter(
             IDictionary<string, string> subject)
         {
             Exception exception = null;
@@ -234,7 +234,7 @@
         }
 
         [Scenario]
-        public void when_matching_a_call_with_a_ref_parameter(
+        public void RefParameter(
             IHaveInterestingParameters subject)
         {
             "establish"
@@ -289,7 +289,7 @@
         /// Ensure that such parameters are not confused with <c>out</c> parameters.
         /// </summary>
         [Scenario]
-        public void when_matching_a_call_with_a_parameter_having_an_out_attribute(
+        public void ParameterHavingAnOutAttribute(
              ITooHaveInterestingParameters subject)
         {
             "establish"

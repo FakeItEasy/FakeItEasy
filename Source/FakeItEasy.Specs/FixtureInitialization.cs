@@ -8,7 +8,7 @@
     public class FixtureInitialization
     {
         [Scenario]
-        public void when_initializing_fixture()
+        public void Initialization()
         {
             "establish"
                 .x(() => Fixture = new ExampleFixture());

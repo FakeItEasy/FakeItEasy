@@ -9,7 +9,7 @@
     public class Lazy
     {
         [Scenario]
-        public void when_calling_a_method_that_returns_a_lazy(
+        public void LazyReturnValue(
             ILazyFactory fake,
             Lazy<IFoo> lazy)
         {

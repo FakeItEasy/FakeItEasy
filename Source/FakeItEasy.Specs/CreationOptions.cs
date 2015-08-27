@@ -15,7 +15,7 @@
     public class CreationOptions
     {
         [Scenario]
-        public void when_ConfigureFake_is_used_to_configure_a_method(
+        public void ConfigureFakeDuringConstruction(
             MakesVirtualCallInConstructor fake)
         {
             "when ConfigureFake is used to configure a method"
@@ -35,7 +35,7 @@
         }
 
         [Scenario]
-        public void when_ConfigureFake_is_used_to_configure_a_method_also_configured_by_a_FakeConfigurator(
+        public void ConfigureFakeOverridesFakeConfigurator(
             RobotRunsAmokEvent fake)
         {
             "when ConfigureFake is used to configure a method also configured by a FakeConfigurator"
@@ -48,7 +48,7 @@
         }
 
         [Scenario]
-        public void when_ConfigureFake_is_used_twice_to_configure_a_method(
+        public void MultipleConfigureFakeConfigurations(
             MakesVirtualCallInConstructor fake)
         {
             "when ConfigureFake is used twice to configure a method"
@@ -65,7 +65,7 @@
         }
 
         [Scenario]
-        public void when_CallsBaseMethods_followed_by_ConfigureFake_are_used_to_configure_a_fake(
+        public void ConfigureFakeOverridesCallsBaseMethods(
             MakesVirtualCallInConstructor fake)
         {
             "when CallsBaseMethods followed by ConfigureFake are used to configure a fake"
@@ -78,7 +78,7 @@
         }
 
         [Scenario]
-        public void when_Strict_followed_by_ConfigureFake_are_used_to_configure_a_fake(
+        public void StrictCombinedWithConfigureFake(
             MakesVirtualCallInConstructor fake)
         {
             "when Strict followed by ConfigureFake are used to configure a fake"
@@ -95,7 +95,7 @@
         }
 
         [Scenario]
-        public void when_Wrapping_followed_by_ConfigureFake_are_used_to_configure_a_fake(
+        public void WrappingCombinedWithConfigureFake(
             MakesVirtualCallInConstructor fake)
         {
             "when Wrapping followed by ConfigureFake are used to configure a fake"
@@ -112,7 +112,7 @@
         }
 
         [Scenario]
-        public void when_CallsBaseMethods_is_used_to_configure_a_fake(
+        public void CallsBaseMethodsDuringConstruction(
             MakesVirtualCallInConstructor fake)
         {
             "when CallsBaseMethods is used to configure a fake"
@@ -126,7 +126,7 @@
         }
 
         [Scenario]
-        public void when_ConfigureFake_followed_by_CallsBaseMethods_are_used_to_configure_a_fake(
+        public void CallsBaseMethodsOverridesConfigureFake(
             MakesVirtualCallInConstructor fake)
         {
             "when ConfigureFake followed by CallsBaseMethods are used to configure a fake"
@@ -139,7 +139,7 @@
         }
 
         [Scenario]
-        public void when_Strict_followed_by_CallsBaseMethods_are_used_to_configure_a_fake(
+        public void CallsBaseMethodsOverridesStrict(
             MakesVirtualCallInConstructor fake)
         {
             "when Strict followed by CallsBaseMethods are used to configure a fake"
@@ -152,7 +152,7 @@
         }
 
         [Scenario]
-        public void when_Wrapping_followed_by_CallsBaseMethods_are_used_to_configure_a_fake(
+        public void CallsBaseMethodsOverridesWrapping(
             MakesVirtualCallInConstructor fake)
         {
             "when Wrapping followed by CallsBaseMethods are used to configure a fake"
@@ -165,7 +165,7 @@
         }
 
         [Scenario]
-        public void when_Strict_is_used_to_configure_a_fake(
+        public void StrictDuringConstruction(
             MakesVirtualCallInConstructor fake)
         {
             "when Strict is used to configure a fake"
@@ -185,7 +185,7 @@
         }
 
         [Scenario]
-        public void when_CallsBaseMethods_followed_by_Strict_are_used_to_configure_a_fake(
+        public void StrictOverridesCallsBaseMethods(
             MakesVirtualCallInConstructor fake)
         {
             "when CallsBaseMethods followed by Strict are used to configure a fake"
@@ -199,7 +199,7 @@
                              .BeAnExceptionOfType<ExpectationException>());
         }
         [Scenario]
-        public void when_ConfigureFake_followed_by_Strict_are_used_to_configure_a_fake(
+        public void StrictOverridesConfigureFake(
             MakesVirtualCallInConstructor fake)
         {
             "when ConfigureFake followed by Strict are used to configure a fake"
@@ -215,7 +215,7 @@
         }
 
         [Scenario]
-        public void when_Wrapping_followed_by_Strict_are_used_to_configure_a_fake(
+        public void StrictOverridesWrapping(
             MakesVirtualCallInConstructor fake)
         {
             "when Wrapping followed by Strict are used to configure a fake"
@@ -230,7 +230,7 @@
         }
 
         [Scenario]
-        public void when_Wrapping_is_used_to_configure_a_fake(
+        public void WrappingDuringConstruction(
             MakesVirtualCallInConstructor fake)
         {
             "when Wrapping is used to configure a fake"
@@ -245,7 +245,7 @@
         }
 
         [Scenario]
-        public void when_CallsBaseMethods_followed_by_Wrapping_are_used_to_configure_a_fake(
+        public void WrappingOverridesCallsBaseMethods(
             MakesVirtualCallInConstructor fake)
         {
             "when CallsBaseMethods followed by Wrapping are used to configure a fake"
@@ -258,7 +258,7 @@
         }
 
         [Scenario]
-        public void when_ConfigureFake_followed_by_Wrapping_are_used_to_configure_a_fake(
+        public void WrappingOverridesConfigureFake(
             MakesVirtualCallInConstructor fake)
         {
             "when ConfigureFake followed by Wrapping are used to configure a fake"
@@ -275,7 +275,7 @@
         }
 
         [Scenario]
-        public void when_Strict_followed_by_Wrapping_are_used_to_configure_a_fake(
+        public void WrappingOverridesStrict(
             MakesVirtualCallInConstructor fake)
         {
             "when Strict followed by Wrapping are used to configure a fake"
@@ -288,7 +288,7 @@
         }
 
         [Scenario]
-        public void when_Wrapping_is_used_to_configure_a_fake_twice(
+        public void MultipleWrappingConfigurations(
             MakesVirtualCallInConstructor fake)
         {
             "when Wrapping is used to configure a fake twice"
@@ -301,7 +301,7 @@
         }
 
         [Scenario]
-        public void when_Wrapping_is_used_to_configure_a_fake_that_has_a_FakeConfigurator(
+        public void Wrapping(
             RobotRunsAmokEvent fake)
         {
             "when Wrapping is used to configure a fake that has a FakeConfigurator"
@@ -313,7 +313,7 @@
         }
 
         [Scenario]
-        public void when_Implements_is_used_to_configure_a_fake(
+        public void Implements(
             MakesVirtualCallInConstructor fake)
         {
             "when Implements is used to configure a fake"
@@ -325,7 +325,7 @@
         }
 
         [Scenario]
-        public void when_Implements_is_used_to_configure_a_fake_twice()
+        public void MultipleImplementsConfigurations()
         {
             MakesVirtualCallInConstructor fake = null;
 
@@ -345,7 +345,7 @@
         }
 
         [Scenario]
-        public void when_WithAdditionalAttributes_is_used_to_configure_a_fake(
+        public void WithAdditionalAttributes(
             IInterfaceThatWeWillAddAttributesTo1 fake)
         {
             "when WithAdditionalAttributes is used to configure a fake"
@@ -369,7 +369,7 @@
         }
 
         [Scenario]
-        public void when_WithAdditionalAttributes_is_used_to_configure_a_fake_with_a_null_set_of_attributes(
+        public void WithAdditionalAttributesAndNullSetOfAttributes(
             Exception exception)
         {
             "when WithAdditionalAttributes is used to configure a fake with a null set of attributes"
@@ -386,7 +386,7 @@
         }
 
         [Scenario]
-        public void when_WithAdditionalAttributes_is_used_to_configure_a_fake_twice(
+        public void MultipleWithAdditionalAttributesConfigurations(
             IInterfaceThatWeWillAddAttributesTo3 fake)
         {
             "when WithAdditionalAttributes is used to configure a fake twice"
@@ -416,7 +416,7 @@
         }
 
         [Scenario]
-        public void when_WithArgumentsForConstructor_is_used_to_create_a_fake_with_a_list_of_arguments(
+        public void WithArgumentsForConstructor(
             MakesVirtualCallInConstructor fake)
         {
             "when WithArgumentsForConstructor is used to create a fake with a list of arguments"
@@ -435,7 +435,7 @@
         }
 
         [Scenario]
-        public void when_WithArgumentsForConstructor_is_used_to_create_a_fake_twice(
+        public void MultipleWithArgumentsForConstructorConfigurations(
             MakesVirtualCallInConstructor fake)
         {
             "when WithArgumentsForConstructor is used to create a fake twice"
@@ -455,7 +455,7 @@
         }
 
         [Scenario]
-        public void when_WithArgumentsForConstructor_is_used_to_create_a_fake_with_an_example_constructor(
+        public void WithArgumentsForConstructorWithExampleConstructor(
             MakesVirtualCallInConstructor fake)
         {
             "when WithArgumentsForConstructor is used to create a fake with an example constructor"

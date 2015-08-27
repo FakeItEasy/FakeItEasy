@@ -16,7 +16,7 @@
     public class CallsBaseMethodsFake
     {
         [Scenario]
-        public void when_concrete_method_is_called_on_fake_that_calls_base_methods(
+        public void ConcreteMethod(
             AbstractBaseClass fake,
             string result)
         {
@@ -31,7 +31,7 @@
         }
 
         [Scenario]
-        public void when_abstract_method_is_called_on_fake_that_calls_base_methods(
+        public void AbstractMethod(
             AbstractBaseClass fake,
             string result = "some non-default value")
         {

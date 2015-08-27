@@ -9,7 +9,7 @@
         private static Exception exception;
 
         [Scenario]
-        public void when_faking_a_disposable_class(
+        public void FakingDisposable(
             IDisposable fake)
         {
             "establish"

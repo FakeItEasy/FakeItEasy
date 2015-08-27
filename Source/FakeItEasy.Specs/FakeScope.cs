@@ -8,7 +8,7 @@
     public class FakeScope
     {
         [Scenario]
-        public void when_configuring_a_method_called_by_a_constructor_from_within_a_scope(
+        public void CallFromConstructor(
             IFakeObjectContainer fakeObjectContainer,
             MakesVirtualCallInConstructor fake,
             string virtualMethodValueInsideOfScope,

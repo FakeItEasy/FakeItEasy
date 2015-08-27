@@ -6,7 +6,7 @@
     public  class AssertingOnSetOnlyProperties
     {
         [Scenario]
-        public void when_asserting_on_set_only_properties(
+        public void SetOnlyProperties(
             ISetOnly setOnly)
         {
             "establish"

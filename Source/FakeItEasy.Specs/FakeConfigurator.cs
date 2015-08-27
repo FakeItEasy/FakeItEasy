@@ -7,7 +7,7 @@
     public class FakeConfigurator
     {
         [Scenario]
-        public void when_a_fake_configurator_is_defined_for_a_set_of_types()
+        public void DefinedFakeConfigurator()
         {
             RobotActivatedEvent fake = null;
 
@@ -19,7 +19,7 @@
         }
 
         [Scenario]
-        public void when_two_fake_configurators_apply_to_the_same_type(
+        public void FakeConfiguratorPriority(
             RobotRunsAmokEvent fake)
         {
             "when two fake configurators apply to the same type"
@@ -30,7 +30,7 @@
         }
 
         [Scenario]
-        public void when_configuring_a_method_called_by_a_constructor(
+        public void DuringConstruction(
             RobotRunsAmokEvent fake)
         {
             "when configuring a method called by a constructor"

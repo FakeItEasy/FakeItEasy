@@ -14,7 +14,7 @@
     public class AsyncAwait
     {
         [Scenario]
-        public void when_calling_defined_method_with_return_value(
+        public void DefinedMethodWithReturnValue(
             FooAsyncAwait foo,
             Task task)
         {
@@ -34,7 +34,7 @@
         }
 
         [Scenario]
-        public void when_calling_defined_void_method(
+        public void DefinedVoidMethod(
             FooAsyncAwait foo,
             Task task)
         {
@@ -54,7 +54,7 @@
         }
 
         [Scenario]
-        public void when_calling_undefined_method_with_return_value(
+        public void UndefinedMethodWithReturnValue(
             FooAsyncAwait foo,
             Task task)
         {
@@ -69,7 +69,7 @@
         }
 
         [Scenario]
-        public void when_calling_undefined_void_method(
+        public void UndefinedVoidMethod(
             FooAsyncAwait foo,
             Task task)
         {

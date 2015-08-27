@@ -7,7 +7,7 @@
     public class FakingDelegates
     {
         [Scenario]
-        public void when_faking_a_delegate_type_and_invoking_without_configuration(
+        public void WithoutConfiguration(
             Func<string, int> fakedDelegate)
         {
             "establish"
@@ -24,7 +24,7 @@
         }
 
         [Scenario]
-        public void when_faking_a_delegate_type_and_invoking_with_configuration(
+        public void WithConfiguration(
             Func<string, int> fakedDelegate,
             int result)
         {
@@ -42,7 +42,7 @@
         }
 
         [Scenario]
-        public void when_faking_a_delegate_type_and_invoking_with_throwing_configuration(
+        public void Throws(
             Func<string, int> fakedDelegate,
             FormatException expectedException,
             Exception exception)
@@ -65,7 +65,7 @@
         }
 
         [Scenario]
-        public void when_faking_a_delegate_type_and_invoking_with_configuration_without_specifying_invoke_method(
+        public void MissingInvoke(
             Func<string, int> fakedDelegate,
             int result)
         {

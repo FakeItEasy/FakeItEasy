@@ -18,7 +18,7 @@
     public class Creation
     {
         [Scenario]
-        public void when_faking_a_class_whose_constructor_throws(
+        public void ThrowingConstructor(
             Exception exception)
         {
             "when faking a class whose constructor throws"
@@ -39,7 +39,7 @@
 
         // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
         [Scenario]
-        public void when_faking_a_class_whose_first_constructor_fails(
+        public void UseSuccessfulConstructor(
             FakedClass fake)
         {
             "when faking a class whose first constructor fails"

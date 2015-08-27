@@ -14,7 +14,7 @@
     public class StrictFake
     {
         [Scenario]
-        public void when_asserting_must_have_happened_when_did_not_happen(
+        public void Repeated(
             IMyInterface fake,
             Exception exception)
         {

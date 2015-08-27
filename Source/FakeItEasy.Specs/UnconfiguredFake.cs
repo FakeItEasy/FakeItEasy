@@ -7,7 +7,7 @@
     public class UnconfiguredFake
     {
         [Scenario]
-        public void when_faking_a_class_with_a_virtual_method(
+        public void VirtualMethod(
             MakesVirtualCallInConstructor fake)
         {
             "when faking a class with a virtual method"
@@ -27,7 +27,7 @@
         }
 
         [Scenario]
-        public void when_faking_a_class_with_virtual_properties(
+        public void VirtualProperties(
             FakedClass fake)
         {
             "when faking a class with virtual properties"

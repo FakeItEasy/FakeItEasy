@@ -20,6 +20,12 @@
     {
     }
 
+    public delegate void CustomEventHandler(object sender, CustomEventArgs e);
+
+    public delegate void ReferenceTypeEventHandler(ReferenceType arg);
+
+    public delegate void ValueTypeEventHandler(int arg);
+
     public class EventRaising
     {
         [Background]
@@ -63,12 +69,6 @@
                 CapturedArgs2 = arg2;
             };
         }
-
-        public delegate void CustomEventHandler(object sender, CustomEventArgs e);
-
-        public delegate void ReferenceTypeEventHandler(ReferenceType arg);
-
-        public delegate void ValueTypeEventHandler(int arg);
 
         public interface IEvents
         {
@@ -114,7 +114,7 @@
         }
 
         [Scenario]
-        public void when_raising_unsubscribed_event(
+        public void UnsubscribedEvent(
             Exception caughtException)
         {
             "when raising unsubscribed event"
@@ -125,7 +125,7 @@
         }
 
         [Scenario]
-        public void when_raising_event_using_WithEmpty()
+        public void WithEmpty()
         {
             "when raising event using WithEmpty"
                 .x(() => Fake.SubscribedEvent += Raise.WithEmpty());
@@ -138,7 +138,7 @@
         }
 
         [Scenario]
-        public void when_raising_event_passing_arguments()
+        public void EventArguments()
         {
             "when raising event passing arguments"
                 .x(() => Fake.SubscribedEvent += Raise.With(this.EventArgs));
@@ -151,7 +151,7 @@
         }
 
         [Scenario]
-        public void when_raising_event_passing_sender_and_arguments()
+        public void SenderAndEventArguments()
         {
             "when raising event passing sender and arguments"
                 .x(() => Fake.SubscribedEvent += Raise.With(SampleSender, this.EventArgs));
@@ -164,7 +164,7 @@
         }
 
         [Scenario]
-        public void when_raising_event_passing_arguments_and_null_sender()
+        public void NullSenderAndEventArguments()
         {
             "when raising event passing arguments and null sender"
                 .x(() => Fake.SubscribedEvent += Raise.With(null, this.EventArgs));
@@ -177,7 +177,7 @@
         }
 
         [Scenario]
-        public void when_raising_event_with_multiple_subscribers(
+        public void MultipleSubscribers(
             int handler1InvocationCount,
             int handler2InvocationCount)
         {
@@ -199,7 +199,7 @@
         }
 
         [Scenario]
-        public void when_raising_generic_event_passing_arguments()
+        public void CustomEventArguments()
         {
             "when raising generic event passing arguments"
                 .x(() => Fake.GenericEvent += Raise.With(this.CustomEventArgs));
@@ -212,7 +212,7 @@
         }
 
         [Scenario]
-        public void when_raising_generic_event_passing_sender_and_arguments()
+        public void SenderAndCustomEventArguments()
         {
             "when raising generic event passing sender and arguments"
                 .x(() => Fake.GenericEvent += Raise.With(SampleSender, this.CustomEventArgs));
@@ -225,7 +225,7 @@
         }
 
         [Scenario]
-        public void when_raising_generic_event_passing_arguments_and_null_sender()
+        public void NullSenderAndCustomEventArguments()
         {
             "when raising generic event passing arguments and null sender"
                 .x(() => Fake.GenericEvent += Raise.With(null, this.CustomEventArgs));
@@ -238,7 +238,7 @@
         }
 
         [Scenario]
-        public void when_raising_custom_event_passing_sender_and_arguments()
+        public void CustomEventHandler()
         {
             "when raising custom event passing sender and arguments"
                 .x(() => Fake.CustomEvent += Raise.With<CustomEventHandler>(SampleSender, this.CustomEventArgs));
@@ -251,7 +251,7 @@
         }
 
         [Scenario]
-        public void when_raising_reference_type_event_passing_arguments()
+        public void ReferenceTypeEventHandler()
         {
             "when raising reference type event passing arguments"
                 .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.ReferenceTypeEventArgs));
@@ -261,7 +261,7 @@
         }
 
         [Scenario]
-        public void when_raising_reference_type_event_passing_derived_arguments()
+        public void ReferenceTypeEventHandlerWithDerivedArguments()
         {
             "when raising reference type event passing derived arguments"
                 .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.DerivedReferenceTypeEventArgs));
@@ -271,7 +271,7 @@
         }
 
         [Scenario]
-        public void when_raising_reference_type_event_passing_invalid_argument_type()
+        public void ReferenceTypeEventHandlerWithInvalidArgumentType()
         {
             "when raising reference type event passing invalid argument type"
                 .x(() => CatchException(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(new Hashtable())));
@@ -289,7 +289,7 @@
         }
    
         [Scenario]
-        public void when_raising_value_type_event_passing_null_argument()
+        public void ValueTypeEventHandlerWithNullValue()
         {
             "when raising value type event passing null argument"
                 .x(() => CatchException(() =>
@@ -302,7 +302,7 @@
         }
    
         [Scenario]
-        public void when_raising_action_event_passing_arguments()
+        public void ActionEvent()
         {
             int eventArgs1 = 19;
             bool eventArgs2 = true;

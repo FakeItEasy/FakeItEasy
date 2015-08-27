@@ -7,7 +7,8 @@
     public class DummyFactory
     {
         [Scenario]
-        public void when_a_dummy_factory_is_defined_for_a_set_of_types(RobotActivatedEvent dummy)
+        public void DummyFactoryUsage(
+            RobotActivatedEvent dummy)
         {
             "when a dummy factory is defined for a set of types"
                 .x(() => dummy = A.Dummy<RobotActivatedEvent>());
@@ -17,7 +18,8 @@
         }
 
         [Scenario]
-        public void when_two_dummy_factories_apply_to_the_same_type(RobotRunsAmokEvent dummy)
+        public void DummyFactoryPriority(
+            RobotRunsAmokEvent dummy)
         {
             "when two dummy factories apply to the same type"
                 .x(() => dummy = A.Dummy<RobotRunsAmokEvent>());

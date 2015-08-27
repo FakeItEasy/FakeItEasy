@@ -13,7 +13,7 @@
     public class AssignsOutAndRefParameters
     {
         [Scenario]
-        public void when_configuring_a_fake_to_assign_out_and_ref_parameters_lazily_using_func(
+        public void AssignOutAndRefParametersLazilyUsingFunc(
             IHaveAnOut subject,
             string outValue)
         {
@@ -63,7 +63,7 @@
         }
 
         [Scenario]
-        public void when_configuring_a_fake_to_assign_out_and_ref_parameters(
+        public void AssignOutAndRefParametersLazilyUsingCall(
             IHaveAnOut subject,
             string outValue)
         {

@@ -7,7 +7,7 @@
     public class OrderedCallMatching
     {
         [Scenario]
-        public void when_failing_to_match_ordered_non_generic_calls(
+        public void NonGenericCalls(
             IFoo fake,
             Exception exception)
         {
@@ -48,7 +48,7 @@
         }
     
         [Scenario]
-        public void when_failing_to_match_ordered_generic_calls(
+        public void GenericCalls(
             IGenericFoo fake,
             Exception exception)
         {

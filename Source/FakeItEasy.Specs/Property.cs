@@ -37,7 +37,7 @@
     public class Property
     {
         [Scenario]
-        public void when_setting_the_value_of_an_indexed_property(
+        public void SettingIndexedProperty(
             IHaveInterestingProperties subject)
         {
             "establish"
@@ -76,7 +76,7 @@
         }
 
         [Scenario]
-        public void when_setting_the_value_of_an_indexed_property_for_different_indexes(
+        public void SettingIndexedPropertyForDifferentIndexes(
             IHaveInterestingProperties subject)
         {
             "establish"
@@ -97,7 +97,7 @@
         }
 
         [Scenario]
-        public void when_getting_the_value_of_an_unconfigured_fakeable_property(
+        public void GettingUnconfiguredFakeableProperty(
             IHaveInterestingProperties subject, 
             IHaveInterestingProperties firstValue, 
             IHaveInterestingProperties secondValue)
@@ -120,7 +120,7 @@
         }
 
         [Scenario]
-        public void when_getting_the_value_of_an_unconfigured_unfakeable_property(
+        public void GettingUnconfiguredUnfakeableProperty(
             IHaveInterestingProperties subject, 
             UnfakeableClass firstValue, 
             UnfakeableClass secondValue)
