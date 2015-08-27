@@ -5,6 +5,7 @@
     using System.Runtime.InteropServices;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     public class CallMatching
     {
@@ -49,7 +50,7 @@
                     {
                         fake.Bar(1);
                         fake.Bar(2);
-                        exception = Catch.Exception(() => A.CallTo(() => fake.Bar(3)).MustHaveHappened());
+                        exception = Record.Exception(() => A.CallTo(() => fake.Bar(3)).MustHaveHappened());
                     });
 
             "it should tell us that the call was not matched"
@@ -83,7 +84,7 @@
                     {
                         fake.Bar(1, 2D);
                         fake.Bar(new Generic<bool, long>(), 3);
-                        exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened());
+                        exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened());
                     });
 
             "it should tell us that the call was not matched"
@@ -117,7 +118,7 @@
                 .x(() => fake = A.Fake<IBarFoo>());
 
             "when_no_non_generic_calls"
-                .x(() => exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened()));
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened()));
 
             "it should tell us that the call was not matched"
                 .x(() => exception.Message.Should().Be(
@@ -144,7 +145,7 @@
                 .x(() => fake = A.Fake<IGenericBarFoo>());
 
             "when no generic calls"
-                .x(() => exception = Catch.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened()));
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened()));
 
             "it should tell us that the call was not matched"
                 .x(() => exception.Message.Should().Be(
@@ -217,7 +218,7 @@
                         string outString = null;
 
                         exception =
-                            Catch.Exception(
+                            Record.Exception(
                                 () => A.CallTo(() => subject.TryGetValue("any key", out outString))
                                     .MustHaveHappened());
                     });

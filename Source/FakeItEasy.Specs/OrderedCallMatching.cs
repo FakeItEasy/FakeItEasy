@@ -3,6 +3,7 @@
     using System;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     public class OrderedCallMatching
     {
@@ -24,7 +25,7 @@
                             using (scope.OrderedAssertions())
                             {
                                 A.CallTo(() => fake.Bar(2)).MustHaveHappened();
-                                exception = Catch.Exception(() => A.CallTo(() => fake.Bar(1)).MustHaveHappened());
+                                exception = Record.Exception(() => A.CallTo(() => fake.Bar(1)).MustHaveHappened());
                             }
                         }
                     });
@@ -65,7 +66,7 @@
                             using (scope.OrderedAssertions())
                             {
                                 A.CallTo(() => fake.Bar(A<Generic<bool>>.Ignored)).MustHaveHappened();
-                                exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened());
+                                exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened());
                             }
                         }
                     });

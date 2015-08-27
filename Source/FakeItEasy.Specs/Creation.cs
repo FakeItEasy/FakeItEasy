@@ -6,6 +6,7 @@
     using FakeItEasy.Core;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     public class ClassWhoseConstructorThrows
     {
@@ -22,7 +23,7 @@
             Exception exception)
         {
             "when faking a class whose constructor throws"
-                .x(() => exception = Catch.Exception(() => A.Fake<ClassWhoseConstructorThrows>()));
+                .x(() => exception = Record.Exception(() => A.Fake<ClassWhoseConstructorThrows>()));
 
             "it should throw a FakeCreationException"
                 .x(() => exception.Should().BeOfType<FakeCreationException>());

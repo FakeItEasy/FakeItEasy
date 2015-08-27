@@ -110,7 +110,7 @@
 
         protected static void CatchException(Action action)
         {
-            CaughtException = Catch.Exception(action);
+            CaughtException = Record.Exception(action);
         }
 
         [Scenario]

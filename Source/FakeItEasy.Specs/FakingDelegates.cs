@@ -3,6 +3,7 @@
     using System;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     public class FakingDelegates
     {
@@ -58,7 +59,7 @@
                     });
 
             "when faking a delegate type and invoking with throwing configuration"
-                .x(() => exception = Catch.Exception(() => fakedDelegate(null)));
+                .x(() => exception = Record.Exception(() => fakedDelegate(null)));
 
             "it should throw the configured exception"
                 .x(() => exception.Should().BeSameAs(expectedException));

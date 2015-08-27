@@ -6,6 +6,7 @@
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
+    using Record = Xunit.Record;
 
     internal interface IInternal
     {
@@ -26,7 +27,7 @@
             Exception exception)
         {
             "when trying to fake invisible internals"
-                .x(() => exception = Catch.Exception(() => A.Fake<IInternal>()));
+                .x(() => exception = Record.Exception(() => A.Fake<IInternal>()));
 
             "it should throw an exception with a message containing a hint at using internals visible to attribute"
                 .x(() =>
@@ -41,7 +42,7 @@
             Exception exception)
         {
             "when trying to fake generic type with internal type parameters"
-                .x(() => exception = Catch.Exception(() => A.Fake<IList<IInternal>>()));
+                .x(() => exception = Record.Exception(() => A.Fake<IList<IInternal>>()));
 
             "it should throw an exception with a message containing a hint at using internals visible to attribute"
                 .x(() => exception.Message.Should()
@@ -60,7 +61,7 @@
                 .x(() => fake = A.Fake<TypeWithInternalMethod>());
 
             "when trying to override internal method on type"
-                .x(() => exception = Catch.Exception(() => A.CallTo(() => fake.InternalMethod()).Returns(17)));
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.InternalMethod()).Returns(17)));
 
             "it should throw an exception with a message complaining about accessibility"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
