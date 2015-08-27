@@ -22,7 +22,7 @@
         public void when_two_fake_configurators_apply_to_the_same_type(
             RobotRunsAmokEvent fake)
         {
-            "when a fake configurator is defined for a set of types"
+            "when two fake configurators apply to the same type"
                 .x(() => fake = A.Fake<RobotRunsAmokEvent>());
 
             "it should use the one with higher priority"
@@ -33,7 +33,7 @@
         public void when_configuring_a_method_called_by_a_constructor(
             RobotRunsAmokEvent fake)
         {
-            "when a fake configurator is defined for a set of types"
+            "when configuring a method called by a constructor"
                 .x(() => fake = A.Fake<RobotRunsAmokEvent>());
 
             "it should use the configured behavior in the constructor"

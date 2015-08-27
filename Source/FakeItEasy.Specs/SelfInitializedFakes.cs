@@ -119,7 +119,7 @@
                         A.CallTo(() => realServiceWhileRecording.GetCount("9780345813923")).Returns(8);
                     });
 
-            "when self initializing a fake"
+            "when self initializing a fake with a FileRecorder"
                 .x(() =>
                     {
                         try

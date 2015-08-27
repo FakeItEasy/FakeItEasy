@@ -13,7 +13,7 @@
             "establish"
                 .x(() => fakedDelegate = A.Fake<Func<string, int>>());
 
-            "when faking a delegate type"
+            "when faking a delegate type and invoking without configuration"
                 .x(() => fakedDelegate.Invoke("foo"));
 
             "it should be possible to assert the call"
@@ -34,7 +34,7 @@
             "establish"
                 .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Returns(10));
 
-            "when faking a delegate type"
+            "when faking a delegate type and invoking with configuration"
                 .x(() => result = fakedDelegate(null));
 
             "it should return configured value"
@@ -57,7 +57,7 @@
                         A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Throws(expectedException);
                     });
 
-            "when faking a delegate type"
+            "when faking a delegate type and invoking with throwing configuration"
                 .x(() => exception = Catch.Exception(() => fakedDelegate(null)));
 
             "it should throw the configured exception"
@@ -75,7 +75,7 @@
             "establish"
                 .x(() => A.CallTo(() => fakedDelegate(A<string>._)).Returns(10));
 
-            "when faking a delegate type"
+            "when faking a delegate type and invoking with configuration without specifying invoke methode"
                 .x(() => result = fakedDelegate(null));
 
             "it should return configured value"

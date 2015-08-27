@@ -82,7 +82,7 @@
             "establish"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "when setting the value of an indexed property"
+            "when setting the value of an indexed property for different indexes"
                 .x(() =>
                     {
                         subject[17, true] = new List<string> { "hippo", "lemur" };
@@ -105,7 +105,7 @@
             "establish"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "when setting the value of an indexed property"
+            "when getting the value of an unconfigured fakeable property"
                 .x(() =>
                     {
                         firstValue = subject.FakeableProperty;
@@ -128,7 +128,7 @@
             "establish"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "when setting the value of an indexed property"
+            "when getting the value of an unconfigured unfakeable property"
                 .x(() =>
                     {
                         firstValue = subject.UnfakeableProperty;

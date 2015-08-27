@@ -30,7 +30,7 @@
         public void when_faking_a_class_with_virtual_properties(
             FakedClass fake)
         {
-            "when faking a class with a virtual method"
+            "when faking a class with virtual properties"
                 .x(() => fake = A.Fake<FakedClass>());
 
             "it should return a default value when a reference type property is called during the constructor"

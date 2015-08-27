@@ -46,7 +46,7 @@
                         foo = new FooAsyncAwait(service);
                     });
 
-            "when calling defined method with return value"
+            "when calling defined void method"
                 .x(() => task = foo.CommandAsync());
 
             "it should return"
@@ -61,7 +61,7 @@
             "establish"
                 .x(() => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>()));
 
-            "when calling defined method with return value"
+            "when calling undefined method with return value"
                 .x(() => task = foo.QueryAsync());
 
             "it should return"
@@ -76,7 +76,7 @@
             "establish"
                 .x(() => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>()));
 
-            "when calling defined method with return value"
+            "when calling undefined void method"
                 .x(() => task = foo.CommandAsync());
 
             "it should return"

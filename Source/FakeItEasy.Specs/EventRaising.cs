@@ -127,7 +127,7 @@
         [Scenario]
         public void when_raising_event_using_WithEmpty()
         {
-            "when raising unsubscribed event"
+            "when raising event using WithEmpty"
                 .x(() => Fake.SubscribedEvent += Raise.WithEmpty());
 
             "it should pass the fake as sender"
@@ -140,7 +140,7 @@
         [Scenario]
         public void when_raising_event_passing_arguments()
         {
-            "when raising unsubscribed event"
+            "when raising event passing arguments"
                 .x(() => Fake.SubscribedEvent += Raise.With(this.EventArgs));
 
             "it should pass the fake as sender"
@@ -153,7 +153,7 @@
         [Scenario]
         public void when_raising_event_passing_sender_and_arguments()
         {
-            "when raising unsubscribed event"
+            "when raising event passing sender and arguments"
                 .x(() => Fake.SubscribedEvent += Raise.With(SampleSender, this.EventArgs));
 
             "it should pass the sender"
@@ -166,7 +166,7 @@
         [Scenario]
         public void when_raising_event_passing_arguments_and_null_sender()
         {
-            "when raising unsubscribed event"
+            "when raising event passing arguments and null sender"
                 .x(() => Fake.SubscribedEvent += Raise.With(null, this.EventArgs));
 
             "it should pass null as the sender"
@@ -188,7 +188,7 @@
                         Fake.SubscribedEvent += (s, e) => handler2InvocationCount++;
                     });
 
-            "when raising unsubscribed event"
+            "when raising event with multiple subscribers"
                 .x(() => Fake.SubscribedEvent += Raise.WithEmpty());
 
             "it should invoke the first handler once"
@@ -201,7 +201,7 @@
         [Scenario]
         public void when_raising_generic_event_passing_arguments()
         {
-            "when raising unsubscribed event"
+            "when raising generic event passing arguments"
                 .x(() => Fake.GenericEvent += Raise.With(this.CustomEventArgs));
 
             "it should pass the fake as sender"
@@ -214,7 +214,7 @@
         [Scenario]
         public void when_raising_generic_event_passing_sender_and_arguments()
         {
-            "when raising unsubscribed event"
+            "when raising generic event passing sender and arguments"
                 .x(() => Fake.GenericEvent += Raise.With(SampleSender, this.CustomEventArgs));
 
             "it should pass the sender"
@@ -227,7 +227,7 @@
         [Scenario]
         public void when_raising_generic_event_passing_arguments_and_null_sender()
         {
-            "when raising unsubscribed event"
+            "when raising generic event passing arguments and null sender"
                 .x(() => Fake.GenericEvent += Raise.With(null, this.CustomEventArgs));
 
             "it should pass null as the sender"
@@ -240,7 +240,7 @@
         [Scenario]
         public void when_raising_custom_event_passing_sender_and_arguments()
         {
-            "when raising unsubscribed event"
+            "when raising custom event passing sender and arguments"
                 .x(() => Fake.CustomEvent += Raise.With<CustomEventHandler>(SampleSender, this.CustomEventArgs));
 
             "it should pass the sender"
@@ -253,7 +253,7 @@
         [Scenario]
         public void when_raising_reference_type_event_passing_arguments()
         {
-            "when raising unsubscribed event"
+            "when raising reference type event passing arguments"
                 .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.ReferenceTypeEventArgs));
 
             "it should pass the event arguments"
@@ -263,7 +263,7 @@
         [Scenario]
         public void when_raising_reference_type_event_passing_derived_arguments()
         {
-            "when raising unsubscribed event"
+            "when raising reference type event passing derived arguments"
                 .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.DerivedReferenceTypeEventArgs));
 
             "it should pass the event arguments"
@@ -273,7 +273,7 @@
         [Scenario]
         public void when_raising_reference_type_event_passing_invalid_argument_type()
         {
-            "when raising unsubscribed event"
+            "when raising reference type event passing invalid argument type"
                 .x(() => CatchException(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(new Hashtable())));
 
             "it should fail with good message"
@@ -291,7 +291,7 @@
         [Scenario]
         public void when_raising_value_type_event_passing_null_argument()
         {
-            "when raising unsubscribed event"
+            "when raising value type event passing null argument"
                 .x(() => CatchException(() =>
                                         Fake.ValueTypeEvent += Raise.With<ValueTypeEventHandler>((object)null)));
 
@@ -307,7 +307,7 @@
             int eventArgs1 = 19;
             bool eventArgs2 = true;
 
-            "when raising unsubscribed event"
+            "when raising action event passing arguments"
                 .x(() => Fake.ActionEvent += Raise.With<Action<int, bool>>(eventArgs1, eventArgs2));
 
             "it should pass the first argument"

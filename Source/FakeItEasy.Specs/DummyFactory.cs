@@ -19,7 +19,7 @@
         [Scenario]
         public void when_two_dummy_factories_apply_to_the_same_type(RobotRunsAmokEvent dummy)
         {
-            "when a dummy factory is defined for a set of types"
+            "when two dummy factories apply to the same type"
                 .x(() => dummy = A.Dummy<RobotRunsAmokEvent>());
 
             "it should use the one with higher priority"

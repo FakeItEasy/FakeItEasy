@@ -38,7 +38,7 @@
             "establish"
                 .x(() => fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods()));
 
-            "when concrete method is called on fake that calls base methods"
+            "when abstract method is called on fake that calls base methods"
                 .x(() => result = fake.AbstractMethod());
 
             "it should return default value"

@@ -38,7 +38,7 @@
         public void when_ConfigureFake_is_used_to_configure_a_method_also_configured_by_a_FakeConfigurator(
             RobotRunsAmokEvent fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when ConfigureFake is used to configure a method also configured by a FakeConfigurator"
                 .x(() => fake = A.Fake<RobotRunsAmokEvent>(
                     options => options.ConfigureFake(
                         f => A.CallTo(() => f.CalculateTimestamp()).Returns(new DateTime(2000, 1, 1, 0, 0, 0)))));
@@ -51,7 +51,7 @@
         public void when_ConfigureFake_is_used_twice_to_configure_a_method(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when ConfigureFake is used twice to configure a method"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                             .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._)).Returns("second value"))
                             .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._)).Returns("first value").Once())));
@@ -68,7 +68,7 @@
         public void when_CallsBaseMethods_followed_by_ConfigureFake_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when CallsBaseMethods followed by ConfigureFake are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .CallsBaseMethods()
                                     .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._)).Returns("a value from ConfigureFake"))));
@@ -81,7 +81,7 @@
         public void when_Strict_followed_by_ConfigureFake_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Strict followed by ConfigureFake are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .Strict()
                                     .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._))
@@ -98,7 +98,7 @@
         public void when_Wrapping_followed_by_ConfigureFake_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Wrapping followed by ConfigureFake are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .Wrapping(new MakesVirtualCallInConstructor())
                                     .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._))
@@ -115,7 +115,7 @@
         public void when_CallsBaseMethods_is_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when CallsBaseMethods is used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options.CallsBaseMethods()));
 
             "it should call base method during the constructor"
@@ -129,7 +129,7 @@
         public void when_ConfigureFake_followed_by_CallsBaseMethods_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when ConfigureFake followed by CallsBaseMethods are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._)).Returns("a value from ConfigureFake"))
                                     .CallsBaseMethods()));
@@ -142,7 +142,7 @@
         public void when_Strict_followed_by_CallsBaseMethods_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Strict followed by CallsBaseMethods are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .Strict()
                                     .CallsBaseMethods()));
@@ -155,7 +155,7 @@
         public void when_Wrapping_followed_by_CallsBaseMethods_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Wrapping followed by CallsBaseMethods are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .Wrapping(new DerivedMakesVirtualCallInConstructor("wrapped value"))
                                     .CallsBaseMethods()));
@@ -168,7 +168,7 @@
         public void when_Strict_is_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Strict is used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options.Strict()));
 
             "it should throw an exception from a method call during the constructor"
@@ -188,7 +188,7 @@
         public void when_CallsBaseMethods_followed_by_Strict_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when CallsBaseMethods followed by Strict are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .CallsBaseMethods()
                                     .Strict()));
@@ -202,7 +202,7 @@
         public void when_ConfigureFake_followed_by_Strict_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when ConfigureFake followed by Strict are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._))
                                         .Returns("configured value of strict fake"))
@@ -218,7 +218,7 @@
         public void when_Wrapping_followed_by_Strict_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Wrapping followed by Strict are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .Wrapping(new MakesVirtualCallInConstructor())
                                         .Strict()));
@@ -233,7 +233,7 @@
         public void when_Wrapping_is_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Wrapping is used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(
                     options => options.Wrapping(new MakesVirtualCallInConstructor())));
 
@@ -248,7 +248,7 @@
         public void when_CallsBaseMethods_followed_by_Wrapping_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when CallsBaseMethods followed by Wrapping are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .CallsBaseMethods()
                                     .Wrapping(new DerivedMakesVirtualCallInConstructor("wrapped value"))));
@@ -261,7 +261,7 @@
         public void when_ConfigureFake_followed_by_Wrapping_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when ConfigureFake followed by Wrapping are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .ConfigureFake(f => A.CallTo(() => f.VirtualMethod(A<string>._))
                                         .Returns("configured in test"))
@@ -278,7 +278,7 @@
         public void when_Strict_followed_by_Wrapping_are_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Strict followed by Wrapping are used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .Strict()
                                     .Wrapping(new DerivedMakesVirtualCallInConstructor("wrapped value"))));
@@ -291,7 +291,7 @@
         public void when_Wrapping_is_used_to_configure_a_fake_twice(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Wrapping is used to configure a fake twice"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .Wrapping(new DerivedMakesVirtualCallInConstructor("first wrapped value"))
                                     .Wrapping(new DerivedMakesVirtualCallInConstructor("second wrapped value"))));
@@ -304,7 +304,7 @@
         public void when_Wrapping_is_used_to_configure_a_fake_that_has_a_FakeConfigurator(
             RobotRunsAmokEvent fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Wrapping is used to configure a fake that has a FakeConfigurator"
                 .x(() => fake = A.Fake<RobotRunsAmokEvent>(
                     options => options.Wrapping(new RobotRunsAmokEvent())));
 
@@ -316,7 +316,7 @@
         public void when_Implements_is_used_to_configure_a_fake(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when Implements is used to configure a fake"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                      .Implements(typeof(IDisposable))));
 
@@ -329,7 +329,7 @@
         {
             MakesVirtualCallInConstructor fake = null;
 
-            "when ConfigureFake is used to configure a method"
+            "when Implements is used to configure a fake twice"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .Implements(typeof(IComparable))
                                     .Implements(typeof(ICloneable))));
@@ -348,7 +348,7 @@
         public void when_WithAdditionalAttributes_is_used_to_configure_a_fake(
             IInterfaceThatWeWillAddAttributesTo1 fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when WithAdditionalAttributes is used to configure a fake"
                 .x(() =>
                     {
                         var constructor = typeof(ForTestAttribute).GetConstructor(new Type[0]);
@@ -372,7 +372,7 @@
         public void when_WithAdditionalAttributes_is_used_to_configure_a_fake_with_a_null_set_of_attributes(
             Exception exception)
         {
-            "when ConfigureFake is used to configure a method"
+            "when WithAdditionalAttributes is used to configure a fake with a null set of attributes"
                 .x(() => exception = Record.Exception(() => A.Fake<IInterfaceThatWeWillAddAttributesTo2>(options => options.WithAdditionalAttributes(null))));
 
             "it should throw an argument null exception"
@@ -389,7 +389,7 @@
         public void when_WithAdditionalAttributes_is_used_to_configure_a_fake_twice(
             IInterfaceThatWeWillAddAttributesTo3 fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when WithAdditionalAttributes is used to configure a fake twice"
                 .x(() =>
                     {
                         var constructor1 = typeof(ScenarioAttribute).GetConstructor(new Type[0]);
@@ -419,7 +419,7 @@
         public void when_WithArgumentsForConstructor_is_used_to_create_a_fake_with_a_list_of_arguments(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when WithArgumentsForConstructor is used to create a fake with a list of arguments"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .WithArgumentsForConstructor(new object[]
                                                                     {
@@ -438,7 +438,7 @@
         public void when_WithArgumentsForConstructor_is_used_to_create_a_fake_twice(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when WithArgumentsForConstructor is used to create a fake twice"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .WithArgumentsForConstructor(new object[]
                                                                     {
@@ -458,7 +458,7 @@
         public void when_WithArgumentsForConstructor_is_used_to_create_a_fake_with_an_example_constructor(
             MakesVirtualCallInConstructor fake)
         {
-            "when ConfigureFake is used to configure a method"
+            "when WithArgumentsForConstructor is used to create a fake with an example constructor"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .WithArgumentsForConstructor(() => new MakesVirtualCallInConstructor("first argument", 9))));
 

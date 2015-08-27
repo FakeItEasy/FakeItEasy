@@ -48,7 +48,7 @@
             "establish"
                 .x(() => subject = A.Fake<IHaveAnOut>());
 
-            "when configuring a fake to assign out and ref parameters lazily using func"
+            "when configuring a fake to assign out and ref parameters lazily using call"
                 .x(() => A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
                              .WithAnyArguments()
                              .AssignsOutAndRefParametersLazily((call) => new object[] { call.Arguments.Get<string>(0) == condition ? knownOutput : "me" }));
@@ -73,7 +73,7 @@
             "establish"
                 .x(() => subject = A.Fake<IHaveAnOut>());
 
-            "when configuring a fake to assign out and ref parameters lazily using func"
+            "when configuring a fake to assign out and ref parameters"
                 .x(() => A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
                              .WithAnyArguments()
                              .AssignsOutAndRefParameters(knownOutput));

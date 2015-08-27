@@ -42,7 +42,7 @@
         public void when_faking_a_class_whose_first_constructor_fails(
             FakedClass fake)
         {
-            "when faking a class whose constructor throws"
+            "when faking a class whose first constructor fails"
                 .x(() => fake = A.Fake<FakedClass>());
 
             "it should instantiate the fake using the successful constructor with the longest parameter list"

@@ -55,7 +55,7 @@
             "establish"
                 .x(() => fake = A.Fake<IGenericFoo>());
 
-            "when failing to match ordered non generic calls"
+            "when failing to match ordered generic calls"
                 .x(() =>
                     {
                         using (var scope = Fake.CreateScope())

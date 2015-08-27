@@ -44,7 +44,7 @@
             "establish"
                 .x(() => fake = A.Fake<IFoo>());
 
-            "when matching calls with parameter arrays"
+            "when failing to match non generic calls"
                 .x(() =>
                     {
                         fake.Bar(1);
@@ -78,7 +78,7 @@
             "establish"
                 .x(() => fake = A.Fake<IGenericFoo>());
 
-            "when matching calls with parameter arrays"
+            "when failing to match generic calls"
                 .x(() =>
                     {
                         fake.Bar(1, 2D);
@@ -143,7 +143,7 @@
             "establish"
                 .x(() => fake = A.Fake<IGenericBarFoo>());
 
-            "when matching calls with parameter arrays"
+            "when no generic calls"
                 .x(() => exception = Catch.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened()));
 
             "it should tell us that the call was not matched"
@@ -173,7 +173,7 @@
             "establish"
                 .x(() => subject = A.Fake<IDictionary<string, string>>());
 
-            "when matching calls with parameter arrays"
+            "when matching a call with an out parameter"
                 .x(() =>
                     {
                         string outString = "a constraint string";
@@ -211,7 +211,7 @@
             "establish"
                 .x(() => subject = A.Fake<IDictionary<string, string>>());
 
-            "when matching calls with parameter arrays"
+            "when failing to match a call with an out parameter"
                 .x(() =>
                     {
                         string outString = null;
@@ -240,7 +240,7 @@
             "establish"
                 .x(() => subject = A.Fake<IHaveInterestingParameters>());
 
-            "when matching calls with parameter arrays"
+            "when matching a call with a ref parameter"
                 .x(() =>
                     {
                         string refString = "a constraint string";
@@ -295,7 +295,7 @@
             "establish"
                 .x(() => subject = A.Fake<ITooHaveInterestingParameters>());
 
-            "when matching calls with parameter arrays"
+            "when matching a call with a parameter having an out attribute"
                 .x(() => A.CallTo(() => subject.Validate("a constraint string"))
                              .Returns(true));
 

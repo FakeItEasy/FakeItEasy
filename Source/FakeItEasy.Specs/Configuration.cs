@@ -41,7 +41,7 @@
             "establish"
                 .x(() => fake = A.Fake<IFoo>());
 
-            "when configuring callback"
+            "when configuring multiple callback"
                 .x(() =>
                     {
                         A.CallTo(() => fake.Baz())
@@ -71,7 +71,7 @@
             "establish"
                 .x(() => fake = A.Fake<BaseClass>());
 
-            "when configuring callback"
+            "when configuring to call base method"
                 .x(() =>
                     {
                         A.CallTo(() => fake.ReturnSomething()).Invokes(x => callbackWasInvoked = true).CallsBaseMethod();

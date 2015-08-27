@@ -40,7 +40,7 @@
         public void when_trying_to_fake_generic_type_with_internal_type_parameters(
             Exception exception)
         {
-            "when trying to fake invisible internals"
+            "when trying to fake generic type with internal type parameters"
                 .x(() => exception = Catch.Exception(() => A.Fake<IList<IInternal>>()));
 
             "it should throw an exception with a message containing a hint at using internals visible to attribute"
@@ -59,7 +59,7 @@
             "establish"
                 .x(() => fake = A.Fake<TypeWithInternalMethod>());
 
-            "when trying to fake invisible internals"
+            "when trying to override internal method on type"
                 .x(() => exception = Catch.Exception(() => A.CallTo(() => fake.InternalMethod()).Returns(17)));
 
             "it should throw an exception with a message complaining about accessibility"
