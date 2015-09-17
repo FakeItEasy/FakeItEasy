@@ -1,8 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Globalization;
     using System.Runtime.CompilerServices;
     using FakeItEasy.Creation;
 
@@ -23,11 +22,20 @@ namespace FakeItEasy.Core
 
             var taggable = AsTaggable(proxy);
 
+            if (taggable.Tag == null)
+            {
+                throw new ArgumentException("The specified object does not have a FakeManager attached.");
+            }
+
             var result = taggable.Tag as FakeManager;
 
             if (result == null)
             {
-                throw new ArgumentException("The specified object is not recognized as a fake object.");
+                throw new ArgumentException(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        "The specified object of type '{0}' is not recognized as a fake object.",
+                        taggable.Tag.GetType().Name));
             }
 
             return result;
