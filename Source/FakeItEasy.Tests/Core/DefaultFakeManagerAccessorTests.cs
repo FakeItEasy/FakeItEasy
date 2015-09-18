@@ -110,7 +110,7 @@ namespace FakeItEasy.Tests.Core
             // Assert
             Assert.That(
                 () => this.accessor.GetFakeManager(proxy),
-                Throws.ArgumentException.With.Message.EqualTo("The specified object of type 'Object' is not recognized as a fake object."));
+                Throws.ArgumentException.With.Message.EqualTo("The specified object of type 'System.Object' is not recognized as a fake object."));
         }
     }
 }

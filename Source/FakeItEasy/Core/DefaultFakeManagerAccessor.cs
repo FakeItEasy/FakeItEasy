@@ -35,7 +35,7 @@ namespace FakeItEasy.Core
                     string.Format(
                         CultureInfo.CurrentCulture,
                         "The specified object of type '{0}' is not recognized as a fake object.",
-                        taggable.Tag.GetType().Name));
+                        taggable.Tag.GetType().FullNameCSharp()));
             }
 
             return result;
