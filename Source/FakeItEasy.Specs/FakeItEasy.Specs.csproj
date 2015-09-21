@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Xbehave.Core.2.0.0\build\portable-net45\Xbehave.Core.props" Condition="Exists('..\packages\Xbehave.Core.2.0.0\build\portable-net45\Xbehave.Core.props')" />
+  <Import Project="..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props" Condition="Exists('..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -15,6 +17,8 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
     <TargetFrameworkProfile />
     <CodeAnalysisCulture>en-US</CodeAnalysisCulture>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,14 +50,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentAssertions.2.2.0.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Machine.Specifications.0.9.1\lib\net45\Machine.Specifications.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications.Clr4, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Machine.Specifications.0.9.1\lib\net45\Machine.Specifications.Clr4.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -61,33 +57,46 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Xbehave.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=e4957f48888f9fe8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xbehave.Core.2.0.0\lib\portable-net45\Xbehave.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.0.0.2929, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.core.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
-    <Compile Include="AsyncAwaitSpecs.cs" />
-    <Compile Include="ConfigurationSpecs.cs" />
-    <Compile Include="CreationOptionsSpecs.cs" />
-    <Compile Include="DisposableSpecs.cs" />
-    <Compile Include="FakeScopeSpecs.cs" />
+    <Compile Include="AssertingOnSetOnlyProperties.cs" />
+    <Compile Include="AsyncAwait.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="CreationOptions.cs" />
+    <Compile Include="Disposable.cs" />
+    <Compile Include="FakeScope.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="CreationSpecs.cs" />
+    <Compile Include="Creation.cs" />
     <Compile Include="DomainEvents.cs" />
-    <Compile Include="FakeConfiguratorSpecs.cs" />
-    <Compile Include="SelfInitializedFakesSpecs.cs" />
-    <Compile Include="LazySpecs.cs" />
-    <Compile Include="DummyFactorySpecs.cs" />
+    <Compile Include="FakeConfigurator.cs" />
+    <Compile Include="Properties\XunitAssemblyInfo.cs" />
+    <Compile Include="SelfInitializedFakes.cs" />
+    <Compile Include="Lazy.cs" />
+    <Compile Include="DummyFactory.cs" />
     <Compile Include="MakesVirtualCallInConstructor.cs" />
-    <Compile Include="OrderedCallMatchingSpecs.cs" />
-    <Compile Include="FakingInternalsSpecs.cs" />
-    <Compile Include="EventRaisingSpecs.cs" />
-    <Compile Include="FixtureInitializationSpecs.cs" />
+    <Compile Include="OrderedCallMatching.cs" />
+    <Compile Include="FakingInternals.cs" />
+    <Compile Include="EventRaising.cs" />
+    <Compile Include="FixtureInitialization.cs" />
     <Compile Include="FakingDelegates.cs" />
-    <Compile Include="CallMatchingSpecs.cs" />
-    <Compile Include="AssignsOutAndRefParametersSpecs.cs" />
-    <Compile Include="PropertySpecs.cs" />
-    <Compile Include="CallsBaseMethodsFakeSpecs.cs" />
-    <Compile Include="StrictFakeSpecs.cs" />
-    <Compile Include="UnconfiguredFakeSpecs.cs" />
+    <Compile Include="CallMatching.cs" />
+    <Compile Include="AssignsOutAndRefParameters.cs" />
+    <Compile Include="Property.cs" />
+    <Compile Include="CallsBaseMethodsFake.cs" />
+    <Compile Include="StrictFake.cs" />
+    <Compile Include="UnconfiguredFake.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj">
@@ -124,5 +133,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.48.2\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.48.2\build\StyleCop.MSBuild.Targets'))" />
+    <Error Condition="!Exists('..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.0.0\build\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props'))" />
+    <Error Condition="!Exists('..\packages\Xbehave.Core.2.0.0\build\portable-net45\Xbehave.Core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xbehave.Core.2.0.0\build\portable-net45\Xbehave.Core.props'))" />
   </Target>
 </Project>

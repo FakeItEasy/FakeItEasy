@@ -2,25 +2,31 @@
 {
     using System;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
-    public class when_a_dummy_factory_is_defined_for_a_set_of_types
+    public class DummyFactory
     {
-        private static RobotActivatedEvent dummy = null;
+        [Scenario]
+        public void DummyFactoryUsage(
+            RobotActivatedEvent dummy)
+        {
+            "when a dummy factory is defined for a set of types"
+                .x(() => dummy = A.Dummy<RobotActivatedEvent>());
 
-        private Because of = () => { dummy = A.Dummy<RobotActivatedEvent>(); };
+            "it should create a dummy from the factory"
+                .x(() => dummy.ID.Should().BeGreaterThan(0));
+        }
 
-        private It should_create_a_dummy_from_the_factory = () => dummy.ID.Should().BeGreaterThan(0);
-    }
+        [Scenario]
+        public void DummyFactoryPriority(
+            RobotRunsAmokEvent dummy)
+        {
+            "when two dummy factories apply to the same type"
+                .x(() => dummy = A.Dummy<RobotRunsAmokEvent>());
 
-    public class when_two_dummy_factories_apply_to_the_same_type
-    {
-        private static RobotRunsAmokEvent dummy = null;
-
-        private Because of = () => { dummy = A.Dummy<RobotRunsAmokEvent>(); };
-
-        private It should_use_the_one_with_higher_priority =
-            () => dummy.ID.Should().Be(-17);
+            "it should use the one with higher priority"
+                .x(() => dummy.ID.Should().Be(-17));
+        }
     }
 
     public class DomainEventDummyFactory : IDummyFactory
