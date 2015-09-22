@@ -39,11 +39,11 @@
    
         [Scenario]
         public void FailingMatchOfNonGenericCalls(
-            IFoo fake,
+            IHaveNoGenericParameters fake,
             Exception exception)
         {
             "establish"
-                .x(() => fake = A.Fake<IFoo>());
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
 
             "when failing to match non generic calls"
                 .x(() =>
@@ -58,26 +58,26 @@
                     @"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IFoo.Bar(3)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(3)
   Expected to find it at least once but found it #0 times among the calls:
-    1: FakeItEasy.Specs.CallMatchingSpecs+IFoo.Bar(baz: 1)
-    2: FakeItEasy.Specs.CallMatchingSpecs+IFoo.Bar(baz: 2)
+    1: FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 1)
+    2: FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 2)
 
 "));
         }
 
-        public interface IFoo
+        public interface IHaveNoGenericParameters
         {
             void Bar(int baz);
         }
 
         [Scenario]
         public void FailingMatchOfGenericCalls(
-            IGenericFoo fake,
+            IHaveTwoGenericParameters fake,
             Exception exception)
         {
             "establish"
-                .x(() => fake = A.Fake<IGenericFoo>());
+                .x(() => fake = A.Fake<IHaveTwoGenericParameters>());
 
             "when failing to match generic calls"
                 .x(() =>
@@ -92,15 +92,15 @@
                     @"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IGenericFoo.Bar<System.String, System.String>(<Ignored>, <Ignored>)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<System.String, System.String>(<Ignored>, <Ignored>)
   Expected to find it at least once but found it #0 times among the calls:
-    1: FakeItEasy.Specs.CallMatchingSpecs+IGenericFoo.Bar<System.Int32, System.Double>(baz1: 1, baz2: 2)
-    2: FakeItEasy.Specs.CallMatchingSpecs+IGenericFoo.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.Boolean, System.Int64>, System.Int32>(baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
+    1: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<System.Int32, System.Double>(baz1: 1, baz2: 2)
+    2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.Boolean, System.Int64>, System.Int32>(baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
 
 "));
         }
 
-        public interface IGenericFoo
+        public interface IHaveTwoGenericParameters
         {
             void Bar<T1, T2>(T1 baz1, T2 baz2);
         }
@@ -111,11 +111,11 @@
 
         [Scenario]
         public void NoNonGeneriCalls(
-            IBarFoo fake,
+            IHaveNoGenericParameters fake,
             Exception exception)
         {
             "establish"
-                .x(() => fake = A.Fake<IBarFoo>());
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
 
             "when_no_non_generic_calls"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened()));
@@ -125,24 +125,19 @@
                     @"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IBarFoo.Bar(<Ignored>)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(<Ignored>)
   Expected to find it at least once but no calls were made to the fake object.
 
 "));
         }
 
-        public interface IBarFoo
-        {
-            void Bar(int baz);
-        }
-
         [Scenario]
         public void NoGenericCalls(
-            IGenericBarFoo fake,
+            IHaveOneGenericParameter fake,
             Exception exception)
         {
             "establish"
-                .x(() => fake = A.Fake<IGenericBarFoo>());
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
 
             "when no generic calls"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened()));
@@ -152,13 +147,13 @@
                     @"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IGenericBarFoo.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.String>>(<Ignored>)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.String>>(<Ignored>)
   Expected to find it at least once but no calls were made to the fake object.
 
 "));
         }
 
-        public interface IGenericBarFoo
+        public interface IHaveOneGenericParameter
         {
             void Bar<T>(T baz);
         }
@@ -205,10 +200,9 @@
 
         [Scenario]
         public void FailingMatchOfOutParameter(
-            IDictionary<string, string> subject)
+            IDictionary<string, string> subject,
+            Exception exception)
         {
-            Exception exception = null;
-
             "establish"
                 .x(() => subject = A.Fake<IDictionary<string, string>>());
 
@@ -236,10 +230,10 @@
 
         [Scenario]
         public void RefParameter(
-            IHaveInterestingParameters subject)
+            IHaveARefParameter subject)
         {
             "establish"
-                .x(() => subject = A.Fake<IHaveInterestingParameters>());
+                .x(() => subject = A.Fake<IHaveARefParameter>());
 
             "when matching a call with a ref parameter"
                 .x(() =>
@@ -278,7 +272,7 @@
                     });
         }
 
-        public interface IHaveInterestingParameters
+        public interface IHaveARefParameter
         {
             bool CheckYourReferences(ref string refString);
         }
@@ -291,10 +285,10 @@
         /// </summary>
         [Scenario]
         public void ParameterHavingAnOutAttribute(
-             ITooHaveInterestingParameters subject)
+             IHaveAnOutParameter subject)
         {
             "establish"
-                .x(() => subject = A.Fake<ITooHaveInterestingParameters>());
+                .x(() => subject = A.Fake<IHaveAnOutParameter>());
 
             "when matching a call with a parameter having an out attribute"
                 .x(() => A.CallTo(() => subject.Validate("a constraint string"))
@@ -309,7 +303,7 @@
                              .Should().BeFalse());
         }
        
-        public interface ITooHaveInterestingParameters
+        public interface IHaveAnOutParameter
         {
             bool Validate([Out] string value);
         }

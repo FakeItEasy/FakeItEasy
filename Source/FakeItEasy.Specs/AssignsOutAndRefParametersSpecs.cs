@@ -17,8 +17,8 @@
             IHaveAnOut subject,
             string outValue)
         {
-            string condition = "someone_else";
-            string knownOutput = "you";
+            var condition = "someone_else";
+            var knownOutput = "you";
 
             "establish"
                 .x(() => subject = A.Fake<IHaveAnOut>());
@@ -38,12 +38,12 @@
         }    
 
         [Scenario]
-        public void when_configuring_a_fake_to_assign_out_and_ref_parameters_lazily_using_call(
+        public void AssignOutAndRefParametersLazilyUsingCall(
             IHaveAnOut subject,
             string outValue)
         {
-            string condition = "someone_else";
-            string knownOutput = "you";
+            var condition = "someone_else";
+            var knownOutput = "you";
 
             "establish"
                 .x(() => subject = A.Fake<IHaveAnOut>());
@@ -63,12 +63,12 @@
         }
 
         [Scenario]
-        public void AssignOutAndRefParametersLazilyUsingCall(
+        public void AssignOutAndRefParameters(
             IHaveAnOut subject,
             string outValue)
         {
-            string condition = "someone_else";
-            string knownOutput = "you";
+            var condition = "someone_else";
+            var knownOutput = "you";
 
             "establish"
                 .x(() => subject = A.Fake<IHaveAnOut>());

@@ -9,11 +9,11 @@
     {
         [Scenario]
         public void NonGenericCalls(
-            IFoo fake,
+            IHaveNoGenericParameters fake,
             Exception exception)
         {
             "establish"
-                .x(() => fake = A.Fake<IFoo>());
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
 
             "when failing to match ordered non generic calls"
                 .x(() =>
@@ -35,26 +35,26 @@
                     @"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(2)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(2)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(1)' repeated at least once
   The calls where found but not in the correct order among the calls:
-    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
-    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)
+    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 1)
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 2)
 "));
         }
 
-        public interface IFoo
+        public interface IHaveNoGenericParameters
         {
             void Bar(int baz);
         }
     
         [Scenario]
         public void GenericCalls(
-            IGenericFoo fake,
+            IHaveOneGenericParameter fake,
             Exception exception)
         {
             "establish"
-                .x(() => fake = A.Fake<IGenericFoo>());
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
 
             "when failing to match ordered generic calls"
                 .x(() =>
@@ -76,16 +76,16 @@
                     @"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IGenericFoo.Bar<FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic<System.Boolean>>(<Ignored>)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IGenericFoo.Bar<System.Int32>(<Ignored>)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic<System.Boolean>>(<Ignored>)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<System.Int32>(<Ignored>)' repeated at least once
   The calls where found but not in the correct order among the calls:
-    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IGenericFoo.Bar<System.Int32>(baz: 1)
-    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IGenericFoo.Bar<FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic<System.Boolean>>(baz: FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic`1[System.Boolean])
+    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<System.Int32>(baz: 1)
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic<System.Boolean>>(baz: FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic`1[System.Boolean])
 "));
         }
         
 
-        public interface IGenericFoo
+        public interface IHaveOneGenericParameter
         {
             void Bar<T>(T baz);
         }
