@@ -88,27 +88,27 @@
             event Action<int, bool> ActionEvent;
         }
 
-        protected static IEvents Fake { get; private set; }
+        private static IEvents Fake { get; set; }
 
-        protected static object SampleSender { get; set; }
+        private static object SampleSender { get; set; }
 
-        protected EventArgs EventArgs = new EventArgs();
+        private readonly EventArgs eventArgs = new EventArgs();
 
-        protected CustomEventArgs CustomEventArgs = new CustomEventArgs();
+        private readonly CustomEventArgs customEventArgs = new CustomEventArgs();
 
-        private ReferenceType ReferenceTypeEventArgs = new ReferenceType();
+        private readonly ReferenceType referenceTypeEventArgs = new ReferenceType();
 
-        private DerivedReferenceType DerivedReferenceTypeEventArgs = new DerivedReferenceType();
+        private readonly DerivedReferenceType derivedReferenceTypeEventArgs = new DerivedReferenceType();
 
-        protected static object CapturedSender { get; private set; }
+        private static object CapturedSender { get; set; }
 
-        protected static object CapturedArgs1 { get; private set; }
+        private static object CapturedArgs1 { get; set; }
 
-        protected static object CapturedArgs2 { get; private set; }
+        private static object CapturedArgs2 { get; set; }
 
-        protected static object CaughtException { get; private set; }
+        private static object CaughtException { get; set; }
 
-        protected static void CatchException(Action action)
+        private static void CatchException(Action action)
         {
             CaughtException = Record.Exception(action);
         }
@@ -141,39 +141,39 @@
         public void EventArguments()
         {
             "when raising event passing arguments"
-                .x(() => Fake.SubscribedEvent += Raise.With(this.EventArgs));
+                .x(() => Fake.SubscribedEvent += Raise.With(this.eventArgs));
 
             "it should pass the fake as sender"
                 .x(() => CapturedSender.Should().BeSameAs(Fake));
 
             "it should pass the event arguments"
-                .x(() => CapturedArgs1.Should().BeSameAs(this.EventArgs));
+                .x(() => CapturedArgs1.Should().BeSameAs(this.eventArgs));
         }
 
         [Scenario]
         public void SenderAndEventArguments()
         {
             "when raising event passing sender and arguments"
-                .x(() => Fake.SubscribedEvent += Raise.With(SampleSender, this.EventArgs));
+                .x(() => Fake.SubscribedEvent += Raise.With(SampleSender, this.eventArgs));
 
             "it should pass the sender"
                 .x(() => CapturedSender.Should().BeSameAs(SampleSender));
 
             "it should pass the event arguments"
-                .x(() => CapturedArgs1.Should().BeSameAs(this.EventArgs));
+                .x(() => CapturedArgs1.Should().BeSameAs(this.eventArgs));
         }
 
         [Scenario]
         public void NullSenderAndEventArguments()
         {
             "when raising event passing arguments and null sender"
-                .x(() => Fake.SubscribedEvent += Raise.With(null, this.EventArgs));
+                .x(() => Fake.SubscribedEvent += Raise.With(null, this.eventArgs));
 
             "it should pass null as the sender"
                 .x(() => CapturedSender.Should().BeNull());
 
             "it should pass the event arguments"
-                .x(() => CapturedArgs1.Should().BeSameAs(this.EventArgs));
+                .x(() => CapturedArgs1.Should().BeSameAs(this.eventArgs));
         }
 
         [Scenario]
@@ -202,72 +202,72 @@
         public void CustomEventArguments()
         {
             "when raising generic event passing arguments"
-                .x(() => Fake.GenericEvent += Raise.With(this.CustomEventArgs));
+                .x(() => Fake.GenericEvent += Raise.With(this.customEventArgs));
 
             "it should pass the fake as sender"
                 .x(() => CapturedSender.Should().BeSameAs(Fake));
 
             "it should pass the event arguments"
-                .x(() => CapturedArgs1.Should().BeSameAs(this.CustomEventArgs));
+                .x(() => CapturedArgs1.Should().BeSameAs(this.customEventArgs));
         }
 
         [Scenario]
         public void SenderAndCustomEventArguments()
         {
             "when raising generic event passing sender and arguments"
-                .x(() => Fake.GenericEvent += Raise.With(SampleSender, this.CustomEventArgs));
+                .x(() => Fake.GenericEvent += Raise.With(SampleSender, this.customEventArgs));
 
             "it should pass the sender"
                 .x(() => CapturedSender.Should().BeSameAs(SampleSender));
 
             "it should pass the event arguments"
-                .x(() => CapturedArgs1.Should().BeSameAs(this.CustomEventArgs));
+                .x(() => CapturedArgs1.Should().BeSameAs(this.customEventArgs));
         }
 
         [Scenario]
         public void NullSenderAndCustomEventArguments()
         {
             "when raising generic event passing arguments and null sender"
-                .x(() => Fake.GenericEvent += Raise.With(null, this.CustomEventArgs));
+                .x(() => Fake.GenericEvent += Raise.With(null, this.customEventArgs));
 
             "it should pass null as the sender"
                 .x(() => CapturedSender.Should().BeNull());
 
             "it should pass the event arguments"
-                .x(() => CapturedArgs1.Should().BeSameAs(this.CustomEventArgs));
+                .x(() => CapturedArgs1.Should().BeSameAs(this.customEventArgs));
         }
 
         [Scenario]
         public void CustomEventHandler()
         {
             "when raising custom event passing sender and arguments"
-                .x(() => Fake.CustomEvent += Raise.With<CustomEventHandler>(SampleSender, this.CustomEventArgs));
+                .x(() => Fake.CustomEvent += Raise.With<CustomEventHandler>(SampleSender, this.customEventArgs));
 
             "it should pass the sender"
                 .x(() => CapturedSender.Should().BeSameAs(SampleSender));
 
             "it should pass the event arguments"
-                .x(() => CapturedArgs1.Should().BeSameAs(this.CustomEventArgs));
+                .x(() => CapturedArgs1.Should().BeSameAs(this.customEventArgs));
         }
 
         [Scenario]
         public void ReferenceTypeEventHandler()
         {
             "when raising reference type event passing arguments"
-                .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.ReferenceTypeEventArgs));
+                .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.referenceTypeEventArgs));
 
             "it should pass the event arguments"
-                .x(() => CapturedArgs1.Should().BeSameAs(this.ReferenceTypeEventArgs));
+                .x(() => CapturedArgs1.Should().BeSameAs(this.referenceTypeEventArgs));
         }
 
         [Scenario]
         public void ReferenceTypeEventHandlerWithDerivedArguments()
         {
             "when raising reference type event passing derived arguments"
-                .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.DerivedReferenceTypeEventArgs));
+                .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.derivedReferenceTypeEventArgs));
 
             "it should pass the event arguments"
-                .x(() => CapturedArgs1.Should().BeSameAs(this.DerivedReferenceTypeEventArgs));
+                .x(() => CapturedArgs1.Should().BeSameAs(this.derivedReferenceTypeEventArgs));
         }
 
         [Scenario]
@@ -304,8 +304,8 @@
         [Scenario]
         public void ActionEvent()
         {
-            int eventArgs1 = 19;
-            bool eventArgs2 = true;
+            var eventArgs1 = 19;
+            var eventArgs2 = true;
 
             "when raising action event passing arguments"
                 .x(() => Fake.ActionEvent += Raise.With<Action<int, bool>>(eventArgs1, eventArgs2));

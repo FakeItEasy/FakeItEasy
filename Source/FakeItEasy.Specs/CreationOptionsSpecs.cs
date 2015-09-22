@@ -10,7 +10,6 @@
     using FluentAssertions;
     using Xbehave;
     using Tests;
-    using Record = FakeItEasy.Tests.TestHelpers.Record;
 
     public class CreationOptionsSpecs
     {
@@ -325,10 +324,9 @@
         }
 
         [Scenario]
-        public void MultipleImplementsConfigurations()
+        public void MultipleImplementsConfigurations(
+            MakesVirtualCallInConstructor fake)
         {
-            MakesVirtualCallInConstructor fake = null;
-
             "when Implements is used to configure a fake twice"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>(options => options
                                     .Implements(typeof(IComparable))

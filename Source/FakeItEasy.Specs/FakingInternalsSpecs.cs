@@ -6,7 +6,6 @@
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
-    using Record = Xunit.Record;
 
     internal interface IInternal
     {
