@@ -25,8 +25,11 @@
 
             "when configuring a fake to assign out and ref parameters lazily using func"
                 .x(() => A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
-                             .WithAnyArguments()
-                             .AssignsOutAndRefParametersLazily((string value) => new object[] { value == condition ? knownOutput : "me" }));
+                    .WithAnyArguments()
+                    .AssignsOutAndRefParametersLazily((string value) => new object[]
+                    {
+                        value == condition ? knownOutput : "me"
+                    }));
 
             "it should assign the conditional value to the out field"
                 .x(() =>
@@ -35,7 +38,7 @@
                         subject.MightReturnAKnownValue(out value);
                         value.Should().BeEquivalentTo(knownOutput);
                     });
-        }    
+        }
 
         [Scenario]
         public void AssignOutAndRefParametersLazilyUsingCall(
@@ -50,8 +53,11 @@
 
             "when configuring a fake to assign out and ref parameters lazily using call"
                 .x(() => A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
-                             .WithAnyArguments()
-                             .AssignsOutAndRefParametersLazily((call) => new object[] { call.Arguments.Get<string>(0) == condition ? knownOutput : "me" }));
+                    .WithAnyArguments()
+                    .AssignsOutAndRefParametersLazily((call) => new object[]
+                    {
+                        call.Arguments.Get<string>(0) == condition ? knownOutput : "me"
+                    }));
 
             "it should assign the conditional value to the out field"
                 .x(() =>

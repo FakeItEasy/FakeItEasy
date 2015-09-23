@@ -3,7 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
     using Xbehave;
 
-    public  class AssertingOnSetOnlyPropertiesSpecs
+    public class AssertingOnSetOnlyPropertiesSpecs
     {
         [Scenario]
         public void SetOnlyProperties(
@@ -14,7 +14,7 @@
 
             "when assertion on set only properties"
                 .x(() =>
-                    { 
+                    {
                         setOnly.MyProperty = 1;
                         setOnly.MyProperty2 = false;
                     });

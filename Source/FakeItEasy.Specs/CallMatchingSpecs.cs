@@ -195,7 +195,6 @@
 
                         outString.Should().Be("a constraint string");
                     });
-
         }
 
         [Scenario]
@@ -283,6 +282,7 @@
         /// One example is the array parameter in <see cref="System.IO.Stream.Read"/>.
         /// Ensure that such parameters are not confused with <c>out</c> parameters.
         /// </summary>
+        /// <param name="subject">The subject of the test.</param>
         [Scenario]
         public void ParameterHavingAnOutAttribute(
              IHaveAnOutParameter subject)

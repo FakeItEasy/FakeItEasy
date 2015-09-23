@@ -5,7 +5,6 @@
     using FluentAssertions;
     using Xbehave;
 
-
     public interface IMyInterface
     {
         void DoIt(Guid id);
