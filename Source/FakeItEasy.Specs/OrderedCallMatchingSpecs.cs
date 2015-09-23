@@ -83,7 +83,6 @@
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic<System.Boolean>>(baz: FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic`1[System.Boolean])
 "));
         }
-        
 
         public interface IHaveOneGenericParameter
         {

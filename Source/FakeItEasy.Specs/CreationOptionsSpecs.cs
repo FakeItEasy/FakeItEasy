@@ -8,8 +8,8 @@
     using System.Reflection.Emit;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using Xbehave;
     using Tests;
+    using Xbehave;
 
     public class CreationOptionsSpecs
     {
@@ -197,6 +197,7 @@
                              .Should()
                              .BeAnExceptionOfType<ExpectationException>());
         }
+
         [Scenario]
         public void StrictOverridesConfigureFake(
             MakesVirtualCallInConstructor fake)
