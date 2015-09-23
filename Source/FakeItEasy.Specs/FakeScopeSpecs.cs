@@ -36,7 +36,7 @@
                         virtualMethodValueOutsideOfScope = fake.VirtualMethod(null);
                     });
 
-            "it should call ConfigureFake of the fake scope"
+            "it should use the fake object container to configure the fake"
                 .x(() => A.CallTo(() => fakeObjectContainer.ConfigureFake(typeof(MakesVirtualCallInConstructor), fake))
                              .MustHaveHappened());
 

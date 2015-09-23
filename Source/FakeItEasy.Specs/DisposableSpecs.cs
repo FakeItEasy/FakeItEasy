@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FluentAssertions;
     using Xbehave;
 
@@ -8,6 +9,7 @@
     {
         private static Exception exception;
 
+        [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect", Justification = "Required for testing.")]
         [Scenario]
         public void FakingDisposable(
             IDisposable fake)

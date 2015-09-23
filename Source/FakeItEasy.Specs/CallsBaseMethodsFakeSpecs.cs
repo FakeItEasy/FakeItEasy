@@ -33,7 +33,7 @@
         [Scenario]
         public void AbstractMethod(
             AbstractBaseClass fake,
-            string result = "some non-default value")
+            string result)
         {
             "establish"
                 .x(() => fake = A.Fake<AbstractBaseClass>(options => options.CallsBaseMethods()));

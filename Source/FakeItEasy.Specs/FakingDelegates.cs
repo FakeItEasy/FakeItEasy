@@ -76,7 +76,7 @@
             "establish"
                 .x(() => A.CallTo(() => fakedDelegate(A<string>._)).Returns(10));
 
-            "when faking a delegate type and invoking with configuration without specifying invoke methode"
+            "when faking a delegate type and invoking with configuration without specifying invoke method"
                 .x(() => result = fakedDelegate(null));
 
             "it should return configured value"
