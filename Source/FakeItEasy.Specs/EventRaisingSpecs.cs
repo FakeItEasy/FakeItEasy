@@ -8,6 +8,12 @@
     using FluentAssertions;
     using Xbehave;
 
+    public delegate void CustomEventHandler(object sender, CustomEventArgs e);
+
+    public delegate void ReferenceTypeEventHandler(ReferenceType arg);
+
+    public delegate void ValueTypeEventHandler(int arg);
+
     public class CustomEventArgs : EventArgs
     {
     }
@@ -20,14 +26,46 @@
     {
     }
 
-    public delegate void CustomEventHandler(object sender, CustomEventArgs e);
-
-    public delegate void ReferenceTypeEventHandler(ReferenceType arg);
-
-    public delegate void ValueTypeEventHandler(int arg);
-
     public class EventRaisingSpecs
     {
+        private readonly EventArgs eventArgs = new EventArgs();
+
+        private readonly CustomEventArgs customEventArgs = new CustomEventArgs();
+
+        private readonly ReferenceType referenceTypeEventArgs = new ReferenceType();
+
+        private readonly DerivedReferenceType derivedReferenceTypeEventArgs = new DerivedReferenceType();
+
+        public interface IEvents
+        {
+            event EventHandler UnsubscribedEvent;
+
+            event EventHandler SubscribedEvent;
+
+            event EventHandler<CustomEventArgs> GenericEvent;
+
+            event CustomEventHandler CustomEvent;
+
+            event ReferenceTypeEventHandler ReferenceTypeEvent;
+
+            event ValueTypeEventHandler ValueTypeEvent;
+
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "Test.")]
+            event Action<int, bool> ActionEvent;
+        }
+
+        private static IEvents Fake { get; set; }
+
+        private static object SampleSender { get; set; }
+
+        private static object CapturedSender { get; set; }
+
+        private static object CapturedArgs1 { get; set; }
+
+        private static object CapturedArgs2 { get; set; }
+
+        private static object CaughtException { get; set; }
+        
         [Background]
         public void Background()
         {
@@ -68,49 +106,6 @@
                 CapturedArgs1 = arg1;
                 CapturedArgs2 = arg2;
             };
-        }
-
-        public interface IEvents
-        {
-            event EventHandler UnsubscribedEvent;
-
-            event EventHandler SubscribedEvent;
-
-            event EventHandler<CustomEventArgs> GenericEvent;
-
-            event CustomEventHandler CustomEvent;
-
-            event ReferenceTypeEventHandler ReferenceTypeEvent;
-
-            event ValueTypeEventHandler ValueTypeEvent;
-
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "Test.")]
-            event Action<int, bool> ActionEvent;
-        }
-
-        private static IEvents Fake { get; set; }
-
-        private static object SampleSender { get; set; }
-
-        private readonly EventArgs eventArgs = new EventArgs();
-
-        private readonly CustomEventArgs customEventArgs = new CustomEventArgs();
-
-        private readonly ReferenceType referenceTypeEventArgs = new ReferenceType();
-
-        private readonly DerivedReferenceType derivedReferenceTypeEventArgs = new DerivedReferenceType();
-
-        private static object CapturedSender { get; set; }
-
-        private static object CapturedArgs1 { get; set; }
-
-        private static object CapturedArgs2 { get; set; }
-
-        private static object CaughtException { get; set; }
-
-        private static void CatchException(Action action)
-        {
-            CaughtException = Record.Exception(action);
         }
 
         [Scenario]
@@ -315,6 +310,11 @@
 
             "it should pass the second argument"
                 .x(() => CapturedArgs2.Should().Be(eventArgs2));
+        }
+
+        private static void CatchException(Action action)
+        {
+            CaughtException = Record.Exception(action);
         }
     }
 }

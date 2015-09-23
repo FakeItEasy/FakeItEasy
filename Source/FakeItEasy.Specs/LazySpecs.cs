@@ -8,6 +8,16 @@
 
     public class LazySpecs
     {
+        public interface ILazyFactory
+        {
+            Lazy<IFoo> Create();
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "Required for testing.")]
+        public interface IFoo
+        {
+        }
+
         [Scenario]
         public void LazyReturnValue(
             ILazyFactory fake,
@@ -24,16 +34,6 @@
 
             "it should return a lazy whose value is a dummy"
                 .x(() => lazy.Value.Should().Be(FooFactory.Instance));
-        }
-        
-        public interface ILazyFactory
-        {
-            Lazy<IFoo> Create();
-        }
-
-        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "Required for testing.")]
-        public interface IFoo
-        {
         }
 
         public class FooFactory : DummyFactory<IFoo>, IFoo

@@ -13,6 +13,21 @@
 
     public class CreationOptionsSpecs
     {
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface IInterfaceThatWeWillAddAttributesTo1
+        {
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface IInterfaceThatWeWillAddAttributesTo2
+        {
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface IInterfaceThatWeWillAddAttributesTo3
+        {
+        }
+
         [Scenario]
         public void ConfigureFakeDuringConstruction(
             MakesVirtualCallInConstructor fake)
@@ -338,11 +353,6 @@
                              .BeAssignableTo<ICloneable>());
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
-        public interface IInterfaceThatWeWillAddAttributesTo1
-        {
-        }
-
         [Scenario]
         public void WithAdditionalAttributes(
             IInterfaceThatWeWillAddAttributesTo1 fake)
@@ -362,11 +372,6 @@
                 .x(() => fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), false).Should().HaveCount(1));
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
-        public interface IInterfaceThatWeWillAddAttributesTo2
-        {
-        }
-
         [Scenario]
         public void WithAdditionalAttributesAndNullSetOfAttributes(
             Exception exception)
@@ -377,11 +382,6 @@
             "it should throw an argument null exception"
                 .x(() => exception.Should().BeAnExceptionOfType<ArgumentNullException>()
                              .WithMessage("*customAttributeBuilders*"));
-        }
-
-        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
-        public interface IInterfaceThatWeWillAddAttributesTo3
-        {
         }
 
         [Scenario]

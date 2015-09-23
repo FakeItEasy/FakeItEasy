@@ -7,6 +7,8 @@
 
     public class FixtureInitializationSpecs
     {
+        public static ExampleFixture Fixture { get; set; }
+
         [Scenario]
         public void Initialization()
         {
@@ -28,8 +30,6 @@
             "it should inject fake when not available in fixture"
                 .x(() => Fixture.Sut.ServiceProvider.Should().NotBeNull());
         }
-
-        public static ExampleFixture Fixture { get; set; }
 
         public class ExampleFixture
         {

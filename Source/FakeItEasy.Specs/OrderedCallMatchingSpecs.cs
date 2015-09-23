@@ -7,6 +7,16 @@
 
     public class OrderedCallMatchingSpecs
     {
+        public interface IHaveNoGenericParameters
+        {
+            void Bar(int baz);
+        }
+
+        public interface IHaveOneGenericParameter
+        {
+            void Bar<T>(T baz);
+        }
+
         [Scenario]
         public void NonGenericCalls(
             IHaveNoGenericParameters fake,
@@ -43,11 +53,6 @@
 "));
         }
 
-        public interface IHaveNoGenericParameters
-        {
-            void Bar(int baz);
-        }
-    
         [Scenario]
         public void GenericCalls(
             IHaveOneGenericParameter fake,
@@ -82,11 +87,6 @@
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<System.Int32>(baz: 1)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic<System.Boolean>>(baz: FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic`1[System.Boolean])
 "));
-        }
-
-        public interface IHaveOneGenericParameter
-        {
-            void Bar<T>(T baz);
         }
 
         public class Generic<T>

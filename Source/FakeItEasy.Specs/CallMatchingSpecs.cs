@@ -9,6 +9,36 @@
 
     public class CallMatchingSpecs
     {
+        public interface ITypeWithParameterArray
+        {
+            void MethodWithParameterArray(string arg, params string[] args);
+        }
+
+        public interface IHaveNoGenericParameters
+        {
+            void Bar(int baz);
+        }
+
+        public interface IHaveOneGenericParameter
+        {
+            void Bar<T>(T baz);
+        }
+
+        public interface IHaveTwoGenericParameters
+        {
+            void Bar<T1, T2>(T1 baz1, T2 baz2);
+        }
+
+        public interface IHaveARefParameter
+        {
+            bool CheckYourReferences(ref string refString);
+        }
+
+        public interface IHaveAnOutParameter
+        {
+            bool Validate([Out] string value);
+        }
+
         [Scenario]
         public void ParameterArrays(
             ITypeWithParameterArray fake)
@@ -32,11 +62,6 @@
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", A<string[]>.That.IsSameSequenceAs(new[] { "bar", "baz" }))).MustHaveHappened());
         }
 
-        public interface ITypeWithParameterArray
-        {
-            void MethodWithParameterArray(string arg, params string[] args);
-        }
-   
         [Scenario]
         public void FailingMatchOfNonGenericCalls(
             IHaveNoGenericParameters fake,
@@ -66,11 +91,6 @@
 "));
         }
 
-        public interface IHaveNoGenericParameters
-        {
-            void Bar(int baz);
-        }
-
         [Scenario]
         public void FailingMatchOfGenericCalls(
             IHaveTwoGenericParameters fake,
@@ -98,15 +118,6 @@
     2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.Boolean, System.Int64>, System.Int32>(baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
 
 "));
-        }
-
-        public interface IHaveTwoGenericParameters
-        {
-            void Bar<T1, T2>(T1 baz1, T2 baz2);
-        }
-
-        public class Generic<T1, T2>
-        {
         }
 
         [Scenario]
@@ -151,15 +162,6 @@
   Expected to find it at least once but no calls were made to the fake object.
 
 "));
-        }
-
-        public interface IHaveOneGenericParameter
-        {
-            void Bar<T>(T baz);
-        }
-
-        public class Generic<T>
-        {
         }
 
         [Scenario]
@@ -271,11 +273,6 @@
                     });
         }
 
-        public interface IHaveARefParameter
-        {
-            bool CheckYourReferences(ref string refString);
-        }
-
         /// <summary>
         /// <see cref="OutAttribute"/> can be applied to parameters that are not
         /// <c>out</c> parameters.
@@ -302,10 +299,13 @@
                 .x(() => subject.Validate("a different string")
                              .Should().BeFalse());
         }
-       
-        public interface IHaveAnOutParameter
+
+        public class Generic<T>
         {
-            bool Validate([Out] string value);
+        }
+
+        public class Generic<T1, T2>
+        {
         }
     }
 }
