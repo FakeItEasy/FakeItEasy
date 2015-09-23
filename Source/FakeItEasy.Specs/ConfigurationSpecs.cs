@@ -78,7 +78,7 @@
                         returnValue = fake.ReturnSomething();
                     });
 
-            "it shuld have called the base method"
+            "it should have called the base method"
                 .x(() => fake.WasCalled.Should().BeTrue());
 
             "it should return value from base method"

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
     using FluentAssertions;
     using Xbehave;
@@ -31,11 +32,13 @@
 
         public interface IHaveARefParameter
         {
+            [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Required for testing.")]
             bool CheckYourReferences(ref string refString);
         }
 
         public interface IHaveAnOutParameter
         {
+            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Required for testing.")]
             bool Validate([Out] string value);
         }
 
@@ -121,14 +124,14 @@
         }
 
         [Scenario]
-        public void NoNonGeneriCalls(
+        public void NoNonGenericCalls(
             IHaveNoGenericParameters fake,
             Exception exception)
         {
             "establish"
                 .x(() => fake = A.Fake<IHaveNoGenericParameters>());
 
-            "when_no_non_generic_calls"
+            "when no non generic calls"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened()));
 
             "it should tell us that the call was not matched"

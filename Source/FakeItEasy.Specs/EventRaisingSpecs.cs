@@ -122,7 +122,7 @@
         [Scenario]
         public void WithEmpty()
         {
-            "when raising event using WithEmpty"
+            "when raising event with empty arguments"
                 .x(() => Fake.SubscribedEvent += Raise.WithEmpty());
 
             "it should pass the fake as sender"

@@ -25,7 +25,7 @@
             "when faking a class whose constructor throws"
                 .x(() => exception = Record.Exception(() => A.Fake<ClassWhoseConstructorThrows>()));
 
-            "it should throw a FakeCreationException"
+            "it should throw a fake creation exception"
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "it should throw an exception whose message includes original exception type"
