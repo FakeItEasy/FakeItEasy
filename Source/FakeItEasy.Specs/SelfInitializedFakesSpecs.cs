@@ -84,21 +84,6 @@
                 .x(() => count2ForBook1DuringPlayback.Should().Be(10));
         }
 
-        public class InMemoryStorage : ICallStorage
-        {
-            private IEnumerable<CallData> recordedCalls;
-
-            public IEnumerable<CallData> Load()
-            {
-                return this.recordedCalls;
-            }
-
-            public void Save(IEnumerable<CallData> calls)
-            {
-                this.recordedCalls = calls.ToList();
-            }
-        }
-
         [Trait("explicit", "yes")]
         [Scenario]
         public void SelfInitializingWithFileRecorder(
@@ -151,6 +136,21 @@
 
             "it should return the recorded result during playback"
                 .x(() => countDuringPlayback.Should().Be(8));
+        }
+
+        public class InMemoryStorage : ICallStorage
+        {
+            private IEnumerable<CallData> recordedCalls;
+
+            public IEnumerable<CallData> Load()
+            {
+                return this.recordedCalls;
+            }
+
+            public void Save(IEnumerable<CallData> calls)
+            {
+                this.recordedCalls = calls.ToList();
+            }
         }
     }
 }
