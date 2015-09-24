@@ -2,302 +2,313 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
+    using Xunit;
 
-    public class when_matching_calls_with_parameter_arrays
+    public class CallMatchingSpecs
     {
-        static ITypeWithParameterArray fake;
-
-        Establish context = () => fake = A.Fake<ITypeWithParameterArray>();
-
-        Because of = () => fake.MethodWithParameterArray("foo", "bar", "baz");
-
-        It should_be_able_to_match_the_call =
-            () => A.CallTo(() => fake.MethodWithParameterArray("foo", "bar", "baz")).MustHaveHappened();
-
-        It should_be_able_to_match_the_call_with_argument_constraints =
-            () => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, A<string>._, A<string>._)).MustHaveHappened();
-
-        It should_be_able_to_match_the_call_mixing_constraints_and_values =
-            () => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, "bar", A<string>._)).MustHaveHappened();
-
-        It should_be_able_to_match_using_array_syntax =
-            () => A.CallTo(() => fake.MethodWithParameterArray("foo", A<string[]>.That.IsSameSequenceAs(new[] { "bar", "baz" }))).MustHaveHappened();
-
         public interface ITypeWithParameterArray
         {
             void MethodWithParameterArray(string arg, params string[] args);
         }
-    }
 
-    public class when_failing_to_match_non_generic_calls
-    {
-        static IFoo fake;
-        static Exception exception;
-
-        Establish context = () => fake = A.Fake<IFoo>();
-
-        Because of = () =>
-        {
-            fake.Bar(1);
-            fake.Bar(2);
-            exception = Catch.Exception(() => A.CallTo(() => fake.Bar(3)).MustHaveHappened());
-        };
-
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
-@"
-
-  Assertion failed for the following call:
-    FakeItEasy.Specs.when_failing_to_match_non_generic_calls+IFoo.Bar(3)
-  Expected to find it at least once but found it #0 times among the calls:
-    1: FakeItEasy.Specs.when_failing_to_match_non_generic_calls+IFoo.Bar(baz: 1)
-    2: FakeItEasy.Specs.when_failing_to_match_non_generic_calls+IFoo.Bar(baz: 2)
-
-");
-
-        public interface IFoo
+        public interface IHaveNoGenericParameters
         {
             void Bar(int baz);
         }
-    }
 
-    public class when_failing_to_match_generic_calls
-    {
-        static IFoo fake;
-        static Exception exception;
-
-        Establish context = () => fake = A.Fake<IFoo>();
-
-        Because of = () =>
-        {
-            fake.Bar(1, 2D);
-            fake.Bar(new Generic<bool, long>(), 3);
-            exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened());
-        };
-
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
-@"
-
-  Assertion failed for the following call:
-    FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<System.String, System.String>(<Ignored>, <Ignored>)
-  Expected to find it at least once but found it #0 times among the calls:
-    1: FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<System.Int32, System.Double>(baz1: 1, baz2: 2)
-    2: FakeItEasy.Specs.when_failing_to_match_generic_calls+IFoo.Bar<FakeItEasy.Specs.when_failing_to_match_generic_calls+Generic<System.Boolean, System.Int64>, System.Int32>(baz1: FakeItEasy.Specs.when_failing_to_match_generic_calls+Generic`2[System.Boolean,System.Int64], baz2: 3)
-
-");
-
-        public interface IFoo
-        {
-            void Bar<T1, T2>(T1 baz1, T2 baz2);
-        }
-
-        public class Generic<T1, T2>
-        {
-        }
-    }
-
-    public class when_no_non_generic_calls
-    {
-        static IFoo fake;
-        static Exception exception;
-
-        Establish context = () => fake = A.Fake<IFoo>();
-
-        Because of = () => exception = Catch.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened());
-
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
-@"
-
-  Assertion failed for the following call:
-    FakeItEasy.Specs.when_no_non_generic_calls+IFoo.Bar(<Ignored>)
-  Expected to find it at least once but no calls were made to the fake object.
-
-");
-
-        public interface IFoo
-        {
-            void Bar(int baz);
-        }
-    }
-
-    public class when_no_generic_calls
-    {
-        static IFoo fake;
-        static Exception exception;
-
-        Establish context = () => fake = A.Fake<IFoo>();
-
-        Because of = () => exception = Catch.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened());
-
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
-@"
-
-  Assertion failed for the following call:
-    FakeItEasy.Specs.when_no_generic_calls+IFoo.Bar<FakeItEasy.Specs.when_no_generic_calls+Generic<System.String>>(<Ignored>)
-  Expected to find it at least once but no calls were made to the fake object.
-
-");
-
-        public interface IFoo
+        public interface IHaveOneGenericParameter
         {
             void Bar<T>(T baz);
         }
 
-        public class Generic<T>
+        public interface IHaveTwoGenericParameters
         {
+            void Bar<T1, T2>(T1 baz1, T2 baz2);
         }
-    }
 
-    public class when_matching_a_call_with_an_out_parameter
-    {
-        private static IDictionary<string, string> subject;
-
-        Establish context = () =>
+        public interface IHaveARefParameter
         {
-            subject = A.Fake<IDictionary<string, string>>();
-        };
+            [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Required for testing.")]
+            bool CheckYourReferences(ref string refString);
+        }
 
-        Because of = () =>
-            {
-                string outString = "a constraint string";
-                A.CallTo(() => subject.TryGetValue("any key", out outString))
-                    .Returns(true);
-            };
-
-        It should_match_without_regard_to_out_parameter_value = () =>
+        public interface IHaveAnOutParameter
         {
-            string outString = "a different string";
+            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Required for testing.")]
+            bool Validate([Out] string value);
+        }
 
-            subject.TryGetValue("any key", out outString)
-                .Should().BeTrue();
-        };
-
-        It should_assign_the_constraint_value_to_the_out_parameter = () =>
+        [Scenario]
+        public void ParameterArrays(
+            ITypeWithParameterArray fake)
         {
-            string outString = "a different string";
+            "establish"
+                .x(() => fake = A.Fake<ITypeWithParameterArray>());
 
-            subject.TryGetValue("any key", out outString);
+            "when matching calls with parameter arrays"
+                .x(() => fake.MethodWithParameterArray("foo", "bar", "baz"));
 
-            outString.Should().Be("a constraint string");
-        };
-    }
+            "it should be able to match the call"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", "bar", "baz")).MustHaveHappened());
 
-    public class when_failing_to_match_a_call_with_an_out_parameter
-    {
-        private static Exception exception;
+            "it should be able to match the call with argument constraints"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, A<string>._, A<string>._)).MustHaveHappened());
 
-        private static IDictionary<string, string> subject;
+            "it should be able to match the call mixing constraints and values"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, "bar", A<string>._)).MustHaveHappened());
 
-        Establish context = () =>
+            "it should be able to match using array syntax"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", A<string[]>.That.IsSameSequenceAs(new[] { "bar", "baz" }))).MustHaveHappened());
+        }
+
+        [Scenario]
+        public void FailingMatchOfNonGenericCalls(
+            IHaveNoGenericParameters fake,
+            Exception exception)
         {
-            subject = A.Fake<IDictionary<string, string>>();
-        };
+            "establish"
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
 
-        Because of = () =>
-            {
-                string outString = null;
+            "when failing to match non generic calls"
+                .x(() =>
+                    {
+                        fake.Bar(1);
+                        fake.Bar(2);
+                        exception = Record.Exception(() => A.CallTo(() => fake.Bar(3)).MustHaveHappened());
+                    });
 
-                exception =
-                    Catch.Exception(
-                        () => A.CallTo(() => subject.TryGetValue("any key", out outString))
-                            .MustHaveHappened());
-            };
+            "it should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(
+                    @"
 
-        It should_tell_us_that_the_call_was_not_matched = () => exception.Message.Should().Be(
-            @"
+  Assertion failed for the following call:
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(3)
+  Expected to find it at least once but found it #0 times among the calls:
+    1: FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 1)
+    2: FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 2)
+
+"));
+        }
+
+        [Scenario]
+        public void FailingMatchOfGenericCalls(
+            IHaveTwoGenericParameters fake,
+            Exception exception)
+        {
+            "establish"
+                .x(() => fake = A.Fake<IHaveTwoGenericParameters>());
+
+            "when failing to match generic calls"
+                .x(() =>
+                    {
+                        fake.Bar(1, 2D);
+                        fake.Bar(new Generic<bool, long>(), 3);
+                        exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened());
+                    });
+
+            "it should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(
+                    @"
+
+  Assertion failed for the following call:
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<System.String, System.String>(<Ignored>, <Ignored>)
+  Expected to find it at least once but found it #0 times among the calls:
+    1: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<System.Int32, System.Double>(baz1: 1, baz2: 2)
+    2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.Boolean, System.Int64>, System.Int32>(baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
+
+"));
+        }
+
+        [Scenario]
+        public void NoNonGenericCalls(
+            IHaveNoGenericParameters fake,
+            Exception exception)
+        {
+            "establish"
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+
+            "when no non generic calls"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened()));
+
+            "it should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(
+                    @"
+
+  Assertion failed for the following call:
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(<Ignored>)
+  Expected to find it at least once but no calls were made to the fake object.
+
+"));
+        }
+
+        [Scenario]
+        public void NoGenericCalls(
+            IHaveOneGenericParameter fake,
+            Exception exception)
+        {
+            "establish"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "when no generic calls"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened()));
+
+            "it should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(
+                    @"
+
+  Assertion failed for the following call:
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.String>>(<Ignored>)
+  Expected to find it at least once but no calls were made to the fake object.
+
+"));
+        }
+
+        [Scenario]
+        public void OutParameter(
+            IDictionary<string, string> subject)
+        {
+            "establish"
+                .x(() => subject = A.Fake<IDictionary<string, string>>());
+
+            "when matching a call with an out parameter"
+                .x(() =>
+                    {
+                        string outString = "a constraint string";
+                        A.CallTo(() => subject.TryGetValue("any key", out outString))
+                            .Returns(true);
+                    });
+
+            "it should match without regard to out parameter value"
+                .x(() =>
+                    {
+                        string outString = "a different string";
+
+                        subject.TryGetValue("any key", out outString)
+                            .Should().BeTrue();
+                    });
+
+            "it should assign the constraint value to the out parameter"
+                .x(() =>
+                    {
+                        string outString = "a different string";
+
+                        subject.TryGetValue("any key", out outString);
+
+                        outString.Should().Be("a constraint string");
+                    });
+        }
+
+        [Scenario]
+        public void FailingMatchOfOutParameter(
+            IDictionary<string, string> subject,
+            Exception exception)
+        {
+            "establish"
+                .x(() => subject = A.Fake<IDictionary<string, string>>());
+
+            "when failing to match a call with an out parameter"
+                .x(() =>
+                    {
+                        string outString = null;
+
+                        exception =
+                            Record.Exception(
+                                () => A.CallTo(() => subject.TryGetValue("any key", out outString))
+                                    .MustHaveHappened());
+                    });
+
+            "it should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(
+                    @"
 
   Assertion failed for the following call:
     System.Collections.Generic.IDictionary`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]].TryGetValue(""any key"", <out parameter>)
   Expected to find it at least once but no calls were made to the fake object.
 
-");
-    }
-
-    public class when_matching_a_call_with_a_ref_parameter
-    {
-        private static IHaveInterestingParameters subject;
-
-        Establish context = () =>
-        {
-            subject = A.Fake<IHaveInterestingParameters>();
-        };
-
-        Because of = () =>
-        {
-            string refString = "a constraint string";
-            A.CallTo(() => subject.CheckYourReferences(ref refString))
-                .Returns(true);
-        };
-
-        It should_match_when_ref_parameter_value_matches = () =>
-        {
-            string refString = "a constraint string";
-
-            subject.CheckYourReferences(ref refString)
-                .Should().BeTrue();
-        };
-
-        It should_not_match_when_ref_parameter_value_does_not_match = () =>
-        {
-            string refString = "a different string";
-
-            subject.CheckYourReferences(ref refString)
-                .Should().BeFalse();
-        };
-
-        It should_assign_the_constraint_value_to_the_ref_parameter = () =>
-        {
-            string refString = "a constraint string";
-
-            subject.CheckYourReferences(ref refString);
-
-            refString.Should().Be("a constraint string");
-        };
-
-        public interface IHaveInterestingParameters
-        {
-            bool CheckYourReferences(ref string refString);
+"));
         }
-    }
 
-    /// <summary>
-    /// <see cref="OutAttribute"/> can be applied to parameters that are not
-    /// <c>out</c> parameters.
-    /// One example is the array parameter in <see cref="System.IO.Stream.Read"/>.
-    /// Ensure that such parameters are not confused with <c>out</c> parameters.
-    /// </summary>
-    public class when_matching_a_call_with_a_parameter_having_an_out_attribute
-    {
-        private static IHaveInterestingParameters subject;
-
-        Establish context = () =>
+        [Scenario]
+        public void RefParameter(
+            IHaveARefParameter subject)
         {
-            subject = A.Fake<IHaveInterestingParameters>();
-        };
+            "establish"
+                .x(() => subject = A.Fake<IHaveARefParameter>());
 
-        Because of = () =>
-        {
-            A.CallTo(() => subject.Validate("a constraint string"))
-                .Returns(true);
-        };
+            "when matching a call with a ref parameter"
+                .x(() =>
+                    {
+                        string refString = "a constraint string";
+                        A.CallTo(() => subject.CheckYourReferences(ref refString))
+                            .Returns(true);
+                    });
 
-        It should_match_when_ref_parameter_value_matches = () =>
-        {
-            subject.Validate("a constraint string")
-                .Should().BeTrue();
-        };
+            "it should match when ref parameter value matches"
+                .x(() =>
+                    {
+                        string refString = "a constraint string";
 
-        It should_not_match_when_ref_parameter_value_does_not_match = () =>
-        {
-            subject.Validate("a different string")
-                .Should().BeFalse();
-        };
+                        subject.CheckYourReferences(ref refString)
+                            .Should().BeTrue();
+                    });
 
-        public interface IHaveInterestingParameters
+            "it should not match when ref parameter value does not match"
+                .x(() =>
+                    {
+                        string refString = "a different string";
+
+                        subject.CheckYourReferences(ref refString)
+                            .Should().BeFalse();
+                    });
+
+            "it should assign the constraint value to the ref parameter"
+                .x(() =>
+                    {
+                        string refString = "a constraint string";
+
+                        subject.CheckYourReferences(ref refString);
+
+                        refString.Should().Be("a constraint string");
+                    });
+        }
+
+        /// <summary>
+        /// <see cref="OutAttribute"/> can be applied to parameters that are not
+        /// <c>out</c> parameters.
+        /// One example is the array parameter in <see cref="System.IO.Stream.Read"/>.
+        /// Ensure that such parameters are not confused with <c>out</c> parameters.
+        /// </summary>
+        /// <param name="subject">The subject of the test.</param>
+        [Scenario]
+        public void ParameterHavingAnOutAttribute(
+             IHaveAnOutParameter subject)
         {
-            bool Validate([Out] string value);
+            "establish"
+                .x(() => subject = A.Fake<IHaveAnOutParameter>());
+
+            "when matching a call with a parameter having an out attribute"
+                .x(() => A.CallTo(() => subject.Validate("a constraint string"))
+                             .Returns(true));
+
+            "it should match when ref parameter value matches"
+                .x(() => subject.Validate("a constraint string")
+                             .Should().BeTrue());
+
+            "it should not match when ref parameter value does not match"
+                .x(() => subject.Validate("a different string")
+                             .Should().BeFalse());
+        }
+
+        public class Generic<T>
+        {
+        }
+
+        public class Generic<T1, T2>
+        {
         }
     }
 }
