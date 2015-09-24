@@ -36,7 +36,7 @@
 
         private readonly DerivedReferenceType derivedReferenceTypeEventArgs = new DerivedReferenceType();
 
-        private interface IEvents
+        public interface IEvents
         {
             event EventHandler UnsubscribedEvent;
 
