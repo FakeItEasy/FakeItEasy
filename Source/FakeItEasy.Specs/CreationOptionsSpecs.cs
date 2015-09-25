@@ -30,7 +30,7 @@
         }
 
         [Scenario]
-        public void ConfigureFakeDuringConstruction(
+        public static void ConfigureFakeDuringConstruction(
             MakesVirtualCallInConstructor fake)
         {
             "when configuring a fake during construction"
@@ -50,7 +50,7 @@
         }
 
         [Scenario]
-        public void ConfigureFakeOverridesFakeConfigurator(
+        public static void ConfigureFakeOverridesFakeConfigurator(
             RobotRunsAmokEvent fake)
         {
             "when configuring a fake during construction to configure a method also configured by a fake configurator"
@@ -63,7 +63,7 @@
         }
 
         [Scenario]
-        public void MultipleConfigureFakeConfigurations(
+        public static void MultipleConfigureFakeConfigurations(
             MakesVirtualCallInConstructor fake)
         {
             "when configuring a fake multiple times"
@@ -80,7 +80,7 @@
         }
 
         [Scenario]
-        public void ConfigureFakeOverridesCallsBaseMethods(
+        public static void ConfigureFakeOverridesCallsBaseMethods(
             MakesVirtualCallInConstructor fake)
         {
             "when specifying that a fake calls base methods followed by explicit configuration"
@@ -93,7 +93,7 @@
         }
 
         [Scenario]
-        public void StrictCombinedWithConfigureFake(
+        public static void StrictCombinedWithConfigureFake(
             MakesVirtualCallInConstructor fake)
         {
             "when specifying a strict fake followed by explicit configuration"
@@ -110,7 +110,7 @@
         }
 
         [Scenario]
-        public void WrappingCombinedWithConfigureFake(
+        public static void WrappingCombinedWithConfigureFake(
             MakesVirtualCallInConstructor fake)
         {
             "when specification of wrapping is followed by explicit configuration"
@@ -127,7 +127,7 @@
         }
 
         [Scenario]
-        public void CallsBaseMethodsDuringConstruction(
+        public static void CallsBaseMethodsDuringConstruction(
             MakesVirtualCallInConstructor fake)
         {
             "when specifying that a fake calls base methods"
@@ -141,7 +141,7 @@
         }
 
         [Scenario]
-        public void CallsBaseMethodsOverridesConfigureFake(
+        public static void CallsBaseMethodsOverridesConfigureFake(
             MakesVirtualCallInConstructor fake)
         {
             "when explicit configuration is followed by specifying that a fake calls base methods"
@@ -154,7 +154,7 @@
         }
 
         [Scenario]
-        public void CallsBaseMethodsOverridesStrict(
+        public static void CallsBaseMethodsOverridesStrict(
             MakesVirtualCallInConstructor fake)
         {
             "when specifying a strict fake followed by specifying the calling of base methods"
@@ -167,7 +167,7 @@
         }
 
         [Scenario]
-        public void CallsBaseMethodsOverridesWrapping(
+        public static void CallsBaseMethodsOverridesWrapping(
             MakesVirtualCallInConstructor fake)
         {
             "when specifying a wrapping fake followed specifying the calling of base methods"
@@ -180,7 +180,7 @@
         }
 
         [Scenario]
-        public void StrictDuringConstruction(
+        public static void StrictDuringConstruction(
             MakesVirtualCallInConstructor fake)
         {
             "when Strict is used to configure a fake"
@@ -200,7 +200,7 @@
         }
 
         [Scenario]
-        public void StrictOverridesCallsBaseMethods(
+        public static void StrictOverridesCallsBaseMethods(
             MakesVirtualCallInConstructor fake)
         {
             "when specifying the calling of base methods followed by strictness"
@@ -215,7 +215,7 @@
         }
 
         [Scenario]
-        public void StrictOverridesConfigureFake(
+        public static void StrictOverridesConfigureFake(
             MakesVirtualCallInConstructor fake)
         {
             "when explicit fake configuration is followed by specification of strict behavior"
@@ -231,7 +231,7 @@
         }
 
         [Scenario]
-        public void StrictOverridesWrapping(
+        public static void StrictOverridesWrapping(
             MakesVirtualCallInConstructor fake)
         {
             "when Wrapping followed by Strict are used to configure a fake"
@@ -246,7 +246,7 @@
         }
 
         [Scenario]
-        public void WrappingDuringConstruction(
+        public static void WrappingDuringConstruction(
             MakesVirtualCallInConstructor fake)
         {
             "when Wrapping is used to configure a fake"
@@ -261,7 +261,7 @@
         }
 
         [Scenario]
-        public void WrappingOverridesCallsBaseMethods(
+        public static void WrappingOverridesCallsBaseMethods(
             MakesVirtualCallInConstructor fake)
         {
             "when specifying the calling of base methods followed by wrapping"
@@ -274,7 +274,7 @@
         }
 
         [Scenario]
-        public void WrappingOverridesConfigureFake(
+        public static void WrappingOverridesConfigureFake(
             MakesVirtualCallInConstructor fake)
         {
             "when explicit configuration is followed by specification of wrapping"
@@ -291,7 +291,7 @@
         }
 
         [Scenario]
-        public void WrappingOverridesStrict(
+        public static void WrappingOverridesStrict(
             MakesVirtualCallInConstructor fake)
         {
             "when Strict followed by Wrapping are used to configure a fake"
@@ -304,7 +304,7 @@
         }
 
         [Scenario]
-        public void MultipleWrappingConfigurations(
+        public static void MultipleWrappingConfigurations(
             MakesVirtualCallInConstructor fake)
         {
             "when Wrapping is used to configure a fake twice"
@@ -317,7 +317,7 @@
         }
 
         [Scenario]
-        public void Wrapping(
+        public static void Wrapping(
             RobotRunsAmokEvent fake)
         {
             "when specification of wrapping is used to configure a fake that has a fake configurator"
@@ -329,7 +329,7 @@
         }
 
         [Scenario]
-        public void Implements(
+        public static void Implements(
             MakesVirtualCallInConstructor fake)
         {
             "when Implements is used to configure a fake"
@@ -341,7 +341,7 @@
         }
 
         [Scenario]
-        public void MultipleImplementsConfigurations(
+        public static void MultipleImplementsConfigurations(
             MakesVirtualCallInConstructor fake)
         {
             "when Implements is used to configure a fake twice"
@@ -355,7 +355,7 @@
         }
 
         [Scenario]
-        public void WithAdditionalAttributes(
+        public static void WithAdditionalAttributes(
             IInterfaceThatWeWillAddAttributesTo1 fake)
         {
             "when specifying a fake with additional attributes"
@@ -374,7 +374,7 @@
         }
 
         [Scenario]
-        public void WithAdditionalAttributesAndNullSetOfAttributes(
+        public static void WithAdditionalAttributesAndNullSetOfAttributes(
             Exception exception)
         {
             "when specifying a fake with additional attributes using a null set of attributes"
@@ -386,7 +386,7 @@
         }
 
         [Scenario]
-        public void MultipleWithAdditionalAttributesConfigurations(
+        public static void MultipleWithAdditionalAttributesConfigurations(
             IInterfaceThatWeWillAddAttributesTo3 fake)
         {
             "when specifying a fake with additional attributes twice"
@@ -416,7 +416,7 @@
         }
 
         [Scenario]
-        public void WithArgumentsForConstructor(
+        public static void WithArgumentsForConstructor(
             MakesVirtualCallInConstructor fake)
         {
             "when specifying constructor arguments with a list of arguments"
@@ -435,7 +435,7 @@
         }
 
         [Scenario]
-        public void MultipleWithArgumentsForConstructorConfigurations(
+        public static void MultipleWithArgumentsForConstructorConfigurations(
             MakesVirtualCallInConstructor fake)
         {
             "when specifying a fake with constructor arguments twice"
@@ -455,7 +455,7 @@
         }
 
         [Scenario]
-        public void WithArgumentsForConstructorWithExampleConstructor(
+        public static void WithArgumentsForConstructorWithExampleConstructor(
             MakesVirtualCallInConstructor fake)
         {
             "when specifying a fake with constructor arguments and an example constructor"
