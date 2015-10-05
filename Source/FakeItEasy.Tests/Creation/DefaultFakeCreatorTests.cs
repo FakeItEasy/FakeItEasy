@@ -16,8 +16,8 @@ namespace FakeItEasy.Tests.Creation
 
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>>>(
-                x => x.Wrapping(A.Fake<Foo>()).Implements(typeof(Foo)),
-                x => x.Implements(typeof(Foo)),
+                x => x.Wrapping(A.Fake<Foo>()).Implements(typeof(IFoo)),
+                x => x.Implements(typeof(IFoo)),
                 x => x.WithArgumentsForConstructor(() => new Foo()),
                 x => x.WithArgumentsForConstructor(new object[] { A.Fake<IServiceProvider>() }),
                 x => x.Wrapping(A.Fake<Foo>()).RecordedBy(A.Fake<ISelfInitializingFakeRecorder>()))

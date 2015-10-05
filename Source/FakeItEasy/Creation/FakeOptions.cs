@@ -2,6 +2,7 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Reflection.Emit;
 
     internal class FakeOptions
@@ -29,6 +30,17 @@ namespace FakeItEasy.Creation
 
         public void AddInterfaceToImplement(Type interfaceType)
         {
+            Guard.AgainstNull(interfaceType, "interfaceType");
+
+            if (!interfaceType.IsInterface)
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        "The specified type '{0}' is not an interface",
+                        interfaceType.FullNameCSharp()));
+            }
+
             this.additionalInterfacesToImplement.Add(interfaceType);
         }
 
