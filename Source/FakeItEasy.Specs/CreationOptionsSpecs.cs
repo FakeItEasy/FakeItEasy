@@ -341,6 +341,19 @@
         }
 
         [Scenario]
+        public static void ImplementsNonInterfaceType(
+            Exception exception)
+        {
+            "When a fake is built to implement a non-interface type"
+                .x(() => exception = Record.Exception(() => A.Fake<MakesVirtualCallInConstructor>(options => options
+                                                                .Implements(typeof(MakesVirtualCallInConstructor)))));
+
+            "Then it should throw an argument exception"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
+                             .WithMessage("*The specified type 'FakeItEasy.Specs.MakesVirtualCallInConstructor' is not an interface*"));
+        }
+
+        [Scenario]
         public static void MultipleImplementsConfigurations(
             MakesVirtualCallInConstructor fake)
         {
