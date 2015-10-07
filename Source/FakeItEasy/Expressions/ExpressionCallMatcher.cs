@@ -30,7 +30,7 @@
         public ExpressionCallMatcher(LambdaExpression callSpecification, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, ICallExpressionParser callExpressionParser)
         {
             this.methodInfoManager = methodInfoManager;
-            
+
             var parsedExpression = callExpressionParser.Parse(callSpecification);
             this.Method = parsedExpression.CalledMethod;
 
@@ -74,7 +74,7 @@
             result.Append(".");
             result.Append(this.Method.Name);
             result.Append(this.Method.GetGenericArgumentsCSharp());
-            
+
             this.AppendArgumentsListString(result);
 
             return result.ToString();
@@ -84,8 +84,8 @@
         {
             this.argumentsPredicate = predicate;
 
-            var numberOfValdiators = this.argumentConstraints.Count();
-            this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValdiators);
+            var numberOfValidators = this.argumentConstraints.Count();
+            this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValidators);
         }
 
         public Func<IFakeObjectCall, ICollection<object>> GetOutAndRefParametersValueProducer()
@@ -112,7 +112,7 @@
         {
             if (argumentExpressions == null)
             {
-                return Enumerable.Empty<IArgumentConstraint>();    
+                return Enumerable.Empty<IArgumentConstraint>();
             }
 
             return

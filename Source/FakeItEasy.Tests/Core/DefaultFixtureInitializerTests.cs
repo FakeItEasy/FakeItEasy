@@ -208,12 +208,12 @@ namespace FakeItEasy.Tests.Core
 
             [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Required for testing.")]
             [Fake]
-            private IFoo PriveFakeProperty { get; set; }
+            private IFoo PrivateFakeProperty { get; set; }
 
             [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Required for testing.")]
             public IFoo GetValueOfPrivateFakeProperty()
             {
-                return this.PriveFakeProperty;
+                return this.PrivateFakeProperty;
             }
 
             [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Required for testing.")]

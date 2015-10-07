@@ -21,10 +21,10 @@
                 return ParsePropertyCallExpression(propertyExpression);
             }
 
-            return ParseInvokationExpression((InvocationExpression)callExpression.Body);
+            return ParseInvocationExpression((InvocationExpression)callExpression.Body);
         }
 
-        private static ParsedCallExpression ParseInvokationExpression(InvocationExpression expression)
+        private static ParsedCallExpression ParseInvocationExpression(InvocationExpression expression)
         {
             var target = expression.Expression.Evaluate();
             var method = target.GetType().GetMethod("Invoke");
@@ -42,7 +42,7 @@
         {
             var argumentsExpressions = from argument in expression.Arguments.Zip(expression.Method.GetParameters(), (x, y) => new { Expression = x, ParameterInfo = y })
                                        select new ParsedArgumentExpression(argument.Expression, argument.ParameterInfo);
-            
+
             return new ParsedCallExpression(
                 calledMethod: expression.Method,
                 callTargetExpression: expression.Object,
