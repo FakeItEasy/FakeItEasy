@@ -42,7 +42,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>FakeItEasy.Specs.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
