@@ -155,7 +155,7 @@ namespace FakeItEasy.IntegrationTests
             var exception = Record.Exception(() =>
                 A.CallTo(() => fake.NonVirtualFunction(string.Empty, 1)).Returns(10));
 
-            // Asssert
+            // Assert
             exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
                 .Message.Should().Contain("Non virtual");
         }
@@ -170,7 +170,7 @@ namespace FakeItEasy.IntegrationTests
             var exception = Record.Exception(() =>
                 A.CallTo(() => fake.GenericNonVirtualFunction<int>()).Returns(10));
 
-            // Asssert
+            // Assert
             exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
                 .Message.Should().Contain("Non virtual");
         }

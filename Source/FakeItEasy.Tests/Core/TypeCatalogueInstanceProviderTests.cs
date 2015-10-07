@@ -77,13 +77,13 @@
         {
             // Arrange
             this.typesInCatalogue.Add(typeof(SomeInterfaceImplementor));
-            this.typesInCatalogue.Add(typeof(SomeInterfaceImpelementorWithoutDefaultConstructor));
+            this.typesInCatalogue.Add(typeof(SomeInterfaceImplementorWithoutDefaultConstructor));
 
             // Act
             var result = this.instanceProvider.InstantiateAllOfType<ISomeInterface>();
 
             // Assert
-            Assert.That(result, Has.Some.InstanceOf<SomeInterfaceImplementor>().And.None.InstanceOf<SomeInterfaceImpelementorWithoutDefaultConstructor>());
+            Assert.That(result, Has.Some.InstanceOf<SomeInterfaceImplementor>().And.None.InstanceOf<SomeInterfaceImplementorWithoutDefaultConstructor>());
         }
 
         private class SomeInterfaceImplementor : ISomeInterface
@@ -94,10 +94,10 @@
         {
         }
 
-        private class SomeInterfaceImpelementorWithoutDefaultConstructor : ISomeInterface
+        private class SomeInterfaceImplementorWithoutDefaultConstructor : ISomeInterface
         {
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "argument", Justification = "Required for testing.")]
-            public SomeInterfaceImpelementorWithoutDefaultConstructor(string argument)
+            public SomeInterfaceImplementorWithoutDefaultConstructor(string argument)
             {
             }
         }

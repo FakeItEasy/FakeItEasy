@@ -67,7 +67,7 @@ namespace FakeItEasy.Tests
         {
             Guard.AgainstNull(writer, "writer");
 
-            writer.WriteLine("When called with the following arguments the method did not throw the apporpriate exception:");
+            writer.WriteLine("When called with the following arguments the method did not throw the appropriate exception:");
 
             foreach (var failingCall in this.state.GetFailingCallsDescriptions())
             {
@@ -115,7 +115,7 @@ namespace FakeItEasy.Tests
             }
 
             protected abstract string CallDescription { get; }
-            
+
             private IEnumerable<object> ArgumentValues
             {
                 get { return this.ValidArguments.Select(x => x.Value); }
@@ -313,7 +313,7 @@ namespace FakeItEasy.Tests
 
                 return result;
             }
-            
+
             protected struct ArgumentInfo
             {
                 public string Name { get; set; }
