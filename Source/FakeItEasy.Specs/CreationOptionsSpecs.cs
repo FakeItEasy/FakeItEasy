@@ -12,7 +12,7 @@
     using Xbehave;
 
     [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Required for testing.")]
-    public class CreationOptionsSpecs
+    public static class CreationOptionsSpecs
     {
         [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
         public interface IInterfaceThatWeWillAddAttributesTo1
