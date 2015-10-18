@@ -4,10 +4,10 @@
     using FluentAssertions;
     using Xbehave;
 
-    public class FakeConfiguratorSpecs
+    public static class FakeConfiguratorSpecs
     {
         [Scenario]
-        public void DefinedFakeConfigurator()
+        public static void DefinedFakeConfigurator()
         {
             RobotActivatedEvent fake = null;
 
@@ -19,7 +19,7 @@
         }
 
         [Scenario]
-        public void FakeConfiguratorPriority(
+        public static void FakeConfiguratorPriority(
             RobotRunsAmokEvent fake)
         {
             "when two fake configurators apply to the same type"
@@ -30,7 +30,7 @@
         }
 
         [Scenario]
-        public void DuringConstruction(
+        public static void DuringConstruction(
             RobotRunsAmokEvent fake)
         {
             "when configuring a method called by a constructor"

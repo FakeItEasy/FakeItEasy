@@ -11,10 +11,10 @@
         Task<int> QueryAsync();
     }
 
-    public class AsyncAwaitSpecs
+    public static class AsyncAwaitSpecs
     {
         [Scenario]
-        public void DefinedMethodWithReturnValue(
+        public static void DefinedMethodWithReturnValue(
             FooAsyncAwait foo,
             Task task)
         {
@@ -34,7 +34,7 @@
         }
 
         [Scenario]
-        public void DefinedVoidMethod(
+        public static void DefinedVoidMethod(
             FooAsyncAwait foo,
             Task task)
         {
@@ -54,7 +54,7 @@
         }
 
         [Scenario]
-        public void UndefinedMethodWithReturnValue(
+        public static void UndefinedMethodWithReturnValue(
             FooAsyncAwait foo,
             Task task)
         {
@@ -69,7 +69,7 @@
         }
 
         [Scenario]
-        public void UndefinedVoidMethod(
+        public static void UndefinedVoidMethod(
             FooAsyncAwait foo,
             Task task)
         {

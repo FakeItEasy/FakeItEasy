@@ -14,10 +14,10 @@
         int GetCount(string internationalStandardBookNumber);
     }
 
-    public class SelfInitializedFakesSpecs
+    public static class SelfInitializedFakesSpecs
     {
         [Scenario]
-        public void SelfInitializing(
+        public static void SelfInitializing(
             InMemoryStorage inMemoryStorage, 
             ILibraryService realServiceWhileRecording, 
             ILibraryService realServiceDuringPlayback,
@@ -86,7 +86,7 @@
 
         [Trait("explicit", "yes")]
         [Scenario]
-        public void SelfInitializingWithFileRecorder(
+        public static void SelfInitializingWithFileRecorder(
             string fileRecorderPath,
             ILibraryService realServiceWhileRecording,
             ILibraryService realServiceDuringPlayback,

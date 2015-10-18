@@ -18,26 +18,10 @@
         List<string> this[int index1, bool index2] { get; set; }
     }
 
-    public sealed class UnfakeableClass
-    {
-        private static int nextId;
-        private readonly int id;
-
-        public UnfakeableClass()
-        {
-            this.id = ++nextId;
-        }
-
-        public override string ToString()
-        {
-            return string.Concat("UnfakeableClass ", this.id);
-        }
-    }
-
-    public class PropertySpecs
+    public static class PropertySpecs
     {
         [Scenario]
-        public void SettingIndexedProperty(
+        public static void SettingIndexedProperty(
             IHaveInterestingProperties subject)
         {
             "establish"
@@ -76,7 +60,7 @@
         }
 
         [Scenario]
-        public void SettingIndexedPropertyForDifferentIndexes(
+        public static void SettingIndexedPropertyForDifferentIndexes(
             IHaveInterestingProperties subject)
         {
             "establish"
@@ -97,7 +81,7 @@
         }
 
         [Scenario]
-        public void GettingUnconfiguredFakeableProperty(
+        public static void GettingUnconfiguredFakeableProperty(
             IHaveInterestingProperties subject, 
             IHaveInterestingProperties firstValue, 
             IHaveInterestingProperties secondValue)
@@ -120,7 +104,7 @@
         }
 
         [Scenario]
-        public void GettingUnconfiguredUnfakeableProperty(
+        public static void GettingUnconfiguredUnfakeableProperty(
             IHaveInterestingProperties subject, 
             UnfakeableClass firstValue, 
             UnfakeableClass secondValue)
@@ -140,6 +124,22 @@
 
             "it should return the same instance on a subsequent get"
                 .x(() => secondValue.Should().BeSameAs(firstValue));
+        }
+    }
+
+    public sealed class UnfakeableClass
+    {
+        private static int nextId;
+        private readonly int id;
+
+        public UnfakeableClass()
+        {
+            this.id = ++nextId;
+        }
+
+        public override string ToString()
+        {
+            return string.Concat("UnfakeableClass ", this.id);
         }
     }
 }

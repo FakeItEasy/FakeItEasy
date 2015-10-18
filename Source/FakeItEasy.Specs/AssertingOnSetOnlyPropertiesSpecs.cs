@@ -3,7 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
     using Xbehave;
 
-    public class AssertingOnSetOnlyPropertiesSpecs
+    public static class AssertingOnSetOnlyPropertiesSpecs
     {
         public interface ISetOnly
         {
@@ -15,7 +15,7 @@
         }
 
         [Scenario]
-        public void SetOnlyProperties(
+        public static void SetOnlyProperties(
             ISetOnly setOnly)
         {
             "establish"

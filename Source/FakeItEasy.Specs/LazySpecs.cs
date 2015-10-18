@@ -6,7 +6,7 @@
     using FluentAssertions;
     using Xbehave;
 
-    public class LazySpecs
+    public static class LazySpecs
     {
         public interface ILazyFactory
         {
@@ -19,7 +19,7 @@
         }
 
         [Scenario]
-        public void LazyReturnValue(
+        public static void LazyReturnValue(
             ILazyFactory fake,
             Lazy<IFoo> lazy)
         {

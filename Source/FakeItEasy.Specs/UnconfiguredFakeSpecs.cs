@@ -4,10 +4,10 @@
     using FluentAssertions;
     using Xbehave;
 
-    public class UnconfiguredFakeSpecs
+    public static class UnconfiguredFakeSpecs
     {
         [Scenario]
-        public void VirtualMethod(
+        public static void VirtualMethod(
             MakesVirtualCallInConstructor fake)
         {
             "when faking a class with a virtual method"
@@ -27,7 +27,7 @@
         }
 
         [Scenario]
-        public void VirtualProperties(
+        public static void VirtualProperties(
             FakedClass fake)
         {
             "when faking a class with virtual properties"

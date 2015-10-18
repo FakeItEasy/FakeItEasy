@@ -4,10 +4,10 @@
     using FluentAssertions;
     using Xbehave;
 
-    public class DummyFactorySpecs
+    public static class DummyFactorySpecs
     {
         [Scenario]
-        public void DummyFactoryUsage(
+        public static void DummyFactoryUsage(
             RobotActivatedEvent dummy)
         {
             "when a dummy factory is defined for a set of types"
@@ -18,7 +18,7 @@
         }
 
         [Scenario]
-        public void DummyFactoryPriority(
+        public static void DummyFactoryPriority(
             RobotRunsAmokEvent dummy)
         {
             "when two dummy factories apply to the same type"
