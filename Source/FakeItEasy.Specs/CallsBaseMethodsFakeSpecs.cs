@@ -3,20 +3,10 @@
     using FluentAssertions;
     using Xbehave;
 
-    public abstract class AbstractBaseClass
-    {
-        public virtual string ConcreteMethod()
-        {
-            return "result from base method";
-        }
-
-        public abstract string AbstractMethod();
-    }
-
-    public class CallsBaseMethodsFakeSpecs
+    public static class CallsBaseMethodsFakeSpecs
     {
         [Scenario]
-        public void ConcreteMethod(
+        public static void ConcreteMethod(
             AbstractBaseClass fake,
             string result)
         {
@@ -31,7 +21,7 @@
         }
 
         [Scenario]
-        public void AbstractMethod(
+        public static void AbstractMethod(
             AbstractBaseClass fake,
             string result)
         {
@@ -44,5 +34,15 @@
             "it should return default value"
                 .x(() => result.Should().BeEmpty());
         }
+    }
+
+    public abstract class AbstractBaseClass
+    {
+        public virtual string ConcreteMethod()
+        {
+            return "result from base method";
+        }
+
+        public abstract string AbstractMethod();
     }
 }

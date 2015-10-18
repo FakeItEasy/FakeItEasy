@@ -8,7 +8,7 @@
     using Xbehave;
     using Xunit;
 
-    public class CallMatchingSpecs
+    public static class CallMatchingSpecs
     {
         public interface ITypeWithParameterArray
         {
@@ -43,7 +43,7 @@
         }
 
         [Scenario]
-        public void ParameterArrays(
+        public static void ParameterArrays(
             ITypeWithParameterArray fake)
         {
             "establish"
@@ -66,7 +66,7 @@
         }
 
         [Scenario]
-        public void FailingMatchOfNonGenericCalls(
+        public static void FailingMatchOfNonGenericCalls(
             IHaveNoGenericParameters fake,
             Exception exception)
         {
@@ -95,7 +95,7 @@
         }
 
         [Scenario]
-        public void FailingMatchOfGenericCalls(
+        public static void FailingMatchOfGenericCalls(
             IHaveTwoGenericParameters fake,
             Exception exception)
         {
@@ -124,7 +124,7 @@
         }
 
         [Scenario]
-        public void NoNonGenericCalls(
+        public static void NoNonGenericCalls(
             IHaveNoGenericParameters fake,
             Exception exception)
         {
@@ -146,7 +146,7 @@
         }
 
         [Scenario]
-        public void NoGenericCalls(
+        public static void NoGenericCalls(
             IHaveOneGenericParameter fake,
             Exception exception)
         {
@@ -168,7 +168,7 @@
         }
 
         [Scenario]
-        public void OutParameter(
+        public static void OutParameter(
             IDictionary<string, string> subject)
         {
             "establish"
@@ -203,7 +203,7 @@
         }
 
         [Scenario]
-        public void FailingMatchOfOutParameter(
+        public static void FailingMatchOfOutParameter(
             IDictionary<string, string> subject,
             Exception exception)
         {
@@ -233,7 +233,7 @@
         }
 
         [Scenario]
-        public void RefParameter(
+        public static void RefParameter(
             IHaveARefParameter subject)
         {
             "establish"
@@ -284,7 +284,7 @@
         /// </summary>
         /// <param name="subject">The subject of the test.</param>
         [Scenario]
-        public void ParameterHavingAnOutAttribute(
+        public static void ParameterHavingAnOutAttribute(
              IHaveAnOutParameter subject)
         {
             "establish"

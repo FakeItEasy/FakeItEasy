@@ -10,10 +10,10 @@
         void MightReturnAKnownValue(out string andThisIsWhoReallyDidIt);
     }
 
-    public class AssignsOutAndRefParametersSpecs
+    public static class AssignsOutAndRefParametersSpecs
     {
         [Scenario]
-        public void AssignOutAndRefParametersLazilyUsingFunc(
+        public static void AssignOutAndRefParametersLazilyUsingFunc(
             IHaveAnOut subject,
             string outValue)
         {
@@ -41,7 +41,7 @@
         }
 
         [Scenario]
-        public void AssignOutAndRefParametersLazilyUsingCall(
+        public static void AssignOutAndRefParametersLazilyUsingCall(
             IHaveAnOut subject,
             string outValue)
         {
@@ -69,7 +69,7 @@
         }
 
         [Scenario]
-        public void AssignOutAndRefParameters(
+        public static void AssignOutAndRefParameters(
             IHaveAnOut subject,
             string outValue)
         {

@@ -5,13 +5,13 @@
     using FluentAssertions;
     using Xbehave;
 
-    public class DisposableSpecs
+    public static class DisposableSpecs
     {
         private static Exception exception;
 
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect", Justification = "Required for testing.")]
         [Scenario]
-        public void FakingDisposable(
+        public static void FakingDisposable(
             IDisposable fake)
         {
             "establish"

@@ -5,10 +5,10 @@
     using FluentAssertions;
     using Xbehave;
 
-    public class FakeScopeSpecs
+    public static class FakeScopeSpecs
     {
         [Scenario]
-        public void CallFromConstructor(
+        public static void CallFromConstructor(
             IFakeObjectContainer fakeObjectContainer,
             MakesVirtualCallInConstructor fake,
             string virtualMethodValueInsideOfScope,

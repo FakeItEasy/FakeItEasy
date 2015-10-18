@@ -3,7 +3,7 @@
     using FluentAssertions;
     using Xbehave;
 
-    public class ConfigurationSpecs
+    public static class ConfigurationSpecs
     {
         public interface IFoo
         {
@@ -13,7 +13,7 @@
         }
 
         [Scenario]
-        public void Callback(
+        public static void Callback(
             IFoo fake,
             bool wasCalled)
         {
@@ -32,7 +32,7 @@
         }
 
         [Scenario]
-        public void MultipleCallbacks(
+        public static void MultipleCallbacks(
             IFoo fake,
             bool firstWasCalled,
             bool secondWasCalled,
@@ -63,7 +63,7 @@
         }
 
         [Scenario]
-        public void CallBaseMethod(
+        public static void CallBaseMethod(
             BaseClass fake,
             int returnValue,
             bool callbackWasInvoked)

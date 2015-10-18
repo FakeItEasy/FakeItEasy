@@ -5,12 +5,12 @@
     using FluentAssertions;
     using Xbehave;
 
-    public class FixtureInitializationSpecs
+    public static class FixtureInitializationSpecs
     {
         public static ExampleFixture Fixture { get; set; }
 
         [Scenario]
-        public void Initialization()
+        public static void Initialization()
         {
             "establish"
                 .x(() => Fixture = new ExampleFixture());

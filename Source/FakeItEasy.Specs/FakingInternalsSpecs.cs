@@ -11,18 +11,10 @@
     {
     }
 
-    public class TypeWithInternalMethod
-    {
-        internal virtual int InternalMethod()
-        {
-            return 8;
-        }
-    }
-
-    public class FakingInternalsSpecs
+    public static class FakingInternalsSpecs
     {
         [Scenario]
-        public void InvisibleInternals(
+        public static void InvisibleInternals(
             Exception exception)
         {
             "when trying to fake invisible internals"
@@ -37,7 +29,7 @@
         }
    
         [Scenario]
-        public void GenericTypeWithInternalTypeParameters(
+        public static void GenericTypeWithInternalTypeParameters(
             Exception exception)
         {
             "when trying to fake generic type with internal type parameters"
@@ -52,7 +44,7 @@
         }
    
         [Scenario]
-        public void OverrideInternalMethod(
+        public static void OverrideInternalMethod(
             TypeWithInternalMethod fake, 
             Exception exception)
         {
@@ -65,6 +57,14 @@
             "it should throw an exception with a message complaining about accessibility"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
                              .And.Message.Should().Contain("not accessible to DynamicProxyGenAssembly2"));
+        }
+    }
+
+    public class TypeWithInternalMethod
+    {
+        internal virtual int InternalMethod()
+        {
+            return 8;
         }
     }
 }

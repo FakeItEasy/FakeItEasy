@@ -10,10 +10,10 @@
         void DoIt(Guid id);
     }
 
-    public class StrictFakeSpecs
+    public static class StrictFakeSpecs
     {
         [Scenario]
-        public void RepeatedAssertion(
+        public static void RepeatedAssertion(
             IMyInterface fake,
             Exception exception)
         {

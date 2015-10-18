@@ -5,7 +5,7 @@
     using Xbehave;
     using Xunit;
 
-    public class OrderedCallMatchingSpecs
+    public static class OrderedCallMatchingSpecs
     {
         public interface IHaveNoGenericParameters
         {
@@ -18,7 +18,7 @@
         }
 
         [Scenario]
-        public void NonGenericCalls(
+        public static void NonGenericCalls(
             IHaveNoGenericParameters fake,
             Exception exception)
         {
@@ -54,7 +54,7 @@
         }
 
         [Scenario]
-        public void GenericCalls(
+        public static void GenericCalls(
             IHaveOneGenericParameter fake,
             Exception exception)
         {

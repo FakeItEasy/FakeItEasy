@@ -8,18 +8,10 @@
     using Xbehave;
     using Xunit;
 
-    public class ClassWhoseConstructorThrows
-    {
-        public ClassWhoseConstructorThrows()
-        {
-            throw new NotSupportedException("I don't like being constructed.");
-        }
-    }
-
-    public class CreationSpecs
+    public static class CreationSpecs
     {
         [Scenario]
-        public void ThrowingConstructor(
+        public static void ThrowingConstructor(
             Exception exception)
         {
             "when faking a class whose constructor throws"
@@ -40,7 +32,7 @@
 
         // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
         [Scenario]
-        public void UseSuccessfulConstructor(
+        public static void UseSuccessfulConstructor(
             FakedClass fake)
         {
             "when faking a class whose first constructor fails"
@@ -94,6 +86,14 @@
             public virtual bool WasParameterlessConstructorCalled { get; set; }
 
             public virtual bool WasTwoParameterConstructorCalled { get; set; }
+        }
+    }
+
+    public class ClassWhoseConstructorThrows
+    {
+        public ClassWhoseConstructorThrows()
+        {
+            throw new NotSupportedException("I don't like being constructed.");
         }
     }
 }

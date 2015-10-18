@@ -5,10 +5,10 @@
     using Xbehave;
     using Xunit;
 
-    public class FakingDelegates
+    public static class FakingDelegates
     {
         [Scenario]
-        public void WithoutConfiguration(
+        public static void WithoutConfiguration(
             Func<string, int> fakedDelegate)
         {
             "establish"
@@ -25,7 +25,7 @@
         }
 
         [Scenario]
-        public void WithConfiguration(
+        public static void WithConfiguration(
             Func<string, int> fakedDelegate,
             int result)
         {
@@ -43,7 +43,7 @@
         }
 
         [Scenario]
-        public void Throws(
+        public static void Throws(
             Func<string, int> fakedDelegate,
             FormatException expectedException,
             Exception exception)
@@ -66,7 +66,7 @@
         }
 
         [Scenario]
-        public void MissingInvoke(
+        public static void MissingInvoke(
             Func<string, int> fakedDelegate,
             int result)
         {
