@@ -19,14 +19,14 @@
             "then the sut should be set"
                 .x(() => fixture.Sut.Should().NotBeNull());
 
-            "and dependencies of the same type should be the same instance"
-                .x(() => fixture.Sut.Foo.Should().BeSameAs(fixture.Sut.Foo2));
-
             "and dependencies should be injected into the sut from the fixture"
                 .x(() => fixture.Sut.Foo.Should().BeSameAs(fixture.Foo));
 
             "and dependencies should be injected into the sut even when not available in fixture"
                 .x(() => fixture.Sut.ServiceProvider.Should().NotBeNull());
+
+            "and dependencies of the same type should be the same instance"
+                .x(() => fixture.Sut.Foo.Should().BeSameAs(fixture.Sut.Foo2));
         }
 
         public class ExampleFixture
