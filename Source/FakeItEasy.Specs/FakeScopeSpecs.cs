@@ -8,46 +8,43 @@
     public static class FakeScopeSpecs
     {
         [Scenario]
-        public static void CallFromConstructor(
+        public static void CreatingFakeInsideScope(
             IFakeObjectContainer fakeObjectContainer,
-            MakesVirtualCallInConstructor fake,
-            string virtualMethodValueInsideOfScope,
-            string virtualMethodValueOutsideOfScope)
+            IFakeScope scope,
+            MakesVirtualCallInConstructor fake)
         {
-            "establish"
+            "given an object container"
                 .x(() =>
-                    {
-                        fakeObjectContainer = A.Fake<IFakeObjectContainer>();
-                        A.CallTo(() => fakeObjectContainer.ConfigureFake(A<Type>._, A<object>._))
-                            .Invokes(
-                                (Type t, object options) =>
+                {
+                    fakeObjectContainer = A.Fake<IFakeObjectContainer>();
+                    A.CallTo(() => fakeObjectContainer.ConfigureFake(A<Type>._, A<object>._))
+                        .Invokes(
+                            (Type t, object options) =>
                                 A.CallTo(options).WithReturnType<string>().Returns("configured value in fake scope"));
-                    });
+                });
 
-            "when configuring a method called by a constructor from within a scope"
-                .x(() =>
-                    {
-                        using (Fake.CreateScope(fakeObjectContainer))
-                        {
-                            fake = A.Fake<MakesVirtualCallInConstructor>();
-                            virtualMethodValueInsideOfScope = fake.VirtualMethod(null);
-                        }
+            "and a fake scope using that container"
+                .x(() => scope = Fake.CreateScope(fakeObjectContainer));
 
-                        virtualMethodValueOutsideOfScope = fake.VirtualMethod(null);
-                    });
+            "when a fake is created inside the scope"
+                .x(() => fake = A.Fake<MakesVirtualCallInConstructor>());
 
-            "it should use the fake object container to configure the fake"
+            "then the object container should configure the fake"
                 .x(() => A.CallTo(() => fakeObjectContainer.ConfigureFake(typeof(MakesVirtualCallInConstructor), fake))
-                             .MustHaveHappened());
+                    .MustHaveHappened());
 
-            "it should return the configured value within the scope during the constructor"
+            "and the object container's configuration should be used during the constructor"
                 .x(() => fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured value in fake scope"));
 
-            "it should return the configured value within the scope after the constructor"
-                .x(() => virtualMethodValueInsideOfScope.Should().Be("configured value in fake scope"));
+            "and the object container's configuration should be used after the constructor"
+                .x(() => fake.VirtualMethod("call after constructor").Should().Be("configured value in fake scope"));
 
-            "it should return default value outside the scope"
-                .x(() => virtualMethodValueOutsideOfScope.Should().Be(string.Empty));
+            "and the object container's configuration should not be used outside the scope"
+                .x(() =>
+                {
+                    scope.Dispose();
+                    fake.VirtualMethod("call outside scope").Should().Be(string.Empty);
+                });
         }
     }
 }

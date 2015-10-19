@@ -7,14 +7,13 @@
     public static class FakeConfiguratorSpecs
     {
         [Scenario]
-        public static void DefinedFakeConfigurator()
+        public static void DefinedFakeConfigurator(
+            RobotActivatedEvent fake)
         {
-            RobotActivatedEvent fake = null;
-
-            "when a fake configurator is defined for a set of types"
+            "when creating a fake that has a matching configurator"
                 .x(() => fake = A.Fake<RobotActivatedEvent>());
 
-            "it should configure the fake"
+            "then it should be configured"
                 .x(() => fake.ID.Should().BeGreaterThan(0));
         }
 
@@ -22,10 +21,10 @@
         public static void FakeConfiguratorPriority(
             RobotRunsAmokEvent fake)
         {
-            "when two fake configurators apply to the same type"
+            "when creating a fake that has two matching configurators"
                 .x(() => fake = A.Fake<RobotRunsAmokEvent>());
 
-            "it should use the one with higher priority"
+            "then it should be configured by the one with higher priority"
                 .x(() => fake.ID.Should().Be(-99));
         }
 
@@ -33,10 +32,10 @@
         public static void DuringConstruction(
             RobotRunsAmokEvent fake)
         {
-            "when configuring a method called by a constructor"
+            "when creating a fake that has a matching configurator"
                 .x(() => fake = A.Fake<RobotRunsAmokEvent>());
 
-            "it should use the configured behavior in the constructor"
+            "then it should be configured before its constructor is run"
                 .x(() => fake.Timestamp.Should().Be(RobotRunsAmokEventFakeConfigurator.ConfiguredTimestamp));
         }
     }
