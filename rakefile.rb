@@ -44,7 +44,7 @@ release_issue_body = <<-eos
 - [ ] de-list pre-release or superseded buggy NuGet packages if present (copy any release notes forward to the new version)
 - [ ] update website with contributors list (if in place)
 - [ ] tweet, mentioning contributors and post link as comment here for easy retweeting ;-)
-- [ ] post tweet in JabbR ([fakeiteasy][1] and [general-chat][2]) and Gitter ([FakeItEasy/FakeItEasy][3])
+- [ ] post tweet in JabbR ([general-chat][1]) and Gitter ([FakeItEasy/FakeItEasy][2])
 - [ ] post links to the NuGet and GitHub release in each issue in this milestone, with thanks to contributors
 - [ ] use `rake set_version[new_version]` to 
     - create a new branch
@@ -58,9 +58,8 @@ release_issue_body = <<-eos
 - [ ] close all issues on this milestone
 - [ ] close this milestone
 
-[1]: https://jabbr.net/#/rooms/fakeiteasy
-[2]: https://jabbr.net/#/rooms/general-chat
-[3]: https://gitter.im/FakeItEasy/FakeItEasy
+[1]: https://jabbr.net/#/rooms/general-chat
+[2]: https://gitter.im/FakeItEasy/FakeItEasy
 eos
 
 release_body = <<-eos
