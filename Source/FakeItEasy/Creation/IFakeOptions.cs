@@ -35,16 +35,6 @@ namespace FakeItEasy.Creation
         /// </summary>
         /// <param name="wrappedInstance">The object to delegate calls to.</param>
         /// <returns>Options object.</returns>
-        /// <remarks>
-        /// <para>
-        /// If both <c>Wrapping</c> and <see cref="ConfigureFake"/> are used when creating a fake,
-        /// the <c>ConfigureFake</c> actions will take precedence for the methods they apply to.
-        /// </para>
-        /// <para>
-        /// When a fake is created for a type that has an <see cref="IFakeConfigurator"/>, and <c>Wrapping</c> is
-        /// used to wrap another object, the <c>Wrapping</c> directive takes precedence.
-        /// </para>
-        /// </remarks>
         IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
 
         /// <summary>
@@ -88,14 +78,6 @@ namespace FakeItEasy.Creation
         /// Also, if FakeItEasy has to try multiple constructors in order
         /// to create the fake (for example, because one or more constructors throw exceptions and must be bypassed),
         /// the <c>action</c> will be called more than once, so it should be side effect-free.
-        /// </para>
-        /// <para>
-        /// If both <see cref="Wrapping"/> and <c>ConfigureFake</c> are used when creating a fake,
-        /// the <c>ConfigureFake</c> actions will take precedence for the methods they apply to.
-        /// </para>
-        /// <para>
-        /// When a fake is created for a type that has an <see cref="IFakeConfigurator"/>, and <c>ConfigureFake</c> is
-        /// used to configure the fake as well, the <c>ConfigureFake</c> actions take precedence.
         /// </para>
         /// </remarks>
         IFakeOptions<T> ConfigureFake(Action<T> action);
