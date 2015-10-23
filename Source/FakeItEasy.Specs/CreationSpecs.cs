@@ -14,19 +14,19 @@
         public static void ThrowingConstructor(
             Exception exception)
         {
-            "when faking a class whose constructor throws"
+            "When faking a class whose constructor throws"
                 .x(() => exception = Record.Exception(() => A.Fake<ClassWhoseConstructorThrows>()));
 
-            "it should throw a fake creation exception"
+            "It should throw a fake creation exception"
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
-            "it should throw an exception whose message includes original exception type"
+            "And the exception message should include the original exception type"
                 .x(() => exception.Message.Should().Contain("of type System.NotSupportedException"));
 
-            "it should throw an exception whose message includes original exception message"
+            "And the exception message should include the original exception message"
                 .x(() => exception.Message.Should().Contain("I don't like being constructed."));
 
-            "it should throw an exception whose message includes original exception stack trace"
+            "And the exception message should include the original exception stack trace"
                 .x(() => exception.Message.Should().Contain("FakeItEasy.Specs.ClassWhoseConstructorThrows..ctor()"));
         }
 
@@ -35,17 +35,17 @@
         public static void UseSuccessfulConstructor(
             FakedClass fake)
         {
-            "when faking a class whose first constructor fails"
+            "When faking a class whose first constructor fails"
                 .x(() => fake = A.Fake<FakedClass>());
 
-            "it should instantiate the fake using the successful constructor with the longest parameter list"
+            "It should instantiate the fake using the successful constructor with the longest parameter list"
                 .x(() => fake.WasTwoParameterConstructorCalled.Should().BeTrue());
 
-            "it should instantiate a fake that does not remember the failing constructor call"
+            "And the fake should not remember the failing constructor call"
                 .x(() => fake.WasParameterlessConstructorCalled
                              .Should().BeFalse("because the parameterless constructor was called for a different fake object"));
 
-            "it should only have tried the parameterless constructor and one with the longest parameter list"
+            "And it should only have tried the parameterless constructor and one with the longest parameter list"
                 .x(() => FakedClass.ParameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2));
         }
 
