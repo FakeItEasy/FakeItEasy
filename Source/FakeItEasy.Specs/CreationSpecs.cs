@@ -27,7 +27,7 @@
                 .x(() => exception.Message.Should().Contain("I don't like being constructed."));
 
             "And the exception message should include the original exception stack trace"
-                .x(() => exception.Message.Should().Contain("FakeItEasy.Specs.ClassWhoseConstructorThrows..ctor()"));
+                .x(() => exception.Message.Should().Contain("FakeItEasy.Specs.CreationSpecs.ClassWhoseConstructorThrows..ctor()"));
         }
 
         // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
@@ -47,6 +47,14 @@
 
             "And it should only have tried the parameterless constructor and one with the longest parameter list"
                 .x(() => FakedClass.ParameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2));
+        }
+
+        public class ClassWhoseConstructorThrows
+        {
+            public ClassWhoseConstructorThrows()
+            {
+                throw new NotSupportedException("I don't like being constructed.");
+            }
         }
 
         public class FakedClass
@@ -86,14 +94,6 @@
             public virtual bool WasParameterlessConstructorCalled { get; set; }
 
             public virtual bool WasTwoParameterConstructorCalled { get; set; }
-        }
-    }
-
-    public class ClassWhoseConstructorThrows
-    {
-        public ClassWhoseConstructorThrows()
-        {
-            throw new NotSupportedException("I don't like being constructed.");
         }
     }
 }
