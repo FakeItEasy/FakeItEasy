@@ -482,6 +482,21 @@
                         fake.ConstructorArgument2.Should().Be(9);
                     });
         }
+
+        [Scenario]
+        public static void WithArgumentsForConstructorWithMethodThatIsNotAConstructor(
+            MakesVirtualCallInConstructor fake,
+            Exception exception)
+        {
+            "When specifying fake constructor arguments with a method that is not a constructor"
+                .x(() => exception = Record.Exception(
+                    () => A.Fake<MakesVirtualCallInConstructor>(options => options
+                        .WithArgumentsForConstructor(() => fake))));
+
+            "Then fake creation should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
+                .WithMessage("*Only expression of the type ExpressionType.New (constructor calls) are accepted.*"));
+        }
     }
 
     public class DerivedMakesVirtualCallInConstructor : MakesVirtualCallInConstructor

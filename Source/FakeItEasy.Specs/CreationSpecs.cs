@@ -10,6 +10,11 @@
 
     public static class CreationSpecs
     {
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface ICollectionItem
+        {
+        }
+
         [Scenario]
         public static void ThrowingConstructor(
             Exception exception)
@@ -47,6 +52,26 @@
 
             "And it should only have tried the parameterless constructor and one with the longest parameter list"
                 .x(() => FakedClass.ParameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2));
+        }
+
+        [Scenario]
+        [Example(2)]
+        [Example(10)]
+        public static void CollectionOfFake(
+            int count,
+            IList<ICollectionItem> fakes)
+        {
+            "When creating a collection of {0} fakes"
+                .x(() => fakes = A.CollectionOfFake<ICollectionItem>(count));
+
+            "Then {0} items should be created"
+                .x(() => fakes.Should().HaveCount(count));
+
+            "And all items should extend the specified type"
+                .x(() => fakes.Should().ContainItemsAssignableTo<ICollectionItem>());
+
+            "And all items should be fakes"
+                .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) != null));
         }
 
         public class ClassWhoseConstructorThrows

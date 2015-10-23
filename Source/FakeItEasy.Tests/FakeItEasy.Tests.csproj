@@ -117,9 +117,6 @@
     <Compile Include="Core\FakeCallEqualityComparerTests.cs" />
     <Compile Include="Core\TypeCatalogueInstanceProviderTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidatorTests.cs" />
-    <Compile Include="Creation\DefaultFakeCreatorTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Creation\DefaultFakeObjectCreatorTests.cs" />
     <Compile Include="Creation\DelegateProxies\DelegateProxyGeneratorTests.cs" />
     <Compile Include="Creation\DummyValueCreationSessionTests.cs" />
