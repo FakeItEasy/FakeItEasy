@@ -50,10 +50,10 @@
         }
 
         [Scenario]
-        public static void ConfigureFakeOverridesFakeConfigurator(
+        public static void ConfigureFakeOverridesFakeOptionsBuilder(
             RobotRunsAmokEvent fake)
         {
-            "When configuring a fake to configure a method already configured by a fake configurator"
+            "When configuring a fake to configure a method already configured by a fake options builder"
                 .x(() => fake = A.Fake<RobotRunsAmokEvent>(
                     options => options.ConfigureFake(
                         f => A.CallTo(() => f.CalculateTimestamp()).Returns(new DateTime(2000, 1, 1, 0, 0, 0)))));
@@ -320,7 +320,7 @@
         public static void Wrapping(
             RobotRunsAmokEvent fake)
         {
-            "When a fake that has a fake configurator is configured to wrap an object"
+            "When a fake that has a fake options builder is configured to wrap an object"
                 .x(() => fake = A.Fake<RobotRunsAmokEvent>(
                     options => options.Wrapping(new RobotRunsAmokEvent())));
 

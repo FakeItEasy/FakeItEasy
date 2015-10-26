@@ -76,11 +76,11 @@
     <Compile Include="ConfigurationSpecs.cs" />
     <Compile Include="CreationOptionsSpecs.cs" />
     <Compile Include="DisposableSpecs.cs" />
+    <Compile Include="FakeOptionsBuilderSpecs.cs" />
     <Compile Include="FakeScopeSpecs.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="CreationSpecs.cs" />
     <Compile Include="DomainEvents.cs" />
-    <Compile Include="FakeConfiguratorSpecs.cs" />
     <Compile Include="Properties\XunitAssemblyInfo.cs" />
     <Compile Include="SelfInitializedFakesSpecs.cs" />
     <Compile Include="LazySpecs.cs" />

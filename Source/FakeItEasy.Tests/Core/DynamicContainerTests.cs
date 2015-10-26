@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using FakeItEasy.Core;
+    using FakeItEasy.Creation;
     using FluentAssertions;
     using NUnit.Framework;
 
@@ -10,7 +11,7 @@
     public class DynamicContainerTests
     {
         private List<IDummyFactory> availableDummyFactories;
-        private List<IFakeConfigurator> availableConfigurators;
+        private List<IFakeOptionsBuilder> availableOptionsBuilders;
 
         private IDisposable scope;
 
@@ -19,7 +20,7 @@
         {
             this.scope = Fake.CreateScope(new NullFakeObjectContainer());
 
-            this.availableConfigurators = new List<IFakeConfigurator>();
+            this.availableOptionsBuilders = new List<IFakeOptionsBuilder>();
             this.availableDummyFactories = new List<IDummyFactory>();
         }
 
@@ -53,21 +54,25 @@
         }
 
         [Test]
-        public void ConfigureFake_should_apply_configuration_for_registered_configuration()
+        public void ConfigureFake_should_apply_configuration_from_registered_options_builders()
         {
-            this.availableConfigurators.Add(new ConfigurationForTypeWithDummyFactory());
+            this.availableOptionsBuilders.Add(new OptionsBuilderForTypeWithDummyFactory());
 
             var container = this.CreateContainer();
 
-            var fake = A.Fake<TypeWithDummyFactory>();
+            var fakeOptions = A.Fake<IFakeOptions>();
+            var fakeTypeWithDummyFactory = A.Fake<TypeWithDummyFactory>();
 
-            container.ConfigureFake(typeof(TypeWithDummyFactory), fake);
+            A.CallTo(() => fakeOptions.ConfigureFake(A<Action<object>>._))
+                .Invokes((Action<object> action) => action(fakeTypeWithDummyFactory));
 
-            fake.WasConfigured.Should().BeTrue();
+            container.ConfigureFake(typeof(TypeWithDummyFactory), fakeOptions);
+
+            Assert.That(fakeTypeWithDummyFactory.WasConfigured, Is.True, "configuration was not applied");
         }
 
         [Test]
-        public void ConfigureFake_should_do_nothing_when_fake_type_has_no_configuration_specified()
+        public void ConfigureFake_should_do_nothing_when_fake_type_has_no_options_builder_specified()
         {
             this.CreateContainer();
             A.Fake<TypeWithDummyFactory>();
@@ -91,11 +96,11 @@
         }
 
         [Test]
-        public void Should_not_fail_when_more_than_one_configurator_exists_for_a_given_type()
+        public void Should_not_fail_when_more_than_one_options_builder_exists_for_a_given_type()
         {
             // Arrange
-            this.availableConfigurators.Add(new ConfigurationForTypeWithDummyFactory());
-            this.availableConfigurators.Add(new DuplicateConfigurationForTypeWithDummyFactory());
+            this.availableOptionsBuilders.Add(new OptionsBuilderForTypeWithDummyFactory());
+            this.availableOptionsBuilders.Add(new DuplicateOptionsBuilderForTypeWithDummyFactory());
 
             // Act
 
@@ -106,22 +111,52 @@
 
         private DynamicContainer CreateContainer()
         {
-            return new DynamicContainer(this.availableDummyFactories, this.availableConfigurators);
+            return new DynamicContainer(this.availableDummyFactories, this.availableOptionsBuilders);
         }
 
-        public class ConfigurationForTypeWithDummyFactory : FakeConfigurator<TypeWithDummyFactory>
+        public class OptionsBuilderForTypeWithDummyFactory : IFakeOptionsBuilder
         {
-            protected override void ConfigureFake(TypeWithDummyFactory fakeObject)
+            public int Priority
             {
-                A.CallTo(() => fakeObject.WasConfigured).Returns(true);
+                get { return 0; }
+            }
+
+            public bool CanBuildOptionsForFakeOfType(Type type)
+            {
+                return type == typeof(TypeWithDummyFactory);
+            }
+
+            public void BuildOptions(Type typeOfFake, IFakeOptions options)
+            {
+                if (options == null)
+                {
+                    return;
+                }
+
+                options.ConfigureFake(fake => A.CallTo(() => ((TypeWithDummyFactory)fake).WasConfigured).Returns(true));
             }
         }
 
-        public class DuplicateConfigurationForTypeWithDummyFactory : FakeConfigurator<TypeWithDummyFactory>
+        public class DuplicateOptionsBuilderForTypeWithDummyFactory : IFakeOptionsBuilder
         {
-            protected override void ConfigureFake(TypeWithDummyFactory fakeObject)
+            public int Priority
             {
-                A.CallTo(() => fakeObject.WasConfigured).Returns(true);
+                get { return 0; }
+            }
+
+            public bool CanBuildOptionsForFakeOfType(Type type)
+            {
+                return type == typeof(TypeWithDummyFactory);
+            }
+
+            public void BuildOptions(Type typeOfFake, IFakeOptions options)
+            {
+                if (options == null)
+                {
+                    return;
+                }
+
+                options.ConfigureFake(fake => A.CallTo(() => ((TypeWithDummyFactory)fake).WasConfigured).Returns(true));
             }
         }
 

@@ -32,7 +32,7 @@ namespace FakeItEasy.Tests.Core
         {
             Fake.InitializeFixture(this);
 
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<IProxyOptions>._)).Returns(this.fakeReturnedFromFakeAndDummyManager);
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<Action<IFakeOptions>>._)).Returns(this.fakeReturnedFromFakeAndDummyManager);
 
             this.fixture = new FixtureType();
         }

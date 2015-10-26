@@ -101,6 +101,7 @@
     <Compile Include="Expressions\ArgumentConstraints\OutArgumentConstraint.cs" />
     <Compile Include="Expressions\ArgumentConstraints\RefArgumentConstraint.cs" />
     <Compile Include="IBootstrapper.cs" />
+    <Compile Include="IFakeOptionsBuilder.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
     <Compile Include="Core\DelegateRaiser.cs" />
@@ -480,9 +481,7 @@
     </Compile>
     <Compile Include="OrderedAssertion.cs" />
     <Compile Include="CompletedFakeObjectCallExtensions.cs" />
-    <Compile Include="FakeConfigurator.cs" />
     <Compile Include="DummyFactory.cs" />
-    <Compile Include="IFakeConfigurator.cs" />
     <Compile Include="IDummyFactory.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions.cs" />
     <Compile Include="MustBeImplementedException.cs" />

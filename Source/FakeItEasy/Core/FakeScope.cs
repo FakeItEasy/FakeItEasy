@@ -197,7 +197,7 @@ namespace FakeItEasy.Core
             {
                 this.fakeObjectContainerField = new DynamicContainer(
                     ServiceLocator.Current.Resolve<IEnumerable<IDummyFactory>>(), 
-                    ServiceLocator.Current.Resolve<IEnumerable<IFakeConfigurator>>());
+                    ServiceLocator.Current.Resolve<IEnumerable<IFakeOptionsBuilder>>());
             }
 
             internal override IFakeObjectContainer FakeObjectContainer

@@ -2,9 +2,6 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection.Emit;
     using FakeItEasy.Core;
 
     /// <summary>
@@ -35,9 +32,7 @@ namespace FakeItEasy.Creation
         {
             Guard.AgainstNull(optionsBuilder, "optionsBuilder");
 
-            var proxyOptions = BuildProxyOptions(optionsBuilder);
-
-            return (T)this.fakeAndDummyManager.CreateFake(typeof(T), proxyOptions);
+            return (T)this.fakeAndDummyManager.CreateFake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
         }
 
         /// <summary>
@@ -71,97 +66,6 @@ namespace FakeItEasy.Creation
         public T CreateDummy<T>()
         {
             return (T)this.fakeAndDummyManager.CreateDummy(typeof(T));
-        }
-
-        private static IProxyOptions BuildProxyOptions<T>(Action<IFakeOptions<T>> optionsBuilder)
-        {
-            var fakeOptions = new FakeOptions<T>();
-            optionsBuilder.Invoke(fakeOptions);
-            return fakeOptions.ProxyOptions;
-        }
-
-        private class FakeOptions<T>
-            : IFakeOptions<T>, IFakeOptions
-        {
-            private readonly ProxyOptions proxyOptions;
-
-            public FakeOptions()
-            {
-                this.proxyOptions = new ProxyOptions();
-            }
-
-            public IProxyOptions ProxyOptions
-            {
-                get { return this.proxyOptions; }
-            }
-
-            public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
-            {
-                this.proxyOptions.ArgumentsForConstructor = argumentsForConstructor;
-                return this;
-            }
-
-            public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
-            {
-                this.proxyOptions.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
-                return this;
-            }
-
-            public IFakeOptions<T> WithAdditionalAttributes(
-                IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
-            {
-                Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
-
-                foreach (var customAttributeBuilder in customAttributeBuilders)
-                {
-                    this.proxyOptions.AddAttribute(customAttributeBuilder);
-                }
-
-                return this;
-            }
-
-            public IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
-            {
-                var wrapper = new FakeWrapperConfigurator<T>(this, wrappedInstance);
-                this.ConfigureFake(fake => wrapper.ConfigureFakeToWrap(fake));
-                return wrapper;
-            }
-
-            public IFakeOptions<T> Implements(Type interfaceType)
-            {
-                this.proxyOptions.AddInterfaceToImplement(interfaceType);
-                return this;
-            }
-
-            public IFakeOptions<T> Implements<TInterface>()
-            {
-                return this.Implements(typeof(TInterface));
-            }
-
-            public IFakeOptions<T> ConfigureFake(Action<T> action)
-            {
-                this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
-                return this;
-            }
-
-            IFakeOptions IFakeOptions.ConfigureFake(Action<object> action)
-            {
-                return (IFakeOptions)this.ConfigureFake(fake => action(fake));
-            }
-
-            private static IEnumerable<object> GetConstructorArgumentsFromExpression(Expression<Func<T>> constructorCall)
-            {
-                AssertThatExpressionRepresentConstructorCall(constructorCall);
-                return ((NewExpression)constructorCall.Body).Arguments.Select(argument => argument.Evaluate());
-            }
-
-            private static void AssertThatExpressionRepresentConstructorCall(Expression<Func<T>> constructorCall)
-            {
-                if (constructorCall.Body.NodeType != ExpressionType.New)
-                {
-                    throw new ArgumentException(ExceptionMessages.NonConstructorExpressionMessage);
-                }
-            }
         }
     }
 }

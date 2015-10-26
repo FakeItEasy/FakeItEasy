@@ -23,7 +23,7 @@
 
             RegisterEnumerableInstantiatedFromTypeCatalogue<IArgumentValueFormatter>(container);
             RegisterEnumerableInstantiatedFromTypeCatalogue<IDummyFactory>(container);
-            RegisterEnumerableInstantiatedFromTypeCatalogue<IFakeConfigurator>(container);
+            RegisterEnumerableInstantiatedFromTypeCatalogue<IFakeOptionsBuilder>(container);
         }
 
         private static void RegisterEnumerableInstantiatedFromTypeCatalogue<T>(DictionaryContainer container)

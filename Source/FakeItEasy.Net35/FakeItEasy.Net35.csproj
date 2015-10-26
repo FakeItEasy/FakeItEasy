@@ -548,9 +548,6 @@
     <Compile Include="..\FakeItEasy\FakeAttribute.cs">
       <Link>FakeAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\FakeConfigurator.cs">
-      <Link>FakeConfigurator.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\FakeFacade.cs">
       <Link>FakeFacade.cs</Link>
     </Compile>
@@ -578,8 +575,8 @@
     <Compile Include="..\FakeItEasy\IDummyFactory.cs">
       <Link>IDummyFactory.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\IFakeConfigurator.cs">
-      <Link>IFakeConfigurator.cs</Link>
+    <Compile Include="..\FakeItEasy\IFakeOptionsBuilder.cs">
+      <Link>IFakeOptionsBuilder.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IFileSystem.cs">
       <Link>IFileSystem.cs</Link>
