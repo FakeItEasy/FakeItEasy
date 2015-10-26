@@ -94,6 +94,7 @@
     <Compile Include="Core\IFakeCallProcessorProvider.cs" />
     <Compile Include="Core\FakeCallProcessorProvider.cs" />
     <Compile Include="Core\EventHandlerArgumentProviderMap.cs" />
+    <Compile Include="Creation\IFakeOptions.of.T.cs" />
     <Compile Include="Creation\IProxyOptions.cs" />
     <Compile Include="DefaultBootstrapper.cs" />
     <Compile Include="Expressions\ArgumentConstraints\IArgumentValueProvider.cs" />
