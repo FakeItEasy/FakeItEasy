@@ -134,7 +134,6 @@
     <Compile Include="ArgumentConstraintManagerExtensions\StringStartsWithTests.cs" />
     <Compile Include="Core\FakeWrapperConfiguratorTests.cs" />
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
-    <Compile Include="Core\FakeConfiguratorTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\IsInstanceOfTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\IsNullTests.cs" />

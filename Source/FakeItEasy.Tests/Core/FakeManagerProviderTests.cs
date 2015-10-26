@@ -18,9 +18,6 @@ namespace FakeItEasy.Tests.Core
         private IFakeManagerAccessor fakeManagerAccessor = null;
 
         [Fake]
-        private IFakeObjectConfigurator fakeObjectConfigurator = null;
-
-        [Fake]
         private Type typeOfFake = null;
 
         [Fake]
@@ -64,18 +61,6 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             A.CallTo(() => this.fakeManagerAccessor.TagProxy(this.proxy, this.fakeManager)).MustHaveHappened();
-        }
-
-        [Test]
-        public void Fetch_should_configure_the_proxy()
-        {
-            // Arrange
-
-            // Act
-            this.fakeManagerProvider.Fetch(this.proxy);
-
-            // Assert
-            A.CallTo(() => this.fakeObjectConfigurator.ConfigureFake(this.typeOfFake, this.proxy)).MustHaveHappened();
         }
 
         [Test]

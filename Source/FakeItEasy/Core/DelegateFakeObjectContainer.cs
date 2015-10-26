@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Creation;
 
     /// <summary>
     /// A fake object container where delegates can be registered that are used to
@@ -43,11 +44,11 @@
         }
 
         /// <summary>
-        /// Configures the fake.
+        /// Configures a fake's creation options.
         /// </summary>
-        /// <param name="typeOfFake">The type of fake.</param>
-        /// <param name="fakeObject">The fake object.</param>
-        public void ConfigureFake(Type typeOfFake, object fakeObject)
+        /// <param name="typeOfFake">The type the fake object represents.</param>
+        /// <param name="fakeOptions">The options to build for the fake's creation.</param>
+        public void ConfigureFake(Type typeOfFake, IFakeOptions fakeOptions)
         {
         }
 

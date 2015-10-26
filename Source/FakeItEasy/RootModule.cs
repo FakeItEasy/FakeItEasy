@@ -58,7 +58,7 @@
 
             container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
                 (typeOfFake, proxyOptions) =>
-                    new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeObjectContainer>(), typeOfFake, proxyOptions));
+                    new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), typeOfFake, proxyOptions));
 
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
                 new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), c.Resolve<IFakeManagerAccessor>()));
@@ -94,8 +94,9 @@
                                                          {
                                                              var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<FakeCallProcessorProvider.Factory>());
                                                              var session = new DummyValueCreationSession(c.Resolve<IFakeObjectContainer>(), new SessionFakeObjectCreator { Creator = fakeCreator });
+                                                             var fakeConfigurator = c.Resolve<IFakeObjectContainer>();
 
-                                                             return new DefaultFakeAndDummyManager(session, fakeCreator);
+                                                             return new DefaultFakeAndDummyManager(session, fakeCreator, fakeConfigurator);
                                                          });
 
             container.RegisterSingleton(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
