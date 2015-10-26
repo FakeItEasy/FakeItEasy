@@ -81,7 +81,7 @@ namespace FakeItEasy.Creation
         }
 
         private class FakeOptions<T>
-            : IFakeOptions<T>
+            : IFakeOptions<T>, IFakeOptions
         {
             private readonly ProxyOptions proxyOptions;
 
@@ -142,6 +142,11 @@ namespace FakeItEasy.Creation
             {
                 this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
                 return this;
+            }
+
+            IFakeOptions IFakeOptions.ConfigureFake(Action<object> action)
+            {
+                return (IFakeOptions)this.ConfigureFake(fake => action(fake));
             }
 
             private static IEnumerable<object> GetConstructorArgumentsFromExpression(Expression<Func<T>> constructorCall)

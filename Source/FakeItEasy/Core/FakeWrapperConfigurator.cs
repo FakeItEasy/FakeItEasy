@@ -11,7 +11,7 @@ namespace FakeItEasy.Core
     /// Handles configuring of fake objects to delegate all their calls to a wrapped instance.
     /// </summary>
     /// <typeparam name="T">The type of fake object generated.</typeparam>
-    internal class FakeWrapperConfigurator<T> : IFakeOptionsForWrappers<T>
+    internal class FakeWrapperConfigurator<T> : IFakeOptionsForWrappers<T>, IFakeOptions
     {
         private readonly IFakeOptions<T> fakeOptions;
 
@@ -58,6 +58,11 @@ namespace FakeItEasy.Core
         public IFakeOptions<T> ConfigureFake(Action<T> action)
         {
             return this.fakeOptions.ConfigureFake(action);
+        }
+
+        IFakeOptions IFakeOptions.ConfigureFake(Action<object> action)
+        {
+            return (IFakeOptions)this.ConfigureFake(fake => action(fake));
         }
 
         public IFakeOptions<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
