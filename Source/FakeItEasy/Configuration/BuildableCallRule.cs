@@ -12,11 +12,17 @@ namespace FakeItEasy.Configuration
         : IFakeObjectCallRule
     {
         private readonly List<WherePredicate> wherePredicates;
+        private Action<IInterceptedFakeObjectCall> applicator;
+        private bool canSetApplicator;
+        private Func<IFakeObjectCall, ICollection<object>> outAndRefParametersValueProducer;
+        private bool canSetOutAndRefParametersValueProducer;
 
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
-            this.Applicator = call => call.SetReturnValue(call.Method.ReturnType.GetDefaultValue());
+            this.applicator = call => call.SetReturnValue(call.Method.ReturnType.GetDefaultValue());
+            this.canSetApplicator = true;
+            this.canSetOutAndRefParametersValueProducer = true;
             this.wherePredicates = new List<WherePredicate>();
         }
 
@@ -24,7 +30,24 @@ namespace FakeItEasy.Configuration
         /// Gets or sets an action that is called by the Apply method to apply this
         /// rule to a fake object call.
         /// </summary>
-        public Action<IInterceptedFakeObjectCall> Applicator { get; set; }
+        public Action<IInterceptedFakeObjectCall> Applicator
+        {
+            get
+            {
+                return this.applicator;
+            }
+
+            set
+            {
+                if (!this.canSetApplicator)
+                {
+                    throw new InvalidOperationException("The behavior for this call has already been defined");
+                }
+
+                this.applicator = value;
+                this.canSetApplicator = false;
+            }
+        }
 
         /// <summary>
         /// Gets a collection of actions that should be invoked when the configured
@@ -35,7 +58,24 @@ namespace FakeItEasy.Configuration
         /// <summary>
         /// Gets or sets a function that provides values to apply to output and reference variables.
         /// </summary>
-        public Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProducer { get; set; }
+        public Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProducer
+        {
+            get
+            {
+                return this.outAndRefParametersValueProducer;
+            }
+
+            set
+            {
+                if (!this.canSetOutAndRefParametersValueProducer)
+                {
+                    throw new InvalidOperationException("How to assign out and ref parameters has already been defined for this call");
+                }
+
+                this.outAndRefParametersValueProducer = value;
+                this.canSetOutAndRefParametersValueProducer = false;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the base method of the fake object call should be
@@ -119,6 +159,16 @@ namespace FakeItEasy.Configuration
         public abstract void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate);
 
         protected abstract bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall);
+
+        /// <summary>
+        /// Sets the OutAndRefParametersValueProducer directly, bypassing the public setter logic, hence allowing
+        /// it to be set again later.
+        /// </summary>
+        /// <param name="value">The new value for OutAndRefParametersValueProducer.</param>
+        protected void SetOutAndRefParametersValueProducer(Func<IFakeObjectCall, ICollection<object>> value)
+        {
+            this.outAndRefParametersValueProducer = value;
+        }
 
         private static ICollection<int> GetIndexesOfOutAndRefParameters(IInterceptedFakeObjectCall fakeObjectCall)
         {

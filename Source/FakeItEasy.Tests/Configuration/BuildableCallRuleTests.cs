@@ -258,6 +258,22 @@ namespace FakeItEasy.Tests.Configuration
             descriptionWriter.Builder.ToString().Should().Be(expectedDescription);
         }
 
+        [Test]
+        public void Applicator_should_not_be_settable_more_than_once()
+        {
+            this.rule.Applicator = x => { };
+
+            Assert.Throws<InvalidOperationException>(() => this.rule.Applicator = x => { });
+        }
+
+        [Test]
+        public void OutAndRefParameterProducer_should_not_be_settable_more_than_once()
+        {
+            this.rule.OutAndRefParametersValueProducer = x => new object[0];
+
+            Assert.Throws<InvalidOperationException>(() => this.rule.OutAndRefParametersValueProducer = x => new object[] { "test" });
+        }
+
         private class TestableCallRule
             : BuildableCallRule
         {
