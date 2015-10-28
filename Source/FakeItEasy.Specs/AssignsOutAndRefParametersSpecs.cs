@@ -1,6 +1,8 @@
 ﻿namespace FakeItEasy.Specs
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
 
@@ -91,6 +93,31 @@
                         subject.MightReturnAKnownValue(out value);
                         value.Should().BeEquivalentTo(knownOutput);
                     });
+        }
+
+        [Scenario]
+        public static void MultipleAssignOutAndRefParameters(
+            IHaveAnOut subject,
+            string outValue,
+            Exception exception)
+        {
+            "establish"
+                .x(() => subject = A.Fake<IHaveAnOut>());
+
+            "when configuring a fake to assign out and ref parameters multiple times"
+                .x(() =>
+                {
+                    var callSpec =
+                        A.CallTo(() => subject.MightReturnAKnownValue(out outValue))
+                            .WithAnyArguments();
+
+                    callSpec.AssignsOutAndRefParameters(new object[] { "test1" });
+
+                    exception = Record.Exception(() => callSpec.AssignsOutAndRefParameters(new object[] { "test2" }));
+                });
+
+            "it should throw an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
     }
 }

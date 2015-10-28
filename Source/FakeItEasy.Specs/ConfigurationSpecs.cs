@@ -1,5 +1,8 @@
 ﻿namespace FakeItEasy.Specs
 {
+    using System;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
 
@@ -86,6 +89,90 @@
 
             "it should invoke the callback"
                 .x(() => callbackWasInvoked.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void MultipleReturns(
+            IFoo fake,
+            IReturnValueArgumentValidationConfiguration<int> configuration,
+            Exception exception)
+        {
+            "establish"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "when configuring multiple returns on the same configuration"
+                .x(() =>
+                {
+                    configuration = A.CallTo(() => fake.Baz());
+                    configuration.Returns(42);
+                    exception = Record.Exception(() => configuration.Returns(0));
+                });
+
+            "it should throw an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void ReturnThenThrow(
+            IFoo fake,
+            IReturnValueArgumentValidationConfiguration<int> configuration,
+            Exception exception)
+        {
+            "establish"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "when configuring a return then a throw on the same configuration"
+                .x(() =>
+                {
+                    configuration = A.CallTo(() => fake.Baz());
+                    configuration.Returns(42);
+                    exception = Record.Exception(() => configuration.Throws(new Exception()));
+                });
+
+            "it should throw an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void ReturnThenCallsBaseMethod(
+            IFoo fake,
+            IReturnValueArgumentValidationConfiguration<int> configuration,
+            Exception exception)
+        {
+            "establish"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "when configuring a return then base method call on the same configuration"
+                .x(() =>
+                {
+                    configuration = A.CallTo(() => fake.Baz());
+                    configuration.Returns(42);
+                    exception = Record.Exception(() => configuration.CallsBaseMethod());
+                });
+
+            "it should throw an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void MultipleThrows(
+            IFoo fake,
+            IReturnValueArgumentValidationConfiguration<int> configuration,
+            Exception exception)
+        {
+            "establish"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "when configuring a return then a throw on the same configuration"
+                .x(() =>
+                {
+                    configuration = A.CallTo(() => fake.Baz());
+                    configuration.Throws(new ArgumentNullException());
+                    exception = Record.Exception(() => configuration.Throws(new ArgumentException()));
+                });
+
+            "it should throw an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
         public class BaseClass
