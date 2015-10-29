@@ -42,6 +42,80 @@
             "Then the builder will build options to be used during the fake's constructor"
                 .x(() => fake.Timestamp.Should().Be(RobotRunsAmokEventFakeOptionsBuilder.ConfiguredTimestamp));
         }
+
+        [Scenario]
+        public void GenericFakeOptionsBuilderDefaultPriority(
+            IFakeOptionsBuilder builder,
+            int priority)
+        {
+            "Given an options builder that extends the generic base"
+                .x(() => builder = new SomeClassOptionsBuilder());
+
+            "When the default priority is fetched"
+                .x(() => priority = builder.Priority);
+
+            "Then it should be 0"
+                .x(() => priority.Should().Be(0));
+        }
+
+        [Scenario]
+        public void GenericFakeOptionsBuilderBuildOptionsForMatchingType(
+            SomeParentClass fake)
+        {
+            "When we create a fake of a type that has an options builder extending the generic base"
+                .x(() => fake = A.Fake<SomeClass>());
+
+            "Then the generic build options method will be used to configure it"
+                .x(() => fake.IsConfigured.Should().BeTrue());
+        }
+
+        [Scenario]
+        public void GenericFakeOptionsBuilderBuildOptionsForDerivedType(
+            SomeParentClass fake)
+        {
+            "When we create a fake of a type whose parent has an options builder extending the generic base"
+                .x(() => fake = A.Fake<SomeDerivedClass>());
+
+            "Then the generic build options method will be not used to configure it"
+                .x(() => fake.IsConfigured.Should().BeFalse());
+        }
+
+        [Scenario]
+        public void GenericFakeOptionsBuilderBuildOptionsForParentType(
+            SomeParentClass fake)
+        {
+            "When we create a fake of a type whose child has an options builder extending the generic base"
+                .x(() => fake = A.Fake<SomeParentClass>());
+
+            "Then the generic build options method will be not used to configure it"
+                .x(() => fake.IsConfigured.Should().BeFalse());
+        }
+
+        public class SomeParentClass
+        {
+            public bool IsConfigured { get; set; }
+        }
+
+        public class SomeClass : SomeParentClass
+        {
+        }
+
+        public class SomeDerivedClass : SomeClass
+        {
+        }
+
+        private class SomeClassOptionsBuilder : FakeOptionsBuilder<SomeClass>
+        {
+            protected override void BuildOptions(IFakeOptions<SomeClass> options)
+            {
+                if (options == null)
+                {
+                    throw new ArgumentNullException("options");
+                }
+
+                options.ConfigureFake(fake => fake.IsConfigured = true);
+            }
+        }
     }
 
     public class DomainEventFakeOptionsBuilder : IFakeOptionsBuilder

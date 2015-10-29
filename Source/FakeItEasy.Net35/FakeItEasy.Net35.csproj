@@ -554,6 +554,9 @@
     <Compile Include="..\FakeItEasy\FakeObjectCallExtensions.cs">
       <Link>FakeObjectCallExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\FakeOptionsBuilder.cs">
+      <Link>FakeOptionsBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\FakeOptionsExtensions.cs">
       <Link>FakeOptionsExtensions.cs</Link>
     </Compile>
