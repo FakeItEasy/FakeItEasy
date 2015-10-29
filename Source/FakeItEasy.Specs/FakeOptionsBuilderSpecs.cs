@@ -25,8 +25,11 @@
             "And it will add its extra attributes"
                 .x(() => fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().HaveCount(1));
 
-            "And it will make the fake implement its extra interface"
+            "And it will make the fake implement its extra interface specified by parameter"
                 .x(() => fake.Should().BeAssignableTo<IDisposable>());
+
+            "And it will make the fake implement its extra interface specified by type parameter"
+                .x(() => fake.Should().BeAssignableTo<ICloneable>());
         }
 
         [Scenario]
@@ -154,7 +157,8 @@
                 domainEvent.Name = typeOfFake.Name;
             })
                 .WithAdditionalAttributes(new[] { CreateCustomAttributeBuilder() })
-                .Implements(typeof(IDisposable));
+                .Implements(typeof(IDisposable))
+                .Implements<ICloneable>();
         }
 
         private static CustomAttributeBuilder CreateCustomAttributeBuilder()
