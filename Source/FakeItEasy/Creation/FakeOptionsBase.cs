@@ -17,6 +17,11 @@ namespace FakeItEasy.Creation
             return (IFakeOptions)this.WithAdditionalAttributes(customAttributeBuilders);
         }
 
+        IFakeOptions IFakeOptions.Implements(Type interfaceType)
+        {
+            return (IFakeOptions)this.Implements(interfaceType);
+        }
+
         public abstract IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
 
         public abstract IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall);
