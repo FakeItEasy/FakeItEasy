@@ -2,6 +2,7 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection.Emit;
     using Configuration;
 
@@ -35,5 +36,16 @@ namespace FakeItEasy.Creation
         /// </para>
         /// </remarks>
         IFakeOptions ConfigureFake(Action<object> action);
+
+        /// <summary>
+        /// Sets up the fake to implement the specified interface in addition to the
+        /// originally faked class.
+        /// </summary>
+        /// <param name="interfaceType">The type of interface to implement.</param>
+        /// <returns>Options object.</returns>
+        /// <exception cref="ArgumentException">The specified type is not an interface.</exception>
+        /// <exception cref="ArgumentNullException">The specified type is null.</exception>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Implements", Justification = "Would be a breaking change, might be changed in a later major version.")]
+        IFakeOptions Implements(Type interfaceType);
     }
 }
