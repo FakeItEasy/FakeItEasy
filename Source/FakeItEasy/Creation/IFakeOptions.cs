@@ -47,5 +47,16 @@ namespace FakeItEasy.Creation
         /// <exception cref="ArgumentNullException">The specified type is null.</exception>
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Implements", Justification = "Would be a breaking change, might be changed in a later major version.")]
         IFakeOptions Implements(Type interfaceType);
+
+        /// <summary>
+        /// Sets up the fake to implement the specified interface in addition to the
+        /// originally faked class.
+        /// </summary>
+        /// <typeparam name="TInterface">The type of interface to implement.</typeparam>
+        /// <returns>Options object.</returns>
+        /// <exception cref="ArgumentException">The specified type is not an interface.</exception>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Implements", Justification = "Would be a breaking change, might be changed in a later major version.")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to provide a strongly typed fluent API.")]
+        IFakeOptions Implements<TInterface>();
     }
 }

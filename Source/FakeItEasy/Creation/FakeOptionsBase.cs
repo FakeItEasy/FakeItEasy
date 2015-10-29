@@ -22,6 +22,11 @@ namespace FakeItEasy.Creation
             return (IFakeOptions)this.Implements(interfaceType);
         }
 
+        IFakeOptions IFakeOptions.Implements<TInterface>()
+        {
+            return (IFakeOptions)this.Implements(typeof(TInterface));
+        }
+
         public abstract IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
 
         public abstract IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall);
