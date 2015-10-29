@@ -24,7 +24,7 @@
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>());
 
             "then the object container should configure the fake"
-                .x(() => A.CallTo(() => fakeObjectContainer.ConfigureFake(typeof(MakesVirtualCallInConstructor), A<IFakeOptions>._))
+                .x(() => A.CallTo(() => fakeObjectContainer.BuildOptions(typeof(MakesVirtualCallInConstructor), A<IFakeOptions>._))
                     .MustHaveHappened());
 
             "and the object container's configuration should be used during the constructor"
@@ -62,7 +62,7 @@
         private static IFakeObjectContainer CreateFakeObjectContainer(string stringMethodValue)
         {
             var fakeObjectContainer = A.Fake<IFakeObjectContainer>();
-            A.CallTo(() => fakeObjectContainer.ConfigureFake(A<Type>._, A<IFakeOptions>._))
+            A.CallTo(() => fakeObjectContainer.BuildOptions(A<Type>._, A<IFakeOptions>._))
                 .Invokes(
                     (Type t, IFakeOptions options) =>
                         options.ConfigureFake(f =>

@@ -4,15 +4,15 @@ namespace FakeItEasy.Core
     using Creation;
 
     /// <summary>
-    /// Handles global configuration of fake object.
+    /// Handles global configuration of fake objects by building fake creation options.
     /// </summary>
-    public interface IFakeObjectConfigurator
+    public interface IFakeObjectOptionsBuilder
     {
         /// <summary>
-        /// Configures a fake's creation options.
+        /// Builds a fake's creation options.
         /// </summary>
         /// <param name="typeOfFake">The type the fake object represents.</param>
         /// <param name="fakeOptions">The options to build for the fake's creation.</param>
-        void ConfigureFake(Type typeOfFake, IFakeOptions fakeOptions);
+        void BuildOptions(Type typeOfFake, IFakeOptions fakeOptions);
     }
 }

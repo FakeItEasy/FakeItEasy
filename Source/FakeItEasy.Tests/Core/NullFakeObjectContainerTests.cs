@@ -37,7 +37,7 @@
 
             var container = new NullFakeObjectContainer();
 
-            container.ConfigureFake(typeof(IFoo), A.Dummy<IFakeOptions>());
+            container.BuildOptions(typeof(IFoo), A.Dummy<IFakeOptions>());
         }
     }
 }
