@@ -1,7 +1,9 @@
 namespace FakeItEasy.Creation
 {
     using System;
-    using FakeItEasy.Configuration;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+    using Configuration;
 
     /// <summary>
     /// Provides options for generating fake object.
@@ -11,6 +13,13 @@ namespace FakeItEasy.Creation
     public interface IFakeOptions
         : IHideObjectMembers
     {
+        /// <summary>
+        /// Specifies that the fake should be created with these additional attributes.
+        /// </summary>
+        /// <param name="customAttributeBuilders">The attributes to build into the proxy.</param>
+        /// <returns>Options object.</returns>
+        IFakeOptions WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders);
+
         /// <summary>
         /// Specifies an action that should be run over the fake object for the initial configuration (during the creation of the fake proxy).
         /// </summary>

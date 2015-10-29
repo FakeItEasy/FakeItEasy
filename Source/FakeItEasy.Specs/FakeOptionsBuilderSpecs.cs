@@ -1,8 +1,10 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System;
+    using System.Reflection.Emit;
     using Creation;
     using FluentAssertions;
+    using Tests;
     using Xbehave;
 
     public class FakeOptionsBuilderSpecs
@@ -19,6 +21,9 @@
 
             "And it will be passed the fake type"
                 .x(() => fake.Name.Should().Be(typeof(RobotActivatedEvent).Name));
+
+            "And it will add its extra attributes"
+                .x(() => fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().HaveCount(1));
         }
 
         [Scenario]
@@ -144,7 +149,14 @@
                 var domainEvent = (DomainEvent)fake;
                 domainEvent.ID = this.nextID++;
                 domainEvent.Name = typeOfFake.Name;
-            });
+            })
+                .WithAdditionalAttributes(new[] { CreateCustomAttributeBuilder() });
+        }
+
+        private static CustomAttributeBuilder CreateCustomAttributeBuilder()
+        {
+            var constructor = typeof(ForTestAttribute).GetConstructor(new Type[0]);
+            return new CustomAttributeBuilder(constructor, new object[0]);
         }
     }
 
