@@ -12,6 +12,11 @@ namespace FakeItEasy.Creation
             return (IFakeOptions)this.ConfigureFake(fake => action(fake));
         }
 
+        IFakeOptions IFakeOptions.WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+        {
+            return (IFakeOptions)this.WithAdditionalAttributes(customAttributeBuilders);
+        }
+
         public abstract IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
 
         public abstract IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall);
