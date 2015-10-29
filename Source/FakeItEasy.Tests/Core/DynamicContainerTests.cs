@@ -66,7 +66,7 @@
             A.CallTo(() => fakeOptions.ConfigureFake(A<Action<object>>._))
                 .Invokes((Action<object> action) => action(fakeTypeWithDummyFactory));
 
-            container.ConfigureFake(typeof(TypeWithDummyFactory), fakeOptions);
+            container.BuildOptions(typeof(TypeWithDummyFactory), fakeOptions);
 
             Assert.That(fakeTypeWithDummyFactory.WasConfigured, Is.True, "configuration was not applied");
         }

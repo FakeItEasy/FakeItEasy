@@ -26,7 +26,7 @@
         /// </summary>
         /// <param name="typeOfFake">The type the fake object represents.</param>
         /// <param name="fakeOptions">The options to build for the fake's creation.</param>
-        public void ConfigureFake(Type typeOfFake, IFakeOptions fakeOptions)
+        public void BuildOptions(Type typeOfFake, IFakeOptions fakeOptions)
         {
         }
     }

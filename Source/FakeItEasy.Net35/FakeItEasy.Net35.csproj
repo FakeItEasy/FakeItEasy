@@ -344,11 +344,11 @@
     <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRule.cs">
       <Link>Core\IFakeObjectCallRule.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeObjectConfigurator.cs">
-      <Link>Core\IFakeObjectConfigurator.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeObjectContainer.cs">
       <Link>Core\IFakeObjectContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeObjectOptionsBuilder.cs">
+      <Link>Core\IFakeObjectOptionsBuilder.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeScope.cs">
       <Link>Core\IFakeScope.cs</Link>

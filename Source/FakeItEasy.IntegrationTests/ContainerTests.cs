@@ -57,7 +57,7 @@
                 return this.RegisteredTypes.TryGetValue(typeOfFakeObject, out fakeObject);
             }
 
-            public void ConfigureFake(Type typeOfFake, IFakeOptions fakeOptions)
+            public void BuildOptions(Type typeOfFake, IFakeOptions fakeOptions)
             {
             }
         }
