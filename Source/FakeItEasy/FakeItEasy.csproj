@@ -100,6 +100,7 @@
     <Compile Include="Expressions\ArgumentConstraints\IArgumentValueProvider.cs" />
     <Compile Include="Expressions\ArgumentConstraints\OutArgumentConstraint.cs" />
     <Compile Include="Expressions\ArgumentConstraints\RefArgumentConstraint.cs" />
+    <Compile Include="FakeOptionsBuilder.cs" />
     <Compile Include="IBootstrapper.cs" />
     <Compile Include="IFakeOptionsBuilder.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
