@@ -37,6 +37,11 @@ namespace FakeItEasy.Creation
             return (IFakeOptionsForWrappers)this.Wrapping((T)wrappedInstance);
         }
 
+        IFakeOptions IFakeOptions.WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+        {
+            return (IFakeOptions)this.WithArgumentsForConstructor(argumentsForConstructor);
+        }
+
         public abstract IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
 
         public abstract IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall);

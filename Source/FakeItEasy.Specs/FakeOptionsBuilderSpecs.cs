@@ -100,6 +100,17 @@
         }
 
         [Scenario]
+        public void DefinedFakeOptionsBuilderConstructorArgumentsByList(
+            ConstructorArgumentsSetByList fake)
+        {
+            "When a fake is created for a type that has an options builder defined"
+                .x(() => fake = A.Fake<ConstructorArgumentsSetByList>());
+
+            "Then the fake will be created using the constructor arguments"
+                .x(() => fake.ConstructorArgument.Should().Be(typeof(ConstructorArgumentsSetByListOptionsBuilder).Name));
+        }
+
+        [Scenario]
         public void FakeOptionsBuilderPriority(
             RobotRunsAmokEvent fake)
         {
@@ -296,6 +307,27 @@
             if (options != null)
             {
                 options.CallsBaseMethods();
+            }
+        }
+    }
+
+    public class ConstructorArgumentsSetByList
+    {
+        public ConstructorArgumentsSetByList(string argument)
+        {
+            this.ConstructorArgument = argument;
+        }
+
+        public string ConstructorArgument { get; private set; }
+    }
+
+    public class ConstructorArgumentsSetByListOptionsBuilder : ConventionBasedOptionsBuilder
+    {
+        public override void BuildOptions(Type typeOfFake, IFakeOptions options)
+        {
+            if (options != null)
+            {
+                options.WithArgumentsForConstructor(new object[] { this.GetType().Name });
             }
         }
     }
