@@ -73,7 +73,7 @@ namespace FakeItEasy.Creation
         }
 
         private class FakeOptions<T>
-            : IFakeOptions<T>, IFakeOptions
+            : FakeOptionsBase<T>
         {
             private readonly ProxyOptions proxyOptions;
 
@@ -82,19 +82,19 @@ namespace FakeItEasy.Creation
                 this.proxyOptions = proxyOptions;
             }
 
-            public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+            public override IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
             {
                 this.proxyOptions.ArgumentsForConstructor = argumentsForConstructor;
                 return this;
             }
 
-            public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
+            public override IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
             {
                 this.proxyOptions.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
                 return this;
             }
 
-            public IFakeOptions<T> WithAdditionalAttributes(
+            public override IFakeOptions<T> WithAdditionalAttributes(
                 IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
             {
                 Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
@@ -107,33 +107,28 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
-            public IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
+            public override IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
             {
                 var wrapper = new FakeWrapperConfigurator<T>(this, wrappedInstance);
                 this.ConfigureFake(fake => wrapper.ConfigureFakeToWrap(fake));
                 return wrapper;
             }
 
-            public IFakeOptions<T> Implements(Type interfaceType)
+            public override IFakeOptions<T> Implements(Type interfaceType)
             {
                 this.proxyOptions.AddInterfaceToImplement(interfaceType);
                 return this;
             }
 
-            public IFakeOptions<T> Implements<TInterface>()
+            public override IFakeOptions<T> Implements<TInterface>()
             {
                 return this.Implements(typeof(TInterface));
             }
 
-            public IFakeOptions<T> ConfigureFake(Action<T> action)
+            public override IFakeOptions<T> ConfigureFake(Action<T> action)
             {
                 this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
                 return this;
-            }
-
-            IFakeOptions IFakeOptions.ConfigureFake(Action<object> action)
-            {
-                return (IFakeOptions)this.ConfigureFake(fake => action(fake));
             }
 
             private static IEnumerable<object> GetConstructorArgumentsFromExpression(Expression<Func<T>> constructorCall)
