@@ -15,6 +15,13 @@ namespace FakeItEasy.Creation
         : IHideObjectMembers
     {
         /// <summary>
+        /// Specifies arguments for the constructor of the faked class.
+        /// </summary>
+        /// <param name="argumentsForConstructor">The arguments to pass to the constructor of the faked class.</param>
+        /// <returns>Options object.</returns>
+        IFakeOptions WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
+
+        /// <summary>
         /// Specifies that the fake should be created with these additional attributes.
         /// </summary>
         /// <param name="customAttributeBuilders">The attributes to build into the proxy.</param>
