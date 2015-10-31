@@ -51,11 +51,6 @@ namespace FakeItEasy.Core
             return this.fakeOptions.Implements(interfaceType);
         }
 
-        public override IFakeOptions<T> Implements<TInterface>()
-        {
-            return this.fakeOptions.Implements<TInterface>();
-        }
-
         public override IFakeOptions<T> ConfigureFake(Action<T> action)
         {
             return this.fakeOptions.ConfigureFake(action);
