@@ -120,11 +120,6 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
-            public override IFakeOptions<T> Implements<TInterface>()
-            {
-                return this.Implements(typeof(TInterface));
-            }
-
             public override IFakeOptions<T> ConfigureFake(Action<T> action)
             {
                 this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
