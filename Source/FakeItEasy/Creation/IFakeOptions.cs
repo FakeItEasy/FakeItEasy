@@ -58,5 +58,12 @@ namespace FakeItEasy.Creation
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Implements", Justification = "Would be a breaking change, might be changed in a later major version.")]
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to provide a strongly typed fluent API.")]
         IFakeOptions Implements<TInterface>();
+
+        /// <summary>
+        /// Specifies that the fake should delegate calls to the specified instance.
+        /// </summary>
+        /// <param name="wrappedInstance">The object to delegate calls to.</param>
+        /// <returns>Options object.</returns>
+        IFakeOptions Wrapping(object wrappedInstance);
     }
 }
