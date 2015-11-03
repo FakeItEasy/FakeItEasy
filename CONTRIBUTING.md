@@ -12,11 +12,11 @@ The coordinators will usually assign a priority to each issue from 1 (highest) t
 
 ## Tests
 
-All features should be described by [MSpec](https://github.com/machine/machine.specifications) feature tests in the `FakeItEasy.Specs` project.
+Changes in functionality (new features, changed behavior, or bug fixes) should be described by [xBehave.net](http://xbehave.github.io/) acceptance tests in the `FakeItEasy.Specs` project. Doing so ensures that tests are written in language familiar to FakeItEasy's end users and are resilient to refactoring.
 
-There should also be a high level of unit test coverage. Our target is 95% unit test coverage (the actual coverage is 93% at the time of writing). Any new code that is added should have a similar level of coverage.
+There should be a high level of test coverage. When achieving proper coverage is impractical via acceptance tests, then integration tests or unit tests should be added.
 
-When writing unit tests, use the 3A's pattern (Arrange, Act, Assert) with comments indicating each part.
+When writing integration or unit tests, use the 3A's pattern (Arrange, Act, Assert) with comments indicating each part.
 New or changed tests should use [FluentAssertions](https://github.com/dennisdoomen/fluentassertions) for the assertion phase.
 E.g.
 
