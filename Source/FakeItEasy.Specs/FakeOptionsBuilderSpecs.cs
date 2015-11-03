@@ -33,6 +33,21 @@
         }
 
         [Scenario]
+        public void DefinedFakeOptionsBuilderWrapping(
+            WrapsAValidObject fake)
+        {
+            "When a fake is created for a type that has an options builder defined"
+                .x(() => fake = A.Fake<WrapsAValidObject>());
+
+            "Then the fake will wrap the configured target"
+                .x(() =>
+                {
+                    fake.AMethod();
+                    A.CallTo(() => WrapsAValidObjectOptionsBuilder.WrappedObject.AMethod()).MustHaveHappened();
+                });
+        }
+
+        [Scenario]
         public void FakeOptionsBuilderPriority(
             RobotRunsAmokEvent fake)
         {
@@ -125,6 +140,45 @@
                 }
 
                 options.ConfigureFake(fake => fake.IsConfigured = true);
+            }
+        }
+    }
+
+    public class WrapsAValidObject
+    {
+        public virtual void AMethod()
+        {
+        }
+    }
+
+    public class AWrappedType : WrapsAValidObject
+    {
+    }
+
+    public class WrapsAValidObjectOptionsBuilder : IFakeOptionsBuilder
+    {
+        private static readonly AWrappedType WrappedFake = A.Fake<AWrappedType>();
+
+        public static AWrappedType WrappedObject
+        {
+            get { return WrappedFake; }
+        }
+
+        public int Priority
+        {
+            get { return 0; }
+        }
+
+        public bool CanBuildOptionsForFakeOfType(Type type)
+        {
+            return type == typeof(WrapsAValidObject);
+        }
+
+        public void BuildOptions(Type typeOfFake, IFakeOptions options)
+        {
+            if (options != null)
+            {
+                options.Wrapping(WrappedObject);
             }
         }
     }
