@@ -70,6 +70,21 @@
         }
 
         [Scenario]
+        public void DefinedFakeOptionsBuilderMakingStrict(
+            Strict fake,
+            Exception exception)
+        {
+            "Given a fake of a type that has an options builder defined that makes the fake strict"
+                .x(() => fake = A.Fake<Strict>());
+
+            "When a method is called on the fake"
+                .x(() => exception = Record.Exception(() => fake.AMethod()));
+
+            "Then an exception will be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+        }
+        
+        [Scenario]
         public void FakeOptionsBuilderPriority(
             RobotRunsAmokEvent fake)
         {
@@ -229,6 +244,24 @@
             if (options != null)
             {
                 options.Wrapping(WrappedObject).RecordedBy(Recorder);
+            }
+        }
+    }
+
+    public class Strict
+    {
+        public virtual void AMethod()
+        {
+        }
+    }
+
+    public class StrictOptionsBuilder : ConventionBasedOptionsBuilder
+    {
+        public override void BuildOptions(Type typeOfFake, IFakeOptions options)
+        {
+            if (options != null)
+            {
+                options.Strict();
             }
         }
     }
