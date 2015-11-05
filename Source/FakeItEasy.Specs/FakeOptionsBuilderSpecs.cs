@@ -2,9 +2,11 @@
 {
     using System;
     using System.Reflection.Emit;
+    using Core;
     using Creation;
     using FluentAssertions;
     using Tests;
+    using Tests.TestHelpers;
     using Xbehave;
 
     public class FakeOptionsBuilderSpecs
@@ -45,6 +47,17 @@
                     fake.AMethod();
                     A.CallTo(() => WrapsAValidObjectOptionsBuilder.WrappedObject.AMethod()).MustHaveHappened();
                 });
+        }
+
+        [Scenario]
+        public void DefinedFakeOptionsBuilderWrappingNull(
+            Exception exception)
+        {
+            "When a fake is created for a type that has an options builder defined that wraps null"
+                .x(() => exception = Record.Exception(() => A.Fake<WrapsNull>()));
+
+            "Then an argument null exception will be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentNullException>());
         }
 
         [Scenario]
@@ -140,6 +153,31 @@
                 }
 
                 options.ConfigureFake(fake => fake.IsConfigured = true);
+            }
+        }
+    }
+
+    public class WrapsNull
+    {
+    }
+
+    public class WrapsNullOptionsBuilder : IFakeOptionsBuilder
+    {
+        public int Priority
+        {
+            get { return 0; }
+        }
+
+        public bool CanBuildOptionsForFakeOfType(Type type)
+        {
+            return type == typeof(WrapsNull);
+        }
+
+        public void BuildOptions(Type typeOfFake, IFakeOptions options)
+        {
+            if (options != null)
+            {
+                options.Wrapping(null);
             }
         }
     }

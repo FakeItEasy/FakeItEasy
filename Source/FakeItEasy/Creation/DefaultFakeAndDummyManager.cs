@@ -109,6 +109,8 @@ namespace FakeItEasy.Creation
 
             public override IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
             {
+                Guard.AgainstNull(wrappedInstance, "wrappedInstance");
+
                 var wrapper = new FakeWrapperConfigurator<T>(this, wrappedInstance);
                 this.ConfigureFake(fake => wrapper.ConfigureFakeToWrap(fake));
                 return wrapper;
