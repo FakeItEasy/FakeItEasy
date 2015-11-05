@@ -85,6 +85,21 @@
         }
         
         [Scenario]
+        public void DefinedFakeOptionsBuilderCallsBaseMethods(
+            CallsBaseMethods fake,
+            string result)
+        {
+            "Given a fake of a type that has an options builder defined that makes the fake call base methods"
+                .x(() => fake = A.Fake<CallsBaseMethods>());
+
+            "When a method is called on the fake"
+                .x(() => result = fake.Name);
+
+            "Then the base method will have been called"
+                .x(() => result.Should().Be(typeof(CallsBaseMethods).Name));
+        }
+
+        [Scenario]
         public void FakeOptionsBuilderPriority(
             RobotRunsAmokEvent fake)
         {
@@ -262,6 +277,25 @@
             if (options != null)
             {
                 options.Strict();
+            }
+        }
+    }
+
+    public class CallsBaseMethods
+    {
+        public virtual string Name
+        {
+            get { return typeof(CallsBaseMethods).Name; }
+        }
+    }
+
+    public class CallsBaseMethodsOptionsBuilder : ConventionBasedOptionsBuilder
+    {
+        public override void BuildOptions(Type typeOfFake, IFakeOptions options)
+        {
+            if (options != null)
+            {
+                options.CallsBaseMethods();
             }
         }
     }
