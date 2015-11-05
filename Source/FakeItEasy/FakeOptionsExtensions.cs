@@ -61,5 +61,19 @@ namespace FakeItEasy
                                                   .Where(call => !call.Method.IsAbstract)
                                                   .CallsBaseMethod());
         }
+
+        /// <summary>
+        /// Makes the fake default to calling base methods, so long as they aren't abstract.
+        /// </summary>
+        /// <param name="optionsBuilder">Action that builds options used to create the fake object.</param>
+        /// <returns>A configuration object.</returns>
+        public static IFakeOptions CallsBaseMethods(this IFakeOptions optionsBuilder)
+        {
+            Guard.AgainstNull(optionsBuilder, "optionsBuilder");
+
+            return optionsBuilder.ConfigureFake(fake => A.CallTo(fake)
+                                                  .Where(call => !call.Method.IsAbstract)
+                                                  .CallsBaseMethod());
+        }
     }
 }
