@@ -431,6 +431,9 @@
     <Compile Include="..\FakeItEasy\Creation\IFakeOptions.of.T.cs">
       <Link>Creation\IFakeOptions.of.T.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsForWrappers.of.T.cs">
+      <Link>Creation\IFakeOptionsForWrappers.of.T.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Creation\IProxyOptions.cs">
       <Link>Creation\IProxyOptions.cs</Link>
     </Compile>

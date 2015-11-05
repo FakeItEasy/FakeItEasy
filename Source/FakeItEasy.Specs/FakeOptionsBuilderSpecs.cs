@@ -5,6 +5,7 @@
     using Core;
     using Creation;
     using FluentAssertions;
+    using SelfInitializedFakes;
     using Tests;
     using Tests.TestHelpers;
     using Xbehave;
@@ -46,6 +47,14 @@
                 {
                     fake.AMethod();
                     A.CallTo(() => WrapsAValidObjectOptionsBuilder.WrappedObject.AMethod()).MustHaveHappened();
+                });
+
+            "And calls will be forwarded to the recorder"
+                .x(() =>
+                {
+                    A.CallTo(
+                        () => WrapsAValidObjectOptionsBuilder.Recorder.RecordCall(A<ICompletedFakeObjectCall>._))
+                        .MustHaveHappened();
                 });
         }
 
@@ -197,9 +206,17 @@
     {
         private static readonly AWrappedType WrappedFake = A.Fake<AWrappedType>();
 
+        private static readonly ISelfInitializingFakeRecorder FakeRecorder = A.Fake<ISelfInitializingFakeRecorder>(
+            options => options.ConfigureFake(fake => A.CallTo(() => fake.IsRecording).Returns(true)));
+
         public static AWrappedType WrappedObject
         {
             get { return WrappedFake; }
+        }
+
+        public static ISelfInitializingFakeRecorder Recorder
+        {
+            get { return FakeRecorder; }
         }
 
         public int Priority
@@ -216,7 +233,7 @@
         {
             if (options != null)
             {
-                options.Wrapping(WrappedObject);
+                options.Wrapping(WrappedObject).RecordedBy(Recorder);
             }
         }
     }
