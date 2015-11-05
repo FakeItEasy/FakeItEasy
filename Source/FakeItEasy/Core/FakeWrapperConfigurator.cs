@@ -12,7 +12,7 @@ namespace FakeItEasy.Core
     /// </summary>
     /// <typeparam name="T">The type of fake object generated.</typeparam>
     internal class FakeWrapperConfigurator<T>
-        : FakeOptionsBase<T>, IFakeOptionsForWrappers<T>
+        : FakeOptionsBase<T>, IFakeOptionsForWrappers<T>, IFakeOptionsForWrappers
     {
         private readonly IFakeOptions<T> fakeOptions;
 
@@ -60,6 +60,11 @@ namespace FakeItEasy.Core
         {
             this.Recorder = recorder;
             return this.fakeOptions;
+        }
+
+        IFakeOptions IFakeOptionsForWrappers.RecordedBy(ISelfInitializingFakeRecorder recorder)
+        {
+            return (IFakeOptions)this.RecordedBy(recorder);
         }
 
         /// <summary>
