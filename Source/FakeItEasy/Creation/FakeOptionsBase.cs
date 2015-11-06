@@ -2,6 +2,7 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection.Emit;
 
@@ -37,14 +38,22 @@ namespace FakeItEasy.Creation
             return (IFakeOptionsForWrappers)this.Wrapping((T)wrappedInstance);
         }
 
+        public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
+        {
+            return this.WithArgumentsForConstructor(GetConstructorArgumentsFromExpression(constructorCall));
+        }
+
+        IFakeOptions IFakeOptions.WithArgumentsForConstructor<TConstructor>(Expression<Func<TConstructor>> constructorCall)
+        {
+            return (IFakeOptions)this.WithArgumentsForConstructor(GetConstructorArgumentsFromExpression(constructorCall));
+        }
+
         IFakeOptions IFakeOptions.WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
         {
             return (IFakeOptions)this.WithArgumentsForConstructor(argumentsForConstructor);
         }
 
         public abstract IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
-
-        public abstract IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall);
 
         public abstract IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
 
@@ -53,5 +62,19 @@ namespace FakeItEasy.Creation
         public abstract IFakeOptions<T> Implements(Type interfaceType);
 
         public abstract IFakeOptions<T> ConfigureFake(Action<T> action);
+
+        private static IEnumerable<object> GetConstructorArgumentsFromExpression<TConstructor>(Expression<Func<TConstructor>> constructorCall)
+        {
+            AssertThatExpressionRepresentConstructorCall(constructorCall);
+            return ((NewExpression)constructorCall.Body).Arguments.Select(argument => argument.Evaluate());
+        }
+
+        private static void AssertThatExpressionRepresentConstructorCall<TConstructor>(Expression<Func<TConstructor>> constructorCall)
+        {
+            if (constructorCall.Body.NodeType != ExpressionType.New)
+            {
+                throw new ArgumentException(ExceptionMessages.NonConstructorExpressionMessage);
+            }
+        }
     }
 }

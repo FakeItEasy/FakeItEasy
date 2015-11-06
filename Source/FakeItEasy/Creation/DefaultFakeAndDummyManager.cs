@@ -2,8 +2,6 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
     using System.Reflection.Emit;
     using FakeItEasy.Core;
 
@@ -88,12 +86,6 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
-            public override IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
-            {
-                this.proxyOptions.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
-                return this;
-            }
-
             public override IFakeOptions<T> WithAdditionalAttributes(
                 IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
             {
@@ -126,20 +118,6 @@ namespace FakeItEasy.Creation
             {
                 this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
                 return this;
-            }
-
-            private static IEnumerable<object> GetConstructorArgumentsFromExpression(Expression<Func<T>> constructorCall)
-            {
-                AssertThatExpressionRepresentConstructorCall(constructorCall);
-                return ((NewExpression)constructorCall.Body).Arguments.Select(argument => argument.Evaluate());
-            }
-
-            private static void AssertThatExpressionRepresentConstructorCall(Expression<Func<T>> constructorCall)
-            {
-                if (constructorCall.Body.NodeType != ExpressionType.New)
-                {
-                    throw new ArgumentException(ExceptionMessages.NonConstructorExpressionMessage);
-                }
             }
         }
     }

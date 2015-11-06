@@ -2,7 +2,6 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq.Expressions;
     using System.Reflection.Emit;
     using Creation;
     using FakeItEasy.SelfInitializedFakes;
@@ -29,11 +28,6 @@ namespace FakeItEasy.Core
         public override IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
         {
             return this.fakeOptions.WithArgumentsForConstructor(argumentsForConstructor);
-        }
-
-        public override IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
-        {
-            return this.fakeOptions.WithArgumentsForConstructor(constructorCall);
         }
 
         public override IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)

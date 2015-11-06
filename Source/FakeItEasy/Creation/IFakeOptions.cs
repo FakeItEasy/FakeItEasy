@@ -3,6 +3,7 @@ namespace FakeItEasy.Creation
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq.Expressions;
     using System.Reflection.Emit;
     using Configuration;
 
@@ -20,6 +21,16 @@ namespace FakeItEasy.Creation
         /// <param name="argumentsForConstructor">The arguments to pass to the constructor of the faked class.</param>
         /// <returns>Options object.</returns>
         IFakeOptions WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
+
+        /// <summary>
+        /// Specifies arguments for the constructor of the faked class by giving an expression with the call to
+        /// the desired constructor using the arguments to be passed to the constructor.
+        /// </summary>
+        /// <param name="constructorCall">The constructor call to use when creating a class proxy.</param>
+        /// <typeparam name="TConstructor">The type created by the example constructer.</typeparam>
+        /// <returns>Options object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
+        IFakeOptions WithArgumentsForConstructor<TConstructor>(Expression<Func<TConstructor>> constructorCall);
 
         /// <summary>
         /// Specifies that the fake should be created with these additional attributes.
