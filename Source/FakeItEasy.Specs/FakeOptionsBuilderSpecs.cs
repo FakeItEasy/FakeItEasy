@@ -122,6 +122,18 @@
         }
 
         [Scenario]
+        public void DefinedFakeOptionsBuilderConstructorArgumentsByConstructorForWrongType(
+            Exception exception)
+        {
+            "When a fake is created for a type that has an options builder using a constructor of the wrong type"
+                .x(() => exception = Record.Exception(() => A.Fake<ConstructorArgumentsSetByConstructorForWrongType>()));
+
+            "Then an exception will be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
+                .WithMessage("Supplied constructor is for type FakeItEasy.Specs.ConstructorArgumentsSetByConstructorForWrongType, but must be for FakeItEasy.Specs.ConstructorArgumentsSetByConstructor."));
+        }
+
+        [Scenario]
         public void FakeOptionsBuilderPriority(
             RobotRunsAmokEvent fake)
         {
@@ -354,6 +366,27 @@
     }
 
     public class ConstructorArgumentsSetByConstructorOptionsBuilder : ConventionBasedOptionsBuilder
+    {
+        public override void BuildOptions(Type typeOfFake, IFakeOptions options)
+        {
+            if (options != null)
+            {
+                options.WithArgumentsForConstructor(() => new ConstructorArgumentsSetByConstructor(this.GetType().Name));
+            }
+        }
+    }
+
+    public class ConstructorArgumentsSetByConstructorForWrongType
+    {
+        public ConstructorArgumentsSetByConstructorForWrongType(string argument)
+        {
+            this.ConstructorArgument = argument;
+        }
+
+        public string ConstructorArgument { get; private set; }
+    }
+
+    public class ConstructorArgumentsSetByConstructorForWrongTypeOptionsBuilder : ConventionBasedOptionsBuilder
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
