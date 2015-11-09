@@ -166,11 +166,7 @@
         }
     }
 
-    public class WrapsNull
-    {
-    }
-
-    public class WrapsNullOptionsBuilder : IFakeOptionsBuilder
+    public abstract class ConventionBasedOptionsBuilder : IFakeOptionsBuilder
     {
         public int Priority
         {
@@ -179,10 +175,19 @@
 
         public bool CanBuildOptionsForFakeOfType(Type type)
         {
-            return type == typeof(WrapsNull);
+            return type != null && type.FullName + "OptionsBuilder" == this.GetType().FullName;
         }
 
-        public void BuildOptions(Type typeOfFake, IFakeOptions options)
+        public abstract void BuildOptions(Type typeOfFake, IFakeOptions options);
+    }
+
+    public class WrapsNull
+    {
+    }
+
+    public class WrapsNullOptionsBuilder : ConventionBasedOptionsBuilder
+    {
+        public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
             if (options != null)
             {
@@ -202,7 +207,7 @@
     {
     }
 
-    public class WrapsAValidObjectOptionsBuilder : IFakeOptionsBuilder
+    public class WrapsAValidObjectOptionsBuilder : ConventionBasedOptionsBuilder
     {
         private static readonly AWrappedType WrappedFake = A.Fake<AWrappedType>();
 
@@ -219,17 +224,7 @@
             get { return FakeRecorder; }
         }
 
-        public int Priority
-        {
-            get { return 0; }
-        }
-
-        public bool CanBuildOptionsForFakeOfType(Type type)
-        {
-            return type == typeof(WrapsAValidObject);
-        }
-
-        public void BuildOptions(Type typeOfFake, IFakeOptions options)
+        public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
             if (options != null)
             {
