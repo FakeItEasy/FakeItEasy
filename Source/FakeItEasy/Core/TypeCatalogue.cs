@@ -16,8 +16,16 @@
     /// </summary>
     internal class TypeCatalogue : ITypeCatalogue
     {
-        private static readonly Assembly FakeItEasyAssembly = Assembly.GetExecutingAssembly();
+        private static readonly Assembly ExecutingAssembly = Assembly.GetExecutingAssembly();
         private readonly List<Type> availableTypes = new List<Type>();
+
+        /// <summary>
+        /// Gets the <c>FakeItEasy</c> assembly
+        /// </summary>
+        public static Assembly FakeItEasyAssembly
+        {
+            get { return ExecutingAssembly; }
+        }
 
         /// <summary>
         /// Loads the available types into the <see cref="TypeCatalogue"/>.
@@ -62,12 +70,10 @@
             var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 
             // Find the paths of already loaded assemblies so we don't double scan them.
-            // Checking Assembly.IsDynamic would be preferable to the business with the Namespace
-            // but the former isn't available in .NET 3.5.
             // Exclude the ReflectionOnly assemblies because we want to be able to fully load them if we need to.
             var loadedAssemblyFiles = new HashSet<string>(
                 loadedAssemblies
-                    .Where(a => !a.ReflectionOnly && a.ManifestModule.GetType().Namespace != "System.Reflection.Emit")
+                    .Where(a => !a.ReflectionOnly && !a.IsDynamic())
                     .Select(a => a.Location),
                 StringComparer.OrdinalIgnoreCase);
 
