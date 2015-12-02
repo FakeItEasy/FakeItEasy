@@ -1,5 +1,8 @@
 ![Are you mocking me?](http://fakeiteasy.github.io/img/fakeiteasy_logo_256.png)
 
+[![Pull requests](http://issuestats.com/github/FakeItEasy/FakeItEasy/badge/pr?style=flat-square)](http://issuestats.com/github/FakeItEasy/FakeItEasy)
+[![Issues](http://issuestats.com/github/FakeItEasy/FakeItEasy/badge/issue?style=flat-square)](http://issuestats.com/github/FakeItEasy/FakeItEasy)
+
 A .Net dynamic fake framework for creating all types of fake objects, mocks, stubs etc.
 
 * Easier semantics, all fake objects are just that - fakes - the use of the fakes determines whether they're mocks or stubs.
