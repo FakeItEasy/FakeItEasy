@@ -8,7 +8,7 @@
     /// <summary>
     /// Provides extension methods for generic usage of <see cref="IEnumerable{T}"/>.
     /// </summary>
-    internal static class EnumerableExtensions
+    internal static partial class EnumerableExtensions
     {
         /// <summary>
         /// Gets an enumerable of tuples where the first value of each tuple is a value

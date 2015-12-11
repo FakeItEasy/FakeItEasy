@@ -51,28 +51,7 @@
     }
 }
 
-namespace System.ComponentModel.Composition
-{
-    using System.Diagnostics.CodeAnalysis;
-
-    [SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes", Justification = "Mimicks net40 BCL type.")]
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
-    public class InheritedExportAttribute
-        : Attribute
-    {
-    }
-
-    [SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes", Justification = "Mimicks net40 BCL type.")]
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-    public class ImportManyAttribute
-        : Attribute
-    {
-    }
-}
-
-namespace System
+namespace FakeItEasy
 {
     using System.Diagnostics.CodeAnalysis;
 
@@ -100,13 +79,14 @@ namespace System
     }
 }
 
-namespace System.Linq
+namespace FakeItEasy
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
-    public static class EnumerableExtensions
+    internal static partial class EnumerableExtensions
     {
         public static IEnumerable<TReturn> Zip<T, T2, TReturn>(this IEnumerable<T> sequence, IEnumerable<T2> otherSequence, Func<T, T2, TReturn> selector)
         {
@@ -132,7 +112,7 @@ namespace System.Linq
                 return new ZipEnumerator(this.firstCollection, this.secondCollection, this.selector);
             }
 
-            Collections.IEnumerator Collections.IEnumerable.GetEnumerator()
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
                 return this.GetEnumerator();
             }
