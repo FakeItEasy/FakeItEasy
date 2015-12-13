@@ -673,6 +673,7 @@
       <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
     <Compile Include="ConcurrentDictionary.cs" />
+    <Compile Include="InternalsVisibleTo.cs" />
     <Compile Include="Properties\CustomAssemblyInfo.cs" />
     <Compile Include="Compatibility.cs" />
   </ItemGroup>
