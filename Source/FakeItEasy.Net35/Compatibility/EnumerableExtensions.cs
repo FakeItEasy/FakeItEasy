@@ -1,84 +1,4 @@
-﻿namespace FakeItEasy
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-
-    // Minimal implementation for compatibility with .net 3.5,
-    // has potential memory leaks and performance issues but should
-    // be fine for this particular use.
-    internal class ConditionalWeakTable<TKey, TValue>
-    {
-        private List<Tuple<WeakReference, TValue>> entries = new List<Tuple<WeakReference, TValue>>();
-
-        public bool TryGetValue(TKey key, out TValue result)
-        {
-            this.Purge();
-            foreach (var entry in this.entries)
-            {
-                if (KeyEquals(key, entry.Item1))
-                {
-                    result = entry.Item2;
-                    return true;
-                }
-            }
-
-            result = default(TValue);
-            return false;
-        }
-
-        public void Add(TKey key, TValue value)
-        {
-            this.Purge();
-            this.entries.Add(Tuple.Create(new WeakReference(key), value));
-        }
-
-        private static bool KeyEquals(TKey key, WeakReference keyReference)
-        {
-            var strongKeyReference = keyReference.Target;
-
-            return strongKeyReference != null && object.ReferenceEquals(key, strongKeyReference);
-        }
-
-        private void Purge()
-        {
-            this.entries = (from entry in this.entries
-                            where entry.Item1.IsAlive
-                            select entry).ToList();
-        }
-    }
-}
-
-namespace System
-{
-    using System.Diagnostics.CodeAnalysis;
-
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
-    internal static class Tuple
-    {
-        public static Tuple<T1, T2> Create<T1, T2>(T1 item1, T2 item2)
-        {
-            return new Tuple<T1, T2>(item1, item2);
-        }
-    }
-
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
-    internal class Tuple<T1, T2>
-    {
-        public Tuple(T1 item1, T2 item2)
-        {
-            this.Item1 = item1;
-            this.Item2 = item2;
-        }
-
-        public T1 Item1 { get; private set; }
-
-        public T2 Item2 { get; private set; }
-    }
-}
-
-namespace System.Linq
+﻿namespace System.Linq
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -92,7 +12,7 @@ namespace System.Linq
         }
 
         private class ZipEnumerable<TFirst, TSecond, TReturn>
-           : IEnumerable<TReturn>
+            : IEnumerable<TReturn>
         {
             private readonly IEnumerable<TFirst> firstCollection;
             private readonly IEnumerable<TSecond> secondCollection;

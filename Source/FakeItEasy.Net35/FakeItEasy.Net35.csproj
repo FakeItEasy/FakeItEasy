@@ -672,10 +672,13 @@
     <Compile Include="..\FakeItEasy\WhereConfigurationExtensions.cs">
       <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
-    <Compile Include="ConcurrentDictionary.cs" />
+    <Compile Include="Compatibility\ConcurrentDictionary.cs" />
+    <Compile Include="Compatibility\ConditionalWeakTable.cs" />
+    <Compile Include="Compatibility\EnumerableExtensions.cs" />
+    <Compile Include="Compatibility\Tuple.cs" />
+    <Compile Include="Compatibility\Tuple.of.T1.T2.cs" />
     <Compile Include="InternalsVisibleTo.cs" />
     <Compile Include="Properties\CustomAssemblyInfo.cs" />
-    <Compile Include="Compatibility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
