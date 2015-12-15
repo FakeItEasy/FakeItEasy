@@ -8,8 +8,7 @@
     // Minimal implementation for compatibility with .net 3.5,
     // has potential memory leaks and performance issues but should
     // be fine for this particular use.
-#pragma warning disable 1591
-    public class ConditionalWeakTable<TKey, TValue>
+    internal class ConditionalWeakTable<TKey, TValue>
     {
         private List<Tuple<WeakReference, TValue>> entries = new List<Tuple<WeakReference, TValue>>();
 
@@ -56,7 +55,7 @@ namespace System
     using System.Diagnostics.CodeAnalysis;
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
-    public static class Tuple
+    internal static class Tuple
     {
         public static Tuple<T1, T2> Create<T1, T2>(T1 item1, T2 item2)
         {
@@ -65,7 +64,7 @@ namespace System
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
-    public class Tuple<T1, T2>
+    internal class Tuple<T1, T2>
     {
         public Tuple(T1 item1, T2 item2)
         {
@@ -85,7 +84,7 @@ namespace System.Linq
     using System.Diagnostics.CodeAnalysis;
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
-    public static class EnumerableExtensions
+    internal static class EnumerableExtensions
     {
         public static IEnumerable<TReturn> Zip<T, T2, TReturn>(this IEnumerable<T> sequence, IEnumerable<T2> otherSequence, Func<T, T2, TReturn> selector)
         {
@@ -169,5 +168,4 @@ namespace System.Linq
             }
         }
     }
-#pragma warning restore 1591
 }
