@@ -39,8 +39,8 @@
                 : IEnumerator<TReturn>
             {
                 private readonly Func<TFirst, TSecond, TReturn> selector;
-                private IEnumerable<TFirst> firstCollection;
-                private IEnumerable<TSecond> secondCollection;
+                private readonly IEnumerable<TFirst> firstCollection;
+                private readonly IEnumerable<TSecond> secondCollection;
                 private IEnumerator<TFirst> firsts;
                 private IEnumerator<TSecond> seconds;
 
