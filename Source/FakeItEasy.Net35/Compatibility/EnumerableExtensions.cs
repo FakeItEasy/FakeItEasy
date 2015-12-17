@@ -1,10 +1,12 @@
-﻿namespace System.Linq
+﻿namespace FakeItEasy
 {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
-    internal static class EnumerableExtensions
+    internal static partial class EnumerableExtensions
     {
         public static IEnumerable<TReturn> Zip<T, T2, TReturn>(this IEnumerable<T> sequence, IEnumerable<T2> otherSequence, Func<T, T2, TReturn> selector)
         {
@@ -30,7 +32,7 @@
                 return new ZipEnumerator(this.firstCollection, this.secondCollection, this.selector);
             }
 
-            Collections.IEnumerator Collections.IEnumerable.GetEnumerator()
+            IEnumerator IEnumerable.GetEnumerator()
             {
                 return this.GetEnumerator();
             }
@@ -60,7 +62,7 @@
                     }
                 }
 
-                object System.Collections.IEnumerator.Current
+                object IEnumerator.Current
                 {
                     get { return this.Current; }
                 }

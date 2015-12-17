@@ -128,12 +128,14 @@ namespace FakeItEasy.Core
         private static ArgumentValueInfo[] GetArgumentValueInfos(IFakeObjectCall call)
         {
             return
-                (from argument in call.Method.GetParameters().Zip(call.Arguments)
-                 select new ArgumentValueInfo
-                            {
-                                ArgumentName = argument.Item1.Name,
-                                ArgumentValue = argument.Item2
-                            }).ToArray();
+                (from argument in
+                    call.Method.GetParameters()
+                        .Zip(call.Arguments, (parameter, value) => new { parameter.Name, Value = value })
+                    select new ArgumentValueInfo
+                    {
+                        ArgumentName = argument.Name,
+                        ArgumentValue = argument.Value
+                    }).ToArray();
         }
 
         private void AppendArgumentsList(StringBuilder builder, IFakeObjectCall call)
