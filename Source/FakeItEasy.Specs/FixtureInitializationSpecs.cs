@@ -7,28 +7,26 @@
 
     public static class FixtureInitializationSpecs
     {
-        public static ExampleFixture Fixture { get; set; }
-
         [Scenario]
-        public static void Initialization()
+        public static void Initialization(ExampleFixture fixture)
         {
-            "establish"
-                .x(() => Fixture = new ExampleFixture());
+            "given a test fixture"
+                .x(() => fixture = new ExampleFixture());
 
-            "when initializing fixture"
-                .x(() => Fake.InitializeFixture(Fixture));
+            "when the fixture is initialized"
+                .x(() => Fake.InitializeFixture(fixture));
 
-            "it should set sut"
-                .x(() => Fixture.Sut.Should().NotBeNull());
+            "then the sut should be set"
+                .x(() => fixture.Sut.Should().NotBeNull());
 
-            "it should use the same instance when more than one dependency is of the same type"
-                .x(() => Fixture.Sut.Foo.Should().BeSameAs(Fixture.Sut.Foo2));
+            "and dependencies should be injected into the sut from the fixture"
+                .x(() => fixture.Sut.Foo.Should().BeSameAs(fixture.Foo));
 
-            "it should inject fake from fixture"
-                .x(() => Fixture.Sut.Foo.Should().BeSameAs(Fixture.Foo));
+            "and dependencies should be injected into the sut even when not available in fixture"
+                .x(() => fixture.Sut.ServiceProvider.Should().NotBeNull());
 
-            "it should inject fake when not available in fixture"
-                .x(() => Fixture.Sut.ServiceProvider.Should().NotBeNull());
+            "and dependencies of the same type should be the same instance"
+                .x(() => fixture.Sut.Foo.Should().BeSameAs(fixture.Sut.Foo2));
         }
 
         public class ExampleFixture
