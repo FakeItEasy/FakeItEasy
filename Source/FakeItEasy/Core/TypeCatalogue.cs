@@ -20,7 +20,7 @@
         private readonly List<Type> availableTypes = new List<Type>();
 
         /// <summary>
-        /// Gets the <c>FakeItEasy</c> assembly
+        /// Gets the <c>FakeItEasy</c> assembly.
         /// </summary>
         public static Assembly FakeItEasyAssembly
         {
