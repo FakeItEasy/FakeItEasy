@@ -100,7 +100,7 @@
 
         private ExpressionCallRule CreateRule()
         {
-            return new ExpressionCallRule(this.callMatcher) { Applicator = x => { } };
+            return new ExpressionCallRule(this.callMatcher) { };
         }
     }
 }

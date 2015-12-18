@@ -14,8 +14,6 @@ namespace FakeItEasy.Configuration
         {
             this.rule = rule;
             this.wrappedBuilder = wrappedBuilder;
-
-            rule.Applicator = x => { };
         }
 
         public delegate RecordingRuleBuilder Factory(RecordedCallRule rule, FakeManager fakeObject);
