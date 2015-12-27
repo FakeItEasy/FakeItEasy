@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FakeItEasy.Tests</RootNamespace>
     <AssemblyName>FakeItEasy.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\FakeItEasy.snk</AssemblyOriginatorKeyFile>
@@ -48,6 +48,7 @@
     <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -60,6 +61,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
@@ -178,7 +180,6 @@
     <Compile Include="SelfInitializedFakes\RecordingExceptionTests.cs" />
     <Compile Include="SelfInitializedFakes\SelfInitializationRuleTests.cs" />
     <Compile Include="Core\CallWriterTests.cs" />
-    <Compile Include="EnumerableExtensionsTests.cs" />
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
     <Compile Include="ArgumentConstraintTestBase.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraintTests.cs" />

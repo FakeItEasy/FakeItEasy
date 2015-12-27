@@ -48,10 +48,18 @@ namespace FakeItEasy.Tests
                 return false;
             }
 
-            foreach (var argument in method1.GetParameters().Zip(method2.GetParameters()))
+            foreach (var argument in method1.GetParameters()
+                .Zip(
+                    method2.GetParameters(),
+                    (method1Parameter, method2Parameter) =>
+                        new
+                        {
+                            Method1Parameter = method1Parameter,
+                            Method2Parameter = method2Parameter
+                        }))
             {
-                if (!object.Equals(argument.Item1.ParameterType, argument.Item2.ParameterType) ||
-                    !string.Equals(argument.Item1.Name, argument.Item2.Name))
+                if (!object.Equals(argument.Method1Parameter.ParameterType, argument.Method2Parameter.ParameterType) ||
+                    !string.Equals(argument.Method1Parameter.Name, argument.Method2Parameter.Name))
                 {
                     return false;
                 }

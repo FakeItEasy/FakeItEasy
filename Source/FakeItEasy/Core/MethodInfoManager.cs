@@ -108,9 +108,10 @@ namespace FakeItEasy.Core
                 var interfaceMap = reflectedType.GetInterfaceMap(interfaceType);
 
                 var foundMethod =
-                    (from methodTargetPair in interfaceMap.InterfaceMethods.Zip(interfaceMap.TargetMethods)
-                     where HasSameBaseMethod(EnsureNonGeneric(method), EnsureNonGeneric(methodTargetPair.Item2))
-                     select MakeGeneric(methodTargetPair.Item1, method)).FirstOrDefault();
+                    (from methodTargetPair in interfaceMap.InterfaceMethods
+                         .Zip(interfaceMap.TargetMethods, (interfaceMethod, targetMethod) => new { InterfaceMethod = interfaceMethod, TargetMethod = targetMethod })
+                     where HasSameBaseMethod(EnsureNonGeneric(method), EnsureNonGeneric(methodTargetPair.TargetMethod))
+                     select MakeGeneric(methodTargetPair.InterfaceMethod, method)).FirstOrDefault();
 
                 if (foundMethod != null)
                 {
@@ -133,9 +134,10 @@ namespace FakeItEasy.Core
             var interfaceMap = type.GetInterfaceMap(baseDefinition.DeclaringType);
 
             return
-                (from methodTargetPair in interfaceMap.InterfaceMethods.Zip(interfaceMap.TargetMethods)
-                 where HasSameBaseMethod(EnsureNonGeneric(methodTargetPair.Item1), EnsureNonGeneric(method))
-                 select MakeGeneric(methodTargetPair.Item2, method)).First();
+                (from methodTargetPair in interfaceMap.InterfaceMethods
+                     .Zip(interfaceMap.TargetMethods, (interfaceMethod, targetMethod) => new { InterfaceMethod = interfaceMethod, TargetMethod = targetMethod })
+                 where HasSameBaseMethod(EnsureNonGeneric(methodTargetPair.InterfaceMethod), EnsureNonGeneric(method))
+                 select MakeGeneric(methodTargetPair.TargetMethod, method)).First();
         }
 
         private static MethodInfo EnsureNonGeneric(MethodInfo methodInfo)

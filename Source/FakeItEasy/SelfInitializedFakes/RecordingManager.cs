@@ -93,9 +93,12 @@
 
         private static void ApplyOutputArguments(IInterceptedFakeObjectCall call, CallDataMetadata callToApply)
         {
-            foreach (var outputArgument in GetIndicesAndValuesOfOutputParameters(call, callToApply.RecordedCall))
+            foreach (var outputArgument in call.Method.GetParameters()
+                .Select((parameter, index) => new { Parameter = parameter, Index = index })
+                .Where(argument => argument.Parameter.ParameterType.IsByRef)
+                .Select(argument => argument.Index).Zip(callToApply.RecordedCall.OutputArguments, (index, outputArgument) => new { Index = index, Value = outputArgument }))
             {
-                call.SetArgumentValue(outputArgument.Item1, outputArgument.Item2);
+                call.SetArgumentValue(outputArgument.Index, outputArgument.Value);
             }
         }
 
@@ -110,9 +113,11 @@
         private static IEnumerable<object> GetOutputArgumentsForCall(IFakeObjectCall call)
         {
             return
-                from valueAndParameterInfo in call.Method.GetParameters().Zip(call.Arguments.AsEnumerable())
-                where valueAndParameterInfo.Item1.ParameterType.IsByRef
-                select valueAndParameterInfo.Item2;
+                from valueAndParameterInfo in call.Method.GetParameters().Zip(
+                    call.Arguments.AsEnumerable(),
+                    (parameter, argument) => new { parameter.ParameterType, Argument = argument })
+                where valueAndParameterInfo.ParameterType.IsByRef
+                select valueAndParameterInfo.Argument;
         }
 
         private static Queue<CallDataMetadata> CreateCallsList(IEnumerable<CallData> callsFromStorage)
@@ -129,14 +134,6 @@
             }
 
             return result;
-        }
-
-        private static IEnumerable<Tuple<int, object>> GetIndicesAndValuesOfOutputParameters(IInterceptedFakeObjectCall call, CallData recordedCall)
-        {
-            return
-                (from argument in call.Method.GetParameters().Zip(Enumerable.Range(0, int.MaxValue))
-                 where argument.Item1.ParameterType.IsByRef
-                 select argument.Item2).Zip(recordedCall.OutputArguments);
         }
 
         private void AssertThatCallQueueIsNotEmpty()

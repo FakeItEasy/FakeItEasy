@@ -327,24 +327,24 @@ namespace FakeItEasy.Tests.Creation
                         return false;
                     }
 
-                    foreach (var constructorPair in x.Zip(constructors))
+                    foreach (var constructorPair in x.Zip(constructors, (constructor1, constructor2) => new { Constructor1 = constructor1, Constructor2 = constructor2 }))
                     {
-                        if (!string.Equals(constructorPair.Item1.ReasonForFailure, constructorPair.Item2.ReasonForFailure))
+                        if (!string.Equals(constructorPair.Constructor1.ReasonForFailure, constructorPair.Constructor2.ReasonForFailure))
                         {
                             return false;
                         }
 
-                        if (constructorPair.Item1.Arguments.Length != constructorPair.Item2.Arguments.Length)
+                        if (constructorPair.Constructor1.Arguments.Length != constructorPair.Constructor2.Arguments.Length)
                         {
                             return false;
                         }
 
-                        foreach (var argumentPair in constructorPair.Item1.Arguments.Zip(constructorPair.Item2.Arguments))
+                        foreach (var argumentPair in constructorPair.Constructor1.Arguments.Zip(constructorPair.Constructor2.Arguments, (argument1, argument2) => new { Argument1 = argument1, Argument2 = argument2 }))
                         {
                             var isEqual =
-                                object.Equals(argumentPair.Item1.ArgumentType, argumentPair.Item2.ArgumentType)
-                                && object.Equals(argumentPair.Item1.ResolvedValue, argumentPair.Item2.ResolvedValue)
-                                && argumentPair.Item1.WasResolved == argumentPair.Item2.WasResolved;
+                                object.Equals(argumentPair.Argument1.ArgumentType, argumentPair.Argument2.ArgumentType)
+                                && object.Equals(argumentPair.Argument1.ResolvedValue, argumentPair.Argument2.ResolvedValue)
+                                && argumentPair.Argument1.WasResolved == argumentPair.Argument2.WasResolved;
 
                             if (!isEqual)
                             {

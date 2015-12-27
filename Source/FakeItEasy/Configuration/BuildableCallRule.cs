@@ -11,13 +11,13 @@ namespace FakeItEasy.Configuration
     internal abstract class BuildableCallRule
         : IFakeObjectCallRule
     {
-        private readonly List<Tuple<Func<IFakeObjectCall, bool>, Action<IOutputWriter>>> wherePredicates;
+        private readonly List<WherePredicate> wherePredicates;
 
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
             this.Applicator = call => call.SetReturnValue(call.Method.ReturnType.GetDefaultValue());
-            this.wherePredicates = new List<Tuple<Func<IFakeObjectCall, bool>, Action<IOutputWriter>>>();
+            this.wherePredicates = new List<WherePredicate>();
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace FakeItEasy.Configuration
         /// <returns>True if the rule applies to the call.</returns>
         public virtual bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
-            return this.wherePredicates.All(x => x.Item1.Invoke(fakeObjectCall))
+            return this.wherePredicates.All(x => x.Predicate.Invoke(fakeObjectCall))
                 && this.OnIsApplicableTo(fakeObjectCall);
         }
 
@@ -101,7 +101,7 @@ namespace FakeItEasy.Configuration
 
             using (writer.Indent())
             {
-                foreach (var wherePredicateDescriptionWriter in this.wherePredicates.Select(x => x.Item2))
+                foreach (var wherePredicateDescriptionWriter in this.wherePredicates.Select(x => x.DescriptionWriter))
                 {
                     writer.WriteLine();
                     writer.Write(wherePrefix.Invoke());
@@ -113,7 +113,7 @@ namespace FakeItEasy.Configuration
 
         public virtual void ApplyWherePredicate(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
-            this.wherePredicates.Add(Tuple.Create(predicate, descriptionWriter));
+            this.wherePredicates.Add(new WherePredicate(predicate, descriptionWriter));
         }
 
         public abstract void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate);
@@ -150,10 +150,23 @@ namespace FakeItEasy.Configuration
                 throw new InvalidOperationException(ExceptionMessages.NumberOfOutAndRefParametersDoesNotMatchCall);
             }
 
-            foreach (var argument in indexes.Zip(values))
+            foreach (var argument in indexes.Zip(values, (index, value) => new { Index = index, Value = value }))
             {
-                fakeObjectCall.SetArgumentValue(argument.Item1, argument.Item2);
+                fakeObjectCall.SetArgumentValue(argument.Index, argument.Value);
             }
+        }
+
+        private class WherePredicate
+        {
+            public WherePredicate(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
+            {
+                this.Predicate = predicate;
+                this.DescriptionWriter = descriptionWriter;
+            }
+
+            public Func<IFakeObjectCall, bool> Predicate { get; private set; }
+
+            public Action<IOutputWriter> DescriptionWriter { get; private set; }
         }
     }
 }

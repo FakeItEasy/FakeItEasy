@@ -8,23 +8,8 @@
     /// <summary>
     /// Provides extension methods for generic usage of <see cref="IEnumerable{T}"/>.
     /// </summary>
-    internal static class EnumerableExtensions
+    internal static partial class EnumerableExtensions
     {
-        /// <summary>
-        /// Gets an enumerable of tuples where the first value of each tuple is a value
-        /// from the first collection and the second value of each tuple is the value at the same position
-        /// from the second collection.
-        /// </summary>
-        /// <typeparam name="TFirst">The type of values in the first collection.</typeparam>
-        /// <typeparam name="TSecond">The type of values in the second collection.</typeparam>
-        /// <param name="firstCollection">The first of the collections to combine.</param>
-        /// <param name="secondCollection">The second of the collections to combine.</param>
-        /// <returns>An enumerable of tuples.</returns>
-        public static IEnumerable<Tuple<TFirst, TSecond>> Zip<TFirst, TSecond>(this IEnumerable<TFirst> firstCollection, IEnumerable<TSecond> secondCollection)
-        {
-            return firstCollection.Zip(secondCollection, Tuple.Create);
-        }
-
         /// <summary>
         /// Joins the collection to a string.
         /// </summary>
