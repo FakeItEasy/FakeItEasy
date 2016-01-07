@@ -21,7 +21,7 @@ namespace FakeItEasy.Expressions
             Guard.AgainstNull(expressionMatcher, "expressionMatcher");
 
             this.ExpressionMatcher = expressionMatcher;
-            this.OutAndRefParametersValueProducer = expressionMatcher.GetOutAndRefParametersValueProducer();
+            this.SetOutAndRefParametersValueProducer(expressionMatcher.GetOutAndRefParametersValueProducer());
         }
         
         /// <summary>
