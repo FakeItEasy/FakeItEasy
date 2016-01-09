@@ -55,16 +55,11 @@ namespace FakeItEasy.Core
                 this.HandleEventCall(eventCall);
             }
 
-            /// <summary>
-            /// Attempts to preserve the stack trace of an existing exception when rethrown via <c>throw</c> or <c>throw ex</c>.
-            /// </summary>
-            /// <remarks>Nicked from
-            /// http://weblogs.asp.net/fmarguerie/archive/2008/01/02/rethrowing-exceptions-and-preserving-the-full-call-stack-trace.aspx.
-            /// If reduced trust context (for example) precludes
-            /// invoking internal members on <see cref="Exception"/>, the stack trace will not be preserved.
-            /// </remarks>
-            /// <param name="exception">The exception whose stack trace needs preserving.</param>
-            [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "URL in remarks.")]
+            // Attempts to preserve the stack trace of an existing exception when re-throw via throw or throw ex.
+            // Nicked from
+            // http://weblogs.asp.net/fmarguerie/archive/2008/01/02/rethrowing-exceptions-and-preserving-the-full-call-stack-trace.aspx.
+            // If reduced trust context (for example) precludes
+            // invoking internal members on Exception, the stack trace will not be preserved.
             [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try method.")]
             private static void TryPreserveStackTrace(Exception exception)
             {
