@@ -6,6 +6,7 @@
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -22,39 +23,39 @@
 
             using (Fake.CreateScope())
             {
-                A.CallTo(() => this.fakeCreator.CreateFake<IFoo>(A<Action<IFakeOptionsBuilder<IFoo>>>._)).Returns(foo);
+                A.CallTo(() => this.fakeCreator.CreateFake(A<Action<IFakeOptions<IFoo>>>._)).Returns(foo);
 
                 var fake = new Fake<IFoo>();
 
-                Assert.That(fake.FakedObject, Is.SameAs(foo));
+                fake.FakedObject.Should().BeSameAs(foo);
             }
         }
 
         [Test]
-        public void Constructor_that_takes_options_should_be_null_guarded()
+        public void Constructor_that_takes_options_builder_should_be_null_guarded()
         {
-            Action<IFakeOptionsBuilder<Foo>> options = x => { };
+            Action<IFakeOptions<Foo>> optionsBuilder = x => { };
 
             NullGuardedConstraint.Assert(() =>
-                new Fake<Foo>(options));
+                new Fake<Foo>(optionsBuilder));
         }
 
         [Test]
-        public void Constructor_that_takes_options_should_set_fake_returned_from_factory_to_FakedObject_property()
+        public void Constructor_that_takes_options_builder_should_set_fake_returned_from_factory_to_FakedObject_property()
         {
             var argumentsForConstructor = new object[] { A.Fake<IFoo>() };
             var fakeReturnedFromFactory = A.Fake<AbstractTypeWithNoDefaultConstructor>(x => x.WithArgumentsForConstructor(argumentsForConstructor));
 
-            Action<IFakeOptionsBuilder<AbstractTypeWithNoDefaultConstructor>> options = x => { };
+            Action<IFakeOptions<AbstractTypeWithNoDefaultConstructor>> optionsBuilder = x => { };
 
             using (Fake.CreateScope())
             {
-                A.CallTo(() => this.fakeCreator.CreateFake<AbstractTypeWithNoDefaultConstructor>(options))
+                A.CallTo(() => this.fakeCreator.CreateFake(optionsBuilder))
                     .Returns(fakeReturnedFromFactory);
 
-                var fake = new Fake<AbstractTypeWithNoDefaultConstructor>(options);
+                var fake = new Fake<AbstractTypeWithNoDefaultConstructor>(optionsBuilder);
 
-                Assert.That(fake.FakedObject, Is.SameAs(fakeReturnedFromFactory));
+                fake.FakedObject.Should().BeSameAs(fakeReturnedFromFactory);
             }
         }
 
@@ -83,7 +84,7 @@
 
             var result = fake.CallsTo(callSpecification);
 
-            Assert.That(result, Is.SameAs(callConfig));
+            result.Should().BeSameAs(callConfig);
         }
 
         [Test]
@@ -100,7 +101,7 @@
 
             var result = fake.CallsTo(callSpecification);
 
-            Assert.That(result, Is.SameAs(callConfig));
+            result.Should().BeSameAs(callConfig);
         }
 
         [Test]
@@ -119,7 +120,7 @@
             var result = fake.AnyCall();
 
             // Assert
-            Assert.That(result, Is.SameAs(callConfig));
+            result.Should().BeSameAs(callConfig);
         }
 
         protected override void OnSetup()
@@ -127,8 +128,8 @@
             this.fakeCreator = A.Fake<IFakeCreatorFacade>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeCreatorFacade>()));
             this.startConfigurationFactory = A.Fake<IStartConfigurationFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<IStartConfigurationFactory>()));
 
-            this.StubResolve<IFakeCreatorFacade>(this.fakeCreator);
-            this.StubResolve<IStartConfigurationFactory>(this.startConfigurationFactory);
+            this.StubResolve(this.fakeCreator);
+            this.StubResolve(this.startConfigurationFactory);
         }
 
         public abstract class AbstractTypeWithNoDefaultConstructor

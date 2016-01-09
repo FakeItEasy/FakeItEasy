@@ -28,7 +28,7 @@ namespace FakeItEasy.Core
         private readonly Type typeOfFake;
 
         [NonSerialized]
-        private readonly FakeOptions fakeOptions;
+        private readonly IProxyOptions proxyOptions;
 
         // We want to lock accesses to initializedFakeManager to guarantee thread-safety (see IFakeCallProcessorProvider documentation):
         private readonly object initializedFakeManagerLock = new object();
@@ -40,19 +40,19 @@ namespace FakeItEasy.Core
                 IFakeManagerAccessor fakeManagerAccessor,
                 IFakeObjectConfigurator fakeObjectConfigurator, 
                 Type typeOfFake,
-                FakeOptions fakeOptions)
+                IProxyOptions proxyOptions)
         {
             Guard.AgainstNull(fakeManagerFactory, "fakeManagerFactory");
             Guard.AgainstNull(fakeManagerAccessor, "fakeManagerAccessor");
             Guard.AgainstNull(fakeObjectConfigurator, "fakeObjectConfigurator");
             Guard.AgainstNull(typeOfFake, "typeOfFake");
-            Guard.AgainstNull(fakeOptions, "fakeOptions");
+            Guard.AgainstNull(proxyOptions, "proxyOptions");
 
             this.fakeManagerFactory = fakeManagerFactory;
             this.fakeManagerAccessor = fakeManagerAccessor;
             this.fakeObjectConfigurator = fakeObjectConfigurator;
             this.typeOfFake = typeOfFake;
-            this.fakeOptions = fakeOptions;
+            this.proxyOptions = proxyOptions;
         }
 
         public IFakeCallProcessor Fetch(object proxy)
@@ -88,9 +88,9 @@ namespace FakeItEasy.Core
         {
             this.fakeObjectConfigurator.ConfigureFake(this.typeOfFake, proxy);
 
-            foreach (var fakeConfigurationAction in this.fakeOptions.FakeConfigurationActions)
+            foreach (var proxyConfigurationAction in this.proxyOptions.ProxyConfigurationActions)
             {
-                fakeConfigurationAction(proxy);
+                proxyConfigurationAction(proxy);
             }
         }
     }

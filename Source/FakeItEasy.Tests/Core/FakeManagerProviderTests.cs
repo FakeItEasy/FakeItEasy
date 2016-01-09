@@ -24,7 +24,7 @@ namespace FakeItEasy.Tests.Core
         private Type typeOfFake = null;
 
         [Fake]
-        private FakeOptions fakeOptions = null;
+        private IProxyOptions proxyOptions = null;
 
         [UnderTest]
         private FakeManagerProvider fakeManagerProvider = null;
@@ -84,8 +84,9 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var fakeConfigurationAction1 = A.Fake<Action<object>>();
             var fakeConfigurationAction2 = A.Fake<Action<object>>();
-            this.fakeOptions.AddFakeConfigurationAction(fakeConfigurationAction1);
-            this.fakeOptions.AddFakeConfigurationAction(fakeConfigurationAction2);
+
+            A.CallTo(() => this.proxyOptions.ProxyConfigurationActions)
+                .Returns(new[] { fakeConfigurationAction1, fakeConfigurationAction2 });
 
             // Act
             this.fakeManagerProvider.Fetch(this.proxy);

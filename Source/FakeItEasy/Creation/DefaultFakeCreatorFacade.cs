@@ -28,16 +28,16 @@ namespace FakeItEasy.Creation
         /// Creates a fake object of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of fake to create.</typeparam>
-        /// <param name="options">Options for the created fake object.</param>
+        /// <param name="optionsBuilder">Action that builds options for the created fake object.</param>
         /// <returns>The created fake object.</returns>
         /// <exception cref="FakeCreationException">Was unable to generate the fake in the current configuration.</exception>
-        public T CreateFake<T>(Action<IFakeOptionsBuilder<T>> options)
+        public T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder)
         {
-            Guard.AgainstNull(options, "options");
+            Guard.AgainstNull(optionsBuilder, "optionsBuilder");
 
-            var fakeOptions = BuildFakeOptions(options);
+            var proxyOptions = BuildProxyOptions(optionsBuilder);
 
-            return (T)this.fakeAndDummyManager.CreateFake(typeof(T), fakeOptions);
+            return (T)this.fakeAndDummyManager.CreateFake(typeof(T), proxyOptions);
         }
 
         /// <summary>
@@ -73,69 +73,74 @@ namespace FakeItEasy.Creation
             return (T)this.fakeAndDummyManager.CreateDummy(typeof(T));
         }
 
-        private static FakeOptions BuildFakeOptions<T>(Action<IFakeOptionsBuilder<T>> options)
+        private static IProxyOptions BuildProxyOptions<T>(Action<IFakeOptions<T>> optionsBuilder)
         {
-            var builder = new FakeOptionsBuilder<T>();
-            options.Invoke(builder);
-            return builder.Options;
+            var fakeOptions = new FakeOptions<T>();
+            optionsBuilder.Invoke(fakeOptions);
+            return fakeOptions.ProxyOptions;
         }
 
-        private class FakeOptionsBuilder<T>
-            : IFakeOptionsBuilder<T>
+        private class FakeOptions<T>
+            : IFakeOptions<T>
         {
-            public FakeOptionsBuilder()
+            private readonly ProxyOptions proxyOptions;
+
+            public FakeOptions()
             {
-                this.Options = new FakeOptions();
+                this.proxyOptions = new ProxyOptions();
             }
 
-            public FakeOptions Options { get; private set; }
-
-            public IFakeOptionsBuilder<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+            public IProxyOptions ProxyOptions
             {
-                this.Options.ArgumentsForConstructor = argumentsForConstructor;
+                get { return this.proxyOptions; }
+            }
+
+            public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+            {
+                this.proxyOptions.ArgumentsForConstructor = argumentsForConstructor;
                 return this;
             }
 
-            public IFakeOptionsBuilder<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
+            public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
             {
-                this.Options.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
+                this.proxyOptions.ArgumentsForConstructor = GetConstructorArgumentsFromExpression(constructorCall);
                 return this;
             }
 
-            public IFakeOptionsBuilder<T> WithAdditionalAttributes(
+            public IFakeOptions<T> WithAdditionalAttributes(
                 IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
             {
                 Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
 
                 foreach (var customAttributeBuilder in customAttributeBuilders)
                 {
-                    this.Options.AddAttribute(customAttributeBuilder);
+                    this.proxyOptions.AddAttribute(customAttributeBuilder);
                 }
 
                 return this;
             }
 
-            public IFakeOptionsBuilderForWrappers<T> Wrapping(T wrappedInstance)
+            public IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
             {
                 var wrapper = new FakeWrapperConfigurator<T>(this, wrappedInstance);
                 this.ConfigureFake(fake => wrapper.ConfigureFakeToWrap(fake));
                 return wrapper;
             }
 
-            public IFakeOptionsBuilder<T> Implements(Type interfaceType)
+            public IFakeOptions<T> Implements(Type interfaceType)
             {
-                this.Options.AddInterfaceToImplement(interfaceType);
+                this.proxyOptions.AddInterfaceToImplement(interfaceType);
                 return this;
             }
 
-            public IFakeOptionsBuilder<T> Implements<TInterface>()
+            public IFakeOptions<T> Implements<TInterface>()
             {
                 return this.Implements(typeof(TInterface));
             }
 
-            public IFakeOptionsBuilder<T> ConfigureFake(Action<T> action)
+            public IFakeOptions<T> ConfigureFake(Action<T> action)
             {
-                this.Options.AddFakeConfigurationAction(x => action((T)x));
+                this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
                 return this;
             }
 

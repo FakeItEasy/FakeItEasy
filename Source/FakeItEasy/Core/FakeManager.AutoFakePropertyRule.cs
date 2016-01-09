@@ -11,7 +11,7 @@
         private class AutoFakePropertyRule
             : IFakeObjectCallRule
         {
-            public FakeManager FakeManager { get; set; }
+            public FakeManager FakeManager { private get; set; }
 
             public int? NumberOfTimesToCall
             {
@@ -56,7 +56,7 @@
 
             private static bool TryCreateFake(Type type, out object fake)
             {
-                return FakeAndDummyManager.TryCreateFake(type, new FakeOptions(), out fake);
+                return FakeAndDummyManager.TryCreateFake(type, new ProxyOptions(), out fake);
             }
 
             private static object DefaultReturnValue(IInterceptedFakeObjectCall fakeObjectCall)

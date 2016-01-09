@@ -4,7 +4,9 @@ namespace FakeItEasy.Tests.Core
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FluentAssertions;
     using NUnit.Framework;
+    using TestHelpers;
 
     [TestFixture]
     public class DefaultFixtureInitializerTests
@@ -28,7 +30,11 @@ namespace FakeItEasy.Tests.Core
         [SetUp]
         public void Setup()
         {
-            this.OnSetup();
+            Fake.InitializeFixture(this);
+
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<IProxyOptions>._)).Returns(this.fakeReturnedFromFakeAndDummyManager);
+
+            this.fixture = new FixtureType();
         }
 
         [Test]
@@ -40,7 +46,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(this.fixture.FooProperty, Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
+            this.fixture.FooProperty.Should().BeSameAs(this.fakeReturnedFromFakeAndDummyManager);
         }
 
         [Test]
@@ -52,7 +58,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(this.fixture.NonFakedProperty, Is.Null);
+            this.fixture.NonFakedProperty.Should().BeNull();
         }
 
         [Test]
@@ -64,7 +70,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(this.fixture.GetValueOfPrivateFakeProperty(), Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
+            this.fixture.GetValueOfPrivateFakeProperty().Should().BeSameAs(this.fakeReturnedFromFakeAndDummyManager);
         }
 
         [Test]
@@ -76,7 +82,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(this.fixture.GetValueOfPrivateFakeField(), Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
+            this.fixture.GetValueOfPrivateFakeField().Should().BeSameAs(this.fakeReturnedFromFakeAndDummyManager);
         }
 
         [Test]
@@ -88,7 +94,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(this.fixture.PublicFakeField, Is.SameAs(this.fakeReturnedFromFakeAndDummyManager));
+            this.fixture.PublicFakeField.Should().BeSameAs(this.fakeReturnedFromFakeAndDummyManager);
         }
 
         [Test]
@@ -100,7 +106,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(this.fixture);
 
             // Assert
-            Assert.That(this.fixture.NonFakeField, Is.Null);
+            this.fixture.NonFakeField.Should().BeNull();
         }
 
         [Test]
@@ -118,7 +124,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(sutFixture);
 
             // Assert
-            Assert.That(sutFixture.Sut, Is.SameAs(sut));
+            sutFixture.Sut.Should().BeSameAs(sut);
         }
 
         [Test]
@@ -136,7 +142,7 @@ namespace FakeItEasy.Tests.Core
             this.initializer.InitializeFakes(sutFixture);
 
             // Assert
-            Assert.That(sutFixture.Foo, Is.SameAs(fake));
+            sutFixture.Foo.Should().BeSameAs(fake);
         }
 
         [Test]
@@ -145,20 +151,11 @@ namespace FakeItEasy.Tests.Core
             // Arrange
 
             // Act
+            var exception = Record.Exception(() => this.initializer.InitializeFakes(new SutFixtureWithTwoSutMembers()));
 
             // Assert
-            Assert.That(
-                () => this.initializer.InitializeFakes(new SutFixtureWithTwoSutMembers()),
-                Throws.InstanceOf<InvalidOperationException>().With.Message.EqualTo("A fake fixture can only contain one member marked \"under test\"."));
-        }
-
-        protected virtual void OnSetup()
-        {
-            Fake.InitializeFixture(this);
-
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>._)).Returns(this.fakeReturnedFromFakeAndDummyManager);
-
-            this.fixture = new FixtureType();
+            exception.Should().BeAnExceptionOfType<InvalidOperationException>()
+                .WithMessage("A fake fixture can only contain one member marked \"under test\".");
         }
 
         public class Sut

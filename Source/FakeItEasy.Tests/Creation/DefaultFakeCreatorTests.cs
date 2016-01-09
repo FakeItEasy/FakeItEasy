@@ -5,23 +5,25 @@ namespace FakeItEasy.Tests.Creation
     using System.Linq;
     using FakeItEasy.Creation;
     using FakeItEasy.SelfInitializedFakes;
+    using FluentAssertions;
     using NUnit.Framework;
+    using TestHelpers;
     using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class DefaultFakeCreatorTests
     {
-        private IFakeAndDummyManager fakeAndDummyManager;
-        private DefaultFakeCreatorFacade creator;
-
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>>>(
+        private readonly object[] optionBuilderCalls = TestCases.Create<Func<IFakeOptions<Foo>, IFakeOptions<Foo>>>(
                 x => x.Wrapping(A.Fake<Foo>()).Implements(typeof(IFoo)),
                 x => x.Implements(typeof(IFoo)),
                 x => x.WithArgumentsForConstructor(() => new Foo()),
                 x => x.WithArgumentsForConstructor(new object[] { A.Fake<IServiceProvider>() }),
                 x => x.Wrapping(A.Fake<Foo>()).RecordedBy(A.Fake<ISelfInitializingFakeRecorder>()))
             .AsTestCaseSource(x => x);
+
+        private IFakeAndDummyManager fakeAndDummyManager;
+        private DefaultFakeCreatorFacade creator;
 
         [SetUp]
         public void Setup()
@@ -41,7 +43,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => new Foo(serviceProvider)));
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.HasArgumentsForConstructor(new object[] { serviceProvider }))).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<IProxyOptions>.That.HasArgumentsForConstructor(new object[] { serviceProvider }))).MustHaveHappened();
         }
 
         [Test]
@@ -55,7 +57,7 @@ namespace FakeItEasy.Tests.Creation
             // Assert
             A.CallTo(() => this.fakeAndDummyManager.CreateFake(
                     A<Type>._,
-                    A<FakeOptions>.That.Matches(
+                    A<IProxyOptions>.That.Matches(
                         x =>
                             x.AdditionalInterfacesToImplement.Contains(typeof(IFormatProvider)) &&
                             x.AdditionalInterfacesToImplement.Contains(typeof(IFormattable)),
@@ -68,9 +70,12 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
 
-            // Act, Assert
-            Assert.Throws<ArgumentException>(() =>
+            // Act
+            var exception = Record.Exception(() =>
                 this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(() => CreateFoo())));
+
+            // Assert
+            exception.Should().BeAnExceptionOfType<ArgumentException>();
         }
 
         [Test]
@@ -78,13 +83,13 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var instanceFromManager = A.Fake<IFoo>();
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>._)).Returns(instanceFromManager);
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<IProxyOptions>._)).Returns(instanceFromManager);
 
             // Act
             var result = this.creator.CreateFake<IFoo>(x => { });
 
             // Assert
-            Assert.That(result, Is.SameAs(instanceFromManager));
+            result.Should().BeSameAs(instanceFromManager);
         }
 
         [Test]
@@ -96,22 +101,22 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<IFoo>(x => { });
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>._)).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<IProxyOptions>._)).MustHaveHappened();
         }
 
         [TestCaseSource("optionBuilderCalls")]
-        public void CreateFake_should_pass_options_builder_that_returns_itself_for_any_call(Func<IFakeOptionsBuilder<Foo>, IFakeOptionsBuilder<Foo>> call)
+        public void CreateFake_should_pass_options_object_that_returns_itself_for_any_call(Func<IFakeOptions<Foo>, IFakeOptions<Foo>> call)
         {
             Guard.AgainstNull(call, "call");
 
             // Arrange
-            IFakeOptionsBuilder<Foo> builderPassedToAction = null;
+            IFakeOptions<Foo> optionsPassedToAction = null;
 
             // Act
-            this.creator.CreateFake<Foo>(x => { builderPassedToAction = x; });
+            this.creator.CreateFake<Foo>(x => { optionsPassedToAction = x; });
 
             // Assert
-            Assert.That(call.Invoke(builderPassedToAction), Is.SameAs(builderPassedToAction));
+            call.Invoke(optionsPassedToAction).Should().BeSameAs(optionsPassedToAction);
         }
 
         [Test]
@@ -125,7 +130,7 @@ namespace FakeItEasy.Tests.Creation
             var result = this.creator.CreateDummy<IFoo>();
 
             // Assert
-            Assert.That(result, Is.SameAs(dummy));
+            result.Should().BeSameAs(dummy);
         }
 
         [Test]
@@ -146,7 +151,7 @@ namespace FakeItEasy.Tests.Creation
             this.creator.CreateFake<Foo>(x => x.WithArgumentsForConstructor(constructorArguments));
 
             // Assert
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<FakeOptions>.That.HasArgumentsForConstructor(constructorArguments))).MustHaveHappened();
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(A<Type>._, A<IProxyOptions>.That.HasArgumentsForConstructor(constructorArguments))).MustHaveHappened();
         }
 
         [Test]
@@ -158,7 +163,7 @@ namespace FakeItEasy.Tests.Creation
             var result = this.creator.CollectionOfFake<IFoo>(10);
 
             // Assert
-            Assert.That(result, Has.All.InstanceOf<IFoo>().And.All.InstanceOf<ITaggable>());
+            result.Should().ContainItemsAssignableTo<IFoo>().And.ContainItemsAssignableTo<ITaggable>();
         }
 
         [TestCase(2)]
@@ -171,7 +176,7 @@ namespace FakeItEasy.Tests.Creation
             var result = this.creator.CollectionOfFake<IFoo>(numberOfFakes);
 
             // Assert
-            Assert.That(result, Has.Count.EqualTo(numberOfFakes));
+            result.Should().HaveCount(numberOfFakes);
         }
 
         private static Foo CreateFoo()
@@ -181,9 +186,9 @@ namespace FakeItEasy.Tests.Creation
 
         private void ConfigureDefaultValuesForFakeAndDummyManager()
         {
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<FakeOptions>._))
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(IFoo), A<IProxyOptions>._))
                 .Returns(A.Fake<IFoo>());
-            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(Foo), A<FakeOptions>._))
+            A.CallTo(() => this.fakeAndDummyManager.CreateFake(typeof(Foo), A<IProxyOptions>._))
                 .Returns(A.Fake<Foo>());
         }
     }

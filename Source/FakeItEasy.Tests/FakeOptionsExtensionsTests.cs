@@ -7,7 +7,7 @@ namespace FakeItEasy.Tests
     using TestHelpers;
 
     [TestFixture]
-    public class FakeOptionsBuilderExtensionsTests
+    public class FakeOptionsExtensionsTests
     {
         [Test]
         public void Strict_should_configure_fake_to_throw_expectation_exception()
@@ -28,7 +28,7 @@ namespace FakeItEasy.Tests
         public void Strict_should_return_configuration_object()
         {
             // Arrange
-            var options = A.Fake<IFakeOptionsBuilder<IFoo>>();
+            var options = A.Fake<IFakeOptions<IFoo>>();
             A.CallTo(() => options.ConfigureFake(A<Action<IFoo>>._)).Returns(options);
 
             // Act
@@ -47,7 +47,7 @@ namespace FakeItEasy.Tests
 
             // Assert
             NullGuardedConstraint.Assert(() =>
-                A.Dummy<IFakeOptionsBuilder<IFoo>>().Strict());
+                A.Dummy<IFakeOptions<IFoo>>().Strict());
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace FakeItEasy.Tests
         public void CallsBaseMethods_should_return_configuration_object()
         {
             // Arrange
-            var options = A.Fake<IFakeOptionsBuilder<IFoo>>();
+            var options = A.Fake<IFakeOptions<IFoo>>();
             A.CallTo(() => options.ConfigureFake(A<Action<IFoo>>._)).Returns(options);
 
             // Act
@@ -99,7 +99,7 @@ namespace FakeItEasy.Tests
 
             // Assert
             NullGuardedConstraint.Assert(() =>
-                A.Dummy<IFakeOptionsBuilder<IFoo>>().CallsBaseMethods());
+                A.Dummy<IFakeOptions<IFoo>>().CallsBaseMethods());
         }
 
         public class ConcreteClass

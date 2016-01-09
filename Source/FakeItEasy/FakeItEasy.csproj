@@ -92,6 +92,7 @@
     <Compile Include="Core\IFakeCallProcessorProvider.cs" />
     <Compile Include="Core\FakeCallProcessorProvider.cs" />
     <Compile Include="Core\EventHandlerArgumentProviderMap.cs" />
+    <Compile Include="Creation\IProxyOptions.cs" />
     <Compile Include="DefaultBootstrapper.cs" />
     <Compile Include="Expressions\ArgumentConstraints\IArgumentValueProvider.cs" />
     <Compile Include="Expressions\ArgumentConstraints\OutArgumentConstraint.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="ExceptionThrowerConfigurationExtensions.cs" />
     <Compile Include="CallbackConfigurationExtensions.cs" />
     <Compile Include="WhereConfigurationExtensions.cs" />
-    <Compile Include="FakeOptionsBuilderExtensions.cs" />
+    <Compile Include="FakeOptionsExtensions.cs" />
     <Compile Include="FakeObjectCallExtensions.cs" />
     <Compile Include="RepeatConfigurationExtensions.cs" />
     <Compile Include="ExceptionMessages.Designer.cs">
@@ -404,7 +405,7 @@
     <Compile Include="Creation\FakeObjectCreator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Creation\FakeOptions.cs">
+    <Compile Include="Creation\ProxyOptions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Creation\IDummyValueCreationSession.cs">
@@ -419,10 +420,10 @@
     <Compile Include="Creation\IFakeObjectCreator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Creation\IFakeOptionsBuilder.cs">
+    <Compile Include="Creation\IFakeOptions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Creation\IFakeOptionsBuilderForWrappers.cs">
+    <Compile Include="Creation\IFakeOptionsForWrappers.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Creation\IProxyGenerator.cs">
