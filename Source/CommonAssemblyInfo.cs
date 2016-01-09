@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("Patrik Hägne")]
 [assembly: AssemblyProduct("FakeItEasy")]
-[assembly: AssemblyCopyright("Copyright (c) FakeItEasy contributors. (fakeiteasy@hagne.se)")]
+[assembly: AssemblyCopyright("Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en-US")]
