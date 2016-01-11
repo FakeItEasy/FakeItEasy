@@ -5,6 +5,8 @@
     using System.Linq;
     using FakeItEasy.Core;
     using NUnit.Framework;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class FakeScopeTests
@@ -42,6 +44,58 @@
             using (Fake.CreateScope())
             {
                 Assert.That(FakeScope.Current.FakeObjectContainer, Is.SameAs(parentContainer));
+            }
+        }
+
+        [Test]
+        public void Creating_new_scope_should_not_change_current_scope_for_other_threads()
+        {
+            var scope = FakeScope.Current;
+            var childScopeSetEvent = new ManualResetEvent(false);
+            var assertionCompletedEvent = new ManualResetEvent(false);
+
+            var thread = new Thread(() =>
+            {
+                using (Fake.CreateScope())
+                {
+                    childScopeSetEvent.Set();
+                    assertionCompletedEvent.WaitOne(TimeSpan.FromSeconds(1));
+                }
+            });
+
+            thread.Start();
+            childScopeSetEvent.WaitOne(TimeSpan.FromSeconds(1));
+
+            Assert.That(FakeScope.Current, Is.SameAs(scope));
+            assertionCompletedEvent.Set();
+        }
+
+        [Test]
+        public void Current_scope_should_flow_to_created_threads()
+        {
+            using (var childScope = Fake.CreateScope())
+            {
+                var thread = new Thread(() =>
+                {
+                    Assert.That(FakeScope.Current, Is.SameAs(childScope));
+                });
+                thread.Start();
+                thread.Join(TimeSpan.FromSeconds(1));
+            }
+        }
+
+        [Test]
+        public void Current_scope_should_flow_to_tasks()
+        {
+            var assertionCompletedEvent = new ManualResetEvent(false);
+            using (var childScope = Fake.CreateScope())
+            {
+                Task.Run(() =>
+                {
+                    Assert.That(FakeScope.Current, Is.SameAs(childScope));
+                    assertionCompletedEvent.Set();
+                });
+                assertionCompletedEvent.WaitOne(TimeSpan.FromSeconds(1));
             }
         }
 
