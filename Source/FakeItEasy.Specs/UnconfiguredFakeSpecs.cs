@@ -6,6 +6,11 @@
 
     public static class UnconfiguredFakeSpecs
     {
+        public interface IFoo
+        {
+            bool IsADummy { get; }
+        }
+
         [Scenario]
         public static void VirtualMethodCalledDuringConstruction(
             MakesVirtualCallInConstructor fake)
@@ -118,6 +123,24 @@
                 .x(() => result.Should().Be(123456));
         }
 
+        [Scenario]
+        public static void FakeableProperty(
+            FakedClass fake,
+            IFoo result)
+        {
+            "Given a type with a virtual fakeable-type property"
+                .x(() => { }); // see FakedClasss
+
+            "And a fake of that type"
+                .x(() => fake = A.Fake<FakedClass>());
+
+            "When I get the property value"
+                .x(() => result = fake.FakeableProperty);
+
+            "Then the value will be a Dummy"
+                .x(() => result.IsADummy.Should().BeTrue("because the property value should be a Dummy"));
+        }
+
         public class FakedClass
         {
             [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "This anti-pattern is part of the the tested scenario.")]
@@ -137,6 +160,18 @@
             public virtual int ValueTypeProperty { get; set; }
 
             public int ValueTypePropertyValueDuringConstructorCall { get; private set; }
+
+            public virtual IFoo FakeableProperty { get; set; }
+        }
+
+        public class FooFactory : DummyFactory<IFoo>, IFoo
+        {
+            public bool IsADummy { get; set; }
+
+            protected override IFoo Create()
+            {
+                return new FooFactory { IsADummy = true };
+            }
         }
     }
 }
