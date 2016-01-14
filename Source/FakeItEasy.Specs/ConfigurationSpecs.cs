@@ -108,7 +108,7 @@
                     exception = Record.Exception(() => configuration.Returns(0));
                 });
 
-            "it should throw an InvalidOperationException"
+            "it should throw an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
@@ -126,10 +126,10 @@
                 {
                     configuration = A.CallTo(() => fake.Baz());
                     configuration.Returns(42);
-                    exception = Record.Exception(() => configuration.Throws(new Exception()));
+                    exception = Record.Exception(() => configuration.Throws<Exception>());
                 });
 
-            "it should throw an InvalidOperationException"
+            "it should throw an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
@@ -150,7 +150,7 @@
                     exception = Record.Exception(() => configuration.CallsBaseMethod());
                 });
 
-            "it should throw an InvalidOperationException"
+            "it should throw an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
@@ -167,11 +167,11 @@
                 .x(() =>
                 {
                     configuration = A.CallTo(() => fake.Baz());
-                    configuration.Throws(new ArgumentNullException());
-                    exception = Record.Exception(() => configuration.Throws(new ArgumentException()));
+                    configuration.Throws<ArgumentNullException>();
+                    exception = Record.Exception(() => configuration.Throws<ArgumentException>());
                 });
 
-            "it should throw an InvalidOperationException"
+            "it should throw an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 

@@ -116,7 +116,7 @@
                     exception = Record.Exception(() => callSpec.AssignsOutAndRefParameters(new object[] { "test2" }));
                 });
 
-            "it should throw an InvalidOperationException"
+            "it should throw an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
     }
