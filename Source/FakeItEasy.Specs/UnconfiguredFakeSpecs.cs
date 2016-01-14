@@ -6,45 +6,139 @@
 
     public static class UnconfiguredFakeSpecs
     {
+        public interface IFoo
+        {
+            bool IsADummy { get; }
+        }
+
         [Scenario]
-        public static void VirtualMethod(
+        public static void VirtualMethodCalledDuringConstruction(
             MakesVirtualCallInConstructor fake)
         {
-            "when faking a class with a virtual method"
+            "Given a type with a default constructor"
+                .x(() => { }); // see MakesVirtualCallInConstructor
+
+            "And the constructor calls a virtual method"
+                .x(() => { }); // see MakesVirtualCallInConstructor.ctor()
+
+            "And the method returns a non-default value"
+               .x(() => { }); // see MakesVirtualCallInConstructor.VirtualMethod()
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<MakesVirtualCallInConstructor>());
 
-            "it should return a default value when the method is called during the constructor"
+            "Then the method will return a default value"
                 .x(() => fake.VirtualMethodValueDuringConstructorCall.Should().Be(string.Empty));
 
-            "it should return a default value when the method is called after the constructor"
-                .x(() => fake.VirtualMethod("call after constructor").Should().Be(string.Empty));
-
-            "it should record the method call during the constructor"
+            "And the method call will be recorded"
                 .x(() => A.CallTo(() => fake.VirtualMethod("call in constructor")).MustHaveHappened());
+        }
 
-            "it should record the method call after the constructor"
+        [Scenario]
+        public static void VirtualMethodCalledAfterConstruction(
+            MakesVirtualCallInConstructor fake,
+            string result)
+        {
+            "Given a type with a virtual method"
+                .x(() => { }); // see MakesVirtualCallInConstructor
+
+            "And the method returns a non-default value"
+                .x(() => { }); // see MakesVirtualCallInConstructor.VirtualMethod
+
+            "And a fake of that type"
+                .x(() => fake = A.Fake<MakesVirtualCallInConstructor>());
+
+            "When I call the method"
+                .x(() => result = fake.VirtualMethod("call after constructor"));
+
+            "Then it will return a default value"
+                .x(() => result.Should().Be(string.Empty));
+
+            "And the method call will be recorded"
                 .x(() => A.CallTo(() => fake.VirtualMethod("call after constructor")).MustHaveHappened());
         }
 
         [Scenario]
-        public static void VirtualProperties(
+        public static void VirtualPropertiesCalledDuringConstruction(
             FakedClass fake)
         {
-            "when faking a class with virtual properties"
+            "Given a type with a default constructor"
+                .x(() => { }); // see FakedClass
+
+            "And the constructor calls some virtual properties"
+                .x(() => { }); // see FakedClass.ctor()
+
+            "And the properties return non-default values"
+               .x(() => { }); // see FakedClass.StringProperty, FakedClass.ValueTypeProperty
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<FakedClass>());
 
-            "it should return a default value when a reference type property is called during the constructor"
+            "Then the reference-type property will return a default value"
                 .x(() => fake.StringPropertyValueDuringConstructorCall.Should().Be(string.Empty));
 
-            // The test for the default value of a value type is a regression test for https://github.com/FakeItEasy/FakeItEasy/issues/368:
-            "it should return a default value when a value type property is called during the constructor"
+            "And the value-type property will return a default value"
                 .x(() => fake.ValueTypePropertyValueDuringConstructorCall.Should().Be(0));
+        }
 
-            "it should return the value assigned during constructor when a reference type property is gotten after the constructor"
-                .x(() => fake.StringProperty.Should().Be("value set in constructor"));
+        [Scenario]
+        public static void VirtualReferenceTypeProperty(
+            FakedClass fake,
+            string result)
+        {
+            "Given a type with a default constructor"
+                .x(() => { }); // see FakedClass
 
-            "it should return the value assigned during constructor when a value type property is gotten after the constructor"
-                .x(() => fake.ValueTypeProperty.Should().Be(123456));
+            "And the constructor assigns a value to a virtual reference-type property"
+                .x(() => { }); // see FakedClass.ctor()
+
+            "And a fake of that type"
+                .x(() => fake = A.Fake<FakedClass>());
+
+            "When I fetch the property value"
+                .x(() => result = fake.StringProperty);
+
+            "Then it will be the value assigned during construction"
+                .x(() => result.Should().Be("value set in constructor"));
+        }
+
+        [Scenario]
+        public static void VirtualValueTypeProperty(
+            FakedClass fake,
+            int result)
+        {
+            "Given a type with a default constructor"
+                .x(() => { }); // see FakedClass
+
+            "And the constructor assigns a value to a virtual value-type property"
+                .x(() => { }); // see FakedClass.ctor()
+
+            "And a fake of that type"
+                .x(() => fake = A.Fake<FakedClass>());
+
+            "When I fetch the property value"
+                .x(() => result = fake.ValueTypeProperty);
+
+            "Then it will be the value assigned during construction"
+                .x(() => result.Should().Be(123456));
+        }
+
+        [Scenario]
+        public static void FakeableProperty(
+            FakedClass fake,
+            IFoo result)
+        {
+            "Given a type with a virtual fakeable-type property"
+                .x(() => { }); // see FakedClasss
+
+            "And a fake of that type"
+                .x(() => fake = A.Fake<FakedClass>());
+
+            "When I get the property value"
+                .x(() => result = fake.FakeableProperty);
+
+            "Then the value will be a Dummy"
+                .x(() => result.IsADummy.Should().BeTrue("because the property value should be a Dummy"));
         }
 
         public class FakedClass
@@ -66,6 +160,18 @@
             public virtual int ValueTypeProperty { get; set; }
 
             public int ValueTypePropertyValueDuringConstructorCall { get; private set; }
+
+            public virtual IFoo FakeableProperty { get; set; }
+        }
+
+        public class FooFactory : DummyFactory<IFoo>, IFoo
+        {
+            public bool IsADummy { get; set; }
+
+            protected override IFoo Create()
+            {
+                return new FooFactory { IsADummy = true };
+            }
         }
     }
 }
