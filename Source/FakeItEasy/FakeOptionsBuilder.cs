@@ -38,8 +38,16 @@
         /// </summary>
         /// <param name="typeOfFake">The type the fake object represents.</param>
         /// <param name="options">The fake options to manipulate.</param>
+        /// <exception cref="InvalidOperationException">When <paramref name="typeOfFake"/> is not <typeparamref name="TFake"/>.</exception>
         public void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
+            if (!this.CanBuildOptionsForFakeOfType(typeOfFake))
+            {
+                throw new InvalidOperationException(
+                    "Specified type '{0}' is not valid. Only '{1}' is allowed."
+                        .FormatInvariant(typeOfFake.FullNameCSharp(), typeof(TFake).FullNameCSharp()));
+            }
+
             this.BuildOptions((IFakeOptions<TFake>)options);
         }
 
