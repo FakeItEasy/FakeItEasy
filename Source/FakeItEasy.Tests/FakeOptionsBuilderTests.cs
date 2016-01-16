@@ -12,7 +12,7 @@
         public void BuildOptions_should_throw_when_passed_wrong_type()
         {
             // Arrange
-            var target = new FakeOptionsBuilderTestsOptionsBuilder();
+            IFakeOptionsBuilder target = new FakeOptionsBuilderTestsOptionsBuilder();
 
             // Act
             var exception = Record.Exception(() => target.BuildOptions(typeof(string), A.Fake<IFakeOptions>()));
