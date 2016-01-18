@@ -436,21 +436,11 @@
         }
     }
 
-    public class RobotRunsAmokEventFakeOptionsBuilder : IFakeOptionsBuilder
+    public class RobotRunsAmokEventFakeOptionsBuilder : FakeOptionsBuilder<RobotRunsAmokEvent>
     {
         public static readonly DateTime ConfiguredTimestamp = new DateTime(1997, 8, 29, 2, 14, 03);
 
-        public int Priority
-        {
-            get { return 0; }
-        }
-
-        public bool CanBuildOptionsForFakeOfType(Type type)
-        {
-            return type == typeof(RobotRunsAmokEvent);
-        }
-
-        public void BuildOptions(Type typeOfFake, IFakeOptions options)
+        protected override void BuildOptions(IFakeOptions<RobotRunsAmokEvent> options)
         {
             if (options == null)
             {
@@ -459,7 +449,7 @@
 
             options.ConfigureFake(fake =>
             {
-                var robotRunsAmokEvent = (RobotRunsAmokEvent)fake;
+                var robotRunsAmokEvent = fake;
                 A.CallTo(() => robotRunsAmokEvent.CalculateTimestamp())
                     .Returns(ConfiguredTimestamp);
                 robotRunsAmokEvent.ID = -99;
