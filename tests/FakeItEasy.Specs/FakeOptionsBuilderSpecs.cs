@@ -1,6 +1,7 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using System.Linq;
     using System.Reflection.Emit;
     using Core;
     using Creation;
@@ -13,25 +14,38 @@ namespace FakeItEasy.Specs
     public class FakeOptionsBuilderSpecs
     {
         [Scenario]
-        public void DefinedFakeOptionsBuilder(
+        public void FakeOptionsBuilderAppliesConfigureFake(
             RobotActivatedEvent fake)
         {
-            "When a fake is created for a type that has an options builder defined"
+            "Given a type that has an implicit options builder defined"
+                .See<RobotActivatedEvent>();
+
+            "And the options builder updates the options to configure the fake"
+                .See<DomainEventFakeOptionsBuilder>(_ => _.BuildOptions);
+
+            "And the options builder updates the options to add an attribute"
+                .See<DomainEventFakeOptionsBuilder>(_ => _.BuildOptions);
+
+            "And the options builder updates the options to implement an interface specified by parameter"
+                .See<DomainEventFakeOptionsBuilder>(_ => _.BuildOptions);
+
+            "And the options builder updates the options to implement an interface specified by type parameter"
+                .See<DomainEventFakeOptionsBuilder>(_ => _.BuildOptions);
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<RobotActivatedEvent>());
 
-            "Then the builder will apply the fake options builder"
+            "Then the fake is configured"
                 .x(() => fake.ID.Should().BeGreaterThan(0));
 
-            "And it will be passed the fake type"
-                .x(() => fake.Name.Should().Be(typeof(RobotActivatedEvent).Name));
+            "And the fake has the attribute"
+                .x(() => fake.GetType().GetCustomAttributes(inherit: false).Select(a => a.GetType())
+                    .Should().Contain(typeof(ForTestAttribute)));
 
-            "And it will add its extra attributes"
-                .x(() => fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().HaveCount(1));
-
-            "And it will make the fake implement its extra interface specified by parameter"
+            "And the fake implements the interface specified by parameter"
                 .x(() => fake.Should().BeAssignableTo<IDisposable>());
 
-            "And it will make the fake implement its extra interface specified by type parameter"
+            "And the fake implements the interface specified by type parameter"
                 .x(() => fake.Should().BeAssignableTo<ICloneable>());
         }
 
@@ -39,21 +53,28 @@ namespace FakeItEasy.Specs
         public void DefinedFakeOptionsBuilderWrapping(
             WrapsAValidObject fake)
         {
-            "When a fake is created for a type that has an options builder defined"
+            "Given a type that has an implicit options builder defined"
+                .See<WrapsAValidObject>();
+
+            "And the options builder updates the options to wrap an object"
+                .See<WrapsAValidObjectOptionsBuilder>(_ => _.BuildOptions);
+
+            "And calls to the wrapped object are to be recorded"
+                .See<WrapsAValidObjectOptionsBuilder>(_ => _.BuildOptions);
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<WrapsAValidObject>());
 
-            "Then the fake will wrap the configured target"
-                .x(() =>
-                {
-                    fake.AMethod();
-                    A.CallTo(() => WrapsAValidObjectOptionsBuilder.WrappedObject.AMethod()).MustHaveHappened();
-                });
+            "And I call a method on the fake"
+                .x(() => fake.AMethod());
 
-            "And calls will be forwarded to the recorder"
+            "Then the call is delegated to the wrapped object"
+                .x(() => A.CallTo(() => WrapsAValidObjectOptionsBuilder.WrappedObject.AMethod()).MustHaveHappened());
+
+            "And the call is recorded"
                 .x(() =>
                 {
-                    A.CallTo(
-                        () => WrapsAValidObjectOptionsBuilder.Recorder.RecordCall(A<ICompletedFakeObjectCall>._))
+                    A.CallTo(() => WrapsAValidObjectOptionsBuilder.Recorder.RecordCall(A<ICompletedFakeObjectCall>._))
                         .MustHaveHappened();
                 });
         }
@@ -62,10 +83,16 @@ namespace FakeItEasy.Specs
         public void DefinedFakeOptionsBuilderWrappingNull(
             Exception exception)
         {
-            "When a fake is created for a type that has an options builder defined that wraps null"
+            "Given a type that has an implicit options builder defined"
+                .See<WrapsNull>();
+
+            "And the options builder updates the options to wrap null"
+                .See<WrapsNullOptionsBuilder>(_ => _.BuildOptions);
+
+            "When I create a fake of the type"
                 .x(() => exception = Record.Exception(() => A.Fake<WrapsNull>()));
 
-            "Then an argument null exception will be thrown"
+            "Then an argument null exception is thrown"
                 .x(() => exception.Should().BeAnExceptionOfType<ArgumentNullException>());
         }
 
@@ -74,28 +101,39 @@ namespace FakeItEasy.Specs
             Strict fake,
             Exception exception)
         {
-            "Given a fake of a type that has an options builder defined that makes the fake strict"
+            "Given a type that has an implicit options builder defined"
+                .See<Strict>();
+
+            "And the options builder updates the options to make it strict"
+                .See<StrictOptionsBuilder>(_ => _.BuildOptions);
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<Strict>());
 
-            "When a method is called on the fake"
+            "And I call a method on the fake"
                 .x(() => exception = Record.Exception(() => fake.AMethod()));
 
-            "Then an exception will be thrown"
+            "Then an exception is thrown"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
         }
 
-        [Scenario]
         public void DefinedFakeOptionsBuilderCallsBaseMethods(
             CallsBaseMethods fake,
             string result)
         {
-            "Given a fake of a type that has an options builder defined that makes the fake call base methods"
+            "Given a type that has an implicit options builder defined"
+                .See<CallsBaseMethods>();
+
+            "And the options builder updates the options to call base methods"
+                .See<CallsBaseMethodsOptionsBuilder>(_ => _.BuildOptions);
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<CallsBaseMethods>());
 
-            "When a method is called on the fake"
+            "And I call a method on the fake"
                 .x(() => result = fake.Name);
 
-            "Then the base method will have been called"
+            "Then the base method is called"
                 .x(() => result.Should().Be(typeof(CallsBaseMethods).Name));
         }
 
@@ -103,10 +141,19 @@ namespace FakeItEasy.Specs
         public void DefinedFakeOptionsBuilderConstructorArgumentsByList(
             ConstructorArgumentsSetByList fake)
         {
-            "When a fake is created for a type that has an options builder defined"
+            "Given a type with a constructor that requires parameters"
+                .See<ConstructorArgumentsSetByList>();
+
+            "And the type has an implicit options builder defined"
+                .See<ConstructorArgumentsSetByList>();
+
+            "And the options builder updates the options to provide constructor arguments using a list"
+                .See<ConstructorArgumentsSetByListOptionsBuilder>(_ => _.BuildOptions);
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<ConstructorArgumentsSetByList>());
 
-            "Then the fake will be created using the constructor arguments"
+            "Then it is created using the constructor arguments"
                 .x(() => fake.ConstructorArgument.Should().Be(typeof(ConstructorArgumentsSetByListOptionsBuilder).Name));
         }
 
@@ -114,10 +161,19 @@ namespace FakeItEasy.Specs
         public void DefinedFakeOptionsBuilderConstructorArgumentsByConstructor(
             ConstructorArgumentsSetByConstructor fake)
         {
-            "When a fake is created for a type that has an options builder defined"
+            "Given a type with a constructor that requires parameters"
+                .See<ConstructorArgumentsSetByConstructor>();
+
+            "And the type has an implicit options builder defined"
+                .See<ConstructorArgumentsSetByConstructor>();
+
+            "And the options builder updates the options to provide constructor arguments using a constructor"
+                .See<ConstructorArgumentsSetByConstructorOptionsBuilder>(_ => _.BuildOptions);
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<ConstructorArgumentsSetByConstructor>());
 
-            "Then the fake will be created using the constructor arguments"
+            "Then it is created using the constructor arguments"
                 .x(() => fake.ConstructorArgument.Should().Be(typeof(ConstructorArgumentsSetByConstructorOptionsBuilder).Name));
         }
 
@@ -125,22 +181,40 @@ namespace FakeItEasy.Specs
         public void DefinedFakeOptionsBuilderConstructorArgumentsByConstructorForWrongType(
             Exception exception)
         {
-            "When a fake is created for a type that has an options builder using a constructor of the wrong type"
+            "Given a type with a constructor that requires parameters"
+                .See<ConstructorArgumentsSetByConstructorForWrongType>();
+
+            "And the type has an implicit options builder defined"
+                .See<ConstructorArgumentsSetByConstructorForWrongType>();
+
+            "And the options builder updates the options to provide constructor arguments using a constructor for the wrong type"
+                .See<ConstructorArgumentsSetByConstructorForWrongTypeOptionsBuilder>(_ => _.BuildOptions);
+
+            "When I create a fake of the type"
                 .x(() => exception = Record.Exception(() => A.Fake<ConstructorArgumentsSetByConstructorForWrongType>()));
 
-            "Then an exception will be thrown"
+            "Then an exception is thrown"
                 .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                .WithMessage("Supplied constructor is for type FakeItEasy.Specs.ConstructorArgumentsSetByConstructorForWrongType, but must be for FakeItEasy.Specs.ConstructorArgumentsSetByConstructor."));
+                    .WithMessage("Supplied constructor is for type FakeItEasy.Specs.ConstructorArgumentsSetByConstructorForWrongType, but must be for FakeItEasy.Specs.ConstructorArgumentsSetByConstructor."));
         }
 
         [Scenario]
         public void FakeOptionsBuilderPriority(
             RobotRunsAmokEvent fake)
         {
-            "When a fake is created for a type that has two applicable fake options builders"
+            "Given a type"
+                .See<RobotRunsAmokEvent>();
+
+            "And the type has an applicable implicit option builder defined"
+                .See<RobotRunsAmokEventFakeOptionsBuilder>();
+
+            "And the type has another applicable implicit option builder defined"
+                .See<DomainEventFakeOptionsBuilder>();
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<RobotRunsAmokEvent>());
 
-            "Then the builder with the higher priority will build options for the fake"
+            "Then the configuration from the options builder with the higher priority is used"
                 .x(() => fake.ID.Should().Be(-99));
         }
 
@@ -148,10 +222,22 @@ namespace FakeItEasy.Specs
         public void DuringConstruction(
             RobotRunsAmokEvent fake)
         {
-            "When a fake is created for a type that has an options builder defined"
+            "Given a type with a parameterless constructor"
+                .See<RobotRunsAmokEvent>();
+
+            "And the constructor calls a virtual method"
+                .See(() => new RobotRunsAmokEvent());
+
+            "And the type has an implicit options builder defined"
+                .See<RobotRunsAmokEventFakeOptionsBuilder>();
+
+            "And the options builder updates the options to configure the fake"
+                .See("RobotRunsAmokEventFakeOptionsBuilder.BuildOptions"); // it's protected
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<RobotRunsAmokEvent>());
 
-            "Then the builder will build options to be used during the fake's constructor"
+            "Then the option builder's configuration is used during the constructor"
                 .x(() => fake.Timestamp.Should().Be(RobotRunsAmokEventFakeOptionsBuilder.ConfiguredTimestamp));
         }
 
@@ -163,32 +249,65 @@ namespace FakeItEasy.Specs
             "Given a fake options builder that does not override priority"
                 .x(() => builder = new SomeClassOptionsBuilder());
 
-            "When the default priority is fetched"
+            "When I get the priority"
                 .x(() => priority = builder.Priority);
 
-            "Then it should be the default priority"
+            "Then it is the default priority"
                 .x(() => priority.Should().Be(Priority.Default));
         }
 
         [Scenario]
         public void GenericFakeOptionsBuilderBuildOptionsForMatchingType(
-            SomeParentClass fake)
+            SomeClass fake)
         {
-            "When we create a fake of a type that has an options builder extending the generic base"
+            "Given a type with a parameterless constructor"
+                .See<SomeClass>();
+
+            "And the constructor calls a virtual method"
+                .See(() => new SomeClass());
+
+            "And the type has an implicit options builder defined"
+                .See<SomeClassOptionsBuilder>();
+
+            "And the options builder extends the generic base"
+                .See<SomeClassOptionsBuilder>();
+
+            "And the options builder updates the options to configure the fake"
+                .See("SomeClassOptionsBuilder.BuildOptions"); // it's protected
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<SomeClass>());
 
-            "Then the generic build options method will be used to configure it"
+            "Then the option builder's configuration is used during the constructor"
                 .x(() => fake.IsConfigured.Should().BeTrue());
         }
 
         [Scenario]
         public void GenericFakeOptionsBuilderBuildOptionsForDerivedType(
-            SomeParentClass fake)
+            SomeDerivedClass fake)
         {
-            "When we create a fake of a type whose parent has an options builder extending the generic base"
+            "Given a type with a parameterless constructor"
+                .See<SomeDerivedClass>();
+
+            "And the constructor calls a virtual method"
+                .See(() => new SomeDerivedClass());
+
+            "And the type has a parent"
+                .See<SomeClass>();
+
+            "And the parent has an implicit options builder defined"
+                .See<SomeClassOptionsBuilder>();
+
+            "And the options builder extends the generic base"
+                .See<SomeClassOptionsBuilder>();
+
+            "And the options builder updates the options to configure the fake"
+                .See("SomeClassOptionsBuilder.BuildOptions"); // it's protected
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<SomeDerivedClass>());
 
-            "Then the generic build options method will be not used to configure it"
+            "Then the option builder's configuration is not used during the constructor"
                 .x(() => fake.IsConfigured.Should().BeFalse());
         }
 
@@ -196,10 +315,28 @@ namespace FakeItEasy.Specs
         public void GenericFakeOptionsBuilderBuildOptionsForParentType(
             SomeParentClass fake)
         {
-            "When we create a fake of a type whose child has an options builder extending the generic base"
+            "Given a type with a parameterless constructor"
+                .See<SomeParentClass>();
+
+            "And the constructor calls a virtual method"
+                .See(() => new SomeParentClass());
+
+            "And the type has a child"
+                .See<SomeClass>();
+
+            "And the child has an implicit options builder defined"
+                .See<SomeClassOptionsBuilder>();
+
+            "And the options builder extends the generic base"
+                .See<SomeClassOptionsBuilder>();
+
+            "And the options builder updates the options to configure the fake"
+                .See("SomeClassOptionsBuilder.BuildOptions"); // it's protected
+
+            "When I create a fake of the type"
                 .x(() => fake = A.Fake<SomeParentClass>());
 
-            "Then the generic build options method will be not used to configure it"
+            "Then the option builder's configuration is not used during the constructor"
                 .x(() => fake.IsConfigured.Should().BeFalse());
         }
 
