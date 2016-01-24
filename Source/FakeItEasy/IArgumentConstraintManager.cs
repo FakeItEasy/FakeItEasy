@@ -1,7 +1,7 @@
 ﻿namespace FakeItEasy
 {
+    using Configuration;
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
@@ -9,7 +9,7 @@
     /// </summary>
     /// <typeparam name="T">The type of argument to constrain.</typeparam>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
-    public interface IArgumentConstraintManager<T>
+    public interface IArgumentConstraintManager<T> : IHideObjectMembers
     {
         /// <summary>
         /// Inverts the logic of the matches method.
