@@ -328,6 +328,15 @@ namespace FakeItEasy {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Supplied constructor is for type {0}, but must be for {1}..
+        /// </summary>
+        internal static string WrongConstructorExpressionTypeMessage {
+            get {
+                return ResourceManager.GetString("WrongConstructorExpressionTypeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The number of argument names does not match the number of arguments..
         /// </summary>
         internal static string WrongNumberOfArgumentNamesMessage {

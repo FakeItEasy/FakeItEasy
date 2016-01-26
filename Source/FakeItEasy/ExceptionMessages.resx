@@ -162,6 +162,9 @@ The following constructors failed:
   <data name="NonConstructorExpressionMessage" xml:space="preserve">
     <value>Only expression of the type ExpressionType.New (constructor calls) are accepted.</value>
   </data>
+  <data name="WrongConstructorExpressionTypeMessage" xml:space="preserve">
+    <value>Supplied constructor is for type {0}, but must be for {1}.</value>
+  </data>
   <data name="NowCalledDirectly" xml:space="preserve">
     <value>The Now-method on the event raise is not meant to be called directly, only use it to register to an event on a fake object that you want to be raised.</value>
   </data>

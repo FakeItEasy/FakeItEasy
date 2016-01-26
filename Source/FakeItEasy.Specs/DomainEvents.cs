@@ -15,6 +15,8 @@
 
         public int ID { get; set; }
 
+        public string Name { get; set; }
+
         public DateTime Timestamp { get; private set; }
 
         public virtual DateTime CalculateTimestamp()

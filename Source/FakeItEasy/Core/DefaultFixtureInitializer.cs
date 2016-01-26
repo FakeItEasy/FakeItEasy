@@ -91,7 +91,7 @@
 
                 if (!fakesUsedToCreateSut.TryGetValue(setter.MemberType, out fake))
                 {
-                    fake = this.fakeAndDummyManager.CreateFake(setter.MemberType, new ProxyOptions());
+                    fake = this.fakeAndDummyManager.CreateFake(setter.MemberType, options => { });
                 }
 
                 setter.Setter(fake);

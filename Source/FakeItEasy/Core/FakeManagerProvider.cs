@@ -22,9 +22,6 @@ namespace FakeItEasy.Core
         private readonly IFakeManagerAccessor fakeManagerAccessor;
 
         [NonSerialized]
-        private readonly IFakeObjectConfigurator fakeObjectConfigurator;
-
-        [NonSerialized]
         private readonly Type typeOfFake;
 
         [NonSerialized]
@@ -38,19 +35,16 @@ namespace FakeItEasy.Core
         public FakeManagerProvider(
                 FakeManager.Factory fakeManagerFactory,
                 IFakeManagerAccessor fakeManagerAccessor,
-                IFakeObjectConfigurator fakeObjectConfigurator, 
                 Type typeOfFake,
                 IProxyOptions proxyOptions)
         {
             Guard.AgainstNull(fakeManagerFactory, "fakeManagerFactory");
             Guard.AgainstNull(fakeManagerAccessor, "fakeManagerAccessor");
-            Guard.AgainstNull(fakeObjectConfigurator, "fakeObjectConfigurator");
             Guard.AgainstNull(typeOfFake, "typeOfFake");
             Guard.AgainstNull(proxyOptions, "proxyOptions");
 
             this.fakeManagerFactory = fakeManagerFactory;
             this.fakeManagerAccessor = fakeManagerAccessor;
-            this.fakeObjectConfigurator = fakeObjectConfigurator;
             this.typeOfFake = typeOfFake;
             this.proxyOptions = proxyOptions;
         }
@@ -86,8 +80,6 @@ namespace FakeItEasy.Core
 
         private void ApplyInitialConfiguration(object proxy)
         {
-            this.fakeObjectConfigurator.ConfigureFake(this.typeOfFake, proxy);
-
             foreach (var proxyConfigurationAction in this.proxyOptions.ProxyConfigurationActions)
             {
                 proxyConfigurationAction(proxy);

@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Core
 {
     using System;
+    using Creation;
 
     /// <summary>
     /// A null implementation for the IFakeObjectContainer interface.
@@ -21,11 +22,11 @@
         }
 
         /// <summary>
-        /// Applies base configuration to a fake object.
+        /// Configures a fake's creation options.
         /// </summary>
         /// <param name="typeOfFake">The type the fake object represents.</param>
-        /// <param name="fakeObject">The fake object to configure.</param>
-        public void ConfigureFake(Type typeOfFake, object fakeObject)
+        /// <param name="fakeOptions">The options to build for the fake's creation.</param>
+        public void BuildOptions(Type typeOfFake, IFakeOptions fakeOptions)
         {
         }
     }

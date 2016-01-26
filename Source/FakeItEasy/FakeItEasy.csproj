@@ -94,12 +94,17 @@
     <Compile Include="Core\IFakeCallProcessorProvider.cs" />
     <Compile Include="Core\FakeCallProcessorProvider.cs" />
     <Compile Include="Core\EventHandlerArgumentProviderMap.cs" />
+    <Compile Include="Creation\FakeOptionsBase.cs" />
+    <Compile Include="Creation\IFakeOptions.of.T.cs" />
+    <Compile Include="Creation\IFakeOptionsForWrappers.of.T.cs" />
     <Compile Include="Creation\IProxyOptions.cs" />
     <Compile Include="DefaultBootstrapper.cs" />
     <Compile Include="Expressions\ArgumentConstraints\IArgumentValueProvider.cs" />
     <Compile Include="Expressions\ArgumentConstraints\OutArgumentConstraint.cs" />
     <Compile Include="Expressions\ArgumentConstraints\RefArgumentConstraint.cs" />
+    <Compile Include="FakeOptionsBuilder.cs" />
     <Compile Include="IBootstrapper.cs" />
+    <Compile Include="IFakeOptionsBuilder.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
     <Compile Include="Core\DelegateRaiser.cs" />
@@ -344,7 +349,7 @@
     <Compile Include="Core\IFakeObjectCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\IFakeObjectConfigurator.cs">
+    <Compile Include="Core\IFakeObjectOptionsBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\IFakeObjectContainer.cs">
@@ -479,9 +484,7 @@
     </Compile>
     <Compile Include="OrderedAssertion.cs" />
     <Compile Include="CompletedFakeObjectCallExtensions.cs" />
-    <Compile Include="FakeConfigurator.cs" />
     <Compile Include="DummyFactory.cs" />
-    <Compile Include="IFakeConfigurator.cs" />
     <Compile Include="IDummyFactory.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions.cs" />
     <Compile Include="MustBeImplementedException.cs" />

@@ -14,7 +14,7 @@
         /// When overridden in a derived class, provides a custom list of assembly file
         /// names to scan for extension points, such as
         /// <see cref="IDummyFactory"/>s, <see cref="IArgumentValueFormatter"/>s, and 
-        /// <see cref="IFakeConfigurator"/>s.
+        /// <see cref="IFakeOptionsBuilder"/>s.
         /// </summary>
         /// <returns>
         /// An empty list, but may be overridden to provide a list of absolute paths

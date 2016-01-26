@@ -344,11 +344,11 @@
     <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRule.cs">
       <Link>Core\IFakeObjectCallRule.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeObjectConfigurator.cs">
-      <Link>Core\IFakeObjectConfigurator.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeObjectContainer.cs">
       <Link>Core\IFakeObjectContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\IFakeObjectOptionsBuilder.cs">
+      <Link>Core\IFakeObjectOptionsBuilder.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeScope.cs">
       <Link>Core\IFakeScope.cs</Link>
@@ -424,6 +424,15 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\FakeObjectCreator.cs">
       <Link>Creation\FakeObjectCreator.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\FakeOptionsBase.cs">
+      <Link>FakeOptionsBase.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\IFakeOptions.of.T.cs">
+      <Link>Creation\IFakeOptions.of.T.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsForWrappers.of.T.cs">
+      <Link>Creation\IFakeOptionsForWrappers.of.T.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Creation\IProxyOptions.cs">
       <Link>Creation\IProxyOptions.cs</Link>
@@ -545,14 +554,14 @@
     <Compile Include="..\FakeItEasy\FakeAttribute.cs">
       <Link>FakeAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\FakeConfigurator.cs">
-      <Link>FakeConfigurator.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\FakeFacade.cs">
       <Link>FakeFacade.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\FakeObjectCallExtensions.cs">
       <Link>FakeObjectCallExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\FakeOptionsBuilder.cs">
+      <Link>FakeOptionsBuilder.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\FakeOptionsExtensions.cs">
       <Link>FakeOptionsExtensions.cs</Link>
@@ -575,8 +584,8 @@
     <Compile Include="..\FakeItEasy\IDummyFactory.cs">
       <Link>IDummyFactory.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\IFakeConfigurator.cs">
-      <Link>IFakeConfigurator.cs</Link>
+    <Compile Include="..\FakeItEasy\IFakeOptionsBuilder.cs">
+      <Link>IFakeOptionsBuilder.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\IFileSystem.cs">
       <Link>IFileSystem.cs</Link>

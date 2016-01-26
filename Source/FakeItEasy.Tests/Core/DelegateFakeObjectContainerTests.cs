@@ -2,6 +2,7 @@
 {
     using System;
     using FakeItEasy.Core;
+    using FakeItEasy.Creation;
     using NUnit.Framework;
 
     [TestFixture]
@@ -61,7 +62,7 @@
 
             var container = this.CreateContainer();
 
-            container.ConfigureFake(typeof(IFoo), fake);
+            container.BuildOptions(typeof(IFoo), A.Dummy<IFakeOptions>());
         }
 
         private DelegateFakeObjectContainer CreateContainer()

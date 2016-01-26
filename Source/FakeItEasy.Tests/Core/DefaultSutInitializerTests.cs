@@ -57,17 +57,27 @@
         }
 
         [Test]
-        public void Should_pass_empty_fake_options_to_fake_manager()
+        public void Should_pass_empty_options_builder_to_fake_manager_for_each_constructor_argument()
         {
             // Arrange
             this.StubFakeManagerWithFake<IFoo>();
             this.StubFakeManagerWithFake<object>();
+            var optionsBuilders = new List<Action<IFakeOptions>>();
+            A.CallTo(() => this.fakeManager.CreateFake(A<Type>._, A<Action<IFakeOptions>>._))
+                .Invokes((Type type, Action<IFakeOptions> optionBuilder) => optionsBuilders.Add(optionBuilder));
 
             // Act
             this.sutInitializer.CreateSut(typeof(TypeWithFakeableDependencies), (x, y) => { });
 
             // Assert
-            A.CallTo(() => this.fakeManager.CreateFake(A<Type>._, A<IProxyOptions>.That.Not.IsEmpty())).MustNotHaveHappened();
+            Assert.That(optionsBuilders, Has.Count.EqualTo(2), "not all constructor arguments were configured");
+            var fakeOptions = A.Fake<IFakeOptions>();
+            foreach (var optionsBuilder in optionsBuilders)
+            {
+                optionsBuilder.Invoke(fakeOptions);
+            }
+
+            A.CallTo(fakeOptions).MustNotHaveHappened();
         }
 
         [Test]
@@ -89,7 +99,8 @@
 
         private void StubFakeManagerWithFake<T>()
         {
-            A.CallTo(() => this.fakeManager.CreateFake(typeof(T), A<IProxyOptions>._)).ReturnsLazily(() => A.Fake<T>());
+            A.CallTo(() => this.fakeManager.CreateFake(typeof(T), A<Action<IFakeOptions>>._))
+                .ReturnsLazily(() => A.Fake<T>());
         }
 
         public class TypeWithFakeableDependencies

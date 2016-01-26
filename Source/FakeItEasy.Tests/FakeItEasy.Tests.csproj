@@ -92,6 +92,7 @@
     <Compile Include="Configuration\ArgumentCollectionTests.cs" />
     <Compile Include="Core\FakeManagerProviderTests.cs" />
     <Compile Include="DefaultBootstrapperTests.cs" />
+    <Compile Include="FakeOptionsBuilderTests.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\DefaultInterceptionAsserterTests.cs" />
@@ -117,9 +118,6 @@
     <Compile Include="Core\FakeCallEqualityComparerTests.cs" />
     <Compile Include="Core\TypeCatalogueInstanceProviderTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidatorTests.cs" />
-    <Compile Include="Creation\DefaultFakeCreatorTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Creation\DefaultFakeObjectCreatorTests.cs" />
     <Compile Include="Creation\DelegateProxies\DelegateProxyGeneratorTests.cs" />
     <Compile Include="Creation\DummyValueCreationSessionTests.cs" />
@@ -137,7 +135,6 @@
     <Compile Include="ArgumentConstraintManagerExtensions\StringStartsWithTests.cs" />
     <Compile Include="Core\FakeWrapperConfiguratorTests.cs" />
     <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
-    <Compile Include="Core\FakeConfiguratorTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\IsInstanceOfTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\IsNullTests.cs" />

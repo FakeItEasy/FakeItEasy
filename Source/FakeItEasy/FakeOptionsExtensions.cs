@@ -30,6 +30,24 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Makes the fake strict. This means that any call to the fake
+        /// that has not been explicitly configured will throw an exception.
+        /// </summary>
+        /// <param name="optionsBuilder">Action that builds options used to create the fake object.</param>
+        /// <returns>A configuration object.</returns>
+        public static IFakeOptions Strict(this IFakeOptions optionsBuilder)
+        {
+            Guard.AgainstNull(optionsBuilder, "optionsBuilder");
+
+            Action<IFakeObjectCall> thrower = call =>
+                {
+                    throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(call.Method.Name));
+                };
+
+            return optionsBuilder.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
+        }
+
+        /// <summary>
         /// Makes the fake default to calling base methods, so long as they aren't abstract.
         /// </summary>
         /// <typeparam name="T">The type of fake object.</typeparam>
@@ -40,6 +58,20 @@ namespace FakeItEasy
             Guard.AgainstNull(options, "options");
 
             return options.ConfigureFake(fake => A.CallTo(fake)
+                                                  .Where(call => !call.Method.IsAbstract)
+                                                  .CallsBaseMethod());
+        }
+
+        /// <summary>
+        /// Makes the fake default to calling base methods, so long as they aren't abstract.
+        /// </summary>
+        /// <param name="optionsBuilder">Action that builds options used to create the fake object.</param>
+        /// <returns>A configuration object.</returns>
+        public static IFakeOptions CallsBaseMethods(this IFakeOptions optionsBuilder)
+        {
+            Guard.AgainstNull(optionsBuilder, "optionsBuilder");
+
+            return optionsBuilder.ConfigureFake(fake => A.CallTo(fake)
                                                   .Where(call => !call.Method.IsAbstract)
                                                   .CallsBaseMethod());
         }

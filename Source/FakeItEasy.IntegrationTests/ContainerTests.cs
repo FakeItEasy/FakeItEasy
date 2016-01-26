@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Creation;
     using FakeItEasy.Core;
     using NUnit.Framework;
 
@@ -56,7 +57,7 @@
                 return this.RegisteredTypes.TryGetValue(typeOfFakeObject, out fakeObject);
             }
 
-            public void ConfigureFake(Type typeOfFakeObject, object fakeObject)
+            public void BuildOptions(Type typeOfFake, IFakeOptions fakeOptions)
             {
             }
         }

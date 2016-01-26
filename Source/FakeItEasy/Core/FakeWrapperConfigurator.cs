@@ -2,7 +2,6 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq.Expressions;
     using System.Reflection.Emit;
     using Creation;
     using FakeItEasy.SelfInitializedFakes;
@@ -11,7 +10,8 @@ namespace FakeItEasy.Core
     /// Handles configuring of fake objects to delegate all their calls to a wrapped instance.
     /// </summary>
     /// <typeparam name="T">The type of fake object generated.</typeparam>
-    internal class FakeWrapperConfigurator<T> : IFakeOptionsForWrappers<T>
+    internal class FakeWrapperConfigurator<T>
+        : FakeOptionsBase<T>, IFakeOptionsForWrappers<T>, IFakeOptionsForWrappers
     {
         private readonly IFakeOptions<T> fakeOptions;
 
@@ -25,37 +25,27 @@ namespace FakeItEasy.Core
 
         private object WrappedObject { get; set; }
 
-        public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+        public override IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
         {
             return this.fakeOptions.WithArgumentsForConstructor(argumentsForConstructor);
         }
 
-        public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
-        {
-            return this.fakeOptions.WithArgumentsForConstructor(constructorCall);
-        }
-
-        public IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
+        public override IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
         {
             return this.fakeOptions.Wrapping(wrappedInstance);
         }
 
-        public IFakeOptions<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+        public override IFakeOptions<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
         {
             return this.fakeOptions.WithAdditionalAttributes(customAttributeBuilders);
         }
 
-        public IFakeOptions<T> Implements(Type interfaceType)
+        public override IFakeOptions<T> Implements(Type interfaceType)
         {
             return this.fakeOptions.Implements(interfaceType);
         }
 
-        public IFakeOptions<T> Implements<TInterface>()
-        {
-            return this.fakeOptions.Implements<TInterface>();
-        }
-
-        public IFakeOptions<T> ConfigureFake(Action<T> action)
+        public override IFakeOptions<T> ConfigureFake(Action<T> action)
         {
             return this.fakeOptions.ConfigureFake(action);
         }
@@ -64,6 +54,11 @@ namespace FakeItEasy.Core
         {
             this.Recorder = recorder;
             return this.fakeOptions;
+        }
+
+        IFakeOptions IFakeOptionsForWrappers.RecordedBy(ISelfInitializingFakeRecorder recorder)
+        {
+            return (IFakeOptions)this.RecordedBy(recorder);
         }
 
         /// <summary>

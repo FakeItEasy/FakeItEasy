@@ -19,7 +19,7 @@
         /// <summary>
         /// Provides a list of assembly file names to scan for extension points, such as
         /// <see cref="IDummyFactory"/>s, <see cref="IArgumentValueFormatter"/>s, and 
-        /// <see cref="IFakeConfigurator"/>s.
+        /// <see cref="IFakeOptionsBuilder"/>s.
         /// </summary>
         /// <returns>A list of absolute paths pointing to assemblies to scan for extension points.</returns>
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "A property would not be appropriate here since the operation might perform significant work.")]

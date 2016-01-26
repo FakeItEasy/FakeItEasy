@@ -5,31 +5,31 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Creation;
 
     /// <summary>
-    /// A IFakeObjectContainer implementation that uses MEF to load IDummyFactories and
-    /// IFakeConfigurations.
+    /// A fake object container that uses MEF to load <see cref="IDummyFactory"/>s and
+    /// <see cref="IFakeOptionsBuilder"/>s.
     /// </summary>
     public class DynamicContainer
         : IFakeObjectContainer
     {
         private readonly IEnumerable<IDummyFactory> allDummyFactories;
-        private readonly IEnumerable<IFakeConfigurator> allFakeConfigurators;
-        private readonly ConcurrentDictionary<Type, IFakeConfigurator> cachedFakeConfigurators;
+        private readonly IEnumerable<IFakeOptionsBuilder> allFakeOptionsBuilders;
+        private readonly ConcurrentDictionary<Type, IFakeOptionsBuilder> cachedFakeOptionsBuilders;
         private readonly ConcurrentDictionary<Type, IDummyFactory> cachedDummyFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicContainer" /> class.
         /// </summary>
         /// <param name="dummyFactories">The dummy factories.</param>
-        /// <param name="fakeConfigurators">The fake configurators.</param>
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Configurators", Justification = "This is the correct spelling.")]
-        public DynamicContainer(IEnumerable<IDummyFactory> dummyFactories, IEnumerable<IFakeConfigurator> fakeConfigurators)
+        /// <param name="fakeOptionsBuilders">The fake options builders.</param>
+        public DynamicContainer(IEnumerable<IDummyFactory> dummyFactories, IEnumerable<IFakeOptionsBuilder> fakeOptionsBuilders)
         {
             this.allDummyFactories = dummyFactories.OrderByDescending(factory => factory.Priority).ToArray();
-            this.allFakeConfigurators = fakeConfigurators.OrderByDescending(factory => factory.Priority).ToArray();
+            this.allFakeOptionsBuilders = fakeOptionsBuilders.OrderByDescending(factory => factory.Priority).ToArray();
             this.cachedDummyFactories = new ConcurrentDictionary<Type, IDummyFactory>();
-            this.cachedFakeConfigurators = new ConcurrentDictionary<Type, IFakeConfigurator>();
+            this.cachedFakeOptionsBuilders = new ConcurrentDictionary<Type, IFakeOptionsBuilder>();
         }
 
         /// <summary>
@@ -59,16 +59,16 @@
         /// Applies base configuration to a fake object.
         /// </summary>
         /// <param name="typeOfFake">The type the fake object represents.</param>
-        /// <param name="fakeObject">The fake object to configure.</param>
-        public void ConfigureFake(Type typeOfFake, object fakeObject)
+        /// <param name="fakeOptions">The options to build for the fake's creation.</param>
+        public void BuildOptions(Type typeOfFake, IFakeOptions fakeOptions)
         {
-            var fakeConfigurator = this.cachedFakeConfigurators.GetOrAdd(
+            var fakeOptionsBuilder = this.cachedFakeOptionsBuilders.GetOrAdd(
                 typeOfFake,
-                type => this.allFakeConfigurators.FirstOrDefault(configurator => configurator.CanConfigureFakeOfType(type)));
+                type => this.allFakeOptionsBuilders.FirstOrDefault(builder => builder.CanBuildOptionsForFakeOfType(type)));
 
-            if (fakeConfigurator != null)
+            if (fakeOptionsBuilder != null)
             {
-                fakeConfigurator.ConfigureFake(fakeObject);
+                fakeOptionsBuilder.BuildOptions(typeOfFake, fakeOptions);
             }
         }
     }
