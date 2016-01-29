@@ -22,9 +22,10 @@ namespace FakeItEasy
         /// registered for the same type the one with the highest
         /// priority is used.
         /// </summary>
+        /// <remarks>The default implementation returns a priority of <code>0</code>.</remarks>
         public virtual int Priority
         {
-            get { return int.MinValue; }
+            get { return 0; }
         }
 
         /// <summary>

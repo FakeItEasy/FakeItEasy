@@ -107,6 +107,11 @@ namespace FakeItEasy.Core
         private class DefaultFormatter
             : ArgumentValueFormatter<object>
         {
+            public override int Priority
+            {
+                get { return -1; }
+            }
+
             protected override string GetStringValue(object argumentValue)
             {
                 Guard.AgainstNull(argumentValue, "argumentValue");
@@ -118,6 +123,11 @@ namespace FakeItEasy.Core
         private class DefaultStringFormatter
             : ArgumentValueFormatter<string>
         {
+            public override int Priority
+            {
+                get { return -1; }
+            }
+
             protected override string GetStringValue(string argumentValue)
             {
                 Guard.AgainstNull(argumentValue, "argumentValue");

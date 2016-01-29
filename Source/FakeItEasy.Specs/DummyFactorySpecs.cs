@@ -27,6 +27,33 @@ namespace FakeItEasy.Specs
             "it should use the one with higher priority"
                 .x(() => dummy.ID.Should().Be(-17));
         }
+
+        [Scenario]
+        public static void GenericDummyFactoryDefaultPriority(
+            IDummyFactory formatter,
+            int priority)
+        {
+            "Given a dummy factory that extends the generic base"
+                .x(() => formatter = new SomeDummyFactory());
+
+            "When I fetch the Priority"
+                .x(() => priority = formatter.Priority);
+
+            "Then it should be 0"
+                .x(() => priority.Should().Be(0));
+        }
+
+        private class SomeClass
+        {
+        }
+
+        private class SomeDummyFactory : DummyFactory<SomeClass>
+        {
+            protected override SomeClass Create()
+            {
+                return new SomeClass();
+            }
+        }
     }
 
     public class DomainEventDummyFactory : IDummyFactory
