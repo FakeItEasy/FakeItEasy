@@ -35,7 +35,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 return "sequence that contains the value 10";
             }
         }
-        
+
         protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)
         {
             scope.Contains(10);

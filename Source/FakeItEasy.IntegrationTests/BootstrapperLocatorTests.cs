@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests
 {
     using System.Collections;
     using FluentAssertions;
@@ -11,7 +11,7 @@
         public void Should_find_bootstrapper_in_app_domain_during_initialization()
         {
             // Arrange
-            
+
             // Act
             A.Fake<IList>(); // to make sure we've initialized FakeItEasy
 

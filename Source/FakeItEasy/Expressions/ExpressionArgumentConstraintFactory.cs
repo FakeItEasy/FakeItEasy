@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Expressions
+namespace FakeItEasy.Expressions
 {
     using System;
     using System.Collections.Generic;

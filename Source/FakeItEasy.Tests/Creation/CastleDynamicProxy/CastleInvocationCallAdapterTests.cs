@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
+namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
     using System.Reflection;

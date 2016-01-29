@@ -1,7 +1,7 @@
 namespace FakeItEasy
 {
     using System;
-    
+
     /// <summary>
     /// An attribute that can be applied to code that should be fixed because there's a
     /// code smell.

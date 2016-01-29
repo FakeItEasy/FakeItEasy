@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy
+namespace FakeItEasy
 {
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;

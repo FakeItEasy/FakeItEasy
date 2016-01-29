@@ -1,4 +1,4 @@
-﻿namespace System.Collections.Concurrent
+namespace System.Collections.Concurrent
 {
     using System.Collections.Generic;
 

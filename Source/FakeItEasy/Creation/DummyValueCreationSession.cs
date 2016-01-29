@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Creation
+namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
@@ -30,13 +30,13 @@
             this.strategyCache = new Dictionary<Type, ResolveStrategy>();
             this.strategies = new ResolveStrategy[]
                 {
-                    new ResolveFromContainerStrategy { Container = container }, 
+                    new ResolveFromContainerStrategy { Container = container },
 #if NET40
-                    new ResolveByCreatingTaskStrategy { Session = this }, 
+                    new ResolveByCreatingTaskStrategy { Session = this },
                     new ResolveByCreatingLazyStrategy { Session = this },
 #endif
-                    new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this }, 
-                    new ResolveByActivatingValueTypeStrategy(), 
+                    new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this },
+                    new ResolveByActivatingValueTypeStrategy(),
                     new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy { Session = this }
                 };
         }
@@ -183,9 +183,9 @@
                     {
                         return false;
                     }
-                    
+
                     var funcType = typeof(Func<>).MakeGenericType(typeOfLazyResult);
-        
+
                     var method = CreateGenericFromResultMethodDefinition().MakeGenericMethod(typeOfLazyResult);
                     var func = method.Invoke(null, new[] { lazyResult });
                     result = typeOfDummy.GetConstructor(new[] { funcType, typeof(bool) }).Invoke(new object[] { func, true });
@@ -206,7 +206,7 @@
             {
                 return () => value;
             }
-        }  
+        }
 #endif
 
         private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy : ResolveStrategy

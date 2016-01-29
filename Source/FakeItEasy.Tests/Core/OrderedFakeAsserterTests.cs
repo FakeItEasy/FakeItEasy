@@ -9,7 +9,7 @@ namespace FakeItEasy.Tests.Core
     public class OrderedFakeAsserterTests
     {
         private CallWriter callWriter;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -29,7 +29,7 @@ namespace FakeItEasy.Tests.Core
 
             // Act
             orderedAsserter.AssertWasCalled(secondCallPredicate, "foo", x => x == 1, "foo");
-            
+
             // Assert
             Assert.Throws<ExpectationException>(() =>
                 orderedAsserter.AssertWasCalled(firstCallPredicate, "foo", x => x == 1, "foo"));

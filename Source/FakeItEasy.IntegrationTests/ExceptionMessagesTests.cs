@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests
 {
     using System.Collections.Generic;
     using System.Linq;

@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
@@ -24,7 +24,7 @@
             var resolvedArguments = this.ResolveArguments(constructorSignature, onFakeCreated);
 
             var argumentsArray = constructorSignature.Select(x => resolvedArguments[x]).ToArray();
-            
+
             return Activator.CreateInstance(typeOfSut, argumentsArray);
         }
 

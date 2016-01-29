@@ -216,7 +216,7 @@
     <Compile Include="NextCallTests.cs" />
     <Compile Include="Configuration\VisualBasicHelpersTests.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManagerTests.cs" />
-    <Compile Include="Fake(T)Tests.cs" />
+    <Compile Include="Fake.of.T.Tests.cs" />
     <Compile Include="Configuration\RecordingRuleBuilderTests.cs" />
     <Compile Include="ExceptionThrowerConfigurationExtensionsTests.cs" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using System.Collections.Generic;
@@ -18,8 +18,8 @@
     {
         [Scenario]
         public static void SelfInitializing(
-            InMemoryStorage inMemoryStorage, 
-            ILibraryService realServiceWhileRecording, 
+            InMemoryStorage inMemoryStorage,
+            ILibraryService realServiceWhileRecording,
             ILibraryService realServiceDuringPlayback,
             int count1ForBook1WhileRecording,
             int count1ForBook1DuringPlayback,

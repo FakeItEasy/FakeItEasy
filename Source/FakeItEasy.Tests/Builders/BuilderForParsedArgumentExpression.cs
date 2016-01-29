@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Builders
+namespace FakeItEasy.Tests.Builders
 {
     using System;
     using System.Diagnostics;

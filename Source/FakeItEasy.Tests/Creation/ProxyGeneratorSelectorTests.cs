@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Creation
+namespace FakeItEasy.Tests.Creation
 {
     using System;
     using FakeItEasy.Core;
@@ -12,7 +12,7 @@
 #pragma warning disable 649
         [Fake]
         private DelegateProxyGenerator delegateProxyGenerator;
-        
+
         [Fake]
         private IProxyGenerator defaultProxyGenerator;
 

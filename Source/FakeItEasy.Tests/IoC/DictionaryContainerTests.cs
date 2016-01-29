@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.IoC
+namespace FakeItEasy.Tests.IoC
 {
     using FakeItEasy.IoC;
     using NUnit.Framework;

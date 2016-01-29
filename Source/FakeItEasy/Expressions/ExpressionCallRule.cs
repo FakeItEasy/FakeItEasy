@@ -23,7 +23,7 @@ namespace FakeItEasy.Expressions
             this.ExpressionMatcher = expressionMatcher;
             this.SetOutAndRefParametersValueProducer(expressionMatcher.GetOutAndRefParametersValueProducer());
         }
-        
+
         /// <summary>
         /// Handles the instantiation of ExpressionCallRule instance.
         /// </summary>

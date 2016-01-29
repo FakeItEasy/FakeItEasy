@@ -16,7 +16,7 @@ namespace FakeItEasy
     public class Fake<T> : IStartConfiguration<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Fake{T}"/> class. 
+        /// Initializes a new instance of the <see cref="Fake{T}"/> class.
         /// Creates a new fake object.
         /// </summary>
         public Fake()
@@ -25,7 +25,7 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Fake{T}"/> class. 
+        /// Initializes a new instance of the <see cref="Fake{T}"/> class.
         /// Creates a new fake object using options built by <paramref name="optionsBuilder"/>.
         /// </summary>
         /// <param name="optionsBuilder">

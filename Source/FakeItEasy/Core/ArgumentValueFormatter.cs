@@ -17,7 +17,7 @@ namespace FakeItEasy.Core
             this.typeFormatters = typeFormatters.Concat(
                 new IArgumentValueFormatter[]
                     {
-                        new DefaultStringFormatter(), 
+                        new DefaultStringFormatter(),
                         new DefaultFormatter()
                     });
         }

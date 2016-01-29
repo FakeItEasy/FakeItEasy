@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests
 {
     using System;
     using FakeItEasy.Core;
@@ -27,7 +27,7 @@
         {
             // Arrange
             var senderToUse = new object();
-            
+
             // Act
             this.foo.SomethingHappened += Raise.With(senderToUse, EventArgs.Empty);
 

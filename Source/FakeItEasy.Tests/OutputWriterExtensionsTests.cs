@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests
 {
     using System;
     using FluentAssertions;
@@ -12,7 +12,7 @@
         {
             // Arrange
             var writer = A.Fake<IOutputWriter>();
-            
+
             // Act
             writer.WriteLine();
 

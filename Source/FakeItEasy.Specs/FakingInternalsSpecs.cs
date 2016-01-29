@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using System.Collections.Generic;
@@ -27,7 +27,7 @@
                         exception.Message.Should().Contain("[assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2\")]");
                     });
         }
-   
+
         [Scenario]
         public static void GenericTypeWithInternalTypeParameters(
             Exception exception)
@@ -42,10 +42,10 @@
                              .And.Contain(
                                  "because type FakeItEasy.Specs.IInternal is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2"));
         }
-   
+
         [Scenario]
         public static void OverrideInternalMethod(
-            TypeWithInternalMethod fake, 
+            TypeWithInternalMethod fake,
             Exception exception)
         {
             "establish"

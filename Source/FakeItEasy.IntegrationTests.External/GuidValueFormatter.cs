@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests.External
+namespace FakeItEasy.IntegrationTests.External
 {
     using System;
     using FakeItEasy;

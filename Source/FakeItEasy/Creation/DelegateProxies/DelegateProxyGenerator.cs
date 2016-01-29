@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Creation.DelegateProxies
+namespace FakeItEasy.Creation.DelegateProxies
 {
     using System;
     using System.Collections.Generic;

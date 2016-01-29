@@ -47,7 +47,7 @@ namespace FakeItEasy.IntegrationTests
                 {
                     Console.SetOut(originalWriter);
                 }
-                
+
                 messageWriter.Flush();
                 actualMessage = messageWriter.Encoding.GetString(messageStream.GetBuffer());
             }
@@ -136,7 +136,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Act
             catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
-            
+
             // Assert
             catalogue.GetAvailableTypes().Select(type => type.FullName).Should().Contain("FakeItEasy.IntegrationTests.External.GuidValueFormatter");
         }
@@ -149,7 +149,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Act
             catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
-            
+
             // Assert
             catalogue.GetAvailableTypes().Should().NotContain(typeof(string));
         }

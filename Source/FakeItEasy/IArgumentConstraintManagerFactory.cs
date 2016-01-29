@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy
+namespace FakeItEasy
 {
     internal interface IArgumentConstraintManagerFactory
     {

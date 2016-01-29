@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Globalization;
@@ -28,7 +28,7 @@
                 typeof(SomeType));
 
             var factory = new TestableFakeFactory() as IDummyFactory;
-            
+
             var exception = Record.Exception(() => factory.Create(typeof(DummyFactoryTests)));
 
             exception.Should()

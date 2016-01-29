@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     /// <summary>
     /// Represents a listener for fake object calls, can be plugged into a

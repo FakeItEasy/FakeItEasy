@@ -30,7 +30,7 @@ namespace FakeItEasy.Configuration
             Guard.AgainstNull(callSpecification, "callSpecification");
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
-            
+
             var rule = this.callRuleFactory(callSpecification);
             this.manager.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, rule);

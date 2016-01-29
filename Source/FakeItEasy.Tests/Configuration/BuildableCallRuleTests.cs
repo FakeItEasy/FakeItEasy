@@ -224,7 +224,7 @@ namespace FakeItEasy.Tests.Configuration
         [Test]
         public void Should_write_description_of_valid_call_by_calling_the_description_property()
         {
-            // Arrange           
+            // Arrange
             this.rule.DescriptionOfValidCallReturnValue = "description";
 
             var writer = new StringBuilderOutputWriter();

@@ -17,7 +17,7 @@ namespace FakeItEasy.Configuration
         }
 
         public delegate RecordingRuleBuilder Factory(RecordedCallRule rule, FakeManager fakeObject);
-        
+
         public IAfterCallSpecifiedConfiguration DoesNothing()
         {
             return this.wrappedBuilder.DoesNothing();

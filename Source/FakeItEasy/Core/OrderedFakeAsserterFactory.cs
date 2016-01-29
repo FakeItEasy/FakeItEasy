@@ -19,7 +19,7 @@ namespace FakeItEasy.Core
         {
             return new CompositeAsserter
                        {
-                           Asserter = this.asserterFactory(calls), 
+                           Asserter = this.asserterFactory(calls),
                            OrderedAsserter = this.orderedAsserter
                        };
         }

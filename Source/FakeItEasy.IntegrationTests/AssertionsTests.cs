@@ -59,7 +59,7 @@ namespace FakeItEasy.IntegrationTests
                 foo.Bar();
                 foo.Baz();
 
-                // Assert            
+                // Assert
                 using (scope.OrderedAssertions())
                 {
                     A.CallTo(() => foo.Bar()).MustHaveHappened();

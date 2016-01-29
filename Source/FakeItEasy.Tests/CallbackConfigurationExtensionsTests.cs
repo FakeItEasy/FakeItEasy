@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests
 {
     using System;
     using FakeItEasy.Configuration;
@@ -47,7 +47,7 @@
             bool actionIsInvoked = false;
 
             var fake = A.Fake<IInterface>();
-            
+
             // Act
             A.CallTo(() => fake.ActionOfOne(A<int>._))
                 .Invokes(() => actionIsInvoked = true);
@@ -68,7 +68,7 @@
             // Act
             A.CallTo(() => fake.Action())
                 .Invokes(() => actionIsInvoked = true);
-            
+
             // Assert
             fake.Action();
             actionIsInvoked.Should().BeTrue();
@@ -96,7 +96,7 @@
             const int ReturnValue = 0;
 
             var fake = A.Fake<IInterface>();
-            
+
             // Act
             A.CallTo(() => fake.Request())
                 .Invokes(() => { })
@@ -116,7 +116,7 @@
             int? collectedArgument = null;
 
             var fake = A.Fake<IInterface>();
-            
+
             // Act
             A.CallTo(() => fake.ActionOfOne(A<int>._))
                 .Invokes((int i) =>
@@ -141,7 +141,7 @@
             string collectedArgument = null;
 
             var fake = A.Fake<IInterface>();
-            
+
             // Act
             A.CallTo(() => fake.ActionOfOne(A<string>._))
                 .Invokes((string s) =>
@@ -149,7 +149,7 @@
                                 actionIsInvoked = true;
                                 collectedArgument = s;
                             });
-            
+
             // Assert
             fake.ActionOfOne(Argument);
 
@@ -221,7 +221,7 @@
             int? secondCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
-            
+
             // Act
             A.CallTo(() => fake.ActionOfTwo(A<int>._, A<int>._))
                 .Invokes((int i, int j) =>
@@ -251,7 +251,7 @@
             string secondCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
-            
+
             // Act
             A.CallTo(() => fake.ActionOfTwo(A<string>._, A<string>._))
                 .Invokes((string s, string t) =>
@@ -444,7 +444,7 @@
         {
             // Arrange
             var fake = A.Fake<IInterface>();
-            
+
             // Act
             A.CallTo(() => fake.ActionOfThree(A<int>._, A<int>._, A<int>._))
                 .Invokes((string s, int i, int j) => { });
@@ -460,7 +460,7 @@
         {
             // Arrange
             var fake = A.Fake<IInterface>();
-            
+
             // Act
             A.CallTo(() => fake.ActionOfThree(A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, string s, int j) => { });
@@ -476,11 +476,11 @@
         {
             // Arrange
             var fake = A.Fake<IInterface>();
-            
+
             // Act
             A.CallTo(() => fake.ActionOfThree(A<int>._, A<int>._, A<int>._))
                 .Invokes((int i, int j, string s) => { });
-            
+
             // Assert
             Action act = () => fake.ActionOfThree(5, 8, 13);
 
@@ -665,7 +665,7 @@
         private static void AssertThatSignatureMismatchExceptionIsThrown(Action act, string fakeSignature, string invokesSignature)
         {
             var expectedMessage = "The faked method has the signature " + fakeSignature + ", but invokes was used with " + invokesSignature + ".";
-            
+
             var exception = Record.Exception(act);
 
             exception.Should().BeAnExceptionOfType<FakeConfigurationException>()

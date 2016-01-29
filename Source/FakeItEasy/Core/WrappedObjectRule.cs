@@ -10,7 +10,7 @@ namespace FakeItEasy.Core
         private readonly object wrappedObject;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WrappedObjectRule"/> class. 
+        /// Initializes a new instance of the <see cref="WrappedObjectRule"/> class.
         /// Creates a new instance.
         /// </summary>
         /// <param name="wrappedInstance">

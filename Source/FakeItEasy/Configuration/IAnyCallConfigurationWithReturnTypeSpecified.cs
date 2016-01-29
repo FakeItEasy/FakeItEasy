@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Configuration
+namespace FakeItEasy.Configuration
 {
     /// <summary>
     /// Aggregate of IReturnValueArgumentValidationConfiguration&lt;T&gt; and IWhereConfiguration&lt;IAnyCallConfigurationWithReturnTypeSpecified&lt;T&gt;&gt;.

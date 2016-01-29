@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
@@ -60,7 +60,7 @@
             {
                 return;
             }
-            
+
             var formatter = ServiceLocator.Current.Resolve<ArgumentValueFormatter>();
 
             var fakeSignature = BuildSignatureDescription(callMethod.GetParameters().Select(p => (object)p.ParameterType), formatter);

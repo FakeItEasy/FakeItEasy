@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using System.Reflection.Emit;
@@ -83,7 +83,7 @@
             "Then an exception will be thrown"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
         }
-        
+
         [Scenario]
         public void DefinedFakeOptionsBuilderCallsBaseMethods(
             CallsBaseMethods fake,
