@@ -112,8 +112,8 @@ namespace FakeItEasy.Tests.Core
         public void Should_use_formatter_with_highest_priority_when_multiple_exists_for_the_same_type()
         {
             // Arrange
-            this.AddTypeFormatter(typeof(string), "low priority", 0);
-            this.AddTypeFormatter(typeof(string), "high priority", 1);
+            this.AddTypeFormatter(typeof(string), "low priority", new Priority(0));
+            this.AddTypeFormatter(typeof(string), "high priority", new Priority(1));
 
             // Act
             var result = this.formatter.GetArgumentValueAsString("string value");
@@ -133,8 +133,8 @@ namespace FakeItEasy.Tests.Core
         public void Should_prefer_exact_type_formatter_to_interface_formatter()
         {
             // Arrange
-            this.AddTypeFormatter(typeof(IEnumerable), "an enumerable", 0);
-            this.AddTypeFormatter(typeof(string), "a string", 0);
+            this.AddTypeFormatter(typeof(IEnumerable), "an enumerable");
+            this.AddTypeFormatter(typeof(string), "a string");
 
             // Act
             var result = this.formatter.GetArgumentValueAsString("string value");
@@ -144,7 +144,7 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void Built_in_formatters_should_have_negative_priority()
+        public void Built_in_formatters_should_have_lower_than_default_priority()
         {
             // Arrange
             var allArgumentValueFormatters = typeof(A).Assembly.GetTypes()
@@ -154,14 +154,14 @@ namespace FakeItEasy.Tests.Core
 
             // Act
             var typesWithNonNegativePriority = allArgumentValueFormatters
-                .Where(f => f.Priority >= 0)
+                .Where(f => f.Priority >= Priority.Default)
                 .Select(f => f.GetType());
 
             // Assert
             Assert.That(
                 typesWithNonNegativePriority,
                 Is.Empty,
-                "because no built-in formatters should have non-negative priority");
+                "because no built-in formatters should have priority equal to or greater than the default");
         }
 
         private void AddTypeFormatter<T>(string formattedValue)
@@ -171,10 +171,10 @@ namespace FakeItEasy.Tests.Core
 
         private void AddTypeFormatter(Type type, string formattedValue)
         {
-            this.AddTypeFormatter(type, formattedValue, int.MinValue);
+            this.AddTypeFormatter(type, formattedValue, Priority.Default);
         }
 
-        private void AddTypeFormatter(Type type, string formattedValue, int priority)
+        private void AddTypeFormatter(Type type, string formattedValue, Priority priority)
         {
             var formatter = A.Fake<IArgumentValueFormatter>();
             A.CallTo(() => formatter.ForType).Returns(type);

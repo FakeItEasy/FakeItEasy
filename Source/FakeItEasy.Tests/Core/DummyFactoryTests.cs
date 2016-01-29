@@ -39,7 +39,7 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void Built_in_factories_should_have_negative_priority()
+        public void Built_in_factories_should_have_lower_than_default_priority()
         {
             // Arrange
             var allDummyFactories = typeof(A).Assembly.GetTypes()
@@ -49,11 +49,11 @@ namespace FakeItEasy.Tests.Core
 
             // Act
             var typesWithNonNegativePriority = allDummyFactories
-                .Where(f => f.Priority >= 0)
+                .Where(f => f.Priority >= Priority.Default)
                 .Select(f => f.GetType());
 
             // Assert
-            typesWithNonNegativePriority.Should().BeEmpty("because no built-in factories should have non-negative priority");
+            typesWithNonNegativePriority.Should().BeEmpty("because no built-in factories should have priority equal to or greater than the default");
         }
 
         public class SomeType

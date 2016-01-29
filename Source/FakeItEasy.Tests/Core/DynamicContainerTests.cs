@@ -116,9 +116,9 @@ namespace FakeItEasy.Tests.Core
 
         public class OptionsBuilderForTypeWithDummyFactory : IFakeOptionsBuilder
         {
-            public int Priority
+            public Priority Priority
             {
-                get { return 0; }
+                get { return Priority.Default; }
             }
 
             public bool CanBuildOptionsForFakeOfType(Type type)
@@ -139,9 +139,9 @@ namespace FakeItEasy.Tests.Core
 
         public class DuplicateOptionsBuilderForTypeWithDummyFactory : IFakeOptionsBuilder
         {
-            public int Priority
+            public Priority Priority
             {
-                get { return 0; }
+                get { return Priority.Default; }
             }
 
             public bool CanBuildOptionsForFakeOfType(Type type)

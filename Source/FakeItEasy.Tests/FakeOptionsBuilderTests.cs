@@ -24,7 +24,7 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void Built_in_options_builders_should_have_negative_priority()
+        public void Built_in_options_builders_should_have_lower_than_default_priority()
         {
             // Arrange
             var allOptionsBuilders = typeof(A).Assembly.GetTypes()
@@ -34,11 +34,11 @@ namespace FakeItEasy.Tests
 
             // Act
             var typesWithNonNegativePriority = allOptionsBuilders
-                .Where(f => f.Priority >= 0)
+                .Where(f => f.Priority >= Priority.Default)
                 .Select(f => f.GetType());
 
             // Assert
-            typesWithNonNegativePriority.Should().BeEmpty("because no built-in options builders should have non-negative priority");
+            typesWithNonNegativePriority.Should().BeEmpty("because no built-in options builders should have priority equal to or greater than the default");
         }
 
         private class FakeOptionsBuilderTestsOptionsBuilder : FakeOptionsBuilder<FakeOptionsBuilderTests>

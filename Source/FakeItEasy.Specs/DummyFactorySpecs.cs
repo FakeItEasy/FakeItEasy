@@ -31,7 +31,7 @@ namespace FakeItEasy.Specs
         [Scenario]
         public static void GenericDummyFactoryDefaultPriority(
             IDummyFactory formatter,
-            int priority)
+            Priority priority)
         {
             "Given an argument value formatter that does not override priority"
                 .x(() => formatter = new SomeDummyFactory());
@@ -39,8 +39,8 @@ namespace FakeItEasy.Specs
             "When I fetch the Priority"
                 .x(() => priority = formatter.Priority);
 
-            "Then it should be 0"
-                .x(() => priority.Should().Be(0));
+            "Then it should be the default priority"
+                .x(() => priority.Should().Be(Priority.Default));
         }
 
         private class SomeClass
@@ -60,9 +60,9 @@ namespace FakeItEasy.Specs
     {
         private int nextID = 1;
 
-        public int Priority
+        public Priority Priority
         {
-            get { return -3; }
+            get { return Priority.Default; }
         }
 
         public bool CanCreate(Type type)
@@ -80,6 +80,11 @@ namespace FakeItEasy.Specs
 
     public class RobotRunsAmokEventDummyFactory : DummyFactory<RobotRunsAmokEvent>
     {
+        public override Priority Priority
+        {
+            get { return new Priority(3); }
+        }
+
         protected override RobotRunsAmokEvent Create()
         {
             return new RobotRunsAmokEvent { ID = -17 };

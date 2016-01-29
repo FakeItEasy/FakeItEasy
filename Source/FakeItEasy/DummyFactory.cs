@@ -13,10 +13,10 @@ namespace FakeItEasy
         /// Gets the priority of the dummy factory. When multiple factories that apply to the same type are registered,
         /// the one with the highest priority is used.
         /// </summary>
-        /// <remarks>The default implementation returns <c>0</c>.</remarks>
-        public virtual int Priority
+        /// <remarks>The default implementation returns <see cref="FakeItEasy.Priority.Default"/>.</remarks>
+        public virtual Priority Priority
         {
-            get { return 0; }
+            get { return Priority.Default; }
         }
 
         /// <summary>

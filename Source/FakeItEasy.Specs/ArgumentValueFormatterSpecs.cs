@@ -9,7 +9,7 @@
         [Scenario]
         public static void GenericArgumentValueFormatterDefaultPriority(
             IArgumentValueFormatter formatter,
-            int priority)
+            Priority priority)
         {
             "Given an argument value formatter that does not override priority"
                 .x(() => formatter = new SomeArgumentValueFormatter());
@@ -17,8 +17,8 @@
             "When I fetch the Priority"
                 .x(() => priority = formatter.Priority);
 
-            "Then it should be 0"
-                .x(() => priority.Should().Be(0));
+            "Then it should be the default priority"
+                .x(() => priority.Should().Be(Priority.Default));
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Required for testing.")]

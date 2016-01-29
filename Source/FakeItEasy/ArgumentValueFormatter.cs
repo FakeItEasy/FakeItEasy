@@ -19,13 +19,12 @@ namespace FakeItEasy
 
         /// <summary>
         /// Gets the priority of the formatter, when two formatters are
-        /// registered for the same type the one with the highest
-        /// priority is used.
+        /// registered for the same type the one with the highest priority value is used.
         /// </summary>
-        /// <remarks>The default implementation returns a priority of <code>0</code>.</remarks>
-        public virtual int Priority
+        /// <remarks>The default implementation returns <see cref="FakeItEasy.Priority.Default"/>.</remarks>
+        public virtual Priority Priority
         {
-            get { return 0; }
+            get { return Priority.Default; }
         }
 
         /// <summary>

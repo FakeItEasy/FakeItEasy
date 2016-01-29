@@ -158,7 +158,7 @@ namespace FakeItEasy.Specs
         [Scenario]
         public void GenericFakeOptionsBuilderDefaultPriority(
             IFakeOptionsBuilder builder,
-            int priority)
+            Priority priority)
         {
             "Given a fake options builder that does not override priority"
                 .x(() => builder = new SomeClassOptionsBuilder());
@@ -166,8 +166,8 @@ namespace FakeItEasy.Specs
             "When the default priority is fetched"
                 .x(() => priority = builder.Priority);
 
-            "Then it should be 0"
-                .x(() => priority.Should().Be(0));
+            "Then it should be the default priority"
+                .x(() => priority.Should().Be(Priority.Default));
         }
 
         [Scenario]
@@ -232,9 +232,9 @@ namespace FakeItEasy.Specs
 
     public abstract class ConventionBasedOptionsBuilder : IFakeOptionsBuilder
     {
-        public int Priority
+        public Priority Priority
         {
-            get { return 0; }
+            get { return Priority.Default; }
         }
 
         public bool CanBuildOptionsForFakeOfType(Type type)
@@ -401,9 +401,9 @@ namespace FakeItEasy.Specs
     {
         private int nextID = 1;
 
-        public int Priority
+        public Priority Priority
         {
-            get { return -1; }
+            get { return Priority.Default; }
         }
 
         public bool CanBuildOptionsForFakeOfType(Type type)
@@ -439,6 +439,11 @@ namespace FakeItEasy.Specs
     public class RobotRunsAmokEventFakeOptionsBuilder : FakeOptionsBuilder<RobotRunsAmokEvent>
     {
         public static readonly DateTime ConfiguredTimestamp = new DateTime(1997, 8, 29, 2, 14, 03);
+
+        public override Priority Priority
+        {
+            get { return new Priority(5); }
+        }
 
         protected override void BuildOptions(IFakeOptions<RobotRunsAmokEvent> options)
         {
