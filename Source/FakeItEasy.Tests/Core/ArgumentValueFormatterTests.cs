@@ -5,6 +5,7 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using FakeItEasy.Core;
     using NUnit.Framework;
 
@@ -140,6 +141,27 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             Assert.That(result, Is.EqualTo("a string"));
+        }
+
+        [Test]
+        public void Built_in_formatters_should_have_negative_priority()
+        {
+            // Arrange
+            var allArgumentValueFormatters = typeof(A).Assembly.GetTypes()
+                .Where(t => t.CanBeInstantiatedAs(typeof(IArgumentValueFormatter)))
+                .Select(Activator.CreateInstance)
+                .Cast<IArgumentValueFormatter>();
+
+            // Act
+            var typesWithNonNegativePriority = allArgumentValueFormatters
+                .Where(f => f.Priority >= 0)
+                .Select(f => f.GetType());
+
+            // Assert
+            Assert.That(
+                typesWithNonNegativePriority,
+                Is.Empty,
+                "because no built-in formatters should have non-negative priority");
         }
 
         private void AddTypeFormatter<T>(string formattedValue)

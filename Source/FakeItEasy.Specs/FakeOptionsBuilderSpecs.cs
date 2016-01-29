@@ -160,7 +160,7 @@ namespace FakeItEasy.Specs
             IFakeOptionsBuilder builder,
             int priority)
         {
-            "Given an options builder that extends the generic base"
+            "Given a fake options builder that does not override priority"
                 .x(() => builder = new SomeClassOptionsBuilder());
 
             "When the default priority is fetched"
