@@ -148,7 +148,7 @@ namespace FakeItEasy.Creation
                     object taskResult;
                     if (!this.Session.TryResolveDummyValue(typeOfTaskResult, out taskResult))
                     {
-                        return false;
+                        taskResult = typeOfTaskResult.GetDefaultValue();
                     }
 
                     var method = GenericFromResultMethodDefinition.MakeGenericMethod(typeOfTaskResult);
@@ -181,7 +181,7 @@ namespace FakeItEasy.Creation
                     object lazyResult;
                     if (!this.Session.TryResolveDummyValue(typeOfLazyResult, out lazyResult))
                     {
-                        return false;
+                        lazyResult = typeOfLazyResult.GetDefaultValue();
                     }
 
                     var funcType = typeof(Func<>).MakeGenericType(typeOfLazyResult);
