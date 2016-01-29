@@ -10,10 +10,9 @@ namespace FakeItEasy
     {
         /// <summary>
         /// Gets the priority of the options builder. When multiple builders that apply to
-        /// the same type are registered, the one with the highest priority is used.
+        /// the same type are registered, the one with the highest priority value is used.
         /// </summary>
-        /// <remarks>Negative values are reserved for use by FakeItEasy.</remarks>
-        int Priority { get; }
+        Priority Priority { get; }
 
         /// <summary>
         /// Whether or not this object can build options for a Fake of type <paramref name="type"/>.

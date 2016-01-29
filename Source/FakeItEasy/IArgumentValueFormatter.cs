@@ -15,10 +15,9 @@ namespace FakeItEasy
 
         /// <summary>
         /// Gets the priority of the formatter, when two formatters are
-        /// registered for the same type the one with the highest
-        /// priority is used.
+        /// registered for the same type the one with the highest priority value is used.
         /// </summary>
-        int Priority { get; }
+        Priority Priority { get; }
 
         /// <summary>
         /// Gets a string representing the specified argument value.

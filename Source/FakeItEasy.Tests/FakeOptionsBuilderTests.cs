@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests
 
             // Act
             var typesWithNonNegativePriority = allOptionsBuilders
-                .Where(f => f.Priority >= 0)
+                .Where(f => f.Priority >= new Priority(0))
                 .Select(f => f.GetType());
 
             // Assert

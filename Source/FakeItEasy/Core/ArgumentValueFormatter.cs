@@ -107,9 +107,9 @@ namespace FakeItEasy.Core
         private class DefaultFormatter
             : ArgumentValueFormatter<object>
         {
-            public override int Priority
+            public override Priority Priority
             {
-                get { return -1; }
+                get { return new Priority(-1); }
             }
 
             protected override string GetStringValue(object argumentValue)
@@ -123,9 +123,9 @@ namespace FakeItEasy.Core
         private class DefaultStringFormatter
             : ArgumentValueFormatter<string>
         {
-            public override int Priority
+            public override Priority Priority
             {
-                get { return -1; }
+                get { return new Priority(-1); }
             }
 
             protected override string GetStringValue(string argumentValue)

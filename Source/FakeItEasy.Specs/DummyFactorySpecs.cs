@@ -31,7 +31,7 @@ namespace FakeItEasy.Specs
         [Scenario]
         public static void GenericDummyFactoryDefaultPriority(
             IDummyFactory formatter,
-            int priority)
+            Priority priority)
         {
             "Given a dummy factory that extends the generic base"
                 .x(() => formatter = new SomeDummyFactory());
@@ -40,7 +40,7 @@ namespace FakeItEasy.Specs
                 .x(() => priority = formatter.Priority);
 
             "Then it should be 0"
-                .x(() => priority.Should().Be(0));
+                .x(() => priority.Should().Be(new Priority(0)));
         }
 
         private class SomeClass
@@ -60,9 +60,9 @@ namespace FakeItEasy.Specs
     {
         private int nextID = 1;
 
-        public int Priority
+        public Priority Priority
         {
-            get { return -3; }
+            get { return new Priority(0); }
         }
 
         public bool CanCreate(Type type)
@@ -80,6 +80,11 @@ namespace FakeItEasy.Specs
 
     public class RobotRunsAmokEventDummyFactory : DummyFactory<RobotRunsAmokEvent>
     {
+        public override Priority Priority
+        {
+            get { return new Priority(3); }
+        }
+
         protected override RobotRunsAmokEvent Create()
         {
             return new RobotRunsAmokEvent { ID = -17 };

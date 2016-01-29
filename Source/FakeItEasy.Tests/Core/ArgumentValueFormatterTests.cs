@@ -154,7 +154,7 @@ namespace FakeItEasy.Tests.Core
 
             // Act
             var typesWithNonNegativePriority = allArgumentValueFormatters
-                .Where(f => f.Priority >= 0)
+                .Where(f => f.Priority >= new Priority(0))
                 .Select(f => f.GetType());
 
             // Assert
@@ -171,15 +171,15 @@ namespace FakeItEasy.Tests.Core
 
         private void AddTypeFormatter(Type type, string formattedValue)
         {
-            this.AddTypeFormatter(type, formattedValue, int.MinValue);
+            this.AddTypeFormatter(type, formattedValue, short.MinValue);
         }
 
-        private void AddTypeFormatter(Type type, string formattedValue, int priority)
+        private void AddTypeFormatter(Type type, string formattedValue, short priority)
         {
             var formatter = A.Fake<IArgumentValueFormatter>();
             A.CallTo(() => formatter.ForType).Returns(type);
             A.CallTo(() => formatter.GetArgumentValueAsString(A<object>._)).Returns(formattedValue);
-            A.CallTo(() => formatter.Priority).Returns(priority);
+            A.CallTo(() => formatter.Priority).Returns(new Priority(priority));
             this.registeredTypeFormatters.Add(formatter);
         }
     }
