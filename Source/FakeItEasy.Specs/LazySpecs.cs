@@ -11,6 +11,8 @@ namespace FakeItEasy.Specs
         public interface ILazyFactory
         {
             Lazy<IFoo> Create();
+
+            Lazy<Bar> CreateBar();
         }
 
         [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "Required for testing.")]
@@ -36,6 +38,24 @@ namespace FakeItEasy.Specs
                 .x(() => lazy.Value.Should().Be(FooFactory.Instance));
         }
 
+        [Scenario]
+        public static void LazyReturnValueOfNonFakeableType(
+            ILazyFactory fake,
+            Lazy<Bar> lazy)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<ILazyFactory>());
+
+            "When calling a method that returns a lazy"
+                .x(() => lazy = fake.CreateBar());
+
+            "Then it should return a lazy"
+                .x(() => lazy.Should().NotBeNull());
+
+            "And the value of the lazy should be null"
+                .x(() => lazy.Value.Should().BeNull());
+        }
+
         public class FooFactory : DummyFactory<IFoo>, IFoo
         {
             private static IFoo instance = new FooFactory();
@@ -48,6 +68,13 @@ namespace FakeItEasy.Specs
             protected override IFoo Create()
             {
                 return instance;
+            }
+        }
+
+        public class Bar
+        {
+            internal Bar()
+            {
             }
         }
     }
