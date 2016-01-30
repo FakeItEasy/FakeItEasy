@@ -1,9 +1,9 @@
 namespace FakeItEasy
 {
     using System;
-    
+
     /// <summary>
-    /// Provides string formatting for arguments when written in 
+    /// Provides string formatting for arguments when written in
     /// call lists.
     /// </summary>
     public interface IArgumentValueFormatter

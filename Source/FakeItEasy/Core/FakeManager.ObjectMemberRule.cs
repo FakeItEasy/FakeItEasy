@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
@@ -14,8 +14,8 @@
             private static readonly List<RuntimeMethodHandle> ObjectMethodsMethodHandles =
                 new List<RuntimeMethodHandle>
                     {
-                        typeof(object).GetMethod("Equals", new[] { typeof(object) }).MethodHandle, 
-                        typeof(object).GetMethod("ToString", new Type[] { }).MethodHandle, 
+                        typeof(object).GetMethod("Equals", new[] { typeof(object) }).MethodHandle,
+                        typeof(object).GetMethod("ToString", new Type[] { }).MethodHandle,
                         typeof(object).GetMethod("GetHashCode", new Type[] { }).MethodHandle
                     };
 

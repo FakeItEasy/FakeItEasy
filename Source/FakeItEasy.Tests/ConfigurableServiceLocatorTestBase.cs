@@ -1,14 +1,14 @@
 namespace FakeItEasy.Tests
 {
     using NUnit.Framework;
-    
+
     public abstract class ConfigurableServiceLocatorTestBase
     {
         private ServiceLocator replacedServiceLocator;
-        
+
         [SetUp]
         public void Setup()
-        {            
+        {
             this.replacedServiceLocator = ServiceLocator.Current;
             ServiceLocator.Current = A.Fake<ServiceLocator>(x => x.Wrapping(ServiceLocator.Current));
 

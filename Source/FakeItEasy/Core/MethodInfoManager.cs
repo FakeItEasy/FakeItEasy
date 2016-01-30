@@ -5,7 +5,7 @@ namespace FakeItEasy.Core
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
-    
+
     /// <summary>
     /// Handles comparisons of instances of <see cref="MethodInfo"/>.
     /// </summary>
@@ -170,7 +170,7 @@ namespace FakeItEasy.Core
             }
 
             public MethodInfo MethodInfo { get; private set; }
-            
+
             public Type Type { get; private set; }
 
             public override int GetHashCode()

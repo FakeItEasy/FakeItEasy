@@ -17,7 +17,7 @@ namespace FakeItEasy.Tests.Configuration
         private IEnumerable<IFakeObjectCall> argumentUsedForAsserterFactory;
         private IFakeAsserter asserter;
         private IFakeObjectCallFormatter callFormatter;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -109,7 +109,7 @@ namespace FakeItEasy.Tests.Configuration
             rule.Apply(call);
 
             A.CallTo(() => this.asserter.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>._, "at least once")).MustHaveHappened();
-            
+
             var asserterCall = Fake.GetCalls(this.asserter).Matching<IFakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>._, A<string>._)).Single();
             var repeatPredicatePassedToAsserter = asserterCall.Arguments.Get<Func<int, bool>>("repeatPredicate");
 

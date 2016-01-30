@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     {
         protected override IEnumerable<object> InvalidValues
         {
-            get 
+            get
             {
                 yield return null;
                 yield return new List<object>() { 1, 2 };
@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
         protected override IEnumerable<object> ValidValues
         {
-            get 
+            get
             {
                 yield return new List<object>();
                 yield return Enumerable.Empty<object>();
@@ -31,7 +31,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
         protected override string ExpectedDescription
         {
-            get 
+            get
             {
                 return "empty collection";
             }

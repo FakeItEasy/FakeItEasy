@@ -32,7 +32,7 @@ namespace FakeItEasy.Tests.Configuration
             // Assert
             Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("Recorded call"));
         }
-        
+
         private RecordedCallRule CreateRule()
         {
             return new RecordedCallRule(A.Fake<MethodInfoManager>());

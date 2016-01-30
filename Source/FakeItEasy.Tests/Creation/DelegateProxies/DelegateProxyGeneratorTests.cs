@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Creation.DelegateProxies
+namespace FakeItEasy.Tests.Creation.DelegateProxies
 {
     using System;
     using System.Linq;

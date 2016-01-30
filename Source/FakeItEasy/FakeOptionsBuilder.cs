@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy
+namespace FakeItEasy
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -36,7 +36,7 @@
         }
 
         /// <summary>
-        /// Manipulates <paramref name="options"/>, which will later be used to 
+        /// Manipulates <paramref name="options"/>, which will later be used to
         /// create a Fake.
         /// </summary>
         /// <param name="typeOfFake">The type the fake object represents.</param>
@@ -57,7 +57,7 @@
         }
 
         /// <summary>
-        /// Manipulates <paramref name="options"/>, which will later be used to 
+        /// Manipulates <paramref name="options"/>, which will later be used to
         /// create a Fake.
         /// </summary>
         /// <param name="options">The fake options to manipulate.</param>

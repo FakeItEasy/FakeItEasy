@@ -39,8 +39,8 @@ namespace FakeItEasy.Core
                 {
                     callInfos.Add(new CallInfo
                                       {
-                                          Call = call, 
-                                          CallNumber = i + 1, 
+                                          Call = call,
+                                          CallNumber = i + 1,
                                           StringRepresentation = this.callFormatter.GetDescription(call)
                                       });
                 }
@@ -61,7 +61,7 @@ namespace FakeItEasy.Core
         {
             var lastCall = callInfos.Last();
             var numberOfDigitsInLastCallNumber = lastCall.NumberOfDigitsInCallNumber();
-            
+
             foreach (var call in callInfos)
             {
                 if (call.CallNumber > 1)
@@ -78,7 +78,7 @@ namespace FakeItEasy.Core
                 {
                     writer.Write(call.StringRepresentation);
                 }
-                
+
                 if (call.Repeat > 1)
                 {
                     writer.Write(" repeated ");

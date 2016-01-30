@@ -42,9 +42,9 @@ namespace FakeItEasy.Core
             this.allUserRulesField = new LinkedList<CallRuleMetadata>();
             this.postUserRules = new[]
                                      {
-                                         new CallRuleMetadata { Rule = new ObjectMemberRule { FakeManager = this } }, 
-                                         new CallRuleMetadata { Rule = new AutoFakePropertyRule { FakeManager = this } }, 
-                                         new CallRuleMetadata { Rule = new PropertySetterRule { FakeManager = this } }, 
+                                         new CallRuleMetadata { Rule = new ObjectMemberRule { FakeManager = this } },
+                                         new CallRuleMetadata { Rule = new AutoFakePropertyRule { FakeManager = this } },
+                                         new CallRuleMetadata { Rule = new PropertySetterRule { FakeManager = this } },
                                          new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
                                      };
 

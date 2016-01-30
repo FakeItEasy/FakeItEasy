@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Expressions
+namespace FakeItEasy.Tests.Expressions
 {
     using System;
     using FakeItEasy.Configuration;
@@ -52,7 +52,7 @@
             NullGuardedConstraint.Assert(() =>
                 new ExpressionCallRule(this.callMatcher));
         }
-      
+
         [Test]
         public void Apply_should_call_the_applicator_with_the_incoming_call()
         {

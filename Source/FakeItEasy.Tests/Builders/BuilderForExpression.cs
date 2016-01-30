@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Builders
+namespace FakeItEasy.Tests.Builders
 {
     using System;
     using System.Linq.Expressions;
@@ -26,7 +26,7 @@
         {
             return this.Do(x => x.builtExpression = callSpecification.Body);
         }
-      
+
         protected override Expression Build()
         {
             return this.builtExpression;

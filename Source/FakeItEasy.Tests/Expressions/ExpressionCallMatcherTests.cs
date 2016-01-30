@@ -45,7 +45,7 @@ namespace FakeItEasy.Tests.Expressions
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar());
 
             this.StubMethodInfoManagerToReturn(true);
-            
+
             matcher.Matches(call).Should().BeTrue();
         }
 
@@ -109,7 +109,7 @@ namespace FakeItEasy.Tests.Expressions
                 .Returns(true);
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._))
                 .Returns(validator);
-            
+
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(argument1, argument2));
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(argument1, argument2));
 
@@ -129,7 +129,7 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => validator.IsValid(A<object>._)).Returns(true).Once();
 
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).Returns(validator);
-            
+
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2));
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 3));
 
@@ -159,7 +159,7 @@ namespace FakeItEasy.Tests.Expressions
             ArgumentCollection argumentsPassedToPredicate = null;
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(null, null));
-            
+
             matcher.UsePredicateToValidateArguments(x =>
                 {
                     argumentsPassedToPredicate = x;

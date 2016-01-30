@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core
 {
     using System.Linq;
     using System.Threading;
@@ -73,7 +73,7 @@
             // its constraint and finished.
             // Without per-thread constraint trapping, this would mean that the first thread's constraint
             // would be lost.
-            
+
             // Arrange
             var lateStartingLock = new ManualResetEventSlim(false);
             var lateEndingLock = new ManualResetEventSlim(false);
@@ -101,12 +101,12 @@
             var lateStartingTask = Task.Factory.StartNew(() =>
             {
                 lateStartingLock.Wait();
-                
+
                 lateStartingResult = this.trap.TrapConstraints(() =>
                 {
                     ArgumentConstraintTrap.ReportTrappedConstraint(lateStartingConstraint);
                 }).SingleOrDefault();
-                
+
                 lateEndingLock.Set();
             });
 

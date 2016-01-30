@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -82,8 +82,8 @@
 
         [Scenario]
         public static void GettingUnconfiguredFakeableProperty(
-            IHaveInterestingProperties subject, 
-            IHaveInterestingProperties firstValue, 
+            IHaveInterestingProperties subject,
+            IHaveInterestingProperties firstValue,
             IHaveInterestingProperties secondValue)
         {
             "establish"
@@ -105,8 +105,8 @@
 
         [Scenario]
         public static void GettingUnconfiguredUnfakeableProperty(
-            IHaveInterestingProperties subject, 
-            UnfakeableClass firstValue, 
+            IHaveInterestingProperties subject,
+            UnfakeableClass firstValue,
             UnfakeableClass secondValue)
         {
             "establish"

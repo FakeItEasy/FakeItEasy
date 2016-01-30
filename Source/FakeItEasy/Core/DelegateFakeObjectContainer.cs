@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
@@ -14,7 +14,7 @@
         private readonly Dictionary<Type, Func<object>> registeredDelegates;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DelegateFakeObjectContainer"/> class. 
+        /// Initializes a new instance of the <see cref="DelegateFakeObjectContainer"/> class.
         /// Creates a new instance of the DelegateFakeObjectContainer.
         /// </summary>
         public DelegateFakeObjectContainer()

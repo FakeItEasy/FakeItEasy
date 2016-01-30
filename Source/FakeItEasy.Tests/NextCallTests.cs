@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests
 {
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -11,7 +11,7 @@
         [Test]
         public void To_should_be_properly_guarded()
         {
-            NullGuardedConstraint.Assert(() => 
+            NullGuardedConstraint.Assert(() =>
                 NextCall.To(A.Fake<IFoo>()));
         }
 
@@ -35,7 +35,7 @@
                 {
                     return r.Equals(recordedRule) && f.Equals(fake) ? builder : null;
                 });
-            
+
             // Act
             var result = NextCall.To(foo);
 

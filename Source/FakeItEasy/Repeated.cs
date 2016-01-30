@@ -6,7 +6,7 @@ namespace FakeItEasy
     using FakeItEasy.Configuration;
 
     /// <summary>
-    /// Provides syntax for specifying the number of times a call must have been repeated when asserting on 
+    /// Provides syntax for specifying the number of times a call must have been repeated when asserting on
     /// fake object calls.
     /// </summary>
     /// <example><code>A.CallTo(() => foo.Bar()).Assert(Happened.Once.Exactly);</code></example>
@@ -101,7 +101,7 @@ namespace FakeItEasy
             }
 
             public delegate bool RepeatValidator(int actualRepeat, int expectedRepeat);
-            
+
             public Repeated Once
             {
                 get { return new RepeatedWithDescription(x => this.repeatValidator(x, 1), this.description + " once"); }
@@ -146,7 +146,7 @@ namespace FakeItEasy
             {
                 return "never";
             }
-            
+
             internal override bool Matches(int repeat)
             {
                 return repeat == 0;

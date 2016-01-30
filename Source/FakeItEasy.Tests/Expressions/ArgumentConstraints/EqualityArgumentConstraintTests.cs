@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.ExpressionsConstraints
+namespace FakeItEasy.Tests.ExpressionsConstraints
 {
     using System;
     using System.Collections.Generic;

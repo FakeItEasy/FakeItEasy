@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using System.Collections;
@@ -65,7 +65,7 @@
         private static object CapturedArgs2 { get; set; }
 
         private static object CaughtException { get; set; }
-        
+
         [Background]
         public void Background()
         {
@@ -282,7 +282,7 @@
                         .Message.Should().Be(ExpectedMessage);
                     });
         }
-   
+
         [Scenario]
         public void ValueTypeEventHandlerWithNullValue()
         {
@@ -295,7 +295,7 @@
                              .And.Message.Should().Be(
                                  "The event has the signature (System.Int32), but the provided arguments have types (<NULL>)."));
         }
-   
+
         [Scenario]
         public void ActionEvent()
         {

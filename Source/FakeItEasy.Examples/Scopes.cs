@@ -20,7 +20,7 @@ namespace FakeItEasy.Examples
 
             using (Fake.CreateScope())
             {
-                // This will produce 0, no calls were made to the create method 
+                // This will produce 0, no calls were made to the create method
                 // in the current scope.
                 Fake.GetCalls(factory).Matching<IWidgetFactory>(x => x.Create()).Count();
 
@@ -64,9 +64,9 @@ namespace FakeItEasy.Examples
             using (Fake.CreateScope())
             {
                 factory.AnyCall().Throws(new Exception());
-                
+
                 using (Fake.CreateScope())
-                { 
+                {
                     // Will throw since it's configured in outer scope.
                     factory.FakedObject.Create();
 

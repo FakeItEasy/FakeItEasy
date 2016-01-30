@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var innerAsserter = A.Fake<FakeAsserter>();
-            Func<IEnumerable<IFakeObjectCall>, FakeAsserter> innerFactory = x => 
+            Func<IEnumerable<IFakeObjectCall>, FakeAsserter> innerFactory = x =>
             {
                 return innerAsserter;
             };
@@ -23,7 +23,7 @@ namespace FakeItEasy.Tests.Core
 
             Func<IFakeObjectCall, bool> callPredicate = x => true;
             Func<int, bool> repeatPredicate = x => true;
-            
+
             // Act
             var asserter = factory.CreateAsserter(Enumerable.Empty<IFakeObjectCall>());
             asserter.AssertWasCalled(callPredicate, "call description", repeatPredicate, "repeat description");

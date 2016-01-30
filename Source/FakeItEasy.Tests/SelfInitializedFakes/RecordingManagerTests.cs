@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.SelfInitializedFakes
+namespace FakeItEasy.Tests.SelfInitializedFakes
 {
     using System.Collections.Generic;
     using System.Linq;

@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var bootstrapper = new DefaultBootstrapper();
-            
+
             // Act
             var assemblyFileNames = bootstrapper.GetAssemblyFileNamesToScanForExtensions();
 

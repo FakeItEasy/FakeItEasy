@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -155,7 +155,7 @@
                     collectedArgument = s;
                     return ReturnValue;
                 });
-            
+
             // Act
             var result = fake.RequestOfOne(Argument);
 
@@ -177,7 +177,7 @@
                 collectedArgument = s;
                 return ReturnValue;
             });
-            
+
             // Act
             var result = fake.RequestOfOneWithOutput(out argument);
 
@@ -490,7 +490,7 @@
 
                     return ReturnValue;
                 });
-            
+
             // Act
             var result = fake.RequestOfThreeWithOutputAndReference(out firstArgument, ref secondArgument, ThirdArgument);
 
@@ -865,7 +865,7 @@
         {
             // Arrange
             var expectedMessage = "The faked method has the signature " + fakeSignature + ", but returns lazily was used with " + returnsLazilySignature + ".";
-            
+
             var exception = Record.Exception(act);
 
             exception.Should().BeOfType<FakeConfigurationException>();

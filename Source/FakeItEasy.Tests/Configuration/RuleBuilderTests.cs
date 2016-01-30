@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Configuration
+namespace FakeItEasy.Tests.Configuration
 {
     using System;
     using FakeItEasy.Configuration;

@@ -24,7 +24,7 @@ namespace FakeItEasy.Configuration
         public Repeated RepeatConstraint { get; set; }
 
         public virtual MethodInfo ApplicableToMethod { get; set; }
-        
+
         public virtual Func<ArgumentCollection, bool> IsApplicableToArguments { get; set; }
 
         public override string DescriptionOfValidCall

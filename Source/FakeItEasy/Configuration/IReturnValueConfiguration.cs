@@ -8,10 +8,10 @@ namespace FakeItEasy.Configuration
     /// </summary>
     /// <typeparam name="TMember">The type of the member.</typeparam>
     public interface IReturnValueConfiguration<TMember>
-        : IExceptionThrowerConfiguration, 
-          ICallbackConfiguration<IReturnValueConfiguration<TMember>>, 
-          IAssertConfiguration, 
-          IHideObjectMembers, 
+        : IExceptionThrowerConfiguration,
+          ICallbackConfiguration<IReturnValueConfiguration<TMember>>,
+          IAssertConfiguration,
+          IHideObjectMembers,
           ICallBaseConfiguration
     {
         /// <summary>

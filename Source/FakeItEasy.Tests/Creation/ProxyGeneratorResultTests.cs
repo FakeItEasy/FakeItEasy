@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.Creation
         public void Should_set_that_proxy_was_not_successfully_created_when_constructor_with_error_message_is_used()
         {
             // Arrange
-            
+
             // Act
             var result = new ProxyGeneratorResult(reasonForFailure: "reason");
 

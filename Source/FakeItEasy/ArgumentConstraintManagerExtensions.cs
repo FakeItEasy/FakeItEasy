@@ -139,7 +139,7 @@ namespace FakeItEasy
                 x => object.Equals(value, x),
                 x => x.Write("equal to ").WriteArgumentValue(value));
         }
-        
+
         /// <summary>
         /// Tests that the passed in argument is the same instance (reference) as the specified value.
         /// </summary>

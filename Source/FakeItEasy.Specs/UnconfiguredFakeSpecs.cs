@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System.Diagnostics.CodeAnalysis;
     using FluentAssertions;

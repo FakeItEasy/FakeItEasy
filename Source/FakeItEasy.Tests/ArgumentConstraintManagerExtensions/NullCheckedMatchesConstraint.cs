@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
+namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
     using NUnit.Framework;
@@ -18,7 +18,7 @@
 
         protected override IEnumerable<object> ValidValues
         {
-            get 
+            get
             {
                 yield return "Foo";
                 yield return string.Empty;

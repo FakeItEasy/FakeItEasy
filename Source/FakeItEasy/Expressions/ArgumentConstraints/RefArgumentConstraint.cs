@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Expressions.ArgumentConstraints
+namespace FakeItEasy.Expressions.ArgumentConstraints
 {
     using FakeItEasy.Core;
 

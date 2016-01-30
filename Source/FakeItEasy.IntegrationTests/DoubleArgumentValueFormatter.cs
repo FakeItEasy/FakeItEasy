@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests
 {
     public class DoubleValueFormatter : ArgumentValueFormatter<double>
     {

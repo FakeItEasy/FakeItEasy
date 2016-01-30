@@ -119,7 +119,7 @@ namespace FakeItEasy.Tests.Core
             this.fakeManagerProvider.EnsureInitialized(this.proxy);
             var deserializedFakeManagerProvider = BinarySerializationHelper.SerializeAndDeserialize(this.fakeManagerProvider);
             var deserializedFakeManager = GetInitializedFakeManager(deserializedFakeManagerProvider);
-            
+
             // Act
             var exception = Record.Exception(() => deserializedFakeManagerProvider.Fetch(deserializedFakeManager.Object));
 

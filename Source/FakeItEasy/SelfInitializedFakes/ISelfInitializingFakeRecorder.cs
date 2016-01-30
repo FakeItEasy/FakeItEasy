@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.SelfInitializedFakes
+namespace FakeItEasy.SelfInitializedFakes
 {
     using System;
     using FakeItEasy.Core;

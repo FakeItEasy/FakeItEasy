@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Concurrent;
@@ -22,7 +22,7 @@
         /// <summary>
         /// Allows a more lenient comparison of delegates, chiefly so <see cref="EventHandler"/>s and
         /// <see cref="EventHandler{TEventArgs}"/>s that refer to the same method on the same instance
-        /// will compare as equal. It relies on the fact that every time an event is raised, 
+        /// will compare as equal. It relies on the fact that every time an event is raised,
         /// <see cref="Raise"/> creates a new instance, and the delegate registered in the map
         /// targets that instance.
         /// </summary>

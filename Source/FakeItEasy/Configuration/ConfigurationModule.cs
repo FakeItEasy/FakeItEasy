@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Configuration
+namespace FakeItEasy.Configuration
 {
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -83,10 +83,10 @@
             public IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeManager fakeObject)
             {
                 return new StartConfiguration<TFake>(
-                    fakeObject, 
-                    this.Container.Resolve<ExpressionCallRule.Factory>(), 
-                    this.Container.Resolve<IConfigurationFactory>(), 
-                    this.Container.Resolve<ICallExpressionParser>(), 
+                    fakeObject,
+                    this.Container.Resolve<ExpressionCallRule.Factory>(),
+                    this.Container.Resolve<IConfigurationFactory>(),
+                    this.Container.Resolve<ICallExpressionParser>(),
                     this.Container.Resolve<IInterceptionAsserter>());
             }
         }

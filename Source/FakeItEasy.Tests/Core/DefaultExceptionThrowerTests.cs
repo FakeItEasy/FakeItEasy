@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests.Core
             {
                 TypeOfFake = typeof(int),
                 ReasonForFailureOfDefault = "reason\r\non two lines",
-                ResolvedConstructors = new ResolvedConstructor[] 
+                ResolvedConstructors = new ResolvedConstructor[]
                 {
                     new ResolvedConstructor
                     {
@@ -89,7 +89,7 @@ namespace FakeItEasy.Tests.Core
             {
                 TypeOfFake = typeof(int),
                 ReasonForFailureOfDefault = "reason\r\non two lines",
-                ResolvedConstructors = new ResolvedConstructor[] 
+                ResolvedConstructors = new ResolvedConstructor[]
                 {
                     new ResolvedConstructor
                     {

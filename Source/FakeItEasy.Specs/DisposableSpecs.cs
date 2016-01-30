@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -34,7 +34,7 @@
             "it should not throw when finalized"
                 .x(() => exception.Should().BeNull());
         }
-        
+
         private static void UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             exception = (Exception)e.ExceptionObject;

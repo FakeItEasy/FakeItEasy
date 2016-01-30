@@ -6,7 +6,7 @@ namespace FakeItEasy.Configuration
     /// </summary>
     /// <typeparam name="TMember">The type of the member.</typeparam>
     public interface IReturnValueArgumentValidationConfiguration<TMember>
-        : IReturnValueConfiguration<TMember>, 
+        : IReturnValueConfiguration<TMember>,
           IArgumentValidationConfiguration<IReturnValueConfiguration<TMember>>
     {
     }

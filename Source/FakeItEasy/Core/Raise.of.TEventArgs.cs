@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -30,7 +30,7 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Raise{TEventArgs}"/> class. The sender will be 
+        /// Initializes a new instance of the <see cref="Raise{TEventArgs}"/> class. The sender will be
         /// the fake that raises the event.
         /// </summary>
         /// <param name="e">The event data.</param>

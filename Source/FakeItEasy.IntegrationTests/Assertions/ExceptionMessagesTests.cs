@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests.Assertions
+namespace FakeItEasy.IntegrationTests.Assertions
 {
     using System;
     using FakeItEasy.Tests;
@@ -70,7 +70,7 @@
 ";
             Assert.That(exception.Message, Is.EqualTo(expectedMessage));
         }
-        
+
         [Test]
         public void Should_be_able_to_assert_on_void_calls_from_configuration()
         {
@@ -102,7 +102,7 @@
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-            
+
             // Act
             foo.Baz(new object(), "lorem ipsum");
 

@@ -49,7 +49,7 @@ namespace FakeItEasy.Tests.Creation
                     typeof(IFoo),
                     options.AdditionalInterfacesToImplement,
                     options.ArgumentsForConstructor,
-                    options.AdditionalAttributes, 
+                    options.AdditionalAttributes,
                     A<IFakeCallProcessorProvider>._))
                 .MustHaveHappened();
         }
@@ -263,7 +263,7 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), new ProxyOptions(), session, throwOnFailure: true);
 
             // Assert
-            var expectedConstructors = new[] 
+            var expectedConstructors = new[]
             {
                 new ResolvedConstructor
                 {

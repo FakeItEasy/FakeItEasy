@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.FakeConstraints
+namespace FakeItEasy.Tests.FakeConstraints
 {
     using System.Linq;
     using FakeItEasy.Core;

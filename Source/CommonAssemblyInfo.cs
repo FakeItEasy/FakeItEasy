@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("2.0.0")]
 [assembly: AssemblyInformationalVersion("2.0.0")]
 
-[assembly: AssemblyCompany("Patrik Hägne")]
+[assembly: AssemblyCompany("Patrik HÃ¤gne")]
 [assembly: AssemblyProduct("FakeItEasy")]
 [assembly: AssemblyCopyright("Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)")]
 [assembly: AssemblyTrademark("")]

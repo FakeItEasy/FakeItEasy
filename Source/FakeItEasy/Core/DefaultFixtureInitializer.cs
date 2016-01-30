@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
@@ -28,7 +28,7 @@
         private static SettableMemberInfo GetSutSetter(object fixture)
         {
             var allSettersTaggedUnderTest = GetMembersTaggedWithAttribute(fixture, typeof(UnderTestAttribute));
-            
+
             if (CountIsNoMoreThanOne(allSettersTaggedUnderTest))
             {
                 throw new InvalidOperationException("A fake fixture can only contain one member marked \"under test\".");
@@ -57,7 +57,7 @@
             {
                 return new SettableMemberInfo
                            {
-                               MemberType = property.PropertyType, 
+                               MemberType = property.PropertyType,
                                Setter = x => property.GetSetMethod(nonPublic: true).Invoke(instance, new[] { x })
                            };
             }
@@ -67,7 +67,7 @@
             {
                 return new SettableMemberInfo
                            {
-                               MemberType = field.FieldType, 
+                               MemberType = field.FieldType,
                                Setter = x => field.SetValue(instance, x)
                            };
             }

@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     /// <summary>
     /// Represents the target of intercepted calls of a fake proxy. An implementation of this interface receives calls, gets its arguments

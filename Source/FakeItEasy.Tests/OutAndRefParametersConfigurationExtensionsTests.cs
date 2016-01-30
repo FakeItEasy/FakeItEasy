@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -461,7 +461,7 @@
                     throw new InvalidOperationException(
                         "assigns out and ref parameters lazily action should not be executed");
                 });
-            
+
             Action act = () => fake.RequestOfFour(5, 8, 4, out fakeOut);
 
             // Act, Assert

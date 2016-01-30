@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Expressions
+namespace FakeItEasy.Tests.Expressions
 {
     public abstract class TypeWithInternalProperty
     {

@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -59,7 +59,7 @@
         [Test]
         public void CollectionOfFakes_should_delegate_to_fake_creator()
         {
-            // Arrange            
+            // Arrange
             var returnedFromCreator = new List<IFoo>();
 
             var creator = this.StubResolveWithFake<IFakeCreatorFacade>();

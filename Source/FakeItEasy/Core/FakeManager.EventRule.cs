@@ -188,8 +188,8 @@ namespace FakeItEasy.Core
 
                     return new EventCall
                                {
-                                   Event = eventInfo, 
-                                   CallingMethod = fakeObjectCall.Method, 
+                                   Event = eventInfo,
+                                   CallingMethod = fakeObjectCall.Method,
                                    EventHandler = (Delegate)fakeObjectCall.Arguments[0],
                                };
                 }

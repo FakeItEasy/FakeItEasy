@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -170,7 +170,7 @@
             // Arrange
             var fake = A.Fake<IInterface>();
             Action act = () => fake.ActionOfOne(5);
-            
+
             // Act
             A.CallTo(() => fake.ActionOfOne(A<int>._))
                 .Throws((int i, int j) => { throw new InvalidOperationException("throws action should not be executed"); });
@@ -350,7 +350,7 @@
             var fake = A.Fake<IInterface>();
             Action act = () => fake.ActionOfFour(FirstArgument, SecondArgument, ThirdArgument, FourthArgument);
 
-            // Act            
+            // Act
             A.CallTo(() => fake.ActionOfFour(FirstArgument, SecondArgument, ThirdArgument, FourthArgument))
                 .Throws((int i, int j, int k, int l) =>
             {
@@ -473,7 +473,7 @@
             // Arrange
             var fake = A.Fake<IInterface>();
             Action act = () => fake.ActionOfFour(2, 5, 8, 13);
-            
+
             // Act
             A.CallTo(() => fake.ActionOfFour(A<int>._, A<int>._, A<int>._, A<int>._))
                 .Throws((int i, int j, int l, string s) => { throw new InvalidOperationException("throws action should not be executed"); });
@@ -540,7 +540,7 @@
                 },
                 x => x.Write("function that returns exception of type ").WriteArgumentValue(typeof(T)));
         }
-        
+
         private static void AssertThatSignatureMismatchExceptionIsThrown(Action act, string fakeSignature, string throwsSignature)
         {
             var expectedMessage = "The faked method has the signature " + fakeSignature + ", but throws was used with " + throwsSignature + ".";

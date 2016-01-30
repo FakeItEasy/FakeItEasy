@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests.Configuration
             rule.IsApplicableTo(call);
 
             // Assert
-            Assert.That(rule.IsApplicableTo(call), Is.EqualTo(predicateReturnValue)); 
+            Assert.That(rule.IsApplicableTo(call), Is.EqualTo(predicateReturnValue));
         }
 
         [Test]

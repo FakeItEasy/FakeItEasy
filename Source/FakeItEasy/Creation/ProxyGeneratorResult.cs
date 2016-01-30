@@ -10,7 +10,7 @@ namespace FakeItEasy.Creation
     internal sealed class ProxyGeneratorResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProxyGeneratorResult"/> class. 
+        /// Initializes a new instance of the <see cref="ProxyGeneratorResult"/> class.
         /// Creates a new instance representing a failed proxy
         /// generation attempt.
         /// </summary>
@@ -25,7 +25,7 @@ namespace FakeItEasy.Creation
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProxyGeneratorResult"/> class. 
+        /// Initializes a new instance of the <see cref="ProxyGeneratorResult"/> class.
         /// Creates a new instance representing a failed proxy
         /// generation attempt due to an exception being caught.
         /// </summary>
@@ -57,7 +57,7 @@ namespace FakeItEasy.Creation
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProxyGeneratorResult"/> class. 
+        /// Initializes a new instance of the <see cref="ProxyGeneratorResult"/> class.
         /// Creates a new instance representing a successful proxy
         /// generation.
         /// </summary>

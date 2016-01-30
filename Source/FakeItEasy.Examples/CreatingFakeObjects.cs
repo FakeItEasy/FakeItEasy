@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Examples
+namespace FakeItEasy.Examples
 {
     using FakeItEasy.Examples.ExampleObjects;
 

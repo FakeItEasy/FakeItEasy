@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
 
@@ -41,7 +41,7 @@
             public T Matches(Func<T, bool> predicate, Action<IOutputWriter> descriptionWriter)
             {
                 return this.parent.Matches(
-                    x => !predicate(x), 
+                    x => !predicate(x),
                     x =>
                     {
                         x.Write("not ");
