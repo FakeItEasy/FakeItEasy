@@ -21,14 +21,14 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void LazyReturnValue(
+        public static void LazyReturnValueOfDummyableType(
             ILazyFactory fake,
             Lazy<IFoo> lazy)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<ILazyFactory>());
 
-            "When calling an unconfigured method that returns a lazy of a fakeable type"
+            "When calling an unconfigured method that returns a lazy of a dummyable type"
                 .x(() => lazy = fake.Create());
 
             "Then it should return a lazy"
@@ -39,14 +39,14 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void LazyReturnValueOfNonFakeableType(
+        public static void LazyReturnValueOfNonDummyableType(
             ILazyFactory fake,
             Lazy<Bar> lazy)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<ILazyFactory>());
 
-            "When calling a method that returns a lazy of a non-fakeable type"
+            "When calling a method that returns a lazy of a non-dummyable type"
                 .x(() => lazy = fake.CreateBar());
 
             "Then it should return a lazy"
