@@ -25,16 +25,16 @@ namespace FakeItEasy.Specs
             ILazyFactory fake,
             Lazy<IFoo> lazy)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<ILazyFactory>());
 
-            "when calling a method that returns a lazy"
+            "When calling an unconfigured method that returns a lazy of a fakeable type"
                 .x(() => lazy = fake.Create());
 
-            "it should return a lazy"
+            "Then it should return a lazy"
                 .x(() => lazy.Should().NotBeNull());
 
-            "it should return a lazy whose value is a dummy"
+            "And the value of the lazy should be a dummy"
                 .x(() => lazy.Value.Should().Be(FooFactory.Instance));
         }
 
@@ -46,7 +46,7 @@ namespace FakeItEasy.Specs
             "Given a fake"
                 .x(() => fake = A.Fake<ILazyFactory>());
 
-            "When calling a method that returns a lazy"
+            "When calling a method that returns a lazy of a non-fakeable type"
                 .x(() => lazy = fake.CreateBar());
 
             "Then it should return a lazy"
@@ -73,7 +73,7 @@ namespace FakeItEasy.Specs
 
         public class Bar
         {
-            internal Bar()
+            private Bar()
             {
             }
         }

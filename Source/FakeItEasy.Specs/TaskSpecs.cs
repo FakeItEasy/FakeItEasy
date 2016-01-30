@@ -6,163 +6,178 @@
 
     public static class TaskSpecs
     {
-        public interface IFooAsyncAwaitService
+        public interface IFooBarService
         {
             Task CommandAsync();
 
             Task<int> QueryAsync();
 
+            Task<Foo> GetFooAsync();
+
             Task<Bar> GetBarAsync();
         }
 
         [Scenario]
-        public static void DefinedMethodWithReturnValue(
-            FooAsyncAwait foo,
+        public static void ConfiguredAsyncMethodWithReturnValueOfTypeInt(
+            IFooBarService fake,
             Task<int> task)
         {
-            "establish"
-                .x(() =>
-                    {
-                        var service = A.Fake<IFooAsyncAwaitService>();
-                        A.CallTo(() => service.QueryAsync()).Returns(Task.FromResult(9));
-                        foo = new FooAsyncAwait(service);
-                    });
+            "Given a fake"
+                .x(() => fake = A.Fake<IFooBarService>());
 
-            "when calling defined method with return value"
-                .x(() => task = foo.QueryAsync());
+            "And a fake async method that is configured to return a completed task with a result of type int"
+                .x(() => A.CallTo(() => fake.QueryAsync()).Returns(Task.FromResult(9)));
 
-            "it should return"
+            "When calling the configured method"
+                .x(() => task = fake.QueryAsync());
+
+            "Then it should return a completed task"
                 .x(() => task.IsCompleted.Should().BeTrue());
 
-            "the configured value"
+            "And the task's result should be the configured value"
                 .x(() => task.Result.Should().Be(9));
         }
 
         [Scenario]
-        public static void DefinedVoidMethod(
-            FooAsyncAwait foo,
+        public static void ConfiguredAsyncMethod(
+            IFooBarService fake,
             Task task)
         {
-            "establish"
-                .x(() =>
-                    {
-                        var service = A.Fake<IFooAsyncAwaitService>();
-                        A.CallTo(() => service.CommandAsync()).Returns(Task.FromResult<object>(null));
-                        foo = new FooAsyncAwait(service);
-                    });
+            "Given a fake"
+                .x(() => fake = A.Fake<IFooBarService>());
 
-            "when calling defined void method"
-                .x(() => task = foo.CommandAsync());
+            "And a fake async method that is configured to return a completed task with no result"
+                .x(() => A.CallTo(() => fake.CommandAsync()).Returns(Task.FromResult<object>(null)));
 
-            "it should return"
+            "When calling the configured method"
+                .x(() => task = fake.CommandAsync());
+
+            "Then it should return a completed task"
                 .x(() => task.IsCompleted.Should().BeTrue());
         }
 
         [Scenario]
-        public static void DefinedMethodWithReturnValueOfNonFakeableType(
-            FooAsyncAwait foo,
-            Bar bar,
+        public static void ConfiguredAsyncMethodWithReturnValueOfFakeableType(
+            IFooBarService fake,
+            Foo result,
+            Task<Foo> task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFooBarService>());
+
+            "And a fake async method that is configured to return a completed task with a result of a fakeable type"
+                .x(() => A.CallTo(() => fake.GetFooAsync()).Returns(Task.FromResult(result)));
+
+            "When calling the configured method"
+                .x(() => task = fake.GetFooAsync());
+
+            "Then it should return a completed task"
+                .x(() => task.IsCompleted.Should().BeTrue());
+
+            "And the task's result should be the configured value"
+                .x(() => task.Result.Should().Be(result));
+        }
+
+        [Scenario]
+        public static void ConfiguredAsyncMethodWithReturnValueOfNonFakeableType(
+            IFooBarService fake,
+            Bar result,
             Task<Bar> task)
         {
-            "establish"
-                .x(() =>
-                {
-                        bar = new Bar();
-                        var service = A.Fake<IFooAsyncAwaitService>();
-                        A.CallTo(() => service.GetBarAsync()).Returns(Task.FromResult(bar));
-                        foo = new FooAsyncAwait(service);
-                    });
+            "Given a fake"
+                .x(() => fake = A.Fake<IFooBarService>());
 
-            "when calling defined method with return value"
-                .x(() => task = foo.GetBarAsync());
+            "And a fake async method that is configured to return a completed task with a result of a non-fakeable type"
+                .x(() => A.CallTo(() => fake.GetBarAsync()).Returns(Task.FromResult(result)));
 
-            "it should return"
+            "When calling the configured method"
+                .x(() => task = fake.GetBarAsync());
+
+            "Then it should return a completed task"
                 .x(() => task.IsCompleted.Should().BeTrue());
 
-            "the configured value"
-                .x(() => task.Result.Should().Be(bar));
+            "And the task's result should be the configured value"
+                .x(() => task.Result.Should().Be(result));
         }
 
         [Scenario]
-        public static void UndefinedMethodWithReturnValue(
-            FooAsyncAwait foo,
+        public static void UnconfiguredAsyncMethodWithReturnValueOfTypeInt(
+            IFooBarService fake,
             Task<int> task)
         {
-            "establish"
-                .x(() => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>()));
+            "Given a fake"
+                .x(() => fake = A.Fake<IFooBarService>());
 
-            "when calling undefined method with return value"
-                .x(() => task = foo.QueryAsync());
+            "When calling an unconfigured async method with a result of type int"
+                .x(() => task = fake.QueryAsync());
 
-            "it should return"
+            "Then it should return a completed task"
                 .x(() => task.IsCompleted.Should().BeTrue());
 
-            "a dummy value"
+            "And the task's result should be a dummy value"
                 .x(() => task.Result.Should().Be(0));
         }
 
         [Scenario]
-        public static void UndefinedVoidMethod(
-            FooAsyncAwait foo,
+        public static void UnconfiguredAsyncMethod(
+            IFooBarService fake,
             Task task)
         {
-            "establish"
-                .x(() => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>()));
+            "Given a fake"
+                .x(() => fake = A.Fake<IFooBarService>());
 
-            "when calling undefined void method"
-                .x(() => task = foo.CommandAsync());
+            "When calling an unconfigured async method with no result"
+                .x(() => task = fake.CommandAsync());
 
-            "it should return"
+            "Then it should return a completed task"
                 .x(() => task.IsCompleted.Should().BeTrue());
         }
 
         [Scenario]
-        public static void UndefinedMethodReturnValueOfNonFakeableType(
-            FooAsyncAwait foo,
-            Task<Bar> task)
+        public static void UnconfiguredAsyncMethodReturnValueOfFakeableType(
+            IFooBarService fake,
+            Task<Foo> task)
         {
-            "establish"
-                .x(() => foo = new FooAsyncAwait(A.Fake<IFooAsyncAwaitService>()));
+            "Given a fake"
+                .x(() => fake = A.Fake<IFooBarService>());
 
-            "when calling undefined method with return value"
-                .x(() => task = foo.GetBarAsync());
+            "When calling an unconfigured async method with a result of a fakeable type"
+                .x(() => task = fake.GetFooAsync());
 
-            "it should return"
+            "Then it should return a completed task"
                 .x(() => task.IsCompleted.Should().BeTrue());
 
-            "and the task result should be null"
+            "And the task's result should be a dummy value"
+                .x(() => task.Result.Should().BeAssignableTo<Foo>());
+        }
+
+        [Scenario]
+        public static void UnconfiguredAsyncMethodReturnValueOfNonFakeableType(
+            IFooBarService fake,
+            Task<Bar> task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFooBarService>());
+
+            "When calling an unconfigured async method with a result of a non-fakeable type"
+                .x(() => task = fake.GetBarAsync());
+
+            "Then it should return a completed task"
+                .x(() => task.IsCompleted.Should().BeTrue());
+
+            "And the task's result should be null"
                 .x(() => task.Result.Should().BeNull());
+        }
+
+        public class Foo
+        {
         }
 
         public class Bar
         {
+            // Non fakeable because the constructor is internal
             internal Bar()
             {
-            }
-        }
-
-        public class FooAsyncAwait
-        {
-            private readonly IFooAsyncAwaitService service;
-
-            public FooAsyncAwait(IFooAsyncAwaitService service)
-            {
-                this.service = service;
-            }
-
-            public async Task CommandAsync()
-            {
-                await this.service.CommandAsync();
-            }
-
-            public async Task<int> QueryAsync()
-            {
-                return await this.service.QueryAsync();
-            }
-
-            public async Task<Bar> GetBarAsync()
-            {
-                return await this.service.GetBarAsync();
             }
         }
     }
