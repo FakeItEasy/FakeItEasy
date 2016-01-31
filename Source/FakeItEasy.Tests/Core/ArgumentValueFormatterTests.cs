@@ -5,17 +5,16 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
     public class ArgumentValueFormatterTests
     {
-        private ArgumentValueFormatter formatter;
-        private List<IArgumentValueFormatter> registeredTypeFormatters;
-
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] specificCases = TestCases.Create(
+        private readonly object[] specificCases = TestCases.Create(
             new
             {
                 LessSpecific = typeof(object),
@@ -35,6 +34,9 @@ namespace FakeItEasy.Tests.Core
                 Value = (object)A.Fake<IFoo>()
             }).AsTestCaseSource();
 
+        private ArgumentValueFormatter formatter;
+        private List<IArgumentValueFormatter> registeredTypeFormatters;
+
         [SetUp]
         public void Setup()
         {
@@ -52,7 +54,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetArgumentValueAsString(null);
 
             // Assert
-            Assert.That(description, Is.EqualTo("<NULL>"));
+            description.Should().Be("<NULL>");
         }
 
         [Test]
@@ -64,7 +66,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetArgumentValueAsString(1);
 
             // Assert
-            Assert.That(description, Is.EqualTo("1"));
+            description.Should().Be("1");
         }
 
         [Test]
@@ -77,7 +79,7 @@ namespace FakeItEasy.Tests.Core
             var result = this.formatter.GetArgumentValueAsString(new DateTime(2000, 1, 1));
 
             // Assert
-            Assert.That(result, Is.EqualTo("Y2K"));
+            result.Should().Be("Y2K");
         }
 
         [Test]
@@ -90,7 +92,7 @@ namespace FakeItEasy.Tests.Core
             var result = this.formatter.GetArgumentValueAsString(new MemoryStream());
 
             // Assert
-            Assert.That(result, Is.EqualTo("stream"));
+            result.Should().Be("stream");
         }
 
         [TestCaseSource("specificCases")]
@@ -118,7 +120,7 @@ namespace FakeItEasy.Tests.Core
             var result = this.formatter.GetArgumentValueAsString("string value");
 
             // Assert
-            Assert.That(result, Is.EqualTo("high priority"));
+            result.Should().Be("high priority");
         }
 
         [TestCase("", Result = "string.Empty")]
@@ -139,7 +141,28 @@ namespace FakeItEasy.Tests.Core
             var result = this.formatter.GetArgumentValueAsString("string value");
 
             // Assert
-            Assert.That(result, Is.EqualTo("a string"));
+            result.Should().Be("a string");
+        }
+
+        [Test]
+        public void Provided_formatters_should_have_negative_priority()
+        {
+            // Arrange
+            var allArgumentValueFormatters = typeof(A).Assembly.GetTypes()
+                .Where(t => t.CanBeInstantiatedAs(typeof(IArgumentValueFormatter)))
+                .Select(Activator.CreateInstance)
+                .Cast<IArgumentValueFormatter>();
+
+            // Act
+            var typesWithNonNegativePriority = allArgumentValueFormatters
+                .Where(f => f.Priority >= new Priority(0))
+                .Select(f => f.GetType());
+
+            // Assert
+            Assert.That(
+                typesWithNonNegativePriority,
+                Is.Empty,
+                "because no formatters should have non-negative priority");
         }
 
         private void AddTypeFormatter<T>(string formattedValue)
@@ -149,16 +172,16 @@ namespace FakeItEasy.Tests.Core
 
         private void AddTypeFormatter(Type type, string formattedValue)
         {
-            this.AddTypeFormatter(type, formattedValue, int.MinValue);
+            this.AddTypeFormatter(type, formattedValue, short.MinValue);
         }
 
-        private void AddTypeFormatter(Type type, string formattedValue, int priority)
+        private void AddTypeFormatter(Type type, string formattedValue, short priority)
         {
-            var formatter = A.Fake<IArgumentValueFormatter>();
-            A.CallTo(() => formatter.ForType).Returns(type);
-            A.CallTo(() => formatter.GetArgumentValueAsString(A<object>._)).Returns(formattedValue);
-            A.CallTo(() => formatter.Priority).Returns(priority);
-            this.registeredTypeFormatters.Add(formatter);
+            var newFormatter = A.Fake<IArgumentValueFormatter>();
+            A.CallTo(() => newFormatter.ForType).Returns(type);
+            A.CallTo(() => newFormatter.GetArgumentValueAsString(A<object>._)).Returns(formattedValue);
+            A.CallTo(() => newFormatter.Priority).Returns(new Priority(priority));
+            this.registeredTypeFormatters.Add(newFormatter);
         }
     }
 }

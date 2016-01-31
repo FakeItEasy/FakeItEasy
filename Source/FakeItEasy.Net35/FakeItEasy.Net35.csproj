@@ -620,6 +620,9 @@
     <Compile Include="..\FakeItEasy\OutputWriterExtensions.cs">
       <Link>OutputWriterExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Priority.cs">
+      <Link>Priority.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
     </Compile>

@@ -27,15 +27,42 @@ namespace FakeItEasy.Specs
             "it should use the one with higher priority"
                 .x(() => dummy.ID.Should().Be(-17));
         }
+
+        [Scenario]
+        public static void GenericDummyFactoryDefaultPriority(
+            IDummyFactory formatter,
+            Priority priority)
+        {
+            "Given a dummy factory that extends the generic base"
+                .x(() => formatter = new SomeDummyFactory());
+
+            "When I fetch the Priority"
+                .x(() => priority = formatter.Priority);
+
+            "Then it should be 0"
+                .x(() => priority.Should().Be(new Priority(0)));
+        }
+
+        private class SomeClass
+        {
+        }
+
+        private class SomeDummyFactory : DummyFactory<SomeClass>
+        {
+            protected override SomeClass Create()
+            {
+                return new SomeClass();
+            }
+        }
     }
 
     public class DomainEventDummyFactory : IDummyFactory
     {
         private int nextID = 1;
 
-        public int Priority
+        public Priority Priority
         {
-            get { return -3; }
+            get { return new Priority(0); }
         }
 
         public bool CanCreate(Type type)
@@ -53,6 +80,11 @@ namespace FakeItEasy.Specs
 
     public class RobotRunsAmokEventDummyFactory : DummyFactory<RobotRunsAmokEvent>
     {
+        public override Priority Priority
+        {
+            get { return new Priority(3); }
+        }
+
         protected override RobotRunsAmokEvent Create()
         {
             return new RobotRunsAmokEvent { ID = -17 };

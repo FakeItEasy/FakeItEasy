@@ -71,6 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgumentValueFormatterSpecs.cs" />
     <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
     <Compile Include="TaskSpecs.cs" />
     <Compile Include="ConfigurationSpecs.cs" />

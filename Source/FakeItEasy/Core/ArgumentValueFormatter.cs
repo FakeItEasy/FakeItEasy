@@ -31,15 +31,14 @@ namespace FakeItEasy.Core
 
             var argumentType = argumentValue.GetType();
 
-            IArgumentValueFormatter formatter;
-            formatter = this.cachedFormatters.GetOrAdd(argumentType, this.ResolveTypeFormatter);
+            var formatter = this.cachedFormatters.GetOrAdd(argumentType, this.ResolveTypeFormatter);
 
             return formatter.GetArgumentValueAsString(argumentValue);
         }
 
         private static int GetDistanceFromKnownType(Type comparedType, Type knownType)
         {
-            if (knownType.Equals(comparedType))
+            if (knownType == comparedType)
             {
                 return 0;
             }
@@ -53,7 +52,7 @@ namespace FakeItEasy.Core
             var currentType = knownType.BaseType;
             while (currentType != null)
             {
-                if (currentType.Equals(comparedType))
+                if (currentType == comparedType)
                 {
                     return distance;
                 }
@@ -107,6 +106,11 @@ namespace FakeItEasy.Core
         private class DefaultFormatter
             : ArgumentValueFormatter<object>
         {
+            public override Priority Priority
+            {
+                get { return new Priority(-1); }
+            }
+
             protected override string GetStringValue(object argumentValue)
             {
                 Guard.AgainstNull(argumentValue, "argumentValue");
@@ -118,6 +122,11 @@ namespace FakeItEasy.Core
         private class DefaultStringFormatter
             : ArgumentValueFormatter<string>
         {
+            public override Priority Priority
+            {
+                get { return new Priority(-1); }
+            }
+
             protected override string GetStringValue(string argumentValue)
             {
                 Guard.AgainstNull(argumentValue, "argumentValue");

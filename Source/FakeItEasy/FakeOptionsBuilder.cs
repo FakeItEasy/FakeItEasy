@@ -12,12 +12,12 @@ namespace FakeItEasy
     {
         /// <summary>
         /// Gets the priority of the options builder. When multiple builders that apply to
-        /// the same type are registered, the one with the highest priority is used.
+        /// the same type are registered, the one with the highest priority value is used.
         /// </summary>
-        /// <remarks>Defaults to <c>0</c>. Negative values are reserved for use by FakeItEasy.</remarks>
-        public virtual int Priority
+        /// <remarks>The default implementation returns a priority with value <code>0</code>.</remarks>
+        public virtual Priority Priority
         {
-            get { return 0; }
+            get { return new Priority(0); }
         }
 
         /// <summary>

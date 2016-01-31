@@ -76,9 +76,9 @@ namespace FakeItEasy.IntegrationTests
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     public class DummyTestsDummyFactory : IDummyFactory
     {
-        public int Priority
+        public Priority Priority
         {
-            get { return 0; }
+            get { return new Priority(0); }
         }
 
         internal static int CanCreateDummyCallCount { get; private set; }
