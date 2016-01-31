@@ -92,7 +92,7 @@ namespace FakeItEasy.Tests.Configuration
                 found.Add(enumerator.Current);
             }
 
-            found.Should().Equal(new object[] { 1, 2 });
+            found.Should().Equal(1, 2);
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             var arguments = this.CreateFakeArgumentList(1, 2, 3);
 
-            arguments.Should().Equal(new[] { 1, 2, 3 });
+            arguments.Should().Equal(1, 2, 3);
         }
 
         [Test]
