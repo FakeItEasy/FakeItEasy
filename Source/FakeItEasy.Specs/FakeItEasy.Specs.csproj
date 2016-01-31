@@ -72,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
-    <Compile Include="AsyncAwaitSpecs.cs" />
+    <Compile Include="TaskSpecs.cs" />
     <Compile Include="ConfigurationSpecs.cs" />
     <Compile Include="CreationOptionsSpecs.cs" />
     <Compile Include="DisposableSpecs.cs" />
