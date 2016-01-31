@@ -10,10 +10,10 @@ namespace FakeItEasy.Specs
         public static void DummyFactoryUsage(
             RobotActivatedEvent dummy)
         {
-            "when a dummy factory is defined for a set of types"
+            "When I create a Dummy of a type that has a dummy factory defined"
                 .x(() => dummy = A.Dummy<RobotActivatedEvent>());
 
-            "it should create a dummy from the factory"
+            "Then it should be created by the factory"
                 .x(() => dummy.ID.Should().BeGreaterThan(0));
         }
 
@@ -21,10 +21,13 @@ namespace FakeItEasy.Specs
         public static void DummyFactoryPriority(
             RobotRunsAmokEvent dummy)
         {
-            "when two dummy factories apply to the same type"
+            "Given two dummy factories which apply to the same type"
+                .x(() => { }); // see DomainEventDummyFactory and RobotRunsAmokEventDummyFactory
+
+            "When I create a Dummy of the type"
                 .x(() => dummy = A.Dummy<RobotRunsAmokEvent>());
 
-            "it should use the one with higher priority"
+            "Then it should be created by the factory with the higher priority"
                 .x(() => dummy.ID.Should().Be(-17));
         }
 
