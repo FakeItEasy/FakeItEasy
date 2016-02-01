@@ -7,8 +7,7 @@ namespace FakeItEasy.Configuration
     /// Configuration that lets the developer specify that an exception should be
     /// thrown by a fake object call.
     /// </summary>
-    public interface IExceptionThrowerConfiguration
-        : IHideObjectMembers
+    public interface IExceptionThrowerConfiguration : IHideObjectMembers
     {
         /// <summary>
         /// Throws the specified exception when the currently configured

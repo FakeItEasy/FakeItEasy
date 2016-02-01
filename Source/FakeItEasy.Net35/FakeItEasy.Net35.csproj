@@ -146,9 +146,6 @@
     <Compile Include="..\FakeItEasy\Configuration\IFakeConfigurationManager.cs">
       <Link>Configuration\IFakeConfigurationManager.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\IHideObjectMembers.cs">
-      <Link>Configuration\IHideObjectMembers.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IInterceptionAsserter.cs">
       <Link>Configuration\IInterceptionAsserter.cs</Link>
     </Compile>
@@ -589,6 +586,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\IFileSystem.cs">
       <Link>IFileSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\IHideObjectMembers.cs">
+      <Link>IHideObjectMembers.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ImportsModule.cs">
       <Link>ImportsModule.cs</Link>

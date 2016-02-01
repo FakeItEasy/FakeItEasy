@@ -8,8 +8,7 @@ namespace FakeItEasy.Configuration
     /// Provides methods for configuring a fake object.
     /// </summary>
     /// <typeparam name="TFake">The type of fake object.</typeparam>
-    public interface IStartConfiguration<TFake>
-        : IHideObjectMembers
+    public interface IStartConfiguration<TFake> : IHideObjectMembers
     {
         /// <summary>
         /// Configures the behavior of the fake object when a call that matches the specified

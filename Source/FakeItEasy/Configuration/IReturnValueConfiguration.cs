@@ -11,7 +11,6 @@ namespace FakeItEasy.Configuration
         : IExceptionThrowerConfiguration,
           ICallbackConfiguration<IReturnValueConfiguration<TMember>>,
           IAssertConfiguration,
-          IHideObjectMembers,
           ICallBaseConfiguration
     {
         /// <summary>

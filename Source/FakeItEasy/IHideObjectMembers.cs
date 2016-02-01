@@ -1,4 +1,4 @@
-namespace FakeItEasy.Configuration
+namespace FakeItEasy
 {
     using System;
     using System.ComponentModel;
