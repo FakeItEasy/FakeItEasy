@@ -1,14 +1,15 @@
-﻿namespace FakeItEasy
+namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using FakeItEasy.Configuration;
 
-	/// <summary>
-	/// Manages attaching of argument constraints.
-	/// </summary>
-	/// <typeparam name="T">The type of argument to constrain.</typeparam>
-	[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
+    /// <summary>
+    /// Manages attaching of argument constraints.
+    /// </summary>
+    /// <typeparam name="T">The type of argument to constrain.</typeparam>
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
     public interface IArgumentConstraintManager<T> : IHideObjectMembers
     {
         /// <summary>

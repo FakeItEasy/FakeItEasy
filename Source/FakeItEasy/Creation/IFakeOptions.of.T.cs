@@ -5,13 +5,13 @@ namespace FakeItEasy.Creation
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using System.Reflection.Emit;
-	using Configuration;
+    using FakeItEasy.Configuration;
 
-	/// <summary>
-	/// Provides options for generating fake object.
-	/// </summary>
-	/// <typeparam name="T">The type of fake object generated.</typeparam>
-	public interface IFakeOptions<T> : IHideObjectMembers
+    /// <summary>
+    /// Provides options for generating fake object.
+    /// </summary>
+    /// <typeparam name="T">The type of fake object generated.</typeparam>
+    public interface IFakeOptions<T> : IHideObjectMembers
     {
         /// <summary>
         /// Specifies arguments for the constructor of the faked class.
