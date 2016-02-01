@@ -175,7 +175,7 @@
     <Compile Include="Configuration\IFakeConfigurationManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\IHideObjectMembers.cs">
+    <Compile Include="IHideObjectMembers.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\IInterceptionAsserter.cs" />

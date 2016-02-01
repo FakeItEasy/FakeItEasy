@@ -3,7 +3,6 @@ namespace FakeItEasy
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using FakeItEasy.Configuration;
 
     /// <summary>
     /// Manages attaching of argument constraints.
