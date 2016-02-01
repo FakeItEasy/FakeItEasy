@@ -11,8 +11,7 @@ namespace FakeItEasy.Creation
     /// Has reduced functionality when compared to <see cref="IFakeOptions{T}"/>,
     /// which should be used when the type of the fake being created is known.
     /// </summary>
-    public interface IFakeOptions
-        : IHideObjectMembers
+    public interface IFakeOptions : IHideObjectMembers
     {
         /// <summary>
         /// Specifies arguments for the constructor of the faked class.

@@ -3,8 +3,7 @@ namespace FakeItEasy.Configuration
     /// <summary>
     /// Allows the developer to assert on a call that's configured.
     /// </summary>
-    public interface IAssertConfiguration
-        : IHideObjectMembers
+    public interface IAssertConfiguration : IHideObjectMembers
     {
         /// <summary>
         /// Asserts that the configured call has happened the number of times

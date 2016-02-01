@@ -2,13 +2,10 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Linq.Expressions;
-    using System.Reflection;
-    using Core;
-    using Creation;
-    using Expressions;
+    using FakeItEasy.Core;
+    using FakeItEasy.Expressions;
 
-    internal class StartConfiguration<TFake>
-        : IStartConfiguration<TFake>, IHideObjectMembers
+    internal class StartConfiguration<TFake> : IStartConfiguration<TFake>
     {
         private readonly ExpressionCallRule.Factory callRuleFactory;
         private readonly IConfigurationFactory configurationFactory;
