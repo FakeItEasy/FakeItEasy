@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Globalization;
+    using System.Linq;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -35,6 +36,24 @@ namespace FakeItEasy.Tests.Core
                 .BeAnExceptionOfType<ArgumentException>()
                 .WithMessage(expectedMessage)
                 .And.ParamName.Should().Be("type");
+        }
+
+        [Test]
+        public void Built_in_factories_should_have_lower_than_default_priority()
+        {
+            // Arrange
+            var allDummyFactories = typeof(A).Assembly.GetTypes()
+                .Where(t => t.CanBeInstantiatedAs(typeof(IDummyFactory)))
+                .Select(Activator.CreateInstance)
+                .Cast<IDummyFactory>();
+
+            // Act
+            var typesWithNonNegativePriority = allDummyFactories
+                .Where(f => f.Priority >= Priority.Default)
+                .Select(f => f.GetType());
+
+            // Assert
+            typesWithNonNegativePriority.Should().BeEmpty("because no built-in factories should have priority equal to or greater than the default");
         }
 
         public class SomeType

@@ -9,9 +9,9 @@ namespace FakeItEasy
     {
         /// <summary>
         /// Gets the priority of the dummy factory. When multiple factories that apply to the same type are registered,
-        /// the one with the highest priority is used.
+        /// the one with the highest priority value is used.
         /// </summary>
-        int Priority { get; }
+        Priority Priority { get; }
 
         /// <summary>
         /// Whether or not this object can create a dummy of type <paramref name="type"/>.

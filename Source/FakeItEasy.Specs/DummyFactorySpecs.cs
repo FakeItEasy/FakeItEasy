@@ -10,10 +10,10 @@ namespace FakeItEasy.Specs
         public static void DummyFactoryUsage(
             RobotActivatedEvent dummy)
         {
-            "when a dummy factory is defined for a set of types"
+            "When I create a Dummy of a type that has a dummy factory defined"
                 .x(() => dummy = A.Dummy<RobotActivatedEvent>());
 
-            "it should create a dummy from the factory"
+            "Then it should be created by the factory"
                 .x(() => dummy.ID.Should().BeGreaterThan(0));
         }
 
@@ -21,11 +21,41 @@ namespace FakeItEasy.Specs
         public static void DummyFactoryPriority(
             RobotRunsAmokEvent dummy)
         {
-            "when two dummy factories apply to the same type"
+            "Given two dummy factories which apply to the same type"
+                .x(() => { }); // see DomainEventDummyFactory and RobotRunsAmokEventDummyFactory
+
+            "When I create a Dummy of the type"
                 .x(() => dummy = A.Dummy<RobotRunsAmokEvent>());
 
-            "it should use the one with higher priority"
+            "Then it should be created by the factory with the higher priority"
                 .x(() => dummy.ID.Should().Be(-17));
+        }
+
+        [Scenario]
+        public static void GenericDummyFactoryDefaultPriority(
+            IDummyFactory formatter,
+            Priority priority)
+        {
+            "Given an argument value formatter that does not override priority"
+                .x(() => formatter = new SomeDummyFactory());
+
+            "When I fetch the Priority"
+                .x(() => priority = formatter.Priority);
+
+            "Then it should be the default priority"
+                .x(() => priority.Should().Be(Priority.Default));
+        }
+
+        private class SomeClass
+        {
+        }
+
+        private class SomeDummyFactory : DummyFactory<SomeClass>
+        {
+            protected override SomeClass Create()
+            {
+                return new SomeClass();
+            }
         }
     }
 
@@ -33,9 +63,9 @@ namespace FakeItEasy.Specs
     {
         private int nextID = 1;
 
-        public int Priority
+        public Priority Priority
         {
-            get { return -3; }
+            get { return Priority.Default; }
         }
 
         public bool CanCreate(Type type)
@@ -53,6 +83,11 @@ namespace FakeItEasy.Specs
 
     public class RobotRunsAmokEventDummyFactory : DummyFactory<RobotRunsAmokEvent>
     {
+        public override Priority Priority
+        {
+            get { return new Priority(3); }
+        }
+
         protected override RobotRunsAmokEvent Create()
         {
             return new RobotRunsAmokEvent { ID = -17 };
