@@ -51,5 +51,27 @@ namespace System.Collections.Concurrent
                 return this.dictionary.TryGetValue(key, out value) && this.dictionary.Remove(key);
             }
         }
+
+        public bool TryAdd(TKey key, TValue value)
+        {
+            lock (this.dictionary)
+            {
+                if (this.dictionary.ContainsKey(key))
+                {
+                    return false;
+                }
+
+                this.dictionary.Add(key, value);
+                return true;
+            }
+        }
+
+        public bool TryGetValue(TKey key, out TValue value)
+        {
+            lock (this.dictionary)
+            {
+                return this.dictionary.TryGetValue(key, out value);
+            }
+        }
     }
 }

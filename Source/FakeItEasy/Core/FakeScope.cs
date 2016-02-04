@@ -2,7 +2,10 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.Remoting.Messaging;
 
     /// <summary>
     /// Represents a scope for fake objects, calls configured within a scope
@@ -13,18 +16,47 @@ namespace FakeItEasy.Core
     internal abstract class FakeScope
         : IFakeScope
     {
+        private const string CurrentScopeLogicalCallContextKey = "FakeItEasy.FakeScope.Current";
+
+        private static readonly RootScope root;
+        private static readonly ConcurrentDictionary<Guid, FakeScope> scopes;
+
+        [SuppressMessage(
+            "Microsoft.Performance", 
+            "CA1810:InitializeReferenceTypeStaticFieldsInline", 
+            Justification = "RootScope constructor requires scopes to be initialized first.")]
         static FakeScope()
         {
-            Current = new RootScope();
+            scopes = new ConcurrentDictionary<Guid, FakeScope>();
+            root = new RootScope();
         }
 
         private FakeScope()
         {
+            this.Id = Guid.NewGuid();
+            FakeScope.scopes.TryAdd(this.Id, this);
         }
 
-        internal static FakeScope Current { get; set; }
+        internal static FakeScope Current
+        {
+            get
+            {
+                var id = (Guid?)CallContext.LogicalGetData(CurrentScopeLogicalCallContextKey);
+                FakeScope scope;
+                return id.HasValue && FakeScope.scopes.TryGetValue(id.Value, out scope) ? scope : FakeScope.root;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                CallContext.LogicalSetData(CurrentScopeLogicalCallContextKey, value.Id);
+            }
+        }
 
         internal abstract IFakeObjectContainer FakeObjectContainer { get; }
+
+        internal Guid Id { get; private set; }
 
         /// <summary>
         /// Creates a new scope and sets it as the current scope.
@@ -157,6 +189,8 @@ namespace FakeItEasy.Core
             {
                 this.RemoveRulesConfiguredInScope();
                 FakeScope.Current = this.parentScope;
+                FakeScope removedScope;
+                FakeScope.scopes.TryRemove(this.Id, out removedScope);
             }
 
             protected override void OnAddInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call)
