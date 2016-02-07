@@ -1,11 +1,11 @@
 require 'albacore'
 
 msbuild_command = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
-nuget_command  = "Source/packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
-nunit_command  = "Source/packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
-xunit_command = "Source/packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
+nuget_command  = "packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
+nunit_command  = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
+xunit_command = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 
-solution       = "Source/FakeItEasy.sln"
+solution       = "FakeItEasy.sln"
 assembly_info  = "Source/CommonAssemblyInfo.cs"
 version        = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 version_suffix = ENV["VERSION_SUFFIX"]
@@ -46,7 +46,7 @@ release_issue_body = <<-eos
 - [ ] tweet, mentioning contributors and post link as comment here for easy retweeting ;-)
 - [ ] post tweet in JabbR ([general-chat][1]) and Gitter ([FakeItEasy/FakeItEasy][2])
 - [ ] post links to the NuGet and GitHub release in each issue in this milestone, with thanks to contributors
-- [ ] use `rake set_version[new_version]` to 
+- [ ] use `rake set_version[new_version]` to
     - create a new branch
     - change CommonAssemblyInfo.cs to expected minor version (of form _xx.yy.zz_)
     - push to origin
@@ -54,7 +54,7 @@ release_issue_body = <<-eos
 - [ ] use `rake create_milestone` to
     - create a new milestone for the next release
     - create new issue (like this one) for the next release, adding it to the new milestone
-    - create a new draft GitHub Release 
+    - create a new draft GitHub Release
 - [ ] close all issues on this milestone
 - [ ] close this milestone
 
@@ -83,7 +83,7 @@ task :default => [ :vars, :unit, :integ, :spec, :pack ]
 
 desc "Print all variables"
 task :vars do
-  print_vars(local_variables.sort.map { |name| [name.to_s, (eval name.to_s)] })  
+  print_vars(local_variables.sort.map { |name| [name.to_s, (eval name.to_s)] })
 end
 
 desc "Restore NuGet packages"
@@ -102,7 +102,7 @@ end
 desc "Update version number"
 task :set_version, :new_version do |asm, args|
   current_branch = `git rev-parse --abbrev-ref HEAD`.strip()
-  
+
   if current_branch != 'master'
     fail("ERROR: Current branch is '#{current_branch}'. Must be on branch 'master' to set new version.")
   end if
@@ -146,7 +146,7 @@ end
 desc "Update assembly info"
 assemblyinfo :set_version_in_assemblyinfo, :new_version do |asm, args|
   new_version = args.new_version
-  
+
   # not using asm.version and asm.file_version due to StyleCop violations
   asm.custom_attributes = {
     :AssemblyVersion => new_version,
@@ -235,7 +235,7 @@ task :create_milestone do |t|
 end
 
 def print_vars(variables)
-  
+
   scalars = []
   vectors = []
 
@@ -254,12 +254,12 @@ def print_vars(variables)
   }
 
   scalar_name_column_width = scalars.map { |s| s[0].length }.max
-  scalars.each { |name, value| 
+  scalars.each { |name, value|
     puts "#{name}:#{' ' * (scalar_name_column_width - name.length)} #{value}"
   }
 
   puts
-  vectors.select { |name, value| !['release_body', 'release_issue_body', 'release_issue_labels'].include? name }.each { |name, value| 
+  vectors.select { |name, value| !['release_body', 'release_issue_body', 'release_issue_labels'].include? name }.each { |name, value|
     puts "#{name}:"
     puts value.map {|v| "  " + v }
     puts ""
@@ -284,7 +284,7 @@ def get_temp_ssl_cert_file(ssl_cert_file_url)
   if ssl_cert_file_path
     return nil
   end
-  
+
   puts "Environment variable SSL_CERT_FILE is not set. Downloading a cert file from '#{ssl_cert_file_url}'..."
 
   require 'open-uri'
