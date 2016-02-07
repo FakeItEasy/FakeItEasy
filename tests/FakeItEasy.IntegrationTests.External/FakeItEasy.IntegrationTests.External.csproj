@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -71,7 +71,7 @@
     <Compile Include="GuidValueFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj">
+    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
       <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
       <Name>FakeItEasy</Name>
     </ProjectReference>

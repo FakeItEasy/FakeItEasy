@@ -15,16 +15,16 @@ output         = "artifacts/output"
 tests          = "artifacts/tests"
 
 unit_tests = [
-  "src/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
-  "src/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
+  "tests/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
+  "tests/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
 ]
 
 integration_tests = [
-  "src/FakeItEasy.IntegrationTests/bin/Release/FakeItEasy.IntegrationTests.dll",
-  "src/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"
+  "tests/FakeItEasy.IntegrationTests/bin/Release/FakeItEasy.IntegrationTests.dll",
+  "tests/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"
 ]
 
-specs = "src/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
+specs = "tests/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
 
 repo = 'FakeItEasy/FakeItEasy'
 release_issue_labels = ['0 - Backlog', 'P2', 'build', 'documentation']

@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\FakeItEasy.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\FakeItEasy.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -226,7 +226,7 @@
     <Compile Include="ExceptionThrowerConfigurationExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj">
+    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
       <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
       <Name>FakeItEasy</Name>
     </ProjectReference>
