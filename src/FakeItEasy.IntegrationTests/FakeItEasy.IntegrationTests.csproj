@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{69A27B0A-710B-4CEC-B159-56E34C788665}</ProjectGuid>
+    <ProjectGuid>{C291B61B-0729-4DC5-B8E4-147A8E3F801F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>FakeItEasy.IntegrationTests.VB</RootNamespace>
-    <AssemblyName>FakeItEasy.IntegrationTests.VB</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <MyType>Windows</MyType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FakeItEasy.IntegrationTests</RootNamespace>
+    <AssemblyName>FakeItEasy.IntegrationTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <OptionExplicit>On</OptionExplicit>
-    <OptionCompare>Binary</OptionCompare>
-    <OptionStrict>Off</OptionStrict>
-    <OptionInfer>On</OptionInfer>
+    <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -36,32 +32,43 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\src\</SolutionDir>
+    <CodeAnalysisCulture>en-US</CodeAnalysisCulture>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>169</NoWarn>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <DefineDebug>false</DefineDebug>
-    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
-    <AdditionalParameters />
+    <OutputPath>Bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>../FakeItEasy.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
@@ -77,19 +84,23 @@
       <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.XML" />
+    <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Import Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="NextCallTests.vb" />
-    <Compile Include="IndexedPropertyTests.vb" />
-    <Compile Include="RaisingEventsTests.vb" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="ExceptionMessagesTests.cs" />
+    <Compile Include="TypeCatalogueTests.cs" />
+    <Compile Include="BootstrapperLocatorTests.cs" />
+    <Compile Include="DoubleArgumentValueFormatter.cs" />
+    <Compile Include="FakingClassesTests.cs" />
+    <Compile Include="StringArgumentConstraints.cs" />
+    <Compile Include="AssertionsTests.cs" />
+    <Compile Include="Assertions\ExceptionMessagesTests.cs" />
+    <Compile Include="Assertions\RepeatIntegrationTests.cs" />
+    <Compile Include="ContainerTests.cs" />
+    <Compile Include="DummyTests.cs" />
+    <Compile Include="GeneralTests.cs" />
+    <Compile Include="WrapperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj">
@@ -119,20 +130,24 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <CodeAnalysisDictionary Include="..\FakeItEasy.Dictionary.Tests.xml">
-      <Link>FakeItEasy.Dictionary.Tests.xml</Link>
-    </CodeAnalysisDictionary>
-    <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml">
-      <Link>FakeItEasy.Dictionary.xml</Link>
-    </CodeAnalysisDictionary>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="My Project\" />
+    <CodeAnalysisDictionary Include="..\FakeItEasy.Dictionary.Tests.xml">
+      <Link>Properties\FakeItEasy.Dictionary.Tests.xml</Link>
+    </CodeAnalysisDictionary>
+    <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml">
+      <Link>Properties\FakeItEasy.Dictionary.xml</Link>
+    </CodeAnalysisDictionary>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /D /Y $(SolutionDir)\src\FakeItEasy.IntegrationTests.External\$(OutDir)FakeItEasy.IntegrationTests.External.dll $(TargetDir)
+</PostBuildEvent>
+  </PropertyGroup>
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

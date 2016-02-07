@@ -12,7 +12,7 @@
     <AssemblyName>FakeItEasy</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Source\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\src\</SolutionDir>
     <CodeAnalysisCulture>en-US</CodeAnalysisCulture>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -714,7 +714,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v2&quot; /internalize:&quot;$(SolutionDir)\Source\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
+    <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v2&quot; /internalize:&quot;$(SolutionDir)\src\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
   </Target>
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

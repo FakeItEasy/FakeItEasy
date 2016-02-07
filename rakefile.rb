@@ -6,25 +6,25 @@ nunit_command  = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
 xunit_command = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 
 solution       = "FakeItEasy.sln"
-assembly_info  = "Source/CommonAssemblyInfo.cs"
+assembly_info  = "src/CommonAssemblyInfo.cs"
 version        = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 version_suffix = ENV["VERSION_SUFFIX"]
-nuspec         = "Source/FakeItEasy.nuspec"
+nuspec         = "src/FakeItEasy.nuspec"
 logs           = "artifacts/logs"
 output         = "artifacts/output"
 tests          = "artifacts/tests"
 
 unit_tests = [
-  "Source/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
-  "Source/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
+  "src/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
+  "src/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
 ]
 
 integration_tests = [
-  "Source/FakeItEasy.IntegrationTests/bin/Release/FakeItEasy.IntegrationTests.dll",
-  "Source/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"
+  "src/FakeItEasy.IntegrationTests/bin/Release/FakeItEasy.IntegrationTests.dll",
+  "src/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"
 ]
 
-specs = "Source/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
+specs = "src/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
 
 repo = 'FakeItEasy/FakeItEasy'
 release_issue_labels = ['0 - Backlog', 'P2', 'build', 'documentation']
