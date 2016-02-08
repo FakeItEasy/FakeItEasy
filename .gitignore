@@ -13,11 +13,11 @@ artifacts
 *.[Dd]ot[Ss]ettings.*
 Thumbs.db
 
-/Source/packages/*
-!/Source/packages/NuGet.CommandLine.*
-/Source/packages/NuGet.CommandLine.*/*
-/Source/packages/NuGet.CommandLine.*/*.*
-!/Source/packages/NuGet.CommandLine.*/tools
-/Source/packages/NuGet.CommandLine.*/tools/*
-/Source/packages/NuGet.CommandLine.*/tools/*.*
-!/Source/packages/NuGet.CommandLine.*/tools/NuGet.exe
+/packages/*
+!/packages/NuGet.CommandLine.*
+/packages/NuGet.CommandLine.*/*
+/packages/NuGet.CommandLine.*/*.*
+!/packages/NuGet.CommandLine.*/tools
+/packages/NuGet.CommandLine.*/tools/*
+/packages/NuGet.CommandLine.*/tools/*.*
+!/packages/NuGet.CommandLine.*/tools/NuGet.exe

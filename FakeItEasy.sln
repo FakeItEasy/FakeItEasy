@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
@@ -6,21 +5,28 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6A7B553-5359-4FB9-B19C-8A23004F49DB}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
-		FakeItEasy.Dictionary.Tests.xml = FakeItEasy.Dictionary.Tests.xml
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		.mailmap = .mailmap
+		CONTRIBUTING.md = CONTRIBUTING.md
 		FakeItEasy.Dictionary.xml = FakeItEasy.Dictionary.xml
-		FakeItEasy.Examples.ruleset = FakeItEasy.Examples.ruleset
-		FakeItEasy.nuspec = FakeItEasy.nuspec
 		FakeItEasy.ruleset = FakeItEasy.ruleset
 		FakeItEasy.snk = FakeItEasy.snk
-		FakeItEasy.Tests.ruleset = FakeItEasy.Tests.ruleset
-		ILMerge.Internalize.Exclude.txt = ILMerge.Internalize.Exclude.txt
+		Gemfile = Gemfile
+		Gemfile.lock = Gemfile.lock
+		how_to_build.md = how_to_build.md
+		License.txt = License.txt
+		rakefile.rb = rakefile.rb
+		README.md = README.md
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{F9C87C93-FE80-45E1-8CFF-8D6E451F7939}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{52D18A62-B744-48F6-A4B5-1382F83FA437}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59466C4D-C407-4DD9-B77B-D99162B9FC7C}"
+	ProjectSection(SolutionItems) = preProject
+		src\CommonAssemblyInfo.cs = src\CommonAssemblyInfo.cs
+		src\FakeItEasy.nuspec = src\FakeItEasy.nuspec
+		src\ILMerge.Internalize.Exclude.txt = src\ILMerge.Internalize.Exclude.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4B581366-50F5-42E9-87A5-BA7DC4F6E330}"
 	ProjectSection(SolutionItems) = preProject
@@ -28,34 +34,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4B5813
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy", "FakeItEasy\FakeItEasy.csproj", "{80721425-68E5-48DC-87EA-41D63D0B45FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy", "src\FakeItEasy\FakeItEasy.csproj", "{80721425-68E5-48DC-87EA-41D63D0B45FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Examples", "FakeItEasy.Examples\FakeItEasy.Examples.csproj", "{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Examples", "samples\FakeItEasy.Examples\FakeItEasy.Examples.csproj", "{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Tests", "FakeItEasy.Tests\FakeItEasy.Tests.csproj", "{0E26272D-045A-47C2-8928-BD9B980115D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Tests", "tests\FakeItEasy.Tests\FakeItEasy.Tests.csproj", "{0E26272D-045A-47C2-8928-BD9B980115D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.IntegrationTests", "FakeItEasy.IntegrationTests\FakeItEasy.IntegrationTests.csproj", "{C291B61B-0729-4DC5-B8E4-147A8E3F801F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.IntegrationTests", "tests\FakeItEasy.IntegrationTests\FakeItEasy.IntegrationTests.csproj", "{C291B61B-0729-4DC5-B8E4-147A8E3F801F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{30396678-D653-4C67-A507-1749424A24CD} = {30396678-D653-4C67-A507-1749424A24CD}
 	EndProjectSection
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FakeItEasy.IntegrationTests.VB", "FakeItEasy.IntegrationTests.VB\FakeItEasy.IntegrationTests.VB.vbproj", "{69A27B0A-710B-4CEC-B159-56E34C788665}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FakeItEasy.IntegrationTests.VB", "tests\FakeItEasy.IntegrationTests.VB\FakeItEasy.IntegrationTests.VB.vbproj", "{69A27B0A-710B-4CEC-B159-56E34C788665}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FakeItEasy.Examples.VB", "FakeItEasy.Examples.VB\FakeItEasy.Examples.VB.vbproj", "{193C944B-733B-4E01-87A3-73F7AB40CDC7}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FakeItEasy.Examples.VB", "samples\FakeItEasy.Examples.VB\FakeItEasy.Examples.VB.vbproj", "{193C944B-733B-4E01-87A3-73F7AB40CDC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Specs", "FakeItEasy.Specs\FakeItEasy.Specs.csproj", "{FA539A2D-98DC-4300-9A2C-EC6FE38A7392}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Specs", "tests\FakeItEasy.Specs\FakeItEasy.Specs.csproj", "{FA539A2D-98DC-4300-9A2C-EC6FE38A7392}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net35", "FakeItEasy.Net35\FakeItEasy.Net35.csproj", "{9F875DD4-9C9A-4E8A-9C13-EFEE41C749F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net35", "src\FakeItEasy.Net35\FakeItEasy.Net35.csproj", "{9F875DD4-9C9A-4E8A-9C13-EFEE41C749F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net35.Tests", "FakeItEasy.Net35.Tests\FakeItEasy.Net35.Tests.csproj", "{E029C5AB-EC90-45B0-BBD9-29A60864B137}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net35.Tests", "tests\FakeItEasy.Net35.Tests\FakeItEasy.Net35.Tests.csproj", "{E029C5AB-EC90-45B0-BBD9-29A60864B137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.IntegrationTests.External", "FakeItEasy.IntegrationTests.External\FakeItEasy.IntegrationTests.External.csproj", "{30396678-D653-4C67-A507-1749424A24CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.IntegrationTests.External", "tests\FakeItEasy.IntegrationTests.External\FakeItEasy.IntegrationTests.External.csproj", "{30396678-D653-4C67-A507-1749424A24CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{DC5EAE30-96E3-4D38-B3C5-33E587C9FB76}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{5D41D463-D53B-4ADC-90AD-44AA03D6340D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Specs", "Specs", "{575A3C3B-17BA-4A8A-9F53-05320913D0A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}"
+	ProjectSection(SolutionItems) = preProject
+		tests\FakeItEasy.Dictionary.Tests.xml = tests\FakeItEasy.Dictionary.Tests.xml
+		tests\FakeItEasy.Tests.ruleset = tests\FakeItEasy.Tests.ruleset
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2EEDF4EB-ED06-4370-9C0A-59502DF1B7F6}"
+	ProjectSection(SolutionItems) = preProject
+		samples\FakeItEasy.Examples.ruleset = samples\FakeItEasy.Examples.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,20 +125,22 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1ED2F1A2-40E3-498C-B13F-AF066EACF58F} = {F9C87C93-FE80-45E1-8CFF-8D6E451F7939}
+		{80721425-68E5-48DC-87EA-41D63D0B45FA} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
+		{1ED2F1A2-40E3-498C-B13F-AF066EACF58F} = {2EEDF4EB-ED06-4370-9C0A-59502DF1B7F6}
 		{0E26272D-045A-47C2-8928-BD9B980115D5} = {DC5EAE30-96E3-4D38-B3C5-33E587C9FB76}
 		{C291B61B-0729-4DC5-B8E4-147A8E3F801F} = {5D41D463-D53B-4ADC-90AD-44AA03D6340D}
 		{69A27B0A-710B-4CEC-B159-56E34C788665} = {5D41D463-D53B-4ADC-90AD-44AA03D6340D}
-		{193C944B-733B-4E01-87A3-73F7AB40CDC7} = {F9C87C93-FE80-45E1-8CFF-8D6E451F7939}
+		{193C944B-733B-4E01-87A3-73F7AB40CDC7} = {2EEDF4EB-ED06-4370-9C0A-59502DF1B7F6}
 		{FA539A2D-98DC-4300-9A2C-EC6FE38A7392} = {575A3C3B-17BA-4A8A-9F53-05320913D0A6}
+		{9F875DD4-9C9A-4E8A-9C13-EFEE41C749F3} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 		{E029C5AB-EC90-45B0-BBD9-29A60864B137} = {DC5EAE30-96E3-4D38-B3C5-33E587C9FB76}
 		{30396678-D653-4C67-A507-1749424A24CD} = {5D41D463-D53B-4ADC-90AD-44AA03D6340D}
-		{DC5EAE30-96E3-4D38-B3C5-33E587C9FB76} = {52D18A62-B744-48F6-A4B5-1382F83FA437}
-		{5D41D463-D53B-4ADC-90AD-44AA03D6340D} = {52D18A62-B744-48F6-A4B5-1382F83FA437}
-		{575A3C3B-17BA-4A8A-9F53-05320913D0A6} = {52D18A62-B744-48F6-A4B5-1382F83FA437}
+		{DC5EAE30-96E3-4D38-B3C5-33E587C9FB76} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
+		{5D41D463-D53B-4ADC-90AD-44AA03D6340D} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
+		{575A3C3B-17BA-4A8A-9F53-05320913D0A6} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 0.1
-		StartupItem = FakeItEasy\FakeItEasy.csproj
+		StartupItem = src\FakeItEasy\FakeItEasy.csproj
 	EndGlobalSection
 EndGlobal
