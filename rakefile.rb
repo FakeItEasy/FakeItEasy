@@ -1,7 +1,7 @@
 require 'albacore'
 
 msbuild_command = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
-nuget_command  = "packages/NuGet.CommandLine.2.8.0/tools/NuGet.exe"
+nuget_command  = "packages/NuGet.CommandLine.3.3.0/tools/NuGet.exe"
 nunit_command  = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
 xunit_command = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 
