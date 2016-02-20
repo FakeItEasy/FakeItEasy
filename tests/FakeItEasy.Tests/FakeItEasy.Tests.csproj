@@ -94,6 +94,7 @@
     <Compile Include="ArgumentConstraintManagerExtensions\StringEndsWithTests.cs" />
     <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
     <Compile Include="Configuration\ArgumentCollectionTests.cs" />
+    <Compile Include="Core\DynamicOptionsBuilderTests.cs" />
     <Compile Include="Core\FakeManagerProviderTests.cs" />
     <Compile Include="DefaultBootstrapperTests.cs" />
     <Compile Include="FakeOptionsBuilderTests.cs" />
@@ -149,7 +150,7 @@
     <Compile Include="Configuration\FakeConfigurationManagerTests.cs" />
     <Compile Include="Configuration\StartConfigurationTests.cs" />
     <Compile Include="Core\DummyFactoryTests.cs" />
-    <Compile Include="Core\DynamicContainerTests.cs" />
+    <Compile Include="Core\DynamicDummyFactoryTests.cs" />
     <Compile Include="Core\OrderedFakeAsserterFactoryTests.cs" />
     <Compile Include="Core\OrderedFakeAsserterTests.cs" />
     <Compile Include="Creation\ProxyGeneratorSelectorTests.cs" />

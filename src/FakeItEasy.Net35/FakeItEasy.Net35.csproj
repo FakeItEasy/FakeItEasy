@@ -233,6 +233,12 @@
     <Compile Include="..\FakeItEasy\Core\DefaultFakeObjectCallFormatter.cs">
       <Link>Core\DefaultFakeObjectCallFormatter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\DynamicDummyFactory.cs">
+      <Link>Core\DynamicDummyFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DynamicOptionsBuilder.cs">
+      <Link>Core\DynamicOptionsBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeWrapperConfigurator.cs">
       <Link>Core\FakeWrapperConfigurator.cs</Link>
     </Compile>
@@ -247,9 +253,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\DelegateRaiser.cs">
       <Link>Core\DelegateRaiser.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\DynamicContainer.cs">
-      <Link>Core\DynamicContainer.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\EventHandlerArgumentProviderMap.cs">
       <Link>Core\EventHandlerArgumentProviderMap.cs</Link>

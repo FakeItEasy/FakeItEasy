@@ -89,6 +89,7 @@
     <Compile Include="A.of.T.cs" />
     <Compile Include="Core\AssemblyExtensions.cs" />
     <Compile Include="Core\BootstrapperLocator.cs" />
+    <Compile Include="Core\DynamicOptionsBuilder.cs" />
     <Compile Include="Core\IFakeCallProcessor.cs" />
     <Compile Include="Core\FakeManagerProvider.cs" />
     <Compile Include="Core\IFakeCallProcessorProvider.cs" />
@@ -260,7 +261,7 @@
     <Compile Include="Core\DefaultSutInitializer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\DynamicContainer.cs">
+    <Compile Include="Core\DynamicDummyFactory.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\FakeAsserter.cs">
