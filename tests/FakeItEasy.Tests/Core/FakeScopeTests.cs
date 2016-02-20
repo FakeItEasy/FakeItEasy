@@ -29,34 +29,6 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void OriginalScope_has_non_null_container()
-        {
-            Assert.That(FakeScope.Current.FakeObjectContainer, Is.Not.Null);
-        }
-
-        [Test]
-        public void CreatingNewScope_without_container_has_container_set_to_same_container_as_parent_scope()
-        {
-            var parentContainer = FakeScope.Current.FakeObjectContainer;
-
-            using (Fake.CreateScope())
-            {
-                Assert.That(FakeScope.Current.FakeObjectContainer, Is.SameAs(parentContainer));
-            }
-        }
-
-        [Test]
-        public void CreatingNewScope_with_container_sets_that_container_to_scope()
-        {
-            var newContainer = A.Fake<IFakeObjectContainer>();
-
-            using (FakeScope.Create(newContainer))
-            {
-                Assert.That(FakeScope.Current.FakeObjectContainer, Is.SameAs(newContainer));
-            }
-        }
-
-        [Test]
         public void Call_intercepted_in_child_scope_should_be_visible_in_parent_scope()
         {
             var fake = A.Fake<IFoo>();

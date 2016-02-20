@@ -13,21 +13,11 @@ namespace FakeItEasy.Tests.Core
         private List<IDummyFactory> availableDummyFactories;
         private List<IFakeOptionsBuilder> availableOptionsBuilders;
 
-        private IDisposable scope;
-
         [SetUp]
         public void Setup()
         {
-            this.scope = Fake.CreateScope(new NullFakeObjectContainer());
-
             this.availableOptionsBuilders = new List<IFakeOptionsBuilder>();
             this.availableDummyFactories = new List<IDummyFactory>();
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            this.scope.Dispose();
         }
 
         [Test]

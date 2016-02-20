@@ -65,34 +65,6 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void CreateScope_with_container_should_return_scope_from_factory()
-        {
-            // Arrange
-            var container = A.Dummy<IFakeObjectContainer>();
-
-            var scope = A.Dummy<IFakeScope>();
-            A.CallTo(() => this.fakeScopeFactory.Create(container)).Returns(scope);
-
-            // Act
-            var result = this.facade.CreateScope(container);
-
-            // Assert
-            Assert.That(result, Is.SameAs(scope));
-        }
-
-        [Test]
-        public void CreateScope_with_container_should_be_guarded()
-        {
-            // Arrange
-
-            // Act
-
-            // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.facade.CreateScope(A.Dummy<IFakeObjectContainer>()));
-        }
-
-        [Test]
         public void GetCalls_should_return_calls_from_manager_received_from_accessor()
         {
             // Arrange

@@ -1,7 +1,6 @@
 namespace FakeItEasy.IntegrationTests
 {
     using System;
-    using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -12,10 +11,13 @@ namespace FakeItEasy.IntegrationTests
         [Test]
         public void Should_be_able_to_get_a_fake_value_of_uri_type()
         {
-            using (Fake.CreateScope(new NullFakeObjectContainer()))
-            {
-                A.Fake<Uri>();
-            }
+            // Arrange
+
+            // Act
+            var fake = A.Fake<Uri>();
+
+            // Assert
+            Fake.GetFakeManager(fake).Should().NotBeNull("because we should be able to create a fake Uri");
         }
 
         [Test]

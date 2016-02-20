@@ -33,8 +33,10 @@ namespace FakeItEasy
             container.Register(c =>
                 FakeScope.Current);
 
-            container.Register(c =>
-                c.Resolve<FakeScope>().FakeObjectContainer);
+            container.RegisterSingleton<IFakeObjectContainer>(c =>
+                new DynamicContainer(
+                    c.Resolve<IEnumerable<IDummyFactory>>(),
+                    c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
 
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c =>
                 new ExpressionCallMatcherFactory
