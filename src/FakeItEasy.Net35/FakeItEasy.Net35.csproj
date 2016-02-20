@@ -245,9 +245,6 @@
     <Compile Include="..\FakeItEasy\Core\DefaultSutInitializer.cs">
       <Link>Core\DefaultSutInitializer.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\DelegateFakeObjectContainer.cs">
-      <Link>Core\DelegateFakeObjectContainer.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\DelegateRaiser.cs">
       <Link>Core\DelegateRaiser.cs</Link>
     </Compile>
@@ -373,9 +370,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\MethodInfoManager.cs">
       <Link>Core\MethodInfoManager.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\NullFakeObjectContainer.cs">
-      <Link>Core\NullFakeObjectContainer.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserter.cs">
       <Link>Core\OrderedFakeAsserter.cs</Link>

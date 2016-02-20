@@ -260,9 +260,6 @@
     <Compile Include="Core\DefaultSutInitializer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\DelegateFakeObjectContainer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\DynamicContainer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -375,9 +372,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\MethodInfoManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\NullFakeObjectContainer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\OrderedFakeAsserter.cs">

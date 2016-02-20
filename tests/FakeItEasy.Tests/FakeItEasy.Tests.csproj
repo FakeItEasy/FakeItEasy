@@ -139,7 +139,6 @@
     <Compile Include="ArgumentConstraintManagerExtensions\StringIsNullOrEmptyTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\StringStartsWithTests.cs" />
     <Compile Include="Core\FakeWrapperConfiguratorTests.cs" />
-    <Compile Include="Core\DelegateFakeObjectContainerTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\IsInstanceOfTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\IsNullTests.cs" />
@@ -197,7 +196,6 @@
     <Compile Include="TestHelpers\MethodInfoDummyFactory.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="Core\FakeManagerTests.cs" />
-    <Compile Include="Core\NullFakeObjectContainerTests.cs" />
     <Compile Include="CustomArgumentConstraints.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapterTests.cs" />
     <Compile Include="Core\WrappedObjectRuleTests.cs" />
