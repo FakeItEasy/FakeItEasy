@@ -12,9 +12,7 @@ namespace FakeItEasy.Tests.Creation
     [TestFixture]
     public class DummyValueCreationSessionTests
     {
-        private IFakeObjectContainer container;
         private IFakeObjectCreator fakeObjectCreator;
-        private DummyValueCreationSession session;
 
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
         private object[] dummiesInContainer = new object[]
@@ -27,10 +25,7 @@ namespace FakeItEasy.Tests.Creation
         [SetUp]
         public void Setup()
         {
-            this.container = A.Fake<IFakeObjectContainer>();
             this.fakeObjectCreator = A.Fake<IFakeObjectCreator>();
-
-            this.session = new DummyValueCreationSession(this.container, this.fakeObjectCreator);
         }
 
         [TestCaseSource("dummiesInContainer")]
@@ -39,11 +34,13 @@ namespace FakeItEasy.Tests.Creation
             Guard.AgainstNull(dummyInContainer, "dummyInContainer");
 
             // Arrange
-            this.StubContainerWithValue(dummyInContainer);
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakes(dummyInContainer),
+                this.fakeObjectCreator);
 
             // Act
             object dummy;
-            var result = this.session.TryResolveDummyValue(dummyInContainer.GetType(), out dummy);
+            var result = session.TryResolveDummyValue(dummyInContainer.GetType(), out dummy);
 
             // Assert
             Assert.That(result, Is.True);
@@ -54,10 +51,13 @@ namespace FakeItEasy.Tests.Creation
         public void Should_return_false_when_type_cannot_be_created()
         {
             // Arrange
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakesNoDummy(),
+                this.fakeObjectCreator);
 
             // Act
             object dummy = null;
-            var result = this.session.TryResolveDummyValue(typeof(TypeThatCanNotBeInstantiated), out dummy);
+            var result = session.TryResolveDummyValue(typeof(TypeThatCanNotBeInstantiated), out dummy);
 
             // Assert
             Assert.That(result, Is.False);
@@ -70,10 +70,13 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var fake = A.Fake<IFoo>();
             this.StubFakeObjectCreatorWithValue<IFoo>(fake);
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakesNoDummy(),
+                this.fakeObjectCreator);
 
             // Act
             object dummy;
-            var result = this.session.TryResolveDummyValue(typeof(IFoo), out dummy);
+            var result = session.TryResolveDummyValue(typeof(IFoo), out dummy);
 
             // Assert
             Assert.That(result, Is.True);
@@ -84,10 +87,13 @@ namespace FakeItEasy.Tests.Creation
         public void Should_return_default_value_when_type_is_value_type()
         {
             // Arrange
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakesNoDummy(),
+                this.fakeObjectCreator);
 
             // Act
             object dummy;
-            var result = this.session.TryResolveDummyValue(typeof(int), out dummy);
+            var result = session.TryResolveDummyValue(typeof(int), out dummy);
 
             // Assert
             Assert.That(result, Is.True);
@@ -98,10 +104,13 @@ namespace FakeItEasy.Tests.Creation
         public void Should_be_able_to_create_class_with_default_constructor()
         {
             // Arrange
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakesNoDummy(),
+                this.fakeObjectCreator);
 
             // Act
             object dummy;
-            var result = this.session.TryResolveDummyValue(typeof(ClassWithDefaultConstructor), out dummy);
+            var result = session.TryResolveDummyValue(typeof(ClassWithDefaultConstructor), out dummy);
 
             // Assert
             Assert.That(result, Is.True);
@@ -112,12 +121,14 @@ namespace FakeItEasy.Tests.Creation
         public void Should_be_able_to_create_class_with_resolvable_constructor_arguments()
         {
             // Arrange
-            this.StubContainerWithValue("dummy string");
             this.StubFakeObjectCreatorWithValue(A.Fake<IFoo>());
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakes("dummy string"),
+                this.fakeObjectCreator);
 
             // Act
             object dummy;
-            var result = this.session.TryResolveDummyValue(typeof(TypeWithResolvableConstructorArguments<string, IFoo>), out dummy);
+            var result = session.TryResolveDummyValue(typeof(TypeWithResolvableConstructorArguments<string, IFoo>), out dummy);
 
             // Assert
             Assert.That(result, Is.True);
@@ -128,10 +139,13 @@ namespace FakeItEasy.Tests.Creation
         public void Should_not_be_able_to_create_class_with_circular_dependencies()
         {
             // Arrange
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakesNoDummy(),
+                this.fakeObjectCreator);
 
             // Act
             object dummy;
-            var result = this.session.TryResolveDummyValue(typeof(TypeWithCircularDependency), out dummy);
+            var result = session.TryResolveDummyValue(typeof(TypeWithCircularDependency), out dummy);
 
             // Assert
             Assert.That(result, Is.False);
@@ -141,14 +155,16 @@ namespace FakeItEasy.Tests.Creation
         public void Should_be_able_to_resolve_same_type_twice_when_successful()
         {
             // Arrange
-            this.StubContainerWithValue("dummy value");
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakes("dummy value"),
+                this.fakeObjectCreator);
 
             object dummy;
-            this.session.TryResolveDummyValue(typeof(string), out dummy);
+            session.TryResolveDummyValue(typeof(string), out dummy);
             dummy = null;
 
             // Act
-            var result = this.session.TryResolveDummyValue(typeof(string), out dummy);
+            var result = session.TryResolveDummyValue(typeof(string), out dummy);
 
             // Assert
             Assert.That(result, Is.True);
@@ -159,10 +175,13 @@ namespace FakeItEasy.Tests.Creation
         public void Should_return_false_when_default_constructor_throws()
         {
             // Arrange
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakesNoDummy(),
+                this.fakeObjectCreator);
 
             // Act
             object dummy;
-            var result = this.session.TryResolveDummyValue(typeof(TypeWithDefaultConstructorThatThrows), out dummy);
+            var result = session.TryResolveDummyValue(typeof(TypeWithDefaultConstructorThatThrows), out dummy);
 
             // Assert
             Assert.That(result, Is.False);
@@ -172,11 +191,13 @@ namespace FakeItEasy.Tests.Creation
         public void Should_favor_the_widest_constructor_when_activating()
         {
             // Arrange
-            this.StubContainerWithValue("dummy value");
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakes("dummy value"),
+                this.fakeObjectCreator);
 
             // Act
             object dummy;
-            this.session.TryResolveDummyValue(typeof(TypeWithMultipleConstructorsOfDifferentWidth), out dummy);
+            session.TryResolveDummyValue(typeof(TypeWithMultipleConstructorsOfDifferentWidth), out dummy);
             var typedDummy = (TypeWithMultipleConstructorsOfDifferentWidth)dummy;
 
             // Assert
@@ -189,10 +210,13 @@ namespace FakeItEasy.Tests.Creation
         public void Should_return_false_for_restricted_types(Type restrictedType)
         {
             // Arrange
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakesNoDummy(),
+                this.fakeObjectCreator);
 
             // Act
             object dummy;
-            var result = this.session.TryResolveDummyValue(restrictedType, out dummy);
+            var result = session.TryResolveDummyValue(restrictedType, out dummy);
 
             // Assert
             Assert.That(result, Is.False);
@@ -204,10 +228,13 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var fake = A.Fake<IFoo>();
             this.StubFakeObjectCreatorWithValue<IFoo>(fake);
+            var session = new DummyValueCreationSession(
+                this.CreateDummyFactoryThatMakesNoDummy(),
+                this.fakeObjectCreator);
 
             // Act
             object dummy;
-            var result = this.session.TryResolveDummyValue(typeof(Lazy<IFoo>), out dummy);
+            var result = session.TryResolveDummyValue(typeof(Lazy<IFoo>), out dummy);
 
             // Assert
             Assert.That(result, Is.True);
@@ -218,17 +245,19 @@ namespace FakeItEasy.Tests.Creation
         private void StubFakeObjectCreatorWithValue<T>(T value)
         {
             object output;
-            A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(typeof(T), this.session, out output))
+            A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(typeof(T), A<DummyValueCreationSession>._, out output))
                 .Returns(true)
                 .AssignsOutAndRefParameters(value);
         }
 
-        private void StubContainerWithValue(object value)
+        private DynamicDummyFactory CreateDummyFactoryThatMakes(object value)
         {
-            object output;
-            A.CallTo(() => this.container.TryCreateDummyObject(value.GetType(), out output))
-                .Returns(true)
-                .AssignsOutAndRefParameters(value);
+            return new DynamicDummyFactory(new[] { new FixedDummyFactory(value) });
+        }
+
+        private DynamicDummyFactory CreateDummyFactoryThatMakesNoDummy()
+        {
+            return new DynamicDummyFactory(new IDummyFactory[0]);
         }
 
         public class ClassWithDefaultConstructor
@@ -271,6 +300,31 @@ namespace FakeItEasy.Tests.Creation
             }
 
             public bool WidestConstructorWasCalled { get; set; }
+        }
+
+        internal class FixedDummyFactory : IDummyFactory
+        {
+            private readonly object dummy;
+
+            public FixedDummyFactory(object dummy)
+            {
+                this.dummy = dummy;
+            }
+
+            public Priority Priority
+            {
+                get { return Priority.Default; }
+            }
+
+            public bool CanCreate(Type type)
+            {
+                return type == this.dummy.GetType();
+            }
+
+            public object Create(Type type)
+            {
+                return this.dummy;
+            }
         }
 
         private static class TypeThatCanNotBeInstantiated

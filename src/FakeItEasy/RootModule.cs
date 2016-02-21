@@ -37,7 +37,7 @@ namespace FakeItEasy
                 new DynamicOptionsBuilder(
                     c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
 
-            container.RegisterSingleton<IFakeObjectContainer>(c =>
+            container.RegisterSingleton(c =>
                 new DynamicDummyFactory(
                     c.Resolve<IEnumerable<IDummyFactory>>()));
 
@@ -98,7 +98,7 @@ namespace FakeItEasy
             container.Register<IFakeAndDummyManager>(c =>
                                                          {
                                                              var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<FakeCallProcessorProvider.Factory>());
-                                                             var session = new DummyValueCreationSession(c.Resolve<IFakeObjectContainer>(), new SessionFakeObjectCreator { Creator = fakeCreator });
+                                                             var session = new DummyValueCreationSession(c.Resolve<DynamicDummyFactory>(), new SessionFakeObjectCreator { Creator = fakeCreator });
                                                              var fakeConfigurator = c.Resolve<IFakeObjectOptionsBuilder>();
 
                                                              return new DefaultFakeAndDummyManager(session, fakeCreator, fakeConfigurator);

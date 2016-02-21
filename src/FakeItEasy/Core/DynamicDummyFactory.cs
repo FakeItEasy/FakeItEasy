@@ -9,7 +9,6 @@ namespace FakeItEasy.Core
     /// Tries to create Dummies by invoking an appropriate <see cref="IDummyFactory"/>.
     /// </summary>
     internal class DynamicDummyFactory
-        : IFakeObjectContainer
     {
         private readonly IEnumerable<IDummyFactory> allDummyFactories;
         private readonly ConcurrentDictionary<Type, IDummyFactory> cachedDummyFactories;
