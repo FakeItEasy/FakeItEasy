@@ -10,7 +10,6 @@ namespace FakeItEasy.Core
     /// Builds fake options by invoking an appropriate <see cref="IFakeOptionsBuilder"/>.
     /// </summary>
     internal class DynamicOptionsBuilder
-        : IFakeObjectOptionsBuilder
     {
         private readonly IEnumerable<IFakeOptionsBuilder> allFakeOptionsBuilders;
         private readonly ConcurrentDictionary<Type, IFakeOptionsBuilder> cachedFakeOptionsBuilders;

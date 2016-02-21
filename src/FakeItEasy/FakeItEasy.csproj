@@ -348,9 +348,6 @@
     <Compile Include="Core\IFakeObjectCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\IFakeObjectOptionsBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\ITypeCatalogue.cs" />
     <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
     <Compile Include="Core\IFakeScope.cs">
