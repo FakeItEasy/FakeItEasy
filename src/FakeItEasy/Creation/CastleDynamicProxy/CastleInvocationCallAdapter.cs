@@ -27,6 +27,8 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             this.Method = invocation.Method;
 
             this.Arguments = new ArgumentCollection(invocation.Arguments, this.Method);
+
+            this.SequenceNumber = SequenceNumberManager.Next();
         }
 
         /// <summary>
@@ -54,6 +56,8 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         {
             get { return this.invocation.Proxy; }
         }
+
+        public int SequenceNumber { get; private set; }
 
         /// <summary>
         /// Freezes the call so that it can no longer be modified.

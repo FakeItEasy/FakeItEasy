@@ -13,6 +13,7 @@ namespace FakeItEasy.Configuration
         /// must have happened.</param>
         /// <exception cref="ExpectationException">The call has not been called a number of times
         /// that passes the repeat constraint.</exception>
-        void MustHaveHappened(Repeated repeatConstraint);
+        /// <returns>An object to assert the call order.</returns>
+        IAfterMustHaveHappenedConfiguration MustHaveHappened(Repeated repeatConstraint);
     }
 }

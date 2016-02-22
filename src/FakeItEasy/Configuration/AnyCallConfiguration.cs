@@ -54,9 +54,9 @@ namespace FakeItEasy.Configuration
             return this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
         }
 
-        public void MustHaveHappened(Repeated repeatConstraint)
+        public IAfterMustHaveHappenedConfiguration MustHaveHappened(Repeated repeatConstraint)
         {
-            this.VoidConfiguration.MustHaveHappened(repeatConstraint);
+            return this.VoidConfiguration.MustHaveHappened(repeatConstraint);
         }
 
         public IAnyCallConfigurationWithNoReturnTypeSpecified Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)

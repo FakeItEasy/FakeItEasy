@@ -89,6 +89,9 @@
     <Compile Include="..\FakeItEasy\CompletedFakeObjectCallExtensions.cs">
       <Link>CompletedFakeObjectCallExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\AfterMustHaveHappenedConfiguration.cs">
+      <Link>Configuration\AfterMustHaveHappenedConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallCallRule.cs">
       <Link>Configuration\AnyCallCallRule.cs</Link>
     </Compile>
@@ -118,6 +121,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs">
       <Link>Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IAfterMustHaveHappenedConfiguration.cs">
+      <Link>Configuration\IAfterMustHaveHappenedConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IAnyCallConfiguration.cs">
       <Link>Configuration\IAnyCallConfiguration.cs</Link>
@@ -368,14 +374,14 @@
     <Compile Include="..\FakeItEasy\Core\MethodInfoManager.cs">
       <Link>Core\MethodInfoManager.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserter.cs">
-      <Link>Core\OrderedFakeAsserter.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserterFactory.cs">
-      <Link>Core\OrderedFakeAsserterFactory.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\Raise.of.TEventArgs.cs">
       <Link>Core\Raise.of.TEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\SequenceNumberManager.cs">
+      <Link>Core\SequenceNumberManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\SequentialCallContext.cs">
+      <Link>Core\SequentialCallContext.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\TypeCatalogue.cs">
       <Link>Core\TypeCatalogue.cs</Link>
@@ -593,6 +599,9 @@
     <Compile Include="..\FakeItEasy\IOutputWriter.cs">
       <Link>IOutputWriter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\ISequentialCallContext.cs">
+      <Link>ISequentialCallContext.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
       <Link>MethodBaseExtensions.cs</Link>
     </Compile>
@@ -601,9 +610,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\NextCall.cs">
       <Link>NextCall.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\OrderedAssertion.cs">
-      <Link>OrderedAssertion.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\OutAndRefParametersConfigurationExtensions.cs">
       <Link>OutAndRefParametersConfigurationExtensions.cs</Link>

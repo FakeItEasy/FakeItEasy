@@ -43,12 +43,13 @@ namespace FakeItEasy.Configuration
             return this.wrappedBuilder.AssignsOutAndRefParametersLazily(valueProducer);
         }
 
-        public void MustHaveHappened(Repeated repeatConstraint)
+        public IAfterMustHaveHappenedConfiguration MustHaveHappened(Repeated repeatConstraint)
         {
             Guard.AgainstNull(repeatConstraint, "repeatConstraint");
 
             this.rule.RepeatConstraint = repeatConstraint;
             this.rule.IsAssertion = true;
+            return new AfterMustHaveHappenedRecordedCallConfiguration(this.rule);
         }
 
         public IRecordingConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
@@ -58,6 +59,23 @@ namespace FakeItEasy.Configuration
             this.rule.UsePredicateToValidateArguments(argumentsPredicate);
 
             return this;
+        }
+
+        private class AfterMustHaveHappenedRecordedCallConfiguration : IAfterMustHaveHappenedConfiguration
+        {
+            private readonly RecordedCallRule rule;
+
+            public AfterMustHaveHappenedRecordedCallConfiguration(RecordedCallRule rule)
+            {
+                this.rule = rule;
+            }
+
+            public void InOrder(ISequentialCallContext context)
+            {
+                Guard.AgainstNull(context, "context");
+
+                this.rule.SequentialCallContext = context;
+            }
         }
     }
 }

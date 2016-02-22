@@ -571,19 +571,16 @@ namespace FakeItEasy.Tests.Core
             manager.AddInterceptionListener(listener1);
             manager.AddInterceptionListener(listener2);
 
-            // Assert
-            using (var scope = Fake.CreateScope())
-            {
-                ProcessFakeObjectCall(manager, A.Dummy<IWritableFakeObjectCall>());
+            ProcessFakeObjectCall(manager, A.Dummy<IWritableFakeObjectCall>());
 
-                using (scope.OrderedAssertions())
-                {
-                    A.CallTo(() => listener2.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened();
-                    A.CallTo(() => listener1.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened();
-                    A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened();
-                    A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened();
-                }
-            }
+            // Assert
+            var context = A.SequentialCallContext();
+            A.CallTo(() => listener2.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened().InOrder(context);
+            A.CallTo(() => listener1.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened().InOrder(context);
+            A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._))
+                .MustHaveHappened().InOrder(context);
+            A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._))
+                .MustHaveHappened().InOrder(context);
         }
 
         private static FakeCallRule CreateApplicableInterception()

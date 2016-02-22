@@ -22,5 +22,10 @@ namespace FakeItEasy.Core
         /// Gets the faked object the call is performed on.
         /// </summary>
         object FakedObject { get; }
+
+        /// <summary>
+        /// Gets the sequence number of the call.
+        /// </summary>
+        int SequenceNumber { get; }
     }
 }

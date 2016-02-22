@@ -83,18 +83,22 @@
     <Compile Include="Configuration\AnyCallCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\AfterMustHaveHappenedConfiguration.cs" />
     <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="A.of.T.cs" />
+    <Compile Include="Configuration\IAfterMustHaveHappenedConfiguration.cs" />
     <Compile Include="Core\AssemblyExtensions.cs" />
     <Compile Include="Core\BootstrapperLocator.cs" />
+    <Compile Include="Core\SequentialCallContext.cs" />
     <Compile Include="Core\DynamicOptionsBuilder.cs" />
     <Compile Include="Core\IFakeCallProcessor.cs" />
     <Compile Include="Core\FakeManagerProvider.cs" />
     <Compile Include="Core\IFakeCallProcessorProvider.cs" />
     <Compile Include="Core\FakeCallProcessorProvider.cs" />
     <Compile Include="Core\EventHandlerArgumentProviderMap.cs" />
+    <Compile Include="Core\SequenceNumberManager.cs" />
     <Compile Include="Creation\FakeOptionsBase.cs" />
     <Compile Include="Creation\IFakeOptions.of.T.cs" />
     <Compile Include="Creation\IFakeOptionsForWrappers.of.T.cs" />
@@ -105,6 +109,7 @@
     <Compile Include="Expressions\ArgumentConstraints\RefArgumentConstraint.cs" />
     <Compile Include="FakeOptionsBuilder.cs" />
     <Compile Include="IBootstrapper.cs" />
+    <Compile Include="ISequentialCallContext.cs" />
     <Compile Include="IFakeOptionsBuilder.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
@@ -369,12 +374,6 @@
     <Compile Include="Core\MethodInfoManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\OrderedFakeAsserter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\OrderedFakeAsserterFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\WrappedObjectRule.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -472,7 +471,6 @@
     <Compile Include="IoC\Module.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OrderedAssertion.cs" />
     <Compile Include="CompletedFakeObjectCallExtensions.cs" />
     <Compile Include="DummyFactory.cs" />
     <Compile Include="IDummyFactory.cs" />

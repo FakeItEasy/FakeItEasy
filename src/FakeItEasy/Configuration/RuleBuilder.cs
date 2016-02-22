@@ -95,7 +95,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public void MustHaveHappened(Repeated repeatConstraint)
+        public IAfterMustHaveHappenedConfiguration MustHaveHappened(Repeated repeatConstraint)
         {
             Guard.AgainstNull(repeatConstraint, "repeatConstraint");
 
@@ -106,6 +106,8 @@ namespace FakeItEasy.Configuration
             this.RuleBeingBuilt.WriteDescriptionOfValidCall(description);
 
             asserter.AssertWasCalled(this.Matcher.Matches, description.Builder.ToString(), repeatConstraint.Matches, repeatConstraint.ToString());
+
+            return new AfterMustHaveHappenedConfiguration(this.manager, this.Matcher, description.Builder.ToString(), repeatConstraint);
         }
 
         public class ReturnValueConfiguration<TMember>
@@ -157,9 +159,9 @@ namespace FakeItEasy.Configuration
                 return this;
             }
 
-            public void MustHaveHappened(Repeated repeatConstraint)
+            public IAfterMustHaveHappenedConfiguration MustHaveHappened(Repeated repeatConstraint)
             {
-                this.ParentConfiguration.MustHaveHappened(repeatConstraint);
+                return this.ParentConfiguration.MustHaveHappened(repeatConstraint);
             }
 
             public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)

@@ -254,6 +254,11 @@ namespace FakeItEasy.Core
                 get { return this.call.FakedObject; }
             }
 
+            public int SequenceNumber
+            {
+                get { return this.call.SequenceNumber; }
+            }
+
             public void SetReturnValue(object value)
             {
                 this.call.SetReturnValue(value);
