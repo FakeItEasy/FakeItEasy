@@ -1,9 +1,11 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
-    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -14,12 +16,15 @@ namespace FakeItEasy.Tests.Core
         {
             var scope = FakeScope.Current;
 
+            FakeScope newCurrentScope;
+
             using (Fake.CreateScope())
             {
-                Assert.That(FakeScope.Current, Is.Not.SameAs(scope));
+                newCurrentScope = FakeScope.Current;
             }
 
-            Assert.That(FakeScope.Current, Is.SameAs(scope));
+            newCurrentScope.Should().NotBeSameAs(scope, "new scopes should not be the original scope");
+            FakeScope.Current.Should().BeSameAs(scope, "current scope should revert to original scope");
         }
 
         [Test]
@@ -68,10 +73,10 @@ namespace FakeItEasy.Tests.Core
             // Arrange
 
             // Act
+            var exception = Record.Exception(() => FakeScope.Current.GetEnumerator());
 
             // Assert
-            Assert.Throws<NotSupportedException>(() =>
-                FakeScope.Current.GetEnumerator());
+            exception.Should().BeAnExceptionOfType<NotSupportedException>();
         }
 
         [Test]
@@ -81,15 +86,19 @@ namespace FakeItEasy.Tests.Core
             var fake = A.Fake<IFoo>();
             var otherFake = A.Fake<IFoo>();
 
+            IEnumerable<string> methodNames;
+
             // Act
             using (var scope = Fake.CreateScope())
             {
                 fake.Bar();
                 otherFake.Baz();
 
-                // Assert
-                Assert.That(scope.ToArray().Select(x => x.Method.Name), Is.EquivalentTo(new[] { "Bar", "Baz" }));
+                methodNames = scope.Select(x => x.Method.Name);
             }
+
+            // Assert
+            methodNames.Should().BeEquivalentTo("Bar", "Baz");
         }
 
         [Test]
@@ -98,6 +107,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var fake = A.Fake<IFoo>();
             var otherFake = A.Fake<IFoo>();
+            IEnumerable<string> methodNames;
 
             // Act
             using (var scope = Fake.CreateScope())
@@ -105,9 +115,11 @@ namespace FakeItEasy.Tests.Core
                 fake.Bar();
                 otherFake.Baz();
 
-                // Assert
-                Assert.That(((IEnumerable)scope).Cast<ICompletedFakeObjectCall>().ToArray().Select(x => x.Method.Name), Is.EquivalentTo(new[] { "Bar", "Baz" }));
+                methodNames = scope.ToArray().Select(x => x.Method.Name);
             }
+
+            // Assert
+            methodNames.Should().BeEquivalentTo("Bar", "Baz");
         }
     }
 }

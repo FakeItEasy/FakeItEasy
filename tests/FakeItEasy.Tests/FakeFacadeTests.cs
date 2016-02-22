@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -35,7 +36,7 @@ namespace FakeItEasy.Tests
             var result = this.facade.GetFakeManager(proxy);
 
             // Assert
-            Assert.That(result, Is.SameAs(manager));
+            result.Should().BeSameAs(manager);
         }
 
         [Test]
@@ -61,7 +62,7 @@ namespace FakeItEasy.Tests
             var result = this.facade.CreateScope();
 
             // Assert
-            Assert.That(result, Is.SameAs(scope));
+            result.Should().BeSameAs(scope);
         }
 
         [Test]
@@ -79,7 +80,7 @@ namespace FakeItEasy.Tests
             var result = this.facade.GetCalls(fake);
 
             // Assert
-            Assert.That(result, Is.EquivalentTo(calls));
+            result.Should().BeEquivalentTo(calls);
         }
 
         [Test]

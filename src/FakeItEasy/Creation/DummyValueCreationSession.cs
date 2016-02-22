@@ -103,7 +103,7 @@ namespace FakeItEasy.Creation
             {
                 result = default(object);
 
-                if (typeOfDummy.IsValueType && !typeOfDummy.Equals(typeof(void)))
+                if (typeOfDummy.IsValueType && typeOfDummy != typeof(void))
                 {
                     result = Activator.CreateInstance(typeOfDummy);
                     return true;
@@ -188,7 +188,7 @@ namespace FakeItEasy.Creation
 
                     var method = CreateGenericFromResultMethodDefinition().MakeGenericMethod(typeOfLazyResult);
                     var func = method.Invoke(null, new[] { lazyResult });
-                    result = typeOfDummy.GetConstructor(new[] { funcType, typeof(bool) }).Invoke(new object[] { func, true });
+                    result = typeOfDummy.GetConstructor(new[] { funcType, typeof(bool) }).Invoke(new[] { func, true });
                     return true;
                 }
 
@@ -254,7 +254,7 @@ namespace FakeItEasy.Creation
 
                 foreach (var type in types)
                 {
-                    object resolvedType = null;
+                    object resolvedType;
 
                     if (!this.Session.TryResolveDummyValue(type, out resolvedType))
                     {

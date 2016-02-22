@@ -2,25 +2,25 @@ namespace FakeItEasy.Tests.Creation
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Threading.Tasks;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FluentAssertions;
     using NUnit.Framework;
     using Guard = FakeItEasy.Guard;
 
     [TestFixture]
     public class DummyValueCreationSessionTests
     {
-        private IFakeObjectCreator fakeObjectCreator;
-
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] dummiesInContainer = new object[]
+        private readonly object[] dummiesInContainer =
             {
                 "dummy value",
                 new Task<int>(() => 7),
                 new Task(delegate { })
             };
+
+        private IFakeObjectCreator fakeObjectCreator;
 
         [SetUp]
         public void Setup()
@@ -43,8 +43,8 @@ namespace FakeItEasy.Tests.Creation
             var result = session.TryResolveDummyValue(dummyInContainer.GetType(), out dummy);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(dummy, Is.SameAs(dummyInContainer));
+            result.Should().BeTrue();
+            dummy.Should().BeSameAs(dummyInContainer);
         }
 
         [Test]
@@ -56,12 +56,12 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy = null;
+            object dummy;
             var result = session.TryResolveDummyValue(typeof(TypeThatCanNotBeInstantiated), out dummy);
 
             // Assert
-            Assert.That(result, Is.False);
-            Assert.That(dummy, Is.Null);
+            result.Should().BeFalse();
+            dummy.Should().BeNull();
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var fake = A.Fake<IFoo>();
-            this.StubFakeObjectCreatorWithValue<IFoo>(fake);
+            this.StubFakeObjectCreatorWithValue(fake);
             var session = new DummyValueCreationSession(
                 this.CreateDummyFactoryThatMakesNoDummy(),
                 this.fakeObjectCreator);
@@ -79,8 +79,8 @@ namespace FakeItEasy.Tests.Creation
             var result = session.TryResolveDummyValue(typeof(IFoo), out dummy);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(dummy, Is.SameAs(fake));
+            result.Should().BeTrue();
+            dummy.Should().BeSameAs(fake);
         }
 
         [Test]
@@ -96,8 +96,8 @@ namespace FakeItEasy.Tests.Creation
             var result = session.TryResolveDummyValue(typeof(int), out dummy);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(dummy, Is.EqualTo(0));
+            result.Should().BeTrue();
+            dummy.Should().Be(0);
         }
 
         [Test]
@@ -113,8 +113,8 @@ namespace FakeItEasy.Tests.Creation
             var result = session.TryResolveDummyValue(typeof(ClassWithDefaultConstructor), out dummy);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(dummy, Is.InstanceOf<ClassWithDefaultConstructor>());
+            result.Should().BeTrue();
+            dummy.Should().BeOfType<ClassWithDefaultConstructor>();
         }
 
         [Test]
@@ -131,8 +131,8 @@ namespace FakeItEasy.Tests.Creation
             var result = session.TryResolveDummyValue(typeof(TypeWithResolvableConstructorArguments<string, IFoo>), out dummy);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(dummy, Is.InstanceOf<TypeWithResolvableConstructorArguments<string, IFoo>>());
+            result.Should().BeTrue();
+            dummy.Should().BeOfType<TypeWithResolvableConstructorArguments<string, IFoo>>();
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace FakeItEasy.Tests.Creation
             var result = session.TryResolveDummyValue(typeof(TypeWithCircularDependency), out dummy);
 
             // Assert
-            Assert.That(result, Is.False);
+            result.Should().BeFalse();
         }
 
         [Test]
@@ -161,14 +161,13 @@ namespace FakeItEasy.Tests.Creation
 
             object dummy;
             session.TryResolveDummyValue(typeof(string), out dummy);
-            dummy = null;
 
             // Act
             var result = session.TryResolveDummyValue(typeof(string), out dummy);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(dummy, Is.EqualTo("dummy value"));
+            result.Should().BeTrue();
+            dummy.Should().Be("dummy value");
         }
 
         [Test]
@@ -184,7 +183,7 @@ namespace FakeItEasy.Tests.Creation
             var result = session.TryResolveDummyValue(typeof(TypeWithDefaultConstructorThatThrows), out dummy);
 
             // Assert
-            Assert.That(result, Is.False);
+            result.Should().BeFalse();
         }
 
         [Test]
@@ -201,7 +200,7 @@ namespace FakeItEasy.Tests.Creation
             var typedDummy = (TypeWithMultipleConstructorsOfDifferentWidth)dummy;
 
             // Assert
-            Assert.That(typedDummy.WidestConstructorWasCalled, Is.True);
+            typedDummy.WidestConstructorWasCalled.Should().BeTrue();
         }
 
         [TestCase(typeof(void))]
@@ -219,7 +218,7 @@ namespace FakeItEasy.Tests.Creation
             var result = session.TryResolveDummyValue(restrictedType, out dummy);
 
             // Assert
-            Assert.That(result, Is.False);
+            result.Should().BeFalse();
         }
 
         [Test]
@@ -227,7 +226,7 @@ namespace FakeItEasy.Tests.Creation
         {
             // Arrange
             var fake = A.Fake<IFoo>();
-            this.StubFakeObjectCreatorWithValue<IFoo>(fake);
+            this.StubFakeObjectCreatorWithValue(fake);
             var session = new DummyValueCreationSession(
                 this.CreateDummyFactoryThatMakesNoDummy(),
                 this.fakeObjectCreator);
@@ -237,9 +236,9 @@ namespace FakeItEasy.Tests.Creation
             var result = session.TryResolveDummyValue(typeof(Lazy<IFoo>), out dummy);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(dummy, Is.InstanceOf<Lazy<IFoo>>());
-            Assert.That(((Lazy<IFoo>)dummy).Value, Is.SameAs(fake));
+            result.Should().BeTrue();
+            dummy.Should().BeOfType<Lazy<IFoo>>();
+            ((Lazy<IFoo>)dummy).Value.Should().BeSameAs(fake);
         }
 
         private void StubFakeObjectCreatorWithValue<T>(T value)

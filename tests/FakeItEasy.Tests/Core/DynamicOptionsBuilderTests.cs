@@ -4,6 +4,8 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -35,7 +37,7 @@ namespace FakeItEasy.Tests.Core
             container.BuildOptions(typeof(TypeWithOptionsBuilders), fakeOptions);
 
             // Assert
-            Assert.That(fakeTypeWithDummyFactory.WasConfigured, Is.True, "configuration was not applied");
+            fakeTypeWithDummyFactory.WasConfigured.Should().BeTrue("because configuration should be applied");
         }
 
         [Test]
@@ -60,10 +62,10 @@ namespace FakeItEasy.Tests.Core
             this.availableOptionsBuilders.Add(new DuplicateOptionsBuilderForTypeWithDummyFactory());
 
             // Act
+            var exception = Record.Exception(() => this.CreateOptionsBuilder());
 
             // Assert
-            Assert.DoesNotThrow(() =>
-                this.CreateOptionsBuilder());
+            exception.Should().BeNull();
         }
 
         private DynamicOptionsBuilder CreateOptionsBuilder()
