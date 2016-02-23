@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -35,7 +36,7 @@ namespace FakeItEasy.Tests
             var result = this.facade.GetFakeManager(proxy);
 
             // Assert
-            Assert.That(result, Is.SameAs(manager));
+            result.Should().BeSameAs(manager);
         }
 
         [Test]
@@ -61,35 +62,7 @@ namespace FakeItEasy.Tests
             var result = this.facade.CreateScope();
 
             // Assert
-            Assert.That(result, Is.SameAs(scope));
-        }
-
-        [Test]
-        public void CreateScope_with_container_should_return_scope_from_factory()
-        {
-            // Arrange
-            var container = A.Dummy<IFakeObjectContainer>();
-
-            var scope = A.Dummy<IFakeScope>();
-            A.CallTo(() => this.fakeScopeFactory.Create(container)).Returns(scope);
-
-            // Act
-            var result = this.facade.CreateScope(container);
-
-            // Assert
-            Assert.That(result, Is.SameAs(scope));
-        }
-
-        [Test]
-        public void CreateScope_with_container_should_be_guarded()
-        {
-            // Arrange
-
-            // Act
-
-            // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.facade.CreateScope(A.Dummy<IFakeObjectContainer>()));
+            result.Should().BeSameAs(scope);
         }
 
         [Test]
@@ -107,7 +80,7 @@ namespace FakeItEasy.Tests
             var result = this.facade.GetCalls(fake);
 
             // Assert
-            Assert.That(result, Is.EquivalentTo(calls));
+            result.Should().BeEquivalentTo(calls);
         }
 
         [Test]

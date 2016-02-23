@@ -12,14 +12,14 @@ namespace FakeItEasy.Creation
         : IFakeAndDummyManager
     {
         private readonly FakeObjectCreator fakeCreator;
-        private readonly IFakeObjectOptionsBuilder fakeObjectOptionsBuilder;
+        private readonly DynamicOptionsBuilder dynamicOptionsBuilder;
         private readonly IDummyValueCreationSession session;
 
-        public DefaultFakeAndDummyManager(IDummyValueCreationSession session, FakeObjectCreator fakeCreator, IFakeObjectOptionsBuilder fakeObjectOptionsBuilder)
+        public DefaultFakeAndDummyManager(IDummyValueCreationSession session, FakeObjectCreator fakeCreator, DynamicOptionsBuilder dynamicOptionsBuilder)
         {
             this.session = session;
             this.fakeCreator = fakeCreator;
-            this.fakeObjectOptionsBuilder = fakeObjectOptionsBuilder;
+            this.dynamicOptionsBuilder = dynamicOptionsBuilder;
         }
 
         public object CreateDummy(Type typeOfDummy)
@@ -65,7 +65,7 @@ namespace FakeItEasy.Creation
             var proxyOptions = new ProxyOptions();
             var options = CreateFakeOptions(typeOfFake, proxyOptions);
 
-            this.fakeObjectOptionsBuilder.BuildOptions(typeOfFake, options);
+            this.dynamicOptionsBuilder.BuildOptions(typeOfFake, options);
             optionsBuilder.Invoke(options);
             return proxyOptions;
         }

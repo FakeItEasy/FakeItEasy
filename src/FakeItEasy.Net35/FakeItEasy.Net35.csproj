@@ -233,6 +233,12 @@
     <Compile Include="..\FakeItEasy\Core\DefaultFakeObjectCallFormatter.cs">
       <Link>Core\DefaultFakeObjectCallFormatter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\DynamicDummyFactory.cs">
+      <Link>Core\DynamicDummyFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\DynamicOptionsBuilder.cs">
+      <Link>Core\DynamicOptionsBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\FakeWrapperConfigurator.cs">
       <Link>Core\FakeWrapperConfigurator.cs</Link>
     </Compile>
@@ -245,14 +251,8 @@
     <Compile Include="..\FakeItEasy\Core\DefaultSutInitializer.cs">
       <Link>Core\DefaultSutInitializer.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\DelegateFakeObjectContainer.cs">
-      <Link>Core\DelegateFakeObjectContainer.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\DelegateRaiser.cs">
       <Link>Core\DelegateRaiser.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\DynamicContainer.cs">
-      <Link>Core\DynamicContainer.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\EventHandlerArgumentProviderMap.cs">
       <Link>Core\EventHandlerArgumentProviderMap.cs</Link>
@@ -341,12 +341,6 @@
     <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRule.cs">
       <Link>Core\IFakeObjectCallRule.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeObjectContainer.cs">
-      <Link>Core\IFakeObjectContainer.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeObjectOptionsBuilder.cs">
-      <Link>Core\IFakeObjectOptionsBuilder.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeScope.cs">
       <Link>Core\IFakeScope.cs</Link>
     </Compile>
@@ -373,9 +367,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\MethodInfoManager.cs">
       <Link>Core\MethodInfoManager.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\NullFakeObjectContainer.cs">
-      <Link>Core\NullFakeObjectContainer.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserter.cs">
       <Link>Core\OrderedFakeAsserter.cs</Link>

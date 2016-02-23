@@ -97,7 +97,6 @@
     <Compile Include="AssertionsTests.cs" />
     <Compile Include="Assertions\ExceptionMessagesTests.cs" />
     <Compile Include="Assertions\RepeatIntegrationTests.cs" />
-    <Compile Include="ContainerTests.cs" />
     <Compile Include="DummyTests.cs" />
     <Compile Include="GeneralTests.cs" />
     <Compile Include="WrapperTests.cs" />

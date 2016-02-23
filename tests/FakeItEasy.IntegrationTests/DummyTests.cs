@@ -3,50 +3,29 @@ namespace FakeItEasy.IntegrationTests
     using System;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
-    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
+
+    [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "Required for testing.")]
+    public interface ITypeWithNoDummyFactory
+    {
+    }
 
     [TestFixture]
     public class DummyTests
     {
         [Test]
-        public void Type_registered_in_container_should_be_returned_when_a_dummy_is_requested()
+        public void Proxy_should_be_returned_for_dummy_interface_when_no_dummy_factory_is_registered()
         {
-            var container = new DelegateFakeObjectContainer();
-            container.Register(() => "dummy");
-
-            string dummyString;
-            using (Fake.CreateScope(container))
-            {
-                dummyString = A.Dummy<string>();
-            }
-
-            dummyString.Should().Be("dummy");
+            var dummy = A.Dummy<ITypeWithNoDummyFactory>();
+            dummy.Should().BeAFake();
         }
 
         [Test]
-        public void Proxy_should_be_returned_when_nothing_is_registered_in_the_container_for_the_type()
+        public void Correct_exception_should_be_thrown_when_dummy_is_requested_for_unfakeable_type_with_no_dummy_factory()
         {
-            IFoo dummyFoo;
-            using (Fake.CreateScope(new NullFakeObjectContainer()))
-            {
-                dummyFoo = A.Dummy<IFoo>();
-            }
-
-            dummyFoo.Should().BeAFake();
-        }
-
-        [Test]
-        public void Correct_exception_should_be_thrown_when_dummy_is_requested_for_non_fakeable_type_not_in_container()
-        {
-            Exception exception;
-            using (Fake.CreateScope(new NullFakeObjectContainer()))
-            {
-                exception = Record.Exception(() => A.Dummy<NonInstance>());
-            }
-
+            var exception = Record.Exception(() => A.Dummy<NonInstance>());
             exception.Should().BeAnExceptionOfType<FakeCreationException>();
         }
 
@@ -98,5 +77,9 @@ namespace FakeItEasy.IntegrationTests
         {
             return new DummyTests.Dummy();
         }
+    }
+
+    public sealed class UnfakeableTypeWithNoDummyFactory
+    {
     }
 }

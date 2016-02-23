@@ -24,26 +24,13 @@ namespace FakeItEasy.Core
 
         internal static FakeScope Current { get; set; }
 
-        internal abstract IFakeObjectContainer FakeObjectContainer { get; }
-
         /// <summary>
         /// Creates a new scope and sets it as the current scope.
         /// </summary>
         /// <returns>The created scope.</returns>
         public static IFakeScope Create()
         {
-            return Create(Current.FakeObjectContainer);
-        }
-
-        /// <summary>
-        /// Creates a new scope and sets it as the current scope, using the specified
-        /// container as the container for the new scope.
-        /// </summary>
-        /// <param name="container">The container to use for the new scope.</param>
-        /// <returns>The created scope.</returns>
-        public static IFakeScope Create(IFakeObjectContainer container)
-        {
-            var result = new ChildScope(Current, container);
+            var result = new ChildScope(Current);
             Current = result;
             return result;
         }
@@ -103,24 +90,17 @@ namespace FakeItEasy.Core
         private class ChildScope
             : FakeScope
         {
-            private readonly IFakeObjectContainer fakeObjectContainerField;
             private readonly FakeScope parentScope;
             private readonly LinkedList<ICompletedFakeObjectCall> recordedCalls;
             private readonly Dictionary<FakeManager, List<ICompletedFakeObjectCall>> recordedCallsGroupedByFakeManager;
             private readonly Dictionary<FakeManager, List<CallRuleMetadata>> rulesField;
 
-            public ChildScope(FakeScope parentScope, IFakeObjectContainer container)
+            public ChildScope(FakeScope parentScope)
             {
                 this.parentScope = parentScope;
                 this.rulesField = new Dictionary<FakeManager, List<CallRuleMetadata>>();
                 this.recordedCallsGroupedByFakeManager = new Dictionary<FakeManager, List<ICompletedFakeObjectCall>>();
                 this.recordedCalls = new LinkedList<ICompletedFakeObjectCall>();
-                this.fakeObjectContainerField = container;
-            }
-
-            internal override IFakeObjectContainer FakeObjectContainer
-            {
-                get { return this.fakeObjectContainerField; }
             }
 
             public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
@@ -191,20 +171,6 @@ namespace FakeItEasy.Core
         private class RootScope
             : FakeScope
         {
-            private readonly IFakeObjectContainer fakeObjectContainerField;
-
-            public RootScope()
-            {
-                this.fakeObjectContainerField = new DynamicContainer(
-                    ServiceLocator.Current.Resolve<IEnumerable<IDummyFactory>>(),
-                    ServiceLocator.Current.Resolve<IEnumerable<IFakeOptionsBuilder>>());
-            }
-
-            internal override IFakeObjectContainer FakeObjectContainer
-            {
-                get { return this.fakeObjectContainerField; }
-            }
-
             public override IEnumerator<ICompletedFakeObjectCall> GetEnumerator()
             {
                 throw new NotSupportedException();

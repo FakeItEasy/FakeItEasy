@@ -7,10 +7,5 @@ namespace FakeItEasy.Core
         {
             return FakeScope.Create();
         }
-
-        public IFakeScope Create(IFakeObjectContainer container)
-        {
-            return FakeScope.Create(container);
-        }
     }
 }

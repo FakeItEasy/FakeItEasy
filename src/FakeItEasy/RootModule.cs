@@ -33,8 +33,13 @@ namespace FakeItEasy
             container.Register(c =>
                 FakeScope.Current);
 
-            container.Register(c =>
-                c.Resolve<FakeScope>().FakeObjectContainer);
+            container.RegisterSingleton(c =>
+                new DynamicOptionsBuilder(
+                    c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
+
+            container.RegisterSingleton(c =>
+                new DynamicDummyFactory(
+                    c.Resolve<IEnumerable<IDummyFactory>>()));
 
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c =>
                 new ExpressionCallMatcherFactory
@@ -93,8 +98,8 @@ namespace FakeItEasy
             container.Register<IFakeAndDummyManager>(c =>
                                                          {
                                                              var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<FakeCallProcessorProvider.Factory>());
-                                                             var session = new DummyValueCreationSession(c.Resolve<IFakeObjectContainer>(), new SessionFakeObjectCreator { Creator = fakeCreator });
-                                                             var fakeConfigurator = c.Resolve<IFakeObjectContainer>();
+                                                             var session = new DummyValueCreationSession(c.Resolve<DynamicDummyFactory>(), new SessionFakeObjectCreator { Creator = fakeCreator });
+                                                             var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
                                                              return new DefaultFakeAndDummyManager(session, fakeCreator, fakeConfigurator);
                                                          });

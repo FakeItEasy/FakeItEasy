@@ -56,8 +56,7 @@ namespace FakeItEasy.IntegrationTests
             var constructor = typeof(ForTestAttribute).GetConstructor(types);
             var list = new object[0];
             var attribute = new CustomAttributeBuilder(constructor, list);
-            var builder = new List<CustomAttributeBuilder>();
-            builder.Add(attribute);
+            var builder = new List<CustomAttributeBuilder> { attribute };
 
             // Act
             var fake = A.Fake<IEmpty>(a => a.WithAdditionalAttributes(builder));
@@ -74,8 +73,7 @@ namespace FakeItEasy.IntegrationTests
             var constructor = typeof(ForTestAttribute).GetConstructor(types);
             var list = new object[0];
             var attribute = new CustomAttributeBuilder(constructor, list);
-            var builder = new List<CustomAttributeBuilder>();
-            builder.Add(attribute);
+            var builder = new List<CustomAttributeBuilder> { attribute };
             A.Fake<IEmpty>(a => a.WithAdditionalAttributes(builder));
 
             // Act
@@ -86,17 +84,12 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
-        public void Should_not_be_able_to_fake_Uri_when_no_container_is_used()
+        public void Should_not_be_able_to_fake_a_guid()
         {
             // Arrange
 
             // Act
-            Exception exception;
-
-            using (Fake.CreateScope(new NullFakeObjectContainer()))
-            {
-                exception = Record.Exception(() => A.Fake<Guid>());
-            }
+            var exception = Record.Exception(() => A.Fake<Guid>());
 
             // Assert
             exception.Should().BeAnExceptionOfType<FakeCreationException>();
@@ -108,12 +101,7 @@ namespace FakeItEasy.IntegrationTests
             // Arrange
 
             // Act
-            Exception exception;
-
-            using (Fake.CreateScope())
-            {
-                exception = Record.Exception(() => A.Fake<NonResolvableType>());
-            }
+            var exception = Record.Exception(() => A.Fake<NonResolvableType>());
 
             // Assert
             const string ExpectedMessage = @"

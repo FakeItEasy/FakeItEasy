@@ -28,13 +28,6 @@ namespace FakeItEasy
             return this.fakeScopeFactory.Create();
         }
 
-        public virtual IFakeScope CreateScope(IFakeObjectContainer container)
-        {
-            Guard.AgainstNull(container, "container");
-
-            return this.fakeScopeFactory.Create(container);
-        }
-
         public virtual IEnumerable<ICompletedFakeObjectCall> GetCalls(object fakedObject)
         {
             Guard.AgainstNull(fakedObject, "fakedObject");
