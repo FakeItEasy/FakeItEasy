@@ -4,9 +4,9 @@ namespace FakeItEasy.Specs
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
-    using Xunit;
 
     public static class CallMatchingSpecs
     {
@@ -301,6 +301,34 @@ namespace FakeItEasy.Specs
             "it should not match when ref parameter value does not match"
                 .x(() => subject.Validate("a different string")
                              .Should().BeFalse());
+        }
+
+        [Scenario]
+        public static void IgnoredArgumentConstraintOutsideCallSpec(
+            Exception exception)
+        {
+            "When A<T>.Ignored is used outside a call specification"
+                .x(() => exception = Record.Exception(() => A<string>.Ignored));
+
+            "Then it should throw an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+
+            "And the exception message should explain why it's invalid"
+                .x(() => exception.Message.Should().Be("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()"));
+        }
+
+        [Scenario]
+        public static void ThatArgumentConstraintOutsideCallSpec(
+            Exception exception)
+        {
+            "When A<T>.That is used outside a call specification"
+                .x(() => exception = Record.Exception(() => A<string>.That.Not.IsNullOrEmpty()));
+
+            "Then it should throw an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+
+            "And the exception message should explain why it's invalid"
+                .x(() => exception.Message.Should().Be("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()"));
         }
 
         public class Generic<T>
