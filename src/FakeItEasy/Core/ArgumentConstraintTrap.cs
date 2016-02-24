@@ -11,10 +11,12 @@ namespace FakeItEasy.Core
 
         public static void ReportTrappedConstraint(IArgumentConstraint constraint)
         {
-            if (trappedConstraints != null)
+            if (trappedConstraints == null)
             {
-                trappedConstraints.Add(constraint);
+                throw new InvalidOperationException("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()");
             }
+
+            trappedConstraints.Add(constraint);
         }
 
         public IEnumerable<IArgumentConstraint> TrapConstraints(Action actionThatProducesConstraint)

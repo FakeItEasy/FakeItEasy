@@ -176,6 +176,8 @@ namespace FakeItEasy.Tests.Expressions
 
         private class InvokeTrapConstraintsAction : IInterceptionListener
         {
+            private readonly ArgumentConstraintTrap realTrap = new ArgumentConstraintTrap();
+
             public void OnBeforeCallIntercepted(IFakeObjectCall call)
             {
             }
@@ -186,7 +188,7 @@ namespace FakeItEasy.Tests.Expressions
 
                 if (call.Method.Name.Equals("TrapConstraints"))
                 {
-                    call.GetArgument<Action>(0).Invoke();
+                    this.realTrap.TrapConstraints(call.GetArgument<Action>(0));
                 }
             }
         }
