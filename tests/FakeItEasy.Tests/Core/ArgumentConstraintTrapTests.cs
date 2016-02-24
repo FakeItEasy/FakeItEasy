@@ -1,5 +1,6 @@
 namespace FakeItEasy.Tests.Core
 {
+    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -51,14 +52,14 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void Should_not_fail_when_reporting_trapped_constraint_outside_call_to_trap_constraints()
+        public void Should_fail_when_reporting_trapped_constraint_outside_call_to_trap_constraints()
         {
             // Act
             var exception = Record.Exception(
                 () => ArgumentConstraintTrap.ReportTrappedConstraint(A.Dummy<IArgumentConstraint>()));
 
             // Assert
-            exception.Should().BeNull();
+            exception.Should().BeAnExceptionOfType<InvalidOperationException>().WithMessage("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()");
         }
 
         [Test]
