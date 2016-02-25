@@ -45,7 +45,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET40 FEATURE_SERIALIZATION FEATURE_SECURITY_PERMISSIONS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET40 FEATURE_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
@@ -56,7 +56,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET40 FEATURE_SERIALIZATION FEATURE_SECURITY_PERMISSIONS</DefineConstants>
+    <DefineConstants>TRACE;NET40 FEATURE_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>Bin\Release\FakeItEasy.xml</DocumentationFile>
