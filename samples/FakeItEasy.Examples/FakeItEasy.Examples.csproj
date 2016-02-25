@@ -78,13 +78,13 @@
     <Compile Include="Scopes.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\FakeItEasy.Net40\FakeItEasy.Net40.csproj">
+      <Project>{80721425-68e5-48dc-87ea-41d63d0b45fa}</Project>
+      <Name>FakeItEasy.Net40</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\tests\FakeItEasy.Tests\FakeItEasy.Tests.csproj">
       <Project>{0E26272D-045A-47C2-8928-BD9B980115D5}</Project>
       <Name>FakeItEasy.Tests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
-      <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
-      <Name>FakeItEasy</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

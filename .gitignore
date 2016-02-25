@@ -4,6 +4,10 @@ artifacts
 
 *.csproj.user
 *.vbproj.user
+*.xproj.user
+*.lock.json
+*.nuget.targets
+.vs/*
 *.ncb
 *.suo
 *.orig

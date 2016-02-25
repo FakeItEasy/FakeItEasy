@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6A7B553-5359-4FB9-B19C-8A23004F49DB}"
 	ProjectSection(SolutionItems) = preProject
@@ -33,8 +33,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4B5813
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy", "src\FakeItEasy\FakeItEasy.csproj", "{80721425-68E5-48DC-87EA-41D63D0B45FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Examples", "samples\FakeItEasy.Examples\FakeItEasy.Examples.csproj", "{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}"
 EndProject
@@ -74,16 +72,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2EED
 		samples\FakeItEasy.Examples.ruleset = samples\FakeItEasy.Examples.ruleset
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net40", "src\FakeItEasy.Net40\FakeItEasy.Net40.csproj", "{80721425-68E5-48DC-87EA-41D63D0B45FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{80721425-68E5-48DC-87EA-41D63D0B45FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80721425-68E5-48DC-87EA-41D63D0B45FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80721425-68E5-48DC-87EA-41D63D0B45FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80721425-68E5-48DC-87EA-41D63D0B45FA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -120,12 +116,15 @@ Global
 		{30396678-D653-4C67-A507-1749424A24CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30396678-D653-4C67-A507-1749424A24CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30396678-D653-4C67-A507-1749424A24CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80721425-68E5-48DC-87EA-41D63D0B45FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80721425-68E5-48DC-87EA-41D63D0B45FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80721425-68E5-48DC-87EA-41D63D0B45FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80721425-68E5-48DC-87EA-41D63D0B45FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{80721425-68E5-48DC-87EA-41D63D0B45FA} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 		{1ED2F1A2-40E3-498C-B13F-AF066EACF58F} = {2EEDF4EB-ED06-4370-9C0A-59502DF1B7F6}
 		{0E26272D-045A-47C2-8928-BD9B980115D5} = {DC5EAE30-96E3-4D38-B3C5-33E587C9FB76}
 		{C291B61B-0729-4DC5-B8E4-147A8E3F801F} = {5D41D463-D53B-4ADC-90AD-44AA03D6340D}
@@ -138,6 +137,7 @@ Global
 		{DC5EAE30-96E3-4D38-B3C5-33E587C9FB76} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
 		{5D41D463-D53B-4ADC-90AD-44AA03D6340D} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
 		{575A3C3B-17BA-4A8A-9F53-05320913D0A6} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
+		{80721425-68E5-48DC-87EA-41D63D0B45FA} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 0.1
