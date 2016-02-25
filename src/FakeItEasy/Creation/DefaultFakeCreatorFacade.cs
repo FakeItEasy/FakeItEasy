@@ -45,7 +45,7 @@ namespace FakeItEasy.Creation
         /// </returns>
         public IList<T> CollectionOfFake<T>(int numberOfFakes)
         {
-            var result = new List<T>();
+            var result = new SynchronizedCollection<T>();
 
             for (var i = 0; i < numberOfFakes; i++)
             {

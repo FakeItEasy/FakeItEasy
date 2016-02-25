@@ -11,7 +11,7 @@ namespace FakeItEasy.Configuration
     internal abstract class BuildableCallRule
         : IFakeObjectCallRule
     {
-        private readonly List<WherePredicate> wherePredicates;
+        private readonly SynchronizedCollection<WherePredicate> wherePredicates;
         private Action<IInterceptedFakeObjectCall> applicator;
         private bool canSetApplicator;
         private Func<IFakeObjectCall, ICollection<object>> outAndRefParametersValueProducer;
@@ -23,7 +23,7 @@ namespace FakeItEasy.Configuration
             this.applicator = call => call.SetReturnValue(call.Method.ReturnType.GetDefaultValue());
             this.canSetApplicator = true;
             this.canSetOutAndRefParametersValueProducer = true;
-            this.wherePredicates = new List<WherePredicate>();
+            this.wherePredicates = new SynchronizedCollection<WherePredicate>();
         }
 
         /// <summary>

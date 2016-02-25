@@ -2,15 +2,13 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
 
     internal class OrderedFakeAsserter : IFakeAsserter
     {
         private readonly IEnumerable<IFakeObjectCall> originalCallList;
         private readonly CallWriter callWriter;
         private readonly Queue<IFakeObjectCall> calls;
-        private readonly List<AssertedCall> assertedCalls = new List<AssertedCall>();
+        private readonly SynchronizedCollection<AssertedCall> assertedCalls = new SynchronizedCollection<AssertedCall>();
 
         public OrderedFakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
         {
@@ -43,7 +41,7 @@ namespace FakeItEasy.Core
         }
 
         private static void ThrowExceptionWhenAssertionFailed(
-            List<AssertedCall> assertedCalls, CallWriter callWriter, IEnumerable<IFakeObjectCall> originalCallList)
+            IList<AssertedCall> assertedCalls, CallWriter callWriter, IEnumerable<IFakeObjectCall> originalCallList)
         {
             var message = new StringBuilderOutputWriter();
 

@@ -16,7 +16,7 @@ namespace FakeItEasy.SelfInitializedFakes
     public class RecordingManager : ISelfInitializingFakeRecorder
     {
         private readonly Queue<CallDataMetadata> callQueue;
-        private readonly List<CallDataMetadata> recordedCalls;
+        private readonly SynchronizedCollection<CallDataMetadata> recordedCalls;
         private readonly ICallStorage storage;
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace FakeItEasy.SelfInitializedFakes
 
             this.IsRecording = recordedCalls == null;
             this.callQueue = CreateCallsList(recordedCalls);
-            this.recordedCalls = new List<CallDataMetadata>(this.callQueue);
+            this.recordedCalls = new SynchronizedCollection<CallDataMetadata>(this.callQueue);
         }
 
         /// <summary>

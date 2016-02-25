@@ -92,14 +92,14 @@ namespace FakeItEasy.Core
         {
             private readonly FakeScope parentScope;
             private readonly LinkedList<ICompletedFakeObjectCall> recordedCalls;
-            private readonly Dictionary<FakeManager, List<ICompletedFakeObjectCall>> recordedCallsGroupedByFakeManager;
-            private readonly Dictionary<FakeManager, List<CallRuleMetadata>> rulesField;
+            private readonly Dictionary<FakeManager, IList<ICompletedFakeObjectCall>> recordedCallsGroupedByFakeManager;
+            private readonly Dictionary<FakeManager, IList<CallRuleMetadata>> rulesField;
 
             public ChildScope(FakeScope parentScope)
             {
                 this.parentScope = parentScope;
-                this.rulesField = new Dictionary<FakeManager, List<CallRuleMetadata>>();
-                this.recordedCallsGroupedByFakeManager = new Dictionary<FakeManager, List<ICompletedFakeObjectCall>>();
+                this.rulesField = new Dictionary<FakeManager, IList<CallRuleMetadata>>();
+                this.recordedCallsGroupedByFakeManager = new Dictionary<FakeManager, IList<ICompletedFakeObjectCall>>();
                 this.recordedCalls = new LinkedList<ICompletedFakeObjectCall>();
             }
 
@@ -110,11 +110,11 @@ namespace FakeItEasy.Core
 
             internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject)
             {
-                List<ICompletedFakeObjectCall> calls;
+                IList<ICompletedFakeObjectCall> calls;
 
                 if (!this.recordedCallsGroupedByFakeManager.TryGetValue(fakeObject, out calls))
                 {
-                    calls = new List<ICompletedFakeObjectCall>();
+                    calls = new SynchronizedCollection<ICompletedFakeObjectCall>();
                 }
 
                 return calls;
@@ -122,11 +122,11 @@ namespace FakeItEasy.Core
 
             protected override void OnAddRule(FakeManager fakeObject, CallRuleMetadata rule)
             {
-                List<CallRuleMetadata> rules;
+                IList<CallRuleMetadata> rules;
 
                 if (!this.rulesField.TryGetValue(fakeObject, out rules))
                 {
-                    rules = new List<CallRuleMetadata>();
+                    rules = new SynchronizedCollection<CallRuleMetadata>();
                     this.rulesField.Add(fakeObject, rules);
                 }
 
@@ -145,11 +145,11 @@ namespace FakeItEasy.Core
 
                 this.recordedCalls.AddLast(call);
 
-                List<ICompletedFakeObjectCall> calls;
+                IList<ICompletedFakeObjectCall> calls;
 
                 if (!this.recordedCallsGroupedByFakeManager.TryGetValue(fakeManager, out calls))
                 {
-                    calls = new List<ICompletedFakeObjectCall>();
+                    calls = new SynchronizedCollection<ICompletedFakeObjectCall>();
                     this.recordedCallsGroupedByFakeManager.Add(fakeManager, calls);
                 }
 
