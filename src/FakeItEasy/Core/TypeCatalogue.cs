@@ -86,7 +86,11 @@ namespace FakeItEasy.Core
             // Exclude the ReflectionOnly assemblies because we want to be able to fully load them if we need to.
             var loadedAssemblyFiles = new HashSet<string>(
                 loadedAssemblies
+#if !FEATURE_NETCORE_REFLECTION || NET45
                     .Where(a => !a.ReflectionOnly && !a.IsDynamic())
+#else
+                    .Where(a => a.IsDynamic())
+#endif
                     .Select(a => a.Location),
                 StringComparer.OrdinalIgnoreCase);
 
@@ -105,7 +109,11 @@ namespace FakeItEasy.Core
                 Assembly reflectedAssembly = null;
                 try
                 {
+#if !FEATURE_NETCORE_REFLECTION || NET45
                     reflectedAssembly = Assembly.ReflectionOnlyLoadFrom(file);
+#else
+                    reflectedAssembly = CustomLoadContext.Instance.LoadFromFullPath(file);
+#endif
                 }
                 catch (Exception ex)
                 {
@@ -162,4 +170,24 @@ namespace FakeItEasy.Core
             }
         }
     }
+#if FEATURE_NETCORE_REFLECTION && !NET45
+    internal class CustomLoadContext : System.Runtime.Loader.AssemblyLoadContext
+    {
+        public static CustomLoadContext Instance { get; } = new CustomLoadContext();
+
+        private string BasePath { get; set; }
+        protected override Assembly Load(AssemblyName assemblyName)
+        {
+            Console.WriteLine("loading {0}", assemblyName.Name);
+            return LoadFromAssemblyPath(System.IO.Path.Combine(BasePath ?? System.IO.Directory.GetCurrentDirectory(), assemblyName.Name));
+        }
+
+        public Assembly LoadFromFullPath(string assemblyPath)
+        {
+            var fileInfo = new System.IO.FileInfo(assemblyPath);
+            BasePath = fileInfo.DirectoryName;
+            return LoadFromAssemblyPath(assemblyPath);
+        }
+    }
+#endif
 }
