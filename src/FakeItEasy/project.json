@@ -8,6 +8,9 @@
 
   "frameworks": {
     "net451": {
+      "compilationOptions": {
+        "define": [ "FEATURE_SERIALIZATION" ]
+      },
       "dependencies": {
         "Castle.Core": "3.3.3"
       }

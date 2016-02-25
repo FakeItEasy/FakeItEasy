@@ -164,7 +164,9 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             return additionalInterfacesToImplement.Concat(typeof(ITaggable));
         }
 
+#if FEATURE_SERIALIZATION
         [Serializable]
+#endif
         private class InterceptEverythingHook
             : IProxyGenerationHook
         {
@@ -195,7 +197,9 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             }
         }
 
+#if FEATURE_SERIALIZATION
         [Serializable]
+#endif
         private class ProxyInterceptor
             : IInterceptor
         {

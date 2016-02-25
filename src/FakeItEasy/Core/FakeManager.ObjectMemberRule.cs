@@ -7,7 +7,9 @@ namespace FakeItEasy.Core
     /// <content>Object member rule.</content>
     public partial class FakeManager
     {
+#if FEATURE_SERIALIZATION
         [Serializable]
+#endif
         private class ObjectMemberRule
             : IFakeObjectCallRule
         {

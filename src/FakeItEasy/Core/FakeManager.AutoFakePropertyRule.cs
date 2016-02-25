@@ -6,7 +6,9 @@ namespace FakeItEasy.Core
     /// <content>Auto fake property rule.</content>
     public partial class FakeManager
     {
+#if FEATURE_SERIALIZATION
         [Serializable]
+#endif
         private class AutoFakePropertyRule
             : IFakeObjectCallRule
         {

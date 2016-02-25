@@ -1,13 +1,17 @@
 namespace FakeItEasy.SelfInitializedFakes
 {
     using System;
+#if FEATURE_SERIALIZATION
     using System.Runtime.Serialization;
+#endif
 
     /// <summary>
     /// An exception that can be thrown when recording for self initialized
     /// fakes fails or when playback fails.
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public class RecordingException
         : Exception
     {
@@ -37,6 +41,7 @@ namespace FakeItEasy.SelfInitializedFakes
         {
         }
 
+#if FEATURE_SERIALIZATION
         /// <summary>
         /// Initializes a new instance of the <see cref="RecordingException"/> class.
         /// </summary>
@@ -52,5 +57,6 @@ namespace FakeItEasy.SelfInitializedFakes
             : base(info, context)
         {
         }
+#endif
     }
 }

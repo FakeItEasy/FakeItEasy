@@ -1,12 +1,16 @@
 namespace FakeItEasy
 {
     using System;
+#if FEATURE_SERIALIZATION
     using System.Runtime.Serialization;
+#endif
 
     /// <summary>
     /// An exception thrown when an expectation is not met (when asserting on fake object calls).
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public class ExpectationException
         : Exception
     {
@@ -36,6 +40,7 @@ namespace FakeItEasy
         {
         }
 
+#if FEATURE_SERIALIZATION
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpectationException"/> class.
         /// </summary>
@@ -50,5 +55,6 @@ namespace FakeItEasy
         protected ExpectationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
+#endif
     }
 }

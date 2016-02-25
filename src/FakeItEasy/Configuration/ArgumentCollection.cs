@@ -11,7 +11,9 @@ namespace FakeItEasy.Configuration
     /// <summary>
     ///   A collection of method arguments.
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Best name to describe the type.")]
     public class ArgumentCollection
         : IEnumerable<object>

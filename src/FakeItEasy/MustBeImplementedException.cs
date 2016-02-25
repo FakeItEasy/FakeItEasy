@@ -10,7 +10,9 @@ namespace FakeItEasy
     /// implemented, will cause the build to fail when not built in
     /// debug mode.
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors", Justification = "Never used in production.")]
     public class MustBeImplementedException
         : Exception

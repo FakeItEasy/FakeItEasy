@@ -3,7 +3,9 @@ namespace FakeItEasy.Core
     using System;
     using FakeItEasy.Creation;
 
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     internal class DefaultReturnValueRule
         : IFakeObjectCallRule
     {
