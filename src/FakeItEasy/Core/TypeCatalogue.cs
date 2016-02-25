@@ -16,7 +16,11 @@ namespace FakeItEasy.Core
     /// </summary>
     internal class TypeCatalogue : ITypeCatalogue
     {
+#if !FEATURE_NETCORE_REFLECTION || NET45
         private static readonly Assembly ExecutingAssembly = Assembly.GetExecutingAssembly();
+#else
+        private static readonly Assembly ExecutingAssembly = typeof(TypeCatalogue).GetTypeInfo().Assembly;
+#endif
         private readonly List<Type> availableTypes = new List<Type>();
 
         /// <summary>
@@ -66,8 +70,17 @@ namespace FakeItEasy.Core
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
         private static IEnumerable<Assembly> GetAllAssemblies(IEnumerable<string> extraAssemblyFiles)
         {
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+#if !FEATURE_NETCORE_REFLECTION || NET45
+             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+             var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
+#else
+            var coreAssemblyName = typeof(object).GetTypeInfo().Assembly.Name();
+            var loadedAssemblies = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.LibraryManager.GetReferencingLibraries(coreAssemblyName)
+                .SelectMany(info => info.Assemblies)
+                .Select(info => Assembly.Load(new AssemblyName(info.Name)))
+                .ToArray();
             var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
+#endif
 
             // Find the paths of already loaded assemblies so we don't double scan them.
             // Exclude the ReflectionOnly assemblies because we want to be able to fully load them if we need to.

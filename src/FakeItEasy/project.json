@@ -9,7 +9,7 @@
   "frameworks": {
     "net451": {
       "compilationOptions": {
-        "define": [ "FEATURE_SERIALIZATION", "FEATURE_NETCORE_REFLECTION" ]
+        "define": [ "FEATURE_SERIALIZATION", "FEATURE_NETCORE_REFLECTION", "NET45" ]
       },
       "dependencies": {
         "Castle.Core": "3.3.3"
@@ -21,6 +21,7 @@
       },
       "dependencies": {
         "Castle.Core": "3.3.4-dev",
+        "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
         "System.Collections.Concurrent": "4.0.11-beta-23516",
         "System.Reflection": "4.1.0-beta-23516",
         "System.Reflection.Context": "4.0.1-beta-23516",

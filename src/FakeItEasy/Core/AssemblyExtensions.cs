@@ -14,7 +14,16 @@ namespace FakeItEasy.Core
         {
             Guard.AgainstNull(assembly, "assembly");
 
+#if !FEATURE_NETCORE_REFLECTION || NET45
             return assembly.GetReferencedAssemblies().Any(r => r.FullName == TypeCatalogue.FakeItEasyAssembly.FullName);
+#else
+            var fakeItEasyLibraryName = TypeCatalogue.FakeItEasyAssembly.GetName().Name;
+            var referencingLibraries = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.LibraryManager.GetReferencingLibraries(fakeItEasyLibraryName);
+            return referencingLibraries
+                .SelectMany(info => info.Assemblies)
+                .Select(info => Assembly.Load(new AssemblyName(info.Name)))
+                .Any(r => r.FullName == assembly.FullName);
+#endif
         }
 
         /// <summary>
