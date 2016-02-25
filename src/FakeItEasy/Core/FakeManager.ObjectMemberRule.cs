@@ -2,9 +2,7 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-#if !FEATURE_REFLECTION_METADATATOKEN
     using System.Linq;
-#endif
     using System.Reflection;
     using FakeItEasy.Creation;
 

@@ -21,15 +21,15 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
         private readonly CastleDynamicProxyInterceptionValidator interceptionValidator;
 
+#if FEATURE_SECURITY_PERMISSIONS
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "No field initialization.")]
         static CastleDynamicProxyGenerator()
         {
-#if FEATURE_SECURITY_PERMISSIONS
 #pragma warning disable 618
             AttributesToAvoidReplicating.Add(typeof(SecurityPermissionAttribute));
 #pragma warning restore 618
-#endif
         }
+#endif
 
         public CastleDynamicProxyGenerator(CastleDynamicProxyInterceptionValidator interceptionValidator)
         {
