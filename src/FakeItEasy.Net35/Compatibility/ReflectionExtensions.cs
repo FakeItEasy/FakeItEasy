@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace FakeItEasy
 {
@@ -12,6 +13,17 @@ namespace FakeItEasy
         public static Type GetTypeInfo(this Type type)
         {
             return type;
+        }
+
+        /// <summary>
+        /// This allows the usage of new Reflection Api Delegate.GetMethodInfo() on .NET 3.5 and 4.0.
+        /// It delegates to the old Delegate.Method property.
+        /// </summary>
+        /// <param name="delegate"></param>
+        /// <returns></returns>
+        public static MethodInfo GetMethodInfo(this Delegate @delegate)
+        {
+            return @delegate.Method;
         }
     }
 }

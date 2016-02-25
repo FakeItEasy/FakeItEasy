@@ -9,7 +9,7 @@
   "frameworks": {
     "net451": {
       "compilationOptions": {
-        "define": [ "FEATURE_SERIALIZATION" ]
+        "define": [ "FEATURE_SERIALIZATION", "FEATURE_NETCORE_REFLECTION" ]
       },
       "dependencies": {
         "Castle.Core": "3.3.3"

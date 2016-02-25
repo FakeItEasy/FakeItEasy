@@ -1,6 +1,9 @@
 namespace FakeItEasy
 {
     using System;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using FakeItEasy.Configuration;
 
     /// <summary>
@@ -49,7 +52,7 @@ namespace FakeItEasy
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
+                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
                 return valueProducer(call.GetArgument<T1>(0));
             });
@@ -78,7 +81,7 @@ namespace FakeItEasy
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
+                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
                 return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
             });
@@ -108,7 +111,7 @@ namespace FakeItEasy
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
+                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
                 return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
             });
@@ -138,7 +141,7 @@ namespace FakeItEasy
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.Method, NameOfOutRefLazilyFeature);
+                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
                 return valueProducer(
                     call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));

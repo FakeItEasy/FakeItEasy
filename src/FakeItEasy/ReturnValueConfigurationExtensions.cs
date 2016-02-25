@@ -6,8 +6,10 @@ namespace FakeItEasy
     using System.Diagnostics.CodeAnalysis;
 #endif
     using System.Linq;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
 #if NET40
-
     using System.Threading.Tasks;
 #endif
 
@@ -107,7 +109,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
                 {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0));
                 });
@@ -160,7 +162,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
                 {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
                 });
@@ -214,7 +216,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
                 {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
                 });
@@ -270,7 +272,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
                 {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
                     return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });

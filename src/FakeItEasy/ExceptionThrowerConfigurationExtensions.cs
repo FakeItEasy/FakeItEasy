@@ -2,6 +2,9 @@ namespace FakeItEasy
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
 
     using FakeItEasy.Configuration;
 
@@ -55,7 +58,7 @@ namespace FakeItEasy
 
             return configuration.Throws(call =>
                 {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.GetMethodInfo(), NameOfThrowsFeature);
 
                     return exceptionFactory(call.GetArgument<T1>(0));
                 });
@@ -77,7 +80,7 @@ namespace FakeItEasy
 
             return configuration.Throws(call =>
                 {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.GetMethodInfo(), NameOfThrowsFeature);
 
                     return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
                 });
@@ -100,7 +103,7 @@ namespace FakeItEasy
 
             return configuration.Throws(call =>
                 {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.GetMethodInfo(), NameOfThrowsFeature);
 
                     return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
                 });
@@ -124,7 +127,7 @@ namespace FakeItEasy
 
             return configuration.Throws(call =>
                 {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.Method, NameOfThrowsFeature);
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, exceptionFactory.GetMethodInfo(), NameOfThrowsFeature);
 
                     return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
