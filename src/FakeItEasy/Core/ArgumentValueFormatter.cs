@@ -4,6 +4,9 @@ namespace FakeItEasy.Core
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
 
     internal class ArgumentValueFormatter
     {
@@ -43,13 +46,13 @@ namespace FakeItEasy.Core
                 return 0;
             }
 
-            if (comparedType.IsInterface && knownType.GetInterfaces().Contains(comparedType))
+            if (comparedType.GetTypeInfo().IsInterface && knownType.GetInterfaces().Contains(comparedType))
             {
                 return 1;
             }
 
             var distance = 2;
-            var currentType = knownType.BaseType;
+            var currentType = knownType.GetTypeInfo().BaseType;
             while (currentType != null)
             {
                 if (currentType == comparedType)
@@ -58,7 +61,7 @@ namespace FakeItEasy.Core
                 }
 
                 distance++;
-                currentType = currentType.BaseType;
+                currentType = currentType.GetTypeInfo().BaseType;
             }
 
             return int.MaxValue;

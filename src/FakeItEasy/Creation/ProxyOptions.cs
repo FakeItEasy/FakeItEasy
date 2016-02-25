@@ -3,6 +3,9 @@ namespace FakeItEasy.Creation
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using System.Reflection.Emit;
 
     internal class ProxyOptions : IProxyOptions
@@ -32,7 +35,7 @@ namespace FakeItEasy.Creation
         {
             Guard.AgainstNull(interfaceType, "interfaceType");
 
-            if (!interfaceType.IsInterface)
+            if (!interfaceType.GetTypeInfo().IsInterface)
             {
                 throw new ArgumentException(
                     string.Format(

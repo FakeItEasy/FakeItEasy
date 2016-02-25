@@ -103,7 +103,7 @@ namespace FakeItEasy.Creation
             {
                 result = default(object);
 
-                if (typeOfDummy.IsValueType && typeOfDummy != typeof(void))
+                if (typeOfDummy.GetTypeInfo().IsValueType && typeOfDummy != typeof(void))
                 {
                     result = Activator.CreateInstance(typeOfDummy);
                     return true;
@@ -217,7 +217,7 @@ namespace FakeItEasy.Creation
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
                 result = default(object);
-                if (typeof(Delegate).IsAssignableFrom(typeOfDummy) || typeOfDummy.IsAbstract)
+                if (typeof(Delegate).IsAssignableFrom(typeOfDummy) || typeOfDummy.GetTypeInfo().IsAbstract)
                 {
                     return false;
                 }

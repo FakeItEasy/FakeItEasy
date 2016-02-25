@@ -683,6 +683,7 @@
     <Compile Include="Compatibility\ConcurrentDictionary.cs" />
     <Compile Include="Compatibility\ConditionalWeakTable.cs" />
     <Compile Include="Compatibility\EnumerableExtensions.cs" />
+    <Compile Include="Compatibility\ReflectionExtensions.cs" />
     <Compile Include="InternalsVisibleTo.cs" />
     <Compile Include="Properties\CustomAssemblyInfo.cs" />
   </ItemGroup>

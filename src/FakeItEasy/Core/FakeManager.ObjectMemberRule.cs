@@ -2,6 +2,9 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using FakeItEasy.Creation;
 
     /// <content>Object member rule.</content>

@@ -57,12 +57,12 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             Guard.AgainstNull(additionalInterfacesToImplement, "additionalInterfacesToImplement");
             Guard.AgainstNull(fakeCallProcessorProvider, "fakeCallProcessorProvider");
 
-            if (typeOfProxy.IsValueType)
+            if (typeOfProxy.GetTypeInfo().IsValueType)
             {
                 return GetProxyResultForValueType(typeOfProxy);
             }
 
-            if (typeOfProxy.IsSealed)
+            if (typeOfProxy.GetTypeInfo().IsSealed)
             {
                 return new ProxyGeneratorResult(DynamicProxyResources.ProxyIsSealedTypeMessage.FormatInvariant(typeOfProxy));
             }
@@ -79,7 +79,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
         private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
         {
-            if (typeOfProxy.IsInterface && argumentsForConstructor != null)
+            if (typeOfProxy.GetTypeInfo().IsInterface && argumentsForConstructor != null)
             {
                 throw new ArgumentException(DynamicProxyResources.ArgumentsForConstructorOnInterfaceTypeMessage);
             }
@@ -133,7 +133,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         {
             var allInterfacesToImplement = GetAllInterfacesToImplement(additionalInterfacesToImplement);
 
-            if (typeOfProxy.IsInterface)
+            if (typeOfProxy.GetTypeInfo().IsInterface)
             {
                 allInterfacesToImplement = new[] { typeOfProxy }.Concat(allInterfacesToImplement);
                 typeOfProxy = typeof(object);

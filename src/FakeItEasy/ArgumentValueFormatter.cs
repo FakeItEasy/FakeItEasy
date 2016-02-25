@@ -1,6 +1,9 @@
 namespace FakeItEasy
 {
     using System;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
 
     /// <summary>
     /// Provides string formatting for arguments of type T when written in call lists.

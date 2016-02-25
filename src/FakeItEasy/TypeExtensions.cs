@@ -4,6 +4,9 @@ namespace FakeItEasy
     using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
 
     /// <summary>
     /// Provides extension methods for <see cref="Type"/>.
@@ -14,7 +17,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(type, "type");
 
-            if (!type.IsGenericType)
+            if (!type.GetTypeInfo().IsGenericType)
             {
                 return type.FullName;
             }
@@ -27,13 +30,13 @@ namespace FakeItEasy
         [DebuggerStepThrough]
         public static object GetDefaultValue(this Type type)
         {
-            return type.IsValueType && !type.Equals(typeof(void)) ? Activator.CreateInstance(type) : null;
+            return type.GetTypeInfo().IsValueType && !type.Equals(typeof(void)) ? Activator.CreateInstance(type) : null;
         }
 
         [DebuggerStepThrough]
         public static bool CanBeInstantiatedAs(this Type type, Type targetType)
         {
-            return targetType.IsAssignableFrom(type) && !type.IsAbstract;
+            return targetType.IsAssignableFrom(type) && !type.GetTypeInfo().IsAbstract;
         }
     }
 }

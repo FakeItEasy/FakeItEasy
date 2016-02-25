@@ -126,7 +126,7 @@ namespace FakeItEasy.Core
         {
             var baseDefinition = method.GetBaseDefinition();
 
-            if (!baseDefinition.DeclaringType.IsInterface || !TypeImplementsInterface(type, baseDefinition.DeclaringType))
+            if (!baseDefinition.DeclaringType.GetTypeInfo().IsInterface || !TypeImplementsInterface(type, baseDefinition.DeclaringType))
             {
                 return null;
             }

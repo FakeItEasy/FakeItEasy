@@ -6,6 +6,9 @@ namespace FakeItEasy
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
 
     /// <summary>
     /// Provides validation extensions for <see cref="IArgumentConstraintManager{T}"/>.
