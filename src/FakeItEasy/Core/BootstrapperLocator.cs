@@ -2,7 +2,7 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Linq;
-#if FEATURE_NETCORE_REFLECTION && !NET45
+#if !FEATURE_REFLECTION_GETASSEMBLIES
     using System.Reflection;
 #endif
     /// <summary>
@@ -26,7 +26,7 @@ namespace FakeItEasy.Core
         {
             var bootstrapperInterface = typeof(IBootstrapper);
 
-#if !FEATURE_NETCORE_REFLECTION || NET45
+#if FEATURE_REFLECTION_GETASSEMBLIES
             var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies
                 .Where(assembly => !assembly.IsDynamic())

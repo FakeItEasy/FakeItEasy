@@ -14,7 +14,7 @@ namespace FakeItEasy.Core
         {
             Guard.AgainstNull(assembly, "assembly");
 
-#if !FEATURE_NETCORE_REFLECTION || NET45
+#if FEATURE_REFLECTION_GETASSEMBLIES
             return assembly.GetReferencedAssemblies().Any(r => r.FullName == TypeCatalogue.FakeItEasyAssembly.FullName);
 #else
             var fakeItEasyLibraryName = TypeCatalogue.FakeItEasyAssembly.GetName().Name;
