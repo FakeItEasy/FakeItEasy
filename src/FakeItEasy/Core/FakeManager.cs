@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -18,7 +19,7 @@ namespace FakeItEasy.Core
         private readonly LinkedList<CallRuleMetadata> allUserRulesField;
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
-        private readonly List<ICompletedFakeObjectCall> recordedCallsField;
+        private readonly ConcurrentQueue<ICompletedFakeObjectCall> recordedCallsField;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
 
@@ -48,7 +49,7 @@ namespace FakeItEasy.Core
                                          new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
                                      };
 
-            this.recordedCallsField = new List<ICompletedFakeObjectCall>();
+            this.recordedCallsField = new ConcurrentQueue<ICompletedFakeObjectCall>();
             this.interceptionListeners = new LinkedList<IInterceptionListener>();
         }
 
@@ -93,7 +94,7 @@ namespace FakeItEasy.Core
             get { return FakeScope.Current.GetCallsWithinScope(this); }
         }
 
-        internal List<ICompletedFakeObjectCall> AllRecordedCalls
+        internal ConcurrentQueue<ICompletedFakeObjectCall> AllRecordedCalls
         {
             get { return this.recordedCallsField; }
         }

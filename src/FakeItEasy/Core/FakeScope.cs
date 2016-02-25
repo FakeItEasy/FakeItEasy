@@ -58,7 +58,7 @@ namespace FakeItEasy.Core
         /// <param name="call">The call that is intercepted.</param>
         internal void AddInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call)
         {
-            fakeManager.AllRecordedCalls.Add(call);
+            fakeManager.AllRecordedCalls.Enqueue(call);
             this.OnAddInterceptedCall(fakeManager, call);
         }
 

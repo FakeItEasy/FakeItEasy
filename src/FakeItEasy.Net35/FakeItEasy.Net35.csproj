@@ -681,6 +681,7 @@
       <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
     <Compile Include="Compatibility\ConcurrentDictionary.cs" />
+    <Compile Include="Compatibility\ConcurrentQueue.cs" />
     <Compile Include="Compatibility\ConditionalWeakTable.cs" />
     <Compile Include="Compatibility\EnumerableExtensions.cs" />
     <Compile Include="InternalsVisibleTo.cs" />
