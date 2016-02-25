@@ -94,6 +94,7 @@
     <Compile Include="ArgumentConstraintManagerExtensions\StringEndsWithTests.cs" />
     <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
     <Compile Include="Configuration\ArgumentCollectionTests.cs" />
+    <Compile Include="Core\ConcurrentListTests.cs" />
     <Compile Include="Core\DynamicOptionsBuilderTests.cs" />
     <Compile Include="Core\FakeManagerProviderTests.cs" />
     <Compile Include="DefaultBootstrapperTests.cs" />

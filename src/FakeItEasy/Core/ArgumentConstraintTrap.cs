@@ -7,7 +7,7 @@ namespace FakeItEasy.Core
         : IArgumentConstraintTrapper
     {
         [ThreadStatic]
-        private static SynchronizedCollection<IArgumentConstraint> trappedConstraints;
+        private static List<IArgumentConstraint> trappedConstraints;
 
         public static void ReportTrappedConstraint(IArgumentConstraint constraint)
         {
@@ -19,7 +19,7 @@ namespace FakeItEasy.Core
 
         public IEnumerable<IArgumentConstraint> TrapConstraints(Action actionThatProducesConstraint)
         {
-            trappedConstraints = new SynchronizedCollection<IArgumentConstraint>();
+            trappedConstraints = new List<IArgumentConstraint>();
             var result = trappedConstraints;
 
             actionThatProducesConstraint.Invoke();

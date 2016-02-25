@@ -5,7 +5,6 @@ namespace FakeItEasy.Core
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.Serialization;
     using FakeItEasy.Configuration;
 
     /// <summary>
@@ -14,12 +13,12 @@ namespace FakeItEasy.Core
     /// by using the AddRule-method.
     /// </summary>
     [Serializable]
-    public partial class FakeManager : IFakeCallProcessor, ISerializable
+    public partial class FakeManager : IFakeCallProcessor
     {
         private readonly LinkedList<CallRuleMetadata> allUserRulesField;
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
-        private readonly SynchronizedCollection<ICompletedFakeObjectCall> recordedCallsField;
+        private readonly ConcurrentList<ICompletedFakeObjectCall> recordedCallsField;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
 
@@ -49,30 +48,8 @@ namespace FakeItEasy.Core
                                          new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
                                      };
 
-            this.recordedCallsField = new SynchronizedCollection<ICompletedFakeObjectCall>();
+            this.recordedCallsField = new ConcurrentList<ICompletedFakeObjectCall>();
             this.interceptionListeners = new LinkedList<IInterceptionListener>();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FakeManager"/> class
-        /// for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> containing the object data.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        protected FakeManager(SerializationInfo info, StreamingContext context)
-        {
-            this.allUserRulesField = (LinkedList<CallRuleMetadata>)info.GetValue("allUserRulesField", typeof(LinkedList<CallRuleMetadata>));
-            this.postUserRules = (CallRuleMetadata[])info.GetValue("postUserRules", typeof(CallRuleMetadata[]));
-            this.preUserRules = (CallRuleMetadata[])info.GetValue("preUserRules", typeof(CallRuleMetadata[]));
-            this.recordedCallsField = new SynchronizedCollection<ICompletedFakeObjectCall>();
-            var recordedCallsToAdd = (ICompletedFakeObjectCall[])info.GetValue("recordedCallsField", typeof(ICompletedFakeObjectCall[]));
-            foreach (var call in recordedCallsToAdd)
-            {
-                this.recordedCallsField.Add(call);
-            }
-
-            this.interceptionListeners = (LinkedList<IInterceptionListener>)info.GetValue("interceptionListeners", typeof(LinkedList<IInterceptionListener>));
-            this.objectReference = (WeakReference)info.GetValue("objectReference", typeof(WeakReference));
         }
 
         /// <summary>
@@ -170,21 +147,6 @@ namespace FakeItEasy.Core
         public void AddInterceptionListener(IInterceptionListener listener)
         {
             this.interceptionListeners.AddFirst(listener);
-        }
-
-        /// <summary>
-        /// Populates a <see cref="SerializationInfo"/> with the data needed to serialize the target object.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("allUserRulesField", this.allUserRulesField);
-            info.AddValue("postUserRules", this.postUserRules);
-            info.AddValue("preUserRules", this.preUserRules);
-            info.AddValue("recordedCallsField", this.recordedCallsField.ToArray());
-            info.AddValue("interceptionListeners", this.interceptionListeners);
-            info.AddValue("objectReference", this.objectReference);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes",

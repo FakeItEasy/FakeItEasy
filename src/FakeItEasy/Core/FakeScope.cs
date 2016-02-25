@@ -3,6 +3,7 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents a scope for fake objects, calls configured within a scope
@@ -114,7 +115,7 @@ namespace FakeItEasy.Core
 
                 if (!this.recordedCallsGroupedByFakeManager.TryGetValue(fakeObject, out calls))
                 {
-                    calls = new SynchronizedCollection<ICompletedFakeObjectCall>();
+                    return Enumerable.Empty<ICompletedFakeObjectCall>();
                 }
 
                 return calls;
@@ -126,7 +127,7 @@ namespace FakeItEasy.Core
 
                 if (!this.rulesField.TryGetValue(fakeObject, out rules))
                 {
-                    rules = new SynchronizedCollection<CallRuleMetadata>();
+                    rules = new ConcurrentList<CallRuleMetadata>();
                     this.rulesField.Add(fakeObject, rules);
                 }
 
@@ -149,7 +150,7 @@ namespace FakeItEasy.Core
 
                 if (!this.recordedCallsGroupedByFakeManager.TryGetValue(fakeManager, out calls))
                 {
-                    calls = new SynchronizedCollection<ICompletedFakeObjectCall>();
+                    calls = new ConcurrentList<ICompletedFakeObjectCall>();
                     this.recordedCallsGroupedByFakeManager.Add(fakeManager, calls);
                 }
 
