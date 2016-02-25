@@ -131,7 +131,7 @@ namespace FakeItEasy.Core
                 return null;
             }
 
-            var interfaceMap = type.GetInterfaceMap(baseDefinition.DeclaringType);
+            var interfaceMap = type.GetTypeInfo().GetRuntimeInterfaceMap(baseDefinition.DeclaringType);
 
             return
                 (from methodTargetPair in interfaceMap.InterfaceMethods
