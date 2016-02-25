@@ -3,7 +3,9 @@ namespace FakeItEasy.SelfInitializedFakes
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+#if FEATURE_SERIALIZATION
     using System.Runtime.Serialization.Formatters.Binary;
+#endif
 
     internal class FileStorage
         : ICallStorage
@@ -63,20 +65,29 @@ namespace FakeItEasy.SelfInitializedFakes
 
         private void WriteCallsToFile(IEnumerable<CallData> calls)
         {
+#if FEATURE_SERIALIZATION
             var formatter = new BinaryFormatter();
             using (var file = this.fileSystem.Open(this.fileName, FileMode.Truncate))
             {
                 formatter.Serialize(file, calls.ToArray());
             }
+#else
+            throw new System.NotImplementedException();
+
+#endif
         }
 
         private IEnumerable<CallData> LoadCallsFromFile()
         {
+#if FEATURE_SERIALIZATION
             var formatter = new BinaryFormatter();
             using (var file = this.fileSystem.Open(this.fileName, FileMode.Open))
             {
                 return (IEnumerable<CallData>)formatter.Deserialize(file);
             }
+#else
+            throw new System.NotImplementedException();
+#endif
         }
 
         private void EnsureThatFileExists()
