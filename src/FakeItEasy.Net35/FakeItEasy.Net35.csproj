@@ -221,6 +221,9 @@
     <Compile Include="..\FakeItEasy\Core\CallWriter.cs">
       <Link>Core\CallWriter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\ConcurrentList.cs">
+      <Link>Core\ConcurrentList.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Core\DefaultArgumentConstraintManager.cs">
       <Link>Core\DefaultArgumentConstraintManager.cs</Link>
     </Compile>

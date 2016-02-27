@@ -89,6 +89,7 @@
     <Compile Include="A.of.T.cs" />
     <Compile Include="Core\AssemblyExtensions.cs" />
     <Compile Include="Core\BootstrapperLocator.cs" />
+    <Compile Include="Core\ConcurrentList.cs" />
     <Compile Include="Core\DynamicOptionsBuilder.cs" />
     <Compile Include="Core\IFakeCallProcessor.cs" />
     <Compile Include="Core\FakeManagerProvider.cs" />
