@@ -77,7 +77,7 @@ namespace FakeItEasy.Core
             var coreAssemblyName = typeof(object).GetTypeInfo().Assembly.Name();
             var loadedAssemblies = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.LibraryManager.GetReferencingLibraries(coreAssemblyName)
                 .SelectMany(info => info.Assemblies)
-                .Select(info => Assembly.Load(new AssemblyName(info.Name)))
+                .Select(info => Assembly.Load(info))
                 .ToArray();
             var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 #endif

@@ -21,7 +21,7 @@ namespace FakeItEasy.Core
             var referencingLibraries = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.LibraryManager.GetReferencingLibraries(fakeItEasyLibraryName);
             return referencingLibraries
                 .SelectMany(info => info.Assemblies)
-                .Select(info => Assembly.Load(new AssemblyName(info.Name)))
+                .Select(info => Assembly.Load(info))
                 .Any(r => r.FullName == assembly.FullName);
 #endif
         }
