@@ -1,7 +1,10 @@
 namespace FakeItEasy
 {
+    extern alias FakeItEasy;
+
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
+    using FakeItEasy::System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -15,12 +18,10 @@ namespace FakeItEasy
             var numbers = new[] { 1, 2 };
 
             // Act
-            var zipped = letters.Zip(numbers, (f, s) => new { Letter = f, Number = s }).ToList();
+            var zipped = letters.Zip(numbers, (l, n) => l + n);
 
             // Assert
-            Assert.That(zipped, Has.Count.EqualTo(2));
-            Assert.That(zipped[0], Has.Property("Letter").EqualTo("a").And.Property("Number").EqualTo(1));
-            Assert.That(zipped[1], Has.Property("Letter").EqualTo("b").And.Property("Number").EqualTo(2));
+            Assert.That(zipped, Is.EqualTo(new[] { "a1", "b2" }));
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace FakeItEasy
+namespace System.Linq
 {
     using System;
     using System.Collections;
