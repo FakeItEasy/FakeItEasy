@@ -1,7 +1,10 @@
 namespace FakeItEasy
 {
+    extern alias FakeItEasy;
+
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using FakeItEasy::System.Runtime.CompilerServices;
     using NUnit.Framework;
 
     [TestFixture]
