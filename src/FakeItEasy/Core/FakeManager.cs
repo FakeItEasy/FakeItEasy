@@ -19,7 +19,7 @@ namespace FakeItEasy.Core
         private readonly LinkedList<CallRuleMetadata> allUserRulesField;
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
-        private readonly ConcurrentQueue<ICompletedFakeObjectCall> recordedCallsField;
+        private readonly ConcurrentQueue<ICompletedFakeObjectCall> recordedCalls;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
 
@@ -49,7 +49,7 @@ namespace FakeItEasy.Core
                                          new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
                                      };
 
-            this.recordedCallsField = new ConcurrentQueue<ICompletedFakeObjectCall>();
+            this.recordedCalls = new ConcurrentQueue<ICompletedFakeObjectCall>();
             this.interceptionListeners = new LinkedList<IInterceptionListener>();
         }
 
@@ -92,11 +92,6 @@ namespace FakeItEasy.Core
         public virtual IEnumerable<ICompletedFakeObjectCall> RecordedCallsInScope
         {
             get { return FakeScope.Current.GetCallsWithinScope(this); }
-        }
-
-        internal ConcurrentQueue<ICompletedFakeObjectCall> AllRecordedCalls
-        {
-            get { return this.recordedCallsField; }
         }
 
         internal LinkedList<CallRuleMetadata> AllUserRules
@@ -184,6 +179,24 @@ namespace FakeItEasy.Core
                     listener.OnAfterCallIntercepted(readonlyCall, ruleToUse.Rule);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns a list of all calls on the managed object.
+        /// </summary>
+        /// <returns>A list of all calls on the managed object.</returns>
+        internal IEnumerable<ICompletedFakeObjectCall> GetRecordedCalls()
+        {
+            return this.recordedCalls;
+        }
+
+        /// <summary>
+        /// Records that a call has occurred on the managed object.
+        /// </summary>
+        /// <param name="call">The call to remember.</param>
+        internal void RecordCall(ICompletedFakeObjectCall call)
+        {
+            this.recordedCalls.Enqueue(call);
         }
 
         /// <summary>
