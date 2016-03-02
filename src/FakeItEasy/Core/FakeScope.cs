@@ -58,7 +58,7 @@ namespace FakeItEasy.Core
         /// <param name="call">The call that is intercepted.</param>
         internal void AddInterceptedCall(FakeManager fakeManager, ICompletedFakeObjectCall call)
         {
-            fakeManager.AllRecordedCalls.Add(call);
+            fakeManager.RecordCall(call);
             this.OnAddInterceptedCall(fakeManager, call);
         }
 
@@ -178,7 +178,7 @@ namespace FakeItEasy.Core
 
             internal override IEnumerable<ICompletedFakeObjectCall> GetCallsWithinScope(FakeManager fakeObject)
             {
-                return fakeObject.AllRecordedCalls;
+                return fakeObject.GetRecordedCalls();
             }
 
             protected override void OnAddRule(FakeManager fakeObject, CallRuleMetadata rule)
