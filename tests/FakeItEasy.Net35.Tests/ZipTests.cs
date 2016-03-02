@@ -5,6 +5,7 @@ namespace FakeItEasy
     using System;
     using System.Collections.Generic;
     using FakeItEasy::System.Linq;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -21,7 +22,7 @@ namespace FakeItEasy
             var zipped = letters.Zip(numbers, (l, n) => l + n);
 
             // Assert
-            Assert.That(zipped, Is.EqualTo(new[] { "a1", "b2" }));
+            zipped.ShouldBeEquivalentTo(new[] { "a1", "b2" });
         }
     }
 }
