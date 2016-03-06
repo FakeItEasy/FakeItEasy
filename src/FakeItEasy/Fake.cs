@@ -29,17 +29,6 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Creates a new scope and sets it as the current scope. When inside a scope the
-        /// getting the calls made to a fake will return only the calls within that scope and when
-        /// asserting that calls were made, the calls must have been made within that scope.
-        /// </summary>
-        /// <returns>The created scope.</returns>
-        public static IFakeScope CreateScope()
-        {
-            return Facade.CreateScope();
-        }
-
-        /// <summary>
         /// Gets all the calls made to the specified fake object.
         /// </summary>
         /// <param name="fakedObject">The faked object.</param>

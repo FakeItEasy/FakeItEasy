@@ -130,7 +130,7 @@ namespace FakeItEasy.Tests.Configuration
 
             rule.Apply(A.Fake<IInterceptedFakeObjectCall>());
 
-            Assert.That(this.argumentUsedForAsserterFactory, Is.EquivalentTo(this.fakeObject.RecordedCallsInScope));
+            Assert.That(this.argumentUsedForAsserterFactory, Is.EquivalentTo(this.fakeObject.GetRecordedCalls()));
         }
 
         [Test]

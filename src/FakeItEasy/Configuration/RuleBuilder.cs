@@ -33,7 +33,7 @@ namespace FakeItEasy.Configuration
 
         public IEnumerable<ICompletedFakeObjectCall> Calls
         {
-            get { return this.manager.RecordedCallsInScope; }
+            get { return this.manager.GetRecordedCalls(); }
         }
 
         public ICallMatcher Matcher

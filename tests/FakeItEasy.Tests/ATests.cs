@@ -10,7 +10,6 @@ namespace FakeItEasy.Tests
     public class ATests : ConfigurableServiceLocatorTestBase
     {
         private IFakeCreatorFacade fakeCreator;
-        private IDisposable scope;
 
         [Test]
         public void Fake_without_arguments_should_call_fake_creator_with_empty_options_builder()
@@ -77,13 +76,6 @@ namespace FakeItEasy.Tests
             base.OnSetup();
             this.fakeCreator = A.Fake<IFakeCreatorFacade>();
             this.StubResolve(this.fakeCreator);
-            this.scope = Fake.CreateScope();
-        }
-
-        protected override void OnTeardown()
-        {
-            this.scope.Dispose();
-            base.OnTeardown();
         }
     }
 }

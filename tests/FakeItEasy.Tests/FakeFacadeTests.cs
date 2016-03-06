@@ -8,7 +8,6 @@ namespace FakeItEasy.Tests
     public class FakeFacadeTests
     {
         private IFakeManagerAccessor managerAccessor;
-        private IFakeScopeFactory fakeScopeFactory;
         private IFixtureInitializer fixtureInitializer;
 
         private FakeFacade facade;
@@ -17,10 +16,9 @@ namespace FakeItEasy.Tests
         public void Setup()
         {
             this.managerAccessor = A.Fake<IFakeManagerAccessor>();
-            this.fakeScopeFactory = A.Fake<IFakeScopeFactory>();
             this.fixtureInitializer = A.Fake<IFixtureInitializer>();
 
-            this.facade = new FakeFacade(this.managerAccessor, this.fakeScopeFactory, this.fixtureInitializer);
+            this.facade = new FakeFacade(this.managerAccessor, this.fixtureInitializer);
         }
 
         [Test]
@@ -49,38 +47,6 @@ namespace FakeItEasy.Tests
             // Assert
             NullGuardedConstraint.Assert(() =>
                 this.facade.GetFakeManager(A.Dummy<IFoo>()));
-        }
-
-        [Test]
-        public void CreateScope_should_return_scope_from_scope_factory()
-        {
-            // Arrange
-            var scope = A.Dummy<IFakeScope>();
-            A.CallTo(() => this.fakeScopeFactory.Create()).Returns(scope);
-
-            // Act
-            var result = this.facade.CreateScope();
-
-            // Assert
-            result.Should().BeSameAs(scope);
-        }
-
-        [Test]
-        public void GetCalls_should_return_calls_from_manager_received_from_accessor()
-        {
-            // Arrange
-            var fake = A.Dummy<object>();
-            var manager = A.Fake<FakeManager>();
-            var calls = A.CollectionOfFake<ICompletedFakeObjectCall>(2);
-
-            A.CallTo(() => manager.RecordedCallsInScope).Returns(calls);
-            A.CallTo(() => this.managerAccessor.GetFakeManager(fake)).Returns(manager);
-
-            // Act
-            var result = this.facade.GetCalls(fake);
-
-            // Assert
-            result.Should().BeEquivalentTo(calls);
         }
 
         [Test]

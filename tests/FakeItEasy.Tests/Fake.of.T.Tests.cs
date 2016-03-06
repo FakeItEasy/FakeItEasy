@@ -21,14 +21,11 @@ namespace FakeItEasy.Tests
         {
             var foo = A.Fake<IFoo>();
 
-            using (Fake.CreateScope())
-            {
-                A.CallTo(() => this.fakeCreator.CreateFake(A<Action<IFakeOptions<IFoo>>>._)).Returns(foo);
+            A.CallTo(() => this.fakeCreator.CreateFake(A<Action<IFakeOptions<IFoo>>>._)).Returns(foo);
 
-                var fake = new Fake<IFoo>();
+            var fake = new Fake<IFoo>();
 
-                fake.FakedObject.Should().BeSameAs(foo);
-            }
+            fake.FakedObject.Should().BeSameAs(foo);
         }
 
         [Test]
@@ -48,26 +45,23 @@ namespace FakeItEasy.Tests
 
             Action<IFakeOptions<AbstractTypeWithNoDefaultConstructor>> optionsBuilder = x => { };
 
-            using (Fake.CreateScope())
-            {
-                A.CallTo(() => this.fakeCreator.CreateFake(optionsBuilder))
-                    .Returns(fakeReturnedFromFactory);
+            A.CallTo(() => this.fakeCreator.CreateFake(optionsBuilder))
+                .Returns(fakeReturnedFromFactory);
 
-                var fake = new Fake<AbstractTypeWithNoDefaultConstructor>(optionsBuilder);
+            var fake = new Fake<AbstractTypeWithNoDefaultConstructor>(optionsBuilder);
 
-                fake.FakedObject.Should().BeSameAs(fakeReturnedFromFactory);
-            }
+            fake.FakedObject.Should().BeSameAs(fakeReturnedFromFactory);
         }
 
         [Test]
-        public void RecordedCalls_returns_recorded_calls_in_scope()
+        public void RecordedCalls_returns_recorded_calls_from_manager()
         {
             var fake = new Fake<IFoo>();
             var fakeObject = Fake.GetFakeManager(fake.FakedObject);
 
             fake.FakedObject.Bar();
 
-            Assert.That(fake.RecordedCalls, Is.EquivalentTo(fakeObject.RecordedCallsInScope));
+            Assert.That(fake.RecordedCalls, Is.EquivalentTo(fakeObject.GetRecordedCalls()));
         }
 
         [Test]

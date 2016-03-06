@@ -4,7 +4,6 @@ namespace FakeItEasy.Tests
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
     using NUnit.Framework;
@@ -30,12 +29,6 @@ namespace FakeItEasy.Tests
         public void Current_should_not_be_null()
         {
             Assert.That(ServiceLocator.Current, Is.Not.Null);
-        }
-
-        [Test]
-        public void Resolve_FakeScope_should_return_the_current_scope()
-        {
-            Assert.That(ServiceLocator.Current.Resolve<FakeScope>(), Is.SameAs(FakeScope.Current));
         }
 
         [Test]

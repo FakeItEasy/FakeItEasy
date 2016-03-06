@@ -23,11 +23,8 @@ namespace FakeItEasy.Tests
             var calls = this.CreateFakeCallCollection(callSpecification);
 
             // Act
-            using (Fake.CreateScope())
-            {
-                this.StubResolve<IExpressionCallMatcherFactory>(factory);
-                calls.Matching(callSpecification);
-            }
+            this.StubResolve<IExpressionCallMatcherFactory>(factory);
+            calls.Matching(callSpecification);
 
             // Assert
             A.CallTo(() => factory.CreateCallMathcer(callSpecification)).MustHaveHappened();
@@ -51,11 +48,8 @@ namespace FakeItEasy.Tests
             // Act
             IEnumerable<ICompletedFakeObjectCall> matchingCalls = null;
 
-            using (Fake.CreateScope())
-            {
-                this.StubResolve<IExpressionCallMatcherFactory>(factory);
-                matchingCalls = calls.Matching<IFoo>(x => x.Bar());
-            }
+            this.StubResolve<IExpressionCallMatcherFactory>(factory);
+            matchingCalls = calls.Matching<IFoo>(x => x.Bar());
 
             // Assert
             matchingCalls.Should().HaveCount(2).And
