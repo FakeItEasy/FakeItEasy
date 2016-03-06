@@ -56,7 +56,7 @@ namespace FakeItEasy
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
 
-            container.Register<FakeAsserter.Factory>(c => x => OrderedAssertion.CurrentAsserterFactory.Invoke(x));
+            container.Register<FakeAsserter.Factory>(c => calls => new FakeAsserter(calls, c.Resolve<CallWriter>()));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
                 (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy));
@@ -137,6 +137,8 @@ namespace FakeItEasy
             container.Register<ISutInitializer>(c => new DefaultSutInitializer(c.Resolve<IFakeAndDummyManager>()));
 
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
+
+            container.Register<ISequentialCallContext>(c => new SequentialCallContext(c.Resolve<CallWriter>()));
         }
 
         private class ExpressionCallMatcherFactory

@@ -5,8 +5,9 @@ namespace FakeItEasy
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
-    using Configuration;
-    using Creation;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
+    using FakeItEasy.Creation;
 
     /// <summary>
     /// Provides methods for generating fake objects.
@@ -109,6 +110,15 @@ namespace FakeItEasy
         public static IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
+        }
+
+        /// <summary>
+        /// Creates a new call ordering context that can be used to assert the order of calls.
+        /// </summary>
+        /// <returns>A call ordering context.</returns>
+        public static ISequentialCallContext SequentialCallContext()
+        {
+            return ServiceLocator.Current.Resolve<ISequentialCallContext>();
         }
     }
 }

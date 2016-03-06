@@ -11,11 +11,12 @@ namespace FakeItEasy
         /// Asserts that the specified call must have happened once or more.
         /// </summary>
         /// <param name="configuration">The configuration to assert on.</param>
-        public static void MustHaveHappened(this IAssertConfiguration configuration)
+        /// <returns>An object to assert the call order.</returns>
+        public static IAfterMustHaveHappenedConfiguration MustHaveHappened(this IAssertConfiguration configuration)
         {
             Guard.AgainstNull(configuration, "configuration");
 
-            configuration.MustHaveHappened(Repeated.AtLeast.Once);
+            return configuration.MustHaveHappened(Repeated.AtLeast.Once);
         }
 
         /// <summary>

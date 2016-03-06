@@ -65,6 +65,10 @@ namespace FakeItEasy.Configuration
             var repeatDescription = this.recordedRule.RepeatConstraint.ToString();
 
             asserter.AssertWasCalled(this.recordedRule.IsApplicableTo, callDescription, x => this.recordedRule.RepeatConstraint.Matches(x), repeatDescription);
+            if (this.recordedRule.SequentialCallContext != null)
+            {
+                this.recordedRule.SequentialCallContext.CheckNextCall(this.fakeManager, this.recordedRule.IsApplicableTo, callDescription, this.recordedRule.RepeatConstraint);
+            }
         }
 
         private void CreateArgumentsPredicateFromArguments(IFakeObjectCall fakeObjectCall)

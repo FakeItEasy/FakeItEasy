@@ -140,33 +140,28 @@ namespace FakeItEasy.Tests.Creation
         }
 
         [Test]
-        public void Should_try_with_resolved_constructors_incorrect_order()
+        public void Should_try_with_resolved_constructors_in_the_correct_order()
         {
-            using (var scope = Fake.CreateScope())
-            {
-                // Arrange
-                var session = A.Fake<IDummyValueCreationSession>();
-                StubSessionWithDummyValue(session, 1);
-                StubSessionWithDummyValue(session, "dummy");
+            // Arrange
+            var session = A.Fake<IDummyValueCreationSession>();
+            StubSessionWithDummyValue(session, 1);
+            StubSessionWithDummyValue(session, "dummy");
 
-                this.StubProxyGeneratorToFail();
+            this.StubProxyGeneratorToFail();
 
-                var options = new ProxyOptions();
+            var options = new ProxyOptions();
 
-                // Act
-                this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
+            // Act
+            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
 
-                // Assert
-                using (scope.OrderedAssertions())
-                {
-                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsNull(), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
-                       .MustHaveHappened();
-                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
-                        .MustHaveHappened();
-                    A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence("dummy"), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
-                        .MustHaveHappened();
-                }
-            }
+            // Assert
+            var context = A.SequentialCallContext();
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsNull(), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+                .MustHaveHappened().InOrder(context);
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+                .MustHaveHappened().InOrder(context);
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence("dummy"), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+                .MustHaveHappened().InOrder(context);
         }
 
         [Test]
