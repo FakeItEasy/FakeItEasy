@@ -8,6 +8,13 @@
 
     public static class FakeSpecs
     {
+        public interface IFoo
+        {
+            void AMethod();
+
+            void AnotherMethod();
+        }
+
         [Scenario]
         public static void NonGenericCallsSuccess(
             IFoo fake,
@@ -32,13 +39,6 @@
                     completedCalls.Select(call => call.Method.Name)
                         .Should()
                         .Equal("AMethod", "AnotherMethod", "AnotherMethod"));
-        }
-
-        public interface IFoo
-        {
-            void AMethod();
-
-            void AnotherMethod();
         }
     }
 }

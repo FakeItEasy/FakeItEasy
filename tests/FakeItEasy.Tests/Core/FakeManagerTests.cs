@@ -163,7 +163,7 @@ namespace FakeItEasy.Tests.Core
             fake.AddRuleFirst(one);
             fake.AddRuleFirst(two);
 
-            fake.Rules.Should().BeEquivalentTo(new[] { one, two });
+            fake.Rules.Should().BeEquivalentTo(one, two);
         }
 
         [Test]

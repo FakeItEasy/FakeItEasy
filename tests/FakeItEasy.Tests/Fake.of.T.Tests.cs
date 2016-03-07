@@ -61,7 +61,7 @@ namespace FakeItEasy.Tests
 
             fake.FakedObject.Bar();
 
-            Assert.That(fake.RecordedCalls, Is.EquivalentTo(fakeObject.GetRecordedCalls()));
+            fake.RecordedCalls.Should().BeEquivalentTo(fakeObject.GetRecordedCalls());
         }
 
         [Test]
