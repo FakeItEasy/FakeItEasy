@@ -296,12 +296,6 @@
     <Compile Include="..\FakeItEasy\Core\FakeManagerProvider.cs">
       <Link>Core\FakeManagerProvider.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\FakeScope.cs">
-      <Link>Core\FakeScope.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\FakeScopeFactory.cs">
-      <Link>Core\FakeScopeFactory.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\IArgumentConstraint.cs">
       <Link>Core\IArgumentConstraint.cs</Link>
     </Compile>
@@ -346,12 +340,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRule.cs">
       <Link>Core\IFakeObjectCallRule.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeScope.cs">
-      <Link>Core\IFakeScope.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeScopeFactory.cs">
-      <Link>Core\IFakeScopeFactory.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\IFixtureInitializer.cs">
       <Link>Core\IFixtureInitializer.cs</Link>

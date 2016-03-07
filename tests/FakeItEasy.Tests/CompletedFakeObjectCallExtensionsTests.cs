@@ -23,11 +23,8 @@ namespace FakeItEasy.Tests
             var calls = this.CreateFakeCallCollection(callSpecification);
 
             // Act
-            using (Fake.CreateScope())
-            {
-                this.StubResolve<IExpressionCallMatcherFactory>(factory);
-                calls.Matching(callSpecification);
-            }
+            this.StubResolve(factory);
+            calls.Matching(callSpecification);
 
             // Assert
             A.CallTo(() => factory.CreateCallMathcer(callSpecification)).MustHaveHappened();
@@ -49,13 +46,8 @@ namespace FakeItEasy.Tests
             A.CallTo(() => factory.CreateCallMathcer(A<LambdaExpression>._)).Returns(matcher);
 
             // Act
-            IEnumerable<ICompletedFakeObjectCall> matchingCalls = null;
-
-            using (Fake.CreateScope())
-            {
-                this.StubResolve<IExpressionCallMatcherFactory>(factory);
-                matchingCalls = calls.Matching<IFoo>(x => x.Bar());
-            }
+            this.StubResolve(factory);
+            var matchingCalls = calls.Matching<IFoo>(x => x.Bar());
 
             // Assert
             matchingCalls.Should().HaveCount(2).And
@@ -65,7 +57,7 @@ namespace FakeItEasy.Tests
 
         private IEnumerable<ICompletedFakeObjectCall> CreateFakeCallCollection<TFake>(params Expression<Action<TFake>>[] callSpecifications)
         {
-            return callSpecifications.Select(x => ExpressionHelper.CreateFakeCall<TFake>(x).AsReadOnly());
+            return callSpecifications.Select(x => ExpressionHelper.CreateFakeCall(x).AsReadOnly());
         }
     }
 }

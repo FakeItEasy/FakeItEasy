@@ -205,7 +205,6 @@
     <Compile Include="ExpectationExceptionTests.cs" />
     <Compile Include="FakeCall.cs" />
     <Compile Include="FakeCallRule.cs" />
-    <Compile Include="Core\FakeScopeTests.cs" />
     <Compile Include="FakeTests.cs" />
     <Compile Include="NullGuardedConstraintTests.cs" />
     <Compile Include="IFoo.cs" />

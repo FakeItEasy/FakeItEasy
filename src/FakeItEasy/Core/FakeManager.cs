@@ -86,14 +86,6 @@ namespace FakeItEasy.Core
             get { return this.allUserRulesField.Select(x => x.Rule); }
         }
 
-        /// <summary>
-        /// Gets a collection of all the calls made to the fake object within the current scope.
-        /// </summary>
-        public virtual IEnumerable<ICompletedFakeObjectCall> RecordedCallsInScope
-        {
-            get { return FakeScope.Current.GetCallsWithinScope(this); }
-        }
-
         internal LinkedList<CallRuleMetadata> AllUserRules
         {
             get { return this.allUserRulesField; }
@@ -110,8 +102,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleFirst(IFakeObjectCallRule rule)
         {
-            var newRule = new CallRuleMetadata { Rule = rule };
-            FakeScope.Current.AddRuleFirst(this, newRule);
+            this.AllUserRules.AddFirst(new CallRuleMetadata { Rule = rule });
         }
 
         /// <summary>
@@ -120,8 +111,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleLast(IFakeObjectCallRule rule)
         {
-            var newRule = new CallRuleMetadata { Rule = rule };
-            FakeScope.Current.AddRuleLast(this, newRule);
+            this.AllUserRules.AddLast(new CallRuleMetadata { Rule = rule });
         }
 
         /// <summary>
@@ -171,7 +161,7 @@ namespace FakeItEasy.Core
 
                 if (!interceptedCall.IgnoreCallInRecording)
                 {
-                    FakeScope.Current.AddInterceptedCall(this, readonlyCall);
+                    this.RecordCall(readonlyCall);
                 }
 
                 foreach (var listener in this.interceptionListeners.Reverse())

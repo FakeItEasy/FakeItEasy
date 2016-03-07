@@ -75,7 +75,6 @@
     <Compile Include="ExampleObjects\IWidget.cs" />
     <Compile Include="ExampleObjects\IWidgetFactory.cs" />
     <Compile Include="RaisingEvents.cs" />
-    <Compile Include="Scopes.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\tests\FakeItEasy.Tests\FakeItEasy.Tests.csproj">

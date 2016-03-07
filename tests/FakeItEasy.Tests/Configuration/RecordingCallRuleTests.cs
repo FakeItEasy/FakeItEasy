@@ -5,6 +5,7 @@ namespace FakeItEasy.Tests.Configuration
     using System.Linq;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -113,8 +114,8 @@ namespace FakeItEasy.Tests.Configuration
             var asserterCall = Fake.GetCalls(this.asserter).Matching<IFakeAsserter>(x => x.AssertWasCalled(A<Func<IFakeObjectCall, bool>>._, "call description", A<Func<int, bool>>._, A<string>._)).Single();
             var repeatPredicatePassedToAsserter = asserterCall.Arguments.Get<Func<int, bool>>("repeatPredicate");
 
-            Assert.That(repeatPredicatePassedToAsserter.Invoke(0), Is.False);
-            Assert.That(repeatPredicatePassedToAsserter.Invoke(1), Is.True);
+            repeatPredicatePassedToAsserter.Invoke(0).Should().BeFalse();
+            repeatPredicatePassedToAsserter.Invoke(1).Should().BeTrue();
         }
 
         [Test]
@@ -130,7 +131,7 @@ namespace FakeItEasy.Tests.Configuration
 
             rule.Apply(A.Fake<IInterceptedFakeObjectCall>());
 
-            Assert.That(this.argumentUsedForAsserterFactory, Is.EquivalentTo(this.fakeObject.RecordedCallsInScope));
+            this.argumentUsedForAsserterFactory.Should().BeEquivalentTo(this.fakeObject.GetRecordedCalls());
         }
 
         [Test]
@@ -138,7 +139,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             var rule = this.CreateRule();
 
-            Assert.That(rule.NumberOfTimesToCall, Is.EqualTo(1));
+            rule.NumberOfTimesToCall.Should().Be(1);
         }
 
         private RecordingCallRule<IFoo> CreateRule()

@@ -7,12 +7,10 @@ namespace FakeItEasy
     {
         private readonly IFixtureInitializer fakeInitializer;
         private readonly IFakeManagerAccessor fakeManagerAccessor;
-        private readonly IFakeScopeFactory fakeScopeFactory;
 
-        public FakeFacade(IFakeManagerAccessor fakeManagerAccessor, IFakeScopeFactory fakeScopeFactory, IFixtureInitializer fakeInitializer)
+        public FakeFacade(IFakeManagerAccessor fakeManagerAccessor, IFixtureInitializer fakeInitializer)
         {
             this.fakeManagerAccessor = fakeManagerAccessor;
-            this.fakeScopeFactory = fakeScopeFactory;
             this.fakeInitializer = fakeInitializer;
         }
 
@@ -23,17 +21,12 @@ namespace FakeItEasy
             return this.fakeManagerAccessor.GetFakeManager(fakedObject);
         }
 
-        public virtual IFakeScope CreateScope()
-        {
-            return this.fakeScopeFactory.Create();
-        }
-
         public virtual IEnumerable<ICompletedFakeObjectCall> GetCalls(object fakedObject)
         {
             Guard.AgainstNull(fakedObject, "fakedObject");
 
             var manager = this.fakeManagerAccessor.GetFakeManager(fakedObject);
-            return manager.RecordedCallsInScope;
+            return manager.GetRecordedCalls();
         }
 
         public virtual void ClearConfiguration(object fakedObject)

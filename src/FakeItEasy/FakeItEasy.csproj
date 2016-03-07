@@ -301,12 +301,6 @@
       <DependentUpon>FakeManager.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\FakeScope.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeScopeFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\IArgumentConstraint.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -355,12 +349,6 @@
     </Compile>
     <Compile Include="Core\ITypeCatalogue.cs" />
     <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
-    <Compile Include="Core\IFakeScope.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IFakeScopeFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\IFixtureInitializer.cs">
       <SubType>Code</SubType>
     </Compile>

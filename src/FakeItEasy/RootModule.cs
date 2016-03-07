@@ -30,9 +30,6 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
         public override void RegisterDependencies(DictionaryContainer container)
         {
-            container.Register(c =>
-                FakeScope.Current);
-
             container.RegisterSingleton(c =>
                 new DynamicOptionsBuilder(
                     c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
@@ -118,9 +115,7 @@ namespace FakeItEasy
             container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
 
             container.Register(c =>
-                new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeScopeFactory>(), c.Resolve<IFixtureInitializer>()));
-
-            container.RegisterSingleton<IFakeScopeFactory>(c => new FakeScopeFactory());
+                new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFixtureInitializer>()));
 
             container.Register<IFixtureInitializer>(c => new DefaultFixtureInitializer(c.Resolve<IFakeAndDummyManager>(), c.Resolve<ISutInitializer>()));
 

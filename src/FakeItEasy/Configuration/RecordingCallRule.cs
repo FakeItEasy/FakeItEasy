@@ -59,7 +59,7 @@ namespace FakeItEasy.Configuration
 
         private void DoAssertion(IFakeObjectCall fakeObjectCall)
         {
-            var asserter = this.asserterFactory.Invoke(this.fakeManager.RecordedCallsInScope.Cast<IFakeObjectCall>());
+            var asserter = this.asserterFactory.Invoke(this.fakeManager.GetRecordedCalls().Cast<IFakeObjectCall>());
 
             var callDescription = this.callFormatter.GetDescription(fakeObjectCall);
             var repeatDescription = this.recordedRule.RepeatConstraint.ToString();
