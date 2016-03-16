@@ -680,6 +680,9 @@
     <Compile Include="..\FakeItEasy\WhereConfigurationExtensions.cs">
       <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MethodInfoWrapper.cs">
+      <Link>Compatibility\MethodInfoWrapper.cs</Link>
+    </Compile>
     <Compile Include="Compatibility\ConcurrentDictionary.cs" />
     <Compile Include="Compatibility\ConditionalWeakTable.cs" />
     <Compile Include="Compatibility\EnumerableExtensions.cs" />

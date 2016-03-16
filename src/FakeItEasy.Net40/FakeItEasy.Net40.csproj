@@ -699,6 +699,9 @@
     <Compile Include="..\FakeItEasy\WhereConfigurationExtensions.cs">
       <Link>WhereConfigurationExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MethodInfoWrapper.cs">
+      <Link>Compatibility\MethodInfoWrapper.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
