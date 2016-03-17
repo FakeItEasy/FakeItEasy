@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -20,7 +21,7 @@ namespace FakeItEasy.Core
         private readonly LinkedList<CallRuleMetadata> allUserRulesField;
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
-        private readonly List<ICompletedFakeObjectCall> recordedCallsField;
+        private readonly ConcurrentQueue<ICompletedFakeObjectCall> recordedCalls;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
 
@@ -50,7 +51,7 @@ namespace FakeItEasy.Core
                                          new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
                                      };
 
-            this.recordedCallsField = new List<ICompletedFakeObjectCall>();
+            this.recordedCalls = new ConcurrentQueue<ICompletedFakeObjectCall>();
             this.interceptionListeners = new LinkedList<IInterceptionListener>();
         }
 
@@ -87,19 +88,6 @@ namespace FakeItEasy.Core
             get { return this.allUserRulesField.Select(x => x.Rule); }
         }
 
-        /// <summary>
-        /// Gets a collection of all the calls made to the fake object within the current scope.
-        /// </summary>
-        public virtual IEnumerable<ICompletedFakeObjectCall> RecordedCallsInScope
-        {
-            get { return FakeScope.Current.GetCallsWithinScope(this); }
-        }
-
-        internal List<ICompletedFakeObjectCall> AllRecordedCalls
-        {
-            get { return this.recordedCallsField; }
-        }
-
         internal LinkedList<CallRuleMetadata> AllUserRules
         {
             get { return this.allUserRulesField; }
@@ -116,8 +104,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleFirst(IFakeObjectCallRule rule)
         {
-            var newRule = new CallRuleMetadata { Rule = rule };
-            FakeScope.Current.AddRuleFirst(this, newRule);
+            this.AllUserRules.AddFirst(new CallRuleMetadata { Rule = rule });
         }
 
         /// <summary>
@@ -126,8 +113,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleLast(IFakeObjectCallRule rule)
         {
-            var newRule = new CallRuleMetadata { Rule = rule };
-            FakeScope.Current.AddRuleLast(this, newRule);
+            this.AllUserRules.AddLast(new CallRuleMetadata { Rule = rule });
         }
 
         /// <summary>
@@ -177,7 +163,7 @@ namespace FakeItEasy.Core
 
                 if (!interceptedCall.IgnoreCallInRecording)
                 {
-                    FakeScope.Current.AddInterceptedCall(this, readonlyCall);
+                    this.RecordCall(readonlyCall);
                 }
 
                 foreach (var listener in this.interceptionListeners.Reverse())
@@ -185,6 +171,24 @@ namespace FakeItEasy.Core
                     listener.OnAfterCallIntercepted(readonlyCall, ruleToUse.Rule);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns a list of all calls on the managed object.
+        /// </summary>
+        /// <returns>A list of all calls on the managed object.</returns>
+        internal IEnumerable<ICompletedFakeObjectCall> GetRecordedCalls()
+        {
+            return this.recordedCalls;
+        }
+
+        /// <summary>
+        /// Records that a call has occurred on the managed object.
+        /// </summary>
+        /// <param name="call">The call to remember.</param>
+        internal void RecordCall(ICompletedFakeObjectCall call)
+        {
+            this.recordedCalls.Enqueue(call);
         }
 
         /// <summary>
@@ -240,6 +244,11 @@ namespace FakeItEasy.Core
             public object FakedObject
             {
                 get { return this.call.FakedObject; }
+            }
+
+            public int SequenceNumber
+            {
+                get { return this.call.SequenceNumber; }
             }
 
             public void SetReturnValue(object value)

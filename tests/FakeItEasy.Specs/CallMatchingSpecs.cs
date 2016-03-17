@@ -4,9 +4,9 @@ namespace FakeItEasy.Specs
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
-    using Xunit;
 
     public static class CallMatchingSpecs
     {
@@ -46,22 +46,22 @@ namespace FakeItEasy.Specs
         public static void ParameterArrays(
             ITypeWithParameterArray fake)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<ITypeWithParameterArray>());
 
-            "when matching calls with parameter arrays"
+            "When a call with a parameter array is made on this fake"
                 .x(() => fake.MethodWithParameterArray("foo", "bar", "baz"));
 
-            "it should be able to match the call"
+            "Then an assertion with all the same argument values should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", "bar", "baz")).MustHaveHappened());
 
-            "it should be able to match the call with argument constraints"
+            "And an assertion with only argument constraints should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, A<string>._, A<string>._)).MustHaveHappened());
 
-            "it should be able to match the call mixing constraints and values"
+            "And an assertion with mixed argument values and argument constraints should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, "bar", A<string>._)).MustHaveHappened());
 
-            "it should be able to match using array syntax"
+            "And an assertion using the array syntax should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", A<string[]>.That.IsSameSequenceAs(new[] { "bar", "baz" }))).MustHaveHappened());
         }
 
@@ -70,20 +70,23 @@ namespace FakeItEasy.Specs
             IHaveNoGenericParameters fake,
             Exception exception)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<IHaveNoGenericParameters>());
 
-            "when failing to match non generic calls"
-                .x(() =>
-                    {
-                        fake.Bar(1);
-                        fake.Bar(2);
-                        exception = Record.Exception(() => A.CallTo(() => fake.Bar(3)).MustHaveHappened());
-                    });
+            "And a call with argument 1 made on this fake"
+                .x(() => fake.Bar(1));
 
-            "it should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Be(
-                    @"
+            "And a call with argument 2 made on this fake"
+                .x(() => fake.Bar(2));
+
+            "When I assert that a call with argument 3 has happened on this fake"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(3)).MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception message should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(3)
@@ -99,20 +102,23 @@ namespace FakeItEasy.Specs
             IHaveTwoGenericParameters fake,
             Exception exception)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<IHaveTwoGenericParameters>());
 
-            "when failing to match generic calls"
-                .x(() =>
-                    {
-                        fake.Bar(1, 2D);
-                        fake.Bar(new Generic<bool, long>(), 3);
-                        exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened());
-                    });
+            "And a call with arguments of type int and double made on this fake"
+                .x(() => fake.Bar(1, 2D));
 
-            "it should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Be(
-                    @"
+            "And a call with arguments of type Generic<bool, long> and int made on this call"
+                .x(() => fake.Bar(new Generic<bool, long>(), 3));
+
+            "When I assert that a call with arguments of type string and string has happened on this fake"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception message should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<System.String, System.String>(<Ignored>, <Ignored>)
@@ -128,15 +134,20 @@ namespace FakeItEasy.Specs
             IHaveNoGenericParameters fake,
             Exception exception)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<IHaveNoGenericParameters>());
 
-            "when no non generic calls"
+            "And no calls made on this fake"
+                .x(() => { });
+
+            "When I assert that a call has happened on this fake"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened()));
 
-            "it should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Be(
-                    @"
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception message should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(<Ignored>)
@@ -150,15 +161,20 @@ namespace FakeItEasy.Specs
             IHaveOneGenericParameter fake,
             Exception exception)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<IHaveOneGenericParameter>());
 
-            "when no generic calls"
+            "And no calls made on this fake"
+                .x(() => { });
+
+            "When I assert that a call has happened on this fake"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened()));
 
-            "it should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Be(
-                    @"
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception message should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.String>>(<Ignored>)
@@ -169,61 +185,50 @@ namespace FakeItEasy.Specs
 
         [Scenario]
         public static void OutParameter(
-            IDictionary<string, string> subject)
+            IDictionary<string, string> subject,
+            string constraintValue,
+            string value)
         {
-            "establish"
+            "Given a fake"
                 .x(() => subject = A.Fake<IDictionary<string, string>>());
 
-            "when matching a call with an out parameter"
+            "And a call to a method with an out parameter configured on this fake"
                 .x(() =>
                     {
-                        string outString = "a constraint string";
-                        A.CallTo(() => subject.TryGetValue("any key", out outString))
+                        constraintValue = "a constraint string";
+                        A.CallTo(() => subject.TryGetValue("any key", out constraintValue))
                             .Returns(true);
                     });
 
-            "it should match without regard to out parameter value"
-                .x(() =>
-                    {
-                        string outString = "a different string";
+            "When I make a call to the configured method"
+                .x(() => subject.TryGetValue("any key", out value));
 
-                        subject.TryGetValue("any key", out outString)
-                            .Should().BeTrue();
-                    });
-
-            "it should assign the constraint value to the out parameter"
-                .x(() =>
-                    {
-                        string outString = "a different string";
-
-                        subject.TryGetValue("any key", out outString);
-
-                        outString.Should().Be("a constraint string");
-                    });
+            "Then it should assign the constraint value to the out parameter"
+                .x(() => value.Should().Be(constraintValue));
         }
 
         [Scenario]
         public static void FailingMatchOfOutParameter(
             IDictionary<string, string> subject,
+            string value,
             Exception exception)
         {
-            "establish"
+            "Given a fake"
                 .x(() => subject = A.Fake<IDictionary<string, string>>());
 
-            "when failing to match a call with an out parameter"
-                .x(() =>
-                    {
-                        string outString = null;
+            "And no calls made on this fake"
+                .x(() => { });
 
-                        exception =
-                            Record.Exception(
-                                () => A.CallTo(() => subject.TryGetValue("any key", out outString))
-                                    .MustHaveHappened());
-                    });
+            "When I assert that a call with an out parameter happened on this fake"
+                .x(() => exception =
+                    Record.Exception(
+                        () => A.CallTo(() => subject.TryGetValue("any key", out value)).MustHaveHappened()));
 
-            "it should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Be(
-                    @"
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception message should tell us that the call was not matched"
+                .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
     System.Collections.Generic.IDictionary`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]].TryGetValue(""any key"", <out parameter>)
@@ -234,46 +239,64 @@ namespace FakeItEasy.Specs
 
         [Scenario]
         public static void RefParameter(
-            IHaveARefParameter subject)
+            IHaveARefParameter subject,
+            string constraintValue,
+            string value,
+            bool result)
         {
-            "establish"
+            "Given a fake"
                 .x(() => subject = A.Fake<IHaveARefParameter>());
 
-            "when matching a call with a ref parameter"
+            "And a call to a method with a ref parameter configured on this fake"
                 .x(() =>
                     {
-                        string refString = "a constraint string";
-                        A.CallTo(() => subject.CheckYourReferences(ref refString))
-                            .Returns(true);
+                        constraintValue = "a constraint string";
+                        A.CallTo(() => subject.CheckYourReferences(ref constraintValue)).Returns(true);
                     });
 
-            "it should match when ref parameter value matches"
+            "When I make a call to the configured method with the constraint string"
                 .x(() =>
                     {
-                        string refString = "a constraint string";
-
-                        subject.CheckYourReferences(ref refString)
-                            .Should().BeTrue();
+                        value = constraintValue;
+                        result = subject.CheckYourReferences(ref value);
                     });
 
-            "it should not match when ref parameter value does not match"
+            "Then it should return the configured value"
+                .x(() => result.Should().BeTrue());
+
+            "And it should assign the constraint value to the ref parameter"
+                .x(() => value.Should().Be(constraintValue));
+        }
+
+        [Scenario]
+        public static void FailingMatchOfRefParameter(
+            IHaveARefParameter subject,
+            string constraintValue,
+            string value,
+            bool result)
+        {
+            "Given a fake"
+                .x(() => subject = A.Fake<IHaveARefParameter>());
+
+            "And a call to a method with a ref parameter configured on this fake"
                 .x(() =>
-                    {
-                        string refString = "a different string";
+                {
+                    constraintValue = "a constraint string";
+                    A.CallTo(() => subject.CheckYourReferences(ref constraintValue)).Returns(true);
+                });
 
-                        subject.CheckYourReferences(ref refString)
-                            .Should().BeFalse();
-                    });
-
-            "it should assign the constraint value to the ref parameter"
+            "When I make a call to the configured method with a different value"
                 .x(() =>
-                    {
-                        string refString = "a constraint string";
+                {
+                    value = "a different string";
+                    result = subject.CheckYourReferences(ref value);
+                });
 
-                        subject.CheckYourReferences(ref refString);
+            "Then it should return the default value"
+                .x(() => result.Should().BeFalse());
 
-                        refString.Should().Be("a constraint string");
-                    });
+            "And it should leave the ref parameter unchanged"
+                .x(() => value.Should().Be("a different string"));
         }
 
         /// <summary>
@@ -283,24 +306,81 @@ namespace FakeItEasy.Specs
         /// Ensure that such parameters are not confused with <c>out</c> parameters.
         /// </summary>
         /// <param name="subject">The subject of the test.</param>
+        /// <param name="result">The result of the call.</param>
         [Scenario]
         public static void ParameterHavingAnOutAttribute(
-             IHaveAnOutParameter subject)
+             IHaveAnOutParameter subject,
+             bool result)
         {
-            "establish"
+            "Given a fake"
                 .x(() => subject = A.Fake<IHaveAnOutParameter>());
 
-            "when matching a call with a parameter having an out attribute"
-                .x(() => A.CallTo(() => subject.Validate("a constraint string"))
-                             .Returns(true));
+            "And a call to a method with a parameter having an out attribute is configured on this fake"
+                .x(() => A.CallTo(() => subject.Validate("a constraint string")).Returns(true));
 
-            "it should match when ref parameter value matches"
-                .x(() => subject.Validate("a constraint string")
-                             .Should().BeTrue());
+            "When I make a call to the configured method with the constraint string"
+                .x(() => result = subject.Validate("a constraint string"));
 
-            "it should not match when ref parameter value does not match"
-                .x(() => subject.Validate("a different string")
-                             .Should().BeFalse());
+            "Then it should return the configured value"
+                .x(() => result.Should().BeTrue());
+        }
+
+        /// <summary>
+        /// <see cref="OutAttribute"/> can be applied to parameters that are not
+        /// <c>out</c> parameters.
+        /// One example is the array parameter in <see cref="System.IO.Stream.Read"/>.
+        /// Ensure that such parameters are not confused with <c>out</c> parameters.
+        /// </summary>
+        /// <param name="subject">The subject of the test.</param>
+        /// <param name="result">The result of the call.</param>
+        [Scenario]
+        public static void FailingMatchOfParameterHavingAnOutAttribute(
+             IHaveAnOutParameter subject,
+             bool result)
+        {
+            "Given a fake"
+                .x(() => subject = A.Fake<IHaveAnOutParameter>());
+
+            "And a call to a method with a parameter having an out attribute is configured on this fake"
+                .x(() => A.CallTo(() => subject.Validate("a constraint string")).Returns(true));
+
+            "When I make a call to the configured method with a different string"
+                .x(() => result = subject.Validate("a different string"));
+
+            "Then it should return the default value"
+                .x(() => result.Should().BeFalse());
+        }
+
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "InvalidOperationException", Justification = "It's an identifier")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
+        [Scenario]
+        public static void IgnoredArgumentConstraintOutsideCallSpec(
+            Exception exception)
+        {
+            "When A<T>.Ignored is used outside a call specification"
+                .x(() => exception = Record.Exception(() => A<string>.Ignored));
+
+            "Then it should throw an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+
+            "And the exception message should explain why it's invalid"
+                .x(() => exception.Message.Should().Be("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()"));
+        }
+
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "InvalidOperationException", Justification = "Because it's the way it should be written")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "Because it's the way it should be written")]
+        [Scenario]
+        public static void ThatArgumentConstraintOutsideCallSpec(
+            Exception exception)
+        {
+            "When A<T>.That is used outside a call specification"
+                .x(() => exception = Record.Exception(() => A<string>.That.Not.IsNullOrEmpty()));
+
+            "Then it should throw an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+
+            "And the exception message should explain why it's invalid"
+                .x(() => exception.Message.Should().Be("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()"));
         }
 
         public class Generic<T>

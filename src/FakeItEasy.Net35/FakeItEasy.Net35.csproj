@@ -89,6 +89,9 @@
     <Compile Include="..\FakeItEasy\CompletedFakeObjectCallExtensions.cs">
       <Link>CompletedFakeObjectCallExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\AfterMustHaveHappenedConfiguration.cs">
+      <Link>Configuration\AfterMustHaveHappenedConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallCallRule.cs">
       <Link>Configuration\AnyCallCallRule.cs</Link>
     </Compile>
@@ -118,6 +121,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs">
       <Link>Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IAfterMustHaveHappenedConfiguration.cs">
+      <Link>Configuration\IAfterMustHaveHappenedConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IAnyCallConfiguration.cs">
       <Link>Configuration\IAnyCallConfiguration.cs</Link>
@@ -290,12 +296,6 @@
     <Compile Include="..\FakeItEasy\Core\FakeManagerProvider.cs">
       <Link>Core\FakeManagerProvider.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\FakeScope.cs">
-      <Link>Core\FakeScope.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\FakeScopeFactory.cs">
-      <Link>Core\FakeScopeFactory.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\IArgumentConstraint.cs">
       <Link>Core\IArgumentConstraint.cs</Link>
     </Compile>
@@ -341,12 +341,6 @@
     <Compile Include="..\FakeItEasy\Core\IFakeObjectCallRule.cs">
       <Link>Core\IFakeObjectCallRule.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeScope.cs">
-      <Link>Core\IFakeScope.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\IFakeScopeFactory.cs">
-      <Link>Core\IFakeScopeFactory.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\IFixtureInitializer.cs">
       <Link>Core\IFixtureInitializer.cs</Link>
     </Compile>
@@ -368,14 +362,14 @@
     <Compile Include="..\FakeItEasy\Core\MethodInfoManager.cs">
       <Link>Core\MethodInfoManager.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserter.cs">
-      <Link>Core\OrderedFakeAsserter.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\OrderedFakeAsserterFactory.cs">
-      <Link>Core\OrderedFakeAsserterFactory.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\Raise.of.TEventArgs.cs">
       <Link>Core\Raise.of.TEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\SequenceNumberManager.cs">
+      <Link>Core\SequenceNumberManager.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Core\SequentialCallContext.cs">
+      <Link>Core\SequentialCallContext.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\TypeCatalogue.cs">
       <Link>Core\TypeCatalogue.cs</Link>
@@ -593,6 +587,9 @@
     <Compile Include="..\FakeItEasy\IOutputWriter.cs">
       <Link>IOutputWriter.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\ISequentialCallContext.cs">
+      <Link>ISequentialCallContext.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
       <Link>MethodBaseExtensions.cs</Link>
     </Compile>
@@ -601,9 +598,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\NextCall.cs">
       <Link>NextCall.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\OrderedAssertion.cs">
-      <Link>OrderedAssertion.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\OutAndRefParametersConfigurationExtensions.cs">
       <Link>OutAndRefParametersConfigurationExtensions.cs</Link>
@@ -684,6 +678,7 @@
       <Link>Compatibility\MethodInfoWrapper.cs</Link>
     </Compile>
     <Compile Include="Compatibility\ConcurrentDictionary.cs" />
+    <Compile Include="Compatibility\ConcurrentQueue.cs" />
     <Compile Include="Compatibility\ConditionalWeakTable.cs" />
     <Compile Include="Compatibility\EnumerableExtensions.cs" />
     <Compile Include="Compatibility\ReflectionExtensions.cs" />

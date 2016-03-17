@@ -59,12 +59,16 @@ namespace FakeItEasy.Configuration
 
         private void DoAssertion(IFakeObjectCall fakeObjectCall)
         {
-            var asserter = this.asserterFactory.Invoke(this.fakeManager.RecordedCallsInScope.Cast<IFakeObjectCall>());
+            var asserter = this.asserterFactory.Invoke(this.fakeManager.GetRecordedCalls().Cast<IFakeObjectCall>());
 
             var callDescription = this.callFormatter.GetDescription(fakeObjectCall);
             var repeatDescription = this.recordedRule.RepeatConstraint.ToString();
 
             asserter.AssertWasCalled(this.recordedRule.IsApplicableTo, callDescription, x => this.recordedRule.RepeatConstraint.Matches(x), repeatDescription);
+            if (this.recordedRule.SequentialCallContext != null)
+            {
+                this.recordedRule.SequentialCallContext.CheckNextCall(this.fakeManager, this.recordedRule.IsApplicableTo, callDescription, this.recordedRule.RepeatConstraint);
+            }
         }
 
         private void CreateArgumentsPredicateFromArguments(IFakeObjectCall fakeObjectCall)

@@ -24,20 +24,6 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Test]
-        public void Calls_configured_in_a_child_context_does_not_exist_outside_that_context()
-        {
-            var fake = this.CreateFakeManager<IFoo>();
-            var rule = A.Fake<IFakeObjectCallRule>();
-
-            using (Fake.CreateScope())
-            {
-                fake.AddRuleFirst(rule);
-            }
-
-            fake.Rules.Should().NotContain(rule);
-        }
-
-        [Test]
         public void Event_listeners_that_are_removed_should_not_be_invoked_when_event_is_raised()
         {
             var foo = A.Fake<IFoo>();
@@ -177,7 +163,7 @@ namespace FakeItEasy.Tests.Core
             fake.AddRuleFirst(one);
             fake.AddRuleFirst(two);
 
-            fake.Rules.Should().BeEquivalentTo(new[] { one, two });
+            fake.Rules.Should().BeEquivalentTo(one, two);
         }
 
         [Test]
@@ -189,8 +175,8 @@ namespace FakeItEasy.Tests.Core
             foo.Bar();
             Record.Exception(() => foo[1]);
 
-            fake.RecordedCallsInScope.Should().Contain(x => x.Method.Name == "Bar");
-            fake.RecordedCallsInScope.Should().Contain(x => x.Method.Name == "get_Item");
+            fake.GetRecordedCalls().Should().Contain(x => x.Method.Name == "Bar");
+            fake.GetRecordedCalls().Should().Contain(x => x.Method.Name == "get_Item");
         }
 
         [Test]
@@ -205,59 +191,7 @@ namespace FakeItEasy.Tests.Core
             Record.Exception(() => fake.Bar());
 
             // Assert
-            manager.RecordedCallsInScope.Count().Should().Be(1);
-        }
-
-        [Test]
-        public void RecordedCalls_only_returns_calls_made_within_the_scope()
-        {
-            var foo = A.Fake<IFoo>();
-
-            foo.Baz();
-
-            using (Fake.CreateScope())
-            {
-                foo.Baz();
-
-                Fake.GetCalls(foo).Count().Should().Be(1);
-            }
-        }
-
-        [Test]
-        public void RecordedCalls_returns_calls_made_in_scope_and_any_inner_scopes()
-        {
-            var foo = A.Fake<IFoo>();
-
-            foo.Baz();
-
-            using (Fake.CreateScope())
-            {
-                foo.Baz();
-
-                using (Fake.CreateScope())
-                {
-                    foo.Baz();
-                }
-            }
-
-            Fake.GetCalls(foo).Count().Should().Be(3);
-        }
-
-        [Test]
-        public void Rules_should_only_be_valid_within_the_current_scope()
-        {
-            var fake = this.CreateFakeManager<IFoo>();
-            var rule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>._)).Returns(true);
-
-            using (Fake.CreateScope())
-            {
-                fake.AddRuleFirst(rule);
-            }
-
-            ((IFoo)fake.Object).Bar();
-
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).MustNotHaveHappened();
+            manager.GetRecordedCalls().Count().Should().Be(1);
         }
 
         [Test]
@@ -571,19 +505,16 @@ namespace FakeItEasy.Tests.Core
             manager.AddInterceptionListener(listener1);
             manager.AddInterceptionListener(listener2);
 
-            // Assert
-            using (var scope = Fake.CreateScope())
-            {
-                ProcessFakeObjectCall(manager, A.Dummy<IWritableFakeObjectCall>());
+            ProcessFakeObjectCall(manager, A.Dummy<IWritableFakeObjectCall>());
 
-                using (scope.OrderedAssertions())
-                {
-                    A.CallTo(() => listener2.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened();
-                    A.CallTo(() => listener1.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened();
-                    A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened();
-                    A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened();
-                }
-            }
+            // Assert
+            var context = A.SequentialCallContext();
+            A.CallTo(() => listener2.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened().InOrder(context);
+            A.CallTo(() => listener1.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened().InOrder(context);
+            A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._))
+                .MustHaveHappened().InOrder(context);
+            A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._))
+                .MustHaveHappened().InOrder(context);
         }
 
         private static FakeCallRule CreateApplicableInterception()

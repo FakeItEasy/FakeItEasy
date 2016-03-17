@@ -30,9 +30,6 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
         public override void RegisterDependencies(DictionaryContainer container)
         {
-            container.Register(c =>
-                FakeScope.Current);
-
             container.RegisterSingleton(c =>
                 new DynamicOptionsBuilder(
                     c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
@@ -56,7 +53,7 @@ namespace FakeItEasy
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
 
-            container.Register<FakeAsserter.Factory>(c => x => OrderedAssertion.CurrentAsserterFactory.Invoke(x));
+            container.Register<FakeAsserter.Factory>(c => calls => new FakeAsserter(calls, c.Resolve<CallWriter>()));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
                 (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy));
@@ -118,9 +115,7 @@ namespace FakeItEasy
             container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
 
             container.Register(c =>
-                new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFakeScopeFactory>(), c.Resolve<IFixtureInitializer>()));
-
-            container.RegisterSingleton<IFakeScopeFactory>(c => new FakeScopeFactory());
+                new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFixtureInitializer>()));
 
             container.Register<IFixtureInitializer>(c => new DefaultFixtureInitializer(c.Resolve<IFakeAndDummyManager>(), c.Resolve<ISutInitializer>()));
 
@@ -137,6 +132,8 @@ namespace FakeItEasy
             container.Register<ISutInitializer>(c => new DefaultSutInitializer(c.Resolve<IFakeAndDummyManager>()));
 
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
+
+            container.Register<ISequentialCallContext>(c => new SequentialCallContext(c.Resolve<CallWriter>()));
         }
 
         private class ExpressionCallMatcherFactory

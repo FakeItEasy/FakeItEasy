@@ -1,8 +1,6 @@
 namespace FakeItEasy.IntegrationTests
 {
     using System;
-    using System.Linq;
-    using FakeItEasy.Core;
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -51,21 +49,16 @@ namespace FakeItEasy.IntegrationTests
         public void Should_be_able_to_assert_ordered_on_collections_of_calls()
         {
             // Arrange
-            using (var scope = Fake.CreateScope())
-            {
-                var foo = A.Fake<IFoo>();
+            var foo = A.Fake<IFoo>();
 
-                // Act
-                foo.Bar();
-                foo.Baz();
+            // Act
+            foo.Bar();
+            foo.Baz();
 
-                // Assert
-                using (scope.OrderedAssertions())
-                {
-                    A.CallTo(() => foo.Bar()).MustHaveHappened();
-                    A.CallTo(() => foo.Baz()).MustHaveHappened();
-                }
-            }
+            // Assert
+            var context = A.SequentialCallContext();
+            A.CallTo(() => foo.Bar()).MustHaveHappened().InOrder(context);
+            A.CallTo(() => foo.Baz()).MustHaveHappened().InOrder(context);
         }
 
         [Test]
@@ -73,24 +66,18 @@ namespace FakeItEasy.IntegrationTests
         {
             // Arrange
             Exception exception;
+            var foo = A.Fake<IFoo>();
 
-            using (var scope = Fake.CreateScope())
+            // Act
+            foo.Baz();
+            foo.Bar();
+
+            exception = Record.Exception(() =>
             {
-                var foo = A.Fake<IFoo>();
-
-                // Act
-                foo.Baz();
-                foo.Bar();
-
-                exception = Record.Exception(() =>
-                {
-                    using (scope.OrderedAssertions())
-                    {
-                        A.CallTo(() => foo.Bar()).MustHaveHappened();
-                        A.CallTo(() => foo.Baz()).MustHaveHappened();
-                    }
-                });
-            }
+                var context = A.SequentialCallContext();
+                A.CallTo(() => foo.Bar()).MustHaveHappened().InOrder(context);
+                A.CallTo(() => foo.Baz()).MustHaveHappened().InOrder(context);
+            });
 
             // Assert
             exception.Should().BeAnExceptionOfType<ExpectationException>();
@@ -101,50 +88,22 @@ namespace FakeItEasy.IntegrationTests
         {
             // Arrange
             Exception exception;
+            var fooOne = A.Fake<IFoo>();
+            var fooTwo = A.Fake<IFoo>();
 
-            using (var scope = Fake.CreateScope())
+            // Act
+            fooOne.Bar();
+            fooTwo.Bar();
+
+            exception = Record.Exception(() =>
             {
-                var fooOne = A.Fake<IFoo>();
-                var fooTwo = A.Fake<IFoo>();
-
-                // Act
-                fooOne.Bar();
-                fooTwo.Bar();
-
-                exception = Record.Exception(() =>
-                {
-                    using (scope.OrderedAssertions())
-                    {
-                        A.CallTo(() => fooTwo.Bar()).MustHaveHappened();
-                        A.CallTo(() => fooOne.Bar()).MustHaveHappened();
-                    }
-                });
-            }
+                var context = A.SequentialCallContext();
+                A.CallTo(() => fooTwo.Bar()).MustHaveHappened().InOrder(context);
+                A.CallTo(() => fooOne.Bar()).MustHaveHappened().InOrder(context);
+            });
 
             // Assert
             exception.Should().BeAnExceptionOfType<ExpectationException>();
-        }
-
-        [Test]
-        public void Should_throw_when_starting_new_ordered_assertions_scope_when_one_is_already_opened()
-        {
-            // Arrange
-            Exception exception;
-
-            using (Enumerable.Empty<ICompletedFakeObjectCall>().OrderedAssertions())
-            {
-                // Act
-                exception = Record.Exception(
-                    () =>
-                    {
-                        using (Enumerable.Empty<ICompletedFakeObjectCall>().OrderedAssertions())
-                        {
-                        }
-                    });
-            }
-
-            // Assert
-            exception.Should().BeAnExceptionOfType<InvalidOperationException>();
         }
 
         // Reported as issue 182 (https://github.com/FakeItEasy/FakeItEasy/issues/182).
@@ -156,21 +115,37 @@ namespace FakeItEasy.IntegrationTests
             var baz = A.Fake<ISomethingBaz>();
             var qux = A.Fake<ISomethingQux>();
 
-            using (var scope = Fake.CreateScope())
-            {
-                // Act
-                qux.QuxMethod();
-                baz.BazMethod();
+            // Act
+            qux.QuxMethod();
+            baz.BazMethod();
 
-                using (scope.OrderedAssertions())
-                {
-                    A.CallTo(() => qux.QuxMethod()).MustHaveHappened();
-                    exception = Record.Exception(() => A.CallTo(() => qux.QuxMethod()).MustHaveHappened());
-                }
-            }
+            var context = A.SequentialCallContext();
+            A.CallTo(() => qux.QuxMethod()).MustHaveHappened().InOrder(context);
+            exception = Record.Exception(() => A.CallTo(() => qux.QuxMethod()).MustHaveHappened().InOrder(context));
 
             // Assert
             exception.Should().BeAnExceptionOfType<ExpectationException>();
+        }
+
+        [Test]
+        public void Should_not_throw_when_asserting_while_calls_are_being_made_on_the_fake()
+        {
+            var fake = A.Fake<ISomething>();
+
+            fake.SomethingMethod();
+
+            A.CallTo(fake)
+                .Where(
+                    call =>
+                    {
+                        // Simulate a concurrent call being made in another thread while the `MustHaveHappened` assertion
+                        // is being evaluated. This method is unorthodox, but is deterministic, not relying on the
+                        // vagaries of the thread scheduler to ensure that the calls overlap.
+                        fake.SomethingMethod();
+                        return true;
+                    },
+                    output => { })
+                .MustHaveHappened();
         }
     }
 }

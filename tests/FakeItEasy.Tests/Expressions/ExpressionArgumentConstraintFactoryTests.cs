@@ -9,6 +9,7 @@ namespace FakeItEasy.Tests.Expressions
     using FakeItEasy.Expressions;
     using FakeItEasy.Expressions.ArgumentConstraints;
     using FakeItEasy.Tests.Builders;
+    using FluentAssertions;
     using NUnit.Framework;
     using Guard = FakeItEasy.Guard;
 
@@ -40,7 +41,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.BuildWithDefaults());
 
             // Assert
-            Assert.That(result, Is.SameAs(constraint));
+            result.Should().BeSameAs(constraint);
         }
 
         [Test]
@@ -54,7 +55,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.Build(x => x.WithConstantExpression("foo")));
 
             // Assert
-            Assert.That(result, Is.InstanceOf<EqualityArgumentConstraint>().And.Property("ExpectedValue").EqualTo("foo"));
+            result.Should().BeOfType<EqualityArgumentConstraint>().Which.ExpectedValue.Should().Be("foo");
         }
 
         [Test]
@@ -74,7 +75,7 @@ namespace FakeItEasy.Tests.Expressions
             wasInvoked = false;
             actionToTrapper.Invoke();
 
-            Assert.That(wasInvoked, Is.True);
+            wasInvoked.Should().BeTrue();
         }
 
         [Test]
@@ -92,7 +93,7 @@ namespace FakeItEasy.Tests.Expressions
             this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.Build(x => x.WithExpression(expression)));
 
             // Assert
-            Assert.That(invokedNumberOfTimes, Is.EqualTo(1));
+            invokedNumberOfTimes.Should().Be(1);
         }
 
         [Test]
@@ -112,12 +113,12 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.factory.GetArgumentConstraint(expression);
 
             // Assert
-            Assert.That(result, Is.InstanceOf<AggregateArgumentConstraint>());
-            var aggregate = result as AggregateArgumentConstraint;
-
-            Assert.That(aggregate.Constraints.First(), Is.SameAs(constraintForFirst.Single()));
-            Assert.That(aggregate.Constraints.Skip(1).First(), Is.InstanceOf<EqualityArgumentConstraint>().And.Property("ExpectedValue").EqualTo("foo"));
-            Assert.That(aggregate.Constraints.Skip(2).First(), Is.SameAs(constraintForThird.Single()));
+            result.Should().BeOfType<AggregateArgumentConstraint>();
+            var aggregate = (AggregateArgumentConstraint)result;
+            aggregate.Constraints.Should().HaveCount(3);
+            aggregate.Constraints.ElementAt(0).Should().BeSameAs(constraintForFirst.Single());
+            aggregate.Constraints.ElementAt(1).Should().BeOfType<EqualityArgumentConstraint>().Which.ExpectedValue.Should().Be("foo");
+            aggregate.Constraints.ElementAt(2).Should().BeSameAs(constraintForThird.Single());
         }
 
         [Test]
@@ -132,7 +133,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.factory.GetArgumentConstraint(expression);
 
             // Assert
-            Assert.That(result, Is.InstanceOf<EqualityArgumentConstraint>());
+            result.Should().BeOfType<EqualityArgumentConstraint>();
         }
 
         [Test]
@@ -146,7 +147,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.factory.GetArgumentConstraint(expression);
 
             // Assert
-            Assert.That(result, Is.InstanceOf<EqualityArgumentConstraint>());
+            result.Should().BeOfType<EqualityArgumentConstraint>();
         }
 
         private static Func<object> FuncFromAction(Action action)
@@ -176,6 +177,8 @@ namespace FakeItEasy.Tests.Expressions
 
         private class InvokeTrapConstraintsAction : IInterceptionListener
         {
+            private readonly ArgumentConstraintTrap realTrap = new ArgumentConstraintTrap();
+
             public void OnBeforeCallIntercepted(IFakeObjectCall call)
             {
             }
@@ -186,7 +189,7 @@ namespace FakeItEasy.Tests.Expressions
 
                 if (call.Method.Name.Equals("TrapConstraints"))
                 {
-                    call.GetArgument<Action>(0).Invoke();
+                    this.realTrap.TrapConstraints(call.GetArgument<Action>(0));
                 }
             }
         }

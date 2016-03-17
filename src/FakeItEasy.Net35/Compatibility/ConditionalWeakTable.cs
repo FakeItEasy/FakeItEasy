@@ -1,4 +1,4 @@
-namespace FakeItEasy
+namespace System.Runtime.CompilerServices
 {
     using System;
     using System.Collections.Generic;

@@ -151,8 +151,6 @@
     <Compile Include="Configuration\StartConfigurationTests.cs" />
     <Compile Include="Core\DummyFactoryTests.cs" />
     <Compile Include="Core\DynamicDummyFactoryTests.cs" />
-    <Compile Include="Core\OrderedFakeAsserterFactoryTests.cs" />
-    <Compile Include="Core\OrderedFakeAsserterTests.cs" />
     <Compile Include="Creation\ProxyGeneratorSelectorTests.cs" />
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGeneratorTests.cs" />
@@ -207,7 +205,6 @@
     <Compile Include="ExpectationExceptionTests.cs" />
     <Compile Include="FakeCall.cs" />
     <Compile Include="FakeCallRule.cs" />
-    <Compile Include="Core\FakeScopeTests.cs" />
     <Compile Include="FakeTests.cs" />
     <Compile Include="NullGuardedConstraintTests.cs" />
     <Compile Include="IFoo.cs" />
