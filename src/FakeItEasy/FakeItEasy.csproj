@@ -111,6 +111,7 @@
     <Compile Include="IBootstrapper.cs" />
     <Compile Include="ISequentialCallContext.cs" />
     <Compile Include="IFakeOptionsBuilder.cs" />
+    <Compile Include="JetBrainsAnnotations.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
     <Compile Include="Core\DelegateRaiser.cs" />
