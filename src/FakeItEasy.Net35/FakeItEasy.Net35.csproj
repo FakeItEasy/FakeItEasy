@@ -590,6 +590,9 @@
     <Compile Include="..\FakeItEasy\ISequentialCallContext.cs">
       <Link>ISequentialCallContext.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\JetBrainsAnnotations.cs">
+      <Link>JetBrainsAnnotations.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
       <Link>MethodBaseExtensions.cs</Link>
     </Compile>
