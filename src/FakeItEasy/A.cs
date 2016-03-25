@@ -81,7 +81,7 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
-        [MustUseReturnValue("A.CallTo() must be followed by a fake setup call or by assertions.")]
+        [MustUseReturnValue("Unused call specification; did you forget to configure or assert the call?")]
         public static IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
@@ -97,7 +97,7 @@ namespace FakeItEasy
         /// <returns>
         /// A configuration object.
         /// </returns>
-        [MustUseReturnValue("A.CallTo() must be followed by a fake setup call or by assertions.")]
+        [MustUseReturnValue("Unused call specification; did you forget to configure or assert the call?")]
         public static IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fake)
         {
             return ConfigurationManager.CallTo(fake);
@@ -110,7 +110,7 @@ namespace FakeItEasy
         /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
-        [MustUseReturnValue("A.CallTo() must be followed by a fake setup call or by assertions.")]
+        [MustUseReturnValue("Unused call specification; did you forget to configure or assert the call?")]
         public static IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
