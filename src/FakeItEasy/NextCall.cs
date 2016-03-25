@@ -2,6 +2,7 @@ namespace FakeItEasy
 {
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Lets you specify options for the next call to a fake object.
@@ -15,6 +16,7 @@ namespace FakeItEasy
         /// <typeparam name="TFake">The type of the faked object.</typeparam>
         /// <param name="fake">The faked object to configure.</param>
         /// <returns>A call configuration object.</returns>
+        [MustUseReturnValue(JetBrainsAnnotationsJustificationMessages.CallSpecificationMustUseReturnValueJustification)]
         public static IRecordingConfigurationWithArgumentValidation To<TFake>(TFake fake)
         {
             Guard.AgainstNull(fake, "fake");

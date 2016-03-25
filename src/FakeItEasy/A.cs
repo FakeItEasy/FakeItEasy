@@ -81,7 +81,7 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
-        [MustUseReturnValue(CallToMustUseReturnValueJustification)]
+        [MustUseReturnValue(JetBrainsAnnotationsJustificationMessages.CallSpecificationMustUseReturnValueJustification)]
         public static IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
@@ -97,7 +97,7 @@ namespace FakeItEasy
         /// <returns>
         /// A configuration object.
         /// </returns>
-        [MustUseReturnValue(CallToMustUseReturnValueJustification)]
+        [MustUseReturnValue(JetBrainsAnnotationsJustificationMessages.CallSpecificationMustUseReturnValueJustification)]
         public static IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fake)
         {
             return ConfigurationManager.CallTo(fake);
@@ -110,7 +110,7 @@ namespace FakeItEasy
         /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
-        [MustUseReturnValue(CallToMustUseReturnValueJustification)]
+        [MustUseReturnValue(JetBrainsAnnotationsJustificationMessages.CallSpecificationMustUseReturnValueJustification)]
         public static IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
@@ -124,7 +124,5 @@ namespace FakeItEasy
         {
             return ServiceLocator.Current.Resolve<ISequentialCallContext>();
         }
-
-        private const string CallToMustUseReturnValueJustification = "Unused call specification; did you forget to configure or assert the call?";
     }
 }
