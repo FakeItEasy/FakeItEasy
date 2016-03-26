@@ -44,7 +44,7 @@ namespace FakeItEasy.Core
         /// <returns>Whether or not the assembly is dynamically generated.</returns>
         public static bool IsDynamic(this Assembly assembly)
         {
-#if NET40
+#if NET40_OR_LATER
             return assembly.IsDynamic;
 #else
             return assembly.ManifestModule.GetType().Namespace == "System.Reflection.Emit";

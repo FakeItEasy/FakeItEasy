@@ -2,14 +2,14 @@ namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
-#if NET40
+#if NET40_OR_LATER
     using System.Diagnostics.CodeAnalysis;
 #endif
     using System.Linq;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
-#if NET40
+#if NET40_OR_LATER
     using System.Threading.Tasks;
 #endif
 
@@ -36,7 +36,7 @@ namespace FakeItEasy
             return configuration.ReturnsLazily(x => value);
         }
 
-#if NET40
+#if NET40_OR_LATER
         /// <summary>
         /// Specifies the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/> which is returned when the configured call is made.
         /// The <see cref="Task{T}"/> returned from the configured call will have a <see cref="Task.Status"/> of <see cref="TaskStatus.RanToCompletion"/>.
@@ -71,7 +71,7 @@ namespace FakeItEasy
             return configuration.ReturnsLazily(x => valueProducer());
         }
 
-#if NET40
+#if NET40_OR_LATER
         /// <summary>
         /// Specifies a function used to produce the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/> which is returned when the configured call is made.
         /// The function will be called each time the configured call is made and can return different values each time.
@@ -115,7 +115,7 @@ namespace FakeItEasy
                 });
         }
 
-#if NET40
+#if NET40_OR_LATER
         /// <summary>
         /// Specifies a function used to produce the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/> which is returned when the configured call is made.
         /// The function will be called each time the configured call is made and can return different values each time.
@@ -136,7 +136,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
             {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
                 return TaskHelper.FromResult(valueProducer(call.GetArgument<T1>(0)));
             });
@@ -168,7 +168,7 @@ namespace FakeItEasy
                 });
         }
 
-#if NET40
+#if NET40_OR_LATER
         /// <summary>
         /// Specifies a function used to produce the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/> which is returned when the configured call is made.
         /// The function will be called each time the configured call is made and can return different values each time.
@@ -189,7 +189,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
             {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
                 return TaskHelper.FromResult(valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1)));
             });
@@ -222,7 +222,7 @@ namespace FakeItEasy
                 });
         }
 
-#if NET40
+#if NET40_OR_LATER
         /// <summary>
         /// Specifies a function used to produce the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/> which is returned when the configured call is made.
         /// The function will be called each time the configured call is made and can return different values each time.
@@ -244,7 +244,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
                 {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
                     return TaskHelper.FromResult(valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2)));
                 });
@@ -278,7 +278,7 @@ namespace FakeItEasy
                 });
         }
 
-#if NET40
+#if NET40_OR_LATER
         /// <summary>
         /// Specifies a function used to produce the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/> which is returned when the configured call is made.
         /// The function will be called each time the configured call is made and can return different values each time.
@@ -301,7 +301,7 @@ namespace FakeItEasy
 
             return configuration.ReturnsLazily(call =>
                 {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.Method, NameOfReturnsLazilyFeature);
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
                     return TaskHelper.FromResult(valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3)));
                 });
@@ -323,7 +323,7 @@ namespace FakeItEasy
             configuration.ReturnsLazily(x => queue.Dequeue()).NumberOfTimes(queue.Count);
         }
 
-#if NET40
+#if NET40_OR_LATER
         /// <summary>
         /// Configures the call to return a <see cref="Task{T}"/> with a <see cref="Task{T}.Result"/> of
         /// the next value from the specified sequence each time it's called.

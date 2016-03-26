@@ -9,7 +9,7 @@
   "frameworks": {
     "net451": {
       "compilationOptions": {
-        "define": [ "FEATURE_SERIALIZATION", "FEATURE_NETCORE_REFLECTION", "FEATURE_REFLECTION_GETASSEMBLIES" ]
+        "define": [ "NET40_OR_LATER", "FEATURE_SERIALIZATION", "FEATURE_NETCORE_REFLECTION", "FEATURE_REFLECTION_GETASSEMBLIES" ]
       },
       "dependencies": {
         "Castle.Core": "3.3.3"
@@ -17,7 +17,8 @@
     },
     "dotnet5.4": {
       "compilationOptions": {
-        "define": [ "FEATURE_NETCORE_REFLECTION" ]
+        "define": [ "NET40_OR_LATER", "FEATURE_NETCORE_REFLECTION" ],
+        "keyFile": "../../FakeItEasy.snk"
       },
       "dependencies": {
         "Castle.Core": "3.3.4",
