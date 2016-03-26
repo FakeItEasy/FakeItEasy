@@ -74,9 +74,10 @@ namespace FakeItEasy.Core
              var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
              var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 #else
-            var coreAssemblyName = typeof(object).GetTypeInfo().Assembly.Name();
-            var loadedAssemblies = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.LibraryManager.GetReferencingLibraries(coreAssemblyName)
+            var libraries = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.LibraryManager.GetLibraries();
+            var loadedAssemblies = libraries
                 .SelectMany(info => info.Assemblies)
+                .Distinct()
                 .Select(info => Assembly.Load(info))
                 .ToArray();
             var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
@@ -199,7 +200,7 @@ namespace FakeItEasy.Core
             protected override Assembly Load(AssemblyName assemblyName)
             {
                 Console.WriteLine("loading {0}", assemblyName.Name);
-                return this.LoadFromAssemblyPath(System.IO.Path.Combine(this.BasePath ?? System.IO.Directory.GetCurrentDirectory(), assemblyName.Name));
+                return base.LoadFromAssemblyPath(System.IO.Path.Combine(this.BasePath ?? System.IO.Directory.GetCurrentDirectory(), assemblyName.Name) + ".dll");
             }
         }
 #endif
