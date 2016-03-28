@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.Configuration
     using System;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
     using ExceptionFactory = System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception>;
 
@@ -33,7 +34,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = this.configuration.WithReturnType<int>();
 
             // Assert
-            Assert.That(returnConfig, Is.SameAs(result));
+            returnConfig.Should().BeSameAs(result);
         }
 
         [Test]
@@ -45,7 +46,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration.WithReturnType<string>();
 
             // Assert
-            Assert.That(this.callRule.ApplicableToMembersWithReturnType, Is.EqualTo(typeof(string)));
+            this.callRule.ApplicableToMembersWithReturnType.Should().Be(typeof(string));
         }
 
         [Test]
@@ -73,7 +74,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = this.configuration.DoesNothing();
 
             // Assert
-            Assert.That(result, Is.SameAs(doesNothingConfig));
+            result.Should().BeSameAs(doesNothingConfig);
         }
 
         [Test]
@@ -104,7 +105,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = this.configuration.Throws(A.Dummy<ExceptionFactory>());
 
             // Assert
-            Assert.That(result, Is.SameAs(throwsConfig));
+            result.Should().BeSameAs(throwsConfig);
         }
 
         [Test]
@@ -136,7 +137,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = this.configuration.Invokes(invocation);
 
             // Assert
-            Assert.That(result, Is.SameAs(invokesConfig));
+            result.Should().BeSameAs(invokesConfig);
         }
 
         [Test]
@@ -165,7 +166,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = this.configuration.CallsBaseMethod();
 
             // Assert
-            Assert.That(result, Is.SameAs(callsBaseConfig));
+            result.Should().BeSameAs(callsBaseConfig);
         }
 
         [Test]
@@ -201,7 +202,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = this.configuration.AssignsOutAndRefParametersLazily(valueProducer);
 
             // Assert
-            Assert.That(result, Is.SameAs(nextConfig));
+            result.Should().BeSameAs(nextConfig);
         }
 
         [Test]
@@ -239,7 +240,7 @@ namespace FakeItEasy.Tests.Configuration
             // Act
 
             // Assert
-            Assert.That(this.configuration.Where(x => true, x => { }), Is.SameAs(this.configuration));
+            this.configuration.Where(x => true, x => { }).Should().BeSameAs(this.configuration);
         }
 
         [Test]
@@ -264,7 +265,7 @@ namespace FakeItEasy.Tests.Configuration
             // Act
 
             // Assert
-            Assert.That(this.configuration.WhenArgumentsMatch(x => true), Is.SameAs(this.configuration));
+            this.configuration.WhenArgumentsMatch(x => true).Should().BeSameAs(this.configuration);
         }
 
         private IVoidArgumentValidationConfiguration StubVoidConfig()

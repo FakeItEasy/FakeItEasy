@@ -37,7 +37,8 @@ namespace FakeItEasy.Tests.Core
 
             var asserter = this.CreateAsserter();
 
-            Assert.Throws<ExpectationException>(() => asserter.AssertWasCalled(x => true, string.Empty, x => false, string.Empty));
+            var exception = Record.Exception(() => asserter.AssertWasCalled(x => true, string.Empty, x => false, string.Empty));
+            exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
 
         [Test]
@@ -51,7 +52,7 @@ namespace FakeItEasy.Tests.Core
 
             asserter.AssertWasCalled(x => this.calls.IndexOf(x) == 0, string.Empty, x => { numberPassedToRepeatPredicate = x; return true; }, string.Empty);
 
-            Assert.That(numberPassedToRepeatPredicate, Is.EqualTo(1));
+            numberPassedToRepeatPredicate.Should().Be(1);
         }
 
         [Test]
@@ -67,7 +68,7 @@ namespace FakeItEasy.Tests.Core
   Assertion failed for the following call:
     IFoo.Bar(1)";
 
-            Assert.That(message, Is.StringStarting(expectedMessage));
+            message.Should().StartWith(expectedMessage);
         }
 
         [Test]
@@ -84,7 +85,7 @@ namespace FakeItEasy.Tests.Core
 @"
   Expected to find it #2 times but found it #0 times among the calls:";
 
-            Assert.That(message, Is.StringContaining(expectedMessage));
+            message.Should().Contain(expectedMessage);
         }
 
         [Test]
@@ -113,7 +114,7 @@ namespace FakeItEasy.Tests.Core
 @"
   Expected to find it #2 times but no calls were made to the fake object.";
 
-            Assert.That(message, Is.StringContaining(expectedMessage));
+            message.Should().Contain(expectedMessage);
         }
 
         [Test]
@@ -124,7 +125,7 @@ namespace FakeItEasy.Tests.Core
             var message = this.GetExceptionMessage(() =>
                 asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
 
-            Assert.That(message, Is.StringEnding(string.Concat(Environment.NewLine, Environment.NewLine)));
+            message.Should().EndWith(string.Concat(Environment.NewLine, Environment.NewLine));
         }
 
         [Test]
@@ -135,7 +136,7 @@ namespace FakeItEasy.Tests.Core
             var message = this.GetExceptionMessage(() =>
                 asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
 
-            Assert.That(message, Is.StringStarting(Environment.NewLine));
+            message.Should().StartWith(Environment.NewLine);
         }
 
         private FakeAsserter CreateAsserter()

@@ -1,7 +1,10 @@
 namespace FakeItEasy.Tests.Core
 {
+    using System;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -38,7 +41,7 @@ namespace FakeItEasy.Tests.Core
             this.accessor.TagProxy(proxy, fakeManager);
 
             // Assert
-            Assert.That(proxy.Tag, Is.SameAs(fakeManager));
+            proxy.Tag.Should().BeSameAs(fakeManager);
         }
 
         [Test]
@@ -53,7 +56,7 @@ namespace FakeItEasy.Tests.Core
             var result = this.accessor.GetFakeManager(proxy);
 
             // Assert
-            Assert.That(result, Is.SameAs(fakeManager));
+            result.Should().BeSameAs(fakeManager);
         }
 
         [Test]
@@ -80,7 +83,7 @@ namespace FakeItEasy.Tests.Core
             var manager = this.accessor.GetFakeManager(proxy);
 
             // Assert
-            Assert.That(manager, Is.SameAs(fakeManager));
+            manager.Should().BeSameAs(fakeManager);
         }
 
         [Test]
@@ -91,11 +94,12 @@ namespace FakeItEasy.Tests.Core
             proxy.Tag = null;
 
             // Act
+            var exception = Record.Exception(() => this.accessor.GetFakeManager(proxy));
 
             // Assert
-            Assert.That(
-                () => this.accessor.GetFakeManager(proxy),
-                Throws.ArgumentException.With.Message.EqualTo("The specified object is not recognized as a fake object."));
+            exception.Should()
+                .BeAnExceptionOfType<ArgumentException>()
+                .WithMessage("The specified object is not recognized as a fake object.");
         }
 
         [Test]
@@ -106,11 +110,12 @@ namespace FakeItEasy.Tests.Core
             proxy.Tag = new object();
 
             // Act
+            var exception = Record.Exception(() => this.accessor.GetFakeManager(proxy));
 
             // Assert
-            Assert.That(
-                () => this.accessor.GetFakeManager(proxy),
-                Throws.ArgumentException.With.Message.EqualTo("The specified object is not recognized as a fake object."));
+            exception.Should()
+                .BeAnExceptionOfType<ArgumentException>()
+                .WithMessage("The specified object is not recognized as a fake object.");
         }
     }
 }

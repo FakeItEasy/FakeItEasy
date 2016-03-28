@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.IoC
 {
     using FakeItEasy.IoC;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -21,7 +22,7 @@ namespace FakeItEasy.Tests.IoC
             container.Resolve<IFoo>();
             container.Resolve<IFoo>();
 
-            Assert.That(calledNumberOfTimes, Is.EqualTo(2));
+            calledNumberOfTimes.Should().Be(2);
         }
 
         [Test]
@@ -39,7 +40,7 @@ namespace FakeItEasy.Tests.IoC
             container.Resolve<IFoo>();
             container.Resolve<IFoo>();
 
-            Assert.That(calledNumberOfTimes, Is.EqualTo(1));
+            calledNumberOfTimes.Should().Be(1);
         }
 
         private DictionaryContainer CreateContainer()

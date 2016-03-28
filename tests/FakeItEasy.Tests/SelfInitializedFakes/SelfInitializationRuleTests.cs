@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 {
     using FakeItEasy.Core;
     using FakeItEasy.SelfInitializedFakes;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -28,7 +29,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 
             var rule = this.CreateRule();
 
-            Assert.That(rule.IsApplicableTo(call), Is.EqualTo(wrappedRuleIsApplicable));
+            rule.IsApplicableTo(call).Should().Be(wrappedRuleIsApplicable);
         }
 
         [Test]
@@ -89,7 +90,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 
             var rule = this.CreateRule();
 
-            Assert.That(rule.NumberOfTimesToCall, Is.EqualTo(numberOfTimesToCallWrappedRule));
+            rule.NumberOfTimesToCall.Should().Be(numberOfTimesToCallWrappedRule);
         }
 
         private SelfInitializationRule CreateRule()

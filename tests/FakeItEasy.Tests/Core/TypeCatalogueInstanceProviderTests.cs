@@ -5,6 +5,7 @@ namespace FakeItEasy.Tests.Core
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -41,9 +42,9 @@ namespace FakeItEasy.Tests.Core
             var result = this.instanceProvider.InstantiateAllOfType<ISomeInterface>().ToArray();
 
             // Assert
-            Assert.That(
-                   result,
-                   Has.Length.EqualTo(2).And.Some.InstanceOf<SomeInterfaceImplementor>().And.Some.InstanceOf<SomeInterfaceImplementor2>());
+            result.Should().HaveCount(2).And
+                .Contain(item => item.GetType().CanBeInstantiatedAs(typeof(SomeInterfaceImplementor))).And
+                .Contain(item => item.GetType().CanBeInstantiatedAs(typeof(SomeInterfaceImplementor2)));
         }
 
         [Test]
@@ -56,7 +57,7 @@ namespace FakeItEasy.Tests.Core
             var result = this.instanceProvider.InstantiateAllOfType<ISomeInterface>().ToArray();
 
             // Assert
-            Assert.That(result, Is.Empty);
+            result.Should().BeEmpty();
         }
 
         [Test]
@@ -69,7 +70,7 @@ namespace FakeItEasy.Tests.Core
             var result = this.instanceProvider.InstantiateAllOfType<SomeInterfaceImplementor>();
 
             // Assert
-            Assert.That(result.Single(), Is.SameAs(result.Single()));
+            result.Single().Should().BeSameAs(result.Single());
         }
 
         [Test]
@@ -83,7 +84,9 @@ namespace FakeItEasy.Tests.Core
             var result = this.instanceProvider.InstantiateAllOfType<ISomeInterface>();
 
             // Assert
-            Assert.That(result, Has.Some.InstanceOf<SomeInterfaceImplementor>().And.None.InstanceOf<SomeInterfaceImplementorWithoutDefaultConstructor>());
+            result.Should()
+                .Contain(item => item.GetType().CanBeInstantiatedAs(typeof(SomeInterfaceImplementor))).And
+                .NotContain(item => item.GetType().CanBeInstantiatedAs(typeof(SomeInterfaceImplementorWithoutDefaultConstructor)));
         }
 
         private class SomeInterfaceImplementor : ISomeInterface

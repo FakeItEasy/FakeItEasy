@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
+    using FluentAssertions;
     using NUnit.Framework;
     using Guard = FakeItEasy.Guard;
 
@@ -91,7 +92,7 @@ namespace FakeItEasy.Tests
             var happened = Repeated.Like(repeatPredicate);
 
             // Assert
-            Assert.That(happened.ToString(), Is.EqualTo("the number of times specified by the predicate 'repeat => (repeat == 1)'"));
+            happened.ToString().Should().Be("the number of times specified by the predicate 'repeat => (repeat == 1)'");
         }
 
         [TestCase(1, Result = true)]
@@ -247,7 +248,7 @@ namespace FakeItEasy.Tests
             var description = repeatedInstance.ToString();
 
             // Assert
-            Assert.That(description, Is.EqualTo(expectedDescription));
+            description.Should().Be(expectedDescription);
         }
 
         private class RepeatDescriptionTestCase

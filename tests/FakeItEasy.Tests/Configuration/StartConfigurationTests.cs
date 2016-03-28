@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -47,8 +48,8 @@ namespace FakeItEasy.Tests.Configuration
             var result = configuration.CallsTo(callSpecification);
 
             // Assert
-            Assert.That(this.argumentToRuleFactory, Is.SameAs(callSpecification));
-            Assert.That(result, Is.SameAs(returnedConfiguration));
+            this.argumentToRuleFactory.Should().BeSameAs(callSpecification);
+            result.Should().BeSameAs(returnedConfiguration);
         }
 
         [Test]
@@ -85,8 +86,9 @@ namespace FakeItEasy.Tests.Configuration
             configuration.CallsTo(x => x.Bar());
 
             // Assert
-            Assert.DoesNotThrow(() =>
+            var exception = Record.Exception(() =>
                 this.rule.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
+            exception.Should().BeNull("because the rule's applicator should do nothing");
         }
 
         [Test]
@@ -105,8 +107,8 @@ namespace FakeItEasy.Tests.Configuration
             var result = configuration.CallsTo(callSpecification);
 
             // Assert
-            Assert.That(this.argumentToRuleFactory, Is.SameAs(callSpecification));
-            Assert.That(result, Is.SameAs(returnedConfiguration));
+            this.argumentToRuleFactory.Should().BeSameAs(callSpecification);
+            result.Should().BeSameAs(returnedConfiguration);
         }
 
         [Test]
@@ -161,7 +163,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = configuration.AnyCall();
 
             // Assert
-            Assert.That(result, Is.SameAs(returnedConfig));
+            result.Should().BeSameAs(returnedConfig);
         }
 
         [Test]

@@ -7,6 +7,8 @@ namespace FakeItEasy.Tests.Expressions
     using System.Linq.Expressions;
     using System.Reflection;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -32,7 +34,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.CalledMethod, Is.EqualTo(GetMethod<string>("Equals", typeof(string))));
+            result.CalledMethod.Should().BeSameAs(GetMethod<string>("Equals", typeof(string)));
         }
 
         [Test]
@@ -45,7 +47,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.CalledMethod, Is.EqualTo(GetPropertyGetter<string>("Length")));
+            result.CalledMethod.Should().BeSameAs(GetPropertyGetter<string>("Length"));
         }
 
         [Test]
@@ -59,7 +61,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.CalledMethod, Is.EqualTo(GetPropertyGetter<TypeWithInternalProperty>("InternalProperty")));
+            result.CalledMethod.Should().BeSameAs(GetPropertyGetter<TypeWithInternalProperty>("InternalProperty"));
         }
 
         [Test]
@@ -72,7 +74,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.CalledMethod, Is.EqualTo(GetMethod<object>("Equals", typeof(object), typeof(object))));
+            result.CalledMethod.Should().BeSameAs(GetMethod<object>("Equals", typeof(object), typeof(object)));
         }
 
         [Test]
@@ -86,7 +88,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.CallTarget, Is.EqualTo(foo));
+            result.CallTarget.Should().Be(foo);
         }
 
         [Test]
@@ -100,7 +102,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.CallTarget, Is.EqualTo(foo));
+            result.CallTarget.Should().Be(foo);
         }
 
         [Test]
@@ -117,7 +119,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.Arguments, Is.EquivalentTo(new[] { argumentOne, argumentTwo }));
+           result.Arguments.Should().BeEquivalentTo(argumentOne, argumentTwo);
         }
 
         [Test]
@@ -131,7 +133,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.Arguments.Single(), Is.EqualTo(10));
+            result.Arguments.Single().Should().Be(10);
         }
 
         [Test]
@@ -148,7 +150,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name), Is.EquivalentTo(new[] { "argument", "argument2" }));
+            result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Should().BeEquivalentTo("argument", "argument2");
         }
 
         [Test]
@@ -162,7 +164,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Single(), Is.EqualTo("index"));
+            result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Single().Should().Be("index");
         }
 
         [Test]
@@ -173,11 +175,12 @@ namespace FakeItEasy.Tests.Expressions
             var call = Call(() => instance.PublicField);
 
             // Act
+            var exception = Record.Exception(() => this.parser.Parse(call));
 
             // Assert
-            Assert.That(
-                () => this.parser.Parse(call),
-                Throws.ArgumentException.With.Message.EqualTo("The specified expression is not a method call or property getter."));
+            exception.Should()
+                .BeAnExceptionOfType<ArgumentException>()
+                .WithMessage("The specified expression is not a method call or property getter.");
         }
 
         [Test]
@@ -192,10 +195,10 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            Assert.That(result.CalledMethod.Name, Is.EqualTo("Invoke"));
-            Assert.That(result.Arguments, Is.EquivalentTo(new object[] { "foo", "bar" }));
-            Assert.That(result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name), Is.EquivalentTo(new[] { "argument1", "argument2" }));
-            Assert.That(result.CallTarget, Is.SameAs(d));
+            result.CalledMethod.Name.Should().Be("Invoke");
+            result.Arguments.Should().BeEquivalentTo(new object[] { "foo", "bar" });
+            result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Should().BeEquivalentTo("argument1", "argument2");
+            result.CallTarget.Should().BeSameAs(d);
         }
 
         private static MethodInfo GetMethod<T>(string methodName, params Type[] argumentTypes)

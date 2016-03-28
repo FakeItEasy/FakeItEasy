@@ -8,6 +8,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     using FakeItEasy.Core;
     using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Expressions;
+    using FluentAssertions;
     using NUnit.Framework;
     using Guard = FakeItEasy.Guard;
 
@@ -63,8 +64,8 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var result = this.validator.MethodCanBeInterceptedOnInstance(testCase.Method, testCase.Target, out reason);
 
             // Assert
-            Assert.That(result, Is.False);
-            Assert.That(reason, Is.EqualTo(testCase.FailReason));
+            result.Should().BeFalse();
+            reason.Should().Be(testCase.FailReason);
         }
 
         [TestCaseSource("interceptableMethods")]
@@ -79,8 +80,8 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var result = this.validator.MethodCanBeInterceptedOnInstance(testCase.Method, testCase.Target, out reason);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(reason, Is.Null);
+            result.Should().BeTrue();
+            reason.Should().BeNull();
         }
 
         public class InterceptionTestCase

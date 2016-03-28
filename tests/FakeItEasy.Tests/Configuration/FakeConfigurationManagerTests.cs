@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -68,7 +69,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = this.configurationManager.CallTo(() => foo.Bar());
 
             // Assert
-            Assert.That(result, Is.SameAs(returnedConfiguration));
+            result.Should().BeSameAs(returnedConfiguration);
         }
 
         [Test]
@@ -81,7 +82,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Bar());
 
             // Assert
-            Assert.That(this.fakeObjectReturnedFromParser.Rules, Has.Some.EqualTo(this.ruleReturnedFromFactory));
+            this.fakeObjectReturnedFromParser.Rules.Should().Contain(this.ruleReturnedFromFactory);
         }
 
         [Test]
@@ -137,7 +138,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = this.configurationManager.CallTo(() => foo.Baz());
 
             // Assert
-            Assert.That(result, Is.SameAs(returnedConfiguration));
+            result.Should().BeSameAs(returnedConfiguration);
         }
 
         [Test]
@@ -150,7 +151,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(() => foo.Baz());
 
             // Assert
-            Assert.That(this.fakeObjectReturnedFromParser.Rules, Has.Some.EqualTo(this.ruleReturnedFromFactory));
+            this.fakeObjectReturnedFromParser.Rules.Should().Contain(this.ruleReturnedFromFactory);
         }
 
         [Test]
@@ -230,7 +231,7 @@ namespace FakeItEasy.Tests.Configuration
             var result = this.configurationManager.CallTo(fake);
 
             // Assert
-            Assert.That(result, Is.SameAs(expectedConfiguration));
+            result.Should().BeSameAs(expectedConfiguration);
         }
 
         [Test]
@@ -244,7 +245,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configurationManager.CallTo(fake);
 
             // Assert
-            Assert.That(manager.AllUserRules.Single().Rule, Is.InstanceOf<AnyCallCallRule>());
+            manager.AllUserRules.Single().Rule.Should().BeOfType<AnyCallCallRule>();
         }
 
         private void OnSetup()
