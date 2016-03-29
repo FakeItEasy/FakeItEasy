@@ -8,6 +8,7 @@ namespace FakeItEasy
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Provides methods for generating fake objects.
@@ -80,6 +81,7 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
+        [MustUseReturnValue(JetBrainsAnnotationsJustificationMessages.CallSpecificationMustUseReturnValueJustification)]
         public static IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
@@ -95,6 +97,7 @@ namespace FakeItEasy
         /// <returns>
         /// A configuration object.
         /// </returns>
+        [MustUseReturnValue(JetBrainsAnnotationsJustificationMessages.CallSpecificationMustUseReturnValueJustification)]
         public static IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fake)
         {
             return ConfigurationManager.CallTo(fake);
@@ -107,6 +110,7 @@ namespace FakeItEasy
         /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
+        [MustUseReturnValue(JetBrainsAnnotationsJustificationMessages.CallSpecificationMustUseReturnValueJustification)]
         public static IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
