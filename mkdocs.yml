@@ -2,7 +2,7 @@ site_name: FakeItEasy
 site_dir: artifacts/docs
 theme: readthedocs
 repo_url: https://github.com/FakeItEasy/FakeItEasy
-
+extra_css: [css/highlight.css]
 
 pages:
 - FakeItEasy: index.md
