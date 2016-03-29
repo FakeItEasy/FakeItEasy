@@ -1,3 +1,14 @@
+code {
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    border-radius: 3px;
+    border-width: 0px;
+    background-color: #f7f7f7;
+    color: inherit;
+    font-size: inherit;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+}
+
 /*
 Modified GitHub theme for highlight.js
 
@@ -10,14 +21,17 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   overflow-x: auto;
   padding: 0.5em;
   color: #333;
+  background-color: #f7f7f7;
+  border-width: 0px;
+  font-size: inherit;
   -webkit-text-size-adjust: none;
 }
 
 .hljs-comment,
 .diff .hljs-header,
 .hljs-javadoc {
-  color: #998;
-  font-style: italic;
+  color: #969896;
+  font-style: normal;
 }
 
 .hljs-keyword,
@@ -27,14 +41,14 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 .hljs-subst,
 .hljs-request,
 .hljs-status {
-  color: #333;
-  font-weight: bold;
+  color: #a71d5d;
+  font-weight: normal;
 }
 
 .hljs-number,
 .hljs-hexcolor,
 .ruby .hljs-constant {
-  color: #008080;
+  color: #0086b3;
 }
 
 .hljs-string,
@@ -42,14 +56,14 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 .hljs-phpdoc,
 .hljs-dartdoc,
 .tex .hljs-formula {
-  color: #d14;
+  color: #183691;
 }
 
 .hljs-title,
 .hljs-id,
 .scss .hljs-preprocessor {
-  color: #900;
-  font-weight: bold;
+  color: #795da3;
+  font-weight: normal;
 }
 
 .hljs-list .hljs-keyword,
@@ -62,7 +76,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 .vhdl .hljs-literal,
 .tex .hljs-command {
   color: #458;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .hljs-tag,
@@ -105,7 +119,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 .hljs-shebang,
 .hljs-cdata {
   color: #999;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .hljs-deletion {
