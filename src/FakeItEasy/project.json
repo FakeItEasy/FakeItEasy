@@ -9,7 +9,8 @@
   "frameworks": {
     "net451": {
       "compilationOptions": {
-        "define": [ "NET40_OR_LATER", "FEATURE_SERIALIZATION", "FEATURE_NETCORE_REFLECTION", "FEATURE_REFLECTION_GETASSEMBLIES" ]
+        "define": [ "NET40_OR_LATER", "FEATURE_SERIALIZATION", "FEATURE_NETCORE_REFLECTION", "FEATURE_REFLECTION_GETASSEMBLIES" ],
+        "keyFile": "../../FakeItEasy.snk"
       },
       "dependencies": {
         "Castle.Core": "3.3.3"
