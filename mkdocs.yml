@@ -1,0 +1,43 @@
+site_name: FakeItEasy 
+site_dir: artifacts/docs
+theme: readthedocs
+repo_url: https://github.com/FakeItEasy/FakeItEasy
+extra_css: [css/extra-highlight.css]
+
+pages:
+- FakeItEasy: index.md
+- Quickstart: quickstart.md
+- Changes in version 2.0: changes-in-version-2.0.md
+- Creating Fakes: 
+  - Creating Fakes: creating-fakes.md
+  - What can be faked: what-can-be-faked.md
+  - Default fake behavior: default-fake-behavior.md
+  - How to fake internal (Friend in VB) types: how-to-fake-internal-types.md
+- Specifying Fakes’ Behavior:
+  - Specifying a Call to Configure: specifying-a-call-to-configure.md
+  - Specifying Return Values: specifying-return-values.md
+  - Throwing Exceptions: throwing-exceptions.md
+  - Doing Nothing: doing-nothing.md
+  - Read/Write Property Behavior: read-write-property-behavior.md
+  - Assigning out and ref parameters: assigning-out-and-ref-parameters.md
+  - Invoking Custom Code: invoking-custom-code.md
+  - Calling base methods: calling-base-methods.md
+  - Limited Call Specifications: limited-call-specifications.md
+- Argument constraints: argument-constraints.md
+- Assertion:
+  - Assertion: assertion.md
+  - Ordered assertions: ordered-assertions.md
+- Faking async methods: faking-async-methods.md
+- Raising events: raising-events.md
+- Strict fakes: strict-fakes.md
+- Dummies:
+  - Dummies: dummies.md
+  - Custom Dummy Creation: custom-dummy-creation.md
+- Implicit Creation Options: implicit-creation-options.md
+- Formatting Argument Values: formatting-argument-values.md
+- Scanning for Extension Points: scanning-for-extension-points.md
+- Bootstrapper: bootstrapper.md
+- Snippets for FakeItEasy in SideWaffle: snippets-for-fakeiteasy-in-sidewaffle.md
+- Platform support: platform-support.md
+- Why was FakeItEasy created?: why-was-fakeiteasy-created.md
+- External Resources: external-resources.md
