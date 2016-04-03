@@ -5,16 +5,13 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
+    using FluentAssertions.Specialized;
     using NUnit.Framework;
-    using NUnit.Framework.Constraints;
 
     [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Disposed in teardown.")]
     [TestFixture]
     public class NullGuardedConstraintTests
     {
-        private NullGuardedConstraint constraint;
-        private MessageWriter writer;
-
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "text", Justification = "Required for testing.")]
         public static void UnguardedStaticMethod(string text)
         {
@@ -26,176 +23,121 @@ namespace FakeItEasy.Tests
             throw new InvalidOperationException();
         }
 
-        [SetUp]
-        public void Setup()
-        {
-            this.constraint = new NullGuardedConstraint();
-            this.writer = new TextMessageWriter();
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            this.writer.Dispose();
-        }
-
         [Test]
-        public void Matches_should_throw_when_call_is_null()
+        public void Assert_should_throw_when_call_is_null()
         {
-            var exception = Record.Exception(() => this.constraint.Matches(ToExpression(null)));
+            var exception = Record.Exception(() => NullGuardedConstraint.Assert(null));
             exception.Should().BeAnExceptionOfType<ArgumentNullException>();
         }
 
         [Test]
-        public void Matches_should_throw_when_actual_is_not_an_expression()
+        public void Assert_should_fail_when_call_is_not_guarded()
         {
-            var exception = Record.Exception(() => this.constraint.Matches("not an expression"));
-            exception.Should().BeAnExceptionOfType<ArgumentException>();
+            AssertShouldFail(() => this.UnguardedMethod("foo"));
         }
 
         [Test]
-        public void Matches_should_return_false_when_call_is_not_guarded()
+        public void Assert_should_pass_when_call_is_properly_guarded()
         {
-            this.constraint.Matches(ToExpression(() => this.UnguardedMethod("foo"))).Should().BeFalse();
+            AssertShouldPass(() => this.GuardedMethod("foo"));
         }
 
         [Test]
-        public void Matches_should_return_true_when_call_is_properly_guarded()
+        public void Assert_should_pass_when_call_is_properly_guarded_constructor()
         {
-            this.constraint.Matches(ToExpression(() => this.GuardedMethod("foo"))).Should().BeTrue();
+            AssertShouldPass(() => new ClassWithProperlyGuardedConstructor("foo"));
         }
 
         [Test]
-        public void Matches_should_return_true_when_call_is_properly_guarded_constructor()
+        public void Assert_should_fail_when_argument_is_guarded_with_wrong_name()
         {
-            var expression = ToExpression(() => new ClassWithProperlyGuardedConstructor("foo"));
-            this.constraint.Matches(expression).Should().BeTrue();
+            AssertShouldFail(() => this.GuardedWithWrongName("foo"));
         }
 
         [Test]
-        public void Matches_should_return_false_when_argument_is_guarded_with_wrong_name()
+        public void Assert_should_pass_when_null_argument_is_valid_and_it_is_specified_as_null()
         {
-            var call = ToExpression(() => this.GuardedWithWrongName("foo"));
-            this.constraint.Matches(call).Should().BeFalse();
+            AssertShouldPass(() => this.FirstArgumentMayBeNull(null, "foo"));
         }
 
         [Test]
-        public void Matches_should_return_true_when_null_argument_is_valid_and_its_specified_as_null()
+        public void Assert_should_include_method_signature_in_error_message_when_call_is_non_guarded_constructor()
         {
-            var call = ToExpression(() => this.FirstArgumentMayBeNull(null, "foo"));
-            this.constraint.Matches(call).Should().BeTrue();
+            AssertShouldFail(() => new ClassWithNonProperlyGuardedConstructor("foo", "bar")).And
+                .Message.Should().Contain("Calls to FakeItEasy.Tests.NullGuardedConstraintTests+ClassWithNonProperlyGuardedConstructor.ctor([String] a, [String] b) should be null guarded.");
         }
 
         [Test]
-        public void WriteMessageTo_should_write_method_signature_in_expected_message_when_call_is_non_guarded_constructor()
+        public void Assert_should_include_method_signature_in_error_message_when_call_is_non_guarded_method()
         {
-            this.WriteConstraintMessageToWriter(() => new ClassWithNonProperlyGuardedConstructor("foo", "bar"));
-
-            this.writer.ToString().Should().Contain(
-                "Calls to FakeItEasy.Tests.NullGuardedConstraintTests+ClassWithNonProperlyGuardedConstructor.ctor([String] a, [String] b) should be null guarded.");
+            AssertShouldFail(() => this.UnguardedMethod("foo", "bar")).And
+                .Message.Should().Contain("Calls to NullGuardedConstraintTests.UnguardedMethod([String] a, [String] b) should be null guarded.");
         }
 
         [Test]
-        public void WriteMessageTo_should_write_method_signature_in_expected_message_when_call_is_non_guarded_method()
+        public void Assert_should_include_call_signature_of_failing_calls_in_error_message_when_unguarded()
         {
-            this.WriteConstraintMessageToWriter(() => this.UnguardedMethod("foo", "bar"));
-
-            this.writer.ToString().Should()
-                .Contain("Calls to NullGuardedConstraintTests.UnguardedMethod([String] a, [String] b) should be null guarded.");
-        }
-
-        [Test]
-        public void WriteMessageTo_should_write_call_signature_of_failing_call_when_unguarded()
-        {
-            this.WriteConstraintMessageToWriter(() => this.UnguardedMethod("foo", "bar"));
-
-            this.writer.ToString().Should()
+            AssertShouldFail(() => this.UnguardedMethod("foo", "bar")).And.Message.Should()
                 .Contain("(\"foo\", <NULL>) did not throw any exception.").And
                 .Contain("(<NULL>, \"bar\") did not throw any exception.");
         }
 
         [Test]
-        public void WriteMessageTo_should_write_call_signature_and_missing_argument_name_when_ArgumentNullException_was_thrown_with_wrong_name()
+        public void Assert_should_include_call_signature_and_missing_argument_name_in_error_message_when_ArgumentNullException_was_thrown_with_wrong_name()
         {
-            this.WriteConstraintMessageToWriter(() => this.GuardedWithWrongName("foo"));
-
-            this.writer.ToString().Should()
+            AssertShouldFail(() => this.GuardedWithWrongName("foo")).And.Message.Should()
                 .Contain("(<NULL>) threw ArgumentNullException with wrong argument name, it should be \"a\".");
         }
 
         [Test]
-        public void WriteMessageTo_should_write_call_signature_and_exception_type_when_non_ArgumentNullException_was_thrown()
+        public void Assert_should_include_call_signature_and_exception_type_in_error_message_when_non_ArgumentNullException_was_thrown()
         {
-            this.WriteConstraintMessageToWriter(() => UnguardedMethodThatThrowsException("foo"));
-
-            this.writer.ToString().Should()
+            AssertShouldFail(() => UnguardedMethodThatThrowsException("foo")).And.Message.Should()
                 .Contain("(<NULL>) threw unexpected System.InvalidOperationException.");
         }
 
         [Test]
-        public void Matches_should_be_callable_with_expression_that_has_value_types_in_the_parameter_list()
+        public void Assert_should_be_callable_with_expression_that_has_value_types_in_the_parameter_list()
         {
-            var call = ToExpression(() => this.GuardedMethodWithValueTypeArgument(1, "foo"));
-            this.constraint.Matches(call).Should().BeTrue();
+            AssertShouldPass(() => this.GuardedMethodWithValueTypeArgument(1, "foo"));
         }
 
         [Test]
-        public void Matches_should_be_false_when_nullable_argument_is_not_guarded()
+        public void Assert_should_fail_when_nullable_argument_is_not_guarded()
         {
-            var call = ToExpression(() => this.UnguardedMethodWithNullableArgument(1));
-            this.constraint.Matches(call).Should().BeFalse();
+            AssertShouldFail(() => this.UnguardedMethodWithNullableArgument(1));
         }
 
         [Test]
-        public void Matches_should_return_true_when_nullable_argument_is_guarded()
+        public void Assert_should_pass_when_nullable_argument_is_guarded()
         {
-            var call = ToExpression(() => this.GuardedMethodWithNullableArgument(1));
-            this.constraint.Matches(call).Should().BeTrue();
+            AssertShouldPass(() => this.GuardedMethodWithNullableArgument(1));
         }
 
         [Test]
-        public void Matches_should_be_callable_with_static_methods()
+        public void Assert_should_be_callable_with_static_methods()
         {
-            var call = ToExpression(() => UnguardedStaticMethod("foo"));
-            this.constraint.Matches(call).Should().BeFalse();
+            AssertShouldFail(() => UnguardedStaticMethod("foo"));
         }
 
         [Test]
-        public void Matches_should_return_false_when_throwing_permutation_throws_unexpected_exception()
+        public void Assert_should_fail_when_throwing_permutation_throws_unexpected_exception()
         {
-            var call = ToExpression(() => UnguardedMethodThatThrowsException("foo"));
-            this.constraint.Matches(call).Should().BeFalse();
+            AssertShouldFail(() => UnguardedMethodThatThrowsException("foo"));
         }
 
-        [Test]
-        public void Assert_should_delegate_to_constraint()
+        private static void AssertShouldPass(Expression<Action> call)
         {
-            var exception = Record.Exception(() => NullGuardedConstraint.Assert(() => this.UnguardedMethod("foo")));
-            exception.Should().BeAnExceptionOfType<AssertionException>();
+            var exception = Record.Exception(() =>
+                NullGuardedConstraint.Assert(call));
+            exception.Should().BeNull();
         }
 
-        [Test]
-        public void Assert_should_be_null_guarded()
+        private static ExceptionAssertions<AssertionException> AssertShouldFail(Expression<Action> call)
         {
-            var exception = Record.Exception(() => NullGuardedConstraint.Assert(null));
-            exception.Should().BeAnExceptionOfType<ArgumentNullException>()
-                .And.ParamName.Should().Be("call");
-        }
-
-        private static Expression<Action> ToExpression(Expression<Action> action)
-        {
-            return action;
-        }
-
-        private void CallMatchesOnConstraint(Expression<Action> action)
-        {
-            this.constraint.Matches(action);
-        }
-
-        private void WriteConstraintMessageToWriter(Expression<Action> action)
-        {
-            this.constraint.Matches(action);
-            this.constraint.WriteMessageTo(this.writer);
+            var exception = Record.Exception(() =>
+                NullGuardedConstraint.Assert(call));
+            return exception.Should().BeAnExceptionOfType<AssertionException>();
         }
 
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "a", Justification = "Required for testing.")]
@@ -213,7 +155,7 @@ namespace FakeItEasy.Tests
         {
             if (b == null)
             {
-                throw new ArgumentNullException("b");
+                throw new ArgumentNullException(nameof(b));
             }
         }
 
@@ -227,7 +169,7 @@ namespace FakeItEasy.Tests
         {
             if (a == null)
             {
-                throw new ArgumentNullException("a");
+                throw new ArgumentNullException(nameof(a));
             }
         }
 
@@ -235,7 +177,7 @@ namespace FakeItEasy.Tests
         {
             if (a == null)
             {
-                throw new ArgumentNullException("a");
+                throw new ArgumentNullException(nameof(a));
             }
         }
 
@@ -253,7 +195,7 @@ namespace FakeItEasy.Tests
         {
             if (nullIsNotValid == null)
             {
-                throw new ArgumentNullException("nullIsNotValid");
+                throw new ArgumentNullException(nameof(nullIsNotValid));
             }
         }
 
@@ -264,7 +206,7 @@ namespace FakeItEasy.Tests
             {
                 if (a == null)
                 {
-                    throw new ArgumentNullException("a");
+                    throw new ArgumentNullException(nameof(a));
                 }
             }
         }
