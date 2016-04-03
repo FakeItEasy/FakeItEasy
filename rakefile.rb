@@ -1,9 +1,9 @@
 require 'albacore'
 
-msbuild_command = [
-  "C:/Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe",
-  "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
-].find(lambda{ raise "MSBuild not found"}) { |msbuild| File.file?(msbuild) }
+msbuild_command = "C:/Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe"
+if !File.file?(msbuild_command)
+  raise "MSBuild not found"
+end
 
 nuget_command  = ".nuget/NuGet.exe"
 nunit_command  = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
