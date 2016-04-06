@@ -10,6 +10,6 @@ namespace FakeItEasy.Core
         /// Processes an intercepted call of a fake proxy.
         /// </summary>
         /// <param name="fakeObjectCall">The call information (like which method has been called, its arguments, ...).</param>
-        void Process(IWritableFakeObjectCall fakeObjectCall);
+        void Process(IInterceptedFakeObjectCall fakeObjectCall);
     }
 }

@@ -189,15 +189,6 @@
     <Compile Include="Configuration\IOutAndRefParametersConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\IRecordingCallRuleFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IRecordingConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IRecordingConfigurationWithArgumentValidation.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Configuration\IRepeatConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -221,15 +212,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\IWhereConfiguration.cs" />
-    <Compile Include="Configuration\RecordedCallRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\RecordingCallRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\RecordingRuleBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Configuration\RuleBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -356,9 +338,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IOutputWriter.cs" />
-    <Compile Include="Core\IWritableFakeObjectCall.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\MethodInfoManager.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -500,7 +479,6 @@
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="SmellyAttribute.cs" />
-    <Compile Include="NextCall.cs" />
     <Compile Include="StringBuilderOutputWriter.cs" />
     <Compile Include="UnderTestAttribute.cs" />
   </ItemGroup>

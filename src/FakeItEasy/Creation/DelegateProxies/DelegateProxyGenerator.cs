@@ -121,7 +121,7 @@ namespace FakeItEasy.Creation.DelegateProxies
         }
 
         private class DelegateFakeObjectCall
-            : IWritableFakeObjectCall, ICompletedFakeObjectCall
+            : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
         {
             private readonly Delegate instance;
 

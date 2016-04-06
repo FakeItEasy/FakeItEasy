@@ -1,7 +1,6 @@
 namespace FakeItEasy.Configuration
 {
     using FakeItEasy.Core;
-    using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
 
@@ -10,15 +9,6 @@ namespace FakeItEasy.Configuration
     {
         public override void RegisterDependencies(DictionaryContainer container)
         {
-            container.RegisterSingleton<RecordedCallRule.Factory>(c =>
-                () => new RecordedCallRule(c.Resolve<MethodInfoManager>()));
-
-            container.RegisterSingleton<IRecordingCallRuleFactory>(c =>
-                new RecordingCallRuleFactory
-                    {
-                        Container = c
-                    });
-
             container.RegisterSingleton<IConfigurationFactory>(c =>
                 new ConfigurationFactory
                     {
@@ -63,16 +53,6 @@ namespace FakeItEasy.Configuration
             public IAnyCallConfigurationWithNoReturnTypeSpecified CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule)
             {
                 return new AnyCallConfiguration(fakeObject, callRule, this.Container.Resolve<IConfigurationFactory>());
-            }
-        }
-
-        private class RecordingCallRuleFactory : IRecordingCallRuleFactory
-        {
-            public DictionaryContainer Container { get; set; }
-
-            public RecordingCallRule<TFake> Create<TFake>(FakeManager fakeObject, RecordedCallRule recordedRule)
-            {
-                return new RecordingCallRule<TFake>(fakeObject, recordedRule, this.Container.Resolve<FakeAsserter.Factory>(), this.Container.Resolve<IFakeObjectCallFormatter>());
             }
         }
 
