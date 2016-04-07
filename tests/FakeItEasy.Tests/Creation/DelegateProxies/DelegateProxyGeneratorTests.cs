@@ -233,7 +233,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             Assert.That(reason, Is.Null);
         }
 
-        private T GenerateProxy<T>(Action<IWritableFakeObjectCall> fakeCallProcessorAction)
+        private T GenerateProxy<T>(Action<IInterceptedFakeObjectCall> fakeCallProcessorAction)
         {
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
@@ -241,7 +241,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
 
             var fakeCallProcessor = A.Fake<IFakeCallProcessor>();
             A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).Returns(fakeCallProcessor);
-            A.CallTo(() => fakeCallProcessor.Process(A<IWritableFakeObjectCall>._)).Invokes(fakeCallProcessorAction);
+            A.CallTo(() => fakeCallProcessor.Process(A<IInterceptedFakeObjectCall>._)).Invokes(fakeCallProcessorAction);
 
             return (T)result.GeneratedProxy;
         }

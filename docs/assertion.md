@@ -104,8 +104,4 @@ Assert.That(capturedList, Is.EqualTo(new List<int> {1, 2, 3}));
 ' Functions and Subs can be asserted using their respective keywords
 A.CallTo(Function() foo.Bar()).MustHaveHappened()
 A.CallTo(Sub() foo.Baz(A(Of String).Ignored)).MustHaveHappened()
-
-' Can also use the "FakeItEasy.VisualBasic.NextCall" class
-NextCall.To(foo).MustHaveHappened()
-foo.SomeSub()
 ```

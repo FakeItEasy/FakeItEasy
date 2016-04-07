@@ -12,7 +12,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     /// </summary>
     [Serializable]
     internal class CastleInvocationCallAdapter
-        : IWritableFakeObjectCall, ICompletedFakeObjectCall
+        : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
     {
         private readonly IInvocation invocation;
 

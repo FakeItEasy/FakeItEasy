@@ -62,9 +62,5 @@ namespace FakeItEasy.Tests
         public void SetArgumentValue(int index, object value)
         {
         }
-
-        public void DoNotRecordCall()
-        {
-        }
     }
 }

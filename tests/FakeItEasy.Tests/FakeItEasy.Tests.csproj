@@ -212,13 +212,8 @@
     <Compile Include="RaiseTests.cs" />
     <Compile Include="ServiceLocatorTests.cs" />
     <Compile Include="SyntaxTests.cs" />
-    <Compile Include="Configuration\RecordedCallRuleTests.cs" />
-    <Compile Include="Configuration\RecordingCallRuleTests.cs" />
-    <Compile Include="NextCallTests.cs" />
-    <Compile Include="Configuration\VisualBasicHelpersTests.cs" />
     <Compile Include="SelfInitializedFakes\RecordingManagerTests.cs" />
     <Compile Include="Fake.of.T.Tests.cs" />
-    <Compile Include="Configuration\RecordingRuleBuilderTests.cs" />
     <Compile Include="ExceptionThrowerConfigurationExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
