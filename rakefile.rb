@@ -33,7 +33,7 @@ specs = "tests/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
 repo = 'FakeItEasy/FakeItEasy'
 release_issue_labels = ['0 - Backlog', 'P2', 'build', 'documentation']
 release_issue_body = <<-eos
-**Ready** when all other issues forming part of the release are **Done**.
+**Ready** when all other issues on this milestone are **Done** and closed.
 
 - [ ] run code analysis in VS in *Release* mode and address violations (send a regular PR which must be merged before continuing)
 - [ ] if necessary, change `VERSION_SUFFIX` on [CI Server](http://teamcity.codebetter.com/admin/editBuildParams.html?id=buildType:bt929)
@@ -59,7 +59,6 @@ release_issue_body = <<-eos
     - create a new milestone for the next release
     - create new issue (like this one) for the next release, adding it to the new milestone
     - create a new draft GitHub Release
-- [ ] close all issues on this milestone
 - [ ] close this milestone
 
 [1]: https://jabbr.net/#/rooms/general-chat
