@@ -64,36 +64,36 @@ namespace FakeItEasy.Tests
         public void Assert_should_include_method_signature_in_error_message_when_call_is_non_guarded_constructor()
         {
             AssertShouldFail(() => new ClassWithNonProperlyGuardedConstructor("foo", "bar")).And
-                .Message.Should().Contain("Calls to FakeItEasy.Tests.NullGuardedConstraintTests+ClassWithNonProperlyGuardedConstructor.ctor([String] a, [String] b) should be null guarded.");
+                .Message.Should().Contain("Expected calls to FakeItEasy.Tests.NullGuardedConstraintTests+ClassWithNonProperlyGuardedConstructor.ctor([String] a, [String] b) to be null guarded.");
         }
 
         [Test]
         public void Assert_should_include_method_signature_in_error_message_when_call_is_non_guarded_method()
         {
             AssertShouldFail(() => this.UnguardedMethod("foo", "bar")).And
-                .Message.Should().Contain("Calls to NullGuardedConstraintTests.UnguardedMethod([String] a, [String] b) should be null guarded.");
+                .Message.Should().Contain("Expected calls to NullGuardedConstraintTests.UnguardedMethod([String] a, [String] b) to be null guarded.");
         }
 
         [Test]
         public void Assert_should_include_call_signature_of_failing_calls_in_error_message_when_unguarded()
         {
             AssertShouldFail(() => this.UnguardedMethod("foo", "bar")).And.Message.Should()
-                .Contain("(\"foo\", <NULL>) did not throw any exception.").And
-                .Contain("(<NULL>, \"bar\") did not throw any exception.");
+                .Contain("(\"foo\", NULL) did not throw any exception.").And
+                .Contain("(NULL, \"bar\") did not throw any exception.");
         }
 
         [Test]
         public void Assert_should_include_call_signature_and_missing_argument_name_in_error_message_when_ArgumentNullException_was_thrown_with_wrong_name()
         {
             AssertShouldFail(() => this.GuardedWithWrongName("foo")).And.Message.Should()
-                .Contain("(<NULL>) threw ArgumentNullException with wrong argument name, it should be \"a\".");
+                .Contain("(NULL) threw ArgumentNullException with wrong argument name, it should be \"a\".");
         }
 
         [Test]
         public void Assert_should_include_call_signature_and_exception_type_in_error_message_when_non_ArgumentNullException_was_thrown()
         {
             AssertShouldFail(() => UnguardedMethodThatThrowsException("foo")).And.Message.Should()
-                .Contain("(<NULL>) threw unexpected System.InvalidOperationException.");
+                .Contain("(NULL) threw unexpected System.InvalidOperationException.");
         }
 
         [Test]

@@ -5,16 +5,29 @@ namespace FakeItEasy.Tests
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using System.Text;
-    using NUnit.Framework.Constraints;
+    using FluentAssertions.Execution;
+
+    public static class NullGuardedAssertion
+    {
+        public static NullGuardedConstraint Should(this Expression<Action> call)
+        {
+            return new NullGuardedConstraint(call);
+        }
+    }
 
     /// <summary>
     /// Validates that calls are properly null guarded.
     /// </summary>
     public class NullGuardedConstraint
-        : Constraint
     {
+        private readonly Expression<Action> call;
         private ConstraintState state;
+
+        internal NullGuardedConstraint(Expression<Action> call)
+        {
+            Guard.AgainstNull(call, nameof(call));
+            this.call = call;
+        }
 
         /// <summary>
         /// Asserts that the specified call is properly null guarded.
@@ -23,57 +36,23 @@ namespace FakeItEasy.Tests
         /// <exception cref="ArgumentNullException">The call was null.</exception>
         public static void Assert(Expression<Action> call)
         {
-            if (call == null)
-            {
-                throw new ArgumentNullException("call");
-            }
-
-            NUnit.Framework.Assert.That(call, new NullGuardedConstraint());
+            call.Should().BeNullGuarded();
         }
 
-        /// <summary>
-        /// Checks that non all of the parameters of the specified expression are
-        /// properly null guarded.
-        /// </summary>
-        /// <param name="actual">A <see cref="System.Linq.Expression{System.Action}" /> specifying the call to be checked.</param>
-        /// <returns>True if it's properly guarded, false if not.</returns>
-        /// <exception cref="ArgumentNullException">The specified value is null.</exception>
-        /// <exception cref="ArgumentException">The specified value is not a <see cref="System.Linq.Expression{System.Action}" />.</exception>
-        public override bool Matches(object actual)
+        public void BeNullGuarded()
         {
-            if (actual == null)
+            var matches = this.Matches(this.call);
+            if (matches)
             {
-                throw new ArgumentNullException("actual");
+                return;
             }
 
-            var expression = actual as Expression<Action>;
-
-            if (expression == null)
-            {
-                throw new ArgumentException("The value passed to a NullGuardedConstraint must be of the type System.Linq.Expression<System.Action>.", "actual");
-            }
-
-            return this.Matches(expression);
-        }
-
-        public override void WriteDescriptionTo(MessageWriter writer)
-        {
-            Guard.AgainstNull(writer, "writer");
-
-            writer.WritePredicate("Calls to {0} should be null guarded.".FormatInvariant(this.state.ToString()));
-        }
-
-        public override void WriteActualValueTo(MessageWriter writer)
-        {
-            Guard.AgainstNull(writer, "writer");
-
-            writer.WriteLine("When called with the following arguments the method did not throw the appropriate exception:");
-
-            foreach (var failingCall in this.state.GetFailingCallsDescriptions())
-            {
-                writer.Write("            ");
-                writer.WriteLine(failingCall);
-            }
+            var builder = new StringBuilderOutputWriter();
+            this.WriteDescriptionTo(builder);
+            builder.WriteLine();
+            this.WriteActualValueTo(builder);
+            var reason = builder.Builder.ToString();
+            Execute.Assertion.FailWith(reason);
         }
 
         private static ConstraintState CreateCall(Expression<Action> methodCall)
@@ -96,6 +75,20 @@ namespace FakeItEasy.Tests
 
             var lambda = Expression.Lambda(expression);
             return lambda.Compile().DynamicInvoke();
+        }
+
+        private void WriteDescriptionTo(StringBuilderOutputWriter builder)
+        {
+            builder.Write("Expected calls to ");
+            this.state.WriteTo(builder);
+            builder.Write(" to be null guarded.");
+        }
+
+        private void WriteActualValueTo(StringBuilderOutputWriter builder)
+        {
+            builder.Write("When called with the following arguments the method did not throw the appropriate exception:");
+            builder.WriteLine();
+            this.state.WriteFailingCallsDescriptions(builder);
         }
 
         private bool Matches(Expression<Action> expression)
@@ -128,29 +121,25 @@ namespace FakeItEasy.Tests
                 return this.unguardedCalls.Count() == 0;
             }
 
-            public override string ToString()
+            public void WriteTo(StringBuilderOutputWriter builder)
             {
-                var result = new StringBuilder();
-                result.Append(this.CallDescription);
-                result.Append("(");
+                builder.Write(this.CallDescription);
+                builder.Write("(");
 
-                AppendArgumentList(result, this.ValidArguments);
-                result.Append(")");
-
-                return result.ToString();
+                WriteArgumentList(builder, this.ValidArguments);
+                builder.Write(")");
             }
 
-            public IEnumerable<string> GetFailingCallsDescriptions()
+            public void WriteFailingCallsDescriptions(StringBuilderOutputWriter builder)
             {
-                var descriptions = new List<string>();
-
-                foreach (var call in this.unguardedCalls)
+                using (builder.Indent())
                 {
-                    var description = GetFailingCallDescription(call);
-                    descriptions.Add(description);
+                    foreach (var call in this.unguardedCalls)
+                    {
+                        call.WriteFailingCallDescription(builder);
+                        builder.WriteLine();
+                    }
                 }
-
-                return descriptions;
             }
 
             protected static IEnumerable<ArgumentInfo> GetArgumentInfos(IEnumerable<Expression> callArgumentsValues, ParameterInfo[] callArguments)
@@ -179,92 +168,27 @@ namespace FakeItEasy.Tests
                 return !type.IsValueType || (type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)));
             }
 
-            private static void AppendArgumentList(StringBuilder builder, IEnumerable<ArgumentInfo> arguments)
+            private static void WriteArgumentList(StringBuilderOutputWriter builder, IEnumerable<ArgumentInfo> arguments)
             {
-                int lengthWhenStarting = builder.Length;
+                int lengthWhenStarting = builder.Builder.Length;
                 foreach (var argument in arguments)
                 {
-                    if (builder.Length > lengthWhenStarting)
+                    if (builder.Builder.Length > lengthWhenStarting)
                     {
-                        builder.Append(", ");
+                        builder.Write(", ");
                     }
 
-                    AppendArgument(builder, argument);
+                    WriteArgument(builder, argument);
                 }
             }
 
-            private static void AppendArgumentList(StringBuilder builder, IEnumerable<object> arguments)
+            private static void WriteArgument(StringBuilderOutputWriter builder, ArgumentInfo argument)
             {
-                int lengthWhenStarting = builder.Length;
-                foreach (var argument in arguments)
-                {
-                    if (builder.Length > lengthWhenStarting)
-                    {
-                        builder.Append(", ");
-                    }
-
-                    AppendArgument(builder, argument);
-                }
-            }
-
-            private static void AppendArgument(StringBuilder builder, ArgumentInfo argument)
-            {
-                builder.Append("[");
-                builder.Append(argument.ArgumentType.Name);
-                builder.Append("]");
-                builder.Append(" ");
-                builder.Append(argument.Name);
-            }
-
-            private static void AppendArgument(StringBuilder builder, object argument)
-            {
-                if (argument == null)
-                {
-                    builder.Append("<NULL>");
-                    return;
-                }
-
-                if (argument is string)
-                {
-                    builder.AppendFormat("\"{0}\"", argument);
-                }
-                else
-                {
-                    builder.Append(argument);
-                }
-            }
-
-            private static string GetFailingCallDescription(CallThatShouldThrow call)
-            {
-                var result = new StringBuilder();
-
-                result.Append("(");
-                AppendArgumentList(result, call.Arguments);
-                result.Append(") ");
-
-                AppendFailReason(result, call);
-
-                return result.ToString();
-            }
-
-            private static void AppendFailReason(StringBuilder description, CallThatShouldThrow call)
-            {
-                if (call.Thrown == null)
-                {
-                    description.Append("did not throw any exception.");
-                }
-                else
-                {
-                    var argumentNullException = call.Thrown as ArgumentNullException;
-                    if (argumentNullException != null)
-                    {
-                        description.Append("threw ArgumentNullException with wrong argument name, it should be \"{0}\".".FormatInvariant(call.ArgumentName));
-                    }
-                    else
-                    {
-                        description.Append("threw unexpected {0}.".FormatInvariant(call.Thrown.GetType().FullName));
-                    }
-                }
+                builder.Write("[");
+                builder.Write(argument.ArgumentType.Name);
+                builder.Write("]");
+                builder.Write(" ");
+                builder.Write(argument.Name);
             }
 
             private IEnumerable<CallThatShouldThrow> GetArgumentsForCallsThatAreNotProperlyNullGuarded()
@@ -330,6 +254,48 @@ namespace FakeItEasy.Tests
                 public object[] Arguments { get; set; }
 
                 public Exception Thrown { get; set; }
+
+                public void WriteFailingCallDescription(StringBuilderOutputWriter builder)
+                {
+                    builder.Write("(");
+                    this.WriteArgumentList(builder);
+                    builder.Write(") ");
+                    this.WriteFailReason(builder);
+                }
+
+                private void WriteArgumentList(StringBuilderOutputWriter builder)
+                {
+                    int lengthWhenStarting = builder.Builder.Length;
+                    foreach (var argument in this.Arguments)
+                    {
+                        if (builder.Builder.Length > lengthWhenStarting)
+                        {
+                            builder.Write(", ");
+                        }
+
+                        builder.WriteArgumentValue(argument);
+                    }
+                }
+
+                private void WriteFailReason(StringBuilderOutputWriter description)
+                {
+                    if (this.Thrown == null)
+                    {
+                        description.Write("did not throw any exception.");
+                    }
+                    else
+                    {
+                        var argumentNullException = this.Thrown as ArgumentNullException;
+                        if (argumentNullException != null)
+                        {
+                            description.Write("threw ArgumentNullException with wrong argument name, it should be \"{0}\".".FormatInvariant(this.ArgumentName));
+                        }
+                        else
+                        {
+                            description.Write("threw unexpected {0}.".FormatInvariant(this.Thrown.GetType().FullName));
+                        }
+                    }
+                }
             }
         }
 
