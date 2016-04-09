@@ -89,9 +89,6 @@
     <Compile Include="..\FakeItEasy\CompletedFakeObjectCallExtensions.cs">
       <Link>CompletedFakeObjectCallExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\AfterMustHaveHappenedConfiguration.cs">
-      <Link>Configuration\AfterMustHaveHappenedConfiguration.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallCallRule.cs">
       <Link>Configuration\AnyCallCallRule.cs</Link>
     </Compile>
@@ -122,9 +119,6 @@
     <Compile Include="..\FakeItEasy\Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs">
       <Link>Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\IAfterMustHaveHappenedConfiguration.cs">
-      <Link>Configuration\IAfterMustHaveHappenedConfiguration.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IAnyCallConfiguration.cs">
       <Link>Configuration\IAnyCallConfiguration.cs</Link>
     </Compile>
@@ -154,6 +148,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IInterceptionAsserter.cs">
       <Link>Configuration\IInterceptionAsserter.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IOrderableCallAssertion.cs">
+      <Link>Configuration\IOrderableCallAssertion.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IOutAndRefParametersConfiguration.cs">
       <Link>Configuration\IOutAndRefParametersConfiguration.cs</Link>
@@ -190,6 +187,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\StartConfiguration.cs">
       <Link>Configuration\StartConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\UnorderedCallAssertion.cs">
+      <Link>Configuration\UnorderedCallAssertion.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\ArgumentConstraintTrap.cs">
       <Link>Core\ArgumentConstraintTrap.cs</Link>
@@ -565,9 +565,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\IOutputWriter.cs">
       <Link>IOutputWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\ISequentialCallContext.cs">
-      <Link>ISequentialCallContext.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
       <Link>MethodBaseExtensions.cs</Link>

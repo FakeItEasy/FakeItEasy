@@ -83,12 +83,12 @@
     <Compile Include="Configuration\AnyCallCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\AfterMustHaveHappenedConfiguration.cs" />
+    <Compile Include="Configuration\UnorderedCallAssertion.cs" />
     <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="A.of.T.cs" />
-    <Compile Include="Configuration\IAfterMustHaveHappenedConfiguration.cs" />
+    <Compile Include="Configuration\IOrderableCallAssertion.cs" />
     <Compile Include="Core\AssemblyExtensions.cs" />
     <Compile Include="Core\BootstrapperLocator.cs" />
     <Compile Include="Core\SequentialCallContext.cs" />
@@ -109,7 +109,6 @@
     <Compile Include="Expressions\ArgumentConstraints\RefArgumentConstraint.cs" />
     <Compile Include="FakeOptionsBuilder.cs" />
     <Compile Include="IBootstrapper.cs" />
-    <Compile Include="ISequentialCallContext.cs" />
     <Compile Include="IFakeOptionsBuilder.cs" />
     <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
