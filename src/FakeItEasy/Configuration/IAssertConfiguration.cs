@@ -14,6 +14,6 @@ namespace FakeItEasy.Configuration
         /// <exception cref="ExpectationException">The call has not been called a number of times
         /// that passes the repeat constraint.</exception>
         /// <returns>An object to assert the call order.</returns>
-        IAfterMustHaveHappenedConfiguration MustHaveHappened(Repeated repeatConstraint);
+        UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint);
     }
 }

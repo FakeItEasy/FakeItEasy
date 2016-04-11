@@ -12,7 +12,7 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="configuration">The configuration to assert on.</param>
         /// <returns>An object to assert the call order.</returns>
-        public static IAfterMustHaveHappenedConfiguration MustHaveHappened(this IAssertConfiguration configuration)
+        public static UnorderedCallAssertion MustHaveHappened(this IAssertConfiguration configuration)
         {
             Guard.AgainstNull(configuration, "configuration");
 

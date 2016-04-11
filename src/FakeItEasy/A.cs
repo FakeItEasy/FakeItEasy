@@ -111,14 +111,5 @@ namespace FakeItEasy
         {
             return ConfigurationManager.CallTo(callSpecification);
         }
-
-        /// <summary>
-        /// Creates a new call ordering context that can be used to assert the order of calls.
-        /// </summary>
-        /// <returns>A call ordering context.</returns>
-        public static ISequentialCallContext SequentialCallContext()
-        {
-            return ServiceLocator.Current.Resolve<ISequentialCallContext>();
-        }
     }
 }

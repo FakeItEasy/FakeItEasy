@@ -54,7 +54,7 @@ namespace FakeItEasy.Configuration
             return this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
         }
 
-        public IAfterMustHaveHappenedConfiguration MustHaveHappened(Repeated repeatConstraint)
+        public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
         {
             return this.VoidConfiguration.MustHaveHappened(repeatConstraint);
         }
