@@ -105,8 +105,8 @@
     <Compile Include="..\FakeItEasy\CompletedFakeObjectCallExtensions.cs">
       <Link>CompletedFakeObjectCallExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\AfterMustHaveHappenedConfiguration.cs">
-      <Link>Configuration\AfterMustHaveHappenedConfiguration.cs</Link>
+    <Compile Include="..\FakeItEasy\Configuration\UnorderedCallAssertion.cs">
+      <Link>Configuration\UnorderedCallAssertion.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\AnyCallCallRule.cs">
       <Link>Configuration\AnyCallCallRule.cs</Link>
@@ -138,8 +138,8 @@
     <Compile Include="..\FakeItEasy\Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs">
       <Link>Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\IAfterMustHaveHappenedConfiguration.cs">
-      <Link>Configuration\IAfterMustHaveHappenedConfiguration.cs</Link>
+    <Compile Include="..\FakeItEasy\Configuration\IOrderableCallAssertion.cs">
+      <Link>Configuration\IOrderableCallAssertion.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IAnyCallConfiguration.cs">
       <Link>Configuration\IAnyCallConfiguration.cs</Link>
@@ -174,15 +174,6 @@
     <Compile Include="..\FakeItEasy\Configuration\IOutAndRefParametersConfiguration.cs">
       <Link>Configuration\IOutAndRefParametersConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\IRecordingCallRuleFactory.cs">
-      <Link>Configuration\IRecordingCallRuleFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\IRecordingConfiguration.cs">
-      <Link>Configuration\IRecordingConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\IRecordingConfigurationWithArgumentValidation.cs">
-      <Link>Configuration\IRecordingConfigurationWithArgumentValidation.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IRepeatConfiguration.cs">
       <Link>Configuration\IRepeatConfiguration.cs</Link>
     </Compile>
@@ -209,15 +200,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IWhereConfiguration.cs">
       <Link>Configuration\IWhereConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\RecordedCallRule.cs">
-      <Link>Configuration\RecordedCallRule.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\RecordingCallRule.cs">
-      <Link>Configuration\RecordingCallRule.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\RecordingRuleBuilder.cs">
-      <Link>Configuration\RecordingRuleBuilder.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\RuleBuilder.cs">
       <Link>Configuration\RuleBuilder.cs</Link>
@@ -371,9 +353,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Core\ITypeCatalogue.cs">
       <Link>Core\ITypeCatalogue.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\IWritableFakeObjectCall.cs">
-      <Link>Core\IWritableFakeObjectCall.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\MethodInfoManager.cs">
       <Link>Core\MethodInfoManager.cs</Link>
@@ -611,9 +590,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\MustBeImplementedException.cs">
       <Link>MustBeImplementedException.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\NextCall.cs">
-      <Link>NextCall.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\OutAndRefParametersConfigurationExtensions.cs">
       <Link>OutAndRefParametersConfigurationExtensions.cs</Link>

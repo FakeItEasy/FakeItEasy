@@ -1,13 +1,6 @@
-﻿Imports FakeItEasy
-Imports FakeItEasy.Examples.ExampleObjects
+﻿Imports FakeItEasy.Examples.ExampleObjects
 
 Public Class ConfiguringCalls
-    Public Sub Configuring_a_sub_to_throw_an_exception()
-        Dim widget = A.Fake(Of IWidget)()
-
-        NextCall.To(widget).Throws(New NotSupportedException()) : widget.Repair()
-    End Sub
-
     Public Sub Configuring_a_sub_using_lambda()
         Dim widget = A.Fake(Of IWidget)()
 

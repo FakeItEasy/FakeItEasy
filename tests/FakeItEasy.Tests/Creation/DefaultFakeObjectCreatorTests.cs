@@ -155,13 +155,15 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
 
             // Assert
-            var context = A.SequentialCallContext();
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsNull(), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
-                .MustHaveHappened().InOrder(context);
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
-                .MustHaveHappened().InOrder(context);
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence("dummy"), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
-                .MustHaveHappened().InOrder(context);
+            A.CallTo(() =>
+                this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsNull(), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+                .MustHaveHappened()
+                .Then(A.CallTo(() =>
+                    this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+                    .MustHaveHappened())
+                .Then(A.CallTo(() =>
+                    this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence("dummy"), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+                    .MustHaveHappened());
         }
 
         [Test]

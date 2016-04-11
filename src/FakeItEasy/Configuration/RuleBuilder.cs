@@ -95,7 +95,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public IAfterMustHaveHappenedConfiguration MustHaveHappened(Repeated repeatConstraint)
+        public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
         {
             Guard.AgainstNull(repeatConstraint, "repeatConstraint");
 
@@ -107,7 +107,7 @@ namespace FakeItEasy.Configuration
 
             asserter.AssertWasCalled(this.Matcher.Matches, description.Builder.ToString(), repeatConstraint.Matches, repeatConstraint.ToString());
 
-            return new AfterMustHaveHappenedConfiguration(this.manager, this.Matcher, description.Builder.ToString(), repeatConstraint);
+            return new UnorderedCallAssertion(this.manager, this.Matcher, description.Builder.ToString(), repeatConstraint);
         }
 
         public class ReturnValueConfiguration<TMember>
@@ -159,7 +159,7 @@ namespace FakeItEasy.Configuration
                 return this;
             }
 
-            public IAfterMustHaveHappenedConfiguration MustHaveHappened(Repeated repeatConstraint)
+            public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
             {
                 return this.ParentConfiguration.MustHaveHappened(repeatConstraint);
             }

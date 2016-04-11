@@ -14,7 +14,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     [Serializable]
 #endif
     internal class CastleInvocationCallAdapter
-        : IWritableFakeObjectCall, ICompletedFakeObjectCall
+        : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
     {
         private readonly IInvocation invocation;
 

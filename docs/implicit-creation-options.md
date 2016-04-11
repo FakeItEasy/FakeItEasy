@@ -61,21 +61,21 @@ example, if you wanted all Fakes to be Strict, you might write
 something like this:
 
 ```csharp
-class MakeEverythingStrictOptionsBuilder: IFakeOptionsBuilder
+class MakeEverythingStrictOptionsBuilder : IFakeOptionsBuilder
 {
     public bool CanBuildOptionsForFakeOfType(Type type)
     {
         return true;
     }
 
-    public void BuildOptions(Type typeOfFake, IFakeOptions options);
+    public void BuildOptions(Type typeOfFake, IFakeOptions options)
     {
-        options => options.Strict();
+        options.Strict();
     }
 
-    public int Priority
+    public Priority Priority
     {
-        get { Priority.Default; } // equivalent to value 0
+        get { return Priority.Default; } // equivalent to value 0
     }
 }
 ```

@@ -139,7 +139,7 @@ namespace FakeItEasy.Core
 
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes",
             Justification = "Explicit implementation to be able to make the IFakeCallProcessor interface internal.")]
-        void IFakeCallProcessor.Process(IWritableFakeObjectCall fakeObjectCall)
+        void IFakeCallProcessor.Process(IInterceptedFakeObjectCall fakeObjectCall)
         {
             foreach (var listener in this.interceptionListeners)
             {
@@ -161,10 +161,7 @@ namespace FakeItEasy.Core
             {
                 var readonlyCall = fakeObjectCall.AsReadOnly();
 
-                if (!interceptedCall.IgnoreCallInRecording)
-                {
-                    this.RecordCall(readonlyCall);
-                }
+                this.RecordCall(readonlyCall);
 
                 foreach (var listener in this.interceptionListeners.Reverse())
                 {
@@ -222,14 +219,12 @@ namespace FakeItEasy.Core
         private class InterceptedCallAdapter
             : IInterceptedFakeObjectCall
         {
-            private readonly IWritableFakeObjectCall call;
+            private readonly IInterceptedFakeObjectCall call;
 
-            public InterceptedCallAdapter(IWritableFakeObjectCall call)
+            public InterceptedCallAdapter(IInterceptedFakeObjectCall call)
             {
                 this.call = call;
             }
-
-            public bool IgnoreCallInRecording { get; private set; }
 
             public MethodInfo Method
             {
@@ -269,11 +264,6 @@ namespace FakeItEasy.Core
             public ICompletedFakeObjectCall AsReadOnly()
             {
                 return this.call.AsReadOnly();
-            }
-
-            public void DoNotRecordCall()
-            {
-                this.IgnoreCallInRecording = true;
             }
         }
     }

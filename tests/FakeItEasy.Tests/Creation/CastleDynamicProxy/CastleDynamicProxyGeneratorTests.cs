@@ -114,7 +114,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         public void Should_delegate_to_fake_call_processor_when_method_on_fake_is_called(Type typeThatImplementsInterfaceType)
         {
             // Arrange
-            IWritableFakeObjectCall interceptedFakeObjectCall = null;
+            IInterceptedFakeObjectCall interceptedFakeObjectCall = null;
 
             var fakeCallProcessorProvider = CreateFakeCallProcessorProvider(c => interceptedFakeObjectCall = c);
 
@@ -316,14 +316,14 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
                 .MethodCanBeInterceptedOnInstance(method, instance, out Ignore.This<string>().Value)).MustHaveHappened();
         }
 
-        private static IFakeCallProcessorProvider CreateFakeCallProcessorProvider(Action<IWritableFakeObjectCall> fakeCallProcessorAction)
+        private static IFakeCallProcessorProvider CreateFakeCallProcessorProvider(Action<IInterceptedFakeObjectCall> fakeCallProcessorAction)
         {
             var result = A.Fake<IFakeCallProcessorProvider>();
 
             var fakeCallProcessor = A.Fake<IFakeCallProcessor>();
             A.CallTo(() => result.Fetch(A<object>._)).Returns(fakeCallProcessor);
 
-            A.CallTo(() => fakeCallProcessor.Process(A<IWritableFakeObjectCall>._)).Invokes(fakeCallProcessorAction);
+            A.CallTo(() => fakeCallProcessor.Process(A<IInterceptedFakeObjectCall>._)).Invokes(fakeCallProcessorAction);
 
             return result;
         }

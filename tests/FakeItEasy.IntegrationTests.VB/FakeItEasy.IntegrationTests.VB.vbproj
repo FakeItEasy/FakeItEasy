@@ -84,7 +84,6 @@
     <Import Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NextCallTests.vb" />
     <Compile Include="IndexedPropertyTests.vb" />
     <Compile Include="RaisingEventsTests.vb" />
   </ItemGroup>

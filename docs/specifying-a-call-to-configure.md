@@ -60,17 +60,6 @@ A.CallTo(fakeShop).Where(call => call.Method.Name == "set_Address")
 been raised to develop a better mechanism for specifying property
 `set`s.
 
-## Specifying a call by example
-```csharp
-NextCall.To(fakeShop).WithAnyArguments()
-                     .Throws(new Exception("we're closed");
-fakeShop.SellThisCandy(null); // recorded, and configuration above is applied
-
-...
-
-fakeShop.SellThisCandy(lollipop); // will throw now
-```
-
 ## VB.Net
 Special syntax is provided to specify `Func`s and `Sub`s in VB, using their respective keywords:
 

@@ -1,30 +1,41 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
 
     public static class OrderedCallMatchingSpecs
     {
-        public interface IHaveNoGenericParameters
+        public interface IFoo
         {
             void Bar(int baz);
         }
 
-        public interface IHaveOneGenericParameter
+        public interface ISomething
         {
-            void Bar<T>(T baz);
+            void SomethingMethod();
+        }
+
+        public interface ISomethingBaz : ISomething
+        {
+            void BazMethod();
+        }
+
+        public interface ISomethingQux : ISomething
+        {
+            void QuxMethod();
         }
 
         [Scenario]
-        public static void NonGenericCallsSuccess(
-            IHaveNoGenericParameters fake,
-            ISequentialCallContext sequentialCallContext,
-            Exception exception)
+        public static void OrderedAssertionsInOrder(IFoo fake, Exception exception)
         {
             "Given a Fake"
-                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
 
             "And a call on the Fake, passing argument 1"
                 .x(() => fake.Bar(1));
@@ -32,27 +43,30 @@ namespace FakeItEasy.Specs
             "And a call on the Fake, passing argument 2"
                 .x(() => fake.Bar(2));
 
-            "And a call-ordering context"
-                .x(c => sequentialCallContext = A.SequentialCallContext());
+            "And a call on the Fake, passing argument 3"
+                .x(() => fake.Bar(3));
 
-            "When I expect the call with argument 1 to have been made"
-                .x(() => A.CallTo(() => fake.Bar(1)).MustHaveHappened().InOrder(sequentialCallContext));
+            "When I assert that a call with argument 1 was made exactly twice, then a call with argument 2, and then a call with argument 3"
+                .x(() => exception = Record.Exception(() =>
+                    A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Twice)
+                        .Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened())
+                        .Then(A.CallTo(() => fake.Bar(3)).MustHaveHappened())));
 
-            "And I expect the call with argument 2 to have been made next"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(2)).MustHaveHappened().InOrder(sequentialCallContext)));
-
-            "Then the assertion should succeed"
-                .x(() => exception.Should().BeNull("because the assertion should have succeeded"));
+            "Then the assertion should pass"
+                .x(() => exception.Should().BeNull());
         }
 
         [Scenario]
-        public static void NonGenericCallsFailure(
-            IHaveNoGenericParameters fake,
-            ISequentialCallContext sequentialCallContext,
-            Exception exception)
+        public static void OrderedAssertionsOutOfOrder(IFoo fake, Exception exception)
         {
             "Given a Fake"
-                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call on the Fake, passing argument 3"
+                .x(() => fake.Bar(3));
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
 
             "And a call on the Fake, passing argument 1"
                 .x(() => fake.Bar(1));
@@ -60,140 +74,180 @@ namespace FakeItEasy.Specs
             "And a call on the Fake, passing argument 2"
                 .x(() => fake.Bar(2));
 
-            "And a call-ordering context"
-                .x(c => sequentialCallContext = A.SequentialCallContext());
-
-            "When I expect the call with argument 2 to have been made"
-                .x(() => A.CallTo(() => fake.Bar(2)).MustHaveHappened().InOrder(sequentialCallContext));
-
-            "And I expect the call with argument 1 to have been made next"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(1)).MustHaveHappened().InOrder(sequentialCallContext)));
+            "When I assert that a call with argument 1 was made exactly twice, then a call with argument 2, and then a call with argument 3"
+                .x(() => exception = Record.Exception(() =>
+                    A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Twice)
+                        .Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened())
+                        .Then(A.CallTo(() => fake.Bar(3)).MustHaveHappened())));
 
             "Then the assertion should fail"
-                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
-
-            "And the error should tell us that the calls were not matched in order"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(2)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(1)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated exactly twice
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(2)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(3)' repeated at least once
   The calls where found but not in the correct order among the calls:
-    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 1)
-    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 2)
+    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) repeated 2 times
+    ...
+    4: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)"));
+        }
+
+        [Scenario]
+        public static void OrderedAssertionsOnDifferentObjectsInOrder(IFoo fake1, IFoo fake2, Exception exception)
+        {
+            "Given a Fake"
+                .x(() => fake1 = A.Fake<IFoo>());
+
+            "And another Fake of the same type"
+                .x(() => fake2 = A.Fake<IFoo>());
+
+            "And a call on the first Fake, passing argument 1"
+                .x(() => fake1.Bar(1));
+
+            "And a call on the second Fake, passing argument 1"
+                .x(() => fake2.Bar(1));
+
+            "And a call on the first Fake, passing argument 2"
+                .x(() => fake1.Bar(2));
+
+            "When I assert that a call with argument 1 was made on the first Fake, then on the second, and then that a call with argument 2 was made on the first Fake"
+                .x(() => exception = Record.Exception(() =>
+                    A.CallTo(() => fake1.Bar(1)).MustHaveHappened()
+                        .Then(A.CallTo(() => fake2.Bar(1)).MustHaveHappened())
+                        .Then(A.CallTo(() => fake1.Bar(2)).MustHaveHappened())));
+
+            "Then the assertion should pass"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
+        public static void OrderedAssertionsOnDifferentObjectsOutOfOrder(IFoo fake1, IFoo fake2, Exception exception)
+        {
+            "Given a Fake"
+                .x(() => fake1 = A.Fake<IFoo>());
+
+            "And another Fake of the same type"
+                .x(() => fake2 = A.Fake<IFoo>());
+
+            "And a call on the second Fake, passing argument 1"
+                .x(() => fake2.Bar(1));
+
+            "And a call on the first Fake, passing argument 1"
+                .x(() => fake1.Bar(1));
+
+            "And a call on the first Fake, passing argument 2"
+                .x(() => fake1.Bar(2));
+
+            "When I assert that a call with argument 1 was made on the first Fake, then on the second, and then that a call with argument 2 was made on the first Fake"
+                .x(() => exception = Record.Exception(() =>
+                    A.CallTo(() => fake1.Bar(1)).MustHaveHappened()
+                        .Then(A.CallTo(() => fake2.Bar(1)).MustHaveHappened())
+                        .Then(A.CallTo(() => fake1.Bar(2)).MustHaveHappened())));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
+
+  Assertion failed for the following calls:
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated at least once
+  The calls where found but not in the correct order among the calls:
+    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
+    3: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)
 "));
         }
 
         [Scenario]
-        public static void GenericCallsSuccess(
-            IHaveOneGenericParameter fake,
-            ISequentialCallContext sequentialCallContext,
-            Exception exception)
+        public static void MultistepOrderedAssertionsInOrder(
+            IFoo fake,
+            Exception exception,
+            IOrderableCallAssertion lastAssertion)
         {
             "Given a Fake"
-                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+                .x(() => fake = A.Fake<IFoo>());
 
-            "And a call on the Fake, passing argument of type int"
+            "And a call on the Fake, passing argument 1"
                 .x(() => fake.Bar(1));
 
-            "And a call on the Fake, passing argument of type Generic<bool>"
-                .x(() => fake.Bar(new Generic<bool>()));
+            "And a call on the Fake, passing argument 2"
+                .x(() => fake.Bar(2));
 
-            "And a call-ordering context"
-                .x(c => sequentialCallContext = A.SequentialCallContext());
+            "And a call on the Fake, passing argument 2"
+                .x(() => fake.Bar(2));
 
-            "When I expect the call with any argument of type int to have been made"
-                .x(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened().InOrder(sequentialCallContext));
+            "And a call on the Fake, passing argument 3"
+                .x(() => fake.Bar(3));
 
-            "And I expect the call with any argument of type Generic<bool> to have been made next"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<Generic<bool>>.Ignored)).MustHaveHappened().InOrder(sequentialCallContext)));
+            "When I assert that a call with argument 1 was made exactly once"
+                .x(() => lastAssertion = A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Once));
 
-            "Then the assertion should succeed"
-                .x(() => exception.Should().BeNull("because the assertion should have succeeded"));
+            "And then a call with argument 2"
+                .x(() => lastAssertion = lastAssertion.Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened()));
+
+            "And then a call with argument 3 exactly once"
+                .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => fake.Bar(3)).MustHaveHappened(Repeated.Exactly.Once))));
+
+            "Then the assertions should pass"
+                .x(() => exception.Should().BeNull());
         }
 
         [Scenario]
-        public static void GenericCallsFailure(
-            IHaveOneGenericParameter fake,
-            ISequentialCallContext sequentialCallContext,
-            Exception exception)
+        public static void MultistepOrderedAssertionsOutOfOrder(
+            IFoo fake,
+            Exception exception,
+            IOrderableCallAssertion lastAssertion)
         {
             "Given a Fake"
-                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+                .x(() => fake = A.Fake<IFoo>());
 
-            "And a call on the Fake, passing argument of type int"
+            "And a call on the Fake, passing argument 3"
+                .x(() => fake.Bar(3));
+
+            "And a call on the Fake, passing argument 1"
                 .x(() => fake.Bar(1));
 
-            "And a call on the Fake, passing argument of type Generic<bool>"
-                .x(() => fake.Bar(new Generic<bool>()));
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
 
-            "And a call-ordering context"
-                .x(c => sequentialCallContext = A.SequentialCallContext());
+            "And a call on the Fake, passing argument 2"
+                .x(() => fake.Bar(2));
 
-            "When I expect the call with any argument of type Generic<bool> to have been made"
-                .x(() => A.CallTo(() => fake.Bar(A<Generic<bool>>.Ignored)).MustHaveHappened().InOrder(sequentialCallContext));
+            "When I assert that a call with argument 1 was made exactly twice"
+                .x(() => lastAssertion = A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Twice));
 
-            "And I expect the call with any argument of type int to have been made next"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).MustHaveHappened().InOrder(sequentialCallContext)));
+            "And then a call with argument 2"
+                .x(() => lastAssertion = lastAssertion.Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened()));
 
-            "Then the assertion should fail"
-                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+            "And then that a call with argument 3 was made exactly once"
+                .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => fake.Bar(3)).MustHaveHappened(Repeated.Exactly.Once))));
 
-            "And the error should tell us that the calls were not matched in order"
-                .x(() => exception.Message.Should().Be(
-                    @"
+            "Then the last assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic<System.Boolean>>(<Ignored>)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<System.Int32>(<Ignored>)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated exactly twice
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(2)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(3)' repeated exactly once
   The calls where found but not in the correct order among the calls:
-    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<System.Int32>(baz: 1)
-    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic<System.Boolean>>(baz: FakeItEasy.Specs.OrderedCallMatchingSpecs+Generic`1[System.Boolean])
-"));
+    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) repeated 2 times
+    ...
+    4: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)"));
         }
 
+        // This is perhaps not the most intuitive behavior, but has been
+        // in place since ordered assertions were introduced: the
+        // MustHaveHappened is executed first and checks all calls.
         [Scenario]
-        public static void WithRepeatConstraintSuccess(
-            IHaveNoGenericParameters fake,
-            ISequentialCallContext sequentialCallContext,
+        public static void OrderedAssertionWithRepeatConstraintFailure(
+            IFoo fake,
+            IOrderableCallAssertion lastAssertion,
             Exception exception)
         {
             "Given a Fake"
-                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
-
-            "And a call on the Fake, passing argument 1"
-                .x(() => fake.Bar(1));
-
-            "And a call on the Fake, passing argument 1"
-                .x(() => fake.Bar(1));
-
-            "And a call on the Fake, passing argument 1"
-                .x(() => fake.Bar(1));
-
-            "And a call on the Fake, passing argument 2"
-                .x(() => fake.Bar(2));
-
-            "And a call-ordering context"
-                .x(c => sequentialCallContext = A.SequentialCallContext());
-
-            "When I expect the call with argument 1 to have been made at least twice"
-                .x(() => A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.AtLeast.Twice).InOrder(sequentialCallContext));
-
-            "And I expect the call with argument 2 to have been made next exactly once"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(2)).MustHaveHappened(Repeated.Exactly.Once).InOrder(sequentialCallContext)));
-
-            "Then the assertion should succeed"
-                .x(() => exception.Should().BeNull("because the assertion should have succeeded"));
-        }
-
-        [Scenario]
-        public static void WithRepeatConstraintFailure(
-            IHaveNoGenericParameters fake,
-            ISequentialCallContext sequentialCallContext,
-            Exception exception)
-        {
-            "Given a Fake"
-                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+                .x(() => fake = A.Fake<IFoo>());
 
             "And a call on the Fake, passing argument 1"
                 .x(() => fake.Bar(1));
@@ -204,118 +258,52 @@ namespace FakeItEasy.Specs
             "And a call on the Fake, passing argument 1"
                 .x(() => fake.Bar(1));
 
-            "And a call-ordering context"
-                .x(c => sequentialCallContext = A.SequentialCallContext());
+            "When I assert that a call with argument 2 was made"
+                .x(() => lastAssertion = A.CallTo(() => fake.Bar(2)).MustHaveHappened());
 
-            "When I expect the call with argument 2 to have been made"
-                .x(() => A.CallTo(() => fake.Bar(2)).MustHaveHappened().InOrder(sequentialCallContext));
+            "And then that a call with argument 1 was made exactly once"
+                .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Once))));
 
-            "And I expect the call with argument 1 to have been made next exactly once"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Once).InOrder(sequentialCallContext)));
-
-            "Then the assertion should fail"
+            "Then the last assertion should fail"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
-            "And the error should tell us that the call to Bar(1) was found too many times"
+            "And the message should say that the call to Bar(1) was found too many times"
                 .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(1)
+    FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)
   Expected to find it exactly once but found it #2 times among the calls:
-    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 1)
-    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 2)
-    3: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 1)
+    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)
+    3: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
 
 "));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "NextCall", Justification = "Because it's the correct spelling")]
+        // Reported as issue 182 (https://github.com/FakeItEasy/FakeItEasy/issues/182).
         [Scenario]
-        public static void NextCallToSuccess(
-            IHaveNoGenericParameters fake,
-            ISequentialCallContext sequentialCallContext,
-            Exception exception)
+        public static void OrderedAssertionOnInterfacesWithCommonParent(ISomethingBaz baz, ISomethingQux qux, IOrderableCallAssertion lastAssertion, Exception exception)
         {
-            "Given a fake"
-                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+            "Given a Fake baz"
+                .x(() => baz = A.Fake<ISomethingBaz>());
 
-            "And a call on the Fake, passing argument 1"
-                .x(() => fake.Bar(1));
+            "And a Fake qux implementing an interface in common with baz"
+                .x(() => qux = A.Fake<ISomethingQux>());
 
-            "And a call on the Fake, passing argument 2"
-                .x(() => fake.Bar(2));
+            "And a call on qux"
+                .x(() => qux.QuxMethod());
 
-            "And a call-ordering context"
-                .x(c => sequentialCallContext = A.SequentialCallContext());
+            "And a call on baz"
+                .x(() => baz.BazMethod());
 
-            "When I expect the call with argument 1 to have been made using NextCall.To"
-                .x(() =>
-                {
-                    NextCall.To(fake).MustHaveHappened().InOrder(sequentialCallContext);
-                    fake.Bar(1);
-                });
+            "When I assert that the qux call was made"
+                .x(() => lastAssertion = A.CallTo(() => qux.QuxMethod()).MustHaveHappened());
 
-            "And I expect the call with argument 2 to have been made next using NextCall.To"
-                .x(() => exception = Record.Exception(() =>
-                {
-                    NextCall.To(fake).MustHaveHappened().InOrder(sequentialCallContext);
-                    fake.Bar(2);
-                }));
+            "And I make the same assertion again"
+                .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => qux.QuxMethod()).MustHaveHappened())));
 
-            "Then the assertion should succeed"
-                .x(() => exception.Should().BeNull("because the assertion should have succeeded"));
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "NextCall", Justification = "Because it's the correct spelling")]
-        [Scenario]
-        public static void NextCallToFailure(
-            IHaveNoGenericParameters fake,
-            ISequentialCallContext sequentialCallContext,
-            Exception exception)
-        {
-            "Given a fake"
-                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
-
-            "And a call on the Fake, passing argument 1"
-                .x(() => fake.Bar(1));
-
-            "And a call on the Fake, passing argument 2"
-                .x(() => fake.Bar(2));
-
-            "And a call-ordering context"
-                .x(c => sequentialCallContext = A.SequentialCallContext());
-
-            "When I expect the call with argument 2 to have been made using NextCall.To"
-                .x(() =>
-                {
-                    NextCall.To(fake).MustHaveHappened().InOrder(sequentialCallContext);
-                    fake.Bar(2);
-                });
-
-            "And I expect the call with argument 1 to have been made next using NextCall.To"
-                .x(() => exception = Record.Exception(() =>
-                {
-                    NextCall.To(fake).MustHaveHappened().InOrder(sequentialCallContext);
-                    fake.Bar(1);
-                }));
-
-            "Then the assertion should fail"
+            "Then the second assertion should fail"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
-
-            "And the error should tell us that the calls were not matched in order"
-                .x(() => exception.Message.Should().Be(@"
-
-  Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 2)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 1)' repeated at least once
-  The calls where found but not in the correct order among the calls:
-    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 1)
-    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 2)
-"));
-        }
-
-        public class Generic<T>
-        {
         }
     }
 }

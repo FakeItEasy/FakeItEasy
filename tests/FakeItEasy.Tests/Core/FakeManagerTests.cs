@@ -348,7 +348,7 @@ namespace FakeItEasy.Tests.Core
 
             var equalsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
 
-            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
+            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>();
             A.CallTo(() => interceptedCall.Method).Returns(equalsMethod);
             A.CallTo(() => interceptedCall.FakedObject).Returns(proxyPassedToEquals);
             A.CallTo(() => interceptedCall.Arguments).Returns(new ArgumentCollection(new object[] { proxyPassedToEquals }, interceptedCall.Method));
@@ -369,7 +369,7 @@ namespace FakeItEasy.Tests.Core
 
             var equalsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
 
-            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
+            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>();
             A.CallTo(() => interceptedCall.Method).Returns(equalsMethod);
             A.CallTo(() => interceptedCall.FakedObject).Returns(proxyPassedToEquals);
             A.CallTo(() => interceptedCall.Arguments).Returns(new ArgumentCollection(new object[] { proxyPassedToEquals }, interceptedCall.Method));
@@ -379,24 +379,6 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             A.CallTo(() => interceptedCall.SetReturnValue(true)).MustHaveHappened();
-        }
-
-        [Test]
-        public void Call_should_not_be_recorded_when_DoNotRecordCall_has_been_called()
-        {
-            // Arrange
-            var fake = A.Fake<IFoo>();
-            var rule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => rule.IsApplicableTo(A<IFakeObjectCall>._)).Returns(true);
-            A.CallTo(() => rule.Apply(A<IInterceptedFakeObjectCall>._)).Invokes(x => x.Arguments.Get<IInterceptedFakeObjectCall>(0).DoNotRecordCall());
-
-            Fake.GetFakeManager(fake).AddRuleFirst(rule);
-
-            // Act
-            fake.Bar();
-
-            // Assert
-            Fake.GetCalls(fake).Should().BeEmpty();
         }
 
         [Test]
@@ -432,7 +414,7 @@ namespace FakeItEasy.Tests.Core
         public void Should_invoke_listener_when_call_is_intercepted()
         {
             // Arrange
-            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
+            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>();
 
             var listener = A.Fake<IInterceptionListener>();
             var manager = new FakeManager(typeof(int), 0);
@@ -450,7 +432,7 @@ namespace FakeItEasy.Tests.Core
         public void Should_invoke_listener_after_call_has_been_intercepted()
         {
             // Arrange
-            var interceptedCall = A.Fake<IWritableFakeObjectCall>(x => x.Implements(typeof(ICompletedFakeObjectCall)));
+            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>(x => x.Implements(typeof(ICompletedFakeObjectCall)));
             A.CallTo(() => interceptedCall.AsReadOnly()).Returns((ICompletedFakeObjectCall)interceptedCall);
 
             var listener = A.Fake<IInterceptionListener>();
@@ -473,7 +455,7 @@ namespace FakeItEasy.Tests.Core
         public void Should_invoke_listener_after_call_has_been_intercepted_when_application_of_rule_throws()
         {
             // Arrange
-            var interceptedCall = A.Fake<IWritableFakeObjectCall>(x => x.Implements(typeof(ICompletedFakeObjectCall)));
+            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>(x => x.Implements(typeof(ICompletedFakeObjectCall)));
             A.CallTo(() => interceptedCall.AsReadOnly()).Returns((ICompletedFakeObjectCall)interceptedCall);
 
             var listener = A.Fake<IInterceptionListener>();
@@ -505,16 +487,13 @@ namespace FakeItEasy.Tests.Core
             manager.AddInterceptionListener(listener1);
             manager.AddInterceptionListener(listener2);
 
-            ProcessFakeObjectCall(manager, A.Dummy<IWritableFakeObjectCall>());
+            ProcessFakeObjectCall(manager, A.Dummy<IInterceptedFakeObjectCall>());
 
             // Assert
-            var context = A.SequentialCallContext();
-            A.CallTo(() => listener2.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened().InOrder(context);
-            A.CallTo(() => listener1.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened().InOrder(context);
-            A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._))
-                .MustHaveHappened().InOrder(context);
-            A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._))
-                .MustHaveHappened().InOrder(context);
+            A.CallTo(() => listener2.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened()
+                .Then(A.CallTo(() => listener1.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened())
+                .Then(A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened())
+                .Then(A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened());
         }
 
         private static FakeCallRule CreateApplicableInterception()
@@ -522,7 +501,7 @@ namespace FakeItEasy.Tests.Core
             return new FakeCallRule { IsApplicableTo = x => true };
         }
 
-        private static void ProcessFakeObjectCall(IFakeCallProcessor fakeCallProcessor, IWritableFakeObjectCall interceptedCall)
+        private static void ProcessFakeObjectCall(IFakeCallProcessor fakeCallProcessor, IInterceptedFakeObjectCall interceptedCall)
         {
             fakeCallProcessor.Process(interceptedCall);
         }
@@ -539,7 +518,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var manager = new FakeManager(typeof(IFoo), A.Fake<IFoo>());
 
-            var interceptedCall = A.Fake<IWritableFakeObjectCall>();
+            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>();
             A.CallTo(() => interceptedCall.Method).Returns(interceptedMethod);
 
             // Act

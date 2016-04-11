@@ -4,7 +4,7 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Linq;
 
-    internal class SequentialCallContext : ISequentialCallContext
+    internal class SequentialCallContext
     {
         private readonly CallWriter callWriter;
         private readonly HashSet<FakeManager> fakeManagers;

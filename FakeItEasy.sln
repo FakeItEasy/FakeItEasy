@@ -1,7 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
-MinimumVisualStudioVersion = 10.0.40219.1
+MinimumVisualStudioVersion = 14.0.0.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6A7B553-5359-4FB9-B19C-8A23004F49DB}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Gemfile.lock = Gemfile.lock
 		how_to_build.md = how_to_build.md
 		License.txt = License.txt
+		mkdocs.yml = mkdocs.yml
 		rakefile.rb = rakefile.rb
 		README.md = README.md
 		Settings.StyleCop = Settings.StyleCop
@@ -51,6 +52,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Specs", "tests\F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net35", "src\FakeItEasy.Net35\FakeItEasy.Net35.csproj", "{9F875DD4-9C9A-4E8A-9C13-EFEE41C749F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net40", "src\FakeItEasy.Net40\FakeItEasy.Net40.csproj", "{80721425-68E5-48DC-87EA-41D63D0B45FA}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.dotnet", "src\FakeItEasy\FakeItEasy.dotnet.xproj", "{4082CF04-086F-4D12-B98C-79B74E294C29}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net35.Tests", "tests\FakeItEasy.Net35.Tests\FakeItEasy.Net35.Tests.csproj", "{E029C5AB-EC90-45B0-BBD9-29A60864B137}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.IntegrationTests.External", "tests\FakeItEasy.IntegrationTests.External\FakeItEasy.IntegrationTests.External.csproj", "{30396678-D653-4C67-A507-1749424A24CD}"
@@ -72,9 +77,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2EED
 		samples\FakeItEasy.Examples.ruleset = samples\FakeItEasy.Examples.ruleset
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Net40", "src\FakeItEasy.Net40\FakeItEasy.Net40.csproj", "{80721425-68E5-48DC-87EA-41D63D0B45FA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-377B-47C4-8644-AF1F4FD669E2}"
+	ProjectSection(SolutionItems) = preProject
+		docs\argument-constraints.md = docs\argument-constraints.md
+		docs\assertion.md = docs\assertion.md
+		docs\assigning-out-and-ref-parameters.md = docs\assigning-out-and-ref-parameters.md
+		docs\bootstrapper.md = docs\bootstrapper.md
+		docs\calling-base-methods.md = docs\calling-base-methods.md
+		docs\creating-fakes.md = docs\creating-fakes.md
+		docs\custom-dummy-creation.md = docs\custom-dummy-creation.md
+		docs\default-fake-behavior.md = docs\default-fake-behavior.md
+		docs\doing-nothing.md = docs\doing-nothing.md
+		docs\dummies.md = docs\dummies.md
+		docs\external-resources.md = docs\external-resources.md
+		docs\faking-async-methods.md = docs\faking-async-methods.md
+		docs\formatting-argument-values.md = docs\formatting-argument-values.md
+		docs\how-to-fake-internal-types.md = docs\how-to-fake-internal-types.md
+		docs\implicit-creation-options.md = docs\implicit-creation-options.md
+		docs\index.md = docs\index.md
+		docs\invoking-custom-code.md = docs\invoking-custom-code.md
+		docs\limited-call-specifications.md = docs\limited-call-specifications.md
+		docs\ordered-assertions.md = docs\ordered-assertions.md
+		docs\platform-support.md = docs\platform-support.md
+		docs\quickstart.md = docs\quickstart.md
+		docs\raising-events.md = docs\raising-events.md
+		docs\read-write-property-behavior.md = docs\read-write-property-behavior.md
+		docs\scanning-for-extension-points.md = docs\scanning-for-extension-points.md
+		docs\snippets-for-fakeiteasy-in-sidewaffle.md = docs\snippets-for-fakeiteasy-in-sidewaffle.md
+		docs\specifying-a-call-to-configure.md = docs\specifying-a-call-to-configure.md
+		docs\specifying-return-values.md = docs\specifying-return-values.md
+		docs\strict-fakes.md = docs\strict-fakes.md
+		docs\throwing-exceptions.md = docs\throwing-exceptions.md
+		docs\what-can-be-faked.md = docs\what-can-be-faked.md
+		docs\why-was-fakeiteasy-created.md = docs\why-was-fakeiteasy-created.md
+	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.dotnet", "src\FakeItEasy\FakeItEasy.dotnet.xproj", "{4082CF04-086F-4D12-B98C-79B74E294C29}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "css", "css", "{5A081DFC-0269-480B-853A-89D09AF478A8}"
+	ProjectSection(SolutionItems) = preProject
+		docs\css\extra-highlight.css = docs\css\extra-highlight.css
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,6 +184,7 @@ Global
 		{DC5EAE30-96E3-4D38-B3C5-33E587C9FB76} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
 		{5D41D463-D53B-4ADC-90AD-44AA03D6340D} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
 		{575A3C3B-17BA-4A8A-9F53-05320913D0A6} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
+		{5A081DFC-0269-480B-853A-89D09AF478A8} = {072853A5-377B-47C4-8644-AF1F4FD669E2}
 		{80721425-68E5-48DC-87EA-41D63D0B45FA} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 		{4082CF04-086F-4D12-B98C-79B74E294C29} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 	EndGlobalSection
