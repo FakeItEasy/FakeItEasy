@@ -582,9 +582,6 @@
     <Compile Include="..\FakeItEasy\IOutputWriter.cs">
       <Link>IOutputWriter.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\ISequentialCallContext.cs">
-      <Link>ISequentialCallContext.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\MethodBaseExtensions.cs">
       <Link>MethodBaseExtensions.cs</Link>
     </Compile>
