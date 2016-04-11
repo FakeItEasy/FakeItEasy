@@ -33,7 +33,7 @@ namespace FakeItEasy.Configuration
             return new OrderedCallAssertion(context).Then(nextAssertion);
         }
 
-        private void CheckCallHappenedInOrder(Core.SequentialCallContext context)
+        private void CheckCallHappenedInOrder(SequentialCallContext context)
         {
             context.CheckNextCall(this.fakeManager, this.matcher.Matches, this.callDescription, this.repeatConstraint);
         }
