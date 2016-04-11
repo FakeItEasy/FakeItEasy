@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Gemfile.lock = Gemfile.lock
 		how_to_build.md = how_to_build.md
 		License.txt = License.txt
+		mkdocs.yml = mkdocs.yml
 		rakefile.rb = rakefile.rb
 		README.md = README.md
 		Settings.StyleCop = Settings.StyleCop
@@ -72,6 +73,46 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2EEDF4EB-ED06-4370-9C0A-59502DF1B7F6}"
 	ProjectSection(SolutionItems) = preProject
 		samples\FakeItEasy.Examples.ruleset = samples\FakeItEasy.Examples.ruleset
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-377B-47C4-8644-AF1F4FD669E2}"
+	ProjectSection(SolutionItems) = preProject
+		docs\argument-constraints.md = docs\argument-constraints.md
+		docs\assertion.md = docs\assertion.md
+		docs\assigning-out-and-ref-parameters.md = docs\assigning-out-and-ref-parameters.md
+		docs\bootstrapper.md = docs\bootstrapper.md
+		docs\calling-base-methods.md = docs\calling-base-methods.md
+		docs\creating-fakes.md = docs\creating-fakes.md
+		docs\custom-dummy-creation.md = docs\custom-dummy-creation.md
+		docs\default-fake-behavior.md = docs\default-fake-behavior.md
+		docs\doing-nothing.md = docs\doing-nothing.md
+		docs\dummies.md = docs\dummies.md
+		docs\external-resources.md = docs\external-resources.md
+		docs\faking-async-methods.md = docs\faking-async-methods.md
+		docs\formatting-argument-values.md = docs\formatting-argument-values.md
+		docs\how-to-fake-internal-types.md = docs\how-to-fake-internal-types.md
+		docs\implicit-creation-options.md = docs\implicit-creation-options.md
+		docs\index.md = docs\index.md
+		docs\invoking-custom-code.md = docs\invoking-custom-code.md
+		docs\limited-call-specifications.md = docs\limited-call-specifications.md
+		docs\ordered-assertions.md = docs\ordered-assertions.md
+		docs\platform-support.md = docs\platform-support.md
+		docs\quickstart.md = docs\quickstart.md
+		docs\raising-events.md = docs\raising-events.md
+		docs\read-write-property-behavior.md = docs\read-write-property-behavior.md
+		docs\scanning-for-extension-points.md = docs\scanning-for-extension-points.md
+		docs\snippets-for-fakeiteasy-in-sidewaffle.md = docs\snippets-for-fakeiteasy-in-sidewaffle.md
+		docs\specifying-a-call-to-configure.md = docs\specifying-a-call-to-configure.md
+		docs\specifying-return-values.md = docs\specifying-return-values.md
+		docs\strict-fakes.md = docs\strict-fakes.md
+		docs\throwing-exceptions.md = docs\throwing-exceptions.md
+		docs\what-can-be-faked.md = docs\what-can-be-faked.md
+		docs\why-was-fakeiteasy-created.md = docs\why-was-fakeiteasy-created.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "css", "css", "{5A081DFC-0269-480B-853A-89D09AF478A8}"
+	ProjectSection(SolutionItems) = preProject
+		docs\css\extra-highlight.css = docs\css\extra-highlight.css
 	EndProjectSection
 EndProject
 Global
@@ -138,6 +179,7 @@ Global
 		{DC5EAE30-96E3-4D38-B3C5-33E587C9FB76} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
 		{5D41D463-D53B-4ADC-90AD-44AA03D6340D} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
 		{575A3C3B-17BA-4A8A-9F53-05320913D0A6} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
+		{5A081DFC-0269-480B-853A-89D09AF478A8} = {072853A5-377B-47C4-8644-AF1F4FD669E2}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 0.1
