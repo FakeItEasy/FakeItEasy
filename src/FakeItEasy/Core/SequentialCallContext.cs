@@ -20,15 +20,21 @@ namespace FakeItEasy.Core
             this.currentSequenceNumber = -1;
         }
 
-        public void CheckNextCall(FakeManager fakeManager, Func<IFakeObjectCall, bool> callPredicate, string callDescription, Repeated repeatConstraint)
+        public void CheckNextCall(
+            FakeManager fakeManager,
+            Func<IFakeObjectCall, bool> callPredicate,
+            string callDescription,
+            Repeated repeatConstraint)
         {
             Guard.AgainstNull(fakeManager, "fakeManager");
             Guard.AgainstNull(callPredicate, "callPredicate");
             Guard.AgainstNull(callDescription, "callDescription");
             Guard.AgainstNull(repeatConstraint, "repeatConstraint");
             this.fakeManagers.Add(fakeManager);
-            this.assertedCalls.Add(new AssertedCall { CallDescription = callDescription, RepeatDescription = repeatConstraint.ToString() });
-            var allCalls = this.fakeManagers.SelectMany(f => f.GetRecordedCalls().Cast<IFakeObjectCall>()).OrderBy(c => c.SequenceNumber).ToList();
+            this.assertedCalls.Add(
+                new AssertedCall { CallDescription = callDescription, RepeatDescription = repeatConstraint.ToString() });
+
+            var allCalls = this.fakeManagers.SelectMany(f => f.GetRecordedCalls()).OrderBy(c => c.SequenceNumber).ToList();
 
             int matchedCallCount = 0;
             foreach (var currentCall in allCalls.SkipWhile(c => c.SequenceNumber <= this.currentSequenceNumber))
@@ -51,7 +57,8 @@ namespace FakeItEasy.Core
             }
         }
 
-        private static void ThrowExceptionWhenAssertionFailed(List<AssertedCall> assertedCalls, CallWriter callWriter, IEnumerable<IFakeObjectCall> originalCallList)
+        private static void ThrowExceptionWhenAssertionFailed(
+            List<AssertedCall> assertedCalls, CallWriter callWriter, List<ICompletedFakeObjectCall> originalCallList)
         {
             var message = new StringBuilderOutputWriter();
 
