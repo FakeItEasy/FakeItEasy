@@ -3,7 +3,7 @@ namespace FakeItEasy.Tests
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
+    using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
     using FluentAssertions;
@@ -13,17 +13,25 @@ namespace FakeItEasy.Tests
     public class ServiceLocatorTests
     {
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private readonly Type[] singletonTypes =
+        private static IEnumerable<Type> SingletonTypes
         {
-            typeof(IExpressionCallMatcherFactory),
-            typeof(ExpressionArgumentConstraintFactory),
-            typeof(IProxyGenerator)
-        };
+            get
+            {
+                yield return typeof(IExpressionCallMatcherFactory);
+                yield return typeof(ExpressionArgumentConstraintFactory);
+                yield return typeof(IProxyGenerator);
+            }
+        }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Used reflectively.")]
-        private IEnumerable<Type> NonSingletonTypes
+        private static IEnumerable<Type> NonSingletonTypes
         {
-            get { return Enumerable.Empty<Type>(); }
+            get
+            {
+                yield return typeof(IFakeCreatorFacade);
+                yield return typeof(IFakeAndDummyManager);
+                yield return typeof(IFixtureInitializer);
+            }
         }
 
         [Test]
@@ -33,7 +41,7 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void Should_be_registered_as_singleton([ValueSource("singletonTypes")] Type type)
+        public void Should_be_registered_as_singleton([ValueSource(nameof(SingletonTypes))] Type type)
         {
             var first = ServiceLocator.Current.Resolve(type);
             var second = ServiceLocator.Current.Resolve(type);
@@ -42,7 +50,7 @@ namespace FakeItEasy.Tests
         }
 
         [Test]
-        public void Should_be_registered_as_non_singleton([ValueSource("NonSingletonTypes")] Type type)
+        public void Should_be_registered_as_non_singleton([ValueSource(nameof(NonSingletonTypes))] Type type)
         {
             var first = ServiceLocator.Current.Resolve(type);
             var second = ServiceLocator.Current.Resolve(type);
