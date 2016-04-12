@@ -5,7 +5,7 @@ namespace FakeItEasy.Core
     using System.Reflection;
 
     /// <content>Property behavior rule.</content>
-    public partial class FakeManager
+    internal partial class FakeManager
     {
         private class PropertyBehaviorRule
             : IFakeObjectCallRule

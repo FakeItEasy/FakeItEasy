@@ -5,7 +5,7 @@ namespace FakeItEasy.Core
     using FakeItEasy.Creation;
 
     /// <content>Object member rule.</content>
-    public partial class FakeManager
+    internal partial class FakeManager
     {
         [Serializable]
         private class ObjectMemberRule

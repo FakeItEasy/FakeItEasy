@@ -23,7 +23,7 @@ namespace FakeItEasy
         /// <returns>The fake object manager.</returns>
         [DebuggerStepThrough]
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
-        public static FakeManager GetFakeManager(object fakedObject)
+        internal static FakeManager GetFakeManager(object fakedObject)
         {
             return Facade.GetFakeManager(fakedObject);
         }

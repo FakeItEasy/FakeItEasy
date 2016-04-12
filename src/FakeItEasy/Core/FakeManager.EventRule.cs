@@ -7,7 +7,7 @@ namespace FakeItEasy.Core
     using System.Reflection;
 
     /// <content>Event rule.</content>
-    public partial class FakeManager
+    internal partial class FakeManager
     {
         [Serializable]
         [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Would provide no benefit since there is no place from where to call the Dispose-method.")]

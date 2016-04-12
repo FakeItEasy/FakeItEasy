@@ -4,7 +4,7 @@ namespace FakeItEasy.Core
     using System.Linq;
 
     /// <content>Auto fake property rule.</content>
-    public partial class FakeManager
+    internal partial class FakeManager
     {
         [Serializable]
         private class AutoFakePropertyRule
