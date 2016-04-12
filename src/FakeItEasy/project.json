@@ -6,6 +6,9 @@
   "projectUrl": "",
   "licenseUrl": "",
 
+  "dependencies": {
+    "Castle.Core": "4.0.0-alpha001"
+  },
   "frameworks": {
     "net451": {
       "compilationOptions": {
@@ -13,7 +16,6 @@
         "keyFile": "../../FakeItEasy.snk"
       },
       "dependencies": {
-        "Castle.Core": "4.0.0-alpha001"
       }
     },
     "dotnet5.4": {
@@ -22,7 +24,6 @@
         "keyFile": "../../FakeItEasy.snk"
       },
       "dependencies": {
-        "Castle.Core": "4.0.0-alpha001",
         "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
         "System.Collections.Concurrent": "4.0.11-beta-23516",
         "System.Console": "4.0.0-beta-23516",
