@@ -28,7 +28,7 @@ namespace FakeItEasy.Core
             Guard.AgainstNull(repeatConstraint, "repeatConstraint");
             this.fakeManagers.Add(fakeManager);
             this.assertedCalls.Add(new AssertedCall { CallDescription = callDescription, RepeatDescription = repeatConstraint.ToString() });
-            var allCalls = this.fakeManagers.SelectMany(f => f.GetRecordedCalls().Cast<IFakeObjectCall>()).OrderBy(c => c.SequenceNumber).ToList();
+            var allCalls = this.fakeManagers.SelectMany(f => f.GetRecordedCalls()).OrderBy(c => c.SequenceNumber).ToList();
 
             int matchedCallCount = 0;
             foreach (var currentCall in allCalls.SkipWhile(c => c.SequenceNumber <= this.currentSequenceNumber))
@@ -47,7 +47,7 @@ namespace FakeItEasy.Core
 
             if (!repeatConstraint.Matches(matchedCallCount))
             {
-                ThrowExceptionWhenAssertionFailed(this.assertedCalls, this.callWriter, allCalls);
+                ThrowExceptionWhenAssertionFailed(this.assertedCalls, this.callWriter, allCalls.Cast<IFakeObjectCall>());
             }
         }
 
