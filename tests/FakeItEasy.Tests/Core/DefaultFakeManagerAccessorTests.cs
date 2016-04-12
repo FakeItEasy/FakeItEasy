@@ -1,8 +1,10 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
+    using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -26,8 +28,8 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.accessor.TagProxy(A.Fake<object>(), A.Fake<FakeManager>()));
+            Expression<Action> call = () => this.accessor.TagProxy(A.Fake<object>(), A.Fake<FakeManager>());
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -67,8 +69,8 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.accessor.GetFakeManager(A.Fake<ITaggable>()));
+            Expression<Action> call = () => this.accessor.GetFakeManager(A.Fake<ITaggable>());
+            call.Should().BeNullGuarded();
         }
 
         [Test]

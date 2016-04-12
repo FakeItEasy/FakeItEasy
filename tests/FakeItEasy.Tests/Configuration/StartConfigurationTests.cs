@@ -5,6 +5,7 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -72,8 +73,9 @@ namespace FakeItEasy.Tests.Configuration
             var configuration = this.CreateConfiguration<IFoo>();
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                configuration.CallsTo(x => x.Bar()));
+            Expression<Action> call = () =>
+                configuration.CallsTo(x => x.Bar());
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -131,8 +133,9 @@ namespace FakeItEasy.Tests.Configuration
             var configuration = this.CreateConfiguration<IFoo>();
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                configuration.CallsTo(x => x.Baz()));
+            Expression<Action> call = () =>
+                configuration.CallsTo(x => x.Baz());
+            call.Should().BeNullGuarded();
         }
 
         [Test]

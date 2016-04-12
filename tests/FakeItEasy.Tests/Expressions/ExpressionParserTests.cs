@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.Expressions
     using System;
     using System.Linq.Expressions;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests;
     using FluentAssertions;
     using NUnit.Framework;
     using TestHelpers;
@@ -25,8 +26,9 @@ namespace FakeItEasy.Tests.Expressions
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.parser.GetFakeManagerCallIsMadeOn(CreateDummyExpression()));
+            Expression<Action> call = () =>
+                this.parser.GetFakeManagerCallIsMadeOn(CreateDummyExpression());
+            call.Should().BeNullGuarded();
         }
 
         [Test]

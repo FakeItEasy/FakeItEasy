@@ -1,5 +1,6 @@
 namespace FakeItEasy.Tests
 {
+    using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FluentAssertions;
     using NUnit.Framework;
@@ -45,8 +46,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.facade.GetFakeManager(A.Dummy<IFoo>()));
+            Expression<System.Action> call = () => this.facade.GetFakeManager(A.Dummy<IFoo>());
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -73,8 +74,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.facade.GetCalls(A.Dummy<object>()));
+            Expression<System.Action> call = () => this.facade.GetCalls(A.Dummy<object>());
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -85,8 +86,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.facade.ClearConfiguration(A.Dummy<object>()));
+            Expression<System.Action> call = () => this.facade.ClearConfiguration(A.Dummy<object>());
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -110,8 +111,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.facade.InitializeFixture(new object()));
+             Expression<System.Action> call = () => this.facade.InitializeFixture(new object());
+            call.Should().BeNullGuarded();
         }
     }
 }

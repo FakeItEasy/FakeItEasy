@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using System.Linq;
+    using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using NUnit.Framework;
 
@@ -29,8 +30,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                A.Fake<IAssertConfiguration>().MustHaveHappened());
+            Expression<System.Action> call = () => A.Fake<IAssertConfiguration>().MustHaveHappened();
+            call.Should().BeNullGuarded();
         }
 
         [TestCase(0, Result = true)]
@@ -57,8 +58,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                A.Fake<IAssertConfiguration>().MustNotHaveHappened());
+            Expression<System.Action> call = () => A.Fake<IAssertConfiguration>().MustNotHaveHappened();
+            call.Should().BeNullGuarded();
         }
     }
 }

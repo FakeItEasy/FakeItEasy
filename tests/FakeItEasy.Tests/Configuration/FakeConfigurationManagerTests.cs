@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests;
     using FluentAssertions;
     using NUnit.Framework;
 
@@ -94,8 +95,9 @@ namespace FakeItEasy.Tests.Configuration
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.configurationManager.CallTo(() => foo.Bar()));
+            Expression<Action> call = () =>
+                this.configurationManager.CallTo(() => foo.Bar());
+            call.Should().BeNullGuarded();
         }
 
         // CallTo with function calls
@@ -162,8 +164,9 @@ namespace FakeItEasy.Tests.Configuration
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.configurationManager.CallTo(() => string.Empty.Length));
+            Expression<Action> call = () =>
+                this.configurationManager.CallTo(() => string.Empty.Length);
+            call.Should().BeNullGuarded();
         }
 
         [Test]

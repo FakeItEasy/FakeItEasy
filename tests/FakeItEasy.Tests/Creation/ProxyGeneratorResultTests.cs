@@ -1,8 +1,10 @@
 namespace FakeItEasy.Tests.Creation
 {
     using System;
+    using System.Linq.Expressions;
     using System.Reflection;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -144,8 +146,8 @@ namespace FakeItEasy.Tests.Creation
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                new ProxyGeneratorResult("reason"));
+            Expression<Action> call = () => new ProxyGeneratorResult("reason");
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -156,8 +158,8 @@ namespace FakeItEasy.Tests.Creation
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                new ProxyGeneratorResult(A.Dummy<ITaggable>()));
+            Expression<Action> call = () => new ProxyGeneratorResult(A.Dummy<ITaggable>());
+            call.Should().BeNullGuarded();
         }
     }
 }

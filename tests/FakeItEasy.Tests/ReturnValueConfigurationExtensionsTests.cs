@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -98,8 +99,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                A.Fake<IReturnValueConfiguration<string>>().Returns(null));
+            Expression<Action> call = () => A.Fake<IReturnValueConfiguration<string>>().Returns(null);
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -797,8 +798,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                A.Fake<IReturnValueConfiguration<int>>().ReturnsLazily(() => 10));
+            Expression<Action> call = () => A.Fake<IReturnValueConfiguration<int>>().ReturnsLazily(() => 10);
+            call.Should().BeNullGuarded();
         }
 
         [Test]

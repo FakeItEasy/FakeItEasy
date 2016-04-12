@@ -10,7 +10,7 @@ namespace FakeItEasy.Tests
 
     [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Disposed in teardown.")]
     [TestFixture]
-    public class NullGuardedConstraintTests
+    public class NullGuardedAssertionTests
     {
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "text", Justification = "Required for testing.")]
         public static void UnguardedStaticMethod(string text)
@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests
         [Test]
         public void Assert_should_throw_when_call_is_null()
         {
-            var exception = Record.Exception(() => NullGuardedConstraint.Assert(null));
+            var exception = Record.Exception(() => ((Expression<Action>)null).Should().BeNullGuarded());
             exception.Should().BeAnExceptionOfType<ArgumentNullException>();
         }
 
@@ -64,14 +64,14 @@ namespace FakeItEasy.Tests
         public void Assert_should_include_method_signature_in_error_message_when_call_is_non_guarded_constructor()
         {
             AssertShouldFail(() => new ClassWithNonProperlyGuardedConstructor("foo", "bar")).And
-                .Message.Should().Contain("Expected calls to FakeItEasy.Tests.NullGuardedConstraintTests+ClassWithNonProperlyGuardedConstructor.ctor([String] a, [String] b) to be null guarded.");
+                .Message.Should().Contain("Expected calls to FakeItEasy.Tests.NullGuardedAssertionTests+ClassWithNonProperlyGuardedConstructor.ctor([String] a, [String] b) to be null guarded.");
         }
 
         [Test]
         public void Assert_should_include_method_signature_in_error_message_when_call_is_non_guarded_method()
         {
             AssertShouldFail(() => this.UnguardedMethod("foo", "bar")).And
-                .Message.Should().Contain("Expected calls to NullGuardedConstraintTests.UnguardedMethod([String] a, [String] b) to be null guarded.");
+                .Message.Should().Contain("Expected calls to NullGuardedAssertionTests.UnguardedMethod([String] a, [String] b) to be null guarded.");
         }
 
         [Test]
@@ -128,15 +128,13 @@ namespace FakeItEasy.Tests
 
         private static void AssertShouldPass(Expression<Action> call)
         {
-            var exception = Record.Exception(() =>
-                NullGuardedConstraint.Assert(call));
+            var exception = Record.Exception(() => call.Should().BeNullGuarded());
             exception.Should().BeNull();
         }
 
         private static ExceptionAssertions<AssertionException> AssertShouldFail(Expression<Action> call)
         {
-            var exception = Record.Exception(() =>
-                NullGuardedConstraint.Assert(call));
+            var exception = Record.Exception(() => call.Should().BeNullGuarded());
             return exception.Should().BeAnExceptionOfType<AssertionException>();
         }
 

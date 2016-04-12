@@ -33,8 +33,9 @@ namespace FakeItEasy.Tests
         {
             Action<IFakeOptions<Foo>> optionsBuilder = x => { };
 
-            NullGuardedConstraint.Assert(() =>
-                new Fake<Foo>(optionsBuilder));
+            Expression<Action> call = () =>
+                new Fake<Foo>(optionsBuilder);
+            call.Should().BeNullGuarded();
         }
 
         [Test]

@@ -3,10 +3,12 @@ namespace FakeItEasy.Tests.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -294,8 +296,8 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                fake.RemoveRule(ExpressionHelper.CreateRule<IFoo>(x => x.Bar())));
+            Expression<Action> call = () => fake.RemoveRule(ExpressionHelper.CreateRule<IFoo>(x => x.Bar()));
+            call.Should().BeNullGuarded();
         }
 
         [Test]

@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using System;
+    using System.Linq.Expressions;
     using FakeItEasy.Creation;
     using FluentAssertions;
     using NUnit.Framework;
@@ -46,8 +47,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                A.Dummy<IFakeOptions<IFoo>>().Strict());
+            Expression<Action> call = () => A.Dummy<IFakeOptions<IFoo>>().Strict();
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -98,8 +99,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                A.Dummy<IFakeOptions<IFoo>>().CallsBaseMethods());
+            Expression<Action> call = () => A.Dummy<IFakeOptions<IFoo>>().CallsBaseMethods();
+            call.Should().BeNullGuarded();
         }
 
         public class ConcreteClass

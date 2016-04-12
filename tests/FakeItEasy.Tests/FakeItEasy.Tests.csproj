@@ -206,9 +206,9 @@
     <Compile Include="FakeCall.cs" />
     <Compile Include="FakeCallRule.cs" />
     <Compile Include="FakeTests.cs" />
-    <Compile Include="NullGuardedConstraintTests.cs" />
+    <Compile Include="NullGuardedAssertionTests.cs" />
     <Compile Include="IFoo.cs" />
-    <Compile Include="NullGuardedConstraint.cs" />
+    <Compile Include="NullGuardedAssertion.cs" />
     <Compile Include="RaiseTests.cs" />
     <Compile Include="ServiceLocatorTests.cs" />
     <Compile Include="SyntaxTests.cs" />
