@@ -2,7 +2,6 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
 
     internal class CallWriter
@@ -38,11 +37,11 @@ namespace FakeItEasy.Core
                 else
                 {
                     callInfos.Add(new CallInfo
-                                      {
-                                          Call = call,
-                                          CallNumber = i + 1,
-                                          StringRepresentation = this.callFormatter.GetDescription(call)
-                                      });
+                    {
+                        Call = call,
+                        CallNumber = i + 1,
+                        StringRepresentation = this.callFormatter.GetDescription(call)
+                    });
                 }
             }
 
