@@ -47,11 +47,11 @@ namespace FakeItEasy.Core
 
             if (!repeatConstraint.Matches(matchedCallCount))
             {
-                ThrowExceptionWhenAssertionFailed(this.assertedCalls, this.callWriter, allCalls.Cast<IFakeObjectCall>());
+                ThrowExceptionWhenAssertionFailed(this.assertedCalls, this.callWriter, allCalls);
             }
         }
 
-        private static void ThrowExceptionWhenAssertionFailed(List<AssertedCall> assertedCalls, CallWriter callWriter, IEnumerable<IFakeObjectCall> originalCallList)
+        private static void ThrowExceptionWhenAssertionFailed(List<AssertedCall> assertedCalls, CallWriter callWriter, IEnumerable<ICompletedFakeObjectCall> originalCallList)
         {
             var message = new StringBuilderOutputWriter();
 

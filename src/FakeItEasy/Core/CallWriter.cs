@@ -17,7 +17,7 @@ namespace FakeItEasy.Core
             this.callComparer = callComparer;
         }
 
-        public virtual void WriteCalls(IEnumerable<IFakeObjectCall> calls, IOutputWriter writer)
+        public virtual void WriteCalls<T>(IEnumerable<T> calls, IOutputWriter writer) where T : IFakeObjectCall
         {
             if (!calls.Any())
             {
