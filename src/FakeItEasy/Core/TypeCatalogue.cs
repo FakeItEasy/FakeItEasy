@@ -200,7 +200,7 @@ namespace FakeItEasy.Core
             protected override Assembly Load(AssemblyName assemblyName)
             {
                 Console.WriteLine("loading {0}", assemblyName.Name);
-                return base.LoadFromAssemblyPath(System.IO.Path.Combine(this.BasePath ?? System.IO.Directory.GetCurrentDirectory(), assemblyName.Name) + ".dll");
+                return this.LoadFromAssemblyPath(System.IO.Path.Combine(this.BasePath ?? System.IO.Directory.GetCurrentDirectory(), assemblyName.Name) + ".dll");
             }
         }
 #endif
