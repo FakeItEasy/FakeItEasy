@@ -41,10 +41,8 @@
     }
   },
   "compileFiles": [
+    "../AssemblyInfo.cs",
     "../CommonAssemblyInfo.cs",
     "../MethodInfoWrapper.cs"
-  ],
-  "exclude": [
-    "Configuration/IRecording*.cs"
   ]
 }
