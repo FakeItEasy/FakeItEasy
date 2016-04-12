@@ -25,39 +25,6 @@
         }
 
         /// <summary>
-        /// Called to test a VB DiagnosticAnalyzer when applied on the single inputted string as a source.
-        /// Note: input a DiagnosticResult for each Diagnostic expected.
-        /// </summary>
-        /// <param name="source">A class in the form of a string to run the analyzer on.</param>
-        /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the source.</param>
-        internal void VerifyBasicDiagnostic(string source, params DiagnosticResult[] expected)
-        {
-            this.VerifyDiagnostics(new[] { source }, LanguageNames.VisualBasic, this.GetBasicDiagnosticAnalyzer(), expected);
-        }
-
-        /// <summary>
-        /// Called to test a C# DiagnosticAnalyzer when applied on the inputted strings as a source.
-        /// Note: input a DiagnosticResult for each Diagnostic expected.
-        /// </summary>
-        /// <param name="sources">An array of strings to create source documents from to run the analyzers on.</param>
-        /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources.</param>
-        internal void VerifyCSharpDiagnostic(string[] sources, params DiagnosticResult[] expected)
-        {
-            this.VerifyDiagnostics(sources, LanguageNames.CSharp, this.GetCSharpDiagnosticAnalyzer(), expected);
-        }
-
-        /// <summary>
-        /// Called to test a VB DiagnosticAnalyzer when applied on the inputted strings as a source.
-        /// Note: input a DiagnosticResult for each Diagnostic expected.
-        /// </summary>
-        /// <param name="sources">An array of strings to create source documents from to run the analyzers on.</param>
-        /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources.</param>
-        internal void VerifyBasicDiagnostic(string[] sources, params DiagnosticResult[] expected)
-        {
-            this.VerifyDiagnostics(sources, LanguageNames.VisualBasic, this.GetBasicDiagnosticAnalyzer(), expected);
-        }
-
-        /// <summary>
         /// Get the CSharp analyzer being tested - to be implemented in non-abstract class.
         /// </summary>
         /// <returns>The diagnostic analyzer being tested.</returns>
