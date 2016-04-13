@@ -12,7 +12,7 @@ namespace FakeItEasy.Tests
     [TestFixture]
     public class ServiceLocatorTests
     {
-        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Used reflectively.")]
         private static IEnumerable<Type> SingletonTypes
         {
             get
