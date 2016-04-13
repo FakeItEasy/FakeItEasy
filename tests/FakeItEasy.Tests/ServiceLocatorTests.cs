@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -12,27 +11,21 @@ namespace FakeItEasy.Tests
     [TestFixture]
     public class ServiceLocatorTests
     {
-        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Used reflectively.")]
-        private static IEnumerable<Type> SingletonTypes
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
+        private static readonly Type[] SingletonTypes = new[]
         {
-            get
-            {
-                yield return typeof(IExpressionCallMatcherFactory);
-                yield return typeof(ExpressionArgumentConstraintFactory);
-                yield return typeof(IProxyGenerator);
-            }
-        }
+            typeof(IExpressionCallMatcherFactory),
+            typeof(ExpressionArgumentConstraintFactory),
+            typeof(IProxyGenerator)
+        };
 
-        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Used reflectively.")]
-        private static IEnumerable<Type> NonSingletonTypes
+        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
+        private static readonly Type[] NonSingletonTypes = new[]
         {
-            get
-            {
-                yield return typeof(IFakeCreatorFacade);
-                yield return typeof(IFakeAndDummyManager);
-                yield return typeof(IFixtureInitializer);
-            }
-        }
+            typeof(IFakeCreatorFacade),
+            typeof(IFakeAndDummyManager),
+            typeof(IFixtureInitializer)
+        };
 
         [Test]
         public void Current_should_not_be_null()
