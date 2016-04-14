@@ -65,6 +65,18 @@
     <Compile Include="..\FakeItEasy\Analysis\Diagnostics.cs">
       <Link>Analysis\Diagnostics.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IDoNothingConfiguration.cs">
+      <Link>IDoNothingConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IPropertySetterAnyValueConfiguration.cs">
+      <Link>Configuration\IPropertySetterAnyValueConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IPropertySetterConfiguration.cs">
+      <Link>Configuration\IPropertySetterConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\PropertySetterConfiguration.cs">
+      <Link>Configuration\PropertySetterConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>

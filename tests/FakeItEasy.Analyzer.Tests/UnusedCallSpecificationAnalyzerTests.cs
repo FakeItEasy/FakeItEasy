@@ -205,6 +205,105 @@ namespace TheNamespace
                 });
         }
 
+        [Test]
+        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallToSet", Justification = "It's an identifier")]
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var foo = A.Fake<IFoo>();
+            A.CallToSet(() => foo.Bar);
+        }
+    }
+
+    interface IFoo { int Bar { get; set; } }
+}
+";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallToSet(() => foo.Bar)'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
+        [Test]
+        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallToSet", Justification = "It's an identifier")]
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet_To_Value()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var foo = A.Fake<IFoo>();
+            A.CallToSet(() => foo.Bar).To(9);
+        }
+    }
+
+    interface IFoo { int Bar { get; set; } }
+}
+";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallToSet(() => foo.Bar).To(9)'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
+        [Test]
+        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallToSet", Justification = "It's an identifier")]
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet_To_Expression()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var foo = A.Fake<IFoo>();
+            A.CallToSet(() => foo.Bar).To(() => A<int>.That.Matches(i => i > 3);
+        }
+    }
+
+    interface IFoo { int Bar { get; set; } }
+}
+";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallToSet(() => foo.Bar).To(() => A<int>.That.Matches(i => i > 3)'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new UnusedReturnValueAnalyzer();

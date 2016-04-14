@@ -14,5 +14,7 @@ namespace FakeItEasy.Configuration
         IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification);
 
         IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fakeObject);
+
+        IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(Expression<Func<TValue>> propertySpecification);
     }
 }

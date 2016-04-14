@@ -114,5 +114,18 @@ namespace FakeItEasy
         {
             return ConfigurationManager.CallTo(callSpecification);
         }
+
+        /// <summary>
+        /// Configures a property setter on a faked object.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the property value.</typeparam>
+        /// <param name="propertySpecification">An expression that uses the getter aspect of the property to configure.</param>
+        /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
+        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
+        public static IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(Expression<Func<TValue>> propertySpecification)
+        {
+            return ConfigurationManager.CallToSet(propertySpecification);
+        }
     }
 }
