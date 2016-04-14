@@ -100,7 +100,7 @@ namespace TheNamespace
                     Id = UnusedCallSpecificationAnalyzer.DiagnosticId,
                     Message =
                         "Unused call specification for 'foo.Bar()'; did you forget to configure or assert the call?",
-                    Severity = DiagnosticSeverity.Warning,
+                    Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
                 });
         }

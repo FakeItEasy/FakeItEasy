@@ -17,7 +17,7 @@ namespace FakeItEasy.Analyzer
         internal static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.UnusedCallSpecificationMessageFormat), Resources.ResourceManager, typeof(Resources));
         internal static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.UnusedCallSpecificationDescription), Resources.ResourceManager, typeof(Resources));
 
-        internal static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+        internal static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Error, isEnabledByDefault: true, description: Description);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
