@@ -5,7 +5,7 @@ namespace FakeItEasy.Specs
     using FluentAssertions;
     using Xbehave;
 
-    public static class PropertySpecs
+    public static class UnconfiguredPropertySpecs
     {
         public interface IHaveInterestingProperties
         {
