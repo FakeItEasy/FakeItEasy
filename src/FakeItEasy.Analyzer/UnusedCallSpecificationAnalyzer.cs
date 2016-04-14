@@ -10,7 +10,7 @@ namespace FakeItEasy.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class UnusedCallSpecificationAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "UnusedCallSpecification";
+        public const string DiagnosticId = "FakeItEasy001";
         internal const string Category = "Usage";
 
         internal static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.UnusedCallSpecificationTitle), Resources.ResourceManager, typeof(Resources));
