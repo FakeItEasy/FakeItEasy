@@ -5,141 +5,142 @@ namespace FakeItEasy.Specs
     using FluentAssertions;
     using Xbehave;
 
-    public interface IHaveInterestingProperties
-    {
-        IHaveInterestingProperties FakeableProperty { get; }
-
-        UnfakeableClass UnfakeableProperty { get; }
-
-        [SuppressMessage("Microsoft.Design",
-            "CA1023:IndexersShouldNotBeMultidimensional", Justification = "Required for testing.")]
-        [SuppressMessage("Microsoft.Design",
-            "CA1002:DoNotExposeGenericLists", Justification = "Required for testing.")]
-        List<string> this[int index1, bool index2] { get; set; }
-    }
-
     public static class PropertySpecs
     {
-        [Scenario]
-        public static void SettingIndexedProperty(
-            IHaveInterestingProperties subject)
+        public interface IHaveInterestingProperties
         {
-            "establish"
-                .x(() => subject = A.Fake<IHaveInterestingProperties>());
+            IHaveInterestingProperties FakeableProperty { get; }
 
-            "when setting the value of an indexed property"
-                .x(() => subject[17, true] = new List<string> { "hippo", "lemur" });
+            UnfakeableClass UnfakeableProperty { get; }
 
-            "it should return the value to the getter with same indexes"
-                .x(() => subject[17, true].Should().BeEquivalentTo("hippo", "lemur"));
-
-            "it should return the same instance each time the getter is called with those indexes"
-                .x(() =>
-                    {
-                        var firstResult = subject[17, true];
-                        var secondResult = subject[17, true];
-                        ReferenceEquals(firstResult, secondResult)
-                            .Should().BeTrue("property getters should return the same object every time");
-                    });
-
-            "it should return the default value to getters with different indexes"
-                .x(() =>
-                    {
-                        var result = subject[-183, true];
-                        result.Should().BeEmpty();
-                    });
-
-            "it should return the same instance each time the getter is called with other indexes"
-                .x(() =>
-                    {
-                        var firstResult = subject[18, false];
-                        var secondResult = subject[18, false];
-                        ReferenceEquals(firstResult, secondResult)
-                            .Should().BeTrue("property getters should return the same object every time");
-                    });
+            [SuppressMessage("Microsoft.Design", "CA1023:IndexersShouldNotBeMultidimensional", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Justification = "Required for testing.")]
+            List<string> this[int index1, bool index2] { get; set; }
         }
 
         [Scenario]
-        public static void SettingIndexedPropertyForDifferentIndexes(
-            IHaveInterestingProperties subject)
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Justification = "Required for testing.")]
+        public static void SettingIndexedProperty(
+            IHaveInterestingProperties subject,
+            List<string> firstGetResultForOriginalIndexes,
+            List<string> firstGetResultForDifferentIndexes)
         {
-            "establish"
+            "Given a Fake with an indexed property"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "when setting the value of an indexed property for different indexes"
-                .x(() =>
-                    {
-                        subject[17, true] = new List<string> { "hippo", "lemur" };
-                        subject[17, false] = new List<string> { "corgi", "chicken" };
-                    });
+            "When I set the value of the property"
+                .x(() => subject[17, true] = new List<string> { "hippo", "lemur" });
 
-            "it should return the correct value for the first indexes"
-                .x(() => subject[17, true].Should().BeEquivalentTo("hippo", "lemur"));
+            "And I call the getter with the original indexes"
+                .x(() => firstGetResultForOriginalIndexes = subject[17, true]);
 
-            "it should return the correct value for the second indexes"
-                .x(() => subject[17, false].Should().BeEquivalentTo("corgi", "chicken"));
+            "And I call the getter with different indexes"
+                .x(() => firstGetResultForDifferentIndexes = subject[-183, true]);
+
+            "Then the property returns the supplied value when called using the original indexes"
+                .x(() => firstGetResultForOriginalIndexes.Should().BeEquivalentTo("hippo", "lemur"));
+
+            "And the property returns the same instance when called again with those indexes"
+                .x(() => subject[17, true].Should()
+                    .BeSameAs(firstGetResultForOriginalIndexes, "property getters should return the same object every time"));
+
+            "And the property returns the default value when called using the different indexes"
+                .x(() => firstGetResultForDifferentIndexes.Should().BeEmpty());
+
+            "And the property returns the same instance when called again with those indexes"
+                .x(() => subject[-183, true].Should().BeSameAs(firstGetResultForDifferentIndexes));
+        }
+
+        [Scenario]
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Justification = "Required for testing.")]
+        public static void SettingIndexedPropertyForDifferentIndexes(
+            IHaveInterestingProperties subject,
+            List<string> getResultForFirstIndexes,
+            List<string> getResultForSecondIndexes)
+        {
+            "Given a Fake with an indexed property"
+                .x(() => subject = A.Fake<IHaveInterestingProperties>());
+
+            "When I set the value of the property"
+                .x(() => subject[17, true] = new List<string> { "hippo", "lemur" });
+
+            "And I set the value of the property using different indexes"
+                .x(() => subject[17, false] = new List<string> { "corgi", "chicken" });
+
+            "And I call the getter with the original indexes"
+                .x(() => getResultForFirstIndexes = subject[17, true]);
+
+            "And I call the getter with the second indexes"
+                .x(() => getResultForSecondIndexes = subject[17, false]);
+
+            "Then the property returns the correct value when called with the original indexes"
+                .x(() => getResultForFirstIndexes.Should().BeEquivalentTo("hippo", "lemur"));
+
+            "And the property returns the correct value when called with the second indexes"
+                .x(() => getResultForSecondIndexes.Should().BeEquivalentTo("corgi", "chicken"));
         }
 
         [Scenario]
         public static void GettingUnconfiguredFakeableProperty(
             IHaveInterestingProperties subject,
-            IHaveInterestingProperties firstValue,
-            IHaveInterestingProperties secondValue)
+            IHaveInterestingProperties firstGetResult,
+            IHaveInterestingProperties secondGetResult)
         {
-            "establish"
+            "Given a Fake with a property"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "when getting the value of an unconfigured fakeable property"
-                .x(() =>
-                    {
-                        firstValue = subject.FakeableProperty;
-                        secondValue = subject.FakeableProperty;
-                    });
+            "When I get the value of the property"
+                .x(() => firstGetResult = subject.FakeableProperty);
 
-            "it should not return null"
-                .x(() => firstValue.Should().NotBeNull());
+            "And I get the value of the property again"
+                .x(() => secondGetResult = subject.FakeableProperty);
 
-            "it should return the same instance on a subsequent get"
-                .x(() => secondValue.Should().BeSameAs(firstValue));
+            "Then the property does not return null the first time"
+                .x(() => firstGetResult.Should().NotBeNull());
+
+            "And the property returns the same instance when called again"
+                .x(() => secondGetResult.Should().BeSameAs(firstGetResult));
         }
 
         [Scenario]
-        public static void GettingUnconfiguredUnfakeableProperty(
+        public static void GettingUnconfiguredPropertyOfUnfakeableType(
             IHaveInterestingProperties subject,
-            UnfakeableClass firstValue,
-            UnfakeableClass secondValue)
+            UnfakeableClass firstGetResult,
+            UnfakeableClass secondGetResult)
         {
-            "establish"
+            "Given a Fake with a property whose type is unfakeable"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "when getting the value of an unconfigured unfakeable property"
-                .x(() =>
-                    {
-                        firstValue = subject.UnfakeableProperty;
-                        secondValue = subject.UnfakeableProperty;
-                    });
+            "And the property type can be made into a Dummy"
+                .x(() => { }); // see UnfakeableClass
 
-            "it should not return null if dummy can be made"
-                .x(() => firstValue.Should().NotBeNull());
+            "When I get the value of the property"
+                .x(() => firstGetResult = subject.UnfakeableProperty);
 
-            "it should return the same instance on a subsequent get"
-                .x(() => secondValue.Should().BeSameAs(firstValue));
-        }
-    }
+            "And I get the value of the property again"
+                .x(() => secondGetResult = subject.UnfakeableProperty);
 
-    public sealed class UnfakeableClass
-    {
-        private static int nextId;
-        private readonly int id;
+            "Then the property does not return null if a Dummy can be made"
+                .x(() => firstGetResult.Should().NotBeNull());
 
-        public UnfakeableClass()
-        {
-            this.id = ++nextId;
+            "And the property returns the same instance when called again"
+                .x(() => secondGetResult.Should().BeSameAs(firstGetResult));
         }
 
-        public override string ToString()
+        public sealed class UnfakeableClass
         {
-            return string.Concat("UnfakeableClass ", this.id);
+            private static int nextId;
+            private readonly int id;
+
+            public UnfakeableClass()
+            {
+                this.id = ++nextId;
+            }
+
+            public override string ToString()
+            {
+                return string.Concat("UnfakeableClass ", this.id);
+            }
         }
     }
 }
