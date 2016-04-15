@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
     using System.Collections.Generic;
     using System.Text;
     using FakeItEasy.Expressions.ArgumentConstraints;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -58,7 +59,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
 
             this.ConstraintField.WriteDescription(new StringBuilderOutputWriter(output));
 
-            Assert.That(output.ToString(), Is.EqualTo(this.ExpectedDescription));
+            output.ToString().Should().Be(this.ExpectedDescription);
         }
     }
 }

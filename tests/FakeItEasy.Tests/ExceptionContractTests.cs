@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests
     using System;
     using System.Reflection;
     using System.Runtime.Serialization;
+    using FluentAssertions;
     using NUnit.Framework;
 
     public abstract class ExceptionContractTests<T> where T : Exception
@@ -24,8 +25,9 @@ namespace FakeItEasy.Tests
             var constructor = typeof(T).GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(SerializationInfo), typeof(StreamingContext) }, null);
 
             // Assert
-            Assert.That(constructor, Is.Not.Null, "Exception classes should implement a constructor serialization constructor");
-            Assert.That(!constructor.IsPublic && !constructor.IsPrivate, "Serialization constructor should be protected.");
+            constructor.Should().NotBeNull("exception classes should implement a constructor serialization constructor");
+            constructor.IsPublic.Should().BeFalse("serialization constructor should be protected, not public");
+            constructor.IsPrivate.Should().BeFalse("serialization constructor should be protected, not private");
         }
 
         [Test]
@@ -37,7 +39,7 @@ namespace FakeItEasy.Tests
             var constructor = this.GetMessageOnlyConstructor();
 
             // Assert
-            Assert.That(constructor, Is.Not.Null, "Exception classes should provide a public message only constructor.");
+            constructor.Should().NotBeNull("Exception classes should provide a public message only constructor.");
         }
 
         [Test]
@@ -50,13 +52,13 @@ namespace FakeItEasy.Tests
             var result = (T)constructor.Invoke(new object[] { "A message" });
 
             // Assert
-            Assert.That(result.Message, Is.StringStarting("A message"));
+            result.Message.Should().StartWith("A message");
         }
 
         [Test]
         public void Exception_should_be_serializable()
         {
-            Assert.That(this.exception, Is.BinarySerializable);
+            this.exception.Should().BeBinarySerializable();
         }
 
         [Test]
@@ -68,7 +70,7 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            Assert.That(constructor, Is.Not.Null, "Exception classes should provide a public constructor that takes message and inner exception.");
+            constructor.Should().NotBeNull("exception classes should provide a public constructor that takes message and inner exception.");
         }
 
         [Test]
@@ -81,7 +83,7 @@ namespace FakeItEasy.Tests
             var result = (T)constructor.Invoke(new object[] { "A message", new InvalidOperationException() });
 
             // Assert
-            Assert.That(result.Message, Is.EqualTo("A message"));
+            result.Message.Should().Be("A message");
         }
 
         [Test]
@@ -95,7 +97,7 @@ namespace FakeItEasy.Tests
             var result = (T)constructor.Invoke(new object[] { string.Empty, innerException });
 
             // Assert
-            Assert.That(result.InnerException, Is.EqualTo(innerException));
+            result.InnerException.Should().Be(innerException);
         }
 
         [Test]
@@ -108,7 +110,7 @@ namespace FakeItEasy.Tests
             constructor.Invoke(new object[] { });
 
             // Assert
-            Assert.That(constructor, Is.Not.Null, "Exception classes should provide a public default constructor.");
+            constructor.Should().NotBeNull("exception classes should provide a public default constructor.");
         }
 
         protected abstract T CreateException();

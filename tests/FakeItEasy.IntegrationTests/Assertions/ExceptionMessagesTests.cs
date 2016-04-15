@@ -2,6 +2,8 @@ namespace FakeItEasy.IntegrationTests.Assertions
 {
     using System;
     using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -21,7 +23,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.ToString();
             foo.Biz();
 
-            var exception = Assert.Throws<ExpectationException>(() =>
+            var exception = Record.Exception(() =>
                 A.CallTo(() => foo.Bar(string.Empty)).MustHaveHappened(Repeated.AtLeast.Twice));
 
             var expectedMessage =
@@ -38,7 +40,8 @@ namespace FakeItEasy.IntegrationTests.Assertions
     6: FakeItEasy.Tests.IFoo.Biz()
 
 ";
-            Assert.That(exception.Message, Is.EqualTo(expectedMessage));
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                     .WithMessage(expectedMessage);
         }
 
         [Test]
@@ -51,7 +54,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.Bar(1, 2, "three");
             foo.Bar();
 
-            var exception = Assert.Throws<ExpectationException>(() =>
+            var exception = Record.Exception(() =>
                 A.CallTo(() => foo.Bar(string.Empty)).MustHaveHappened(Repeated.AtLeast.Twice));
 
             var expectedMessage =
@@ -68,7 +71,9 @@ namespace FakeItEasy.IntegrationTests.Assertions
     3: FakeItEasy.Tests.IFoo.Bar()
 
 ";
-            Assert.That(exception.Message, Is.EqualTo(expectedMessage));
+
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .WithMessage(expectedMessage);
         }
 
         [Test]
@@ -81,7 +86,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.Bar(new object(), "lorem ipsum");
 
             // Assert
-            var thrown = Assert.Throws<ExpectationException>(() =>
+            var exception = Record.Exception(() =>
                 A.CallTo(() => foo.Bar(A<object>._, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
 
             var expectedMessage =
@@ -94,7 +99,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
 ";
 
-            Assert.That(thrown.Message, Is.EqualTo(expectedMessage));
+            exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(expectedMessage);
         }
 
         [Test]
@@ -102,14 +107,13 @@ namespace FakeItEasy.IntegrationTests.Assertions
         {
             // Arrange
             var foo = A.Fake<IFoo>();
-
-            // Act
             foo.Baz(new object(), "lorem ipsum");
 
-            // Assert
-            var thrown = Assert.Throws<ExpectationException>(() =>
+            // Act
+            var exception = Record.Exception(() =>
                 A.CallTo(() => foo.Baz(A<object>._, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
 
+            // Assert
             var expectedMessage =
 @"
 
@@ -119,8 +123,8 @@ namespace FakeItEasy.IntegrationTests.Assertions
     1: FakeItEasy.Tests.IFoo.Baz(argument: System.Object, argument2: ""lorem ipsum"")
 
 ";
-
-            Assert.That(thrown.Message, Is.EqualTo(expectedMessage));
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .WithMessage(expectedMessage);
         }
     }
 }

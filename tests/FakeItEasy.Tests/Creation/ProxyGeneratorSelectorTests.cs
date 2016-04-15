@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests.Creation
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.DelegateProxies;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -42,7 +43,7 @@ namespace FakeItEasy.Tests.Creation
             var result = this.selector.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider);
 
             // Assert
-            Assert.That(result, Is.SameAs(expected));
+            result.Should().BeSameAs(expected);
         }
 
         [Test]
@@ -61,7 +62,7 @@ namespace FakeItEasy.Tests.Creation
             var result = this.selector.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider);
 
             // Assert
-            Assert.That(result, Is.SameAs(expected));
+            result.Should().BeSameAs(expected);
         }
 
         [Test]
@@ -80,8 +81,8 @@ namespace FakeItEasy.Tests.Creation
             var result = this.selector.MethodCanBeInterceptedOnInstance(invoke, fake, out output);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(output, Is.EqualTo("reason"));
+            result.Should().BeTrue();
+            output.Should().Be("reason");
         }
 
         [Test]
@@ -92,16 +93,15 @@ namespace FakeItEasy.Tests.Creation
             var getHashCode = fake.GetType().GetMethod("GetHashCode");
 
             string reason = null;
-            A.CallTo(() => this.defaultProxyGenerator.MethodCanBeInterceptedOnInstance(getHashCode, fake, out reason))
-                .Returns(true).AssignsOutAndRefParameters("reason");
+            A.CallTo(() => this.defaultProxyGenerator.MethodCanBeInterceptedOnInstance(getHashCode, fake, out reason)).Returns(true).AssignsOutAndRefParameters("reason");
 
             // Act
             string output = null;
             var result = this.selector.MethodCanBeInterceptedOnInstance(getHashCode, fake, out output);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(output, Is.EqualTo("reason"));
+            result.Should().BeTrue();
+            output.Should().Be("reason");
         }
     }
 }

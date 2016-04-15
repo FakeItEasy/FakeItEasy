@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.SelfInitializedFakes;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -26,7 +27,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             // Act
 
             // Assert
-            Assert.That(data, Is.BinarySerializable);
+            data.Should().BeBinarySerializable();
         }
 
         [Test]
@@ -42,7 +43,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             // Act
 
             // Assert
-            Assert.That(data, Is.BinarySerializable);
+            data.Should().BeBinarySerializable();
         }
     }
 }

@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Core
 {
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -46,7 +47,7 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             this.createdConstraint.IsValid("argument");
-            Assert.That(argumentPassedToDelegate, Is.EqualTo("argument"));
+            argumentPassedToDelegate.Should().Be("argument");
         }
 
         [Test]
@@ -62,7 +63,7 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             this.createdConstraint.WriteDescription(writerFromOutside);
-            Assert.That(passedInWriter, Is.EqualTo(writerFromOutside));
+            passedInWriter.Should().Be(writerFromOutside);
         }
 
         [TestCase(true, Result = false)]
@@ -95,7 +96,7 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             this.createdConstraint.IsValid("argument");
-            Assert.That(argumentPassedToDelegate, Is.EqualTo("argument"));
+            argumentPassedToDelegate.Should().Be("argument");
         }
 
         [Test]
@@ -111,7 +112,7 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             this.createdConstraint.WriteDescription(writerFromOutside);
-            Assert.That(passedInWriter, Is.EqualTo(writerFromOutside));
+            passedInWriter.Should().Be(writerFromOutside);
         }
 
         [Test]
@@ -139,7 +140,7 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             this.createdConstraint.WriteDescription(writer);
-            Assert.That(writer.Builder.ToString(), Is.EqualTo("<foo>"));
+            writer.Builder.ToString().Should().Be("<foo>");
         }
     }
 }

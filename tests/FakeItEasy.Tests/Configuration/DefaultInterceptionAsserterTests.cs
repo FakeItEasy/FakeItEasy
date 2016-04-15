@@ -2,6 +2,8 @@ namespace FakeItEasy.Tests.Configuration
 {
     using FakeItEasy.Configuration;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -39,12 +41,10 @@ namespace FakeItEasy.Tests.Configuration
     - reason
 
 ";
-            Assert.That(
-                () =>
-                {
-                    this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(method, instance);
-                },
-                Throws.Exception.InstanceOf<FakeConfigurationException>().With.Message.EqualTo(expectedMessage));
+            var exception = Record.Exception(() =>
+                this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(method, instance));
+
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessage(expectedMessage);
         }
     }
 }

@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests
     using System.Collections.Generic;
     using System.Text;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     internal abstract class ArgumentConstraintTestBase
@@ -27,7 +28,7 @@ namespace FakeItEasy.Tests
         [TestCaseSource("InvalidValues")]
         public void IsValid_should_return_false_for_invalid_values(object invalidValue)
         {
-            Assert.That(this.Constraint.IsValid(invalidValue), Is.False);
+            this.Constraint.IsValid(invalidValue).Should().BeFalse();
         }
 
         [Test]
@@ -36,7 +37,7 @@ namespace FakeItEasy.Tests
         {
             var result = this.Constraint.IsValid(validValue);
 
-            Assert.That(result, Is.True);
+            result.Should().BeTrue();
         }
 
         [Test]
@@ -46,7 +47,7 @@ namespace FakeItEasy.Tests
 
             this.Constraint.WriteDescription(new StringBuilderOutputWriter(output));
 
-            Assert.That(output.ToString(), Is.EqualTo("<" + this.ExpectedDescription + ">"));
+            output.ToString().Should().Be("<" + this.ExpectedDescription + ">");
         }
     }
 }

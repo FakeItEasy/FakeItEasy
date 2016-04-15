@@ -4,12 +4,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+    using FluentAssertions;
+    using FluentAssertions.Execution;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CodeActions;
     using Microsoft.CodeAnalysis.CodeFixes;
     using Microsoft.CodeAnalysis.Diagnostics;
     using Microsoft.CodeAnalysis.Formatting;
-    using NUnit.Framework;
 
     /// <summary>
     /// Superclass of all Unit tests made for diagnostics with code fixes.
@@ -120,7 +121,7 @@
 New document:
 {document.GetSyntaxRootAsync().Result.ToFullString()}
 ");
-                    Assert.IsTrue(false, message);
+                    Execute.Assertion.FailWith(message);
                 }
 
                 // Check if there are analyzer diagnostics left after the code fix
@@ -132,7 +133,7 @@ New document:
 
             // After applying all of the code fixes, compare the resulting string to the inputted one
             var actual = GetStringFromDocument(document);
-            Assert.AreEqual(newSource, actual);
+            actual.Should().Be(newSource);
         }
     }
 }

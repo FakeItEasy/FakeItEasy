@@ -4,9 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using FluentAssertions;
+    using FluentAssertions.Execution;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;
-    using NUnit.Framework;
 
     /// <summary>
     /// Superclass of all Unit Tests for DiagnosticAnalyzers.
@@ -67,7 +68,7 @@
 Diagnostics:
 {diagnosticsOutput}
 ");
-                Assert.IsTrue(false, message);
+                Execute.Assertion.FailWith(message);
             }
 
             for (int i = 0; i < expectedResults.Length; i++)
@@ -85,7 +86,7 @@ Diagnostics:
 A project diagnostic with No location
 Actual:
 {FormatDiagnostics(analyzer, actual)}");
-                        Assert.IsTrue(false, message);
+                        Execute.Assertion.FailWith(message);
                     }
                 }
                 else
@@ -100,7 +101,7 @@ Actual:
                                 $@"Expected {expected.Locations.Length - 1} additional locations but got {additionalLocations.Length} for Diagnostic:
     {FormatDiagnostics(analyzer, actual)}
 ");
-                        Assert.IsTrue(false, message);
+                        Execute.Assertion.FailWith(message);
                     }
 
                     for (int j = 0; j < additionalLocations.Length; ++j)
@@ -118,7 +119,7 @@ Actual:
 Diagnostic:
     {FormatDiagnostics(analyzer, actual)}
 ");
-                    Assert.IsTrue(false, message);
+                    Execute.Assertion.FailWith(message);
                 }
 
                 if (actual.Severity != expected.Severity)
@@ -130,7 +131,7 @@ Diagnostic:
 Diagnostic:
     {FormatDiagnostics(analyzer, actual)}
 ");
-                    Assert.IsTrue(false, message);
+                    Execute.Assertion.FailWith(message);
                 }
 
                 if (actual.GetMessage() != expected.Message)
@@ -142,7 +143,7 @@ Diagnostic:
 Diagnostic:
     {FormatDiagnostics(analyzer, actual)}
 ");
-                    Assert.IsTrue(false, message);
+                    Execute.Assertion.FailWith(message);
                 }
             }
         }
@@ -165,9 +166,8 @@ Diagnostic:
 Diagnostic:
     {FormatDiagnostics(analyzer, diagnostic)}
 ");
-            Assert.IsTrue(
-                actualSpan.Path == expected.Path || (actualSpan.Path != null && actualSpan.Path.Contains("Test0.") && expected.Path.Contains("Test.")),
-                message);
+            (actualSpan.Path == expected.Path || (actualSpan.Path != null && actualSpan.Path.Contains("Test0.") && expected.Path.Contains("Test.")))
+                .Should().BeTrue(message);
 
             var actualLinePosition = actualSpan.StartLinePosition;
 
@@ -183,7 +183,7 @@ Diagnostic:
 Diagnostic:
     {FormatDiagnostics(analyzer, diagnostic)}
 ");
-                    Assert.IsTrue(false, message);
+                    Execute.Assertion.FailWith(message);
                 }
             }
 
@@ -199,7 +199,7 @@ Diagnostic:
 Diagnostic:
     {FormatDiagnostics(analyzer, diagnostic)}
 ");
-                    Assert.IsTrue(false, message);
+                    Execute.Assertion.FailWith(message);
                 }
             }
         }
@@ -231,9 +231,9 @@ Diagnostic:
                         }
                         else
                         {
-                            Assert.IsTrue(
-                                location.IsInSource,
-                                FormattableString.Invariant($"Test base does not currently handle diagnostics in metadata locations. Diagnostic in metadata: {diagnostics[i]}\r\n"));
+                            location.IsInSource.Should()
+                                .BeTrue(FormattableString.Invariant(
+                                    $"Test base does not currently handle diagnostics in metadata locations. Diagnostic in metadata: {diagnostics[i]}\r\n"));
 
                             string resultMethodName = diagnostics[i].Location.SourceTree.FilePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) ? "GetCSharpResultAt" : "GetBasicResultAt";
                             var linePosition = diagnostics[i].Location.GetLineSpan().StartLinePosition;

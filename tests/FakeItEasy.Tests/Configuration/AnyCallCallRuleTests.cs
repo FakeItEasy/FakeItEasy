@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.Configuration
     using System;
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -41,7 +42,7 @@ namespace FakeItEasy.Tests.Configuration
             rule.IsApplicableTo(call);
 
             // Assert
-            Assert.That(rule.IsApplicableTo(call), Is.EqualTo(predicateReturnValue));
+            rule.IsApplicableTo(call).Should().Be(predicateReturnValue);
         }
 
         [Test]
@@ -53,7 +54,7 @@ namespace FakeItEasy.Tests.Configuration
             // Act
 
             // Assert
-            Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("Any call made to the fake object."));
+            rule.DescriptionOfValidCall.Should().Be("Any call made to the fake object.");
         }
 
         [Test]
@@ -66,7 +67,7 @@ namespace FakeItEasy.Tests.Configuration
             rule.ApplicableToMembersWithReturnType = typeof(string);
 
             // Assert
-            Assert.That(rule.DescriptionOfValidCall, Is.EqualTo("Any call with return type System.String to the fake object."));
+            rule.DescriptionOfValidCall.Should().Be("Any call with return type System.String to the fake object.");
         }
 
         private AnyCallCallRule CreateRule()
