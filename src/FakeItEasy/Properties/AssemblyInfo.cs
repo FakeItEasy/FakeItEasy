@@ -16,8 +16,5 @@ using System.Runtime.CompilerServices;
 // Module level suppress messages.
 [module: SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Justification = "Contains several internal types.", Scope = "namespace", Target = "FakeItEasy.Creation")]
 [module: SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Justification = "Contains several internal types.", Scope = "namespace", Target = "FakeItEasy.Expressions")]
-[module: SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Justification = "These types are only used by VB and should not confuse other developers.", Scope = "namespace", Target = "FakeItEasy.VisualBasic")]
-[module: SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Justification = "Is in a namespace of its own to allow for just using the extensions when they are explicitly requested.", Scope = "namespace", Target = "FakeItEasy.ExtensionSyntax")]
-[module: SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "FakeItEasy.ExtensionSyntax.Full", Justification = "Is in a namespace of its own to allow for just using the extensions when they are explicitly requested.")]
 [module: SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "FakeItEasy.Creation.CastleDynamicProxy", Justification = "Should not be mixed with other types.")]
 [assembly: SuppressMessage("Microsoft.Usage", "CA2243:AttributeStringLiteralsShouldParseCorrectly", Justification = "AssemblyInformationalVersion uses SemVer.")]
