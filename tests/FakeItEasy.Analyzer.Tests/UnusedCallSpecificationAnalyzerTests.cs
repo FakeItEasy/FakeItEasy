@@ -75,6 +75,7 @@ namespace TheNamespace
 
         [Test]
         [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Be_Triggered_When_Call_Specification_Is_Not_Used()
         {
             var test = @"using FakeItEasy;
@@ -97,9 +98,41 @@ namespace TheNamespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = UnusedCallSpecificationAnalyzer.DiagnosticId,
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
                     Message =
-                        "Unused call specification for 'foo.Bar()'; did you forget to configure or assert the call?",
+                        "Unused call specification 'A.CallTo(() => foo.Bar())'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
+        [Test]
+        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_For_Call_To_With_No_Expression()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var foo = A.Fake<IFoo>();
+            A.CallTo(foo);
+        }
+    }
+    interface IFoo { int Bar(); }
+}
+";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallTo(foo)'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
                 });
@@ -107,7 +140,7 @@ namespace TheNamespace
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
-            return new UnusedCallSpecificationAnalyzer();
+            return new UnusedReturnValueAnalyzer();
         }
     }
 }
