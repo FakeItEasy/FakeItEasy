@@ -2,6 +2,7 @@ namespace FakeItEasy.Analyzer
 {
     using System;
     using System.Collections.Immutable;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using Microsoft.CodeAnalysis;
 
@@ -9,7 +10,7 @@ namespace FakeItEasy.Analyzer
     {
         public static DiagnosticDescriptor UnusedCallSpecification { get; } = CreateDiagnosticDescriptor(nameof(UnusedCallSpecification), "FakeItEasy0001", "FakeItEasy.Usage", DiagnosticSeverity.Error, true);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object[])", Justification = "Irrelevant in this case")]
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object[])", Justification = "Irrelevant in this case")]
         public static ImmutableDictionary<string, DiagnosticDescriptor> GetDiagnosticsMap(params string[] diagnosticNames)
         {
             if (diagnosticNames == null)

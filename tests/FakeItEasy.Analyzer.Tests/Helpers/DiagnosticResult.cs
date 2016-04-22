@@ -1,12 +1,13 @@
 ﻿namespace FakeItEasy.Analyzer.Tests.Helpers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.CodeAnalysis;
 
     /// <summary>
     /// Location where the diagnostic appears, as determined by path, line number, and column number.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes", Justification = "Not necessary")]
+    [SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes", Justification = "Not necessary")]
     internal struct DiagnosticResultLocation
     {
         public DiagnosticResultLocation(string path, int line, int column)
@@ -36,12 +37,12 @@
     /// <summary>
     /// Struct that stores information about a Diagnostic appearing in a source.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes", Justification = "Not necessary")]
+    [SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes", Justification = "Not necessary")]
     internal struct DiagnosticResult
     {
         private DiagnosticResultLocation[] locations;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays", Justification = "It's not intended to be a public API, so it doesn't matter")]
+        [SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays", Justification = "It's not intended to be a public API, so it doesn't matter")]
         public DiagnosticResultLocation[] Locations
         {
             get

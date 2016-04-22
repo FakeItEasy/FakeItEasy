@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.Analyzer.Tests
 {
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Analyzer.Tests.Helpers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;
@@ -75,7 +76,7 @@ namespace TheNamespace
 
         [Test]
         [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Be_Triggered_When_Call_Specification_Is_Not_Used()
         {
             var test = @"using FakeItEasy;
@@ -108,7 +109,7 @@ namespace TheNamespace
 
         [Test]
         [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_For_Call_To_With_No_Expression()
         {
             var test = @"using FakeItEasy;
@@ -140,8 +141,8 @@ namespace TheNamespace
 
         [Test]
         [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithAnyArguments", Justification = "It's an identifier")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithAnyArguments", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WithAnyArguments()
         {
             var test = @"using FakeItEasy;
@@ -173,8 +174,8 @@ namespace TheNamespace
 
         [Test]
         [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithReturnType", Justification = "It's an identifier")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithReturnType", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_Where()
         {
             var test = @"using FakeItEasy;
