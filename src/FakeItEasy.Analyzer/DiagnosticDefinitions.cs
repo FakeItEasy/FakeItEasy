@@ -10,7 +10,11 @@ namespace FakeItEasy.Analyzer
     {
         public static DiagnosticDescriptor UnusedCallSpecification { get; } = CreateDiagnosticDescriptor(nameof(UnusedCallSpecification), "FakeItEasy0001", "FakeItEasy.Usage", DiagnosticSeverity.Error, true);
 
-        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object[])", Justification = "Irrelevant in this case")]
+        [SuppressMessage(
+            "Microsoft.Globalization",
+            "CA1305:SpecifyIFormatProvider",
+            MessageId = "System.String.Format(System.String,System.Object[])",
+            Justification = "Irrelevant in this case")]
         public static ImmutableDictionary<string, DiagnosticDescriptor> GetDiagnosticsMap(params string[] diagnosticNames)
         {
             if (diagnosticNames == null)
@@ -35,17 +39,18 @@ namespace FakeItEasy.Analyzer
             return builder.ToImmutable();
         }
 
-        private static DiagnosticDescriptor CreateDiagnosticDescriptor(string diagnosticName, string diagnosticId, string category, DiagnosticSeverity severity, bool isEnabledByDefault)
+        private static DiagnosticDescriptor CreateDiagnosticDescriptor(
+            string name, string id, string category, DiagnosticSeverity defaultSeverity, bool isEnabledByDefault)
         {
-            var title = GetDiagnosticResourceString(diagnosticName, nameof(DiagnosticDescriptor.Title));
-            var messageFormat = GetDiagnosticResourceString(diagnosticName, nameof(DiagnosticDescriptor.MessageFormat));
-            var description = GetDiagnosticResourceString(diagnosticName, nameof(DiagnosticDescriptor.Description));
-            return new DiagnosticDescriptor(diagnosticId, title, messageFormat, category, severity, isEnabledByDefault, description);
+            var title = GetDiagnosticResourceString(name, nameof(DiagnosticDescriptor.Title));
+            var messageFormat = GetDiagnosticResourceString(name, nameof(DiagnosticDescriptor.MessageFormat));
+            var description = GetDiagnosticResourceString(name, nameof(DiagnosticDescriptor.Description));
+            return new DiagnosticDescriptor(id, title, messageFormat, category, defaultSeverity, isEnabledByDefault, description);
         }
 
-        private static LocalizableResourceString GetDiagnosticResourceString(string diagnosticName, string suffix)
+        private static LocalizableResourceString GetDiagnosticResourceString(string name, string propertyName)
         {
-            return new LocalizableResourceString(diagnosticName + suffix, Resources.ResourceManager, typeof(Resources));
+            return new LocalizableResourceString(name + propertyName, Resources.ResourceManager, typeof(Resources));
         }
     }
 }

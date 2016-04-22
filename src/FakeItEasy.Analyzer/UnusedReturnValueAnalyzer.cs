@@ -13,8 +13,7 @@ namespace FakeItEasy.Analyzer
     public class UnusedReturnValueAnalyzer : DiagnosticAnalyzer
     {
         private static readonly ImmutableDictionary<string, DiagnosticDescriptor> Diagnostics =
-            GetDiagnosticsMap(
-                nameof(UnusedCallSpecification));
+            GetDiagnosticsMap(nameof(UnusedCallSpecification));
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = Diagnostics.Values.ToImmutableArray();
 
@@ -64,19 +63,15 @@ namespace FakeItEasy.Analyzer
         private static IMethodSymbol GetCalledMethodSymbol(InvocationExpressionSyntax call, SyntaxNodeAnalysisContext context)
         {
             var memberAccess = call?.Expression as MemberAccessExpressionSyntax;
-            var methodSymbol = context.SemanticModel.GetSymbolInfo(memberAccess?.Name).Symbol as IMethodSymbol;
-
-            return methodSymbol;
+            return context.SemanticModel.GetSymbolInfo(memberAccess?.Name).Symbol as IMethodSymbol;
         }
 
         private static string GetDiagnosticName(IMethodSymbol methodSymbol)
         {
-            var attribute =
-                methodSymbol.GetAttributes()
-                    .FirstOrDefault(a => a.AttributeClass.GetFullName() == "FakeItEasy.Analysis.MustUseReturnValueAttribute");
+            var attribute = methodSymbol.GetAttributes()
+                .FirstOrDefault(a => a.AttributeClass.GetFullName() == "FakeItEasy.Analysis.MustUseReturnValueAttribute");
 
-            var argument = attribute?.ConstructorArguments.FirstOrDefault();
-            return argument?.Value as string;
+            return attribute?.ConstructorArguments.FirstOrDefault().Value as string;
         }
     }
 }
