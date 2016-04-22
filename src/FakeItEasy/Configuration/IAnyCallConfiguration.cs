@@ -15,5 +15,7 @@ namespace FakeItEasy.Configuration
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to provide a strongly typed fluent API.")]
         IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>();
+
+        IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType();
     }
 }

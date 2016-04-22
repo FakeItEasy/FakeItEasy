@@ -48,6 +48,19 @@ namespace FakeItEasy.Tests.Configuration
             Assert.That(this.callRule.ApplicableToMembersWithReturnType, Is.EqualTo(typeof(string)));
         }
 
+
+        [Test]
+        public void WithNonVoidReturnType_should_set_the_flag_to_apply_to_all_return_types()
+        {
+            // Arrange
+
+            // Act
+            this.configuration.WithNonVoidReturnType();
+
+            // Assert
+            Assert.That(this.callRule.ApplicableToAllNonVoidReturnTypes, Is.EqualTo(true));
+        }
+
         [Test]
         public void DoesNothing_delegates_to_configuration_produced_by_factory()
         {
