@@ -20,15 +20,17 @@ When writing integration or unit tests, use the 3A's pattern (Arrange, Act, Asse
 New or changed tests should use [FluentAssertions](https://github.com/dennisdoomen/fluentassertions) for the assertion phase.
 E.g.
 
-    // Arrange
-    var dummy = A.Fake<IFoo>();
-    A.CallTo(() => this.fakeCreator.CreateDummy<IFoo>()).Returns(dummy);
+```c#
+// Arrange
+var dummy = A.Fake<IFoo>();
+A.CallTo(() => this.fakeCreator.CreateDummy<IFoo>()).Returns(dummy);
 
-    // Act
-    var result = A.Dummy<IFoo>();
+// Act
+var result = A.Dummy<IFoo>();
 
-    // Assert
-    result.Should().BeSameAs(dummy));
+// Assert
+result.Should().BeSameAs(dummy));
+```
 
 Whenever FluentAssertions are introduced into a test file, all tests in the file should be converted to use FluentAssertions.
 
