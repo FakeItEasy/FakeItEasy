@@ -4,6 +4,7 @@ namespace FakeItEasy
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
+    using FakeItEasy.Analysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -72,6 +73,7 @@ namespace FakeItEasy
         /// <param name="callSpecification">An expression specifying the call to configure.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
+        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public IVoidArgumentValidationConfiguration CallsTo(Expression<Action<T>> callSpecification)
         {
             return this.StartConfiguration.CallsTo(callSpecification);
@@ -84,6 +86,7 @@ namespace FakeItEasy
         /// <param name="callSpecification">An expression specifying the call to configure.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
+        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(Expression<Func<T, TMember>> callSpecification)
         {
             return this.StartConfiguration.CallsTo(callSpecification);
@@ -93,6 +96,7 @@ namespace FakeItEasy
         /// Configures any call to the fake object.
         /// </summary>
         /// <returns>A configuration object.</returns>
+        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall()
         {
             return this.StartConfiguration.AnyCall();

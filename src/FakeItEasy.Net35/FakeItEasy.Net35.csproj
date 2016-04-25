@@ -62,6 +62,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\FakeItEasy\Analysis\Diagnostics.cs">
+      <Link>Analysis\Diagnostics.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
@@ -73,6 +76,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\A.of.T.cs">
       <Link>A.of.T.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Analysis\MustUseReturnValueAttribute.cs">
+      <Link>Analysis\MustUseReturnValueAttribute.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ArgumentConstraintManagerExtensions.cs">
       <Link>ArgumentConstraintManagerExtensions.cs</Link>

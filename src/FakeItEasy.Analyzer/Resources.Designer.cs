@@ -71,7 +71,7 @@ namespace FakeItEasy.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unused call specification for &apos;{0}&apos;; did you forget to configure or assert the call?.
+        ///   Looks up a localized string similar to Unused call specification &apos;{0}&apos;; did you forget to configure or assert the call?.
         /// </summary>
         internal static string UnusedCallSpecificationMessageFormat {
             get {
