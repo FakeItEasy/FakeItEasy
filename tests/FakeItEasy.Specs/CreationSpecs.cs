@@ -71,7 +71,7 @@ namespace FakeItEasy.Specs
                 .x(() => fakes.Should().ContainItemsAssignableTo<ICollectionItem>());
 
             "And all items should be fakes"
-                .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) != null));
+                .x(() => fakes.Should().OnlyContain(item => item.GetType().Assembly.FullName.StartsWith("DynamicProxyGenAssembly2")));
         }
 
         public class ClassWhoseConstructorThrows

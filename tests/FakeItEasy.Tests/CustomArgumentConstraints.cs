@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
 
-    public static class CustomArgumentConstraints
+    internal static class CustomArgumentConstraints
     {
         public static T IsThisSequence<T>(this IArgumentConstraintManager<T> scope, T collection) where T : IEnumerable
         {

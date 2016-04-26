@@ -4,7 +4,7 @@ namespace FakeItEasy.Core
     using System.Linq;
 
     /// <content>Property setter rule.</content>
-    public partial class FakeManager
+    internal partial class FakeManager
     {
         [Serializable]
         private class PropertySetterRule

@@ -14,7 +14,7 @@ namespace FakeItEasy.Core
     /// by using the AddRule-method.
     /// </summary>
     [Serializable]
-    public partial class FakeManager : IFakeCallProcessor
+    internal partial class FakeManager : IFakeCallProcessor
     {
         private readonly LinkedList<CallRuleMetadata> allUserRulesField;
         private readonly CallRuleMetadata[] postUserRules;
