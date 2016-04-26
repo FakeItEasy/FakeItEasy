@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.Specs
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using FluentAssertions;
     using Xbehave;
@@ -12,10 +13,10 @@
 
             Task<int> QueryAsync();
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not appropriate in this case")]
+            [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not appropriate in this case")]
             Task<Foo> GetFooAsync();
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not appropriate in this case")]
+            [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not appropriate in this case")]
             Task<Bar> GetBarAsync();
         }
 

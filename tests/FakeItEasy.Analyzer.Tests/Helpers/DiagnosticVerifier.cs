@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using FluentAssertions;
@@ -29,7 +30,7 @@
         /// Get the CSharp analyzer being tested - to be implemented in non-abstract class.
         /// </summary>
         /// <returns>The diagnostic analyzer being tested.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
         protected virtual DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return null;
@@ -39,7 +40,7 @@
         /// Get the Visual Basic analyzer being tested - to be implemented in non-abstract class.
         /// </summary>
         /// <returns>The diagnostic analyzer being tested.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
         protected virtual DiagnosticAnalyzer GetBasicDiagnosticAnalyzer()
         {
             return null;

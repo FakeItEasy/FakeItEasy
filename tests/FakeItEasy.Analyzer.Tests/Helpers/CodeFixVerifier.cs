@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading;
     using FluentAssertions;
@@ -22,7 +23,7 @@
         /// Returns the code fix being tested (C#) - to be implemented in non-abstract class.
         /// </summary>
         /// <returns>The CodeFixProvider to be used for CSharp code.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
         protected virtual CodeFixProvider GetCSharpCodeFixProvider()
         {
             return null;
@@ -32,7 +33,7 @@
         /// Returns the code fix being tested (VB) - to be implemented in non-abstract class.
         /// </summary>
         /// <returns>The CodeFixProvider to be used for VisualBasic code.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
         protected virtual CodeFixProvider GetBasicCodeFixProvider()
         {
             return null;
@@ -45,7 +46,7 @@
         /// <param name="newSource">A class in the form of a string after the code fix was applied to it.</param>
         /// <param name="codeFixIndex">Index determining which code fix to apply if there are multiple.</param>
         /// <param name="allowNewCompilerDiagnostics">A boolean controlling whether or not the test will fail if the code fix introduces other warnings after being applied.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "It's not intended to be a public API, so it doesn't matter")]
+        [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "It's not intended to be a public API, so it doesn't matter")]
         protected void VerifyCSharpFix(string oldSource, string newSource, int? codeFixIndex = null, bool allowNewCompilerDiagnostics = false)
         {
             this.VerifyFix(LanguageNames.CSharp, this.GetCSharpDiagnosticAnalyzer(), this.GetCSharpCodeFixProvider(), oldSource, newSource, codeFixIndex, allowNewCompilerDiagnostics);
@@ -58,7 +59,7 @@
         /// <param name="newSource">A class in the form of a string after the code fix was applied to it.</param>
         /// <param name="codeFixIndex">Index determining which code fix to apply if there are multiple.</param>
         /// <param name="allowNewCompilerDiagnostics">A boolean controlling whether or not the test will fail if the code fix introduces other warnings after being applied.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "It's not intended to be a public API, so it doesn't matter")]
+        [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "It's not intended to be a public API, so it doesn't matter")]
         protected void VerifyBasicFix(string oldSource, string newSource, int? codeFixIndex = null, bool allowNewCompilerDiagnostics = false)
         {
             this.VerifyFix(LanguageNames.VisualBasic, this.GetBasicDiagnosticAnalyzer(), this.GetBasicCodeFixProvider(), oldSource, newSource, codeFixIndex, allowNewCompilerDiagnostics);
