@@ -20,7 +20,6 @@ output          = "artifacts/output"
 tests           = "artifacts/tests"
 
 unit_tests = [
-  "tests/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
   "tests/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
   "tests/FakeItEasy.Analyzer.Tests/bin/Release/FakeItEasy.Analyzer.Tests.dll"
 ]

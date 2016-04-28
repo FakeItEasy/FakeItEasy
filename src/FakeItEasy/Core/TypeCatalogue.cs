@@ -73,7 +73,7 @@ namespace FakeItEasy.Core
             // Exclude the ReflectionOnly assemblies because we want to be able to fully load them if we need to.
             var loadedAssemblyFiles = new HashSet<string>(
                 loadedAssemblies
-                    .Where(a => !a.ReflectionOnly && !a.IsDynamic())
+                    .Where(a => !a.ReflectionOnly && !a.IsDynamic)
                     .Select(a => a.Location),
                 StringComparer.OrdinalIgnoreCase);
 

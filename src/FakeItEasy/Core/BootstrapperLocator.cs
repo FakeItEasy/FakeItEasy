@@ -26,7 +26,7 @@ namespace FakeItEasy.Core
 
             var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies
-                .Where(assembly => !assembly.IsDynamic())
+                .Where(assembly => !assembly.IsDynamic)
                 .Where(assembly => assembly.ReferencesFakeItEasy());
 
             var candidateTypes = appDomainAssembliesReferencingFakeItEasy

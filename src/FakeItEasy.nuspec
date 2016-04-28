@@ -14,8 +14,6 @@
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
   </metadata>
   <files>
-    <file src="FakeItEasy.Net35\Bin\Release\FakeItEasy.dll" target="lib\net35" />
-    <file src="FakeItEasy.Net35\Bin\Release\FakeItEasy.xml" target="lib\net35" />
     <file src="FakeItEasy\Bin\Release\FakeItEasy.dll" target="lib\net40" />
     <file src="FakeItEasy\Bin\Release\FakeItEasy.xml" target="lib\net40" />
   </files>
