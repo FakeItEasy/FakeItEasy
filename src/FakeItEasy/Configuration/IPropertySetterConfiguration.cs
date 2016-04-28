@@ -1,13 +1,12 @@
 namespace FakeItEasy.Configuration
 {
     /// <summary>
-    /// Provides configuration methods for methods that does not have a return value.
+    /// Provides configuration for property setters and allows the user to specify validations for arguments.
     /// </summary>
-    public interface IVoidConfiguration
+    public interface IPropertySetterConfiguration
         : IExceptionThrowerConfiguration,
-          ICallbackConfiguration<IVoidConfiguration>,
+          ICallbackConfiguration<IPropertySetterConfiguration>,
           ICallBaseConfiguration,
-          IOutAndRefParametersConfiguration,
           IAssertConfiguration,
           IDoNothingConfiguration
     {

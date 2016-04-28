@@ -27,6 +27,23 @@ Many types of actions can be specified, including
 [returning various values](specifying-return-values.md),
 [throwing exceptions](throwing-exceptions.md), and more.
 
+## Specifying a call to a property setter
+
+Assignment operators can't be used in lambda expressions, so the
+`A.CallTo` overloads described above cannot be used to configure calls
+to property setters.
+Use `A.CallToSet` to configure the `set` behavior of read/write properties:
+
+```csharp
+A.CallToSet(() => fakeShop.Address).To("123 Fake Street").CallsBaseMethod();
+A.CallToSet(() => fakeShop.Address).To(() => A<string>.That.StartsWith("123").DoesNothing();
+A.CallToSet(() => fakeShop.Address).DoesNothing(); // ignores the value that's set
+```
+
+[Argument constraints](argument-constraints.md) can be used to
+constrain the value that's set into the property, or the indexes that
+must be supplied when invoking an indexer.
+
 ## Specifying a call to any method or property
 
 Instead of supplying an expression to identify a specific method, pass
@@ -43,7 +60,7 @@ A.CallTo(fakeShop).Where(call => call.Arguments.Count > 4)
                   .Throws(new Exception("too many arguments is bad");
 ```
 
-`A.CallTo(object)` can also be used to specify property `set`s and
+`A.CallTo(object)` can also be used to specify write-only properties and
 `protected` members:
 
 ```csharp
@@ -55,10 +72,6 @@ A.CallTo(fakeShop).Where(call => call.Method.Name == "ProtectedCalculateSalesFor
 A.CallTo(fakeShop).Where(call => call.Method.Name == "set_Address")
                   .Throws(new Exception("we can't move");
 ```
-
-[Issue 175](https://github.com/FakeItEasy/FakeItEasy/issues/175) has
-been raised to develop a better mechanism for specifying property
-`set`s.
 
 ## VB.Net
 Special syntax is provided to specify `Func`s and `Sub`s in VB, using their respective keywords:

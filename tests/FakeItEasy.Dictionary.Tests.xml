@@ -12,6 +12,8 @@
       <Word>Bazz</Word>
       <Word>Qux</Word>
       <Word>FakeItEasy</Word>
+      <Word>WhenArgumentsMatch</Word>
+      <Word>WithAnyArguments</Word>
     </Recognized>
   </Words>
 </Dictionary>
