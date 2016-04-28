@@ -41,7 +41,7 @@ var foo = A.Fake<FooClass>(x => x.Implements<IFoo>());
 // Get a parameterless constructor for our attribute and create a builder 
 var constructor = typeof(FooAttribute).GetConstructor(new Type[0]);
 var builder = new CustomAttributeBuilder(constructor, new object[0]);
-var builders = new List<CustomAttributeBuilder>() { test };
+var builders = new List<CustomAttributeBuilder>() { builder };
 // foo and foo's type should both have "FooAttribute"
 var foo = A.Fake<IFoo>(x => x.WithAdditionalAttributes(builders));
 
