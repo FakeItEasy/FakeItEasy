@@ -6,6 +6,10 @@ namespace FakeItEasy.Specs
     using FluentAssertions;
     using Xbehave;
 
+    public delegate void VoidDelegateWithOutAndRefParameters(int x, ref int y, out int z);
+
+    public delegate int NonVoidDelegateWithOutAndRefParameters(int x, ref int y, out int z);
+
     public interface IHaveAnOut
     {
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Required for testing.")]
@@ -118,6 +122,54 @@ namespace FakeItEasy.Specs
 
             "it should throw an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void AssignOutAndRefParameterForVoidDelegate(
+            VoidDelegateWithOutAndRefParameters subject,
+            int refValue,
+            int outValue)
+        {
+            "Given a faked delegate with void return type and ref and out parameters"
+                .x(() => subject = A.Fake<VoidDelegateWithOutAndRefParameters>());
+
+            "When the faked delegate is configured to assign the out and ref parameters"
+                .x(() => A.CallTo(() => subject(1, ref refValue, out outValue)).AssignsOutAndRefParameters(42, 99));
+
+            "And I call the faked delegate"
+                .x(() => subject(1, ref refValue, out outValue));
+
+            "Then the ref parameter is set to the specified value"
+                .x(() => refValue.Should().Be(42));
+
+            "And the out parameter is set to the specified value"
+                .x(() => outValue.Should().Be(99));
+        }
+
+        [Scenario]
+        public static void AssignOutAndRefParameterForNonVoidDelegate(
+            NonVoidDelegateWithOutAndRefParameters subject,
+            int refValue,
+            int outValue,
+            int result)
+        {
+            "Given a faked delegate with a non-void return type and ref and out parameters"
+                .x(() => subject = A.Fake<NonVoidDelegateWithOutAndRefParameters>());
+
+            "When the faked delegate is configured to assign the out and ref parameters"
+                .x(() => A.CallTo(() => subject(1, ref refValue, out outValue)).Returns(123).AssignsOutAndRefParameters(42, 99));
+
+            "And I call the faked delegate"
+                .x(() => result = subject(1, ref refValue, out outValue));
+
+            "Then it returns the specified value"
+                .x(() => result.Should().Be(123));
+
+            "And the ref parameter is set to the specified value"
+                .x(() => refValue.Should().Be(42));
+
+            "And the out parameter is set to the specified value"
+                .x(() => outValue.Should().Be(99));
         }
     }
 }

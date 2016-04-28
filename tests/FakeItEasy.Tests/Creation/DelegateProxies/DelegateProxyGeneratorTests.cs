@@ -17,7 +17,13 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
         private DelegateProxyGenerator generator;
 #pragma warning restore 649
 
-        private delegate void DelegateWithOutputValue(out string result);
+        private delegate void VoidDelegateWithOutputValue(out string result);
+
+        private delegate string NonVoidDelegateWithOutputValue(out int result);
+
+        private delegate void VoidDelegateWithRefValue(ref string result);
+
+        private delegate string NonVoidDelegateWithRefValue(ref int result);
 
         [SetUp]
         public void Setup()
@@ -150,18 +156,78 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             proxy.Invoke();
         }
 
-        [Test, Ignore]
-        public void Should_return_proxy_where_out_parameter_can_be_set()
+        [Test]
+        public void Should_return_proxy_where_out_parameter_can_be_set_void()
         {
             // Arrange
-            var proxy = this.GenerateProxy<DelegateWithOutputValue>(x => { x.SetArgumentValue(0, "Foo"); });
+            var proxy = this.GenerateProxy<VoidDelegateWithOutputValue>(x => { x.SetArgumentValue(0, "Foo"); });
 
             // Act
-            string output = null;
+            string output;
             proxy.Invoke(out output);
 
             // Assert
             output.Should().Be("Foo");
+        }
+
+        [Test]
+        public void Should_return_proxy_where_out_parameter_can_be_set_non_void()
+        {
+            // Arrange
+            var proxy = this.GenerateProxy<NonVoidDelegateWithOutputValue>(
+                x =>
+                {
+                    x.SetArgumentValue(0, 42);
+                    x.SetReturnValue("Foo");
+                });
+
+            // Act
+            int output;
+            string result = proxy.Invoke(out output);
+
+            // Assert
+            result.Should().Be("Foo");
+            output.Should().Be(42);
+        }
+
+        [Test]
+        public void Should_return_proxy_where_ref_parameter_can_be_set_void()
+        {
+            // Arrange
+            var proxy = this.GenerateProxy<VoidDelegateWithRefValue>(
+                x =>
+                {
+                    var arg = x.GetArgument<string>(0);
+                    x.SetArgumentValue(0, arg + arg);
+                });
+
+            // Act
+            string output = "Foo";
+            proxy.Invoke(ref output);
+
+            // Assert
+            output.Should().Be("FooFoo");
+        }
+
+        [Test]
+        public void Should_return_proxy_where_ref_parameter_can_be_set_non_void()
+        {
+            // Arrange
+            var proxy = this.GenerateProxy<NonVoidDelegateWithRefValue>(
+                x =>
+                {
+                    var arg = x.GetArgument<int>(0);
+                    x.SetArgumentValue(0, arg + arg);
+                    x.SetReturnValue("Foo");
+                });
+
+            // Act
+            int output = 21;
+            string result = proxy.Invoke(ref output);
+
+            // Assert
+            result.Should().Be("Foo");
+            output.Should().Be(42);
         }
 
         [Test]
