@@ -11,7 +11,7 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
 ## Prerequisites
 
-1. Ensure you have .NET framework 3.5 and 4.0/4.5 installed.
+1. Ensure you have .NET framework 4.x installed.
 
 1. Ensure you have Visual Studio 2015 or MSBuild 14 installed.
 
