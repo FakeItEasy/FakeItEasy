@@ -74,22 +74,106 @@ namespace FakeItEasy.Creation.DelegateProxies
         }
 
         private static Expression CreateBodyExpression(
-            MethodInfo delegateMethod, DelegateCallInterceptedEventRaiser eventRaiser, IEnumerable<Expression> parameterExpressions)
+            MethodInfo delegateMethod,
+            DelegateCallInterceptedEventRaiser eventRaiser,
+            ParameterExpression[] parameterExpressions)
         {
-            var parameterExpressionsCastToObject =
-                parameterExpressions.Select(x => Expression.Convert(x, typeof(object))).Cast<Expression>().ToArray();
+            /*
+             * Generate a method that:
+             * - wraps its arguments in an object array
+             * - passes this array to eventRaiser.Raise()
+             * - assigns the output values back to the ref/out parameters
+             * - casts and returns the result of eventRaiser.Raise()
+             *
+             * For instance, for a delegate like this:
+             *
+             * delegate int Foo(int x, ref int y, out int z);
+             *
+             * We generate a method like this:
+             *
+             * int ProxyFoo(int x, ref int y, out int z)
+             * {
+             *     var arguments = new[]{ (object)x, (object)y, (object)z };
+             *     var result = (int)eventRaiser.Raise(arguments);
+             *     y = (int)arguments[1];
+             *     z = (int)arguments[2];
+             *     return result;
+             * }
+             *
+             * Or, for a delegate with void return type:
+             *
+             * delegate void Foo(int x, ref int y, out int z);
+             *
+             * void ProxyFoo(int x, ref int y, out int z)
+             * {
+             *     var arguments = new[]{ (object)x, (object)y, (object)z };
+             *     eventRaiser.Raise(arguments);
+             *     y = (int)arguments[1];
+             *     z = (int)arguments[2];
+             * }
+             */
 
-            Expression body = Expression.Call(
+            bool isVoid = delegateMethod.ReturnType == typeof(void);
+
+            // Local variables of the generated method
+            var arguments = Expression.Variable(typeof(object[]), "arguments");
+            var result = isVoid ? null : Expression.Variable(delegateMethod.ReturnType, "result");
+
+            var bodyExpressions = new List<Expression>();
+
+            bodyExpressions.Add(Expression.Assign(arguments, WrapParametersInObjectArray(parameterExpressions)));
+
+            Expression call = Expression.Call(
                 Expression.Constant(eventRaiser),
                 DelegateCallInterceptedEventRaiser.RaiseMethod,
-                new Expression[] { Expression.NewArrayInit(typeof(object), parameterExpressionsCastToObject) });
+                arguments);
 
-            if (!delegateMethod.ReturnType.Equals(typeof(void)))
+            if (!isVoid)
             {
-                body = Expression.Convert(body, delegateMethod.ReturnType);
+                // If the return type is non void, cast the result of eventRaiser.Raise()
+                // to the real return type and assign to the result variable
+                call = Expression.Assign(result, Expression.Convert(call, delegateMethod.ReturnType));
             }
 
+            bodyExpressions.Add(call);
+
+            // After the call, copy the values back to the ref/out parameters
+            for (int index = 0; index < parameterExpressions.Length; index++)
+            {
+                var parameter = parameterExpressions[index];
+                if (parameter.IsByRef)
+                {
+                    var assignment = AssignParameterFromArrayElement(arguments, index, parameter);
+                    bodyExpressions.Add(assignment);
+                }
+            }
+
+            // Return the result if the return type is non-void
+            if (!isVoid)
+            {
+                bodyExpressions.Add(result);
+            }
+
+            var variables = isVoid ? new[] { arguments } : new[] { arguments, result };
+            var body = Expression.Block(variables, bodyExpressions);
             return body;
+        }
+
+        private static BinaryExpression AssignParameterFromArrayElement(ParameterExpression arguments, int index, ParameterExpression parameter)
+        {
+            var conversion =
+                Expression.Convert(
+                    Expression.ArrayAccess(arguments, Expression.Constant(index)),
+                    parameter.Type);
+            var assignment = Expression.Assign(parameter, conversion);
+            return assignment;
+        }
+
+        private static NewArrayExpression WrapParametersInObjectArray(ParameterExpression[] parameterExpressions)
+        {
+            return Expression.NewArrayInit(
+                typeof(object),
+                parameterExpressions.Select(x => Expression.Convert(x, typeof(object))));
         }
 
         private class DelegateCallInterceptedEventRaiser
