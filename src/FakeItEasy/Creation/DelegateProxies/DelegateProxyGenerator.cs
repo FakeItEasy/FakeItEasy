@@ -214,7 +214,7 @@ namespace FakeItEasy.Creation.DelegateProxies
                 this.instance = instance;
                 this.Arguments = new ArgumentCollection(arguments, method);
                 this.Method = method;
-                this.SequenceNumber = SequenceNumberManager.Next();
+                SequenceNumberManager.RecordSequenceNumber(this);
             }
 
             public object ReturnValue { get; private set; }
@@ -227,8 +227,6 @@ namespace FakeItEasy.Creation.DelegateProxies
             {
                 get { return this.instance; }
             }
-
-            public int SequenceNumber { get; private set; }
 
             public void SetReturnValue(object value)
             {

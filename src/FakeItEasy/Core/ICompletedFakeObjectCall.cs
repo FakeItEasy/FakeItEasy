@@ -9,10 +9,5 @@ namespace FakeItEasy.Core
         /// Gets the value set to be returned from the call.
         /// </summary>
         object ReturnValue { get; }
-
-        /// <summary>
-        /// Gets the sequence number of the call.
-        /// </summary>
-        int SequenceNumber { get; }
     }
 }
