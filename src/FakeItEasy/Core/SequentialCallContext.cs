@@ -34,10 +34,10 @@ namespace FakeItEasy.Core
             this.assertedCalls.Add(
                 new AssertedCall { CallDescription = callDescription, RepeatDescription = repeatConstraint.ToString() });
 
-            var allCalls = this.fakeManagers.SelectMany(f => f.GetRecordedCalls()).OrderBy(c => c.SequenceNumber).ToList();
+            var allCalls = this.fakeManagers.SelectMany(f => f.GetRecordedCalls()).OrderBy(SequenceNumberManager.GetSequenceNumber).ToList();
 
             int matchedCallCount = 0;
-            foreach (var currentCall in allCalls.SkipWhile(c => c.SequenceNumber <= this.currentSequenceNumber))
+            foreach (var currentCall in allCalls.SkipWhile(c => SequenceNumberManager.GetSequenceNumber(c) <= this.currentSequenceNumber))
             {
                 if (repeatConstraint.Matches(matchedCallCount))
                 {
@@ -47,7 +47,7 @@ namespace FakeItEasy.Core
                 if (callPredicate(currentCall))
                 {
                     matchedCallCount++;
-                    this.currentSequenceNumber = currentCall.SequenceNumber;
+                    this.currentSequenceNumber = SequenceNumberManager.GetSequenceNumber(currentCall);
                 }
             }
 

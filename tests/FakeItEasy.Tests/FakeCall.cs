@@ -23,20 +23,20 @@ namespace FakeItEasy.Tests
 
         public object FakedObject { get; private set; }
 
-        public int SequenceNumber { get; private set; }
-
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "By design.")]
         public static FakeCall Create<T>(string methodName, Type[] parameterTypes, object[] arguments) where T : class
         {
             var method = typeof(T).GetMethod(methodName, parameterTypes);
 
-            return new FakeCall
+            var call = new FakeCall
             {
                 Method = method,
                 Arguments = new ArgumentCollection(arguments, method),
                 FakedObject = A.Fake<T>(),
-                SequenceNumber = SequenceNumberManager.Next()
             };
+
+            SequenceNumberManager.RecordSequenceNumber(call);
+            return call;
         }
 
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "By design.")]
