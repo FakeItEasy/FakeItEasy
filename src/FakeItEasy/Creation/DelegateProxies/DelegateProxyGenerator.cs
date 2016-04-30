@@ -13,27 +13,26 @@ namespace FakeItEasy.Creation.DelegateProxies
         : IProxyGenerator
     {
         public virtual ProxyGeneratorResult GenerateProxy(
-            Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IFakeCallProcessorProvider fakeCallProcessorProvider)
+            Type typeOfProxy,
+            IEnumerable<Type> additionalInterfacesToImplement,
+            IEnumerable<object> argumentsForConstructor,
+            IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             Guard.AgainstNull(typeOfProxy, "typeOfProxy");
 
             if (!typeof(Delegate).IsAssignableFrom(typeOfProxy))
             {
-                return
-                    new ProxyGeneratorResult("The delegate proxy generator can only create proxies for delegate types.");
+                return new ProxyGeneratorResult("The delegate proxy generator can only create proxies for delegate types.");
             }
 
             var invokeMethod = typeOfProxy.GetMethod("Invoke");
-
             var eventRaiser = new DelegateCallInterceptedEventRaiser(fakeCallProcessorProvider);
-
             var proxy = CreateDelegateProxy(typeOfProxy, invokeMethod, eventRaiser);
 
             eventRaiser.Method = invokeMethod;
             eventRaiser.Instance = proxy;
 
             fakeCallProcessorProvider.EnsureInitialized(proxy);
-
             return new ProxyGeneratorResult(proxy);
         }
 
@@ -44,7 +43,8 @@ namespace FakeItEasy.Creation.DelegateProxies
             IEnumerable<CustomAttributeBuilder> customAttributeBuilders,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            return this.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
+            return this.GenerateProxy(
+                typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
         }
 
         public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
@@ -61,58 +61,53 @@ namespace FakeItEasy.Creation.DelegateProxies
             return true;
         }
 
-        private static Delegate CreateDelegateProxy(Type typeOfProxy, MethodInfo invokeMethod, DelegateCallInterceptedEventRaiser eventRaiser)
+        private static Delegate CreateDelegateProxy(
+            Type typeOfProxy, MethodInfo invokeMethod, DelegateCallInterceptedEventRaiser eventRaiser)
         {
-            var delegateMethod = invokeMethod;
-
             var parameterExpressions =
-                delegateMethod.GetParameters().Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToArray();
+                invokeMethod.GetParameters().Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToArray();
 
-            var body = CreateBodyExpression(delegateMethod, eventRaiser, parameterExpressions);
-
+            var body = CreateBodyExpression(invokeMethod, eventRaiser, parameterExpressions);
             return Expression.Lambda(typeOfProxy, body, parameterExpressions).Compile();
         }
 
+        // Generate a method that:
+        // - wraps its arguments in an object array
+        // - passes this array to eventRaiser.Raise()
+        // - assigns the output values back to the ref/out parameters
+        // - casts and returns the result of eventRaiser.Raise()
+        //
+        // For instance, for a delegate like this:
+        //
+        // delegate int Foo(int x, ref int y, out int z);
+        //
+        // We generate a method like this:
+        //
+        // int ProxyFoo(int x, ref int y, out int z)
+        // {
+        //     var arguments = new[]{ (object)x, (object)y, (object)z };
+        //     var result = (int)eventRaiser.Raise(arguments);
+        //     y = (int)arguments[1];
+        //     z = (int)arguments[2];
+        //     return result;
+        // }
+        //
+        // Or, for a delegate with void return type:
+        //
+        // delegate void Foo(int x, ref int y, out int z);
+        //
+        // void ProxyFoo(int x, ref int y, out int z)
+        // {
+        //     var arguments = new[]{ (object)x, (object)y, (object)z };
+        //     eventRaiser.Raise(arguments);
+        //     y = (int)arguments[1];
+        //     z = (int)arguments[2];
+        // }
         private static Expression CreateBodyExpression(
             MethodInfo delegateMethod,
             DelegateCallInterceptedEventRaiser eventRaiser,
             ParameterExpression[] parameterExpressions)
         {
-            /*
-             * Generate a method that:
-             * - wraps its arguments in an object array
-             * - passes this array to eventRaiser.Raise()
-             * - assigns the output values back to the ref/out parameters
-             * - casts and returns the result of eventRaiser.Raise()
-             *
-             * For instance, for a delegate like this:
-             *
-             * delegate int Foo(int x, ref int y, out int z);
-             *
-             * We generate a method like this:
-             *
-             * int ProxyFoo(int x, ref int y, out int z)
-             * {
-             *     var arguments = new[]{ (object)x, (object)y, (object)z };
-             *     var result = (int)eventRaiser.Raise(arguments);
-             *     y = (int)arguments[1];
-             *     z = (int)arguments[2];
-             *     return result;
-             * }
-             *
-             * Or, for a delegate with void return type:
-             *
-             * delegate void Foo(int x, ref int y, out int z);
-             *
-             * void ProxyFoo(int x, ref int y, out int z)
-             * {
-             *     var arguments = new[]{ (object)x, (object)y, (object)z };
-             *     eventRaiser.Raise(arguments);
-             *     y = (int)arguments[1];
-             *     z = (int)arguments[2];
-             * }
-             */
-
             bool isVoid = delegateMethod.ReturnType == typeof(void);
 
             // Local variables of the generated method
@@ -124,9 +119,7 @@ namespace FakeItEasy.Creation.DelegateProxies
             bodyExpressions.Add(Expression.Assign(arguments, WrapParametersInObjectArray(parameterExpressions)));
 
             Expression call = Expression.Call(
-                Expression.Constant(eventRaiser),
-                DelegateCallInterceptedEventRaiser.RaiseMethod,
-                arguments);
+                Expression.Constant(eventRaiser), DelegateCallInterceptedEventRaiser.RaiseMethod, arguments);
 
             if (!isVoid)
             {
@@ -155,31 +148,26 @@ namespace FakeItEasy.Creation.DelegateProxies
             }
 
             var variables = isVoid ? new[] { arguments } : new[] { arguments, result };
-            var body = Expression.Block(variables, bodyExpressions);
-            return body;
+            return Expression.Block(variables, bodyExpressions);
         }
 
-        private static BinaryExpression AssignParameterFromArrayElement(ParameterExpression arguments, int index, ParameterExpression parameter)
+        private static BinaryExpression AssignParameterFromArrayElement(
+            ParameterExpression arguments, int index, ParameterExpression parameter)
         {
-            var conversion =
-                Expression.Convert(
-                    Expression.ArrayAccess(arguments, Expression.Constant(index)),
-                    parameter.Type);
-            var assignment = Expression.Assign(parameter, conversion);
-            return assignment;
+            return Expression.Assign(
+                parameter,
+                Expression.Convert(Expression.ArrayAccess(arguments, Expression.Constant(index)), parameter.Type));
         }
 
         private static NewArrayExpression WrapParametersInObjectArray(ParameterExpression[] parameterExpressions)
         {
             return Expression.NewArrayInit(
-                typeof(object),
-                parameterExpressions.Select(x => Expression.Convert(x, typeof(object))));
+                typeof(object), parameterExpressions.Select(x => Expression.Convert(x, typeof(object))));
         }
 
         private class DelegateCallInterceptedEventRaiser
         {
-            public static readonly MethodInfo RaiseMethod =
-                typeof(DelegateCallInterceptedEventRaiser).GetMethod("Raise");
+            public static readonly MethodInfo RaiseMethod = typeof(DelegateCallInterceptedEventRaiser).GetMethod("Raise");
 
             private readonly IFakeCallProcessorProvider fakeCallProcessorProvider;
 
@@ -192,20 +180,15 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             public Delegate Instance { private get; set; }
 
-            // ReSharper disable UnusedMember.Local
             public object Raise(object[] arguments)
-            // ReSharper restore UnusedMember.Local
             {
                 var call = new DelegateFakeObjectCall(this.Instance, this.Method, arguments);
-
                 this.fakeCallProcessorProvider.Fetch(this.Instance).Process(call);
-
                 return call.ReturnValue;
             }
         }
 
-        private class DelegateFakeObjectCall
-            : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
+        private class DelegateFakeObjectCall : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
         {
             private readonly Delegate instance;
 

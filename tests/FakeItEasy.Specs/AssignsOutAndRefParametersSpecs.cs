@@ -10,12 +10,14 @@ namespace FakeItEasy.Specs
     [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
     [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Required for testing.")]
     [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Required for testing.")]
-    public delegate void VoidDelegateWithOutAndRefParameters(int byValueParameter, ref int byRefParameter, out int outParameter);
+    public delegate void VoidDelegateWithOutAndRefParameters(
+        int byValueParameter, ref int byRefParameter, out int outParameter);
 
     [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
     [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Required for testing.")]
     [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Required for testing.")]
-    public delegate int NonVoidDelegateWithOutAndRefParameters(int byValueParameter, ref int byRefParameter, out int outParameter);
+    public delegate int NonVoidDelegateWithOutAndRefParameters(
+        int byValueParameter, ref int byRefParameter, out int outParameter);
 
     public interface IHaveARef
     {
@@ -25,13 +27,11 @@ namespace FakeItEasy.Specs
 
     public static class AssignsOutAndRefParametersSpecs
     {
-        const string Condition = "someone_else";
-        const string KnownOutput = "you";
+        private const string Condition = "someone_else";
+        private const string KnownOutput = "you";
 
         [Scenario]
-        public static void AssignOutAndRefParametersLazilyUsingFunc(
-            IHaveARef subject,
-            string outValue)
+        public static void AssignOutAndRefParametersLazilyUsingFunc(IHaveARef subject, string outValue)
         {
             "Given a fake with a method that has a ref parameter"
                 .x(() => subject = A.Fake<IHaveARef>());
@@ -56,9 +56,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void AssignOutAndRefParametersLazilyUsingCall(
-            IHaveARef subject,
-            string outValue)
+        public static void AssignOutAndRefParametersLazilyUsingCall(IHaveARef subject, string outValue)
         {
             "Given a fake with a method that has a ref parameter"
                 .x(() => subject = A.Fake<IHaveARef>());
@@ -83,17 +81,15 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void AssignOutAndRefParameters(
-            IHaveARef subject,
-            string outValue)
+        public static void AssignOutAndRefParameters(IHaveARef subject, string outValue)
         {
             "Given a fake with a method that has a ref parameter"
                 .x(() => subject = A.Fake<IHaveARef>());
 
             "When the fake is configured to assign out and ref parameters unconditionally"
                 .x(() => A.CallTo(() => subject.MightReturnAKnownValue(ref outValue))
-                             .WithAnyArguments()
-                             .AssignsOutAndRefParameters(KnownOutput));
+                    .WithAnyArguments()
+                    .AssignsOutAndRefParameters(KnownOutput));
 
             "And the configured method is called"
                 .x(() => subject.MightReturnAKnownValue(ref outValue));
@@ -104,10 +100,7 @@ namespace FakeItEasy.Specs
 
         [Scenario]
         public static void MultipleAssignOutAndRefParameters(
-            IHaveARef subject,
-            string outValue,
-            IVoidConfiguration callSpec,
-            Exception exception)
+            IHaveARef subject, string outValue, IVoidConfiguration callSpec, Exception exception)
         {
             "Given a fake with a method that has a ref parameter"
                 .x(() => subject = A.Fake<IHaveARef>());
@@ -127,9 +120,7 @@ namespace FakeItEasy.Specs
 
         [Scenario]
         public static void AssignOutAndRefParameterForVoidDelegate(
-            VoidDelegateWithOutAndRefParameters subject,
-            int refValue,
-            int outValue)
+            VoidDelegateWithOutAndRefParameters subject, int refValue, int outValue)
         {
             "Given a faked delegate with void return type and ref and out parameters"
                 .x(() => subject = A.Fake<VoidDelegateWithOutAndRefParameters>());
@@ -149,16 +140,14 @@ namespace FakeItEasy.Specs
 
         [Scenario]
         public static void AssignOutAndRefParameterForNonVoidDelegate(
-            NonVoidDelegateWithOutAndRefParameters subject,
-            int refValue,
-            int outValue,
-            int result)
+            NonVoidDelegateWithOutAndRefParameters subject, int refValue, int outValue, int result)
         {
             "Given a faked delegate with a non-void return type and ref and out parameters"
                 .x(() => subject = A.Fake<NonVoidDelegateWithOutAndRefParameters>());
 
             "When the faked delegate is configured to assign the out and ref parameters"
-                .x(() => A.CallTo(() => subject(1, ref refValue, out outValue)).Returns(123).AssignsOutAndRefParameters(42, 99));
+                .x(() => A.CallTo(() => subject(1, ref refValue, out outValue))
+                    .Returns(123).AssignsOutAndRefParameters(42, 99));
 
             "And I call the faked delegate"
                 .x(() => result = subject(1, ref refValue, out outValue));
