@@ -60,7 +60,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Analysis\Diagnostics.cs" />
     <Compile Include="Configuration\IDoNothingConfiguration.cs" />
     <Compile Include="Configuration\IPropertySetterAnyValueConfiguration.cs" />
     <Compile Include="Configuration\IPropertySetterConfiguration.cs" />
@@ -70,7 +69,6 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="A.cs" />
-    <Compile Include="Analysis\MustUseReturnValueAttribute.cs" />
     <Compile Include="ArgumentValueFormatter.cs" />
     <Compile Include="Configuration\AnyCallCallRule.cs">
       <SubType>Code</SubType>

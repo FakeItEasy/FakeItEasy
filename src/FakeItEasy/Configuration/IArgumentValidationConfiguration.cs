@@ -1,7 +1,6 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-    using FakeItEasy.Analysis;
 
     /// <summary>
     /// Provides configurations to validate arguments of a fake object call.
@@ -14,7 +13,6 @@ namespace FakeItEasy.Configuration
         /// </summary>
         /// <param name="argumentsPredicate">The argument predicate.</param>
         /// <returns>A configuration object.</returns>
-        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         TInterface WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate);
     }
 }
