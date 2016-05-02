@@ -68,10 +68,9 @@ namespace FakeItEasy.Analyzer
 
         private static string GetDiagnosticName(IMethodSymbol methodSymbol)
         {
-            var attribute = methodSymbol.GetAttributes()
-                .FirstOrDefault(a => a.AttributeClass.GetFullName() == "FakeItEasy.Analysis.MustUseReturnValueAttribute");
-
-            return attribute?.ConstructorArguments.FirstOrDefault().Value as string;
+            return methodSymbol.GetAttributes()
+                .FirstOrDefault(a => a.AttributeClass.GetFullName() == "FakeItEasy.Analysis.MustUseReturnValueAttribute")
+                ?.ConstructorArguments.FirstOrDefault().Value as string;
         }
     }
 }
