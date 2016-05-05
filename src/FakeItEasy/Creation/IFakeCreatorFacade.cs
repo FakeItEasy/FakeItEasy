@@ -34,5 +34,13 @@ namespace FakeItEasy.Creation
         /// <param name="numberOfFakes">The number of fakes in the collection.</param>
         /// <returns>A collection of fake objects of the specified type.</returns>
         IList<T> CollectionOfFake<T>(int numberOfFakes);
+
+        /// <summary>
+        /// Creates a collection of dummies of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of dummies to create.</typeparam>
+        /// <param name="numberOfDummies">The number of dummies in the collection.</param>
+        /// <returns>A collection of dummy objects of the specified type.</returns>
+        IList<T> CollectionOfDummy<T>(int numberOfDummies);
     }
 }
