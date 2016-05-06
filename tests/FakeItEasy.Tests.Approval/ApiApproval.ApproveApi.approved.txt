@@ -1,0 +1,600 @@
+﻿[assembly: System.CLSCompliantAttribute(true)]
+[assembly: System.Resources.NeutralResourcesLanguageAttribute("en-US")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleToAttribute(@"DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleToAttribute(@"FakeItEasy.IntegrationTests, PublicKey=00240000048000009400000006020000002400005253413100040000010001002f50d82092713be482c885861c984334606da0f54c78738a3dd0862fb2dfc6080f0780132cc65d88f0f0c70af74e8a53430962395bfc1a36fab08b7a2549d387e805c13cc84acd884447ec8c4dcfb6216df720f0998380f9c906b5de8141798d64661f036d47274e6ecb76c9cde5f4cf2b521040601e44b3914fbeb9f39127f9")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleToAttribute(@"FakeItEasy.Tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001002f50d82092713be482c885861c984334606da0f54c78738a3dd0862fb2dfc6080f0780132cc65d88f0f0c70af74e8a53430962395bfc1a36fab08b7a2549d387e805c13cc84acd884447ec8c4dcfb6216df720f0998380f9c906b5de8141798d64661f036d47274e6ecb76c9cde5f4cf2b521040601e44b3914fbeb9f39127f9")]
+[assembly: System.Runtime.InteropServices.ComVisibleAttribute(false)]
+[assembly: System.Runtime.Versioning.TargetFrameworkAttribute(".NETFramework,Version=v4.0", FrameworkDisplayName=".NET Framework 4")]
+
+namespace Castle.DynamicProxy
+{
+    
+    public abstract class AbstractInvocation : Castle.DynamicProxy.IInvocation, System.Runtime.Serialization.ISerializable
+    {
+        protected readonly object proxyObject;
+        protected AbstractInvocation(object proxy, Castle.DynamicProxy.IInterceptor[] interceptors, System.Reflection.MethodInfo proxiedMethod, object[] arguments) { }
+        public object[] Arguments { get; }
+        public System.Type[] GenericArguments { get; }
+        public abstract object InvocationTarget { get; }
+        public System.Reflection.MethodInfo Method { get; }
+        public abstract System.Reflection.MethodInfo MethodInvocationTarget { get; }
+        public object Proxy { get; }
+        public object ReturnValue { get; set; }
+        public abstract System.Type TargetType { get; }
+        public object GetArgumentValue(int index) { }
+        public System.Reflection.MethodInfo GetConcreteMethod() { }
+        public System.Reflection.MethodInfo GetConcreteMethodInvocationTarget() { }
+        [System.Security.SecurityCriticalAttribute()]
+        public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+        protected abstract void InvokeMethodOnTarget();
+        public void Proceed() { }
+        public void SetArgumentValue(int index, object value) { }
+        public void SetGenericMethodArguments(System.Type[] arguments) { }
+        protected void ThrowOnNoTarget() { }
+    }
+    public interface IProxyTargetAccessor
+    {
+        object DynProxyGetTarget();
+        Castle.DynamicProxy.IInterceptor[] GetInterceptors();
+    }
+}
+namespace Castle.DynamicProxy.Generators
+{
+    
+    public class static AttributesToAvoidReplicating
+    {
+        public static void Add(System.Type attribute) { }
+        public static void Add<T>() { }
+        public static bool Contains(System.Type type) { }
+    }
+}
+namespace Castle.DynamicProxy.Internal
+{
+    
+    public abstract class CompositionInvocation : Castle.DynamicProxy.AbstractInvocation
+    {
+        protected object target;
+        protected CompositionInvocation(object target, object proxy, Castle.DynamicProxy.IInterceptor[] interceptors, System.Reflection.MethodInfo proxiedMethod, object[] arguments) { }
+        public override object InvocationTarget { get; }
+        public override System.Reflection.MethodInfo MethodInvocationTarget { get; }
+        public override System.Type TargetType { get; }
+        protected void EnsureValidProxyTarget(object newTarget) { }
+        protected void EnsureValidTarget() { }
+    }
+    public abstract class InheritanceInvocation : Castle.DynamicProxy.AbstractInvocation
+    {
+        protected InheritanceInvocation(System.Type targetType, object proxy, Castle.DynamicProxy.IInterceptor[] interceptors, System.Reflection.MethodInfo proxiedMethod, object[] arguments) { }
+        public override object InvocationTarget { get; }
+        public override System.Reflection.MethodInfo MethodInvocationTarget { get; }
+        public override System.Type TargetType { get; }
+        protected virtual void InvokeMethodOnTarget() { }
+    }
+    public class static TypeUtil
+    {
+        public static System.Reflection.FieldInfo[] GetAllFields(this System.Type type) { }
+        public static System.Type[] GetAllInterfaces(params System.Type[] types) { }
+        public static System.Type[] GetAllInterfaces(this System.Type type) { }
+        public static System.Type GetClosedParameterType(this Castle.DynamicProxy.Generators.Emitters.AbstractTypeEmitter type, System.Type parameter) { }
+        public static System.Type GetTypeOrNull(object target) { }
+        public static bool IsFinalizer(this System.Reflection.MethodInfo methodInfo) { }
+        public static bool IsGetType(this System.Reflection.MethodInfo methodInfo) { }
+        public static bool IsMemberwiseClone(this System.Reflection.MethodInfo methodInfo) { }
+        public static void SetStaticField(this System.Type type, string fieldName, System.Reflection.BindingFlags additionalFlags, object value) { }
+        public static System.Reflection.MemberInfo[] Sort(System.Reflection.MemberInfo[] members) { }
+    }
+}
+namespace FakeItEasy
+{
+    
+    public class static A
+    {
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        public static FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallTo(System.Linq.Expressions.Expression<System.Action> callSpecification) { }
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        public static FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fake) { }
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        public static FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T> CallTo<T>(System.Linq.Expressions.Expression<System.Func<T>> callSpecification) { }
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        public static FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(System.Linq.Expressions.Expression<System.Func<TValue>> propertySpecification) { }
+        public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes) { }
+        public static T Dummy<T>() { }
+        public static T Fake<T>() { }
+        public static T Fake<T>(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
+    }
+    public class static A<T>
+    
+    {
+        [System.CLSCompliantAttribute(false)]
+        public static T _ { get; }
+        public static T Ignored { get; }
+        public static FakeItEasy.IArgumentConstraintManager<T> That { get; }
+    }
+    public class static ArgumentConstraintManagerExtensions
+    {
+        public static string Contains(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
+        public static T Contains<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, object value)
+            where T : System.Collections.IEnumerable { }
+        public static string EndsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
+        public static T IsEmpty<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
+            where T : System.Collections.IEnumerable { }
+        public static T IsEqualTo<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
+        public static T IsGreaterThan<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value)
+            where T : System.IComparable { }
+        public static T IsInstanceOf<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Type type) { }
+        public static T IsNull<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
+            where T :  class { }
+        public static string IsNullOrEmpty(this FakeItEasy.IArgumentConstraintManager<string> manager) { }
+        public static T IsSameAs<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
+        public static T IsSameSequenceAs<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Collections.IEnumerable value)
+            where T : System.Collections.IEnumerable { }
+        public static T Matches<T>(this FakeItEasy.IArgumentConstraintManager<T> scope, System.Func<T, bool> predicate, string description) { }
+        public static T Matches<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, string descriptionFormat, params object[] args) { }
+        public static T Matches<T>(this FakeItEasy.IArgumentConstraintManager<T> scope, System.Linq.Expressions.Expression<System.Func<T, bool>> predicate) { }
+        public static T NullCheckedMatches<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter) { }
+        public static string StartsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
+    }
+    public class static ArgumentValidationConfigurationExtensions
+    {
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        public static TInterface WithAnyArguments<TInterface>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration) { }
+    }
+    public abstract class ArgumentValueFormatter<T> : FakeItEasy.IArgumentValueFormatter
+    
+    {
+        protected ArgumentValueFormatter() { }
+        public System.Type ForType { get; }
+        public virtual FakeItEasy.Priority Priority { get; }
+        public string GetArgumentValueAsString(object argumentValue) { }
+        protected abstract string GetStringValue(T argumentValue);
+    }
+    public class static AssertConfigurationExtensions
+    {
+        public static FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
+        public static void MustNotHaveHappened(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
+    }
+    public class static CallbackConfigurationExtensions
+    {
+        public static TFake Invokes<TFake>(this FakeItEasy.Configuration.ICallbackConfiguration<TFake> configuration, System.Action actionToInvoke) { }
+        public static TFake Invokes<TFake, T1>(this FakeItEasy.Configuration.ICallbackConfiguration<TFake> configuration, System.Action<T1> actionToInvoke) { }
+        public static TFake Invokes<TFake, T1, T2>(this FakeItEasy.Configuration.ICallbackConfiguration<TFake> configuration, System.Action<T1, T2> actionToInvoke) { }
+        public static TFake Invokes<TFake, T1, T2, T3>(this FakeItEasy.Configuration.ICallbackConfiguration<TFake> configuration, System.Action<T1, T2, T3> actionToInvoke) { }
+        public static TFake Invokes<TFake, T1, T2, T3, T4>(this FakeItEasy.Configuration.ICallbackConfiguration<TFake> configuration, System.Action<T1, T2, T3, T4> actionToInvoke) { }
+    }
+    public class static CompletedFakeObjectCallExtensions
+    {
+        public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> Matching<TFake>(this System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> calls, System.Linq.Expressions.Expression<System.Action<TFake>> callSpecification) { }
+    }
+    public class DefaultBootstrapper : FakeItEasy.IBootstrapper
+    {
+        public DefaultBootstrapper() { }
+        public virtual System.Collections.Generic.IEnumerable<string> GetAssemblyFileNamesToScanForExtensions() { }
+    }
+    public abstract class DummyFactory<T> : FakeItEasy.IDummyFactory
+    
+    {
+        protected DummyFactory() { }
+        public virtual FakeItEasy.Priority Priority { get; }
+        public bool CanCreate(System.Type type) { }
+        public object Create(System.Type type) { }
+        protected abstract T Create();
+    }
+    public class static ExceptionThrowerConfigurationExtensions
+    {
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Exception exception) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Func<System.Exception> exceptionFactory) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws<T1>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Func<T1, System.Exception> exceptionFactory) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws<T1, T2>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Func<T1, T2, System.Exception> exceptionFactory) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws<T1, T2, T3>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Func<T1, T2, T3, System.Exception> exceptionFactory) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws<T1, T2, T3, T4>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Func<T1, T2, T3, T4, System.Exception> exceptionFactory) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws<T>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration)
+            where T : System.Exception, new () { }
+    }
+    public class ExpectationException : System.Exception
+    {
+        public ExpectationException() { }
+        public ExpectationException(string message) { }
+        public ExpectationException(string message, System.Exception innerException) { }
+        protected ExpectationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
+    public class static Fake
+    {
+        public static void ClearConfiguration(object fakedObject) { }
+        public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
+        public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
+        public static void InitializeFixture(object fixture) { }
+    }
+    public class Fake<T> : FakeItEasy.Configuration.IStartConfiguration<T>, FakeItEasy.IHideObjectMembers
+    
+    {
+        public Fake() { }
+        public Fake(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
+        public T FakedObject { get; }
+        public System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> RecordedCalls { get; }
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        public FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall() { }
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        public FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallsTo(System.Linq.Expressions.Expression<System.Action<T>> callSpecification) { }
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        public FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(System.Linq.Expressions.Expression<System.Func<T, TMember>> callSpecification) { }
+    }
+    [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.All)]
+    public class FakeAttribute : System.Attribute
+    {
+        public FakeAttribute() { }
+    }
+    public class static FakeObjectCallExtensions
+    {
+        public static T GetArgument<T>(this FakeItEasy.Core.IFakeObjectCall call, int argumentIndex) { }
+        public static T GetArgument<T>(this FakeItEasy.Core.IFakeObjectCall call, string argumentName) { }
+        public static void Write<T>(this System.Collections.Generic.IEnumerable<T> calls, FakeItEasy.IOutputWriter writer)
+            where T : FakeItEasy.Core.IFakeObjectCall { }
+        public static void WriteToConsole<T>(this System.Collections.Generic.IEnumerable<T> calls)
+            where T : FakeItEasy.Core.IFakeObjectCall { }
+    }
+    public abstract class FakeOptionsBuilder<TFake> : FakeItEasy.IFakeOptionsBuilder
+    
+    {
+        protected FakeOptionsBuilder() { }
+        public virtual FakeItEasy.Priority Priority { get; }
+        protected abstract void BuildOptions(FakeItEasy.Creation.IFakeOptions<TFake> options);
+    }
+    public class static FakeOptionsExtensions
+    {
+        public static FakeItEasy.Creation.IFakeOptions<T> CallsBaseMethods<T>(this FakeItEasy.Creation.IFakeOptions<T> options) { }
+        public static FakeItEasy.Creation.IFakeOptions CallsBaseMethods(this FakeItEasy.Creation.IFakeOptions optionsBuilder) { }
+        public static FakeItEasy.Creation.IFakeOptions<T> Strict<T>(this FakeItEasy.Creation.IFakeOptions<T> options) { }
+        public static FakeItEasy.Creation.IFakeOptions Strict(this FakeItEasy.Creation.IFakeOptions optionsBuilder) { }
+    }
+    public interface IArgumentConstraintManager<T> : FakeItEasy.IHideObjectMembers
+    
+    {
+        FakeItEasy.IArgumentConstraintManager<T> Not { get; }
+        T Matches(System.Func<T, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter);
+    }
+    public interface IArgumentValueFormatter
+    {
+        System.Type ForType { get; }
+        FakeItEasy.Priority Priority { get; }
+        string GetArgumentValueAsString(object argumentValue);
+    }
+    public interface IBootstrapper
+    {
+        System.Collections.Generic.IEnumerable<string> GetAssemblyFileNamesToScanForExtensions();
+    }
+    public interface IDummyFactory
+    {
+        FakeItEasy.Priority Priority { get; }
+        bool CanCreate(System.Type type);
+        object Create(System.Type type);
+    }
+    public interface IFakeOptionsBuilder
+    {
+        FakeItEasy.Priority Priority { get; }
+        void BuildOptions(System.Type typeOfFake, FakeItEasy.Creation.IFakeOptions options);
+        bool CanBuildOptionsForFakeOfType(System.Type type);
+    }
+    public interface IHideObjectMembers
+    {
+        bool Equals(object o);
+        int GetHashCode();
+        System.Type GetType();
+        string ToString();
+    }
+    public interface IOutputWriter
+    {
+        System.IDisposable Indent();
+        FakeItEasy.IOutputWriter Write(string value);
+        FakeItEasy.IOutputWriter WriteArgumentValue(object value);
+    }
+    public class static OutAndRefParametersConfigurationExtensions
+    {
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration configuration, params object[] values) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration configuration, System.Func<T1, object[]> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1, T2>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration configuration, System.Func<T1, T2, object[]> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1, T2, T3>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration configuration, System.Func<T1, T2, T3, object[]> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration configuration, System.Func<T1, T2, T3, T4, object[]> valueProducer) { }
+    }
+    public class static OutputWriterExtensions
+    {
+        public static FakeItEasy.IOutputWriter Write(this FakeItEasy.IOutputWriter writer, string format, params object[] args) { }
+        public static FakeItEasy.IOutputWriter Write(this FakeItEasy.IOutputWriter writer, object value) { }
+        public static FakeItEasy.IOutputWriter WriteLine(this FakeItEasy.IOutputWriter writer) { }
+    }
+    public struct Priority : System.IComparable<FakeItEasy.Priority>, System.IEquatable<FakeItEasy.Priority>
+    {
+        public Priority(byte value) { }
+        public static FakeItEasy.Priority Default { get; }
+        public int CompareTo(FakeItEasy.Priority other) { }
+        public bool Equals(FakeItEasy.Priority other) { }
+        public override bool Equals(object obj) { }
+        public override int GetHashCode() { }
+        public override string ToString() { }
+    }
+    public class static Raise
+    {
+        public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e)
+            where TEventArgs : System.EventArgs { }
+        public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(TEventArgs e)
+            where TEventArgs : System.EventArgs { }
+        public static TEventHandler With<TEventHandler>(params object[] arguments) { }
+        public static FakeItEasy.Core.Raise<System.EventArgs> WithEmpty() { }
+    }
+    public class static Recorders
+    {
+        public static FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder FileRecorder(string fileName) { }
+    }
+    public class static RepeatConfigurationExtensions
+    {
+        public static void Once(this FakeItEasy.Configuration.IRepeatConfiguration configuration) { }
+        public static void Twice(this FakeItEasy.Configuration.IRepeatConfiguration configuration) { }
+    }
+    public abstract class Repeated
+    {
+        protected Repeated() { }
+        public static FakeItEasy.Configuration.IRepeatSpecification AtLeast { get; }
+        public static FakeItEasy.Configuration.IRepeatSpecification Exactly { get; }
+        public static FakeItEasy.Repeated Never { get; }
+        public static FakeItEasy.Configuration.IRepeatSpecification NoMoreThan { get; }
+        public static FakeItEasy.Repeated Like(System.Linq.Expressions.Expression<System.Func<int, bool>> repeatValidation) { }
+    }
+    public class static ReturnValueConfigurationExtensions
+    {
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, T value) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, T value) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, System.Func<T> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<T> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2, T3>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, T3, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2, T3>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, T3, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2, T3, T4>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, T3, T4, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2, T3, T4>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, T3, T4, TReturnType> valueProducer) { }
+        public static void ReturnsNextFromSequence<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, params T[] values) { }
+        public static void ReturnsNextFromSequence<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, params T[] values) { }
+    }
+    [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.All)]
+    public class UnderTestAttribute : System.Attribute
+    {
+        public UnderTestAttribute() { }
+    }
+    public class static WhereConfigurationExtensions
+    {
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        public static T Where<T>(this FakeItEasy.Configuration.IWhereConfiguration<T> configuration, System.Linq.Expressions.Expression<System.Func<FakeItEasy.Core.IFakeObjectCall, bool>> predicate) { }
+    }
+}
+namespace FakeItEasy.Configuration
+{
+    
+    public class ArgumentCollection : System.Collections.Generic.IEnumerable<object>, System.Collections.IEnumerable
+    {
+        public System.Collections.Generic.IEnumerable<string> ArgumentNames { get; }
+        public int Count { get; }
+        public object this[int argumentIndex] { get; }
+        public T Get<T>(int index) { }
+        public T Get<T>(string argumentName) { }
+        public System.Collections.Generic.IEnumerator<object> GetEnumerator() { }
+    }
+    public class FakeConfigurationException : System.Exception
+    {
+        public FakeConfigurationException() { }
+        public FakeConfigurationException(string message) { }
+        public FakeConfigurationException(string message, System.Exception innerException) { }
+        protected FakeConfigurationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
+    public interface IAfterCallSpecifiedConfiguration : FakeItEasy.Configuration.IRepeatConfiguration, FakeItEasy.IHideObjectMembers { }
+    public interface IAfterCallSpecifiedWithOutAndRefParametersConfiguration : FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.Configuration.IRepeatConfiguration, FakeItEasy.IHideObjectMembers { }
+    public interface IAnyCallConfigurationWithNoReturnTypeSpecified : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.Configuration.IVoidArgumentValidationConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified>, FakeItEasy.IHideObjectMembers
+    {
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>();
+    }
+    public interface IAnyCallConfigurationWithReturnTypeSpecified<T> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T>, FakeItEasy.Configuration.IReturnValueConfiguration<T>, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<T>>, FakeItEasy.IHideObjectMembers { }
+    public interface IArgumentValidationConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    
+    {
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        TInterface WhenArgumentsMatch(System.Func<FakeItEasy.Configuration.ArgumentCollection, bool> argumentsPredicate);
+    }
+    public interface IAssertConfiguration : FakeItEasy.IHideObjectMembers
+    {
+        FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(FakeItEasy.Repeated repeatConstraint);
+    }
+    public interface ICallbackConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    
+    {
+        TInterface Invokes(System.Action<FakeItEasy.Core.IFakeObjectCall> action);
+    }
+    public interface ICallBaseConfiguration : FakeItEasy.IHideObjectMembers
+    {
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration CallsBaseMethod();
+    }
+    public interface IDoNothingConfiguration
+    {
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration DoesNothing();
+    }
+    public interface IExceptionThrowerConfiguration : FakeItEasy.IHideObjectMembers
+    {
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception> exceptionFactory);
+    }
+    public interface IOrderableCallAssertion : FakeItEasy.IHideObjectMembers
+    {
+        FakeItEasy.Configuration.IOrderableCallAssertion Then(FakeItEasy.Configuration.UnorderedCallAssertion nextAssertion);
+    }
+    public interface IOutAndRefParametersConfiguration
+    {
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Collections.Generic.ICollection<object>> valueProducer);
+    }
+    public interface IPropertySetterAnyValueConfiguration<TValue> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IPropertySetterConfiguration, FakeItEasy.IHideObjectMembers
+    
+    {
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        FakeItEasy.Configuration.IPropertySetterConfiguration To(TValue value);
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        FakeItEasy.Configuration.IPropertySetterConfiguration To(System.Linq.Expressions.Expression<System.Func<TValue>> valueConstraint);
+    }
+    public interface IPropertySetterConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.IHideObjectMembers { }
+    public interface IRepeatConfiguration : FakeItEasy.IHideObjectMembers
+    {
+        void NumberOfTimes(int numberOfTimesToRepeat);
+    }
+    public interface IRepeatSpecification
+    {
+        FakeItEasy.Repeated Once { get; }
+        FakeItEasy.Repeated Twice { get; }
+        FakeItEasy.Repeated Times(int numberOfTimes);
+    }
+    public interface IReturnValueArgumentValidationConfiguration<TMember> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IReturnValueConfiguration<TMember>, FakeItEasy.IHideObjectMembers { }
+    public interface IReturnValueConfiguration<TMember> : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.IHideObjectMembers
+    
+    {
+        FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, TMember> valueProducer);
+    }
+    public interface IStartConfiguration<TFake> : FakeItEasy.IHideObjectMembers
+    
+    {
+        FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall();
+        FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(System.Linq.Expressions.Expression<System.Func<TFake, TMember>> callSpecification);
+        FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallsTo(System.Linq.Expressions.Expression<System.Action<TFake>> callSpecification);
+    }
+    public interface IVoidArgumentValidationConfiguration : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.IHideObjectMembers { }
+    public interface IVoidConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.IHideObjectMembers { }
+    public interface IWhereConfiguration<out T>
+    
+    {
+        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
+        T Where(System.Func<FakeItEasy.Core.IFakeObjectCall, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter);
+    }
+    public sealed class UnorderedCallAssertion : FakeItEasy.Configuration.IOrderableCallAssertion, FakeItEasy.IHideObjectMembers
+    {
+        public FakeItEasy.Configuration.IOrderableCallAssertion Then(FakeItEasy.Configuration.UnorderedCallAssertion nextAssertion) { }
+    }
+}
+namespace FakeItEasy.Core
+{
+    
+    public class FakeCreationException : System.Exception
+    {
+        public FakeCreationException() { }
+        public FakeCreationException(string message) { }
+        public FakeCreationException(string message, System.Exception innerException) { }
+        protected FakeCreationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
+    public class FakeManager : FakeItEasy.Core.IFakeCallProcessor
+    {
+        public System.Type FakeObjectType { get; }
+        public virtual object Object { get; }
+        public virtual System.Collections.Generic.IEnumerable<FakeItEasy.Core.IFakeObjectCallRule> Rules { get; }
+        public void AddInterceptionListener(FakeItEasy.Core.IInterceptionListener listener) { }
+        public virtual void AddRuleFirst(FakeItEasy.Core.IFakeObjectCallRule rule) { }
+        public virtual void AddRuleLast(FakeItEasy.Core.IFakeObjectCallRule rule) { }
+        public virtual void RemoveRule(FakeItEasy.Core.IFakeObjectCallRule rule) { }
+    }
+    public interface ICompletedFakeObjectCall : FakeItEasy.Core.IFakeObjectCall
+    {
+        object ReturnValue { get; }
+    }
+    public interface IFakeObjectCall
+    {
+        FakeItEasy.Configuration.ArgumentCollection Arguments { get; }
+        object FakedObject { get; }
+        System.Reflection.MethodInfo Method { get; }
+    }
+    public interface IFakeObjectCallRule
+    {
+        System.Nullable<int> NumberOfTimesToCall { get; }
+        void Apply(FakeItEasy.Core.IInterceptedFakeObjectCall fakeObjectCall);
+        bool IsApplicableTo(FakeItEasy.Core.IFakeObjectCall fakeObjectCall);
+    }
+    public interface IInterceptedFakeObjectCall : FakeItEasy.Core.IFakeObjectCall
+    {
+        FakeItEasy.Core.ICompletedFakeObjectCall AsReadOnly();
+        void CallBaseMethod();
+        void SetArgumentValue(int index, object value);
+        void SetReturnValue(object value);
+    }
+    public interface IInterceptionListener
+    {
+        void OnAfterCallIntercepted(FakeItEasy.Core.ICompletedFakeObjectCall interceptedCall, FakeItEasy.Core.IFakeObjectCallRule ruleThatWasApplied);
+        void OnBeforeCallIntercepted(FakeItEasy.Core.IFakeObjectCall interceptedCall);
+    }
+    public class Raise<TEventArgs> : FakeItEasy.Core.IEventRaiserArgumentProvider
+        where TEventArgs : System.EventArgs { }
+}
+namespace FakeItEasy.Creation
+{
+    
+    public interface IFakeOptions : FakeItEasy.IHideObjectMembers
+    {
+        FakeItEasy.Creation.IFakeOptions ConfigureFake(System.Action<object> action);
+        FakeItEasy.Creation.IFakeOptions Implements(System.Type interfaceType);
+        FakeItEasy.Creation.IFakeOptions Implements<TInterface>();
+        FakeItEasy.Creation.IFakeOptions WithAdditionalAttributes(System.Collections.Generic.IEnumerable<System.Reflection.Emit.CustomAttributeBuilder> customAttributeBuilders);
+        FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
+        FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor<TConstructor>(System.Linq.Expressions.Expression<System.Func<TConstructor>> constructorCall);
+        FakeItEasy.Creation.IFakeOptionsForWrappers Wrapping(object wrappedInstance);
+    }
+    public interface IFakeOptions<T> : FakeItEasy.IHideObjectMembers
+    
+    {
+        FakeItEasy.Creation.IFakeOptions<T> ConfigureFake(System.Action<T> action);
+        FakeItEasy.Creation.IFakeOptions<T> Implements(System.Type interfaceType);
+        FakeItEasy.Creation.IFakeOptions<T> Implements<TInterface>();
+        FakeItEasy.Creation.IFakeOptions<T> WithAdditionalAttributes(System.Collections.Generic.IEnumerable<System.Reflection.Emit.CustomAttributeBuilder> customAttributeBuilders);
+        FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
+        FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Linq.Expressions.Expression<System.Func<T>> constructorCall);
+        FakeItEasy.Creation.IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
+    }
+    public interface IFakeOptionsForWrappers : FakeItEasy.Creation.IFakeOptions, FakeItEasy.IHideObjectMembers
+    {
+        FakeItEasy.Creation.IFakeOptions RecordedBy(FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder);
+    }
+    public interface IFakeOptionsForWrappers<T> : FakeItEasy.Creation.IFakeOptions<T>, FakeItEasy.IHideObjectMembers
+    
+    {
+        FakeItEasy.Creation.IFakeOptions<T> RecordedBy(FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder);
+    }
+    public interface ITaggable
+    {
+        object Tag { get; set; }
+    }
+}
+namespace FakeItEasy.SelfInitializedFakes
+{
+    
+    public class CallData
+    {
+        public CallData(System.Reflection.MethodInfo method, System.Collections.Generic.IEnumerable<object> outputArguments, object returnValue) { }
+        public System.Reflection.MethodInfo Method { get; }
+        public System.Collections.Generic.IEnumerable<object> OutputArguments { get; }
+        public object ReturnValue { get; }
+    }
+    public interface ICallStorage
+    {
+        System.Collections.Generic.IEnumerable<FakeItEasy.SelfInitializedFakes.CallData> Load();
+        void Save(System.Collections.Generic.IEnumerable<FakeItEasy.SelfInitializedFakes.CallData> calls);
+    }
+    public interface ISelfInitializingFakeRecorder : System.IDisposable
+    {
+        bool IsRecording { get; }
+        void ApplyNext(FakeItEasy.Core.IInterceptedFakeObjectCall fakeObjectCall);
+        void RecordCall(FakeItEasy.Core.ICompletedFakeObjectCall fakeObjectCall);
+    }
+    public class RecordingException : System.Exception
+    {
+        public RecordingException() { }
+        public RecordingException(string message) { }
+        public RecordingException(string message, System.Exception innerException) { }
+        protected RecordingException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
+    public class RecordingManager : FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder, System.IDisposable
+    {
+        public RecordingManager(FakeItEasy.SelfInitializedFakes.ICallStorage storage) { }
+        public bool IsRecording { get; }
+        public void ApplyNext(FakeItEasy.Core.IInterceptedFakeObjectCall fakeObjectCall) { }
+        public virtual void Dispose() { }
+        public virtual void RecordCall(FakeItEasy.Core.ICompletedFakeObjectCall fakeObjectCall) { }
+    }
+}
