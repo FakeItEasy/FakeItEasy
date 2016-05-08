@@ -9,9 +9,8 @@ namespace FakeItEasy.Configuration
     /// Provides configuration for property setters and allows the user to specify validations for arguments.
     /// </summary>
     /// <typeparam name="TValue">The value of the property.</typeparam>
-    public interface IPropertySetterAnyValueConfiguration<TValue>
-        : IPropertySetterConfiguration,
-            IArgumentValidationConfiguration<IPropertySetterConfiguration>
+    public interface IPropertySetterAnyValueConfiguration<TValue> :
+        IPropertySetterConfiguration, IArgumentValidationConfiguration<IPropertySetterConfiguration>
     {
         /// <summary>
         /// Configures the property assignment to be accepted when the value <see cref="object.Equals(object)"/>
