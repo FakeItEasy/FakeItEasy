@@ -76,6 +76,19 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Creates a collection of dummies of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of dummies to create.</typeparam>
+        /// <param name="numberOfDummies">The number of dummies in the collection.</param>
+        /// <returns>A collection of dummy objects of the specified type.</returns>
+        /// <exception cref="ArgumentException">Dummies of the specified type can not be created.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of dummy.")]
+        public static IList<T> CollectionOfDummy<T>(int numberOfDummies)
+        {
+            return FakeCreator.CollectionOfDummy<T>(numberOfDummies);
+        }
+
+        /// <summary>
         /// Configures a call to a faked object.
         /// </summary>
         /// <param name="callSpecification">An expression where the configured member is called.</param>

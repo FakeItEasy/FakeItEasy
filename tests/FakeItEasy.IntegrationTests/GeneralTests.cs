@@ -237,6 +237,18 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
+        public void DummyCollection_should_return_correct_number_of_dummies()
+        {
+            // Arrange
+
+            // Act
+            var result = A.CollectionOfDummy<IFoo>(10);
+
+            // Assert
+            result.Should().HaveCount(10);
+        }
+
+        [Test]
         public void Returns_from_sequence_only_applies_the_number_as_many_times_as_the_number_of_specified_values()
         {
             // Arrange

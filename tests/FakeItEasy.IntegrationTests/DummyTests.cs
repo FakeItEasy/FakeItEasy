@@ -30,6 +30,13 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Test]
+        public void Correct_exception_should_be_thrown_when_dummy_collection_is_requested_for_unfakeable_type_with_no_dummy_factory()
+        {
+            var exception = Record.Exception(() => A.CollectionOfDummy<NonInstance>(1));
+            exception.Should().BeAnExceptionOfType<FakeCreationException>();
+        }
+
+        [Test]
         public void Dummy_factories_are_polled_only_once_per_dummy_type()
         {
             A.Dummy<Dummy>();
