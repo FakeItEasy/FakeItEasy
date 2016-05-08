@@ -18,7 +18,6 @@ namespace FakeItEasy.Specs
             [SuppressMessage("Microsoft.Design", "CA1023:IndexersShouldNotBeMultidimensional", Justification = "Required for testing.")]
             bool this[string genus, string species] { get; set; }
 
-            [SuppressMessage("Microsoft.Design", "CA1023:IndexersShouldNotBeMultidimensional", Justification = "Required for testing.")]
             int this[string commonName] { get; set; }
 
             string this[int count] { get; }
@@ -33,9 +32,11 @@ namespace FakeItEasy.Specs
             "When assignment of a property is configured using a null expression"
                 .x(() => exception = Record.Exception(() => A.CallToSet<int>(null)));
 
-            "Then the call to configure throws"
-                .x(() => exception.Should().BeAnExceptionOfType<ArgumentNullException>()
-                    .And.ParamName.Should().Be("propertySpecification"));
+            "Then an argument null exception is thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentNullException>());
+
+            "And the parameter name is 'propertySpecification'"
+                .x(() => exception.As<ArgumentNullException>().ParamName.Should().Be("propertySpecification"));
         }
 
         [Scenario]
@@ -46,10 +47,10 @@ namespace FakeItEasy.Specs
             "Given a Fake with a property that can't be configured"
                 .x(() => subject = A.Fake<ClassWithInterestingProperties>());
 
-            "When assignment of the property is configured for any value"
+            "When assignment of the property is configured"
                 .x(() => exception = Record.Exception(() => A.CallToSet(() => subject.NonConfigurableProperty).DoesNothing()));
 
-            "Then the call to configure throws"
+            "Then a fake configuration exception is thrown"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>());
         }
 
@@ -61,12 +62,15 @@ namespace FakeItEasy.Specs
             "Given a Fake with a read-only property"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "When assignment of the property is configured for any value"
+            "When assignment of the property is configured"
                 .x(() => exception = Record.Exception(() => A.CallToSet(() => subject.ReadOnlyProperty).DoesNothing()));
 
-            "Then the call to configure throws"
-                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                .And.Message.Should().Be("The property '" + nameof(IHaveInterestingProperties.ReadOnlyProperty) + "' does not have a setter."));
+            "Then an argument exception is thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>());
+
+            "And the exception message indicates that the property is read-only"
+                .x(() => exception.Message.Should().Be(
+                    $"The property '{nameof(IHaveInterestingProperties.ReadOnlyProperty)}' does not have a setter."));
         }
 
         [Scenario]
@@ -78,11 +82,14 @@ namespace FakeItEasy.Specs
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
             "When assignment of the property is configured using a method call expression"
-                .x(() => exception = Record.Exception(() => A.CallToSet(() => subject.MethodThatLooksLikeAPropertyGetter()).DoesNothing()));
+                .x(() => exception = Record.Exception(() =>
+                    A.CallToSet(() => subject.MethodThatLooksLikeAPropertyGetter()).DoesNothing()));
 
-            "Then the call to configure throws"
-                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                .And.Message.Should().EndWith("' must refer to a property or indexer getter, but doesn't."));
+            "Then an argument exception is thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>());
+
+            "And the exception message indicates that the expression refers to an incorrect member type"
+                .x(() => exception.Message.Should().EndWith("' must refer to a property or indexer getter, but doesn't."));
         }
 
         [Scenario]
@@ -96,13 +103,21 @@ namespace FakeItEasy.Specs
             "When assignment of the property is configured using a field access expression"
                 .x(() => exception = Record.Exception(() => A.CallToSet(() => subject.Field).DoesNothing()));
 
-            "Then the call to configure throws"
-                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                .And.Message.Should().Be("The specified expression is not a method call or property getter."));
+            "Then an argument exception is thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>());
+
+            "And the exception message indicates that the expression refers to an incorrect member type"
+                .x(() => exception.Message.Should().Be("The specified expression is not a method call or property getter."));
         }
 
         [Scenario]
+        [Example(int.MinValue)]
+        [Example(-42)]
+        [Example(0)]
+        [Example(42)]
+        [Example(int.MaxValue)]
         public static void ConfiguringSetterForAnyValue(
+            int value,
             IHaveInterestingProperties subject,
             bool wasConfiguredBehaviorUsed)
         {
@@ -112,8 +127,8 @@ namespace FakeItEasy.Specs
             "And assignment of the property is configured for any value"
                 .x(() => A.CallToSet(() => subject.ReadWriteProperty).Invokes(call => wasConfiguredBehaviorUsed = true));
 
-            "When I assign the property"
-                .x(() => subject.ReadWriteProperty = 7);
+            $"When I assign the property to {value}"
+                .x(() => subject.ReadWriteProperty = value);
 
             "Then the configured behavior is used"
                 .x(() => wasConfiguredBehaviorUsed.Should().BeTrue());
@@ -127,7 +142,7 @@ namespace FakeItEasy.Specs
             "Given a Fake with an indexer"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "And assignment of the indexer is configured for any value"
+            "And assignment of the indexer is configured"
                 .x(() => A.CallToSet(() => subject["Choeropsis", "liberiensis"]).Invokes(call => wasConfiguredBehaviorUsed = true));
 
             "When I assign the property using the wrong indexes"
@@ -145,7 +160,7 @@ namespace FakeItEasy.Specs
             "Given a Fake with an indexer"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "And assignment of the indexer is configured for any value"
+            "And assignment of the indexer is configured"
                 .x(() => A.CallToSet(() => subject["Choeropsis", "liberiensis"]).Invokes(call => wasConfiguredBehaviorUsed = true));
 
             "When I assign the property using matching indexes"
@@ -164,10 +179,10 @@ namespace FakeItEasy.Specs
             "Given a Fake with an overloaded indexer"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "And assignment of the indexer is configured for one signature and any value"
+            "And assignment of the indexer is configured for one signature"
                 .x(() => A.CallToSet(() => subject["Choeropsis", "liberiensis"]).Invokes(call => wasFirstConfiguredBehaviorUsed = true));
 
-            "And assignment of the indexer is configured for the other signature and any value"
+            "And assignment of the indexer is configured for the other signature"
                 .x(() => A.CallToSet(() => subject["Pygmy hippopotamus"]).Invokes(call => wasSecondConfiguredBehaviorUsed = true));
 
             "When I assign the property using one signature"
@@ -191,12 +206,14 @@ namespace FakeItEasy.Specs
             "Given a Fake with a read-only indexer"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "When assignment of the indexer is configured for any value"
+            "When assignment of the indexer is configured"
                 .x(() => exception = Record.Exception(() => A.CallToSet(() => subject[7]).DoesNothing()));
 
-            "Then the call to configure throws"
-               .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-               .And.Message.Should().EndWith("refers to an indexed property that does not have a setter."));
+            "Then an argument exception is thrown"
+               .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>());
+
+            "And the exception message indicates that the property is read only"
+                .x(() => exception.Message.Should().EndWith("refers to an indexed property that does not have a setter."));
         }
 
         [Scenario]
@@ -207,7 +224,7 @@ namespace FakeItEasy.Specs
             "Given a Fake with an indexer"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "And assignment of the indexer is configured for any value using WhenArgumentsMatch"
+            "And assignment of the indexer is configured using WhenArgumentsMatch"
                 .x(() => A.CallToSet(() => subject["Choeropsis", "liberiensis"])
                     .WhenArgumentsMatch(arguments => arguments.Get<string>("genus") == "Canis")
                     .Invokes(call => wasConfiguredBehaviorUsed = true));
@@ -267,7 +284,7 @@ namespace FakeItEasy.Specs
             "Given a Fake with an indexer"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
 
-            "And assignment of the indexer is configured for any value and overridden with WithAnyArguments"
+            "And assignment of the indexer is configured for specific arguments and overridden with WithAnyArguments"
                 .x(() => A.CallToSet(() => subject["Choeropsis", "liberiensis"])
                     .WithAnyArguments()
                     .Invokes(call => wasConfiguredBehaviorUsed = true));
