@@ -16,7 +16,7 @@ namespace FakeItEasy.Tests.Core
             var factory = new TestableFakeFactory() as IDummyFactory;
             var created = factory.Create(typeof(SomeType));
 
-            Assert.That(created, Is.InstanceOf<SomeType>());
+            created.Should().BeOfType<SomeType>();
         }
 
         [Test]

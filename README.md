@@ -16,8 +16,8 @@ A .Net dynamic fake framework for creating all types of fake objects, mocks, stu
 ## It's faking amazing!
 
 * [Website](http://fakeiteasy.github.io/)
-* [Quickstart](https://github.com/FakeItEasy/FakeitEasy/wiki/Quickstart)
-* [Documentation](https://github.com/FakeItEasy/FakeItEasy/wiki)
+* [Quickstart](http://fakeiteasy.readthedocs.io/en/stable/quickstart/)
+* [Documentation](http://fakeiteasy.readthedocs.io/en/stable/)
 * [Chat](https://gitter.im/FakeItEasy/FakeItEasy)
 * [Package](https://nuget.org/packages/FakeItEasy "FakeItEasy on NuGet")
 

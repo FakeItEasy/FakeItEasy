@@ -5,6 +5,7 @@ namespace FakeItEasy
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
+    using FakeItEasy.Analysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Creation;
 
@@ -75,10 +76,24 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Creates a collection of dummies of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of dummies to create.</typeparam>
+        /// <param name="numberOfDummies">The number of dummies in the collection.</param>
+        /// <returns>A collection of dummy objects of the specified type.</returns>
+        /// <exception cref="ArgumentException">Dummies of the specified type can not be created.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of dummy.")]
+        public static IList<T> CollectionOfDummy<T>(int numberOfDummies)
+        {
+            return FakeCreator.CollectionOfDummy<T>(numberOfDummies);
+        }
+
+        /// <summary>
         /// Configures a call to a faked object.
         /// </summary>
         /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
+        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public static IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
@@ -94,6 +109,7 @@ namespace FakeItEasy
         /// <returns>
         /// A configuration object.
         /// </returns>
+        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public static IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fake)
         {
             return ConfigurationManager.CallTo(fake);
@@ -106,9 +122,23 @@ namespace FakeItEasy
         /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
+        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public static IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
+        }
+
+        /// <summary>
+        /// Configures a property setter on a faked object.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the property value.</typeparam>
+        /// <param name="propertySpecification">An expression that uses the getter aspect of the property to configure.</param>
+        /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
+        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
+        public static IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(Expression<Func<TValue>> propertySpecification)
+        {
+            return ConfigurationManager.CallToSet(propertySpecification);
         }
     }
 }

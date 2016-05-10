@@ -1,6 +1,7 @@
 namespace FakeItEasy.Configuration
 {
     using System.Diagnostics.CodeAnalysis;
+    using FakeItEasy.Analysis;
 
     /// <summary>
     /// Configuration for any call to a faked object.
@@ -14,6 +15,7 @@ namespace FakeItEasy.Configuration
         /// <typeparam name="TMember">The return type of the members to configure.</typeparam>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to provide a strongly typed fluent API.")]
+        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>();
     }
 }

@@ -4,13 +4,9 @@ namespace FakeItEasy.Creation
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-#if NET40_OR_LATER
     using System.Linq.Expressions;
-#endif
     using System.Reflection;
-#if NET40_OR_LATER
     using System.Threading.Tasks;
-#endif
     using FakeItEasy.Core;
 
     internal class DummyValueCreationSession : IDummyValueCreationSession
@@ -31,10 +27,8 @@ namespace FakeItEasy.Creation
             this.strategies = new ResolveStrategy[]
                 {
                     new ResolveFromDummyFactoryStrategy { DummyFactory = dummyFactory },
-#if NET40_OR_LATER
                     new ResolveByCreatingTaskStrategy { Session = this },
                     new ResolveByCreatingLazyStrategy { Session = this },
-#endif
                     new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this },
                     new ResolveByActivatingValueTypeStrategy(),
                     new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy { Session = this }
@@ -125,7 +119,6 @@ namespace FakeItEasy.Creation
             }
         }
 
-#if NET40_OR_LATER
         private class ResolveByCreatingTaskStrategy : ResolveStrategy
         {
             private static readonly MethodInfo GenericFromResultMethodDefinition = CreateGenericFromResultMethodDefinition();
@@ -207,7 +200,6 @@ namespace FakeItEasy.Creation
                 return () => value;
             }
         }
-#endif
 
         private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy : ResolveStrategy
         {

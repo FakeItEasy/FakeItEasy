@@ -20,7 +20,6 @@ output          = "artifacts/output"
 tests           = "artifacts/tests"
 
 unit_tests = [
-  "tests/FakeItEasy.Net35.Tests/bin/Release/FakeItEasy.Net35.Tests.dll",
   "tests/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
   "tests/FakeItEasy.Analyzer.Tests/bin/Release/FakeItEasy.Analyzer.Tests.dll"
 ]
@@ -31,6 +30,8 @@ integration_tests = [
 ]
 
 specs = "tests/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
+
+approval_tests = "tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll"
 
 repo = 'FakeItEasy/FakeItEasy'
 release_issue_labels = ['0 - Backlog', 'P2', 'build', 'documentation']
@@ -190,6 +191,13 @@ task :spec => [:build, tests] do
     xunit.assembly = specs
     xunit.options "-noshadow", "-nologo", "-notrait", "\"explicit=yes\"", "-xml", "#{tests}/TestResult.Specifications.xml"
     xunit.execute
+end
+
+desc "Execute approval tests"
+nunit :approve => [:build, tests] do |nunit|
+  nunit.command = nunit_command
+  nunit.assemblies approval_tests
+  nunit.options "/result=#{tests}/TestResult.Approval.xml", "/nologo"
 end
 
 directory output

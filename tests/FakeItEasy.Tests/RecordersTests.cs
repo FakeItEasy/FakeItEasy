@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using FakeItEasy.SelfInitializedFakes;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -21,7 +22,7 @@ namespace FakeItEasy.Tests
             var recorder = Recorders.FileRecorder("c:\\file.dat");
 
             // Assert
-            Assert.That(recorder, Is.SameAs(recordingManager));
+            recorder.Should().BeSameAs(recordingManager);
         }
 
         protected override void OnSetup()

@@ -1,8 +1,10 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using NUnit.Framework;
@@ -85,7 +87,8 @@ namespace FakeItEasy.Tests.Configuration
         {
             var config = this.CreateTestableReturnConfiguration();
 
-            NullGuardedConstraint.Assert(() => config.ReturnsLazily(x => x.Arguments.Get<int>(0)));
+            Expression<Action> call = () => config.ReturnsLazily(x => x.Arguments.Get<int>(0));
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -225,8 +228,8 @@ namespace FakeItEasy.Tests.Configuration
         public void Invokes_should_be_null_guarded()
         {
             Action<IFakeObjectCall> action = x => { };
-            NullGuardedConstraint.Assert(() =>
-                this.builder.Invokes(action));
+            Expression<Action> call = () => this.builder.Invokes(action);
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -255,8 +258,8 @@ namespace FakeItEasy.Tests.Configuration
             var returnConfig = this.CreateTestableReturnConfiguration();
 
             Action<IFakeObjectCall> action = x => { };
-            NullGuardedConstraint.Assert(() =>
-                returnConfig.Invokes(action));
+            Expression<Action> call = () => returnConfig.Invokes(action);
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -340,8 +343,8 @@ namespace FakeItEasy.Tests.Configuration
 
             var config = this.CreateBuilder(builtRule);
 
-            NullGuardedConstraint.Assert(() =>
-                config.WhenArgumentsMatch(x => true));
+            Expression<Action> call = () => config.WhenArgumentsMatch(x => true);
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -372,15 +375,15 @@ namespace FakeItEasy.Tests.Configuration
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
 
-            NullGuardedConstraint.Assert(() =>
-                returnConfig.WhenArgumentsMatch(x => true));
+            Expression<Action> call = () => returnConfig.WhenArgumentsMatch(x => true);
+            call.Should().BeNullGuarded();
         }
 
         [Test]
         public void AssignsOutAndRefParameters_should_be_null_guarded()
         {
-            NullGuardedConstraint.Assert(() =>
-                this.builder.AssignsOutAndRefParameters());
+            Expression<Action> call = () => this.builder.AssignsOutAndRefParameters();
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -403,8 +406,8 @@ namespace FakeItEasy.Tests.Configuration
         [Test]
         public void AssignsOutAndRefParametersLazily_should_be_null_guarded()
         {
-            NullGuardedConstraint.Assert(() =>
-                this.builder.AssignsOutAndRefParametersLazily(null));
+            Expression<Action> call = () => this.builder.AssignsOutAndRefParametersLazily(null);
+            call.Should().BeNullGuarded();
         }
 
         [Test]

@@ -2,6 +2,7 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     internal class ArgumentConstraintTrap
         : IArgumentConstraintTrapper
@@ -9,7 +10,7 @@ namespace FakeItEasy.Core
         [ThreadStatic]
         private static List<IArgumentConstraint> trappedConstraints;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public static void ReportTrappedConstraint(IArgumentConstraint constraint)
         {
             if (trappedConstraints == null)

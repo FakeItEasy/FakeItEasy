@@ -1,7 +1,12 @@
 namespace FakeItEasy.Tests.Core
 {
+    using System;
+    using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -23,8 +28,8 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.accessor.TagProxy(A.Fake<object>(), A.Fake<FakeManager>()));
+            Expression<Action> call = () => this.accessor.TagProxy(A.Fake<object>(), A.Fake<FakeManager>());
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -38,7 +43,7 @@ namespace FakeItEasy.Tests.Core
             this.accessor.TagProxy(proxy, fakeManager);
 
             // Assert
-            Assert.That(proxy.Tag, Is.SameAs(fakeManager));
+            proxy.Tag.Should().BeSameAs(fakeManager);
         }
 
         [Test]
@@ -53,7 +58,7 @@ namespace FakeItEasy.Tests.Core
             var result = this.accessor.GetFakeManager(proxy);
 
             // Assert
-            Assert.That(result, Is.SameAs(fakeManager));
+            result.Should().BeSameAs(fakeManager);
         }
 
         [Test]
@@ -64,8 +69,8 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.accessor.GetFakeManager(A.Fake<ITaggable>()));
+            Expression<Action> call = () => this.accessor.GetFakeManager(A.Fake<ITaggable>());
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -80,7 +85,7 @@ namespace FakeItEasy.Tests.Core
             var manager = this.accessor.GetFakeManager(proxy);
 
             // Assert
-            Assert.That(manager, Is.SameAs(fakeManager));
+            manager.Should().BeSameAs(fakeManager);
         }
 
         [Test]
@@ -91,11 +96,12 @@ namespace FakeItEasy.Tests.Core
             proxy.Tag = null;
 
             // Act
+            var exception = Record.Exception(() => this.accessor.GetFakeManager(proxy));
 
             // Assert
-            Assert.That(
-                () => this.accessor.GetFakeManager(proxy),
-                Throws.ArgumentException.With.Message.EqualTo("The specified object is not recognized as a fake object."));
+            exception.Should()
+                .BeAnExceptionOfType<ArgumentException>()
+                .WithMessage("The specified object is not recognized as a fake object.");
         }
 
         [Test]
@@ -106,11 +112,12 @@ namespace FakeItEasy.Tests.Core
             proxy.Tag = new object();
 
             // Act
+            var exception = Record.Exception(() => this.accessor.GetFakeManager(proxy));
 
             // Assert
-            Assert.That(
-                () => this.accessor.GetFakeManager(proxy),
-                Throws.ArgumentException.With.Message.EqualTo("The specified object is not recognized as a fake object."));
+            exception.Should()
+                .BeAnExceptionOfType<ArgumentException>()
+                .WithMessage("The specified object is not recognized as a fake object.");
         }
     }
 }

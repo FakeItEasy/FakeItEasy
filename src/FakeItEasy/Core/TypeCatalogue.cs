@@ -88,9 +88,9 @@ namespace FakeItEasy.Core
             var loadedAssemblyFiles = new HashSet<string>(
                 loadedAssemblies
 #if FEATURE_REFLECTION_GETASSEMBLIES
-                    .Where(a => !a.ReflectionOnly && !a.IsDynamic())
+                    .Where(a => !a.ReflectionOnly && !a.IsDynamic)
 #else
-                    .Where(a => a.IsDynamic())
+                    .Where(a => a.IsDynamic)
 #endif
                     .Select(a => a.Location),
                 StringComparer.OrdinalIgnoreCase);

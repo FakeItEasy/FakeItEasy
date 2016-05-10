@@ -151,11 +151,9 @@ namespace FakeItEasy.Core
                  where rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes()
                  select rule).First();
 
-            var interceptedCall = new InterceptedCallAdapter(fakeObjectCall);
-
             try
             {
-                ApplyRule(ruleToUse, interceptedCall);
+                ApplyRule(ruleToUse, fakeObjectCall);
             }
             finally
             {
@@ -214,57 +212,6 @@ namespace FakeItEasy.Core
         {
             var metadata = this.AllRules.Single(x => x.Rule.Equals(rule));
             this.MoveRuleToFront(metadata);
-        }
-
-        private class InterceptedCallAdapter
-            : IInterceptedFakeObjectCall
-        {
-            private readonly IInterceptedFakeObjectCall call;
-
-            public InterceptedCallAdapter(IInterceptedFakeObjectCall call)
-            {
-                this.call = call;
-            }
-
-            public MethodInfo Method
-            {
-                get { return this.call.Method; }
-            }
-
-            public ArgumentCollection Arguments
-            {
-                get { return this.call.Arguments; }
-            }
-
-            public object FakedObject
-            {
-                get { return this.call.FakedObject; }
-            }
-
-            public int SequenceNumber
-            {
-                get { return this.call.SequenceNumber; }
-            }
-
-            public void SetReturnValue(object value)
-            {
-                this.call.SetReturnValue(value);
-            }
-
-            public void CallBaseMethod()
-            {
-                this.call.CallBaseMethod();
-            }
-
-            public void SetArgumentValue(int index, object value)
-            {
-                this.call.SetArgumentValue(index, value);
-            }
-
-            public ICompletedFakeObjectCall AsReadOnly()
-            {
-                return this.call.AsReadOnly();
-            }
         }
     }
 }

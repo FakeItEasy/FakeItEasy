@@ -12,4 +12,10 @@ Public Class ConfiguringCalls
 
         A.CallTo(Function() factory.Create()).Returns(A.Fake(Of IWidget)())
     End Sub
+
+    Public Sub Configuring_a_property_setter_and_specifying_a_matching_value()
+        Dim widget = A.Fake(Of IWidget)()
+
+        A.CallToSet(Function() widget.Name).To("cog").DoesNothing()
+    End Sub
 End Class

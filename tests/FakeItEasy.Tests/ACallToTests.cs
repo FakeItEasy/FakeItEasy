@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests
     using System;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -25,7 +26,7 @@ namespace FakeItEasy.Tests
             var result = A.CallTo(callSpecification);
 
             // Assert
-            Assert.That(result, Is.SameAs(configuration));
+            result.Should().BeSameAs(configuration);
         }
 
         [Test]
@@ -42,7 +43,7 @@ namespace FakeItEasy.Tests
             var result = A.CallTo(callSpecification);
 
             // Assert
-            Assert.That(result, Is.SameAs(configuration));
+            result.Should().BeSameAs(configuration);
         }
 
         protected override void OnSetup()

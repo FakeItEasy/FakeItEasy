@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
@@ -65,8 +66,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                A.Fake<IOutAndRefParametersConfiguration>().AssignsOutAndRefParameters(null));
+            Expression<Action> call = () => A.Fake<IOutAndRefParametersConfiguration>().AssignsOutAndRefParameters(null);
+            call.Should().BeNullGuarded();
         }
 
         [Test]

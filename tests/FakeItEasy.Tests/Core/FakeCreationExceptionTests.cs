@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Core
 {
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -17,7 +18,7 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            Assert.That(exception.Message, Is.EqualTo("Unable to create fake object."));
+            exception.Message.Should().Be("Unable to create fake object.");
         }
 
         protected override FakeCreationException CreateException()

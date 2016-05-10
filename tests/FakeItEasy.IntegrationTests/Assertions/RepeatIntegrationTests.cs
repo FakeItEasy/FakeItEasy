@@ -1,6 +1,8 @@
 namespace FakeItEasy.IntegrationTests.Assertions
 {
     using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -21,9 +23,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
             this.foo.Bar();
 
             // Act
+            var exception = Record.Exception(() =>
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Exactly.Once));
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Exactly.Once);
+            exception.Should().BeNull("because the assertion should have passed");
         }
 
         [Test]
@@ -32,10 +36,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Arrange
 
             // Act
+            var exception = Record.Exception(() =>
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Exactly.Once));
 
             // Assert
-            Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Exactly.Once));
+            exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
 
         [Test]
@@ -46,10 +51,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
             this.foo.Bar();
 
             // Act
+            var exception = Record.Exception(() =>
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Exactly.Once));
 
             // Assert
-            Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Exactly.Once));
+            exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
 
         [Test]
@@ -58,10 +64,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Arrange
 
             // Act
+            var exception = Record.Exception(() =>
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened());
 
             // Assert
-            Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => this.foo.Bar()).MustHaveHappened());
+            exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
 
         [Test]
@@ -71,9 +78,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
             this.foo.Bar();
 
             // Act
+            var exception = Record.Exception(() =>
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened());
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).MustHaveHappened();
+            exception.Should().BeNull("because the assertion should have passed");
         }
 
         [Test]
@@ -84,9 +93,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
             this.foo.Bar();
 
             // Act
+            var exception = Record.Exception(() =>
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened());
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).MustHaveHappened();
+            exception.Should().BeNull("because the assertion should have passed");
         }
 
         [Test]
@@ -98,9 +109,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
             this.foo.Bar();
 
             // Act
+            var exception = Record.Exception(() =>
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.AtLeast.Times(3)));
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.AtLeast.Times(3));
+            exception.Should().BeNull("because the assertion should have passed");
         }
 
         [Test]
@@ -109,9 +122,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
             // Arrange
 
             // Act
+            var exception = Record.Exception(() =>
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Never));
 
             // Assert
-            A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Never);
+            exception.Should().BeNull("because the assertion should have passed");
         }
 
         [Test]
@@ -121,10 +136,11 @@ namespace FakeItEasy.IntegrationTests.Assertions
             this.foo.Bar();
 
             // Act
+            var exception = Record.Exception(() =>
+                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Never));
 
             // Assert
-            Assert.Throws<ExpectationException>(() =>
-                A.CallTo(() => this.foo.Bar()).MustHaveHappened(Repeated.Never));
+            exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
     }
 }

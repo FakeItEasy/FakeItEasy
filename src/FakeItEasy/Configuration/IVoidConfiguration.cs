@@ -8,12 +8,8 @@ namespace FakeItEasy.Configuration
           ICallbackConfiguration<IVoidConfiguration>,
           ICallBaseConfiguration,
           IOutAndRefParametersConfiguration,
-          IAssertConfiguration
+          IAssertConfiguration,
+          IDoNothingConfiguration
     {
-        /// <summary>
-        /// Configures the specified call to do nothing when called.
-        /// </summary>
-        /// <returns>A configuration object.</returns>
-        IAfterCallSpecifiedConfiguration DoesNothing();
     }
 }

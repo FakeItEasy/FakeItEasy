@@ -202,7 +202,7 @@ namespace FakeItEasy.Tests.Configuration
             // Act
 
             // Assert
-            Assert.That(this.rule.IsApplicableTo(A.Dummy<IFakeObjectCall>()), Is.True);
+            this.rule.IsApplicableTo(A.Dummy<IFakeObjectCall>()).Should().BeTrue();
         }
 
         [Test]
@@ -263,7 +263,8 @@ namespace FakeItEasy.Tests.Configuration
         {
             this.rule.Applicator = x => { };
 
-            Assert.Throws<InvalidOperationException>(() => this.rule.Applicator = x => { });
+            var exception = Record.Exception(() => this.rule.Applicator = x => { });
+            exception.Should().BeAnExceptionOfType<InvalidOperationException>();
         }
 
         [Test]
@@ -271,7 +272,8 @@ namespace FakeItEasy.Tests.Configuration
         {
             this.rule.OutAndRefParametersValueProducer = x => new object[0];
 
-            Assert.Throws<InvalidOperationException>(() => this.rule.OutAndRefParametersValueProducer = x => new object[] { "test" });
+            var exception = Record.Exception(() => this.rule.OutAndRefParametersValueProducer = x => new object[] { "test" });
+            exception.Should().BeAnExceptionOfType<InvalidOperationException>();
         }
 
         private class TestableCallRule

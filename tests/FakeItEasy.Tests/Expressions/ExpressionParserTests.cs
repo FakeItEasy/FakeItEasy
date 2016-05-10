@@ -3,6 +3,8 @@ namespace FakeItEasy.Tests.Expressions
     using System;
     using System.Linq.Expressions;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests;
+    using FluentAssertions;
     using NUnit.Framework;
     using TestHelpers;
 
@@ -24,8 +26,9 @@ namespace FakeItEasy.Tests.Expressions
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                this.parser.GetFakeManagerCallIsMadeOn(CreateDummyExpression()));
+            Expression<Action> call = () =>
+                this.parser.GetFakeManagerCallIsMadeOn(CreateDummyExpression());
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -35,12 +38,13 @@ namespace FakeItEasy.Tests.Expressions
             var callSpecification = CreateCall(() => DateTime.Now);
 
             // Act
-
-            // Assert
-            var thrown = Assert.Throws<ArgumentException>(() =>
+            var exception = Record.Exception(() =>
                 this.parser.GetFakeManagerCallIsMadeOn(callSpecification));
 
-            Assert.That(thrown.Message, Is.EqualTo("The specified call is not made on a fake object."));
+            // Assert
+            exception.Should()
+                .BeAnExceptionOfType<ArgumentException>()
+                .WithMessage("The specified call is not made on a fake object.");
         }
 
         private static Expression<Func<T>> CreateCall<T>(Expression<Func<T>> expression)

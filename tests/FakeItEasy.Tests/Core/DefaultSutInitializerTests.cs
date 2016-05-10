@@ -70,7 +70,7 @@ namespace FakeItEasy.Tests.Core
             this.sutInitializer.CreateSut(typeof(TypeWithFakeableDependencies), (x, y) => { });
 
             // Assert
-            Assert.That(optionsBuilders, Has.Count.EqualTo(2), "not all constructor arguments were configured");
+            optionsBuilders.Should().HaveCount(2, "because all constructor arguments should be configured");
             var fakeOptions = A.Fake<IFakeOptions>();
             foreach (var optionsBuilder in optionsBuilders)
             {

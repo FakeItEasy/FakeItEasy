@@ -29,7 +29,7 @@ namespace FakeItEasy.Core
 #if FEATURE_REFLECTION_GETASSEMBLIES
             var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies
-                .Where(assembly => !assembly.IsDynamic())
+                .Where(assembly => !assembly.IsDynamic)
                 .Where(assembly => assembly.ReferencesFakeItEasy());
 #else
             var fakeItEasyLibraryName = TypeCatalogue.FakeItEasyAssembly.GetName().Name;

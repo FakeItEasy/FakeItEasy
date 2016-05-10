@@ -127,3 +127,34 @@ Assert.That(success, Is.True);
 See
 [Implicitly Assigning out Parameter Values](assigning-out-and-ref-parameters#implicitly-assigning-out-parameter-values)
 to learn how the initial `configurationValue` is used in this case.
+
+# Overriding argument matchers
+
+Sometimes individually constraining arguments isn't sufficient. In
+such a case, other methods may be used to determine which calls match
+the fake's configuration.
+
+`WithAnyArguments` ensures that no argument constraints will be applied when matching calls:
+
+
+```csharp
+A.CallTo(() => foo.Bar(null, 7).WithAnyArguments().MustHaveHappened();
+```
+
+The example above will match any call to `foo.Bar`, regardless of the arguments. The
+`Ignored` property performs the same task, and is more flexible, but
+some people prefer the look of `WithAnyArguments`.
+
+
+`WhenArgumentsMatch` accepts a predicate that operates on the entire
+collection of call arguments.  For example, to have a Fake throw an
+exception when a call is made to `Bar` where the first arguments is a
+string representation of the second, use
+
+```csharp
+A.CallTo(() => fake.Bar(null, 0))
+    .WhenArgumentsMatch(args =>
+        args.Get<string>("theString")
+            .Equals(args.Get<int>("theInt").ToString()))
+    .Throws<Exception>();
+```

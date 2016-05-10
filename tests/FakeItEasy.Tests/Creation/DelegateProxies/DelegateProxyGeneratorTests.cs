@@ -5,6 +5,8 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation.DelegateProxies;
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -15,7 +17,13 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
         private DelegateProxyGenerator generator;
 #pragma warning restore 649
 
-        private delegate void DelegateWithOutputValue(out string result);
+        private delegate void VoidDelegateWithOutputValue(out string result);
+
+        private delegate string NonVoidDelegateWithOutputValue(out int result);
+
+        private delegate void VoidDelegateWithRefValue(ref string result);
+
+        private delegate string NonVoidDelegateWithRefValue(ref int result);
 
         [SetUp]
         public void Setup()
@@ -32,10 +40,11 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = this.generator.GenerateProxy(
+                delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
-            Assert.That(result.ProxyWasSuccessfullyGenerated, Is.True);
+            result.ProxyWasSuccessfullyGenerated.Should().BeTrue();
         }
 
         [TestCase(typeof(object))]
@@ -47,11 +56,12 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(nonDelegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = this.generator.GenerateProxy(
+                nonDelegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
-            Assert.That(result.ProxyWasSuccessfullyGenerated, Is.False);
-            Assert.That(result.ReasonForFailure, Is.EqualTo("The delegate proxy generator can only create proxies for delegate types."));
+            result.ProxyWasSuccessfullyGenerated.Should().BeFalse();
+            result.ReasonForFailure.Should().Be("The delegate proxy generator can only create proxies for delegate types.");
         }
 
         [TestCase(typeof(Func<int>))]
@@ -63,10 +73,11 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = this.generator.GenerateProxy(
+                delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
-            Assert.That(result.GeneratedProxy.GetType(), Is.EqualTo(delegateType));
+            result.GeneratedProxy.GetType().Should().Be(delegateType);
         }
 
         [Test]
@@ -76,7 +87,8 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             // Act
-            var proxyGeneratorResult = this.generator.GenerateProxy(typeof(Action), Enumerable.Empty<Type>(), null, fakeCallProcessorProvider);
+            var proxyGeneratorResult = this.generator.GenerateProxy(
+                typeof(Action), Enumerable.Empty<Type>(), null, fakeCallProcessorProvider);
 
             // Assert
             A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).MustNotHaveHappened();
@@ -93,7 +105,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             var result = proxy.Invoke();
 
             // Assert
-            Assert.That(result, Is.EqualTo(10));
+            result.Should().Be(10);
         }
 
         [Test]
@@ -104,17 +116,17 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             string secondArgument = null;
 
             var proxy = this.GenerateProxy<Action<int, string>>(x =>
-                {
-                    firstArgument = x.Arguments.Get<int>(0);
-                    secondArgument = x.Arguments.Get<string>(1);
-                });
+            {
+                firstArgument = x.Arguments.Get<int>(0);
+                secondArgument = x.Arguments.Get<string>(1);
+            });
 
             // Act
             proxy.Invoke(10, "foo");
 
             // Assert
-            Assert.That(firstArgument, Is.EqualTo(10));
-            Assert.That(secondArgument, Is.EqualTo("foo"));
+            firstArgument.Should().Be(10);
+            secondArgument.Should().Be("foo");
         }
 
         [Test]
@@ -122,10 +134,12 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
         {
             // Arrange
             var proxy = this.GenerateProxy<Action>(x =>
-                {
-                    var ex = Assert.Throws<NotSupportedException>(x.CallBaseMethod);
-                    Assert.That(ex.Message, Is.EqualTo("Can not configure a delegate proxy to call base method."));
-                });
+            {
+                var exception = Record.Exception(() => x.CallBaseMethod());
+                exception.Should()
+                    .BeAnExceptionOfType<NotSupportedException>()
+                    .WithMessage("Can not configure a delegate proxy to call base method.");
+            });
 
             // Act
             proxy.Invoke();
@@ -136,31 +150,90 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
         {
             // Arrange
             var proxy = this.GenerateProxy<Func<string>>(x =>
-                {
-                    x.SetReturnValue("foo");
-
-                    Assert.That(x.AsReadOnly().ReturnValue, Is.EqualTo("foo"));
-                });
+            {
+                x.SetReturnValue("foo");
+                x.AsReadOnly().ReturnValue.Should().Be("foo");
+            });
 
             // Act
             proxy.Invoke();
         }
 
-        [Test, Ignore]
-        public void Should_return_proxy_where_out_parameter_can_be_set()
+        [Test]
+        public void Should_return_proxy_where_out_parameter_can_be_set_void()
         {
             // Arrange
-            var proxy = this.GenerateProxy<DelegateWithOutputValue>(x =>
-                {
-                    x.SetArgumentValue(0, "Foo");
-                });
+            var proxy = this.GenerateProxy<VoidDelegateWithOutputValue>(x => { x.SetArgumentValue(0, "Foo"); });
+            string output;
 
             // Act
-            string output = null;
             proxy.Invoke(out output);
 
             // Assert
-            Assert.That(output, Is.EqualTo("Foo"));
+            output.Should().Be("Foo");
+        }
+
+        [Test]
+        public void Should_return_proxy_where_out_parameter_can_be_set_non_void()
+        {
+            // Arrange
+            var proxy = this.GenerateProxy<NonVoidDelegateWithOutputValue>(
+                x =>
+                {
+                    x.SetArgumentValue(0, 42);
+                    x.SetReturnValue("Foo");
+                });
+
+            int output;
+
+            // Act
+            string result = proxy.Invoke(out output);
+
+            // Assert
+            result.Should().Be("Foo");
+            output.Should().Be(42);
+        }
+
+        [Test]
+        public void Should_return_proxy_where_ref_parameter_can_be_set_void()
+        {
+            // Arrange
+            var proxy = this.GenerateProxy<VoidDelegateWithRefValue>(
+                x =>
+                {
+                    var arg = x.GetArgument<string>(0);
+                    x.SetArgumentValue(0, arg + arg);
+                });
+
+            string output = "Foo";
+
+            // Act
+            proxy.Invoke(ref output);
+
+            // Assert
+            output.Should().Be("FooFoo");
+        }
+
+        [Test]
+        public void Should_return_proxy_where_ref_parameter_can_be_set_non_void()
+        {
+            // Arrange
+            var proxy = this.GenerateProxy<NonVoidDelegateWithRefValue>(
+                x =>
+                {
+                    var arg = x.GetArgument<int>(0);
+                    x.SetArgumentValue(0, arg + arg);
+                    x.SetReturnValue("Foo");
+                });
+
+            int output = 21;
+
+            // Act
+            string result = proxy.Invoke(ref output);
+
+            // Assert
+            result.Should().Be("Foo");
+            output.Should().Be(42);
         }
 
         [Test]
@@ -169,17 +242,13 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             // Arrange
             var expectedMethod = typeof(Action).GetMethod("Invoke");
             MethodInfo actualMethod = null;
-
-            var proxy = this.GenerateProxy<Action>(x =>
-                {
-                    actualMethod = x.Method;
-                });
+            var proxy = this.GenerateProxy<Action>(x => { actualMethod = x.Method; });
 
             // Act
             proxy.Invoke();
 
             // Assert
-            Assert.That(expectedMethod, Is.EqualTo(actualMethod));
+            expectedMethod.Should().BeSameAs(actualMethod);
         }
 
         [Test]
@@ -187,17 +256,13 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
         {
             // Arrange
             object fakedObject = null;
-
-            var proxy = this.GenerateProxy<Action>(x =>
-                {
-                    fakedObject = x.FakedObject;
-                });
+            var proxy = this.GenerateProxy<Action>(x => { fakedObject = x.FakedObject; });
 
             // Act
             proxy.Invoke();
 
             // Assert
-            Assert.That(fakedObject, Is.SameAs(proxy));
+            fakedObject.Should().BeSameAs(proxy);
         }
 
         [Test]
@@ -207,14 +272,14 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             // Arrange
             var d = new Func<int>(() => 10);
             var getHashCode = d.GetType().GetMethod("GetHashCode");
+            string reason;
 
             // Act
-            string reason;
             var result = this.generator.MethodCanBeInterceptedOnInstance(getHashCode, d, out reason);
 
             // Assert
-            Assert.That(result, Is.False);
-            Assert.That(reason, Is.EqualTo("Only the Invoke method can be intercepted on delegates."));
+            result.Should().BeFalse();
+            reason.Should().Be("Only the Invoke method can be intercepted on delegates.");
         }
 
         [Test]
@@ -223,27 +288,27 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             // Arrange
             var d = new Func<int>(() => 10);
             var invoke = d.GetType().GetMethod("Invoke");
+            string reason;
 
             // Act
-            string reason;
             var result = this.generator.MethodCanBeInterceptedOnInstance(invoke, d, out reason);
 
             // Assert
-            Assert.That(result, Is.True);
-            Assert.That(reason, Is.Null);
+            result.Should().BeTrue();
+            reason.Should().BeNull();
         }
 
         private T GenerateProxy<T>(Action<IInterceptedFakeObjectCall> fakeCallProcessorAction)
         {
-            var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
-
-            var result = this.generator.GenerateProxy(typeof(T), Enumerable.Empty<Type>(), Enumerable.Empty<object>(), fakeCallProcessorProvider);
-
             var fakeCallProcessor = A.Fake<IFakeCallProcessor>();
-            A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).Returns(fakeCallProcessor);
             A.CallTo(() => fakeCallProcessor.Process(A<IInterceptedFakeObjectCall>._)).Invokes(fakeCallProcessorAction);
 
-            return (T)result.GeneratedProxy;
+            var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
+            A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).Returns(fakeCallProcessor);
+
+            return (T)this.generator
+                .GenerateProxy(typeof(T), Enumerable.Empty<Type>(), Enumerable.Empty<object>(), fakeCallProcessorProvider)
+                .GeneratedProxy;
         }
     }
 }

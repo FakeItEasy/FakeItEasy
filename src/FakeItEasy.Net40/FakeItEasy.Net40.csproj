@@ -18,21 +18,6 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\src\</SolutionDir>
@@ -45,7 +30,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET40_OR_LATER FEATURE_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
@@ -56,7 +41,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET40 FEATURE_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>Bin\Release\FakeItEasy.xml</DocumentationFile>
@@ -75,14 +60,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-          <Link>Properties\AssemblyInfo.cs</Link>
+    <Compile Include="..\FakeItEasy\Analysis\Diagnostics.cs">
+      <Link>Analysis\Diagnostics.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Analysis\MustUseReturnValueAttribute.cs">
+      <Link>Analysis\MustUseReturnValueAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IDoNothingConfiguration.cs">
+      <Link>Configuration\IDoNothingConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IPropertySetterAnyValueConfiguration.cs">
+      <Link>Configuration\IPropertySetterAnyValueConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IPropertySetterConfiguration.cs">
+      <Link>Configuration\IPropertySetterConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\PropertySetterConfiguration.cs">
+      <Link>Configuration\PropertySetterConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy.Net35\Compatibility\ReflectionExtensions.cs">
-      <Link>Compatibility\ReflectionExtensions.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\A.cs">
       <Link>A.cs</Link>
@@ -672,28 +672,12 @@
     <Compile Include="..\MethodInfoWrapper.cs">
       <Link>Compatibility\MethodInfoWrapper.cs</Link>
     </Compile>
+    <Compile Include="Compatibility\ReflectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml">
@@ -714,11 +698,11 @@
   <Target Name="AfterBuild">
     <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0&quot; /internalize:&quot;$(SolutionDir)\src\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
   </Target>
-  <Import Project="..\..\packages\StyleCop.MSBuild.4.7.51.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.51.0\build\StyleCop.MSBuild.Targets')" />
+  <Import Project="..\..\packages\StyleCop.MSBuild.4.7.53.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.53.0\build\StyleCop.MSBuild.Targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\StyleCop.MSBuild.4.7.51.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\StyleCop.MSBuild.4.7.51.0\build\StyleCop.MSBuild.Targets'))" />
+    <Error Condition="!Exists('..\..\packages\StyleCop.MSBuild.4.7.53.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\StyleCop.MSBuild.4.7.53.0\build\StyleCop.MSBuild.Targets'))" />
   </Target>
 </Project>

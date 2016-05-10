@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
     using System;
     using System.Collections.Generic;
     using FakeItEasy.Expressions.ArgumentConstraints;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -33,7 +34,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
         [Test]
         public override void Constraint_should_provide_correct_description()
         {
-            Assert.That(this.ConstraintField.ToString(), Is.EqualTo("1"));
+            this.ConstraintField.ToString().Should().Be("1");
         }
 
         [Test]
@@ -41,7 +42,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
         {
             var validator = new EqualityArgumentConstraint(null);
 
-            Assert.That(validator.ToString(), Is.EqualTo("<NULL>"));
+            validator.ToString().Should().Be("<NULL>");
         }
 
         [Test]
@@ -49,7 +50,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
         {
             var validator = new EqualityArgumentConstraint("foo");
 
-            Assert.That(validator.ToString(), Is.EqualTo("\"foo\""));
+            validator.ToString().Should().Be("\"foo\"");
         }
     }
 }

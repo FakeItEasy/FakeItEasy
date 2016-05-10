@@ -67,5 +67,25 @@ namespace FakeItEasy.Creation
         {
             return (T)this.fakeAndDummyManager.CreateDummy(typeof(T));
         }
+
+        /// <summary>
+        /// Creates a collection of dummies of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of dummies to create.</typeparam>
+        /// <param name="numberOfDummies">The number of dummies in the collection.</param>
+        /// <returns>
+        /// A collection of dummy objects of the specified type.
+        /// </returns>
+        public IList<T> CollectionOfDummy<T>(int numberOfDummies)
+        {
+            var result = new List<T>();
+
+            for (var i = 0; i < numberOfDummies; i++)
+            {
+                result.Add(this.CreateDummy<T>());
+            }
+
+            return result;
+        }
     }
 }

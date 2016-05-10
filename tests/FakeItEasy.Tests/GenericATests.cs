@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests
     using System.Linq;
     using System.Text;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -18,7 +19,7 @@ namespace FakeItEasy.Tests
             var validations = A<string>.That;
 
             // Assert
-            Assert.That(validations, Is.InstanceOf<DefaultArgumentConstraintManager<string>>());
+            validations.Should().BeOfType<DefaultArgumentConstraintManager<string>>();
         }
 
         [Test]
@@ -31,7 +32,7 @@ namespace FakeItEasy.Tests
             var isValid = GetIgnoredConstraint<string>().IsValid(argument);
 
             // Assert
-            Assert.That(isValid, Is.True);
+            isValid.Should().BeTrue();
         }
 
         [Test]
@@ -44,7 +45,7 @@ namespace FakeItEasy.Tests
             GetIgnoredConstraint<string>().WriteDescription(new StringBuilderOutputWriter(result));
 
             // Assert
-            Assert.That(result.ToString(), Is.EqualTo("<Ignored>"));
+            result.ToString().Should().Be("<Ignored>");
         }
 
         [Test]
@@ -57,7 +58,7 @@ namespace FakeItEasy.Tests
             var isValid = GetUnderscoreConstraint<string>().IsValid(argument);
 
             // Assert
-            Assert.That(isValid, Is.True);
+            isValid.Should().BeTrue();
         }
 
         [Test]
@@ -70,7 +71,7 @@ namespace FakeItEasy.Tests
             GetUnderscoreConstraint<string>().WriteDescription(new StringBuilderOutputWriter(result));
 
             // Assert
-            Assert.That(result.ToString(), Is.EqualTo("<Ignored>"));
+            result.ToString().Should().Be("<Ignored>");
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "ignored", Justification = "Required for testing.")]

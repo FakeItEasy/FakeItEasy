@@ -2,7 +2,7 @@ namespace FakeItEasy.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FluentAssertions;
@@ -49,8 +49,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                A.Fake<IFakeObjectCall>().GetArgument<int>(0));
+            Expression<System.Action> call = () => A.Fake<IFakeObjectCall>().GetArgument<int>(0);
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -61,8 +61,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                A.Fake<IFakeObjectCall>().GetArgument<int>("foo"));
+            Expression<System.Action> call = () => A.Fake<IFakeObjectCall>().GetArgument<int>("foo");
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -120,8 +120,8 @@ namespace FakeItEasy.Tests
         [Test]
         public void Write_should_be_null_guarded()
         {
-            NullGuardedConstraint.Assert(() =>
-                Enumerable.Empty<IFakeObjectCall>().Write(A.Dummy<IOutputWriter>()));
+            Expression<System.Action> call = () => Enumerable.Empty<IFakeObjectCall>().Write(A.Dummy<IOutputWriter>());
+            call.Should().BeNullGuarded();
         }
 
         [Test]
@@ -150,8 +150,8 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            NullGuardedConstraint.Assert(() =>
-                Enumerable.Empty<IFakeObjectCall>().WriteToConsole());
+            Expression<System.Action> call = () => Enumerable.Empty<IFakeObjectCall>().WriteToConsole();
+            call.Should().BeNullGuarded();
         }
 
         [Test]

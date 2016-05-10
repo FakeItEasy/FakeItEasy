@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests
     using System;
     using System.Linq;
     using System.Reflection;
+    using FluentAssertions;
     using NUnit.Framework;
 
     public abstract class FacadedTestBase
@@ -25,7 +26,7 @@ namespace FakeItEasy.Tests
                        select facadeMethod).Count() == 0
                 select facadedMethod;
 
-            Assert.That(nonMirroredMethods.ToArray(), Is.Empty, "Some methods where not present or did not have the same signature in the facade class.");
+            nonMirroredMethods.Should().BeEmpty("some methods where not present or did not have the same signature in the facade class.");
         }
 
         private bool IsExcluedMethod(MethodInfo facadedMethod)

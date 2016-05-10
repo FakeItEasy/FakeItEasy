@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Core
     using System.Linq.Expressions;
     using System.Reflection;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -30,7 +31,7 @@ namespace FakeItEasy.Tests.Core
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second), Is.False);
+            manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second).Should().BeFalse();
         }
 
         [Test]
@@ -41,7 +42,7 @@ namespace FakeItEasy.Tests.Core
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second), Is.True);
+            manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second).Should().BeTrue();
         }
 
         [Test]
@@ -52,7 +53,7 @@ namespace FakeItEasy.Tests.Core
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Derived), first, second), Is.True);
+            manager.WillInvokeSameMethodOnTarget(typeof(Derived), first, second).Should().BeTrue();
         }
 
         [Test]
@@ -63,7 +64,7 @@ namespace FakeItEasy.Tests.Core
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second), Is.True);
+            manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second).Should().BeTrue();
         }
 
         [Test]
@@ -74,7 +75,7 @@ namespace FakeItEasy.Tests.Core
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(HaveAGenericMethod), first, second), Is.False);
+            manager.WillInvokeSameMethodOnTarget(typeof(HaveAGenericMethod), first, second).Should().BeFalse();
         }
 
         [Test]
@@ -85,7 +86,7 @@ namespace FakeItEasy.Tests.Core
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Concrete), first, second), Is.True);
+            manager.WillInvokeSameMethodOnTarget(typeof(Concrete), first, second).Should().BeTrue();
         }
 
         [Test]
@@ -96,7 +97,7 @@ namespace FakeItEasy.Tests.Core
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(HaveAGenericMethod), first, second), Is.True);
+            manager.WillInvokeSameMethodOnTarget(typeof(HaveAGenericMethod), first, second).Should().BeTrue();
         }
 
         [Test]
@@ -107,7 +108,7 @@ namespace FakeItEasy.Tests.Core
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(HaveAGenericMethod), first, second), Is.False);
+            manager.WillInvokeSameMethodOnTarget(typeof(HaveAGenericMethod), first, second).Should().BeFalse();
         }
 
         [Test]
@@ -118,7 +119,7 @@ namespace FakeItEasy.Tests.Core
 
             var manager = this.CreateManager();
 
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second), Is.False);
+            manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second).Should().BeFalse();
         }
 
         [Test]
@@ -133,7 +134,7 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(ConcreteWithExplicitImplementation), explicitImplementation, interfaceMethod));
+            manager.WillInvokeSameMethodOnTarget(typeof(ConcreteWithExplicitImplementation), explicitImplementation, interfaceMethod).Should().BeTrue();
         }
 
         [Test]
@@ -147,7 +148,7 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            Assert.That(manager.WillInvokeSameMethodOnTarget(typeof(GenericType<int>), first, second), Is.False);
+            manager.WillInvokeSameMethodOnTarget(typeof(GenericType<int>), first, second).Should().BeFalse();
         }
 
         [Test]
@@ -159,7 +160,7 @@ namespace FakeItEasy.Tests.Core
             var manager = this.CreateManager();
 
             // Act, Assert
-            Assert.That(manager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(typeof(Derived), method).Name, Is.EqualTo("DoSomething"));
+            manager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(typeof(Derived), method).Name.Should().Be("DoSomething");
         }
 
         private MethodInfoManager CreateManager()

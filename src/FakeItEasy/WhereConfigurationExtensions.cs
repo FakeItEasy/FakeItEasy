@@ -3,7 +3,7 @@ namespace FakeItEasy
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
-
+    using FakeItEasy.Analysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
@@ -20,6 +20,7 @@ namespace FakeItEasy
         /// <param name="predicate">A predicate for a fake object call.</param>
         /// <returns>The configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for expressions.")]
+        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public static T Where<T>(this IWhereConfiguration<T> configuration, Expression<Func<IFakeObjectCall, bool>> predicate)
         {
             Guard.AgainstNull(configuration, "configuration");

@@ -5,6 +5,7 @@ namespace FakeItEasy.Tests.Core
     using System.Globalization;
     using System.Linq;
     using FakeItEasy.Core;
+    using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -60,7 +61,7 @@ namespace FakeItEasy.Tests.Core
 9:  Fake call 9
 10: Fake call 10";
 
-            Assert.That(message, Is.StringContaining(expectedMessage));
+            message.Should().Contain(expectedMessage);
         }
 
         [Test]
@@ -86,7 +87,7 @@ namespace FakeItEasy.Tests.Core
 ...
 10: Other call";
 
-            Assert.That(message, Is.StringContaining(expectedMessage));
+            message.Should().Contain(expectedMessage);
         }
 
         [Test]
@@ -114,7 +115,7 @@ namespace FakeItEasy.Tests.Core
 3: odd
 4: even";
 
-            Assert.That(message, Is.StringContaining(expectedMessage));
+            message.Should().Contain(expectedMessage);
         }
 
         [Test]
@@ -137,7 +138,7 @@ namespace FakeItEasy.Tests.Core
 @"19: Last call
 ... Found 11 more calls not displayed here.";
 
-            Assert.That(message, Is.StringContaining(expectedMessage));
+            message.Should().Contain(expectedMessage);
         }
 
         [Test]
@@ -172,7 +173,7 @@ second line";
 @"10: first line
     second line";
 
-            Assert.That(message, Is.StringContaining(expectedText1).And.StringContaining(expectedText2));
+            message.Should().Contain(expectedText1).And.Contain(expectedText2);
         }
 
         [Test]
@@ -187,7 +188,7 @@ second line";
             callWriter.WriteCalls(this.calls, this.writer);
 
             // Assert
-            Assert.That(this.writer.Builder.ToString(), Is.StringEnding(Environment.NewLine));
+            this.writer.Builder.ToString().Should().EndWith(Environment.NewLine);
         }
 
         [Test]
@@ -200,7 +201,7 @@ second line";
             callWriter.WriteCalls(Enumerable.Empty<IFakeObjectCall>(), this.writer);
 
             // Assert
-            Assert.That(this.writer.Builder.ToString(), Is.Empty);
+            this.writer.Builder.ToString().Should().BeEmpty();
         }
 
         private CallWriter CreateWriter()
