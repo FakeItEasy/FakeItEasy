@@ -74,6 +74,10 @@
       <HintPath>..\..\packages\FluentAssertions.4.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
@@ -177,7 +181,6 @@
     <Compile Include="ReturnValueConfigurationExtensionsTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SelfInitializedFakes\CallDataTests.cs" />
     <Compile Include="SelfInitializedFakes\FileStorageTests.cs" />
     <Compile Include="SelfInitializedFakes\RecordingExceptionTests.cs" />
     <Compile Include="SelfInitializedFakes\SelfInitializationRuleTests.cs" />
@@ -217,7 +220,9 @@
     <Compile Include="ExceptionThrowerConfigurationExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>

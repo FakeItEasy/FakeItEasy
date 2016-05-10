@@ -71,12 +71,16 @@
       <HintPath>..\..\packages\Castle.Core.4.0.0-alpha001\lib\net40-client\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs">
-          <Link>Properties\AssemblyInfo.cs</Link>
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
@@ -629,6 +633,9 @@
     </Compile>
     <Compile Include="..\FakeItEasy\SelfInitializedFakes\ISelfInitializingFakeRecorder.cs">
       <Link>SelfInitializedFakes\ISelfInitializingFakeRecorder.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\SelfInitializedFakes\MethodInfoConverter.cs">
+      <Link>SelfInitializedFakes\MethodInfoConverter.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\SelfInitializedFakes\RecordingException.cs">
       <Link>SelfInitializedFakes\RecordingException.cs</Link>
