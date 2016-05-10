@@ -4,13 +4,11 @@ namespace FakeItEasy.SelfInitializedFakes
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// DTO for recorded calls.
     /// </summary>
-#if FEATURE_SERIALIZATION
-    [Serializable]
-#endif
     public class CallData
     {
         /// <summary>
@@ -22,7 +20,7 @@ namespace FakeItEasy.SelfInitializedFakes
         public CallData(MethodInfo method, IEnumerable<object> outputArguments, object returnValue)
         {
             this.Method = method;
-            this.OutputArguments = outputArguments.ToArray();
+            this.OutputArguments = outputArguments == null ? new object[0] : outputArguments.ToArray();
             this.ReturnValue = returnValue;
         }
 
@@ -30,6 +28,7 @@ namespace FakeItEasy.SelfInitializedFakes
         /// Gets the method that was called.
         /// </summary>
         /// <value>The method.</value>
+        [JsonConverter(typeof(MethodInfoConverter))]
         public MethodInfo Method { get; private set; }
 
         /// <summary>
