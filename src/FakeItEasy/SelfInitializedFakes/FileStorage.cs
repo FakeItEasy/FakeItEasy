@@ -66,7 +66,8 @@ namespace FakeItEasy.SelfInitializedFakes
             using (var file = this.fileSystem.Open(this.fileName, FileMode.Truncate))
             using (var stream = new StreamWriter(file))
             {
-                var serialized = JsonConvert.SerializeObject(calls.ToArray(),
+                var serialized = JsonConvert.SerializeObject(
+                    calls.ToArray(),
                     Formatting.Indented,
                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
                 stream.Write(serialized);
@@ -79,7 +80,8 @@ namespace FakeItEasy.SelfInitializedFakes
             using (var stream = new StreamReader(file))
             {
                 var json = stream.ReadToEnd();
-                return JsonConvert.DeserializeObject<List<CallData>>(json,
+                return JsonConvert.DeserializeObject<List<CallData>>(
+                    json,
                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
             }
         }

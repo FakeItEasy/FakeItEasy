@@ -1,21 +1,13 @@
-﻿
-namespace FakeItEasy.SelfInitializedFakes
+﻿namespace FakeItEasy.SelfInitializedFakes
 {
     using System;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using Newtonsoft.Json;
-    using System.Diagnostics;
+
     public class MethodInfoConverter : JsonConverter
     {
-
-        private class MethodInfoData
-        {
-            public string QualifiedTypename { get; set; }
-            public string MethodName { get; set; }
-            public string[] ParameterTypes { get; set; }
-        }
-
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(MethodInfo);
@@ -24,17 +16,31 @@ namespace FakeItEasy.SelfInitializedFakes
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             reader.Read();
-            Debug.Assert((string)reader.Value == nameof(MethodInfoData.QualifiedTypename));
+            Debug.Assert(
+                (string)reader.Value == nameof(MethodInfoData.QualifiedTypename),
+                "Unexpected Json property name {0}. Expected: {1}.",
+                (string)reader.Value,
+                nameof(MethodInfoData.QualifiedTypename));
             reader.Read();
             var typeName = (string)reader.Value;
             reader.Read();
-            Debug.Assert((string)reader.Value == nameof(MethodInfoData.MethodName));
+            Debug.Assert(
+                (string)reader.Value == nameof(MethodInfoData.MethodName),
+                "Unexpected Json property name {0}. Expected: {1}.",
+                (string)reader.Value,
+                nameof(MethodInfoData.MethodName));
+
             reader.Read();
             var methodName = (string)reader.Value;
             reader.Read();
-            Debug.Assert((string)reader.Value == nameof(MethodInfoData.ParameterTypes));
+            Debug.Assert(
+                (string)reader.Value == nameof(MethodInfoData.ParameterTypes),
+                "Unexpected Json property name {0}. Expected: {1}.",
+                (string)reader.Value,
+                nameof(MethodInfoData.ParameterTypes));
             reader.Read();
             var parameterTypeNames = ((string)reader.Value)?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
             // Need to advance the file read pointer past the end of current object
             reader.Read(); // EndArray
             reader.Read(); // EndObject
@@ -64,8 +70,18 @@ namespace FakeItEasy.SelfInitializedFakes
             {
                 writer.WriteValue(data.ParameterTypes[i]);
             }
+
             writer.WriteEndArray();
             writer.WriteEndObject();
+        }
+
+        private class MethodInfoData
+        {
+            public string QualifiedTypename { get; set; }
+
+            public string MethodName { get; set; }
+
+            public string[] ParameterTypes { get; set; }
         }
     }
 }

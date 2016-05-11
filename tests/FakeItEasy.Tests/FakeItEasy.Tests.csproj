@@ -224,9 +224,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FakeItEasy.Net40\FakeItEasy.Net40.csproj">
-      <Project>{80721425-68e5-48dc-87ea-41d63d0b45fa}</Project>
-      <Name>FakeItEasy.Net40</Name>
+    <ProjectReference Include="..\..\src\FakeItEasy.Net45\FakeItEasy.Net45.csproj">
+      <Project>{74165807-676f-4464-b607-8770c13e8991}</Project>
+      <Name>FakeItEasy.Net45</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
