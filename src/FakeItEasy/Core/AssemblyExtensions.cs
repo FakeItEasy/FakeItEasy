@@ -18,11 +18,11 @@ namespace FakeItEasy.Core
             return assembly.GetReferencedAssemblies().Any(r => r.FullName == TypeCatalogue.FakeItEasyAssembly.FullName);
 #else
             var fakeItEasyLibraryName = TypeCatalogue.FakeItEasyAssembly.GetName().Name;
-            var referencingLibraries = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.LibraryManager.GetReferencingLibraries(fakeItEasyLibraryName);
-            return referencingLibraries
-                .SelectMany(info => info.Assemblies)
-                .Select(info => Assembly.Load(info))
-                .Any(r => r.FullName == assembly.FullName);
+            var context = Microsoft.Extensions.DependencyModel.DependencyContext.Default;
+
+            return context.RuntimeLibraries.Any(
+                library => library.Dependencies.Any(
+                    dependency => string.Equals(dependency.Name, fakeItEasyLibraryName, System.StringComparison.Ordinal)));
 #endif
         }
 

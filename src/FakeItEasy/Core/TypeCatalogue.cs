@@ -5,6 +5,9 @@ namespace FakeItEasy.Core
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
+#if !FEATURE_REFLECTION_GETASSEMBLIES
+    using Microsoft.Extensions.DependencyModel;
+#endif
 
     /// <summary>
     /// Provides access to all types in:
@@ -74,11 +77,13 @@ namespace FakeItEasy.Core
              var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
              var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 #else
-            var libraries = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.LibraryManager.GetLibraries();
-            var loadedAssemblies = libraries
-                .SelectMany(info => info.Assemblies)
+            var fakeItEasyLibraryName = TypeCatalogue.FakeItEasyAssembly.GetName().Name;
+
+            var context = DependencyContext.Default;
+            var loadedAssemblies = context.RuntimeLibraries
+                .SelectMany(library => library.GetDefaultAssemblyNames(context))
                 .Distinct()
-                .Select(info => Assembly.Load(info))
+                .Select(Assembly.Load)
                 .ToArray();
             var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 #endif
