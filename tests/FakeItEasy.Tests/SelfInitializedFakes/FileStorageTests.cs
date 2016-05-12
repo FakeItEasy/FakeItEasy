@@ -109,7 +109,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
                         new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
                     sw.Write(serialized);
                 }
-                return stream.GetBuffer();
+                return stream.ToArray();
             }
         }
 
