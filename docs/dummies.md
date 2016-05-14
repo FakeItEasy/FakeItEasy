@@ -34,6 +34,14 @@ library.Checkout(MakeExpiredCard(), A.Dummy<Book>());
 This signals that the actual value of the `Book` is really not
 important. The code is intention-revealing.
 
+You can also create a collection of dummies by writing:
+
+```csharp
+A.CollectionOfDummy<Book>(10);
+```
+
+This will return an `IList` containing 10 dummy `Book` instances.
+
 ## How FakeItEasy uses them
 
 When [creating Fakes](creating-fakes.md) or Dummies of class types,
@@ -63,7 +71,7 @@ of approaches in turn, until one succeeds:
   Fake `T`.
 1. If `T` is a value type, the Dummy will be a `T` created via
   `Activator.CreateInstance`.
-1. If nothing above matched, then `T` is a class. Loop over all its constructors in _descending order of argument list length_.  
+1. If nothing above matched, then `T` is a class. Loop over all its constructors in _descending order of argument list length_.
   For each constructor, attempt to get Dummies to satisfy the argument
   list. If the Dummies can be found, use `Activator.CreateInstance` to
   create the Dummy, supplying the Dummies as the argument list. If the
