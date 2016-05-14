@@ -96,6 +96,7 @@ namespace FakeItEasy
         public static FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T> CallTo<T>(System.Linq.Expressions.Expression<System.Func<T>> callSpecification) { }
         [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         public static FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(System.Linq.Expressions.Expression<System.Func<TValue>> propertySpecification) { }
+        public static System.Collections.Generic.IList<T> CollectionOfDummy<T>(int numberOfDummies) { }
         public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes) { }
         public static T Dummy<T>() { }
         public static T Fake<T>() { }
