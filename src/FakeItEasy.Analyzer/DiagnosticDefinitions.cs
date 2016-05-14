@@ -8,7 +8,9 @@ namespace FakeItEasy.Analyzer
 
     internal static class DiagnosticDefinitions
     {
-        public static DiagnosticDescriptor UnusedCallSpecification { get; } = CreateDiagnosticDescriptor(nameof(UnusedCallSpecification), "FakeItEasy0001", "FakeItEasy.Usage", DiagnosticSeverity.Error, true);
+        public static DiagnosticDescriptor UnusedCallSpecification { get; } =
+            CreateDiagnosticDescriptor(
+                nameof(UnusedCallSpecification), "FakeItEasy0001", "FakeItEasy.Usage", DiagnosticSeverity.Error, true);
 
         [SuppressMessage(
             "Microsoft.Globalization",

@@ -15,7 +15,8 @@ namespace FakeItEasy.Analyzer
         private static readonly ImmutableDictionary<string, DiagnosticDescriptor> Diagnostics =
             GetDiagnosticsMap(nameof(UnusedCallSpecification));
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = Diagnostics.Values.ToImmutableArray();
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
+            Diagnostics.Values.ToImmutableArray();
 
         public override void Initialize(AnalysisContext context)
         {
