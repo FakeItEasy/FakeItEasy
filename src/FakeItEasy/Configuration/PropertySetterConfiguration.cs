@@ -42,6 +42,7 @@ namespace FakeItEasy.Configuration
         {
             var voidConfiguration = this.CreateArgumentValidationConfiguration(this.setterExpression)
                 .Invokes(action);
+
             return AsPropertySetterConfiguration(voidConfiguration);
         }
 
@@ -67,10 +68,12 @@ namespace FakeItEasy.Configuration
         {
             var voidConfiguration = this.CreateArgumentValidationConfiguration(this.setterExpression)
                 .WhenArgumentsMatch(argumentsPredicate);
+
             return AsPropertySetterConfiguration(voidConfiguration);
         }
 
-        private static IPropertySetterConfiguration AsPropertySetterConfiguration(IVoidConfiguration voidArgumentValidationConfiguration)
+        private static IPropertySetterConfiguration AsPropertySetterConfiguration(
+            IVoidConfiguration voidArgumentValidationConfiguration)
         {
             return new ProperySetterAdapter(voidArgumentValidationConfiguration);
         }
@@ -80,6 +83,7 @@ namespace FakeItEasy.Configuration
             var arguments = this.setterExpression.Arguments
                 .Take(this.setterExpression.Arguments.Count - 1)
                 .Concat(new[] { valueExpression.Body });
+
             return Expression.Call(
                 this.setterExpression.Object,
                 this.setterExpression.Method,
