@@ -129,10 +129,10 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Configures a property setter on a faked object.
+        /// Configures the setting of a property on a faked object.
         /// </summary>
         /// <typeparam name="TValue">The type of the property value.</typeparam>
-        /// <param name="propertySpecification">An expression that uses the getter aspect of the property to configure.</param>
+        /// <param name="propertySpecification">An expression that calls the getter of the property to configure.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
