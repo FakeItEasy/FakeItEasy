@@ -12,6 +12,7 @@
   "buildOptions": {
     "preserveCompilationContext": true,
     "keyFile": "../../FakeItEasy.snk",
+    "xmlDoc":  true,
     "compile": {
       "include": [
         "../CommonAssemblyInfo.cs",
