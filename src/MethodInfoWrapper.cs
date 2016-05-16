@@ -10,14 +10,25 @@
     /// </summary>
     public class MethodInfoWrapper
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MethodInfoWrapper" /> class.
+        /// </summary>
+        /// <param name="methodInfo">The <see cref="System.Reflection.MethodInfo"/> instance to wrap.</param>
+        /// <param name="type">The owning type of the <see cref="System.Reflection.MethodInfo"/> instance.</param>
         public MethodInfoWrapper(MethodInfo methodInfo, Type type)
         {
             this.Method = methodInfo;
             this.ReflectedType = type;
         }
 
+        /// <summary>
+        /// Gets the wrapped MethodInfo instance.
+        /// </summary>
         public MethodInfo Method { get; }
 
+        /// <summary>
+        /// Gets the reflected type of the wrapped MethodInfo instance.
+        /// </summary>
         public Type ReflectedType { get; }
     }
 }

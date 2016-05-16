@@ -104,11 +104,13 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             {
                 using (var sw = new StreamWriter(stream))
                 {
-                    var serialized = JsonConvert.SerializeObject(calls.ToArray(),
+                    var serialized = JsonConvert.SerializeObject(
+                        calls.ToArray(),
                         Formatting.Indented,
                         new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
                     sw.Write(serialized);
                 }
+
                 return stream.ToArray();
             }
         }
