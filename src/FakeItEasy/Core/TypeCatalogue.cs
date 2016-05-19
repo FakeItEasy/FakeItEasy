@@ -13,7 +13,7 @@ namespace FakeItEasy.Core
     /// Provides access to all types in:
     /// <list type="bullet">
     ///   <item>FakeItEasy,</item>
-    ///   <item>assemblies loaded into the current <see cref="AppDomain"/> that reference FakeItEasy and</item>
+    ///   <item>assemblies currently loaded that reference FakeItEasy and</item>
     ///   <item>assemblies whose paths are supplied to the constructor, that also reference FakeItEasy.</item>
     /// </list>
     /// </summary>
@@ -39,7 +39,7 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="extraAssemblyFiles">
         /// The full paths to assemblies from which to load types,
-        /// as well as assemblies loaded into the current <see cref="AppDomain"/>.
+        /// as well as assemblies loaded currently loaded.
         /// </param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Defensive and performed on best effort basis.")]
         public void Load(IEnumerable<string> extraAssemblyFiles)
