@@ -2,21 +2,18 @@ namespace FakeItEasy.Analyzer
 {
     using System;
     using System.Collections.Immutable;
-    using System.Linq;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Microsoft.CodeAnalysis.Diagnostics;
-    using static DiagnosticDefinitions;
 
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class UnusedReturnValueAnalyzer : DiagnosticAnalyzer
     {
-        private static readonly ImmutableDictionary<string, DiagnosticDescriptor> Diagnostics =
-            GetDiagnosticsMap(nameof(UnusedCallSpecification));
+        private static readonly ImmutableDictionary<string, DiagnosticDescriptor> DiagnosticsMap = CreateDiagnosticsMap();
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-            Diagnostics.Values.ToImmutableArray();
+            DiagnosticsMap.Values.ToImmutableArray();
 
         public override void Initialize(AnalysisContext context)
         {
@@ -42,13 +39,8 @@ namespace FakeItEasy.Analyzer
                 return;
             }
 
-            var diagnosticName = GetDiagnosticName(methodSymbol);
-            if (diagnosticName == null)
-            {
-                return;
-            }
-
-            var descriptor = Diagnostics.GetValueOrDefault(diagnosticName);
+            string methodFullName = $"{methodSymbol.ContainingType.GetFullName()}.{methodSymbol.GetDecoratedName()}";
+            var descriptor = DiagnosticsMap.GetValueOrDefault(methodFullName);
             if (descriptor == null)
             {
                 return;
@@ -67,11 +59,24 @@ namespace FakeItEasy.Analyzer
             return context.SemanticModel.GetSymbolInfo(memberAccess?.Name).Symbol as IMethodSymbol;
         }
 
-        private static string GetDiagnosticName(IMethodSymbol methodSymbol)
+        private static ImmutableDictionary<string, DiagnosticDescriptor> CreateDiagnosticsMap()
         {
-            return methodSymbol.GetAttributes()
-                .FirstOrDefault(a => a.AttributeClass.GetFullName() == "FakeItEasy.Analysis.MustUseReturnValueAttribute")
-                ?.ConstructorArguments.FirstOrDefault().Value as string;
+            var callSpecMemberNames = new[]
+            {
+                "FakeItEasy.A.CallTo",
+                "FakeItEasy.A.CallTo`1",
+                "FakeItEasy.A.CallToSet`1",
+                "FakeItEasy.Fake`1.CallsTo`1",
+                "FakeItEasy.Fake`1.AnyCall",
+                "FakeItEasy.ArgumentValidationConfigurationExtensions.WithAnyArguments`1",
+                "FakeItEasy.WhereConfigurationExtensions.Where`1",
+                "FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified.WithReturnType`1",
+                "FakeItEasy.Configuration.IArgumentValidationConfiguration`1.WhenArgumentsMatch",
+                "FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration`1.To",
+                "FakeItEasy.Configuration.IWhereConfiguration`1.Where"
+            };
+
+            return callSpecMemberNames.ToImmutableDictionary(name => name, name => DiagnosticDefinitions.UnusedCallSpecification);
         }
     }
 }

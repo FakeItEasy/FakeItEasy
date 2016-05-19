@@ -7,6 +7,7 @@
       <Value>bootstrapper</Value>
       <Value>proxied</Value>
       <Value>serializability</Value>
+      <Value>arity</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Parsers>
