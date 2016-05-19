@@ -36,6 +36,9 @@
     <DefineConstants>TRACE;FEATURE_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN FEATURE_REFLECTION_GETASSEMBLIES FEATURE_NETCORE_REFLECTION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\FakeItEasy.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <DebugSymbols>true</DebugSymbols>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -692,7 +695,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0&quot; /internalize:&quot;$(SolutionDir)\src\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
+    <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5&quot; /internalize:&quot;$(SolutionDir)\src\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
   </Target>
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.53.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.53.0\build\StyleCop.MSBuild.Targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
