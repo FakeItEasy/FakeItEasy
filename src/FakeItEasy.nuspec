@@ -12,6 +12,33 @@
     <licenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</licenseUrl>
     <copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</copyright>
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="Newtonsoft.Json" version="8.0.4-beta1" />
+      </group>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Newtonsoft.Json" version="8.0.4-beta1" />
+      </group>
+      <group targetFramework=".NETStandard1.5">
+        <dependency id="Microsoft.Extensions.DependencyModel" version="1.0.0-rc2-final" />
+        <dependency id="NETStandard.Library" version="1.5.0-rc2-24027" />
+        <dependency id="System.Collections.Concurrent" version="4.0.12-rc2-24027" />
+        <dependency id="System.Console" version="4.0.0-rc2-24027" />
+        <dependency id="System.Diagnostics.Debug" version="4.0.11-rc2-24027" />
+        <dependency id="System.Diagnostics.StackTrace" version="4.0.1-rc2-24027" />
+        <dependency id="System.Diagnostics.Tools" version="4.0.1-rc2-24027" />
+        <dependency id="System.IO.FileSystem" version="4.0.1-rc2-24027" />
+        <dependency id="System.IO.FileSystem.Primitives" version="4.0.1-rc2-24027" />
+        <dependency id="System.Linq.Expressions" version="4.0.11-rc2-24027" />
+        <dependency id="System.Reflection" version="4.1.0-rc2-24027" />
+        <dependency id="System.Reflection.Emit" version="4.0.1-rc2-24027" />
+        <dependency id="System.Reflection.Extensions" version="4.0.1-rc2-24027" />
+        <dependency id="System.Reflection.TypeExtensions" version="4.1.0-rc2-24027" />
+        <dependency id="System.Runtime.Loader" version="4.0.0-rc2-24027" />
+        <dependency id="Castle.Core" version="4.0.0-alpha001" />
+        <dependency id="Newtonsoft.Json" version="8.0.4-beta1" />
+      </group>
+    </dependencies>
   </metadata>
   <files>
     <file src="FakeItEasy.Net40\Bin\Release\FakeItEasy.dll" target="lib\net40" />
