@@ -1,6 +1,5 @@
 namespace FakeItEasy
 {
-    using FakeItEasy.Analysis;
     using FakeItEasy.Configuration;
 
     /// <summary>
@@ -15,7 +14,6 @@ namespace FakeItEasy
         /// <typeparam name="TInterface">The type of the interface.</typeparam>
         /// <param name="configuration">The configuration.</param>
         /// <returns>A configuration object.</returns>
-        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public static TInterface WithAnyArguments<TInterface>(this IArgumentValidationConfiguration<TInterface> configuration)
         {
             Guard.AgainstNull(configuration, "configuration");

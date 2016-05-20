@@ -5,7 +5,6 @@ namespace FakeItEasy
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
-    using FakeItEasy.Analysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Creation;
 
@@ -93,7 +92,6 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
-        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public static IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
@@ -109,7 +107,6 @@ namespace FakeItEasy
         /// <returns>
         /// A configuration object.
         /// </returns>
-        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public static IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fake)
         {
             return ConfigurationManager.CallTo(fake);
@@ -122,7 +119,6 @@ namespace FakeItEasy
         /// <param name="callSpecification">An expression where the configured member is called.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
-        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public static IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
             return ConfigurationManager.CallTo(callSpecification);
@@ -135,7 +131,6 @@ namespace FakeItEasy
         /// <param name="propertySpecification">An expression that calls the getter of the property to configure.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
-        [MustUseReturnValue(Diagnostics.UnusedCallSpecification)]
         public static IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(Expression<Func<TValue>> propertySpecification)
         {
             return ConfigurationManager.CallToSet(propertySpecification);

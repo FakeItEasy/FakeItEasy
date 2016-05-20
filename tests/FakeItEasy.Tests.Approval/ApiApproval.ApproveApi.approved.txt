@@ -88,13 +88,9 @@ namespace FakeItEasy
     
     public class static A
     {
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         public static FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallTo(System.Linq.Expressions.Expression<System.Action> callSpecification) { }
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         public static FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fake) { }
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         public static FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T> CallTo<T>(System.Linq.Expressions.Expression<System.Func<T>> callSpecification) { }
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         public static FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(System.Linq.Expressions.Expression<System.Func<TValue>> propertySpecification) { }
         public static System.Collections.Generic.IList<T> CollectionOfDummy<T>(int numberOfDummies) { }
         public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes) { }
@@ -136,7 +132,6 @@ namespace FakeItEasy
     }
     public class static ArgumentValidationConfigurationExtensions
     {
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         public static TInterface WithAnyArguments<TInterface>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration) { }
     }
     public abstract class ArgumentValueFormatter<T> : FakeItEasy.IArgumentValueFormatter
@@ -211,11 +206,8 @@ namespace FakeItEasy
         public Fake(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
         public T FakedObject { get; }
         public System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> RecordedCalls { get; }
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         public FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall() { }
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         public FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallsTo(System.Linq.Expressions.Expression<System.Action<T>> callSpecification) { }
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         public FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(System.Linq.Expressions.Expression<System.Func<T, TMember>> callSpecification) { }
     }
     [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.All)]
@@ -362,7 +354,6 @@ namespace FakeItEasy
     }
     public class static WhereConfigurationExtensions
     {
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         public static T Where<T>(this FakeItEasy.Configuration.IWhereConfiguration<T> configuration, System.Linq.Expressions.Expression<System.Func<FakeItEasy.Core.IFakeObjectCall, bool>> predicate) { }
     }
 }
@@ -389,14 +380,12 @@ namespace FakeItEasy.Configuration
     public interface IAfterCallSpecifiedWithOutAndRefParametersConfiguration : FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.Configuration.IRepeatConfiguration, FakeItEasy.IHideObjectMembers { }
     public interface IAnyCallConfigurationWithNoReturnTypeSpecified : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.Configuration.IVoidArgumentValidationConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified>, FakeItEasy.IHideObjectMembers
     {
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>();
     }
     public interface IAnyCallConfigurationWithReturnTypeSpecified<T> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T>, FakeItEasy.Configuration.IReturnValueConfiguration<T>, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<T>>, FakeItEasy.IHideObjectMembers { }
     public interface IArgumentValidationConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     
     {
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         TInterface WhenArgumentsMatch(System.Func<FakeItEasy.Configuration.ArgumentCollection, bool> argumentsPredicate);
     }
     public interface IAssertConfiguration : FakeItEasy.IHideObjectMembers
@@ -431,9 +420,7 @@ namespace FakeItEasy.Configuration
     public interface IPropertySetterAnyValueConfiguration<TValue> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IPropertySetterConfiguration, FakeItEasy.IHideObjectMembers
     
     {
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         FakeItEasy.Configuration.IPropertySetterConfiguration To(TValue value);
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         FakeItEasy.Configuration.IPropertySetterConfiguration To(System.Linq.Expressions.Expression<System.Func<TValue>> valueConstraint);
     }
     public interface IPropertySetterConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.IHideObjectMembers { }
@@ -465,7 +452,6 @@ namespace FakeItEasy.Configuration
     public interface IWhereConfiguration<out T>
     
     {
-        [FakeItEasy.Analysis.MustUseReturnValueAttribute("UnusedCallSpecification")]
         T Where(System.Func<FakeItEasy.Core.IFakeObjectCall, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter);
     }
     public sealed class UnorderedCallAssertion : FakeItEasy.Configuration.IOrderableCallAssertion, FakeItEasy.IHideObjectMembers
