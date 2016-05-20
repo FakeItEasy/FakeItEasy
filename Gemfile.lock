@@ -9,8 +9,12 @@ GEM
 
 PLATFORMS
   x64-mingw32
+  x86-mingw32
 
 DEPENDENCIES
   albacore (= 0.3.6)
   rake
   zip
+
+BUNDLED WITH
+   1.12.4
