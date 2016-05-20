@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="FakeItEasy Tests" ToolsVersion="11.0">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="FakeItEasy Tests" ToolsVersion="14.0">
   <Include Path="..\fakeiteasy.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1000" Action="None" />
@@ -11,6 +11,7 @@
     <Rule Id="CA1025" Action="None" />
     <Rule Id="CA1034" Action="None" />
     <Rule Id="CA1303" Action="None" />
+    <Rule Id="CA1305" Action="None" />
     <Rule Id="CA1402" Action="None" />
     <Rule Id="CA1405" Action="None" />
     <Rule Id="CA1506" Action="None" />
