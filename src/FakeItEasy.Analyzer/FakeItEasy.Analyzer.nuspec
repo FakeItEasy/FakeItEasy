@@ -6,6 +6,7 @@
     <title>FakeItEasy.Analyzer</title>
     <authors>Thomas Levesque, FakeItEasy contributors</authors>
     <description>Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy. Works in Visual Studio 2015 Update 1 or later.</description>
+    <releaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</releaseNotes>
     <language>en-US</language>
     <projectUrl>http://fakeiteasy.github.io/</projectUrl>
     <iconUrl>http://fakeiteasy.github.io/img/fakeiteasy_logo_256_square_white.png</iconUrl>
