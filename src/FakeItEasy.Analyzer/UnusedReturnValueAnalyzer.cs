@@ -39,7 +39,9 @@ namespace FakeItEasy.Analyzer
                 return;
             }
 
-            string methodFullName = $"{methodSymbol.ContainingType.GetFullName()}.{methodSymbol.GetDecoratedName()}";
+            var methodFullName =
+                string.Concat(methodSymbol.ContainingType.GetFullName(), ".", methodSymbol.GetDecoratedName());
+
             var descriptor = DiagnosticsMap.GetValueOrDefault(methodFullName);
             if (descriptor == null)
             {
