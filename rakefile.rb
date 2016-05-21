@@ -13,7 +13,7 @@ solution        = "FakeItEasy.sln"
 assembly_info   = "src/CommonAssemblyInfo.cs"
 version         = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 version_suffix  = ENV["VERSION_SUFFIX"]
-nuspec          = "src/FakeItEasy.nuspec"
+nuspec          = "src/FakeItEasy/FakeItEasy.nuspec"
 analyzer_nuspec = "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.nuspec"
 logs            = "artifacts/logs"
 output          = "artifacts/output"
@@ -43,12 +43,11 @@ release_issue_body = <<-eos
       to appropriate "-beta123" or "" (for non-betas) value and initiate a build
 - [ ] check build
 -  edit draft release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases):
-    - [ ] complete release notes, mentioning non-owner contributors, if any
+    - [ ] complete release notes, mentioning non-owner contributors, if any (move release notes forward from any pre-releases to the current release)
     - [ ] attach nupkg
     - [ ] publish the release
 - [ ] push NuGet package
-- [ ] copy release notes from GitHub to NuGet
-- [ ] de-list pre-release or superseded buggy NuGet packages if present (copy any release notes forward to the new version)
+- [ ] de-list pre-release or superseded buggy NuGet packages if present
 - [ ] update website with contributors list (if in place)
 - [ ] tweet, mentioning contributors and post link as comment here for easy retweeting ;-)
 - [ ] post tweet in [Gitter](https://gitter.im/FakeItEasy/FakeItEasy)
