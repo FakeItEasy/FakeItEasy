@@ -5,7 +5,7 @@ if !File.file?(msbuild_command)
   raise "MSBuild not found"
 end
 
-nuget_command  = ".nuget/NuGet.exe"
+nuget_command  = ".nuget/nuget.exe"
 nunit_command  = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
 xunit_command = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 
