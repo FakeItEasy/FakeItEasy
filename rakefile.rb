@@ -5,9 +5,8 @@ if !File.file?(msbuild_command)
   raise "MSBuild not found"
 end
 
-nuget_command = ".nuget/NuGet.exe"
-nuget_msbuild = "-MSBuildVersion 14"
-nunit_command = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
+nuget_command  = ".nuget/NuGet.exe"
+nunit_command  = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
 xunit_command = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 
 solution        = "FakeItEasy.sln"
@@ -93,7 +92,7 @@ end
 desc "Restore NuGet packages"
 exec :restore do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "restore #{solution} #{nuget_msbuild}"
+  cmd.parameters "restore #{solution}"
 end
 
 directory logs
@@ -203,13 +202,13 @@ directory output
 desc "create the nuget package"
 exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "pack #{nuspec} #{nuget_msbuild} -Version #{version}#{version_suffix} -OutputDirectory #{output}"
+  cmd.parameters "pack #{nuspec} -Version #{version}#{version_suffix} -OutputDirectory #{output}"
 end
 
 desc "create the analyzer nuget package"
 exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "pack #{analyzer_nuspec} #{nuget_msbuild} -Version #{version}#{version_suffix} -OutputDirectory #{output}"
+  cmd.parameters "pack #{analyzer_nuspec} -Version #{version}#{version_suffix} -OutputDirectory #{output}"
 end
 
 desc "create new milestone, release issue and release"
