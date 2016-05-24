@@ -34,7 +34,7 @@ specs = "tests/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
 approval_tests = "tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll"
 
 repo = 'FakeItEasy/FakeItEasy'
-release_issue_labels = ['0 - Backlog', 'P2', 'build', 'documentation']
+release_issue_labels = ['P2', 'build', 'documentation']
 release_issue_body = <<-eos
 **Ready** when all other issues on this milestone are **Done** and closed.
 
@@ -44,7 +44,7 @@ release_issue_body = <<-eos
 - [ ] check build
 -  edit draft release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases):
     - [ ] complete release notes, mentioning non-owner contributors, if any (move release notes forward from any pre-releases to the current release)
-    - [ ] attach nupkg
+    - [ ] attach nupkg(s) - main package and/or analyzer, whichever have new content
     - [ ] publish the release
 - [ ] push NuGet package
 - [ ] de-list pre-release or superseded buggy NuGet packages if present
@@ -52,14 +52,11 @@ release_issue_body = <<-eos
 - [ ] tweet, mentioning contributors and post link as comment here for easy retweeting ;-)
 - [ ] post tweet in [Gitter](https://gitter.im/FakeItEasy/FakeItEasy)
 - [ ] post links to the NuGet and GitHub release in each issue in this milestone, with thanks to contributors
-- [ ] use `rake set_version[new_version]` to
-    - create a new branch
-    - change CommonAssemblyInfo.cs to expected minor version (of form _xx.yy.zz_)
-    - push to origin
-    - create PR to upstream master
-- [ ] use `rake create_milestone` to
+- [ ] run `rake set_version[new_version]` to create a pull request that changes the version in
+       CommonAssemblyInfo.cs to the expected version (of form _xx.yy.zz_)
+- [ ] run `rake create_milestone`(whilst on the branch containing the version update) to:
     - create a new milestone for the next release
-    - create new issue (like this one) for the next release, adding it to the new milestone
+    - create a new issue (like this one) for the next release, adding it to the new milestone
     - create a new draft GitHub Release
 - [ ] close this milestone
 
