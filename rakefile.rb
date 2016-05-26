@@ -54,7 +54,7 @@ release_issue_body = <<-eos
 - [ ] post links to the NuGet and GitHub release in each issue in this milestone, with thanks to contributors
 - [ ] run `rake set_version[new_version]` to create a pull request that changes the version in
        CommonAssemblyInfo.cs to the expected version (of form _xx.yy.zz_)
-- [ ] run `rake create_milestone`(whilst on the branch containing the version update) to:
+- [ ] run `rake create_milestone` (whilst on the branch containing the version update) to:
     - create a new milestone for the next release
     - create a new issue (like this one) for the next release, adding it to the new milestone
     - create a new draft GitHub Release
