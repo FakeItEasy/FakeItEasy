@@ -56,9 +56,8 @@ release_issue_body = <<-eos
 - [ ] tweet, mentioning contributors and post link as comment here for easy retweeting ;-)
 - [ ] post tweet in [Gitter](https://gitter.im/FakeItEasy/FakeItEasy)
 - [ ] post links to the NuGet and GitHub release in each issue in this milestone, with thanks to contributors
-- [ ] run `rake set_version[new_version]` to create a pull request that changes the version in
-       CommonAssemblyInfo.cs to the expected version (of form _xx.yy.zz_)
-- [ ] run `rake create_milestone` (whilst on the branch containing the version update) to:
+- [ ] run `rake next_version[new_version]` to
+    - create a pull request that changes the version in CommonAssemblyInfo.cs to the expected version (of form _xx.yy.zz_)
     - create a new milestone for the next release
     - create a new issue (like this one) for the next release, adding it to the new milestone
     - create a new draft GitHub Release
@@ -103,15 +102,17 @@ task :clean => [logs] do
   run_msbuild solution, "Clean", msbuild_command
 end
 
-desc "Update version number"
-task :set_version, :new_version do |asm, args|
+desc "Update version number and create milestone, release, and release checklist issue"
+task :next_version, :new_version do |asm, args|
+  new_version = args.new_version or
+    fail "ERROR: A new version is required, e.g.: rake next_version[2.3.0]"
+
   current_branch = `git rev-parse --abbrev-ref HEAD`.strip()
 
   if current_branch != 'master'
-    fail("ERROR: Current branch is '#{current_branch}'. Must be on branch 'master' to set new version.")
+    fail "ERROR: Current branch is '#{current_branch}'. Must be on branch 'master' to set new version."
   end if
 
-  new_version = args.new_version
   new_branch = "set-version-to-" + new_version
 
   require 'octokit'
@@ -145,6 +146,36 @@ task :set_version, :new_version do |asm, args|
     "preparing for #{new_version}"
   )
   puts "Created pull request \##{pull_request.number} '#{pull_request.title}'."
+
+  release_description = new_version + ' release'
+
+  puts "Creating milestone '#{new_version}'..."
+  milestone = client.create_milestone(
+    repo,
+    new_version,
+    :description => release_description
+    )
+  puts "Created milestone '#{new_version}'."
+
+  puts "Creating issue '#{release_description}'..."
+  issue = client.create_issue(
+    repo,
+    release_description,
+    release_issue_body,
+    :labels => release_issue_labels,
+    :milestone => milestone.number
+    )
+  puts "Created issue \##{issue.number} '#{release_description}'."
+
+  puts "Creating release '#{new_version}'..."
+  client.create_release(
+    repo,
+    new_version,
+    :name => new_version,
+    :draft => true,
+    :body => release_body
+    )
+  puts "Created release '#{new_version}'."
 end
 
 desc "Update assembly info"
@@ -216,45 +247,6 @@ desc "create the analyzer nuget package"
 exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
   cmd.parameters "pack #{analyzer_nuspec} -Version #{version}#{version_suffix} -OutputDirectory #{output}"
-end
-
-desc "create new milestone, release issue and release"
-task :create_milestone do |t|
-  require 'octokit'
-
-  ssl_cert_file = get_temp_ssl_cert_file(ssl_cert_file_url)
-
-  client = Octokit::Client.new(:netrc => true)
-
-  release_description = version + ' release'
-
-  puts "Creating milestone '#{version}'..."
-  milestone = client.create_milestone(
-    repo,
-    version,
-    :description => release_description
-    )
-  puts "Created milestone '#{version}'."
-
-  puts "Creating issue '#{release_description}'..."
-  issue = client.create_issue(
-    repo,
-    release_description,
-    release_issue_body,
-    :labels => release_issue_labels,
-    :milestone => milestone.number
-    )
-  puts "Created issue \##{issue.number} '#{release_description}'."
-
-  puts "Creating release '#{version}'..."
-  client.create_release(
-    repo,
-    version,
-    :name => version,
-    :draft => true,
-    :body => release_body
-    )
-  puts "Created release '#{version}'."
 end
 
 def print_vars(variables)
