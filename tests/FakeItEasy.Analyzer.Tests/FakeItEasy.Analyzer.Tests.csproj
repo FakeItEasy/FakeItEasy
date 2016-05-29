@@ -114,7 +114,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnusedCallSpecificationAnalyzerTests.cs" />
+    <Compile Include="UnusedReturnValueAnalyzerTests.cs" />
     <Compile Include="Helpers\CodeFixVerifier.cs" />
     <Compile Include="Helpers\DiagnosticVerifier.cs" />
     <Compile Include="Helpers\CodeFixVerifier.Helper.cs" />
