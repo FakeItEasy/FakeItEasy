@@ -41,24 +41,26 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
 Using a command prompt, navigate to your clone root folder and execute:
 
-`bundle exec rake`
+`build.cmd`
 
 This executes the default build tasks. After the build has completed, the build artifacts will be located in `artifacts`.
 
 ## Extras
 
+`build.cmd` is a shortcut for `bundle exec rake`, so you can use all the usual command line argument that you would use with Rake, e.g.:
+
 * View the full list of build tasks:
 
-    `bundle exec rake -T`
+    `build.cmd -T`
 
 * Run a specific task:
 
-    `bundle exec rake spec`
+    `build.cmd spec`
 
 * Run multiple tasks:
 
-    `bundle exec rake spec pack`
+    `build.cmd spec pack`
 
 * View the full list of rake options:
 
-    `bundle exec rake -h`
+    `build.cmd -h`
