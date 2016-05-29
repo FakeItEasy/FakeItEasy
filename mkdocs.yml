@@ -38,5 +38,6 @@ pages:
 - Bootstrapper: bootstrapper.md
 - Snippets for FakeItEasy in SideWaffle: snippets-for-fakeiteasy-in-sidewaffle.md
 - Platform support: platform-support.md
+- Source Stepping: source-stepping.md
 - Why was FakeItEasy created?: why-was-fakeiteasy-created.md
 - External Resources: external-resources.md

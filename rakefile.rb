@@ -5,19 +5,23 @@ if !File.file?(msbuild_command)
   raise "MSBuild not found"
 end
 
-nuget_command  = ".nuget/nuget.exe"
-nunit_command  = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
-xunit_command = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
+nuget_command   = ".nuget/nuget.exe"
+gitlink_command = "packages/gitlink.2.3.0/lib/net45/GitLink.exe"
+nunit_command   = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
+xunit_command   = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 
 solution        = "FakeItEasy.sln"
 assembly_info   = "src/CommonAssemblyInfo.cs"
 version         = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 version_suffix  = ENV["VERSION_SUFFIX"]
+repo_url        = "https://github.com/FakeItEasy/FakeItEasy"
 nuspec          = "src/FakeItEasy/FakeItEasy.nuspec"
 analyzer_nuspec = "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.nuspec"
 logs            = "artifacts/logs"
 output          = "artifacts/output"
 tests           = "artifacts/tests"
+
+gitlinks        = ["FakeItEasy", "FakeItEasy.Analyzer"]
 
 unit_tests = [
   "tests/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
@@ -79,7 +83,7 @@ Albacore.configure do |config|
 end
 
 desc "Execute default tasks"
-task :default => [ :vars, :unit, :integ, :spec, :pack ]
+task :default => [ :vars, :gitlink, :unit, :integ, :spec, :pack ]
 
 desc "Print all variables"
 task :vars do
@@ -160,6 +164,12 @@ end
 desc "Build solution"
 task :build => [:clean, :restore, logs] do
   run_msbuild solution, "Build", msbuild_command
+end
+
+desc "GitLink PDB's"
+exec :gitlink => [:build] do |cmd|
+  cmd.command = gitlink_command
+  cmd.parameters ". -u #{repo_url} -include " + gitlinks.join(",")
 end
 
 directory tests
