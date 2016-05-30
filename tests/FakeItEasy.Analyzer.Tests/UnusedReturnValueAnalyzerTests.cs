@@ -110,6 +110,39 @@ namespace TheNamespace
         [Test]
         [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
+        public void Diagnostic_Should_Be_Triggered_When_Call_Specification_Made_In_Global_Scope_Is_Not_Used()
+        {
+            var test = @"using static FakeItEasy.A;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var foo = Fake<IFoo>();
+            CallTo(() => foo.Bar());
+        }
+    }
+
+    interface IFoo { int Bar(); }
+}
+";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'CallTo(() => foo.Bar())'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
+        [Test]
+        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_For_Call_To_With_No_Expression()
         {
             var test = @"using FakeItEasy;

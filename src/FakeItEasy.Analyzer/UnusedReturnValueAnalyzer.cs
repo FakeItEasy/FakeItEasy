@@ -57,10 +57,12 @@ namespace FakeItEasy.Analyzer
 
         private static IMethodSymbol GetCalledMethodSymbol(InvocationExpressionSyntax call, SyntaxNodeAnalysisContext context)
         {
-            var memberAccess = call?.Expression as MemberAccessExpressionSyntax;
-            return memberAccess == null
+            var name = (call?.Expression as MemberAccessExpressionSyntax)?.Name
+                ?? call?.Expression as IdentifierNameSyntax;
+
+            return name == null
                 ? null
-                : context.SemanticModel.GetSymbolInfo(memberAccess.Name).Symbol as IMethodSymbol;
+                : context.SemanticModel.GetSymbolInfo(name).Symbol as IMethodSymbol;
         }
 
         private static ImmutableDictionary<string, DiagnosticDescriptor> CreateDiagnosticsMap()
