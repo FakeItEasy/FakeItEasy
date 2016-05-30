@@ -6,7 +6,7 @@
     using Microsoft.CodeAnalysis.Diagnostics;
     using NUnit.Framework;
 
-    public class UnusedCallSpecificationAnalyzerTests : DiagnosticVerifier
+    public class UnusedReturnValueAnalyzerTests : DiagnosticVerifier
     {
         [Test]
         public void Diagnostic_Should_Not_Be_Triggered_When_Call_Is_Configured_With_Returns()
