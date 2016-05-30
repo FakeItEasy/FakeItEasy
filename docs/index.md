@@ -1,4 +1,4 @@
-![FakeItEasy](http://fakeiteasy.github.io/img/fakeiteasy_logo_256.png)
+![FakeItEasy](https://fakeiteasy.github.io/img/fakeiteasy_logo_256.png)
 
 FakeItEasy is a .Net dynamic fake framework for creating all types of fake objects, mocks, stubs etc.
 
@@ -9,7 +9,7 @@ FakeItEasy is a .Net dynamic fake framework for creating all types of fake objec
 
 ## It's faking amazing!
 
-* [Website](http://fakeiteasy.github.io/)
+* [Website](https://fakeiteasy.github.io/)
 * [Quickstart](quickstart.md)
 * [Chat](https://gitter.im/FakeItEasy/FakeItEasy)
 * [Package](https://nuget.org/packages/FakeItEasy "FakeItEasy on NuGet")
