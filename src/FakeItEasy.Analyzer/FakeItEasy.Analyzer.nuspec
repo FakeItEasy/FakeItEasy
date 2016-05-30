@@ -16,6 +16,7 @@
   </metadata>
   <files>
     <file src="bin\Release\FakeItEasy.Analyzer.dll" target="analyzers\dotnet\cs" />
+    <file src="bin\Release\FakeItEasy.Analyzer.pdb" target="analyzers\dotnet\cs" />
     <file src="tools\*.ps1" target="tools\" />
   </files>
 </package>

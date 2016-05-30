@@ -16,6 +16,7 @@
   </metadata>
   <files>
     <file src="Bin\Release\FakeItEasy.dll" target="lib\net40" />
+    <file src="Bin\Release\FakeItEasy.pdb" target="lib\net40" />
     <file src="Bin\Release\FakeItEasy.xml" target="lib\net40" />
   </files>
 </package>
