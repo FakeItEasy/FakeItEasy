@@ -41,7 +41,7 @@ repo = 'FakeItEasy/FakeItEasy'
 ci_server_url = 'http://teamcity.codebetter.com/admin/editBuildParams.html?id=buildType:bt929'
 release_issue_labels = ['P2', 'build', 'documentation']
 release_issue_common_steps = <<-eos
-**in-progress** when all other issues on this milestone are closed.
+Can be labelled **ready** when all other issues on this milestone are closed.
 
 - [ ] run code analysis in VS in *Release* mode and address violations (send a regular PR which must be merged before continuing)
 - [ ] if necessary, change `VERSION_SUFFIX` on the [CI Server](#{ci_server_url})
@@ -56,15 +56,7 @@ release_issue_common_steps = <<-eos
 - [ ] update website with contributors list (if in place)
 - [ ] tweet, mentioning contributors and post link as comment here for easy retweeting ;-)
 - [ ] post tweet in [Gitter](https://gitter.im/FakeItEasy/FakeItEasy)
-- [ ] post links to the GitHub Release in each issue in this milestone, with thanks to contributors
-eos
-
-next_pre_release_steps = <<-eos
-- if there's to be a new pre-release issue
-    - [ ] run `rake pre_release[version_suffix]` to
-        - create a new draft GitHub Release
-        - new issue (like this one) for the next release, adding it to the current milestone
-    - [ ] change `VERSION_SUFFIX` on the [CI Server](#{ci_server_url})
+- [ ] post a link to the GitHub Release in each issue in this milestone, with thanks to contributors
 eos
 
 next_version_steps = <<-eos
@@ -113,7 +105,7 @@ task :clean => [logs] do
   run_msbuild solution, "Clean", msbuild_command
 end
 
-desc "Update version number and create milestone, release, and release checklist issue"
+desc "Update version number and create pull request, milestone, release, and release checklist issue"
 task :next_version, :new_version do |asm, args|
   new_version = args.new_version or
     fail "ERROR: A new version is required, e.g.: rake next_version[2.3.0]"
@@ -199,7 +191,7 @@ task :pre_release, :version_suffix do |asm, args|
                  milestone,
                  "#{version}-#{version_suffix}",
                  release_body,
-                 release_issue_common_steps + next_pre_release_steps,
+                 release_issue_common_steps,
                  release_issue_labels)
 end
 
@@ -326,7 +318,6 @@ def print_vars(variables)
                                    'release_body',
                                    'release_issue_common_steps',
                                    'next_version_steps',
-                                   'next_pre_release_steps',
                                    'release_issue_labels'
                                   ].include? name }.each { |name, value|
     puts "#{name}:"
