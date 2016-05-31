@@ -10,7 +10,7 @@ namespace FakeItEasy.Core
     /// <remarks>
     /// Note that we just need to serialize the <see cref="FakeManager"/> + the lock (an "empty", *new* object will be deserialized)
     /// because <see cref="IFakeCallProcessorProvider"/> doesn't require serializability before the first call of <see cref="Fetch"/> or
-    /// <see cref="EnsureInitialized "/> (see remarks section of <see cref="IFakeCallProcessorProvider"/>).
+    /// <see cref="EnsureInitialized"/> (see remarks section of <see cref="IFakeCallProcessorProvider"/>).
     /// </remarks>
     [Serializable]
     internal class FakeManagerProvider : IFakeCallProcessorProvider
