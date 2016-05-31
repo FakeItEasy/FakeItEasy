@@ -431,7 +431,6 @@
     <Compile Include="DummyFactory.cs" />
     <Compile Include="IDummyFactory.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions.cs" />
-    <Compile Include="MustBeImplementedException.cs" />
     <Compile Include="OutputWriterExtensions.cs" />
     <Compile Include="Repeated.cs" />
     <Compile Include="Recorders.cs" />
