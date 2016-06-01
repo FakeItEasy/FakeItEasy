@@ -69,13 +69,17 @@ next_version_steps = <<-eos
 eos
 
 release_body = <<-eos
-* **Changed**: _&lt;description&gt;_ - _#&lt;issue number&gt;_
-* **New**: _&lt;description&gt;_ - _#&lt;issue number&gt;_
-* **Fixed**: _&lt;description&gt;_ - _#&lt;issue number&gt;_
+### Changed
+* _&lt;Description of change.&gt;_ (#_&lt;issue number&gt;_)
 
-With special thanks for contributions to this release from:
+### New
+* _&lt;Description of feature.&gt;_ (#_&lt;issue number&gt;_)
 
-* _&lt;user's actual name&gt;_ - _@&lt;github_userid&gt;_
+### Fixed
+* _&lt;Description of fix.&gt;_ (#_&lt;issue number&gt;_)
+
+### With special thanks for contributions to this release from:
+* _&lt;user's actual name&gt;_ - @_&lt;github userid&gt;_
 eos
 
 ssl_cert_file_url = "http://curl.haxx.se/ca/cacert.pem"
