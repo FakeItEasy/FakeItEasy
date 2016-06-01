@@ -48,7 +48,7 @@ Can be labelled **ready** when all other issues on this milestone are closed.
       to appropriate "-beta123" or "" (for non-betas) value and initiate a build
 - [ ] check build
 - edit draft release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases):
-    - [ ] complete release notes, mentioning non-owner contributors, if any (move release notes forward from any pre-releases to the current release)
+    - [ ] ensure completeness of release notes, including non-owner contributors, if any (move release notes forward from any pre-releases to the current release)
     - [ ] attach main nupkg and/or analyzer nupkg, whichever have content to release
     - [ ] publish the release
 - [ ] push nupkg(s) to NuGet
