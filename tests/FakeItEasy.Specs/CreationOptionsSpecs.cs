@@ -6,10 +6,10 @@ namespace FakeItEasy.Specs
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection.Emit;
-    using Creation;
+    using FakeItEasy.Creation;
+    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using Tests;
     using Xbehave;
 
     public static class CreationOptionsSpecs
@@ -725,7 +725,7 @@ namespace FakeItEasy.Specs
                     var customAttributeBuilders1 = new List<CustomAttributeBuilder> { attribute1 };
 
                     var constructor2 = typeof(ExampleAttribute).GetConstructor(new[] { typeof(object[]) });
-                    var attribute2 = new CustomAttributeBuilder(constructor2, new[] { new object[] { 1, null } });
+                    var attribute2 = new CustomAttributeBuilder(constructor2, new object[] { new object[] { 1, null } });
                     var constructor3 = typeof(DebuggerStepThroughAttribute).GetConstructor(new Type[0]);
                     var attribute3 = new CustomAttributeBuilder(constructor3, new object[0]);
                     var customAttributeBuilders2 = new List<CustomAttributeBuilder> { attribute2, attribute3 };

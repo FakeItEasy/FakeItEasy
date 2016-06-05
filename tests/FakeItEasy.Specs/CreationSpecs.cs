@@ -102,12 +102,10 @@ namespace FakeItEasy.Specs
 
         public class FakedClass
         {
-            private static ISet<int> parameterListLengthsForAttemptedConstructors = new SortedSet<int>();
-
             [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "This anti-pattern is part of the the tested scenario.")]
             public FakedClass()
             {
-                parameterListLengthsForAttemptedConstructors.Add(0);
+                ParameterListLengthsForAttemptedConstructors.Add(0);
                 this.WasParameterlessConstructorCalled = true;
 
                 throw new InvalidOperationException();
@@ -117,7 +115,7 @@ namespace FakeItEasy.Specs
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "someInterface", Justification = "This is just a dummy argument.")]
             public FakedClass(IDisposable someInterface)
             {
-                parameterListLengthsForAttemptedConstructors.Add(1);
+                ParameterListLengthsForAttemptedConstructors.Add(1);
             }
 
             [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "This anti-pattern is part of the the tested scenario.")]
@@ -125,18 +123,15 @@ namespace FakeItEasy.Specs
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "someName", Justification = "This is just a dummy argument.")]
             public FakedClass(IDisposable someInterface, string someName)
             {
-                parameterListLengthsForAttemptedConstructors.Add(2);
+                ParameterListLengthsForAttemptedConstructors.Add(2);
                 this.WasTwoParameterConstructorCalled = true;
             }
 
-            public static ISet<int> ParameterListLengthsForAttemptedConstructors
-            {
-                get { return parameterListLengthsForAttemptedConstructors; }
-            }
+            public static ISet<int> ParameterListLengthsForAttemptedConstructors { get; } = new SortedSet<int>();
 
-            public virtual bool WasParameterlessConstructorCalled { get; set; }
+            public bool WasParameterlessConstructorCalled { get; set; }
 
-            public virtual bool WasTwoParameterConstructorCalled { get; set; }
+            public bool WasTwoParameterConstructorCalled { get; set; }
         }
     }
 }

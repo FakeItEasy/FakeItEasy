@@ -3,12 +3,12 @@ namespace FakeItEasy.Specs
     using System;
     using System.Linq;
     using System.Reflection.Emit;
-    using Core;
-    using Creation;
+    using FakeItEasy.Core;
+    using FakeItEasy.Creation;
+    using FakeItEasy.SelfInitializedFakes;
+    using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using SelfInitializedFakes;
-    using Tests;
-    using Tests.TestHelpers;
     using Xbehave;
 
     public class FakeOptionsBuilderSpecs
@@ -359,7 +359,7 @@ namespace FakeItEasy.Specs
             {
                 if (options == null)
                 {
-                    throw new ArgumentNullException("options");
+                    throw new ArgumentNullException(nameof(options));
                 }
 
                 options.ConfigureFake(fake => fake.IsConfigured = true);
@@ -369,10 +369,7 @@ namespace FakeItEasy.Specs
 
     public abstract class ConventionBasedOptionsBuilder : IFakeOptionsBuilder
     {
-        public Priority Priority
-        {
-            get { return Priority.Default; }
-        }
+        public Priority Priority => Priority.Default;
 
         public bool CanBuildOptionsForFakeOfType(Type type)
         {
@@ -410,20 +407,11 @@ namespace FakeItEasy.Specs
 
     public class WrapsAValidObjectOptionsBuilder : ConventionBasedOptionsBuilder
     {
-        private static readonly AWrappedType WrappedFake = A.Fake<AWrappedType>();
+        public static AWrappedType WrappedObject { get; } = A.Fake<AWrappedType>();
 
-        private static readonly ISelfInitializingFakeRecorder FakeRecorder = A.Fake<ISelfInitializingFakeRecorder>(
-            options => options.ConfigureFake(fake => A.CallTo(() => fake.IsRecording).Returns(true)));
-
-        public static AWrappedType WrappedObject
-        {
-            get { return WrappedFake; }
-        }
-
-        public static ISelfInitializingFakeRecorder Recorder
-        {
-            get { return FakeRecorder; }
-        }
+        public static ISelfInitializingFakeRecorder Recorder { get; } =
+            A.Fake<ISelfInitializingFakeRecorder>(options =>
+                options.ConfigureFake(fake => A.CallTo(() => fake.IsRecording).Returns(true)));
 
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
@@ -454,10 +442,7 @@ namespace FakeItEasy.Specs
 
     public class CallsBaseMethods
     {
-        public virtual string Name
-        {
-            get { return typeof(CallsBaseMethods).Name; }
-        }
+        public virtual string Name => typeof(CallsBaseMethods).Name;
     }
 
     public class CallsBaseMethodsOptionsBuilder : ConventionBasedOptionsBuilder
@@ -478,7 +463,7 @@ namespace FakeItEasy.Specs
             this.ConstructorArgument = argument;
         }
 
-        public string ConstructorArgument { get; private set; }
+        public string ConstructorArgument { get; }
     }
 
     public class ConstructorArgumentsSetByListOptionsBuilder : ConventionBasedOptionsBuilder
@@ -499,7 +484,7 @@ namespace FakeItEasy.Specs
             this.ConstructorArgument = argument;
         }
 
-        public string ConstructorArgument { get; private set; }
+        public string ConstructorArgument { get; }
     }
 
     public class ConstructorArgumentsSetByConstructorOptionsBuilder : ConventionBasedOptionsBuilder
@@ -538,10 +523,7 @@ namespace FakeItEasy.Specs
     {
         private int nextID = 1;
 
-        public Priority Priority
-        {
-            get { return Priority.Default; }
-        }
+        public Priority Priority => Priority.Default;
 
         public bool CanBuildOptionsForFakeOfType(Type type)
         {
@@ -577,10 +559,7 @@ namespace FakeItEasy.Specs
     {
         public static readonly DateTime ConfiguredTimestamp = new DateTime(1997, 8, 29, 2, 14, 03);
 
-        public override Priority Priority
-        {
-            get { return new Priority(5); }
-        }
+        public override Priority Priority => new Priority(5);
 
         protected override void BuildOptions(IFakeOptions<RobotRunsAmokEvent> options)
         {
