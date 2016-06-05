@@ -19,7 +19,7 @@ Then the arguments to Bar can be constrained used to limit call matching:
 ```csharp
 var foo = A.Fake<IFoo>();
 
-A.CallTo(() => foo.Bar("hello", 17).MustHaveHappened();
+A.CallTo(() => foo.Bar("hello", 17)).MustHaveHappened();
 ```
 
 Then FakeItEasy will look _only_ for calls made with the arguments
@@ -138,7 +138,7 @@ the fake's configuration.
 
 
 ```csharp
-A.CallTo(() => foo.Bar(null, 7).WithAnyArguments().MustHaveHappened();
+A.CallTo(() => foo.Bar(null, 7)).WithAnyArguments().MustHaveHappened();
 ```
 
 The example above will match any call to `foo.Bar`, regardless of the arguments. The

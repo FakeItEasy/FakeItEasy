@@ -7,7 +7,7 @@ exception like this:
 
 ```csharp
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(DateTime.MaxValue))
- .Throws(new InvalidDateException("the date is in the future");
+ .Throws(new InvalidDateException("the date is in the future"));
 ```
 
 If the exception type has a parameterless constructor, you can use it
@@ -26,11 +26,11 @@ example
 ```csharp
 // Generate the exception at call time.
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
- .Throws(() => new InvalidDateException(DateTime.UtcNow + " is in the future");
+ .Throws(() => new InvalidDateException(DateTime.UtcNow + " is in the future"));
 
 // Pass up to 4 original call argument values into the method that creates the exception.
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
- .Throws((DateTime when)=>new InvalidDateException(when + " is in the future");
+ .Throws((DateTime when)=>new InvalidDateException(when + " is in the future"));
 
 // Pass an IFakeObjectCall into the creation method for more advanced scenarios.
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
