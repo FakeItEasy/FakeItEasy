@@ -14,7 +14,7 @@ public class RobotRunsAmokEventFakeOptionsBuilder : FakeOptionsBuilder<RobotRuns
         options.ConfigureFake(fake =>
         {
             A.CallTo(() => fake.CalculateTimestamp())
-                .Returns(new DateTime(1997, 8, 29, 2, 14, 03););
+                .Returns(new DateTime(1997, 8, 29, 2, 14, 03));
             robotRunsAmokEvent.ID = Guid.NewGuid();
         });
     }

@@ -36,7 +36,7 @@ Use `A.CallToSet` to configure the `set` behavior of read/write properties:
 
 ```csharp
 A.CallToSet(() => fakeShop.Address).To("123 Fake Street").CallsBaseMethod();
-A.CallToSet(() => fakeShop.Address).To(() => A<string>.That.StartsWith("123").DoesNothing();
+A.CallToSet(() => fakeShop.Address).To(() => A<string>.That.StartsWith("123")).DoesNothing();
 A.CallToSet(() => fakeShop.Address).DoesNothing(); // ignores the value that's set
 ```
 

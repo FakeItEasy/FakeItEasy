@@ -24,8 +24,8 @@ is configured. `ReturnsNextFromSequence` and `ReturnsLazily` can help
 with that. `ReturnsNextFromSequence` is the simpler of the two:
 
 ```csharp
-A.CallTo(() => fakeShop.SellSweetFromShelf()
-                       .ReturnsNextFromSequence(lollipop, smarties, wineGums));
+A.CallTo(() => fakeShop.SellSweetFromShelf())
+                       .ReturnsNextFromSequence(lollipop, smarties, wineGums);
 ```
 
 will first return `lollipop`, then `smarties`, then `wineGums`. The
@@ -37,7 +37,7 @@ On to the very powerful `ReturnsLazily`:
 ```csharp
 // Returns the number of times the method has been called
 int sweetsSold = 0;
-A.CallTo(() => fakeShop.NumberOfSweetsSoldToday().ReturnsLazily(() => ++sweetsSold);
+A.CallTo(() => fakeShop.NumberOfSweetsSoldToday()).ReturnsLazily(() => ++sweetsSold);
 ```
 
 If a return value depends on input to the method, those values can be
@@ -45,7 +45,7 @@ incorporated in the calculation. Convenient overloads exist for
 methods of up to four parameters.
 
 ```csharp
-A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>.Ignored) 
+A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>.Ignored)) 
                        .ReturnsLazily((DateTime theDate) => 
                                           theDate.DayOfWeek == DayOfWeek.Sunday ? 0 : 200);
 ```
@@ -63,8 +63,8 @@ than 4 parameters, the convenience methods won't work. Use the variant
 that takes an `IFakeObjectCall` instead:
 
 ```charp
-A.CallTo(objectCall => fakeShop.SomeCall(…)
-                               .ReturnsLazily(objectCall => calculateReturnFrom(objectCall));
+A.CallTo(() => fakeShop.SomeCall(…)
+                       .ReturnsLazily(objectCall => calculateReturnFrom(objectCall));
 ```
 
 The `IFakeObjectCall` object provides access to
