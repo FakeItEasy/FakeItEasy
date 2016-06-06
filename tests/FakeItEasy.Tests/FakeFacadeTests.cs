@@ -3,18 +3,16 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeFacadeTests
     {
-        private IFakeManagerAccessor managerAccessor;
-        private IFixtureInitializer fixtureInitializer;
+        private readonly IFakeManagerAccessor managerAccessor;
+        private readonly IFixtureInitializer fixtureInitializer;
 
-        private FakeFacade facade;
+        private readonly FakeFacade facade;
 
-        [SetUp]
-        public void Setup()
+        public FakeFacadeTests()
         {
             this.managerAccessor = A.Fake<IFakeManagerAccessor>();
             this.fixtureInitializer = A.Fake<IFixtureInitializer>();
@@ -22,7 +20,7 @@ namespace FakeItEasy.Tests
             this.facade = new FakeFacade(this.managerAccessor, this.fixtureInitializer);
         }
 
-        [Test]
+        [Fact]
         public void GetFakeManager_should_return_manager_from_manager_accessor()
         {
             // Arrange
@@ -38,7 +36,7 @@ namespace FakeItEasy.Tests
             result.Should().BeSameAs(manager);
         }
 
-        [Test]
+        [Fact]
         public void GetFakeManager_should_be_guarded()
         {
             // Arrange
@@ -50,7 +48,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void ClearConfiguration_should_call_clear_configuration_on_manager()
         {
             // Arrange
@@ -66,7 +64,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => manager.ClearUserRules()).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void GetCalls_should_be_guarded()
         {
             // Arrange
@@ -78,7 +76,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void ClearConfiguration_should_be_guarded()
         {
             // Arrange
@@ -90,7 +88,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Initialize_should_call_initialize_on_fake_initializer()
         {
             // Arrange
@@ -103,7 +101,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => this.fixtureInitializer.InitializeFakes(o)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Initialize_should_be_guarded()
         {
             // Arrange

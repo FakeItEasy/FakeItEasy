@@ -6,6 +6,7 @@ namespace FakeItEasy.Specs
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
     [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Required for testing.")]

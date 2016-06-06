@@ -10,13 +10,12 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
     using FluentAssertions;
-    using NUnit.Framework;
     using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
     public class WhereConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
     {
-        [Test]
+        [Fact]
         public void Where_should_return_configuration_from_configuration()
         {
             // Arrange
@@ -32,7 +31,7 @@ namespace FakeItEasy.Tests
             returnedConfiguration.Should().BeSameAs(returnedConfiguration);
         }
 
-        [Test]
+        [Fact]
         public void Where_should_pass_writer_that_writes_predicate_as_string()
         {
             // Arrange
@@ -47,8 +46,9 @@ namespace FakeItEasy.Tests
                 A<Action<IOutputWriter>>.That.Writes("x => True"))).MustHaveHappened();
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
         public void Where_should_pass_compiled_predicate_to_configuration(bool predicateReturnValue)
         {
             // Arrange

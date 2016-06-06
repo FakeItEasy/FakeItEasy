@@ -7,9 +7,8 @@ namespace FakeItEasy.Tests.Core
     using System.Reflection;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class MethodInfoManagerTests
     {
         public interface IInterface
@@ -23,7 +22,7 @@ namespace FakeItEasy.Tests.Core
             void GenericMethod<T>();
         }
 
-        [Test]
+        [Fact]
         public void Matches_returns_false_when_methods_are_not_the_same()
         {
             var first = this.GetMethod<Base>(x => x.DoSomething());
@@ -34,7 +33,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Will_invoke_same_method_on_target_when_both_methods_are_same()
         {
             var first = this.GetMethod<Base>(x => x.DoSomething());
@@ -45,7 +44,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Will_invoke_same_method_on_target_when_first_is_method_on_derived_type()
         {
             var first = this.GetMethod<Derived>(x => x.DoSomething());
@@ -56,7 +55,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(Derived), first, second).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Will_invoke_same_method_on_target_when_first_is_method_on_base_type()
         {
             var first = this.GetMethod<Base>(x => x.DoSomething());
@@ -67,7 +66,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Will_not_invoke_same_method_on_target_when_calls_are_to_same_method_but_with_different_generic_arguments()
         {
             var first = this.GetMethod<IHaveAGenericMethod>(x => x.GenericMethod<string>());
@@ -78,7 +77,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(HaveAGenericMethod), first, second).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Will_invoke_same_method_on_target_when_first_points_to_interface_method_and_second_to_implementing_method()
         {
             var first = this.GetMethod<IInterface>(x => x.Foo());
@@ -89,7 +88,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(Concrete), first, second).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Will_invoke_same_method_on_target_when_one_points_to_interface_method_with_generic_argument_and_second_to_implementing_method()
         {
             var first = this.GetMethod<IHaveAGenericMethod>(x => x.GenericMethod<int>());
@@ -100,7 +99,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(HaveAGenericMethod), first, second).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Will_not_invoke_same_method_on_target_when_one_points_to_interface_method_with_generic_argument_and_second_to_implementing_method_but_with_different_type_argument()
         {
             var first = this.GetMethod<IHaveAGenericMethod>(x => x.GenericMethod<int>());
@@ -111,7 +110,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(HaveAGenericMethod), first, second).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Will_not_invoke_same_method_on_target_when_calls_are_to_same_method_but_to_different_overloads()
         {
             var first = this.GetMethod<Base>(x => x.DoSomething());
@@ -122,7 +121,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(Base), first, second).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_true_when_method_is_explicit_implementation_of_interface_method()
         {
             // Arrange
@@ -137,7 +136,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(ConcreteWithExplicitImplementation), explicitImplementation, interfaceMethod).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_false_when_same_method_is_invoked_on_generic_type_with_different_type_arguments()
         {
             // Arrange
@@ -151,7 +150,7 @@ namespace FakeItEasy.Tests.Core
             manager.WillInvokeSameMethodOnTarget(typeof(GenericType<int>), first, second).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_method_from_derived_type_when_getting_non_virtual_method_on_base_type()
         {
             // Arrange

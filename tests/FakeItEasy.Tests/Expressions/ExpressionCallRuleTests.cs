@@ -8,20 +8,18 @@ namespace FakeItEasy.Tests.Expressions
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class ExpressionCallRuleTests
     {
-        private ExpressionCallMatcher callMatcher;
+        private readonly ExpressionCallMatcher callMatcher;
 
-        [SetUp]
-        public void Setup()
+        public ExpressionCallRuleTests()
         {
             this.callMatcher = A.Fake<ExpressionCallMatcher>();
         }
 
-        [Test]
+        [Fact]
         public void IsApplicableTo_should_pass_call_to_call_matcher()
         {
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar());
@@ -33,8 +31,9 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => this.callMatcher.Matches(call)).MustHaveHappened();
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
         public void IsApplicableTo_should_return_result_from_call_matcher(bool callMatcherResult)
         {
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar());
@@ -48,14 +47,14 @@ namespace FakeItEasy.Tests.Expressions
             result.Should().Be(callMatcherResult);
         }
 
-        [Test]
+        [Fact]
         public void Constructor_should_be_null_guarded()
         {
             Expression<Action> call = () => new ExpressionCallRule(this.callMatcher);
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Apply_should_call_the_applicator_with_the_incoming_call()
         {
             IInterceptedFakeObjectCall callPassedToApplicator = null;
@@ -69,7 +68,7 @@ namespace FakeItEasy.Tests.Expressions
             callPassedToApplicator.Should().BeSameAs(callPassedToRule);
         }
 
-        [Test]
+        [Fact]
         public void NumberOfTimesToCall_should_be_settable_and_gettable()
         {
             var rule = this.CreateRule();
@@ -78,7 +77,7 @@ namespace FakeItEasy.Tests.Expressions
             rule.NumberOfTimesToCall.Should().Be(10);
         }
 
-        [Test]
+        [Fact]
         public void DescriptionOfValidCall_should_return_expressionMatcher_ToString()
         {
             A.CallTo(() => this.callMatcher.DescriptionOfMatchingCall).Returns("foo");
@@ -88,7 +87,7 @@ namespace FakeItEasy.Tests.Expressions
             rule.DescriptionOfValidCall.Should().Be("foo");
         }
 
-        [Test]
+        [Fact]
         public void UsePredicateToValidateArguments_should_pass_predicate_to_call_matcher()
         {
             Func<ArgumentCollection, bool> predicate = x => true;

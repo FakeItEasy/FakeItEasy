@@ -3,20 +3,18 @@ namespace FakeItEasy.IntegrationTests.Assertions
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class RepeatIntegrationTests
     {
-        private IFoo foo;
+        private readonly IFoo foo;
 
-        [SetUp]
-        public void Setup()
+        public RepeatIntegrationTests()
         {
             this.foo = A.Fake<IFoo>();
         }
 
-        [Test]
+        [Fact]
         public void Assert_happened_once_exactly_should_pass_when_call_has_been_made_once()
         {
             // Arrange
@@ -30,7 +28,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             exception.Should().BeNull("because the assertion should have passed");
         }
 
-        [Test]
+        [Fact]
         public void Assert_happened_once_exactly_should_fail_when_call_never_happened()
         {
             // Arrange
@@ -43,7 +41,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
 
-        [Test]
+        [Fact]
         public void Assert_happened_once_exactly_should_fail_when_call_happened_more_than_once()
         {
             // Arrange
@@ -58,7 +56,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
 
-        [Test]
+        [Fact]
         public void Assert_happened_once_should_fail_when_call_never_happened()
         {
             // Arrange
@@ -71,7 +69,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
 
-        [Test]
+        [Fact]
         public void Assert_happened_once_should_pass_when_call_happened_once()
         {
             // Arrange
@@ -85,7 +83,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             exception.Should().BeNull("because the assertion should have passed");
         }
 
-        [Test]
+        [Fact]
         public void Assert_happened_once_should_pass_when_call_happened_twice()
         {
             // Arrange
@@ -100,7 +98,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             exception.Should().BeNull("because the assertion should have passed");
         }
 
-        [Test]
+        [Fact]
         public void Assert_happened_times_should_pass_when_call_has_happened_specified_number_of_times()
         {
             // Arrange
@@ -116,7 +114,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             exception.Should().BeNull("because the assertion should have passed");
         }
 
-        [Test]
+        [Fact]
         public void Assert_happened_never_should_pass_when_no_call_has_been_made()
         {
             // Arrange
@@ -129,7 +127,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             exception.Should().BeNull("because the assertion should have passed");
         }
 
-        [Test]
+        [Fact]
         public void Assert_happened_never_should_fail_when_a_call_has_been_made()
         {
             // Arrange

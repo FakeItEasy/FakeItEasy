@@ -7,11 +7,9 @@ namespace FakeItEasy.Tests
     using System.Threading.Tasks;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class ReturnValueConfigurationExtensionsTests
     {
         public interface IInterface
@@ -61,7 +59,7 @@ namespace FakeItEasy.Tests
             string RequestOfFourWithOutputAndReference(string text1, string text2, ref string text3, out string text4);
         }
 
-        [Test]
+        [Fact]
         public void Returns_should_return_configuration_returned_from_passed_in_configuration()
         {
             // Arrange
@@ -76,7 +74,7 @@ namespace FakeItEasy.Tests
             returned.Should().BeSameAs(expectedConfig);
         }
 
-        [Test]
+        [Fact]
         public void Returns_should_return_configuration_returned_from_passed_in_configuration_task()
         {
             // Arrange
@@ -91,7 +89,7 @@ namespace FakeItEasy.Tests
             returned.Should().BeSameAs(expectedConfig);
         }
 
-        [Test]
+        [Fact]
         public void Returns_should_be_null_guarded()
         {
             // Arrange
@@ -103,7 +101,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_task_of_t_return_type_should_support_func_of_t_valueProducer()
         {
             // Arrange
@@ -119,7 +117,7 @@ namespace FakeItEasy.Tests
             result.Result.Should().Be(ReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_1_argument_should_use_returns_lazily_ReturnsLazily_with_action_having_1_argument()
         {
             // Arrange
@@ -142,7 +140,7 @@ namespace FakeItEasy.Tests
             collectedArgument.Should().Be(Argument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_1_argument_should_support_overloads()
         {
             // Arrange
@@ -164,7 +162,7 @@ namespace FakeItEasy.Tests
             collectedArgument.Should().Be(Argument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_1_argument_should_support_out_parameter()
         {
             // Arrange
@@ -187,7 +185,7 @@ namespace FakeItEasy.Tests
             collectedArgument.Should().Be(argument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_1_argument_should_support_ref_parameter()
         {
             // Arrange
@@ -210,7 +208,7 @@ namespace FakeItEasy.Tests
             collectedArgument.Should().Be(argument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_1_argument_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -223,7 +221,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_1_argument_should_throw_exception_when_argument_type_does_not_match()
         {
             // Arrange
@@ -236,7 +234,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32)", "(System.String)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_task_of_t_return_type_with_1_argument_should_support_func_of_t_valueProducer()
         {
             // Arrange
@@ -253,7 +251,7 @@ namespace FakeItEasy.Tests
             result.Result.Should().Be(ReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_2_arguments_should_use_returns_lazily_ReturnsLazily_with_action_having_2_arguments()
         {
             // Arrange
@@ -283,7 +281,7 @@ namespace FakeItEasy.Tests
             secondCollectedArgument.Should().HaveValue().And.Be(SecondArgument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_2_arguments_should_support_overloads()
         {
             // Arrange
@@ -313,7 +311,7 @@ namespace FakeItEasy.Tests
             secondCollectedArgument.Should().Be(SecondArgument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_2_arguments_should_support_out_and_ref()
         {
             // Arrange
@@ -343,7 +341,7 @@ namespace FakeItEasy.Tests
             secondCollectedArgument.Should().Be(secondArgument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_2_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -356,7 +354,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32)", "(System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_2_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
@@ -369,7 +367,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_2_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
@@ -382,7 +380,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32, System.String)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_task_of_t_return_type_with_2_argument_should_support_func_of_t_valueProducer()
         {
             // Arrange
@@ -400,7 +398,7 @@ namespace FakeItEasy.Tests
             result.Result.Should().Be(ReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_3_arguments_should_use_returns_lazily_ReturnsLazily_with_action_having_3_arguments()
         {
             // Arrange
@@ -434,7 +432,7 @@ namespace FakeItEasy.Tests
             thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_3_arguments_should_support_overloads()
         {
             // Arrange
@@ -468,7 +466,7 @@ namespace FakeItEasy.Tests
             thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_3_arguments_should_support_out_and_ref()
         {
             // Arrange
@@ -502,7 +500,7 @@ namespace FakeItEasy.Tests
             thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_3_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -515,7 +513,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_3_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
@@ -528,7 +526,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.String, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_3_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
@@ -541,7 +539,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_3_arguments_should_throw_exception_when_third_argument_type_does_not_match()
         {
             // Arrange
@@ -554,7 +552,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_task_of_t_return_type_with_3_argument_should_support_func_of_t_valueProducer()
         {
             // Arrange
@@ -573,7 +571,7 @@ namespace FakeItEasy.Tests
             result.Result.Should().Be(ReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_4_arguments_should_use_returns_lazily_ReturnsLazily_with_action_having_4_arguments()
         {
             // Arrange
@@ -611,7 +609,7 @@ namespace FakeItEasy.Tests
             fourthCollectedArgument.Should().HaveValue().And.Be(FourthArgument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_4_arguments_should_support_overloads()
         {
             // Arrange
@@ -649,7 +647,7 @@ namespace FakeItEasy.Tests
             fourthCollectedArgument.Should().Be(FourthArgument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_4_arguments_should_support_out_and_ref()
         {
             // Arrange
@@ -687,7 +685,7 @@ namespace FakeItEasy.Tests
             fourthCollectedArgument.Should().Be(fourthArgument);
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_4_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -700,7 +698,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_4_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
@@ -713,7 +711,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.String, System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_4_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
@@ -726,7 +724,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_4_arguments_should_throw_exception_when_third_argument_type_does_not_match()
         {
             // Arrange
@@ -739,7 +737,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_4_arguments_should_throw_exception_when_fourth_argument_type_does_not_match()
         {
             // Arrange
@@ -752,7 +750,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.String)");
         }
 
-        [Test]
+        [Fact]
         public void ReturnsLazily_with_task_of_t_return_type_with_4_argument_should_support_func_of_t_valueProducer()
         {
             // Arrange
@@ -772,7 +770,7 @@ namespace FakeItEasy.Tests
             result.Result.Should().Be(ReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void Curried_ReturnsLazily_returns_value_from_curried_function()
         {
             // Arrange
@@ -790,7 +788,7 @@ namespace FakeItEasy.Tests
             curriedFunction.Invoke(A.Dummy<IFakeObjectCall>()).Should().Be(currentValue);
         }
 
-        [Test]
+        [Fact]
         public void Curried_ReturnsLazily_should_be_null_guarded()
         {
             // Arrange
@@ -802,7 +800,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void ReturnsNextFromSequence_should_call_returns_with_factory_that_returns_next_from_sequence_for_each_call()
         {
             // Arrange
@@ -825,7 +823,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => config.ReturnsLazily(factoryValidator.Invoke())).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void ReturnsNextFromSequence_should_call_returns_with_factory_that_returns_next_from_sequence_for_each_call_task()
         {
             // Arrange
@@ -846,7 +844,7 @@ namespace FakeItEasy.Tests
             fourthInvocationValue.Result.Should().Be(default(int));
         }
 
-        [Test]
+        [Fact]
         public void ReturnsNextFromSequence_should_set_repeat_to_the_number_of_values_in_sequence()
         {
             // Arrange

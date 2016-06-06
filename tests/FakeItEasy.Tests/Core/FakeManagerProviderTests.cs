@@ -6,11 +6,13 @@ namespace FakeItEasy.Tests.Core
     using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeManagerProviderTests
     {
+        private readonly object proxy;
+        private readonly FakeManager fakeManager;
+
         [Fake]
         private FakeManager.Factory fakeManagerFactory = null;
 
@@ -26,11 +28,7 @@ namespace FakeItEasy.Tests.Core
         [UnderTest]
         private FakeManagerProvider fakeManagerProvider = null;
 
-        private object proxy;
-        private FakeManager fakeManager;
-
-        [SetUp]
-        public void Setup()
+        public FakeManagerProviderTests()
         {
             Fake.InitializeFixture(this);
 
@@ -39,7 +37,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => this.fakeManagerFactory(A<Type>._, this.proxy)).Returns(this.fakeManager);
         }
 
-        [Test]
+        [Fact]
         public void Fetch_should_return_a_fake_manager_from_the_factory()
         {
             // Arrange
@@ -51,7 +49,7 @@ namespace FakeItEasy.Tests.Core
             fakeCallProcessor.Should().BeSameAs(this.fakeManager);
         }
 
-        [Test]
+        [Fact]
         public void Fetch_should_tag_the_proxy_with_the_manager()
         {
             // Arrange
@@ -63,7 +61,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => this.fakeManagerAccessor.TagProxy(this.proxy, this.fakeManager)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Fetch_should_configure_the_proxy_with_all_fake_configuration_actions()
         {
             // Arrange
@@ -81,7 +79,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => fakeConfigurationAction2(this.proxy)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Fetch_should_create_exactly_one_fake_manager_when_called_repeatedly()
         {
             // Arrange
@@ -98,7 +96,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappened(Repeated.Exactly.Once);
         }
 
-        [Test]
+        [Fact]
         public void EnsureInitialized_should_create_exactly_one_fake_manager_when_called_repeatedly()
         {
             // Arrange
@@ -112,7 +110,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappened(Repeated.Exactly.Once);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_fetch_a_serialized_and_deserialized_initialized_provider()
         {
             // Arrange

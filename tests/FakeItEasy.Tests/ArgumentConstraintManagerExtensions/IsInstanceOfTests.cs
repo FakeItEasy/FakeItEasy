@@ -2,25 +2,28 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System;
     using System.Collections.Generic;
-    using NUnit.Framework;
 
-    [TestFixture]
-    internal class IsInstanceOfTests
+    public class IsInstanceOfTests
         : ArgumentConstraintTestBase<object>
     {
-        protected override IEnumerable<object> InvalidValues
-        {
-            get { return new object[] { new object(), 1, "foo", null }; }
-        }
-
-        protected override IEnumerable<object> ValidValues
-        {
-            get { return new object[] { new DateTime(2000, 1, 1) }; }
-        }
-
         protected override string ExpectedDescription
         {
             get { return "Instance of System.DateTime"; }
+        }
+
+        public static IEnumerable<object[]> InvalidValues()
+        {
+            return TestCases.FromObject(
+                new object(),
+                1,
+                "foo",
+                null);
+        }
+
+        public static IEnumerable<object[]> ValidValues()
+        {
+            return TestCases.FromObject(
+                new DateTime(2000, 1, 1));
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<object> scope)

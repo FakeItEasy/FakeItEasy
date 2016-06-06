@@ -7,15 +7,19 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
     using FakeItEasy.Creation.DelegateProxies;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class DelegateProxyGeneratorTests
     {
 #pragma warning disable 649
         [UnderTest]
         private DelegateProxyGenerator generator;
 #pragma warning restore 649
+
+        public DelegateProxyGeneratorTests()
+        {
+            Fake.InitializeFixture(this);
+        }
 
         private delegate void VoidDelegateWithOutputValue(out string result);
 
@@ -25,16 +29,11 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
 
         private delegate string NonVoidDelegateWithRefValue(ref int result);
 
-        [SetUp]
-        public void Setup()
-        {
-            Fake.InitializeFixture(this);
-        }
-
-        [TestCase(typeof(Func<int>))]
-        [TestCase(typeof(Action))]
-        [TestCase(typeof(EventHandler<EventArgs>))]
-        [TestCase(typeof(Predicate<object>))]
+        [Theory]
+        [InlineData(typeof(Func<int>))]
+        [InlineData(typeof(Action))]
+        [InlineData(typeof(EventHandler<EventArgs>))]
+        [InlineData(typeof(Predicate<object>))]
         public void Should_be_successful_with_delegate_types(Type delegateType)
         {
             // Arrange
@@ -47,10 +46,11 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             result.ProxyWasSuccessfullyGenerated.Should().BeTrue();
         }
 
-        [TestCase(typeof(object))]
-        [TestCase(typeof(string))]
-        [TestCase(typeof(IServiceProvider))]
-        [SetCulture("en-US")]
+        [Theory]
+        [InlineData(typeof(object))]
+        [InlineData(typeof(string))]
+        [InlineData(typeof(IServiceProvider))]
+        [UsingCulture("en-US")]
         public void Should_fail_for_non_delegate_types(Type nonDelegateType)
         {
             // Arrange
@@ -64,10 +64,11 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             result.ReasonForFailure.Should().Be("The delegate proxy generator can only create proxies for delegate types.");
         }
 
-        [TestCase(typeof(Func<int>))]
-        [TestCase(typeof(Action))]
-        [TestCase(typeof(EventHandler<EventArgs>))]
-        [TestCase(typeof(Predicate<object>))]
+        [Theory]
+        [InlineData(typeof(Func<int>))]
+        [InlineData(typeof(Action))]
+        [InlineData(typeof(EventHandler<EventArgs>))]
+        [InlineData(typeof(Predicate<object>))]
         public void Should_create_proxy_of_the_specified_type(Type delegateType)
         {
             // Arrange
@@ -80,7 +81,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             result.GeneratedProxy.GetType().Should().Be(delegateType);
         }
 
-        [Test]
+        [Fact]
         public void Should_ensure_fake_call_processor_is_initialized_but_not_fetched_when_no_method_on_fake_is_called()
         {
             // Arrange
@@ -95,7 +96,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             A.CallTo(() => fakeCallProcessorProvider.EnsureInitialized(proxyGeneratorResult.GeneratedProxy)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_proxy_where_return_value_can_be_set()
         {
             // Arrange
@@ -108,7 +109,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             result.Should().Be(10);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_proxy_that_exposes_arguments_passed_to_proxy()
         {
             // Arrange
@@ -129,7 +130,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             secondArgument.Should().Be("foo");
         }
 
-        [Test]
+        [Fact]
         public void Should_return_proxy_that_cannot_be_configured_to_call_base_method()
         {
             // Arrange
@@ -145,7 +146,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             proxy.Invoke();
         }
 
-        [Test]
+        [Fact]
         public void Should_create_calls_that_exposes_return_value_when_converted_to_read_only()
         {
             // Arrange
@@ -159,7 +160,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             proxy.Invoke();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_proxy_where_out_parameter_can_be_set_void()
         {
             // Arrange
@@ -173,7 +174,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             output.Should().Be("Foo");
         }
 
-        [Test]
+        [Fact]
         public void Should_return_proxy_where_out_parameter_can_be_set_non_void()
         {
             // Arrange
@@ -194,7 +195,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             output.Should().Be(42);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_proxy_where_ref_parameter_can_be_set_void()
         {
             // Arrange
@@ -214,7 +215,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             output.Should().Be("FooFoo");
         }
 
-        [Test]
+        [Fact]
         public void Should_return_proxy_where_ref_parameter_can_be_set_non_void()
         {
             // Arrange
@@ -236,7 +237,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             output.Should().Be(42);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_proxy_where_calls_has_the_correct_method_set()
         {
             // Arrange
@@ -251,7 +252,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             expectedMethod.Should().BeSameAs(actualMethod);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_proxy_where_calls_has_the_correct_faked_object_set()
         {
             // Arrange
@@ -265,8 +266,8 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             fakedObject.Should().BeSameAs(proxy);
         }
 
-        [Test]
-        [SetCulture("en-US")]
+        [Fact]
+        [UsingCulture("en-US")]
         public void Should_return_false_for_non_invoke_method_when_asking_if_it_can_be_intercepted()
         {
             // Arrange
@@ -282,7 +283,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             reason.Should().Be("Only the Invoke method can be intercepted on delegates.");
         }
 
-        [Test]
+        [Fact]
         public void Should_return_true_for_invoke_method_when_asking_if_it_can_be_intercepted()
         {
             // Arrange

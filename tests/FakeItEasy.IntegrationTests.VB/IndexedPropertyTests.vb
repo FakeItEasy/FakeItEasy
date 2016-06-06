@@ -1,5 +1,5 @@
 ﻿Imports FluentAssertions
-Imports NUnit.Framework
+Imports Xunit
 
 Public Interface IHaveAnInterestingProperty
 
@@ -7,10 +7,9 @@ Public Interface IHaveAnInterestingProperty
 
 End Interface
 
-<TestFixture()> _
 Public Class IndexedPropertyTests
 
-    <Test()> _
+    <Fact> _
     Public Sub Set_followed_by_get_should_return_same_object()
         'Arrange
         Dim target = A.Fake(Of IHaveAnInterestingProperty)()
@@ -25,7 +24,7 @@ Public Class IndexedPropertyTests
         AssertionExtensions.Should(ReferenceEquals(fetchedValue, initialValue)).BeTrue()
     End Sub
 
-    <Test()> _
+    <Fact> _
     Public Sub Set_followed_by_get_with_different_index_should_return_a_different_object()
         'Arrange
         Dim target = A.Fake(Of IHaveAnInterestingProperty)()
@@ -40,7 +39,7 @@ Public Class IndexedPropertyTests
         AssertionExtensions.Should(ReferenceEquals(fetchedValue, initialValue)).BeFalse()
     End Sub
 
-    <Test()> _
+    <Fact> _
     Public Sub Set_configured_with_any_value_followed_by_get_with_different_index_should_not_trigger_configured_action()
         'Arrange
         Dim wasInvoked = false
@@ -54,7 +53,7 @@ Public Class IndexedPropertyTests
         wasInvoked.Should().BeFalse
     End Sub
 
-    <Test()> _
+    <Fact> _
     Public Sub Set_configured_with_any_value_followed_by_get_with_same_index_should_trigger_configured_action()
         'Arrange
         Dim wasInvoked = false

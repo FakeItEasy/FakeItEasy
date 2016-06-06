@@ -1,25 +1,33 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
-    using NUnit.Framework;
 
-    [TestFixture]
-    internal class StringContainsTests
+    public class StringContainsTests
         : ArgumentConstraintTestBase<string>
     {
-        protected override IEnumerable<object> InvalidValues
-        {
-            get { return new object[] { "foo", "baz", "biz", string.Empty, null, "lorem ipsum" }; }
-        }
-
-        protected override IEnumerable<object> ValidValues
-        {
-            get { return new object[] { "bar", "barcode", "foo bar", "unbareable ;-)" }; }
-        }
-
         protected override string ExpectedDescription
         {
             get { return "string that contains \"bar\""; }
+        }
+
+        public static IEnumerable<object[]> InvalidValues()
+        {
+            return TestCases.FromObject(
+                "foo",
+                "baz",
+                "biz",
+                string.Empty,
+                null,
+                "lorem ipsum");
+        }
+
+        public static IEnumerable<object[]> ValidValues()
+        {
+            return TestCases.FromObject(
+                "bar",
+                "barcode",
+                "foo bar",
+                "unbareable ;-)");
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<string> scope)

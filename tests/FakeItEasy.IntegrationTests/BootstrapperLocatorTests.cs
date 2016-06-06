@@ -2,12 +2,11 @@ namespace FakeItEasy.IntegrationTests
 {
     using System.Collections;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class BootstrapperLocatorTests
     {
-        [Test]
+        [Fact]
         public void Should_find_bootstrapper_in_app_domain_during_initialization()
         {
             // Arrange

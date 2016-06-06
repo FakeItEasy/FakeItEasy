@@ -5,9 +5,8 @@ namespace FakeItEasy.Tests.Creation
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.DelegateProxies;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class ProxyGeneratorSelectorTests
     {
 #pragma warning disable 649
@@ -21,13 +20,12 @@ namespace FakeItEasy.Tests.Creation
         private ProxyGeneratorSelector selector;
 #pragma warning restore 649
 
-        [SetUp]
-        public void Setup()
+        public ProxyGeneratorSelectorTests()
         {
             Fake.InitializeFixture(this);
         }
 
-        [Test]
+        [Fact]
         public void Should_delegate_calls_to_delegate_generator_when_generating_delegate_proxy()
         {
             // Arrange
@@ -46,7 +44,7 @@ namespace FakeItEasy.Tests.Creation
             result.Should().BeSameAs(expected);
         }
 
-        [Test]
+        [Fact]
         public void Should_delegate_calls_to_default_generator_when_generating_non_delegate_proxy()
         {
             // Arrange
@@ -65,7 +63,7 @@ namespace FakeItEasy.Tests.Creation
             result.Should().BeSameAs(expected);
         }
 
-        [Test]
+        [Fact]
         public void Should_delegate_calls_to_delegate_generator_asking_about_delegate_proxy()
         {
             // Arrange
@@ -85,7 +83,7 @@ namespace FakeItEasy.Tests.Creation
             output.Should().Be("reason");
         }
 
-        [Test]
+        [Fact]
         public void Should_delegate_calls_to_default_generator_asking_about_non_delegate_proxy()
         {
             // Arrange

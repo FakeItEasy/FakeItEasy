@@ -3,16 +3,13 @@ namespace FakeItEasy.Tests
     using System.Collections.Generic;
     using System.Text;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    internal abstract class ArgumentConstraintTestBase
+    public abstract class ArgumentConstraintTestBase
     {
-        protected internal IArgumentConstraint ConstraintField { get; set; }
-
-        protected abstract IEnumerable<object> InvalidValues { get; }
-
-        protected abstract IEnumerable<object> ValidValues { get; }
+        internal IArgumentConstraint ConstraintField { get; set; }
 
         protected abstract string ExpectedDescription { get; }
 
@@ -24,15 +21,15 @@ namespace FakeItEasy.Tests
             }
         }
 
-        [Test]
-        [TestCaseSource("InvalidValues")]
+        [Theory]
+        [ReflectedMethodData("InvalidValues")]
         public void IsValid_should_return_false_for_invalid_values(object invalidValue)
         {
             this.Constraint.IsValid(invalidValue).Should().BeFalse();
         }
 
-        [Test]
-        [TestCaseSource("ValidValues")]
+        [Theory]
+        [ReflectedMethodData("ValidValues")]
         public void IsValid_should_return_true_for_valid_values(object validValue)
         {
             var result = this.Constraint.IsValid(validValue);
@@ -40,7 +37,7 @@ namespace FakeItEasy.Tests
             result.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public virtual void Constraint_should_provide_correct_description()
         {
             var output = new StringBuilder();

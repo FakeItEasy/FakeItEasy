@@ -5,9 +5,8 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
     using System.Reflection;
     using FakeItEasy.SelfInitializedFakes;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class CallDataTests
     {
         private MethodInfo DummyMethodInfo
@@ -18,7 +17,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             }
         }
 
-        [Test]
+        [Fact]
         public void CallData_should_be_serializable()
         {
             // Arrange
@@ -30,7 +29,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             data.Should().BeBinarySerializable();
         }
 
-        [Test]
+        [Fact]
         public void CallData_should_be_serializable_when_output_arguments_is_provided_by_linq_query()
         {
             // Arrange

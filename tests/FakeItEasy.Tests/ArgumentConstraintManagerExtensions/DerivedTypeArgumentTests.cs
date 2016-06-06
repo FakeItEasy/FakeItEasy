@@ -1,25 +1,28 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
-    using NUnit.Framework;
 
-    [TestFixture]
-    internal class DerivedTypeArgumentTests
+    public class DerivedTypeArgumentTests
         : ArgumentConstraintTestBase<string>
     {
-        protected override IEnumerable<object> InvalidValues
-        {
-            get { return new object[] { "bar", 123, 12.3f }; }
-        }
-
-        protected override IEnumerable<object> ValidValues
-        {
-            get { return new object[] { "foo", null }; }
-        }
-
         protected override string ExpectedDescription
         {
             get { return "string that is \"foo\" or is empty"; }
+        }
+
+        public static IEnumerable<object[]> InvalidValues()
+        {
+            return TestCases.FromObject(
+                "bar",
+                123,
+                12.3f);
+        }
+
+        public static IEnumerable<object[]> ValidValues()
+        {
+            return TestCases.FromObject(
+                "foo",
+                null);
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<string> scope)

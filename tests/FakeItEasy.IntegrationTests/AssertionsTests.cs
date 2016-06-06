@@ -2,9 +2,8 @@ namespace FakeItEasy.IntegrationTests
 {
     using System;
     using FakeItEasy.Tests;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class AssertionsTests
     {
         public interface ISomething
@@ -12,7 +11,7 @@ namespace FakeItEasy.IntegrationTests
             void SomethingMethod();
         }
 
-        [Test]
+        [Fact]
         public void Method_that_is_configured_to_throw_should_still_be_recorded()
         {
             // Arrange
@@ -33,7 +32,7 @@ namespace FakeItEasy.IntegrationTests
             A.CallTo(() => fake.Bar()).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_not_throw_when_asserting_while_calls_are_being_made_on_the_fake()
         {
             var fake = A.Fake<ISomething>();

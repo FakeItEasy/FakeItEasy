@@ -1,19 +1,18 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
+    using System.Collections.Generic;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FluentAssertions;
-    using NUnit.Framework;
     using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
-    internal class DefaultExceptionThrowerTests
+    public class DefaultExceptionThrowerTests
     {
-        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private readonly object[] resolvedConstructorsTestCases =
-            {
+        public static IEnumerable<object> ResolvedConstructorsTestCases()
+        {
+            return TestCases.FromObject(
                 new DefaultExceptionThrowerTestCase("only parameterless constructor")
                 {
                     TypeOfFake = typeof(string),
@@ -152,28 +151,21 @@ namespace FakeItEasy.Tests.Core
       IFakeObjectContainer to enable these constructors.
 
 "
-                }
-            };
-
-        private DefaultExceptionThrower thrower;
-
-        [SetUp]
-        public void Setup()
-        {
-            this.thrower = new DefaultExceptionThrower();
+                });
         }
 
-        [Test]
+        [Fact]
         public void Should_throw_correct_exception_when_arguments_for_constructor_are_specified()
         {
             // Arrange
             var reason =
 @"a reason
 that spans a couple of lines.";
+            var thrower = new DefaultExceptionThrower();
 
             // Act
             var exception = Record.Exception(
-                () => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason));
+                () => thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason));
 
             // Assert
             var expectedMessage =
@@ -188,14 +180,16 @@ that spans a couple of lines.";
                 .WithMessage(expectedMessage);
         }
 
-        [TestCaseSource("resolvedConstructorsTestCases")]
+        [Theory]
+        [MemberData(nameof(ResolvedConstructorsTestCases))]
         public void Should_throw_correct_exception_when_resolved_constructors_are_used(DefaultExceptionThrowerTestCase testCase)
         {
             // Arrange
+            var thrower = new DefaultExceptionThrower();
 
             // Act
             var exception = Record.Exception(
-                () => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
+                () => thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
                     testCase.TypeOfFake, testCase.ReasonForFailureOfDefaultConstructor, testCase.ResolvedConstructors));
 
             // Assert
@@ -204,7 +198,7 @@ that spans a couple of lines.";
                 .WithMessage(testCase.ExpectedMessage);
         }
 
-        internal class DefaultExceptionThrowerTestCase
+        public class DefaultExceptionThrowerTestCase
         {
             private readonly string description;
 

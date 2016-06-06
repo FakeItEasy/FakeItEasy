@@ -7,22 +7,20 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
     using System.Runtime.Serialization.Formatters.Binary;
     using FakeItEasy.SelfInitializedFakes;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FileStorageTests
     {
-        private IFileSystem fileSystem;
+        private readonly IFileSystem fileSystem;
 
-        [SetUp]
-        public void Setup()
+        public FileStorageTests()
         {
             this.fileSystem = A.Fake<IFileSystem>();
             A.CallTo(() => this.fileSystem.FileExists(A<string>._)).Returns(true);
             A.CallTo(() => this.fileSystem.Open(A<string>._, A<FileMode>._)).Returns(new MemoryStream());
         }
 
-        [Test]
+        [Fact]
         public void Load_should_deserialize_calls_from_file()
         {
             // Arrange
@@ -43,7 +41,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             loadedCalls.Should().Equal(calls, new CallDataComparer().Equals);
         }
 
-        [Test]
+        [Fact]
         public void Load_should_return_null_when_file_does_not_exist()
         {
             // Arrange
@@ -57,7 +55,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             loadedCalls.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void Save_should_serialize_calls_to_file()
         {
             // Arrange
@@ -79,7 +77,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             savedCalls.Should().Equal(calls, new CallDataComparer().Equals);
         }
 
-        [Test]
+        [Fact]
         public void Save_should_create_file_when_it_does_not_exist()
         {
             // Arrange

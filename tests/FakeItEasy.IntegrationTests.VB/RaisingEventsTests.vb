@@ -1,10 +1,10 @@
 ﻿Imports System.Diagnostics.CodeAnalysis
 Imports FluentAssertions
-Imports NUnit.Framework
+Imports Xunit
 
 <Assembly: SuppressMessage("Microsoft.Design", "CA1003:UseGenericEventHandlerInstances",
     Scope:="type", Target:="FakeItEasy.IntegrationTests.VB.IHaveEvents+DerivedEventHanderEventHandler",
-    Justification:="Required to test nonstandard events.")> 
+    Justification:="Required to test nonstandard events.")>
 
 Public Interface IHaveEvents
 
@@ -25,7 +25,6 @@ Public Class MyEventArgs
     Inherits EventArgs
 End Class
 
-<TestFixture()>
 Public Class RaisingEventsTests
 
     Dim capturedSender As Object
@@ -51,13 +50,12 @@ Public Class RaisingEventsTests
         capturedObject = objectOfInterest
     End Sub
 
-    <SetUp()>
-    Public Sub Setup()
+    Public Sub New()
         capturedSender = Nothing
         capturedEventArgs = Nothing
     End Sub
 
-    <Test()>
+    <Fact>
     <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification:="Required for testing.")>
     Public Sub Raise_EventHandler_sends_good_sender()
         'Arrange
@@ -73,7 +71,7 @@ Public Class RaisingEventsTests
         ReferenceEquals(capturedSender, aSender).Should().BeTrue()
     End Sub
 
-    <Test()>
+    <Fact>
     <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification:="Required for testing.")>
     Public Sub Raise_EventHandler_sends_good_arguments()
         'Arrange
@@ -90,7 +88,7 @@ Public Class RaisingEventsTests
         ReferenceEquals(capturedEventArgs, eventArgs).Should().BeTrue()
     End Sub
 
-    <Test()>
+    <Fact>
     <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification:="Required for testing.")>
     Public Sub Raise_EventHandlerOfT_sends_good_sender()
         'Arrange
@@ -106,7 +104,7 @@ Public Class RaisingEventsTests
         ReferenceEquals(capturedSender, aSender).Should().BeTrue()
     End Sub
 
-    <Test()>
+    <Fact>
     <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification:="Required for testing.")>
     Public Sub Raise_EventHandlerOfT_sends_good_arguments()
         'Arrange
@@ -123,7 +121,7 @@ Public Class RaisingEventsTests
         ReferenceEquals(capturedEventArgs, eventArgs).Should().BeTrue()
     End Sub
 
-    <Test()>
+    <Fact>
     <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification:="Required for testing.")>
     Public Sub Raise_DerivedEventHandler_sends_good_sender()
         'Arrange
@@ -139,7 +137,7 @@ Public Class RaisingEventsTests
         ReferenceEquals(capturedSender, aSender).Should().BeTrue()
     End Sub
 
-    <Test()>
+    <Fact>
     <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification:="Required for testing.")>
     Public Sub Raise_DerivedEventHandler_sends_good_arguments()
         'Arrange
@@ -156,7 +154,7 @@ Public Class RaisingEventsTests
         ReferenceEquals(capturedEventArgs, eventArgs).Should().BeTrue()
     End Sub
 
-    <Test()>
+    <Fact>
     <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate",
         Justification:="Required for testing.")>
     Public Sub Raise_ObjectEvent_sends_object()

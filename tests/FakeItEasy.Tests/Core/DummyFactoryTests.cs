@@ -5,12 +5,11 @@ namespace FakeItEasy.Tests.Core
     using System.Linq;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class DummyFactoryTests
     {
-        [Test]
+        [Fact]
         public void Create_with_type_parameter_should_return_object_from_Create()
         {
             var factory = new TestableFakeFactory() as IDummyFactory;
@@ -19,7 +18,7 @@ namespace FakeItEasy.Tests.Core
             created.Should().BeOfType<SomeType>();
         }
 
-        [Test]
+        [Fact]
         public void Create_should_guard_against_bad_type_argument()
         {
             string expectedMessage = string.Format(
@@ -38,7 +37,7 @@ namespace FakeItEasy.Tests.Core
                 .And.ParamName.Should().Be("type");
         }
 
-        [Test]
+        [Fact]
         public void Built_in_factories_should_have_lower_than_default_priority()
         {
             // Arrange

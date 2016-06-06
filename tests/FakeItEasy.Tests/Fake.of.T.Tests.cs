@@ -7,16 +7,24 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeTTests
         : ConfigurableServiceLocatorTestBase
     {
-        private IFakeCreatorFacade fakeCreator;
-        private IStartConfigurationFactory startConfigurationFactory;
+        private readonly IFakeCreatorFacade fakeCreator;
+        private readonly IStartConfigurationFactory startConfigurationFactory;
 
-        [Test]
+        public FakeTTests()
+        {
+            this.fakeCreator = A.Fake<IFakeCreatorFacade>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeCreatorFacade>()));
+            this.startConfigurationFactory = A.Fake<IStartConfigurationFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<IStartConfigurationFactory>()));
+
+            this.StubResolve(this.fakeCreator);
+            this.StubResolve(this.startConfigurationFactory);
+        }
+
+        [Fact]
         public void Constructor_sets_fake_object_returned_from_fake_creator_to_FakedObject_property()
         {
             var foo = A.Fake<IFoo>();
@@ -28,7 +36,7 @@ namespace FakeItEasy.Tests
             fake.FakedObject.Should().BeSameAs(foo);
         }
 
-        [Test]
+        [Fact]
         public void Constructor_that_takes_options_builder_should_be_null_guarded()
         {
             Action<IFakeOptions<Foo>> optionsBuilder = x => { };
@@ -38,7 +46,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Constructor_that_takes_options_builder_should_set_fake_returned_from_factory_to_FakedObject_property()
         {
             var argumentsForConstructor = new object[] { A.Fake<IFoo>() };
@@ -54,7 +62,7 @@ namespace FakeItEasy.Tests
             fake.FakedObject.Should().BeSameAs(fakeReturnedFromFactory);
         }
 
-        [Test]
+        [Fact]
         public void RecordedCalls_returns_recorded_calls_from_manager()
         {
             var fake = new Fake<IFoo>();
@@ -65,7 +73,7 @@ namespace FakeItEasy.Tests
             fake.RecordedCalls.Should().BeEquivalentTo(fakeObject.GetRecordedCalls());
         }
 
-        [Test]
+        [Fact]
         public void Calls_to_returns_fake_configuration_for_the_faked_object_when_void_call_is_specified()
         {
             Expression<Action<IFoo>> callSpecification = x => x.Bar();
@@ -82,7 +90,7 @@ namespace FakeItEasy.Tests
             result.Should().BeSameAs(callConfig);
         }
 
-        [Test]
+        [Fact]
         public void Calls_to_returns_fake_configuration_for_the_faked_object_when_function_call_is_specified()
         {
             Expression<Func<IFoo, int>> callSpecification = x => x.Baz();
@@ -99,7 +107,7 @@ namespace FakeItEasy.Tests
             result.Should().BeSameAs(callConfig);
         }
 
-        [Test]
+        [Fact]
         public void AnyCall_returns_fake_configuration_for_the_faked_object()
         {
             // Arrange
@@ -116,15 +124,6 @@ namespace FakeItEasy.Tests
 
             // Assert
             result.Should().BeSameAs(callConfig);
-        }
-
-        protected override void OnSetup()
-        {
-            this.fakeCreator = A.Fake<IFakeCreatorFacade>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeCreatorFacade>()));
-            this.startConfigurationFactory = A.Fake<IStartConfigurationFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<IStartConfigurationFactory>()));
-
-            this.StubResolve(this.fakeCreator);
-            this.StubResolve(this.startConfigurationFactory);
         }
 
         public abstract class AbstractTypeWithNoDefaultConstructor

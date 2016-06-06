@@ -1,11 +1,11 @@
 namespace FakeItEasy.Tests
 {
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
     public static class DefaultBootstrapperTests
     {
-        [Test]
+        [Fact]
         public static void GetAssemblyFileNamesToScanForExtensions_should_return_empty_list()
         {
             // Arrange

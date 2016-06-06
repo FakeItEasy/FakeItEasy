@@ -7,12 +7,11 @@ namespace FakeItEasy.Tests.Creation
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class ProxyGeneratorResultTests
     {
-        [Test]
+        [Fact]
         public void Should_set_that_proxy_was_not_successfully_created_when_constructor_with_error_message_is_used()
         {
             // Arrange
@@ -24,7 +23,7 @@ namespace FakeItEasy.Tests.Creation
             result.ProxyWasSuccessfullyGenerated.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_set_that_proxy_was_not_successfully_created_when_constructor_with_error_message_and_exception_is_used()
         {
             // Arrange
@@ -38,7 +37,7 @@ namespace FakeItEasy.Tests.Creation
             result.ProxyWasSuccessfullyGenerated.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_set_that_proxy_was_successfully_created_when_constructor_with_proxy_is_used()
         {
             // Arrange
@@ -50,7 +49,7 @@ namespace FakeItEasy.Tests.Creation
             result.ProxyWasSuccessfullyGenerated.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_set_reason_for_failure_when_constructor_with_reason_is_used()
         {
             // Arrange
@@ -62,7 +61,7 @@ namespace FakeItEasy.Tests.Creation
             result.ReasonForFailure.Should().Be("reason");
         }
 
-        [Test]
+        [Fact]
         public void Should_set_reason_for_failure_when_constructor_with_reason_and_exception_is_used()
         {
             // Arrange
@@ -83,7 +82,7 @@ namespace FakeItEasy.Tests.Creation
             result.ReasonForFailure.Should().StartWith(expectedReason);
         }
 
-        [Test]
+        [Fact]
         public void Should_set_reason_for_failure_from_inner_exception_when_constructor_with_reason_and_TargetInvocationException_is_used()
         {
             // Arrange
@@ -104,7 +103,7 @@ namespace FakeItEasy.Tests.Creation
             result.ReasonForFailure.Should().StartWith(expectedReason);
         }
 
-        [Test]
+        [Fact]
         public void Should_set_reason_for_failure_from_exception_when_constructor_with_reason_and_TargetInvocationException_that_has_no_inner_exception_is_used()
         {
             // Arrange
@@ -125,7 +124,7 @@ namespace FakeItEasy.Tests.Creation
             result.ReasonForFailure.Should().StartWith(expectedReason);
         }
 
-        [Test]
+        [Fact]
         public void Should_set_proxy_when_constructor_with_proxy_is_used()
         {
             // Arrange
@@ -138,7 +137,7 @@ namespace FakeItEasy.Tests.Creation
             result.GeneratedProxy.Should().Be(proxy);
         }
 
-        [Test]
+        [Fact]
         public void Constructor_with_error_message_should_be_null_guarded()
         {
             // Arrange
@@ -150,7 +149,7 @@ namespace FakeItEasy.Tests.Creation
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Constructor_with_proxy_should_be_null_guarded()
         {
             // Arrange

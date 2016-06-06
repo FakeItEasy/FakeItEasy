@@ -5,22 +5,20 @@ namespace FakeItEasy.Tests.Core
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeAsserterTests
     {
-        private List<IFakeObjectCall> calls;
-        private CallWriter callWriter;
+        private readonly List<IFakeObjectCall> calls;
+        private readonly CallWriter callWriter;
 
-        [SetUp]
-        public void Setup()
+        public FakeAsserterTests()
         {
             this.calls = new List<IFakeObjectCall>();
             this.callWriter = A.Fake<CallWriter>();
         }
 
-        [Test]
+        [Fact]
         public void AssertWasCalled_should_pass_when_the_repeatPredicate_returns_true_for_the_number_of_matching_calls()
         {
             this.StubCalls(2);
@@ -30,7 +28,7 @@ namespace FakeItEasy.Tests.Core
             asserter.AssertWasCalled(x => true, string.Empty, x => x == 2, string.Empty);
         }
 
-        [Test]
+        [Fact]
         public void AssertWasCalled_should_fail_when_the_repeatPredicate_returns_false_fro_the_number_of_matching_calls()
         {
             this.StubCalls(2);
@@ -41,7 +39,7 @@ namespace FakeItEasy.Tests.Core
             exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
 
-        [Test]
+        [Fact]
         public void AssertWasCalled_should_pass_the_number_of_matching_calls_to_the_repeatPredicate()
         {
             int? numberPassedToRepeatPredicate = null;
@@ -55,7 +53,7 @@ namespace FakeItEasy.Tests.Core
             numberPassedToRepeatPredicate.Should().Be(1);
         }
 
-        [Test]
+        [Fact]
         public void Exception_message_should_start_with_call_specification()
         {
             var asserter = this.CreateAsserter();
@@ -71,7 +69,7 @@ namespace FakeItEasy.Tests.Core
             message.Should().StartWith(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void Exception_message_should_write_repeat_expectation()
         {
             this.StubCalls(2);
@@ -88,7 +86,7 @@ namespace FakeItEasy.Tests.Core
             message.Should().Contain(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void Exception_message_should_call_the_call_writer_to_append_calls_list()
         {
             this.StubCalls(2);
@@ -100,7 +98,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => this.callWriter.WriteCalls(A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls), A<IOutputWriter>._)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Exception_message_should_write_that_no_calls_were_made_when_calls_is_empty()
         {
             this.calls.Clear();
@@ -117,7 +115,7 @@ namespace FakeItEasy.Tests.Core
             message.Should().Contain(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void Exception_message_should_end_with_blank_line()
         {
             var asserter = this.CreateAsserter();
@@ -128,7 +126,7 @@ namespace FakeItEasy.Tests.Core
             message.Should().EndWith(string.Concat(Environment.NewLine, Environment.NewLine));
         }
 
-        [Test]
+        [Fact]
         public void Exception_message_should_start_with_blank_line()
         {
             var asserter = this.CreateAsserter();

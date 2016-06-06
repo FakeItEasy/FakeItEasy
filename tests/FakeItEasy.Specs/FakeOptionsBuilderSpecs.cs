@@ -10,6 +10,7 @@ namespace FakeItEasy.Specs
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     public class FakeOptionsBuilderSpecs
     {

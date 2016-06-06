@@ -3,10 +3,9 @@ namespace FakeItEasy.Tests
     using System;
     using FakeItEasy.Configuration;
     using FluentAssertions;
-    using NUnit.Framework;
     using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
     public class CallbackConfigurationExtensionsTests
     {
         public interface IInterface
@@ -40,7 +39,7 @@ namespace FakeItEasy.Tests
             int RequestOfFour(int number1, int number2, int number3, int number4);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_should_support_omitting_arguments_when_they_are_not_used()
         {
             // Arrange
@@ -57,7 +56,7 @@ namespace FakeItEasy.Tests
             actionIsInvoked.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_no_argument_should_use_invokes_with_action_having_no_arguments()
         {
             // Arrange
@@ -74,7 +73,7 @@ namespace FakeItEasy.Tests
             actionIsInvoked.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_no_argument_and_no_returns_should_return_default_return_value()
         {
             // Arrange
@@ -89,7 +88,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(default(int));
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_no_argument_should_support_return_value()
         {
             // Arrange
@@ -107,7 +106,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(ReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_1_argument_should_use_invokes_with_action_having_1_argument()
         {
             // Arrange
@@ -132,7 +131,7 @@ namespace FakeItEasy.Tests
             collectedArgument.Should().Be(Argument);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_1_argument_should_support_overloads()
         {
             // Arrange
@@ -157,7 +156,7 @@ namespace FakeItEasy.Tests
             collectedArgument.Should().Be(Argument);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_1_argument_should_support_return_value()
         {
             // Arrange
@@ -177,7 +176,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(ReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_1_argument_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -193,7 +192,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_1_argument_should_throw_exception_when_argument_type_does_not_match()
         {
             // Arrange
@@ -209,7 +208,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32)", "(System.String)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_2_arguments_should_use_invokes_with_action_having_2_arguments()
         {
             // Arrange
@@ -239,7 +238,7 @@ namespace FakeItEasy.Tests
             secondCollectedArgument.Should().Be(SecondArgument);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_2_arguments_should_support_overloads()
         {
             // Arrange
@@ -269,7 +268,7 @@ namespace FakeItEasy.Tests
             secondCollectedArgument.Should().Be(SecondArgument);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_2_arguments_should_support_return_value()
         {
             // Arrange
@@ -288,7 +287,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(ReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_2_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -304,7 +303,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32)", "(System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_2_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
@@ -320,7 +319,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_2_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
@@ -336,7 +335,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32, System.String)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_3_arguments_should_use_invokes_with_action_having_3_arguments()
         {
             // Arrange
@@ -370,7 +369,7 @@ namespace FakeItEasy.Tests
             thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_3_arguments_should_support_overloads()
         {
             // Arrange
@@ -404,7 +403,7 @@ namespace FakeItEasy.Tests
             thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_3_arguments_should_support_return_value()
         {
             // Arrange
@@ -423,7 +422,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(ReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_3_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -439,7 +438,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_3_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
@@ -455,7 +454,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.String, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_3_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
@@ -471,7 +470,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_3_arguments_should_throw_exception_when_third_argument_type_does_not_match()
         {
             // Arrange
@@ -487,7 +486,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.String)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_4_arguments_should_use_invokes_with_action_having_4_arguments()
         {
             // Arrange
@@ -525,7 +524,7 @@ namespace FakeItEasy.Tests
             fourthCollectedArgument.Should().Be(FourthArgument);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_4_arguments_should_support_overloads()
         {
             // Arrange
@@ -563,7 +562,7 @@ namespace FakeItEasy.Tests
             fourthCollectedArgument.Should().Be(FourthArgument);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_4_arguments_should_support_return_value()
         {
             // Arrange
@@ -582,7 +581,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(ReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_4_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -598,7 +597,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_4_arguments_should_throw_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
@@ -614,7 +613,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.String, System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_4_arguments_should_throw_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
@@ -630,7 +629,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_4_arguments_should_throw_exception_when_third_argument_type_does_not_match()
         {
             // Arrange
@@ -646,7 +645,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Invokes_with_4_arguments_should_throw_exception_when_fourth_argument_type_does_not_match()
         {
             // Arrange

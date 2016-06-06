@@ -6,6 +6,7 @@ namespace FakeItEasy.Specs
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     internal interface IInternal
     {

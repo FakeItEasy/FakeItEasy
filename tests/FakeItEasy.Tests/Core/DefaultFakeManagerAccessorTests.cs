@@ -7,20 +7,18 @@ namespace FakeItEasy.Tests.Core
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class DefaultFakeManagerAccessorTests
     {
-        private DefaultFakeManagerAccessor accessor;
+        private readonly DefaultFakeManagerAccessor accessor;
 
-        [SetUp]
-        public void Setup()
+        public DefaultFakeManagerAccessorTests()
         {
             this.accessor = new DefaultFakeManagerAccessor();
         }
 
-        [Test]
+        [Fact]
         public void TagProxy_should_be_null_guarded()
         {
             // Arrange
@@ -32,7 +30,7 @@ namespace FakeItEasy.Tests.Core
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Should_set_fake_manager_to_tag()
         {
             // Arrange
@@ -46,7 +44,7 @@ namespace FakeItEasy.Tests.Core
             proxy.Tag.Should().BeSameAs(fakeManager);
         }
 
-        [Test]
+        [Fact]
         public void Should_get_fake_manager_from_tag()
         {
             // Arrange
@@ -61,7 +59,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().BeSameAs(fakeManager);
         }
 
-        [Test]
+        [Fact]
         public void GetFakeManager_should_be_null_guarded()
         {
             // Arrange
@@ -73,7 +71,7 @@ namespace FakeItEasy.Tests.Core
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_set_and_retrieve_fake_manager_from_non_taggable_objects()
         {
             // Arrange
@@ -88,7 +86,7 @@ namespace FakeItEasy.Tests.Core
             manager.Should().BeSameAs(fakeManager);
         }
 
-        [Test]
+        [Fact]
         public void Should_fail_when_getting_manager_from_object_where_a_fake_manager_has_not_been_attached()
         {
             // Arrange
@@ -104,7 +102,7 @@ namespace FakeItEasy.Tests.Core
                 .WithMessage("The specified object is not recognized as a fake object.");
         }
 
-        [Test]
+        [Fact]
         public void Should_fail_when_getting_manager_from_object_where_a_wrong_typed_fake_manager_has_been_attached()
         {
             // Arrange

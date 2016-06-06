@@ -3,12 +3,12 @@ namespace FakeItEasy.Tests.Approval
     using System.Runtime.CompilerServices;
     using ApprovalTests;
     using ApprovalTests.Reporters;
-    using NUnit.Framework;
     using PublicApiGenerator;
+    using Xunit;
 
     public class ApiApproval
     {
-        [Test]
+        [Fact]
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void ApproveApi()

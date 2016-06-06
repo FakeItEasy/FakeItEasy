@@ -3,12 +3,11 @@ namespace FakeItEasy.IntegrationTests
     using System;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakingClassesTests
     {
-        [Test]
+        [Fact]
         public void Should_be_able_to_get_a_fake_value_of_uri_type()
         {
             // Arrange
@@ -20,7 +19,7 @@ namespace FakeItEasy.IntegrationTests
             Fake.GetFakeManager(fake).Should().NotBeNull("because we should be able to create a fake Uri");
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_use_a_fake_after_binary_deserializing_it()
         {
             // Arrange
@@ -33,7 +32,7 @@ namespace FakeItEasy.IntegrationTests
             deserializedPerson.Name.Should().Be(string.Empty, "because the default behavior should work");
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_change_the_configuration_of_a_fake_after_binary_deserializing_it()
         {
             // Arrange

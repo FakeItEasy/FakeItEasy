@@ -9,9 +9,8 @@ namespace FakeItEasy.IntegrationTests
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class GeneralTests
     {
         public interface ITypeWithFakeableProperties
@@ -21,7 +20,7 @@ namespace FakeItEasy.IntegrationTests
             IFoo Foo { get; }
         }
 
-        [Test]
+        [Fact]
         public void Faked_object_with_fakeable_properties_should_have_fake_as_default_value()
         {
             // Arrange
@@ -34,7 +33,7 @@ namespace FakeItEasy.IntegrationTests
             fake.Foo.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Faked_object_with_method_that_returns_fakeable_type_should_return_fake_by_default()
         {
             // Arrange
@@ -48,7 +47,7 @@ namespace FakeItEasy.IntegrationTests
             Fake.GetFakeManager(enumerator).Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Faked_object_with_additional_attributes_should_create_a_type_with_those_attributes()
         {
             // Arrange
@@ -65,7 +64,7 @@ namespace FakeItEasy.IntegrationTests
             fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().HaveCount(1);
         }
 
-        [Test]
+        [Fact]
         public void Additional_attributes_should_not_be_added_to_the_next_fake()
         {
             // Arrange
@@ -83,7 +82,7 @@ namespace FakeItEasy.IntegrationTests
             secondFake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void Should_not_be_able_to_fake_a_guid()
         {
             // Arrange
@@ -95,7 +94,7 @@ namespace FakeItEasy.IntegrationTests
             exception.Should().BeAnExceptionOfType<FakeCreationException>();
         }
 
-        [Test]
+        [Fact]
         public void ErrorMessage_when_type_cannot_be_faked_should_specify_non_resolvable_constructor_arguments()
         {
             // Arrange
@@ -118,7 +117,7 @@ namespace FakeItEasy.IntegrationTests
                 .Message.Should().Contain(ExpectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void ErrorMessage_when_configuring_void_call_that_cannot_be_configured_should_be_correct()
         {
             // Arrange
@@ -133,7 +132,7 @@ namespace FakeItEasy.IntegrationTests
                 .Message.Should().Contain("Non virtual");
         }
 
-        [Test]
+        [Fact]
         public void ErrorMessage_when_configuring_function_call_that_cannot_be_configured_should_be_correct()
         {
             // Arrange
@@ -148,7 +147,7 @@ namespace FakeItEasy.IntegrationTests
                 .Message.Should().Contain("Non virtual");
         }
 
-        [Test]
+        [Fact]
         public void ErrorMessage_when_configuring_generic_function_call_that_cannot_be_configured_should_be_correct()
         {
             // Arrange
@@ -163,7 +162,7 @@ namespace FakeItEasy.IntegrationTests
                 .Message.Should().Contain("Non virtual");
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_generate_class_fake_that_implements_additional_interface()
         {
             // Arrange
@@ -178,7 +177,7 @@ namespace FakeItEasy.IntegrationTests
                 .BeAssignableTo<FakeableClass>();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_generate_class_fake_that_implements_additional_interface_using_generic()
         {
             // Arrange
@@ -193,7 +192,7 @@ namespace FakeItEasy.IntegrationTests
                 .BeAssignableTo<FakeableClass>();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_generate_interface_fake_that_implements_additional_interface()
         {
             // Arrange
@@ -208,7 +207,7 @@ namespace FakeItEasy.IntegrationTests
                 .BeAssignableTo<IFormatProvider>();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_generate_interface_fake_that_implements_additional_interface_using_generic()
         {
             // Arrange
@@ -223,7 +222,7 @@ namespace FakeItEasy.IntegrationTests
                 .BeAssignableTo<IFormatProvider>();
         }
 
-        [Test]
+        [Fact]
         public void FakeCollection_should_return_list_where_all_objects_are_fakes()
         {
             // Arrange
@@ -236,7 +235,7 @@ namespace FakeItEasy.IntegrationTests
                 .OnlyContain(foo => foo != null && Fake.GetFakeManager(foo) != null);
         }
 
-        [Test]
+        [Fact]
         public void DummyCollection_should_return_correct_number_of_dummies()
         {
             // Arrange
@@ -248,7 +247,7 @@ namespace FakeItEasy.IntegrationTests
             result.Should().HaveCount(10);
         }
 
-        [Test]
+        [Fact]
         public void Returns_from_sequence_only_applies_the_number_as_many_times_as_the_number_of_specified_values()
         {
             // Arrange

@@ -33,5 +33,17 @@ namespace FakeItEasy.Tests
 
             return cases.Select(objectToPropertiesProjection);
         }
+
+        /// <summary>
+        /// Creates a series of test cases, one per input object.
+        /// Each test case will be constructed as an object array
+        /// containing a single member - the input object.
+        /// </summary>
+        /// <param name="cases">The input test objects.</param>
+        /// <returns>A sequence of test cases.</returns>
+        public static IEnumerable<object[]> FromObject(params object[] cases)
+        {
+            return cases.Select(@case => new[] { @case });
+        }
     }
 }

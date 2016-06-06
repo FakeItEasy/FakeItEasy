@@ -59,13 +59,21 @@
       <HintPath>..\..\packages\FluentAssertions.4.6.3\lib\net45\FluentAssertions.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionOverWriterValueFormatter.cs" />
@@ -90,12 +98,15 @@
     <Compile Include="AutoInitializedFixture.cs" />
     <Compile Include="ArgumentConstraintTestBase.of.T.cs" />
     <Compile Include="ACallToTests.cs" />
+    <Compile Include="Properties\XunitAssemblyInfo.cs" />
     <Compile Include="RepeatConfigurationExtensionsTests.cs" />
     <Compile Include="ArgumentValidationConfigurationExtensionsTests.cs" />
     <Compile Include="AssertConfigurationExtensionsTests.cs" />
     <Compile Include="CompletedFakeObjectCallExtensionsTests.cs" />
     <Compile Include="TestHelpers\BinarySerializationHelper.cs" />
+    <Compile Include="TestHelpers\ReflectedMethodDataAttribute.cs" />
     <Compile Include="TestHelpers\StringEnumerableExtensions.cs" />
+    <Compile Include="TestHelpers\UsingCultureAttribute.cs" />
     <Compile Include="WhereConfigurationExtensionsTests.cs" />
     <Compile Include="FakeOptionsExtensionsTests.cs" />
     <Compile Include="FakeObjectCallExtensionsTests.cs" />
@@ -176,7 +187,6 @@
     <Compile Include="IoC\DictionaryContainerTests.cs" />
     <Compile Include="TestCases.cs" />
     <Compile Include="TestHelpers\ObjectAssertionsExtensions.cs" />
-    <Compile Include="TestHelpers\Record.cs" />
     <Compile Include="TestHelpers\MethodInfoDummyFactory.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="Core\FakeManagerTests.cs" />

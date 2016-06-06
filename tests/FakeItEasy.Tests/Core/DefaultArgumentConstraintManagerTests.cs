@@ -2,24 +2,23 @@ namespace FakeItEasy.Tests.Core
 {
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class DefaultArgumentConstraintManagerTests
     {
-        private DefaultArgumentConstraintManager<string> constraintManager;
+        private readonly DefaultArgumentConstraintManager<string> constraintManager;
         private IArgumentConstraint createdConstraint;
 
-        [SetUp]
-        public void Setup()
+        public DefaultArgumentConstraintManagerTests()
         {
             this.createdConstraint = null;
             this.constraintManager = new DefaultArgumentConstraintManager<string>(x => this.createdConstraint = x);
         }
 
-        [TestCase(true, Result = true)]
-        [TestCase(false, Result = false)]
-        public bool Should_add_constraint_that_is_validated_by_the_specified_predicate(bool predicateIsValid)
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        public void Should_add_constraint_that_is_validated_by_the_specified_predicate(bool predicateIsValid, bool expectedResult)
         {
             // Arrange
 
@@ -27,10 +26,10 @@ namespace FakeItEasy.Tests.Core
             this.constraintManager.Matches(x => predicateIsValid, x => x.Write("foo"));
 
             // Assert
-            return this.createdConstraint.IsValid("foo");
+            this.createdConstraint.IsValid("foo").Should().Be(expectedResult);
         }
 
-        [Test]
+        [Fact]
         public void Should_create_constraint_that_passes_argument_to_delegate()
         {
             // Arrange
@@ -50,7 +49,7 @@ namespace FakeItEasy.Tests.Core
             argumentPassedToDelegate.Should().Be("argument");
         }
 
-        [Test]
+        [Fact]
         public void Should_create_constraint_that_passes_writer_to_writer_delegate()
         {
             // Arrange
@@ -66,9 +65,10 @@ namespace FakeItEasy.Tests.Core
             passedInWriter.Should().Be(writerFromOutside);
         }
 
-        [TestCase(true, Result = false)]
-        [TestCase(false, Result = true)]
-        public bool Should_add_constraint_that_is_validated_inversed_by_the_specified_predicate_when_prefixing_with_not(bool predicateIsValid)
+        [Theory]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        public void Should_add_constraint_that_is_validated_inversed_by_the_specified_predicate_when_prefixing_with_not(bool predicateIsValid, bool expectedResult)
         {
             // Arrange
 
@@ -76,10 +76,10 @@ namespace FakeItEasy.Tests.Core
             this.constraintManager.Not.Matches(x => predicateIsValid, x => x.Write("foo"));
 
             // Assert
-            return this.createdConstraint.IsValid("foo");
+            this.createdConstraint.IsValid("foo").Should().Be(expectedResult);
         }
 
-        [Test]
+        [Fact]
         public void Should_create_constraint_that_passes_argument_to_delegate_when_prefixing_with_not()
         {
             // Arrange
@@ -99,7 +99,7 @@ namespace FakeItEasy.Tests.Core
             argumentPassedToDelegate.Should().Be("argument");
         }
 
-        [Test]
+        [Fact]
         public void Should_create_constraint_that_passes_writer_to_writer_delegate_when_prefixing_with_not()
         {
             // Arrange
@@ -115,7 +115,7 @@ namespace FakeItEasy.Tests.Core
             passedInWriter.Should().Be(writerFromOutside);
         }
 
-        [Test]
+        [Fact]
         public void Should_create_constraint_writes_the_word_not_to_writer_when_prefixing_with_not()
         {
             // Arrange
@@ -129,7 +129,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => writer.Write("not ")).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_create_constraint_that_writes_beginning_and_end_of_argument_constraint()
         {
             // Arrange

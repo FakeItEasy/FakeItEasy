@@ -3,12 +3,11 @@ namespace FakeItEasy.IntegrationTests
     using System.Collections.Generic;
     using System.IO;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class WrapperTests
     {
-        [Test]
+        [Fact]
         public void Wrapper_should_only_delegate_non_configured_calls()
         {
             var stream = new MemoryStream();
@@ -23,7 +22,7 @@ namespace FakeItEasy.IntegrationTests
             this.CanRead(wrapper).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Wrapper_should_pass_values_to_wrapped_instance()
         {
             var dictionary = new Dictionary<string, string>();

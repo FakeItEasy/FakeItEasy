@@ -5,12 +5,11 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class ArgumentValidationConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
     {
-        [Test]
+        [Fact]
         public void WithAnyArguments_with_void_call_should_call_when_arguments_match_with_predicate_that_returns_true()
         {
             // Arrange
@@ -25,7 +24,7 @@ namespace FakeItEasy.Tests
             predicate.Invoke(null).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void WithAnyArguments_with_function_call_should_call_when_arguments_match_with_predicate_that_returns_true()
         {
             // Arrange
@@ -40,7 +39,7 @@ namespace FakeItEasy.Tests
             predicate.Invoke(null).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void WithAnyArguments_should_throw_when_configuration_is_null()
         {
             // Arrange

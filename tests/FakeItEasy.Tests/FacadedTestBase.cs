@@ -4,7 +4,7 @@ namespace FakeItEasy.Tests
     using System.Linq;
     using System.Reflection;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
     public abstract class FacadedTestBase
     {
@@ -15,7 +15,7 @@ namespace FakeItEasy.Tests
             get { return Type.GetType(this.FacadedType.FullName + "Facade, " + this.FacadedType.Assembly.FullName, true); }
         }
 
-        [Test]
+        [Fact]
         public void The_facade_class_should_contain_instance_methods_mirroring_the_static_methods_of_the_facaded_class()
         {
             var nonMirroredMethods =
