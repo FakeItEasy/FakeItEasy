@@ -64,7 +64,7 @@ that takes an `IFakeObjectCall` instead:
 
 ```charp
 A.CallTo(() => fakeShop.SomeCall(…)
-                               .ReturnsLazily(objectCall => calculateReturnFrom(objectCall));
+                       .ReturnsLazily(objectCall => calculateReturnFrom(objectCall));
 ```
 
 The `IFakeObjectCall` object provides access to
