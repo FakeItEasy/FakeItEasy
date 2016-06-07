@@ -63,7 +63,7 @@ than 4 parameters, the convenience methods won't work. Use the variant
 that takes an `IFakeObjectCall` instead:
 
 ```charp
-A.CallTo(() => fakeShop.SomeCall(…)
+A.CallTo(() => fakeShop.SomeCall(…))
                        .ReturnsLazily(objectCall => calculateReturnFrom(objectCall));
 ```
 
