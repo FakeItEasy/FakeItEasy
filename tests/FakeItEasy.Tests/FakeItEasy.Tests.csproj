@@ -186,7 +186,6 @@
     <Compile Include="ATests.cs" />
     <Compile Include="Configuration\BuildableCallRuleTests.cs" />
     <Compile Include="Configuration\RuleBuilderTests.cs" />
-    <Compile Include="FakeConstraints\WrappingFakeConstraint.cs" />
     <Compile Include="ExpectationExceptionTests.cs" />
     <Compile Include="FakeCall.cs" />
     <Compile Include="FakeCallRule.cs" />
