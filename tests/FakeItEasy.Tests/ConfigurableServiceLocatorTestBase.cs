@@ -19,14 +19,9 @@ namespace FakeItEasy.Tests
         public void Teardown()
         {
             ServiceLocator.Current = this.replacedServiceLocator;
-            this.OnTeardown();
         }
 
         protected virtual void OnSetup()
-        {
-        }
-
-        protected virtual void OnTeardown()
         {
         }
 
