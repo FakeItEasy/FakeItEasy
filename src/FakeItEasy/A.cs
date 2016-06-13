@@ -113,6 +113,7 @@ namespace FakeItEasy
         /// <param name="typeOfDummy">The type of dummy to return.</param>
         /// <returns>A dummy object of the specified type.</returns>
         /// <exception cref="ArgumentException">Dummies of the specified type can not be created.</exception>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public static object Dummy(Type typeOfDummy)
         {
             return FakeCreator.CreateDummy(typeOfDummy);
@@ -126,6 +127,7 @@ namespace FakeItEasy
         /// <returns>A collection of dummy objects of the specified type.</returns>
         /// <exception cref="ArgumentException">Dummies of the specified type can not be created.</exception>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of dummy.")]
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public static IList<T> CollectionOfDummy<T>(int numberOfDummies)
         {
             return FakeCreator.CollectionOfDummy<T>(numberOfDummies);
@@ -138,6 +140,7 @@ namespace FakeItEasy
         /// <param name="numberOfDummies">The number of dummies in the collection.</param>
         /// <returns>A collection of dummy objects of the specified type.</returns>
         /// <exception cref="ArgumentException">Dummies of the specified type can not be created.</exception>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public static IList<object> CollectionOfDummy(Type typeOfDummy, int numberOfDummies)
         {
             return FakeCreator.CollectionOfDummy(typeOfDummy, numberOfDummies);
