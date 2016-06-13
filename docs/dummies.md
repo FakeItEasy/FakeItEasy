@@ -42,6 +42,12 @@ A.CollectionOfDummy<Book>(10);
 
 This will return an `IList` containing 10 dummy `Book` instances.
 
+For cases where the type of dummy isn't statically known, non-generic methods are also available:
+```csharp
+object book = A.Dummy(typeof(Book));
+IList<object> books = A.CollectionOfFake(typeof(Book), 10);
+```
+
 ## How FakeItEasy uses them
 
 When [creating Fakes](creating-fakes.md) or Dummies of class types,

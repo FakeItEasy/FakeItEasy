@@ -8,6 +8,17 @@ var foo = A.Fake<IFoo>();
 ```
 This will return a faked object that is an actual instance of the type specified (`IFoo` in this case).
 
+You can also create a collection of fakes by writing:
+```csharp
+var foos = A.CollectionOfFake<Foo>(10);
+```
+
+For cases where the type to fake isn't statically known, non-generic methods are also available:
+```csharp
+object foo = A.Fake(typeof(Foo));
+IList<object> foos = A.CollectionOfFake(typeof(Foo), 10);
+```
+
 ##Explicit Creation Options
 When creating fakes you can, through a fluent interface, specify options for how the fake should be created:
 
@@ -31,14 +42,14 @@ var foo = A.Fake<FooClass>(x => x.WithArgumentsForConstructor(() => new FooClass
 var foo = A.Fake<FooClass>(x => x.WithArgumentsForConstructor(new object[] { "foo", "bar" }));
 
 // Specifying additional interfaces to be implemented. Among other uses,
-// this can help when a fake skips members because they have been 
+// this can help when a fake skips members because they have been
 // explicitly implemented on the class being faked.
 var foo = A.Fake<FooClass>(x => x.Implements(typeof(IFoo)));
-// or 
+// or
 var foo = A.Fake<FooClass>(x => x.Implements<IFoo>());
 
 // Assigning custom attributes to the faked class.
-// Get a parameterless constructor for our attribute and create a builder 
+// Get a parameterless constructor for our attribute and create a builder
 var constructor = typeof(FooAttribute).GetConstructor(new Type[0]);
 var builder = new CustomAttributeBuilder(constructor, new object[0]);
 var builders = new List<CustomAttributeBuilder>() { builder };
