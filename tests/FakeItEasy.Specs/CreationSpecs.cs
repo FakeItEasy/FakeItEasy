@@ -3,12 +3,14 @@ namespace FakeItEasy.Specs
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using FakeItEasy.Core;
+    using FakeItEasy.Creation;
     using FluentAssertions;
     using Xbehave;
     using Xunit;
 
-    public static class CreationSpecs
+    public abstract class CreationSpecsBase
     {
         [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
         public interface ICollectionItem
@@ -16,7 +18,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void ThrowingConstructor(
+        public void ThrowingConstructor(
             Exception exception)
         {
             "Given a class with a parameterless constructor"
@@ -26,7 +28,7 @@ namespace FakeItEasy.Specs
                 .See(() => new ClassWhoseConstructorThrows());
 
             "When I create a fake of the class"
-                .x(() => exception = Record.Exception(() => A.Fake<ClassWhoseConstructorThrows>()));
+                .x(() => exception = Record.Exception(() => this.CreateFake<ClassWhoseConstructorThrows>()));
 
             "Then it throws a fake creation exception"
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
@@ -38,12 +40,12 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Contain("I don't like being constructed."));
 
             "And the exception message includes the original exception stack trace"
-                .x(() => exception.Message.Should().Contain("FakeItEasy.Specs.CreationSpecs.ClassWhoseConstructorThrows..ctor()"));
+                .x(() => exception.Message.Should().Contain("FakeItEasy.Specs.CreationSpecsBase.ClassWhoseConstructorThrows..ctor()"));
         }
 
         // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
         [Scenario]
-        public static void UseSuccessfulConstructor(
+        public void UseSuccessfulConstructor(
             FakedClass fake)
         {
             "Given a class with multiple constructors"
@@ -59,7 +61,7 @@ namespace FakeItEasy.Specs
                 .See(() => new FakedClass(A.Dummy<IDisposable>(), A.Dummy<string>()));
 
             "When I create a fake of the class"
-                .x(() => fake = A.Fake<FakedClass>());
+                .x(() => fake = this.CreateFake<FakedClass>());
 
             "Then the fake is instantiated using the two-parameter constructor"
                 .x(() => fake.WasTwoParameterConstructorCalled.Should().BeTrue());
@@ -75,12 +77,12 @@ namespace FakeItEasy.Specs
         [Scenario]
         [Example(2)]
         [Example(10)]
-        public static void CollectionOfFake(
+        public void CollectionOfFake(
             int count,
             IList<ICollectionItem> fakes)
         {
             "When I create a collection of {0} fakes"
-                .x(() => fakes = A.CollectionOfFake<ICollectionItem>(count));
+                .x(() => fakes = this.CreateCollectionOfFake<ICollectionItem>(count));
 
             "Then {0} items are created"
                 .x(() => fakes.Should().HaveCount(count));
@@ -91,6 +93,12 @@ namespace FakeItEasy.Specs
             "And all items are fakes"
                 .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) != null));
         }
+
+        protected abstract T CreateFake<T>();
+
+        protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder);
+
+        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes);
 
         public class ClassWhoseConstructorThrows
         {
@@ -132,6 +140,42 @@ namespace FakeItEasy.Specs
             public bool WasParameterlessConstructorCalled { get; set; }
 
             public bool WasTwoParameterConstructorCalled { get; set; }
+        }
+    }
+
+    public class GenericCreationSpecs : CreationSpecsBase
+    {
+        protected override T CreateFake<T>()
+        {
+            return A.Fake<T>();
+        }
+
+        protected override T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder)
+        {
+            return A.Fake(optionsBuilder);
+        }
+
+        protected override IList<T> CreateCollectionOfFake<T>(int numberOfFakes)
+        {
+            return A.CollectionOfFake<T>(numberOfFakes);
+        }
+    }
+
+    public class NonGenericCreationSpecs : CreationSpecsBase
+    {
+        protected override T CreateFake<T>()
+        {
+            return (T)A.Fake(typeof(T));
+        }
+
+        protected override T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder)
+        {
+            return (T)A.Fake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
+        }
+
+        protected override IList<T> CreateCollectionOfFake<T>(int numberOfFakes)
+        {
+            return A.CollectionOfFake(typeof(T), numberOfFakes).Cast<T>().ToList();
         }
     }
 }

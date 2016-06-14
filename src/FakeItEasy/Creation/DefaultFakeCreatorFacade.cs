@@ -35,6 +35,14 @@ namespace FakeItEasy.Creation
             return (T)this.fakeAndDummyManager.CreateFake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
         }
 
+        public object CreateFake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
+        {
+            Guard.AgainstNull(typeOfFake, nameof(typeOfFake));
+            Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
+
+            return this.fakeAndDummyManager.CreateFake(typeOfFake, optionsBuilder);
+        }
+
         /// <summary>
         /// Creates a collection of fakes of the specified type.
         /// </summary>
@@ -55,6 +63,20 @@ namespace FakeItEasy.Creation
             return result;
         }
 
+        public IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes)
+        {
+            Guard.AgainstNull(typeOfFake, nameof(typeOfFake));
+
+            var result = new List<object>();
+
+            for (var i = 0; i < numberOfFakes; i++)
+            {
+                result.Add(this.CreateFake(typeOfFake, x => { }));
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Creates a dummy object, this can be a fake object or an object resolved
         /// from the current IFakeObjectContainer.
@@ -66,6 +88,13 @@ namespace FakeItEasy.Creation
         public T CreateDummy<T>()
         {
             return (T)this.fakeAndDummyManager.CreateDummy(typeof(T));
+        }
+
+        public object CreateDummy(Type typeOfDummy)
+        {
+            Guard.AgainstNull(typeOfDummy, nameof(typeOfDummy));
+
+            return this.fakeAndDummyManager.CreateDummy(typeOfDummy);
         }
 
         /// <summary>
@@ -83,6 +112,20 @@ namespace FakeItEasy.Creation
             for (var i = 0; i < numberOfDummies; i++)
             {
                 result.Add(this.CreateDummy<T>());
+            }
+
+            return result;
+        }
+
+        public IList<object> CollectionOfDummy(Type typeOfDummy, int numberOfDummies)
+        {
+            Guard.AgainstNull(typeOfDummy, nameof(typeOfDummy));
+
+            var result = new List<object>();
+
+            for (var i = 0; i < numberOfDummies; i++)
+            {
+                result.Add(this.CreateDummy(typeOfDummy));
             }
 
             return result;
