@@ -57,10 +57,28 @@ namespace FakeItEasy.Creation
         /// <summary>
         /// Creates a collection of fakes of the specified type.
         /// </summary>
-        /// <param name="typeOfFakes">The type of fakes to create.</param>
+        /// <typeparam name="T">The type of fakes to create.</typeparam>
+        /// <param name="numberOfFakes">The number of fakes in the collection.</param>
+        /// <param name="optionsBuilder">Action that builds options for the created fake object.</param>
+        /// <returns>A collection of fake objects of the specified type.</returns>
+        IList<T> CollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder);
+
+        /// <summary>
+        /// Creates a collection of fakes of the specified type.
+        /// </summary>
+        /// <param name="typeOfFake">The type of fakes to create.</param>
         /// <param name="numberOfFakes">The number of fakes in the collection.</param>
         /// <returns>A collection of fake objects of the specified type.</returns>
-        IList<object> CollectionOfFake(Type typeOfFakes, int numberOfFakes);
+        IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes);
+
+        /// <summary>
+        /// Creates a collection of fakes of the specified type.
+        /// </summary>
+        /// <param name="typeOfFake">The type of fakes to create.</param>
+        /// <param name="numberOfFakes">The number of fakes in the collection.</param>
+        /// <param name="optionsBuilder">Action that builds options for the created fake object.</param>
+        /// <returns>A collection of fake objects of the specified type.</returns>
+        IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes, Action<IFakeOptions> optionsBuilder);
 
         /// <summary>
         /// Creates a collection of dummies of the specified type.

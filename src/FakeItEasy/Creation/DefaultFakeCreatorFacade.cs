@@ -53,11 +53,16 @@ namespace FakeItEasy.Creation
         /// </returns>
         public IList<T> CollectionOfFake<T>(int numberOfFakes)
         {
+            return this.CollectionOfFake<T>(numberOfFakes, x => { });
+        }
+
+        public IList<T> CollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder)
+        {
             var result = new List<T>();
 
             for (var i = 0; i < numberOfFakes; i++)
             {
-                result.Add(this.CreateFake<T>(x => { }));
+                result.Add(this.CreateFake(optionsBuilder));
             }
 
             return result;
@@ -65,13 +70,16 @@ namespace FakeItEasy.Creation
 
         public IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes)
         {
-            Guard.AgainstNull(typeOfFake, nameof(typeOfFake));
+            return this.CollectionOfFake(typeOfFake, numberOfFakes, x => { });
+        }
 
+        public IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes, Action<IFakeOptions> optionsBuilder)
+        {
             var result = new List<object>();
 
             for (var i = 0; i < numberOfFakes; i++)
             {
-                result.Add(this.CreateFake(typeOfFake, x => { }));
+                result.Add(this.CreateFake(typeOfFake, optionsBuilder));
             }
 
             return result;

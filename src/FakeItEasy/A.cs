@@ -84,12 +84,37 @@ namespace FakeItEasy
         /// <summary>
         /// Creates a collection of fakes of the specified type.
         /// </summary>
+        /// <typeparam name="T">The type of fakes to create.</typeparam>
+        /// <param name="numberOfFakes">The number of fakes in the collection.</param>
+        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
+        /// <returns>A collection of fake objects of the specified type.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
+        public static IList<T> CollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder)
+        {
+            return FakeCreator.CollectionOfFake(numberOfFakes, optionsBuilder);
+        }
+
+        /// <summary>
+        /// Creates a collection of fakes of the specified type.
+        /// </summary>
         /// <param name="typeOfFake">The type of fakes to create.</param>
         /// <param name="numberOfFakes">The number of fakes in the collection.</param>
         /// <returns>A collection of fake objects of the specified type.</returns>
         public static IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes)
         {
             return FakeCreator.CollectionOfFake(typeOfFake, numberOfFakes);
+        }
+
+        /// <summary>
+        /// Creates a collection of fakes of the specified type.
+        /// </summary>
+        /// <param name="typeOfFake">The type of fakes to create.</param>
+        /// <param name="numberOfFakes">The number of fakes in the collection.</param>
+        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
+        /// <returns>A collection of fake objects of the specified type.</returns>
+        public static IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes, Action<IFakeOptions> optionsBuilder)
+        {
+            return FakeCreator.CollectionOfFake(typeOfFake, numberOfFakes, optionsBuilder);
         }
 
         /// <summary>
