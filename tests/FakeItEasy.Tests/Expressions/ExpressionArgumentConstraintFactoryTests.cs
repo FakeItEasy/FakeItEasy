@@ -44,6 +44,20 @@ namespace FakeItEasy.Tests.Expressions
             result.Should().BeSameAs(constraint);
         }
 
+
+        [Test]
+        public void Should_return_null_from_trapper_when_set_to_return_null()
+        {
+            // Arrange
+            A.CallTo(this.trapper).WithNonVoidReturnType().Returns(null);
+
+            // Act
+            var result = this.factory.GetArgumentConstraint(BuilderForParsedArgumentExpression.BuildWithDefaults());
+
+            // Assert
+            result.Should().BeNull();
+        }
+
         [Test]
         public void Should_return_equality_constraint_when_trapper_does_not_produce_any_constraint()
         {

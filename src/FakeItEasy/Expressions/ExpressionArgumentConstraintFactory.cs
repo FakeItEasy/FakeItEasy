@@ -81,7 +81,7 @@ namespace FakeItEasy.Expressions
             var trappedConstraints = this.argumentConstraintTrapper.TrapConstraints(() =>
             {
                 expressionValue = InvokeExpression(expression);
-            });
+            }) ?? new IArgumentConstraint[0];
 
             return TryCreateConstraintFromTrappedConstraints(trappedConstraints.ToArray()) ?? CreateEqualityConstraint(expressionValue);
         }
