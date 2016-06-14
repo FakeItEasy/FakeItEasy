@@ -94,11 +94,33 @@ namespace FakeItEasy.Specs
                 .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) != null));
         }
 
+        [Scenario]
+        [Example(2)]
+        [Example(10)]
+        public void CollectionOfFakeWithOptionBuilder(
+            int count,
+            IList<ICollectionItem> fakes)
+        {
+            "When I create a collection of {0} fakes that also implement another interface"
+                .x(() => fakes = this.CreateCollectionOfFake<ICollectionItem>(count, options => options.Implements<IDisposable>()));
+
+            "Then {0} items are created"
+                .x(() => fakes.Should().HaveCount(count));
+
+            "And all items extend the specified type and the extra interface"
+                .x(() => fakes.Should().ContainItemsAssignableTo<ICollectionItem>().And.ContainItemsAssignableTo<IDisposable>());
+
+            "And all items are fakes"
+                .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) != null));
+        }
+
         protected abstract T CreateFake<T>();
 
         protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder);
 
         protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes);
+
+        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder);
 
         public class ClassWhoseConstructorThrows
         {
@@ -159,6 +181,11 @@ namespace FakeItEasy.Specs
         {
             return A.CollectionOfFake<T>(numberOfFakes);
         }
+
+        protected override IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder)
+        {
+            return A.CollectionOfFake(numberOfFakes, optionsBuilder);
+        }
     }
 
     public class NonGenericCreationSpecs : CreationSpecsBase
@@ -176,6 +203,11 @@ namespace FakeItEasy.Specs
         protected override IList<T> CreateCollectionOfFake<T>(int numberOfFakes)
         {
             return A.CollectionOfFake(typeof(T), numberOfFakes).Cast<T>().ToList();
+        }
+
+        protected override IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder)
+        {
+            return A.CollectionOfFake(typeof(T), numberOfFakes, options => optionsBuilder((IFakeOptions<T>)options)).Cast<T>().ToList();
         }
     }
 }
