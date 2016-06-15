@@ -15,6 +15,8 @@ namespace FakeItEasy.Configuration
 
         public Type ApplicableToMembersWithReturnType { get; set; }
 
+        public bool ApplicableToAllNonVoidReturnTypes { get; set; }
+
         public override string DescriptionOfValidCall
         {
             get
@@ -37,7 +39,9 @@ namespace FakeItEasy.Configuration
         {
             return
                 this.argumentsPredicate(fakeObjectCall.Arguments) &&
-                    (this.ApplicableToMembersWithReturnType == null || this.ApplicableToMembersWithReturnType.Equals(fakeObjectCall.Method.ReturnType));
+                    (this.ApplicableToMembersWithReturnType == null
+                    || (this.ApplicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType)
+                    || (this.ApplicableToAllNonVoidReturnTypes && fakeObjectCall.Method.ReturnType != typeof(void)));
         }
     }
 }

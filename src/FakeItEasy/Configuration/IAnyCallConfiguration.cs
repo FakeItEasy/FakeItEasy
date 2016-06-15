@@ -9,11 +9,17 @@ namespace FakeItEasy.Configuration
         : IWhereConfiguration<IAnyCallConfigurationWithNoReturnTypeSpecified>, IVoidArgumentValidationConfiguration
     {
         /// <summary>
-        /// Matches calls that has the return type specified in the generic type parameter.
+        /// Matches calls that have the return type specified in the generic type parameter.
         /// </summary>
         /// <typeparam name="TMember">The return type of the members to configure.</typeparam>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to provide a strongly typed fluent API.")]
         IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>();
+
+        /// <summary>
+        /// Matches calls that have any non-void return type.
+        /// </summary>
+        /// <returns>A configuration object.</returns>
+        IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType();
     }
 }
