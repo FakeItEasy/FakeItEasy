@@ -55,6 +55,10 @@ A.CallTo(fakeShop).Throws(new Exception());
 // Or limit the calls by return type
 A.CallTo(fakeShop).WithReturnType<string>().Returns("sugar tastes good");
 
+// Or limit the calls to methods that return a value. Note that it will throw at runtime
+// if the configured return value doesn't match the called method's return type.
+A.CallTo(fakeShop).WithNonVoidReturnType().Returns("sugar tastes good");
+
 // Or create a sophisticated test with a predicate that acts on an IFakeObjectCall
 A.CallTo(fakeShop).Where(call => call.Arguments.Count > 4)
                   .Throws(new Exception("too many arguments is bad");
