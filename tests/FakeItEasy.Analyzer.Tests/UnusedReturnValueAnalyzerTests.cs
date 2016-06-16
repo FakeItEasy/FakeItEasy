@@ -337,6 +337,39 @@ namespace TheNamespace
                 });
         }
 
+        [Test]
+        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithNonVoidReturnType", Justification = "It's an identifier")]
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WithNonVoidReturnType()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var foo = A.Fake<IFoo>();
+            A.CallTo(foo).WithNonVoidReturnType();
+        }
+    }
+    interface IFoo { int Bar(); }
+}
+";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallTo(foo).WithNonVoidReturnType()'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new UnusedReturnValueAnalyzer();
