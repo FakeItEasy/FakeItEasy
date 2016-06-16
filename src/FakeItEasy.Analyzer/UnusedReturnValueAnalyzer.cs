@@ -77,6 +77,7 @@ namespace FakeItEasy.Analyzer
                 "FakeItEasy.ArgumentValidationConfigurationExtensions.WithAnyArguments`1",
                 "FakeItEasy.WhereConfigurationExtensions.Where`1",
                 "FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified.WithReturnType`1",
+                "FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified.WithNonVoidReturnType",
                 "FakeItEasy.Configuration.IArgumentValidationConfiguration`1.WhenArgumentsMatch",
                 "FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration`1.To",
                 "FakeItEasy.Configuration.IWhereConfiguration`1.Where"
