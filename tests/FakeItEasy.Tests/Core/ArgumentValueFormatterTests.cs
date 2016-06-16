@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.Core
     public class ArgumentValueFormatterTests
     {
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private readonly object[] specificCases = TestCases.Create(
+        private readonly IEnumerable<object[]> specificCases = TestCases.FromProperties(
             new
             {
                 LessSpecific = typeof(object),
@@ -32,7 +32,7 @@ namespace FakeItEasy.Tests.Core
                 LessSpecific = typeof(object),
                 MoreSpecific = typeof(IFoo),
                 Value = (object)A.Fake<IFoo>()
-            }).AsTestCaseSource();
+            });
 
         private ArgumentValueFormatter formatter;
         private List<IArgumentValueFormatter> registeredTypeFormatters;

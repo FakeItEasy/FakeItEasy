@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -12,7 +13,7 @@ namespace FakeItEasy.Tests.Configuration
     public class BuildableCallRuleTests
     {
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] defaultReturnValueCases = TestCases.Create(
+        private IEnumerable<object[]> defaultReturnValueCases = TestCases.FromProperties(
             new
             {
                 MethodName = "IntReturn",
@@ -27,7 +28,7 @@ namespace FakeItEasy.Tests.Configuration
             {
                 MethodName = "SelfReturn",
                 ExpectedReturnValue = (object)null
-            }).AsTestCaseSource();
+            });
 
         private TestableCallRule rule;
 

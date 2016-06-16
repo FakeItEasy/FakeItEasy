@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FluentAssertions;
@@ -11,7 +12,7 @@ namespace FakeItEasy.Tests
     public class RepeatedTests
     {
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] descriptionTestCases = TestCases.Create(
+        private IEnumerable<object[]> descriptionTestCases = TestCases.FromProperties(
             new RepeatDescriptionTestCase()
             {
                 Repeat = () => Repeated.AtLeast.Once,
@@ -66,7 +67,7 @@ namespace FakeItEasy.Tests
             {
                 Repeat = () => Repeated.Exactly.Times(99),
                 ExpectedDescription = "exactly 99 times"
-            }).AsTestCaseSource();
+            });
 
         [TestCase(1, 1, Result = true)]
         [TestCase(1, 2, Result = false)]
