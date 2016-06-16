@@ -50,7 +50,7 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Test]
-        public void WithNonVoidReturnType_should_set_the_flag_to_apply_to_all_return_types()
+        public void WithNonVoidReturnType_should_cause_the_call_rule_to_apply_to_all_return_types()
         {
             // Arrange
 
