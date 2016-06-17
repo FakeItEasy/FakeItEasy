@@ -4,9 +4,6 @@ namespace FakeItEasy.Tests
 
     public class FakeTests : FacadedTestBase
     {
-        protected override Type FacadedType
-        {
-            get { return typeof(Fake); }
-        }
+        protected override Type FacadedType => typeof(Fake);
     }
 }

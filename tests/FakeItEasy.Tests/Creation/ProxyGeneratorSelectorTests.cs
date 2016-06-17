@@ -70,12 +70,12 @@ namespace FakeItEasy.Tests.Creation
             var fake = new Func<int>(() => 10);
             var invoke = fake.GetType().GetMethod("Invoke");
 
-            string reason = null;
+            string reason;
             A.CallTo(() => this.delegateProxyGenerator.MethodCanBeInterceptedOnInstance(invoke, fake, out reason))
                 .Returns(true).AssignsOutAndRefParameters("reason");
 
             // Act
-            string output = null;
+            string output;
             var result = this.selector.MethodCanBeInterceptedOnInstance(invoke, fake, out output);
 
             // Assert
@@ -90,11 +90,11 @@ namespace FakeItEasy.Tests.Creation
             var fake = new object();
             var getHashCode = fake.GetType().GetMethod("GetHashCode");
 
-            string reason = null;
+            string reason;
             A.CallTo(() => this.defaultProxyGenerator.MethodCanBeInterceptedOnInstance(getHashCode, fake, out reason)).Returns(true).AssignsOutAndRefParameters("reason");
 
             // Act
-            string output = null;
+            string output;
             var result = this.selector.MethodCanBeInterceptedOnInstance(getHashCode, fake, out output);
 
             // Assert

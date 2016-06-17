@@ -101,7 +101,7 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_set_ref_and_out_parameters_when_specified()
         {
             // Arrange
-            this.rule.OutAndRefParametersValueProducer = (x) => { return new object[] { 1, "foo" }; };
+            this.rule.OutAndRefParametersValueProducer = x => new object[] { 1, "foo" };
             this.rule.Applicator = x => { };
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
@@ -119,7 +119,7 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_throw_when_OutAndRefParametersValues_length_differs_from_the_number_of_out_and_ref_parameters_in_the_call()
         {
             // Arrange
-            this.rule.OutAndRefParametersValueProducer = (x) => { return new object[] { 1, "foo", "bar" }; };
+            this.rule.OutAndRefParametersValueProducer = x => new object[] { 1, "foo", "bar" };
             this.rule.Applicator = x => { };
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
@@ -294,12 +294,9 @@ namespace FakeItEasy.Tests.Configuration
 
             public string DescriptionOfValidCallReturnValue { get; set; }
 
-            public bool OnIsApplicableToWasCalled { get; set; }
+            public bool OnIsApplicableToWasCalled { get; private set; }
 
-            public override string DescriptionOfValidCall
-            {
-                get { return this.DescriptionOfValidCallReturnValue; }
-            }
+            public override string DescriptionOfValidCall => this.DescriptionOfValidCallReturnValue;
 
             public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
             {

@@ -23,10 +23,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => this.callStorage.Load()).Returns(this.recordedCalls);
         }
 
-        private MethodInfo TypeWithOutAndRefFooMethod
-        {
-            get { return typeof(IOutputAndRef).GetMethod("Foo"); }
-        }
+        private MethodInfo TypeWithOutAndRefFooMethod => typeof(IOutputAndRef).GetMethod("Foo");
 
         [Fact]
         public void ApplyCall_should_apply_values_from_recorded_call()

@@ -10,10 +10,8 @@ namespace FakeItEasy.Tests
     {
         protected abstract Type FacadedType { get; }
 
-        protected virtual Type FacadeType
-        {
-            get { return Type.GetType(this.FacadedType.FullName + "Facade, " + this.FacadedType.Assembly.FullName, true); }
-        }
+        private Type FacadeType =>
+            Type.GetType(this.FacadedType.FullName + "Facade, " + this.FacadedType.Assembly.FullName, true);
 
         [Fact]
         public void The_facade_class_should_contain_instance_methods_mirroring_the_static_methods_of_the_facaded_class()
@@ -21,9 +19,9 @@ namespace FakeItEasy.Tests
             var nonMirroredMethods =
                 from facadedMethod in this.FacadedType.GetMethods(BindingFlags.Static | BindingFlags.Public)
                 where !this.IsExcluedMethod(facadedMethod)
-                where (from facadeMethod in this.FacadeType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                where !(from facadeMethod in this.FacadeType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                        where this.NameSignatureAndReturnTypeEquals(facadedMethod, facadeMethod)
-                       select facadeMethod).Count() == 0
+                       select facadeMethod).Any()
                 select facadedMethod;
 
             nonMirroredMethods.Should().BeEmpty("some methods where not present or did not have the same signature in the facade class.");

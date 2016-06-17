@@ -14,10 +14,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
             this.ConstraintField = new EqualityArgumentConstraint(1);
         }
 
-        protected override string ExpectedDescription
-        {
-            get { return "1"; }
-        }
+        protected override string ExpectedDescription => "1";
 
         public static IEnumerable<object[]> InvalidValues()
         {

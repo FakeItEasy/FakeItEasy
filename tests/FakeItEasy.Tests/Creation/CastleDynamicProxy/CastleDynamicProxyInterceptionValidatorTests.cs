@@ -25,13 +25,10 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     public class CastleDynamicProxyInterceptionValidatorTests
     {
         private readonly CastleDynamicProxyInterceptionValidator validator;
-        private MethodInfoManager methodInfoManager;
 
         public CastleDynamicProxyInterceptionValidatorTests()
         {
-            this.methodInfoManager = new MethodInfoManager();
-
-            this.validator = new CastleDynamicProxyInterceptionValidator(this.methodInfoManager);
+            this.validator = new CastleDynamicProxyInterceptionValidator(new MethodInfoManager());
         }
 
         public static IEnumerable<object[]> NonInterceptableMembers()
@@ -67,7 +64,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             Guard.AgainstNull(testCase, "testCase");
 
             // Arrange
-            string reason = null;
+            string reason;
 
             // Act
             var result = this.validator.MethodCanBeInterceptedOnInstance(testCase.Method, testCase.Target, out reason);
@@ -84,7 +81,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             Guard.AgainstNull(testCase, "testCase");
 
             // Arrange
-            string reason = null;
+            string reason;
 
             // Act
             var result = this.validator.MethodCanBeInterceptedOnInstance(testCase.Method, testCase.Target, out reason);

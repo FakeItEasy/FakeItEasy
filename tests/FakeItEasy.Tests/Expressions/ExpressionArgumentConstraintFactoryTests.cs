@@ -102,7 +102,7 @@ namespace FakeItEasy.Tests.Expressions
             var constraintForThird = A.CollectionOfFake<IArgumentConstraint>(1);
 
             A.CallTo(() => this.trapper.TrapConstraints(A<Action>._))
-                .ReturnsNextFromSequence(new[] { constraintForFirst, noConstraintForSecond, constraintForThird });
+                .ReturnsNextFromSequence(constraintForFirst, noConstraintForSecond, constraintForThird);
 
             var expression = this.FromExpression(() => this.MethodWithParamArray(A<string>._, "foo", A<string>._));
 

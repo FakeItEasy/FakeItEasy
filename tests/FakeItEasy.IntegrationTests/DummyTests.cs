@@ -63,10 +63,7 @@ namespace FakeItEasy.IntegrationTests
         Justification = "Tidier.")]
     public class DummyTestsDummyFactory : IDummyFactory
     {
-        public Priority Priority
-        {
-            get { return Priority.Default; }
-        }
+        public Priority Priority => Priority.Default;
 
         internal static int CanCreateDummyCallCount { get; private set; }
 

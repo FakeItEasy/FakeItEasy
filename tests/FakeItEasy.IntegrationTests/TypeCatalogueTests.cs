@@ -67,7 +67,7 @@ namespace FakeItEasy.IntegrationTests
   *{0}*";
 
             var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, badAssemblyFile);
-            string actualMessage = null;
+            string actualMessage;
 
             using (var stream = new MemoryStream())
             using (var writer = new StreamWriter(stream))

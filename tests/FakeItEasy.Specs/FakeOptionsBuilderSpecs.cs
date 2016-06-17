@@ -118,6 +118,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
         }
 
+        [Scenario]
         public void DefinedFakeOptionsBuilderCallsBaseMethods(
             CallsBaseMethods fake,
             string result)

@@ -31,7 +31,7 @@ namespace FakeItEasy.Tests
         {
             var result = A.Fake<T>();
 
-            this.StubResolve<T>(result);
+            this.StubResolve(result);
 
             return result;
         }

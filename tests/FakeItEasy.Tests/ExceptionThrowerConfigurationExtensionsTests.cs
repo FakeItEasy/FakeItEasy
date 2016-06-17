@@ -524,17 +524,7 @@ namespace FakeItEasy.Tests
         private static Func<IFakeObjectCall, Exception> FuncThatReturnsExceptionOfType<T>()
         {
             return A<Func<IFakeObjectCall, Exception>>.That.NullCheckedMatches(
-                x =>
-                {
-                    var result = x.Invoke(null);
-
-                    if (result == null)
-                    {
-                        return false;
-                    }
-
-                    return typeof(T).IsAssignableFrom(result.GetType());
-                },
+                x => x.Invoke(null) is T,
                 x => x.Write("function that returns exception of type ").WriteArgumentValue(typeof(T)));
         }
 

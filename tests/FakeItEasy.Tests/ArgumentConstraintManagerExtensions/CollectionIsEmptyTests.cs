@@ -6,13 +6,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class CollectionIsEmptyTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
-        protected override string ExpectedDescription
-        {
-            get
-            {
-                return "empty collection";
-            }
-        }
+        protected override string ExpectedDescription => "empty collection";
 
         public static IEnumerable<object[]> InvalidValues()
         {

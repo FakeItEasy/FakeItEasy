@@ -10,12 +10,12 @@ namespace FakeItEasy.Tests.Core
 
     public class DefaultSutInitializerTests
     {
+        private readonly DefaultSutInitializer sutInitializer;
+
 #pragma warning disable 649
         [Fake]
         private IFakeAndDummyManager fakeManager;
 #pragma warning restore 649
-
-        private DefaultSutInitializer sutInitializer;
 
         public DefaultSutInitializerTests()
         {

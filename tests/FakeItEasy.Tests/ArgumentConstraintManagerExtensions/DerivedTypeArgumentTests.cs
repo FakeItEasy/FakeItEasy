@@ -5,10 +5,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class DerivedTypeArgumentTests
         : ArgumentConstraintTestBase<string>
     {
-        protected override string ExpectedDescription
-        {
-            get { return "string that is \"foo\" or is empty"; }
-        }
+        protected override string ExpectedDescription => "string that is \"foo\" or is empty";
 
         public static IEnumerable<object[]> InvalidValues()
         {
@@ -27,7 +24,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
         protected override void CreateConstraint(IArgumentConstraintManager<string> scope)
         {
-            FakeItEasy.Guard.AgainstNull(scope, "scope");
+            Guard.AgainstNull(scope, "scope");
 
             scope.Matches(x => x == null || x == "foo", x => x.Write("string that is \"foo\" or is empty"));
         }

@@ -36,7 +36,7 @@ namespace FakeItEasy.Tests.Configuration
 
             var arguments = new ArgumentCollection(new object[] { "foo", "bar" }, method);
 
-            arguments.ArgumentNames.Should().Equal(new[] { "argument", "argument2" });
+            arguments.ArgumentNames.Should().Equal("argument", "argument2");
         }
 
         [Fact]

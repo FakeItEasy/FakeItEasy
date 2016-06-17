@@ -9,13 +9,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
 
     public class CallDataTests
     {
-        private MethodInfo DummyMethodInfo
-        {
-            get
-            {
-                return typeof(IFoo).GetMethod("Bar", new Type[] { });
-            }
-        }
+        private MethodInfo DummyMethodInfo => typeof(IFoo).GetMethod("Bar", new Type[0]);
 
         [Fact]
         public void CallData_should_be_serializable()

@@ -12,7 +12,7 @@ namespace FakeItEasy.Tests.IoC
             int calledNumberOfTimes = 0;
 
             var container = this.CreateContainer();
-            container.Register<IFoo>(x =>
+            container.Register(x =>
                 {
                     calledNumberOfTimes++;
                     return A.Fake<IFoo>();
@@ -30,7 +30,7 @@ namespace FakeItEasy.Tests.IoC
             int calledNumberOfTimes = 0;
 
             var container = this.CreateContainer();
-            container.RegisterSingleton<IFoo>(x =>
+            container.RegisterSingleton(x =>
                 {
                     calledNumberOfTimes++;
                     return A.Fake<IFoo>();

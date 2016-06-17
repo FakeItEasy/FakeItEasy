@@ -5,10 +5,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class EqualToConstraintTests
         : ArgumentConstraintTestBase<object>
     {
-        protected override string ExpectedDescription
-        {
-            get { return "equal to 10"; }
-        }
+        protected override string ExpectedDescription => "equal to 10";
 
         public static IEnumerable<object[]> InvalidValues()
         {

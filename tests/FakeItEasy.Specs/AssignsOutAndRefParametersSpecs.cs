@@ -65,7 +65,7 @@ namespace FakeItEasy.Specs
             "When the fake is configured to assign out and ref parameters lazily using call"
                 .x(() => A.CallTo(() => subject.MightReturnAKnownValue(ref outValue))
                     .WithAnyArguments()
-                    .AssignsOutAndRefParametersLazily((call) => new object[]
+                    .AssignsOutAndRefParametersLazily(call => new object[]
                     {
                         call.Arguments.Get<string>(0) == Condition ? KnownOutput : "me"
                     }));

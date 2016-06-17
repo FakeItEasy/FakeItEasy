@@ -57,16 +57,17 @@ namespace FakeItEasy.Tests.Core
         public void Exception_message_should_start_with_call_specification()
         {
             var asserter = this.CreateAsserter();
+            var exception =
+                Record.Exception(() => asserter.AssertWasCalled(x => true, @"IFoo.Bar(1)", x => false, string.Empty));
 
-            var message = this.GetExceptionMessage(() =>
-                asserter.AssertWasCalled(x => true, @"IFoo.Bar(1)", x => false, string.Empty));
             var expectedMessage =
 @"
 
   Assertion failed for the following call:
     IFoo.Bar(1)";
 
-            message.Should().StartWith(expectedMessage);
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .And.Message.Should().StartWith(expectedMessage);
         }
 
         [Fact]
@@ -75,15 +76,15 @@ namespace FakeItEasy.Tests.Core
             this.StubCalls(2);
 
             var asserter = this.CreateAsserter();
-
-            var message = this.GetExceptionMessage(() =>
+            var exception = Record.Exception(() =>
                 asserter.AssertWasCalled(x => false, string.Empty, x => x == 2, "#2 times"));
 
             var expectedMessage =
 @"
   Expected to find it #2 times but found it #0 times among the calls:";
 
-            message.Should().Contain(expectedMessage);
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .And.Message.Should().Contain(expectedMessage);
         }
 
         [Fact]
@@ -92,9 +93,9 @@ namespace FakeItEasy.Tests.Core
             this.StubCalls(2);
 
             var asserter = this.CreateAsserter();
+            var exception = Record.Exception(() => asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
 
-            this.GetExceptionMessage(() => asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
-
+            exception.Should().BeAnExceptionOfType<ExpectationException>();
             A.CallTo(() => this.callWriter.WriteCalls(A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls), A<IOutputWriter>._)).MustHaveHappened();
         }
 
@@ -105,14 +106,15 @@ namespace FakeItEasy.Tests.Core
 
             var asserter = this.CreateAsserter();
 
-            var message = this.GetExceptionMessage(() =>
+            var exception = Record.Exception(() =>
                 asserter.AssertWasCalled(x => false, string.Empty, x => x == 2, "#2 times"));
 
             var expectedMessage =
 @"
   Expected to find it #2 times but no calls were made to the fake object.";
 
-            message.Should().Contain(expectedMessage);
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .And.Message.Should().Contain(expectedMessage);
         }
 
         [Fact]
@@ -120,10 +122,11 @@ namespace FakeItEasy.Tests.Core
         {
             var asserter = this.CreateAsserter();
 
-            var message = this.GetExceptionMessage(() =>
+            var exception = Record.Exception(() =>
                 asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
 
-            message.Should().EndWith(string.Concat(Environment.NewLine, Environment.NewLine));
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .And.Message.Should().EndWith(string.Concat(Environment.NewLine, Environment.NewLine));
         }
 
         [Fact]
@@ -131,10 +134,11 @@ namespace FakeItEasy.Tests.Core
         {
             var asserter = this.CreateAsserter();
 
-            var message = this.GetExceptionMessage(() =>
+            var exception = Record.Exception(() =>
                 asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
 
-            message.Should().StartWith(Environment.NewLine);
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .And.Message.Should().StartWith(Environment.NewLine);
         }
 
         private FakeAsserter CreateAsserter()
@@ -148,14 +152,6 @@ namespace FakeItEasy.Tests.Core
             {
                 this.calls.Add(A.Fake<IFakeObjectCall>());
             }
-        }
-
-        private string GetExceptionMessage(Action failingAssertion)
-        {
-            var exception = Record.Exception(failingAssertion);
-            exception.Should().NotBeNull();
-            exception.Should().BeOfType<ExpectationException>();
-            return exception.Message;
         }
     }
 }

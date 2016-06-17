@@ -85,7 +85,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             // Assert
             result.GeneratedProxy.Should().NotBeNull()
-                .And.Subject.Should().Match(p => typeOfProxy.IsAssignableFrom(p.GetType()));
+                .And.Subject.Should().Match(p => typeOfProxy.IsInstanceOfType(p));
         }
 
         [Theory]

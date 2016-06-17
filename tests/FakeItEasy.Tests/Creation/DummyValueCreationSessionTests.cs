@@ -298,7 +298,7 @@ namespace FakeItEasy.Tests.Creation
                 this.WidestConstructorWasCalled = true;
             }
 
-            public bool WidestConstructorWasCalled { get; set; }
+            public bool WidestConstructorWasCalled { get; }
         }
 
         internal class FixedDummyFactory : IDummyFactory
@@ -310,10 +310,7 @@ namespace FakeItEasy.Tests.Creation
                 this.dummy = dummy;
             }
 
-            public Priority Priority
-            {
-                get { return Priority.Default; }
-            }
+            public Priority Priority => Priority.Default;
 
             public bool CanCreate(Type type)
             {

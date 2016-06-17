@@ -178,7 +178,7 @@ namespace FakeItEasy.Specs
 
         public class BaseClass
         {
-            public bool WasCalled { get; set; }
+            public bool WasCalled { get; private set; }
 
             public virtual void DoSomething()
             {

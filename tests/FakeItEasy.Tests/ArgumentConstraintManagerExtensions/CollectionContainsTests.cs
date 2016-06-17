@@ -5,13 +5,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class CollectionContainsTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
-        protected override string ExpectedDescription
-        {
-            get
-            {
-                return "sequence that contains the value 10";
-            }
-        }
+        protected override string ExpectedDescription => "sequence that contains the value 10";
 
         public static IEnumerable<object[]> InvalidValues()
         {

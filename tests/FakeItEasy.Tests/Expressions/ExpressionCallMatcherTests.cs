@@ -167,7 +167,7 @@ namespace FakeItEasy.Tests.Expressions
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2));
             matcher.Matches(call);
 
-            argumentsPassedToPredicate.Should().BeEquivalentTo(new object[] { 1, 2 });
+            argumentsPassedToPredicate.Should().BeEquivalentTo(1, 2);
         }
 
         [Theory]

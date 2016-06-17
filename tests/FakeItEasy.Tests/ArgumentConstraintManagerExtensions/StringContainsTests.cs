@@ -5,10 +5,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class StringContainsTests
         : ArgumentConstraintTestBase<string>
     {
-        protected override string ExpectedDescription
-        {
-            get { return "string that contains \"bar\""; }
-        }
+        protected override string ExpectedDescription => "string that contains \"bar\"";
 
         public static IEnumerable<object[]> InvalidValues()
         {

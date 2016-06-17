@@ -258,10 +258,7 @@ namespace FakeItEasy.Tests.Configuration
 
             Expression<Action<IFoo>> dummyExpression = x => x.Bar();
             this.ruleReturnedFromFactory = ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>().Invoke(dummyExpression);
-            this.ruleFactory = x =>
-            {
-                return this.ruleReturnedFromFactory;
-            };
+            this.ruleFactory = x => this.ruleReturnedFromFactory;
 
             this.fakeObjectReturnedFromParser = A.Fake<FakeManager>(o => o.CallsBaseMethods());
 

@@ -5,10 +5,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class StringIsNullOrEmptyTests
         : ArgumentConstraintTestBase<string>
     {
-        protected override string ExpectedDescription
-        {
-            get { return "NULL or string.Empty"; }
-        }
+        protected override string ExpectedDescription => "NULL or string.Empty";
 
         public static IEnumerable<object[]> InvalidValues()
         {

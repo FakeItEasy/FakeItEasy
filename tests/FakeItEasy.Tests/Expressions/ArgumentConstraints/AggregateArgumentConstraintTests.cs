@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
             this.ConstraintField = new AggregateArgumentConstraint(new[] { new EqualityArgumentConstraint("foo"), new EqualityArgumentConstraint("bar") });
         }
 
-        public interface ITypeWithPaldkf
+        public interface ITypeWithMethod
         {
             void Method(string firstArgument, params object[] args);
         }

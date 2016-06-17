@@ -7,6 +7,7 @@ namespace FakeItEasy.Tests
     using System.Threading.Tasks;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
@@ -867,8 +868,8 @@ namespace FakeItEasy.Tests
 
             var exception = Record.Exception(act);
 
-            exception.Should().BeOfType<FakeConfigurationException>();
-            exception.Message.Should().Be(expectedMessage);
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                .And.Message.Should().Be(expectedMessage);
         }
     }
 }

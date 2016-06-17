@@ -5,10 +5,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class StringStartsWithTests
         : ArgumentConstraintTestBase<string>
     {
-        protected override string ExpectedDescription
-        {
-            get { return "string that starts with \"abc\""; }
-        }
+        protected override string ExpectedDescription => "string that starts with \"abc\"";
 
         public static IEnumerable<object[]> InvalidValues()
         {

@@ -5,13 +5,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class IsSameSequenceAsTests
         : ArgumentConstraintTestBase<IEnumerable<int>>
     {
-        protected override string ExpectedDescription
-        {
-            get
-            {
-                return "specified sequence";
-            }
-        }
+        protected override string ExpectedDescription => "specified sequence";
 
         public static IEnumerable<object[]> InvalidValues()
         {
@@ -26,13 +20,13 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
         public static IEnumerable<object[]> ValidValues()
         {
             return TestCases.FromObject(
-                new int[] { 1, 2, 3 },
+                new[] { 1, 2, 3 },
                 new List<int> { 1, 2, 3 });
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<int>> scope)
         {
-            scope.IsSameSequenceAs(new int[] { 1, 2, 3 });
+            scope.IsSameSequenceAs(new[] { 1, 2, 3 });
         }
     }
 }

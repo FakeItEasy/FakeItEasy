@@ -7,6 +7,7 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
@@ -79,10 +80,7 @@ namespace FakeItEasy.Tests
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfOne(out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((int oi) =>
-                {
-                    return new object[] { OutValue };
-                });
+                .AssignsOutAndRefParametersLazily((int oi) => new object[] { OutValue });
 
             // Act
             fake.RequestOfOne(out result);
@@ -102,10 +100,7 @@ namespace FakeItEasy.Tests
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfOne(out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((string oi) =>
-                {
-                    return new object[] { OutValue };
-                });
+                .AssignsOutAndRefParametersLazily((string oi) => new object[] { OutValue });
 
             // Act
             fake.RequestOfOne(out result);
@@ -485,8 +480,8 @@ namespace FakeItEasy.Tests
             var exception = Record.Exception(act);
 
             // Assert
-            exception.Should().BeOfType<FakeConfigurationException>();
-            exception.Message.Should().Be(expectedMessage);
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                .And.Message.Should().Be(expectedMessage);
         }
     }
 }

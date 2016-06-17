@@ -12,13 +12,7 @@ namespace FakeItEasy.Tests
 
         protected abstract string ExpectedDescription { get; }
 
-        private IArgumentConstraint Constraint
-        {
-            get
-            {
-                return (IArgumentConstraint)this.ConstraintField;
-            }
-        }
+        private IArgumentConstraint Constraint => this.ConstraintField;
 
         [Theory]
         [ReflectedMethodData("InvalidValues")]

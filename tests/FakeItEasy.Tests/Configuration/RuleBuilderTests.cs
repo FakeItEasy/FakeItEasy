@@ -394,7 +394,7 @@ namespace FakeItEasy.Tests.Configuration
             this.builder.AssignsOutAndRefParameters(1, "foo");
 
             var valueProducer = this.ruleProducedByFactory.OutAndRefParametersValueProducer;
-            valueProducer(null).Should().BeEquivalentTo(new object[] { 1, "foo" });
+            valueProducer(null).Should().BeEquivalentTo(1, "foo");
         }
 
         [Fact]
@@ -418,7 +418,7 @@ namespace FakeItEasy.Tests.Configuration
             this.builder.AssignsOutAndRefParametersLazily(call => new object[] { 1, "foo" });
 
             var valueProducer = this.ruleProducedByFactory.OutAndRefParametersValueProducer;
-            valueProducer(null).Should().BeEquivalentTo(new object[] { 1, "foo" });
+            valueProducer(null).Should().BeEquivalentTo(1, "foo");
         }
 
         [Fact]

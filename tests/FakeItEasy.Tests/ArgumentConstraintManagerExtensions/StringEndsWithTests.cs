@@ -5,10 +5,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class StringEndsWithTests
         : ArgumentConstraintTestBase<string>
     {
-        protected override string ExpectedDescription
-        {
-            get { return "string that ends with \"table\""; }
-        }
+        protected override string ExpectedDescription => "string that ends with \"table\"";
 
         public static IEnumerable<object[]> InvalidValues()
         {
