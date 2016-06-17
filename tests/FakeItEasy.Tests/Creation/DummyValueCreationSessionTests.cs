@@ -8,7 +8,6 @@ namespace FakeItEasy.Tests.Creation
     using FakeItEasy.Creation;
     using FluentAssertions;
     using Xunit;
-    using Guard = FakeItEasy.Guard;
 
     public class DummyValueCreationSessionTests
     {

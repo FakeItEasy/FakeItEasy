@@ -6,8 +6,8 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using TestHelpers;
     using Xunit;
 
     public class CompletedFakeObjectCallExtensionsTests : ConfigurableServiceLocatorTestBase

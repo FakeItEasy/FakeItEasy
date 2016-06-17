@@ -4,8 +4,8 @@ namespace FakeItEasy.Tests.Expressions
     using System.Linq.Expressions;
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using TestHelpers;
     using Xunit;
 
     public class ExpressionParserTests

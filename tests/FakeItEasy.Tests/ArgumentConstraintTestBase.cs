@@ -1,6 +1,5 @@
 namespace FakeItEasy.Tests
 {
-    using System.Collections.Generic;
     using System.Text;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;

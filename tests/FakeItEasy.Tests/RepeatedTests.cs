@@ -6,7 +6,6 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FluentAssertions;
     using Xunit;
-    using Guard = FakeItEasy.Guard;
 
     public class RepeatedTests
     {

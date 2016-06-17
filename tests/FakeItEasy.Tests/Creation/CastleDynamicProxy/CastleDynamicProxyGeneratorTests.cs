@@ -8,8 +8,8 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using TestHelpers;
     using Xunit;
 
     public class CastleDynamicProxyGeneratorTests

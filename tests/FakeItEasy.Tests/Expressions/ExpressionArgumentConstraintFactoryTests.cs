@@ -11,7 +11,6 @@ namespace FakeItEasy.Tests.Expressions
     using FakeItEasy.Tests.Builders;
     using FluentAssertions;
     using Xunit;
-    using Guard = FakeItEasy.Guard;
 
     public class ExpressionArgumentConstraintFactoryTests
     {

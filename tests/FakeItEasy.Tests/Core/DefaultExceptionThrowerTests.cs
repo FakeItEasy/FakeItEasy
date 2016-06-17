@@ -4,8 +4,8 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using TestHelpers;
     using Xunit;
 
     public class DefaultExceptionThrowerTests

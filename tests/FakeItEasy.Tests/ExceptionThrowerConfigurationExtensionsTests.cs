@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FluentAssertions;

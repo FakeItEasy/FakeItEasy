@@ -5,8 +5,8 @@ namespace FakeItEasy.Tests.Core
     using System.Threading;
     using System.Threading.Tasks;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using TestHelpers;
     using Xunit;
 
     public class ArgumentConstraintTrapTests

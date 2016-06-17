@@ -3,8 +3,8 @@ namespace FakeItEasy.Tests
     using System;
     using System.Linq.Expressions;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using TestHelpers;
     using Xunit;
 
     public class FakeOptionsExtensionsTests

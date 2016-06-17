@@ -6,8 +6,8 @@ namespace FakeItEasy.Tests.Expressions
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using TestHelpers;
     using Xunit;
 
     public class ExpressionCallMatcherTests

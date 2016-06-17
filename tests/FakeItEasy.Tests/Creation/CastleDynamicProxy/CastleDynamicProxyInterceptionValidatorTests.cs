@@ -11,7 +11,6 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     using FakeItEasy.Expressions;
     using FluentAssertions;
     using Xunit;
-    using Guard = FakeItEasy.Guard;
 
     public interface IAInterface
     {
