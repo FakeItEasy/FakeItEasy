@@ -4,6 +4,7 @@ namespace FakeItEasy
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Creation;
@@ -57,7 +58,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
         public static IList<T> CollectionOfFake<T>(int numberOfFakes)
         {
-            return FakeCreator.CollectionOfFake<T>(numberOfFakes);
+            return Enumerable.Range(0, numberOfFakes).Select(_ => Fake<T>()).ToList();
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static IList<T> CollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder)
         {
-            return FakeCreator.CollectionOfFake(numberOfFakes, optionsBuilder);
+            return Enumerable.Range(0, numberOfFakes).Select(_ => Fake<T>(optionsBuilder)).ToList();
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace FakeItEasy
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public static IList<T> CollectionOfDummy<T>(int numberOfDummies)
         {
-            return FakeCreator.CollectionOfDummy<T>(numberOfDummies);
+            return Enumerable.Range(0, numberOfDummies).Select(_ => Dummy<T>()).ToList();
         }
 
         /// <summary>

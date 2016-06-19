@@ -4,6 +4,7 @@ namespace FakeItEasy.Sdk
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using FakeItEasy.Creation;
 
     /// <summary>
@@ -46,7 +47,7 @@ namespace FakeItEasy.Sdk
         /// <returns>A collection of fake objects of the specified type.</returns>
         public static IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes)
         {
-            return FakeCreator.CollectionOfFake(typeOfFake, numberOfFakes);
+            return Enumerable.Range(0, numberOfFakes).Select(_ => Fake(typeOfFake)).ToList();
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace FakeItEasy.Sdk
         /// <returns>A collection of fake objects of the specified type.</returns>
         public static IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes, Action<IFakeOptions> optionsBuilder)
         {
-            return FakeCreator.CollectionOfFake(typeOfFake, numberOfFakes, optionsBuilder);
+            return Enumerable.Range(0, numberOfFakes).Select(_ => Fake(typeOfFake, optionsBuilder)).ToList();
         }
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace FakeItEasy.Sdk
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public static IList<object> CollectionOfDummy(Type typeOfDummy, int numberOfDummies)
         {
-            return FakeCreator.CollectionOfDummy(typeOfDummy, numberOfDummies);
+            return Enumerable.Range(0, numberOfDummies).Select(_ => Dummy(typeOfDummy)).ToList();
         }
     }
 }
