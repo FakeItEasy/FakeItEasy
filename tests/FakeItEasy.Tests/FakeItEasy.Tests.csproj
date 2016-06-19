@@ -193,7 +193,6 @@
     <Compile Include="CustomArgumentConstraints.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapterTests.cs" />
     <Compile Include="Core\WrappedObjectRuleTests.cs" />
-    <Compile Include="ATests.cs" />
     <Compile Include="Configuration\BuildableCallRuleTests.cs" />
     <Compile Include="Configuration\RuleBuilderTests.cs" />
     <Compile Include="ExpectationExceptionTests.cs" />

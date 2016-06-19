@@ -13,9 +13,9 @@ namespace FakeItEasy.Sdk
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A", Justification = "Is spelled correctly.")]
     public static class Create
     {
-        private static IFakeCreatorFacade FakeCreator
+        private static IFakeAndDummyManager FakeAndDummyManager
         {
-            get { return ServiceLocator.Current.Resolve<IFakeCreatorFacade>(); }
+            get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace FakeItEasy.Sdk
         /// <returns>A fake object.</returns>
         public static object Fake(Type typeOfFake)
         {
-            return FakeCreator.CreateFake(typeOfFake, x => { });
+            return Fake(typeOfFake, x => { });
         }
 
         /// <summary>
@@ -36,7 +36,10 @@ namespace FakeItEasy.Sdk
         /// <returns>A fake object.</returns>
         public static object Fake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
-            return FakeCreator.CreateFake(typeOfFake, optionsBuilder);
+            Guard.AgainstNull(typeOfFake, nameof(typeOfFake));
+            Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
+
+            return FakeAndDummyManager.CreateFake(typeOfFake, optionsBuilder);
         }
 
         /// <summary>
@@ -72,7 +75,9 @@ namespace FakeItEasy.Sdk
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public static object Dummy(Type typeOfDummy)
         {
-            return FakeCreator.CreateDummy(typeOfDummy);
+            Guard.AgainstNull(typeOfDummy, nameof(typeOfDummy));
+
+            return FakeAndDummyManager.CreateDummy(typeOfDummy);
         }
 
         /// <summary>

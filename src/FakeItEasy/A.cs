@@ -20,9 +20,9 @@ namespace FakeItEasy
             get { return ServiceLocator.Current.Resolve<IFakeConfigurationManager>(); }
         }
 
-        private static IFakeCreatorFacade FakeCreator
+        private static IFakeAndDummyManager FakeAndDummyManager
         {
-            get { return ServiceLocator.Current.Resolve<IFakeCreatorFacade>(); }
+            get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
         public static T Fake<T>()
         {
-            return FakeCreator.CreateFake<T>(x => { });
+            return Fake<T>(x => { });
         }
 
         /// <summary>
@@ -46,7 +46,9 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
         public static T Fake<T>(Action<IFakeOptions<T>> optionsBuilder)
         {
-            return FakeCreator.CreateFake(optionsBuilder);
+            Guard.AgainstNull(optionsBuilder, "optionsBuilder");
+
+            return (T)FakeAndDummyManager.CreateFake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
         }
 
         /// <summary>
@@ -85,7 +87,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of dummy.")]
         public static T Dummy<T>()
         {
-            return FakeCreator.CreateDummy<T>();
+            return (T)FakeAndDummyManager.CreateDummy(typeof(T));
         }
 
         /// <summary>

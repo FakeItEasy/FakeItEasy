@@ -24,7 +24,6 @@ namespace FakeItEasy.Tests
         {
             return new[]
             {
-                new object[] { typeof(IFakeCreatorFacade) },
                 new object[] { typeof(IFakeAndDummyManager) },
                 new object[] { typeof(IFixtureInitializer) }
             };

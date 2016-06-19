@@ -349,9 +349,6 @@
     <Compile Include="Creation\DefaultFakeAndDummyManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Creation\DefaultFakeCreatorFacade.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Creation\DummyValueCreationSession.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -365,9 +362,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Creation\IFakeAndDummyManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\IFakeCreatorFacade.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Creation\IFakeObjectCreator.cs">

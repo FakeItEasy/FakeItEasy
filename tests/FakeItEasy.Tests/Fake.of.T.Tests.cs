@@ -12,28 +12,13 @@ namespace FakeItEasy.Tests
     public class FakeTTests
         : ConfigurableServiceLocatorTestBase
     {
-        private readonly IFakeCreatorFacade fakeCreator;
         private readonly IStartConfigurationFactory startConfigurationFactory;
 
         public FakeTTests()
         {
-            this.fakeCreator = A.Fake<IFakeCreatorFacade>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeCreatorFacade>()));
             this.startConfigurationFactory = A.Fake<IStartConfigurationFactory>(x => x.Wrapping(ServiceLocator.Current.Resolve<IStartConfigurationFactory>()));
 
-            this.StubResolve(this.fakeCreator);
             this.StubResolve(this.startConfigurationFactory);
-        }
-
-        [Fact]
-        public void Constructor_sets_fake_object_returned_from_fake_creator_to_FakedObject_property()
-        {
-            var foo = A.Fake<IFoo>();
-
-            A.CallTo(() => this.fakeCreator.CreateFake(A<Action<IFakeOptions<IFoo>>>._)).Returns(foo);
-
-            var fake = new Fake<IFoo>();
-
-            fake.FakedObject.Should().BeSameAs(foo);
         }
 
         [Fact]
@@ -44,22 +29,6 @@ namespace FakeItEasy.Tests
             Expression<Action> call = () =>
                 new Fake<Foo>(optionsBuilder);
             call.Should().BeNullGuarded();
-        }
-
-        [Fact]
-        public void Constructor_that_takes_options_builder_should_set_fake_returned_from_factory_to_FakedObject_property()
-        {
-            var argumentsForConstructor = new object[] { A.Fake<IFoo>() };
-            var fakeReturnedFromFactory = A.Fake<AbstractTypeWithNoDefaultConstructor>(x => x.WithArgumentsForConstructor(argumentsForConstructor));
-
-            Action<IFakeOptions<AbstractTypeWithNoDefaultConstructor>> optionsBuilder = x => { };
-
-            A.CallTo(() => this.fakeCreator.CreateFake(optionsBuilder))
-                .Returns(fakeReturnedFromFactory);
-
-            var fake = new Fake<AbstractTypeWithNoDefaultConstructor>(optionsBuilder);
-
-            fake.FakedObject.Should().BeSameAs(fakeReturnedFromFactory);
         }
 
         [Fact]

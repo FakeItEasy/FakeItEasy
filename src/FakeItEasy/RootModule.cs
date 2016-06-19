@@ -86,9 +86,6 @@ namespace FakeItEasy
             container.RegisterSingleton<IExpressionParser>(c =>
                 new ExpressionParser(c.Resolve<ICallExpressionParser>()));
 
-            container.Register<IFakeCreatorFacade>(c =>
-                new DefaultFakeCreatorFacade(c.Resolve<IFakeAndDummyManager>()));
-
             container.Register<IFakeAndDummyManager>(c =>
                                                          {
                                                              var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<FakeCallProcessorProvider.Factory>());
