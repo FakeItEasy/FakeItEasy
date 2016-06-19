@@ -13,10 +13,13 @@ You can also create a collection of fakes by writing:
 var foos = A.CollectionOfFake<Foo>(10);
 ```
 
-For cases where the type to fake isn't statically known, non-generic methods are also available:
+For cases where the type to fake isn't statically known, non-generic methods are also available. These are usually only required when writing extensions for FakeItEasy, so they live in the `FakeItEasy.Sdk` namespace:
 ```csharp
-object foo = A.Fake(typeof(Foo));
-IList<object> foos = A.CollectionOfFake(typeof(Foo), 10);
+using FakeItEasy.Sdk;
+...
+var type = GetTypeOfFake();
+object fake = Create.Fake(type);
+IList<object> fakes = Create.CollectionOfFake(type, 10);
 ```
 
 ##Explicit Creation Options

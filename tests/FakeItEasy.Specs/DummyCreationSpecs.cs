@@ -118,12 +118,12 @@
     {
         protected override T CreateDummy<T>()
         {
-            return (T)A.Dummy(typeof(T));
+            return (T)Sdk.Create.Dummy(typeof(T));
         }
 
         protected override IList<T> CreateCollectionOfDummy<T>(int count)
         {
-            return A.CollectionOfDummy(typeof(T), count).Cast<T>().ToList();
+            return Sdk.Create.CollectionOfDummy(typeof(T), count).Cast<T>().ToList();
         }
     }
 }

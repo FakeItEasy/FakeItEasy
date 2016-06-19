@@ -192,22 +192,22 @@ namespace FakeItEasy.Specs
     {
         protected override T CreateFake<T>()
         {
-            return (T)A.Fake(typeof(T));
+            return (T)Sdk.Create.Fake(typeof(T));
         }
 
         protected override T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder)
         {
-            return (T)A.Fake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
+            return (T)Sdk.Create.Fake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
         }
 
         protected override IList<T> CreateCollectionOfFake<T>(int numberOfFakes)
         {
-            return A.CollectionOfFake(typeof(T), numberOfFakes).Cast<T>().ToList();
+            return Sdk.Create.CollectionOfFake(typeof(T), numberOfFakes).Cast<T>().ToList();
         }
 
         protected override IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder)
         {
-            return A.CollectionOfFake(typeof(T), numberOfFakes, options => optionsBuilder((IFakeOptions<T>)options)).Cast<T>().ToList();
+            return Sdk.Create.CollectionOfFake(typeof(T), numberOfFakes, options => optionsBuilder((IFakeOptions<T>)options)).Cast<T>().ToList();
         }
     }
 }

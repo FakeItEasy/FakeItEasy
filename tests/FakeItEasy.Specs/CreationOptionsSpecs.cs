@@ -857,7 +857,7 @@ namespace FakeItEasy.Specs
     {
         protected override T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder)
         {
-            return (T)A.Fake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
+            return (T)Sdk.Create.Fake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
         }
     }
 
