@@ -4,9 +4,8 @@ namespace FakeItEasy.Tests.Core
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class WrappedObjectRuleTests
     {
         public interface ITypeWithOutputAndRefArguments
@@ -18,7 +17,7 @@ namespace FakeItEasy.Tests.Core
             void MethodWithOutputArgument(out int argument);
         }
 
-        [Test]
+        [Fact]
         public void IsApplicableTo_should_return_true()
         {
             var rule = this.CreateRule();
@@ -26,7 +25,7 @@ namespace FakeItEasy.Tests.Core
             rule.IsApplicableTo(A.Fake<IFakeObjectCall>()).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void NumberOfTimesToCall_should_be_null()
         {
             var rule = this.CreateRule();
@@ -34,8 +33,14 @@ namespace FakeItEasy.Tests.Core
             rule.NumberOfTimesToCall.Should().Be(null);
         }
 
-        [Test]
-        public void Apply_should_set_return_value_from_wrapped_object([Values(0, 1, 2, 3, 5, 8)] int returnValue)
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(5)]
+        [InlineData(8)]
+        public void Apply_should_set_return_value_from_wrapped_object(int returnValue)
         {
             var wrapped = A.Fake<IFoo>();
             A.CallTo(() => wrapped.Baz()).Returns(returnValue);
@@ -48,7 +53,7 @@ namespace FakeItEasy.Tests.Core
             call.ReturnValue.Should().Be(returnValue);
         }
 
-        [Test]
+        [Fact]
         public void Apply_should_use_arguments_from_call_when_calling_wrapped_object()
         {
             var wrapped = A.Fake<IFoo>();
@@ -61,7 +66,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => wrapped.Bar("foo", "bar")).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Apply_should_assign_reference_arguments()
         {
             // Arrange
@@ -80,7 +85,7 @@ namespace FakeItEasy.Tests.Core
             call.Arguments[0].Should().Be(10);
         }
 
-        [Test]
+        [Fact]
         public void Apply_should_assign_out_arguments()
         {
             // Arrange

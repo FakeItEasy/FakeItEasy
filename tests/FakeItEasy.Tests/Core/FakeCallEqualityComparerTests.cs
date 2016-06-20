@@ -4,22 +4,19 @@ namespace FakeItEasy.Tests.Core
     using System.Reflection;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeCallEqualityComparerTests
     {
         private static readonly MethodInfo ToStringMethod = typeof(object).GetMethod("ToString", new Type[] { });
         private static readonly MethodInfo EqualsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
 
-        private FakeCallEqualityComparer comparer;
-        private IFakeObjectCall firstCall;
-        private IFakeObjectCall secondCall;
+        private readonly FakeCallEqualityComparer comparer;
+        private readonly IFakeObjectCall firstCall;
+        private readonly IFakeObjectCall secondCall;
 
-        [SetUp]
-        public void Setup()
+        public FakeCallEqualityComparerTests()
         {
             this.firstCall = CreateFakedFakeObjectCall();
             this.secondCall = MakeEqualCopy(this.firstCall);
@@ -27,7 +24,7 @@ namespace FakeItEasy.Tests.Core
             this.comparer = new FakeCallEqualityComparer();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_true_for_call_where_method_arguments_and_fake_are_the_same()
         {
             // Arrange
@@ -38,7 +35,7 @@ namespace FakeItEasy.Tests.Core
             this.comparer.Equals(this.firstCall, this.secondCall).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_false_when_method_differs()
         {
             // Arrang
@@ -52,7 +49,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_false_when_argument_differs()
         {
             // Arrang
@@ -65,7 +62,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_false_when_faked_object_differs()
         {
             // Arrang
@@ -78,7 +75,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_same_hash_code_for_equal_calls()
         {
             // Arrange
@@ -89,7 +86,7 @@ namespace FakeItEasy.Tests.Core
             this.comparer.GetHashCode(this.firstCall).Should().Be(this.comparer.GetHashCode(this.secondCall));
         }
 
-        [Test]
+        [Fact]
         public void Should_not_fail_when_getting_hash_code_where_arguments_contains_null()
         {
             // Arrange
@@ -102,7 +99,7 @@ namespace FakeItEasy.Tests.Core
             exception.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void Should_not_fail_getting_hash_code_when_fake_is_strict()
         {
             // arrange

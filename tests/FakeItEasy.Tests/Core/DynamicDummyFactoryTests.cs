@@ -3,20 +3,18 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class DynamicDummyFactoryTests
     {
-        private List<IDummyFactory> availableDummyFactories;
+        private readonly List<IDummyFactory> availableDummyFactories;
 
-        [SetUp]
-        public void Setup()
+        public DynamicDummyFactoryTests()
         {
             this.availableDummyFactories = new List<IDummyFactory>();
         }
 
-        [Test]
+        [Fact]
         public void TryCreateDummyObject_should_create_dummy_for_type_that_has_factory()
         {
             this.availableDummyFactories.Add(new DummyFactoryForTypeWithFactory());
@@ -29,7 +27,7 @@ namespace FakeItEasy.Tests.Core
             dummy.Should().BeOfType<TypeWithDummyFactory>();
         }
 
-        [Test]
+        [Fact]
         public void TryCreateDummyObject_should_return_false_when_no_factory_exists()
         {
             var container = this.CreateFactory();
@@ -39,7 +37,7 @@ namespace FakeItEasy.Tests.Core
             container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out dummy).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void TryCreateDummyObject_should_not_fail_when_more_than_one_factory_exists_for_a_given_type()
         {
             // Arrange

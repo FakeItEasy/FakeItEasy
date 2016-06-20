@@ -1,15 +1,15 @@
 namespace FakeItEasy.Tests.Core
 {
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeCreationExceptionTests
         : ExceptionContractTests<FakeCreationException>
     {
-        [Test]
-        [SetCulture("en-US")]
+        [Fact]
+        [UsingCulture("en-US")]
         public void DefaultConstructor_should_set_correct_error_message()
         {
             // Arrange

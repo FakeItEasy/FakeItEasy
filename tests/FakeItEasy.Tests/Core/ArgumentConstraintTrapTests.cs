@@ -5,16 +5,15 @@ namespace FakeItEasy.Tests.Core
     using System.Threading;
     using System.Threading.Tasks;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
-    using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
     public class ArgumentConstraintTrapTests
     {
         private readonly ArgumentConstraintTrap trap = new ArgumentConstraintTrap();
 
-        [Test]
+        [Fact]
         public void Should_return_constraints_that_has_been_trapped()
         {
             // Arrange
@@ -32,7 +31,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().BeEquivalentTo(constraint1, constraint2);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_return_constraints_from_previous_call()
         {
             // Arrange
@@ -51,7 +50,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().BeEquivalentTo(constraint2);
         }
 
-        [Test]
+        [Fact]
         public void Should_fail_when_reporting_trapped_constraint_outside_call_to_trap_constraints()
         {
             // Act
@@ -62,7 +61,7 @@ namespace FakeItEasy.Tests.Core
             exception.Should().BeAnExceptionOfType<InvalidOperationException>().WithMessage("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()");
         }
 
-        [Test]
+        [Fact]
         public void Should_track_constraints_supplied_in_calls_made_from_overlapping_threads()
         {
             // Ensures that constraints are properly trapped even when two constraint-trapping threads

@@ -3,14 +3,13 @@ namespace FakeItEasy.Tests
     using System;
     using System.Linq.Expressions;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
-    using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
     public class FakeOptionsExtensionsTests
     {
-        [Test]
+        [Fact]
         public void Strict_should_configure_fake_to_throw_expectation_exception()
         {
             // Arrange
@@ -25,7 +24,7 @@ namespace FakeItEasy.Tests
                 .WithMessage("Call to non configured method \"Bar\" of strict fake.");
         }
 
-        [Test]
+        [Fact]
         public void Strict_should_return_configuration_object()
         {
             // Arrange
@@ -39,7 +38,7 @@ namespace FakeItEasy.Tests
             result.Should().BeSameAs(options);
         }
 
-        [Test]
+        [Fact]
         public void Strict_should_be_null_guarded()
         {
             // Arrange
@@ -51,7 +50,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void CallsBaseMethods_should_configure_fake_to_call_concrete_base_method()
         {
             // Arrange
@@ -64,7 +63,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(17);
         }
 
-        [Test]
+        [Fact]
         public void CallsBaseMethods_should_not_configure_fake_to_call_abstract_base_method()
         {
             // Arrange
@@ -77,7 +76,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void CallsBaseMethods_should_return_configuration_object()
         {
             // Arrange
@@ -91,7 +90,7 @@ namespace FakeItEasy.Tests
             result.Should().BeSameAs(options);
         }
 
-        [Test]
+        [Fact]
         public void CallsBaseMethods_should_be_null_guarded()
         {
             // Arrange

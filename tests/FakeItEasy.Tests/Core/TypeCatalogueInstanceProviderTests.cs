@@ -6,21 +6,15 @@ namespace FakeItEasy.Tests.Core
     using System.Linq;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class TypeCatalogueInstanceProviderTests
     {
-        private ITypeCatalogue typeCatalogue;
-        private List<Type> typesInCatalogue;
-        private TypeCatalogueInstanceProvider instanceProvider;
+        private readonly ITypeCatalogue typeCatalogue;
+        private readonly List<Type> typesInCatalogue;
+        private readonly TypeCatalogueInstanceProvider instanceProvider;
 
-        private interface ISomeInterface
-        {
-        }
-
-        [SetUp]
-        public void Setup()
+        public TypeCatalogueInstanceProviderTests()
         {
             this.typeCatalogue = A.Fake<ITypeCatalogue>();
 
@@ -31,7 +25,11 @@ namespace FakeItEasy.Tests.Core
             this.instanceProvider = new TypeCatalogueInstanceProvider(this.typeCatalogue);
         }
 
-        [Test]
+        private interface ISomeInterface
+        {
+        }
+
+        [Fact]
         public void Should_return_one_instance_of_each_type()
         {
             // Arrange
@@ -47,7 +45,7 @@ namespace FakeItEasy.Tests.Core
                 .Contain(item => item.GetType().CanBeInstantiatedAs(typeof(SomeInterfaceImplementor2)));
         }
 
-        [Test]
+        [Fact]
         public void Should_ignore_types_not_assignable_to_T()
         {
             // Arrange
@@ -60,7 +58,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_same_instance_when_enumerated_twice()
         {
             // Arrange
@@ -73,7 +71,7 @@ namespace FakeItEasy.Tests.Core
             result.Single().Should().BeSameAs(result.Single());
         }
 
-        [Test]
+        [Fact]
         public void Should_ignore_types_with_no_default_constructor()
         {
             // Arrange

@@ -7,7 +7,6 @@ end
 
 nuget_command   = ".nuget/nuget.exe"
 gitlink_command = "packages/gitlink.2.3.0/lib/net45/GitLink.exe"
-nunit_command   = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
 xunit_command   = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 
 solution        = "FakeItEasy.sln"
@@ -33,9 +32,13 @@ integration_tests = [
   "tests/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"
 ]
 
-specs = "tests/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
+specs = [
+  "tests/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
+]
 
-approval_tests = "tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll"
+approval_tests = [
+  "tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll"
+]
 
 repo = 'FakeItEasy/FakeItEasy'
 ci_server_url = 'http://teamcity.codebetter.com/admin/editBuildParams.html?id=buildType:bt929'
@@ -227,33 +230,23 @@ end
 directory tests
 
 desc "Execute unit tests"
-nunit :unit => [:build, tests] do |nunit|
-  nunit.command = nunit_command
-  nunit.assemblies unit_tests
-  nunit.options "/result=#{tests}/TestResult.Unit.xml", "/nologo"
+task :unit => [:build, tests] do
+    run_tests(unit_tests, xunit_command, tests)
 end
 
 desc "Execute integration tests"
-nunit :integ => [:build, tests] do |nunit|
-  nunit.command = nunit_command
-  nunit.assemblies integration_tests
-  nunit.options "/result=#{tests}/TestResult.Integration.xml", "/nologo"
+task :integ => [:build, tests] do
+    run_tests(integration_tests, xunit_command, tests)
 end
 
 desc "Execute specifications"
 task :spec => [:build, tests] do
-    xunit = XUnitTestRunner.new
-    xunit.command = xunit_command
-    xunit.assembly = specs
-    xunit.options "-noshadow", "-nologo", "-notrait", "\"explicit=yes\"", "-xml", "#{tests}/TestResult.Specifications.xml"
-    xunit.execute
+    run_tests(specs, xunit_command, tests)
 end
 
 desc "Execute approval tests"
-nunit :approve => [:build, tests] do |nunit|
-  nunit.command = nunit_command
-  nunit.assemblies approval_tests
-  nunit.options "/result=#{tests}/TestResult.Approval.xml", "/nologo"
+task :approve => [:build, tests] do
+    run_tests(approval_tests, xunit_command, tests)
 end
 
 directory output
@@ -335,6 +328,18 @@ def run_msbuild(solution, target, command)
   cmd.command = command
   cmd.parameters "#{solution} /target:#{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/#{target}.log;Verbosity=Detailed;PerformanceSummary"
   cmd.execute
+end
+
+def run_tests(test_assemblies, command, result_dir)
+  test_assemblies.each do |test_assembly|
+    result_file = File.expand_path(File.join(result_dir, File.basename(test_assembly, '.dll') + '.TestResults.xml'))
+
+    xunit = XUnitTestRunner.new
+    xunit.command = command
+    xunit.assembly = test_assembly
+    xunit.options '-noshadow', '-nologo', '-notrait', '"explicit=yes"', '-xml', result_file
+    xunit.execute
+  end
 end
 
 # Get a temporary SSL cert file if necessary.

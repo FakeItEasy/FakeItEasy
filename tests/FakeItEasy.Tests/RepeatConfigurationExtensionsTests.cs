@@ -2,14 +2,12 @@ namespace FakeItEasy.Tests
 {
     using System;
     using FakeItEasy.Configuration;
-    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class RepeatConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
     {
-        [Test]
+        [Fact]
         public void Once_should_call_NumberOfTimes_with_1_as_argument()
         {
             // Arrange
@@ -22,7 +20,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => repeatConfig.NumberOfTimes(1)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Once_should_throw_when_configuration_is_null()
         {
             // Arrange
@@ -35,7 +33,7 @@ namespace FakeItEasy.Tests
             exception.Should().BeOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [Fact]
         public void Twice_should_call_NumberOfTimes_with_2_as_argument()
         {
             // Arrange
@@ -48,7 +46,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => repeatConfig.NumberOfTimes(2)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Twice_should_throw_when_configuration_is_null()
         {
             // Arrange

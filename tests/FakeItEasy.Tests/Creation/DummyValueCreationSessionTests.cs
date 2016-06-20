@@ -1,53 +1,52 @@
 namespace FakeItEasy.Tests.Creation
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FluentAssertions;
-    using NUnit.Framework;
-    using Guard = FakeItEasy.Guard;
+    using Xunit;
 
-    [TestFixture]
     public class DummyValueCreationSessionTests
     {
-        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private readonly object[] dummiesInContainer =
-            {
-                "dummy value",
-                new Task<int>(() => 7),
-                new Task(delegate { })
-            };
+        private readonly IFakeObjectCreator fakeObjectCreator;
 
-        private IFakeObjectCreator fakeObjectCreator;
-
-        [SetUp]
-        public void Setup()
+        public DummyValueCreationSessionTests()
         {
             this.fakeObjectCreator = A.Fake<IFakeObjectCreator>();
         }
 
-        [TestCaseSource("dummiesInContainer")]
-        public void Should_return_dummy_from_container_when_available(object dummyInContainer)
+        public static IEnumerable<object[]> DummiesInContainer()
         {
-            Guard.AgainstNull(dummyInContainer, "dummyInContainer");
+            return TestCases.FromObject(
+                "dummy value",
+                Task.FromResult(7),
+                Task.WhenAll()); // creates a completed Task
+        }
+
+        [Theory]
+        [MemberData(nameof(DummiesInContainer))]
+        public void Should_return_dummy_from_container_when_available(object dummyForContainer)
+        {
+            Guard.AgainstNull(dummyForContainer, "dummyInContainer");
 
             // Arrange
             var session = new DummyValueCreationSession(
-                this.CreateDummyFactoryThatMakes(dummyInContainer),
+                this.CreateDummyFactoryThatMakes(dummyForContainer),
                 this.fakeObjectCreator);
 
             // Act
             object dummy;
-            var result = session.TryResolveDummyValue(dummyInContainer.GetType(), out dummy);
+            var result = session.TryResolveDummyValue(dummyForContainer.GetType(), out dummy);
 
             // Assert
             result.Should().BeTrue();
-            dummy.Should().BeSameAs(dummyInContainer);
+            dummy.Should().BeSameAs(dummyForContainer);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_false_when_type_cannot_be_created()
         {
             // Arrange
@@ -64,7 +63,7 @@ namespace FakeItEasy.Tests.Creation
             dummy.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_fake_when_it_can_be_created()
         {
             // Arrange
@@ -83,7 +82,7 @@ namespace FakeItEasy.Tests.Creation
             dummy.Should().BeSameAs(fake);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_default_value_when_type_is_value_type()
         {
             // Arrange
@@ -100,7 +99,7 @@ namespace FakeItEasy.Tests.Creation
             dummy.Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_create_class_with_default_constructor()
         {
             // Arrange
@@ -117,7 +116,7 @@ namespace FakeItEasy.Tests.Creation
             dummy.Should().BeOfType<ClassWithDefaultConstructor>();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_create_class_with_resolvable_constructor_arguments()
         {
             // Arrange
@@ -135,7 +134,7 @@ namespace FakeItEasy.Tests.Creation
             dummy.Should().BeOfType<TypeWithResolvableConstructorArguments<string, IFoo>>();
         }
 
-        [Test]
+        [Fact]
         public void Should_not_be_able_to_create_class_with_circular_dependencies()
         {
             // Arrange
@@ -151,7 +150,7 @@ namespace FakeItEasy.Tests.Creation
             result.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_resolve_same_type_twice_when_successful()
         {
             // Arrange
@@ -170,7 +169,7 @@ namespace FakeItEasy.Tests.Creation
             dummy.Should().Be("dummy value");
         }
 
-        [Test]
+        [Fact]
         public void Should_return_false_when_default_constructor_throws()
         {
             // Arrange
@@ -186,7 +185,7 @@ namespace FakeItEasy.Tests.Creation
             result.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_favor_the_widest_constructor_when_activating()
         {
             // Arrange
@@ -203,9 +202,10 @@ namespace FakeItEasy.Tests.Creation
             typedDummy.WidestConstructorWasCalled.Should().BeTrue();
         }
 
-        [TestCase(typeof(void))]
-        [TestCase(typeof(Func<int>))]
-        [TestCase(typeof(Action))]
+        [Theory]
+        [InlineData(typeof(void))]
+        [InlineData(typeof(Func<int>))]
+        [InlineData(typeof(Action))]
         public void Should_return_false_for_restricted_types(Type restrictedType)
         {
             // Arrange
@@ -221,7 +221,7 @@ namespace FakeItEasy.Tests.Creation
             result.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_create_lazy_wrapper()
         {
             // Arrange
@@ -298,7 +298,7 @@ namespace FakeItEasy.Tests.Creation
                 this.WidestConstructorWasCalled = true;
             }
 
-            public bool WidestConstructorWasCalled { get; set; }
+            public bool WidestConstructorWasCalled { get; }
         }
 
         internal class FixedDummyFactory : IDummyFactory
@@ -310,10 +310,7 @@ namespace FakeItEasy.Tests.Creation
                 this.dummy = dummy;
             }
 
-            public Priority Priority
-            {
-                get { return Priority.Default; }
-            }
+            public Priority Priority => Priority.Default;
 
             public bool CanCreate(Type type)
             {

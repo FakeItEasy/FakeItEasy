@@ -6,16 +6,21 @@ namespace FakeItEasy.Tests.Core
     using System.Reflection;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class DefaultFakeObjectCallFormatterTests
     {
 #pragma warning disable 649
         [UnderTest]
         private DefaultFakeObjectCallFormatter formatter;
 #pragma warning restore 649
+
+        public DefaultFakeObjectCallFormatterTests()
+        {
+            Fake.InitializeFixture(this);
+        }
 
         public interface ITypeWithMethodThatTakesArguments
         {
@@ -30,13 +35,7 @@ namespace FakeItEasy.Tests.Core
         [Fake]
         private IFakeManagerAccessor FakeManagerAccessor { get; set; }
 
-        [SetUp]
-        public void Setup()
-        {
-            Fake.InitializeFixture(this);
-        }
-
-        [Test]
+        [Fact]
         public void Should_start_with_method_name()
         {
             // Arrange
@@ -49,7 +48,7 @@ namespace FakeItEasy.Tests.Core
             description.Should().StartWith("System.String.Equals(");
         }
 
-        [Test]
+        [Fact]
         public void Should_write_empty_argument_list()
         {
             // Arrange
@@ -62,8 +61,8 @@ namespace FakeItEasy.Tests.Core
             description.Should().EndWith("()");
         }
 
-        [Test]
-        [SetCulture("en-US")]
+        [Fact]
+        [UsingCulture("en-US")]
         public void Should_write_argument_list()
         {
             // Arrange
@@ -78,7 +77,7 @@ namespace FakeItEasy.Tests.Core
             description.Should().EndWith("(argument1: \"argument value\", argument2: 1)");
         }
 
-        [Test]
+        [Fact]
         public void Should_put_each_argument_on_separate_line_when_more_than_two_arguments()
         {
             // Arrange
@@ -104,7 +103,7 @@ namespace FakeItEasy.Tests.Core
             description.Should().EndWith(expectedDescription);
         }
 
-        [Test]
+        [Fact]
         public void Should_write_property_getter_properly()
         {
             // Arrange
@@ -118,7 +117,7 @@ namespace FakeItEasy.Tests.Core
             description.Should().Be("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.NormalProperty");
         }
 
-        [Test]
+        [Fact]
         public void Should_write_property_setter_properly()
         {
             // Arrange
@@ -133,7 +132,7 @@ namespace FakeItEasy.Tests.Core
             description.Should().Be("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.NormalProperty = \"foo\"");
         }
 
-        [Test]
+        [Fact]
         public void Should_write_indexed_property_getter_properly()
         {
             // Arrange
@@ -148,7 +147,7 @@ namespace FakeItEasy.Tests.Core
             description.Should().Be("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.Item[index: 0]");
         }
 
-        [Test]
+        [Fact]
         public void Should_write_indexed_property_setter_properly()
         {
             // Arrange

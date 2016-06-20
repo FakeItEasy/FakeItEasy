@@ -4,17 +4,15 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class RaiseTests
     {
-        private IFoo foo;
+        private readonly IFoo foo;
         private object sender;
         private EventArgs eventArguments;
 
-        [SetUp]
-        public void Setup()
+        public RaiseTests()
         {
             this.foo = A.Fake<IFoo>();
             this.foo.SomethingHappened += this.Foo_SomethingHappened;
@@ -22,7 +20,7 @@ namespace FakeItEasy.Tests
             this.eventArguments = null;
         }
 
-        [Test]
+        [Fact]
         public void Raising_with_sender_and_arguments_should_raise_event_with_specified_sender()
         {
             // Arrange
@@ -35,7 +33,7 @@ namespace FakeItEasy.Tests
             this.sender.Should().Be(senderToUse);
         }
 
-        [Test]
+        [Fact]
         public void Raising_with_sender_and_arguments_should_raise_event_with_specified_arguments()
         {
             // Arrange
@@ -48,7 +46,7 @@ namespace FakeItEasy.Tests
             this.eventArguments.Should().BeSameAs(arguments);
         }
 
-        [Test]
+        [Fact]
         public void Raising_with_arguments_only_should_raise_event_with_fake_as_sender()
         {
             // Arrange
@@ -60,7 +58,7 @@ namespace FakeItEasy.Tests
             this.sender.Should().BeSameAs(this.foo);
         }
 
-        [Test]
+        [Fact]
         public void Raising_with_arguments_only_should_raise_event_with_specified_arguments()
         {
             // Arrange
@@ -73,11 +71,10 @@ namespace FakeItEasy.Tests
             this.eventArguments.Should().BeSameAs(arguments);
         }
 
-        [Test]
+        [Fact]
         public void WithEmpty_should_return_raise_object_with_event_args_empty_set()
         {
             // Arrange
-            this.foo = A.Fake<IFoo>();
             this.foo.SomethingHappened += this.Foo_SomethingHappened;
 
             // Act
@@ -87,11 +84,10 @@ namespace FakeItEasy.Tests
             this.eventArguments.Should().Be(EventArgs.Empty);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_fail_when_raising_event_that_has_no_registered_listeners()
         {
             // Arrange
-            this.foo = A.Fake<IFoo>();
 
             // Act
             var exception = Record.Exception(() => { foo.SomethingHappened += Raise.WithEmpty(); });
@@ -100,11 +96,10 @@ namespace FakeItEasy.Tests
             exception.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void Should_propagate_exception_thrown_by_event_handler()
         {
             // Arrange
-            this.foo = A.Fake<IFoo>();
             this.foo.SomethingHappened += this.Foo_SomethingHappenedThrows;
 
             // Act
@@ -116,13 +111,12 @@ namespace FakeItEasy.Tests
                 .And.StackTrace.Should().Contain("FakeItEasy.Tests.RaiseTests.Foo_SomethingHappenedThrows");
         }
 
-        [Test]
+        [Fact]
         public void Should_not_leak_handlers_when_raising()
         {
             // Arrange
             var eventHandlerArgumentProvider = ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
 
-            this.foo = A.Fake<IFoo>();
             this.foo.SomethingHappened += this.Foo_SomethingHappened;
 
             EventHandler raisingHandler = Raise.WithEmpty(); // EventHandler to force the implicit conversion

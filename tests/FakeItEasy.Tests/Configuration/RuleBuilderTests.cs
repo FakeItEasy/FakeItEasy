@@ -7,13 +7,13 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using FluentAssertions.Execution;
+    using Xunit;
 
-    [TestFixture]
     public class RuleBuilderTests
     {
-        private RuleBuilder builder;
-        private FakeManager fakeManager;
+        private readonly RuleBuilder builder;
+        private readonly FakeManager fakeManager;
 
 #pragma warning disable 649
         [Fake]
@@ -23,8 +23,7 @@ namespace FakeItEasy.Tests.Configuration
         private BuildableCallRule ruleProducedByFactory;
 #pragma warning restore 649
 
-        [SetUp]
-        public void Setup()
+        public RuleBuilderTests()
         {
             Fake.InitializeFixture(this);
 
@@ -33,7 +32,7 @@ namespace FakeItEasy.Tests.Configuration
             this.builder = this.CreateBuilder();
         }
 
-        [Test]
+        [Fact]
         public void Returns_called_with_value_sets_applicator_to_a_function_that_applies_that_value_to_interceptor()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -46,7 +45,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => call.SetReturnValue(10)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Returns_called_with_value_returns_parent_configuration()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -56,7 +55,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().Be(this.builder);
         }
 
-        [Test]
+        [Fact]
         public void Returns_with_call_function_applies_value_returned_from_function()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -72,7 +71,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => call.SetReturnValue(2)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Returns_with_call_function_should_return_delegate()
         {
             var config = this.CreateTestableReturnConfiguration();
@@ -82,7 +81,7 @@ namespace FakeItEasy.Tests.Configuration
             returned.Should().Be(config.ParentConfiguration);
         }
 
-        [Test]
+        [Fact]
         public void Returns_with_call_function_should_be_properly_guarded()
         {
             var config = this.CreateTestableReturnConfiguration();
@@ -91,7 +90,7 @@ namespace FakeItEasy.Tests.Configuration
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Throws_configures_interceptor_so_that_the_specified_exception_is_thrown_when_apply_is_called()
         {
             this.builder.Throws(x => new FormatException());
@@ -102,7 +101,7 @@ namespace FakeItEasy.Tests.Configuration
             exception.Should().BeAnExceptionOfType<FormatException>();
         }
 
-        [Test]
+        [Fact]
         public void Throws_returns_configuration()
         {
             var result = this.builder.Throws(A.Dummy<Func<IFakeObjectCall, Exception>>());
@@ -110,7 +109,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().Be(this.builder);
         }
 
-        [Test]
+        [Fact]
         public void Throws_called_from_return_value_configuration_configures_interceptor_so_that_the_specified_exception_is_thrown_when_apply_is_called()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -123,7 +122,7 @@ namespace FakeItEasy.Tests.Configuration
             exception.Should().BeAnExceptionOfType<FormatException>();
         }
 
-        [Test]
+        [Fact]
         public void Should_pass_call_to_interceptor_when_throwing_exception()
         {
             // Arrange
@@ -139,7 +138,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => factory(call)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_pass_call_to_interceptor_when_throwing_exception_specified_in_return_value_configuration()
         {
             // Arrange
@@ -156,7 +155,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => factory(call)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Throws_called_from_return_value_configuration_returns_parent_configuration()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -166,7 +165,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().Be(this.builder);
         }
 
-        [Test]
+        [Fact]
         public void NumberOfTimes_sets_number_of_times_to_interceptor()
         {
             this.builder.NumberOfTimes(10);
@@ -174,9 +173,12 @@ namespace FakeItEasy.Tests.Configuration
             this.builder.RuleBeingBuilt.NumberOfTimesToCall.Should().Be(10);
         }
 
-        [Test]
-        public void NumberOfTimes_throws_when_number_of_times_is_not_a_positive_integer(
-            [Values(0, -1, -100, int.MinValue)]int numberOfTimes)
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        [InlineData(-100)]
+        [InlineData(int.MinValue)]
+        public void NumberOfTimes_throws_when_number_of_times_is_not_a_positive_integer(int numberOfTimes)
         {
             var exception = Record.Exception(() =>
                 this.builder.NumberOfTimes(numberOfTimes));
@@ -184,21 +186,21 @@ namespace FakeItEasy.Tests.Configuration
             exception.Should().BeAnExceptionOfType<ArgumentOutOfRangeException>();
         }
 
-        [Test]
+        [Fact]
         public void DoesNothing_should_set_applicator_that_does_nothing_when_called()
         {
             this.builder.DoesNothing();
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
 
-            A.CallTo(call).Throws(new AssertionException("Applicator should do nothing."));
+            A.CallTo(call).Throws(new AssertionFailedException("Applicator should do nothing."));
 
             var exception = Record.Exception(() => this.builder.RuleBeingBuilt.Applicator(call));
 
             exception.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void Does_nothing_should_return_configuration_object()
         {
             var result = this.builder.DoesNothing();
@@ -206,7 +208,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().Be(this.builder);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_should_return_the_configuration_object()
         {
             var result = this.builder.Invokes(x => { });
@@ -214,7 +216,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(this.builder);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_should_add_action_to_list_of_actions()
         {
             Action<IFakeObjectCall> action = x => { };
@@ -224,7 +226,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.builder.RuleBeingBuilt.Actions.Add(action)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Invokes_should_be_null_guarded()
         {
             Action<IFakeObjectCall> action = x => { };
@@ -232,7 +234,7 @@ namespace FakeItEasy.Tests.Configuration
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Invokes_on_return_value_configuration_should_return_the_configuration_object()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -241,7 +243,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(returnConfig);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_on_return_value_configuration_should_add_action_to_list_of_actions()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -252,7 +254,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.builder.RuleBeingBuilt.Actions.Add(action)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Invokes_on_return_value_configuration_should_be_null_guarded()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -262,7 +264,7 @@ namespace FakeItEasy.Tests.Configuration
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void CallsBaseMethod_sets_CallBaseMethod_to_true_on_the_built_rule()
         {
             this.builder.CallsBaseMethod();
@@ -270,7 +272,7 @@ namespace FakeItEasy.Tests.Configuration
             this.builder.RuleBeingBuilt.CallBaseMethod.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void CallBaseMethod_returns_configuration_object()
         {
             var result = this.builder.CallsBaseMethod();
@@ -278,7 +280,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(this.builder);
         }
 
-        [Test]
+        [Fact]
         public void CallBaseMethod_sets_the_applicator_to_a_null_action()
         {
             this.builder.CallsBaseMethod();
@@ -286,7 +288,7 @@ namespace FakeItEasy.Tests.Configuration
             this.builder.RuleBeingBuilt.Applicator.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void CallsBaseMethod_for_function_calls_sets_CallBaseMethod_to_true_on_the_built_rule()
         {
             var config = this.CreateTestableReturnConfiguration();
@@ -295,7 +297,7 @@ namespace FakeItEasy.Tests.Configuration
             this.builder.RuleBeingBuilt.CallBaseMethod.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void CallBaseMethod_for_function_calls_returns_configuration_object()
         {
             var config = this.CreateTestableReturnConfiguration();
@@ -304,7 +306,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(this.builder);
         }
 
-        [Test]
+        [Fact]
         public void CallBaseMethod_for_function_calls_sets_the_applicator_to_a_null_action()
         {
             var config = this.CreateTestableReturnConfiguration();
@@ -313,7 +315,7 @@ namespace FakeItEasy.Tests.Configuration
             this.builder.RuleBeingBuilt.Applicator.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void WhenArgumentsMatches_should_call_UsePredicateToValidateArguments_on_built_rule()
         {
             Func<ArgumentCollection, bool> predicate = x => true;
@@ -326,7 +328,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => builtRule.UsePredicateToValidateArguments(predicate)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void WhenArgumentsMatches_should_return_self()
         {
             var builtRule = A.Fake<BuildableCallRule>();
@@ -336,7 +338,7 @@ namespace FakeItEasy.Tests.Configuration
             config.WhenArgumentsMatch(x => true).Should().BeSameAs(config);
         }
 
-        [Test]
+        [Fact]
         public void WhenArgumentsMatches_should_be_null_guarded()
         {
             var builtRule = A.Fake<BuildableCallRule>();
@@ -347,7 +349,7 @@ namespace FakeItEasy.Tests.Configuration
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void WhenArgumentsMatches_with_function_call_should_call_UsePredicateToValidateArguments_on_built_rule()
         {
             var builtRule = A.Fake<BuildableCallRule>();
@@ -362,7 +364,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => builtRule.UsePredicateToValidateArguments(predicate)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void WhenArgumentsMatches_with_function_call_should_return_config_should_return_self()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -370,7 +372,7 @@ namespace FakeItEasy.Tests.Configuration
             returnConfig.WhenArgumentsMatch(x => true).Should().BeSameAs(returnConfig);
         }
 
-        [Test]
+        [Fact]
         public void WhenArgumentsMatches_with_function_call_should_be_null_guarded()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -379,23 +381,23 @@ namespace FakeItEasy.Tests.Configuration
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParameters_should_be_null_guarded()
         {
             Expression<Action> call = () => this.builder.AssignsOutAndRefParameters();
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParameters_should_set_values_to_rule()
         {
             this.builder.AssignsOutAndRefParameters(1, "foo");
 
             var valueProducer = this.ruleProducedByFactory.OutAndRefParametersValueProducer;
-            valueProducer(null).Should().BeEquivalentTo(new object[] { 1, "foo" });
+            valueProducer(null).Should().BeEquivalentTo(1, "foo");
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParameters_returns_self()
         {
             var result = this.builder.AssignsOutAndRefParameters(1, "foo");
@@ -403,23 +405,23 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(this.builder);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_should_be_null_guarded()
         {
             Expression<Action> call = () => this.builder.AssignsOutAndRefParametersLazily(null);
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_should_set_values_to_rule()
         {
             this.builder.AssignsOutAndRefParametersLazily(call => new object[] { 1, "foo" });
 
             var valueProducer = this.ruleProducedByFactory.OutAndRefParametersValueProducer;
-            valueProducer(null).Should().BeEquivalentTo(new object[] { 1, "foo" });
+            valueProducer(null).Should().BeEquivalentTo(1, "foo");
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_returns_self()
         {
             var result = this.builder.AssignsOutAndRefParametersLazily(call => new object[] { 1, "foo" });
@@ -427,7 +429,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(this.builder);
         }
 
-        [Test]
+        [Fact]
         public void Assert_with_void_call_should_assert_on_assertions_produced_by_factory()
         {
             // Arrange
@@ -445,7 +447,7 @@ namespace FakeItEasy.Tests.Configuration
                 .MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Assert_with_void_call_should_remove_built_rule_from_fake_object()
         {
             // Arrange
@@ -458,7 +460,7 @@ namespace FakeItEasy.Tests.Configuration
             this.fakeManager.Rules.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void Assert_with_function_call_should_assert_on_assertions_produced_by_factory()
         {
             // Arrange
@@ -477,7 +479,7 @@ namespace FakeItEasy.Tests.Configuration
                 .MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Assert_with_function_call_should_remove_built_rule_from_fake_object()
         {
             // Arrange
@@ -491,7 +493,7 @@ namespace FakeItEasy.Tests.Configuration
             this.fakeManager.Rules.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void Where_should_apply_where_predicate_to_built_rule()
         {
             // Arrange
@@ -507,7 +509,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.ruleProducedByFactory.ApplyWherePredicate(predicate, writer)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Where_should_return_the_configuration_object()
         {
             // Arrange

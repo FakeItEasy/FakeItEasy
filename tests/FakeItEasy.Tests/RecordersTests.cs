@@ -2,13 +2,12 @@ namespace FakeItEasy.Tests
 {
     using FakeItEasy.SelfInitializedFakes;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class RecordersTests
         : ConfigurableServiceLocatorTestBase
     {
-        [Test]
+        [Fact]
         public void FileRecorder_should_return_recording_manager_with_file_storage()
         {
             // Arrange
@@ -23,10 +22,6 @@ namespace FakeItEasy.Tests
 
             // Assert
             recorder.Should().BeSameAs(recordingManager);
-        }
-
-        protected override void OnSetup()
-        {
         }
     }
 }

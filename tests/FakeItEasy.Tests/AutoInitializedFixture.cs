@@ -1,11 +1,8 @@
 namespace FakeItEasy.Tests
 {
-    using NUnit.Framework;
-
-    internal class AutoInitializedFixture
+    public class AutoInitializedFixture
     {
-        [SetUp]
-        public void InitializeFixture()
+        public AutoInitializedFixture()
         {
             Fake.InitializeFixture(this);
         }

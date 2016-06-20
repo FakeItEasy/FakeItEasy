@@ -7,12 +7,12 @@ namespace FakeItEasy.IntegrationTests
     using System.Linq;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
     public class TypeCatalogueTests
     {
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "No exception is thrown.")]
-        [Test]
+        [Fact]
         public void Should_warn_of_duplicate_input_assemblies_with_different_paths()
         {
             // Arrange
@@ -57,7 +57,7 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "No exception is thrown.")]
-        [Test]
+        [Fact]
         public void Should_warn_of_bad_assembly_files()
         {
             // Arrange
@@ -67,7 +67,7 @@ namespace FakeItEasy.IntegrationTests
   *{0}*";
 
             var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, badAssemblyFile);
-            string actualMessage = null;
+            string actualMessage;
 
             using (var stream = new MemoryStream())
             using (var writer = new StreamWriter(stream))
@@ -102,7 +102,7 @@ namespace FakeItEasy.IntegrationTests
             actualMessage.Should().Match(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_get_types_from_fakeiteasy()
         {
             // Arrange
@@ -115,7 +115,7 @@ namespace FakeItEasy.IntegrationTests
             catalogue.GetAvailableTypes().Should().Contain(typeof(A));
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_get_types_from_assembly_in_app_domain()
         {
             // Arrange
@@ -128,7 +128,7 @@ namespace FakeItEasy.IntegrationTests
             catalogue.GetAvailableTypes().Should().Contain(typeof(DoubleValueFormatter));
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_get_types_from_external_assembly_in_directory()
         {
             // Arrange
@@ -141,7 +141,7 @@ namespace FakeItEasy.IntegrationTests
             catalogue.GetAvailableTypes().Select(type => type.FullName).Should().Contain("FakeItEasy.IntegrationTests.External.GuidValueFormatter");
         }
 
-        [Test]
+        [Fact]
         public void Should_not_be_able_to_get_types_from_assembly_that_does_not_reference_fakeiteasy()
         {
             // Arrange

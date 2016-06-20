@@ -6,12 +6,11 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeObjectCallExtensionsTests : ConfigurableServiceLocatorTestBase
     {
-        [Test]
+        [Fact]
         public void GetArgument_should_delegate_to_the_argument_collections_get_method_when_using_index()
         {
             // Arrange
@@ -26,7 +25,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(1);
         }
 
-        [Test]
+        [Fact]
         public void GetArgument_should_delegate_to_the_argument_collections_get_method_when_using_name()
         {
             // Arrange
@@ -41,7 +40,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void GetArgument_should_be_null_guarded_when_using_index()
         {
             // Arrange
@@ -53,7 +52,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void GetArgument_should_be_null_guarded_when_using_argument_name()
         {
             // Arrange
@@ -65,7 +64,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void GetDescription_should_render_method_name_and_empty_arguments_list_when_call_has_no_arguments()
         {
             // Arrange
@@ -78,7 +77,7 @@ namespace FakeItEasy.Tests
             description.Should().Be("System.Object.GetType()");
         }
 
-        [Test]
+        [Fact]
         public void GetDescription_should_render_method_name_and_all_arguments_when_call_has_arguments()
         {
             // Arrange
@@ -91,7 +90,7 @@ namespace FakeItEasy.Tests
             description.Should().Be("FakeItEasy.Tests.IFoo.Bar(\"abc\", 123)");
         }
 
-        [Test]
+        [Fact]
         public void GetDescription_should_render_null_when_argument_is_null()
         {
             // Arrange
@@ -104,7 +103,7 @@ namespace FakeItEasy.Tests
             description.Should().Be("FakeItEasy.Tests.IFoo.Bar(<NULL>, 123)");
         }
 
-        [Test]
+        [Fact]
         public void GetDescription_should_render_string_empty_when_string_is_empty()
         {
             // Arrange
@@ -117,14 +116,14 @@ namespace FakeItEasy.Tests
             description.Should().Be("FakeItEasy.Tests.IFoo.Bar(<string.Empty>, 123)");
         }
 
-        [Test]
+        [Fact]
         public void Write_should_be_null_guarded()
         {
             Expression<System.Action> call = () => Enumerable.Empty<IFakeObjectCall>().Write(A.Dummy<IOutputWriter>());
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Write_should_call_writer_registered_in_container_with_calls()
         {
             // Arrange
@@ -142,7 +141,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => callWriter.WriteCalls(calls, writer)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void WriteToConsole_should_be_null_guarded()
         {
             // Arrange
@@ -154,7 +153,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void WriteToConsole_should_call_writer_registered_in_container_with_calls()
         {
             // Arrange
@@ -170,7 +169,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => callWriter.WriteCalls(calls, A<IOutputWriter>._)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void WriteToConsole_should_call_writer_registered_in_container_with_console_out()
         {
             // Arrange

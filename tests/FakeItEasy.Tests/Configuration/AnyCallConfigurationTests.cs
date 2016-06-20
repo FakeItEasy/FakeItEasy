@@ -4,11 +4,10 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
     using ExceptionFactory = System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception>;
 
-    [TestFixture]
-    internal class AnyCallConfigurationTests : AutoInitializedFixture
+    public class AnyCallConfigurationTests : AutoInitializedFixture
     {
 #pragma warning disable 649
         [Fake]
@@ -24,7 +23,7 @@ namespace FakeItEasy.Tests.Configuration
         private AnyCallConfiguration configuration;
 #pragma warning restore 649
 
-        [Test]
+        [Fact]
         public void WithReturnType_should_return_configuration_from_factory()
         {
             // Arrange
@@ -37,7 +36,7 @@ namespace FakeItEasy.Tests.Configuration
             returnConfig.Should().BeSameAs(result);
         }
 
-        [Test]
+        [Fact]
         public void WithReturnType_should_set_the_type_to_the_configured_rule()
         {
             // Arrange
@@ -49,7 +48,7 @@ namespace FakeItEasy.Tests.Configuration
             this.callRule.ApplicableToMembersWithReturnType.Should().Be(typeof(string));
         }
 
-        [Test]
+        [Fact]
         public void WithNonVoidReturnType_should_cause_the_call_rule_to_apply_to_all_return_types()
         {
             // Arrange
@@ -58,10 +57,10 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration.WithNonVoidReturnType();
 
             // Assert
-            Assert.That(this.callRule.ApplicableToAllNonVoidReturnTypes, Is.EqualTo(true));
+            this.callRule.ApplicableToAllNonVoidReturnTypes.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void DoesNothing_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
@@ -74,7 +73,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => factoryConfig.DoesNothing()).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void DoesNothing_returns_configuration_produced_by_factory()
         {
             // Arrange
@@ -89,7 +88,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(doesNothingConfig);
         }
 
-        [Test]
+        [Fact]
         public void ThrowsLazily_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
@@ -104,7 +103,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => factoryConfig.Throws(exceptionFactory)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void ThrowsLazily_returns_configuration_produced_by_factory()
         {
             // Arrange
@@ -120,7 +119,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(throwsConfig);
         }
 
-        [Test]
+        [Fact]
         public void Invokes_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
@@ -134,7 +133,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => factoryConfig.Invokes(invocation)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Invokes_returns_configuration_produced_by_factory()
         {
             // Arrange
@@ -152,7 +151,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(invokesConfig);
         }
 
-        [Test]
+        [Fact]
         public void CallsBaseMethod_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
@@ -165,7 +164,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => factoryConfig.CallsBaseMethod()).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void CallsBaseMethod_returns_configuration_produced_by_factory()
         {
             // Arrange
@@ -181,7 +180,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(callsBaseConfig);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
@@ -199,7 +198,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(valueProducer)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_returns_configuration_produced_by_factory()
         {
             // Arrange
@@ -217,7 +216,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(nextConfig);
         }
 
-        [Test]
+        [Fact]
         public void Assert_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
@@ -230,7 +229,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => factoryConfig.MustHaveHappened(A<Repeated>._)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Where_should_apply_where_predicate_on_rule()
         {
             // Arrange
@@ -244,7 +243,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.callRule.ApplyWherePredicate(predicate, writer)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Where_should_return_self()
         {
             // Arrange
@@ -255,7 +254,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration.Where(x => true, x => { }).Should().BeSameAs(this.configuration);
         }
 
-        [Test]
+        [Fact]
         public void WhenArgumentsMatch_should_delegate_to_buildable_rule()
         {
             // Arrange
@@ -269,7 +268,7 @@ namespace FakeItEasy.Tests.Configuration
                 .MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void WhenArgumentsMatch_should_return_self()
         {
             // Arrange

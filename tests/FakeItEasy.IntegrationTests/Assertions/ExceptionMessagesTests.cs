@@ -4,13 +4,12 @@ namespace FakeItEasy.IntegrationTests.Assertions
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class ExceptionMessagesTests
     {
-        [Test]
-        [SetCulture("en-US")]
+        [Fact]
+        [UsingCulture("en-US")]
         public void Exception_message_should_be_correctly_formatted()
         {
             var foo = A.Fake<IFoo>();
@@ -44,8 +43,8 @@ namespace FakeItEasy.IntegrationTests.Assertions
                      .WithMessage(expectedMessage);
         }
 
-        [Test]
-        [SetCulture("en-US")]
+        [Fact]
+        [UsingCulture("en-US")]
         public void Exception_message_should_be_correctly_formatted_when_containing_call_with_three_or_more_arguments()
         {
             var foo = A.Fake<IFoo>();
@@ -76,7 +75,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
                 .WithMessage(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_assert_on_void_calls_from_configuration()
         {
             // Arrange
@@ -102,7 +101,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_assert_on_function_calls_from_configuration()
         {
             // Arrange

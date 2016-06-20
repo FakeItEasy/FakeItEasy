@@ -10,17 +10,14 @@ namespace FakeItEasy.Tests.Expressions
     using FakeItEasy.Expressions.ArgumentConstraints;
     using FakeItEasy.Tests.Builders;
     using FluentAssertions;
-    using NUnit.Framework;
-    using Guard = FakeItEasy.Guard;
+    using Xunit;
 
-    [TestFixture]
     public class ExpressionArgumentConstraintFactoryTests
     {
-        private IArgumentConstraintTrapper trapper;
-        private ExpressionArgumentConstraintFactory factory;
+        private readonly IArgumentConstraintTrapper trapper;
+        private readonly ExpressionArgumentConstraintFactory factory;
 
-        [SetUp]
-        public void Setup()
+        public ExpressionArgumentConstraintFactoryTests()
         {
             this.trapper = A.Fake<IArgumentConstraintTrapper>();
 
@@ -29,7 +26,7 @@ namespace FakeItEasy.Tests.Expressions
             this.factory = new ExpressionArgumentConstraintFactory(this.trapper);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_constraint_from_trapper_when_available()
         {
             // Arrange
@@ -44,7 +41,7 @@ namespace FakeItEasy.Tests.Expressions
             result.Should().BeSameAs(constraint);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_equality_constraint_when_trapper_does_not_produce_any_constraint()
         {
             // Arrange
@@ -58,7 +55,7 @@ namespace FakeItEasy.Tests.Expressions
             result.Should().BeOfType<EqualityArgumentConstraint>().Which.ExpectedValue.Should().Be("foo");
         }
 
-        [Test]
+        [Fact]
         public void Should_pass_action_that_invokes_expression_to_trapper()
         {
             // Arrange
@@ -78,7 +75,7 @@ namespace FakeItEasy.Tests.Expressions
             wasInvoked.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_not_invoke_expression_more_than_once()
         {
             // Arrange
@@ -96,7 +93,7 @@ namespace FakeItEasy.Tests.Expressions
             invokedNumberOfTimes.Should().Be(1);
         }
 
-        [Test]
+        [Fact]
         public void Should_get_aggregate_constraint_when_multiple_items_are_passed_to_parameters_array()
         {
             // Arrange
@@ -105,7 +102,7 @@ namespace FakeItEasy.Tests.Expressions
             var constraintForThird = A.CollectionOfFake<IArgumentConstraint>(1);
 
             A.CallTo(() => this.trapper.TrapConstraints(A<Action>._))
-                .ReturnsNextFromSequence(new[] { constraintForFirst, noConstraintForSecond, constraintForThird });
+                .ReturnsNextFromSequence(constraintForFirst, noConstraintForSecond, constraintForThird);
 
             var expression = this.FromExpression(() => this.MethodWithParamArray(A<string>._, "foo", A<string>._));
 
@@ -121,7 +118,7 @@ namespace FakeItEasy.Tests.Expressions
             aggregate.Constraints.ElementAt(2).Should().BeSameAs(constraintForThird.Single());
         }
 
-        [Test]
+        [Fact]
         public void Should_get_equality_constraint_when_array_is_passed_to_parameters_array()
         {
             // Arrange
@@ -136,7 +133,7 @@ namespace FakeItEasy.Tests.Expressions
             result.Should().BeOfType<EqualityArgumentConstraint>();
         }
 
-        [Test]
+        [Fact]
         public void Should_get_equality_constraint_when_null_is_passed_to_parameters_array()
         {
             // Arrange

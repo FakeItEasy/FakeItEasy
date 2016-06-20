@@ -6,6 +6,7 @@ namespace FakeItEasy.Specs
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
     [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Required for testing.")]
@@ -64,7 +65,7 @@ namespace FakeItEasy.Specs
             "When the fake is configured to assign out and ref parameters lazily using call"
                 .x(() => A.CallTo(() => subject.MightReturnAKnownValue(ref outValue))
                     .WithAnyArguments()
-                    .AssignsOutAndRefParametersLazily((call) => new object[]
+                    .AssignsOutAndRefParametersLazily(call => new object[]
                     {
                         call.Arguments.Get<string>(0) == Condition ? KnownOutput : "me"
                     }));

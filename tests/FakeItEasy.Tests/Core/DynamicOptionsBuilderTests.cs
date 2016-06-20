@@ -4,22 +4,19 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class DynamicOptionsBuilderTests
     {
-        private List<IFakeOptionsBuilder> availableOptionsBuilders;
+        private readonly List<IFakeOptionsBuilder> availableOptionsBuilders;
 
-        [SetUp]
-        public void Setup()
+        public DynamicOptionsBuilderTests()
         {
             this.availableOptionsBuilders = new List<IFakeOptionsBuilder>();
         }
 
-        [Test]
+        [Fact]
         public void BuildOptions_should_apply_configuration_from_registered_options_builders()
         {
             // Arrange
@@ -40,7 +37,7 @@ namespace FakeItEasy.Tests.Core
             fakeTypeWithDummyFactory.WasConfigured.Should().BeTrue("because configuration should be applied");
         }
 
-        [Test]
+        [Fact]
         public void BuildOptions_should_do_nothing_when_fake_type_has_no_options_builder_specified()
         {
             // Arrange
@@ -54,7 +51,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(fakeOptions).MustNotHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void BuildOptions_should_not_fail_when_more_than_one_options_builder_exists_for_a_given_type()
         {
             // Arrange
@@ -75,10 +72,7 @@ namespace FakeItEasy.Tests.Core
 
         private class OptionsBuilderForTypeWithDummyFactory : IFakeOptionsBuilder
         {
-            public Priority Priority
-            {
-                get { return Priority.Default; }
-            }
+            public Priority Priority => Priority.Default;
 
             public bool CanBuildOptionsForFakeOfType(Type type)
             {
@@ -98,10 +92,7 @@ namespace FakeItEasy.Tests.Core
 
         private class DuplicateOptionsBuilderForTypeWithDummyFactory : IFakeOptionsBuilder
         {
-            public Priority Priority
-            {
-                get { return Priority.Default; }
-            }
+            public Priority Priority => Priority.Default;
 
             public bool CanBuildOptionsForFakeOfType(Type type)
             {

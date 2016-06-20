@@ -5,12 +5,11 @@ namespace FakeItEasy.Tests
     using System.Text;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class GenericATests
     {
-        [Test]
+        [Fact]
         public void That_should_return_root_validations()
         {
             // Arrange
@@ -22,9 +21,12 @@ namespace FakeItEasy.Tests
             validations.Should().BeOfType<DefaultArgumentConstraintManager<string>>();
         }
 
-        [Test]
-        public void Ignored_should_return_validator_that_passes_any_argument(
-            [Values(null, "", "hello world", "foo")] string argument)
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("hello world")]
+        [InlineData("foo")]
+        public void Ignored_should_return_validator_that_passes_any_argument(string argument)
         {
             // Arrange
 
@@ -35,7 +37,7 @@ namespace FakeItEasy.Tests
             isValid.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Ignored_should_return_validator_with_correct_description()
         {
             // Arrange
@@ -48,9 +50,12 @@ namespace FakeItEasy.Tests
             result.ToString().Should().Be("<Ignored>");
         }
 
-        [Test]
-        public void Underscore_should_return_validator_that_passes_any_argument(
-            [Values(null, "", "hello world", "foo")] string argument)
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("hello world")]
+        [InlineData("foo")]
+        public void Underscore_should_return_validator_that_passes_any_argument(string argument)
         {
             // Arrange
 
@@ -61,7 +66,7 @@ namespace FakeItEasy.Tests
             isValid.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Underscore_should_return_validator_with_correct_description()
         {
             // Arrange

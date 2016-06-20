@@ -6,19 +6,17 @@ namespace FakeItEasy.Tests.Expressions
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
-    using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
     public class ExpressionCallMatcherTests
     {
-        private ExpressionArgumentConstraintFactory constraintFactory;
-        private MethodInfoManager methodInfoManager;
-        private CallExpressionParser parser;
+        private readonly ExpressionArgumentConstraintFactory constraintFactory;
+        private readonly MethodInfoManager methodInfoManager;
+        private readonly CallExpressionParser parser;
 
-        [SetUp]
-        public void Setup()
+        public ExpressionCallMatcherTests()
         {
             this.constraintFactory = A.Fake<ExpressionArgumentConstraintFactory>();
             var validator = A.Fake<IArgumentConstraint>();
@@ -29,7 +27,7 @@ namespace FakeItEasy.Tests.Expressions
             this.parser = new CallExpressionParser();
         }
 
-        [Test]
+        [Fact]
         public void Constructor_should_throw_if_expression_is_not_property_or_method()
         {
             var exception = Record.Exception(() =>
@@ -38,7 +36,7 @@ namespace FakeItEasy.Tests.Expressions
             exception.Should().BeAnExceptionOfType<ArgumentException>();
         }
 
-        [Test]
+        [Fact]
         public void Matches_should_return_true_when_MethodInfoManager_returns_true()
         {
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar());
@@ -49,7 +47,7 @@ namespace FakeItEasy.Tests.Expressions
             matcher.Matches(call).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Matches_should_return_false_when_MethodInfoManager_returns_false()
         {
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar());
@@ -60,7 +58,7 @@ namespace FakeItEasy.Tests.Expressions
             matcher.Matches(call).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Matches_should_call_MethodInfoManager_with_method_from_call_and_method_from_expression()
         {
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar());
@@ -74,7 +72,7 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => this.methodInfoManager.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), call.Method, expressionMethod)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Matches_should_call_MethodInfoManager_with_property_getter_method_when_call_is_property_access()
         {
             var call = ExpressionHelper.CreateFakeCall<IFoo, int>(x => x.SomeProperty);
@@ -87,7 +85,7 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => this.methodInfoManager.WillInvokeSameMethodOnTarget(call.FakedObject.GetType(), getter, getter)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Matches_should_use_ArgumentValidatorManager_to_create_validator_for_each_argument()
         {
             this.CreateMatcher<IFoo>(x => x.Bar("foo", 10));
@@ -96,7 +94,7 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>.That.ProducesValue(10))).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Matches_should_use_argument_validators_to_validate_each_argument_of_call()
         {
             this.StubMethodInfoManagerToReturn(true);
@@ -119,7 +117,7 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => validator.IsValid(argument2)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Matches_should_return_false_when_any_argument_validator_returns_false()
         {
             this.StubMethodInfoManagerToReturn(true);
@@ -136,7 +134,7 @@ namespace FakeItEasy.Tests.Expressions
             matcher.Matches(call).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void ToString_should_write_full_method_name_with_type_name_and_arguments_list()
         {
             var constraint = A.Fake<IArgumentConstraint>();
@@ -152,7 +150,7 @@ namespace FakeItEasy.Tests.Expressions
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).MustHaveHappened(Repeated.Exactly.Twice);
         }
 
-        [Test]
+        [Fact]
         public void UsePredicateToValidateArguments_should_configure_matcher_to_pass_arguments_to_the_specified_predicate()
         {
             this.StubMethodInfoManagerToReturn(true);
@@ -169,22 +167,25 @@ namespace FakeItEasy.Tests.Expressions
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2));
             matcher.Matches(call);
 
-            argumentsPassedToPredicate.Should().BeEquivalentTo(new object[] { 1, 2 });
+            argumentsPassedToPredicate.Should().BeEquivalentTo(1, 2);
         }
 
-        [TestCase(true, Result = true)]
-        [TestCase(false, Result = false)]
-        public bool UsePredicateToValidateArguments_should_configure_matcher_to_return_predicate_result_when_method_matches(bool predicateReturnValue)
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        public void UsePredicateToValidateArguments_should_configure_matcher_to_return_predicate_result_when_method_matches(
+            bool predicateReturnValue,
+            bool expectedResult)
         {
             this.StubMethodInfoManagerToReturn(true);
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(null, null));
             matcher.UsePredicateToValidateArguments(x => predicateReturnValue);
 
-            return matcher.Matches(ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2)));
+            matcher.Matches(ExpressionHelper.CreateFakeCall<IFoo>(x => x.Bar(1, 2))).Should().Be(expectedResult);
         }
 
-        [Test]
+        [Fact]
         public void ToString_should_write_predicate_when_predicate_is_used_to_validate_arguments()
         {
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(null, null));
@@ -194,7 +195,7 @@ namespace FakeItEasy.Tests.Expressions
             matcher.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(<Predicated>, <Predicated>)");
         }
 
-        [Test]
+        [Fact]
         public void Matches_should_call_MethodInfoManager_with_property_getter_method_when_call_is_internal_property_access()
         {
             var call = ExpressionHelper.CreateFakeCall<TypeWithInternalProperty, bool>(x => x.InternalProperty);

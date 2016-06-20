@@ -1,7 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using System.Linq.Expressions;
-    using TestHelpers;
+    using FakeItEasy.Tests.TestHelpers;
 
     public class LambdaExpressionDummyFactory
         : DummyFactory<LambdaExpression>

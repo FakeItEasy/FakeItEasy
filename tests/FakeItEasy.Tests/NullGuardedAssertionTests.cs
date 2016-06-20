@@ -5,11 +5,11 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
+    using FluentAssertions.Execution;
     using FluentAssertions.Specialized;
-    using NUnit.Framework;
+    using Xunit;
 
     [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Disposed in teardown.")]
-    [TestFixture]
     public class NullGuardedAssertionTests
     {
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "text", Justification = "Required for testing.")]
@@ -23,58 +23,58 @@ namespace FakeItEasy.Tests
             throw new InvalidOperationException();
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_throw_when_call_is_null()
         {
             var exception = Record.Exception(() => ((Expression<Action>)null).Should().BeNullGuarded());
             exception.Should().BeAnExceptionOfType<ArgumentNullException>();
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_fail_when_call_is_not_guarded()
         {
             AssertShouldFail(() => this.UnguardedMethod("foo"));
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_pass_when_call_is_properly_guarded()
         {
             AssertShouldPass(() => this.GuardedMethod("foo"));
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_pass_when_call_is_properly_guarded_constructor()
         {
             AssertShouldPass(() => new ClassWithProperlyGuardedConstructor("foo"));
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_fail_when_argument_is_guarded_with_wrong_name()
         {
             AssertShouldFail(() => this.GuardedWithWrongName("foo"));
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_pass_when_null_argument_is_valid_and_it_is_specified_as_null()
         {
             AssertShouldPass(() => this.FirstArgumentMayBeNull(null, "foo"));
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_include_method_signature_in_error_message_when_call_is_non_guarded_constructor()
         {
             AssertShouldFail(() => new ClassWithNonProperlyGuardedConstructor("foo", "bar")).And
                 .Message.Should().Contain("Expected calls to FakeItEasy.Tests.NullGuardedAssertionTests+ClassWithNonProperlyGuardedConstructor.ctor([String] a, [String] b) to be null guarded.");
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_include_method_signature_in_error_message_when_call_is_non_guarded_method()
         {
             AssertShouldFail(() => this.UnguardedMethod("foo", "bar")).And
                 .Message.Should().Contain("Expected calls to NullGuardedAssertionTests.UnguardedMethod([String] a, [String] b) to be null guarded.");
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_include_call_signature_of_failing_calls_in_error_message_when_unguarded()
         {
             AssertShouldFail(() => this.UnguardedMethod("foo", "bar")).And.Message.Should()
@@ -82,45 +82,45 @@ namespace FakeItEasy.Tests
                 .Contain("(NULL, \"bar\") did not throw any exception.");
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_include_call_signature_and_missing_argument_name_in_error_message_when_ArgumentNullException_was_thrown_with_wrong_name()
         {
             AssertShouldFail(() => this.GuardedWithWrongName("foo")).And.Message.Should()
                 .Contain("(NULL) threw ArgumentNullException with wrong argument name, it should be \"a\".");
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_include_call_signature_and_exception_type_in_error_message_when_non_ArgumentNullException_was_thrown()
         {
             AssertShouldFail(() => UnguardedMethodThatThrowsException("foo")).And.Message.Should()
                 .Contain("(NULL) threw unexpected System.InvalidOperationException.");
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_be_callable_with_expression_that_has_value_types_in_the_parameter_list()
         {
             AssertShouldPass(() => this.GuardedMethodWithValueTypeArgument(1, "foo"));
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_fail_when_nullable_argument_is_not_guarded()
         {
             AssertShouldFail(() => this.UnguardedMethodWithNullableArgument(1));
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_pass_when_nullable_argument_is_guarded()
         {
             AssertShouldPass(() => this.GuardedMethodWithNullableArgument(1));
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_be_callable_with_static_methods()
         {
             AssertShouldFail(() => UnguardedStaticMethod("foo"));
         }
 
-        [Test]
+        [Fact]
         public void Assert_should_fail_when_throwing_permutation_throws_unexpected_exception()
         {
             AssertShouldFail(() => UnguardedMethodThatThrowsException("foo"));
@@ -132,10 +132,10 @@ namespace FakeItEasy.Tests
             exception.Should().BeNull();
         }
 
-        private static ExceptionAssertions<AssertionException> AssertShouldFail(Expression<Action> call)
+        private static ExceptionAssertions<AssertionFailedException> AssertShouldFail(Expression<Action> call)
         {
             var exception = Record.Exception(() => call.Should().BeNullGuarded());
-            return exception.Should().BeAnExceptionOfType<AssertionException>();
+            return exception.Should().BeAnExceptionOfType<AssertionFailedException>();
         }
 
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "a", Justification = "Required for testing.")]

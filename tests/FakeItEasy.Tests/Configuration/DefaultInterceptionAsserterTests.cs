@@ -4,23 +4,21 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class DefaultInterceptionAsserterTests
     {
-        private IProxyGenerator proxyGenerator;
-        private DefaultInterceptionAsserter interceptionAsserter;
+        private readonly IProxyGenerator proxyGenerator;
+        private readonly DefaultInterceptionAsserter interceptionAsserter;
 
-        [SetUp]
-        public void Setup()
+        public DefaultInterceptionAsserterTests()
         {
             this.proxyGenerator = A.Fake<IProxyGenerator>();
 
             this.interceptionAsserter = new DefaultInterceptionAsserter(this.proxyGenerator);
         }
 
-        [Test]
+        [Fact]
         public void Should_throw_with_message_from_generator()
         {
             // Arrange

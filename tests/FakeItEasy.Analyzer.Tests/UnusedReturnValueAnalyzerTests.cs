@@ -2,13 +2,14 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Analyzer.Tests.Helpers;
+    using FakeItEasy.Tests.TestHelpers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Diagnostics;
-    using NUnit.Framework;
+    using Xunit;
 
     public class UnusedReturnValueAnalyzerTests : DiagnosticVerifier
     {
-        [Test]
+        [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_When_Call_Is_Configured_With_Returns()
         {
             var test = @"using FakeItEasy;
@@ -30,7 +31,7 @@ namespace TheNamespace
             this.VerifyCSharpDiagnostic(test);
         }
 
-        [Test]
+        [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_When_Call_Is_Asserted_With_MustHaveHappened()
         {
             var test = @"using FakeItEasy;
@@ -52,7 +53,7 @@ namespace TheNamespace
             this.VerifyCSharpDiagnostic(test);
         }
 
-        [Test]
+        [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_When_Call_Specification_Is_Assigned()
         {
             var test = @"using FakeItEasy;
@@ -74,8 +75,8 @@ namespace TheNamespace
             this.VerifyCSharpDiagnostic(test);
         }
 
-        [Test]
-        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Be_Triggered_When_Call_Specification_Is_Not_Used()
         {
@@ -107,8 +108,8 @@ namespace TheNamespace
                 });
         }
 
-        [Test]
-        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Be_Triggered_When_Call_Specification_Made_In_Global_Scope_Is_Not_Used()
         {
@@ -140,8 +141,8 @@ namespace TheNamespace
                 });
         }
 
-        [Test]
-        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_For_Call_To_With_No_Expression()
         {
@@ -172,8 +173,8 @@ namespace TheNamespace
                 });
         }
 
-        [Test]
-        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithAnyArguments", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WithAnyArguments()
@@ -205,8 +206,8 @@ namespace TheNamespace
                 });
         }
 
-        [Test]
-        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithReturnType", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_Where()
@@ -238,8 +239,8 @@ namespace TheNamespace
                 });
         }
 
-        [Test]
-        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallToSet", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet()
         {
@@ -271,8 +272,8 @@ namespace TheNamespace
                 });
         }
 
-        [Test]
-        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallToSet", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet_To_Value()
         {
@@ -304,8 +305,8 @@ namespace TheNamespace
                 });
         }
 
-        [Test]
-        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallToSet", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet_To_Expression()
         {
@@ -337,8 +338,8 @@ namespace TheNamespace
                 });
         }
 
-        [Test]
-        [SetUICulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithNonVoidReturnType", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WithNonVoidReturnType()

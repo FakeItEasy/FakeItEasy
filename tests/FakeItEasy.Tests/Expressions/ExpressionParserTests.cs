@@ -4,22 +4,20 @@ namespace FakeItEasy.Tests.Expressions
     using System.Linq.Expressions;
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
-    using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
     public class ExpressionParserTests
     {
-        private ExpressionParser parser;
+        private readonly ExpressionParser parser;
 
-        [SetUp]
-        public void Setup()
+        public ExpressionParserTests()
         {
             this.parser = new ExpressionParser(new CallExpressionParser());
         }
 
-        [Test]
+        [Fact]
         public void GetFakeObjectCallIsMadeOn_should_be_null_guarded()
         {
             // Arrange
@@ -31,7 +29,7 @@ namespace FakeItEasy.Tests.Expressions
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void GetFakeObjectCallIsMadeOn_should_fail_when_call_is_not_on_an_instance()
         {
             // Arrange

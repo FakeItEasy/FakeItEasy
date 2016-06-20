@@ -5,38 +5,37 @@ namespace FakeItEasy.IntegrationTests
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
     [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "Required for testing.")]
     public interface ITypeWithNoDummyFactory
     {
     }
 
-    [TestFixture]
     public class DummyTests
     {
-        [Test]
+        [Fact]
         public void Proxy_should_be_returned_for_dummy_interface_when_no_dummy_factory_is_registered()
         {
             var dummy = A.Dummy<ITypeWithNoDummyFactory>();
             dummy.Should().BeAFake();
         }
 
-        [Test]
+        [Fact]
         public void Correct_exception_should_be_thrown_when_dummy_is_requested_for_unfakeable_type_with_no_dummy_factory()
         {
             var exception = Record.Exception(() => A.Dummy<NonInstance>());
             exception.Should().BeAnExceptionOfType<FakeCreationException>();
         }
 
-        [Test]
+        [Fact]
         public void Correct_exception_should_be_thrown_when_dummy_collection_is_requested_for_unfakeable_type_with_no_dummy_factory()
         {
             var exception = Record.Exception(() => A.CollectionOfDummy<NonInstance>(1));
             exception.Should().BeAnExceptionOfType<FakeCreationException>();
         }
 
-        [Test]
+        [Fact]
         public void Dummy_factories_are_polled_only_once_per_dummy_type()
         {
             A.Dummy<Dummy>();
@@ -50,7 +49,8 @@ namespace FakeItEasy.IntegrationTests
         {
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Required for testing.")]
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "Required for testing.")]
         private class NonInstance
         {
             private NonInstance()
@@ -59,13 +59,11 @@ namespace FakeItEasy.IntegrationTests
         }
     }
 
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "Tidier.")]
     public class DummyTestsDummyFactory : IDummyFactory
     {
-        public Priority Priority
-        {
-            get { return Priority.Default; }
-        }
+        public Priority Priority => Priority.Default;
 
         internal static int CanCreateDummyCallCount { get; private set; }
 

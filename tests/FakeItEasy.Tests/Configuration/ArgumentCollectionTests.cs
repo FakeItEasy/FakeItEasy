@@ -10,19 +10,18 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class ArgumentCollectionTests
     {
-        [Test]
+        [Fact]
         public void Constructor_is_properly_guarded()
         {
             Expression<Action> call = () => new ArgumentCollection(new object[] { "foo", 1 }, new[] { "foo", "bar" });
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Constructor_that_takes_method_is_properly_null_guarded()
         {
             var method = typeof(IFoo).GetMethod("Bar", new[] { typeof(object), typeof(object) });
@@ -30,17 +29,17 @@ namespace FakeItEasy.Tests.Configuration
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Constructor_that_takes_method_should_set_argument_names()
         {
             var method = typeof(IFoo).GetMethod("Bar", new[] { typeof(object), typeof(object) });
 
             var arguments = new ArgumentCollection(new object[] { "foo", "bar" }, method);
 
-            arguments.ArgumentNames.Should().Equal(new[] { "argument", "argument2" });
+            arguments.ArgumentNames.Should().Equal("argument", "argument2");
         }
 
-        [Test]
+        [Fact]
         public void Constructor_should_throw_when_number_of_arguments_does_not_match_number_of_argument_names()
         {
             // act
@@ -50,7 +49,7 @@ namespace FakeItEasy.Tests.Configuration
             exception.Should().BeOfType<ArgumentException>();
         }
 
-        [Test]
+        [Fact]
         public void Get_called_with_index_should_return_argument_typed()
         {
             var arguments = this.CreateFakeArgumentList("foo", "bar");
@@ -58,7 +57,7 @@ namespace FakeItEasy.Tests.Configuration
             arguments.Get<string>(1).Should().Be("bar");
         }
 
-        [Test]
+        [Fact]
         public void Get_called_with_name_should_return_argument_at_position_of_name()
         {
             var arguments = this.CreateFakeArgumentList(new[] { "foo", "bar" }, 1, 2);
@@ -66,7 +65,7 @@ namespace FakeItEasy.Tests.Configuration
             arguments.Get<int>("bar").Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void Get_called_with_argument_name_that_does_not_exist_throws_exception()
         {
             var arguments = this.CreateFakeArgumentList(new[] { "foo", "bar" }, 1, 2);
@@ -76,7 +75,7 @@ namespace FakeItEasy.Tests.Configuration
             exception.Should().BeAnExceptionOfType<ArgumentException>();
         }
 
-        [Test]
+        [Fact]
         public void Count_should_return_the_number_of_arguments_in_the_collection()
         {
             var arguments = this.CreateFakeArgumentList(new[] { "foo", "bar" }, 1, 2);
@@ -84,7 +83,7 @@ namespace FakeItEasy.Tests.Configuration
             arguments.Count.Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void GetEnumerator_through_non_generic_interface_returns_enumerator_that_enumerates_all_arguments()
         {
             var arguments = this.CreateFakeArgumentList(new[] { "foo", "bar" }, 1, 2);
@@ -99,7 +98,7 @@ namespace FakeItEasy.Tests.Configuration
             found.Should().Equal(1, 2);
         }
 
-        [Test]
+        [Fact]
         public void GetEnumerator_returns_enumerable_that_enumerates_the_arguments_of_the_collection()
         {
             var arguments = this.CreateFakeArgumentList(1, 2, 3);
@@ -107,7 +106,7 @@ namespace FakeItEasy.Tests.Configuration
             arguments.Should().Equal(1, 2, 3);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_serializable_when_arguments_are_equatable()
         {
             // Arrange

@@ -4,13 +4,14 @@ namespace FakeItEasy.Tests.Core
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
-    using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
     public class DefaultFixtureInitializerTests
     {
+        private readonly FixtureType fixture;
+
 #pragma warning disable 649
         [UnderTest]
         private DefaultFixtureInitializer initializer;
@@ -25,10 +26,7 @@ namespace FakeItEasy.Tests.Core
         private ISutInitializer sutInitializer;
 #pragma warning restore 649
 
-        private FixtureType fixture;
-
-        [SetUp]
-        public void Setup()
+        public DefaultFixtureInitializerTests()
         {
             Fake.InitializeFixture(this);
 
@@ -37,7 +35,7 @@ namespace FakeItEasy.Tests.Core
             this.fixture = new FixtureType();
         }
 
-        [Test]
+        [Fact]
         public void Should_set_public_property_that_is_attributed()
         {
             // Arrange
@@ -49,7 +47,7 @@ namespace FakeItEasy.Tests.Core
             this.fixture.FooProperty.Should().BeSameAs(this.fakeReturnedFromFakeAndDummyManager);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_set_untagged_property()
         {
             // Arrange
@@ -61,7 +59,7 @@ namespace FakeItEasy.Tests.Core
             this.fixture.NonFakedProperty.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void Should_set_private_property_that_is_tagged()
         {
             // Arrange
@@ -73,7 +71,7 @@ namespace FakeItEasy.Tests.Core
             this.fixture.GetValueOfPrivateFakeProperty().Should().BeSameAs(this.fakeReturnedFromFakeAndDummyManager);
         }
 
-        [Test]
+        [Fact]
         public void Should_set_private_field_that_is_tagged()
         {
             // Arrange
@@ -85,7 +83,7 @@ namespace FakeItEasy.Tests.Core
             this.fixture.GetValueOfPrivateFakeField().Should().BeSameAs(this.fakeReturnedFromFakeAndDummyManager);
         }
 
-        [Test]
+        [Fact]
         public void Should_set_public_field_that_is_tagged()
         {
             // Arrange
@@ -97,7 +95,7 @@ namespace FakeItEasy.Tests.Core
             this.fixture.PublicFakeField.Should().BeSameAs(this.fakeReturnedFromFakeAndDummyManager);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_set_non_tagged_field()
         {
             // Arrange
@@ -109,7 +107,7 @@ namespace FakeItEasy.Tests.Core
             this.fixture.NonFakeField.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void Should_set_sut_from_sut_initializer()
         {
             // Arrange
@@ -127,7 +125,7 @@ namespace FakeItEasy.Tests.Core
             sutFixture.Sut.Should().BeSameAs(sut);
         }
 
-        [Test]
+        [Fact]
         public void Should_set_fake_from_sut_initializer_callback_when_available()
         {
             // Arrange
@@ -145,7 +143,7 @@ namespace FakeItEasy.Tests.Core
             sutFixture.Foo.Should().BeSameAs(fake);
         }
 
-        [Test]
+        [Fact]
         public void Should_fail_when_more_than_one_member_is_marked_as_sut()
         {
             // Arrange

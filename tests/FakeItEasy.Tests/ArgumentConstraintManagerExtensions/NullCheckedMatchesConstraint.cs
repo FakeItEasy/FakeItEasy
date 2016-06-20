@@ -1,35 +1,26 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
-    using NUnit.Framework;
 
-    [TestFixture]
-    internal class NullCheckedMatchesConstraint
+    public class NullCheckedMatchesConstraint
         : ArgumentConstraintTestBase<object>
     {
-        protected override IEnumerable<object> InvalidValues
+        protected override string ExpectedDescription => "is of type string";
+
+        public static IEnumerable<object[]> InvalidValues()
         {
-            get
-            {
-                yield return null;
-                yield return new object();
-            }
+            return TestCases.FromObject(
+                null,
+                new object());
         }
 
-        protected override IEnumerable<object> ValidValues
+        public static IEnumerable<object[]> ValidValues()
         {
-            get
-            {
-                yield return "Foo";
-                yield return string.Empty;
-                yield return "Bar";
+            return TestCases.FromObject(
+                "Foo",
+                string.Empty,
+                "Bar");
             }
-        }
-
-        protected override string ExpectedDescription
-        {
-            get { return "is of type string"; }
-        }
 
         protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
         {

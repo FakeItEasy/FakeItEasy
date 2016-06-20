@@ -8,9 +8,8 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeConfigurationManagerTests
     {
         private IConfigurationFactory configurationFactory;
@@ -22,14 +21,13 @@ namespace FakeItEasy.Tests.Configuration
         private CallExpressionParser callExpressionParser;
         private IInterceptionAsserter interceptionAsserter;
 
-        [SetUp]
-        public void Setup()
+        public FakeConfigurationManagerTests()
         {
             this.OnSetup();
         }
 
         // Callto
-        [Test]
+        [Fact]
         public void CallTo_with_void_call_should_call_configuration_factory_with_fake_object()
         {
             // Arrange
@@ -42,7 +40,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.configurationFactory.CreateConfiguration(this.fakeObjectReturnedFromParser, A<BuildableCallRule>._)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void CallTo_with_void_call_should_call_configuration_factory_with_call_rule_from_factory()
         {
             // Arrange
@@ -55,7 +53,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.configurationFactory.CreateConfiguration(A<FakeManager>._, this.ruleReturnedFromFactory)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void CallTo_with_void_call_should_return_configuration_from_factory()
         {
             // Arrange
@@ -73,7 +71,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(returnedConfiguration);
         }
 
-        [Test]
+        [Fact]
         public void CallTo_with_void_call_should_add_rule_to_fake_object()
         {
             // Arrange
@@ -86,7 +84,7 @@ namespace FakeItEasy.Tests.Configuration
             this.fakeObjectReturnedFromParser.Rules.Should().Contain(this.ruleReturnedFromFactory);
         }
 
-        [Test]
+        [Fact]
         public void CallTo_with_void_call_should_be_null_guarded()
         {
             // Arrange
@@ -101,7 +99,7 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         // CallTo with function calls
-        [Test]
+        [Fact]
         public void CallTo_with_function_call_should_call_configuration_factory_with_fake_object()
         {
             // Arrange
@@ -114,7 +112,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(this.fakeObjectReturnedFromParser, A<BuildableCallRule>._)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void CallTo_with_function_call_should_call_configuration_factory_with_call_rule_from_factory()
         {
             // Arrange
@@ -127,7 +125,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(A<FakeManager>._, this.ruleReturnedFromFactory)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void CallTo_with_function_call_should_return_configuration_from_factory()
         {
             // Arrange
@@ -143,7 +141,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(returnedConfiguration);
         }
 
-        [Test]
+        [Fact]
         public void CallTo_with_function_call_should_add_rule_to_fake_object()
         {
             // Arrange
@@ -156,7 +154,7 @@ namespace FakeItEasy.Tests.Configuration
             this.fakeObjectReturnedFromParser.Rules.Should().Contain(this.ruleReturnedFromFactory);
         }
 
-        [Test]
+        [Fact]
         public void CallTo_with_function_call_should_be_null_guarded()
         {
             // Arrange
@@ -169,7 +167,7 @@ namespace FakeItEasy.Tests.Configuration
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void Should_call_interception_asserter_when_configuring_function_call()
         {
             // Arrange
@@ -187,7 +185,7 @@ namespace FakeItEasy.Tests.Configuration
                 parsedCall.CallTarget)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_call_interception_asserter_when_configuring_void_call()
         {
             // Arrange
@@ -205,7 +203,7 @@ namespace FakeItEasy.Tests.Configuration
                 parsedCall.CallTarget)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_call_configuration_factory_with_manager_from_fake()
         {
             // Arrange
@@ -220,7 +218,7 @@ namespace FakeItEasy.Tests.Configuration
                 manager, A<AnyCallCallRule>.That.Not.IsNull())).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_configuration_when_configuring_any_call()
         {
             // Arrange
@@ -237,7 +235,7 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(expectedConfiguration);
         }
 
-        [Test]
+        [Fact]
         public void Should_add_call_rule_to_fake_manager_when_configuring_any_call()
         {
             // Arrange
@@ -260,10 +258,7 @@ namespace FakeItEasy.Tests.Configuration
 
             Expression<Action<IFoo>> dummyExpression = x => x.Bar();
             this.ruleReturnedFromFactory = ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>().Invoke(dummyExpression);
-            this.ruleFactory = x =>
-            {
-                return this.ruleReturnedFromFactory;
-            };
+            this.ruleFactory = x => this.ruleReturnedFromFactory;
 
             this.fakeObjectReturnedFromParser = A.Fake<FakeManager>(o => o.CallsBaseMethods());
 

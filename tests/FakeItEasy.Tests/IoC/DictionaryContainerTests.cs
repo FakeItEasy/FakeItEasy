@@ -2,18 +2,17 @@ namespace FakeItEasy.Tests.IoC
 {
     using FakeItEasy.IoC;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class DictionaryContainerTests
     {
-        [Test]
+        [Fact]
         public void Register_registers_resolver_to_resolve_each_time_resolve_is_called()
         {
             int calledNumberOfTimes = 0;
 
             var container = this.CreateContainer();
-            container.Register<IFoo>(x =>
+            container.Register(x =>
                 {
                     calledNumberOfTimes++;
                     return A.Fake<IFoo>();
@@ -25,13 +24,13 @@ namespace FakeItEasy.Tests.IoC
             calledNumberOfTimes.Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void RegisterSingleton_registers_resolver_to_be_invoked_once_only()
         {
             int calledNumberOfTimes = 0;
 
             var container = this.CreateContainer();
-            container.RegisterSingleton<IFoo>(x =>
+            container.RegisterSingleton(x =>
                 {
                     calledNumberOfTimes++;
                     return A.Fake<IFoo>();

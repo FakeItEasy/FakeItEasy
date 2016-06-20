@@ -5,6 +5,7 @@ namespace FakeItEasy.Specs
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     public static class ConfigurationSpecs
     {
@@ -177,7 +178,7 @@ namespace FakeItEasy.Specs
 
         public class BaseClass
         {
-            public bool WasCalled { get; set; }
+            public bool WasCalled { get; private set; }
 
             public virtual void DoSomething()
             {

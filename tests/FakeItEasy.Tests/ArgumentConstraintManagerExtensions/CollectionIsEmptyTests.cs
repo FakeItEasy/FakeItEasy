@@ -2,39 +2,27 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
     using System.Linq;
-    using NUnit.Framework;
 
-    [TestFixture]
-    internal class CollectionIsEmptyTests
+    public class CollectionIsEmptyTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
-        protected override IEnumerable<object> InvalidValues
+        protected override string ExpectedDescription => "empty collection";
+
+        public static IEnumerable<object[]> InvalidValues()
         {
-            get
-            {
-                yield return null;
-                yield return new List<object>() { 1, 2 };
-                yield return new object[] { "foo" };
-                yield return Enumerable.Range(1, 10).Cast<object>();
-            }
+            return TestCases.FromObject(
+                null,
+                new List<object> { 1, 2 },
+                new object[] { "foo" },
+                Enumerable.Range(1, 10).Cast<object>());
         }
 
-        protected override IEnumerable<object> ValidValues
+        public static IEnumerable<object[]> ValidValues()
         {
-            get
-            {
-                yield return new List<object>();
-                yield return Enumerable.Empty<object>();
-                yield return new object[] { };
-            }
-        }
-
-        protected override string ExpectedDescription
-        {
-            get
-            {
-                return "empty collection";
-            }
+            return TestCases.FromObject(
+                new List<object>(),
+                Enumerable.Empty<object>(),
+                new object[0]);
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)

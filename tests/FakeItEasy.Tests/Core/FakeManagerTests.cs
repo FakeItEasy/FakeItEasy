@@ -11,21 +11,19 @@ namespace FakeItEasy.Tests.Core
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeManagerTests
     {
         private static readonly IFakeObjectCallRule NonApplicableInterception = new FakeCallRule { IsApplicableTo = x => false };
-        private List<object> createdFakes;
+        private readonly List<object> createdFakes;
 
-        [SetUp]
-        public void Setup()
+        public FakeManagerTests()
         {
             this.createdFakes = new List<object>();
         }
 
-        [Test]
+        [Fact]
         public void Event_listeners_that_are_removed_should_not_be_invoked_when_event_is_raised()
         {
             var foo = A.Fake<IFoo>();
@@ -40,7 +38,7 @@ namespace FakeItEasy.Tests.Core
             called.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Method_call_should_return_default_value_when_there_is_no_matching_interception_and_return_type_is_value_type()
         {
             var fake = this.CreateFakeManager<IFoo>();
@@ -49,14 +47,14 @@ namespace FakeItEasy.Tests.Core
             result.Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void Method_call_should_not_set_return_value_when_there_is_no_matching_interception_and_return_type_is_void()
         {
             var fake = this.CreateFakeManager<IFoo>();
             ((IFoo)fake.Object).Bar();
         }
 
-        [Test]
+        [Fact]
         public void The_first_interceptor_should_be_applied_when_it_has_not_been_used()
         {
             var fake = this.CreateFakeManager<IFoo>();
@@ -74,7 +72,7 @@ namespace FakeItEasy.Tests.Core
             interception.ApplyWasCalled.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void The_first_applicable_interceptor_should_be_called_when_it_has_not_been_used()
         {
             var fake = this.CreateFakeManager<IFoo>();
@@ -92,7 +90,7 @@ namespace FakeItEasy.Tests.Core
             interception.ApplyWasCalled.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void The_latest_added_rule_should_be_called_forever_when_no_number_of_times_is_specified()
         {
             var fake = this.CreateFakeManager<IFoo>();
@@ -111,7 +109,7 @@ namespace FakeItEasy.Tests.Core
             firstRule.ApplyWasCalled.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void An_applicable_action_should_be_called_its_specified_number_of_times_before_the_next_applicable_action_is_called()
         {
             var fake = this.CreateFakeManager<IFoo>();
@@ -135,7 +133,7 @@ namespace FakeItEasy.Tests.Core
             nextApplicable.ApplyWasCalled.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void DefaultValue_should_be_returned_when_the_last_applicable_action_has_been_used_its_specified_number_of_times()
         {
             var fake = this.CreateFakeManager<IFoo>();
@@ -154,7 +152,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void Interceptions_should_return_interceptions_that_are_added()
         {
             var fake = this.CreateFakeManager<IFoo>();
@@ -168,7 +166,7 @@ namespace FakeItEasy.Tests.Core
             fake.Rules.Should().BeEquivalentTo(one, two);
         }
 
-        [Test]
+        [Fact]
         public void RecordedCalls_contains_all_calls_made_on_the_fake()
         {
             var fake = this.CreateFakeManager<IFoo>();
@@ -181,7 +179,7 @@ namespace FakeItEasy.Tests.Core
             fake.GetRecordedCalls().Should().Contain(x => x.Method.Name == "get_Item");
         }
 
-        [Test]
+        [Fact]
         public void RecordedCalls_should_contain_calls_that_throws_exceptions()
         {
             // Arrange
@@ -196,7 +194,7 @@ namespace FakeItEasy.Tests.Core
             manager.GetRecordedCalls().Count().Should().Be(1);
         }
 
-        [Test]
+        [Fact]
         public void Object_properties_has_property_behavior_when_not_configured()
         {
             var foo = A.Fake<IFoo>();
@@ -206,7 +204,7 @@ namespace FakeItEasy.Tests.Core
             foo.SomeProperty.Should().Be(10);
         }
 
-        [Test]
+        [Fact]
         public void Object_properties_be_set_directly_and_configured_as_methods_interchangeably()
         {
             var foo = A.Fake<IFoo>();
@@ -224,7 +222,7 @@ namespace FakeItEasy.Tests.Core
             foo.SomeProperty.Should().Be(10);
         }
 
-        [Test]
+        [Fact]
         public void Properties_should_be_set_to_fake_objects_when_property_type_is_fakeable_and_the_property_is_not_explicitly_set()
         {
             var foo = A.Fake<IFoo>();
@@ -232,7 +230,7 @@ namespace FakeItEasy.Tests.Core
             foo.ChildFoo.Should().BeAFake();
         }
 
-        [Test]
+        [Fact]
         public void Non_configured_property_should_have_same_fake_instance_when_accessed_twice_when_property_is_internal()
         {
             // Arrange
@@ -244,7 +242,7 @@ namespace FakeItEasy.Tests.Core
             foo.InternalVirtualFakeableProperty.Should().BeSameAs(foo.InternalVirtualFakeableProperty);
         }
 
-        [Test]
+        [Fact]
         public void Property_should_return_set_value_when_property_is_internal()
         {
             // Arrange
@@ -258,7 +256,7 @@ namespace FakeItEasy.Tests.Core
             foo.InternalVirtualFakeableProperty.Should().BeSameAs(value);
         }
 
-        [Test]
+        [Fact]
         public void RemoveRule_should_remove_the_specified_rule_from_the_fake()
         {
             // Arrange
@@ -273,7 +271,7 @@ namespace FakeItEasy.Tests.Core
             fake.Rules.Should().NotContain(rule);
         }
 
-        [Test]
+        [Fact]
         public void RemoveRule_should_do_nothing_when_rule_does_not_exist_in_fake()
         {
             // Arrange
@@ -287,7 +285,7 @@ namespace FakeItEasy.Tests.Core
             fake.Rules.Should().NotContain(rule);
         }
 
-        [Test]
+        [Fact]
         public void RemoveRule_should_be_null_guarded()
         {
             // Arrange
@@ -300,7 +298,7 @@ namespace FakeItEasy.Tests.Core
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void AddRuleLast_should_add_rule()
         {
             // Arrange
@@ -314,7 +312,7 @@ namespace FakeItEasy.Tests.Core
             fake.Rules.Should().Contain(r => ReferenceEquals(r, rule));
         }
 
-        [Test]
+        [Fact]
         public void AddRuleLast_should_add_rule_last_among_the_user_specified_rules()
         {
             // Arrange
@@ -329,19 +327,19 @@ namespace FakeItEasy.Tests.Core
             fake.AllUserRules.Last.Value.Rule.Should().BeSameAs(rule);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_fake_and_type_when_ToString_is_intercepted_but_not_configured()
         {
             this.Should_set_default_return_value_when_object_method_has_not_been_configured(typeof(object).GetMethod("ToString"), x => "Faked FakeItEasy.Tests.IFoo");
         }
 
-        [Test]
+        [Fact]
         public void Should_return_hash_code_of_fake_manager_when_GetHashCode_has_not_been_configured()
         {
             this.Should_set_default_return_value_when_object_method_has_not_been_configured(typeof(object).GetMethod("GetHashCode"), x => x.GetHashCode());
         }
 
-        [Test]
+        [Fact]
         public void Should_return_false_for_equals_method_when_fake_managers_are_not_the_same()
         {
             // Arrange
@@ -362,7 +360,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => interceptedCall.SetReturnValue(false)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_true_for_equals_method_when_fake_managers_are_the_same()
         {
             // Arrange
@@ -383,7 +381,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => interceptedCall.SetReturnValue(true)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Constructor_should_set_fake_type_and_fake_object()
         {
             // Arrange
@@ -397,7 +395,7 @@ namespace FakeItEasy.Tests.Core
             fakeManager.Object.Should().BeSameAs(proxy);
         }
 
-        [Test]
+        [Fact]
         public void Should_clear_all_added_rules_when_calling_clear_user_rules()
         {
             // Arrange
@@ -412,7 +410,7 @@ namespace FakeItEasy.Tests.Core
             manager.AllUserRules.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void Should_invoke_listener_when_call_is_intercepted()
         {
             // Arrange
@@ -430,7 +428,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => listener.OnBeforeCallIntercepted(interceptedCall)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_invoke_listener_after_call_has_been_intercepted()
         {
             // Arrange
@@ -453,7 +451,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => listener.OnAfterCallIntercepted((ICompletedFakeObjectCall)interceptedCall, selectedRule)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_invoke_listener_after_call_has_been_intercepted_when_application_of_rule_throws()
         {
             // Arrange
@@ -477,7 +475,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => listener.OnAfterCallIntercepted((ICompletedFakeObjectCall)interceptedCall, selectedRule)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_invoke_listeners_in_the_correct_order()
         {
             // Arrange

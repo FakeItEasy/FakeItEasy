@@ -2,12 +2,11 @@ namespace FakeItEasy.Tests
 {
     using System;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class OutputWriterExtensionsTests
     {
-        [Test]
+        [Fact]
         public void Should_append_line_break_when_calling_write_line()
         {
             // Arrange
@@ -20,7 +19,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => writer.Write(Environment.NewLine)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_same_instance_when_calling_write_line()
         {
             // Arrange

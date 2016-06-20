@@ -5,16 +5,14 @@ namespace FakeItEasy.Tests.Core
     using FakeItEasy.Creation;
     using FakeItEasy.SelfInitializedFakes;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeWrapperConfiguratorTests
     {
-        private IFoo faked;
-        private FakeWrapperConfigurator<IFoo> wrapperConfigurator;
+        private readonly IFoo faked;
+        private readonly FakeWrapperConfigurator<IFoo> wrapperConfigurator;
 
-        [SetUp]
-        public void Setup()
+        public FakeWrapperConfiguratorTests()
         {
             this.faked = A.Fake<IFoo>();
 
@@ -22,7 +20,7 @@ namespace FakeItEasy.Tests.Core
             this.wrapperConfigurator = new FakeWrapperConfigurator<IFoo>(A.Fake<IFakeOptions<IFoo>>(), wrapped);
         }
 
-        [Test]
+        [Fact]
         public void ConfigureFakeToWrap_should_add_WrappedFakeObjectRule_to_fake_object()
         {
             // Arrange
@@ -35,7 +33,7 @@ namespace FakeItEasy.Tests.Core
                 .Should().Contain(item => item.GetType().IsAssignableFrom(typeof(WrappedObjectRule)));
         }
 
-        [Test]
+        [Fact]
         public void ConfigureFakeToWrap_should_add_self_initialization_rule_when_recorder_is_specified()
         {
             // Arrange
@@ -49,7 +47,7 @@ namespace FakeItEasy.Tests.Core
                 .Should().BeOfType<SelfInitializationRule>();
         }
 
-        [Test]
+        [Fact]
         public void ConfigureFakeToWrap_should_not_add_self_initialization_rule_when_recorder_is_not_specified()
         {
             // Arrange

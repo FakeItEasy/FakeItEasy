@@ -9,22 +9,20 @@ namespace FakeItEasy.Tests.Expressions
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class CallExpressionParserTests
     {
-        private CallExpressionParser parser;
+        private readonly CallExpressionParser parser;
 
-        private delegate int IntFunction(string argument1, object argument2);
-
-        [SetUp]
-        public void Setup()
+        public CallExpressionParserTests()
         {
             this.parser = new CallExpressionParser();
         }
 
-        [Test]
+        private delegate int IntFunction(string argument1, object argument2);
+
+        [Fact]
         public void Should_return_parsed_expression_with_instance_method_set()
         {
             // Arrange
@@ -37,7 +35,7 @@ namespace FakeItEasy.Tests.Expressions
             result.CalledMethod.Should().BeSameAs(GetMethod<string>("Equals", typeof(string)));
         }
 
-        [Test]
+        [Fact]
         public void Should_return_parsed_expression_with_property_getter_method_set()
         {
             // Arrange
@@ -50,7 +48,7 @@ namespace FakeItEasy.Tests.Expressions
             result.CalledMethod.Should().BeSameAs(GetPropertyGetter<string>("Length"));
         }
 
-        [Test]
+        [Fact]
         public void Should_return_parsed_expression_with_property_getter_method_set_when_property_is_internal()
         {
             // Arrange
@@ -64,7 +62,7 @@ namespace FakeItEasy.Tests.Expressions
             result.CalledMethod.Should().BeSameAs(GetPropertyGetter<TypeWithInternalProperty>("InternalProperty"));
         }
 
-        [Test]
+        [Fact]
         public void Should_return_parsed_expression_with_static_method_set()
         {
             // Arrange
@@ -77,7 +75,7 @@ namespace FakeItEasy.Tests.Expressions
             result.CalledMethod.Should().BeSameAs(GetMethod<object>("Equals", typeof(object), typeof(object)));
         }
 
-        [Test]
+        [Fact]
         public void Should_return_parsed_expression_with_target_instance_set_when_calling_method()
         {
             // Arrange
@@ -91,7 +89,7 @@ namespace FakeItEasy.Tests.Expressions
             result.CallTarget.Should().Be(foo);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_parsed_expression_with_target_instance_set_when_calling_property_getter()
         {
             // Arrange
@@ -105,7 +103,7 @@ namespace FakeItEasy.Tests.Expressions
             result.CallTarget.Should().Be(foo);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_parsed_expression_with_arguments_set_when_calling_instance_method()
         {
             // Arrange
@@ -122,7 +120,7 @@ namespace FakeItEasy.Tests.Expressions
            result.Arguments.Should().BeEquivalentTo(argumentOne, argumentTwo);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_parsed_expression_with_arguments_set_when_calling_indexed_property_getter()
         {
             // Arrange
@@ -136,7 +134,7 @@ namespace FakeItEasy.Tests.Expressions
             result.Arguments.Single().Should().Be(10);
         }
 
-        [Test]
+        [Fact]
         public void Should_return_parsed_expression_with_argument_names_set_when_calling_instance_method()
         {
             // Arrange
@@ -153,7 +151,7 @@ namespace FakeItEasy.Tests.Expressions
             result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Should().BeEquivalentTo("argument", "argument2");
         }
 
-        [Test]
+        [Fact]
         public void Should_return_parsed_expression_with_argument_names_set_when_calling_indexed_property_getter()
         {
             // Arrange
@@ -167,7 +165,7 @@ namespace FakeItEasy.Tests.Expressions
             result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Single().Should().Be("index");
         }
 
-        [Test]
+        [Fact]
         public void Should_throw_when_expression_is_not_method_or_property_getter_or_invocation()
         {
             // Arrange
@@ -183,7 +181,7 @@ namespace FakeItEasy.Tests.Expressions
                 .WithMessage("The specified expression is not a method call or property getter.");
         }
 
-        [Test]
+        [Fact]
         public void Should_parse_invocation_expression_correctly()
         {
             // Arrange

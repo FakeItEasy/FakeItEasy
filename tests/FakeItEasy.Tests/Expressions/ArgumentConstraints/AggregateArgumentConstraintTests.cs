@@ -4,41 +4,19 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
     using System.Text;
     using FakeItEasy.Expressions.ArgumentConstraints;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
-    internal class AggregateArgumentConstraintTests
+    public class AggregateArgumentConstraintTests
         : ArgumentConstraintTestBase
     {
-        public interface ITypeWithPaldkf
+        public AggregateArgumentConstraintTests()
+        {
+            this.ConstraintField = new AggregateArgumentConstraint(new[] { new EqualityArgumentConstraint("foo"), new EqualityArgumentConstraint("bar") });
+        }
+
+        public interface ITypeWithMethod
         {
             void Method(string firstArgument, params object[] args);
-        }
-
-        protected override IEnumerable<object> InvalidValues
-        {
-            get
-            {
-                return new[]
-                    {
-                        new object(),
-                        null,
-                        new[] { "one", "two" },
-                        new[] { "foo", "bar", "biz" }
-                    };
-            }
-        }
-
-        protected override IEnumerable<object> ValidValues
-        {
-            get
-            {
-                return new object[]
-                    {
-                        new[] { "foo", "bar" },
-                        new List<string>(new[] { "foo", "bar" })
-                    };
-            }
         }
 
         protected override string ExpectedDescription
@@ -46,13 +24,23 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
             get { return "[\"foo\", \"bar\"]"; }
         }
 
-        [SetUp]
-        public void Setup()
+        public static IEnumerable<object[]> InvalidValues()
         {
-            this.ConstraintField = new AggregateArgumentConstraint(new[] { new EqualityArgumentConstraint("foo"), new EqualityArgumentConstraint("bar") });
+            return TestCases.FromObject(
+                new object(),
+                null,
+                new[] { "one", "two" },
+                new[] { "foo", "bar", "biz" });
         }
 
-        [Test]
+        public static IEnumerable<object[]> ValidValues()
+        {
+            return TestCases.FromObject(
+                new[] { "foo", "bar" },
+                new List<string>(new[] { "foo", "bar" }));
+        }
+
+        [Fact]
         public override void Constraint_should_provide_correct_description()
         {
             var output = new StringBuilder();

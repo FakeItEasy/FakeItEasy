@@ -9,9 +9,8 @@ namespace FakeItEasy.Tests
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class OutAndRefParametersConfigurationExtensionsTests
     {
         public interface IInterface
@@ -41,7 +40,7 @@ namespace FakeItEasy.Tests
             void RequestOfFour(string text1, string text2, string text3, out string textOut);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParameters_should_return_configuration_returned_from_passed_in_configuration()
         {
             // Arrange
@@ -58,7 +57,7 @@ namespace FakeItEasy.Tests
             returned.Should().BeSameAs(expectedConfig);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParameters_should_be_null_guarded()
         {
             // Arrange
@@ -70,7 +69,7 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_1_argument_should_use_ReturnsOutAndRefParameters_with_action_having_1_argument()
         {
             // Arrange
@@ -81,10 +80,7 @@ namespace FakeItEasy.Tests
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfOne(out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((int oi) =>
-                {
-                    return new object[] { OutValue };
-                });
+                .AssignsOutAndRefParametersLazily((int oi) => new object[] { OutValue });
 
             // Act
             fake.RequestOfOne(out result);
@@ -93,7 +89,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(OutValue);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_1_argument_should_support_overloads()
         {
             // Arrange
@@ -104,10 +100,7 @@ namespace FakeItEasy.Tests
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfOne(out fakeOut))
                 .WithAnyArguments()
-                .AssignsOutAndRefParametersLazily((string oi) =>
-                {
-                    return new object[] { OutValue };
-                });
+                .AssignsOutAndRefParametersLazily((string oi) => new object[] { OutValue });
 
             // Act
             fake.RequestOfOne(out result);
@@ -116,7 +109,7 @@ namespace FakeItEasy.Tests
             result.Should().Be(OutValue);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_1_argument_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -136,7 +129,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32&)", "(System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_1_argument_should_throw_exception_when_type_does_not_match()
         {
             // Arrange
@@ -156,7 +149,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32&)", "(System.String)");
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_2_arguments_should_use_ReturnsOutAndRefParameters_with_action_having_2_arguments()
         {
             // Arrange
@@ -183,7 +176,7 @@ namespace FakeItEasy.Tests
             collectedArgument.Should().Be(Argument);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_2_arguments_should_support_overloads()
         {
             // Arrange
@@ -210,7 +203,7 @@ namespace FakeItEasy.Tests
             collectedArgument.Should().Be(Argument);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_2_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -231,7 +224,7 @@ namespace FakeItEasy.Tests
                 act, "(System.Int32, System.Int32, System.Int32&)", "(System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_2_arguments_should_throw_exception_when_type_does_not_match()
         {
             // Arrange
@@ -252,7 +245,7 @@ namespace FakeItEasy.Tests
                 act, "(System.Int32, System.Int32&)", "(System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_3_arguments_should_use_ReturnsOutAndRefParameters_with_action_having_3_arguments()
         {
             // Arrange
@@ -283,7 +276,7 @@ namespace FakeItEasy.Tests
             secondCollectedArgument.Should().Be(SecondArgument);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_3_arguments_should_support_overloads()
         {
             // Arrange
@@ -314,7 +307,7 @@ namespace FakeItEasy.Tests
             secondCollectedArgument.Should().Be(SecondArgument);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_3_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -337,7 +330,7 @@ namespace FakeItEasy.Tests
                 "(System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_3_arguments_should_throw_exception_when_type_does_not_match()
         {
             // Arrange
@@ -358,7 +351,7 @@ namespace FakeItEasy.Tests
                 act, "(System.Int32, System.Int32, System.Int32&)", "(System.String, System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_4_arguments_should_use_ReturnsOutAndRefParameters_with_action_having_4_arguments()
         {
             // Arrange
@@ -393,7 +386,7 @@ namespace FakeItEasy.Tests
             thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_4_arguments_should_support_overloads()
         {
             // Arrange
@@ -428,7 +421,7 @@ namespace FakeItEasy.Tests
             thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_4_arguments_should_throw_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -449,7 +442,7 @@ namespace FakeItEasy.Tests
                 act, "(System.Int32, System.Int32&)", "(System.Int32, System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void AssignsOutAndRefParametersLazily_with_4_arguments_should_throw_exception_when_type_does_not_match()
         {
             // Arrange
@@ -487,8 +480,8 @@ namespace FakeItEasy.Tests
             var exception = Record.Exception(act);
 
             // Assert
-            exception.Should().BeOfType<FakeConfigurationException>();
-            exception.Message.Should().Be(expectedMessage);
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                .And.Message.Should().Be(expectedMessage);
         }
     }
 }

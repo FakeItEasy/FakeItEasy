@@ -7,42 +7,43 @@ namespace FakeItEasy.Tests
 
     public static class TestCases
     {
-        public static object[] AsTestCaseSource<T>(this IEnumerable<T> cases, Func<T, object[]> caseProjection)
-        {
-            return
-                (from @case in cases
-                 select caseProjection(@case)).ToArray();
-        }
-
-        public static object[] AsTestCaseSource<T>(this IEnumerable<T> cases, params Func<T, object>[] values)
-        {
-            return
-                (from @case in cases
-                 select values.Select(x => x.Invoke(@case)).ToArray()).ToArray();
-        }
-
-        public static object[] AsTestCaseSource<T>(this IEnumerable<T> cases)
+        /// <summary>
+        /// Creates a series of test cases, one per input object.
+        /// Each test case will be constructed as an array of objects
+        /// derived from the public properties of the input object.
+        /// </summary>
+        /// <typeparam name="T">The type of the input test objects.</typeparam>
+        /// <param name="cases">The input test objects.</param>
+        /// <returns>A sequence of test cases.</returns>
+        public static IEnumerable<object[]> FromProperties<T>(params T[] cases)
         {
             var properties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
 
-            Func<T, object[]> projection = x =>
+            Func<T, object[]> objectToPropertiesProjection = x =>
+            {
+                var result = new object[properties.Length];
+
+                for (int i = 0; i < result.Length; i++)
                 {
-                    var result = new object[properties.Length];
+                    result[i] = properties[i].GetValue(x, null);
+                }
 
-                    for (int i = 0; i < result.Length; i++)
-                    {
-                        result[i] = properties[i].GetValue(x, null);
-                    }
+                return result;
+            };
 
-                    return result;
-                };
-
-            return cases.AsTestCaseSource(projection);
+            return cases.Select(objectToPropertiesProjection);
         }
 
-        public static IEnumerable<T> Create<T>(params T[] cases)
+        /// <summary>
+        /// Creates a series of test cases, one per input object.
+        /// Each test case will be constructed as an object array
+        /// containing a single member - the input object.
+        /// </summary>
+        /// <param name="cases">The input test objects.</param>
+        /// <returns>A sequence of test cases.</returns>
+        public static IEnumerable<object[]> FromObject(params object[] cases)
         {
-            return cases;
+            return cases.Select(@case => new[] { @case });
         }
     }
 }

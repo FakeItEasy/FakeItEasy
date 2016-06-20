@@ -2,26 +2,23 @@ namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
-    using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
-    internal class DefaultExceptionThrowerTests
+    public class DefaultExceptionThrowerTests
     {
-        private DefaultExceptionThrower thrower;
-
-        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] resolvedConstructorsTestCases = TestCases.Create(
-            new
-            {
-                TypeOfFake = typeof(string),
-                ReasonForFailureOfDefault = "reason",
-                ResolvedConstructors = new ResolvedConstructor[] { },
-                ExpectedMessage = @"
+        public static IEnumerable<object> ResolvedConstructorsTestCases()
+        {
+            return TestCases.FromObject(
+                new DefaultExceptionThrowerTestCase("only parameterless constructor")
+                {
+                    TypeOfFake = typeof(string),
+                    ReasonForFailureOfDefaultConstructor = "reason",
+                    ResolvedConstructors = new ResolvedConstructor[] { },
+                    ExpectedMessage = @"
   Failed to create fake of type ""System.String"".
 
   Below is a list of reasons for failure per attempted constructor:
@@ -29,47 +26,47 @@ namespace FakeItEasy.Tests.Core
       reason
 
 "
-            },
-            new
-            {
-                TypeOfFake = typeof(int),
-                ReasonForFailureOfDefault = "reason\r\non two lines",
-                ResolvedConstructors = new ResolvedConstructor[]
+                },
+                new DefaultExceptionThrowerTestCase("multi-line reason for constructor failure")
                 {
-                    new ResolvedConstructor
+                    TypeOfFake = typeof(int),
+                    ReasonForFailureOfDefaultConstructor = "reason\r\non two lines",
+                    ResolvedConstructors = new[]
                     {
-                        Arguments = new[]
+                        new ResolvedConstructor
                         {
-                            new ResolvedArgument
+                            Arguments = new[]
                             {
-                                ArgumentType = typeof(int),
-                                WasResolved = false
-                            },
-                            new ResolvedArgument
+                                new ResolvedArgument
+                                {
+                                    ArgumentType = typeof(int),
+                                    WasResolved = false
+                                },
+                                new ResolvedArgument
+                                {
+                                    ArgumentType = typeof(string),
+                                    WasResolved = true
+                                }
+                            }
+                        },
+                        new ResolvedConstructor
+                        {
+                            Arguments = new[]
                             {
-                                ArgumentType = typeof(string),
-                                WasResolved = true
+                                new ResolvedArgument
+                                {
+                                    ArgumentType = typeof(object),
+                                    WasResolved = true
+                                },
+                                new ResolvedArgument
+                                {
+                                    ArgumentType = typeof(DateTime),
+                                    WasResolved = false
+                                }
                             }
                         }
                     },
-                    new ResolvedConstructor
-                    {
-                        Arguments = new[]
-                        {
-                            new ResolvedArgument
-                            {
-                                ArgumentType = typeof(object),
-                                WasResolved = true
-                            },
-                            new ResolvedArgument
-                            {
-                                ArgumentType = typeof(DateTime),
-                                WasResolved = false
-                            }
-                        }
-                    }
-                },
-                ExpectedMessage = @"
+                    ExpectedMessage = @"
   Failed to create fake of type ""System.Int32"".
 
   Below is a list of reasons for failure per attempted constructor:
@@ -84,60 +81,60 @@ namespace FakeItEasy.Tests.Core
       IFakeObjectContainer to enable these constructors.
 
 "
-            },
-            new
-            {
-                TypeOfFake = typeof(int),
-                ReasonForFailureOfDefault = "reason\r\non two lines",
-                ResolvedConstructors = new ResolvedConstructor[]
-                {
-                    new ResolvedConstructor
-                    {
-                        Arguments = new[]
-                        {
-                            new ResolvedArgument
-                            {
-                                ArgumentType = typeof(int),
-                                WasResolved = false
-                            },
-                            new ResolvedArgument
-                            {
-                                ArgumentType = typeof(string),
-                                WasResolved = true
-                            }
-                        }
-                    },
-                    new ResolvedConstructor
-                    {
-                        ReasonForFailure = "message from proxy generator",
-                        Arguments = new[]
-                        {
-                            new ResolvedArgument
-                            {
-                                ArgumentType = typeof(string),
-                                ResolvedValue = string.Empty,
-                                WasResolved = true
-                            }
-                        }
-                    },
-                    new ResolvedConstructor
-                    {
-                        Arguments = new[]
-                        {
-                            new ResolvedArgument
-                            {
-                                ArgumentType = typeof(object),
-                                WasResolved = true
-                            },
-                            new ResolvedArgument
-                            {
-                                ArgumentType = typeof(DateTime),
-                                WasResolved = false
-                            }
-                        }
-                    }
                 },
-                ExpectedMessage = @"
+                new DefaultExceptionThrowerTestCase("parameterful constructor failed")
+                {
+                    TypeOfFake = typeof(int),
+                    ReasonForFailureOfDefaultConstructor = "reason\r\non two lines",
+                    ResolvedConstructors = new[]
+                    {
+                        new ResolvedConstructor
+                        {
+                            Arguments = new[]
+                            {
+                                new ResolvedArgument
+                                {
+                                    ArgumentType = typeof(int),
+                                    WasResolved = false
+                                },
+                                new ResolvedArgument
+                                {
+                                    ArgumentType = typeof(string),
+                                    WasResolved = true
+                                }
+                            }
+                        },
+                        new ResolvedConstructor
+                        {
+                            ReasonForFailure = "message from proxy generator",
+                            Arguments = new[]
+                            {
+                                new ResolvedArgument
+                                {
+                                    ArgumentType = typeof(string),
+                                    ResolvedValue = string.Empty,
+                                    WasResolved = true
+                                }
+                            }
+                        },
+                        new ResolvedConstructor
+                        {
+                            Arguments = new[]
+                            {
+                                new ResolvedArgument
+                                {
+                                    ArgumentType = typeof(object),
+                                    WasResolved = true
+                                },
+                                new ResolvedArgument
+                                {
+                                    ArgumentType = typeof(DateTime),
+                                    WasResolved = false
+                                }
+                            }
+                        }
+                    },
+                    ExpectedMessage = @"
   Failed to create fake of type ""System.Int32"".
 
   Below is a list of reasons for failure per attempted constructor:
@@ -154,25 +151,21 @@ namespace FakeItEasy.Tests.Core
       IFakeObjectContainer to enable these constructors.
 
 "
-            }).AsTestCaseSource();
-
-        [SetUp]
-        public void Setup()
-        {
-            this.thrower = new DefaultExceptionThrower();
+                });
         }
 
-        [Test]
+        [Fact]
         public void Should_throw_correct_exception_when_arguments_for_constructor_are_specified()
         {
             // Arrange
             var reason =
 @"a reason
 that spans a couple of lines.";
+            var thrower = new DefaultExceptionThrower();
 
             // Act
             var exception = Record.Exception(
-                () => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason));
+                () => thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(string), reason));
 
             // Assert
             var expectedMessage =
@@ -187,21 +180,45 @@ that spans a couple of lines.";
                 .WithMessage(expectedMessage);
         }
 
-        [TestCaseSource("resolvedConstructorsTestCases")]
-        public void Should_throw_correct_exception_when_resolved_constructors_are_used(
-            Type typeOfFake, string reasonForFailureOfUnspecifiedConstructor, IEnumerable<ResolvedConstructor> resolvedConstructors, string expectedMessage)
+        [Theory]
+        [MemberData(nameof(ResolvedConstructorsTestCases))]
+        public void Should_throw_correct_exception_when_resolved_constructors_are_used(DefaultExceptionThrowerTestCase testCase)
         {
             // Arrange
+            var thrower = new DefaultExceptionThrower();
 
             // Act
             var exception = Record.Exception(
-                () => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
-                    typeOfFake, reasonForFailureOfUnspecifiedConstructor, resolvedConstructors));
+                () => thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
+                    testCase.TypeOfFake, testCase.ReasonForFailureOfDefaultConstructor, testCase.ResolvedConstructors));
 
             // Assert
             exception.Should()
                 .BeAnExceptionOfType<FakeCreationException>()
-                .WithMessage(expectedMessage);
+                .WithMessage(testCase.ExpectedMessage);
+        }
+
+        public class DefaultExceptionThrowerTestCase
+        {
+            private readonly string description;
+
+            public DefaultExceptionThrowerTestCase(string description)
+            {
+                this.description = description;
+            }
+
+            internal Type TypeOfFake { get; set; }
+
+            internal string ReasonForFailureOfDefaultConstructor { get; set; }
+
+            internal ResolvedConstructor[] ResolvedConstructors { get; set; }
+
+            internal string ExpectedMessage { get; set; }
+
+            public override string ToString()
+            {
+                return this.description;
+            }
         }
     }
 }

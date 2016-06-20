@@ -8,18 +8,16 @@ namespace FakeItEasy.Tests.Creation
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class FakeObjectCreatorTests
     {
-        private IProxyGenerator proxyGenerator;
-        private FakeObjectCreator fakeObjectCreator;
-        private IExceptionThrower thrower;
-        private FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
+        private readonly IProxyGenerator proxyGenerator;
+        private readonly FakeObjectCreator fakeObjectCreator;
+        private readonly IExceptionThrower thrower;
+        private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
 
-        [SetUp]
-        public void Setup()
+        public FakeObjectCreatorTests()
         {
             this.proxyGenerator = A.Fake<IProxyGenerator>();
             this.thrower = A.Fake<IExceptionThrower>();
@@ -28,7 +26,7 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator = new FakeObjectCreator(this.proxyGenerator, this.thrower, this.fakeCallProcessorProviderFactory);
         }
 
-        [Test]
+        [Fact]
         public void Should_pass_fake_options_to_the_proxy_generator_and_return_the_fake_when_successful()
         {
             // Arrange
@@ -54,7 +52,7 @@ namespace FakeItEasy.Tests.Creation
                 .MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_use_new_fake_call_processor_for_the_proxy_generator()
         {
             // Arrange
@@ -74,7 +72,7 @@ namespace FakeItEasy.Tests.Creation
                 .MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_use_new_fake_call_processor_for_every_tried_constructor()
         {
             // Arrange
@@ -94,7 +92,7 @@ namespace FakeItEasy.Tests.Creation
                 .MustHaveHappened(Repeated.Exactly.Times(3));
         }
 
-        [Test]
+        [Fact]
         public void Should_throw_when_generator_fails_and_arguments_for_constructor_are_specified()
         {
             // Arrange
@@ -113,7 +111,7 @@ namespace FakeItEasy.Tests.Creation
                 .MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_null_when_unsuccessful_and_throw_on_failure_is_false()
         {
             // Arrange
@@ -126,7 +124,7 @@ namespace FakeItEasy.Tests.Creation
             createdFake.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void Should_not_throw_when_unsuccessful_and_throw_on_failure_is_false()
         {
             // Arrange
@@ -139,7 +137,7 @@ namespace FakeItEasy.Tests.Creation
             A.CallTo(this.thrower).MustNotHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_try_with_resolved_constructors_in_the_correct_order()
         {
             // Arrange
@@ -166,7 +164,7 @@ namespace FakeItEasy.Tests.Creation
                     .MustHaveHappened());
         }
 
-        [Test]
+        [Fact]
         public void Should_not_try_to_resolve_constructors_when_arguments_for_constructor_are_specified()
         {
             // Arrange
@@ -188,7 +186,7 @@ namespace FakeItEasy.Tests.Creation
                 .MustNotHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_first_successfully_generated_proxy()
         {
             // Arrange
@@ -212,7 +210,7 @@ namespace FakeItEasy.Tests.Creation
             createdFake.Should().BeSameAs(proxy);
         }
 
-        [Test]
+        [Fact]
         public void Should_not_try_constructor_where_not_all_arguments_are_resolved()
         {
             // Arrange
@@ -228,7 +226,7 @@ namespace FakeItEasy.Tests.Creation
                 .MustNotHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_try_protected_constructors()
         {
             // Arrange
@@ -246,7 +244,7 @@ namespace FakeItEasy.Tests.Creation
                 .MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_throw_when_no_resolved_constructor_was_successfully_used()
         {
             // Arrange

@@ -10,6 +10,7 @@ namespace FakeItEasy.Specs
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     public class FakeOptionsBuilderSpecs
     {
@@ -117,6 +118,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
         }
 
+        [Scenario]
         public void DefinedFakeOptionsBuilderCallsBaseMethods(
             CallsBaseMethods fake,
             string result)

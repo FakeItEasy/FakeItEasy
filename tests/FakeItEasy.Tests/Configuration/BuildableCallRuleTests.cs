@@ -1,35 +1,22 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
-    using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
     public class BuildableCallRuleTests
     {
-        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] defaultReturnValueCases = TestCases.Create(
-            new
-            {
-                MethodName = "IntReturn",
-                ExpectedReturnValue = (object)0
-            },
-            new
-            {
-                MethodName = "StringReturn",
-                ExpectedReturnValue = (object)null
-            },
-            new
-            {
-                MethodName = "SelfReturn",
-                ExpectedReturnValue = (object)null
-            }).AsTestCaseSource();
+        private readonly TestableCallRule rule;
 
-        private TestableCallRule rule;
+        public BuildableCallRuleTests()
+        {
+            this.rule = new TestableCallRule();
+        }
 
         private interface IOutAndRef
         {
@@ -45,13 +32,27 @@ namespace FakeItEasy.Tests.Configuration
             IHaveDifferentReturnValues SelfReturn();
         }
 
-        [SetUp]
-        public void Setup()
+        public static IEnumerable<object> DefaultReturnValueCases()
         {
-            this.rule = new TestableCallRule();
+            return TestCases.FromProperties(
+                new
+                {
+                    MethodName = "IntReturn",
+                    ExpectedReturnValue = (object)0
+                },
+                new
+                {
+                    MethodName = "StringReturn",
+                    ExpectedReturnValue = (object)null
+                },
+                new
+                {
+                    MethodName = "SelfReturn",
+                    ExpectedReturnValue = (object)null
+                });
         }
 
-        [Test]
+        [Fact]
         public void Apply_should_invoke_all_actions_in_the_actions_collection()
         {
             // Arrange
@@ -70,7 +71,7 @@ namespace FakeItEasy.Tests.Configuration
             secondWasCalled.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Apply_should_pass_the_call_to_specified_actions()
         {
             var call = A.Fake<IInterceptedFakeObjectCall>();
@@ -84,7 +85,7 @@ namespace FakeItEasy.Tests.Configuration
             passedCall.Should().BeSameAs(call);
         }
 
-        [Test]
+        [Fact]
         public void Apply_should_call_CallBaseMethod_on_intercepted_call_when_CallBaseMethod_is_set_to_true()
         {
             var call = A.Fake<IInterceptedFakeObjectCall>();
@@ -96,11 +97,11 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => call.CallBaseMethod()).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Apply_should_set_ref_and_out_parameters_when_specified()
         {
             // Arrange
-            this.rule.OutAndRefParametersValueProducer = (x) => { return new object[] { 1, "foo" }; };
+            this.rule.OutAndRefParametersValueProducer = x => new object[] { 1, "foo" };
             this.rule.Applicator = x => { };
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
@@ -114,11 +115,11 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => call.SetArgumentValue(3, "foo")).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Apply_should_throw_when_OutAndRefParametersValues_length_differs_from_the_number_of_out_and_ref_parameters_in_the_call()
         {
             // Arrange
-            this.rule.OutAndRefParametersValueProducer = (x) => { return new object[] { 1, "foo", "bar" }; };
+            this.rule.OutAndRefParametersValueProducer = x => new object[] { 1, "foo", "bar" };
             this.rule.Applicator = x => { };
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
@@ -131,7 +132,8 @@ namespace FakeItEasy.Tests.Configuration
                 .WithMessage("The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call.");
         }
 
-        [TestCaseSource("defaultReturnValueCases")]
+        [Theory]
+        [MemberData(nameof(DefaultReturnValueCases))]
         public void Apply_should_set_return_value_to_default_value_when_applicator_is_not_set(string methodName, object expectedResponse)
         {
             // Arrange
@@ -146,9 +148,12 @@ namespace FakeItEasy.Tests.Configuration
                 .MustHaveHappened();
         }
 
-        [TestCase(true, Result = true)]
-        [TestCase(false, Result = false)]
-        public bool Apply_should_return_return_value_from_on_is_applicable_to_when_a_where_predicate_is_not_set(bool resultFromOnIsApplicableTo)
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        public void Apply_should_return_return_value_from_on_is_applicable_to_when_a_where_predicate_is_not_set(
+            bool resultFromOnIsApplicableTo,
+            bool expectedResult)
         {
             // Arrange
             this.rule.ReturnValueFromOnIsApplicableTo = resultFromOnIsApplicableTo;
@@ -157,11 +162,11 @@ namespace FakeItEasy.Tests.Configuration
             var result = this.rule.IsApplicableTo(null);
 
             // Assert
-            return result;
+            result.Should().Be(expectedResult);
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "andon", Justification = "False positive")]
-        [Test]
+        [Fact]
         public void IsApplicableTo_should_return_false_when_a_predicate_fails_and_on_is_applicable_to_passes()
         {
             // Arrange
@@ -177,7 +182,7 @@ namespace FakeItEasy.Tests.Configuration
             isThisRuleApplicable.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_not_call_OnIsApplicableTo_when_a_where_predicate_returns_false()
         {
             // Arrange
@@ -190,7 +195,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.OnIsApplicableToWasCalled.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Apply_should_return_true_when_on_is_applicable_to_is_true_and_all_where_predicates_returns_true()
         {
             // Arrange
@@ -205,7 +210,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.IsApplicableTo(A.Dummy<IFakeObjectCall>()).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_pass_call_to_where_predicates()
         {
             // Arrange
@@ -221,7 +226,7 @@ namespace FakeItEasy.Tests.Configuration
             isApplicableTo.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_write_description_of_valid_call_by_calling_the_description_property()
         {
             // Arrange
@@ -236,7 +241,7 @@ namespace FakeItEasy.Tests.Configuration
             writer.Builder.ToString().Should().Be("description");
         }
 
-        [Test]
+        [Fact]
         public void Should_append_where_predicates_to_description_correctly()
         {
             // Arrange
@@ -258,7 +263,7 @@ namespace FakeItEasy.Tests.Configuration
             descriptionWriter.Builder.ToString().Should().Be(expectedDescription);
         }
 
-        [Test]
+        [Fact]
         public void Applicator_should_not_be_settable_more_than_once()
         {
             this.rule.Applicator = x => { };
@@ -267,7 +272,7 @@ namespace FakeItEasy.Tests.Configuration
             exception.Should().BeAnExceptionOfType<InvalidOperationException>();
         }
 
-        [Test]
+        [Fact]
         public void OutAndRefParameterProducer_should_not_be_settable_more_than_once()
         {
             this.rule.OutAndRefParametersValueProducer = x => new object[0];
@@ -289,12 +294,9 @@ namespace FakeItEasy.Tests.Configuration
 
             public string DescriptionOfValidCallReturnValue { get; set; }
 
-            public bool OnIsApplicableToWasCalled { get; set; }
+            public bool OnIsApplicableToWasCalled { get; private set; }
 
-            public override string DescriptionOfValidCall
-            {
-                get { return this.DescriptionOfValidCallReturnValue; }
-            }
+            public override string DescriptionOfValidCall => this.DescriptionOfValidCallReturnValue;
 
             public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
             {

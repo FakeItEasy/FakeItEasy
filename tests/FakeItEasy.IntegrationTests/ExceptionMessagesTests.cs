@@ -5,12 +5,11 @@ namespace FakeItEasy.IntegrationTests
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class ExceptionMessagesTests
     {
-        [Test]
+        [Fact]
         public void Should_give_pretty_message_when_trying_to_fake_static_method()
         {
             // Act
@@ -28,7 +27,7 @@ namespace FakeItEasy.IntegrationTests
             exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And.Message.Should().Be(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void Should_give_pretty_message_when_trying_to_fake_extension_method()
         {
             // Arrange

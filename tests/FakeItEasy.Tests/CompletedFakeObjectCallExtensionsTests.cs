@@ -6,14 +6,13 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
-    using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
     public class CompletedFakeObjectCallExtensionsTests : ConfigurableServiceLocatorTestBase
     {
-        [Test]
+        [Fact]
         public void Matching_should_pass_call_specification_to_matcher_factory()
         {
             // Arrange
@@ -30,7 +29,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => factory.CreateCallMathcer(callSpecification)).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Matching_should_return_calls_that_are_matched_by_matcher()
         {
             // Arrange

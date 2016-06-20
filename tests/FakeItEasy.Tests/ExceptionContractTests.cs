@@ -4,19 +4,11 @@ namespace FakeItEasy.Tests
     using System.Reflection;
     using System.Runtime.Serialization;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
     public abstract class ExceptionContractTests<T> where T : Exception
     {
-        private T exception;
-
-        [SetUp]
-        public void Setup()
-        {
-            this.exception = this.CreateException();
-        }
-
-        [Test]
+        [Fact]
         public void Exception_should_provide_serialization_constructor()
         {
             // Arrange
@@ -30,7 +22,7 @@ namespace FakeItEasy.Tests
             constructor.IsPrivate.Should().BeFalse("serialization constructor should be protected, not private");
         }
 
-        [Test]
+        [Fact]
         public void Exception_should_provide_message_only_constructor()
         {
             // Arrange
@@ -42,7 +34,7 @@ namespace FakeItEasy.Tests
             constructor.Should().NotBeNull("Exception classes should provide a public message only constructor.");
         }
 
-        [Test]
+        [Fact]
         public void Constructor_that_takes_message_should_set_message()
         {
             // Arrange
@@ -55,13 +47,13 @@ namespace FakeItEasy.Tests
             result.Message.Should().StartWith("A message");
         }
 
-        [Test]
+        [Fact]
         public void Exception_should_be_serializable()
         {
-            this.exception.Should().BeBinarySerializable();
+            this.CreateException().Should().BeBinarySerializable();
         }
 
-        [Test]
+        [Fact]
         public void Exception_should_provide_message_and_inner_exception_constructor()
         {
             // Arrange
@@ -73,7 +65,7 @@ namespace FakeItEasy.Tests
             constructor.Should().NotBeNull("exception classes should provide a public constructor that takes message and inner exception.");
         }
 
-        [Test]
+        [Fact]
         public void Constructor_that_takes_message_and_inner_exception_should_set_message()
         {
             // Arrange
@@ -86,7 +78,7 @@ namespace FakeItEasy.Tests
             result.Message.Should().Be("A message");
         }
 
-        [Test]
+        [Fact]
         public void Constructor_that_takes_message_and_inner_exception_should_set_inner_exception()
         {
             // Arrange
@@ -100,7 +92,7 @@ namespace FakeItEasy.Tests
             result.InnerException.Should().Be(innerException);
         }
 
-        [Test]
+        [Fact]
         public void Exception_should_provide_default_constructor()
         {
             // Arrange

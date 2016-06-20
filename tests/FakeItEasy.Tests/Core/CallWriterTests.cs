@@ -6,22 +6,14 @@ namespace FakeItEasy.Tests.Core
     using System.Linq;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class CallWriterTests
     {
-        private List<IFakeObjectCall> calls;
-        private StringBuilderOutputWriter writer;
+        private readonly List<IFakeObjectCall> calls;
+        private readonly StringBuilderOutputWriter writer;
 
-        [Fake]
-        public IEqualityComparer<IFakeObjectCall> CallComparer { get; set; }
-
-        [Fake]
-        internal IFakeObjectCallFormatter CallFormatter { get; set; }
-
-        [SetUp]
-        public void Setup()
+        public CallWriterTests()
         {
             Fake.InitializeFixture(this);
 
@@ -32,7 +24,13 @@ namespace FakeItEasy.Tests.Core
             this.writer = new StringBuilderOutputWriter();
         }
 
-        [Test]
+        [Fake]
+        public IEqualityComparer<IFakeObjectCall> CallComparer { get; set; }
+
+        [Fake]
+        internal IFakeObjectCallFormatter CallFormatter { get; set; }
+
+        [Fact]
         public void WriteCalls_should_list_the_calls_in_the_calls_collection()
         {
             this.StubCalls(10);
@@ -64,7 +62,7 @@ namespace FakeItEasy.Tests.Core
             message.Should().Contain(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void WriteCalls_should_skip_duplicate_calls_in_row()
         {
             // Arrange
@@ -90,7 +88,7 @@ namespace FakeItEasy.Tests.Core
             message.Should().Contain(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void WriteCalls_should_not_skip_duplicate_messages_that_are_not_in_row()
         {
             this.StubCalls(4);
@@ -118,7 +116,7 @@ namespace FakeItEasy.Tests.Core
             message.Should().Contain(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void WriteCalls_should_truncate_calls_list_when_more_than_a_hundred_call_lines_are_printed()
         {
             this.StubCalls(30);
@@ -141,7 +139,7 @@ namespace FakeItEasy.Tests.Core
             message.Should().Contain(expectedMessage);
         }
 
-        [Test]
+        [Fact]
         public void WriteCalls_should_indent_values_with_new_lines_correctly()
         {
             // Arrange
@@ -176,7 +174,7 @@ second line";
             message.Should().Contain(expectedText1).And.Contain(expectedText2);
         }
 
-        [Test]
+        [Fact]
         public void WriteCalls_should_write_new_line_at_end()
         {
             // Arrange
@@ -191,7 +189,7 @@ second line";
             this.writer.Builder.ToString().Should().EndWith(Environment.NewLine);
         }
 
-        [Test]
+        [Fact]
         public void Should_write_nothing_if_call_list_is_empty()
         {
             // Arrange

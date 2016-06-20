@@ -1,25 +1,24 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
-    using NUnit.Framework;
 
-    [TestFixture]
-    internal class IsNullTests
+    public class IsNullTests
         : ArgumentConstraintTestBase<object>
     {
-        protected override IEnumerable<object> ValidValues
+        protected override string ExpectedDescription => "NULL";
+
+        public static IEnumerable<object[]> ValidValues()
         {
-            get { return new object[] { null }; }
+            return TestCases.FromObject(
+                (object)null);
         }
 
-        protected override IEnumerable<object> InvalidValues
+        public static IEnumerable<object[]> InvalidValues()
         {
-            get { return new object[] { string.Empty, "foo", "bar" }; }
-        }
-
-        protected override string ExpectedDescription
-        {
-            get { return "NULL"; }
+            return TestCases.FromObject(
+                string.Empty,
+                "foo",
+                "bar");
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<object> scope)

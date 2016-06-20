@@ -1,14 +1,11 @@
 namespace FakeItEasy.Tests
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
-    using TestHelpers;
+    using Xunit;
 
-    [TestFixture]
     public class ExceptionThrowerConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
     {
         public interface IInterface
@@ -30,7 +27,7 @@ namespace FakeItEasy.Tests
             void ActionOfFour(string text1, string text2, string text3, string text4);
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_1_argument_should_throw_exception_and_provide_argument_for_consumption()
         {
             // Arrange
@@ -54,7 +51,7 @@ namespace FakeItEasy.Tests
             collectedArgument.Should().Be(Argument);
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_1_argument_should_support_overloads()
         {
             // Arrange
@@ -78,7 +75,7 @@ namespace FakeItEasy.Tests
             collectedArgument.Should().Be(Argument);
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_1_argument_should_throw_fake_configuration_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -93,7 +90,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_1_argument_should_throw_fake_configuration_exception_when_argument_type_does_not_match()
         {
             // Arrange
@@ -108,7 +105,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32)", "(System.String)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_2_arguments_should_throw_exception_and_provide_arguments_for_consumption()
         {
             // Arrange
@@ -136,7 +133,7 @@ namespace FakeItEasy.Tests
             secondCollectedArgument.Should().Be(SecondArgument);
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_2_arguments_should_support_overloads()
         {
             // Arrange
@@ -164,7 +161,7 @@ namespace FakeItEasy.Tests
             secondCollectedArgument.Should().Be(SecondArgument);
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_2_arguments_should_throw_fake_configuration_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -179,7 +176,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32)", "(System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_2_arguments_should_throw_fake_configuration_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
@@ -194,7 +191,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_2_arguments_should_throw_fake_configuration_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
@@ -209,7 +206,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32, System.String)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_3_arguments_should_throw_exception_and_provide_arguments_for_consumption()
         {
             // Arrange
@@ -241,7 +238,7 @@ namespace FakeItEasy.Tests
             thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_3_arguments_should_support_overloads()
         {
             // Arrange
@@ -273,7 +270,7 @@ namespace FakeItEasy.Tests
             thirdCollectedArgument.Should().Be(ThirdArgument);
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_3_arguments_should_throw_fake_configuration_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -288,7 +285,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_3_arguments_should_throw_fake_configuration_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
@@ -303,7 +300,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.String, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_3_arguments_should_throw_fake_configuration_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
@@ -318,7 +315,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_3_arguments_should_throw_fake_configuration_exception_when_third_argument_type_does_not_match()
         {
             // Arrange
@@ -333,7 +330,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.String)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_4_arguments_should_throw_exception_and_provide_arguments_for_consumption()
         {
             // Arrange
@@ -370,7 +367,7 @@ namespace FakeItEasy.Tests
             fourthCollectedArgument.Should().Be(FourthArgument);
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_4_arguments_should_support_overloads()
         {
             // Arrange
@@ -407,7 +404,7 @@ namespace FakeItEasy.Tests
             fourthCollectedArgument.Should().Be(FourthArgument);
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_4_arguments_should_throw_fake_configuration_exception_when_argument_count_does_not_match()
         {
             // Arrange
@@ -422,7 +419,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_4_arguments_should_throw_fake_configuration_exception_when_first_argument_type_does_not_match()
         {
             // Arrange
@@ -437,7 +434,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.String, System.Int32, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_4_arguments_should_throw_fake_configuration_exception_when_second_argument_type_does_not_match()
         {
             // Arrange
@@ -452,7 +449,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_4_arguments_should_throw_fake_configuration_exception_when_third_argument_type_does_not_match()
         {
             // Arrange
@@ -467,7 +464,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.String, System.Int32)");
         }
 
-        [Test]
+        [Fact]
         public void Throws_with_4_arguments_should_throw_fake_configuration_exception_when_fourth_argument_type_does_not_match()
         {
             // Arrange
@@ -482,7 +479,7 @@ namespace FakeItEasy.Tests
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.String)");
         }
 
-        [Test]
+        [Fact]
         public void Should_configure_fake_to_throw_the_specified_exception()
         {
             // Arrange
@@ -496,7 +493,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => config.Throws(A<Func<IFakeObjectCall, Exception>>.That.Returns(ex))).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_configure_fake_to_throw_the_specified_exception_type()
         {
             // Arrange
@@ -509,7 +506,7 @@ namespace FakeItEasy.Tests
             A.CallTo(() => config.Throws(FuncThatReturnsExceptionOfType<InvalidOperationException>())).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Should_configure_fake_to_throw_exceptions_returned_by_the_factory()
         {
             // Arrange
@@ -527,17 +524,7 @@ namespace FakeItEasy.Tests
         private static Func<IFakeObjectCall, Exception> FuncThatReturnsExceptionOfType<T>()
         {
             return A<Func<IFakeObjectCall, Exception>>.That.NullCheckedMatches(
-                x =>
-                {
-                    var result = x.Invoke(null);
-
-                    if (result == null)
-                    {
-                        return false;
-                    }
-
-                    return typeof(T).IsAssignableFrom(result.GetType());
-                },
+                x => x.Invoke(null) is T,
                 x => x.Write("function that returns exception of type ").WriteArgumentValue(typeof(T)));
         }
 

@@ -3,12 +3,12 @@ namespace FakeItEasy.Tests
     using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
-    using NUnit.Framework;
+    using FluentAssertions;
+    using Xunit;
 
-    [TestFixture]
     public class MustHaveHappenedExtensionsTests : ConfigurableServiceLocatorTestBase
     {
-        [Test]
+        [Fact]
         public void MustHaveHappened_should_call_configuration_with_repeat_once()
         {
             // Arrange
@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests
                 .MustHaveHappened(Repeated.Exactly.Once); // avoid .MustHaveHappened(), since we're testing it
         }
 
-        [Test]
+        [Fact]
         public void MustHaveHappened_should_be_null_guarded()
         {
             // Arrange
@@ -34,10 +34,11 @@ namespace FakeItEasy.Tests
             call.Should().BeNullGuarded();
         }
 
-        [TestCase(0, Result = true)]
-        [TestCase(1, Result = false)]
-        [TestCase(3, Result = false)]
-        public bool MustNotHaveHappened_should_call_configuration_with_repeat_that_validates_correctly(int repeat)
+        [Theory]
+        [InlineData(0, true)]
+        [InlineData(1, false)]
+        [InlineData(3, false)]
+        public void MustNotHaveHappened_should_call_configuration_with_repeat_that_validates_correctly(int repeat, bool expectedResult)
         {
             // Arrange
             var configuration = A.Fake<IAssertConfiguration>();
@@ -47,10 +48,10 @@ namespace FakeItEasy.Tests
 
             // Assert
             var specifiedRepeat = Fake.GetCalls(configuration).Single().Arguments.Get<Repeated>(0);
-            return specifiedRepeat.Matches(repeat);
+            specifiedRepeat.Matches(repeat).Should().Be(expectedResult);
         }
 
-        [Test]
+        [Fact]
         public void MustNotHaveHappened_should_be_null_guarded()
         {
             // Arrange

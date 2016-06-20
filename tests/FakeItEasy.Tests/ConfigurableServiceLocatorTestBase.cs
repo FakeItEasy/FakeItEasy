@@ -1,28 +1,25 @@
 namespace FakeItEasy.Tests
 {
-    using NUnit.Framework;
+    using System;
+    using System.Diagnostics.CodeAnalysis;
 
-    public abstract class ConfigurableServiceLocatorTestBase
+    public abstract class ConfigurableServiceLocatorTestBase : IDisposable
     {
-        private ServiceLocator replacedServiceLocator;
+        private readonly ServiceLocator replacedServiceLocator;
 
-        [SetUp]
-        public void Setup()
+        protected ConfigurableServiceLocatorTestBase()
         {
             this.replacedServiceLocator = ServiceLocator.Current;
             ServiceLocator.Current = A.Fake<ServiceLocator>(x => x.Wrapping(ServiceLocator.Current));
-
-            this.OnSetup();
         }
 
-        [TearDown]
-        public void Teardown()
+        [SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly",
+            Justification = "Children do not have a finalizer.")]
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly",
+            Justification = "Implements the Disposable method only to support xUnit test lifecycle.")]
+        public void Dispose()
         {
             ServiceLocator.Current = this.replacedServiceLocator;
-        }
-
-        protected virtual void OnSetup()
-        {
         }
 
         protected void StubResolve<T>(T returnedInstance)
@@ -34,7 +31,7 @@ namespace FakeItEasy.Tests
         {
             var result = A.Fake<T>();
 
-            this.StubResolve<T>(result);
+            this.StubResolve(result);
 
             return result;
         }

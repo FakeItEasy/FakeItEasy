@@ -1,31 +1,25 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
-    using NUnit.Framework;
 
-    [TestFixture]
-    internal class SameAsConstraintTests
+    public class SameAsConstraintTests
         : ArgumentConstraintTestBase<object>
     {
-        private static readonly SomeRefType TheRealThing = new SomeRefType { Value = "Foo" };
+        private static readonly SomeRefType TheRealThing = new SomeRefType("Foo");
 
-        protected override IEnumerable<object> InvalidValues
+        protected override string ExpectedDescription => "same as Foo";
+
+        public static IEnumerable<object[]> InvalidValues()
         {
-            get
-            {
-                yield return new SomeRefType { Value = "Foo" };
-                yield return new SomeRefType { Value = "Bar" };
-            }
+            return TestCases.FromObject(
+                new SomeRefType("Foo"),
+                new SomeRefType("Bar"));
         }
 
-        protected override IEnumerable<object> ValidValues
+        public static IEnumerable<object[]> ValidValues()
         {
-            get { yield return TheRealThing; }
-        }
-
-        protected override string ExpectedDescription
-        {
-            get { return "same as Foo"; }
+            return TestCases.FromObject(
+                TheRealThing);
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<object> scope)
@@ -35,11 +29,16 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
         private class SomeRefType
         {
-            public string Value { get; set; }
+            private readonly string value;
+
+            public SomeRefType(string value)
+            {
+                this.value = value;
+            }
 
             public override string ToString()
             {
-                return this.Value;
+                return this.value;
             }
         }
     }

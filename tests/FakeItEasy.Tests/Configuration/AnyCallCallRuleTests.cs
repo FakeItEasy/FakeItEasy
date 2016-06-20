@@ -4,15 +4,15 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class AnyCallCallRuleTests
     {
-        [TestCase(typeof(int), Result = true)]
-        [TestCase(typeof(string), Result = false)]
-        [TestCase(null, Result = true)]
-        public bool IsApplicableTo_should_check_the_ApplicableToMembersWithReturnType_property(Type type)
+        [Theory]
+        [InlineData(typeof(int), true)]
+        [InlineData(typeof(string), false)]
+        [InlineData(null, true)]
+        public void IsApplicableTo_should_check_the_ApplicableToMembersWithReturnType_property(Type type, bool expectedResult)
         {
             // Arrange
             var rule = this.CreateRule();
@@ -21,14 +21,16 @@ namespace FakeItEasy.Tests.Configuration
             var call = ExpressionHelper.CreateFakeCall<IFoo>(x => x.Baz());
 
             // Act
+            var result = rule.IsApplicableTo(call);
 
             // Assert
-            return rule.IsApplicableTo(call);
+            result.Should().Be(expectedResult);
         }
 
-        [Test]
-        public void IsApplicableTo_should_use_predicate_set_by_UsePredicateToValidateArguments(
-            [Values(true, false)] bool predicateReturnValue)
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void IsApplicableTo_should_use_predicate_set_by_UsePredicateToValidateArguments(bool predicateReturnValue)
         {
             // Arrange
             Func<ArgumentCollection, bool> argumentsPredicate = x => predicateReturnValue;
@@ -45,7 +47,7 @@ namespace FakeItEasy.Tests.Configuration
             rule.IsApplicableTo(call).Should().Be(predicateReturnValue);
         }
 
-        [Test]
+        [Fact]
         public void ToString_when_no_member_type_is_specified_should_return_correct_description()
         {
             // Arrange
@@ -57,7 +59,7 @@ namespace FakeItEasy.Tests.Configuration
             rule.DescriptionOfValidCall.Should().Be("Any call made to the fake object.");
         }
 
-        [Test]
+        [Fact]
         public void ToString_when_member_type_is_set_should_return_correct_description()
         {
             // Arrange

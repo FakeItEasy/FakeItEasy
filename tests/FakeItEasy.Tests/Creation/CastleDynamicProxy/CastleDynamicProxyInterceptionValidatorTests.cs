@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
@@ -9,8 +10,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Expressions;
     using FluentAssertions;
-    using NUnit.Framework;
-    using Guard = FakeItEasy.Guard;
+    using Xunit;
 
     public interface IAInterface
     {
@@ -22,43 +22,49 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         string Method();
     }
 
-    [TestFixture]
     public class CastleDynamicProxyInterceptionValidatorTests
     {
-        private CastleDynamicProxyInterceptionValidator validator;
-        private MethodInfoManager methodInfoManager;
+        private readonly CastleDynamicProxyInterceptionValidator validator;
 
-        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private object[] nonInterceptableMembers = new[]
+        public CastleDynamicProxyInterceptionValidatorTests()
         {
-            NonInterceptableTestCase.Create(() => new object().GetType(), "Non virtual methods can not be intercepted."),
-            NonInterceptableTestCase.Create(() => object.Equals("foo", "bar"), "Static methods can not be intercepted."),
-            NonInterceptableTestCase.Create(() => "foo".Count(), "Extension methods can not be intercepted since they're static."),
-            NonInterceptableTestCase.Create(() => new TypeWithSealedOverride().ToString(), "Sealed methods can not be intercepted.")
-        };
-
-        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private InterceptionTestCase[] interceptableMethods = new[]
-        {
-            InterceptionTestCase.Create(() => new object().ToString()),
-            InterceptionTestCase.Create(() => ((IBInterface)A.Fake<IAInterface>(builder => builder.Implements(typeof(IBInterface)))).Method())
-        };
-
-        [SetUp]
-        public void Setup()
-        {
-            this.methodInfoManager = new MethodInfoManager();
-
-            this.validator = new CastleDynamicProxyInterceptionValidator(this.methodInfoManager);
+            this.validator = new CastleDynamicProxyInterceptionValidator(new MethodInfoManager());
         }
 
-        [TestCaseSource("nonInterceptableMembers")]
+        public static IEnumerable<object[]> NonInterceptableMembers()
+        {
+            return TestCases.FromObject(
+                NonInterceptableTestCase.Create(
+                    () => new object().GetType(),
+                    "Non virtual methods can not be intercepted."),
+                NonInterceptableTestCase.Create(
+                    () => object.Equals("foo", "bar"),
+                    "Static methods can not be intercepted."),
+                NonInterceptableTestCase.Create(
+                    () => "foo".Count(),
+                    "Extension methods can not be intercepted since they're static."),
+                NonInterceptableTestCase.Create(
+                    () => new TypeWithSealedOverride().ToString(),
+                    "Sealed methods can not be intercepted."));
+        }
+
+        public static IEnumerable<object[]> InterceptableMethods()
+        {
+            return TestCases.FromObject(
+                InterceptionTestCase.Create(() => new object().ToString()),
+                InterceptionTestCase.Create(() =>
+                    ((IBInterface)A.Fake<IAInterface>(builder => builder.Implements(typeof(IBInterface))))
+                        .Method()));
+        }
+
+        [Theory]
+        [MemberData(nameof(NonInterceptableMembers))]
         public void Should_fail_for_non_interceptable_methods(NonInterceptableTestCase testCase)
         {
             Guard.AgainstNull(testCase, "testCase");
 
             // Arrange
-            string reason = null;
+            string reason;
 
             // Act
             var result = this.validator.MethodCanBeInterceptedOnInstance(testCase.Method, testCase.Target, out reason);
@@ -68,13 +74,14 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             reason.Should().Be(testCase.FailReason);
         }
 
-        [TestCaseSource("interceptableMethods")]
+        [Theory]
+        [MemberData(nameof(InterceptableMethods))]
         public void Should_succeed_for_interceptable_methods(InterceptionTestCase testCase)
         {
             Guard.AgainstNull(testCase, "testCase");
 
             // Arrange
-            string reason = null;
+            string reason;
 
             // Act
             var result = this.validator.MethodCanBeInterceptedOnInstance(testCase.Method, testCase.Target, out reason);

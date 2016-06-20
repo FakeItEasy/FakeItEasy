@@ -3,49 +3,48 @@ namespace FakeItEasy.Tests.Core
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class ArgumentValueFormatterTests
     {
-        [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used reflectively.")]
-        private readonly object[] specificCases = TestCases.Create(
-            new
-            {
-                LessSpecific = typeof(object),
-                MoreSpecific = typeof(DateTime),
-                Value = (object)new DateTime(2000, 1, 1)
-            },
-            new
-            {
-                LessSpecific = typeof(object),
-                MoreSpecific = typeof(Stream),
-                Value = (object)new MemoryStream()
-            },
-            new
-            {
-                LessSpecific = typeof(object),
-                MoreSpecific = typeof(IFoo),
-                Value = (object)A.Fake<IFoo>()
-            }).AsTestCaseSource();
+        private readonly ArgumentValueFormatter formatter;
+        private readonly List<IArgumentValueFormatter> registeredTypeFormatters;
 
-        private ArgumentValueFormatter formatter;
-        private List<IArgumentValueFormatter> registeredTypeFormatters;
-
-        [SetUp]
-        public void Setup()
+        public ArgumentValueFormatterTests()
         {
             this.registeredTypeFormatters = new List<IArgumentValueFormatter>();
 
             this.formatter = new ArgumentValueFormatter(this.registeredTypeFormatters);
         }
 
-        [Test]
+        public static IEnumerable<object> SpecificCases()
+        {
+            return TestCases.FromProperties(
+                new
+                {
+                    LessSpecific = typeof(object),
+                    MoreSpecific = typeof(DateTime),
+                    Value = (object)new DateTime(2000, 1, 1)
+                },
+                new
+                {
+                    LessSpecific = typeof(object),
+                    MoreSpecific = typeof(Stream),
+                    Value = (object)new MemoryStream()
+                },
+                new
+                {
+                    LessSpecific = typeof(object),
+                    MoreSpecific = typeof(IFoo),
+                    Value = (object)A.Fake<IFoo>()
+                });
+        }
+
+        [Fact]
         public void Should_write_null_values_correct()
         {
             // Arrange
@@ -57,7 +56,7 @@ namespace FakeItEasy.Tests.Core
             description.Should().Be("<NULL>");
         }
 
-        [Test]
+        [Fact]
         public void Should_use_ToString_when_no_matching_formatter_is_registered()
         {
             // Arrange
@@ -69,7 +68,7 @@ namespace FakeItEasy.Tests.Core
             description.Should().Be("1");
         }
 
-        [Test]
+        [Fact]
         public void Should_use_injected_formatter_when_available()
         {
             // Arrange
@@ -82,7 +81,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().Be("Y2K");
         }
 
-        [Test]
+        [Fact]
         public void Should_use_injected_formatter_that_is_for_base_type_of_value()
         {
             // Arrange
@@ -95,7 +94,8 @@ namespace FakeItEasy.Tests.Core
             result.Should().Be("stream");
         }
 
-        [TestCaseSource("specificCases")]
+        [Theory]
+        [MemberData(nameof(SpecificCases))]
         public void Should_favor_most_specific_formatter_when_more_than_one_is_applicable(Type lessSpecific, Type moreSpecific, object value)
         {
             // Arrange
@@ -109,7 +109,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().Be("more specific");
         }
 
-        [Test]
+        [Fact]
         public void Should_use_formatter_with_highest_priority_when_multiple_exists_for_the_same_type()
         {
             // Arrange
@@ -123,14 +123,15 @@ namespace FakeItEasy.Tests.Core
             result.Should().Be("high priority");
         }
 
-        [TestCase("", Result = "string.Empty")]
-        [TestCase("string value", Result = "\"string value\"")]
-        public string Should_format_string_values_correct_by_default(string value)
+        [Theory]
+        [InlineData("", "string.Empty")]
+        [InlineData("string value", "\"string value\"")]
+        public void Should_format_string_values_correct_by_default(string value, string expectedResult)
         {
-            return this.formatter.GetArgumentValueAsString(value);
+            this.formatter.GetArgumentValueAsString(value).Should().Be(expectedResult);
         }
 
-        [Test]
+        [Fact]
         public void Should_prefer_exact_type_formatter_to_interface_formatter()
         {
             // Arrange
@@ -144,7 +145,7 @@ namespace FakeItEasy.Tests.Core
             result.Should().Be("a string");
         }
 
-        [Test]
+        [Fact]
         public void Built_in_formatters_should_have_lower_than_default_priority()
         {
             // Arrange

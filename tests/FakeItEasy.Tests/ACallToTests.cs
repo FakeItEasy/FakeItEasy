@@ -4,15 +4,20 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class ACallToTests
         : ConfigurableServiceLocatorTestBase
     {
-        private IFakeConfigurationManager configurationManager;
+        private readonly IFakeConfigurationManager configurationManager;
 
-        [Test]
+        public ACallToTests()
+        {
+            this.configurationManager = A.Fake<IFakeConfigurationManager>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeConfigurationManager>()));
+            this.StubResolve(this.configurationManager);
+        }
+
+        [Fact]
         public void CallTo_with_void_call_should_return_configuration_from_configuration_manager()
         {
             // Arrange
@@ -29,7 +34,7 @@ namespace FakeItEasy.Tests
             result.Should().BeSameAs(configuration);
         }
 
-        [Test]
+        [Fact]
         public void CallTo_with_function_call_should_return_configuration_from_configuration_manager()
         {
             // Arrange
@@ -44,12 +49,6 @@ namespace FakeItEasy.Tests
 
             // Assert
             result.Should().BeSameAs(configuration);
-        }
-
-        protected override void OnSetup()
-        {
-            this.configurationManager = A.Fake<IFakeConfigurationManager>(x => x.Wrapping(ServiceLocator.Current.Resolve<IFakeConfigurationManager>()));
-            this.StubResolve<IFakeConfigurationManager>(this.configurationManager);
         }
     }
 }

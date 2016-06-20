@@ -8,21 +8,14 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
     using FakeItEasy.SelfInitializedFakes;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using NUnit.Framework;
+    using Xunit;
 
-    [TestFixture]
     public class RecordingManagerTests
     {
-        private ICallStorage callStorage;
-        private List<CallData> recordedCalls;
+        private readonly ICallStorage callStorage;
+        private readonly List<CallData> recordedCalls;
 
-        private MethodInfo TypeWithOutAndRefFooMethod
-        {
-            get { return typeof(IOutputAndRef).GetMethod("Foo"); }
-        }
-
-        [SetUp]
-        public void Setup()
+        public RecordingManagerTests()
         {
             this.recordedCalls = new List<CallData>();
 
@@ -30,7 +23,9 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => this.callStorage.Load()).Returns(this.recordedCalls);
         }
 
-        [Test]
+        private MethodInfo TypeWithOutAndRefFooMethod => typeof(IOutputAndRef).GetMethod("Foo");
+
+        [Fact]
         public void ApplyCall_should_apply_values_from_recorded_call()
         {
             this.recordedCalls.Add(new CallData(this.TypeWithOutAndRefFooMethod, new object[] { 10, "20" }, 10));
@@ -48,7 +43,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => call.SetArgumentValue(3, "20")).MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void ApplyCall_should_apply_each_recorded_call_once_only_then_use_next_existing_call()
         {
             this.recordedCalls.Add(new CallData(this.TypeWithOutAndRefFooMethod, new object[] { 10, "20" }, 10));
@@ -68,7 +63,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => call.SetArgumentValue(3, "200")).MustHaveHappened(Repeated.Exactly.Once);
         }
 
-        [Test]
+        [Fact]
         public void IsRecording_should_return_true_when_storage_returns_null_from_load()
         {
             // Arrange
@@ -81,7 +76,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             recorder.IsRecording.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void IsRecording_should_return_false_when_calls_are_loaded_from_storage()
         {
             // Arrange
@@ -94,8 +89,8 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             recorder.IsRecording.Should().BeFalse();
         }
 
-        [Test]
-        [SetCulture("en-US")]
+        [Fact]
+        [UsingCulture("en-US")]
         public void ApplyNext_should_throw_when_all_calls_have_been_applied()
         {
             // Arrange
@@ -116,8 +111,8 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
                 .WithMessage("All the recorded calls has been applied, the recorded sequence is no longer valid.");
         }
 
-        [Test]
-        [SetCulture("en-US")]
+        [Fact]
+        [UsingCulture("en-US")]
         public void ApplyNext_should_throw_when_method_of_call_being_applied_does_not_match_the_next_non_applied_recorded_call()
         {
             // Arrange
@@ -134,7 +129,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
                 .WithMessage("The method of the call did not match the method of the recorded call, the recorded sequence is no longer valid.*");
         }
 
-        [Test]
+        [Fact]
         public void RecordCall_should_add_call_to_recorded_calls()
         {
             var callToRecord = A.Fake<ICompletedFakeObjectCall>();
@@ -151,7 +146,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
                 .MustHaveHappened();
         }
 
-        [Test]
+        [Fact]
         public void Dispose_should_call_save_with_empty_collection_when_no_calls_have_been_recorded_and_no_previous_recording_exists()
         {
             A.CallTo(() => this.callStorage.Load()).Returns(null);
