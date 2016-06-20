@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests
 {
     using System;
-    using System.Collections.Generic;
     using FakeItEasy.Creation;
     using FluentAssertions;
     using NUnit.Framework;
@@ -53,22 +52,6 @@ namespace FakeItEasy.Tests
 
             // Assert
             result.Should().BeSameAs(dummy);
-        }
-
-        [Test]
-        public void CollectionOfFakes_should_delegate_to_fake_creator()
-        {
-            // Arrange
-            var returnedFromCreator = new List<IFoo>();
-
-            var creator = this.StubResolveWithFake<IFakeCreatorFacade>();
-            A.CallTo(() => creator.CollectionOfFake<IFoo>(10)).Returns(returnedFromCreator);
-
-            // Act
-            object result = A.CollectionOfFake<IFoo>(10);
-
-            // Assert
-            result.Should().BeSameAs(returnedFromCreator);
         }
 
         protected override void OnSetup()

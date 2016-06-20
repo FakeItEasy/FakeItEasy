@@ -93,17 +93,11 @@ namespace FakeItEasy
         public static FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T> CallTo<T>(System.Linq.Expressions.Expression<System.Func<T>> callSpecification) { }
         public static FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(System.Linq.Expressions.Expression<System.Func<TValue>> propertySpecification) { }
         public static System.Collections.Generic.IList<T> CollectionOfDummy<T>(int numberOfDummies) { }
-        public static System.Collections.Generic.IList<object> CollectionOfDummy(System.Type typeOfDummy, int numberOfDummies) { }
         public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes) { }
         public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
-        public static System.Collections.Generic.IList<object> CollectionOfFake(System.Type typeOfFake, int numberOfFakes) { }
-        public static System.Collections.Generic.IList<object> CollectionOfFake(System.Type typeOfFake, int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions> optionsBuilder) { }
         public static T Dummy<T>() { }
-        public static object Dummy(System.Type typeOfDummy) { }
         public static T Fake<T>() { }
         public static T Fake<T>(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
-        public static object Fake(System.Type typeOfFake) { }
-        public static object Fake(System.Type typeOfFake, System.Action<FakeItEasy.Creation.IFakeOptions> optionsBuilder) { }
     }
     public class static A<T>
     
@@ -554,6 +548,19 @@ namespace FakeItEasy.Creation
     public interface ITaggable
     {
         object Tag { get; set; }
+    }
+}
+namespace FakeItEasy.Sdk
+{
+    
+    public class static Create
+    {
+        public static System.Collections.Generic.IList<object> CollectionOfDummy(System.Type typeOfDummy, int numberOfDummies) { }
+        public static System.Collections.Generic.IList<object> CollectionOfFake(System.Type typeOfFake, int numberOfFakes) { }
+        public static System.Collections.Generic.IList<object> CollectionOfFake(System.Type typeOfFake, int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions> optionsBuilder) { }
+        public static object Dummy(System.Type typeOfDummy) { }
+        public static object Fake(System.Type typeOfFake) { }
+        public static object Fake(System.Type typeOfFake, System.Action<FakeItEasy.Creation.IFakeOptions> optionsBuilder) { }
     }
 }
 namespace FakeItEasy.SelfInitializedFakes

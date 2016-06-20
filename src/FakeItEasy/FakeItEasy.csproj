@@ -104,6 +104,7 @@
     <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
     <Compile Include="Core\DelegateRaiser.cs" />
     <Compile Include="Priority.cs" />
+    <Compile Include="Sdk\Create.cs" />
     <Compile Include="TaskHelper.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="StringBuilderExtensions.cs" />
