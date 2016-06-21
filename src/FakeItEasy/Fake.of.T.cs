@@ -52,9 +52,9 @@ namespace FakeItEasy
             get { return FakeItEasy.Fake.GetCalls(this.FakedObject); }
         }
 
-        private static IFakeCreatorFacade FakeCreator
+        private static IFakeAndDummyManager FakeAndDummyManager
         {
-            get { return ServiceLocator.Current.Resolve<IFakeCreatorFacade>(); }
+            get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
         }
 
         private IStartConfiguration<T> StartConfiguration
@@ -100,7 +100,9 @@ namespace FakeItEasy
 
         private static T CreateFake(Action<IFakeOptions<T>> optionsBuilder)
         {
-            return FakeCreator.CreateFake(optionsBuilder);
+            Guard.AgainstNull(optionsBuilder, "optionsBuilder");
+
+            return (T)FakeAndDummyManager.CreateFake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
         }
     }
 }
