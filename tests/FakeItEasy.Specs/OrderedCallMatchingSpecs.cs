@@ -88,7 +88,7 @@ namespace FakeItEasy.Specs
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated exactly twice
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(2)' repeated at least once
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(3)' repeated at least once
-  The calls where found but not in the correct order among the calls:
+  The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) repeated 2 times
     ...
@@ -153,7 +153,7 @@ namespace FakeItEasy.Specs
   Assertion failed for the following calls:
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated at least once
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated at least once
-  The calls where found but not in the correct order among the calls:
+  The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
     3: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)
@@ -231,7 +231,7 @@ namespace FakeItEasy.Specs
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated exactly twice
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(2)' repeated at least once
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(3)' repeated exactly once
-  The calls where found but not in the correct order among the calls:
+  The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) repeated 2 times
     ...
