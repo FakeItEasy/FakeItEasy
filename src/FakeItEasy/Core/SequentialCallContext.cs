@@ -83,7 +83,7 @@ namespace FakeItEasy.Core
                     }
                 }
 
-                message.Write("The calls where found but not in the correct order among the calls:");
+                message.Write("The calls were found but not in the correct order among the calls:");
                 message.WriteLine();
 
                 using (message.Indent())
