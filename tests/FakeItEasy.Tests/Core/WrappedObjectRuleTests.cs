@@ -8,11 +8,14 @@ namespace FakeItEasy.Tests.Core
 
     public class WrappedObjectRuleTests
     {
-        public interface ITypeWithOutputAndRefArguments
+        public interface ITypeWithRefeferenceArguments
         {
             [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Required for testing.")]
             void MethodWithReferenceArgument(ref int argument);
+        }
 
+        public interface ITypeWithOutputArguments
+        {
             [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Required for testing.")]
             void MethodWithOutputArgument(out int argument);
         }
@@ -70,12 +73,8 @@ namespace FakeItEasy.Tests.Core
         public void Apply_should_assign_reference_arguments()
         {
             // Arrange
-            var wrapped = new TypeThatImplementsInterfaceWithOutputAndRefArguments
-            {
-                ReferenceArgumentThatWillBeApplied = 10
-            };
-
-            var call = FakeCall.Create<ITypeWithOutputAndRefArguments>("MethodWithReferenceArgument", new[] { Type.GetType("System.Int32&") }, new object[] { 0 });
+            var wrapped = new TypeWithReferenceArguments(10);
+            var call = FakeCall.Create<ITypeWithRefeferenceArguments>("MethodWithReferenceArgument", new[] { Type.GetType("System.Int32&") }, new object[] { 0 });
             var rule = this.CreateRule(wrapped);
 
             // Act
@@ -89,12 +88,8 @@ namespace FakeItEasy.Tests.Core
         public void Apply_should_assign_out_arguments()
         {
             // Arrange
-            var wrapped = new TypeThatImplementsInterfaceWithOutputAndRefArguments
-            {
-                OutArgumentThatWillBeApplied = 10
-            };
-
-            var call = FakeCall.Create<ITypeWithOutputAndRefArguments>("MethodWithOutputArgument", new[] { Type.GetType("System.Int32&") }, new object[] { 0 });
+            var wrapped = new TypeWithOutputArguments(10);
+            var call = FakeCall.Create<ITypeWithOutputArguments>("MethodWithOutputArgument", new[] { Type.GetType("System.Int32&") }, new object[] { 0 });
             var rule = this.CreateRule(wrapped);
 
             // Act
@@ -114,21 +109,35 @@ namespace FakeItEasy.Tests.Core
             return new WrappedObjectRule(wrapped);
         }
 
-        private class TypeThatImplementsInterfaceWithOutputAndRefArguments
-            : ITypeWithOutputAndRefArguments
+        private class TypeWithReferenceArguments
+            : ITypeWithRefeferenceArguments
         {
-            public int ReferenceArgumentThatWillBeApplied { private get; set; }
+            private readonly int referenceArgumentThatWillBeApplied;
 
-            public int OutArgumentThatWillBeApplied { private get; set; }
+            public TypeWithReferenceArguments(int referenceArgumentThatWillBeApplied)
+            {
+                this.referenceArgumentThatWillBeApplied = referenceArgumentThatWillBeApplied;
+            }
 
             public void MethodWithReferenceArgument(ref int argument)
             {
-                argument = this.ReferenceArgumentThatWillBeApplied;
+                argument = this.referenceArgumentThatWillBeApplied;
+            }
+        }
+
+        private class TypeWithOutputArguments
+            : ITypeWithOutputArguments
+        {
+            private readonly int outArgumentThatWillBeApplied;
+
+            public TypeWithOutputArguments(int outArgumentThatWillBeApplied)
+            {
+                this.outArgumentThatWillBeApplied = outArgumentThatWillBeApplied;
             }
 
             public void MethodWithOutputArgument(out int argument)
             {
-                argument = this.OutArgumentThatWillBeApplied;
+                argument = this.outArgumentThatWillBeApplied;
             }
         }
     }

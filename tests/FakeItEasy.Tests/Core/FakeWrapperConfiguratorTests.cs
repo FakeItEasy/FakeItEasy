@@ -37,7 +37,7 @@ namespace FakeItEasy.Tests.Core
         public void ConfigureFakeToWrap_should_add_self_initialization_rule_when_recorder_is_specified()
         {
             // Arrange
-            this.wrapperConfigurator.Recorder = A.Fake<ISelfInitializingFakeRecorder>();
+            this.wrapperConfigurator.RecordedBy(A.Fake<ISelfInitializingFakeRecorder>());
 
             // Act
             this.wrapperConfigurator.ConfigureFakeToWrap(this.faked);

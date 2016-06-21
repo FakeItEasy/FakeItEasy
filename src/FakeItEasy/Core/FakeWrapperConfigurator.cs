@@ -14,14 +14,13 @@ namespace FakeItEasy.Core
         : FakeOptionsBase<T>, IFakeOptionsForWrappers<T>, IFakeOptionsForWrappers
     {
         private readonly IFakeOptions<T> fakeOptions;
+        private ISelfInitializingFakeRecorder recorder;
 
         public FakeWrapperConfigurator(IFakeOptions<T> fakeOptions, object wrappedObject)
         {
             this.fakeOptions = fakeOptions;
             this.WrappedObject = wrappedObject;
         }
-
-        public ISelfInitializingFakeRecorder Recorder { private get; set; }
 
         private object WrappedObject { get; set; }
 
@@ -52,7 +51,7 @@ namespace FakeItEasy.Core
 
         public IFakeOptions<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
         {
-            this.Recorder = recorder;
+            this.recorder = recorder;
             return this.fakeOptions;
         }
 
@@ -71,7 +70,7 @@ namespace FakeItEasy.Core
 
             var wrapperRule = CreateAndAddWrapperRule(this.WrappedObject, fake);
 
-            AddRecordingRuleWhenRecorderIsSpecified(this.Recorder, fake, wrapperRule);
+            AddRecordingRuleWhenRecorderIsSpecified(this.recorder, fake, wrapperRule);
         }
 
         private static void AddRecordingRuleWhenRecorderIsSpecified(ISelfInitializingFakeRecorder recorder, FakeManager fake, WrappedObjectRule wrapperRule)

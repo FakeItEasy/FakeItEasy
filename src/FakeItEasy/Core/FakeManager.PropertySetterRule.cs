@@ -10,7 +10,12 @@ namespace FakeItEasy.Core
         private class PropertySetterRule
             : IFakeObjectCallRule
         {
-            public FakeManager FakeManager { get; set; }
+            private readonly FakeManager fakeManager;
+
+            public PropertySetterRule(FakeManager fakeManager)
+            {
+                this.fakeManager = fakeManager;
+            }
 
             public int? NumberOfTimesToCall
             {
@@ -31,14 +36,14 @@ namespace FakeItEasy.Core
                 var newRule = new CallRuleMetadata
                                   {
                                       CalledNumberOfTimes = 1,
-                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.FakeManager)
+                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.fakeManager)
                                                  {
                                                      Indices = fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1).ToArray(),
                                                      Value = fakeObjectCall.Arguments.Last()
                                                  }
                                   };
 
-                this.FakeManager.allUserRulesField.AddFirst(newRule);
+                this.fakeManager.allUserRulesField.AddFirst(newRule);
             }
         }
     }
