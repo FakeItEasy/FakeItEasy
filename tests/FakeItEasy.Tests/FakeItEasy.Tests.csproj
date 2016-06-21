@@ -104,7 +104,6 @@
     <Compile Include="AssertConfigurationExtensionsTests.cs" />
     <Compile Include="CompletedFakeObjectCallExtensionsTests.cs" />
     <Compile Include="TestHelpers\BinarySerializationHelper.cs" />
-    <Compile Include="TestHelpers\ReflectedMethodDataAttribute.cs" />
     <Compile Include="TestHelpers\StringEnumerableExtensions.cs" />
     <Compile Include="TestHelpers\UsingCultureAttribute.cs" />
     <Compile Include="WhereConfigurationExtensionsTests.cs" />
