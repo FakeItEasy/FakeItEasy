@@ -38,14 +38,14 @@ namespace FakeItEasy.Core
 
             this.preUserRules = new[]
                                     {
-                                        new CallRuleMetadata { Rule = new EventRule { FakeManager = this } }
+                                        new CallRuleMetadata { Rule = new EventRule(this) }
                                     };
             this.allUserRulesField = new LinkedList<CallRuleMetadata>();
             this.postUserRules = new[]
                                      {
-                                         new CallRuleMetadata { Rule = new ObjectMemberRule { FakeManager = this } },
-                                         new CallRuleMetadata { Rule = new AutoFakePropertyRule { FakeManager = this } },
-                                         new CallRuleMetadata { Rule = new PropertySetterRule { FakeManager = this } },
+                                         new CallRuleMetadata { Rule = new ObjectMemberRule(this) },
+                                         new CallRuleMetadata { Rule = new AutoFakePropertyRule(this) },
+                                         new CallRuleMetadata { Rule = new PropertySetterRule(this) },
                                          new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
                                      };
 

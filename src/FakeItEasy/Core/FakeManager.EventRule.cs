@@ -14,6 +14,8 @@ namespace FakeItEasy.Core
         private class EventRule
             : IFakeObjectCallRule
         {
+            private readonly FakeManager fakeManager;
+
             [NonSerialized]
             private readonly EventHandlerArgumentProviderMap eventHandlerArgumentProviderMap =
                 ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
@@ -21,7 +23,10 @@ namespace FakeItEasy.Core
             [NonSerialized]
             private Dictionary<object, Delegate> registeredEventHandlersField;
 
-            public FakeManager FakeManager { private get; set; }
+            public EventRule(FakeManager fakeManager)
+            {
+                this.fakeManager = fakeManager;
+            }
 
             public int? NumberOfTimesToCall
             {
@@ -148,7 +153,7 @@ namespace FakeItEasy.Core
 
                 if (this.RegisteredEventHandlers.TryGetValue(call.Event, out raiseMethod))
                 {
-                    var arguments = argumentProvider.GetEventArguments(this.FakeManager.Object);
+                    var arguments = argumentProvider.GetEventArguments(this.fakeManager.Object);
 
                     try
                     {

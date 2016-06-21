@@ -26,14 +26,10 @@ namespace FakeItEasy.Creation.DelegateProxies
             }
 
             var invokeMethod = typeOfProxy.GetMethod("Invoke");
-            var eventRaiser = new DelegateCallInterceptedEventRaiser(fakeCallProcessorProvider);
-            var proxy = CreateDelegateProxy(typeOfProxy, invokeMethod, eventRaiser);
+            var eventRaiser = new DelegateCallInterceptedEventRaiser(fakeCallProcessorProvider, invokeMethod, typeOfProxy);
 
-            eventRaiser.Method = invokeMethod;
-            eventRaiser.Instance = proxy;
-
-            fakeCallProcessorProvider.EnsureInitialized(proxy);
-            return new ProxyGeneratorResult(proxy);
+            fakeCallProcessorProvider.EnsureInitialized(eventRaiser.Instance);
+            return new ProxyGeneratorResult(eventRaiser.Instance);
         }
 
         public virtual ProxyGeneratorResult GenerateProxy(
@@ -170,19 +166,20 @@ namespace FakeItEasy.Creation.DelegateProxies
             public static readonly MethodInfo RaiseMethod = typeof(DelegateCallInterceptedEventRaiser).GetMethod("Raise");
 
             private readonly IFakeCallProcessorProvider fakeCallProcessorProvider;
+            private readonly MethodInfo method;
 
-            public DelegateCallInterceptedEventRaiser(IFakeCallProcessorProvider fakeCallProcessorProvider)
+            public DelegateCallInterceptedEventRaiser(IFakeCallProcessorProvider fakeCallProcessorProvider, MethodInfo method, Type type)
             {
                 this.fakeCallProcessorProvider = fakeCallProcessorProvider;
+                this.method = method;
+                this.Instance = CreateDelegateProxy(type, method, this);
             }
 
-            public MethodInfo Method { private get; set; }
-
-            public Delegate Instance { private get; set; }
+            public Delegate Instance { get; }
 
             public object Raise(object[] arguments)
             {
-                var call = new DelegateFakeObjectCall(this.Instance, this.Method, arguments);
+                var call = new DelegateFakeObjectCall(this.Instance, this.method, arguments);
                 this.fakeCallProcessorProvider.Fetch(this.Instance).Process(call);
                 return call.ReturnValue;
             }

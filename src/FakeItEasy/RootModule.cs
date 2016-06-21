@@ -38,11 +38,7 @@ namespace FakeItEasy
                 new DynamicDummyFactory(
                     c.Resolve<IEnumerable<IDummyFactory>>()));
 
-            container.RegisterSingleton<IExpressionCallMatcherFactory>(c =>
-                new ExpressionCallMatcherFactory
-                    {
-                        Container = c
-                    });
+            container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(c));
 
             container.RegisterSingleton(c =>
                 new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
@@ -89,7 +85,7 @@ namespace FakeItEasy
             container.Register<IFakeAndDummyManager>(c =>
                                                          {
                                                              var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<FakeCallProcessorProvider.Factory>());
-                                                             var session = new DummyValueCreationSession(c.Resolve<DynamicDummyFactory>(), new SessionFakeObjectCreator { Creator = fakeCreator });
+                                                             var session = new DummyValueCreationSession(c.Resolve<DynamicDummyFactory>(), new SessionFakeObjectCreator(fakeCreator));
                                                              var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
                                                              return new DefaultFakeAndDummyManager(session, fakeCreator, fakeConfigurator);
@@ -133,15 +129,20 @@ namespace FakeItEasy
         private class ExpressionCallMatcherFactory
             : IExpressionCallMatcherFactory
         {
-            public DictionaryContainer Container { private get; set; }
+            private readonly ServiceLocator serviceLocator;
+
+            public ExpressionCallMatcherFactory(ServiceLocator serviceLocator)
+            {
+                this.serviceLocator = serviceLocator;
+            }
 
             public ICallMatcher CreateCallMathcer(LambdaExpression callSpecification)
             {
                 return new ExpressionCallMatcher(
                     callSpecification,
-                    this.Container.Resolve<ExpressionArgumentConstraintFactory>(),
-                    this.Container.Resolve<MethodInfoManager>(),
-                    this.Container.Resolve<ICallExpressionParser>());
+                    this.serviceLocator.Resolve<ExpressionArgumentConstraintFactory>(),
+                    this.serviceLocator.Resolve<MethodInfoManager>(),
+                    this.serviceLocator.Resolve<ICallExpressionParser>());
             }
         }
 
@@ -166,11 +167,16 @@ namespace FakeItEasy
         private class SessionFakeObjectCreator
             : IFakeObjectCreator
         {
-            public FakeObjectCreator Creator { private get; set; }
+            private readonly FakeObjectCreator creator;
+
+            public SessionFakeObjectCreator(FakeObjectCreator creator)
+            {
+                this.creator = creator;
+            }
 
             public bool TryCreateFakeObject(Type typeOfFake, DummyValueCreationSession session, out object result)
             {
-                result = this.Creator.CreateFake(typeOfFake, new ProxyOptions(), session, false);
+                result = this.creator.CreateFake(typeOfFake, new ProxyOptions(), session, false);
                 return result != null;
             }
         }
