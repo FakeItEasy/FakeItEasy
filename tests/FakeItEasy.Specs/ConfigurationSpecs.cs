@@ -21,17 +21,16 @@ namespace FakeItEasy.Specs
             IFoo fake,
             bool wasCalled)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
 
-            "when configuring callback"
-                .x(() =>
-                    {
-                        A.CallTo(() => fake.Bar()).Invokes(x => wasCalled = true);
-                        fake.Bar();
-                    });
+            "And I configure a method to invoke an action"
+                .x(() => A.CallTo(() => fake.Bar()).Invokes(x => wasCalled = true));
 
-            "it should invoke the callback"
+            "When I call the method"
+                .x(() => fake.Bar());
+
+            "Then it invokes the action"
                 .x(() => wasCalled.Should().BeTrue());
         }
 
@@ -42,27 +41,26 @@ namespace FakeItEasy.Specs
             bool secondWasCalled,
             int returnValue)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
 
-            "when configuring multiple callback"
+            "And I configure a method to invoke two actions and return a value"
                 .x(() =>
-                    {
-                        A.CallTo(() => fake.Baz())
-                            .Invokes(x => firstWasCalled = true)
-                            .Invokes(x => secondWasCalled = true)
-                            .Returns(10);
+                    A.CallTo(() => fake.Baz())
+                        .Invokes(x => firstWasCalled = true)
+                        .Invokes(x => secondWasCalled = true)
+                        .Returns(10));
 
-                        returnValue = fake.Baz();
-                    });
+            "When I call the method"
+                .x(() => returnValue = fake.Baz());
 
-            "it should call the first callback"
+            "Then it calls the first callback"
                 .x(() => firstWasCalled.Should().BeTrue());
 
-            "it should call the second callback"
+            "And it calls the first callback"
                 .x(() => secondWasCalled.Should().BeTrue());
 
-            "it should return the configured value"
+            "And it returns the configured value"
                 .x(() => returnValue.Should().Be(10));
         }
 
@@ -72,23 +70,25 @@ namespace FakeItEasy.Specs
             int returnValue,
             bool callbackWasInvoked)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<BaseClass>());
 
-            "when configuring to call base method"
+            "And I configure a method to invoke an action and call the base method"
                 .x(() =>
-                    {
-                        A.CallTo(() => fake.ReturnSomething()).Invokes(x => callbackWasInvoked = true).CallsBaseMethod();
-                        returnValue = fake.ReturnSomething();
-                    });
+                    A.CallTo(() => fake.ReturnSomething())
+                        .Invokes(x => callbackWasInvoked = true)
+                        .CallsBaseMethod());
 
-            "it should have called the base method"
+            "When I call the method"
+                .x(() => returnValue = fake.ReturnSomething());
+
+            "Then it calls the base method"
                 .x(() => fake.WasCalled.Should().BeTrue());
 
-            "it should return value from base method"
+            "And it returns the value from base method"
                 .x(() => returnValue.Should().Be(10));
 
-            "it should invoke the callback"
+            "And it invokes the callback"
                 .x(() => callbackWasInvoked.Should().BeTrue());
         }
 
@@ -98,18 +98,20 @@ namespace FakeItEasy.Specs
             IReturnValueArgumentValidationConfiguration<int> configuration,
             Exception exception)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
 
-            "when configuring multiple returns on the same configuration"
+            "And I configure the return value for the method"
                 .x(() =>
                 {
                     configuration = A.CallTo(() => fake.Baz());
                     configuration.Returns(42);
-                    exception = Record.Exception(() => configuration.Returns(0));
                 });
 
-            "it should throw an invalid operation exception"
+            "When I use the same configuration object to set the return value again"
+                .x(() => exception = Record.Exception(() => configuration.Returns(0)));
+
+            "Then it throws an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
@@ -119,18 +121,20 @@ namespace FakeItEasy.Specs
             IReturnValueArgumentValidationConfiguration<int> configuration,
             Exception exception)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
 
-            "when configuring a return then a throw on the same configuration"
+            "And I configure the return value for the method"
                 .x(() =>
                 {
                     configuration = A.CallTo(() => fake.Baz());
                     configuration.Returns(42);
-                    exception = Record.Exception(() => configuration.Throws<Exception>());
                 });
 
-            "it should throw an invalid operation exception"
+            "When I use the same configuration object to have the method throw an exception"
+                .x(() => exception = Record.Exception(() => configuration.Throws<Exception>()));
+
+            "Then it throws an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
@@ -140,18 +144,20 @@ namespace FakeItEasy.Specs
             IReturnValueArgumentValidationConfiguration<int> configuration,
             Exception exception)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
 
-            "when configuring a return then base method call on the same configuration"
+            "And I configure the return value for the method"
                 .x(() =>
                 {
                     configuration = A.CallTo(() => fake.Baz());
                     configuration.Returns(42);
-                    exception = Record.Exception(() => configuration.CallsBaseMethod());
                 });
 
-            "it should throw an invalid operation exception"
+            "When I use the same configuration object to have the method call the base method"
+                .x(() => exception = Record.Exception(() => configuration.CallsBaseMethod()));
+
+            "Then it throws an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
@@ -161,18 +167,20 @@ namespace FakeItEasy.Specs
             IReturnValueArgumentValidationConfiguration<int> configuration,
             Exception exception)
         {
-            "establish"
+            "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
 
-            "when configuring a return then a throw on the same configuration"
+            "And I configure the return method to throw an exception"
                 .x(() =>
                 {
                     configuration = A.CallTo(() => fake.Baz());
                     configuration.Throws<ArgumentNullException>();
-                    exception = Record.Exception(() => configuration.Throws<ArgumentException>());
                 });
 
-            "it should throw an invalid operation exception"
+            "When I use the same configuration object to have the method throw an exception again"
+                .x(() => exception = Record.Exception(() => configuration.Throws<ArgumentException>()));
+
+            "Then it throws an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
