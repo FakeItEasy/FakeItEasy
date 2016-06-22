@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests.Core
 
     public class WrappedObjectRuleTests
     {
-        public interface ITypeWithRefeferenceArguments
+        public interface ITypeWithReferenceArguments
         {
             [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Required for testing.")]
             void MethodWithReferenceArgument(ref int argument);
@@ -74,7 +74,7 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var wrapped = new TypeWithReferenceArguments(10);
-            var call = FakeCall.Create<ITypeWithRefeferenceArguments>("MethodWithReferenceArgument", new[] { Type.GetType("System.Int32&") }, new object[] { 0 });
+            var call = FakeCall.Create<ITypeWithReferenceArguments>("MethodWithReferenceArgument", new[] { Type.GetType("System.Int32&") }, new object[] { 0 });
             var rule = this.CreateRule(wrapped);
 
             // Act
@@ -110,7 +110,7 @@ namespace FakeItEasy.Tests.Core
         }
 
         private class TypeWithReferenceArguments
-            : ITypeWithRefeferenceArguments
+            : ITypeWithReferenceArguments
         {
             private readonly int referenceArgumentThatWillBeApplied;
 

@@ -49,15 +49,15 @@ namespace FakeItEasy.Core
             return this.fakeOptions.ConfigureFake(action);
         }
 
-        public IFakeOptions<T> RecordedBy(ISelfInitializingFakeRecorder recorder)
+        public IFakeOptions<T> RecordedBy(ISelfInitializingFakeRecorder fakeRecorder)
         {
-            this.recorder = recorder;
+            this.recorder = fakeRecorder;
             return this.fakeOptions;
         }
 
-        IFakeOptions IFakeOptionsForWrappers.RecordedBy(ISelfInitializingFakeRecorder recorder)
+        IFakeOptions IFakeOptionsForWrappers.RecordedBy(ISelfInitializingFakeRecorder fakeRecorder)
         {
-            return (IFakeOptions)this.RecordedBy(recorder);
+            return (IFakeOptions)this.RecordedBy(fakeRecorder);
         }
 
         /// <summary>
