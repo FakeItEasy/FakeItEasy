@@ -85,6 +85,7 @@
     <Compile Include="ArgumentConstraintManagerExtensions\IsSameSequenceAsTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\NullCheckedMatchesConstraint.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\StringEndsWithTests.cs" />
+    <Compile Include="ArgumentConstraintTestBase.cs" />
     <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
     <Compile Include="Configuration\ArgumentCollectionTests.cs" />
     <Compile Include="Core\DynamicOptionsBuilderTests.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="TestHelpers\BinarySerializationHelper.cs" />
     <Compile Include="TestHelpers\ReflectedMethodDataAttribute.cs" />
     <Compile Include="TestHelpers\StringEnumerableExtensions.cs" />
+    <Compile Include="TestHelpers\TypedContextDataAttribute.cs" />
     <Compile Include="TestHelpers\UsingCultureAttribute.cs" />
     <Compile Include="WhereConfigurationExtensionsTests.cs" />
     <Compile Include="FakeOptionsExtensionsTests.cs" />
@@ -179,7 +181,7 @@
     <Compile Include="SelfInitializedFakes\SelfInitializationRuleTests.cs" />
     <Compile Include="Core\CallWriterTests.cs" />
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
-    <Compile Include="ArgumentConstraintTestBase.cs" />
+    <Compile Include="CommonArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ExpressionCallRuleTests.cs" />
     <Compile Include="Expressions\ExpressionCallMatcherTests.cs" />

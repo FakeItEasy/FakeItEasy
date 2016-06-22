@@ -6,9 +6,9 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class CollectionIsEmptyTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
     {
-        protected override string ExpectedDescription => "empty collection";
+        public override string ExpectedDescription => "empty collection";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public override IEnumerable<object[]> InvalidValues()
         {
             return TestCases.FromObject(
                 null,
@@ -17,7 +17,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 Enumerable.Range(1, 10).Cast<object>());
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public override IEnumerable<object[]> ValidValues()
         {
             return TestCases.FromObject(
                 new List<object>(),

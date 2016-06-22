@@ -7,16 +7,16 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     {
         private static readonly SomeRefType TheRealThing = new SomeRefType("Foo");
 
-        protected override string ExpectedDescription => "same as Foo";
+        public override string ExpectedDescription => "same as Foo";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public override IEnumerable<object[]> InvalidValues()
         {
             return TestCases.FromObject(
                 new SomeRefType("Foo"),
                 new SomeRefType("Bar"));
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public override IEnumerable<object[]> ValidValues()
         {
             return TestCases.FromObject(
                 TheRealThing);

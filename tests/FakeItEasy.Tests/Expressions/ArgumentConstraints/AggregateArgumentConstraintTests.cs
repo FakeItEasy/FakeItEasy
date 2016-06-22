@@ -19,12 +19,12 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
             void Method(string firstArgument, params object[] args);
         }
 
-        protected override string ExpectedDescription
+        public override string ExpectedDescription
         {
             get { return "[\"foo\", \"bar\"]"; }
         }
 
-        public static IEnumerable<object[]> InvalidValues()
+        public override IEnumerable<object[]> InvalidValues()
         {
             return TestCases.FromObject(
                 new object(),
@@ -33,7 +33,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
                 new[] { "foo", "bar", "biz" });
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public override IEnumerable<object[]> ValidValues()
         {
             return TestCases.FromObject(
                 new[] { "foo", "bar" },
@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
         }
 
         [Fact]
-        public override void Constraint_should_provide_correct_description()
+        public void Constraint_should_provide_correct_description()
         {
             var output = new StringBuilder();
 

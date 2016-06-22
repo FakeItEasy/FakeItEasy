@@ -1,10 +1,10 @@
 namespace FakeItEasy.Tests
 {
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
 
-    public abstract class ArgumentConstraintTestBase<T>
-        : ArgumentConstraintTestBase
+    public abstract class ArgumentConstraintTestBase<T> : ArgumentConstraintTestBase
     {
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors",
             Justification = "CreateCosntraint has no unsafe side effects.")]
