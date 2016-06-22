@@ -1,43 +1,48 @@
 namespace FakeItEasy.Tests
 {
+    using System;
+    using System.Collections.Generic;
     using System.Text;
-    using FakeItEasy.Core;
+    using FakeItEasy.Tests.ArgumentConstraintManagerExtensions;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
-    public abstract class ArgumentConstraintTestBase
+    public class ArgumentConstraintTestBase
     {
-        internal IArgumentConstraint ConstraintField { get; set; }
-
-        protected abstract string ExpectedDescription { get; }
-
-        private IArgumentConstraint Constraint => this.ConstraintField;
+        public static Type[][] TestContextTypes =
+        {
+            new[] { typeof(CollectionContainsTests)},
+            new[] { typeof(CollectionIsEmptyTests)},
+        };
 
         [Theory]
-        [ReflectedMethodData("InvalidValues")]
-        public void IsValid_should_return_false_for_invalid_values(object invalidValue)
+        [TypedContextData(nameof(TestContextTypes),
+            nameof(ArgumentConstraintTestBase<IEnumerable<object>>.InvalidValues))]
+        public void IsValid_should_return_false_for_invalid_values(ArgumentConstraintTestBase<IEnumerable<object>> testContext, object invalidValue)
         {
-            this.Constraint.IsValid(invalidValue).Should().BeFalse();
+            testContext.ConstraintField.IsValid(invalidValue).Should().BeFalse();
         }
 
         [Theory]
-        [ReflectedMethodData("ValidValues")]
-        public void IsValid_should_return_true_for_valid_values(object validValue)
+        [TypedContextData(nameof(TestContextTypes),
+            nameof(ArgumentConstraintTestBase<IEnumerable<object>>.ValidValues))]
+        public void IsValid_should_return_true_for_valid_values(ArgumentConstraintTestBase<IEnumerable<object>> testContext, object validValue)
         {
-            var result = this.Constraint.IsValid(validValue);
+            var result = testContext.ConstraintField.IsValid(validValue);
 
             result.Should().BeTrue();
         }
 
-        [Fact]
-        public virtual void Constraint_should_provide_correct_description()
+        [Theory]
+        [TypedContextData(nameof(TestContextTypes))]
+        public virtual void Constraint_should_provide_correct_description(ArgumentConstraintTestBase<IEnumerable<object>> testContext)
         {
             var output = new StringBuilder();
 
-            this.Constraint.WriteDescription(new StringBuilderOutputWriter(output));
+            testContext.ConstraintField.WriteDescription(new StringBuilderOutputWriter(output));
 
-            output.ToString().Should().Be("<" + this.ExpectedDescription + ">");
+            output.ToString().Should().Be("<" + testContext.ExpectedDescription + ">");
         }
     }
 }

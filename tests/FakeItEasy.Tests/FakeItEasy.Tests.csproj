@@ -79,12 +79,6 @@
     <Compile Include="ActionOverWriterValueFormatter.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\CollectionContainsTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\CollectionIsEmptyTests.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\DerivedTypeArgumentTests.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\SameAsConstraintTests.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\EqualToConstraintTests.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\IsSameSequenceAsTests.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\NullCheckedMatchesConstraint.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\StringEndsWithTests.cs" />
     <Compile Include="Builders\BuilderForParsedArgumentExpression.cs" />
     <Compile Include="Configuration\ArgumentCollectionTests.cs" />
     <Compile Include="Core\DynamicOptionsBuilderTests.cs" />
@@ -106,6 +100,7 @@
     <Compile Include="TestHelpers\BinarySerializationHelper.cs" />
     <Compile Include="TestHelpers\ReflectedMethodDataAttribute.cs" />
     <Compile Include="TestHelpers\StringEnumerableExtensions.cs" />
+    <Compile Include="TestHelpers\TypedContextDataAttribute.cs" />
     <Compile Include="TestHelpers\UsingCultureAttribute.cs" />
     <Compile Include="WhereConfigurationExtensionsTests.cs" />
     <Compile Include="FakeOptionsExtensionsTests.cs" />
@@ -132,14 +127,8 @@
     <Compile Include="Core\FakeAsserterTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ArgumentConstraintManagerExtensions\ComparableGreaterThanTests.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\StringIsNullOrEmptyTests.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\StringStartsWithTests.cs" />
     <Compile Include="Core\FakeWrapperConfiguratorTests.cs" />
     <Compile Include="Core\FakeCreationExceptionTests.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\IsInstanceOfTests.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\IsNullTests.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions\StringContainsTests.cs" />
     <Compile Include="Configuration\AnyCallCallRuleTests.cs" />
     <Compile Include="Configuration\AnyCallConfigurationTests.cs" />
     <Compile Include="Configuration\FakeConfigurationExceptionTests.cs" />
@@ -151,7 +140,6 @@
     <Compile Include="DummyExceptionContractTests.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGeneratorTests.cs" />
     <Compile Include="ExceptionContractTests.cs" />
-    <Compile Include="Expressions\ArgumentConstraints\AggregateArgumentConstraintTests.cs" />
     <Compile Include="Expressions\CallExpressionParserTests.cs" />
     <Compile Include="Expressions\ExpressionArgumentConstraintFactoryTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />
@@ -180,7 +168,6 @@
     <Compile Include="Core\CallWriterTests.cs" />
     <Compile Include="ConfigurableServiceLocatorTestBase.cs" />
     <Compile Include="ArgumentConstraintTestBase.cs" />
-    <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraintTests.cs" />
     <Compile Include="Expressions\ExpressionCallRuleTests.cs" />
     <Compile Include="Expressions\ExpressionCallMatcherTests.cs" />
     <Compile Include="Core\MethodInfoManagerTests.cs" />
@@ -231,6 +218,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expressions\ArgumentConstraints\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
