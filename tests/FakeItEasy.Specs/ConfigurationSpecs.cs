@@ -184,18 +184,253 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
+        [Scenario]
+        public static void CallToObjectOnNonFake(
+            BaseClass notAFake,
+            Exception exception)
+        {
+            "Given an object that is not a fake"
+                .x(() => notAFake = new BaseClass());
+
+            "When I start to configure the object"
+                .x(() => exception = Record.Exception(() => A.CallTo(notAFake)));
+
+            "Then it throws an argument exception"
+               .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
+                   .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+        }
+
+        [Scenario]
+        public static void CallToNonVirtualVoidOnNonFake(
+            BaseClass notAFake,
+            Exception exception)
+        {
+            "Given an object that is not a fake"
+                .x(() => notAFake = new BaseClass());
+
+            "When I start to configure a non-virtual void method on the object"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => notAFake.DoSomethingNonVirtual())));
+
+            "Then it throws an argument exception"
+               .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
+                   .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+        }
+
+        [Scenario]
+        public static void CallToNonVirtualVoidOnFake(
+            BaseClass fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<BaseClass>());
+
+            "When I start to configure a non-virtual void method on the fake"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.DoSomethingNonVirtual())));
+
+            "Then it throws a fake configuration exception"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                    .And.Message.Should().Contain("Non virtual methods can not be intercepted."));
+        }
+
+        [Scenario]
+        public static void CallToSealedVoidOnNonFake(
+            DerivedClass notAFake,
+            Exception exception)
+        {
+            "Given an object that is not a fake"
+                .x(() => notAFake = new DerivedClass());
+
+            "When I start to configure a sealed void method on the object"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => notAFake.DoSomething())));
+
+            "Then it throws an argument exception"
+               .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
+                   .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+        }
+
+        [Scenario]
+        public static void CallToSealedVoidOnFake(
+            DerivedClass fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<DerivedClass>());
+
+            "When I start to configure a sealed void method on the fake"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.DoSomething())));
+
+            "Then it throws a fake configuration exception"
+               .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                   .And.Message.Should().Contain("Sealed methods can not be intercepted."));
+        }
+
+        [Scenario]
+        public static void CallToNonVirtualNonVoidOnNonFake(
+            BaseClass notAFake,
+            Exception exception)
+        {
+            "Given an object that is not a fake"
+                .x(() => notAFake = new BaseClass());
+
+            "When I start to configure a non-virtual non-void method on the object"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => notAFake.ReturnSomethingNonVirtual())));
+
+             "Then it throws an argument exception"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
+                    .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+        }
+
+        [Scenario]
+        public static void CallToNonVirtualNonVoidOnFake(
+            BaseClass fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<BaseClass>());
+
+            "When I start to configure a non-virtual non-void method on the fake"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.ReturnSomethingNonVirtual())));
+
+            "Then it throws a fake configuration exception"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                    .And.Message.Should().Contain("Non virtual methods can not be intercepted."));
+        }
+
+        [Scenario]
+        public static void CallToSealedNonVoidOnNonFake(
+            DerivedClass notAFake,
+            Exception exception)
+        {
+            "Given an object that is not a fake"
+                .x(() => notAFake = new DerivedClass());
+
+            "When I start to configure a sealed non-void method on the object"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => notAFake.ReturnSomething())));
+
+             "Then it throws an argument exception"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
+                    .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+        }
+
+        [Scenario]
+        public static void CallToSealedNonVoidOnFake(
+            DerivedClass fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<DerivedClass>());
+
+            "When I start to configure a sealed non-void method on the fake"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.ReturnSomething())));
+
+             "Then it throws a fake configuration exception"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                    .And.Message.Should().Contain("Sealed methods can not be intercepted."));
+        }
+
+        [Scenario]
+        public static void CallToSetNonVirtualOnNonFake(
+            BaseClass notAFake,
+            Exception exception)
+        {
+            "Given an object that is not a fake"
+                .x(() => notAFake = new BaseClass());
+
+            "When I start to configure a non-virtual property setter on the object"
+                .x(() => exception = Record.Exception(() => A.CallToSet(() => notAFake.SomeNonVirtualProperty)));
+
+            "Then it throws an argument exception"
+               .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
+                   .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+        }
+
+        [Scenario]
+        public static void CallToSetNonVirtualOnFake(
+            BaseClass fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<BaseClass>());
+
+            "When I start to configure a non-virtual property setter on the fake"
+                .x(() => exception = Record.Exception(() => A.CallToSet(() => fake.SomeNonVirtualProperty)));
+
+            "Then it throws a fake configuration exception"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                    .And.Message.Should().Contain("Non virtual methods can not be intercepted."));
+        }
+
+        [Scenario]
+        public static void CallToSetSealedOnNonFake(
+            DerivedClass notAFake,
+            Exception exception)
+        {
+            "Given an object that is not a fake"
+                .x(() => notAFake = new DerivedClass());
+
+            "When I start to configure a sealed property setter on the object"
+                .x(() => exception = Record.Exception(() => A.CallToSet(() => notAFake.SomeProperty)));
+
+            "Then it throws an argument exception"
+               .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
+                   .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+        }
+
+        [Scenario]
+        public static void CallToSetSealedOnFake(
+            DerivedClass fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<DerivedClass>());
+
+            "When I start to configure a sealed property setter on the fake"
+                .x(() => exception = Record.Exception(() => A.CallToSet(() => fake.SomeProperty)));
+
+            "Then it throws a fake configuration exception"
+               .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                   .And.Message.Should().Contain("Sealed methods can not be intercepted."));
+        }
+
         public class BaseClass
         {
             public bool WasCalled { get; private set; }
+
+            public string SomeNonVirtualProperty { get; set; }
+
+            public virtual string SomeProperty { get; set; }
 
             public virtual void DoSomething()
             {
                 this.WasCalled = true;
             }
 
+            public void DoSomethingNonVirtual()
+            {
+            }
+
             public virtual int ReturnSomething()
             {
                 this.WasCalled = true;
+                return 10;
+            }
+
+            public int ReturnSomethingNonVirtual()
+            {
+                return 11;
+            }
+        }
+
+        public class DerivedClass : BaseClass
+        {
+            public sealed override string SomeProperty { get; set; }
+
+            public sealed override void DoSomething()
+            {
+            }
+
+            public sealed override int ReturnSomething()
+            {
                 return 10;
             }
         }
