@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
+    using Xunit;
 
     public class CollectionContainsTests
         : ArgumentConstraintTestBase<IEnumerable<object>>
@@ -22,6 +23,20 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 new object[] { 10 },
                 new object[] { 10, 11 },
                 new object[] { "foo", 10 });
+        }
+
+        [Theory]
+        [MemberData(nameof(InvalidValues))]
+        public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
+        {
+            base.IsValid_should_return_false_for_invalid_values(invalidValue);
+        }
+
+        [Theory]
+        [MemberData(nameof(ValidValues))]
+        public override void IsValid_should_return_true_for_valid_values(object validValue)
+        {
+            base.IsValid_should_return_true_for_valid_values(validValue);
         }
 
         protected override void CreateConstraint(IArgumentConstraintManager<IEnumerable<object>> scope)

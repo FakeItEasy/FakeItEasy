@@ -14,16 +14,12 @@ namespace FakeItEasy.Tests
 
         private IArgumentConstraint Constraint => this.ConstraintField;
 
-        [Theory]
-        [ReflectedMethodData("InvalidValues")]
-        public void IsValid_should_return_false_for_invalid_values(object invalidValue)
+        public virtual void IsValid_should_return_false_for_invalid_values(object invalidValue)
         {
             this.Constraint.IsValid(invalidValue).Should().BeFalse();
         }
 
-        [Theory]
-        [ReflectedMethodData("ValidValues")]
-        public void IsValid_should_return_true_for_valid_values(object validValue)
+        public virtual void IsValid_should_return_true_for_valid_values(object validValue)
         {
             var result = this.Constraint.IsValid(validValue);
 

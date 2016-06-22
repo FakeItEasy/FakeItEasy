@@ -32,6 +32,20 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
                 1);
         }
 
+        [Theory]
+        [MemberData(nameof(InvalidValues))]
+        public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
+        {
+            base.IsValid_should_return_false_for_invalid_values(invalidValue);
+        }
+
+        [Theory]
+        [MemberData(nameof(ValidValues))]
+        public override void IsValid_should_return_true_for_valid_values(object validValue)
+        {
+            base.IsValid_should_return_true_for_valid_values(validValue);
+        }
+
         [Fact]
         public override void Constraint_should_provide_correct_description()
         {
