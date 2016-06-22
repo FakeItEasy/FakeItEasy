@@ -6,9 +6,9 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class IsInstanceOfTests
         : ArgumentConstraintTestBase<object>
     {
-        protected override string ExpectedDescription => "Instance of System.DateTime";
+        public override string ExpectedDescription => "Instance of System.DateTime";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public override IEnumerable<object[]> InvalidValues()
         {
             return TestCases.FromObject(
                 new object(),
@@ -17,7 +17,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 null);
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public override IEnumerable<object[]> ValidValues()
         {
             return TestCases.FromObject(
                 new DateTime(2000, 1, 1));

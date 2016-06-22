@@ -5,9 +5,9 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class StringIsNullOrEmptyTests
         : ArgumentConstraintTestBase<string>
     {
-        protected override string ExpectedDescription => "NULL or string.Empty";
+        public override string ExpectedDescription => "NULL or string.Empty";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public override IEnumerable<object[]> InvalidValues()
         {
             return TestCases.FromObject(
                 "foo",
@@ -16,7 +16,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 "b");
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public override IEnumerable<object[]> ValidValues()
         {
             return TestCases.FromObject(
                 string.Empty,

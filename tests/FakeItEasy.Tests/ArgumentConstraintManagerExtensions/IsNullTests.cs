@@ -5,15 +5,15 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class IsNullTests
         : ArgumentConstraintTestBase<object>
     {
-        protected override string ExpectedDescription => "NULL";
+        public override string ExpectedDescription => "NULL";
 
-        public static IEnumerable<object[]> ValidValues()
+        public override IEnumerable<object[]> ValidValues()
         {
             return TestCases.FromObject(
                 (object)null);
         }
 
-        public static IEnumerable<object[]> InvalidValues()
+        public override IEnumerable<object[]> InvalidValues()
         {
             return TestCases.FromObject(
                 string.Empty,

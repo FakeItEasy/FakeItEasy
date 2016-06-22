@@ -5,16 +5,16 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class NullCheckedMatchesConstraint
         : ArgumentConstraintTestBase<object>
     {
-        protected override string ExpectedDescription => "is of type string";
+        public override string ExpectedDescription => "is of type string";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public override IEnumerable<object[]> InvalidValues()
         {
             return TestCases.FromObject(
                 null,
                 new object());
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public override IEnumerable<object[]> ValidValues()
         {
             return TestCases.FromObject(
                 "Foo",

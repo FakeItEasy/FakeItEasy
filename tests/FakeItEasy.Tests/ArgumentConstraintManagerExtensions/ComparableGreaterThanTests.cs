@@ -5,9 +5,9 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     public class ComparableGreaterThanTests
         : ArgumentConstraintTestBase<int>
     {
-        protected override string ExpectedDescription => "greater than 100";
+        public override string ExpectedDescription => "greater than 100";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public override IEnumerable<object[]> InvalidValues()
         {
             return TestCases.FromObject(
                 int.MinValue,
@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 100);
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public override IEnumerable<object[]> ValidValues()
         {
             return TestCases.FromObject(
                 101,
