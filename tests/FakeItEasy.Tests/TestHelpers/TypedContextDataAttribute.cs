@@ -20,21 +20,21 @@
     public sealed class TypedContextDataAttribute : DataAttribute
     {
         private readonly string methodName;
-        private readonly string testContextTypeSource;
+        private readonly string testContextSource;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypedContextDataAttribute"/> class.
         /// </summary>
+        /// <param name="testContextSource">A source of test cases.</param>
         /// <param name="methodName">
         /// The name of the public static member on the test class that will provide the test data.
         /// </param>
-        /// <param name="testContextTypeSource"></param>
-        public TypedContextDataAttribute(string testContextTypeSource, string methodName=null)
+        public TypedContextDataAttribute(string testContextSource, string methodName = null)
         {
-            Guard.AgainstNull(testContextTypeSource, nameof(testContextTypeSource));
+            Guard.AgainstNull(testContextSource, nameof(testContextSource));
 
             this.methodName = methodName;
-            this.testContextTypeSource = testContextTypeSource;
+            this.testContextSource = testContextSource;
         }
 
         /// <inheritdoc/>
@@ -42,15 +42,13 @@
         {
             Guard.AgainstNull(testMethod, nameof(testMethod));
 
-            var testCaseSourceParams = new MemberDataAttribute(this.testContextTypeSource).GetData(testMethod);
+            var testCaseSourceParams = new MemberDataAttribute(this.testContextSource).GetData(testMethod);
 
-            foreach (Type testContextType in testCaseSourceParams.Select(p=>p.First()))
+            foreach (object testContext in testCaseSourceParams.Select(p => p.First()))
             {
-                var testContext = Activator.CreateInstance(testContextType);
-
-                if (methodName != null)
+                if (this.methodName != null)
                 {
-                    var dataSource = testContextType.GetMethod(this.methodName);
+                    var dataSource = testContext.GetType().GetMethod(this.methodName);
                     foreach (
                         object[] parameterSet in (IEnumerable<object[]>)dataSource.Invoke(testContext, new object[0]))
                     {

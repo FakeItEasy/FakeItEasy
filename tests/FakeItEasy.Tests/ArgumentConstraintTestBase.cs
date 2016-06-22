@@ -10,10 +10,10 @@ namespace FakeItEasy.Tests
 
     public class ArgumentConstraintTestBase
     {
-        public static Type[][] TestContextTypes =
+        public static object[][] TestContextTypes =
         {
-            new[] { typeof(CollectionContainsTests)},
-            new[] { typeof(CollectionIsEmptyTests)},
+            new object[] { new CollectionContainsTests() },
+            new object[] { new CollectionIsEmptyTests() },
         };
 
         [Theory]

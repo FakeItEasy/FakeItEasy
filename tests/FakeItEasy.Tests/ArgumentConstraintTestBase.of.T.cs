@@ -6,10 +6,6 @@ namespace FakeItEasy.Tests
 
     public abstract class ArgumentConstraintTestBase<T>
     {
-        public abstract string ExpectedDescription { get; }
-
-        internal IArgumentConstraint ConstraintField { get; set; }
-
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors",
             Justification = "CreateCosntraint has no unsafe side effects.")]
         protected ArgumentConstraintTestBase()
@@ -17,8 +13,14 @@ namespace FakeItEasy.Tests
             this.CreateConstraint(new DefaultArgumentConstraintManager<T>(x => this.ConstraintField = x));
         }
 
-        protected abstract void CreateConstraint(IArgumentConstraintManager<T> scope);
+        public abstract string ExpectedDescription { get; }
+
+        internal IArgumentConstraint ConstraintField { get; set; }
+
         public abstract IEnumerable<object[]> ValidValues();
+
         public abstract IEnumerable<object[]> InvalidValues();
+
+        protected abstract void CreateConstraint(IArgumentConstraintManager<T> scope);
     }
 }
