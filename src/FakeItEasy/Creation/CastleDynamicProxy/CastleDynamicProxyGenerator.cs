@@ -15,7 +15,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     internal class CastleDynamicProxyGenerator
         : IProxyGenerator
     {
-        private static readonly ProxyGenerationOptions ProxyGenerationOptions = new ProxyGenerationOptions { Hook = new InterceptEverythingHook() };
+        private static readonly IProxyGenerationHook ProxyGenerationHook = new InterceptEverythingHook();
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
         private readonly CastleDynamicProxyInterceptionValidator interceptionValidator;
 
@@ -40,18 +40,42 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
-            Guard.AgainstNull(fakeCallProcessorProvider, "fakeCallProcessorProvider");
 
-            ProxyGenerationOptions.AdditionalAttributes.Clear();
+            var options = CreateProxyGenerationOptions();
             foreach (CustomAttributeBuilder builder in customAttributeBuilders)
             {
-                ProxyGenerationOptions.AdditionalAttributes.Add(builder);
+                options.AdditionalAttributes.Add(builder);
             }
 
-            return this.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
+            return GenerateProxy(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
         }
 
-        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IFakeCallProcessorProvider fakeCallProcessorProvider)
+        public ProxyGeneratorResult GenerateProxy(
+            Type typeOfProxy,
+            IEnumerable<Type> additionalInterfacesToImplement,
+            IEnumerable<object> argumentsForConstructor,
+            IFakeCallProcessorProvider fakeCallProcessorProvider)
+        {
+            var options = CreateProxyGenerationOptions();
+            return GenerateProxy(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
+        }
+
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
+        {
+            return this.interceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
+        }
+
+        private static ProxyGenerationOptions CreateProxyGenerationOptions()
+        {
+            return new ProxyGenerationOptions(ProxyGenerationHook);
+        }
+
+        private static ProxyGeneratorResult GenerateProxy(
+            Type typeOfProxy,
+            ProxyGenerationOptions options,
+            IEnumerable<Type> additionalInterfacesToImplement,
+            IEnumerable<object> argumentsForConstructor,
+            IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             Guard.AgainstNull(typeOfProxy, "typeOfProxy");
             Guard.AgainstNull(additionalInterfacesToImplement, "additionalInterfacesToImplement");
@@ -69,12 +93,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
 
-            return CreateProxyGeneratorResult(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
-        }
-
-        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
-        {
-            return this.interceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
+            return CreateProxyGeneratorResult(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
         }
 
         private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
@@ -86,7 +105,12 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate since the method tries to create a proxy and returns a result object where success is reported.")]
-        private static ProxyGeneratorResult CreateProxyGeneratorResult(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IFakeCallProcessorProvider fakeCallProcessorProvider)
+        private static ProxyGeneratorResult CreateProxyGeneratorResult(
+            Type typeOfProxy,
+            ProxyGenerationOptions options,
+            IEnumerable<Type> additionalInterfacesToImplement,
+            IEnumerable<object> argumentsForConstructor,
+            IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             var interceptor = new ProxyInterceptor(fakeCallProcessorProvider);
             object proxy;
@@ -95,6 +119,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             {
                 proxy = DoGenerateProxy(
                     typeOfProxy,
+                    options,
                     additionalInterfacesToImplement,
                     argumentsForConstructor,
                     interceptor);
@@ -129,7 +154,12 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             return new ProxyGeneratorResult(string.Format(CultureInfo.CurrentCulture, DynamicProxyResources.ProxyIsValueTypeMessage, typeOfProxy));
         }
 
-        private static object DoGenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor)
+        private static object DoGenerateProxy(
+            Type typeOfProxy,
+            ProxyGenerationOptions options,
+            IEnumerable<Type> additionalInterfacesToImplement,
+            IEnumerable<object> argumentsForConstructor,
+            IInterceptor interceptor)
         {
             var allInterfacesToImplement = GetAllInterfacesToImplement(additionalInterfacesToImplement);
 
@@ -139,24 +169,24 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 typeOfProxy = typeof(object);
             }
 
-            return GenerateClassProxy(typeOfProxy, argumentsForConstructor, interceptor, allInterfacesToImplement);
+            return GenerateClassProxy(typeOfProxy, options, argumentsForConstructor, interceptor, allInterfacesToImplement);
         }
 
-        private static object GenerateClassProxy(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, IInterceptor interceptor, IEnumerable<Type> allInterfacesToImplement)
+        private static object GenerateClassProxy(
+            Type typeOfProxy,
+            ProxyGenerationOptions options,
+            IEnumerable<object> argumentsForConstructor,
+            IInterceptor interceptor,
+            IEnumerable<Type> allInterfacesToImplement)
         {
-            var argumentsArray = GetConstructorArgumentsArray(argumentsForConstructor);
+            var argumentsArray = argumentsForConstructor?.ToArray();
 
             return ProxyGenerator.CreateClassProxy(
                 typeOfProxy,
                 allInterfacesToImplement.ToArray(),
-                ProxyGenerationOptions,
+                options,
                 argumentsArray,
                 interceptor);
-        }
-
-        private static object[] GetConstructorArgumentsArray(IEnumerable<object> argumentsForConstructor)
-        {
-            return argumentsForConstructor != null ? argumentsForConstructor.ToArray() : null;
         }
 
         private static IEnumerable<Type> GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
@@ -190,8 +220,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             public override bool Equals(object obj)
             {
-                var other = obj as InterceptEverythingHook;
-                return other != null;
+                return obj is InterceptEverythingHook;
             }
         }
 
