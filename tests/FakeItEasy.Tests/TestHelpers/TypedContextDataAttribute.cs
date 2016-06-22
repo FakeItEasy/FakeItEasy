@@ -46,6 +46,12 @@
 
             foreach (object testContext in testCaseSourceParams.Select(p => p.First()))
             {
+                if (testContext.GetType().GetMethod(testMethod.Name) != null)
+                {
+                    // the test context has its own implementation of the method being tested - skip this case
+                    continue;
+                }
+
                 if (this.methodName != null)
                 {
                     var dataSource = testContext.GetType().GetMethod(this.methodName);
