@@ -2,7 +2,6 @@ namespace FakeItEasy.Expressions
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -25,10 +24,5 @@ namespace FakeItEasy.Expressions
         public IEnumerable<ParsedArgumentExpression> ArgumentsExpressions { get; private set; }
 
         public object CallTarget => this.callTarget.Value;
-
-        public IEnumerable<object> Arguments
-        {
-            get { return this.ArgumentsExpressions.Select(x => x.Value); }
-        }
     }
 }
