@@ -3,7 +3,6 @@ namespace FakeItEasy.Expressions
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Reflection;
     using System.Text;
     using FakeItEasy.Configuration;
@@ -23,15 +22,13 @@ namespace FakeItEasy.Expressions
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionCallMatcher" /> class.
         /// </summary>
-        /// <param name="callSpecification">The call specification.</param>
+        /// <param name="parsedExpression">The parsed call specification.</param>
         /// <param name="constraintFactory">The constraint factory.</param>
         /// <param name="methodInfoManager">The method info manager to use.</param>
-        /// <param name="callExpressionParser">A parser to use to parse call expressions.</param>
-        public ExpressionCallMatcher(LambdaExpression callSpecification, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, ICallExpressionParser callExpressionParser)
+        public ExpressionCallMatcher(ParsedCallExpression parsedExpression, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager)
         {
             this.methodInfoManager = methodInfoManager;
 
-            var parsedExpression = callExpressionParser.Parse(callSpecification);
             this.Method = parsedExpression.CalledMethod;
 
             this.argumentConstraints = GetArgumentConstraints(parsedExpression.ArgumentsExpressions, constraintFactory).ToArray();

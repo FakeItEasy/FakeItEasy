@@ -168,7 +168,8 @@ namespace FakeItEasy.Tests.Configuration
             this.interceptionAsserter = A.Fake<IInterceptionAsserter>();
 
             Expression<Action<IFoo>> dummyExpression = x => x.Bar();
-            this.ruleReturnedFromFactory = ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>().Invoke(dummyExpression);
+            var parsedDummyExpression = this.callExpressionParser.Parse(dummyExpression);
+            this.ruleReturnedFromFactory = ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>().Invoke(parsedDummyExpression);
             this.ruleFactory = x => this.ruleReturnedFromFactory;
 
             this.configurationManager = this.CreateManager();

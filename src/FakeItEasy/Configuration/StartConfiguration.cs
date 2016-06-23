@@ -28,7 +28,7 @@ namespace FakeItEasy.Configuration
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
-            var rule = this.callRuleFactory(callSpecification);
+            var rule = this.callRuleFactory(this.expressionParser.Parse(callSpecification));
             this.manager.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, rule);
         }
@@ -39,7 +39,7 @@ namespace FakeItEasy.Configuration
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
-            var rule = this.callRuleFactory(callSpecification);
+            var rule = this.callRuleFactory(this.expressionParser.Parse(callSpecification));
             rule.Applicator = x => { };
             this.manager.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration(this.manager, rule);

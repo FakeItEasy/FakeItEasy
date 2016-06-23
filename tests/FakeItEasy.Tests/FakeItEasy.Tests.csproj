@@ -102,7 +102,6 @@
     <Compile Include="RepeatConfigurationExtensionsTests.cs" />
     <Compile Include="ArgumentValidationConfigurationExtensionsTests.cs" />
     <Compile Include="AssertConfigurationExtensionsTests.cs" />
-    <Compile Include="CompletedFakeObjectCallExtensionsTests.cs" />
     <Compile Include="TestHelpers\BinarySerializationHelper.cs" />
     <Compile Include="TestHelpers\StringEnumerableExtensions.cs" />
     <Compile Include="TestHelpers\UsingCultureAttribute.cs" />
@@ -143,7 +142,6 @@
     <Compile Include="Configuration\AnyCallConfigurationTests.cs" />
     <Compile Include="Configuration\FakeConfigurationExceptionTests.cs" />
     <Compile Include="Configuration\FakeConfigurationManagerTests.cs" />
-    <Compile Include="Configuration\StartConfigurationTests.cs" />
     <Compile Include="Core\DummyFactoryTests.cs" />
     <Compile Include="Core\DynamicDummyFactoryTests.cs" />
     <Compile Include="Creation\ProxyGeneratorSelectorTests.cs" />

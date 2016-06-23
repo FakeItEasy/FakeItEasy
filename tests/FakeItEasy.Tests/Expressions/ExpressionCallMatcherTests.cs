@@ -86,7 +86,7 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         [Fact]
-        public void Matches_should_use_ArgumentValidatorManager_to_create_validator_for_each_argument()
+        public void Creating_matcher_should_create_validator_for_each_argument()
         {
             this.CreateMatcher<IFoo>(x => x.Bar("foo", 10));
 
@@ -210,17 +210,17 @@ namespace FakeItEasy.Tests.Expressions
 
         private ExpressionCallMatcher CreateMatcher<TFake, TMember>(Expression<Func<TFake, TMember>> callSpecification)
         {
-            return this.CreateMatcher((LambdaExpression)callSpecification);
+            return this.CreateMatcher(this.parser.Parse(callSpecification));
         }
 
         private ExpressionCallMatcher CreateMatcher<TFake>(Expression<Action<TFake>> callSpecification)
         {
-            return this.CreateMatcher((LambdaExpression)callSpecification);
+            return this.CreateMatcher(this.parser.Parse(callSpecification));
         }
 
-        private ExpressionCallMatcher CreateMatcher(LambdaExpression callSpecification)
+        private ExpressionCallMatcher CreateMatcher(ParsedCallExpression callSpecification)
         {
-            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager, this.parser);
+            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager);
         }
 
         private void StubMethodInfoManagerToReturn(bool returnValue)

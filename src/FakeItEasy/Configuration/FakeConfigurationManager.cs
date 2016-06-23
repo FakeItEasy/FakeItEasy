@@ -28,9 +28,10 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(callSpecification, "callSpecification");
 
-            this.AssertThatMemberCanBeIntercepted(callSpecification);
+            var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
+            this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
-            return this.CreateVoidArgumentValidationConfiguration(callSpecification);
+            return this.CreateVoidArgumentValidationConfiguration(parsedCallExpression);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
@@ -38,11 +39,11 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(callSpecification, "callSpecification");
 
-            this.AssertThatMemberCanBeIntercepted(callSpecification);
-
             var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
+            this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
+
             var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
-            var rule = this.ruleFactory.Invoke(callSpecification);
+            var rule = this.ruleFactory.Invoke(parsedCallExpression);
 
             fake.AddRuleFirst(rule);
 
@@ -61,11 +62,14 @@ namespace FakeItEasy.Configuration
         public IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(Expression<Func<TValue>> propertySpecification)
         {
             Guard.AgainstNull(propertySpecification, nameof(propertySpecification));
-            this.AssertThatMemberCanBeIntercepted(propertySpecification);
+            var parsedCallExpression = this.callExpressionParser.Parse(propertySpecification);
+            this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
-            var setterExpression = BuildSetterFromGetter(propertySpecification);
+            var setterExpression = BuildSetterFromGetter(parsedCallExpression, propertySpecification);
 
-            return new PropertySetterConfiguration<TValue>(setterExpression, this.CreateVoidArgumentValidationConfiguration);
+            return new PropertySetterConfiguration<TValue>(
+                setterExpression,
+                lambda => this.CreateVoidArgumentValidationConfiguration(this.callExpressionParser.Parse(lambda)));
         }
 
         private static string GetPropertyName(MethodCallExpression methodCallExpression)
@@ -126,43 +130,44 @@ namespace FakeItEasy.Configuration
             return Fake.GetFakeManager(parsedCallExpression.CallTarget);
         }
 
-        private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(LambdaExpression lambda)
+        private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(ParsedCallExpression parsedCallExpression)
         {
-            var parsedCallExpression = this.callExpressionParser.Parse(lambda);
             var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
-            var rule = this.ruleFactory.Invoke(lambda);
+            var rule = this.ruleFactory.Invoke(parsedCallExpression);
             fake.AddRuleFirst(rule);
 
             return this.configurationFactory.CreateConfiguration(fake, rule);
         }
 
-        private string GetExpressionDescription<TValue>(Expression<Func<TValue>> expression)
+        private string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
         {
             var matcher = new ExpressionCallMatcher(
-                expression,
+                parsedCallExpression,
                 ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>(),
-                ServiceLocator.Current.Resolve<MethodInfoManager>(),
-                this.callExpressionParser);
+                ServiceLocator.Current.Resolve<MethodInfoManager>());
 
-            var expressionDescription = matcher.DescriptionOfMatchingCall;
-            return expressionDescription;
+            return matcher.DescriptionOfMatchingCall;
         }
 
-        private MethodCallExpression BuildSetterFromGetter<TValue>(Expression<Func<TValue>> propertySpecification)
+        private MethodCallExpression BuildSetterFromGetter<TValue>(
+            ParsedCallExpression parsedCallExpression,
+            Expression<Func<TValue>> propertySpecification)
         {
             var memberExpression = propertySpecification.Body as MemberExpression;
             return memberExpression == null
-                ? BuildSetterFromMethodCall(propertySpecification)
+                ? BuildSetterFromMethodCall(parsedCallExpression, propertySpecification)
                 : BuildSetterFromMemberExpression<TValue>(memberExpression);
         }
 
-        private MethodCallExpression BuildSetterFromMethodCall<TValue>(Expression<Func<TValue>> propertySpecification)
+        private MethodCallExpression BuildSetterFromMethodCall<TValue>(
+            ParsedCallExpression parsedCallExpression,
+            Expression<Func<TValue>> propertySpecification)
         {
             var methodCallExpression = propertySpecification.Body as MethodCallExpression;
             var indexerName = GetPropertyName(methodCallExpression);
             if (indexerName == null)
             {
-                var expressionDescription = GetExpressionDescription(propertySpecification);
+                var expressionDescription = this.GetExpressionDescription(parsedCallExpression);
                 throw new ArgumentException("Expression '" + expressionDescription +
                                             "' must refer to a property or indexer getter, but doesn't.");
             }
@@ -176,7 +181,7 @@ namespace FakeItEasy.Configuration
 
             if (indexerSetterInfo == null)
             {
-                var expressionDescription = GetExpressionDescription(propertySpecification);
+                var expressionDescription = this.GetExpressionDescription(parsedCallExpression);
                 throw new ArgumentException("Expression '" + expressionDescription +
                                             "' refers to an indexed property that does not have a setter.");
             }
@@ -186,9 +191,8 @@ namespace FakeItEasy.Configuration
             return Expression.Call(instance, indexerSetterInfo, arguments);
         }
 
-        private void AssertThatMemberCanBeIntercepted(LambdaExpression callSpecification)
+        private void AssertThatMemberCanBeIntercepted(ParsedCallExpression parsed)
         {
-            var parsed = this.callExpressionParser.Parse(callSpecification);
             this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(
                 parsed.CalledMethod,
                 parsed.CallTarget);

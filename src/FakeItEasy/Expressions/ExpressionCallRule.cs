@@ -1,7 +1,6 @@
 namespace FakeItEasy.Expressions
 {
     using System;
-    using System.Linq.Expressions;
     using Configuration;
     using Core;
 
@@ -29,7 +28,7 @@ namespace FakeItEasy.Expressions
         /// </summary>
         /// <param name="callSpecification">An expression specifying the call.</param>
         /// <returns>A rule instance.</returns>
-        public delegate ExpressionCallRule Factory(LambdaExpression callSpecification);
+        public delegate ExpressionCallRule Factory(ParsedCallExpression callSpecification);
 
         public override string DescriptionOfValidCall
         {
