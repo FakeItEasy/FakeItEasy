@@ -153,7 +153,6 @@
     <Compile Include="Expressions\ArgumentConstraints\AggregateArgumentConstraintTests.cs" />
     <Compile Include="Expressions\CallExpressionParserTests.cs" />
     <Compile Include="Expressions\ExpressionArgumentConstraintFactoryTests.cs" />
-    <Compile Include="Expressions\ExpressionParserTests.cs" />
     <Compile Include="Builders\BuilderForExpression.cs" />
     <Compile Include="ForTestAttribute.cs" />
     <Compile Include="IEmpty.cs" />

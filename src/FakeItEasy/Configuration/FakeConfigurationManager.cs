@@ -12,15 +12,13 @@ namespace FakeItEasy.Configuration
         : IFakeConfigurationManager
     {
         private readonly IConfigurationFactory configurationFactory;
-        private readonly IExpressionParser expressionParser;
         private readonly ICallExpressionParser callExpressionParser;
         private readonly IInterceptionAsserter interceptionAsserter;
         private readonly ExpressionCallRule.Factory ruleFactory;
 
-        public FakeConfigurationManager(IConfigurationFactory configurationFactory, IExpressionParser parser, ExpressionCallRule.Factory callRuleFactory, ICallExpressionParser callExpressionParser, IInterceptionAsserter interceptionAsserter)
+        public FakeConfigurationManager(IConfigurationFactory configurationFactory, ExpressionCallRule.Factory callRuleFactory, ICallExpressionParser callExpressionParser, IInterceptionAsserter interceptionAsserter)
         {
             this.configurationFactory = configurationFactory;
-            this.expressionParser = parser;
             this.ruleFactory = callRuleFactory;
             this.callExpressionParser = callExpressionParser;
             this.interceptionAsserter = interceptionAsserter;
@@ -42,7 +40,8 @@ namespace FakeItEasy.Configuration
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
-            var fake = this.expressionParser.GetFakeManagerCallIsMadeOn(callSpecification);
+            var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
+            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
             var rule = this.ruleFactory.Invoke(callSpecification);
 
             fake.AddRuleFirst(rule);
@@ -117,9 +116,20 @@ namespace FakeItEasy.Configuration
             return value.Body;
         }
 
+        private static FakeManager GetFakeManagerCallIsMadeOn(ParsedCallExpression parsedCallExpression)
+        {
+            if (parsedCallExpression.CallTarget == null)
+            {
+                throw new ArgumentException("The specified call is not made on a fake object.");
+            }
+
+            return Fake.GetFakeManager(parsedCallExpression.CallTarget);
+        }
+
         private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(LambdaExpression lambda)
         {
-            var fake = this.expressionParser.GetFakeManagerCallIsMadeOn(lambda);
+            var parsedCallExpression = this.callExpressionParser.Parse(lambda);
+            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
             var rule = this.ruleFactory.Invoke(lambda);
             fake.AddRuleFirst(rule);
 
