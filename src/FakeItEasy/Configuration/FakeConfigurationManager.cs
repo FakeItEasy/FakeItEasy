@@ -130,16 +130,7 @@ namespace FakeItEasy.Configuration
             return Fake.GetFakeManager(parsedCallExpression.CallTarget);
         }
 
-        private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(ParsedCallExpression parsedCallExpression)
-        {
-            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
-            var rule = this.ruleFactory.Invoke(parsedCallExpression);
-            fake.AddRuleFirst(rule);
-
-            return this.configurationFactory.CreateConfiguration(fake, rule);
-        }
-
-        private string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
+        private static string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
         {
             var matcher = new ExpressionCallMatcher(
                 parsedCallExpression,
@@ -149,7 +140,7 @@ namespace FakeItEasy.Configuration
             return matcher.DescriptionOfMatchingCall;
         }
 
-        private MethodCallExpression BuildSetterFromGetter<TValue>(
+        private static MethodCallExpression BuildSetterFromGetter<TValue>(
             ParsedCallExpression parsedCallExpression,
             Expression<Func<TValue>> propertySpecification)
         {
@@ -159,7 +150,7 @@ namespace FakeItEasy.Configuration
                 : BuildSetterFromMemberExpression<TValue>(memberExpression);
         }
 
-        private MethodCallExpression BuildSetterFromMethodCall<TValue>(
+        private static MethodCallExpression BuildSetterFromMethodCall<TValue>(
             ParsedCallExpression parsedCallExpression,
             Expression<Func<TValue>> propertySpecification)
         {
@@ -167,7 +158,7 @@ namespace FakeItEasy.Configuration
             var indexerName = GetPropertyName(methodCallExpression);
             if (indexerName == null)
             {
-                var expressionDescription = this.GetExpressionDescription(parsedCallExpression);
+                var expressionDescription = GetExpressionDescription(parsedCallExpression);
                 throw new ArgumentException("Expression '" + expressionDescription +
                                             "' must refer to a property or indexer getter, but doesn't.");
             }
@@ -181,7 +172,7 @@ namespace FakeItEasy.Configuration
 
             if (indexerSetterInfo == null)
             {
-                var expressionDescription = this.GetExpressionDescription(parsedCallExpression);
+                var expressionDescription = GetExpressionDescription(parsedCallExpression);
                 throw new ArgumentException("Expression '" + expressionDescription +
                                             "' refers to an indexed property that does not have a setter.");
             }
@@ -189,6 +180,15 @@ namespace FakeItEasy.Configuration
             var arguments = methodCallExpression.Arguments.Concat(new[] { BuildArgumentThatMatchesAnything<TValue>() });
 
             return Expression.Call(instance, indexerSetterInfo, arguments);
+        }
+
+        private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(ParsedCallExpression parsedCallExpression)
+        {
+            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
+            var rule = this.ruleFactory.Invoke(parsedCallExpression);
+            fake.AddRuleFirst(rule);
+
+            return this.configurationFactory.CreateConfiguration(fake, rule);
         }
 
         private void AssertThatMemberCanBeIntercepted(ParsedCallExpression parsed)
