@@ -65,20 +65,19 @@ namespace FakeItEasy.Configuration
             var parsedCallExpression = this.callExpressionParser.Parse(propertySpecification);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
-            var setterExpression = BuildSetterFromGetter(parsedCallExpression, propertySpecification);
+            var setterExpression = BuildSetterFromGetter<TValue>(parsedCallExpression);
 
             return new PropertySetterConfiguration<TValue>(
                 setterExpression,
                 lambda => this.CreateVoidArgumentValidationConfiguration(this.callExpressionParser.Parse(lambda)));
         }
 
-        private static string GetPropertyName(MethodCallExpression methodCallExpression)
+        private static string GetPropertyName(ParsedCallExpression parsedCallExpression)
         {
-            if (methodCallExpression != null &&
-                HasThis(methodCallExpression) &&
-                methodCallExpression.Method.IsSpecialName)
+            var calledMethod = parsedCallExpression.CalledMethod;
+            if (HasThis(calledMethod) && calledMethod.IsSpecialName)
             {
-                var methodName = methodCallExpression.Method.Name;
+                var methodName = calledMethod.Name;
                 if (methodName.StartsWith("get_", StringComparison.Ordinal))
                 {
                     return methodName.Substring(4);
@@ -88,30 +87,9 @@ namespace FakeItEasy.Configuration
             return null;
         }
 
-        private static bool HasThis(MethodCallExpression methodCallExpression)
+        private static bool HasThis(MethodInfo methodCall)
         {
-            return (methodCallExpression.Method.CallingConvention & CallingConventions.HasThis) ==
-                   CallingConventions.HasThis;
-        }
-
-        private static MethodCallExpression BuildSetterFromMemberExpression<TValue>(MemberExpression memberExpression)
-        {
-            PropertyInfo propertyInfo = memberExpression.Member as PropertyInfo;
-            if (propertyInfo == null)
-            {
-                throw new ArgumentException("The expression refers to '" + memberExpression.Member.Name +
-                                            "', which is a field, not a property getter.");
-            }
-
-            var propertySetterInfo = propertyInfo.GetSetMethod(nonPublic: true);
-            if (propertySetterInfo == null)
-            {
-                throw new ArgumentException("The property '" + memberExpression.Member.Name + "' does not have a setter.");
-            }
-
-            var arguments = new[] { BuildArgumentThatMatchesAnything<TValue>() };
-
-            return Expression.Call(memberExpression.Expression, propertySetterInfo, arguments);
+            return methodCall.CallingConvention.HasFlag(CallingConventions.HasThis);
         }
 
         private static Expression BuildArgumentThatMatchesAnything<TValue>()
@@ -141,45 +119,46 @@ namespace FakeItEasy.Configuration
         }
 
         private static MethodCallExpression BuildSetterFromGetter<TValue>(
-            ParsedCallExpression parsedCallExpression,
-            Expression<Func<TValue>> propertySpecification)
+            ParsedCallExpression parsedCallExpression)
         {
-            var memberExpression = propertySpecification.Body as MemberExpression;
-            return memberExpression == null
-                ? BuildSetterFromMethodCall(parsedCallExpression, propertySpecification)
-                : BuildSetterFromMemberExpression<TValue>(memberExpression);
-        }
-
-        private static MethodCallExpression BuildSetterFromMethodCall<TValue>(
-            ParsedCallExpression parsedCallExpression,
-            Expression<Func<TValue>> propertySpecification)
-        {
-            var methodCallExpression = propertySpecification.Body as MethodCallExpression;
-            var indexerName = GetPropertyName(methodCallExpression);
-            if (indexerName == null)
+            var propertyName = GetPropertyName(parsedCallExpression);
+            if (propertyName == null)
             {
                 var expressionDescription = GetExpressionDescription(parsedCallExpression);
                 throw new ArgumentException("Expression '" + expressionDescription +
                                             "' must refer to a property or indexer getter, but doesn't.");
             }
 
-            var parameterTypes = methodCallExpression.Method.GetParameters()
-                .Select(p => p.ParameterType)
-                .Concat(new[] { methodCallExpression.Method.ReturnType })
+            var parsedArgumentExpressions = parsedCallExpression.ArgumentsExpressions ?? new ParsedArgumentExpression[0];
+            var parameterTypes = parsedArgumentExpressions
+                .Select(p => p.ArgumentInformation.ParameterType)
+                .Concat(new[] { parsedCallExpression.CalledMethod.ReturnType })
                 .ToArray();
-            var instance = methodCallExpression.Object;
-            var indexerSetterInfo = instance.Type.GetMethod("set_" + indexerName, parameterTypes);
+
+            var indexerSetterInfo = parsedCallExpression.CallTarget.GetType()
+                .GetMethod("set_" + propertyName, parameterTypes);
 
             if (indexerSetterInfo == null)
             {
-                var expressionDescription = GetExpressionDescription(parsedCallExpression);
-                throw new ArgumentException("Expression '" + expressionDescription +
-                                            "' refers to an indexed property that does not have a setter.");
+                if (parsedArgumentExpressions.Any())
+                {
+                    var expressionDescription = GetExpressionDescription(parsedCallExpression);
+                    throw new ArgumentException("Expression '" + expressionDescription +
+                                                "' refers to an indexed property that does not have a setter.");
+                }
+
+                throw new ArgumentException(
+                    "The property '" + propertyName + "' does not have a setter.");
             }
 
-            var arguments = methodCallExpression.Arguments.Concat(new[] { BuildArgumentThatMatchesAnything<TValue>() });
+            var arguments = parsedArgumentExpressions
+                .Select(a => a.Expression)
+                .Concat(new[] { BuildArgumentThatMatchesAnything<TValue>() });
 
-            return Expression.Call(instance, indexerSetterInfo, arguments);
+            return Expression.Call(
+                Expression.Constant(parsedCallExpression.CallTarget),
+                indexerSetterInfo,
+                arguments);
         }
 
         private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(ParsedCallExpression parsedCallExpression)
