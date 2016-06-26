@@ -26,7 +26,7 @@ namespace FakeItEasy.Configuration
 
         public IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
         {
-            Guard.AgainstNull(callSpecification, "callSpecification");
+            Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
             var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
             EnsureCallIsMadeOnAFake(parsedCallExpression);
@@ -38,7 +38,7 @@ namespace FakeItEasy.Configuration
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
-            Guard.AgainstNull(callSpecification, "callSpecification");
+            Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
             var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
             var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);

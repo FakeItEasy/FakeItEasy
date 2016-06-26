@@ -27,7 +27,7 @@ namespace FakeItEasy
         {
             var factory = ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>();
             var callExpressionParser = ServiceLocator.Current.Resolve<ICallExpressionParser>();
-            var matcher = factory.CreateCallMathcer(callExpressionParser.Parse(callSpecification));
+            var matcher = factory.CreateCallMatcher(callExpressionParser.Parse(callSpecification));
 
             return
                 from call in calls

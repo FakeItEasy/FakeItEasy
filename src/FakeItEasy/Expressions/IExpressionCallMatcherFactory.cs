@@ -4,6 +4,6 @@ namespace FakeItEasy.Expressions
 
     internal interface IExpressionCallMatcherFactory
     {
-        ICallMatcher CreateCallMathcer(ParsedCallExpression callSpecification);
+        ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification);
     }
 }

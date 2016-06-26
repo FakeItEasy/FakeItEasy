@@ -2,7 +2,6 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using FakeItEasy.Core;
 
     internal class RuleBuilder
@@ -29,23 +28,20 @@ namespace FakeItEasy.Configuration
         /// <returns>A configuration object.</returns>
         internal delegate RuleBuilder Factory(BuildableCallRule ruleBeingBuilt, FakeManager fakeObject);
 
-        public BuildableCallRule RuleBeingBuilt { get; private set; }
+        public BuildableCallRule RuleBeingBuilt { get; }
 
-        public IEnumerable<ICompletedFakeObjectCall> Calls
-        {
-            get { return this.manager.GetRecordedCalls(); }
-        }
+        public IEnumerable<ICompletedFakeObjectCall> Calls => this.manager.GetRecordedCalls();
 
-        public ICallMatcher Matcher
-        {
-            get { return new RuleMatcher(this); }
-        }
+        public ICallMatcher Matcher => new RuleMatcher(this);
 
         public void NumberOfTimes(int numberOfTimesToRepeat)
         {
             if (numberOfTimesToRepeat <= 0)
             {
-                throw new ArgumentOutOfRangeException("numberOfTimesToRepeat", numberOfTimesToRepeat, "The number of times to repeat is not greater than zero.");
+                throw new ArgumentOutOfRangeException(
+                    nameof(numberOfTimesToRepeat),
+                    numberOfTimesToRepeat,
+                    "The number of times to repeat is not greater than zero.");
             }
 
             this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimesToRepeat;
@@ -59,7 +55,7 @@ namespace FakeItEasy.Configuration
 
         public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(argumentsPredicate, "argumentsPredicate");
+            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
 
             this.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
             return this;
@@ -73,7 +69,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
         {
-            Guard.AgainstNull(action, "action");
+            Guard.AgainstNull(action, nameof(action));
 
             this.RuleBeingBuilt.Actions.Add(action);
             return this;
@@ -88,7 +84,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, "valueProducer");
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             this.RuleBeingBuilt.OutAndRefParametersValueProducer = valueProducer;
 
@@ -97,10 +93,10 @@ namespace FakeItEasy.Configuration
 
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
         {
-            Guard.AgainstNull(repeatConstraint, "repeatConstraint");
+            Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
 
             this.manager.RemoveRule(this.RuleBeingBuilt);
-            var asserter = this.asserterFactory.Invoke(this.Calls.Cast<IFakeObjectCall>());
+            var asserter = this.asserterFactory.Invoke(this.Calls);
 
             var description = new StringBuilderOutputWriter();
             this.RuleBeingBuilt.WriteDescriptionOfValidCall(description);
@@ -113,17 +109,16 @@ namespace FakeItEasy.Configuration
         public class ReturnValueConfiguration<TMember>
             : IAnyCallConfigurationWithReturnTypeSpecified<TMember>, ICallCollectionAndCallMatcherAccessor
         {
-            public RuleBuilder ParentConfiguration { get; set; }
-
-            public ICallMatcher Matcher
+            public ReturnValueConfiguration(RuleBuilder parentConfiguration)
             {
-                get { return this.ParentConfiguration.Matcher; }
+                this.ParentConfiguration = parentConfiguration;
             }
 
-            public IEnumerable<ICompletedFakeObjectCall> Calls
-            {
-                get { return this.ParentConfiguration.Calls; }
-            }
+            public RuleBuilder ParentConfiguration { get; }
+
+            public ICallMatcher Matcher => this.ParentConfiguration.Matcher;
+
+            public IEnumerable<ICompletedFakeObjectCall> Calls => this.ParentConfiguration.Calls;
 
             public IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
             {
@@ -132,7 +127,7 @@ namespace FakeItEasy.Configuration
 
             public IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily(Func<IFakeObjectCall, TMember> valueProducer)
             {
-                Guard.AgainstNull(valueProducer, "valueProducer");
+                Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
                 this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(valueProducer(x));
                 return this.ParentConfiguration;
@@ -140,7 +135,7 @@ namespace FakeItEasy.Configuration
 
             public IReturnValueConfiguration<TMember> Invokes(Action<IFakeObjectCall> action)
             {
-                Guard.AgainstNull(action, "action");
+                Guard.AgainstNull(action, nameof(action));
 
                 this.ParentConfiguration.RuleBeingBuilt.Actions.Add(action);
                 return this;
@@ -153,7 +148,7 @@ namespace FakeItEasy.Configuration
 
             public IReturnValueConfiguration<TMember> WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
             {
-                Guard.AgainstNull(argumentsPredicate, "argumentsPredicate");
+                Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
 
                 this.ParentConfiguration.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
                 return this;
@@ -183,7 +178,7 @@ namespace FakeItEasy.Configuration
 
             public bool Matches(IFakeObjectCall call)
             {
-                Guard.AgainstNull(call, "call");
+                Guard.AgainstNull(call, nameof(call));
 
                 return this.builder.RuleBeingBuilt.IsApplicableTo(call) &&
                        ReferenceEquals(this.builder.manager.Object, call.FakedObject);

@@ -132,7 +132,7 @@ namespace FakeItEasy
                 this.serviceLocator = serviceLocator;
             }
 
-            public ICallMatcher CreateCallMathcer(ParsedCallExpression callSpecification)
+            public ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification)
             {
                 return new ExpressionCallMatcher(
                     callSpecification,

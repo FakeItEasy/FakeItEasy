@@ -17,21 +17,18 @@ namespace FakeItEasy.Core
                 this.fakeManager = fakeManager;
             }
 
-            public int? NumberOfTimesToCall
-            {
-                get { return null; }
-            }
+            public int? NumberOfTimesToCall => null;
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
                 return PropertyBehaviorRule.IsPropertyGetter(fakeObjectCall.Method);
             }
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
                 var newRule = new CallRuleMetadata
                                   {

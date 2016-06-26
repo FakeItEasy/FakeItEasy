@@ -39,12 +39,9 @@ namespace FakeItEasy.Expressions
         /// Gets a human readable description of calls that will be matched by this
         /// matcher.
         /// </summary>
-        public virtual string DescriptionOfMatchingCall
-        {
-            get { return this.ToString(); }
-        }
+        public virtual string DescriptionOfMatchingCall => this.ToString();
 
-        private MethodInfo Method { get; set; }
+        private MethodInfo Method { get; }
 
         /// <summary>
         /// Matches the specified call against the expression.
@@ -53,7 +50,7 @@ namespace FakeItEasy.Expressions
         /// <returns>True if the call is matched by the expression.</returns>
         public virtual bool Matches(IFakeObjectCall call)
         {
-            Guard.AgainstNull(call, "call");
+            Guard.AgainstNull(call, nameof(call));
 
             return this.InvokesSameMethodOnTarget(call.FakedObject.GetType(), call.Method, this.Method)
                 && this.ArgumentsMatches(call.Arguments);
@@ -87,15 +84,9 @@ namespace FakeItEasy.Expressions
 
         public Func<IFakeObjectCall, ICollection<object>> GetOutAndRefParametersValueProducer()
         {
-            var values = new List<object>();
-            foreach (var constraint in this.argumentConstraints)
-            {
-                var valueProvidingConstraint = constraint as IArgumentValueProvider;
-                if (valueProvidingConstraint != null)
-                {
-                    values.Add(valueProvidingConstraint.Value);
-                }
-            }
+            var values = this.argumentConstraints.OfType<IArgumentValueProvider>()
+                .Select(valueProvidingConstraint => valueProvidingConstraint.Value)
+                .ToList();
 
             if (values.Any())
             {
