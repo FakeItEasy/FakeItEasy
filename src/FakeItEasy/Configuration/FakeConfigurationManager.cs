@@ -29,6 +29,7 @@ namespace FakeItEasy.Configuration
             Guard.AgainstNull(callSpecification, "callSpecification");
 
             var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
+            EnsureCallIsMadeOnAFake(parsedCallExpression);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
             return this.CreateVoidArgumentValidationConfiguration(parsedCallExpression);
@@ -40,9 +41,9 @@ namespace FakeItEasy.Configuration
             Guard.AgainstNull(callSpecification, "callSpecification");
 
             var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
+            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
-            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
             var rule = this.ruleFactory.Invoke(parsedCallExpression);
 
             fake.AddRuleFirst(rule);
@@ -63,6 +64,7 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(propertySpecification, nameof(propertySpecification));
             var parsedCallExpression = this.callExpressionParser.Parse(propertySpecification);
+            EnsureCallIsMadeOnAFake(parsedCallExpression);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
             var setterExpression = BuildSetterFromGetter<TValue>(parsedCallExpression);
@@ -100,12 +102,14 @@ namespace FakeItEasy.Configuration
 
         private static FakeManager GetFakeManagerCallIsMadeOn(ParsedCallExpression parsedCallExpression)
         {
-            if (parsedCallExpression.CallTarget == null)
-            {
-                throw new ArgumentException("The specified call is not made on a fake object.");
-            }
+            return parsedCallExpression.CallTarget == null
+                ? null
+                : Fake.GetFakeManager(parsedCallExpression.CallTarget);
+        }
 
-            return Fake.GetFakeManager(parsedCallExpression.CallTarget);
+        private static void EnsureCallIsMadeOnAFake(ParsedCallExpression parsedCallExpression)
+        {
+            GetFakeManagerCallIsMadeOn(parsedCallExpression);
         }
 
         private static string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
