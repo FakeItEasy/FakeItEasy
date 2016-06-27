@@ -112,10 +112,7 @@ namespace FakeItEasy.IoC
                     this.resolver = resolver;
                 }
 
-                private bool SingletonHasNotBeenCreated
-                {
-                    get { return this.resolveFunction != null; }
-                }
+                private bool SingletonHasNotBeenCreated => this.resolveFunction != null;
 
                 public override T Resolve(DictionaryContainer container)
                 {

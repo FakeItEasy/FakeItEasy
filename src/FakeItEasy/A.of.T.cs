@@ -15,10 +15,8 @@ namespace FakeItEasy
         /// Gets an argument constraint object that will be used to constrain a method call argument.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
-        public static IArgumentConstraintManager<T> That
-        {
-            get { return ServiceLocator.Current.Resolve<IArgumentConstraintManagerFactory>().Create<T>(); }
-        }
+        public static IArgumentConstraintManager<T> That =>
+            ServiceLocator.Current.Resolve<IArgumentConstraintManagerFactory>().Create<T>();
 
         /// <summary>
         /// Gets a constraint that considers any value of an argument as valid.
@@ -29,10 +27,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "But it's kinda cool right?")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [CLSCompliant(false)]
-        public static T _
-        {
-            get { return Ignored; }
-        }
+        public static T _ => Ignored;
 
         /// <summary>
         /// Gets a constraint that considers any value of an argument as valid.

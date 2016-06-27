@@ -16,10 +16,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             this.constraintsField = constraints.ToArray();
         }
 
-        public IEnumerable<IArgumentConstraint> Constraints
-        {
-            get { return this.constraintsField; }
-        }
+        public IEnumerable<IArgumentConstraint> Constraints => this.constraintsField;
 
         public void WriteDescription(IOutputWriter writer)
         {

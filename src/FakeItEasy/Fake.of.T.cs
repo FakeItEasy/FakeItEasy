@@ -47,15 +47,10 @@ namespace FakeItEasy
         /// <summary>
         /// Gets all calls made to the faked object.
         /// </summary>
-        public IEnumerable<ICompletedFakeObjectCall> RecordedCalls
-        {
-            get { return FakeItEasy.Fake.GetCalls(this.FakedObject); }
-        }
+        public IEnumerable<ICompletedFakeObjectCall> RecordedCalls => FakeItEasy.Fake.GetCalls(this.FakedObject);
 
-        private static IFakeAndDummyManager FakeAndDummyManager
-        {
-            get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
-        }
+        private static IFakeAndDummyManager FakeAndDummyManager =>
+            ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
 
         private IStartConfiguration<T> StartConfiguration
         {

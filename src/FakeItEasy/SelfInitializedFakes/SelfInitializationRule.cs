@@ -28,10 +28,7 @@ namespace FakeItEasy.SelfInitializedFakes
         /// to null its infinitely valid.
         /// </summary>
         /// <value></value>
-        public int? NumberOfTimesToCall
-        {
-            get { return this.wrappedRule.NumberOfTimesToCall; }
-        }
+        public int? NumberOfTimesToCall => this.wrappedRule.NumberOfTimesToCall;
 
         /// <summary>
         /// Gets whether this interceptor is applicable to the specified

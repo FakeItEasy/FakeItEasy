@@ -34,10 +34,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// <summary>
         /// Gets the value set to be returned from the call.
         /// </summary>
-        public object ReturnValue
-        {
-            get { return this.invocation.ReturnValue; }
-        }
+        public object ReturnValue => this.invocation.ReturnValue;
 
         /// <summary>
         /// Gets the method that's called.
@@ -52,10 +49,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// <summary>
         /// Gets the faked object the call is performed on.
         /// </summary>
-        public object FakedObject
-        {
-            get { return this.invocation.Proxy; }
-        }
+        public object FakedObject => this.invocation.Proxy;
 
         /// <summary>
         /// Freezes the call so that it can no longer be modified.

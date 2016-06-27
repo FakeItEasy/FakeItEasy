@@ -18,10 +18,8 @@ namespace FakeItEasy.Configuration
             this.configurationFactory = configurationFactory;
         }
 
-        private IVoidArgumentValidationConfiguration VoidConfiguration
-        {
-            get { return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule); }
-        }
+        private IVoidArgumentValidationConfiguration VoidConfiguration =>
+            this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule);
 
         public IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>()
         {

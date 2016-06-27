@@ -66,10 +66,7 @@ namespace FakeItEasy.Configuration
         /// <summary>
         ///   Gets the names of the arguments in the list.
         /// </summary>
-        public IEnumerable<string> ArgumentNames
-        {
-            get { return this.argumentNamesField; }
-        }
+        public IEnumerable<string> ArgumentNames => this.argumentNamesField;
 
         /// <summary>
         ///   Gets the argument at the specified index.

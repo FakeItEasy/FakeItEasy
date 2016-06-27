@@ -14,10 +14,7 @@ namespace FakeItEasy
         /// the one with the highest priority is used.
         /// </summary>
         /// <remarks>The default implementation returns <see cref="FakeItEasy.Priority.Default"/>.</remarks>
-        public virtual Priority Priority
-        {
-            get { return Priority.Default; }
-        }
+        public virtual Priority Priority => Priority.Default;
 
         /// <summary>
         /// Whether or not this object can create a dummy of type <paramref name="type"/>.

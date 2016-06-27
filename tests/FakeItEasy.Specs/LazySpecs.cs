@@ -60,10 +60,7 @@ namespace FakeItEasy.Specs
         {
             private static IFoo instance = new FooFactory();
 
-            public static IFoo Instance
-            {
-                get { return instance; }
-            }
+            public static IFoo Instance => instance;
 
             protected override IFoo Create()
             {

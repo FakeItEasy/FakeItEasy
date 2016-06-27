@@ -29,10 +29,7 @@ namespace FakeItEasy.SelfInitializedFakes
         /// <returns>A FileStorage instance.</returns>
         public delegate FileStorage Factory(string fileName);
 
-        private bool FileExists
-        {
-            get { return this.fileSystem.FileExists(this.fileName); }
-        }
+        private bool FileExists => this.fileSystem.FileExists(this.fileName);
 
         /// <summary>
         /// Loads the recorded calls for the specified recording.
