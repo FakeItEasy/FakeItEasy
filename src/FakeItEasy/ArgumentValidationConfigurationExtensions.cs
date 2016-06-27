@@ -16,7 +16,7 @@ namespace FakeItEasy
         /// <returns>A configuration object.</returns>
         public static TInterface WithAnyArguments<TInterface>(this IArgumentValidationConfiguration<TInterface> configuration)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.WhenArgumentsMatch(x => true);
         }

@@ -24,14 +24,14 @@ namespace FakeItEasy.Core
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
                 return PropertyBehaviorRule.IsPropertySetter(fakeObjectCall.Method);
             }
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
                 var newRule = new CallRuleMetadata
                                   {

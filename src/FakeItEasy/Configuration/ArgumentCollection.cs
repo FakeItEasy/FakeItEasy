@@ -31,12 +31,12 @@ namespace FakeItEasy.Configuration
         [DebuggerStepThrough]
         internal ArgumentCollection(object[] arguments, IEnumerable<string> argumentNames)
         {
-            Guard.AgainstNull(arguments, "arguments");
-            Guard.AgainstNull(argumentNames, "argumentNames");
+            Guard.AgainstNull(arguments, nameof(arguments));
+            Guard.AgainstNull(argumentNames, nameof(argumentNames));
 
             if (arguments.Length != argumentNames.Count())
             {
-                throw new ArgumentException(ExceptionMessages.WrongNumberOfArgumentNamesMessage, "argumentNames");
+                throw new ArgumentException(ExceptionMessages.WrongNumberOfArgumentNamesMessage, nameof(argumentNames));
             }
 
             this.arguments = arguments;
@@ -132,7 +132,7 @@ namespace FakeItEasy.Configuration
         [DebuggerStepThrough]
         private static IEnumerable<string> GetArgumentNames(MethodInfo method)
         {
-            Guard.AgainstNull(method, "method");
+            Guard.AgainstNull(method, nameof(method));
 
             return method.GetParameters().Select(x => x.Name);
         }
@@ -150,7 +150,7 @@ namespace FakeItEasy.Configuration
                 index++;
             }
 
-            throw new ArgumentException(ExceptionMessages.ArgumentNameDoesNotExist, "argumentName");
+            throw new ArgumentException(ExceptionMessages.ArgumentNameDoesNotExist, nameof(argumentName));
         }
     }
 }

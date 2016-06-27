@@ -39,7 +39,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             IEnumerable<CustomAttributeBuilder> customAttributeBuilders,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
+            Guard.AgainstNull(customAttributeBuilders, nameof(customAttributeBuilders));
 
             var options = CreateProxyGenerationOptions();
             foreach (CustomAttributeBuilder builder in customAttributeBuilders)
@@ -77,9 +77,9 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             IEnumerable<object> argumentsForConstructor,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            Guard.AgainstNull(typeOfProxy, "typeOfProxy");
-            Guard.AgainstNull(additionalInterfacesToImplement, "additionalInterfacesToImplement");
-            Guard.AgainstNull(fakeCallProcessorProvider, "fakeCallProcessorProvider");
+            Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
+            Guard.AgainstNull(additionalInterfacesToImplement, nameof(additionalInterfacesToImplement));
+            Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
 
             if (typeOfProxy.IsValueType)
             {
@@ -242,7 +242,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             public void Intercept(IInvocation invocation)
             {
-                Guard.AgainstNull(invocation, "invocation");
+                Guard.AgainstNull(invocation, nameof(invocation));
 
                 if (invocation.Method.Equals(TagGetMethod))
                 {

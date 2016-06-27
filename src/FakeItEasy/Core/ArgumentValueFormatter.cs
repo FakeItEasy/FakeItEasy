@@ -92,7 +92,7 @@ namespace FakeItEasy.Core
 
             public int CompareTo(RangedFormatter other)
             {
-                Guard.AgainstNull(other, "other");
+                Guard.AgainstNull(other, nameof(other));
 
                 if (other.distanceFromKnownType == this.distanceFromKnownType)
                 {
@@ -113,7 +113,7 @@ namespace FakeItEasy.Core
 
             protected override string GetStringValue(object argumentValue)
             {
-                Guard.AgainstNull(argumentValue, "argumentValue");
+                Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
                 return argumentValue.ToString();
             }
@@ -129,7 +129,7 @@ namespace FakeItEasy.Core
 
             protected override string GetStringValue(string argumentValue)
             {
-                Guard.AgainstNull(argumentValue, "argumentValue");
+                Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
                 if (argumentValue.Length == 0)
                 {

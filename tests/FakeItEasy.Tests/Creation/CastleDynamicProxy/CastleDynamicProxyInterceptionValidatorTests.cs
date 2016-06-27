@@ -61,7 +61,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         [MemberData(nameof(NonInterceptableMembers))]
         public void Should_fail_for_non_interceptable_methods(NonInterceptableTestCase testCase)
         {
-            Guard.AgainstNull(testCase, "testCase");
+            Guard.AgainstNull(testCase, nameof(testCase));
 
             // Arrange
             string reason;
@@ -78,7 +78,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         [MemberData(nameof(InterceptableMethods))]
         public void Should_succeed_for_interceptable_methods(InterceptionTestCase testCase)
         {
-            Guard.AgainstNull(testCase, "testCase");
+            Guard.AgainstNull(testCase, nameof(testCase));
 
             // Arrange
             string reason;

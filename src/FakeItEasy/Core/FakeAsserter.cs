@@ -13,8 +13,8 @@ namespace FakeItEasy.Core
 
         public FakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
         {
-            Guard.AgainstNull(calls, "calls");
-            Guard.AgainstNull(callWriter, "callWriter");
+            Guard.AgainstNull(calls, nameof(calls));
+            Guard.AgainstNull(callWriter, nameof(callWriter));
 
             this.calls = calls;
             this.callWriter = callWriter;

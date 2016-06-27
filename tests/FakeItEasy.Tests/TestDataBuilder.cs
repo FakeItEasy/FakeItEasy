@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests
 
         public static TSubject Build(Action<TBuilder> buildAction)
         {
-            Guard.AgainstNull(buildAction, "buildAction");
+            Guard.AgainstNull(buildAction, nameof(buildAction));
 
             var builder = CreateBuilderInstance();
             buildAction.Invoke(builder);
@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests
         [SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates", Justification = "Not required.")]
         public static implicit operator TSubject(TestDataBuilder<TSubject, TBuilder> builder)
         {
-            Guard.AgainstNull(builder, "builder");
+            Guard.AgainstNull(builder, nameof(builder));
 
             return builder.Build();
         }
@@ -35,7 +35,7 @@ namespace FakeItEasy.Tests
 
         protected TBuilder Do(Action<TBuilder> action)
         {
-            Guard.AgainstNull(action, "action");
+            Guard.AgainstNull(action, nameof(action));
 
             action((TBuilder)this);
             return (TBuilder)this;

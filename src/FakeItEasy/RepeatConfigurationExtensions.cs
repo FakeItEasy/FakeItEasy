@@ -13,7 +13,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to set repeat 1 to.</param>
         public static void Once(this IRepeatConfiguration configuration)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             configuration.NumberOfTimes(1);
         }
@@ -24,7 +24,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to set repeat 2 to.</param>
         public static void Twice(this IRepeatConfiguration configuration)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             configuration.NumberOfTimes(2);
         }

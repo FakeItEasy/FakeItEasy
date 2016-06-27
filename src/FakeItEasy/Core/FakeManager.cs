@@ -30,8 +30,8 @@ namespace FakeItEasy.Core
         /// <param name="proxy">The faked proxy object.</param>
         internal FakeManager(Type fakeObjectType, object proxy)
         {
-            Guard.AgainstNull(fakeObjectType, "fakeObjectType");
-            Guard.AgainstNull(proxy, "proxy");
+            Guard.AgainstNull(fakeObjectType, nameof(fakeObjectType));
+            Guard.AgainstNull(proxy, nameof(proxy));
 
             this.objectReference = new WeakReference(proxy);
             this.FakeObjectType = fakeObjectType;
@@ -120,7 +120,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to remove.</param>
         public virtual void RemoveRule(IFakeObjectCallRule rule)
         {
-            Guard.AgainstNull(rule, "rule");
+            Guard.AgainstNull(rule, nameof(rule));
 
             var ruleToRemove = this.AllUserRules.FirstOrDefault(x => x.Rule.Equals(rule));
             this.AllUserRules.Remove(ruleToRemove);

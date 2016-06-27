@@ -12,7 +12,7 @@ namespace FakeItEasy
     {
         public static string FullNameCSharp(this Type type)
         {
-            Guard.AgainstNull(type, "type");
+            Guard.AgainstNull(type, nameof(type));
 
             if (!type.IsGenericType)
             {

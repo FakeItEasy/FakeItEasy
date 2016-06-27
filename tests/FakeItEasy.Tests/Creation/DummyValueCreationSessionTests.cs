@@ -30,7 +30,7 @@ namespace FakeItEasy.Tests.Creation
         [MemberData(nameof(DummiesInContainer))]
         public void Should_return_dummy_from_container_when_available(object dummyForContainer)
         {
-            Guard.AgainstNull(dummyForContainer, "dummyInContainer");
+            Guard.AgainstNull(dummyForContainer, nameof(dummyForContainer));
 
             // Arrange
             var session = new DummyValueCreationSession(

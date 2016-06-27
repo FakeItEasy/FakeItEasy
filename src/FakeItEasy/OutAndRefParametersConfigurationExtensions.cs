@@ -22,8 +22,8 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(
             this IOutAndRefParametersConfiguration configuration, params object[] values)
         {
-            Guard.AgainstNull(configuration, "configuration");
-            Guard.AgainstNull(values, "values");
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(values, nameof(values));
 
             return configuration.AssignsOutAndRefParametersLazily(x => values);
         }
@@ -44,7 +44,7 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1>(
             this IOutAndRefParametersConfiguration configuration, Func<T1, object[]> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
@@ -73,7 +73,7 @@ namespace FakeItEasy
             AssignsOutAndRefParametersLazily<T1, T2>(
             this IOutAndRefParametersConfiguration configuration, Func<T1, T2, object[]> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
@@ -103,7 +103,7 @@ namespace FakeItEasy
             AssignsOutAndRefParametersLazily<T1, T2, T3>(
             this IOutAndRefParametersConfiguration configuration, Func<T1, T2, T3, object[]> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {
@@ -133,7 +133,7 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(
             this IOutAndRefParametersConfiguration configuration, Func<T1, T2, T3, T4, object[]> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.AssignsOutAndRefParametersLazily(call =>
             {

@@ -18,7 +18,7 @@ namespace FakeItEasy.Creation.DelegateProxies
             IEnumerable<object> argumentsForConstructor,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            Guard.AgainstNull(typeOfProxy, "typeOfProxy");
+            Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
 
             if (!typeof(Delegate).IsAssignableFrom(typeOfProxy))
             {
@@ -45,7 +45,7 @@ namespace FakeItEasy.Creation.DelegateProxies
 
         public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
         {
-            Guard.AgainstNull(method, "method");
+            Guard.AgainstNull(method, nameof(method));
 
             if (method.Name != "Invoke")
             {

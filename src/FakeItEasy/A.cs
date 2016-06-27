@@ -46,7 +46,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
         public static T Fake<T>(Action<IFakeOptions<T>> optionsBuilder)
         {
-            Guard.AgainstNull(optionsBuilder, "optionsBuilder");
+            Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
 
             return (T)FakeAndDummyManager.CreateFake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
         }

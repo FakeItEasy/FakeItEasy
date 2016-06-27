@@ -21,8 +21,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for expressions.")]
         public static T Where<T>(this IWhereConfiguration<T> configuration, Expression<Func<IFakeObjectCall, bool>> predicate)
         {
-            Guard.AgainstNull(configuration, "configuration");
-            Guard.AgainstNull(predicate, "predicate");
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(predicate, nameof(predicate));
 
             return configuration.Where(predicate.Compile(), x => x.Write(predicate.ToString()));
         }

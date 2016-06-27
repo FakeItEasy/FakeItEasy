@@ -252,7 +252,7 @@ namespace FakeItEasy.Tests
         [MemberData(nameof(DescriptionTestCases))]
         public void Should_provide_expected_description(Func<Repeated> repeated, string expectedDescription)
         {
-            Guard.AgainstNull(repeated, "repeated");
+            Guard.AgainstNull(repeated, nameof(repeated));
 
             // Arrange
             var repeatedInstance = repeated.Invoke();
