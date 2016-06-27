@@ -3,7 +3,7 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Core;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Provides the base for rules that can be built using the FakeConfiguration.

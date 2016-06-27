@@ -10,7 +10,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System.Security.Permissions;
     using Castle.DynamicProxy;
     using Castle.DynamicProxy.Generators;
-    using Core;
+    using FakeItEasy.Core;
 
     internal class CastleDynamicProxyGenerator
         : IProxyGenerator

@@ -3,7 +3,7 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
-    using Creation;
+    using FakeItEasy.Creation;
     using FakeItEasy.SelfInitializedFakes;
 
     /// <summary>

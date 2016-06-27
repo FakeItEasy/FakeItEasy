@@ -1,7 +1,7 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-    using Core;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Provides a way to configure predicates for when a call should be applied.

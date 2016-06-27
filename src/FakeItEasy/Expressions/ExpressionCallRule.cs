@@ -1,8 +1,8 @@
 namespace FakeItEasy.Expressions
 {
     using System;
-    using Configuration;
-    using Core;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// An implementation of the <see cref="IFakeObjectCallRule" /> interface that uses
