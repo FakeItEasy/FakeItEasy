@@ -11,6 +11,6 @@ namespace FakeItEasy.Examples.ExampleObjects
             this.WidgetName = widgetName;
         }
 
-        public string WidgetName { get; private set; }
+        public string WidgetName { get; }
     }
 }

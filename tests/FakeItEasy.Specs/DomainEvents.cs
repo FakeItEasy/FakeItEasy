@@ -17,7 +17,7 @@ namespace FakeItEasy.Specs
 
         public string Name { get; set; }
 
-        public DateTime Timestamp { get; private set; }
+        public DateTime Timestamp { get; }
 
         public virtual DateTime CalculateTimestamp()
         {

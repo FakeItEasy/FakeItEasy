@@ -507,7 +507,7 @@ namespace FakeItEasy.Specs
             this.ConstructorArgument = argument;
         }
 
-        public string ConstructorArgument { get; private set; }
+        public string ConstructorArgument { get; }
     }
 
     public class ConstructorArgumentsSetByConstructorForWrongTypeOptionsBuilder : ConventionBasedOptionsBuilder

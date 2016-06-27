@@ -18,6 +18,6 @@ namespace FakeItEasy.Expressions
             get { return this.Expression.Evaluate(); }
         }
 
-        public ParameterInfo ArgumentInformation { get; private set; }
+        public ParameterInfo ArgumentInformation { get; }
     }
 }

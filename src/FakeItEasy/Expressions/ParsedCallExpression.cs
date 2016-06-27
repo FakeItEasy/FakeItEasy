@@ -29,9 +29,9 @@ namespace FakeItEasy.Expressions
             this.callTarget = new Lazy<object>(() => callTarget);
         }
 
-        public MethodInfo CalledMethod { get; private set; }
+        public MethodInfo CalledMethod { get; }
 
-        public IEnumerable<ParsedArgumentExpression> ArgumentsExpressions { get; private set; }
+        public IEnumerable<ParsedArgumentExpression> ArgumentsExpressions { get; }
 
         public object CallTarget => this.callTarget.Value;
     }

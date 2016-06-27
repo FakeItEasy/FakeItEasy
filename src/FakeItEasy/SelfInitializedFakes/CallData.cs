@@ -28,18 +28,18 @@ namespace FakeItEasy.SelfInitializedFakes
         /// Gets the method that was called.
         /// </summary>
         /// <value>The method.</value>
-        public MethodInfo Method { get; private set; }
+        public MethodInfo Method { get; }
 
         /// <summary>
         /// Gets the output arguments of the call.
         /// </summary>
         /// <value>The output arguments.</value>
-        public IEnumerable<object> OutputArguments { get; private set; }
+        public IEnumerable<object> OutputArguments { get; }
 
         /// <summary>
         /// Gets the return value of the call.
         /// </summary>
         /// <value>The return value.</value>
-        public object ReturnValue { get; private set; }
+        public object ReturnValue { get; }
     }
 }
