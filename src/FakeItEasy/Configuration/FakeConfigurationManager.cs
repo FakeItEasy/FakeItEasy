@@ -67,11 +67,11 @@ namespace FakeItEasy.Configuration
             EnsureCallIsMadeOnAFake(parsedCallExpression);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
-            var setterExpression = BuildSetterFromGetter<TValue>(parsedCallExpression);
+            var parsedSetterCallExpression = BuildSetterFromGetter<TValue>(parsedCallExpression);
 
             return new PropertySetterConfiguration<TValue>(
-                setterExpression,
-                lambda => this.CreateVoidArgumentValidationConfiguration(this.callExpressionParser.Parse(lambda)));
+                parsedSetterCallExpression,
+                this.CreateVoidArgumentValidationConfiguration);
         }
 
         private static string GetPropertyName(ParsedCallExpression parsedCallExpression)
@@ -122,7 +122,7 @@ namespace FakeItEasy.Configuration
             return matcher.DescriptionOfMatchingCall;
         }
 
-        private static MethodCallExpression BuildSetterFromGetter<TValue>(
+        private static ParsedCallExpression BuildSetterFromGetter<TValue>(
             ParsedCallExpression parsedCallExpression)
         {
             var propertyName = GetPropertyName(parsedCallExpression);
@@ -155,14 +155,17 @@ namespace FakeItEasy.Configuration
                     "The property '" + propertyName + "' does not have a setter.");
             }
 
-            var arguments = parsedArgumentExpressions
-                .Select(a => a.Expression)
-                .Concat(new[] { BuildArgumentThatMatchesAnything<TValue>() });
+            var originalParameterInfos = indexerSetterInfo.GetParameters();
 
-            return Expression.Call(
-                Expression.Constant(parsedCallExpression.CallTarget),
-                indexerSetterInfo,
-                arguments);
+            var newParsedSetterValueExpression = new ParsedArgumentExpression(
+                BuildArgumentThatMatchesAnything<TValue>(),
+                originalParameterInfos.Last());
+
+            var arguments = parsedArgumentExpressions
+                .Take(originalParameterInfos.Length - 1)
+                .Concat(new[] { newParsedSetterValueExpression });
+
+            return new ParsedCallExpression(indexerSetterInfo, parsedCallExpression.CallTarget, arguments);
         }
 
         private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(ParsedCallExpression parsedCallExpression)
