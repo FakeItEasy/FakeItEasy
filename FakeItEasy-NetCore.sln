@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 14.0.0.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6A7B553-5359-4FB9-B19C-8A23004F49DB}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		FakeItEasy.snk = FakeItEasy.snk
 		Gemfile = Gemfile
 		Gemfile.lock = Gemfile.lock
+		global.json = global.json
 		how_to_build.md = how_to_build.md
 		License.txt = License.txt
 		mkdocs.yml = mkdocs.yml
