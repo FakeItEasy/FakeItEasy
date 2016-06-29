@@ -29,10 +29,11 @@ namespace FakeItEasy.Configuration
             Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
             var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
-            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
+            GuardAgainstNonFake(parsedCallExpression.CallTarget);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
             var rule = this.ruleFactory.Invoke(parsedCallExpression);
+            var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget);
             fake.AddRuleFirst(rule);
 
             return this.configurationFactory.CreateConfiguration(fake, rule);
@@ -44,11 +45,11 @@ namespace FakeItEasy.Configuration
             Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
             var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
-            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
+            GuardAgainstNonFake(parsedCallExpression.CallTarget);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
             var rule = this.ruleFactory.Invoke(parsedCallExpression);
-
+            var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget);
             fake.AddRuleFirst(rule);
 
             return this.configurationFactory.CreateConfiguration<T>(fake, rule);
@@ -56,6 +57,7 @@ namespace FakeItEasy.Configuration
 
         public IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fakeObject)
         {
+            GuardAgainstNonFake(fakeObject);
             var rule = new AnyCallCallRule();
             var manager = Fake.GetFakeManager(fakeObject);
             manager.AddRuleFirst(rule);
@@ -67,9 +69,10 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(propertySpecification, nameof(propertySpecification));
             var parsedCallExpression = this.callExpressionParser.Parse(propertySpecification);
-            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
+            GuardAgainstNonFake(parsedCallExpression.CallTarget);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
+            var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget);
             var parsedSetterCallExpression = BuildSetterFromGetter<TValue>(parsedCallExpression);
 
             return new PropertySetterConfiguration<TValue>(
@@ -104,11 +107,12 @@ namespace FakeItEasy.Configuration
             return value.Body;
         }
 
-        private static FakeManager GetFakeManagerCallIsMadeOn(ParsedCallExpression parsedCallExpression)
+        private static void GuardAgainstNonFake(object target)
         {
-            return parsedCallExpression.CallTarget == null
-                ? null
-                : Fake.GetFakeManager(parsedCallExpression.CallTarget);
+            if (target != null)
+            {
+                Fake.GetFakeManager(target);
+            }
         }
 
         private static string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
