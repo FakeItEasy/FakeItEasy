@@ -29,10 +29,13 @@ namespace FakeItEasy.Configuration
             Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
             var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
-            EnsureCallIsMadeOnAFake(parsedCallExpression);
+            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
-            return this.CreateVoidArgumentValidationConfiguration(parsedCallExpression);
+            var rule = this.ruleFactory.Invoke(parsedCallExpression);
+            fake.AddRuleFirst(rule);
+
+            return this.configurationFactory.CreateConfiguration(fake, rule);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
@@ -64,14 +67,15 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(propertySpecification, nameof(propertySpecification));
             var parsedCallExpression = this.callExpressionParser.Parse(propertySpecification);
-            EnsureCallIsMadeOnAFake(parsedCallExpression);
+            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
             var parsedSetterCallExpression = BuildSetterFromGetter<TValue>(parsedCallExpression);
 
             return new PropertySetterConfiguration<TValue>(
                 parsedSetterCallExpression,
-                this.CreateVoidArgumentValidationConfiguration);
+                newParsedSetterCallExpression =>
+                    this.CreateVoidArgumentValidationConfiguration(fake, newParsedSetterCallExpression));
         }
 
         private static string GetPropertyName(ParsedCallExpression parsedCallExpression)
@@ -105,11 +109,6 @@ namespace FakeItEasy.Configuration
             return parsedCallExpression.CallTarget == null
                 ? null
                 : Fake.GetFakeManager(parsedCallExpression.CallTarget);
-        }
-
-        private static void EnsureCallIsMadeOnAFake(ParsedCallExpression parsedCallExpression)
-        {
-            GetFakeManagerCallIsMadeOn(parsedCallExpression);
         }
 
         private static string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
@@ -168,9 +167,8 @@ namespace FakeItEasy.Configuration
             return new ParsedCallExpression(indexerSetterInfo, parsedCallExpression.CallTarget, arguments);
         }
 
-        private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(ParsedCallExpression parsedCallExpression)
+        private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(FakeManager fake, ParsedCallExpression parsedCallExpression)
         {
-            var fake = GetFakeManagerCallIsMadeOn(parsedCallExpression);
             var rule = this.ruleFactory.Invoke(parsedCallExpression);
             fake.AddRuleFirst(rule);
 
