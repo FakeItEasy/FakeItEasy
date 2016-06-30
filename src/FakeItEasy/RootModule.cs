@@ -4,7 +4,6 @@ namespace FakeItEasy
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -44,7 +43,7 @@ namespace FakeItEasy
                 new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
 
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>(), c.Resolve<ICallExpressionParser>())));
+                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>())));
 
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
@@ -78,9 +77,6 @@ namespace FakeItEasy
 
             container.RegisterSingleton<ICallExpressionParser>(c =>
                 new CallExpressionParser());
-
-            container.RegisterSingleton<IExpressionParser>(c =>
-                new ExpressionParser(c.Resolve<ICallExpressionParser>()));
 
             container.Register<IFakeAndDummyManager>(c =>
                                                          {
@@ -136,13 +132,12 @@ namespace FakeItEasy
                 this.serviceLocator = serviceLocator;
             }
 
-            public ICallMatcher CreateCallMathcer(LambdaExpression callSpecification)
+            public ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification)
             {
                 return new ExpressionCallMatcher(
                     callSpecification,
                     this.serviceLocator.Resolve<ExpressionArgumentConstraintFactory>(),
-                    this.serviceLocator.Resolve<MethodInfoManager>(),
-                    this.serviceLocator.Resolve<ICallExpressionParser>());
+                    this.serviceLocator.Resolve<MethodInfoManager>());
             }
         }
 

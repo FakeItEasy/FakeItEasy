@@ -3,7 +3,6 @@ namespace FakeItEasy.Expressions
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Reflection;
     using System.Text;
     using FakeItEasy.Configuration;
@@ -23,15 +22,13 @@ namespace FakeItEasy.Expressions
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionCallMatcher" /> class.
         /// </summary>
-        /// <param name="callSpecification">The call specification.</param>
+        /// <param name="parsedExpression">The parsed call specification.</param>
         /// <param name="constraintFactory">The constraint factory.</param>
         /// <param name="methodInfoManager">The method info manager to use.</param>
-        /// <param name="callExpressionParser">A parser to use to parse call expressions.</param>
-        public ExpressionCallMatcher(LambdaExpression callSpecification, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, ICallExpressionParser callExpressionParser)
+        public ExpressionCallMatcher(ParsedCallExpression parsedExpression, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager)
         {
             this.methodInfoManager = methodInfoManager;
 
-            var parsedExpression = callExpressionParser.Parse(callSpecification);
             this.Method = parsedExpression.CalledMethod;
 
             this.argumentConstraints = GetArgumentConstraints(parsedExpression.ArgumentsExpressions, constraintFactory).ToArray();
@@ -42,12 +39,9 @@ namespace FakeItEasy.Expressions
         /// Gets a human readable description of calls that will be matched by this
         /// matcher.
         /// </summary>
-        public virtual string DescriptionOfMatchingCall
-        {
-            get { return this.ToString(); }
-        }
+        public virtual string DescriptionOfMatchingCall => this.ToString();
 
-        private MethodInfo Method { get; set; }
+        private MethodInfo Method { get; }
 
         /// <summary>
         /// Matches the specified call against the expression.
@@ -56,7 +50,7 @@ namespace FakeItEasy.Expressions
         /// <returns>True if the call is matched by the expression.</returns>
         public virtual bool Matches(IFakeObjectCall call)
         {
-            Guard.AgainstNull(call, "call");
+            Guard.AgainstNull(call, nameof(call));
 
             return this.InvokesSameMethodOnTarget(call.FakedObject.GetType(), call.Method, this.Method)
                 && this.ArgumentsMatches(call.Arguments);
@@ -90,15 +84,9 @@ namespace FakeItEasy.Expressions
 
         public Func<IFakeObjectCall, ICollection<object>> GetOutAndRefParametersValueProducer()
         {
-            var values = new List<object>();
-            foreach (var constraint in this.argumentConstraints)
-            {
-                var valueProvidingConstraint = constraint as IArgumentValueProvider;
-                if (valueProvidingConstraint != null)
-                {
-                    values.Add(valueProvidingConstraint.Value);
-                }
-            }
+            var values = this.argumentConstraints.OfType<IArgumentValueProvider>()
+                .Select(valueProvidingConstraint => valueProvidingConstraint.Value)
+                .ToList();
 
             if (values.Any())
             {

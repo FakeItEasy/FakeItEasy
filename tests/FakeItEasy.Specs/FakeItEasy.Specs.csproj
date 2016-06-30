@@ -112,6 +112,7 @@
     <Compile Include="StrictFakeSpecs.cs" />
     <Compile Include="UnconfiguredFakeSpecs.cs" />
     <Compile Include="StringExtensions.cs" />
+    <Compile Include="UnnaturalFakeSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj">

@@ -355,7 +355,7 @@ namespace FakeItEasy.Tests.Configuration
             var builtRule = A.Fake<BuildableCallRule>();
             var config = this.CreateBuilder(builtRule);
 
-            var returnConfig = new RuleBuilder.ReturnValueConfiguration<bool> { ParentConfiguration = config };
+            var returnConfig = new RuleBuilder.ReturnValueConfiguration<bool>(config);
 
             Func<ArgumentCollection, bool> predicate = x => true;
 
@@ -467,7 +467,7 @@ namespace FakeItEasy.Tests.Configuration
             A.CallTo(() => this.ruleProducedByFactory.DescriptionOfValidCall).Returns("call description");
 
             // Act
-            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int> { ParentConfiguration = this.builder };
+            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>(this.builder);
             returnConfig.MustHaveHappened(Repeated.Exactly.Times(99));
 
             // Assert
@@ -486,7 +486,7 @@ namespace FakeItEasy.Tests.Configuration
             this.fakeManager.AddRuleFirst(this.ruleProducedByFactory);
 
             // Act
-            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int> { ParentConfiguration = this.builder };
+            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>(this.builder);
             returnConfig.MustHaveHappened();
 
             // Assert
@@ -500,7 +500,7 @@ namespace FakeItEasy.Tests.Configuration
             Func<IFakeObjectCall, bool> predicate = x => true;
             Action<IOutputWriter> writer = x => { };
 
-            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int> { ParentConfiguration = this.builder };
+            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>(this.builder);
 
             // Act
             returnConfig.Where(predicate, writer);
@@ -513,7 +513,7 @@ namespace FakeItEasy.Tests.Configuration
         public void Where_should_return_the_configuration_object()
         {
             // Arrange
-            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int> { ParentConfiguration = this.builder };
+            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>(this.builder);
 
             // Act
 
@@ -533,7 +533,7 @@ namespace FakeItEasy.Tests.Configuration
 
         private RuleBuilder.ReturnValueConfiguration<int> CreateTestableReturnConfiguration()
         {
-            return new RuleBuilder.ReturnValueConfiguration<int> { ParentConfiguration = this.builder };
+            return new RuleBuilder.ReturnValueConfiguration<int>(this.builder);
         }
     }
 }

@@ -24,22 +24,22 @@ namespace FakeItEasy.Configuration
 
         public IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(Expression<Func<TFake, TMember>> callSpecification)
         {
-            Guard.AgainstNull(callSpecification, "callSpecification");
+            Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
-            var rule = this.callRuleFactory(callSpecification);
+            var rule = this.callRuleFactory(this.expressionParser.Parse(callSpecification));
             this.manager.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, rule);
         }
 
         public IVoidArgumentValidationConfiguration CallsTo(Expression<Action<TFake>> callSpecification)
         {
-            Guard.AgainstNull(callSpecification, "callSpecification");
+            Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
-            var rule = this.callRuleFactory(callSpecification);
+            var rule = this.callRuleFactory(this.expressionParser.Parse(callSpecification));
             rule.Applicator = x => { };
             this.manager.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration(this.manager, rule);

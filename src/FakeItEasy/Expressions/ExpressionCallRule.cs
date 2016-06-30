@@ -1,7 +1,6 @@
 namespace FakeItEasy.Expressions
 {
     using System;
-    using System.Linq.Expressions;
     using Configuration;
     using Core;
 
@@ -18,7 +17,7 @@ namespace FakeItEasy.Expressions
         /// <param name="expressionMatcher">The expression matcher to use.</param>
         public ExpressionCallRule(ExpressionCallMatcher expressionMatcher)
         {
-            Guard.AgainstNull(expressionMatcher, "expressionMatcher");
+            Guard.AgainstNull(expressionMatcher, nameof(expressionMatcher));
 
             this.ExpressionMatcher = expressionMatcher;
             this.SetOutAndRefParametersValueProducer(expressionMatcher.GetOutAndRefParametersValueProducer());
@@ -29,14 +28,11 @@ namespace FakeItEasy.Expressions
         /// </summary>
         /// <param name="callSpecification">An expression specifying the call.</param>
         /// <returns>A rule instance.</returns>
-        public delegate ExpressionCallRule Factory(LambdaExpression callSpecification);
+        public delegate ExpressionCallRule Factory(ParsedCallExpression callSpecification);
 
-        public override string DescriptionOfValidCall
-        {
-            get { return this.ExpressionMatcher.DescriptionOfMatchingCall; }
-        }
+        public override string DescriptionOfValidCall => this.ExpressionMatcher.DescriptionOfMatchingCall;
 
-        private ExpressionCallMatcher ExpressionMatcher { get; set; }
+        private ExpressionCallMatcher ExpressionMatcher { get; }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

@@ -17,7 +17,8 @@ namespace FakeItEasy.Tests.TestHelpers
 
         public static ExpressionCallRule CreateRule<TFake>(Expression<Action<TFake>> expression)
         {
-            return GetCallRuleFactory().Invoke(expression);
+            var parsedExpression = ServiceLocator.Current.Resolve<ICallExpressionParser>().Parse(expression);
+            return GetCallRuleFactory().Invoke(parsedExpression);
         }
 
         public static IInterceptedFakeObjectCall CreateFakeCall<TFake, TReturn>(Expression<Func<TFake, TReturn>> callSpecification)

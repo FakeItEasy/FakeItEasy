@@ -10,32 +10,28 @@ namespace FakeItEasy.Configuration
         public override void RegisterDependencies(DictionaryContainer container)
         {
             container.RegisterSingleton<IConfigurationFactory>(c =>
-                new ConfigurationFactory
-                    {
-                        Container = c
-                    });
+                new ConfigurationFactory(c));
 
             container.RegisterSingleton<IStartConfigurationFactory>(c =>
-                new StartConfigurationFactory
-                    {
-                        Container = c
-                    });
+                new StartConfigurationFactory(c));
 
             container.RegisterSingleton<RuleBuilder.Factory>(c =>
                 (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>()));
 
             container.RegisterSingleton<IFakeConfigurationManager>(c =>
-                new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), c.Resolve<IExpressionParser>(), c.Resolve<ExpressionCallRule.Factory>(), c.Resolve<ICallExpressionParser>(), c.Resolve<IInterceptionAsserter>()));
+                new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), c.Resolve<ExpressionCallRule.Factory>(), c.Resolve<ICallExpressionParser>(), c.Resolve<IInterceptionAsserter>()));
         }
 
         private class ConfigurationFactory : IConfigurationFactory
         {
-            public DictionaryContainer Container { get; set; }
-
-            private RuleBuilder.Factory BuilderFactory
+            public ConfigurationFactory(DictionaryContainer container)
             {
-                get { return this.Container.Resolve<RuleBuilder.Factory>(); }
+                this.Container = container;
             }
+
+            private DictionaryContainer Container { get; }
+
+            private RuleBuilder.Factory BuilderFactory => this.Container.Resolve<RuleBuilder.Factory>();
 
             public IVoidArgumentValidationConfiguration CreateConfiguration(FakeManager fakeObject, BuildableCallRule callRule)
             {
@@ -45,9 +41,7 @@ namespace FakeItEasy.Configuration
             public IAnyCallConfigurationWithReturnTypeSpecified<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule)
             {
                 var parent = this.BuilderFactory.Invoke(callRule, fakeObject);
-                var configuration = new RuleBuilder.ReturnValueConfiguration<TMember>();
-                configuration.ParentConfiguration = parent;
-                return configuration;
+                return new RuleBuilder.ReturnValueConfiguration<TMember>(parent);
             }
 
             public IAnyCallConfigurationWithNoReturnTypeSpecified CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule)
@@ -58,7 +52,12 @@ namespace FakeItEasy.Configuration
 
         private class StartConfigurationFactory : IStartConfigurationFactory
         {
-            public DictionaryContainer Container { get; set; }
+            public StartConfigurationFactory(DictionaryContainer container)
+            {
+                this.Container = container;
+            }
+
+            private DictionaryContainer Container { get; }
 
             public IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeManager fakeObject)
             {

@@ -401,14 +401,8 @@
     <Compile Include="Expressions\ExpressionCallRule.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Expressions\ExpressionParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Expressions\ICallExpressionParser.cs" />
     <Compile Include="Expressions\IExpressionCallMatcherFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\IExpressionParser.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Expressions\ParsedCallExpression.cs" />

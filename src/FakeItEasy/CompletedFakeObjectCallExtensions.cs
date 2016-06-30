@@ -26,7 +26,8 @@ namespace FakeItEasy
         public static IEnumerable<ICompletedFakeObjectCall> Matching<TFake>(this IEnumerable<ICompletedFakeObjectCall> calls, Expression<Action<TFake>> callSpecification)
         {
             var factory = ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>();
-            var matcher = factory.CreateCallMathcer(callSpecification);
+            var callExpressionParser = ServiceLocator.Current.Resolve<ICallExpressionParser>();
+            var matcher = factory.CreateCallMatcher(callExpressionParser.Parse(callSpecification));
 
             return
                 from call in calls

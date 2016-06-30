@@ -104,37 +104,6 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         [Fact]
-        public void Should_return_parsed_expression_with_arguments_set_when_calling_instance_method()
-        {
-            // Arrange
-            var argumentOne = new object();
-            var argumentTwo = new object();
-
-            var foo = A.Fake<IFoo>();
-            var call = Call(() => foo.Bar(argumentOne, argumentTwo));
-
-            // Act
-            var result = this.parser.Parse(call);
-
-            // Assert
-           result.Arguments.Should().BeEquivalentTo(argumentOne, argumentTwo);
-        }
-
-        [Fact]
-        public void Should_return_parsed_expression_with_arguments_set_when_calling_indexed_property_getter()
-        {
-            // Arrange
-            var foo = A.Fake<IList<string>>();
-            var call = Call(() => foo[10]);
-
-            // Act
-            var result = this.parser.Parse(call);
-
-            // Assert
-            result.Arguments.Single().Should().Be(10);
-        }
-
-        [Fact]
         public void Should_return_parsed_expression_with_argument_names_set_when_calling_instance_method()
         {
             // Arrange
@@ -194,7 +163,6 @@ namespace FakeItEasy.Tests.Expressions
 
             // Assert
             result.CalledMethod.Name.Should().Be("Invoke");
-            result.Arguments.Should().BeEquivalentTo(new object[] { "foo", "bar" });
             result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Should().BeEquivalentTo("argument1", "argument2");
             result.CallTarget.Should().BeSameAs(d);
         }

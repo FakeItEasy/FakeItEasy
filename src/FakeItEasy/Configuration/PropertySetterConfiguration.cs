@@ -4,19 +4,20 @@ namespace FakeItEasy.Configuration
     using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Core;
+    using FakeItEasy.Expressions;
 
     internal class PropertySetterConfiguration<TValue>
         : IPropertySetterAnyValueConfiguration<TValue>
     {
-        private readonly MethodCallExpression setterExpression;
+        private readonly ParsedCallExpression parsedSetterExpression;
 
-        private readonly Func<LambdaExpression, IVoidArgumentValidationConfiguration> voidArgumentValidationConfigurationFactory;
+        private readonly Func<ParsedCallExpression, IVoidArgumentValidationConfiguration> voidArgumentValidationConfigurationFactory;
 
         public PropertySetterConfiguration(
-            MethodCallExpression setterExpression,
-            Func<LambdaExpression, IVoidArgumentValidationConfiguration> voidArgumentValidationConfigurationFactory)
+            ParsedCallExpression parsedCallExpression,
+            Func<ParsedCallExpression, IVoidArgumentValidationConfiguration> voidArgumentValidationConfigurationFactory)
         {
-            this.setterExpression = setterExpression;
+            this.parsedSetterExpression = parsedCallExpression;
             this.voidArgumentValidationConfigurationFactory = voidArgumentValidationConfigurationFactory;
         }
 
@@ -34,13 +35,13 @@ namespace FakeItEasy.Configuration
 
         public IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            return this.CreateArgumentValidationConfiguration(this.setterExpression)
+            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression)
                 .Throws(exceptionFactory);
         }
 
         public IPropertySetterConfiguration Invokes(Action<IFakeObjectCall> action)
         {
-            var voidConfiguration = this.CreateArgumentValidationConfiguration(this.setterExpression)
+            var voidConfiguration = this.CreateArgumentValidationConfiguration(this.parsedSetterExpression)
                 .Invokes(action);
 
             return AsPropertySetterConfiguration(voidConfiguration);
@@ -48,25 +49,25 @@ namespace FakeItEasy.Configuration
 
         public IAfterCallSpecifiedConfiguration CallsBaseMethod()
         {
-            return this.CreateArgumentValidationConfiguration(this.setterExpression)
+            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression)
                 .CallsBaseMethod();
         }
 
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
         {
-            return this.CreateArgumentValidationConfiguration(this.setterExpression)
+            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression)
                 .MustHaveHappened(repeatConstraint);
         }
 
         public IAfterCallSpecifiedConfiguration DoesNothing()
         {
-            return this.CreateArgumentValidationConfiguration(this.setterExpression)
+            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression)
                 .DoesNothing();
         }
 
         public IPropertySetterConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
         {
-            var voidConfiguration = this.CreateArgumentValidationConfiguration(this.setterExpression)
+            var voidConfiguration = this.CreateArgumentValidationConfiguration(this.parsedSetterExpression)
                 .WhenArgumentsMatch(argumentsPredicate);
 
             return AsPropertySetterConfiguration(voidConfiguration);
@@ -78,22 +79,27 @@ namespace FakeItEasy.Configuration
             return new ProperySetterAdapter(voidArgumentValidationConfiguration);
         }
 
-        private MethodCallExpression CreateSetterExpressionWithNewValue(Expression<Func<TValue>> valueExpression)
+        private ParsedCallExpression CreateSetterExpressionWithNewValue(Expression<Func<TValue>> valueExpression)
         {
-            var arguments = this.setterExpression.Arguments
-                .Take(this.setterExpression.Arguments.Count - 1)
-                .Concat(new[] { valueExpression.Body });
+            var originalParameterInfos = this.parsedSetterExpression.CalledMethod.GetParameters();
+            var parsedValueExpression = new ParsedArgumentExpression(
+                valueExpression.Body,
+                originalParameterInfos.Last());
 
-            return Expression.Call(
-                this.setterExpression.Object,
-                this.setterExpression.Method,
+            var arguments = this.parsedSetterExpression.ArgumentsExpressions
+                .Take(originalParameterInfos.Length - 1)
+                .Concat(new[] { parsedValueExpression });
+
+            return new ParsedCallExpression(
+                this.parsedSetterExpression.CalledMethod,
+                this.parsedSetterExpression.CallTarget,
                 arguments);
         }
 
         private IVoidArgumentValidationConfiguration CreateArgumentValidationConfiguration(
-            MethodCallExpression expression)
+            ParsedCallExpression parsedSetter)
         {
-            return this.voidArgumentValidationConfigurationFactory(Expression.Lambda(expression));
+            return this.voidArgumentValidationConfigurationFactory(parsedSetter);
         }
 
         private class ProperySetterAdapter : IPropertySetterConfiguration
