@@ -53,7 +53,7 @@ namespace FakeItEasy.Configuration
         /// Gets a collection of actions that should be invoked when the configured
         /// call is made.
         /// </summary>
-        public virtual ICollection<Action<IFakeObjectCall>> Actions { get; private set; }
+        public virtual ICollection<Action<IFakeObjectCall>> Actions { get; }
 
         /// <summary>
         /// Gets or sets a function that provides values to apply to output and reference variables.
@@ -214,9 +214,9 @@ namespace FakeItEasy.Configuration
                 this.DescriptionWriter = descriptionWriter;
             }
 
-            public Func<IFakeObjectCall, bool> Predicate { get; private set; }
+            public Func<IFakeObjectCall, bool> Predicate { get; }
 
-            public Action<IOutputWriter> DescriptionWriter { get; private set; }
+            public Action<IOutputWriter> DescriptionWriter { get; }
         }
     }
 }

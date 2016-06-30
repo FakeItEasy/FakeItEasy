@@ -16,10 +16,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
         /// there's no use in accepting or rejecting calls based on the
         /// incoming parameter value.
         /// </summary>
-        public object Value
-        {
-            get; private set;
-        }
+        public object Value { get; }
 
         public void WriteDescription(IOutputWriter writer)
         {

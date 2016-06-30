@@ -117,11 +117,11 @@ namespace FakeItEasy.Tests.Core
                 this.Dependency = dependency;
             }
 
-            public IFoo FooDependency { get; private set; }
+            public IFoo FooDependency { get; }
 
-            public IFoo FooDependency2 { get; private set; }
+            public IFoo FooDependency2 { get; }
 
-            public object Dependency { get; private set; }
+            public object Dependency { get; }
         }
     }
 }

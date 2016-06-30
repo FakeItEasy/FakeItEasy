@@ -155,11 +155,11 @@ namespace FakeItEasy.Specs
 
             public virtual string StringProperty { get; set; }
 
-            public string StringPropertyValueDuringConstructorCall { get; private set; }
+            public string StringPropertyValueDuringConstructorCall { get; }
 
             public virtual int ValueTypeProperty { get; set; }
 
-            public int ValueTypePropertyValueDuringConstructorCall { get; private set; }
+            public int ValueTypePropertyValueDuringConstructorCall { get; }
 
             public virtual IFoo FakeableProperty { get; set; }
         }

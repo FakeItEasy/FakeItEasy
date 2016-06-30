@@ -199,9 +199,9 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             public object ReturnValue { get; private set; }
 
-            public MethodInfo Method { get; private set; }
+            public MethodInfo Method { get; }
 
-            public ArgumentCollection Arguments { get; private set; }
+            public ArgumentCollection Arguments { get; }
 
             public object FakedObject
             {

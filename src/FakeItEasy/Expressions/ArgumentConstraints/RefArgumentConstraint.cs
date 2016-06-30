@@ -24,7 +24,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
         /// Gets the value that was used when specifying the constraint.
         /// Used for implicit assignment of ref parameter values.
         /// </summary>
-        public object Value { get; private set; }
+        public object Value { get; }
 
         public void WriteDescription(IOutputWriter writer)
         {

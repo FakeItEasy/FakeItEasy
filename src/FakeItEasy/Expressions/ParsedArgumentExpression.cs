@@ -11,7 +11,7 @@ namespace FakeItEasy.Expressions
             this.ArgumentInformation = argumentInformation;
         }
 
-        public Expression Expression { get; private set; }
+        public Expression Expression { get; }
 
         public object Value
         {

@@ -169,9 +169,9 @@ namespace FakeItEasy.Core
                 MethodInfo = methodInfo;
             }
 
-            public MethodInfo MethodInfo { get; private set; }
+            public MethodInfo MethodInfo { get; }
 
-            public Type Type { get; private set; }
+            public Type Type { get; }
 
             public override int GetHashCode()
             {
