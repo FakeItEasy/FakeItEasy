@@ -26,12 +26,12 @@ namespace FakeItEasy.Creation
             this.strategyCache = new Dictionary<Type, ResolveStrategy>();
             this.strategies = new ResolveStrategy[]
                 {
-                    new ResolveFromDummyFactoryStrategy { DummyFactory = dummyFactory },
-                    new ResolveByCreatingTaskStrategy { Session = this },
-                    new ResolveByCreatingLazyStrategy { Session = this },
-                    new ResolveByCreatingFakeStrategy { FakeCreator = fakeObjectCreator, Session = this },
+                    new ResolveFromDummyFactoryStrategy(dummyFactory),
+                    new ResolveByCreatingTaskStrategy(this),
+                    new ResolveByCreatingLazyStrategy(this),
+                    new ResolveByCreatingFakeStrategy(fakeObjectCreator, this),
                     new ResolveByActivatingValueTypeStrategy(),
-                    new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy { Session = this }
+                    new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy(this)
                 };
         }
 
@@ -109,9 +109,15 @@ namespace FakeItEasy.Creation
 
         private class ResolveByCreatingFakeStrategy : ResolveStrategy
         {
-            public IFakeObjectCreator FakeCreator { get; set; }
+            public ResolveByCreatingFakeStrategy(IFakeObjectCreator fakeCreator, DummyValueCreationSession session)
+            {
+                this.FakeCreator = fakeCreator;
+                this.Session = session;
+            }
 
-            public DummyValueCreationSession Session { get; set; }
+            private IFakeObjectCreator FakeCreator { get; }
+
+            private DummyValueCreationSession Session { get; }
 
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
@@ -123,7 +129,12 @@ namespace FakeItEasy.Creation
         {
             private static readonly MethodInfo GenericFromResultMethodDefinition = CreateGenericFromResultMethodDefinition();
 
-            public DummyValueCreationSession Session { get; set; }
+            public ResolveByCreatingTaskStrategy(DummyValueCreationSession session)
+            {
+                this.Session = session;
+            }
+
+            private DummyValueCreationSession Session { get; }
 
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
@@ -162,7 +173,12 @@ namespace FakeItEasy.Creation
 
         private class ResolveByCreatingLazyStrategy : ResolveStrategy
         {
-            public DummyValueCreationSession Session { get; set; }
+            public ResolveByCreatingLazyStrategy(DummyValueCreationSession session)
+            {
+                this.Session = session;
+            }
+
+            private DummyValueCreationSession Session { get; }
 
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
@@ -203,7 +219,12 @@ namespace FakeItEasy.Creation
 
         private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy : ResolveStrategy
         {
-            public DummyValueCreationSession Session { get; set; }
+            public ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy(DummyValueCreationSession session)
+            {
+                this.Session = session;
+            }
+
+            private DummyValueCreationSession Session { get; }
 
             [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try method.")]
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
@@ -262,7 +283,12 @@ namespace FakeItEasy.Creation
 
         private class ResolveFromDummyFactoryStrategy : ResolveStrategy
         {
-            public DynamicDummyFactory DummyFactory { get; set; }
+            public ResolveFromDummyFactoryStrategy(DynamicDummyFactory dummyFactory)
+            {
+                this.DummyFactory = dummyFactory;
+            }
+
+            private DynamicDummyFactory DummyFactory { get; }
 
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
