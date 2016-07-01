@@ -48,7 +48,7 @@ namespace FakeItEasy.SelfInitializedFakes
         /// Gets a value indicating whether the recorder is currently recording.
         /// </summary>
         /// <value></value>
-        public bool IsRecording { get; private set; }
+        public bool IsRecording { get; }
 
         /// <summary>
         /// Applies the call if the call has been recorded.

@@ -88,7 +88,7 @@ namespace FakeItEasy.Core
                 this.distanceFromKnownType = distanceFromKnownType;
             }
 
-            public IArgumentValueFormatter Formatter { get; private set; }
+            public IArgumentValueFormatter Formatter { get; }
 
             public int CompareTo(RangedFormatter other)
             {

@@ -473,7 +473,7 @@ namespace FakeItEasy.Core
     }
     public class FakeManager : FakeItEasy.Core.IFakeCallProcessor
     {
-        public System.Type FakeObjectType { get; }
+        public virtual System.Type FakeObjectType { get; }
         public virtual object Object { get; }
         public virtual System.Collections.Generic.IEnumerable<FakeItEasy.Core.IFakeObjectCallRule> Rules { get; }
         public void AddInterceptionListener(FakeItEasy.Core.IInterceptionListener listener) { }

@@ -10,7 +10,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             this.ExpectedValue = expectedValue;
         }
 
-        public object ExpectedValue { get; private set; }
+        public object ExpectedValue { get; }
 
         public string ConstraintDescription
         {

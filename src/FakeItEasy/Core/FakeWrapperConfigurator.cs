@@ -22,7 +22,7 @@ namespace FakeItEasy.Core
             this.WrappedObject = wrappedObject;
         }
 
-        private object WrappedObject { get; set; }
+        private object WrappedObject { get; }
 
         public override IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
         {

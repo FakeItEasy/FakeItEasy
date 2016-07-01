@@ -32,9 +32,9 @@ namespace FakeItEasy.Core
             argumentProviderMap.AddArgumentProvider(this.EventHandler as Delegate, this);
         }
 
-        private TEventHandler EventHandler { get; set; }
+        private TEventHandler EventHandler { get; }
 
-        private object[] EventArguments { get; set; }
+        private object[] EventArguments { get; }
 
         /// <summary>
         /// Converts the <c>DelegateRaiser</c> to a <c>TEventHandler</c>.

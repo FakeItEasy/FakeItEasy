@@ -42,12 +42,12 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// <summary>
         /// Gets the method that's called.
         /// </summary>
-        public MethodInfo Method { get; private set; }
+        public MethodInfo Method { get; }
 
         /// <summary>
         /// Gets the arguments used in the call.
         /// </summary>
-        public ArgumentCollection Arguments { get; private set; }
+        public ArgumentCollection Arguments { get; }
 
         /// <summary>
         /// Gets the faked object the call is performed on.

@@ -42,7 +42,7 @@ namespace FakeItEasy
         /// <summary>
         /// Gets the faked object.
         /// </summary>
-        public T FakedObject { get; private set; }
+        public T FakedObject { get; }
 
         /// <summary>
         /// Gets all calls made to the faked object.

@@ -76,7 +76,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the faked type.
         /// </summary>
-        public virtual Type FakeObjectType { get; private set; }
+        public virtual Type FakeObjectType { get; }
 
         /// <summary>
         /// Gets the interceptions that are currently registered with the fake object.
