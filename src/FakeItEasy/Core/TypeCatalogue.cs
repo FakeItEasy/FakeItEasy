@@ -6,6 +6,7 @@ namespace FakeItEasy.Core
     using System.Linq;
     using System.Reflection;
 #if !FEATURE_REFLECTION_GETASSEMBLIES
+    using System.Runtime.Loader;
     using Microsoft.Extensions.DependencyModel;
 #endif
 
@@ -114,7 +115,7 @@ namespace FakeItEasy.Core
 #if FEATURE_REFLECTION_GETASSEMBLIES
                     reflectedAssembly = Assembly.ReflectionOnlyLoadFrom(file);
 #else
-                    reflectedAssembly = CustomLoadContext.Instance.LoadFromFullPath(file);
+                    reflectedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
 #endif
                 }
                 catch (Exception ex)
@@ -171,39 +172,5 @@ namespace FakeItEasy.Core
                 writer.WriteLine();
             }
         }
-#if !FEATURE_REFLECTION_GETASSEMBLIES
-        private class CustomLoadContext : System.Runtime.Loader.AssemblyLoadContext
-        {
-            private static CustomLoadContext instance;
-
-            public static CustomLoadContext Instance
-            {
-                get
-                {
-                    if (instance == null)
-                    {
-                        instance = new CustomLoadContext();
-                    }
-
-                    return instance;
-                }
-            }
-
-            private string BasePath { get; set; }
-
-            public Assembly LoadFromFullPath(string assemblyPath)
-            {
-                var fileInfo = new System.IO.FileInfo(assemblyPath);
-                this.BasePath = fileInfo.DirectoryName;
-                return this.LoadFromAssemblyPath(assemblyPath);
-            }
-
-            protected override Assembly Load(AssemblyName assemblyName)
-            {
-                Console.WriteLine("loading {0}", assemblyName.Name);
-                return this.LoadFromAssemblyPath(System.IO.Path.Combine(this.BasePath ?? System.IO.Directory.GetCurrentDirectory(), assemblyName.Name) + ".dll");
-            }
-        }
-#endif
     }
 }
