@@ -14,7 +14,7 @@ namespace FakeItEasy
         /// <returns>An object to assert the call order.</returns>
         public static UnorderedCallAssertion MustHaveHappened(this IAssertConfiguration configuration)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.MustHaveHappened(Repeated.AtLeast.Once);
         }
@@ -25,7 +25,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to assert on.</param>
         public static void MustNotHaveHappened(this IAssertConfiguration configuration)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             configuration.MustHaveHappened(Repeated.Never);
         }

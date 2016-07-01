@@ -16,14 +16,14 @@ namespace FakeItEasy
 
         public virtual FakeManager GetFakeManager(object fakedObject)
         {
-            Guard.AgainstNull(fakedObject, "fakedObject");
+            Guard.AgainstNull(fakedObject, nameof(fakedObject));
 
             return this.fakeManagerAccessor.GetFakeManager(fakedObject);
         }
 
         public virtual IEnumerable<ICompletedFakeObjectCall> GetCalls(object fakedObject)
         {
-            Guard.AgainstNull(fakedObject, "fakedObject");
+            Guard.AgainstNull(fakedObject, nameof(fakedObject));
 
             var manager = this.fakeManagerAccessor.GetFakeManager(fakedObject);
             return manager.GetRecordedCalls();
@@ -31,7 +31,7 @@ namespace FakeItEasy
 
         public virtual void ClearConfiguration(object fakedObject)
         {
-            Guard.AgainstNull(fakedObject, "fakedObject");
+            Guard.AgainstNull(fakedObject, nameof(fakedObject));
 
             var manager = this.fakeManagerAccessor.GetFakeManager(fakedObject);
             manager.ClearUserRules();
@@ -39,7 +39,7 @@ namespace FakeItEasy
 
         public void InitializeFixture(object fixture)
         {
-            Guard.AgainstNull(fixture, "fixture");
+            Guard.AgainstNull(fixture, nameof(fixture));
 
             this.fakeInitializer.InitializeFakes(fixture);
         }

@@ -19,7 +19,7 @@ namespace FakeItEasy.Core
         /// <returns>A fake manager.</returns>
         public FakeManager GetFakeManager(object proxy)
         {
-            Guard.AgainstNull(proxy, "proxy");
+            Guard.AgainstNull(proxy, nameof(proxy));
 
             var taggable = AsTaggable(proxy);
 
@@ -35,8 +35,8 @@ namespace FakeItEasy.Core
 
         public void TagProxy(object proxy, FakeManager manager)
         {
-            Guard.AgainstNull(proxy, "proxy");
-            Guard.AgainstNull(manager, "manager");
+            Guard.AgainstNull(proxy, nameof(proxy));
+            Guard.AgainstNull(manager, nameof(manager));
 
             var taggable = AsTaggable(proxy);
 

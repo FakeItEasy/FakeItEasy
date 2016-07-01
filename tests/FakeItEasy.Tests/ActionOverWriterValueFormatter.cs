@@ -6,7 +6,7 @@ namespace FakeItEasy.Tests
     {
         protected override string GetStringValue(Action<IOutputWriter> argumentValue)
         {
-            Guard.AgainstNull(argumentValue, "argumentValue");
+            Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
             var writer = new StringBuilderOutputWriter();
             argumentValue.Invoke(writer);

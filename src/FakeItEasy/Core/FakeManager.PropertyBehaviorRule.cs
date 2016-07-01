@@ -49,7 +49,7 @@ namespace FakeItEasy.Core
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
                 if (this.IsPropertyGetter(fakeObjectCall))
                 {

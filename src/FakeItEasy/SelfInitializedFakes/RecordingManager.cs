@@ -25,7 +25,7 @@ namespace FakeItEasy.SelfInitializedFakes
         /// <param name="storage">The storage.</param>
         public RecordingManager(ICallStorage storage)
         {
-            Guard.AgainstNull(storage, "storage");
+            Guard.AgainstNull(storage, nameof(storage));
 
             this.storage = storage;
 
@@ -56,7 +56,7 @@ namespace FakeItEasy.SelfInitializedFakes
         /// <param name="fakeObjectCall">The call to apply to from recording.</param>
         public void ApplyNext(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+            Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
             this.AssertThatCallQueueIsNotEmpty();
 
@@ -75,7 +75,7 @@ namespace FakeItEasy.SelfInitializedFakes
         /// <param name="fakeObjectCall">The call to record.</param>
         public virtual void RecordCall(ICompletedFakeObjectCall fakeObjectCall)
         {
-            Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+            Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
             var callData = new CallData(fakeObjectCall.Method, GetOutputArgumentsForCall(fakeObjectCall), fakeObjectCall.ReturnValue);
             this.recordedCalls.Add(new CallDataMetadata { HasBeenApplied = true, RecordedCall = callData });

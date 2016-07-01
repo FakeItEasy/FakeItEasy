@@ -30,7 +30,7 @@ namespace FakeItEasy.Creation
 
         public void AddInterfaceToImplement(Type interfaceType)
         {
-            Guard.AgainstNull(interfaceType, "interfaceType");
+            Guard.AgainstNull(interfaceType, nameof(interfaceType));
 
             if (!interfaceType.IsInterface)
             {

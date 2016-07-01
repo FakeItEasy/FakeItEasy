@@ -13,7 +13,7 @@ namespace FakeItEasy.Core
 
         public SequentialCallContext(CallWriter callWriter)
         {
-            Guard.AgainstNull(callWriter, "callWriter");
+            Guard.AgainstNull(callWriter, nameof(callWriter));
             this.callWriter = callWriter;
             this.fakeManagers = new HashSet<FakeManager>();
             this.assertedCalls = new List<AssertedCall>();
@@ -26,10 +26,10 @@ namespace FakeItEasy.Core
             string callDescription,
             Repeated repeatConstraint)
         {
-            Guard.AgainstNull(fakeManager, "fakeManager");
-            Guard.AgainstNull(callPredicate, "callPredicate");
-            Guard.AgainstNull(callDescription, "callDescription");
-            Guard.AgainstNull(repeatConstraint, "repeatConstraint");
+            Guard.AgainstNull(fakeManager, nameof(fakeManager));
+            Guard.AgainstNull(callPredicate, nameof(callPredicate));
+            Guard.AgainstNull(callDescription, nameof(callDescription));
+            Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
             this.fakeManagers.Add(fakeManager);
             this.assertedCalls.Add(
                 new AssertedCall { CallDescription = callDescription, RepeatDescription = repeatConstraint.ToString() });

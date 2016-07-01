@@ -15,7 +15,7 @@ namespace FakeItEasy
         /// <returns>The writer.</returns>
         public static IOutputWriter WriteLine(this IOutputWriter writer)
         {
-            Guard.AgainstNull(writer, "writer");
+            Guard.AgainstNull(writer, nameof(writer));
 
             writer.Write(Environment.NewLine);
             return writer;
@@ -30,7 +30,7 @@ namespace FakeItEasy
         /// <returns>The writer.</returns>
         public static IOutputWriter Write(this IOutputWriter writer, string format, params object[] args)
         {
-            Guard.AgainstNull(writer, "writer");
+            Guard.AgainstNull(writer, nameof(writer));
 
             writer.Write(string.Format(CultureInfo.InvariantCulture, format, args));
             return writer;
@@ -44,8 +44,8 @@ namespace FakeItEasy
         /// <returns>The writer.</returns>
         public static IOutputWriter Write(this IOutputWriter writer, object value)
         {
-            Guard.AgainstNull(writer, "writer");
-            Guard.AgainstNull(value, "value");
+            Guard.AgainstNull(writer, nameof(writer));
+            Guard.AgainstNull(value, nameof(value));
 
             writer.Write(value.ToString());
             return writer;

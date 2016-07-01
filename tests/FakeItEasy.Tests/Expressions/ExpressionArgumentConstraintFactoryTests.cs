@@ -182,7 +182,7 @@ namespace FakeItEasy.Tests.Expressions
 
             public void OnAfterCallIntercepted(ICompletedFakeObjectCall call, IFakeObjectCallRule ruleThatWasApplied)
             {
-                Guard.AgainstNull(call, "call");
+                Guard.AgainstNull(call, nameof(call));
 
                 if (call.Method.Name.Equals("TrapConstraints"))
                 {

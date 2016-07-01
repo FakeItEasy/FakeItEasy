@@ -48,7 +48,7 @@ namespace FakeItEasy.Core
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, "fakeObjectCall");
+                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
                 return EventCall.GetEvent(fakeObjectCall.Method) != null;
             }

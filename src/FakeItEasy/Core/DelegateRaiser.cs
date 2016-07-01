@@ -44,7 +44,7 @@ namespace FakeItEasy.Core
         [SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates", Justification = "Provides the event raising syntax.")]
         public static implicit operator TEventHandler(DelegateRaiser<TEventHandler> raiser)
         {
-            Guard.AgainstNull(raiser, "raiser");
+            Guard.AgainstNull(raiser, nameof(raiser));
 
             return raiser.EventHandler;
         }

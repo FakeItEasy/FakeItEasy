@@ -89,7 +89,7 @@ namespace FakeItEasy.Creation
             public override IFakeOptions<T> WithAdditionalAttributes(
                 IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
             {
-                Guard.AgainstNull(customAttributeBuilders, "customAttributeBuilders");
+                Guard.AgainstNull(customAttributeBuilders, nameof(customAttributeBuilders));
 
                 foreach (var customAttributeBuilder in customAttributeBuilders)
                 {
@@ -101,7 +101,7 @@ namespace FakeItEasy.Creation
 
             public override IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
             {
-                Guard.AgainstNull(wrappedInstance, "wrappedInstance");
+                Guard.AgainstNull(wrappedInstance, nameof(wrappedInstance));
 
                 var wrapper = new FakeWrapperConfigurator<T>(this, wrappedInstance);
                 this.ConfigureFake(fake => wrapper.ConfigureFakeToWrap(fake));

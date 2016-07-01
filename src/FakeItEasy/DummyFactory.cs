@@ -60,7 +60,7 @@ namespace FakeItEasy
                     this.GetType(),
                     typeof(T));
 
-                throw new ArgumentException(message, "type");
+                throw new ArgumentException(message, nameof(type));
             }
         }
     }

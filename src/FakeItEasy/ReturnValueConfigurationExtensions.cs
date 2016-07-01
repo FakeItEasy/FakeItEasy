@@ -23,7 +23,7 @@ namespace FakeItEasy
         /// <returns>A configuration object.</returns>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<T> configuration, T value)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.ReturnsLazily(x => value);
         }
@@ -39,7 +39,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of Task<T> return values.")]
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this IReturnValueConfiguration<Task<T>> configuration, T value)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.ReturnsLazily(() => value);
         }
@@ -55,8 +55,8 @@ namespace FakeItEasy
         /// <returns>A configuration object.</returns>
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this IReturnValueConfiguration<T> configuration, Func<T> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
-            Guard.AgainstNull(valueProducer, "valueProducer");
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(x => valueProducer());
         }
@@ -73,8 +73,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of Task<T> return values.")]
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this IReturnValueConfiguration<Task<T>> configuration, Func<T> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
-            Guard.AgainstNull(valueProducer, "valueProducer");
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(x => TaskHelper.FromResult(valueProducer()));
         }
@@ -93,7 +93,7 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, TReturnType> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -118,8 +118,8 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1>(this IReturnValueConfiguration<Task<TReturnType>> configuration, Func<T1, TReturnType> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
-            Guard.AgainstNull(valueProducer, "valueProducer");
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(call =>
             {
@@ -144,7 +144,7 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, TReturnType> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -170,7 +170,7 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2>(this IReturnValueConfiguration<Task<TReturnType>> configuration, Func<T1, T2, TReturnType> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.ReturnsLazily(call =>
             {
@@ -196,7 +196,7 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2, T3>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, TReturnType> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -223,7 +223,7 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2, T3>(this IReturnValueConfiguration<Task<TReturnType>> configuration, Func<T1, T2, T3, TReturnType> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -250,7 +250,7 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2, T3, T4>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, T4, TReturnType> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -278,7 +278,7 @@ namespace FakeItEasy
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration
             ReturnsLazily<TReturnType, T1, T2, T3, T4>(this IReturnValueConfiguration<Task<TReturnType>> configuration, Func<T1, T2, T3, T4, TReturnType> valueProducer)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -297,7 +297,7 @@ namespace FakeItEasy
         /// <param name="values">The values to return in sequence.</param>
         public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             var queue = new Queue<T>(values);
             configuration.ReturnsLazily(x => queue.Dequeue()).NumberOfTimes(queue.Count);
@@ -315,7 +315,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of Task<T> return values.")]
         public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<Task<T>> configuration, params T[] values)
         {
-            Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNull(configuration, nameof(configuration));
 
             var taskValues = values.Select(value => TaskHelper.FromResult(value));
 

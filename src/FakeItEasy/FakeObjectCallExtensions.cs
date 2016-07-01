@@ -23,7 +23,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Generic argument is used to cast the result.")]
         public static T GetArgument<T>(this IFakeObjectCall call, int argumentIndex)
         {
-            Guard.AgainstNull(call, "call");
+            Guard.AgainstNull(call, nameof(call));
 
             return call.Arguments.Get<T>(argumentIndex);
         }
@@ -39,8 +39,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Generic argument is used to cast the result.")]
         public static T GetArgument<T>(this IFakeObjectCall call, string argumentName)
         {
-            Guard.AgainstNull(call, "call");
-            Guard.AgainstNull(argumentName, "argumentName");
+            Guard.AgainstNull(call, nameof(call));
+            Guard.AgainstNull(argumentName, nameof(argumentName));
 
             return call.Arguments.Get<T>(argumentName);
         }
@@ -53,8 +53,8 @@ namespace FakeItEasy
         /// <param name="writer">The writer to write the calls to.</param>
         public static void Write<T>(this IEnumerable<T> calls, IOutputWriter writer) where T : IFakeObjectCall
         {
-            Guard.AgainstNull(calls, "calls");
-            Guard.AgainstNull(writer, "writer");
+            Guard.AgainstNull(calls, nameof(calls));
+            Guard.AgainstNull(writer, nameof(writer));
 
             var callWriter = ServiceLocator.Current.Resolve<CallWriter>();
             callWriter.WriteCalls(calls.Cast<IFakeObjectCall>(), writer);

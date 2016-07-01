@@ -17,7 +17,7 @@ namespace FakeItEasy.Tests.TestHelpers
         /// <param name="assertion">A FluentAssertions assertion that has been initiated on a subject.</param>
         public static void BeAFake(this ReferenceTypeAssertions<object, ObjectAssertions> assertion)
         {
-            Guard.AgainstNull(assertion, "assertion");
+            Guard.AgainstNull(assertion, nameof(assertion));
 
             assertion
                 .NotBeNull("because fakes aren't null").And
@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests.TestHelpers
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "BeAn", Justification = "Refers to the two words 'be an'")]
         public static ExceptionAssertions<TExpectedException> BeAnExceptionOfType<TExpectedException>(this ReferenceTypeAssertions<object, ObjectAssertions> assertion) where TExpectedException : Exception
         {
-            Guard.AgainstNull(assertion, "assertion");
+            Guard.AgainstNull(assertion, nameof(assertion));
 
             assertion
                 .NotBeNull("because it must be a valid exception").And
@@ -54,7 +54,7 @@ namespace FakeItEasy.Tests.TestHelpers
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "BeAn", Justification = "Refers to the two words 'be an'")]
         public static ExceptionAssertions<TExpectedException> BeAnExceptionAssignableTo<TExpectedException>(this ReferenceTypeAssertions<object, ObjectAssertions> assertion) where TExpectedException : Exception
         {
-            Guard.AgainstNull(assertion, "assertion");
+            Guard.AgainstNull(assertion, nameof(assertion));
 
             assertion
                 .NotBeNull("because it must be a valid exception").And
