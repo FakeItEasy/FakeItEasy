@@ -213,7 +213,11 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             result.ReasonForFailure.Should().StartWith("No usable default constructor was found on the type");
         }
 
+#if !NETCORE
         [Fact]
+#else
+        [Fact(Skip = "System.AppDomainInitializerInfo is not available in .NET Core. Furthermore, even if we could found another non-static internal class in mscorlib that is type-forwarded to Private.CoreLib on .NET Core it may disappear in the future too.")]
+#endif
         [UsingCulture("en-US")]
         public void Should_specify_that_private_class_was_not_found()
         {
