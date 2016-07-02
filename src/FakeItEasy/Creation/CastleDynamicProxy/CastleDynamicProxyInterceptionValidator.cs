@@ -3,7 +3,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System;
     using System.Linq;
     using System.Reflection;
-    using Core;
+    using FakeItEasy.Core;
 
     internal class CastleDynamicProxyInterceptionValidator
     {

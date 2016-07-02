@@ -2,7 +2,7 @@ namespace FakeItEasy.Configuration
 {
     using System.Reflection;
     using System.Text;
-    using Creation;
+    using FakeItEasy.Creation;
 
     internal class DefaultInterceptionAsserter
         : IInterceptionAsserter

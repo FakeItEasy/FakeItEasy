@@ -5,8 +5,8 @@ namespace FakeItEasy.Configuration
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using Expressions;
     using FakeItEasy.Core;
+    using FakeItEasy.Expressions;
 
     internal class FakeConfigurationManager
         : IFakeConfigurationManager

@@ -1,6 +1,6 @@
 namespace FakeItEasy.Creation
 {
-    using SelfInitializedFakes;
+    using FakeItEasy.SelfInitializedFakes;
 
     /// <summary>
     /// Provides options for fake wrappers.

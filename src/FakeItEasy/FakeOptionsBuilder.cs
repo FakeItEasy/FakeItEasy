@@ -2,7 +2,7 @@ namespace FakeItEasy
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using Creation;
+    using FakeItEasy.Creation;
 
     /// <summary>
     /// A base implementation for classes that can build options for fakes of type <typeparamref name="TFake"/>.

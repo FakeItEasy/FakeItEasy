@@ -2,8 +2,8 @@ namespace FakeItEasy
 {
     using System;
     using System.Diagnostics;
-    using Configuration;
-    using IoC;
+    using FakeItEasy.Configuration;
+    using FakeItEasy.IoC;
 
     internal abstract class ServiceLocator
     {

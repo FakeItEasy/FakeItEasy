@@ -1,9 +1,8 @@
 namespace FakeItEasy
 {
     using System.Collections.Generic;
-    using Core;
-    using IoC;
-    using Module = IoC.Module;
+    using FakeItEasy.Core;
+    using FakeItEasy.IoC;
 
     internal class ImportsModule
         : Module

@@ -1,7 +1,7 @@
 namespace FakeItEasy
 {
     using System;
-    using Creation;
+    using FakeItEasy.Creation;
 
     /// <summary>
     /// Builds options to be used during Fake creation.
