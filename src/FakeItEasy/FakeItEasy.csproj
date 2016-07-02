@@ -455,7 +455,6 @@
     </Compile>
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="SmellyAttribute.cs" />
     <Compile Include="StringBuilderOutputWriter.cs" />
     <Compile Include="UnderTestAttribute.cs" />
   </ItemGroup>
