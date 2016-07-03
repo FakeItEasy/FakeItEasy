@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests
         protected abstract Type FacadedType { get; }
 
         private Type FacadeType =>
-            Type.GetType(this.FacadedType.FullName + "Facade, " + this.FacadedType.Assembly.FullName, true);
+            Type.GetType(this.FacadedType.FullName + "Facade, " + this.FacadedType.GetTypeInfo().Assembly.FullName, true);
 
         [Fact]
         public void The_facade_class_should_contain_instance_methods_mirroring_the_static_methods_of_the_facaded_class()

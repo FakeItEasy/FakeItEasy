@@ -19,6 +19,7 @@ analyzer_nuspec = "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.nuspec"
 logs            = "artifacts/logs"
 output          = "artifacts/output"
 tests           = "artifacts/tests"
+packages        = File.absolute_path("packages")
 
 gitlinks        = ["FakeItEasy", "FakeItEasy.Analyzer"]
 
@@ -102,7 +103,7 @@ end
 desc "Restore NuGet packages"
 exec :restore do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "restore #{solution}"
+  cmd.parameters "restore #{solution} -PackagesDirectory #{packages}"
 end
 
 directory logs
@@ -218,7 +219,7 @@ end
 
 desc "Build solution"
 task :build => [:clean, :restore, logs] do
-  run_msbuild solution, "Build", msbuild_command
+  run_msbuild solution, "Build", msbuild_command, packages
 end
 
 desc "GitLink PDB's"
@@ -323,10 +324,11 @@ def print_vars(variables)
   }
 end
 
-def run_msbuild(solution, target, command)
+def run_msbuild(solution, target, command, packages_dir = nil)
+  packages_dir_option = "/p:NuGetPackagesDirectory=#{packages_dir}" if packages_dir
   cmd = Exec.new
   cmd.command = command
-  cmd.parameters "#{solution} /target:#{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/#{target}.log;Verbosity=Detailed;PerformanceSummary"
+  cmd.parameters "#{solution} /target:#{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/#{target}.log;Verbosity=Detailed;PerformanceSummary #{packages_dir_option}"
   cmd.execute
 end
 

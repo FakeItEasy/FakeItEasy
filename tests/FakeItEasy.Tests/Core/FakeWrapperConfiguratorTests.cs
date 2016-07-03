@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Core
 {
     using System.Linq;
+    using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.SelfInitializedFakes;

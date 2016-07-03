@@ -4,9 +4,12 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Runtime.Serialization.Formatters.Binary;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using FakeItEasy.SelfInitializedFakes;
     using FluentAssertions;
+    using Newtonsoft.Json;
     using Xunit;
 
     public class FileStorageTests
@@ -72,7 +75,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             storage.Save(calls);
 
             // Assert
-            var savedCalls = this.DeserializeCalls(fileStream.GetBuffer());
+            var savedCalls = this.DeserializeCalls(fileStream.ToArray());
 
             savedCalls.Should().Equal(calls, new CallDataComparer().Equals);
         }
@@ -100,8 +103,16 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             using (var stream = new MemoryStream())
             {
-                new BinaryFormatter().Serialize(stream, calls);
-                return stream.GetBuffer();
+                using (var sw = new StreamWriter(stream))
+                {
+                    var serialized = JsonConvert.SerializeObject(
+                        calls.ToArray(),
+                        Formatting.Indented,
+                        new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
+                    sw.Write(serialized);
+                }
+
+                return stream.ToArray();
             }
         }
 
@@ -109,7 +120,11 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             using (var stream = new MemoryStream(serializedCalls))
             {
-                return (IEnumerable<CallData>)new BinaryFormatter().Deserialize(stream);
+                using (var sr = new StreamReader(stream))
+                {
+                    var deserialized = JsonConvert.DeserializeObject<IEnumerable<CallData>>(sr.ReadToEnd());
+                    return deserialized;
+                }
             }
         }
 

@@ -155,8 +155,8 @@ namespace FakeItEasy.Tests
 
                 private static bool IsNullableType(Type type)
                 {
-                    return !type.IsValueType ||
-                           (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+                    return !type.GetTypeInfo().IsValueType ||
+                           (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
                 }
 
                 private static void WriteArgumentList(StringBuilderOutputWriter builder, IEnumerable<ArgumentInfo> arguments)
@@ -316,7 +316,11 @@ namespace FakeItEasy.Tests
                     this.target = NullGuardedConstraint.GetValueProducedByExpression(expression.Object);
                 }
 
+#if FEATURE_NETCORE_REFLECTION
+                protected override string CallDescription => this.method.DeclaringType.Name + "." + this.method.Name;
+#else
                 protected override string CallDescription => this.method.ReflectedType.Name + "." + this.method.Name;
+#endif
 
                 protected override void PerformCall(object[] arguments)
                 {
@@ -340,7 +344,11 @@ namespace FakeItEasy.Tests
                     this.constructorInfo = expression.Constructor;
                 }
 
+#if FEATURE_NETCORE_REFLECTION
+                protected override string CallDescription => this.constructorInfo.DeclaringType.FullName + ".ctor";
+#else
                 protected override string CallDescription => this.constructorInfo.ReflectedType.FullName + ".ctor";
+#endif
 
                 protected override void PerformCall(object[] arguments)
                 {

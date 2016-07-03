@@ -8,6 +8,7 @@ namespace FakeItEasy.Tests
 
     public abstract class ExceptionContractTests<T> where T : Exception
     {
+#if FEATURE_BINARY_SERIALIZATION
         [Fact]
         public void Exception_should_provide_serialization_constructor()
         {
@@ -21,6 +22,7 @@ namespace FakeItEasy.Tests
             constructor.IsPublic.Should().BeFalse("serialization constructor should be protected, not public");
             constructor.IsPrivate.Should().BeFalse("serialization constructor should be protected, not private");
         }
+#endif
 
         [Fact]
         public void Exception_should_provide_message_only_constructor()
@@ -47,11 +49,13 @@ namespace FakeItEasy.Tests
             result.Message.Should().StartWith("A message");
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Fact]
         public void Exception_should_be_serializable()
         {
             this.CreateException().Should().BeBinarySerializable();
         }
+#endif
 
         [Fact]
         public void Exception_should_provide_message_and_inner_exception_constructor()

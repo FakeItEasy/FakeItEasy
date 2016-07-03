@@ -69,7 +69,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         private static bool IsDynamicProxyType(Type declaringType)
         {
             return declaringType != null &&
-                   declaringType.Assembly.Name() == Castle.DynamicProxy.ModuleScope.DEFAULT_ASSEMBLY_NAME;
+                   declaringType.GetTypeInfo().Assembly.Name() == Castle.DynamicProxy.ModuleScope.DEFAULT_ASSEMBLY_NAME;
         }
 
         private MethodInfo GetInvokedMethod(MethodInfo method, object callTarget)

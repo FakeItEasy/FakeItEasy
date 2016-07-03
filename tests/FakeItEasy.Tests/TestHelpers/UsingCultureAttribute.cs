@@ -24,16 +24,28 @@
 
         public override void After(MethodInfo methodUnderTest)
         {
+#if FEATURE_THREAD_CURRENTCULTURE
             Thread.CurrentThread.CurrentCulture = this.originalCulture;
             Thread.CurrentThread.CurrentUICulture = this.originalUiCulture;
+#else
+            CultureInfo.CurrentCulture = this.originalCulture;
+            CultureInfo.CurrentUICulture = this.originalUiCulture;
+#endif
         }
 
         public override void Before(MethodInfo methodUnderTest)
         {
+#if FEATURE_THREAD_CURRENTCULTURE
             this.originalCulture = Thread.CurrentThread.CurrentCulture;
             this.originalUiCulture = Thread.CurrentThread.CurrentUICulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo(this.cultureName);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(this.cultureName);
+#else
+            this.originalCulture = CultureInfo.CurrentCulture;
+            this.originalUiCulture = CultureInfo.CurrentUICulture;
+            CultureInfo.CurrentCulture = new CultureInfo(this.cultureName);
+            CultureInfo.CurrentUICulture = new CultureInfo(this.cultureName);
+#endif
         }
     }
 }

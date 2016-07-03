@@ -2,7 +2,10 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Linq;
-
+#if !FEATURE_REFLECTION_GETASSEMBLIES
+    using System.Reflection;
+    using Microsoft.Extensions.DependencyModel;
+#endif
     /// <summary>
     /// Locate an <see cref="IBootstrapper"/> implementation.
     /// </summary>
@@ -24,10 +27,23 @@ namespace FakeItEasy.Core
         {
             var bootstrapperInterface = typeof(IBootstrapper);
 
+#if FEATURE_REFLECTION_GETASSEMBLIES
             var appDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             var appDomainAssembliesReferencingFakeItEasy = appDomainAssemblies
                 .Where(assembly => !assembly.IsDynamic)
                 .Where(assembly => assembly.ReferencesFakeItEasy());
+#else
+            var fakeItEasyLibraryName = TypeCatalogue.FakeItEasyAssembly.GetName().Name;
+
+            var context = DependencyContext.Default;
+            var candidateLibraries = context.RuntimeLibraries.Where(
+                library => library.Dependencies.Any(
+                    dependency => string.Equals(dependency.Name, fakeItEasyLibraryName, StringComparison.Ordinal)));
+
+            var appDomainAssembliesReferencingFakeItEasy = candidateLibraries
+                .SelectMany(library => library.GetDefaultAssemblyNames(context))
+                .Select(Assembly.Load);
+#endif
 
             var candidateTypes = appDomainAssembliesReferencingFakeItEasy
                 .SelectMany(assembly => assembly.GetExportedTypes())

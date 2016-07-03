@@ -2,6 +2,9 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using System.Reflection.Emit;
     using FakeItEasy.Core;
 

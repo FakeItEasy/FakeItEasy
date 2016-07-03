@@ -38,7 +38,7 @@ namespace FakeItEasy.Core
         {
             var key = new TypeMethodInfoPair(type, method);
 
-            return MethodCache.GetOrAdd(key, k => FindMethodOnTypeThatWillBeInvokedByMethodInfo(k.Type, k.MethodInfo));
+            return MethodCache.GetOrAdd(key, k => FindMethodOnTypeThatWillBeInvokedByMethodInfo(k.Type, new FakeItEasy.Compatibility.MethodInfoWrapper(k.MethodInfo, k.Type)));
         }
 
         private static bool HasSameBaseMethod(MethodInfo first, MethodInfo second)
@@ -62,38 +62,43 @@ namespace FakeItEasy.Core
         private static bool IsSameMethod(MethodInfo first, MethodInfo second)
         {
             return first.DeclaringType == second.DeclaringType
+#if FEATURE_REFLECTION_METADATATOKEN
                    && first.MetadataToken == second.MetadataToken
+#else
+                   && first.Name == second.Name
+                   && first.GetParameters().Select(p => p.ParameterType).SequenceEqual(second.GetParameters().Select(p => p.ParameterType))
+#endif
                    && first.Module == second.Module
                    && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
         }
 
-        private static MethodInfo FindMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
+        private static MethodInfo FindMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, FakeItEasy.Compatibility.MethodInfoWrapper methodWrapper)
         {
             var result =
                 (from typeMethod in type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                 where HasSameBaseMethod(typeMethod, method)
-                 select MakeGeneric(typeMethod, method)).FirstOrDefault();
+                 where HasSameBaseMethod(typeMethod, methodWrapper.Method)
+                 select MakeGeneric(typeMethod, methodWrapper.Method)).FirstOrDefault();
 
             if (result != null)
             {
                 return result;
             }
 
-            result = GetMethodOnTypeThatImplementsInterfaceMethod(type, method);
+            result = GetMethodOnTypeThatImplementsInterfaceMethod(type, methodWrapper.Method);
 
             if (result != null)
             {
                 return result;
             }
 
-            return GetMethodOnInterfaceTypeImplementedByMethod(type, method);
+            return GetMethodOnInterfaceTypeImplementedByMethod(type, methodWrapper);
         }
 
-        private static MethodInfo GetMethodOnInterfaceTypeImplementedByMethod(Type type, MethodInfo method)
+        private static MethodInfo GetMethodOnInterfaceTypeImplementedByMethod(Type type, FakeItEasy.Compatibility.MethodInfoWrapper methodWrapper)
         {
-            var reflectedType = method.ReflectedType;
+            var reflectedType = methodWrapper.ReflectedType;
 
-            if (reflectedType.IsInterface)
+            if (reflectedType.GetTypeInfo().IsInterface)
             {
                 return null;
             }
@@ -105,13 +110,13 @@ namespace FakeItEasy.Core
 
             foreach (var interfaceType in allInterfaces)
             {
-                var interfaceMap = reflectedType.GetInterfaceMap(interfaceType);
+                var interfaceMap = reflectedType.GetTypeInfo().GetRuntimeInterfaceMap(interfaceType);
 
                 var foundMethod =
                     (from methodTargetPair in interfaceMap.InterfaceMethods
                          .Zip(interfaceMap.TargetMethods, (interfaceMethod, targetMethod) => new { InterfaceMethod = interfaceMethod, TargetMethod = targetMethod })
-                     where HasSameBaseMethod(EnsureNonGeneric(method), EnsureNonGeneric(methodTargetPair.TargetMethod))
-                     select MakeGeneric(methodTargetPair.InterfaceMethod, method)).FirstOrDefault();
+                     where HasSameBaseMethod(EnsureNonGeneric(methodWrapper.Method), EnsureNonGeneric(methodTargetPair.TargetMethod))
+                     select MakeGeneric(methodTargetPair.InterfaceMethod, methodWrapper.Method)).FirstOrDefault();
 
                 if (foundMethod != null)
                 {
@@ -126,12 +131,12 @@ namespace FakeItEasy.Core
         {
             var baseDefinition = method.GetBaseDefinition();
 
-            if (!baseDefinition.DeclaringType.IsInterface || !TypeImplementsInterface(type, baseDefinition.DeclaringType))
+            if (!baseDefinition.DeclaringType.GetTypeInfo().IsInterface || !TypeImplementsInterface(type, baseDefinition.DeclaringType))
             {
                 return null;
             }
 
-            var interfaceMap = type.GetInterfaceMap(baseDefinition.DeclaringType);
+            var interfaceMap = type.GetTypeInfo().GetRuntimeInterfaceMap(baseDefinition.DeclaringType);
 
             return
                 (from methodTargetPair in interfaceMap.InterfaceMethods

@@ -13,7 +13,9 @@ namespace FakeItEasy.Core
     /// of fake object calls by using a set of rules. User defined rules can be inserted
     /// by using the AddRule-method.
     /// </summary>
+#if FEATURE_BINARY_SERIALIZATION
     [Serializable]
+#endif
     public partial class FakeManager : IFakeCallProcessor
     {
         private readonly CallRuleMetadata[] postUserRules;

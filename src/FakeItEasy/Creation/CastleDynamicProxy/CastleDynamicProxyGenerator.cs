@@ -7,7 +7,9 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
+#if FEATURE_SECURITY_PERMISSIONS
     using System.Security.Permissions;
+#endif
     using Castle.DynamicProxy;
     using Castle.DynamicProxy.Generators;
     using FakeItEasy.Core;
@@ -19,6 +21,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
         private readonly CastleDynamicProxyInterceptionValidator interceptionValidator;
 
+#if FEATURE_SECURITY_PERMISSIONS
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "No field initialization.")]
         static CastleDynamicProxyGenerator()
         {
@@ -26,6 +29,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             AttributesToAvoidReplicating.Add(typeof(SecurityPermissionAttribute));
 #pragma warning restore 618
         }
+#endif
 
         public CastleDynamicProxyGenerator(CastleDynamicProxyInterceptionValidator interceptionValidator)
         {
@@ -81,12 +85,12 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             Guard.AgainstNull(additionalInterfacesToImplement, nameof(additionalInterfacesToImplement));
             Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
 
-            if (typeOfProxy.IsValueType)
+            if (typeOfProxy.GetTypeInfo().IsValueType)
             {
                 return GetProxyResultForValueType(typeOfProxy);
             }
 
-            if (typeOfProxy.IsSealed)
+            if (typeOfProxy.GetTypeInfo().IsSealed)
             {
                 return new ProxyGeneratorResult(DynamicProxyResources.ProxyIsSealedTypeMessage.FormatInvariant(typeOfProxy));
             }
@@ -98,7 +102,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
         private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
         {
-            if (typeOfProxy.IsInterface && argumentsForConstructor != null)
+            if (typeOfProxy.GetTypeInfo().IsInterface && argumentsForConstructor != null)
             {
                 throw new ArgumentException(DynamicProxyResources.ArgumentsForConstructorOnInterfaceTypeMessage);
             }
@@ -163,7 +167,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         {
             var allInterfacesToImplement = GetAllInterfacesToImplement(additionalInterfacesToImplement);
 
-            if (typeOfProxy.IsInterface)
+            if (typeOfProxy.GetTypeInfo().IsInterface)
             {
                 allInterfacesToImplement = new[] { typeOfProxy }.Concat(allInterfacesToImplement);
                 typeOfProxy = typeof(object);
@@ -194,7 +198,9 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             return additionalInterfacesToImplement.Concat(typeof(ITaggable));
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         private class InterceptEverythingHook
             : IProxyGenerationHook
         {
@@ -224,7 +230,9 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             }
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         private class ProxyInterceptor
             : IInterceptor
         {

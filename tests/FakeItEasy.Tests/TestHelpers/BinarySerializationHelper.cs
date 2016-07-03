@@ -2,12 +2,15 @@ namespace FakeItEasy.Tests.TestHelpers
 {
     using System;
     using System.IO;
+#if FEATURE_BINARY_SERIALIZATION
     using System.Runtime.Serialization.Formatters.Binary;
+#endif
 
     public static class BinarySerializationHelper
     {
         public static T SerializeAndDeserialize<T>(T value)
         {
+#if FEATURE_BINARY_SERIALIZATION
             T result;
 
             var formatter = new BinaryFormatter();
@@ -19,6 +22,9 @@ namespace FakeItEasy.Tests.TestHelpers
             }
 
             return result;
+#else
+            throw new System.PlatformNotSupportedException();
+#endif
         }
     }
 }
