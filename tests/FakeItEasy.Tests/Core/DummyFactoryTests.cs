@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.Core
     using System;
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
@@ -41,7 +42,7 @@ namespace FakeItEasy.Tests.Core
         public void Built_in_factories_should_have_lower_than_default_priority()
         {
             // Arrange
-            var allDummyFactories = typeof(A).Assembly.GetTypes()
+            var allDummyFactories = typeof(A).GetTypeInfo().Assembly.GetTypes()
                 .Where(t => t.CanBeInstantiatedAs(typeof(IDummyFactory)))
                 .Select(Activator.CreateInstance)
                 .Cast<IDummyFactory>();

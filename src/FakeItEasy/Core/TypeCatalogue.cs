@@ -5,12 +5,15 @@ namespace FakeItEasy.Core
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
+#if !FEATURE_REFLECTION_GETASSEMBLIES
+    using Microsoft.Extensions.DependencyModel;
+#endif
 
     /// <summary>
     /// Provides access to all types in:
     /// <list type="bullet">
     ///   <item>FakeItEasy,</item>
-    ///   <item>assemblies loaded into the current <see cref="AppDomain"/> that reference FakeItEasy and</item>
+    ///   <item>assemblies currently loaded that reference FakeItEasy and</item>
     ///   <item>assemblies whose paths are supplied to the constructor, that also reference FakeItEasy.</item>
     /// </list>
     /// </summary>
@@ -21,14 +24,18 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the <c>FakeItEasy</c> assembly.
         /// </summary>
+#if FEATURE_REFLECTION_GETASSEMBLIES
         public static Assembly FakeItEasyAssembly { get; } = Assembly.GetExecutingAssembly();
+#else
+        public static Assembly FakeItEasyAssembly { get; } = typeof(TypeCatalogue).GetTypeInfo().Assembly;
+#endif
 
         /// <summary>
         /// Loads the available types into the <see cref="TypeCatalogue"/>.
         /// </summary>
         /// <param name="extraAssemblyFiles">
         /// The full paths to assemblies from which to load types,
-        /// as well as assemblies loaded into the current <see cref="AppDomain"/>.
+        /// as well as assemblies loaded currently loaded.
         /// </param>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Defensive and performed on best effort basis.")]
         public void Load(IEnumerable<string> extraAssemblyFiles)
@@ -62,14 +69,30 @@ namespace FakeItEasy.Core
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
         private static IEnumerable<Assembly> GetAllAssemblies(IEnumerable<string> extraAssemblyFiles)
         {
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+#if FEATURE_REFLECTION_GETASSEMBLIES
+             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+             var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
+#else
+            var fakeItEasyLibraryName = TypeCatalogue.FakeItEasyAssembly.GetName().Name;
+
+            var context = DependencyContext.Default;
+            var loadedAssemblies = context.RuntimeLibraries
+                .SelectMany(library => library.GetDefaultAssemblyNames(context))
+                .Distinct()
+                .Select(Assembly.Load)
+                .ToArray();
             var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
+#endif
 
             // Find the paths of already loaded assemblies so we don't double scan them.
             // Exclude the ReflectionOnly assemblies because we want to be able to fully load them if we need to.
             var loadedAssemblyFiles = new HashSet<string>(
                 loadedAssemblies
+#if FEATURE_REFLECTION_GETASSEMBLIES
                     .Where(a => !a.ReflectionOnly && !a.IsDynamic)
+#else
+                    .Where(a => a.IsDynamic)
+#endif
                     .Select(a => a.Location),
                 StringComparer.OrdinalIgnoreCase);
 
@@ -88,7 +111,11 @@ namespace FakeItEasy.Core
                 Assembly reflectedAssembly = null;
                 try
                 {
+#if FEATURE_REFLECTION_GETASSEMBLIES
                     reflectedAssembly = Assembly.ReflectionOnlyLoadFrom(file);
+#else
+                    reflectedAssembly = CustomLoadContext.Instance.LoadFromFullPath(file);
+#endif
                 }
                 catch (Exception ex)
                 {
@@ -144,5 +171,39 @@ namespace FakeItEasy.Core
                 writer.WriteLine();
             }
         }
+#if !FEATURE_REFLECTION_GETASSEMBLIES
+        private class CustomLoadContext : System.Runtime.Loader.AssemblyLoadContext
+        {
+            private static CustomLoadContext instance;
+
+            public static CustomLoadContext Instance
+            {
+                get
+                {
+                    if (instance == null)
+                    {
+                        instance = new CustomLoadContext();
+                    }
+
+                    return instance;
+                }
+            }
+
+            private string BasePath { get; set; }
+
+            public Assembly LoadFromFullPath(string assemblyPath)
+            {
+                var fileInfo = new System.IO.FileInfo(assemblyPath);
+                this.BasePath = fileInfo.DirectoryName;
+                return this.LoadFromAssemblyPath(assemblyPath);
+            }
+
+            protected override Assembly Load(AssemblyName assemblyName)
+            {
+                Console.WriteLine("loading {0}", assemblyName.Name);
+                return this.LoadFromAssemblyPath(System.IO.Path.Combine(this.BasePath ?? System.IO.Directory.GetCurrentDirectory(), assemblyName.Name) + ".dll");
+            }
+        }
+#endif
     }
 }

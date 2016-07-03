@@ -2,6 +2,9 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using System.Reflection.Emit;
     using FakeItEasy.Core;
     using FakeItEasy.Creation.DelegateProxies;
@@ -41,7 +44,7 @@ namespace FakeItEasy.Creation
 
         private static bool IsDelegateType(Type typeOfProxy)
         {
-            return typeOfProxy != null && typeOfProxy.IsSubclassOf(typeof(Delegate));
+            return typeOfProxy != null && typeOfProxy.GetTypeInfo().IsSubclassOf(typeof(Delegate));
         }
 
         private IProxyGenerator SelectProxyGenerator(Type typeOfProxy)

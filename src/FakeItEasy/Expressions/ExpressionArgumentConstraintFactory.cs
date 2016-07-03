@@ -4,6 +4,9 @@ namespace FakeItEasy.Expressions
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using FakeItEasy.Core;
     using FakeItEasy.Expressions.ArgumentConstraints;
 

@@ -2,21 +2,25 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using FakeItEasy.Creation;
 
     /// <content>Object member rule.</content>
     public partial class FakeManager
     {
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         private class ObjectMemberRule
             : IFakeObjectCallRule
         {
-            private static readonly List<RuntimeMethodHandle> ObjectMethodsMethodHandles =
-                new List<RuntimeMethodHandle>
+            private static readonly List<MethodInfo> ObjectMethods =
+                new List<MethodInfo>
                     {
-                        typeof(object).GetMethod("Equals", new[] { typeof(object) }).MethodHandle,
-                        typeof(object).GetMethod("ToString", new Type[] { }).MethodHandle,
-                        typeof(object).GetMethod("GetHashCode", new Type[] { }).MethodHandle
+                        typeof(object).GetMethod("Equals", new[] { typeof(object) }),
+                        typeof(object).GetMethod("ToString", new Type[] { }),
+                        typeof(object).GetMethod("GetHashCode", new Type[] { })
                     };
 
             private readonly FakeManager fakeManager;
@@ -51,14 +55,29 @@ namespace FakeItEasy.Core
                 }
             }
 
+            private static bool IsSameMethod(MethodInfo first, MethodInfo second)
+            {
+                return first.DeclaringType == second.DeclaringType
+#if FEATURE_REFLECTION_METADATATOKEN
+                   && first.MetadataToken == second.MetadataToken
+#else
+                   && first.Name == second.Name
+                   && first.GetParameters().Select(p => p.ParameterType).SequenceEqual(second.GetParameters().Select(p => p.ParameterType))
+#endif
+                   && first.Module == second.Module
+                   && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
+            }
+
             private static bool IsObjetMethod(IFakeObjectCall fakeObjectCall)
             {
-                return ObjectMethodsMethodHandles.Contains(fakeObjectCall.Method.MethodHandle);
+                return IsSameMethod(ObjectMethods[0], fakeObjectCall.Method)
+                    || IsSameMethod(ObjectMethods[1], fakeObjectCall.Method)
+                    || IsSameMethod(ObjectMethods[2], fakeObjectCall.Method);
             }
 
             private bool TryHandleGetHashCode(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                if (!fakeObjectCall.Method.MethodHandle.Equals(ObjectMethodsMethodHandles[2]))
+                if (!IsSameMethod(fakeObjectCall.Method, ObjectMethods[2]))
                 {
                     return false;
                 }
@@ -70,7 +89,7 @@ namespace FakeItEasy.Core
 
             private bool TryHandleToString(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                if (!fakeObjectCall.Method.MethodHandle.Equals(ObjectMethodsMethodHandles[1]))
+                if (!IsSameMethod(fakeObjectCall.Method, ObjectMethods[1]))
                 {
                     return false;
                 }
@@ -82,7 +101,7 @@ namespace FakeItEasy.Core
 
             private bool TryHandleEquals(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                if (!fakeObjectCall.Method.MethodHandle.Equals(ObjectMethodsMethodHandles[0]))
+                if (!IsSameMethod(fakeObjectCall.Method, ObjectMethods[0]))
                 {
                     return false;
                 }

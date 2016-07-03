@@ -5,6 +5,7 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using FakeItEasy.Core;
     using FluentAssertions;
     using Xunit;
@@ -149,7 +150,7 @@ namespace FakeItEasy.Tests.Core
         public void Built_in_formatters_should_have_lower_than_default_priority()
         {
             // Arrange
-            var allArgumentValueFormatters = typeof(A).Assembly.GetTypes()
+            var allArgumentValueFormatters = typeof(A).GetTypeInfo().Assembly.GetTypes()
                 .Where(t => t.CanBeInstantiatedAs(typeof(IArgumentValueFormatter)))
                 .Select(Activator.CreateInstance)
                 .Cast<IArgumentValueFormatter>();
