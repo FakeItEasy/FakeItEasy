@@ -133,7 +133,8 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Assert
             interceptedFakeObjectCall.Should().NotBeNull();
             interceptedFakeObjectCall.Arguments.Should().BeEquivalentTo(1, 2);
-            interceptedFakeObjectCall.Method.Name.Should().Be(typeof(IInterfaceType).GetMethod("Foo").Name);
+            interceptedFakeObjectCall.Method.Name.Should().Be(
+                typeof(IInterfaceType).GetMethod(nameof(IInterfaceType.Foo)).Name);
             interceptedFakeObjectCall.FakedObject.Should().BeSameAs(proxy);
         }
 

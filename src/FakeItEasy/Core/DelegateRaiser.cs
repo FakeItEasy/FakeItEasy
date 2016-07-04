@@ -68,7 +68,7 @@ namespace FakeItEasy.Core
 
             throw new FakeConfigurationException(
                 "The event has the signature ({0}), but the provided arguments have types ({1})."
-                    .FormatInvariant(fakeSignature, actionSignature, "Raise"));
+                    .FormatInvariant(fakeSignature, actionSignature));
         }
 
         private static bool IsCallSignatureSatisfiedByValues(MethodInfo callMethod, object[] values)

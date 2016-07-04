@@ -11,7 +11,7 @@
         }
 
         [Scenario]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IFoo", Justification = "It's an identifier")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = nameof(IFoo), Justification = "It's an identifier")]
         public static void WithNonVoidReturnType(IFoo fake)
         {
             "Given a fake with a generic method"
@@ -28,7 +28,7 @@
         }
 
         [Scenario]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IFoo", Justification = "It's an identifier")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = nameof(IFoo), Justification = "It's an identifier")]
         public static void WithReturnType(
             IFoo fake,
             string returnValue)
