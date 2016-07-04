@@ -16,13 +16,12 @@ namespace FakeItEasy.Core
     /// </summary>
     internal class TypeCatalogue : ITypeCatalogue
     {
-        private static readonly Assembly ExecutingAssembly = Assembly.GetExecutingAssembly();
         private readonly List<Type> availableTypes = new List<Type>();
 
         /// <summary>
         /// Gets the <c>FakeItEasy</c> assembly.
         /// </summary>
-        public static Assembly FakeItEasyAssembly => ExecutingAssembly;
+        public static Assembly FakeItEasyAssembly { get; } = Assembly.GetExecutingAssembly();
 
         /// <summary>
         /// Loads the available types into the <see cref="TypeCatalogue"/>.

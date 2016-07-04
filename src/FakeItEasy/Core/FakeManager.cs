@@ -16,7 +16,6 @@ namespace FakeItEasy.Core
     [Serializable]
     public partial class FakeManager : IFakeCallProcessor
     {
-        private readonly LinkedList<CallRuleMetadata> allUserRulesField;
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
         private readonly ConcurrentQueue<ICompletedFakeObjectCall> recordedCalls;
@@ -40,7 +39,7 @@ namespace FakeItEasy.Core
                                     {
                                         new CallRuleMetadata { Rule = new EventRule(this) }
                                     };
-            this.allUserRulesField = new LinkedList<CallRuleMetadata>();
+            this.AllUserRules = new LinkedList<CallRuleMetadata>();
             this.postUserRules = new[]
                                      {
                                          new CallRuleMetadata { Rule = new ObjectMemberRule(this) },
@@ -77,10 +76,10 @@ namespace FakeItEasy.Core
         /// </summary>
         public virtual IEnumerable<IFakeObjectCallRule> Rules
         {
-            get { return this.allUserRulesField.Select(x => x.Rule); }
+            get { return this.AllUserRules.Select(x => x.Rule); }
         }
 
-        internal LinkedList<CallRuleMetadata> AllUserRules => this.allUserRulesField;
+        internal LinkedList<CallRuleMetadata> AllUserRules { get; }
 
         private IEnumerable<CallRuleMetadata> AllRules =>
             this.preUserRules.Concat(this.AllUserRules.Concat(this.postUserRules));
@@ -178,7 +177,7 @@ namespace FakeItEasy.Core
         /// </summary>
         internal virtual void ClearUserRules()
         {
-            this.allUserRulesField.Clear();
+            this.AllUserRules.Clear();
         }
 
         private static void ApplyRule(CallRuleMetadata rule, IInterceptedFakeObjectCall fakeObjectCall)
@@ -189,9 +188,9 @@ namespace FakeItEasy.Core
 
         private void MoveRuleToFront(CallRuleMetadata rule)
         {
-            if (this.allUserRulesField.Remove(rule))
+            if (this.AllUserRules.Remove(rule))
             {
-                this.allUserRulesField.AddFirst(rule);
+                this.AllUserRules.AddFirst(rule);
             }
         }
 

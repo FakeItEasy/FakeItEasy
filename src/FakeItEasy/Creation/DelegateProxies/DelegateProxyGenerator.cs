@@ -187,11 +187,9 @@ namespace FakeItEasy.Creation.DelegateProxies
 
         private class DelegateFakeObjectCall : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
         {
-            private readonly Delegate instance;
-
             public DelegateFakeObjectCall(Delegate instance, MethodInfo method, object[] arguments)
             {
-                this.instance = instance;
+                this.FakedObject = instance;
                 this.Arguments = new ArgumentCollection(arguments, method);
                 this.Method = method;
                 SequenceNumberManager.RecordSequenceNumber(this);
@@ -203,7 +201,7 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             public ArgumentCollection Arguments { get; }
 
-            public object FakedObject => this.instance;
+            public object FakedObject { get; }
 
             public void SetReturnValue(object value)
             {
