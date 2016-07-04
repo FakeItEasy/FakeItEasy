@@ -16,8 +16,6 @@ namespace FakeItEasy.Configuration
     public class ArgumentCollection
         : IEnumerable<object>
     {
-        private readonly string[] argumentNamesField;
-
         /// <summary>
         ///   The arguments this collection contains.
         /// </summary>
@@ -40,7 +38,7 @@ namespace FakeItEasy.Configuration
             }
 
             this.arguments = arguments;
-            this.argumentNamesField = argumentNames.ToArray();
+            this.ArgumentNames = argumentNames.ToArray();
         }
 
         /// <summary>
@@ -66,7 +64,7 @@ namespace FakeItEasy.Configuration
         /// <summary>
         ///   Gets the names of the arguments in the list.
         /// </summary>
-        public IEnumerable<string> ArgumentNames => this.argumentNamesField;
+        public IEnumerable<string> ArgumentNames { get; }
 
         /// <summary>
         ///   Gets the argument at the specified index.
@@ -137,7 +135,7 @@ namespace FakeItEasy.Configuration
         private int GetArgumentIndex(string argumentName)
         {
             var index = 0;
-            foreach (var name in this.argumentNamesField)
+            foreach (var name in this.ArgumentNames)
             {
                 if (name.Equals(argumentName, StringComparison.Ordinal))
                 {

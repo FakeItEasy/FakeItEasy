@@ -40,7 +40,7 @@ namespace FakeItEasy.Core
                                       CalledNumberOfTimes = 1
                                   };
 
-                this.fakeManager.allUserRulesField.AddFirst(newRule);
+                this.fakeManager.AllUserRules.AddFirst(newRule);
                 newRule.Rule.Apply(fakeObjectCall);
             }
 

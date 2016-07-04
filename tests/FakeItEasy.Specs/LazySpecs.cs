@@ -58,13 +58,11 @@ namespace FakeItEasy.Specs
 
         public class FooFactory : DummyFactory<IFoo>, IFoo
         {
-            private static IFoo instance = new FooFactory();
-
-            public static IFoo Instance => instance;
+            public static IFoo Instance { get; } = new FooFactory();
 
             protected override IFoo Create()
             {
-                return instance;
+                return Instance;
             }
         }
 

@@ -40,7 +40,7 @@ namespace FakeItEasy.Core
                                                  }
                                   };
 
-                this.fakeManager.allUserRulesField.AddFirst(newRule);
+                this.fakeManager.AllUserRules.AddFirst(newRule);
             }
         }
     }

@@ -9,10 +9,6 @@
     /// </summary>
     public struct Priority : IComparable<Priority>, IEquatable<Priority>
     {
-        private static readonly Priority DefaultInstance = new Priority(0);
-
-        private static readonly Priority InternalInstance = new Priority(-1);
-
         private readonly int value;
 
         /// <summary>
@@ -35,7 +31,7 @@
         /// <see cref="IFakeOptionsBuilder"/>s, and <see cref="IArgumentValueFormatter"/>s.
         /// </summary>
         /// <remarks>Equivalent to a Priority with value <c>0</c>.</remarks>
-        public static Priority Default => DefaultInstance;
+        public static Priority Default { get; } = new Priority(0);
 
         /// <summary>
         /// Gets the <c>Priority</c> used by all FakeItEasy-supplied <see cref="IDummyFactory"/>s,
@@ -52,7 +48,7 @@
         /// Just in case, though, all negative values have been reserved for use by FakeItEasy.
         /// </para>
         /// </remarks>
-        internal static Priority Internal => InternalInstance;
+        internal static Priority Internal { get; } = new Priority(-1);
 
         /// <summary>
         /// Compares <see paramref="left"/> and <see paramref="right"/>, returning <c>true</c> if
