@@ -77,10 +77,7 @@ namespace FakeItEasy.Tests.Core
 
         private class TypeWithDummyFactory
         {
-            public virtual bool WasConfigured
-            {
-                get { return false; }
-            }
+            public virtual bool WasConfigured => false;
         }
     }
 }

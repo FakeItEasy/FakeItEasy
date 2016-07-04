@@ -11,10 +11,7 @@ namespace FakeItEasy
     /// </summary>
     public static class Fake
     {
-        private static FakeFacade Facade
-        {
-            get { return ServiceLocator.Current.Resolve<FakeFacade>(); }
-        }
+        private static FakeFacade Facade => ServiceLocator.Current.Resolve<FakeFacade>();
 
         /// <summary>
         /// Gets the fake object that manages the faked object.

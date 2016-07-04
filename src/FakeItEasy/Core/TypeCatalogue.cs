@@ -22,10 +22,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the <c>FakeItEasy</c> assembly.
         /// </summary>
-        public static Assembly FakeItEasyAssembly
-        {
-            get { return ExecutingAssembly; }
-        }
+        public static Assembly FakeItEasyAssembly => ExecutingAssembly;
 
         /// <summary>
         /// Loads the available types into the <see cref="TypeCatalogue"/>.

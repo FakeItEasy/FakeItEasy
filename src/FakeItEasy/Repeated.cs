@@ -16,10 +16,7 @@ namespace FakeItEasy
         /// <summary>
         /// Asserts that a call has not happened at all.
         /// </summary>
-        public static Repeated Never
-        {
-            get { return new NeverRepeated(); }
-        }
+        public static Repeated Never => new NeverRepeated();
 
         /// <summary>
         /// The call must have happened exactly the number of times that is specified in the next step.

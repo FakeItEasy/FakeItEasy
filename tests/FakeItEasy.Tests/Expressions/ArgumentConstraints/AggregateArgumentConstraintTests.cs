@@ -19,10 +19,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
             void Method(string firstArgument, params object[] args);
         }
 
-        protected override string ExpectedDescription
-        {
-            get { return "[\"foo\", \"bar\"]"; }
-        }
+        protected override string ExpectedDescription => "[\"foo\", \"bar\"]";
 
         public static IEnumerable<object[]> InvalidValues()
         {

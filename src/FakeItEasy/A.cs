@@ -15,15 +15,11 @@ namespace FakeItEasy
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A", Justification = "Is spelled correctly.")]
     public static class A
     {
-        private static IFakeConfigurationManager ConfigurationManager
-        {
-            get { return ServiceLocator.Current.Resolve<IFakeConfigurationManager>(); }
-        }
+        private static IFakeConfigurationManager ConfigurationManager =>
+            ServiceLocator.Current.Resolve<IFakeConfigurationManager>();
 
-        private static IFakeAndDummyManager FakeAndDummyManager
-        {
-            get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
-        }
+        private static IFakeAndDummyManager FakeAndDummyManager =>
+            ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
 
         /// <summary>
         /// Creates a fake object of the type T.

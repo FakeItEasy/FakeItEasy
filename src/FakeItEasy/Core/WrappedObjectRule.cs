@@ -26,10 +26,7 @@ namespace FakeItEasy.Core
         /// to null its infinitely valid.
         /// </summary>
         /// <value></value>
-        public int? NumberOfTimesToCall
-        {
-            get { return null; }
-        }
+        public int? NumberOfTimesToCall => null;
 
         /// <summary>
         /// Gets whether this interceptor is applicable to the specified

@@ -65,13 +65,7 @@ namespace FakeItEasy.Core
         /// Gets the faked proxy object.
         /// </summary>
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Object", Justification = "Renaming this property would be a breaking change.")]
-        public virtual object Object
-        {
-            get
-            {
-                return this.objectReference.Target;
-            }
-        }
+        public virtual object Object => this.objectReference.Target;
 
         /// <summary>
         /// Gets the faked type.
@@ -86,15 +80,10 @@ namespace FakeItEasy.Core
             get { return this.allUserRulesField.Select(x => x.Rule); }
         }
 
-        internal LinkedList<CallRuleMetadata> AllUserRules
-        {
-            get { return this.allUserRulesField; }
-        }
+        internal LinkedList<CallRuleMetadata> AllUserRules => this.allUserRulesField;
 
-        private IEnumerable<CallRuleMetadata> AllRules
-        {
-            get { return this.preUserRules.Concat(this.AllUserRules.Concat(this.postUserRules)); }
-        }
+        private IEnumerable<CallRuleMetadata> AllRules =>
+            this.preUserRules.Concat(this.AllUserRules.Concat(this.postUserRules));
 
         /// <summary>
         /// Adds a call rule to the fake object.

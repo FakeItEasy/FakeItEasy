@@ -35,10 +35,7 @@
         /// <see cref="IFakeOptionsBuilder"/>s, and <see cref="IArgumentValueFormatter"/>s.
         /// </summary>
         /// <remarks>Equivalent to a Priority with value <c>0</c>.</remarks>
-        public static Priority Default
-        {
-            get { return DefaultInstance; }
-        }
+        public static Priority Default => DefaultInstance;
 
         /// <summary>
         /// Gets the <c>Priority</c> used by all FakeItEasy-supplied <see cref="IDummyFactory"/>s,
@@ -55,10 +52,7 @@
         /// Just in case, though, all negative values have been reserved for use by FakeItEasy.
         /// </para>
         /// </remarks>
-        internal static Priority Internal
-        {
-            get { return InternalInstance; }
-        }
+        internal static Priority Internal => InternalInstance;
 
         /// <summary>
         /// Compares <see paramref="left"/> and <see paramref="right"/>, returning <c>true</c> if

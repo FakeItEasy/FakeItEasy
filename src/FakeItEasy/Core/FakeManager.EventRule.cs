@@ -28,10 +28,7 @@ namespace FakeItEasy.Core
                 this.fakeManager = fakeManager;
             }
 
-            public int? NumberOfTimesToCall
-            {
-                get { return null; }
-            }
+            public int? NumberOfTimesToCall => null;
 
             private Dictionary<object, Delegate> RegisteredEventHandlers
             {

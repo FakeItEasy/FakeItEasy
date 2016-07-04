@@ -29,10 +29,10 @@ namespace FakeItEasy.SelfInitializedFakes
 
             this.storage = storage;
 
-            var recordedCalls = storage.Load();
+            var callsFromStorage = storage.Load();
 
-            this.IsRecording = recordedCalls == null;
-            this.callQueue = CreateCallsList(recordedCalls);
+            this.IsRecording = callsFromStorage == null;
+            this.callQueue = CreateCallsList(callsFromStorage);
             this.recordedCalls = new List<CallDataMetadata>(this.callQueue);
         }
 

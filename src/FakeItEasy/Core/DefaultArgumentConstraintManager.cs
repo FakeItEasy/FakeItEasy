@@ -12,10 +12,7 @@ namespace FakeItEasy.Core
             this.onConstraintCreated = onConstraintCreated;
         }
 
-        public IArgumentConstraintManager<T> Not
-        {
-            get { return new NotArgumentConstraintManager(this); }
-        }
+        public IArgumentConstraintManager<T> Not => new NotArgumentConstraintManager(this);
 
         public T Matches(Func<T, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
@@ -33,10 +30,7 @@ namespace FakeItEasy.Core
                 this.parent = parent;
             }
 
-            public IArgumentConstraintManager<T> Not
-            {
-                get { return new NotArgumentConstraintManager(this); }
-            }
+            public IArgumentConstraintManager<T> Not => new NotArgumentConstraintManager(this);
 
             public T Matches(Func<T, bool> predicate, Action<IOutputWriter> descriptionWriter)
             {

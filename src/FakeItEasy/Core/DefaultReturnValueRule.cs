@@ -7,15 +7,9 @@ namespace FakeItEasy.Core
     internal class DefaultReturnValueRule
         : IFakeObjectCallRule
     {
-        public int? NumberOfTimesToCall
-        {
-            get { return null; }
-        }
+        public int? NumberOfTimesToCall => null;
 
-        private static IFakeAndDummyManager FakeManager
-        {
-            get { return ServiceLocator.Current.Resolve<IFakeAndDummyManager>(); }
-        }
+        private static IFakeAndDummyManager FakeManager => ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
 
         public static object ResolveReturnValue(IInterceptedFakeObjectCall fakeObjectCall)
         {

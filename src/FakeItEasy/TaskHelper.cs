@@ -2,7 +2,7 @@ namespace FakeItEasy
 {
     using System.Threading.Tasks;
 
-    internal class TaskHelper
+    internal static class TaskHelper
     {
         public static Task<T> FromResult<T>(T result)
         {

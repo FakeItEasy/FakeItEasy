@@ -203,10 +203,7 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             public ArgumentCollection Arguments { get; }
 
-            public object FakedObject
-            {
-                get { return this.instance; }
-            }
+            public object FakedObject => this.instance;
 
             public void SetReturnValue(object value)
             {

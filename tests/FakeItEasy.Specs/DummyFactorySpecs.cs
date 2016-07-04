@@ -63,10 +63,7 @@ namespace FakeItEasy.Specs
     {
         private int nextID = 1;
 
-        public Priority Priority
-        {
-            get { return Priority.Default; }
-        }
+        public Priority Priority => Priority.Default;
 
         public bool CanCreate(Type type)
         {
@@ -83,10 +80,7 @@ namespace FakeItEasy.Specs
 
     public class RobotRunsAmokEventDummyFactory : DummyFactory<RobotRunsAmokEvent>
     {
-        public override Priority Priority
-        {
-            get { return new Priority(3); }
-        }
+        public override Priority Priority => new Priority(3);
 
         protected override RobotRunsAmokEvent Create()
         {

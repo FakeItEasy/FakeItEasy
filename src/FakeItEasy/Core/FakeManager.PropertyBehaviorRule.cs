@@ -27,10 +27,7 @@ namespace FakeItEasy.Core
 
             public object[] Indices { get; set; }
 
-            public int? NumberOfTimesToCall
-            {
-                get { return null; }
-            }
+            public int? NumberOfTimesToCall => null;
 
             public static bool IsPropertySetter(MethodInfo method)
             {

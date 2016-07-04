@@ -25,13 +25,13 @@ namespace FakeItEasy.Specs
             this.ConstructorArgument2 = argument2;
         }
 
-        public string ConstructorArgument1 { get; private set; }
+        public string ConstructorArgument1 { get; }
 
-        public int ConstructorArgument2 { get; private set; }
+        public int ConstructorArgument2 { get; }
 
-        public Exception ExceptionFromVirtualMethodCallInConstructor { get; private set; }
+        public Exception ExceptionFromVirtualMethodCallInConstructor { get; }
 
-        public string VirtualMethodValueDuringConstructorCall { get; private set; }
+        public string VirtualMethodValueDuringConstructorCall { get; }
 
         public virtual string VirtualMethod(string parameter)
         {

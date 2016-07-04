@@ -13,20 +13,11 @@ namespace FakeItEasy.Creation
 
         public IEnumerable<object> ArgumentsForConstructor { get; set; }
 
-        public IEnumerable<Type> AdditionalInterfacesToImplement
-        {
-            get { return this.additionalInterfacesToImplement; }
-        }
+        public IEnumerable<Type> AdditionalInterfacesToImplement => this.additionalInterfacesToImplement;
 
-        public IEnumerable<Action<object>> ProxyConfigurationActions
-        {
-            get { return this.proxyConfigurationActions; }
-        }
+        public IEnumerable<Action<object>> ProxyConfigurationActions => this.proxyConfigurationActions;
 
-        public IEnumerable<CustomAttributeBuilder> AdditionalAttributes
-        {
-            get { return this.additionalAttributes; }
-        }
+        public IEnumerable<CustomAttributeBuilder> AdditionalAttributes => this.additionalAttributes;
 
         public void AddInterfaceToImplement(Type interfaceType)
         {
