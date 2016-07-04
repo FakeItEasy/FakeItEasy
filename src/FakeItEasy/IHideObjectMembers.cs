@@ -47,7 +47,7 @@ namespace FakeItEasy
         /// <returns>The exact runtime type of the current instance.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Hides object member.")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "GetType", Justification = "Uses the name of the method to intercept.")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = nameof(GetType), Justification = "Uses the name of the method to intercept.")]
         Type GetType();
     }
 }

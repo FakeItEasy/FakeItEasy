@@ -186,7 +186,8 @@ namespace FakeItEasy.Tests.Core
         private IFakeObjectCall CreateFakeCallToFoo(string argument1, object argument2)
         {
             return this.CreateFakeCall(
-                typeof(ITypeWithMethodThatTakesArguments).GetMethod("Foo", new[] { typeof(string), typeof(object) }),
+                typeof(ITypeWithMethodThatTakesArguments)
+                    .GetMethod(nameof(ITypeWithMethodThatTakesArguments.Foo), new[] { typeof(string), typeof(object) }),
                 argument1,
                 argument2);
         }

@@ -163,7 +163,7 @@ namespace FakeItEasy.Creation.DelegateProxies
 
         private class DelegateCallInterceptedEventRaiser
         {
-            public static readonly MethodInfo RaiseMethod = typeof(DelegateCallInterceptedEventRaiser).GetMethod("Raise");
+            public static readonly MethodInfo RaiseMethod = typeof(DelegateCallInterceptedEventRaiser).GetMethod(nameof(Raise));
 
             private readonly IFakeCallProcessorProvider fakeCallProcessorProvider;
             private readonly MethodInfo method;

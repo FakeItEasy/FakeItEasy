@@ -8,7 +8,7 @@ namespace FakeItEasy
     /// Provides an API entry point for constraining arguments of fake object calls.
     /// </summary>
     /// <typeparam name="T">The type of argument to validate.</typeparam>
-    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A", Justification = "It is spelled correctly.")]
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = nameof(A), Justification = "It is spelled correctly.")]
     public static class A<T>
     {
         /// <summary>
@@ -35,7 +35,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
         public static T Ignored
         {
-            get { return That.Matches(x => true, x => x.Write("Ignored")); }
+            get { return That.Matches(x => true, x => x.Write(nameof(Ignored))); }
         }
     }
 }
