@@ -4,7 +4,7 @@
         "Castle.Core": "4.0.0-alpha001"
   },
   "frameworks": {
-    "netstandard1.3": {
+    "netstandard1.6": {
       "wrappedProject": "../../src/FakeItEasy.dotnet/FakeItEasy.dotnet.csproj",
       "bin": {
         "assembly": "../../src/FakeItEasy.dotnet/bin/{configuration}/FakeItEasy.dll",
