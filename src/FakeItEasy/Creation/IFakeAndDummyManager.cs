@@ -32,14 +32,5 @@ namespace FakeItEasy.Creation
         /// <param name="result">Outputs the result dummy when creation is successful.</param>
         /// <returns>A value indicating whether the creation was successful.</returns>
         bool TryCreateDummy(Type typeOfDummy, out object result);
-
-        /// <summary>
-        /// Tries to create a fake object of the specified type.
-        /// </summary>
-        /// <param name="typeOfFake">The type of fake to create.</param>
-        /// <param name="options">Options for building the proxy that will act as the fake.</param>
-        /// <param name="result">The created fake object when creation is successful.</param>
-        /// <returns>A value indicating whether the creation was successful.</returns>
-        bool TryCreateFake(Type typeOfFake, IProxyOptions options, out object result);
     }
 }

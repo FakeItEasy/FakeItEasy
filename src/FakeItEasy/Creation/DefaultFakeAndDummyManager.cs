@@ -45,12 +45,6 @@ namespace FakeItEasy.Creation
             return this.session.TryResolveDummyValue(typeOfDummy, out result);
         }
 
-        public bool TryCreateFake(Type typeOfFake, IProxyOptions options, out object result)
-        {
-            result = this.fakeCreator.CreateFake(typeOfFake, options, this.session, throwOnFailure: false);
-            return result != null;
-        }
-
         private static IFakeOptions CreateFakeOptions(Type typeOfFake, ProxyOptions proxyOptions)
         {
             var optionsConstructor = typeof(FakeOptions<>)
