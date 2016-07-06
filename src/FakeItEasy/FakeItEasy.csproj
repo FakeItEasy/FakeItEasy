@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FEATURE_BINARY_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN FEATURE_REFLECTION_GETASSEMBLIES FEATURE_NETCORE_REFLECTION</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_BINARY_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_GETASSEMBLIES FEATURE_NETCORE_REFLECTION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
@@ -33,7 +33,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_BINARY_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN FEATURE_REFLECTION_GETASSEMBLIES FEATURE_NETCORE_REFLECTION</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_BINARY_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_GETASSEMBLIES FEATURE_NETCORE_REFLECTION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\FakeItEasy.xml</DocumentationFile>

@@ -71,8 +71,7 @@ namespace FakeItEasy.Core
         private static IEnumerable<Assembly> GetAllAssemblies(IEnumerable<string> extraAssemblyFiles)
         {
 #if FEATURE_REFLECTION_GETASSEMBLIES
-             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-             var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 #else
             var fakeItEasyLibraryName = TypeCatalogue.FakeItEasyAssembly.GetName().Name;
 
@@ -82,8 +81,8 @@ namespace FakeItEasy.Core
                 .Distinct()
                 .Select(Assembly.Load)
                 .ToArray();
-            var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 #endif
+            var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 
             // Find the paths of already loaded assemblies so we don't double scan them.
             // Exclude the ReflectionOnly assemblies because we want to be able to fully load them if we need to.
@@ -92,7 +91,7 @@ namespace FakeItEasy.Core
 #if FEATURE_REFLECTION_GETASSEMBLIES
                     .Where(a => !a.ReflectionOnly && !a.IsDynamic)
 #else
-                    .Where(a => a.IsDynamic)
+                    .Where(a => !a.IsDynamic)
 #endif
                     .Select(a => a.Location),
                 StringComparer.OrdinalIgnoreCase);

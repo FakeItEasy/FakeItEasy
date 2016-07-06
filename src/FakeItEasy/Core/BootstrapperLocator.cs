@@ -42,7 +42,8 @@ namespace FakeItEasy.Core
 
             var appDomainAssembliesReferencingFakeItEasy = candidateLibraries
                 .SelectMany(library => library.GetDefaultAssemblyNames(context))
-                .Select(Assembly.Load);
+                .Select(Assembly.Load)
+                .Where(a => !a.IsDynamic);
 #endif
 
             var candidateTypes = appDomainAssembliesReferencingFakeItEasy

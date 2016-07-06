@@ -62,12 +62,7 @@ namespace FakeItEasy.Core
         private static bool IsSameMethod(MethodInfo first, MethodInfo second)
         {
             return first.DeclaringType == second.DeclaringType
-#if FEATURE_REFLECTION_METADATATOKEN
                    && first.MetadataToken == second.MetadataToken
-#else
-                   && first.Name == second.Name
-                   && first.GetParameters().Select(p => p.ParameterType).SequenceEqual(second.GetParameters().Select(p => p.ParameterType))
-#endif
                    && first.Module == second.Module
                    && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
         }

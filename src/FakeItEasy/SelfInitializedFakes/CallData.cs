@@ -23,7 +23,7 @@ namespace FakeItEasy.SelfInitializedFakes
         public CallData(MethodInfo method, IEnumerable<object> outputArguments, object returnValue)
         {
             this.Method = method;
-            this.OutputArguments = outputArguments == null ? new object[0] : outputArguments.ToArray();
+            this.OutputArguments = outputArguments == null ? null : outputArguments.ToArray();
             this.ReturnValue = returnValue;
         }
 

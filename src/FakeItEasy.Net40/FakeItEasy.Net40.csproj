@@ -30,7 +30,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FEATURE_BINARY_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_BINARY_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
@@ -41,7 +41,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_BINARY_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_METADATATOKEN FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_BINARY_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>Bin\Release\FakeItEasy.xml</DocumentationFile>
