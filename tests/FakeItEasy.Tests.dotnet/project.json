@@ -16,7 +16,8 @@
       ],
       "exclude": [
       ]
-    }
+    },
+    "define": [ "NETCORE" ]
   },
 
   "dependencies": {

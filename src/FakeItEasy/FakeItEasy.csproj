@@ -1,20 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{74165807-676F-4464-B607-8770C13E8991}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FakeItEasy</RootNamespace>
     <AssemblyName>FakeItEasy</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\FakeItEasy.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\src\</SolutionDir>
     <CodeAnalysisCulture>en-US</CodeAnalysisCulture>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,7 +36,6 @@
     <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
-    <DocumentationFile>bin\Debug\FakeItEasy.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,437 +44,227 @@
     <DefineConstants>TRACE;FEATURE_BINARY_SERIALIZATION FEATURE_SECURITY_PERMISSIONS FEATURE_REFLECTION_GETASSEMBLIES FEATURE_NETCORE_REFLECTION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\FakeItEasy.xml</DocumentationFile>
+    <DocumentationFile>Bin\Release\FakeItEasy.xml</DocumentationFile>
     <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
     <DebugSymbols>true</DebugSymbols>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <DocumentationFile>bin\Release\FakeItEasy.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Castle.Core.4.0.0-alpha001\lib\net45\Castle.Core.dll</HintPath>
+      <HintPath>..\..\packages\Castle.Core.4.0.0-alpha001\lib\net40-client\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compatibility\MethodInfoWrapper.cs" />
     <Compile Include="Configuration\IDoNothingConfiguration.cs" />
     <Compile Include="Configuration\IPropertySetterAnyValueConfiguration.cs" />
     <Compile Include="Configuration\IPropertySetterConfiguration.cs" />
     <Compile Include="Configuration\PropertySetterConfiguration.cs" />
-    <Compile Include="Compatibility\MethodInfoWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="A.cs" />
-    <Compile Include="ArgumentValueFormatter.cs" />
-    <Compile Include="Configuration\AnyCallCallRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\UnorderedCallAssertion.cs" />
-    <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="A.of.T.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions.cs" />
+    <Compile Include="ArgumentValidationConfigurationExtensions.cs" />
+    <Compile Include="ArgumentValueFormatter.cs" />
+    <Compile Include="AssertConfigurationExtensions.cs" />
+    <Compile Include="CallbackConfigurationExtensions.cs" />
+    <Compile Include="CompletedFakeObjectCallExtensions.cs" />
+    <Compile Include="Configuration\UnorderedCallAssertion.cs" />
+    <Compile Include="Configuration\AnyCallCallRule.cs" />
+    <Compile Include="Configuration\AnyCallConfiguration.cs" />
+    <Compile Include="Configuration\ArgumentCollection.cs" />
+    <Compile Include="Configuration\BuildableCallRule.cs" />
+    <Compile Include="Configuration\ConfigurationModule.cs" />
+    <Compile Include="Configuration\DefaultInterceptionAsserter.cs" />
+    <Compile Include="Configuration\FakeConfigurationException.cs" />
+    <Compile Include="Configuration\FakeConfigurationManager.cs" />
+    <Compile Include="Configuration\IAfterCallSpecifiedConfiguration.cs" />
+    <Compile Include="Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs" />
     <Compile Include="Configuration\IOrderableCallAssertion.cs" />
+    <Compile Include="Configuration\IAnyCallConfiguration.cs" />
+    <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs" />
+    <Compile Include="Configuration\IArgumentValidationConfiguration.cs" />
+    <Compile Include="Configuration\IAssertConfiguration.cs" />
+    <Compile Include="Configuration\ICallBackConfiguration.cs" />
+    <Compile Include="Configuration\ICallBaseConfiguration.cs" />
+    <Compile Include="Configuration\IConfigurationFactory.cs" />
+    <Compile Include="Configuration\IExceptionThrowerConfiguration.cs" />
+    <Compile Include="Configuration\IFakeConfigurationManager.cs" />
+    <Compile Include="Configuration\IInterceptionAsserter.cs" />
+    <Compile Include="Configuration\IOutAndRefParametersConfiguration.cs" />
+    <Compile Include="Configuration\IRepeatConfiguration.cs" />
+    <Compile Include="Configuration\IRepeatSpecification.cs" />
+    <Compile Include="Configuration\IReturnValueArgumentValidationConfiguration.cs" />
+    <Compile Include="Configuration\IReturnValueConfiguration.cs" />
+    <Compile Include="Configuration\IStartConfiguration.cs" />
+    <Compile Include="Configuration\IStartConfigurationFactory.cs" />
+    <Compile Include="Configuration\IVoidArgumentValidationConfiguration.cs" />
+    <Compile Include="Configuration\IVoidConfiguration.cs" />
+    <Compile Include="Configuration\IWhereConfiguration.cs" />
+    <Compile Include="Configuration\RuleBuilder.cs" />
+    <Compile Include="Configuration\StartConfiguration.cs" />
+    <Compile Include="Core\ArgumentConstraintTrap.cs" />
+    <Compile Include="Core\ArgumentValueFormatter.cs" />
     <Compile Include="Core\AssemblyExtensions.cs" />
     <Compile Include="Core\BootstrapperLocator.cs" />
-    <Compile Include="Core\SequentialCallContext.cs" />
+    <Compile Include="Core\CallRuleMetadata.cs" />
+    <Compile Include="Core\CallWriter.cs" />
+    <Compile Include="Core\DefaultArgumentConstraintManager.cs" />
+    <Compile Include="Core\DefaultExceptionThrower.cs" />
+    <Compile Include="Core\DefaultFakeManagerAccessor.cs" />
+    <Compile Include="Core\DefaultFakeObjectCallFormatter.cs" />
+    <Compile Include="Core\DefaultFixtureInitializer.cs" />
+    <Compile Include="Core\DefaultReturnValueRule.cs" />
+    <Compile Include="Core\DefaultSutInitializer.cs" />
+    <Compile Include="Core\DelegateRaiser.cs" />
+    <Compile Include="Core\DynamicDummyFactory.cs" />
     <Compile Include="Core\DynamicOptionsBuilder.cs" />
-    <Compile Include="Core\IFakeCallProcessor.cs" />
-    <Compile Include="Core\FakeManagerProvider.cs" />
-    <Compile Include="Core\IFakeCallProcessorProvider.cs" />
-    <Compile Include="Core\FakeCallProcessorProvider.cs" />
     <Compile Include="Core\EventHandlerArgumentProviderMap.cs" />
+    <Compile Include="Core\FakeAsserter.cs" />
+    <Compile Include="Core\FakeCallEqualityComparer.cs" />
+    <Compile Include="Core\FakeCallProcessorProvider.cs" />
+    <Compile Include="Core\FakeCreationException.cs" />
+    <Compile Include="Core\FakeManager.AutoFakePropertyRule.cs" />
+    <Compile Include="Core\FakeManager.cs" />
+    <Compile Include="Core\FakeManager.EventRule.cs" />
+    <Compile Include="Core\FakeManager.ObjectMemberRule.cs" />
+    <Compile Include="Core\FakeManager.PropertyBehaviorRule.cs" />
+    <Compile Include="Core\FakeManager.PropertySetterRule.cs" />
+    <Compile Include="Core\FakeManagerProvider.cs" />
+    <Compile Include="Core\FakeWrapperConfigurator.cs" />
+    <Compile Include="Core\IArgumentConstraint.cs" />
+    <Compile Include="Core\IArgumentConstraintTrapper.cs" />
+    <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs" />
+    <Compile Include="Core\ICallMatcher.cs" />
+    <Compile Include="Core\ICallMatcherAccessor.cs" />
+    <Compile Include="Core\ICompletedFakeObjectCall.cs" />
+    <Compile Include="Core\IEventRaiserArguments.cs" />
+    <Compile Include="Core\IExceptionThrower.cs" />
+    <Compile Include="Core\IFakeAsserter.cs" />
+    <Compile Include="Core\IFakeCallProcessor.cs" />
+    <Compile Include="Core\IFakeCallProcessorProvider.cs" />
+    <Compile Include="Core\IFakeManagerAccessor.cs" />
+    <Compile Include="Core\IFakeObjectCall.cs" />
+    <Compile Include="Core\IFakeObjectCallFormatter.cs" />
+    <Compile Include="Core\IFakeObjectCallRule.cs" />
+    <Compile Include="Core\IFixtureInitializer.cs" />
+    <Compile Include="Core\IInterceptedFakeObjectCall.cs" />
+    <Compile Include="Core\IInterceptionListener.cs" />
+    <Compile Include="Core\ISutInitializer.cs" />
+    <Compile Include="Core\ITypeCatalogue.cs" />
+    <Compile Include="Core\MethodInfoManager.cs" />
+    <Compile Include="Core\Raise.of.TEventArgs.cs" />
     <Compile Include="Core\SequenceNumberManager.cs" />
+    <Compile Include="Core\SequentialCallContext.cs" />
+    <Compile Include="Core\TypeCatalogue.cs" />
+    <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
+    <Compile Include="Core\WrappedObjectRule.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGenerator.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidator.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\DynamicProxyResources.Designer.cs" />
+    <Compile Include="Creation\DefaultFakeAndDummyManager.cs" />
+    <Compile Include="Creation\DelegateProxies\DelegateProxyGenerator.cs" />
+    <Compile Include="Creation\DummyValueCreationSession.cs" />
+    <Compile Include="Creation\FakeObjectCreator.cs" />
     <Compile Include="Creation\FakeOptionsBase.cs" />
+    <Compile Include="Creation\IDummyValueCreationSession.cs" />
+    <Compile Include="Creation\IFakeAndDummyManager.cs" />
+    <Compile Include="Creation\IFakeObjectCreator.cs" />
+    <Compile Include="Creation\IFakeOptions.cs" />
     <Compile Include="Creation\IFakeOptions.of.T.cs" />
+    <Compile Include="Creation\IFakeOptionsForWrappers.cs" />
     <Compile Include="Creation\IFakeOptionsForWrappers.of.T.cs" />
+    <Compile Include="Creation\IProxyGenerator.cs" />
     <Compile Include="Creation\IProxyOptions.cs" />
+    <Compile Include="Creation\ITaggable.cs" />
+    <Compile Include="Creation\ProxyGeneratorResult.cs" />
+    <Compile Include="Creation\ProxyGeneratorSelector.cs" />
+    <Compile Include="Creation\ProxyOptions.cs" />
+    <Compile Include="Creation\ResolvedArgument.cs" />
+    <Compile Include="Creation\ResolvedConstructor.cs" />
     <Compile Include="DefaultBootstrapper.cs" />
+    <Compile Include="DefaultOutputWriter.cs" />
+    <Compile Include="DummyFactory.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="ExceptionMessages.Designer.cs" />
+    <Compile Include="ExceptionThrowerConfigurationExtensions.cs" />
+    <Compile Include="ExpectationException.cs" />
+    <Compile Include="ExpressionExtensions.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\AggregateArgumentConstraint.cs" />
+    <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs" />
     <Compile Include="Expressions\ArgumentConstraints\IArgumentValueProvider.cs" />
     <Compile Include="Expressions\ArgumentConstraints\OutArgumentConstraint.cs" />
     <Compile Include="Expressions\ArgumentConstraints\RefArgumentConstraint.cs" />
-    <Compile Include="FakeOptionsBuilder.cs" />
-    <Compile Include="IBootstrapper.cs" />
-    <Compile Include="IFakeOptionsBuilder.cs" />
-    <Compile Include="MethodBaseExtensions.cs" />
-    <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
-    <Compile Include="Core\DelegateRaiser.cs" />
-    <Compile Include="Priority.cs" />
-    <Compile Include="Sdk\Create.cs" />
-    <Compile Include="SelfInitializedFakes\MethodInfoConverter.cs" />
-    <Compile Include="TaskHelper.cs" />
-    <Compile Include="TypeExtensions.cs" />
-    <Compile Include="StringBuilderExtensions.cs" />
-    <Compile Include="StringExtensions.cs" />
-    <Compile Include="ReturnValueConfigurationExtensions.cs" />
-    <Compile Include="ArgumentValidationConfigurationExtensions.cs" />
-    <Compile Include="AssertConfigurationExtensions.cs" />
-    <Compile Include="ExceptionThrowerConfigurationExtensions.cs" />
-    <Compile Include="CallbackConfigurationExtensions.cs" />
-    <Compile Include="WhereConfigurationExtensions.cs" />
-    <Compile Include="FakeOptionsExtensions.cs" />
-    <Compile Include="FakeObjectCallExtensions.cs" />
-    <Compile Include="RepeatConfigurationExtensions.cs" />
-    <Compile Include="ExceptionMessages.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExceptionMessages.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Core\Raise.of.TEventArgs.cs" />
-    <Compile Include="Fake.of.T.cs" />
-    <Compile Include="Core\TypeCatalogue.cs" />
-    <Compile Include="Configuration\AnyCallConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\BuildableCallRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\ConfigurationModule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\DefaultInterceptionAsserter.cs" />
-    <Compile Include="Configuration\FakeConfigurationException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\FakeConfigurationManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IAfterCallSpecifiedConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IAnyCallConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IArgumentValidationConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IAssertConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\ICallBackConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\ICallBaseConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IConfigurationFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IExceptionThrowerConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IFakeConfigurationManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="IHideObjectMembers.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IInterceptionAsserter.cs" />
-    <Compile Include="Configuration\IOutAndRefParametersConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IRepeatConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IRepeatSpecification.cs" />
-    <Compile Include="Configuration\IReturnValueArgumentValidationConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IReturnValueConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IStartConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IStartConfigurationFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IVoidArgumentValidationConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IVoidConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\IWhereConfiguration.cs" />
-    <Compile Include="Configuration\RuleBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\StartConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\ArgumentConstraintTrap.cs" />
-    <Compile Include="Core\ArgumentValueFormatter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\CallRuleMetadata.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\CallWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\DefaultArgumentConstraintManager.cs" />
-    <Compile Include="Core\DefaultExceptionThrower.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\DefaultFakeManagerAccessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\DefaultFakeObjectCallFormatter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeWrapperConfigurator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\DefaultFixtureInitializer.cs" />
-    <Compile Include="Core\DefaultReturnValueRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\DefaultSutInitializer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\DynamicDummyFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeAsserter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeCallEqualityComparer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeCreationException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeManager.AutoFakePropertyRule.cs">
-      <DependentUpon>FakeManager.cs</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeManager.EventRule.cs">
-      <DependentUpon>FakeManager.cs</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeManager.ObjectMemberRule.cs">
-      <DependentUpon>FakeManager.cs</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeManager.PropertyBehaviorRule.cs">
-      <DependentUpon>FakeManager.cs</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\FakeManager.PropertySetterRule.cs">
-      <DependentUpon>FakeManager.cs</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IArgumentConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IInterceptionListener.cs" />
-    <Compile Include="Core\ISutInitializer.cs" />
-    <Compile Include="Creation\DelegateProxies\DelegateProxyGenerator.cs" />
-    <Compile Include="Creation\ProxyGeneratorSelector.cs" />
-    <Compile Include="DefaultOutputWriter.cs" />
+    <Compile Include="Expressions\CallExpressionParser.cs" />
+    <Compile Include="Expressions\ExpressionArgumentConstraintFactory.cs" />
+    <Compile Include="Expressions\ExpressionCallMatcher.cs" />
+    <Compile Include="Expressions\ExpressionCallRule.cs" />
+    <Compile Include="Expressions\ICallExpressionParser.cs" />
+    <Compile Include="Expressions\IExpressionCallMatcherFactory.cs" />
     <Compile Include="Expressions\ParsedArgumentExpression.cs" />
-    <Compile Include="Expressions\ArgumentConstraints\AggregateArgumentConstraint.cs" />
+    <Compile Include="Expressions\ParsedCallExpression.cs" />
+    <Compile Include="Fake.cs" />
+    <Compile Include="Fake.of.T.cs" />
+    <Compile Include="FakeAttribute.cs" />
+    <Compile Include="FakeFacade.cs" />
+    <Compile Include="FakeObjectCallExtensions.cs" />
+    <Compile Include="FakeOptionsBuilder.cs" />
+    <Compile Include="FakeOptionsExtensions.cs" />
+    <Compile Include="Guard.cs" />
     <Compile Include="IArgumentConstraintManager.cs" />
     <Compile Include="IArgumentConstraintManagerFactory.cs" />
-    <Compile Include="Core\IArgumentConstraintTrapper.cs" />
-    <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\ICallMatcher.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\ICallMatcherAccessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\ICompletedFakeObjectCall.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IEventRaiserArguments.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IExceptionThrower.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IFakeAsserter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IFakeManagerAccessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IFakeObjectCall.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IFakeObjectCallFormatter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IFakeObjectCallRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\ITypeCatalogue.cs" />
-    <Compile Include="Core\TypeCatalogueInstanceProvider.cs" />
-    <Compile Include="Core\IFixtureInitializer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\IInterceptedFakeObjectCall.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="IOutputWriter.cs" />
-    <Compile Include="Core\MethodInfoManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Core\WrappedObjectRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidator.cs" />
-    <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\CastleDynamicProxy\DynamicProxyResources.Designer.cs">
-      <DependentUpon>DynamicProxyResources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Creation\DefaultFakeAndDummyManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\DummyValueCreationSession.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\FakeObjectCreator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\ProxyOptions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\IDummyValueCreationSession.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\IFakeAndDummyManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\IFakeObjectCreator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\IFakeOptions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\IFakeOptionsForWrappers.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\IProxyGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\ITaggable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\ProxyGeneratorResult.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\ResolvedArgument.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Creation\ResolvedConstructor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ArgumentConstraints\EqualityArgumentConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\CallExpressionParser.cs" />
-    <Compile Include="Expressions\ExpressionArgumentConstraintFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ExpressionCallMatcher.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ExpressionCallRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ICallExpressionParser.cs" />
-    <Compile Include="Expressions\IExpressionCallMatcherFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Expressions\ParsedCallExpression.cs" />
-    <Compile Include="FakeAttribute.cs" />
     <Compile Include="IArgumentValueFormatter.cs" />
-    <Compile Include="FakeFacade.cs" />
-    <Compile Include="ImportsModule.cs" />
-    <Compile Include="IoC\DictionaryContainer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="IoC\Module.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CompletedFakeObjectCallExtensions.cs" />
-    <Compile Include="DummyFactory.cs" />
+    <Compile Include="IBootstrapper.cs" />
     <Compile Include="IDummyFactory.cs" />
-    <Compile Include="ArgumentConstraintManagerExtensions.cs" />
-    <Compile Include="OutputWriterExtensions.cs" />
-    <Compile Include="Repeated.cs" />
-    <Compile Include="Recorders.cs" />
+    <Compile Include="IFakeOptionsBuilder.cs" />
     <Compile Include="IFileSystem.cs" />
-    <Compile Include="ExpressionExtensions.cs" />
-    <Compile Include="ExpectationException.cs" />
-    <Compile Include="ValueProducerSignatureHelper.cs" />
-    <Compile Include="Configuration\ArgumentCollection.cs" />
-    <Compile Include="Guard.cs" />
-    <Compile Include="Fake.cs" />
+    <Compile Include="IHideObjectMembers.cs" />
+    <Compile Include="ImportsModule.cs" />
+    <Compile Include="IoC\DictionaryContainer.cs" />
+    <Compile Include="IoC\Module.cs" />
+    <Compile Include="IOutputWriter.cs" />
+    <Compile Include="MethodBaseExtensions.cs" />
+    <Compile Include="OutAndRefParametersConfigurationExtensions.cs" />
+    <Compile Include="OutputWriterExtensions.cs" />
+    <Compile Include="Priority.cs" />
     <Compile Include="Raise.cs" />
+    <Compile Include="Recorders.cs" />
+    <Compile Include="RepeatConfigurationExtensions.cs" />
+    <Compile Include="Repeated.cs" />
+    <Compile Include="ReturnValueConfigurationExtensions.cs" />
     <Compile Include="RootModule.cs" />
-    <Compile Include="SelfInitializedFakes\CallData.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SelfInitializedFakes\FileStorage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SelfInitializedFakes\ICallStorage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SelfInitializedFakes\ISelfInitializingFakeRecorder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SelfInitializedFakes\RecordingException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SelfInitializedFakes\RecordingManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SelfInitializedFakes\SelfInitializationRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Sdk\Create.cs" />
+    <Compile Include="SelfInitializedFakes\CallData.cs" />
+    <Compile Include="SelfInitializedFakes\FileStorage.cs" />
+    <Compile Include="SelfInitializedFakes\ICallStorage.cs" />
+    <Compile Include="SelfInitializedFakes\ISelfInitializingFakeRecorder.cs" />
+    <Compile Include="SelfInitializedFakes\MethodInfoConverter.cs" />
+    <Compile Include="SelfInitializedFakes\RecordingException.cs" />
+    <Compile Include="SelfInitializedFakes\RecordingManager.cs" />
+    <Compile Include="SelfInitializedFakes\SelfInitializationRule.cs" />
     <Compile Include="ServiceLocator.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="StringBuilderExtensions.cs" />
     <Compile Include="StringBuilderOutputWriter.cs" />
+    <Compile Include="StringExtensions.cs" />
+    <Compile Include="TaskHelper.cs" />
+    <Compile Include="TypeExtensions.cs" />
     <Compile Include="UnderTestAttribute.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>DynamicProxyResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ExceptionMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <Compile Include="ValueProducerSignatureHelper.cs" />
+    <Compile Include="WhereConfigurationExtensions.cs" />
+    <Compile Include="Compatibility\ReflectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FakeItEasy.nuspec" />
@@ -480,9 +278,14 @@
       <SubType>Designer</SubType>
     </CodeAnalysisDictionary>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx" />
+    <EmbeddedResource Include="ExceptionMessages.resx" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5&quot; /internalize:&quot;$(SolutionDir)\src\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
+    <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0&quot; /internalize:&quot;$(SolutionDir)\src\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
   </Target>
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

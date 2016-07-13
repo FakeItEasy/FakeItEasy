@@ -1,10 +1,18 @@
 namespace FakeItEasy.Tests
 {
+#if !NETCORE
+    extern alias mscorlib;
+#endif
     using System;
     using System.Linq;
-    using System.Reflection;
     using FluentAssertions;
     using Xunit;
+#if NETCORE
+    using System.Reflection;
+#else
+    using mscorlib::System.Reflection;
+#endif
+
 
     public abstract class FacadedTestBase
     {

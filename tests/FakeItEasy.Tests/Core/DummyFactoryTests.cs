@@ -1,12 +1,19 @@
 namespace FakeItEasy.Tests.Core
 {
+#if !NETCORE
+    extern alias mscorlib;
+#endif
     using System;
     using System.Globalization;
     using System.Linq;
-    using System.Reflection;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
+#if NETCORE
+    using System.Reflection;
+#else
+    using mscorlib::System.Reflection;
+#endif
 
     public class DummyFactoryTests
     {
