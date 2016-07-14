@@ -1,18 +1,12 @@
 namespace FakeItEasy.Tests
 {
-#if !NETCORE
-    extern alias mscorlib;
-#endif
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using FluentAssertions.Execution;
-#if NETCORE
     using System.Reflection;
-#else
-    using mscorlib::System.Reflection;
-#endif
+    using FakeItEasy.Tests.TestHelpers;
+    using FluentAssertions.Execution;
 
     public static class NullGuardedAssertion
     {
@@ -162,8 +156,8 @@ namespace FakeItEasy.Tests
 
                 private static bool IsNullableType(Type type)
                 {
-                    return !type.GetTypeInfo().IsValueType ||
-                           (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+                    return !type.GetTypeInformation().IsValueType ||
+                           (type.GetTypeInformation().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
                 }
 
                 private static void WriteArgumentList(StringBuilderOutputWriter builder, IEnumerable<ArgumentInfo> arguments)

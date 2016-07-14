@@ -1,19 +1,12 @@
 namespace FakeItEasy.Tests.Core
 {
-#if !NETCORE
-    extern alias mscorlib;
-#endif
     using System;
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
-#if NETCORE
-    using System.Reflection;
-#else
-    using mscorlib::System.Reflection;
-#endif
 
     public class DummyFactoryTests
     {
@@ -49,7 +42,8 @@ namespace FakeItEasy.Tests.Core
         public void Built_in_factories_should_have_lower_than_default_priority()
         {
             // Arrange
-            var allDummyFactories = typeof(A).GetTypeInfo().Assembly.GetTypes()
+            var allDummyFactories = typeof(A).GetTypeInformation().Assembly.GetTypes()
+
                 .Where(t => t.CanBeInstantiatedAs(typeof(IDummyFactory)))
                 .Select(Activator.CreateInstance)
                 .Cast<IDummyFactory>();

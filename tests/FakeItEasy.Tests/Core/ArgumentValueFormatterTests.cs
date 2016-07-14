@@ -1,21 +1,15 @@
 namespace FakeItEasy.Tests.Core
 {
-#if !NETCORE
-    extern alias mscorlib;
-#endif
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
-#if NETCORE
-    using System.Reflection;
-#else
-    using mscorlib::System.Reflection;
-#endif
 
     public class ArgumentValueFormatterTests
     {
@@ -157,7 +151,7 @@ namespace FakeItEasy.Tests.Core
         public void Built_in_formatters_should_have_lower_than_default_priority()
         {
             // Arrange
-            var allArgumentValueFormatters = typeof(A).GetTypeInfo().Assembly.GetTypes()
+            var allArgumentValueFormatters = typeof(A).GetTypeInformation().Assembly.GetTypes()
                 .Where(t => t.CanBeInstantiatedAs(typeof(IArgumentValueFormatter)))
                 .Select(Activator.CreateInstance)
                 .Cast<IArgumentValueFormatter>();

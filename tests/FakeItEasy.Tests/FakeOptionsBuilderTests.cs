@@ -1,19 +1,14 @@
 namespace FakeItEasy.Tests
 {
-#if !NETCORE
-    extern alias mscorlib;
-#endif
     using System;
     using System.Linq;
+#if NETCORE
+    using System.Reflection;
+#endif
     using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
-#if NETCORE
-    using System.Reflection;
-#else
-    using mscorlib::System.Reflection;
-#endif
 
     public class FakeOptionsBuilderTests
     {
@@ -35,7 +30,7 @@ namespace FakeItEasy.Tests
         public void Built_in_options_builders_should_have_lower_than_default_priority()
         {
             // Arrange
-            var allOptionsBuilders = typeof(A).GetTypeInfo().Assembly.GetTypes()
+            var allOptionsBuilders = typeof(A).GetTypeInformation().Assembly.GetTypes()
                 .Where(t => t.CanBeInstantiatedAs(typeof(IFakeOptionsBuilder)))
                 .Select(Activator.CreateInstance)
                 .Cast<IFakeOptionsBuilder>();

@@ -1,4 +1,5 @@
-﻿namespace FakeItEasy
+﻿#if !FEATURE_NETCORE_REFLECTION
+namespace FakeItEasy
 {
     using System;
     using System.Reflection;
@@ -39,3 +40,4 @@
         }
     }
 }
+#endif

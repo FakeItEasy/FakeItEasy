@@ -64,9 +64,6 @@
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="mscorlib">
-      <Aliases>global, mscorlib</Aliases>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -112,6 +109,7 @@
     <Compile Include="AssertConfigurationExtensionsTests.cs" />
     <Compile Include="TestHelpers\BinarySerializationHelper.cs" />
     <Compile Include="TestHelpers\StringEnumerableExtensions.cs" />
+    <Compile Include="TestHelpers\TypeExtensions.cs" />
     <Compile Include="TestHelpers\UsingCultureAttribute.cs" />
     <Compile Include="WhereConfigurationExtensionsTests.cs" />
     <Compile Include="FakeOptionsExtensionsTests.cs" />
