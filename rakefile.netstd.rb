@@ -41,6 +41,10 @@ integration_tests = [
   "tests/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"
 ]
 
+netstd_integration_test_directories = [
+  "tests/FakeItEasy.IntegrationTests.netstd"
+]
+
 specs = [
   "tests/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
 ]
@@ -116,7 +120,7 @@ task :restore do
 
   # performing restore on the solution doesn't restore
   # all the xprojs' dependencies, so do them separately
-  netstd_unit_test_directories.each do | test_directory |
+  (netstd_unit_test_directories + netstd_integration_test_directories).each do | test_directory |
     restore_dependencies_for_project test_directory
   end
 end
@@ -254,6 +258,7 @@ end
 desc "Execute integration tests"
 task :integ => [:build, tests] do
     run_tests(integration_tests, xunit_command, tests)
+    run_netstd_tests(netstd_integration_test_directories, tests)
 end
 
 desc "Execute specifications"

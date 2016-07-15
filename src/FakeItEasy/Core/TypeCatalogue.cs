@@ -107,13 +107,13 @@ namespace FakeItEasy.Core
         {
             foreach (var file in files)
             {
-                Assembly reflectedAssembly = null;
+                Assembly assembly = null;
                 try
                 {
 #if FEATURE_REFLECTION_GETASSEMBLIES
-                    reflectedAssembly = Assembly.ReflectionOnlyLoadFrom(file);
+                    assembly = Assembly.ReflectionOnlyLoadFrom(file);
 #else
-                    reflectedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
+                    assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
 #endif
                 }
                 catch (Exception ex)
@@ -122,24 +122,25 @@ namespace FakeItEasy.Core
                     continue;
                 }
 
-                if (!reflectedAssembly.ReferencesFakeItEasy())
+                if (!assembly.ReferencesFakeItEasy())
                 {
                     continue;
                 }
 
-                // A reflection-only loaded assembly can't be scanned for types, so fully load it before saving it.
-                Assembly loadedAssembly = null;
+#if FEATURE_REFLECTION_GETASSEMBLIES
+                // A reflection-only loaded assembly can't be scanned for types, so fully load it before returning it.
                 try
                 {
-                    loadedAssembly = Assembly.Load(reflectedAssembly.GetName());
+                    assembly = Assembly.Load(assembly.GetName());
                 }
                 catch (Exception ex)
                 {
                     WarnFailedToLoadAssembly(file, ex);
                     continue;
                 }
+#endif
 
-                yield return loadedAssembly;
+                yield return assembly;
             }
         }
 

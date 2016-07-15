@@ -1,0 +1,26 @@
+﻿{
+  "name": "FakeItEasy.IntegrationTests.External",
+  "version": "1.0.0-*",
+  "description": "FakeItEasy.IntegrationTests.External.netstd Class Library",
+
+  "buildOptions": {
+    "compile": {
+      "include": [
+        "../FakeItEasy.IntegrationTests.External/**/*.cs"
+      ]
+    }
+  },
+
+  "dependencies": {
+    "NETStandard.Library": "1.6.0",
+    "FakeItEasy": {
+      "target": "project",
+      "version": "99.99.99-wrapped"
+    }
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+    }
+  }
+}
