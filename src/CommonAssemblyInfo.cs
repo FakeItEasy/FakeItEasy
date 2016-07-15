@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("2.3.0")]
 [assembly: AssemblyFileVersion("2.3.0")]
-[assembly: AssemblyInformationalVersion("2.2.0")]
+[assembly: AssemblyInformationalVersion("2.3.0")]
 
 [assembly: AssemblyCompany("Patrik Hägne")]
 [assembly: AssemblyCopyright("Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)")]
