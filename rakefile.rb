@@ -224,7 +224,7 @@ end
 desc "GitLink PDB's"
 exec :gitlink => [:build] do |cmd|
   cmd.command = gitlink_command
-  cmd.parameters ". -u #{repo_url} -include " + gitlinks.join(",")
+  cmd.parameters ". -f #{solution} -u #{repo_url} -include " + gitlinks.join(",")
 end
 
 directory tests
