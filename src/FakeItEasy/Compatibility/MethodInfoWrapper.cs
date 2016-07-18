@@ -8,7 +8,7 @@
     /// Until ReflectedType is back in RTM (tracked by CoreFX issue 5381), this
     /// wrapper is used to temporarily provide the needed ReflectedType.
     /// </summary>
-    public class MethodInfoWrapper
+    internal class MethodInfoWrapper
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MethodInfoWrapper" /> class.
