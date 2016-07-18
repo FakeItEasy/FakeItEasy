@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 14.0.0.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6A7B553-5359-4FB9-B19C-8A23004F49DB}"
 	ProjectSection(SolutionItems) = preProject
@@ -121,8 +121,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Tests.Approval",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy", "src\FakeItEasy\FakeItEasy.csproj", "{74165807-676F-4464-B607-8770C13E8991}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.dotnet", "src\FakeItEasy.dotnet\FakeItEasy.dotnet.csproj", "{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,10 +171,6 @@ Global
 		{74165807-676F-4464-B607-8770C13E8991}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74165807-676F-4464-B607-8770C13E8991}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74165807-676F-4464-B607-8770C13E8991}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -198,7 +192,6 @@ Global
 		{9D4A41F1-D444-4244-AAAC-F610D9977B2F} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
 		{42A92357-2A87-4B87-A591-CA78B6CE4461} = {9D4A41F1-D444-4244-AAAC-F610D9977B2F}
 		{74165807-676F-4464-B607-8770C13E8991} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
-		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 0.1
