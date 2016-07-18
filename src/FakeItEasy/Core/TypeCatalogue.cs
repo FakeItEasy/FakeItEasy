@@ -14,7 +14,7 @@ namespace FakeItEasy.Core
     /// Provides access to all types in:
     /// <list type="bullet">
     ///   <item>FakeItEasy,</item>
-    ///   <item> currently loadedassemblies that reference FakeItEasy and</item>
+    ///   <item>currently loaded assemblies that reference FakeItEasy and</item>
     ///   <item>assemblies whose paths are supplied to the constructor, that also reference FakeItEasy.</item>
     /// </list>
     /// </summary>
