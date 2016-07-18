@@ -33,7 +33,7 @@
         "define": [ "NETCORE", "FEATURE_NETCORE_REFLECTION" ]
       },
       "dependencies": {
-        "Castle.Core": "4.0.0-alpha001",
+        "Castle.Core": "4.0.0-beta001",
         "FakeItEasy": {
           "target": "project",
           "version": "99.99.99-wrapped"
@@ -56,7 +56,7 @@
         "Microsoft.CSharp": "4.0.1",
         "dotnet-test-xunit": "2.2.0-preview2-build1029"
       },
-      "imports": [ "dotnet5.4", "dnxcore50", "portable-net451+win81" ]
+      "imports": [ "dnxcore50", "portable-net451+win81" ]
     }
   }
 }

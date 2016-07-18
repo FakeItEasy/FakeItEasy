@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "Castle.Core": "4.0.0-alpha001",
+    "Castle.Core": "4.0.0-beta001",
     "Microsoft.Extensions.DependencyModel": "1.0.0",
     "Newtonsoft.Json": "9.0.1",
     "System.Collections.Concurrent": "4.0.12",
@@ -18,8 +18,6 @@
   },
 
   "frameworks": {
-    "netstandard1.6": {
-      "imports": [ "dotnet5.4" ]
-    }
+    "netstandard1.6": { }
   }
 }
