@@ -1,3 +1,4 @@
+#if FEATURE_SELF_INITIALIZED_FAKES
 namespace FakeItEasy.Tests
 {
     using FakeItEasy.SelfInitializedFakes;
@@ -25,3 +26,4 @@ namespace FakeItEasy.Tests
         }
     }
 }
+#endif

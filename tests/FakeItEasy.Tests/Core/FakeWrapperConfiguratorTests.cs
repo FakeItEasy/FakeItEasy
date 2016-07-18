@@ -1,3 +1,4 @@
+#if FEATURE_SELF_INITIALIZED_FAKES
 namespace FakeItEasy.Tests.Core
 {
     using System.Linq;
@@ -62,3 +63,4 @@ namespace FakeItEasy.Tests.Core
         }
     }
 }
+#endif

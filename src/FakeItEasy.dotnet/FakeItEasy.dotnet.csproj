@@ -591,9 +591,6 @@
     <Compile Include="..\FakeItEasy\SelfInitializedFakes\ISelfInitializingFakeRecorder.cs">
       <Link>SelfInitializedFakes\ISelfInitializingFakeRecorder.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\SelfInitializedFakes\MethodInfoConverter.cs">
-      <Link>SelfInitializedFakes\MethodInfoConverter.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\SelfInitializedFakes\RecordingException.cs">
       <Link>SelfInitializedFakes\RecordingException.cs</Link>
     </Compile>
@@ -632,9 +629,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\FakeItEasy\FakeItEasy.nuspec">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="FakeItEasy.nuspec" />
     <None Include="project.json" />
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>

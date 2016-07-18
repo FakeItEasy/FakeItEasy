@@ -43,7 +43,6 @@
           "type": "platform",
           "version": "1.0.0"
         },
-        "Newtonsoft.Json": "9.0.1",
         "System.Console": "4.0.0",
         "System.Diagnostics.TraceSource": "4.0.0",
         "System.Linq.Expressions": "4.1.0",

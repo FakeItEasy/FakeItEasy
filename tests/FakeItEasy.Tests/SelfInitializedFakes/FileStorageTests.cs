@@ -1,15 +1,13 @@
+#if FEATURE_SELF_INITIALIZED_FAKES
 namespace FakeItEasy.Tests.SelfInitializedFakes
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
+    using System.Runtime.Serialization.Formatters.Binary;
     using FakeItEasy.SelfInitializedFakes;
     using FluentAssertions;
-    using Newtonsoft.Json;
     using Xunit;
 
     public class FileStorageTests
@@ -75,7 +73,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             storage.Save(calls);
 
             // Assert
-            var savedCalls = this.DeserializeCalls(fileStream.ToArray());
+            var savedCalls = this.DeserializeCalls(fileStream.GetBuffer());
 
             savedCalls.Should().Equal(calls, new CallDataComparer().Equals);
         }
@@ -103,16 +101,8 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             using (var stream = new MemoryStream())
             {
-                using (var sw = new StreamWriter(stream))
-                {
-                    var serialized = JsonConvert.SerializeObject(
-                        calls.ToArray(),
-                        Formatting.Indented,
-                        new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
-                    sw.Write(serialized);
-                }
-
-                return stream.ToArray();
+                new BinaryFormatter().Serialize(stream, calls);
+                return stream.GetBuffer();
             }
         }
 
@@ -120,11 +110,7 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             using (var stream = new MemoryStream(serializedCalls))
             {
-                using (var sr = new StreamReader(stream))
-                {
-                    var deserialized = JsonConvert.DeserializeObject<IEnumerable<CallData>>(sr.ReadToEnd());
-                    return deserialized;
-                }
+                return (IEnumerable<CallData>)new BinaryFormatter().Deserialize(stream);
             }
         }
 
@@ -157,3 +143,4 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         }
     }
 }
+#endif

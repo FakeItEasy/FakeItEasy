@@ -1,9 +1,10 @@
+#if FEATURE_SELF_INITIALIZED_FAKES
 namespace FakeItEasy.SelfInitializedFakes
 {
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using Newtonsoft.Json;
+    using System.Runtime.Serialization.Formatters.Binary;
 
     internal class FileStorage
         : ICallStorage
@@ -60,26 +61,19 @@ namespace FakeItEasy.SelfInitializedFakes
 
         private void WriteCallsToFile(IEnumerable<CallData> calls)
         {
+            var formatter = new BinaryFormatter();
             using (var file = this.fileSystem.Open(this.fileName, FileMode.Truncate))
-            using (var stream = new StreamWriter(file))
             {
-                var serialized = JsonConvert.SerializeObject(
-                    calls.ToArray(),
-                    Formatting.Indented,
-                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
-                stream.Write(serialized);
+                formatter.Serialize(file, calls.ToArray());
             }
         }
 
         private IEnumerable<CallData> LoadCallsFromFile()
         {
+            var formatter = new BinaryFormatter();
             using (var file = this.fileSystem.Open(this.fileName, FileMode.Open))
-            using (var stream = new StreamReader(file))
             {
-                var json = stream.ReadToEnd();
-                return JsonConvert.DeserializeObject<List<CallData>>(
-                    json,
-                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include });
+                return (IEnumerable<CallData>)formatter.Deserialize(file);
             }
         }
 
@@ -92,3 +86,4 @@ namespace FakeItEasy.SelfInitializedFakes
         }
     }
 }
+#endif

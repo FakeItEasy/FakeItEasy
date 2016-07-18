@@ -30,7 +30,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FEATURE_BINARY_SERIALIZATION;FEATURE_THREAD_CURRENTCULTURE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_BINARY_SERIALIZATION;FEATURE_THREAD_CURRENTCULTURE FEATURE_SELF_INITIALIZED_FAKES</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
@@ -42,7 +42,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_BINARY_SERIALIZATION;FEATURE_THREAD_CURRENTCULTURE</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_BINARY_SERIALIZATION;FEATURE_THREAD_CURRENTCULTURE FEATURE_SELF_INITIALIZED_FAKES</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
@@ -58,10 +58,6 @@
     </Reference>
     <Reference Include="FluentAssertions.Core, Version=4.6.3.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentAssertions.4.6.3\lib\net45\FluentAssertions.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

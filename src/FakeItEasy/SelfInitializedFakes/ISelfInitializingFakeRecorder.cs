@@ -1,3 +1,4 @@
+#if FEATURE_SELF_INITIALIZED_FAKES
 namespace FakeItEasy.SelfInitializedFakes
 {
     using System;
@@ -27,3 +28,4 @@ namespace FakeItEasy.SelfInitializedFakes
         void RecordCall(ICompletedFakeObjectCall fakeObjectCall);
     }
 }
+#endif

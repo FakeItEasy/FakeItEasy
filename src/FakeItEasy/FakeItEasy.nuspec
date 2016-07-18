@@ -14,9 +14,7 @@
     <copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</copyright>
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
     <dependencies>
-      <group targetFramework=".NETFramework4.0">
-        <dependency id="Newtonsoft.Json" version="9.0.1" />
-      </group>
+      <group targetFramework=".NETFramework4.0" />
     </dependencies>
   </metadata>
   <files>

@@ -2,7 +2,6 @@
   "dependencies": {
     "Castle.Core": "4.0.0-beta001",
     "Microsoft.Extensions.DependencyModel": "1.0.0",
-    "Newtonsoft.Json": "9.0.1",
     "System.Collections.Concurrent": "4.0.12",
     "System.Console": "4.0.0",
     "System.Diagnostics.Tools": "4.0.1",

@@ -11,7 +11,9 @@ namespace FakeItEasy
     using FakeItEasy.Creation.DelegateProxies;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
+#if FEATURE_SELF_INITIALIZED_FAKES
     using FakeItEasy.SelfInitializedFakes;
+#endif
 
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -66,6 +68,7 @@ namespace FakeItEasy
             container.RegisterSingleton(c =>
                 new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), c.Resolve<IEqualityComparer<IFakeObjectCall>>()));
 
+#if FEATURE_SELF_INITIALIZED_FAKES
             container.RegisterSingleton<RecordingManager.Factory>(c =>
                 x => new RecordingManager(x));
 
@@ -74,6 +77,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton<FileStorage.Factory>(c =>
                 x => new FileStorage(x, c.Resolve<IFileSystem>()));
+#endif
 
             container.RegisterSingleton<ICallExpressionParser>(c =>
                 new CallExpressionParser());

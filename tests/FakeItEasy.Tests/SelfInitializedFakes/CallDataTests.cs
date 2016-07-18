@@ -1,3 +1,4 @@
+#if FEATURE_SELF_INITIALIZED_FAKES
 namespace FakeItEasy.Tests.SelfInitializedFakes
 {
     using System;
@@ -11,7 +12,6 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
     {
         private MethodInfo DummyMethodInfo => typeof(IFoo).GetMethod("Bar", new Type[0]);
 
-#if FEATURE_BINARY_SERIALIZATION
         [Fact]
         public void CallData_should_be_serializable()
         {
@@ -39,6 +39,6 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             // Assert
             data.Should().BeBinarySerializable();
         }
-#endif
     }
 }
+#endif
