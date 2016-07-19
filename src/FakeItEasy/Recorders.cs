@@ -1,4 +1,3 @@
-#if FEATURE_SELF_INITIALIZED_FAKES
 namespace FakeItEasy
 {
     using FakeItEasy.SelfInitializedFakes;
@@ -23,4 +22,3 @@ namespace FakeItEasy
         }
     }
 }
-#endif

@@ -1,4 +1,3 @@
-#if FEATURE_SELF_INITIALIZED_FAKES
 namespace FakeItEasy.SelfInitializedFakes
 {
     using System;
@@ -164,4 +163,3 @@ namespace FakeItEasy.SelfInitializedFakes
         }
     }
 }
-#endif

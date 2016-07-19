@@ -1,4 +1,3 @@
-#if FEATURE_SELF_INITIALIZED_FAKES
 namespace FakeItEasy.SelfInitializedFakes
 {
     using System.Collections.Generic;
@@ -86,4 +85,3 @@ namespace FakeItEasy.SelfInitializedFakes
         }
     }
 }
-#endif

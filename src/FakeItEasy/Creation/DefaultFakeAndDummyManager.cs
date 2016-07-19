@@ -101,9 +101,7 @@ namespace FakeItEasy.Creation
                 Guard.AgainstNull(wrappedInstance, nameof(wrappedInstance));
 
                 var wrapper = new FakeWrapperConfigurator<T>(this, wrappedInstance);
-#if FEATURE_SELF_INITIALIZED_FAKES
                 this.ConfigureFake(fake => wrapper.ConfigureFakeToWrap(fake));
-#endif
                 return wrapper;
             }
 

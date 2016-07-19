@@ -64,6 +64,7 @@ namespace FakeItEasy.Core
         {
             return (IFakeOptions)this.RecordedBy(fakeRecorder);
         }
+#endif
 
         /// <summary>
         /// Configures the specified faked object to wrap the specified instance.
@@ -75,9 +76,12 @@ namespace FakeItEasy.Core
 
             var wrapperRule = CreateAndAddWrapperRule(this.WrappedObject, fake);
 
+#if FEATURE_SELF_INITIALIZED_FAKES
             AddRecordingRuleWhenRecorderIsSpecified(this.recorder, fake, wrapperRule);
+#endif
         }
 
+#if FEATURE_SELF_INITIALIZED_FAKES
         private static void AddRecordingRuleWhenRecorderIsSpecified(ISelfInitializingFakeRecorder recorder, FakeManager fake, WrappedObjectRule wrapperRule)
         {
             if (recorder != null)

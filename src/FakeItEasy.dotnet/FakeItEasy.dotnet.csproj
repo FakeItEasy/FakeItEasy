@@ -564,9 +564,6 @@
     <Compile Include="..\FakeItEasy\Raise.cs">
       <Link>Raise.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Recorders.cs">
-      <Link>Recorders.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\RepeatConfigurationExtensions.cs">
       <Link>RepeatConfigurationExtensions.cs</Link>
     </Compile>
@@ -578,27 +575,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\RootModule.cs">
       <Link>RootModule.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\SelfInitializedFakes\CallData.cs">
-      <Link>SelfInitializedFakes\CallData.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\SelfInitializedFakes\FileStorage.cs">
-      <Link>SelfInitializedFakes\FileStorage.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\SelfInitializedFakes\ICallStorage.cs">
-      <Link>SelfInitializedFakes\ICallStorage.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\SelfInitializedFakes\ISelfInitializingFakeRecorder.cs">
-      <Link>SelfInitializedFakes\ISelfInitializingFakeRecorder.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\SelfInitializedFakes\RecordingException.cs">
-      <Link>SelfInitializedFakes\RecordingException.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\SelfInitializedFakes\RecordingManager.cs">
-      <Link>SelfInitializedFakes\RecordingManager.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\SelfInitializedFakes\SelfInitializationRule.cs">
-      <Link>SelfInitializedFakes\SelfInitializationRule.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\ServiceLocator.cs">
       <Link>ServiceLocator.cs</Link>
