@@ -8,6 +8,10 @@ namespace FakeItEasy.Analyzer
             CreateDiagnosticDescriptor(
                 nameof(UnusedCallSpecification), "FakeItEasy0001", "FakeItEasy.Usage", DiagnosticSeverity.Error, true);
 
+        public static DiagnosticDescriptor NonVirtualSetupSpecification { get; } =
+            CreateDiagnosticDescriptor(
+                nameof(NonVirtualSetupSpecification), "FakeItEasy0002", "FakeItEasy.Usage", DiagnosticSeverity.Warning, true);
+
         private static DiagnosticDescriptor CreateDiagnosticDescriptor(
             string name, string id, string category, DiagnosticSeverity defaultSeverity, bool isEnabledByDefault)
         {
