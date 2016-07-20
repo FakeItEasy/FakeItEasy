@@ -4,7 +4,7 @@ namespace FakeItEasy.Tests.Core
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-#if FEATURE_BINARY_SERIALIZATION
+#if FEATURE_SELF_INITIALIZED_FAKES
     using FakeItEasy.SelfInitializedFakes;
 #endif
     using FluentAssertions;
@@ -36,7 +36,7 @@ namespace FakeItEasy.Tests.Core
                 .Should().Contain(item => item.GetType().IsAssignableFrom(typeof(WrappedObjectRule)));
         }
 
-#if FEATURE_BINARY_SERIALIZATION
+#if FEATURE_SELF_INITIALIZED_FAKES
         [Fact]
         public void ConfigureFakeToWrap_should_add_self_initialization_rule_when_recorder_is_specified()
         {
