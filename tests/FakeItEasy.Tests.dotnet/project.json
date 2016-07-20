@@ -1,4 +1,5 @@
 {
+  "name": "FakeItEasy.Tests",
   "version": "1.0.0-*",
   "description": "FakeItEasy.Tests.dotnet Class Library",
   "authors": [ "" ],
