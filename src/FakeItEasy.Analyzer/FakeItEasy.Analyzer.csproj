@@ -56,6 +56,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SymbolExtensions.cs" />
+    <Compile Include="SymbolHelpers.cs" />
     <Compile Include="UnusedReturnValueAnalyzer.cs" />
   </ItemGroup>
   <ItemGroup>

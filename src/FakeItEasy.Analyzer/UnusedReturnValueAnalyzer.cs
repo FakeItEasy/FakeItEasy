@@ -33,7 +33,7 @@ namespace FakeItEasy.Analyzer
                 return;
             }
 
-            var methodSymbol = GetCalledMethodSymbol(call, context);
+            var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(call, context);
             if (methodSymbol == null)
             {
                 return;
@@ -53,16 +53,6 @@ namespace FakeItEasy.Analyzer
                 var diagnostic = Diagnostic.Create(descriptor, call.GetLocation(), call.ToString());
                 context.ReportDiagnostic(diagnostic);
             }
-        }
-
-        private static IMethodSymbol GetCalledMethodSymbol(InvocationExpressionSyntax call, SyntaxNodeAnalysisContext context)
-        {
-            var name = (call?.Expression as MemberAccessExpressionSyntax)?.Name
-                ?? call?.Expression as IdentifierNameSyntax;
-
-            return name == null
-                ? null
-                : context.SemanticModel.GetSymbolInfo(name).Symbol as IMethodSymbol;
         }
 
         private static ImmutableDictionary<string, DiagnosticDescriptor> CreateDiagnosticsMap()

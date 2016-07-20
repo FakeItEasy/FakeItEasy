@@ -117,6 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="NonVirtualSetupDescription" xml:space="preserve">
+    <value>Non virtual members can not be intercepted.</value>
+    <comment>An optional longer localizable description of the diagnostic.</comment>
+  </data>
+  <data name="NonVirtualSetupMessageFormat" xml:space="preserve">
+    <value>Non virtual member '{0}' cannot be intercepted.</value>
+    <comment>The format-able message the diagnostic displays.</comment>
+  </data>
+  <data name="NonVirtualSetupSpecificationTitle" xml:space="preserve">
+    <value>Non virtual member setup</value>
+    <comment>The title of the diagnostic.</comment>
+  </data>
+
   <data name="UnusedCallSpecificationDescription" xml:space="preserve">
     <value>Call specifications should be configured or asserted.</value>
     <comment>An optional longer localizable description of the diagnostic.</comment>

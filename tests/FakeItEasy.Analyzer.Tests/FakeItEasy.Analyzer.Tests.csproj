@@ -124,7 +124,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NonVirtualSetupAnalyzerTests.cs" />
-    <Compile Include="RemoveMe.cs" />
     <Compile Include="UnusedReturnValueAnalyzerTests.cs" />
     <Compile Include="Helpers\CodeFixVerifier.cs" />
     <Compile Include="Helpers\DiagnosticVerifier.cs" />
