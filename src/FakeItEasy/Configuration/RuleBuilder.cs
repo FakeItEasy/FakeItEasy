@@ -6,7 +6,8 @@ namespace FakeItEasy.Configuration
 
     internal class RuleBuilder
         : IVoidArgumentValidationConfiguration,
-          IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IVoidConfiguration>
+          IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IVoidConfiguration>,
+          IThenConfiguration<IVoidConfiguration>
     {
         private readonly FakeAsserter.Factory asserterFactory;
         private readonly FakeManager manager;
@@ -34,7 +35,7 @@ namespace FakeItEasy.Configuration
 
         public ICallMatcher Matcher => new RuleMatcher(this);
 
-        public void NumberOfTimes(int numberOfTimesToRepeat)
+        public IThenConfiguration<IVoidConfiguration> NumberOfTimes(int numberOfTimesToRepeat)
         {
             if (numberOfTimesToRepeat <= 0)
             {
@@ -45,6 +46,7 @@ namespace FakeItEasy.Configuration
             }
 
             this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimesToRepeat;
+            return this;
         }
 
         public virtual IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
@@ -95,6 +97,14 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
+        public IVoidConfiguration Then
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
         {
             Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
@@ -120,7 +130,8 @@ namespace FakeItEasy.Configuration
 
         public class ReturnValueConfiguration<TMember>
             : IAnyCallConfigurationWithReturnTypeSpecified<TMember>,
-              IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>>
+              IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>>,
+              IThenConfiguration<IReturnValueConfiguration<TMember>>
         {
             public ReturnValueConfiguration(RuleBuilder parentConfiguration)
             {
@@ -182,9 +193,18 @@ namespace FakeItEasy.Configuration
                 return this;
             }
 
-            public void NumberOfTimes(int numberOfTimesToRepeat)
+            public IThenConfiguration<IReturnValueConfiguration<TMember>> NumberOfTimes(int numberOfTimesToRepeat)
             {
                 this.ParentConfiguration.NumberOfTimes(numberOfTimesToRepeat);
+                return this;
+            }
+
+            public IReturnValueConfiguration<TMember> Then
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
             }
         }
 

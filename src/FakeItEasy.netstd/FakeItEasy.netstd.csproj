@@ -57,6 +57,9 @@
     <Compile Include="..\FakeItEasy\Configuration\IPropertySetterConfiguration.cs">
       <Link>Configuration\IPropertySetterConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IThenConfiguration.cs">
+      <Link>Configuration\IThenConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\PropertySetterConfiguration.cs">
       <Link>Configuration\PropertySetterConfiguration.cs</Link>
     </Compile>
