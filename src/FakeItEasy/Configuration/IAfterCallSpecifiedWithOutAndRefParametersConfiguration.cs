@@ -7,8 +7,8 @@ namespace FakeItEasy.Configuration
     /// interfaces.
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "Refers to the two words 'with out' not the word 'without'.")]
-    public interface IAfterCallSpecifiedWithOutAndRefParametersConfiguration
-        : IAfterCallSpecifiedConfiguration, IOutAndRefParametersConfiguration
+    public interface IAfterCallSpecifiedWithOutAndRefParametersConfiguration<TInterface>
+        : IAfterCallSpecifiedConfiguration<TInterface>, IOutAndRefParametersConfiguration<TInterface>
     {
     }
 }

@@ -9,7 +9,7 @@ namespace FakeItEasy
     using FakeItEasy.Configuration;
 
     /// <summary>
-    /// Provides the extension methods for <see cref="IExceptionThrowerConfiguration"/>.
+    /// Provides the extension methods for <see cref="IExceptionThrowerConfiguration{TInterface}"/>.
     /// </summary>
     public static class ExceptionThrowerConfigurationExtensions
     {
@@ -22,7 +22,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exception">The exception to throw when a call that matches is invoked.</param>
         /// <returns>Configuration object.</returns>
-        public static IAfterCallSpecifiedConfiguration Throws(this IExceptionThrowerConfiguration configuration, Exception exception)
+        public static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface>(this IExceptionThrowerConfiguration<TInterface> configuration, Exception exception)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -36,7 +36,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
         /// <returns>Configuration object.</returns>
-        public static IAfterCallSpecifiedConfiguration Throws(this IExceptionThrowerConfiguration configuration, Func<Exception> exceptionFactory)
+        public static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<Exception> exceptionFactory)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -49,10 +49,11 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="TInterface"></typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
-        public static IAfterCallSpecifiedConfiguration Throws<T1>(this IExceptionThrowerConfiguration configuration, Func<T1, Exception> exceptionFactory)
+        public static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, Exception> exceptionFactory)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -70,11 +71,12 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="TInterface"></typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
-        public static IAfterCallSpecifiedConfiguration Throws<T1, T2>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, Exception> exceptionFactory)
+        public static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1, T2>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, T2, Exception> exceptionFactory)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -92,12 +94,13 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="TInterface"></typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
-        public static IAfterCallSpecifiedConfiguration Throws<T1, T2, T3>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, T3, Exception> exceptionFactory)
+        public static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1, T2, T3>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, T2, T3, Exception> exceptionFactory)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -115,13 +118,14 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+        /// <typeparam name="TInterface"></typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
         /// <typeparam name="T4">Type of the fourth argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
-        public static IAfterCallSpecifiedConfiguration Throws<T1, T2, T3, T4>(this IExceptionThrowerConfiguration configuration, Func<T1, T2, T3, T4, Exception> exceptionFactory)
+        public static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1, T2, T3, T4>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -132,6 +136,11 @@ namespace FakeItEasy
                     return exceptionFactory(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
         }
+
+#if DISABLED
+
+        // This method already has a generic parameter, and it can't be inferred; if we add another, we make it unusable,
+        // especially since the new one is something unintelligible like IAnyCallConfigurationWithReturnTypeSpecificied<Foo>...
 
         /// <summary>
         /// Throws the specified exception when the currently configured
@@ -147,5 +156,6 @@ namespace FakeItEasy
 
             return configuration.Throws(_ => new T());
         }
+#endif
     }
 }

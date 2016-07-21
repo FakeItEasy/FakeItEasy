@@ -8,7 +8,7 @@ namespace FakeItEasy.Configuration
     /// <summary>
     /// Lets the developer configure output values of out and ref parameters.
     /// </summary>
-    public interface IOutAndRefParametersConfiguration
+    public interface IOutAndRefParametersConfiguration<out TInterface>
     {
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -19,6 +19,6 @@ namespace FakeItEasy.Configuration
         /// <param name="valueProducer">A function that produces the output values.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
-        IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer);
+        IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer);
     }
 }

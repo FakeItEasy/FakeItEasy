@@ -64,7 +64,7 @@ namespace FakeItEasy.Tests.Configuration
 
             var result = returnConfig.Returns(10);
 
-            result.Should().Be(this.builder);
+            result.Should().BeSameAs(returnConfig);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace FakeItEasy.Tests.Configuration
 
             var returned = config.ReturnsLazily(x => x.Arguments.Get<int>(0));
 
-            returned.Should().Be(config.ParentConfiguration);
+            returned.Should().BeSameAs(config);
         }
 
         [Fact]
@@ -99,9 +99,9 @@ namespace FakeItEasy.Tests.Configuration
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
 
-            var result = returnConfig.Throws(_ => new InvalidOperationException()) as RuleBuilder;
+            var result = returnConfig.Throws(_ => new InvalidOperationException());
 
-            result.Should().Be(this.builder);
+            result.Should().BeSameAs(returnConfig);
         }
 
         [Fact]
@@ -220,7 +220,7 @@ namespace FakeItEasy.Tests.Configuration
             var config = this.CreateTestableReturnConfiguration();
             var result = config.CallsBaseMethod();
 
-            result.Should().BeSameAs(this.builder);
+            result.Should().BeSameAs(config);
         }
 
         [Fact]

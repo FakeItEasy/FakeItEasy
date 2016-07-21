@@ -3,7 +3,7 @@ namespace FakeItEasy.Configuration
     /// <summary>
     /// Provides configuration for method calls that has a return value.
     /// </summary>
-    public interface IRepeatConfiguration : IHideObjectMembers
+    public interface IRepeatConfiguration<out TInterface> : IHideObjectMembers
     {
         /// <summary>
         /// Specifies the number of times for the configured event.

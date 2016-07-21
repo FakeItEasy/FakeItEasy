@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests
         public void Once_should_call_NumberOfTimes_with_1_as_argument()
         {
             // Arrange
-            var repeatConfig = A.Fake<IRepeatConfiguration>();
+            var repeatConfig = A.Fake<IRepeatConfiguration<IVoidConfiguration>>();
 
             // Act
             repeatConfig.Once();
@@ -24,7 +24,7 @@ namespace FakeItEasy.Tests
         public void Once_should_throw_when_configuration_is_null()
         {
             // Arrange
-            IRepeatConfiguration repeatConfig = null;
+            IRepeatConfiguration<IVoidConfiguration> repeatConfig = null;
 
             // Act
             var exception = Record.Exception(() => repeatConfig.Once());
@@ -37,7 +37,7 @@ namespace FakeItEasy.Tests
         public void Twice_should_call_NumberOfTimes_with_2_as_argument()
         {
             // Arrange
-            var repeatConfig = A.Fake<IRepeatConfiguration>();
+            var repeatConfig = A.Fake<IRepeatConfiguration<IVoidConfiguration>>();
 
             // Act
             repeatConfig.Twice();
@@ -50,7 +50,7 @@ namespace FakeItEasy.Tests
         public void Twice_should_throw_when_configuration_is_null()
         {
             // Arrange
-            IRepeatConfiguration repeatConfig = null;
+            IRepeatConfiguration<IVoidConfiguration> repeatConfig = null;
 
             // Act
             var exception = Record.Exception(() => repeatConfig.Twice());

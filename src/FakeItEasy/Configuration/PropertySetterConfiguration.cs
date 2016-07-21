@@ -33,9 +33,9 @@ namespace FakeItEasy.Configuration
             return AsPropertySetterConfiguration(voidArgumentValidationConfiguration);
         }
 
-        public IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
+        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression)
+            return AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
                 .Throws(exceptionFactory);
         }
 
@@ -47,10 +47,11 @@ namespace FakeItEasy.Configuration
             return AsPropertySetterConfiguration(voidConfiguration);
         }
 
-        public IAfterCallSpecifiedConfiguration CallsBaseMethod()
+        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> CallsBaseMethod()
         {
-            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression)
-                .CallsBaseMethod();
+            return
+                AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
+                    .CallsBaseMethod();
         }
 
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
@@ -59,10 +60,11 @@ namespace FakeItEasy.Configuration
                 .MustHaveHappened(repeatConstraint);
         }
 
-        public IAfterCallSpecifiedConfiguration DoesNothing()
+        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> DoesNothing()
         {
-            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression)
-                .DoesNothing();
+            return
+                AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
+                    .DoesNothing();
         }
 
         public IPropertySetterConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
@@ -111,14 +113,14 @@ namespace FakeItEasy.Configuration
                 this.voidConfiguration = voidArgumentValidationConfiguration;
             }
 
-            public IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
+            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
             {
-                return this.voidConfiguration.Throws(exceptionFactory);
+                return AsPropertySetterConfiguration(this.voidConfiguration).Throws(exceptionFactory);
             }
 
-            public IAfterCallSpecifiedConfiguration CallsBaseMethod()
+            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> CallsBaseMethod()
             {
-                return this.voidConfiguration.CallsBaseMethod();
+                return AsPropertySetterConfiguration(this.voidConfiguration).CallsBaseMethod();
             }
 
             public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
@@ -126,9 +128,9 @@ namespace FakeItEasy.Configuration
                 return this.voidConfiguration.MustHaveHappened(repeatConstraint);
             }
 
-            public IAfterCallSpecifiedConfiguration DoesNothing()
+            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> DoesNothing()
             {
-                return this.voidConfiguration.DoesNothing();
+                return AsPropertySetterConfiguration(this.voidConfiguration).DoesNothing();
             }
 
             public IPropertySetterConfiguration Invokes(Action<IFakeObjectCall> action)

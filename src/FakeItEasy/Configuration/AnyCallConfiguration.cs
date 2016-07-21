@@ -33,12 +33,12 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration<object>(this.manager, this.configuredRule);
         }
 
-        public IAfterCallSpecifiedConfiguration DoesNothing()
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> DoesNothing()
         {
             return this.VoidConfiguration.DoesNothing();
         }
 
-        public IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
             return this.VoidConfiguration.Throws(exceptionFactory);
         }
@@ -48,12 +48,12 @@ namespace FakeItEasy.Configuration
             return this.VoidConfiguration.Invokes(action);
         }
 
-        public IAfterCallSpecifiedConfiguration CallsBaseMethod()
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> CallsBaseMethod()
         {
             return this.VoidConfiguration.CallsBaseMethod();
         }
 
-        public IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
         {
             return this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
         }

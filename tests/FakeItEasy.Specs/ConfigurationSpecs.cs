@@ -134,7 +134,7 @@ namespace FakeItEasy.Specs
                 });
 
             "When I use the same configuration object to have the method throw an exception"
-                .x(() => exception = Record.Exception(() => configuration.Throws<Exception>()));
+                .x(() => exception = Record.Exception(() => configuration.Throws(new Exception())));
 
             "Then it throws an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
@@ -176,11 +176,11 @@ namespace FakeItEasy.Specs
                 .x(() =>
                 {
                     configuration = A.CallTo(() => fake.Baz());
-                    configuration.Throws<ArgumentNullException>();
+                    configuration.Throws(new ArgumentNullException());
                 });
 
             "When I use the same configuration object to have the method throw an exception again"
-                .x(() => exception = Record.Exception(() => configuration.Throws<ArgumentException>()));
+                .x(() => exception = Record.Exception(() => configuration.Throws(new ArgumentException())));
 
             "Then it throws an invalid operation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
