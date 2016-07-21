@@ -7,11 +7,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
-#if FEATURE_SECURITY_PERMISSIONS
-    using System.Security.Permissions;
-#endif
     using Castle.DynamicProxy;
-    using Castle.DynamicProxy.Generators;
     using FakeItEasy.Core;
 
     internal class CastleDynamicProxyGenerator
@@ -20,16 +16,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         private static readonly IProxyGenerationHook ProxyGenerationHook = new InterceptEverythingHook();
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
         private readonly CastleDynamicProxyInterceptionValidator interceptionValidator;
-
-#if FEATURE_SECURITY_PERMISSIONS
-        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "No field initialization.")]
-        static CastleDynamicProxyGenerator()
-        {
-#pragma warning disable 618
-            AttributesToAvoidReplicating.Add(typeof(SecurityPermissionAttribute));
-#pragma warning restore 618
-        }
-#endif
 
         public CastleDynamicProxyGenerator(CastleDynamicProxyInterceptionValidator interceptionValidator)
         {
