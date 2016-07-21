@@ -37,8 +37,8 @@
     <file src="..\FakeItEasy\bin\Release\FakeItEasy.dll" target="lib\net40" />
     <file src="..\FakeItEasy\bin\Release\FakeItEasy.pdb" target="lib\net40" />
     <file src="..\FakeItEasy\bin\Release\FakeItEasy.xml" target="lib\net40" />
-    <file src="bin\Release\FakeItEasy.dll" target="lib\netstandard1.5" />
-    <file src="bin\Release\FakeItEasy.pdb" target="lib\netstandard1.5" />
-    <file src="bin\Release\FakeItEasy.xml" target="lib\netstandard1.5" />
+    <file src="bin\Release\FakeItEasy.dll" target="lib\netstandard1.6" />
+    <file src="bin\Release\FakeItEasy.pdb" target="lib\netstandard1.6" />
+    <file src="bin\Release\FakeItEasy.xml" target="lib\netstandard1.6" />
   </files>
 </package>
