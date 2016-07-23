@@ -53,7 +53,7 @@ namespace FakeItEasy
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
-        public static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, Exception> exceptionFactory)
+        internal static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, Exception> exceptionFactory)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -76,7 +76,7 @@ namespace FakeItEasy
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
-        public static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1, T2>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, T2, Exception> exceptionFactory)
+        internal static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1, T2>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, T2, Exception> exceptionFactory)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -100,7 +100,7 @@ namespace FakeItEasy
         /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
-        public static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1, T2, T3>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, T2, T3, Exception> exceptionFactory)
+        internal static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1, T2, T3>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, T2, T3, Exception> exceptionFactory)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -125,7 +125,7 @@ namespace FakeItEasy
         /// <typeparam name="T4">Type of the fourth argument of the faked method call.</typeparam>
         /// <returns>Configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
-        public static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1, T2, T3, T4>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, T2, T3, T4, Exception> exceptionFactory)
+        internal static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T1, T2, T3, T4>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -137,25 +137,20 @@ namespace FakeItEasy
                 });
         }
 
-#if DISABLED
-
-        // This method already has a generic parameter, and it can't be inferred; if we add another, we make it unusable,
-        // especially since the new one is something unintelligible like IAnyCallConfigurationWithReturnTypeSpecificied<Foo>...
-
         /// <summary>
         /// Throws the specified exception when the currently configured
         /// call gets called.
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
+        /// <typeparam name="TInterface"></typeparam>
         /// <typeparam name="T">The type of exception to throw.</typeparam>
         /// <returns>Configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "By design.")]
-        public static IAfterCallSpecifiedConfiguration Throws<T>(this IExceptionThrowerConfiguration configuration) where T : Exception, new()
+        internal static IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface, T>(this IExceptionThrowerConfiguration<TInterface> configuration) where T : Exception, new()
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
             return configuration.Throws(_ => new T());
         }
-#endif
     }
 }

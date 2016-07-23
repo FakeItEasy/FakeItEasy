@@ -43,6 +43,31 @@ namespace FakeItEasy.Configuration
             return this.VoidConfiguration.Throws(exceptionFactory);
         }
 
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2, T3>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2, T3, T4>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T>() where T : Exception, new()
+        {
+            return this.Throws<IVoidConfiguration, T>();
+        }
+
         public IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
         {
             return this.VoidConfiguration.Invokes(action);

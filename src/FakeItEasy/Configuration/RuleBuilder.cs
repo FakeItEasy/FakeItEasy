@@ -56,6 +56,31 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2, T3>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2, T3, T4>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T>() where T : Exception, new()
+        {
+            return this.Throws<IVoidConfiguration, T>();
+        }
+
         public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
         {
             Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
@@ -148,6 +173,31 @@ namespace FakeItEasy.Configuration
             {
                 this.ParentConfiguration.Throws(exceptionFactory);
                 return this;
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws<T1>(Func<T1, Exception> exceptionFactory)
+            {
+                return this.Throws<IReturnValueConfiguration<TMember>, T1>(exceptionFactory);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
+            {
+                return this.Throws<IReturnValueConfiguration<TMember>, T1, T2>(exceptionFactory);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
+            {
+                return this.Throws<IReturnValueConfiguration<TMember>, T1, T2, T3>(exceptionFactory);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
+            {
+                return this.Throws<IReturnValueConfiguration<TMember>, T1, T2, T3, T4>(exceptionFactory);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws<T>() where T : Exception, new()
+            {
+                return this.Throws<IReturnValueConfiguration<TMember>, T>();
             }
 
             public IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>> ReturnsLazily(Func<IFakeObjectCall, TMember> valueProducer)
