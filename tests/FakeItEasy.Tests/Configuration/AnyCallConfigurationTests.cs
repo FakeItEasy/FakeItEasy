@@ -2,8 +2,8 @@ namespace FakeItEasy.Tests.Configuration
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using FakeItEasy.Configuration;
+    using System.Linq;
     using FakeItEasy.Core;
     using FluentAssertions;
     using Xunit;
@@ -193,7 +193,7 @@ namespace FakeItEasy.Tests.Configuration
         public void AssignsOutAndRefParametersLazily_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
-            Func<IFakeObjectCall, object[]> valueProducer = x => new object[] { "a", "b" };
+            Func<IFakeObjectCall, ICollection<object>> valueProducer = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
             var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
@@ -211,7 +211,7 @@ namespace FakeItEasy.Tests.Configuration
         public void AssignsOutAndRefParametersLazily_returns_configuration_produced_by_factory()
         {
             // Arrange
-            Func<IFakeObjectCall, object[]> valueProducer = x => new object[] { "a", "b" };
+            Func<IFakeObjectCall, ICollection<object>> valueProducer = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
             var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();

@@ -45,7 +45,7 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public static IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<TInterface, T1>(
+        internal static IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<TInterface, T1>(
             this IOutAndRefParametersConfiguration<TInterface> configuration, Func<T1, object[]> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
@@ -74,7 +74,7 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public static IAfterCallSpecifiedConfiguration<TInterface>
+        internal static IAfterCallSpecifiedConfiguration<TInterface>
             AssignsOutAndRefParametersLazily<TInterface, T1, T2>(
             this IOutAndRefParametersConfiguration<TInterface> configuration, Func<T1, T2, object[]> valueProducer)
         {
@@ -105,7 +105,7 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public static IAfterCallSpecifiedConfiguration<TInterface>
+        internal static IAfterCallSpecifiedConfiguration<TInterface>
             AssignsOutAndRefParametersLazily<TInterface, T1, T2, T3>(
             this IOutAndRefParametersConfiguration<TInterface> configuration, Func<T1, T2, T3, object[]> valueProducer)
         {
@@ -137,7 +137,7 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public static IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<TInterface, T1, T2, T3, T4>(
+        internal static IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<TInterface, T1, T2, T3, T4>(
             this IOutAndRefParametersConfiguration<TInterface> configuration, Func<T1, T2, T3, T4, object[]> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));

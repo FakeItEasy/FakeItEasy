@@ -122,6 +122,26 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3, T4>(valueProducer);
+        }
+
         public IVoidConfiguration Then
         {
             get
@@ -241,6 +261,26 @@ namespace FakeItEasy.Configuration
             {
                 this.ParentConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
                 return this;
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer)
+            {
+                return this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1>(valueProducer);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer)
+            {
+                return this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2>(valueProducer);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer)
+            {
+                return this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2, T3>(valueProducer);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer)
+            {
+                return this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2, T3, T4>(valueProducer);
             }
 
             public IThenConfiguration<IReturnValueConfiguration<TMember>> NumberOfTimes(int numberOfTimesToRepeat)

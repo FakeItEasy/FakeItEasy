@@ -83,6 +83,26 @@ namespace FakeItEasy.Configuration
             return this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
         }
 
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3, T4>(valueProducer);
+        }
+
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
         {
             return this.VoidConfiguration.MustHaveHappened(repeatConstraint);
