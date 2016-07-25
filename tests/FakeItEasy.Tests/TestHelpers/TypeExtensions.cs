@@ -7,13 +7,12 @@
 
     internal static class TypeExtensions
     {
-        //// The FakeItEasy project (targeting net40) uses ILMerge to merge Castle.Core
-        //// (targeting net40) into its output, while the FakeItEasy.Tests project targets
-        //// net45 due to XUnit requirement. This leads compile error because of the
-        //// disambiguity of the GetTypeInfo() extension methods, defined by the .NET
-        //// Framework v4.5 or later, and by Castle.Core net40. This method use another name
-        //// to avoid conflicts.
-
+        // The FakeItEasy project (targeting net40) uses ILMerge to merge Castle.Core
+        // (targeting net40) into its output, while the FakeItEasy.Tests project targets
+        // net45 due its dependency on xUnit.net. This leads to a compilation error because of the
+        // ambiguity of the GetTypeInfo() extension methods, defined by the .NET
+        // Framework v4.5 or later, and by Castle.Core net40. This method uses another name
+        // to avoid conflicts.
 #if FEATURE_NETCORE_REFLECTION
         /// <summary>
         /// A pass through extension method to call the GetTypeInfo() extension method defined
@@ -27,7 +26,7 @@
         }
 #else
         /// <summary>
-        /// A pass through extension for legacy platforms that lacks GetTypeInfo() extension method.
+        /// A pass through extension for legacy platforms that lack the GetTypeInfo() extension method.
         /// </summary>
         /// <param name="type">The type argument.</param>
         /// <returns>Type info of the type argument.</returns>
