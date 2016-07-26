@@ -9,6 +9,7 @@ namespace FakeItEasy.Configuration
         /// Specifies the number of times for the configured event.
         /// </summary>
         /// <param name="numberOfTimesToRepeat">The number of times to repeat.</param>
+        /// <returns>A configuration object that lets you define the subsequent behavior.</returns>
         IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimesToRepeat);
     }
 }

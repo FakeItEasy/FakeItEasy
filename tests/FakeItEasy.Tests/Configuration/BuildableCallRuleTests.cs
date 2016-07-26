@@ -310,6 +310,15 @@ namespace FakeItEasy.Tests.Configuration
                 this.OnIsApplicableToWasCalled = true;
                 return this.ReturnValueFromOnIsApplicableTo;
             }
+
+            protected override BuildableCallRule CloneCallSpecificationCore()
+            {
+                return new TestableCallRule
+                {
+                    ReturnValueFromOnIsApplicableTo = this.ReturnValueFromOnIsApplicableTo,
+                    DescriptionOfValidCallReturnValue = this.DescriptionOfValidCallReturnValue
+                };
+            }
         }
     }
 }

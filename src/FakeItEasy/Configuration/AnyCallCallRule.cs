@@ -43,5 +43,13 @@ namespace FakeItEasy.Configuration
                     || (this.ApplicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType)
                     || (this.ApplicableToAllNonVoidReturnTypes && fakeObjectCall.Method.ReturnType != typeof(void)));
         }
+
+        protected override BuildableCallRule CloneCallSpecificationCore()
+        {
+            return new AnyCallCallRule
+            {
+                argumentsPredicate = this.argumentsPredicate
+            };
+        }
     }
 }

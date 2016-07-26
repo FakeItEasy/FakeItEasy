@@ -54,5 +54,10 @@ namespace FakeItEasy.Expressions
         {
             return this.ExpressionMatcher.Matches(fakeObjectCall);
         }
+
+        protected override BuildableCallRule CloneCallSpecificationCore()
+        {
+            return new ExpressionCallRule(this.ExpressionMatcher);
+        }
     }
 }

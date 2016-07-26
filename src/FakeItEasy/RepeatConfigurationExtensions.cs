@@ -11,22 +11,24 @@ namespace FakeItEasy
         /// Specifies NumberOfTimes(1) to the repeat configuration.
         /// </summary>
         /// <param name="configuration">The configuration to set repeat 1 to.</param>
-        public static void Once<TInterface>(this IRepeatConfiguration<TInterface> configuration)
+        /// <returns>A configuration object that lets you define the subsequent behavior.</returns>
+        public static IThenConfiguration<TInterface> Once<TInterface>(this IRepeatConfiguration<TInterface> configuration)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            configuration.NumberOfTimes(1);
+            return configuration.NumberOfTimes(1);
         }
 
         /// <summary>
         /// Specifies NumberOfTimes(2) to the repeat configuration.
         /// </summary>
         /// <param name="configuration">The configuration to set repeat 2 to.</param>
-        public static void Twice<TInterface>(this IRepeatConfiguration<TInterface> configuration)
+        /// <returns>A configuration object that lets you define the subsequent behavior.</returns>
+        public static IThenConfiguration<TInterface> Twice<TInterface>(this IRepeatConfiguration<TInterface> configuration)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            configuration.NumberOfTimes(2);
+            return configuration.NumberOfTimes(2);
         }
     }
 }

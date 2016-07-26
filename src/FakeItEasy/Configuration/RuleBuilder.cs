@@ -31,9 +31,22 @@ namespace FakeItEasy.Configuration
 
         public BuildableCallRule RuleBeingBuilt { get; }
 
+        IVoidConfiguration IThenConfiguration<IVoidConfiguration>.Then => this.Then;
+
         public IEnumerable<ICompletedFakeObjectCall> Calls => this.manager.GetRecordedCalls();
 
         public ICallMatcher Matcher => new RuleMatcher(this);
+
+        private RuleBuilder Then
+        {
+            get
+            {
+                var newRule = this.RuleBeingBuilt.CloneCallSpecification();
+                return new RuleBuilder(newRule, this.manager, this.asserterFactory) { PreviousRule = this.RuleBeingBuilt };
+            }
+        }
+
+        private BuildableCallRule PreviousRule { get; set; }
 
         public IThenConfiguration<IVoidConfiguration> NumberOfTimes(int numberOfTimesToRepeat)
         {
@@ -146,7 +159,9 @@ namespace FakeItEasy.Configuration
         {
             get
             {
-                throw new NotImplementedException();
+                var newRule = this.RuleBeingBuilt.CloneCallSpecification();
+                this.manager.AddRuleAfter(this.RuleBeingBuilt, newRule);
+                return new RuleBuilder(newRule, this.manager, this.asserterFactory);
             }
         }
 
@@ -168,7 +183,15 @@ namespace FakeItEasy.Configuration
         {
             if (!this.wasRuleAdded)
             {
-                this.manager.AddRuleFirst(this.RuleBeingBuilt);
+                if (this.PreviousRule != null)
+                {
+                    this.manager.AddRuleAfter(this.PreviousRule, this.RuleBeingBuilt);
+                }
+                else
+                {
+                    this.manager.AddRuleFirst(this.RuleBeingBuilt);
+                }
+
                 this.wasRuleAdded = true;
             }
         }
@@ -186,6 +209,15 @@ namespace FakeItEasy.Configuration
             public RuleBuilder ParentConfiguration { get; }
 
             public ICallMatcher Matcher => this.ParentConfiguration.Matcher;
+
+            public IReturnValueConfiguration<TMember> Then
+            {
+                get
+                {
+                    var newConfiguration = this.ParentConfiguration.Then;
+                    return new ReturnValueConfiguration<TMember>(newConfiguration);
+                }
+            }
 
             public IEnumerable<ICompletedFakeObjectCall> Calls => this.ParentConfiguration.Calls;
 
@@ -293,7 +325,8 @@ namespace FakeItEasy.Configuration
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    var newConfiguration = (RuleBuilder)this.ParentConfiguration.Then;
+                    return new ReturnValueConfiguration<TMember>(newConfiguration);
                 }
             }
         }
