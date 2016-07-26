@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace FakeItEasy
+﻿namespace FakeItEasy
 {
+    using System.Collections.Generic;
+
     internal static class LinkedListExtensions
     {
         public static IEnumerable<LinkedListNode<T>> Nodes<T>(this LinkedList<T> linkedList)

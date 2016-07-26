@@ -19,6 +19,7 @@ namespace FakeItEasy
         /// Any non out and ref parameters are ignored.
         /// The function will be called each time this call is made and can return different values.
         /// </summary>
+        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="values">The values.</param>
         /// <returns>A configuration object.</returns>
@@ -37,7 +38,7 @@ namespace FakeItEasy
         /// Any non out and ref parameters are ignored.
         /// The function will be called each time this call is made and can return different values.
         /// </summary>
-        /// <typeparam name="TInterface"></typeparam>
+        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the output values.</param>
@@ -65,7 +66,7 @@ namespace FakeItEasy
         /// Any non out and ref parameters are ignored.
         /// The function will be called each time this call is made and can return different values.
         /// </summary>
-        /// <typeparam name="TInterface"></typeparam>
+        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <param name="configuration">The configuration to extend.</param>
@@ -95,7 +96,7 @@ namespace FakeItEasy
         /// Any non out and ref parameters are ignored.
         /// The function will be called each time this call is made and can return different values.
         /// </summary>
-        /// <typeparam name="TInterface"></typeparam>
+        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
@@ -126,7 +127,7 @@ namespace FakeItEasy
         /// Any non out and ref parameters are ignored.
         /// The function will be called each time this call is made and can return different values.
         /// </summary>
-        /// <typeparam name="TInterface"></typeparam>
+        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>

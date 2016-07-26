@@ -3,6 +3,7 @@
     /// <summary>
     /// Provides configuration methods for calls that should perform no action.
     /// </summary>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
     public interface IDoNothingConfiguration<out TInterface>
     {
         /// <summary>

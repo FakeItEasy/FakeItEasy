@@ -238,14 +238,5 @@ namespace FakeItEasy.Configuration
 
             public Action<IOutputWriter> DescriptionWriter { get; }
         }
-
-        public BuildableCallRule CloneCallSpecification()
-        {
-            var clone = this.CloneCallSpecificationCore();
-            clone.wherePredicates = this.wherePredicates;
-            return clone;
-        }
-
-        protected abstract BuildableCallRule CloneCallSpecificationCore();
     }
 }

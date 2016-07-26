@@ -2,8 +2,8 @@ namespace FakeItEasy.Tests.Configuration
 {
     using System;
     using System.Collections.Generic;
-    using FakeItEasy.Configuration;
     using System.Linq;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FluentAssertions;
     using Xunit;

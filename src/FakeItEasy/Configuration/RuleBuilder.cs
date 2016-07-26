@@ -155,16 +155,6 @@ namespace FakeItEasy.Configuration
             return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3, T4>(valueProducer);
         }
 
-        public IVoidConfiguration Then
-        {
-            get
-            {
-                var newRule = this.RuleBeingBuilt.CloneCallSpecification();
-                this.manager.AddRuleAfter(this.RuleBeingBuilt, newRule);
-                return new RuleBuilder(newRule, this.manager, this.asserterFactory);
-            }
-        }
-
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
         {
             Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
@@ -319,15 +309,6 @@ namespace FakeItEasy.Configuration
             {
                 this.ParentConfiguration.NumberOfTimes(numberOfTimesToRepeat);
                 return this;
-            }
-
-            public IReturnValueConfiguration<TMember> Then
-            {
-                get
-                {
-                    var newConfiguration = (RuleBuilder)this.ParentConfiguration.Then;
-                    return new ReturnValueConfiguration<TMember>(newConfiguration);
-                }
             }
         }
 

@@ -24,6 +24,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="value">The value to return.</param>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<T>> Returns<T>(this IReturnValueConfiguration<T> configuration, T value)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
@@ -56,6 +57,7 @@ namespace FakeItEasy
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the return value.</param>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<T>> ReturnsLazily<T>(this IReturnValueConfiguration<T> configuration, Func<T> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
@@ -93,6 +95,7 @@ namespace FakeItEasy
         /// <param name="valueProducer">A function that produces the return value.</param>
         /// <returns>A configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TReturnType>>
             ReturnsLazily<TReturnType, T1>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, TReturnType> valueProducer)
         {
@@ -144,6 +147,7 @@ namespace FakeItEasy
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <returns>A configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TReturnType>>
             ReturnsLazily<TReturnType, T1, T2>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, TReturnType> valueProducer)
         {
@@ -196,6 +200,7 @@ namespace FakeItEasy
         /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
         /// <returns>A configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TReturnType>>
             ReturnsLazily<TReturnType, T1, T2, T3>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, TReturnType> valueProducer)
         {
@@ -250,6 +255,7 @@ namespace FakeItEasy
         /// <typeparam name="T4">Type of the fourth argument of the faked method call.</typeparam>
         /// <returns>A configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TReturnType>>
             ReturnsLazily<TReturnType, T1, T2, T3, T4>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, T4, TReturnType> valueProducer)
         {

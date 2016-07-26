@@ -3,6 +3,7 @@ namespace FakeItEasy.Configuration
     /// <summary>
     /// Provides configuration for method calls that has a return value.
     /// </summary>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
     public interface IRepeatConfiguration<out TInterface> : IHideObjectMembers
     {
         /// <summary>
