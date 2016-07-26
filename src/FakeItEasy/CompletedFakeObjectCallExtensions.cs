@@ -25,7 +25,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "The compiler would not be able to figure out the type.")]
         public static IEnumerable<ICompletedFakeObjectCall> Matching<TFake>(this IEnumerable<ICompletedFakeObjectCall> calls, Expression<Action<TFake>> callSpecification)
         {
-            return Matching(calls, callSpecification);
+            return InternalMatching(calls, callSpecification);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "The compiler would not be able to figure out the type.")]
         public static IEnumerable<ICompletedFakeObjectCall> Matching<TFake, TResult>(this IEnumerable<ICompletedFakeObjectCall> calls, Expression<Func<TFake, TResult>> callSpecification)
         {
-            return Matching(calls, callSpecification);
+            return InternalMatching(calls, callSpecification);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace FakeItEasy
         /// <param name="calls">The calls to filter.</param>
         /// <param name="callSpecification">The call to match on.</param>
         /// <returns>A collection of the calls that matches the call specification.</returns>
-        private static IEnumerable<ICompletedFakeObjectCall> Matching(this IEnumerable<ICompletedFakeObjectCall> calls, LambdaExpression callSpecification)
+        private static IEnumerable<ICompletedFakeObjectCall> InternalMatching(this IEnumerable<ICompletedFakeObjectCall> calls, LambdaExpression callSpecification)
         {
             var factory = ServiceLocator.Current.Resolve<IExpressionCallMatcherFactory>();
             var callExpressionParser = ServiceLocator.Current.Resolve<ICallExpressionParser>();
