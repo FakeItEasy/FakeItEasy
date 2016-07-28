@@ -34,5 +34,5 @@ and then function properly thereafter:
 A.CallTo(() => fakeService.DoSomething()).Returns("SUCCESS");
 
 // set up a one-time exception which will be used for the first call
-A.CallTo(() => fakeService.DoSomething()).Throws<Exception>().Once;
+A.CallTo(() => fakeService.DoSomething()).Throws<Exception>().Once();
 ```
