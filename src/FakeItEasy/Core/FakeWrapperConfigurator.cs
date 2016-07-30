@@ -4,7 +4,9 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Reflection.Emit;
     using FakeItEasy.Creation;
+#if FEATURE_SELF_INITIALIZED_FAKES
     using FakeItEasy.SelfInitializedFakes;
+#endif
 
     /// <summary>
     /// Handles configuring of fake objects to delegate all their calls to a wrapped instance.
@@ -14,7 +16,9 @@ namespace FakeItEasy.Core
         : FakeOptionsBase<T>, IFakeOptionsForWrappers<T>, IFakeOptionsForWrappers
     {
         private readonly IFakeOptions<T> fakeOptions;
+#if FEATURE_SELF_INITIALIZED_FAKES
         private ISelfInitializingFakeRecorder recorder;
+#endif
 
         public FakeWrapperConfigurator(IFakeOptions<T> fakeOptions, object wrappedObject)
         {
@@ -49,6 +53,7 @@ namespace FakeItEasy.Core
             return this.fakeOptions.ConfigureFake(action);
         }
 
+#if FEATURE_SELF_INITIALIZED_FAKES
         public IFakeOptions<T> RecordedBy(ISelfInitializingFakeRecorder fakeRecorder)
         {
             this.recorder = fakeRecorder;
@@ -59,6 +64,7 @@ namespace FakeItEasy.Core
         {
             return (IFakeOptions)this.RecordedBy(fakeRecorder);
         }
+#endif
 
         /// <summary>
         /// Configures the specified faked object to wrap the specified instance.
@@ -70,9 +76,12 @@ namespace FakeItEasy.Core
 
             var wrapperRule = CreateAndAddWrapperRule(this.WrappedObject, fake);
 
+#if FEATURE_SELF_INITIALIZED_FAKES
             AddRecordingRuleWhenRecorderIsSpecified(this.recorder, fake, wrapperRule);
+#endif
         }
 
+#if FEATURE_SELF_INITIALIZED_FAKES
         private static void AddRecordingRuleWhenRecorderIsSpecified(ISelfInitializingFakeRecorder recorder, FakeManager fake, WrappedObjectRule wrapperRule)
         {
             if (recorder != null)
@@ -80,6 +89,7 @@ namespace FakeItEasy.Core
                 fake.AddRuleFirst(new SelfInitializationRule(wrapperRule, recorder));
             }
         }
+#endif
 
         private static WrappedObjectRule CreateAndAddWrapperRule(object wrappedInstance, FakeManager fake)
         {

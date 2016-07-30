@@ -19,6 +19,7 @@ namespace FakeItEasy.IntegrationTests
             Fake.GetFakeManager(fake).Should().NotBeNull("because we should be able to create a fake Uri");
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Fact]
         public void Should_be_able_to_use_a_fake_after_binary_deserializing_it()
         {
@@ -31,6 +32,7 @@ namespace FakeItEasy.IntegrationTests
             // Assert
             deserializedPerson.Name.Should().Be(string.Empty, "because the default behavior should work");
         }
+#endif
 
         [Fact]
         public void Should_be_able_to_change_the_configuration_of_a_fake_after_binary_deserializing_it()

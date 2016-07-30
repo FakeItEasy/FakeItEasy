@@ -1,0 +1,15 @@
+{
+  "version": "99.99.99-wrapped",
+  "dependencies": {
+        "Castle.Core": "4.0.0-beta001"
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "wrappedProject": "../../src/FakeItEasy.dotnet/FakeItEasy.dotnet.csproj",
+      "bin": {
+        "assembly": "../../src/FakeItEasy.dotnet/bin/{configuration}/FakeItEasy.dll",
+        "pdb": "../../src/FakeItEasy.dotnet/{configuration}/FakeItEasy.pdb"
+      }
+    }
+  }
+}

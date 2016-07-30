@@ -97,7 +97,7 @@ namespace FakeItEasy.Creation
             {
                 result = default(object);
 
-                if (typeOfDummy.IsValueType && typeOfDummy != typeof(void))
+                if (typeOfDummy.GetTypeInfo().IsValueType && typeOfDummy != typeof(void))
                 {
                     result = Activator.CreateInstance(typeOfDummy);
                     return true;
@@ -146,7 +146,7 @@ namespace FakeItEasy.Creation
                     return true;
                 }
 
-                if (typeOfDummy.IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Task<>))
+                if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Task<>))
                 {
                     var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
                     object taskResult;
@@ -184,7 +184,7 @@ namespace FakeItEasy.Creation
             {
                 result = default(object);
 
-                if (typeOfDummy.IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Lazy<>))
+                if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Lazy<>))
                 {
                     var typeOfLazyResult = typeOfDummy.GetGenericArguments()[0];
                     object lazyResult;
@@ -230,7 +230,7 @@ namespace FakeItEasy.Creation
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
                 result = default(object);
-                if (typeof(Delegate).IsAssignableFrom(typeOfDummy) || typeOfDummy.IsAbstract)
+                if (typeof(Delegate).IsAssignableFrom(typeOfDummy) || typeOfDummy.GetTypeInfo().IsAbstract)
                 {
                     return false;
                 }

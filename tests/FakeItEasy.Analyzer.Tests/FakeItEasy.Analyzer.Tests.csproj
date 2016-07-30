@@ -136,13 +136,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
-      <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
-      <Name>FakeItEasy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\FakeItEasy.Analyzer\FakeItEasy.Analyzer.csproj">
       <Project>{F97E3B4B-080D-414A-9F00-EE20F4451E36}</Project>
       <Name>FakeItEasy.Analyzer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
+      <Project>{74165807-676F-4464-B607-8770C13E8991}</Project>
+      <Name>FakeItEasy</Name>
     </ProjectReference>
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj">
       <Project>{0E26272D-045A-47C2-8928-BD9B980115D5}</Project>

@@ -28,7 +28,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_BINARY_SERIALIZATION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
@@ -42,7 +42,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_BINARY_SERIALIZATION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\FakeItEasy.Tests.ruleset</CodeAnalysisRuleSet>
@@ -97,13 +97,13 @@
     <Compile Include="WrapperTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
+      <Project>{74165807-676f-4464-b607-8770c13e8991}</Project>
+      <Name>FakeItEasy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj">
       <Project>{0E26272D-045A-47C2-8928-BD9B980115D5}</Project>
       <Name>FakeItEasy.Tests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
-      <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
-      <Name>FakeItEasy</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

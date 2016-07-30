@@ -3,6 +3,9 @@ namespace FakeItEasy.Tests.Configuration
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;

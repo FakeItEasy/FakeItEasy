@@ -56,12 +56,6 @@
     <Compile Include="GuidValueFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
-      <Project>{80721425-68E5-48DC-87EA-41D63D0B45FA}</Project>
-      <Name>FakeItEasy</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <CodeAnalysisDictionary Include="..\FakeItEasy.Dictionary.Tests.xml">
       <Link>Properties\FakeItEasy.Dictionary.Tests.xml</Link>
     </CodeAnalysisDictionary>
@@ -71,6 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
+      <Project>{74165807-676f-4464-b607-8770c13e8991}</Project>
+      <Name>FakeItEasy</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />

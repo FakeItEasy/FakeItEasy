@@ -13,10 +13,13 @@
     <licenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</licenseUrl>
     <copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</copyright>
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="Bin\Release\FakeItEasy.dll" target="lib\net40" />
-    <file src="Bin\Release\FakeItEasy.pdb" target="lib\net40" />
-    <file src="Bin\Release\FakeItEasy.xml" target="lib\net40" />
+    <file src="bin\Release\FakeItEasy.dll" target="lib\net40" />
+    <file src="bin\Release\FakeItEasy.pdb" target="lib\net40" />
+    <file src="bin\Release\FakeItEasy.xml" target="lib\net40" />
   </files>
 </package>

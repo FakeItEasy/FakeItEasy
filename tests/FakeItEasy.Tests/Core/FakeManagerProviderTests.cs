@@ -110,6 +110,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappened(Repeated.Exactly.Once);
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Fact]
         public void Should_be_able_to_fetch_a_serialized_and_deserialized_initialized_provider()
         {
@@ -124,6 +125,7 @@ namespace FakeItEasy.Tests.Core
             // Assert
             exception.Should().BeNull();
         }
+#endif
 
         private static FakeManager GetInitializedFakeManager(FakeManagerProvider fakeManagerProvider)
         {

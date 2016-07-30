@@ -1,13 +1,17 @@
 namespace FakeItEasy.Configuration
 {
     using System;
+#if FEATURE_BINARY_SERIALIZATION
     using System.Runtime.Serialization;
+#endif
 
     /// <summary>
     /// An exception that can be thrown when something goes wrong with the configuration
     /// of a fake object.
     /// </summary>
+#if FEATURE_BINARY_SERIALIZATION
     [Serializable]
+#endif
     public class FakeConfigurationException
         : Exception
     {
@@ -37,6 +41,7 @@ namespace FakeItEasy.Configuration
         {
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeConfigurationException"/> class.
         /// </summary>
@@ -52,5 +57,6 @@ namespace FakeItEasy.Configuration
             : base(info, context)
         {
         }
+#endif
     }
 }

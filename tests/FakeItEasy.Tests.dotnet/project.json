@@ -1,0 +1,64 @@
+{
+  "name": "FakeItEasy.Tests",
+  "version": "1.0.0-*",
+  "description": "FakeItEasy.Tests.dotnet Class Library",
+  "authors": [ "" ],
+  "packOptions": {
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": ""
+  },
+
+  "buildOptions": {
+    "keyFile": "../../FakeItEasy.snk",
+    "compile": {
+      "include": [
+        "../FakeItEasy.Tests/**/*.cs"
+      ],
+      "exclude": [
+        "../FakeItEasy.Tests/RecordersTests.cs",
+        "../FakeItEasy.Tests/SelfInitializedFakes/*.cs"
+      ]
+    },
+    "define": [ "NETCORE" ]
+  },
+
+  "dependencies": {
+    "xunit.abstractions": "2.0.0",
+    "xunit.extensibility.core": "2.1.0",
+    "xunit.extensibility.execution": "2.1.0"
+  },
+
+  "testRunner": "xunit",
+  "frameworks": {
+    "netcoreapp1.0": {
+      "buildOptions": {
+        "define": [ "NETCORE", "FEATURE_NETCORE_REFLECTION" ]
+      },
+      "dependencies": {
+        "Castle.Core": "4.0.0-beta001",
+        "FakeItEasy": {
+          "target": "project",
+          "version": "99.99.99-wrapped"
+        },
+        "FluentAssertions": "4.6.3",
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        },
+        "System.Console": "4.0.0",
+        "System.Diagnostics.TraceSource": "4.0.0",
+        "System.Linq.Expressions": "4.1.0",
+        "System.Reflection": "4.1.0",
+        "System.Reflection.Emit.ILGeneration": "4.0.1",
+        "System.Reflection.Extensions": "4.0.1",
+        "System.Reflection.TypeExtensions": "4.1.0",
+        "System.Runtime.Serialization.Primitives": "4.1.1",
+        "System.Threading.Tasks.Parallel": "4.0.1",
+        "Microsoft.CSharp": "4.0.1",
+        "dotnet-test-xunit": "2.2.0-preview2-build1029"
+      },
+      "imports": [ "dnxcore50", "portable-net451+win81" ]
+    }
+  }
+}

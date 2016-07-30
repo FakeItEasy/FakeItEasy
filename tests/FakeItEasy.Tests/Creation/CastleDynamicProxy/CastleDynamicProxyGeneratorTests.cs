@@ -4,6 +4,9 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Creation.CastleDynamicProxy;
@@ -153,6 +156,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             A.CallTo(() => fakeCallProcessorProvider.EnsureInitialized(A<object>._)).MustHaveHappened();
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Theory]
         [MemberData(nameof(SupportedTypes))]
         public void Serialized_proxies_should_deserialize_to_an_object(Type typeOfProxy)
@@ -169,6 +173,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Assert
             deserializedProxy.Should().NotBeNull();
         }
+#endif
 
         [Fact]
         [UsingCulture("en-US")]
@@ -215,11 +220,11 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var type = Type.GetType("System.AppDomainInitializerInfo, mscorlib");
+            var type = Type.GetType("FluentAssertions.Common.NullReflector, FluentAssertions.Core");
             var result = this.generator.GenerateProxy(type, Enumerable.Empty<Type>(), null, A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
-            result.ReasonForFailure.Should().StartWith("No usable default constructor was found on the type System.AppDomainInitializerInfo.\r\nAn exception of type Castle.DynamicProxy.Generators.GeneratorException was caught during this call. Its message was:\r\nCan not create proxy for type System.AppDomainInitializerInfo because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7\")] attribute, because assembly mscorlib is strong-named.");
+            result.ReasonForFailure.Should().StartWith("No usable default constructor was found on the type FluentAssertions.Common.NullReflector.\r\nAn exception of type Castle.DynamicProxy.Generators.GeneratorException was caught during this call. Its message was:\r\nCan not create proxy for type FluentAssertions.Common.NullReflector because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7\")] attribute, because assembly FluentAssertions.Core is strong-named.");
         }
 
         [Theory]
@@ -338,7 +343,9 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             return result;
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         public class TypeWithArgumentsForConstructor
         {
             public TypeWithArgumentsForConstructor(int argument)
@@ -349,7 +356,9 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             public int Argument { get; set; }
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         public abstract class AbstractClass
             : IInterfaceType
         {
@@ -358,7 +367,9 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             }
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         public class ClassWithProtectedConstructor
             : IInterfaceType
         {
@@ -371,7 +382,9 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             }
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         public class ClassWithInternalConstructor
             : IInterfaceType
         {
@@ -384,7 +397,9 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             }
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         public class ClassWithPrivateConstructor
         {
             private ClassWithPrivateConstructor()
@@ -392,7 +407,9 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             }
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         internal class InternalType
             : IInterfaceType
         {
@@ -405,7 +422,9 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         {
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         private class SerializableFakeCallProcessorProvider : IFakeCallProcessorProvider
         {
             public IFakeCallProcessor Fetch(object proxy)

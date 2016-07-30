@@ -25,3 +25,7 @@ indent_size = 2
 [*.{csproj,vbproj}]
 insert_final_newline = false
 charset = utf-8-bom
+
+[*.json]
+# 2-column space indentation
+indent_size = 2
