@@ -27,7 +27,6 @@
     <DefineConstants>TRACE;DEBUG;FEATURE_NETCORE_REFLECTION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\FakeItEasy.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,7 +35,7 @@
     <DefineConstants>TRACE;FEATURE_NETCORE_REFLECTION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\FakeItEasy.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\FakeItEasy.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\FakeItEasy\Compatibility\MethodInfoWrapper.cs">
