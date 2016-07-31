@@ -101,7 +101,7 @@ end
 desc "Execute default tasks"
 task :default => [ :vars, :gitlink, :unit, :integ, :spec, :pack ]
 
-desc "Execute default tasks for .NET Core solution"
+desc "Execute default tasks plus .NET Core tasks"
 task :dotnet => [ :default, :unit_dotnet, :pack_dotnet]
 
 desc "Print all variables"
