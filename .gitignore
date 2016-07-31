@@ -1,13 +1,14 @@
+.vs
 [Oo]bj
 [Bb]in
 artifacts
+packages
 
 *.csproj.user
 *.vbproj.user
 *.xproj.user
 *.lock.json
 *.nuget.targets
-.vs/*
 *.ncb
 *.suo
 *.orig
@@ -17,5 +18,3 @@ artifacts
 *.[Dd]ot[Ss]ettings.*
 Thumbs.db
 *.received.txt
-
-packages
