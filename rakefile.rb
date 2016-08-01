@@ -17,7 +17,7 @@ repo_url        = "https://github.com/FakeItEasy/FakeItEasy"
 nuspec          = "src/FakeItEasy/FakeItEasy.nuspec"
 analyzer_nuspec = "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.nuspec"
 logs            = "artifacts/logs"
-output          = "artifacts/output"
+output          = File.absolute_path("artifacts/output")
 tests           = "artifacts/tests"
 packages        = File.absolute_path("packages")
 
