@@ -39,15 +39,23 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
 ## Building
 
-Using a command prompt, navigate to your clone root folder and execute:
+Using a command prompt, navigate to your clone root folder and execute one of two commands:
 
-`build.cmd`
+* `build-dotnet.cmd`
 
-This executes the default build tasks. After the build has completed, the build artifacts will be located in `artifacts`.
+  This executes the default build tasks to produce both the .NET Standard and the .NET 4.0 artifacts.
+
+* `build.cmd`
+
+  This executes the default build tasks to produce only the .NET 4.0 artifacts, and should be used
+  when the build machine does not have tooling to build .NET Standard projects.
+
+After the build has completed, the build artifacts will be located in `artifacts`.
 
 ## Extras
 
-`build.cmd` is a shortcut for `bundle exec rake`, so you can use all the usual command line argument that you would use with Rake, e.g.:
+`build.cmd` is a shortcut for `bundle exec rake` (and `build-dotnet.cmd` for `bundle exec rake -f rakefile-dotnet.rb`),
+so you can use all the usual command line argument that you would use with Rake, e.g.:
 
 * View the full list of build tasks:
 
