@@ -126,6 +126,13 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.Tests.dotnet", "
 		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E} = {CF137AE3-7C4F-41BD-A4AD-762BBED2255E}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wrap", "wrap", "{3192F732-5E1C-4B3A-9CB9-AF729A513941}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FakeItEasy", "FakeItEasy", "{E7190229-2F49-4FFF-ABA6-715D48C83BA1}"
+	ProjectSection(SolutionItems) = preProject
+		wrap\FakeItEasy\project.json = wrap\FakeItEasy\project.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -207,6 +214,7 @@ Global
 		{74165807-676F-4464-B607-8770C13E8991} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 		{AA7CF6E8-C3F2-43CC-A765-5B05AADED390} = {DC5EAE30-96E3-4D38-B3C5-33E587C9FB76}
+		{E7190229-2F49-4FFF-ABA6-715D48C83BA1} = {3192F732-5E1C-4B3A-9CB9-AF729A513941}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 0.1
