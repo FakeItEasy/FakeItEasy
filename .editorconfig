@@ -26,6 +26,14 @@ indent_size = 2
 insert_final_newline = false
 charset = utf-8-bom
 
+[project.json]
+insert_final_newline = false
+charset = utf-8-bom
+
+[*.nuget.targets]
+insert_final_newline = false
+charset = utf-8-bom
+
 [*.json]
 # 2-column space indentation
 indent_size = 2
