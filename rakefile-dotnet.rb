@@ -21,7 +21,7 @@ output          = File.absolute_path("artifacts/output")
 tests           = "artifacts/tests"
 packages        = File.absolute_path("packages")
 
-gitlinks        = ["FakeItEasy", "FakeItEasy.Analyzer"]
+gitlinks        = ["FakeItEasy", "FakeItEasy.Analyzer", "FakeItEasy.dotnet"]
 
 unit_tests = [
   "tests/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
