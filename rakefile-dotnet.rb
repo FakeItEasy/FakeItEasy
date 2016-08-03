@@ -14,8 +14,7 @@ assembly_info   = "src/CommonAssemblyInfo.cs"
 version         = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 version_suffix  = ENV["VERSION_SUFFIX"]
 repo_url        = "https://github.com/FakeItEasy/FakeItEasy"
-nuspec          = "src/FakeItEasy/FakeItEasy.nuspec"
-dotnet_nuspec   = "src/FakeItEasy.dotnet/FakeItEasy.nuspec"
+nuspec          = "src/FakeItEasy.dotnet/FakeItEasy.nuspec"
 analyzer_nuspec = "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.nuspec"
 logs            = "artifacts/logs"
 output          = File.absolute_path("artifacts/output")
@@ -265,13 +264,7 @@ directory output
 desc "create the nuget package"
 exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "pack #{nuspec} -Version #{version}#{version_suffix} -OutputDirectory #{output}"
-end
-
-desc "create the nuget package with the .NET Standard"
-exec :pack => [:build, output] do |cmd|
-  cmd.command = nuget_command
-  cmd.parameters "pack #{dotnet_nuspec} -Version #{version}-dotnet#{version_suffix} -OutputDirectory #{output}"
+  cmd.parameters "pack #{nuspec} -Version #{version}-dotnet#{version_suffix} -OutputDirectory #{output}"
 end
 
 desc "create the analyzer nuget package"
