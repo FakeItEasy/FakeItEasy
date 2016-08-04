@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		.mailmap = .mailmap
+		build.netstd.cmd = build.netstd.cmd
 		CONTRIBUTING.md = CONTRIBUTING.md
 		FakeItEasy.Dictionary.xml = FakeItEasy.Dictionary.xml
 		FakeItEasy.ruleset = FakeItEasy.ruleset
@@ -18,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		how_to_build.md = how_to_build.md
 		License.txt = License.txt
 		mkdocs.yml = mkdocs.yml
-		rakefile.rb = rakefile.rb
+		rakefile.netstd.rb = rakefile.netstd.rb
 		README.md = README.md
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
@@ -120,9 +121,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Tests.Approval",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy", "src\FakeItEasy\FakeItEasy.csproj", "{74165807-676F-4464-B607-8770C13E8991}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.dotnet", "src\FakeItEasy.dotnet\FakeItEasy.dotnet.csproj", "{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.netstd", "src\FakeItEasy.netstd\FakeItEasy.netstd.csproj", "{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.Tests.dotnet", "tests\FakeItEasy.Tests.dotnet\FakeItEasy.Tests.dotnet.xproj", "{AA7CF6E8-C3F2-43CC-A765-5B05AADED390}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.Tests.netstd", "tests\FakeItEasy.Tests.netstd\FakeItEasy.Tests.netstd.xproj", "{AA7CF6E8-C3F2-43CC-A765-5B05AADED390}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E} = {CF137AE3-7C4F-41BD-A4AD-762BBED2255E}
 	EndProjectSection
