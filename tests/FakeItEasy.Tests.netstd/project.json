@@ -1,7 +1,7 @@
 {
   "name": "FakeItEasy.Tests",
   "version": "1.0.0-*",
-  "description": "FakeItEasy.Tests.dotnet Class Library",
+  "description": "FakeItEasy.Tests.netstd Class Library",
   "authors": [ "" ],
   "packOptions": {
     "tags": [ "" ],
