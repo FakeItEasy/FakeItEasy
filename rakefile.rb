@@ -9,23 +9,27 @@ nuget_command   = ".nuget/nuget.exe"
 gitlink_command = "packages/gitlink.2.3.0/lib/net45/GitLink.exe"
 xunit_command   = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 
-solution        = "FakeItEasy.sln"
+solution        = "FakeItEasy.netstd.sln"
 assembly_info   = "src/CommonAssemblyInfo.cs"
 version         = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 version_suffix  = ENV["VERSION_SUFFIX"]
 repo_url        = "https://github.com/FakeItEasy/FakeItEasy"
-nuspec          = "src/FakeItEasy/FakeItEasy.nuspec"
+nuspec          = "src/FakeItEasy.netstd/FakeItEasy.nuspec"
 analyzer_nuspec = "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.nuspec"
 logs            = "artifacts/logs"
 output          = File.absolute_path("artifacts/output")
 tests           = "artifacts/tests"
 packages        = File.absolute_path("packages")
 
-gitlinks        = ["FakeItEasy", "FakeItEasy.Analyzer"]
+gitlinks        = ["FakeItEasy", "FakeItEasy.Analyzer", "FakeItEasy.netstd"]
 
 unit_tests = [
   "tests/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
   "tests/FakeItEasy.Analyzer.Tests/bin/Release/FakeItEasy.Analyzer.Tests.dll"
+]
+
+netstd_unit_test_directories = [
+  "tests/FakeItEasy.Tests.netstd"
 ]
 
 integration_tests = [
@@ -219,6 +223,10 @@ end
 
 desc "Build solution"
 task :build => [:clean, :restore, logs] do
+  netstd_unit_test_directories.each do | test_directory |
+    restore_dependencies_for_project test_directory
+  end
+
   run_msbuild solution, "Build", msbuild_command, packages
 end
 
@@ -233,6 +241,7 @@ directory tests
 desc "Execute unit tests"
 task :unit => [:build, tests] do
     run_tests(unit_tests, xunit_command, tests)
+    run_netstd_tests(netstd_unit_test_directories, tests)
 end
 
 desc "Execute integration tests"
@@ -255,7 +264,7 @@ directory output
 desc "create the nuget package"
 exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "pack #{nuspec} -Version #{version}#{version_suffix} -OutputDirectory #{output}"
+  cmd.parameters "pack #{nuspec} -Version #{version}-netstd#{version_suffix} -OutputDirectory #{output}"
 end
 
 desc "create the analyzer nuget package"
@@ -342,6 +351,24 @@ def run_tests(test_assemblies, command, result_dir)
     xunit.options '-noshadow', '-nologo', '-notrait', '"explicit=yes"', '-xml', result_file
     xunit.execute
   end
+end
+
+def run_netstd_tests(test_directories, result_dir)
+  test_directories.each do |test_directory|
+    result_file = File.expand_path(File.join(result_dir, File.basename(test_directory) + '.TestResults.xml'))
+
+    test_cmd = Exec.new
+    test_cmd.command = "dotnet"
+    test_cmd.parameters "test -c Release #{test_directory} -nologo -notrait \"explicit=yes\" -xml #{result_file}"
+    test_cmd.execute
+  end
+end
+
+def restore_dependencies_for_project(project_dir)
+  restore_cmd = Exec.new
+  restore_cmd.command = "dotnet"
+  restore_cmd.parameters "restore #{project_dir}"
+  restore_cmd.execute
 end
 
 # Get a temporary SSL cert file if necessary.
