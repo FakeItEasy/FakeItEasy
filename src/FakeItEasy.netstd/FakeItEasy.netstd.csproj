@@ -611,7 +611,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FakeItEasy.dotnet.nuget.targets">
+    <None Include="FakeItEasy.netstd.nuget.targets">
       <SubType>Designer</SubType>
     </None>
     <None Include="FakeItEasy.nuspec" />
