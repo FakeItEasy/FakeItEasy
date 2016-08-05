@@ -33,15 +33,6 @@ namespace FakeItEasy.Tests.Configuration
             this.builder = this.CreateBuilder();
         }
 
-        public static IEnumerable<object[]> CallSpecificationActionsForVoid =>
-            TestCases.FromObject<Action<IVoidArgumentValidationConfiguration>>(
-                configuration => configuration.WhenArgumentsMatch(args => true));
-
-        public static IEnumerable<object[]> CallSpecificationActionsForNonVoid =>
-            TestCases.FromObject<Action<IAnyCallConfigurationWithReturnTypeSpecified<int>>>(
-                configuration => configuration.WhenArgumentsMatch(args => true),
-                configuration => configuration.Where(call => true));
-
         public static IEnumerable<object[]> BehaviorDefinitionActionsForVoid =>
             TestCases.FromObject<Action<IVoidArgumentValidationConfiguration>>(
                 configuration => configuration.CallsBaseMethod(),
@@ -57,25 +48,14 @@ namespace FakeItEasy.Tests.Configuration
                 configuration => configuration.Invokes(DoNothing),
                 configuration => configuration.ReturnsLazily(_ => 0));
 
-        [Fact]
-        public void Returns_called_with_value_returns_parent_configuration()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
+        public static IEnumerable<object[]> CallSpecificationActionsForNonVoid =>
+            TestCases.FromObject<Action<IAnyCallConfigurationWithReturnTypeSpecified<int>>>(
+                configuration => configuration.WhenArgumentsMatch(args => true),
+                configuration => configuration.Where(call => true));
 
-            var result = returnConfig.Returns(10);
-
-            result.Should().BeSameAs(returnConfig);
-        }
-
-        [Fact]
-        public void Returns_with_call_function_should_return_delegate()
-        {
-            var config = this.CreateTestableReturnConfiguration();
-
-            var returned = config.ReturnsLazily(x => x.Arguments.Get<int>(0));
-
-            returned.Should().BeSameAs(config);
-        }
+        public static IEnumerable<object[]> CallSpecificationActionsForVoid =>
+            TestCases.FromObject<Action<IVoidArgumentValidationConfiguration>>(
+                configuration => configuration.WhenArgumentsMatch(args => true));
 
         [Fact]
         public void Returns_with_call_function_should_be_properly_guarded()
@@ -84,24 +64,6 @@ namespace FakeItEasy.Tests.Configuration
 
             Expression<Action> call = () => config.ReturnsLazily(x => x.Arguments.Get<int>(0));
             call.Should().BeNullGuarded();
-        }
-
-        [Fact]
-        public void Throws_returns_configuration()
-        {
-            var result = this.builder.Throws(A.Dummy<Func<IFakeObjectCall, Exception>>());
-
-            result.Should().Be(this.builder);
-        }
-
-        [Fact]
-        public void Throws_called_from_return_value_configuration_returns_parent_configuration()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-
-            var result = returnConfig.Throws(_ => new InvalidOperationException());
-
-            result.Should().BeSameAs(returnConfig);
         }
 
         [Fact]
@@ -126,22 +88,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void Does_nothing_should_return_configuration_object()
-        {
-            var result = this.builder.DoesNothing();
-
-            result.Should().Be(this.builder);
-        }
-
-        [Fact]
-        public void Invokes_should_return_the_configuration_object()
-        {
-            var result = this.builder.Invokes(x => { });
-
-            result.Should().BeSameAs(this.builder);
-        }
-
-        [Fact]
         public void Invokes_should_add_action_to_list_of_actions()
         {
             Action<IFakeObjectCall> action = x => { };
@@ -157,15 +103,6 @@ namespace FakeItEasy.Tests.Configuration
             Action<IFakeObjectCall> action = x => { };
             Expression<Action> call = () => this.builder.Invokes(action);
             call.Should().BeNullGuarded();
-        }
-
-        [Fact]
-        public void Invokes_on_return_value_configuration_should_return_the_configuration_object()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-            var result = returnConfig.Invokes(x => { });
-
-            result.Should().BeSameAs(returnConfig);
         }
 
         [Fact]
@@ -198,29 +135,12 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void CallBaseMethod_returns_configuration_object()
-        {
-            var result = this.builder.CallsBaseMethod();
-
-            result.Should().BeSameAs(this.builder);
-        }
-
-        [Fact]
         public void CallsBaseMethod_for_function_calls_sets_CallBaseMethod_to_true_on_the_built_rule()
         {
             var config = this.CreateTestableReturnConfiguration();
             config.CallsBaseMethod();
 
             this.builder.RuleBeingBuilt.CallBaseMethod.Should().BeTrue();
-        }
-
-        [Fact]
-        public void CallBaseMethod_for_function_calls_returns_configuration_object()
-        {
-            var config = this.CreateTestableReturnConfiguration();
-            var result = config.CallsBaseMethod();
-
-            result.Should().BeSameAs(config);
         }
 
         [Fact]
@@ -234,16 +154,6 @@ namespace FakeItEasy.Tests.Configuration
             config.WhenArgumentsMatch(predicate);
 
             A.CallTo(() => builtRule.UsePredicateToValidateArguments(predicate)).MustHaveHappened();
-        }
-
-        [Fact]
-        public void WhenArgumentsMatches_should_return_self()
-        {
-            var builtRule = A.Fake<BuildableCallRule>();
-
-            var config = this.CreateBuilder(builtRule);
-
-            config.WhenArgumentsMatch(x => true).Should().BeSameAs(config);
         }
 
         [Fact]
@@ -273,14 +183,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void WhenArgumentsMatches_with_function_call_should_return_config_should_return_self()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-
-            returnConfig.WhenArgumentsMatch(x => true).Should().BeSameAs(returnConfig);
-        }
-
-        [Fact]
         public void WhenArgumentsMatches_with_function_call_should_be_null_guarded()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -306,14 +208,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void AssignsOutAndRefParameters_returns_self()
-        {
-            var result = this.builder.AssignsOutAndRefParameters(1, "foo");
-
-            result.Should().BeSameAs(this.builder);
-        }
-
-        [Fact]
         public void AssignsOutAndRefParametersLazily_should_be_null_guarded()
         {
             Expression<Action> call = () => this.builder.AssignsOutAndRefParametersLazily(null);
@@ -327,14 +221,6 @@ namespace FakeItEasy.Tests.Configuration
 
             var valueProducer = this.ruleProducedByFactory.OutAndRefParametersValueProducer;
             valueProducer(null).Should().BeEquivalentTo(1, "foo");
-        }
-
-        [Fact]
-        public void AssignsOutAndRefParametersLazily_returns_self()
-        {
-            var result = this.builder.AssignsOutAndRefParametersLazily(call => new object[] { 1, "foo" });
-
-            result.Should().BeSameAs(this.builder);
         }
 
         [Fact]
@@ -388,18 +274,6 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             A.CallTo(() => this.ruleProducedByFactory.ApplyWherePredicate(predicate, writer)).MustHaveHappened();
-        }
-
-        [Fact]
-        public void Where_should_return_the_configuration_object()
-        {
-            // Arrange
-            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>(this.builder);
-
-            // Act
-
-            // Assert
-            returnConfig.Where(x => true, x => { }).Should().BeSameAs(returnConfig);
         }
 
         [Theory]

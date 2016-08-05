@@ -196,8 +196,6 @@ namespace FakeItEasy.Configuration
                 this.ParentConfiguration = parentConfiguration;
             }
 
-            public RuleBuilder ParentConfiguration { get; }
-
             public ICallMatcher Matcher => this.ParentConfiguration.Matcher;
 
             public IReturnValueConfiguration<TMember> Then
@@ -210,6 +208,8 @@ namespace FakeItEasy.Configuration
             }
 
             public IEnumerable<ICompletedFakeObjectCall> Calls => this.ParentConfiguration.Calls;
+
+            private RuleBuilder ParentConfiguration { get; }
 
             public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
             {
