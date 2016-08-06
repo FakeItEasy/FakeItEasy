@@ -17,7 +17,7 @@ Perhaps you want to have all or nearly all of a fake's (fakeable) methods defer 
 var fakeShop = A.Fake<CandyShop>(options => options.CallsBaseMethods());
 ```
 
-And then [selectively override some of them](limited-call-specifications.md#changing-behavior-between-calls)
+And then [selectively override some of them](changing-behavior-between-calls.md#overriding-the-behavior-for-a-call)
 
 ```chsharp
 A.CallTo(() => fakeShop.SellRockets()).Throws<Exception>();
