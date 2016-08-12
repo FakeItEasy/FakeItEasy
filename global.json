@@ -1,5 +1,5 @@
 {
-  "projects": [ "src", "test", "wrap" ],
+  "projects": [ "src", "tests", "wrap" ],
   "sdk": {
     "version": "1.0.0-preview2-003121"
   }
