@@ -35,6 +35,8 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
 1. Install gems:
 
+    Using a command prompt, navigate to your clone root folder and execute:
+
     `bundler install`
 
 ## Building
