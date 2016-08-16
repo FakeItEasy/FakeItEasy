@@ -33,7 +33,7 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
     `gem install bundler`
 
-1. Install gems:
+1. Install gems (after navigating to your clone root folder):
 
     `bundler install`
 
