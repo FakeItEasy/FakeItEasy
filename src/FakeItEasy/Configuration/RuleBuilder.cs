@@ -63,7 +63,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallSpecifiedConfiguration DoesNothing()
         {
-            this.RuleBeingBuilt.Applicator = x => { };
+            this.RuleBeingBuilt.Applicator = call => call.SetReturnValue(call.Method.ReturnType.GetDefaultValue());
             return this;
         }
 

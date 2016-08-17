@@ -187,20 +187,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void DoesNothing_should_set_applicator_that_does_nothing_when_called()
-        {
-            this.builder.DoesNothing();
-
-            var call = A.Fake<IInterceptedFakeObjectCall>();
-
-            A.CallTo(call).Throws(new AssertionFailedException("Applicator should do nothing."));
-
-            var exception = Record.Exception(() => this.builder.RuleBeingBuilt.Applicator(call));
-
-            exception.Should().BeNull();
-        }
-
-        [Fact]
         public void Does_nothing_should_return_configuration_object()
         {
             var result = this.builder.DoesNothing();
