@@ -61,7 +61,7 @@ namespace FakeItEasy.Tests.Expressions
             var callPassedToRule = FakeCall.Create<IFoo>("Bar");
 
             var rule = this.CreateRule();
-            rule.Applicator = x => callPassedToApplicator = x;
+            rule.UseApplicator(x => callPassedToApplicator = x);
 
             rule.Apply(callPassedToRule);
 

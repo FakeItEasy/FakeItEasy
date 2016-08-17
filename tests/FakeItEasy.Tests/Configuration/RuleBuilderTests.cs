@@ -33,19 +33,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void Returns_called_with_value_sets_applicator_to_a_function_that_applies_that_value_to_interceptor()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-            var call = A.Fake<IInterceptedFakeObjectCall>();
-
-            returnConfig.Returns(10);
-
-            this.ruleProducedByFactory.Applicator(call);
-
-            A.CallTo(() => call.SetReturnValue(10)).MustHaveHappened();
-        }
-
-        [Fact]
         public void Returns_called_with_value_returns_parent_configuration()
         {
             var returnConfig = this.CreateTestableReturnConfiguration();
@@ -53,22 +40,6 @@ namespace FakeItEasy.Tests.Configuration
             var result = returnConfig.Returns(10);
 
             result.Should().Be(this.builder);
-        }
-
-        [Fact]
-        public void Returns_with_call_function_applies_value_returned_from_function()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-            var call = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(
-                new object[] { 1, 2 },
-                new[] { "foo", "bar" }));
-
-            returnConfig.ReturnsLazily(x => x.Arguments.Get<int>("bar"));
-
-            this.ruleProducedByFactory.Applicator(call);
-
-            A.CallTo(() => call.SetReturnValue(2)).MustHaveHappened();
         }
 
         [Fact]
@@ -91,68 +62,11 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void Throws_configures_interceptor_so_that_the_specified_exception_is_thrown_when_apply_is_called()
-        {
-            this.builder.Throws(x => new FormatException());
-
-            var exception = Record.Exception(() =>
-                this.ruleProducedByFactory.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
-
-            exception.Should().BeAnExceptionOfType<FormatException>();
-        }
-
-        [Fact]
         public void Throws_returns_configuration()
         {
             var result = this.builder.Throws(A.Dummy<Func<IFakeObjectCall, Exception>>());
 
             result.Should().Be(this.builder);
-        }
-
-        [Fact]
-        public void Throws_called_from_return_value_configuration_configures_interceptor_so_that_the_specified_exception_is_thrown_when_apply_is_called()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-
-            returnConfig.Throws(x => new FormatException());
-
-            var exception = Record.Exception(() =>
-                this.ruleProducedByFactory.Applicator(A.Fake<IInterceptedFakeObjectCall>()));
-
-            exception.Should().BeAnExceptionOfType<FormatException>();
-        }
-
-        [Fact]
-        public void Should_pass_call_to_interceptor_when_throwing_exception()
-        {
-            // Arrange
-            var factory = A.Fake<Func<IFakeObjectCall, Exception>>();
-            var call = A.Fake<IInterceptedFakeObjectCall>();
-            this.builder.Throws(factory);
-
-            // Act
-            var exception = Record.Exception(() => this.ruleProducedByFactory.Applicator(call));
-
-            // Assert
-            exception.Should().BeAnExceptionAssignableTo<Exception>();
-            A.CallTo(() => factory(call)).MustHaveHappened();
-        }
-
-        [Fact]
-        public void Should_pass_call_to_interceptor_when_throwing_exception_specified_in_return_value_configuration()
-        {
-            // Arrange
-            var config = this.CreateTestableReturnConfiguration();
-            var factory = A.Fake<Func<IFakeObjectCall, Exception>>();
-            var call = A.Fake<IInterceptedFakeObjectCall>();
-            config.Throws(factory);
-
-            // Act
-            var exception = Record.Exception(() => this.ruleProducedByFactory.Applicator(call));
-
-            // Assert
-            exception.Should().BeAnExceptionAssignableTo<Exception>();
-            A.CallTo(() => factory(call)).MustHaveHappened();
         }
 
         [Fact]
@@ -267,14 +181,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void CallBaseMethod_sets_the_applicator_to_a_null_action()
-        {
-            this.builder.CallsBaseMethod();
-
-            this.builder.RuleBeingBuilt.Applicator.Should().NotBeNull();
-        }
-
-        [Fact]
         public void CallsBaseMethod_for_function_calls_sets_CallBaseMethod_to_true_on_the_built_rule()
         {
             var config = this.CreateTestableReturnConfiguration();
@@ -290,15 +196,6 @@ namespace FakeItEasy.Tests.Configuration
             var result = config.CallsBaseMethod();
 
             result.Should().BeSameAs(this.builder);
-        }
-
-        [Fact]
-        public void CallBaseMethod_for_function_calls_sets_the_applicator_to_a_null_action()
-        {
-            var config = this.CreateTestableReturnConfiguration();
-            config.CallsBaseMethod();
-
-            this.builder.RuleBeingBuilt.Applicator.Should().NotBeNull();
         }
 
         [Fact]

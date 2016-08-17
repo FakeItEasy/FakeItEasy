@@ -40,7 +40,7 @@ namespace FakeItEasy.Configuration
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
             var rule = this.callRuleFactory(this.expressionParser.Parse(callSpecification));
-            rule.Applicator = x => { };
+            rule.UseApplicator(x => { });
             this.manager.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration(this.manager, rule);
         }

@@ -64,7 +64,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.Actions.Add(x => firstWasCalled = true);
             this.rule.Actions.Add(x => secondWasCalled = true);
 
-            this.rule.Applicator = x => { };
+            this.rule.UseApplicator(x => { });
 
             // Act
             this.rule.Apply(A.Fake<IInterceptedFakeObjectCall>());
@@ -80,7 +80,7 @@ namespace FakeItEasy.Tests.Configuration
             var call = A.Fake<IInterceptedFakeObjectCall>();
             IFakeObjectCall passedCall = null;
 
-            this.rule.Applicator = x => { };
+            this.rule.UseApplicator(x => { });
             this.rule.Actions.Add(x => passedCall = x);
 
             this.rule.Apply(call);
@@ -93,7 +93,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             var call = A.Fake<IInterceptedFakeObjectCall>();
 
-            this.rule.Applicator = x => { };
+            this.rule.UseApplicator(x => { });
             this.rule.CallBaseMethod = true;
             this.rule.Apply(call);
 
@@ -105,7 +105,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             this.rule.OutAndRefParametersValueProducer = x => new object[] { 1, "foo" };
-            this.rule.Applicator = x => { };
+            this.rule.UseApplicator(x => { });
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
 
@@ -123,7 +123,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             this.rule.OutAndRefParametersValueProducer = x => new object[] { 1, "foo", "bar" };
-            this.rule.Applicator = x => { };
+            this.rule.UseApplicator(x => { });
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
             A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod("OutAndRef"));
@@ -267,11 +267,11 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void Applicator_should_not_be_settable_more_than_once()
+        public void UseApplicator_should_not_be_callable_more_than_once()
         {
-            this.rule.Applicator = x => { };
+            this.rule.UseApplicator(x => { });
 
-            var exception = Record.Exception(() => this.rule.Applicator = x => { });
+            var exception = Record.Exception(() => this.rule.UseApplicator(x => { }));
             exception.Should().BeAnExceptionOfType<InvalidOperationException>();
         }
 
