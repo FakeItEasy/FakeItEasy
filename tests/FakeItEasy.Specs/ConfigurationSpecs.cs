@@ -14,6 +14,8 @@ namespace FakeItEasy.Specs
             void Bar();
 
             int Baz();
+
+            string Bas();
         }
 
         [Scenario]
@@ -390,6 +392,199 @@ namespace FakeItEasy.Specs
             "Then it throws a fake configuration exception"
                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
                    .And.Message.Should().Contain("Sealed methods can not be intercepted."));
+        }
+
+        [Scenario]
+        public static void DoesNothingAfterStrictVoid(
+            IFoo fake,
+            Exception exception)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(options => options.Strict()));
+
+            "And I configure a void method to do nothing"
+                .x(() => A.CallTo(() => fake.Bar()).DoesNothing());
+
+            "When I call the method"
+                .x(() => exception = Record.Exception(() => fake.Bar()));
+
+            "Then it does not throw an exception"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
+        public static void DoesNothingAfterStrictValueType(
+            IFoo fake,
+            int result)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(options => options.Strict()));
+
+            "And I configure all methods to do nothing"
+                .x(() => A.CallTo(fake).DoesNothing());
+
+            "When I call a value type method"
+                .x(() => result = fake.Baz());
+
+            "Then it returns a default instance of the value type"
+                .x(() => result.Should().Be(0));
+        }
+
+        [Scenario]
+        public static void DoesNothingAfterStrictReferenceType(
+            IFoo fake,
+            string result)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(options => options.Strict()));
+
+            "And I configure all methods to do nothing"
+                .x(() => A.CallTo(fake).DoesNothing());
+
+            "When I call a reference type method"
+                .x(() => result = fake.Bas());
+
+            "Then it returns null"
+                .x(() => result.Should().BeNull());
+        }
+
+        [Scenario]
+        public static void ThrowsAndDoesNothingAppliedToSameACallTo(
+            IFoo fake,
+            IVoidArgumentValidationConfiguration callToBar,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And I identify a method to configure"
+                .x(() => callToBar = A.CallTo(() => fake.Bar()));
+
+            "And I configure the method to throw an exception"
+                .x(() => callToBar.Throws<Exception>());
+
+            "When I configure the method to do nothing"
+                .x(() => exception = Record.Exception(() => callToBar.DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void DoesNothingAndThrowsAppliedToSameACallTo(
+            IFoo fake,
+            IVoidArgumentValidationConfiguration callToBar,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And I identify a method to configure"
+                .x(() => callToBar = A.CallTo(() => fake.Bar()));
+
+            "And I configure the method to do nothing"
+                .x(() => callToBar.DoesNothing());
+
+            "When I configure the method to throw an exception"
+                .x(() => exception = Record.Exception(() => callToBar.Throws<Exception>()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void CallsBaseMethodAndDoesNothing(BaseClass fake)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<BaseClass>());
+
+            "And I configure a method to call the base method"
+                .x(() => A.CallTo(() => fake.DoSomething()).CallsBaseMethod());
+
+            "And I configure the method to do nothing"
+                .x(() => A.CallTo(() => fake.DoSomething()).DoesNothing());
+
+            "When I call the method"
+                .x(() => fake.DoSomething());
+
+            "Then it does nothing"
+                .x(() => fake.WasCalled.Should().BeFalse());
+        }
+
+        [Scenario]
+        public static void CallsBaseMethodAndDoesNothingAppliedToSameACallTo(
+            BaseClass fake,
+            IVoidArgumentValidationConfiguration callToDoSomething,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<BaseClass>());
+
+            "And I identify a method to configure"
+                .x(() => callToDoSomething = A.CallTo(() => fake.DoSomething()));
+
+            "And I configure the method to call the base method"
+                .x(() => callToDoSomething.CallsBaseMethod());
+
+            "And I configure the method to do nothing"
+                .x(() => exception = Record.Exception(() => callToDoSomething.DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void InvokesAfterStrictVoid(
+            IFoo fake,
+            Exception exception)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(options => options.Strict()));
+
+            "And I configure a void method to invoke an action"
+                .x(() => A.CallTo(() => fake.Bar()).Invokes(() => { }));
+
+            "When I call the method"
+                .x(() => exception = Record.Exception(() => fake.Bar()));
+
+            "Then it does not throw an exception"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
+        public static void InvokesAfterStrictValueType(
+            IFoo fake,
+            int result)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(options => options.Strict()));
+
+            "And I configure a value type method to invoke an action"
+                .x(() => A.CallTo(() => fake.Baz()).Invokes(() => { }));
+
+            "When I call the method"
+                .x(() => result = fake.Baz());
+
+            "Then it returns a default instance of the value type"
+                .x(() => result.Should().Be(0));
+        }
+
+        [Scenario]
+        public static void InvokesAfterStrictReferenceType(
+            IFoo fake,
+            string result)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(options => options.Strict()));
+
+            "And I configure all methods to invoke an action"
+                .x(() => A.CallTo(fake).Invokes(() => { }));
+
+            "When I call a reference type method"
+                .x(() => result = fake.Bas());
+
+            "Then it returns null"
+                .x(() => result.Should().BeNull());
         }
 
         public class BaseClass
