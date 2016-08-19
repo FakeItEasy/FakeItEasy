@@ -106,9 +106,17 @@ task :vars do
 end
 
 desc "Restore NuGet packages"
-exec :restore do |cmd|
-  cmd.command = nuget_command
-  cmd.parameters "restore #{solution} -PackagesDirectory #{packages}"
+task :restore do
+  restore_cmd = Exec.new
+  restore_cmd.command = nuget_command
+  restore_cmd.parameters "restore #{solution} -PackagesDirectory #{packages}"
+  restore_cmd.execute
+
+  # performing restore on the solution doesn't restore
+  # all the xprojs' dependencies, so do them separately
+  netstd_unit_test_directories.each do | test_directory |
+    restore_dependencies_for_project test_directory
+  end
 end
 
 directory logs
@@ -224,10 +232,6 @@ end
 
 desc "Build solution"
 task :build => [:clean, :restore, logs] do
-  netstd_unit_test_directories.each do | test_directory |
-    restore_dependencies_for_project test_directory
-  end
-
   run_msbuild solution, "Build", msbuild_command, packages
 end
 
