@@ -13,40 +13,17 @@ namespace FakeItEasy.Configuration
     {
         private readonly List<WherePredicate> wherePredicates;
         private Action<IInterceptedFakeObjectCall> applicator;
-        private bool canSetApplicator;
+        private bool wasApplicatorSet;
         private Func<IFakeObjectCall, ICollection<object>> outAndRefParametersValueProducer;
         private bool canSetOutAndRefParametersValueProducer;
 
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
-            this.applicator = call => call.SetReturnValue(call.Method.ReturnType.GetDefaultValue());
-            this.canSetApplicator = true;
+            this.UseDefaultApplicator();
+            this.wasApplicatorSet = false;
             this.canSetOutAndRefParametersValueProducer = true;
             this.wherePredicates = new List<WherePredicate>();
-        }
-
-        /// <summary>
-        /// Gets or sets an action that is called by the Apply method to apply this
-        /// rule to a fake object call.
-        /// </summary>
-        public Action<IInterceptedFakeObjectCall> Applicator
-        {
-            get
-            {
-                return this.applicator;
-            }
-
-            set
-            {
-                if (!this.canSetApplicator)
-                {
-                    throw new InvalidOperationException("The behavior for this call has already been defined");
-                }
-
-                this.applicator = value;
-                this.canSetApplicator = false;
-            }
         }
 
         /// <summary>
@@ -94,6 +71,31 @@ namespace FakeItEasy.Configuration
         /// <value></value>
         public abstract string DescriptionOfValidCall { get; }
 
+        /// <summary>
+        /// Sets an action that is called by the <see cref="Apply"/> method to apply this
+        /// rule to a fake object call.
+        /// </summary>
+        /// <param name="newApplicator">The action to use.</param>
+        public void UseApplicator(Action<IInterceptedFakeObjectCall> newApplicator)
+        {
+            if (this.wasApplicatorSet)
+            {
+                throw new InvalidOperationException("The behavior for this call has already been defined");
+            }
+
+            this.applicator = newApplicator;
+            this.wasApplicatorSet = true;
+        }
+
+        /// <summary>
+        /// Sets (or resets) the applicator (see <see cref="UseApplicator"/>) to the default action:
+        /// the same as a newly-created rule would have.
+        /// </summary>
+        public void UseDefaultApplicator()
+        {
+            this.UseApplicator(call => call.SetReturnValue(call.Method.ReturnType.GetDefaultValue()));
+        }
+
         public virtual void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
             Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
@@ -103,7 +105,7 @@ namespace FakeItEasy.Configuration
                 action.Invoke(fakeObjectCall);
             }
 
-            this.Applicator.Invoke(fakeObjectCall);
+            this.applicator.Invoke(fakeObjectCall);
             this.ApplyOutAndRefParametersValueProducer(fakeObjectCall);
 
             if (this.CallBaseMethod)

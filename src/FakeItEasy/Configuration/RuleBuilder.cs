@@ -49,7 +49,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            this.RuleBeingBuilt.Applicator = x => { throw exceptionFactory(x); };
+            this.RuleBeingBuilt.UseApplicator(x => { throw exceptionFactory(x); });
             return this;
         }
 
@@ -63,7 +63,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallSpecifiedConfiguration DoesNothing()
         {
-            this.RuleBeingBuilt.Applicator = x => { };
+            this.RuleBeingBuilt.UseDefaultApplicator();
             return this;
         }
 
@@ -77,7 +77,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallSpecifiedConfiguration CallsBaseMethod()
         {
-            this.RuleBeingBuilt.Applicator = x => { };
+            this.RuleBeingBuilt.UseApplicator(x => { });
             this.RuleBeingBuilt.CallBaseMethod = true;
             return this;
         }
@@ -129,7 +129,7 @@ namespace FakeItEasy.Configuration
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
-                this.ParentConfiguration.RuleBeingBuilt.Applicator = x => x.SetReturnValue(valueProducer(x));
+                this.ParentConfiguration.RuleBeingBuilt.UseApplicator(x => x.SetReturnValue(valueProducer(x)));
                 return this.ParentConfiguration;
             }
 
