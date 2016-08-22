@@ -17,3 +17,4 @@ packages
 *.[Dd]ot[Ss]ettings.*
 Thumbs.db
 *.received.txt
+*.nuget.targets

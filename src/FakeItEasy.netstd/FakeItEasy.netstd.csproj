@@ -614,9 +614,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FakeItEasy.netstd.nuget.targets">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="FakeItEasy.nuspec" />
     <None Include="project.json" />
     <!-- A reference to the entire .NET Framework is automatically included -->
