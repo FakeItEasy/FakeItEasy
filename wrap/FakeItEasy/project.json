@@ -5,10 +5,10 @@
   },
   "frameworks": {
     "netstandard1.6": {
-      "wrappedProject": "../../src/FakeItEasy.dotnet/FakeItEasy.dotnet.csproj",
+      "wrappedProject": "../../src/FakeItEasy.netstd/FakeItEasy.netstd.csproj",
       "bin": {
-        "assembly": "../../src/FakeItEasy.dotnet/bin/{configuration}/FakeItEasy.dll",
-        "pdb": "../../src/FakeItEasy.dotnet/{configuration}/FakeItEasy.pdb"
+        "assembly": "../../src/FakeItEasy.netstd/bin/{configuration}/FakeItEasy.dll",
+        "pdb": "../../src/FakeItEasy.netstd/{configuration}/FakeItEasy.pdb"
       }
     }
   }
