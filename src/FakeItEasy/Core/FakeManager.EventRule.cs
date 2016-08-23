@@ -63,26 +63,6 @@ namespace FakeItEasy.Core
                 this.HandleEventCall(eventCall);
             }
 
-            // Attempts to preserve the stack trace of an existing exception when re-throw via throw or throw ex.
-            // Nicked from
-            // http://weblogs.asp.net/fmarguerie/archive/2008/01/02/rethrowing-exceptions-and-preserving-the-full-call-stack-trace.aspx.
-            // If reduced trust context (for example) precludes
-            // invoking internal members on Exception, the stack trace will not be preserved.
-            [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try method.")]
-            private static void TryPreserveStackTrace(Exception exception)
-            {
-                try
-                {
-                    var preserveStackTrace = typeof(Exception).GetMethod(
-                                                                    "InternalPreserveStackTrace",
-                                                                    BindingFlags.Instance | BindingFlags.NonPublic);
-                    preserveStackTrace.Invoke(exception, null);
-                }
-                catch
-                {
-                }
-            }
-
             private void HandleEventCall(EventCall eventCall)
             {
                 if (eventCall.IsEventRegistration())
@@ -164,14 +144,9 @@ namespace FakeItEasy.Core
                     }
                     catch (TargetInvocationException ex)
                     {
-                        if (ex.InnerException != null)
-                        {
-                            // Exceptions thrown by event handlers should propagate outward as is, not
-                            // be wrapped in a TargetInvocationException.
-                            TryPreserveStackTrace(ex.InnerException);
-                            throw ex.InnerException;
-                        }
-
+                        // Exceptions thrown by event handlers should propagate outward as is, not
+                        // be wrapped in a TargetInvocationException.
+                        ex.InnerException?.Rethrow();
                         throw;
                     }
                 }

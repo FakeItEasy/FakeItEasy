@@ -1,5 +1,7 @@
 namespace FakeItEasy.Core
 {
+    using System.Reflection;
+
     /// <summary>
     /// A call rule that applies to any call and just delegates the
     /// call to the wrapped object.
@@ -50,7 +52,17 @@ namespace FakeItEasy.Core
             Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
             var parameters = fakeObjectCall.Arguments.GetUnderlyingArgumentsArray();
-            var valueFromWrappedInstance = fakeObjectCall.Method.Invoke(this.wrappedObject, parameters);
+            object valueFromWrappedInstance;
+            try
+            {
+                valueFromWrappedInstance = fakeObjectCall.Method.Invoke(this.wrappedObject, parameters);
+            }
+            catch (TargetInvocationException ex)
+            {
+                ex.InnerException?.Rethrow();
+                throw;
+            }
+
             fakeObjectCall.SetReturnValue(valueFromWrappedInstance);
         }
     }
