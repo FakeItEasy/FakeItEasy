@@ -10,9 +10,9 @@
         /// <summary>
         /// Returns the called method symbol for the invocation expression
         /// </summary>
-        /// <param name="call"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="call">The invocation expression that the symbol is required</param>
+        /// <param name="context">Current context</param>
+        /// <returns>The symbol for the invocation call</returns>
         internal static IMethodSymbol GetCalledMethodSymbol(InvocationExpressionSyntax call, SyntaxNodeAnalysisContext context)
         {
             var name = (call?.Expression as MemberAccessExpressionSyntax)?.Name

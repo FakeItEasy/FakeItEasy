@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FakeItEasy.Analyzer
+﻿namespace FakeItEasy.Analyzer
 {
     using System;
     using System.Collections.Immutable;
@@ -13,7 +11,7 @@ namespace FakeItEasy.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     class NonVirtualSetupAnalyzer:DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = CreateSupportedDiagnostics();
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetup);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -35,16 +33,15 @@ namespace FakeItEasy.Analyzer
             var invocationParent = invocationExpression
                                     .Ancestors()
                                     .OfType<InvocationExpressionSyntax>()
-                                    .Take(1)
-                                    .ToList();
+                                    .FirstOrDefault();
 
-            if (!IsSetupInvocation(invocationParent))
-                return;
-
-            if (!IsFakeItEasy(context, invocationParent.Single()))
+            if (!IsSetupInvocation(context, invocationParent))
                 return;
 
             var symbolInfo = context.SemanticModel.GetSymbolInfo(context.Node);
+
+            if (symbolInfo.Symbol == null)
+                return;
 
             if (!symbolInfo.Symbol.IsVirtual)
             {
@@ -55,12 +52,7 @@ namespace FakeItEasy.Analyzer
             }
         }
 
-        private static bool IsSetupInvocation(IEnumerable<InvocationExpressionSyntax> invocationParent)
-        {
-            return invocationParent.Any(x => x.Expression.ToString() == "A.CallTo");
-        }
-
-        private static bool IsFakeItEasy(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax parent)
+        private static bool IsSetupInvocation(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax parent)
         {
             //Is this genuine FakeItEasy A.CallTo method?
 
@@ -81,19 +73,11 @@ namespace FakeItEasy.Analyzer
 
         private static bool IsInterface(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocationExpression)
         {
-            var typeKind = context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol.ContainingType.TypeKind;
+            var symbol = context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol;
+
+            var typeKind = symbol?.ContainingType.TypeKind;
 
             return typeKind == TypeKind.Interface;
-        }
-
-        private static ImmutableArray<DiagnosticDescriptor> CreateSupportedDiagnostics()
-        {
-            var supportedDiagnostics = new[]
-            {
-                DiagnosticDefinitions.NonVirtualSetup
-            };
-
-            return supportedDiagnostics.ToImmutableArray();
         }
     }
 }

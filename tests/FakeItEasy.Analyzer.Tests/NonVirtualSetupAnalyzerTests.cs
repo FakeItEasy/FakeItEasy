@@ -51,9 +51,9 @@ namespace FakeItEasy.Analyzer.Tests
         }
     }
 
-    internal class Foo
+    public class Foo
     {
-        internal virtual void Bar()
+        public virtual void Bar()
         {
             throw new NotImplementedException();
         }
@@ -90,9 +90,9 @@ namespace AnalyzerPrototypeSubjectConfusion
         }
     }
 
-    internal class Foo
+    public class Foo
     {
-        internal void Bar(string name)
+        public void Bar(string name)
         {
             throw new NotImplementedException();
         }
@@ -146,9 +146,9 @@ namespace FakeItEasy.Analyzer.Tests
         }
     }
 
-    internal class Foo
+    public class Foo
     {
-        internal void Bar()
+        public void Bar()
         {
             throw new NotImplementedException();
         }
@@ -171,6 +171,46 @@ namespace FakeItEasy.Analyzer.Tests
         }
 
         [Fact]
+        public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Member_When_Referenced_Using_Static()
+        {
+            const string test = @"using System;
+using static FakeItEasy.A;
+
+namespace AnalyzerPrototypeSubjectStatic
+{
+    class TheStaticClass
+    {
+        void TheTest()
+        {
+            var foo = Fake<Foo>();
+            CallTo(() => foo.Bar());
+        }
+    }
+
+    internal class Foo
+    {
+        internal void Bar()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+";
+
+    VerifyCSharpDiagnostic(
+    test,
+    new DiagnosticResult
+    {
+        Id = DiagnosticDefinitions.NonVirtualSetup.Id,
+        Message =
+            "Non virtual member 'Bar' cannot be intercepted.",
+        Severity = DiagnosticSeverity.Warning,
+        Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 26) }
+            });
+
+        }
+
+        [Fact]
         public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Member_WithArguments()
         {
             const string test = @"using System;
@@ -187,9 +227,9 @@ namespace FakeItEasy.Analyzer.Tests
         }
     }
 
-    internal class Foo
+    public class Foo
     {
-        internal void Bar(string name)
+        public void Bar(string name)
         {
             throw new NotImplementedException();
         }
@@ -207,6 +247,41 @@ namespace FakeItEasy.Analyzer.Tests
             Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
         });
 
+
+        }
+
+        [Fact]
+        public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Property_Set()
+        {
+            const string test = @"using FakeItEasy;
+
+namespace PrototypeProperty
+{
+    class TheClass
+    {
+        void TheTest()
+        {
+            var foo = A.Fake<Foo>();
+            A.CallToSet(() => foo.Bar);
+        }
+    }
+
+    internal class Foo
+    {
+        public int Bar { get; set; }
+    }
+}";
+
+            VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.NonVirtualSetup.Id,
+                    Message =
+                        "Non virtual member 'Bar' cannot be intercepted.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] {new DiagnosticResultLocation("Test0.cs", 10, 31)}
+                });
 
         }
 
@@ -229,9 +304,9 @@ namespace FakeItEasy.Analyzer.Tests
         }
     }
 
-    internal class Foo
+    public class Foo
     {
-        internal void DifferentNameThanOtherTests(string name)
+        public void DifferentNameThanOtherTests(string name)
         {
             throw new NotImplementedException();
         }
