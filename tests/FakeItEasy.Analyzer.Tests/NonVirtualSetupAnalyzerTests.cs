@@ -171,6 +171,47 @@ namespace FakeItEasy.Analyzer.Tests
         }
 
         [Fact]
+        public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Static_Member()
+        {
+            const string test = @"using System;
+
+//Temporary class to get non-virtual test correct
+namespace FakeItEasy.Analyzer.Tests
+{
+    class TheClass
+    {
+        void TheTest()
+        {
+            var foo = A.Fake<Foo>();
+            A.CallTo(() => Foo.Bar());
+        }
+    }
+
+    public class Foo
+    {
+        public static void Bar()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
+";
+
+            VerifyCSharpDiagnostic(
+     test,
+     new DiagnosticResult
+     {
+         Id = DiagnosticDefinitions.NonVirtualSetup.Id,
+         Message =
+             "Non virtual member 'Bar' cannot be intercepted.",
+         Severity = DiagnosticSeverity.Warning,
+         Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
+     });
+
+        }
+
+        [Fact]
         public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Member_When_Referenced_Using_Static()
         {
             const string test = @"using System;
