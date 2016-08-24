@@ -31,10 +31,12 @@
                 return;
 
             var invocationParent = invocationExpression
-                                    .Ancestors()
+                                    .AncestorsAndSelf()
                                     .OfType<InvocationExpressionSyntax>()
                                     .FirstOrDefault();
 
+            //Property call isn't considered an Invocation, just the fakeiteasy call itself
+           
             if (!IsSetupInvocation(context, invocationParent))
                 return;
 

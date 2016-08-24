@@ -292,6 +292,41 @@ namespace AnalyzerPrototypeSubjectStatic
         }
 
         [Fact]
+        public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Property_Set()
+        {
+            const string test = @"using FakeItEasy;
+
+namespace PrototypeProperty
+{
+    class TheClass
+    {
+        void TheTest()
+        {
+            var foo = A.Fake<Foo>();
+            A.CallToSet(() => foo.Bar);
+        }
+    }
+
+    internal class Foo
+    {
+        public int Bar { get; set; }
+    }
+}";
+
+            VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.NonVirtualSetup.Id,
+                    Message =
+                        "Non virtual member 'Bar' cannot be intercepted.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] {new DiagnosticResultLocation("Test0.cs", 10, 31)}
+                });
+
+         }
+
+        [Fact]
         public void Diagnostic_Should_Correctly_Reflect_Member_Name()
         {
             //Test to ensure member name hasn't mistakenly been hardcoded
