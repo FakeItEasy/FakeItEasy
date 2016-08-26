@@ -114,6 +114,7 @@
     <Compile Include="UnconfiguredFakeSpecs.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="UnnaturalFakeSpecs.cs" />
+    <Compile Include="WrappingFakeSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
