@@ -147,20 +147,6 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(expectedConfiguration);
         }
 
-        [Fact]
-        public void Should_add_call_rule_to_fake_manager_when_configuring_any_call()
-        {
-            // Arrange
-            var fake = A.Fake<IFoo>();
-            var manager = Fake.GetFakeManager(fake);
-
-            // Act
-            this.configurationManager.CallTo(fake);
-
-            // Assert
-            manager.AllUserRules.Single().Rule.Should().BeOfType<AnyCallCallRule>();
-        }
-
         private void OnSetup()
         {
             this.configurationFactory = A.Fake<IConfigurationFactory>();

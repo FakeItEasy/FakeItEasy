@@ -7,7 +7,6 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using FluentAssertions.Execution;
     using Xunit;
 
     public class RuleBuilderTests
@@ -331,19 +330,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void Assert_with_void_call_should_remove_built_rule_from_fake_object()
-        {
-            // Arrange
-            this.fakeManager.AddRuleFirst(this.ruleProducedByFactory);
-
-            // Act
-            this.builder.MustHaveHappened();
-
-            // Assert
-            this.fakeManager.Rules.Should().BeEmpty();
-        }
-
-        [Fact]
         public void Assert_with_function_call_should_assert_on_assertions_produced_by_factory()
         {
             // Arrange
@@ -360,20 +346,6 @@ namespace FakeItEasy.Tests.Configuration
                 A<Func<int, bool>>.That.Matches(x => x.Invoke(99)),
                 "exactly 99 times"))
                 .MustHaveHappened();
-        }
-
-        [Fact]
-        public void Assert_with_function_call_should_remove_built_rule_from_fake_object()
-        {
-            // Arrange
-            this.fakeManager.AddRuleFirst(this.ruleProducedByFactory);
-
-            // Act
-            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>(this.builder);
-            returnConfig.MustHaveHappened();
-
-            // Assert
-            this.fakeManager.Rules.Should().BeEmpty();
         }
 
         [Fact]

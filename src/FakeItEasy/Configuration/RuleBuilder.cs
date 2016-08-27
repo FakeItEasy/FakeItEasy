@@ -10,6 +10,7 @@ namespace FakeItEasy.Configuration
     {
         private readonly FakeAsserter.Factory asserterFactory;
         private readonly FakeManager manager;
+        private bool wasRuleAdded;
 
         internal RuleBuilder(BuildableCallRule ruleBeingBuilt, FakeManager manager, FakeAsserter.Factory asserterFactory)
         {
@@ -48,6 +49,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
+            this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseApplicator(x => { throw exceptionFactory(x); });
             return this;
         }
@@ -62,6 +64,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallSpecifiedConfiguration DoesNothing()
         {
+            this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseDefaultApplicator();
             return this;
         }
@@ -69,13 +72,14 @@ namespace FakeItEasy.Configuration
         public virtual IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
         {
             Guard.AgainstNull(action, nameof(action));
-
+            this.AddRuleIfNeeded();
             this.RuleBeingBuilt.Actions.Add(action);
             return this;
         }
 
         public virtual IAfterCallSpecifiedConfiguration CallsBaseMethod()
         {
+            this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseApplicator(x => { });
             this.RuleBeingBuilt.CallBaseMethod = true;
             return this;
@@ -85,6 +89,7 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
+            this.AddRuleIfNeeded();
             this.RuleBeingBuilt.OutAndRefParametersValueProducer = valueProducer;
 
             return this;
@@ -94,7 +99,6 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
 
-            this.manager.RemoveRule(this.RuleBeingBuilt);
             var asserter = this.asserterFactory.Invoke(this.Calls);
 
             var description = new StringBuilderOutputWriter();
@@ -103,6 +107,15 @@ namespace FakeItEasy.Configuration
             asserter.AssertWasCalled(this.Matcher.Matches, description.Builder.ToString(), repeatConstraint.Matches, repeatConstraint.ToString());
 
             return new UnorderedCallAssertion(this.manager, this.Matcher, description.Builder.ToString(), repeatConstraint);
+        }
+
+        private void AddRuleIfNeeded()
+        {
+            if (!this.wasRuleAdded)
+            {
+                this.manager.AddRuleFirst(this.RuleBeingBuilt);
+                this.wasRuleAdded = true;
+            }
         }
 
         public class ReturnValueConfiguration<TMember>
@@ -127,16 +140,14 @@ namespace FakeItEasy.Configuration
             public IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily(Func<IFakeObjectCall, TMember> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
-
+                this.ParentConfiguration.AddRuleIfNeeded();
                 this.ParentConfiguration.RuleBeingBuilt.UseApplicator(x => x.SetReturnValue(valueProducer(x)));
                 return this.ParentConfiguration;
             }
 
             public IReturnValueConfiguration<TMember> Invokes(Action<IFakeObjectCall> action)
             {
-                Guard.AgainstNull(action, nameof(action));
-
-                this.ParentConfiguration.RuleBeingBuilt.Actions.Add(action);
+                this.ParentConfiguration.Invokes(action);
                 return this;
             }
 
