@@ -143,9 +143,7 @@
     <Compile Include="Core\FakeWrapperConfigurator.cs" />
     <Compile Include="Core\IArgumentConstraint.cs" />
     <Compile Include="Core\IArgumentConstraintTrapper.cs" />
-    <Compile Include="Core\ICallCollectionAndCallMatcherAccessor.cs" />
     <Compile Include="Core\ICallMatcher.cs" />
-    <Compile Include="Core\ICallMatcherAccessor.cs" />
     <Compile Include="Core\ICompletedFakeObjectCall.cs" />
     <Compile Include="Core\IEventRaiserArguments.cs" />
     <Compile Include="Core\IExceptionThrower.cs" />

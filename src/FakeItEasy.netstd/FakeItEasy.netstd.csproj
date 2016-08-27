@@ -288,14 +288,8 @@
     <Compile Include="..\FakeItEasy\Core\IArgumentConstraintTrapper.cs">
       <Link>Core\IArgumentConstraintTrapper.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Core\ICallCollectionAndCallMatcherAccessor.cs">
-      <Link>Core\ICallCollectionAndCallMatcherAccessor.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Core\ICallMatcher.cs">
       <Link>Core\ICallMatcher.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Core\ICallMatcherAccessor.cs">
-      <Link>Core\ICallMatcherAccessor.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Core\ICompletedFakeObjectCall.cs">
       <Link>Core\ICompletedFakeObjectCall.cs</Link>
