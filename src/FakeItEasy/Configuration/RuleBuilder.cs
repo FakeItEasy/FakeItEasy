@@ -6,8 +6,7 @@ namespace FakeItEasy.Configuration
 
     internal class RuleBuilder
         : IVoidArgumentValidationConfiguration,
-          IAfterCallSpecifiedWithOutAndRefParametersConfiguration,
-          ICallCollectionAndCallMatcherAccessor
+          IAfterCallSpecifiedWithOutAndRefParametersConfiguration
     {
         private readonly FakeAsserter.Factory asserterFactory;
         private readonly FakeManager manager;
@@ -107,7 +106,7 @@ namespace FakeItEasy.Configuration
         }
 
         public class ReturnValueConfiguration<TMember>
-            : IAnyCallConfigurationWithReturnTypeSpecified<TMember>, ICallCollectionAndCallMatcherAccessor
+            : IAnyCallConfigurationWithReturnTypeSpecified<TMember>
         {
             public ReturnValueConfiguration(RuleBuilder parentConfiguration)
             {
