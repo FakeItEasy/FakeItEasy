@@ -9,9 +9,11 @@
     using Microsoft.CodeAnalysis.Diagnostics;
 
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    class NonVirtualSetupAnalyzer:DiagnosticAnalyzer
+    class NonVirtualSetupAnalyzer : DiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetup);
+
+        private static readonly ImmutableDictionary<string, DiagnosticDescriptor> DiagnosticsMap = CreateDiagnosticsMap();
 
         public override void Initialize(AnalysisContext context)
         {
@@ -20,29 +22,41 @@
                 throw new ArgumentNullException(nameof(context));
             }
 
-            context.RegisterSyntaxNodeAction(AnalyzeCall, SyntaxKind.InvocationExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeMethod,
+                SyntaxKind.InvocationExpression);
+
+            context.RegisterSyntaxNodeAction(AnalyzeProperty,
+                SyntaxKind.SimpleMemberAccessExpression);
         }
 
-        private static void AnalyzeCall(SyntaxNodeAnalysisContext context)
+        public static void AnalyzeMethod(SyntaxNodeAnalysisContext context)
         {
-            var invocationExpression = (InvocationExpressionSyntax)context.Node;
+            //Method so exclude non-methods and interfaces
 
-            if (IsInterface(context, invocationExpression))
-                return;
+            AnalyzeCall<InvocationExpressionSyntax>(context, x => NotMethod(x) || Interface(x));
+        }
+
+        public static void AnalyzeProperty(SyntaxNodeAnalysisContext context)
+        {
+            //Propery so exclude methods
+
+            AnalyzeCall<MemberAccessExpressionSyntax>(context, x => Method(x));
+        }
+
+        private static void AnalyzeCall<T>(SyntaxNodeAnalysisContext context, Func<SymbolInfo, bool> exclusions) where T : ExpressionSyntax
+        {
+            var symbolInfo = context.SemanticModel.GetSymbolInfo(context.Node);
+
+            if (exclusions.Invoke(symbolInfo)) return;
+
+            var invocationExpression = (T)context.Node;
 
             var invocationParent = invocationExpression
-                                    .AncestorsAndSelf()
+                                    .Ancestors()
                                     .OfType<InvocationExpressionSyntax>()
                                     .FirstOrDefault();
 
-            //Property call isn't considered an Invocation, just the fakeiteasy call itself
-           
             if (!IsSetupInvocation(context, invocationParent))
-                return;
-
-            var symbolInfo = context.SemanticModel.GetSymbolInfo(context.Node);
-
-            if (symbolInfo.Symbol == null)
                 return;
 
             if (!symbolInfo.Symbol.IsVirtual)
@@ -56,10 +70,6 @@
 
         private static bool IsSetupInvocation(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax parent)
         {
-            //Is this genuine FakeItEasy A.CallTo method?
-
-            const string fakeItEasyMethod = "FakeItEasy.A.CallTo";
-
             var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(parent, context);
 
             if (methodSymbol == null)
@@ -70,16 +80,29 @@
             var methodFullName =
                 string.Concat(methodSymbol.ContainingType.GetFullName(), ".", methodSymbol.GetDecoratedName());
 
-            return methodFullName == fakeItEasyMethod;
+            return DiagnosticsMap.ContainsKey(methodFullName);
         }
 
-        private static bool IsInterface(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocationExpression)
+        private static ImmutableDictionary<string, DiagnosticDescriptor> CreateDiagnosticsMap()
         {
-            var symbol = context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol;
+            var memberNames = DiagnosticSubjects.CallSpecMemberNames();
 
-            var typeKind = symbol?.ContainingType.TypeKind;
+            return memberNames.ToImmutableDictionary(name => name, name => DiagnosticDefinitions.NonVirtualSetup);
+        }
 
-            return typeKind == TypeKind.Interface;
+        private static bool NotMethod(SymbolInfo x)
+        {
+            return x.Symbol?.Kind != SymbolKind.Method;
+        }
+
+        private static bool Method(SymbolInfo x)
+        {
+            return x.Symbol?.Kind == SymbolKind.Method;
+        }
+
+        private static bool Interface(SymbolInfo x)
+        {
+            return x.Symbol?.ContainingType.TypeKind == TypeKind.Interface;
         }
     }
 }
