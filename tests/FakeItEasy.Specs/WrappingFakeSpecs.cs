@@ -15,6 +15,8 @@
 
             void VoidMethod(string parameter);
 
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "ref", Justification = "There are no other consumers, so the name is safe.")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "out", Justification = "There are no other consumers, so the name is safe.")]
             [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Required for test scenario")]
             [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#", Justification = "Required for test scenario")]
             void OutAndRefMethod(ref int @ref, out int @out);
