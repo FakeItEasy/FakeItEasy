@@ -24,61 +24,68 @@ namespace FakeItEasy.Specs
             IEnumerable<int> countsWhileRecording,
             IEnumerable<int> countsDuringPlayback)
         {
-            "establish"
+            "Given a call storage object"
+                .x(() => inMemoryStorage = new InMemoryStorage());
+
+            "And a real service to wrap while recording"
                 .x(() =>
-                    {
-                        inMemoryStorage = new InMemoryStorage();
+                {
+                    realServiceWhileRecording = A.Fake<ILibraryService>();
 
-                        realServiceWhileRecording = A.Fake<ILibraryService>();
-                        realServiceDuringPlayback = A.Fake<ILibraryService>();
+                    A.CallTo(() => realServiceWhileRecording.GetCount("1"))
+                        .ReturnsNextFromSequence(0x1A, 0x1B);
+                    A.CallTo(() => realServiceWhileRecording.GetCount("2"))
+                        .Returns(0x2);
+                });
 
-                        A.CallTo(() => realServiceWhileRecording.GetCount("1"))
-                            .ReturnsNextFromSequence(0x1A, 0x1B);
-                        A.CallTo(() => realServiceWhileRecording.GetCount("2"))
-                            .Returns(0x2);
-                    });
+            "And a real service to wrap while playing back"
+                .x(() => realServiceDuringPlayback = A.Fake<ILibraryService>());
 
-            "when self initializing a fake"
+            "When I use a self-initialized fake in recording mode to get the counts for book 1, 2, and 1 again"
                 .x(() =>
+                {
+                    using (var recorder = new RecordingManager(inMemoryStorage))
                     {
-                        using (var recorder = new RecordingManager(inMemoryStorage))
+                        var fakeService = A.Fake<ILibraryService>(options => options
+                            .Wrapping(realServiceWhileRecording).RecordedBy(recorder));
+
+                        countsWhileRecording = new List<int>
                         {
-                            var fakeService = A.Fake<ILibraryService>(options => options
-                                .Wrapping(realServiceWhileRecording).RecordedBy(recorder));
+                            fakeService.GetCount("1"),
+                            fakeService.GetCount("2"),
+                            fakeService.GetCount("1")
+                        };
+                    }
+                });
 
-                            countsWhileRecording = new List<int>
-                            {
-                                fakeService.GetCount("1"),
-                                fakeService.GetCount("2"),
-                                fakeService.GetCount("1")
-                            };
-                        }
+            "And I use a self-initialized fake in playback mode to get the counts for book 1, 2, and 1 again"
+                .x(() =>
+                {
+                    using (var recorder = new RecordingManager(inMemoryStorage))
+                    {
+                        var playbackFakeService = A.Fake<ILibraryService>(options => options
+                            .Wrapping(realServiceDuringPlayback).RecordedBy(recorder));
 
-                        using (var recorder = new RecordingManager(inMemoryStorage))
+                        countsDuringPlayback = new List<int>
                         {
-                            var playbackFakeService = A.Fake<ILibraryService>(options => options
-                                .Wrapping(realServiceDuringPlayback).RecordedBy(recorder));
+                            playbackFakeService.GetCount("1"),
+                            playbackFakeService.GetCount("2"),
+                            playbackFakeService.GetCount("1")
+                        };
+                    }
+                });
 
-                            countsDuringPlayback = new List<int>
-                            {
-                                playbackFakeService.GetCount("1"),
-                                playbackFakeService.GetCount("2"),
-                                playbackFakeService.GetCount("1")
-                            };
-                        }
-                    });
-
-            "it should forward calls to the wrapped service while recording"
+            "Then the recording fake forwards calls to the wrapped service"
                 .x(() => A.CallTo(() => realServiceWhileRecording.GetCount("1"))
-                             .MustHaveHappened(Repeated.Exactly.Twice));
+                    .MustHaveHappened(Repeated.Exactly.Twice));
 
-            "it should return the results while recording"
+            "And the recording fake returns the wrapped service's results"
                 .x(() => countsWhileRecording.Should().Equal(0x1A, 0x2, 0x1B));
 
-            "it should not forward calls to the wrapped service during playback"
+            "And the playback fake does not forward calls to the wrapped service"
                 .x(() => A.CallTo(realServiceDuringPlayback).MustNotHaveHappened());
 
-            "it should return the recorded results during playback"
+            "And the playback fake returns the recorded results"
                 .x(() => countsDuringPlayback.Should().Equal(0x1A, 0x2, 0x1B));
         }
 
@@ -91,48 +98,49 @@ namespace FakeItEasy.Specs
             int countWhileRecording,
             int countDuringPlayback)
         {
-            "establish"
+            "Given a path that does not exist"
+                .x(() => fileRecorderPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
+
+            "And a real service to wrap while recording"
                 .x(() =>
-                    {
-                        fileRecorderPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+                {
+                    realServiceWhileRecording = A.Fake<ILibraryService>();
 
-                        realServiceWhileRecording = A.Fake<ILibraryService>();
-                        realServiceDuringPlayback = A.Fake<ILibraryService>();
+                    A.CallTo(() => realServiceWhileRecording.GetCount("8"))
+                        .Returns(0x8);
+                });
 
-                        A.CallTo(() => realServiceWhileRecording.GetCount("8")).Returns(8);
-                    });
+            "And a real service to wrap while playing back"
+                .x(() => realServiceDuringPlayback = A.Fake<ILibraryService>());
 
-            "when self initializing a fake with a file recorder"
+            "When I use a self-initialized fake recording to the path to get the count for book 8"
                 .x(() =>
+                {
+                    using (var recorder = Recorders.FileRecorder(fileRecorderPath))
                     {
-                        try
-                        {
-                            using (var recorder = Recorders.FileRecorder(fileRecorderPath))
-                            {
-                                var fakeService = A.Fake<ILibraryService>(options => options
-                                    .Wrapping(realServiceWhileRecording).RecordedBy(recorder));
-                                countWhileRecording = fakeService.GetCount("8");
-                            }
-
-                            using (var recorder = Recorders.FileRecorder(fileRecorderPath))
-                            {
-                                var playbackFakeService = A.Fake<ILibraryService>(options => options
-                                    .Wrapping(realServiceDuringPlayback).RecordedBy(recorder));
-
-                                countDuringPlayback = playbackFakeService.GetCount("8");
-                            }
-                        }
-                        finally
-                        {
-                            File.Delete(fileRecorderPath);
-                        }
-                    })
+                        var fakeService = A.Fake<ILibraryService>(options => options
+                            .Wrapping(realServiceWhileRecording).RecordedBy(recorder));
+                        countWhileRecording = fakeService.GetCount("8");
+                    }
+                })
                 .Teardown(() => File.Delete(fileRecorderPath));
 
-            "it should return the expected result while recording"
+            "And I use a self-initialized fake playing back from the path to get the count for book 8"
+                .x(() =>
+                {
+                    using (var recorder = Recorders.FileRecorder(fileRecorderPath))
+                    {
+                        var playbackFakeService = A.Fake<ILibraryService>(options => options
+                            .Wrapping(realServiceDuringPlayback).RecordedBy(recorder));
+
+                        countDuringPlayback = playbackFakeService.GetCount("8");
+                    }
+                });
+
+            "Then the recording fake returns the wrapped service's result"
                 .x(() => countWhileRecording.Should().Be(8));
 
-            "it should return the recorded result during playback"
+            "And the playback fake returns the recorded result"
                 .x(() => countDuringPlayback.Should().Be(8));
         }
 
