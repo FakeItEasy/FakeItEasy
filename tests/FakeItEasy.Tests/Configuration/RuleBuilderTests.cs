@@ -1,6 +1,8 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -30,6 +32,30 @@ namespace FakeItEasy.Tests.Configuration
 
             this.builder = this.CreateBuilder();
         }
+
+        public static IEnumerable<object[]> CallSpecificationActionsForVoid =>
+            TestCases.FromObject<Action<IVoidArgumentValidationConfiguration>>(
+                configuration => configuration.WhenArgumentsMatch(args => true));
+
+        public static IEnumerable<object[]> CallSpecificationActionsForNonVoid =>
+            TestCases.FromObject<Action<IAnyCallConfigurationWithReturnTypeSpecified<int>>>(
+                configuration => configuration.WhenArgumentsMatch(args => true),
+                configuration => configuration.Where(call => true));
+
+        public static IEnumerable<object[]> BehaviorDefinitionActionsForVoid =>
+            TestCases.FromObject<Action<IVoidArgumentValidationConfiguration>>(
+                configuration => configuration.CallsBaseMethod(),
+                configuration => configuration.DoesNothing(),
+                configuration => configuration.Throws<Exception>(),
+                configuration => configuration.Invokes(DoNothing),
+                configuration => configuration.AssignsOutAndRefParametersLazily(_ => new object[0]));
+
+        public static IEnumerable<object[]> BehaviorDefinitionActionsForNonVoid =>
+            TestCases.FromObject<Action<IAnyCallConfigurationWithReturnTypeSpecified<int>>>(
+                configuration => configuration.CallsBaseMethod(),
+                configuration => configuration.Throws<Exception>(),
+                configuration => configuration.Invokes(DoNothing),
+                configuration => configuration.ReturnsLazily(_ => 0));
 
         [Fact]
         public void Returns_called_with_value_returns_parent_configuration()
@@ -374,6 +400,68 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             returnConfig.Where(x => true, x => { }).Should().BeSameAs(returnConfig);
+        }
+
+        [Theory]
+        [MemberData(nameof(CallSpecificationActionsForVoid))]
+        public void Call_specification_method_for_void_should_not_add_rule_to_manager(Action<IVoidArgumentValidationConfiguration> configurationAction)
+        {
+            // Arrange
+            var initialRules = this.fakeManager.Rules.ToList();
+
+            // Act
+            configurationAction(this.builder);
+
+            // Assert
+            this.fakeManager.Rules.Should().Equal(initialRules);
+        }
+
+        [Theory]
+        [MemberData(nameof(CallSpecificationActionsForNonVoid))]
+        public void Call_specification_method_for_non_void_should_not_add_rule_to_manager(Action<IAnyCallConfigurationWithReturnTypeSpecified<int>> configurationAction)
+        {
+            // Arrange
+            var initialRules = this.fakeManager.Rules.ToList();
+            var returnConfig = this.CreateTestableReturnConfiguration();
+
+            // Act
+            configurationAction(returnConfig);
+
+            // Assert
+            this.fakeManager.Rules.Should().Equal(initialRules);
+        }
+
+        [Theory]
+        [MemberData(nameof(BehaviorDefinitionActionsForVoid))]
+        public void Behavior_definition_method_for_void_should_add_rule_to_manager(Action<IVoidArgumentValidationConfiguration> configurationAction)
+        {
+            // Arrange
+            var initialRules = this.fakeManager.Rules.ToList();
+
+            // Act
+            configurationAction(this.builder);
+
+            // Assert
+            this.fakeManager.Rules.Should().Equal(new[] { this.ruleProducedByFactory }.Concat(initialRules));
+        }
+
+        [Theory]
+        [MemberData(nameof(BehaviorDefinitionActionsForNonVoid))]
+        public void Behavior_definition_method_for_non_void_should_add_rule_to_manager(Action<IAnyCallConfigurationWithReturnTypeSpecified<int>> configurationAction)
+        {
+            // Arrange
+            var initialRules = this.fakeManager.Rules.ToList();
+            var returnConfig = this.CreateTestableReturnConfiguration();
+
+            // Act
+            configurationAction(returnConfig);
+
+            // Assert
+            this.fakeManager.Rules.Should().Equal(new[] { this.ruleProducedByFactory }.Concat(initialRules));
+        }
+
+        private static void DoNothing()
+        {
         }
 
         private RuleBuilder CreateBuilder()

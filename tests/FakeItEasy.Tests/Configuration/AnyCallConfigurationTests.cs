@@ -1,6 +1,8 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FluentAssertions;
@@ -22,6 +24,13 @@ namespace FakeItEasy.Tests.Configuration
         [UnderTest]
         private AnyCallConfiguration configuration;
 #pragma warning restore 649
+
+        public static IEnumerable<object[]> CallSpecificationActions =>
+            TestCases.FromObject<Action<IAnyCallConfigurationWithNoReturnTypeSpecified>>(
+                configuration => configuration.WithReturnType<int>(),
+                configuration => configuration.WithNonVoidReturnType(),
+                configuration => configuration.Where(call => true),
+                configuration => configuration.WhenArgumentsMatch(args => true));
 
         [Fact]
         public void WithReturnType_should_return_configuration_from_factory()
@@ -277,6 +286,22 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             this.configuration.WhenArgumentsMatch(x => true).Should().BeSameAs(this.configuration);
+        }
+
+        [Theory]
+        [MemberData(nameof(CallSpecificationActions))]
+        public void Call_specification_method_should_not_add_rule_to_manager(Action<IAnyCallConfigurationWithNoReturnTypeSpecified> configurationAction)
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            var manager = Fake.GetFakeManager(foo);
+            var initialRules = manager.Rules.ToList();
+
+            // Act
+            configurationAction(A.CallTo(foo));
+
+            // Assert
+            manager.Rules.Should().Equal(initialRules);
         }
 
         private IVoidArgumentValidationConfiguration StubVoidConfig()

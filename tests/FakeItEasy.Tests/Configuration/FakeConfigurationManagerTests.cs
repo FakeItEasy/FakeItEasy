@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
@@ -23,6 +24,13 @@ namespace FakeItEasy.Tests.Configuration
         {
             this.OnSetup();
         }
+
+        public static IEnumerable<object[]> CallSpecificationActions =>
+            TestCases.FromObject<Action<FakeConfigurationManagerTests, IFoo>>(
+                (@this, foo) => @this.configurationManager.CallTo(() => foo.Bar()),
+                (@this, foo) => @this.configurationManager.CallTo(() => foo.Baz()),
+                (@this, foo) => @this.configurationManager.CallToSet(() => foo.SomeProperty),
+                (@this, foo) => @this.configurationManager.CallTo(foo));
 
         // Callto
         [Fact]
@@ -145,6 +153,22 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             result.Should().BeSameAs(expectedConfiguration);
+        }
+
+        [Theory]
+        [MemberData(nameof(CallSpecificationActions))]
+        public void CallTo_should_not_add_rule_to_manager(Action<FakeConfigurationManagerTests, IFoo> action)
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            var manager = Fake.GetFakeManager(foo);
+            var initialRules = manager.Rules.ToList();
+
+            // Act
+            action(this, foo);
+
+            // Assert
+            manager.Rules.Should().Equal(initialRules);
         }
 
         private void OnSetup()

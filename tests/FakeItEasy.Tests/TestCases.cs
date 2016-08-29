@@ -45,5 +45,10 @@ namespace FakeItEasy.Tests
         {
             return cases.Select(@case => new[] { @case });
         }
+
+        public static IEnumerable<object[]> FromObject<T>(params T[] cases)
+        {
+            return cases.Select(@case => new object[] { @case });
+        }
     }
 }
