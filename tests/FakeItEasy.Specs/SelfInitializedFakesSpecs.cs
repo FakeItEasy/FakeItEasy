@@ -21,10 +21,8 @@ namespace FakeItEasy.Specs
             InMemoryStorage inMemoryStorage,
             ILibraryService realServiceWhileRecording,
             ILibraryService realServiceDuringPlayback,
-            int count1ForBook1WhileRecording,
-            int count1ForBook1DuringPlayback,
-            int count2ForBook1DuringPlayback,
-            int count1ForBook2DuringPlayback)
+            IEnumerable<int> countsWhileRecording,
+            IEnumerable<int> countsDuringPlayback)
         {
             "establish"
                 .x(() =>
@@ -48,9 +46,12 @@ namespace FakeItEasy.Specs
                             var fakeService = A.Fake<ILibraryService>(options => options
                                 .Wrapping(realServiceWhileRecording).RecordedBy(recorder));
 
-                            count1ForBook1WhileRecording = fakeService.GetCount("1");
-                            fakeService.GetCount("2");
-                            fakeService.GetCount("1");
+                            countsWhileRecording = new List<int>
+                            {
+                                fakeService.GetCount("1"),
+                                fakeService.GetCount("2"),
+                                fakeService.GetCount("1")
+                            };
                         }
 
                         using (var recorder = new RecordingManager(inMemoryStorage))
@@ -58,9 +59,12 @@ namespace FakeItEasy.Specs
                             var playbackFakeService = A.Fake<ILibraryService>(options => options
                                 .Wrapping(realServiceDuringPlayback).RecordedBy(recorder));
 
-                            count1ForBook1DuringPlayback = playbackFakeService.GetCount("1");
-                            count1ForBook2DuringPlayback = playbackFakeService.GetCount("2");
-                            count2ForBook1DuringPlayback = playbackFakeService.GetCount("1");
+                            countsDuringPlayback = new List<int>
+                            {
+                                playbackFakeService.GetCount("1"),
+                                playbackFakeService.GetCount("2"),
+                                playbackFakeService.GetCount("1")
+                            };
                         }
                     });
 
@@ -68,20 +72,14 @@ namespace FakeItEasy.Specs
                 .x(() => A.CallTo(() => realServiceWhileRecording.GetCount("1"))
                              .MustHaveHappened(Repeated.Exactly.Twice));
 
-            "it should return the result while recording"
-                .x(() => count1ForBook1WhileRecording.Should().Be(0x1A));
+            "it should return the results while recording"
+                .x(() => countsWhileRecording.Should().Equal(0x1A, 0x2, 0x1B));
 
             "it should not forward calls to the wrapped service during playback"
                 .x(() => A.CallTo(realServiceDuringPlayback).MustNotHaveHappened());
 
-            "it should return the recorded result for the first set of arguments"
-                .x(() => count1ForBook1DuringPlayback.Should().Be(0x1A));
-
-            "it should return the recorded result for the second set of arguments"
-                .x(() => count1ForBook2DuringPlayback.Should().Be(0x2));
-
-            "it should return the second recorded result when arguments are repeated"
-                .x(() => count2ForBook1DuringPlayback.Should().Be(0x1B));
+            "it should return the recorded results during playback"
+                .x(() => countsDuringPlayback.Should().Equal(0x1A, 0x2, 0x1B));
         }
 
         [Trait("explicit", "yes")]
