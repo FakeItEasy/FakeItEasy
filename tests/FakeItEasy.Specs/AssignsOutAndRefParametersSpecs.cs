@@ -9,20 +9,15 @@ namespace FakeItEasy.Specs
     using Xunit;
 
     [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
-    [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Required for testing.")]
-    [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Required for testing.")]
     public delegate void VoidDelegateWithOutAndRefParameters(
         int byValueParameter, ref int byRefParameter, out int outParameter);
 
     [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
-    [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Required for testing.")]
-    [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Required for testing.")]
     public delegate int NonVoidDelegateWithOutAndRefParameters(
         int byValueParameter, ref int byRefParameter, out int outParameter);
 
     public interface IHaveARef
     {
-        [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Required for testing.")]
         void MightReturnAKnownValue(ref string andThisIsWhoReallyDidIt);
     }
 
