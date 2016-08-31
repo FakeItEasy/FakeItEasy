@@ -29,25 +29,24 @@
                 SyntaxKind.SimpleMemberAccessExpression);
         }
 
-        public static void AnalyzeMethod(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMethod(SyntaxNodeAnalysisContext context)
         {
-            //Method so exclude non-methods and interfaces
-
-            AnalyzeCall<InvocationExpressionSyntax>(context, x => NotMethod(x) || Interface(x));
+            AnalyzeCall<InvocationExpressionSyntax>(context, IsMethod);
         }
 
-        public static void AnalyzeProperty(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeProperty(SyntaxNodeAnalysisContext context)
         {
-            //Propery so exclude methods
-
-            AnalyzeCall<MemberAccessExpressionSyntax>(context, x => Method(x));
+            AnalyzeCall<MemberAccessExpressionSyntax>(context, IsProperty);
         }
 
-        private static void AnalyzeCall<T>(SyntaxNodeAnalysisContext context, Func<SymbolInfo, bool> exclusions) where T : ExpressionSyntax
+        private static void AnalyzeCall<T>(SyntaxNodeAnalysisContext context, Func<SymbolInfo, bool> includes) where T : ExpressionSyntax
         {
             var symbolInfo = context.SemanticModel.GetSymbolInfo(context.Node);
 
-            if (exclusions.Invoke(symbolInfo)) return;
+            if(IsInterface(symbolInfo))
+                return;
+
+            if (!includes.Invoke(symbolInfo)) return;
 
             var invocationExpression = (T)context.Node;
 
@@ -96,19 +95,19 @@
             return callSpecMemberNames.ToImmutableDictionary(name => name, name => DiagnosticDefinitions.NonVirtualSetup);
         }
 
-        private static bool NotMethod(SymbolInfo x)
+        private static bool IsProperty(SymbolInfo symbolInfo)
         {
-            return x.Symbol?.Kind != SymbolKind.Method;
+            return symbolInfo.Symbol?.Kind == SymbolKind.Property;
         }
 
-        private static bool Method(SymbolInfo x)
+        private static bool IsMethod(SymbolInfo symbolInfo)
         {
-            return x.Symbol?.Kind == SymbolKind.Method;
+            return symbolInfo.Symbol?.Kind == SymbolKind.Method;
         }
 
-        private static bool Interface(SymbolInfo x)
+        private static bool IsInterface(SymbolInfo symbolInfo)
         {
-            return x.Symbol?.ContainingType.TypeKind == TypeKind.Interface;
+            return symbolInfo.Symbol?.ContainingType.TypeKind == TypeKind.Interface;
         }
     }
 }

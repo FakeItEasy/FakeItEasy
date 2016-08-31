@@ -292,6 +292,31 @@ namespace AnalyzerPrototypeSubjectStatic
         }
 
         [Fact]
+        public void Diagnostic_Should_Not_Be_Triggered_For_Property_Set_On_Interface()
+        {
+            const string test = @"namespace TheNamespace
+{
+    using FakeItEasy;
+
+    public class TheClass
+    {
+        public void Test()
+        {
+            var foo = A.Fake<IFoo>();
+            A.CallTo(() => foo.Bar);
+        }
+    }
+
+    public interface IFoo
+    {
+        int Bar{get;}
+    }
+}";
+            VerifyCSharpDiagnostic(test);
+
+        }
+
+        [Fact]
         public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Property_Set()
         {
             const string test = @"using FakeItEasy;
