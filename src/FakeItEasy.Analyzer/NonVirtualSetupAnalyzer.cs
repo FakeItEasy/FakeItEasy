@@ -85,9 +85,15 @@
 
         private static ImmutableDictionary<string, DiagnosticDescriptor> CreateDiagnosticsMap()
         {
-            var memberNames = DiagnosticSubjects.CallSpecMemberNames();
+            var callSpecMemberNames = new[]
+                        {
+                "FakeItEasy.A.CallTo",
+                "FakeItEasy.A.CallTo`1",
+                "FakeItEasy.A.CallToSet`1",
+                "FakeItEasy.Fake`1.CallsTo`1"
+            };
 
-            return memberNames.ToImmutableDictionary(name => name, name => DiagnosticDefinitions.NonVirtualSetup);
+            return callSpecMemberNames.ToImmutableDictionary(name => name, name => DiagnosticDefinitions.NonVirtualSetup);
         }
 
         private static bool NotMethod(SymbolInfo x)

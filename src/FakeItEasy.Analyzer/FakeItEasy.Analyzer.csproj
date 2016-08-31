@@ -48,7 +48,6 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DiagnosticDefinitions.cs" />
-    <Compile Include="DiagnosticSubjects.cs" />
     <Compile Include="NonVirtualSetupAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
