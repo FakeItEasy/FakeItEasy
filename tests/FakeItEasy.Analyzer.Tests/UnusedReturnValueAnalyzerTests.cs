@@ -76,6 +76,29 @@ namespace TheNamespace
         }
 
         [Fact]
+        public void Diagnostic_Should_Not_Be_Triggered_When_Call_Specification_Is_Returned()
+        {
+            var test = @"using FakeItEasy;
+using FakeItEasy.Configuration;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        IVoidConfiguration Test()
+        {
+            var foo = A.Fake<IFoo>();
+            return A.CallTo(() => foo.Bar());
+        }
+    }
+
+    interface IFoo { int Bar(); }
+}
+";
+
+            this.VerifyCSharpDiagnostic(test);
+        }
+
+        [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Be_Triggered_When_Call_Specification_Is_Not_Used()
