@@ -317,6 +317,30 @@ namespace AnalyzerPrototypeSubjectStatic
         }
 
         [Fact]
+        public void Diagnostic_Should_Not_Be_Triggered_For_Abstract_Method()
+        {
+            const string test = @"
+namespace TheNamespace
+{
+    using FakeItEasy;
+
+    public class TheClass
+    {
+        public void Test()
+        {
+            var foo = A.Fake<Foo>();
+            A.CallTo(() => foo.Bar()).Returns(42);
+        }
+    }
+
+    public abstract class Foo { public abstract int Bar(); }
+}
+";
+
+            VerifyCSharpDiagnostic(test);
+        }
+
+        [Fact]
         public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Property_Set()
         {
             const string test = @"using FakeItEasy;

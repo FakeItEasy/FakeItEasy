@@ -58,7 +58,7 @@
             if (!IsSetupInvocation(context, invocationParent))
                 return;
 
-            if (!symbolInfo.Symbol.IsVirtual)
+            if (!symbolInfo.Symbol.IsVirtual && !symbolInfo.Symbol.IsAbstract)
             {
                 var location = invocationExpression.GetLocation();
 
