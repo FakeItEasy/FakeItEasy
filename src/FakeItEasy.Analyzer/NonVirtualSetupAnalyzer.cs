@@ -13,7 +13,7 @@
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetup);
 
-        private static readonly ImmutableDictionary<string, DiagnosticDescriptor> DiagnosticsMap = CreateDiagnosticsMap();
+        private static readonly ImmutableHashSet<string> DiagnosticsMap = CreateDiagnosticsMap();
 
         public override void Initialize(AnalysisContext context)
         {
@@ -43,7 +43,7 @@
         {
             var symbolInfo = context.SemanticModel.GetSymbolInfo(context.Node);
 
-            if(IsInterface(symbolInfo))
+            if(IsInterfaceMember(symbolInfo))
                 return;
 
             if (!includes.Invoke(symbolInfo)) return;
@@ -79,20 +79,20 @@
             var methodFullName =
                 string.Concat(methodSymbol.ContainingType.GetFullName(), ".", methodSymbol.GetDecoratedName());
 
-            return DiagnosticsMap.ContainsKey(methodFullName);
+            return DiagnosticsMap.Contains(methodFullName);
         }
 
-        private static ImmutableDictionary<string, DiagnosticDescriptor> CreateDiagnosticsMap()
+        private static ImmutableHashSet<string> CreateDiagnosticsMap()
         {
             var callSpecMemberNames = new[]
-                        {
+            {
                 "FakeItEasy.A.CallTo",
                 "FakeItEasy.A.CallTo`1",
                 "FakeItEasy.A.CallToSet`1",
                 "FakeItEasy.Fake`1.CallsTo`1"
             };
 
-            return callSpecMemberNames.ToImmutableDictionary(name => name, name => DiagnosticDefinitions.NonVirtualSetup);
+            return callSpecMemberNames.ToImmutableHashSet();
         }
 
         private static bool IsProperty(SymbolInfo symbolInfo)
@@ -105,7 +105,7 @@
             return symbolInfo.Symbol?.Kind == SymbolKind.Method;
         }
 
-        private static bool IsInterface(SymbolInfo symbolInfo)
+        private static bool IsInterfaceMember(SymbolInfo symbolInfo)
         {
             return symbolInfo.Symbol?.ContainingType.TypeKind == TypeKind.Interface;
         }

@@ -58,7 +58,7 @@ namespace FakeItEasy.Analyzer
         private static ImmutableDictionary<string, DiagnosticDescriptor> CreateDiagnosticsMap()
         {
             var callSpecMemberNames = new[]
-                        {
+            {
                 "FakeItEasy.A.CallTo",
                 "FakeItEasy.A.CallTo`1",
                 "FakeItEasy.A.CallToSet`1",
