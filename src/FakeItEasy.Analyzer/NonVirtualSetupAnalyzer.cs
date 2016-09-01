@@ -58,13 +58,24 @@
             if (!IsSetupInvocation(context, invocationParent))
                 return;
 
-            if (!symbolInfo.Symbol.IsVirtual && !symbolInfo.Symbol.IsAbstract)
+            if (!IsVirtual(symbolInfo))
             {
                 var location = invocationExpression.GetLocation();
 
                 Diagnostic diagnostic = Diagnostic.Create(DiagnosticDefinitions.NonVirtualSetup, location, symbolInfo.Symbol.Name);
                 context.ReportDiagnostic(diagnostic);
             }
+        }
+
+        private static bool IsVirtual(SymbolInfo symbolInfo)
+        {
+            var member = symbolInfo.Symbol;
+
+            bool isVirtual = member.IsVirtual
+                             || member.IsOverride && !member.IsSealed
+                             || member.IsAbstract;
+
+            return isVirtual;
         }
 
         private static bool IsSetupInvocation(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax parent)
