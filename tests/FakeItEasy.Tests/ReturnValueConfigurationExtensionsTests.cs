@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
@@ -23,10 +22,8 @@ namespace FakeItEasy.Tests
 
             string RequestOfOne(string text);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
             string RequestOfOneWithOutput(out string text);
 
-            [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required for testing.")]
             string RequestOfOneWithReference(ref string text);
 
             int RequestOfTwo(int number1, int number2);
@@ -35,8 +32,6 @@ namespace FakeItEasy.Tests
 
             string RequestOfTwo(string text1, string text2);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
-            [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required for testing.")]
             string RequestOfTwoWithOutputAndReference(out string text1, ref string text2);
 
             int RequestOfThree(int number1, int number2, int number3);
@@ -45,8 +40,6 @@ namespace FakeItEasy.Tests
 
             string RequestOfThree(string text1, string text2, string text3);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
-            [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required for testing.")]
             string RequestOfThreeWithOutputAndReference(out string text1, ref string text2, string text3);
 
             int RequestOfFour(int number1, int number2, int number3, int number4);
@@ -55,8 +48,6 @@ namespace FakeItEasy.Tests
 
             string RequestOfFour(string text1, string text2, string text3, string text4);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
-            [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required for testing.")]
             string RequestOfFourWithOutputAndReference(string text1, string text2, ref string text3, out string text4);
         }
 

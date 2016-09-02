@@ -32,8 +32,6 @@ namespace FakeItEasy.Tests
 
         object Biz();
 
-        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Required for testing.")]
-        [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required for testing.")]
         int MethodWithOutputAndReference(out int argument1, ref int argument2);
     }
 }

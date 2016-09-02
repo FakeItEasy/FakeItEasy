@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
     using FluentAssertions;
     using Xunit;
@@ -10,13 +9,11 @@ namespace FakeItEasy.Tests.Core
     {
         public interface ITypeWithReferenceArguments
         {
-            [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Required for testing.")]
             void MethodWithReferenceArgument(ref int argument);
         }
 
         public interface ITypeWithOutputArguments
         {
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Required for testing.")]
             void MethodWithOutputArgument(out int argument);
         }
 

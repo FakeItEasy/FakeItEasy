@@ -2,7 +2,6 @@ namespace FakeItEasy.Tests
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
@@ -15,28 +14,20 @@ namespace FakeItEasy.Tests
     {
         public interface IInterface
         {
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Required for testing.")]
             void RequestOfOne(out int numberOut);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Required for testing.")]
             void RequestOfOne(out string textOut);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#", Justification = "Required for testing.")]
             void RequestOfTwo(int number1, out int numberOut);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#", Justification = "Required for testing.")]
             void RequestOfTwo(string text1, out string textOut);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Required for testing.")]
             void RequestOfThree(int number1, int number2, out int numberOut);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Required for testing.")]
             void RequestOfThree(string text1, string text2, out string textOut);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "3#", Justification = "Required for testing.")]
             void RequestOfFour(int number1, int number2, int number3, out int numberOut);
 
-            [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "3#", Justification = "Required for testing.")]
             void RequestOfFour(string text1, string text2, string text3, out string textOut);
         }
 

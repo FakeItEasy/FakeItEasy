@@ -2,7 +2,6 @@ namespace FakeItEasy.Specs
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using FakeItEasy.SelfInitializedFakes;
@@ -17,10 +16,6 @@ namespace FakeItEasy.Specs
 
         string GetTitle(string internationalStandardBookNumber);
 
-        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Required for test scenario")]
-        [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Required for test scenario")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "ref", Justification = "There are no other consumers, so the name is safe.")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "out", Justification = "There are no other consumers, so the name is safe.")]
         bool TryToSetSomeOutAndRefParameters(out int @out, ref int @ref);
     }
 
