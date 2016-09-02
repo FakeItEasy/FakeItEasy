@@ -62,7 +62,7 @@ namespace FakeItEasy.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Non virtual members can not be intercepted. test.
+        ///   Looks up a localized string similar to Non virtual members can not be intercepted..
         /// </summary>
         internal static string NonVirtualSetupSpecificationDescription {
             get {
