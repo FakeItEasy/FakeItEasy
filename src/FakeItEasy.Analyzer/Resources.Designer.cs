@@ -62,25 +62,25 @@ namespace FakeItEasy.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Non virtual members can not be intercepted..
+        ///   Looks up a localized string similar to Non virtual members can not be intercepted. test.
         /// </summary>
-        internal static string NonVirtualSetupDescription {
+        internal static string NonVirtualSetupSpecificationDescription {
             get {
-                return ResourceManager.GetString("NonVirtualSetupDescription", resourceCulture);
+                return ResourceManager.GetString("NonVirtualSetupSpecificationDescription", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Non virtual member &apos;{0}&apos; cannot be intercepted..
         /// </summary>
-        internal static string NonVirtualSetupMessageFormat {
+        internal static string NonVirtualSetupSpecificationMessageFormat {
             get {
-                return ResourceManager.GetString("NonVirtualSetupMessageFormat", resourceCulture);
+                return ResourceManager.GetString("NonVirtualSetupSpecificationMessageFormat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Non virtual member setup.
+        ///   Looks up a localized string similar to Non virtual setup specification.
         /// </summary>
         internal static string NonVirtualSetupSpecificationTitle {
             get {

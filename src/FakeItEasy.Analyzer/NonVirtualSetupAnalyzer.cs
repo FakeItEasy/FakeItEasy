@@ -11,7 +11,7 @@
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     class NonVirtualSetupAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetup);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetupSpecification);
 
         private static readonly ImmutableHashSet<string> DiagnosticsMap = CreateDiagnosticsMap();
 
@@ -62,7 +62,7 @@
             {
                 var location = invocationExpression.GetLocation();
 
-                Diagnostic diagnostic = Diagnostic.Create(DiagnosticDefinitions.NonVirtualSetup, location, symbolInfo.Symbol.Name);
+                Diagnostic diagnostic = Diagnostic.Create(DiagnosticDefinitions.NonVirtualSetupSpecification, location, symbolInfo.Symbol.Name);
                 context.ReportDiagnostic(diagnostic);
             }
         }

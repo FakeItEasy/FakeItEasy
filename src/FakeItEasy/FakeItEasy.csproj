@@ -273,7 +273,9 @@
       <SubType>Designer</SubType>
     </CodeAnalysisDictionary>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\FakeItEasy.Analyzer\bin\Debug\FakeItEasy.Analyzer.dll" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx" />
     <EmbeddedResource Include="ExceptionMessages.resx" />

@@ -161,7 +161,7 @@ namespace FakeItEasy.Analyzer.Tests
     test,
     new DiagnosticResult
     {
-        Id = DiagnosticDefinitions.NonVirtualSetup.Id,
+        Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
         Message =
             "Non virtual member 'Bar' cannot be intercepted.",
         Severity = DiagnosticSeverity.Warning,
@@ -202,7 +202,7 @@ namespace FakeItEasy.Analyzer.Tests
      test,
      new DiagnosticResult
      {
-         Id = DiagnosticDefinitions.NonVirtualSetup.Id,
+         Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
          Message =
              "Non virtual member 'Bar' cannot be intercepted.",
          Severity = DiagnosticSeverity.Warning,
@@ -242,7 +242,7 @@ namespace AnalyzerPrototypeSubjectStatic
     test,
     new DiagnosticResult
     {
-        Id = DiagnosticDefinitions.NonVirtualSetup.Id,
+        Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
         Message =
             "Non virtual member 'Bar' cannot be intercepted.",
         Severity = DiagnosticSeverity.Warning,
@@ -281,7 +281,7 @@ namespace AnalyzerPrototypeSubjectStatic
         test,
         new DiagnosticResult
         {
-            Id = DiagnosticDefinitions.NonVirtualSetup.Id,
+            Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
             Message =
              "Non virtual member 'Bar' cannot be intercepted.",
             Severity = DiagnosticSeverity.Warning,
@@ -391,7 +391,7 @@ namespace PrototypeProperty
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetup.Id,
+                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
                         "Non virtual member 'Bar' cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
@@ -432,7 +432,7 @@ namespace PrototypeProperty
         test,
         new DiagnosticResult
         {
-            Id = DiagnosticDefinitions.NonVirtualSetup.Id,
+            Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
             Message =
              "Non virtual member 'DifferentNameThanOtherTests' cannot be intercepted.",
             Severity = DiagnosticSeverity.Warning,
