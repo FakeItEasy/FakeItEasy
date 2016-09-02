@@ -5,17 +5,12 @@
     using Microsoft.CodeAnalysis.Diagnostics;
     using Xunit;
 
-    public class NonVirtualSetupAnalyzerTests:DiagnosticVerifier
+    public class NonVirtualSetupAnalyzerTests : DiagnosticVerifier
     {
-        //The aim to create an analyzer that picks up
-        //on any call setups that target a non-virtual member
-
-        //A.CallTo(() => shop.GetTopSellingCandy()).Returns(lollipop); //Warning here
-
         [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_Interface()
         {
-            const string test = @"using FakeItEasy;
+            const string Test = @"using FakeItEasy;
 namespace TheNamespace
 {
     class TheClass
@@ -31,15 +26,15 @@ namespace TheNamespace
 }
 ";
 
-            VerifyCSharpDiagnostic(test);
+            this.VerifyCSharpDiagnostic(Test);
         }
 
         [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_Virtual_Member()
         {
-            const string test = @"using System;
+            const string Test = @"using System;
 
-//Temporary class to get non-virtual test correct
+//Temporary class to get non-virtual Test correct
 namespace FakeItEasy.Analyzer.Tests
 {
     class TheClass
@@ -61,16 +56,14 @@ namespace FakeItEasy.Analyzer.Tests
 }
 
 ";
-            VerifyCSharpDiagnostic(test);
-
+            this.VerifyCSharpDiagnostic(Test);
         }
 
         [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_Unfortunately_Named_Call()
         {
-            //Ensure only FakeItEasy triggers the diagnostic
-
-            const string test = @"using System;
+            // Ensure only FakeItEasy triggers the diagnostic
+            const string Test = @"using System;
 namespace AnalyzerPrototypeSubjectConfusion
 {
     class UnfortunatelyNamedClass
@@ -100,14 +93,13 @@ namespace AnalyzerPrototypeSubjectConfusion
 
 }";
 
-            VerifyCSharpDiagnostic(test);
-
+            this.VerifyCSharpDiagnostic(Test);
         }
 
         [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_Nested_Non_Virtual_Member()
         {
-            const string test = @"namespace TheNamespace
+            const string Test = @"namespace TheNamespace
 {
     using FakeItEasy;
     class TheClass
@@ -124,17 +116,15 @@ namespace AnalyzerPrototypeSubjectConfusion
     interface IFoo { int Bar(int i); }
 }";
 
-            VerifyCSharpDiagnostic(test);
-
+            this.VerifyCSharpDiagnostic(Test);
         }
-
 
         [Fact]
         public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Member()
         {
-            const string test = @"using System;
+            const string Test = @"using System;
 
-//Temporary class to get non-virtual test correct
+//Temporary class to get non-virtual Test correct
 namespace FakeItEasy.Analyzer.Tests
 {
     class TheClass
@@ -157,25 +147,24 @@ namespace FakeItEasy.Analyzer.Tests
 
 ";
 
-           VerifyCSharpDiagnostic(
-    test,
-    new DiagnosticResult
-    {
-        Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
-        Message =
-            "Non virtual member 'Bar' cannot be intercepted.",
-        Severity = DiagnosticSeverity.Warning,
-        Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
-    });
-
+           this.VerifyCSharpDiagnostic(
+                Test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Message =
+                        "Non virtual member 'Bar' cannot be intercepted.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
+                });
         }
 
         [Fact]
         public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Static_Member()
         {
-            const string test = @"using System;
+            const string Test = @"using System;
 
-//Temporary class to get non-virtual test correct
+//Temporary class to get non-virtual Test correct
 namespace FakeItEasy.Analyzer.Tests
 {
     class TheClass
@@ -198,8 +187,8 @@ namespace FakeItEasy.Analyzer.Tests
 
 ";
 
-            VerifyCSharpDiagnostic(
-     test,
+            this.VerifyCSharpDiagnostic(
+     Test,
      new DiagnosticResult
      {
          Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
@@ -208,13 +197,12 @@ namespace FakeItEasy.Analyzer.Tests
          Severity = DiagnosticSeverity.Warning,
          Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
      });
-
-        }
+    }
 
         [Fact]
         public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Member_When_Referenced_Using_Static()
         {
-            const string test = @"using System;
+            const string Test = @"using System;
 using static FakeItEasy.A;
 
 namespace AnalyzerPrototypeSubjectStatic
@@ -238,8 +226,8 @@ namespace AnalyzerPrototypeSubjectStatic
 }
 ";
 
-    VerifyCSharpDiagnostic(
-    test,
+    this.VerifyCSharpDiagnostic(
+    Test,
     new DiagnosticResult
     {
         Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
@@ -248,15 +236,14 @@ namespace AnalyzerPrototypeSubjectStatic
         Severity = DiagnosticSeverity.Warning,
         Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 26) }
             });
-
         }
 
         [Fact]
         public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Member_WithArguments()
         {
-            const string test = @"using System;
+            const string Test = @"using System;
 
-//Temporary class to get non-virtual test correct
+//Temporary class to get non-virtual Test correct
     namespace FakeItEasy.Analyzer.Tests
     {
     class TheClass
@@ -277,8 +264,8 @@ namespace AnalyzerPrototypeSubjectStatic
     }
 }";
 
-            VerifyCSharpDiagnostic(
-        test,
+            this.VerifyCSharpDiagnostic(
+        Test,
         new DiagnosticResult
         {
             Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
@@ -287,14 +274,12 @@ namespace AnalyzerPrototypeSubjectStatic
             Severity = DiagnosticSeverity.Warning,
             Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
         });
-
-
         }
 
         [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_Property_Set_On_Interface()
         {
-            const string test = @"namespace TheNamespace
+            const string Test = @"namespace TheNamespace
 {
     using FakeItEasy;
 
@@ -312,14 +297,13 @@ namespace AnalyzerPrototypeSubjectStatic
         int Bar{get;}
     }
 }";
-            VerifyCSharpDiagnostic(test);
-
+            this.VerifyCSharpDiagnostic(Test);
         }
 
         [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_Abstract_Method()
         {
-            const string test = @"
+            const string Test = @"
 namespace TheNamespace
 {
     using FakeItEasy;
@@ -337,13 +321,13 @@ namespace TheNamespace
 }
 ";
 
-            VerifyCSharpDiagnostic(test);
+            this.VerifyCSharpDiagnostic(Test);
         }
 
         [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_Non_Sealed_Override_Method()
         {
-            const string test = @"
+            const string Test = @"
 namespace TheNamespace
 {
     using FakeItEasy;
@@ -362,13 +346,13 @@ namespace TheNamespace
 }
 ";
 
-            VerifyCSharpDiagnostic(test);
+            this.VerifyCSharpDiagnostic(Test);
         }
 
         [Fact]
         public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Property_Set()
         {
-            const string test = @"using FakeItEasy;
+            const string Test = @"using FakeItEasy;
 
 namespace PrototypeProperty
 {
@@ -387,27 +371,25 @@ namespace PrototypeProperty
     }
 }";
 
-            VerifyCSharpDiagnostic(
-                test,
+            this.VerifyCSharpDiagnostic(
+                Test,
                 new DiagnosticResult
                 {
                     Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
                         "Non virtual member 'Bar' cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] {new DiagnosticResultLocation("Test0.cs", 10, 31)}
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 31) }
                 });
-
          }
 
         [Fact]
         public void Diagnostic_Should_Correctly_Reflect_Member_Name()
         {
-            //Test to ensure member name hasn't mistakenly been hardcoded
+            // Test to ensure member name hasn't mistakenly been hardcoded
+            const string Test = @"using System;
 
-            const string test = @"using System;
-
-//Temporary class to get non-virtual test correct
+//Temporary class to get non-virtual Test correct
     namespace FakeItEasy.Analyzer.Tests
     {
     class TheClass
@@ -428,26 +410,21 @@ namespace PrototypeProperty
     }
 }";
 
-            VerifyCSharpDiagnostic(
-        test,
-        new DiagnosticResult
-        {
-            Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
-            Message =
-             "Non virtual member 'DifferentNameThanOtherTests' cannot be intercepted.",
-            Severity = DiagnosticSeverity.Warning,
-            Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
-        });
-
-
+            this.VerifyCSharpDiagnostic(
+                Test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Message =
+                     "Non virtual member 'DifferentNameThanOtherTests' cannot be intercepted.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
+                });
         }
-
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new NonVirtualSetupAnalyzer();
         }
-
     }
-
 }
