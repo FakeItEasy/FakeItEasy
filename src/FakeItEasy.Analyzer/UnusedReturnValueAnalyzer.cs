@@ -48,7 +48,7 @@ namespace FakeItEasy.Analyzer
                 return;
             }
 
-            if (call.Parent is StatementSyntax)
+            if (call.Parent is ExpressionStatementSyntax)
             {
                 var diagnostic = Diagnostic.Create(descriptor, call.GetLocation(), call.ToString());
                 context.ReportDiagnostic(diagnostic);
