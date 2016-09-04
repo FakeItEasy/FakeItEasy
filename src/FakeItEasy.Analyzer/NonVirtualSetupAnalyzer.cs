@@ -9,11 +9,11 @@
     using Microsoft.CodeAnalysis.Diagnostics;
 
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    class NonVirtualSetupAnalyzer : DiagnosticAnalyzer
+    internal class NonVirtualSetupAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetupSpecification);
-
         private static readonly ImmutableHashSet<string> DiagnosticsMap = CreateDiagnosticsMap();
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetupSpecification);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -22,10 +22,12 @@
                 throw new ArgumentNullException(nameof(context));
             }
 
-            context.RegisterSyntaxNodeAction(AnalyzeMethod,
+            context.RegisterSyntaxNodeAction(
+                AnalyzeMethod,
                 SyntaxKind.InvocationExpression);
 
-            context.RegisterSyntaxNodeAction(AnalyzeProperty,
+            context.RegisterSyntaxNodeAction(
+                AnalyzeProperty,
                 SyntaxKind.SimpleMemberAccessExpression);
         }
 
@@ -43,10 +45,15 @@
         {
             var symbolInfo = context.SemanticModel.GetSymbolInfo(context.Node);
 
-            if(IsInterfaceMember(symbolInfo))
+            if (IsInterfaceMember(symbolInfo))
+            {
                 return;
+            }
 
-            if (!includes.Invoke(symbolInfo)) return;
+            if (!includes.Invoke(symbolInfo))
+            {
+                return;
+            }
 
             var invocationExpression = (T)context.Node;
 
@@ -56,7 +63,9 @@
                                     .FirstOrDefault();
 
             if (!IsSetupInvocation(context, invocationParent))
+            {
                 return;
+            }
 
             if (!IsVirtual(symbolInfo))
             {
@@ -72,7 +81,7 @@
             var member = symbolInfo.Symbol;
 
             bool isVirtual = member.IsVirtual
-                             || member.IsOverride && !member.IsSealed
+                             || (member.IsOverride && !member.IsSealed)
                              || member.IsAbstract;
 
             return isVirtual;
