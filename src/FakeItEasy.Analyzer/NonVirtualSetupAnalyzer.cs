@@ -118,7 +118,7 @@
 
         private static bool IsInterfaceMember(SymbolInfo symbolInfo)
         {
-            return symbolInfo.Symbol?.ContainingType.TypeKind == TypeKind.Interface;
+            return symbolInfo.Symbol?.ContainingType?.TypeKind == TypeKind.Interface;
         }
     }
 }
