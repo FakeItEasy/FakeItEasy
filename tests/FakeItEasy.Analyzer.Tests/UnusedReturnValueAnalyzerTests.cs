@@ -84,7 +84,7 @@ namespace TheNamespace
 {
     class TheClass
     {
-        IVoidConfiguration Test()
+        IReturnValueArgumentValidationConfiguration<int> Test()
         {
             var foo = A.Fake<IFoo>();
             return A.CallTo(() => foo.Bar());
@@ -341,7 +341,7 @@ namespace TheNamespace
         void Test()
         {
             var foo = A.Fake<IFoo>();
-            A.CallToSet(() => foo.Bar).To(() => A<int>.That.Matches(i => i > 3);
+            A.CallToSet(() => foo.Bar).To(() => A<int>.That.Matches(i => i > 3));
         }
     }
 
@@ -355,7 +355,7 @@ namespace TheNamespace
                 {
                     Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
                     Message =
-                        "Unused call specification 'A.CallToSet(() => foo.Bar).To(() => A<int>.That.Matches(i => i > 3)'; did you forget to configure or assert the call?",
+                        "Unused call specification 'A.CallToSet(() => foo.Bar).To(() => A<int>.That.Matches(i => i > 3))'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
                 });
