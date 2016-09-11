@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
+    using System.Text;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.Diagnostics;
@@ -53,6 +54,9 @@
             foreach (var project in projects)
             {
                 var compilationWithAnalyzers = project.GetCompilationAsync().Result.WithAnalyzers(ImmutableArray.Create(analyzer));
+
+                AssertThatCompilationSucceeded(compilationWithAnalyzers);
+
                 var diags = compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result;
                 foreach (var diag in diags)
                 {
@@ -115,6 +119,24 @@
             return documents;
         }
 
+        private static void AssertThatCompilationSucceeded(CompilationWithAnalyzers compilationWithAnalyzers)
+        {
+            var compilationDiagnostics = compilationWithAnalyzers.Compilation.GetDiagnostics();
+
+            if (compilationDiagnostics.Any())
+            {
+                var messageBuilder = new StringBuilder();
+                messageBuilder.Append("Test code compilation failed. Error(s) encountered:");
+                foreach (var diagnostic in compilationDiagnostics)
+                {
+                    messageBuilder.AppendLine();
+                    messageBuilder.AppendFormat("  {0}", diagnostic);
+                }
+
+                throw new ArgumentException(messageBuilder.ToString());
+            }
+        }
+
         /// <summary>
         /// Create a project using the inputted strings as sources.
         /// </summary>
@@ -131,6 +153,7 @@
             var solution = new AdhocWorkspace()
                 .CurrentSolution
                 .AddProject(projectId, TestProjectName, TestProjectName, language)
+                .WithProjectCompilationOptions(projectId, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddMetadataReference(projectId, CorlibReference)
                 .AddMetadataReference(projectId, SystemCoreReference)
                 .AddMetadataReference(projectId, CSharpSymbolsReference)
