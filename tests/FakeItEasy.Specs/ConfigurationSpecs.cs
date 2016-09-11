@@ -587,6 +587,42 @@ namespace FakeItEasy.Specs
                 .x(() => result.Should().BeNull());
         }
 
+        [Scenario]
+        public static void UnusedVoidCallSpec(
+            IFoo fake,
+            Exception exception)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(o => o.Strict()));
+
+            "When I specify a call to a void method without configuring its behavior"
+                .x(() => A.CallTo(() => fake.Bar()));
+
+            "And I make a call to that method"
+                .x(() => exception = Record.Exception(() => fake.Bar()));
+
+            "Then it throws an expectation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+        }
+
+        [Scenario]
+        public static void UnusedNonVoidCallSpec(
+            IFoo fake,
+            Exception exception)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(o => o.Strict()));
+
+            "When I specify a call to a void method without configuring its behavior"
+                .x(() => A.CallTo(() => fake.Baz()));
+
+            "And I make a call to that method"
+                .x(() => exception = Record.Exception(() => fake.Baz()));
+
+            "Then it throws an expectation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+        }
+
         public class BaseClass
         {
             public bool WasCalled { get; private set; }
