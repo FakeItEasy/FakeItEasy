@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Configuration
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
@@ -23,6 +24,13 @@ namespace FakeItEasy.Tests.Configuration
         {
             this.OnSetup();
         }
+
+        public static IEnumerable<object[]> CallSpecificationActions =>
+            TestCases.FromObject<Action<FakeConfigurationManagerTests, IFoo>>(
+                (@this, foo) => @this.configurationManager.CallTo(() => foo.Bar()),
+                (@this, foo) => @this.configurationManager.CallTo(() => foo.Baz()),
+                (@this, foo) => @this.configurationManager.CallToSet(() => foo.SomeProperty),
+                (@this, foo) => @this.configurationManager.CallTo(foo));
 
         // Callto
         [Fact]
@@ -147,18 +155,20 @@ namespace FakeItEasy.Tests.Configuration
             result.Should().BeSameAs(expectedConfiguration);
         }
 
-        [Fact]
-        public void Should_add_call_rule_to_fake_manager_when_configuring_any_call()
+        [Theory]
+        [MemberData(nameof(CallSpecificationActions))]
+        public void CallTo_should_not_add_rule_to_manager(Action<FakeConfigurationManagerTests, IFoo> action)
         {
             // Arrange
-            var fake = A.Fake<IFoo>();
-            var manager = Fake.GetFakeManager(fake);
+            var foo = A.Fake<IFoo>();
+            var manager = Fake.GetFakeManager(foo);
+            var initialRules = manager.Rules.ToList();
 
             // Act
-            this.configurationManager.CallTo(fake);
+            action(this, foo);
 
             // Assert
-            manager.AllUserRules.Single().Rule.Should().BeOfType<AnyCallCallRule>();
+            manager.Rules.Should().Equal(initialRules);
         }
 
         private void OnSetup()

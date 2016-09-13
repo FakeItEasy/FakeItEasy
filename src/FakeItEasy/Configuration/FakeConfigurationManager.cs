@@ -34,7 +34,6 @@ namespace FakeItEasy.Configuration
 
             var rule = this.ruleFactory.Invoke(parsedCallExpression);
             var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget);
-            fake.AddRuleFirst(rule);
 
             return this.configurationFactory.CreateConfiguration(fake, rule);
         }
@@ -50,7 +49,6 @@ namespace FakeItEasy.Configuration
 
             var rule = this.ruleFactory.Invoke(parsedCallExpression);
             var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget);
-            fake.AddRuleFirst(rule);
 
             return this.configurationFactory.CreateConfiguration<T>(fake, rule);
         }
@@ -60,7 +58,6 @@ namespace FakeItEasy.Configuration
             GuardAgainstNonFake(fakeObject);
             var rule = new AnyCallCallRule();
             var manager = Fake.GetFakeManager(fakeObject);
-            manager.AddRuleFirst(rule);
 
             return this.configurationFactory.CreateAnyCallConfiguration(manager, rule);
         }
@@ -174,7 +171,6 @@ namespace FakeItEasy.Configuration
         private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(FakeManager fake, ParsedCallExpression parsedCallExpression)
         {
             var rule = this.ruleFactory.Invoke(parsedCallExpression);
-            fake.AddRuleFirst(rule);
 
             return this.configurationFactory.CreateConfiguration(fake, rule);
         }

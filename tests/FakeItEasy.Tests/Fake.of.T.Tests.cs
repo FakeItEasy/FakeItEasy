@@ -1,7 +1,9 @@
 namespace FakeItEasy.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -20,6 +22,12 @@ namespace FakeItEasy.Tests
 
             this.StubResolve(this.startConfigurationFactory);
         }
+
+        public static IEnumerable<object[]> CallSpecificationActions =>
+            TestCases.FromObject<Action<Fake<IFoo>>>(
+                fake => fake.CallsTo(foo => foo.Bar()),
+                fake => fake.CallsTo(foo => foo.Baz()),
+                fake => fake.AnyCall());
 
         [Fact]
         public void Constructor_that_takes_options_builder_should_be_null_guarded()
@@ -93,6 +101,22 @@ namespace FakeItEasy.Tests
 
             // Assert
             result.Should().BeSameAs(callConfig);
+        }
+
+        [Theory]
+        [MemberData(nameof(CallSpecificationActions))]
+        public void Call_specifications_should_not_add_rule_to_manager(Action<Fake<IFoo>> action)
+        {
+            // Arrange
+            var fake = new Fake<IFoo>();
+            var manager = Fake.GetFakeManager(fake.FakedObject);
+            var initialRules = manager.Rules.ToList();
+
+            // Act
+            action(fake);
+
+            // Assert
+            manager.Rules.Should().Equal(initialRules);
         }
 
         public abstract class AbstractTypeWithNoDefaultConstructor

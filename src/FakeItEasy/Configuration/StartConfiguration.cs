@@ -29,7 +29,6 @@ namespace FakeItEasy.Configuration
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
             var rule = this.callRuleFactory(this.expressionParser.Parse(callSpecification));
-            this.manager.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, rule);
         }
 
@@ -40,14 +39,12 @@ namespace FakeItEasy.Configuration
             this.AssertThatMemberCanBeIntercepted(callSpecification);
 
             var rule = this.callRuleFactory(this.expressionParser.Parse(callSpecification));
-            this.manager.AddRuleFirst(rule);
             return this.configurationFactory.CreateConfiguration(this.manager, rule);
         }
 
         public IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall()
         {
             var rule = new AnyCallCallRule();
-            this.manager.AddRuleFirst(rule);
             return this.configurationFactory.CreateAnyCallConfiguration(this.manager, rule);
         }
 
