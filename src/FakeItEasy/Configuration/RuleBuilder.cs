@@ -158,9 +158,7 @@ namespace FakeItEasy.Configuration
 
             public IReturnValueConfiguration<TMember> WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
             {
-                Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
-
-                this.ParentConfiguration.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
+                this.ParentConfiguration.WhenArgumentsMatch(argumentsPredicate);
                 return this;
             }
 
