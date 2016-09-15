@@ -43,7 +43,8 @@ specs = [
 ]
 
 approval_tests = [
-  "tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll"
+  "tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll",
+  "tests/FakeItEasy.Tests.Approval.netstd/bin/Release/FakeItEasy.Tests.Approval.netstd.dll"
 ]
 
 repo = 'FakeItEasy/FakeItEasy'

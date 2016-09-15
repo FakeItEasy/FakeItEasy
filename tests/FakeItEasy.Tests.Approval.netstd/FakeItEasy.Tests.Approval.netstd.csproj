@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{42A92357-2A87-4B87-A591-CA78B6CE4461}</ProjectGuid>
+    <ProjectGuid>{BC38E29E-2915-4E3E-BC12-69226747E269}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FakeItEasy.Tests.Approval</RootNamespace>
-    <AssemblyName>FakeItEasy.Tests.Approval</AssemblyName>
+    <AssemblyName>FakeItEasy.Tests.Approval.netstd</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>false</SignAssembly>
@@ -68,6 +68,7 @@
       <HintPath>..\..\packages\PublicApiGenerator.4.0.1\lib\net40\PublicApiGenerator.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
@@ -101,13 +102,13 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">
-      <Project>{74165807-676F-4464-B607-8770C13E8991}</Project>
-      <Name>FakeItEasy</Name>
+    <ProjectReference Include="..\..\src\FakeItEasy.netstd\FakeItEasy.netstd.csproj">
+      <Project>{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}</Project>
+      <Name>FakeItEasy.netstd</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ApiApproval.ApproveApi.approved.txt" />
+    <Content Include="ApiApproval.ApproveApiNetStd.approved.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
