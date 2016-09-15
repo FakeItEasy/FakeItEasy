@@ -9,6 +9,9 @@ install:
 build_script:
     - cmd: build.netstd.cmd
 
+nuget:
+    disable_publish_on_pr: true
+
 test: off
 
 on_finish:
