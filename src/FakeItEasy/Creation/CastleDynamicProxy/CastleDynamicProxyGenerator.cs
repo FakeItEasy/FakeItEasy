@@ -151,7 +151,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             IEnumerable<object> argumentsForConstructor,
             IInterceptor interceptor)
         {
-            var allInterfacesToImplement = GetAllInterfacesToImplement(additionalInterfacesToImplement);
+            var allInterfacesToImplement = GetAllInterfacesToImplement(typeOfProxy, additionalInterfacesToImplement);
 
             if (typeOfProxy.GetTypeInfo().IsInterface)
             {
@@ -179,9 +179,17 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 interceptor);
         }
 
-        private static IEnumerable<Type> GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
+        private static IEnumerable<Type> GetAllInterfacesToImplement(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement)
         {
-            return additionalInterfacesToImplement.Concat(typeof(ITaggable));
+            return additionalInterfacesToImplement
+                .Union(typeOfProxy.GetInterfaces().Where(CanInterfaceBeImplemented))
+                .Concat(typeof(ITaggable));
+        }
+
+        private static bool CanInterfaceBeImplemented(Type type)
+        {
+            var info = type.GetTypeInfo();
+            return (info.IsPublic || info.IsNestedPublic) && !info.IsImport;
         }
 
 #if FEATURE_BINARY_SERIALIZATION
