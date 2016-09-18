@@ -1,4 +1,4 @@
-site_name: FakeItEasy 
+site_name: FakeItEasy
 site_dir: artifacts/docs
 theme: readthedocs
 repo_url: https://github.com/FakeItEasy/FakeItEasy
@@ -7,7 +7,7 @@ extra_css: [css/extra-highlight.css]
 pages:
 - FakeItEasy: index.md
 - Quickstart: quickstart.md
-- Creating Fakes: 
+- Creating Fakes:
   - Creating Fakes: creating-fakes.md
   - What can be faked: what-can-be-faked.md
   - Default fake behavior: default-fake-behavior.md
@@ -36,6 +36,7 @@ pages:
 - Formatting Argument Values: formatting-argument-values.md
 - Scanning for Extension Points: scanning-for-extension-points.md
 - Bootstrapper: bootstrapper.md
+- Analyzer: analyzer.md
 - Snippets for FakeItEasy in SideWaffle: snippets-for-fakeiteasy-in-sidewaffle.md
 - Platform support: platform-support.md
 - Source Stepping: source-stepping.md
