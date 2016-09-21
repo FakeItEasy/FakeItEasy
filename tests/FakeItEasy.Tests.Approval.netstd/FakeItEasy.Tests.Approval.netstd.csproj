@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiApproval.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -100,12 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\FakeItEasy.netstd\FakeItEasy.netstd.csproj">
-      <Project>{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}</Project>
-      <Name>FakeItEasy.netstd</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApiApproval.ApproveApiNetStd.approved.txt" />
