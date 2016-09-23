@@ -14,27 +14,7 @@ namespace FakeItEasy
         /// </summary>
         /// <notes>
         /// This method evaluates an expression, but tries to do it in a light-weight way that doesn't compile it into a delegate.
-        /// This is often going to be used in the context of finding out 'what object/value is a some (sub-)expression referring to?'
-        /// 
-        /// Key observation is that walking the expression tree and evaluating directly can be much faster for simple expressions like:
-        /// 
-        /// - constant expressions (null, 1, "easy", etc.)
-        /// 
-        /// - local variables referenced from lambda expressions, such as 'fake' in the A.CallTo line:
-        /// 
-        ///     {
-        ///         var fake = A.Fake&lt;Something&gt;();
-        ///         A.CallTo(() => fake.DoStuff());
-        ///     }
-        ///     
-        /// - Expressions that are simple member accesses (field gets, property gets) on an object or class, such as
-        ///     String.Empty
-        ///     A&lt;SomethingA&gt;.Ignored
-        ///     A&lt;SomethingA&gt;._
-        ///     myObj.someProperty
-        ///     
-        /// - Trivial method calls with no arguments (A.ToString(), B.GetType(), Factory.Create())
-        ///     
+        /// It is often used to solve 'what object/value does the user-supplied Expression refer to?'
         /// </notes>
         /// <param name="expression">The expression to be evaluated.</param>
         /// <returns>The value returned from the delegate compiled from the expression.</returns>
@@ -42,7 +22,21 @@ namespace FakeItEasy
         {
             return EvaluateOptimized(expression);
         }
-        
+
+        // About the optimizations: 
+        // Key observation is that walking the expression tree and evaluating directly can be much faster for simple expressions like:
+        // - constant expressions (null, 1, "easy", etc.)
+        // - local variables referenced from lambda expressions, such as 'fake' in the A.CallTo line:
+        //     {
+        //         var fake = A.Fake&lt;Something&gt;();
+        //         A.CallTo(() => fake.DoStuff());
+        //     }
+        // - expressions that are simple member accesses (field gets, property gets) on an object or class, such as
+        //     String.Empty
+        //     A&lt;SomethingA&gt;.Ignored
+        //     A&lt;SomethingA&gt;._
+        //     myObj.someProperty
+        // - trivial method calls with no arguments (A.ToString(), B.GetType(), Factory.Create())
         private static object EvaluateOptimized(this Expression expression)
         {
             if (expression == null)
