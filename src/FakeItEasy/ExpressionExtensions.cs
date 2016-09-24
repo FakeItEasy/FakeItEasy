@@ -23,18 +23,18 @@ namespace FakeItEasy
             return EvaluateOptimized(expression);
         }
 
-        // About the optimizations: 
+        // About the optimizations:
         // Key observation is that walking the expression tree and evaluating directly can be much faster for simple expressions like:
         // - constant expressions (null, 1, "easy", etc.)
         // - local variables referenced from lambda expressions, such as 'fake' in the A.CallTo line:
         //     {
-        //         var fake = A.Fake&lt;Something&gt;();
+        //         var fake = A.Fake<Something>();
         //         A.CallTo(() => fake.DoStuff());
         //     }
         // - expressions that are simple member accesses (field gets, property gets) on an object or class, such as
         //     String.Empty
-        //     A&lt;SomethingA&gt;.Ignored
-        //     A&lt;SomethingA&gt;._
+        //     A<SomethingA>.Ignored
+        //     A<SomethingA>._
         //     myObj.someProperty
         // - trivial method calls with no arguments (A.ToString(), B.GetType(), Factory.Create())
         private static object EvaluateOptimized(this Expression expression)
@@ -86,7 +86,7 @@ namespace FakeItEasy
                     // for now, handling only 'boxing/casting to object' expressions like '3' used as an argument to a function which takes an object[] array parameter.
                     if (unaryExpression.Type == typeof(object))
                     {
-                        // in principle, we would first evaluate it without the boxing, and then box/cast to object... 
+                        // in principle, we would first evaluate it without the boxing, and then box/cast to object...
                         // ...but EvaluateOptimized already boxes before returning, so no explicit cast needed.
                         object obj = EvaluateOptimized(unaryExpression.Operand); // declaring an explicitly typed variable to ensure we're really boxing
                         return obj;
