@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Approval
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -14,13 +15,15 @@ namespace FakeItEasy.Tests.Approval
         [Fact]
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
+        [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFrom", Justification = "By design")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Std", Justification = "Controls the approved/received file name")]
         public void ApproveApiNetStd()
         {
             // Approvals and PublicApiGenerator aren't available for .NET Core, so
             // we'll load the .NET Standard FakeItEasy assembly from disk and
             // examine it.
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
+            UriBuilder uri = new UriBuilder(new Uri(codeBase));
             string assemblyPath = Uri.UnescapeDataString(uri.Path);
             var containingDirectory = Path.GetDirectoryName(assemblyPath);
             var configurationName = new DirectoryInfo(containingDirectory).Name;
