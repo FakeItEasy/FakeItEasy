@@ -1,8 +1,6 @@
 ![Are you mocking me?](http://fakeiteasy.github.io/img/fakeiteasy_logo_256.png)
 
 [![NuGet version](https://img.shields.io/nuget/v/FakeItEasy.svg?style=flat-square)](https://www.nuget.org/packages/FakeItEasy)
-[![Pull requests](http://issuestats.com/github/FakeItEasy/FakeItEasy/badge/pr?style=flat-square)](http://issuestats.com/github/FakeItEasy/FakeItEasy)
-[![Issues](http://issuestats.com/github/FakeItEasy/FakeItEasy/badge/issue?style=flat-square)](http://issuestats.com/github/FakeItEasy/FakeItEasy)
 [![TeamCity CodeBetter](https://img.shields.io/teamcity/codebetter/bt929.svg?style=flat-square)](http://teamcity.codebetter.com/viewType.html?buildTypeId=bt929)
 
 A .Net dynamic fake framework for creating all types of fake objects, mocks, stubs etc.
