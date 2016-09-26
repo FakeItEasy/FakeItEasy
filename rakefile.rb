@@ -57,7 +57,6 @@ Can be labelled **ready** when all other issues on this milestone are closed.
     - [ ] publish the release
 - [ ] push nupkg(s) to NuGet
 - [ ] de-list pre-release or superseded buggy NuGet packages if present
-- [ ] update website with contributors list (if in place)
 - [ ] tweet, mentioning contributors and post link as comment here for easy retweeting ;-)
 - [ ] post tweet in [Gitter](https://gitter.im/FakeItEasy/FakeItEasy)
 - [ ] post a link to the GitHub Release in each issue in this milestone, with thanks to contributors
