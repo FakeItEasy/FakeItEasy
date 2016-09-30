@@ -623,24 +623,6 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
         }
 
-        [Scenario]
-        public static void ConfigureExplicitlyImplementedMethod(
-            ImplementsFooExplicitly fake,
-            int result)
-        {
-            "Given a fake of a class that explicitly implements an interface"
-                .x(() => fake = A.Fake<ImplementsFooExplicitly>());
-
-            "And an explicitly implemented interface method configured to return a value"
-                .x(() => A.CallTo(() => ((IFoo)fake).Baz()).Returns(42));
-
-            "When that method is called"
-                .x(() => result = ((IFoo)fake).Baz());
-
-            "Then it returns the configured value"
-                .x(() => result.Should().Be(42));
-        }
-
         public class BaseClass
         {
             public bool WasCalled { get; private set; }
@@ -681,24 +663,6 @@ namespace FakeItEasy.Specs
             public sealed override int ReturnSomething()
             {
                 return 10;
-            }
-        }
-
-        public class ImplementsFooExplicitly : IFoo
-        {
-            void IFoo.Bar()
-            {
-                throw new NotImplementedException();
-            }
-
-            int IFoo.Baz()
-            {
-                return 1;
-            }
-
-            string IFoo.Bas()
-            {
-                throw new NotImplementedException();
             }
         }
     }
