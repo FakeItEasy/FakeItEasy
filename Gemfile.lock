@@ -1,10 +1,19 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    addressable (2.4.0)
     albacore (0.3.6)
       rubyzip (< 1.0.0)
+    faraday (0.9.2)
+      multipart-post (>= 1.2, < 3)
+    multipart-post (2.0.0)
+    octokit (4.3.0)
+      sawyer (~> 0.7.0, >= 0.5.3)
     rake (11.1.2)
     rubyzip (0.9.9)
+    sawyer (0.7.0)
+      addressable (>= 2.3.5, < 2.5)
+      faraday (~> 0.8, < 0.10)
     zip (2.0.2)
 
 PLATFORMS
@@ -13,8 +22,9 @@ PLATFORMS
 
 DEPENDENCIES
   albacore (= 0.3.6)
+  octokit
   rake
   zip
 
 BUNDLED WITH
-   1.12.4
+   1.13.1
