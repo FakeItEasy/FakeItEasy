@@ -12,8 +12,9 @@ xunit_command   = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 solution        = "FakeItEasy.netstd.sln"
 assembly_info   = "src/CommonAssemblyInfo.cs"
 version         = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
-version_suffix  = ENV["VERSION_SUFFIX"]
-version_suffix  = version_suffix.to_s.empty? ? "-adhoc" : version_suffix
+#version_suffix  = ENV["VERSION_SUFFIX"]
+#version_suffix  = version_suffix.to_s.empty? ? "-adhoc" : version_suffix
+version_suffix  = "-netstd" #temporary while we have two build scripts
 repo_url        = "https://github.com/FakeItEasy/FakeItEasy"
 nuspec          = "src/FakeItEasy.netstd/FakeItEasy.nuspec"
 analyzer_nuspec = "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.nuspec"
@@ -99,7 +100,7 @@ Albacore.configure do |config|
 end
 
 desc "Execute default tasks"
-task :default => [ :vars, :gitlink, :unit, :integ, :spec, :pack ]
+task :default => [ :vars, :gitlink, :unit, :integ, :spec, :approve, :pack ]
 
 desc "Print all variables"
 task :vars do
