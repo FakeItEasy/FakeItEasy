@@ -16,4 +16,5 @@ nuget:
 test: off
 
 artifacts:
-- path: .\artifacts\*\*.*
+- path: .\artifacts\*\*-netstd.nupkg
+- path: .\artifacts
