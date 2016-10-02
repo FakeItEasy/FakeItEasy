@@ -350,23 +350,25 @@ end
 
 def run_tests(test_assemblies, command, result_dir)
   test_assemblies.each do |test_assembly|
-    result_file = File.expand_path(File.join(result_dir, File.basename(test_assembly, '.dll') + '.TestResults.xml'))
+    xml   = File.expand_path(File.join(result_dir, File.basename(test_assembly, '.dll') + '.TestResults.xml'))
+    html  = File.expand_path(File.join(result_dir, File.basename(test_assembly, '.dll') + '.TestResults.html'))
 
     xunit = XUnitTestRunner.new
     xunit.command = command
     xunit.assembly = test_assembly
-    xunit.options '-noshadow', '-nologo', '-notrait', '"explicit=yes"', '-xml', result_file
+    xunit.options '-noshadow', '-nologo', '-notrait', '"explicit=yes"', '-xml', xml, '-html', html
     xunit.execute
   end
 end
 
 def run_netstd_tests(test_directories, result_dir)
   test_directories.each do |test_directory|
-    result_file = File.expand_path(File.join(result_dir, File.basename(test_directory) + '.TestResults.xml'))
+    xml = File.expand_path(File.join(result_dir, File.basename(test_directory) + '.TestResults.xml'))
+    # the xunit .NET Core runner can't produce HTML yet since XSLT isn't scheduled until .NET Core 1.2
 
     test_cmd = Exec.new
     test_cmd.command = "dotnet"
-    test_cmd.parameters "test -c Release #{test_directory} -nologo -notrait \"explicit=yes\" -xml #{result_file}"
+    test_cmd.parameters "test -c Release #{test_directory} -nologo -notrait \"explicit=yes\" -xml #{xml}"
     test_cmd.execute
   end
 end
