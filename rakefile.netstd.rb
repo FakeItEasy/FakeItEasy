@@ -15,6 +15,8 @@ version         = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)
 #version_suffix  = ENV["VERSION_SUFFIX"]
 #version_suffix  = version_suffix.to_s.empty? ? "-adhoc" : version_suffix
 version_suffix  = "-netstd" #temporary while we have two build scripts
+build           = (ENV["BUILD"] || "").rjust(6, "0");
+build_suffix    = version_suffix.to_s.empty? ? "" : "-build" + build;
 repo_url        = "https://github.com/FakeItEasy/FakeItEasy"
 nuspec          = "src/FakeItEasy.netstd/FakeItEasy.nuspec"
 analyzer_nuspec = "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.nuspec"
@@ -269,13 +271,13 @@ directory output
 desc "create the nuget package"
 exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "pack #{nuspec} -Version #{version}#{version_suffix} -OutputDirectory #{output}"
+  cmd.parameters "pack #{nuspec} -Version #{version}#{version_suffix}#{build_suffix} -OutputDirectory #{output}"
 end
 
 desc "create the analyzer nuget package"
 exec :pack => [:build, output] do |cmd|
   cmd.command = nuget_command
-  cmd.parameters "pack #{analyzer_nuspec} -Version #{version}#{version_suffix} -OutputDirectory #{output}"
+  cmd.parameters "pack #{analyzer_nuspec} -Version #{version}#{version_suffix}#{build_suffix} -OutputDirectory #{output}"
 end
 
 def create_release(client, repo, milestone, release_version, release_body, release_issue_body, release_issue_labels)
