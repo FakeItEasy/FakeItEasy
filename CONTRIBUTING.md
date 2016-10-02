@@ -34,6 +34,10 @@ result.Should().BeSameAs(dummy));
 
 Whenever FluentAssertions are introduced into a test file, all tests in the file should be converted to use FluentAssertions.
 
+### API Approval
+
+If your contribution changes the public API, you will initially have a test failure from the `FakeItEasy.Tests.Approval` project. In order to fix this, check the difference between `tests\FakeItEasy.Tests.Approval\ApiApproval.ApproveApi.approved.txt` and `tests\FakeItEasy.Tests.Approval\ApiApproval.ApproveApi.received.txt`. If you are satisfied with change, update `...approved.txt` to match `...received.txt` and commit the change.
+
 ## Spaces not Tabs
 
 Pull requests containing tabs will not be accepted. Make sure you set your editor to replace tabs with spaces. Indents for all file types should be 4 characters wide with the exception of Ruby (rakefile.rb) which should have indents 2 characters wide.
@@ -67,7 +71,7 @@ Please do not add Resharper suppressions to code using comments. You may tweak y
 1. Work on your feature
 1. Rebase if required (see below)
 1. Run code analysis on the solution to ensure you have not introduced any violations
-1. Execute rake to ensure the build succeeds (see ['How to build'](https://github.com/FakeItEasy/FakeItEasy/blob/master/how_to_build.md "How to build"))  
+1. Execute rake to ensure the build succeeds (see ['How to build'](https://github.com/FakeItEasy/FakeItEasy/blob/master/how_to_build.md "How to build"))
 1. Push the branch up to GitHub (`git push origin myBranch`)
 1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub
 
@@ -83,7 +87,7 @@ While you're working away in your branch it's quite possible that your upstream/
 1. `git checkout myBranch`
 1. `git rebase master myBranch`
 1. `git push origin master` - (optional) this this makes sure your remote master is up to date
-1. if you previously pushed your branch to your origin, you need to force push the rebased branch - `git push origin myBranch -f` 
+1. if you previously pushed your branch to your origin, you need to force push the rebased branch - `git push origin myBranch -f`
 
 This ensures that your history is "clean" i.e. you have one branch off from master followed by your changes in a straight line. Failing to do this ends up with several "messy" merges in your history, which we don't want. This is the reason why you should always work in a branch and you should never be working in, or sending pull requests from, master.
 
@@ -97,4 +101,3 @@ When you're ready to go you should confirm that you are up to date and rebased w
 
 1. `git push origin myBranch`
 1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub. Make sure you select `FakeItEasy/FakeItEasy` as the *base repo* and `master` as the *base branch*. Select your fork as the *head repo* and your branch as the *head branch*. The pull request should include a description starting with "Fixes #123." (using the real issue number, of course) if it fixes an issue. If there's no issue, be sure to clearly explain the intent of the change.
-1. If GitHub indicates that the pull request can be merged automatically, check that the pull request has built successfully on our [CI server](http://teamcity.codebetter.com/viewType.html?buildTypeId=bt929) (you can either create an account or login as guest). E.g. if your pull request is number 123, you should see a build labelled '123/merge' on the CI server. If the build has failed (red) then there is a problem with your changes and you'll have to fix it before the pull request can be accepted. You can inspect the build logs on the CI server to see what caused the failure.

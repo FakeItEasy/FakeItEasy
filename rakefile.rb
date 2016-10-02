@@ -42,14 +42,13 @@ approval_tests = [
 ]
 
 repo = 'FakeItEasy/FakeItEasy'
-ci_server_url = 'http://teamcity.codebetter.com/admin/editBuildParams.html?id=buildType:bt929'
+appveyor_server_url = 'https://ci.appveyor.com/project/FakeItEasy/fakeiteasy/settings'
 release_issue_labels = ['P2', 'build', 'documentation']
 release_issue_common_steps = <<-eos
 Can be labelled **ready** when all other issues on this milestone are closed.
 
 - [ ] run code analysis in VS in *Release* mode and address violations (send a regular PR which must be merged before continuing)
-- [ ] if necessary, change `VERSION_SUFFIX` on the [CI Server](#{ci_server_url})
-      to appropriate "-beta123" or "" (for non-betas) value and initiate a build
+- [ ] if necessary, change `VERSION_SUFFIX` in [AppVeyor](#{appveyor_server_url}) to appropriate "-beta123" or "" (for non-betas) value and initiate a build
 - [ ] check build
 - edit draft release in [GitHub UI](https://github.com/FakeItEasy/FakeItEasy/releases):
     - [ ] ensure completeness of release notes, including non-owner contributors, if any (move release notes forward from any pre-releases to the current release)
@@ -92,7 +91,7 @@ Albacore.configure do |config|
 end
 
 desc "Execute default tasks"
-task :default => [ :vars, :gitlink, :unit, :integ, :spec, :pack ]
+task :default => [ :vars, :gitlink, :unit, :integ, :spec, :approve, :pack ]
 
 desc "Print all variables"
 task :vars do
