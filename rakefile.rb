@@ -92,7 +92,7 @@ Albacore.configure do |config|
 end
 
 desc "Execute default tasks"
-task :default => [ :vars, :gitlink, :unit, :integ, :spec, :pack ]
+task :default => [ :vars, :gitlink, :unit, :integ, :spec, :approve, :pack ]
 
 desc "Print all variables"
 task :vars do
