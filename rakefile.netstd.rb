@@ -93,7 +93,7 @@ release_body = <<-eos
 * _&lt;user's actual name&gt;_ - @_&lt;github userid&gt;_
 eos
 
-ssl_cert_file_url = "http://curl.haxx.se/ca/cacert.pem"
+ssl_cert_filename = "cacert.pem"
 
 Albacore.configure do |config|
   config.log_level = :verbose
@@ -143,7 +143,7 @@ task :next_version, :new_version do |asm, args|
 
   require 'octokit'
 
-  ssl_cert_file = get_temp_ssl_cert_file(ssl_cert_file_url)
+  use_ssl_cert_file(ssl_cert_filename)
 
   client = Octokit::Client.new(:netrc => true)
 
@@ -198,7 +198,7 @@ task :pre_release, :version_suffix do |asm, args|
 
   require 'octokit'
 
-  ssl_cert_file = get_temp_ssl_cert_file(ssl_cert_file_url)
+  use_ssl_cert_file(ssl_cert_filename)
 
   client = Octokit::Client.new(:netrc => true)
 
@@ -378,30 +378,10 @@ def restore_dependencies_for_project(project_dir)
   restore_cmd.execute
 end
 
-# Get a temporary SSL cert file if necessary.
-# If ENV["SSL_CERT_FILE"] is set, will return nil.
-# Otherwise, attempts to download a known
-# SSL cert file, sets ENV["SSL_CERT_FILE"]
-# to point at it, and returns the file (mostly so it will
-# stay in scope while it's needed).
-def get_temp_ssl_cert_file(ssl_cert_file_url)
-  ssl_cert_file_path = ENV["SSL_CERT_FILE"]
-  if ssl_cert_file_path
-    return nil
-  end
-
-  puts "Environment variable SSL_CERT_FILE is not set. Downloading a cert file from '#{ssl_cert_file_url}'..."
-
-  require 'open-uri'
-  require 'tempfile'
-
-  file = Tempfile.new('ssl_cert_file')
-  file.binmode
-  file << open(ssl_cert_file_url).read
-  file.close
-
-  ENV["SSL_CERT_FILE"] = file.path
-
-  puts "Downloaded cert file to '#{ENV['SSL_CERT_FILE']}'."
-  return file
+# Load SSL cert file to enable Ruby SSL support.
+# New cert files can be had from
+#    http://curl.haxx.se/ca/cacert.pem
+# in case the current one stops working.
+def use_ssl_cert_file(ssl_cert_filename)
+  ENV["SSL_CERT_FILE"] = File.absolute_path(ssl_cert_filename)
 end
