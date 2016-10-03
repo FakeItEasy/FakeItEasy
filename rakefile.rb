@@ -334,12 +334,13 @@ end
 
 def run_tests(test_assemblies, command, result_dir)
   test_assemblies.each do |test_assembly|
-    result_file = File.expand_path(File.join(result_dir, File.basename(test_assembly, '.dll') + '.TestResults.xml'))
+    xml   = File.expand_path(File.join(result_dir, File.basename(test_assembly, '.dll') + '.TestResults.xml'))
+    html  = File.expand_path(File.join(result_dir, File.basename(test_assembly, '.dll') + '.TestResults.html'))
 
     xunit = XUnitTestRunner.new
     xunit.command = command
     xunit.assembly = test_assembly
-    xunit.options '-noshadow', '-nologo', '-notrait', '"explicit=yes"', '-xml', result_file
+    xunit.options '-noshadow', '-nologo', '-notrait', '"explicit=yes"', '-xml', xml, '-html', html
     xunit.execute
   end
 end
