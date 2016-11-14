@@ -2,7 +2,7 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection.Emit;
+    using System.Linq.Expressions;
     using FakeItEasy.Creation;
 #if FEATURE_SELF_INITIALIZED_FAKES
     using FakeItEasy.SelfInitializedFakes;
@@ -38,9 +38,9 @@ namespace FakeItEasy.Core
             return this.fakeOptions.Wrapping(wrappedInstance);
         }
 
-        public override IFakeOptions<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+        public override IFakeOptions<T> WithAdditionalAttributes(params Expression<Func<Attribute>>[] attributes)
         {
-            return this.fakeOptions.WithAdditionalAttributes(customAttributeBuilders);
+            return this.fakeOptions.WithAdditionalAttributes(attributes);
         }
 
         public override IFakeOptions<T> Implements(Type interfaceType)

@@ -9,7 +9,7 @@
 namespace Castle.DynamicProxy
 {
     
-    public abstract class AbstractInvocation : Castle.DynamicProxy.IInvocation, System.Runtime.Serialization.ISerializable
+    public abstract class AbstractInvocation : Castle.DynamicProxy.IInvocation
     {
         protected readonly object proxyObject;
         protected AbstractInvocation(object proxy, Castle.DynamicProxy.IInterceptor[] interceptors, System.Reflection.MethodInfo proxiedMethod, object[] arguments) { }
@@ -24,8 +24,6 @@ namespace Castle.DynamicProxy
         public object GetArgumentValue(int index) { }
         public System.Reflection.MethodInfo GetConcreteMethod() { }
         public System.Reflection.MethodInfo GetConcreteMethodInvocationTarget() { }
-        [System.Security.SecurityCriticalAttribute()]
-        public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         protected abstract void InvokeMethodOnTarget();
         public void Proceed() { }
         public void SetArgumentValue(int index, object value) { }
@@ -45,7 +43,7 @@ namespace Castle.DynamicProxy.Generators
     {
         public static void Add(System.Type attribute) { }
         public static void Add<T>() { }
-        public static bool Contains(System.Type type) { }
+        public static bool Contains(System.Type attribute) { }
     }
 }
 namespace Castle.DynamicProxy.Internal
@@ -71,6 +69,7 @@ namespace Castle.DynamicProxy.Internal
     }
     public class static TypeUtil
     {
+        public static System.Type[] AsTypeArray(this System.Reflection.Emit.GenericTypeParameterBuilder[] typeInfos) { }
         public static System.Reflection.FieldInfo[] GetAllFields(this System.Type type) { }
         public static System.Type[] GetAllInterfaces(params System.Type[] types) { }
         public static System.Type[] GetAllInterfaces(this System.Type type) { }
@@ -520,7 +519,7 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions ConfigureFake(System.Action<object> action);
         FakeItEasy.Creation.IFakeOptions Implements(System.Type interfaceType);
         FakeItEasy.Creation.IFakeOptions Implements<TInterface>();
-        FakeItEasy.Creation.IFakeOptions WithAdditionalAttributes(System.Collections.Generic.IEnumerable<System.Reflection.Emit.CustomAttributeBuilder> customAttributeBuilders);
+        FakeItEasy.Creation.IFakeOptions WithAdditionalAttributes(params System.Linq.Expressions.Expression<>[] attributes);
         FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor<TConstructor>(System.Linq.Expressions.Expression<System.Func<TConstructor>> constructorCall);
         FakeItEasy.Creation.IFakeOptionsForWrappers Wrapping(object wrappedInstance);
@@ -531,7 +530,7 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions<T> ConfigureFake(System.Action<T> action);
         FakeItEasy.Creation.IFakeOptions<T> Implements(System.Type interfaceType);
         FakeItEasy.Creation.IFakeOptions<T> Implements<TInterface>();
-        FakeItEasy.Creation.IFakeOptions<T> WithAdditionalAttributes(System.Collections.Generic.IEnumerable<System.Reflection.Emit.CustomAttributeBuilder> customAttributeBuilders);
+        FakeItEasy.Creation.IFakeOptions<T> WithAdditionalAttributes(params System.Linq.Expressions.Expression<>[] attributes);
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Linq.Expressions.Expression<System.Func<T>> constructorCall);
         FakeItEasy.Creation.IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);

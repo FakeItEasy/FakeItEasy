@@ -4,7 +4,6 @@ namespace FakeItEasy.Creation
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
-    using System.Reflection.Emit;
 
     /// <summary>
     /// Provides options for generating fake object.
@@ -33,9 +32,9 @@ namespace FakeItEasy.Creation
         /// <summary>
         /// Specifies that the fake should be created with these additional attributes.
         /// </summary>
-        /// <param name="customAttributeBuilders">The attributes to build into the proxy.</param>
+        /// <param name="attributes">Expressions that create attributes to add to the proxy.</param>
         /// <returns>Options object.</returns>
-        IFakeOptions WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders);
+        IFakeOptions WithAdditionalAttributes(params Expression<Func<Attribute>>[] attributes);
 
         /// <summary>
         /// Specifies an action that should be run over the fake object for the initial configuration (during the creation of the fake proxy).

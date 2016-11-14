@@ -4,7 +4,7 @@ namespace FakeItEasy.Tests.Creation
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Reflection.Emit;
+    using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FluentAssertions;
@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests.Creation
 
             var proxy = A.Fake<IFoo>();
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
                 .Returns(new ProxyGeneratorResult(proxy));
 
             // Act
@@ -68,7 +68,7 @@ namespace FakeItEasy.Tests.Creation
             // Assert
             A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(IFoo), options)).MustHaveHappened();
 
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<CustomAttributeBuilder>>._, fakeCallProcessorProvider))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<Expression<Func<Attribute>>>>._, fakeCallProcessorProvider))
                 .MustHaveHappened();
         }
 
@@ -154,13 +154,13 @@ namespace FakeItEasy.Tests.Creation
 
             // Assert
             A.CallTo(() =>
-                this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsNull(), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+                this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsNull(), A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
                 .MustHaveHappened()
                 .Then(A.CallTo(() =>
-                    this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+                    this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1), A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
                     .MustHaveHappened())
                 .Then(A.CallTo(() =>
-                    this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence("dummy"), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+                    this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence("dummy"), A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
                     .MustHaveHappened());
         }
 
@@ -198,9 +198,9 @@ namespace FakeItEasy.Tests.Creation
             var proxy = A.Fake<IFoo>();
 
             this.StubProxyGeneratorToFail();
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1, 1), A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
                 .Returns(new ProxyGeneratorResult(proxy));
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1), A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
                 .Returns(new ProxyGeneratorResult(new object()));
 
             // Act
@@ -222,7 +222,7 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator.CreateFake(typeof(TypeWithConstructorThatTakesDifferentTypes), new ProxyOptions(), session, throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>.That.Not.IsNull(), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>.That.Not.IsNull(), A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
                 .MustNotHaveHappened();
         }
 
@@ -240,7 +240,7 @@ namespace FakeItEasy.Tests.Creation
             this.fakeObjectCreator.CreateFake(typeof(TypeWithProtectedConstructor), options, session, throwOnFailure: false);
 
             // Assert
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithProtectedConstructor), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1), A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithProtectedConstructor), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1), A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
                 .MustHaveHappened();
         }
 
@@ -355,7 +355,7 @@ namespace FakeItEasy.Tests.Creation
 
         private void StubProxyGeneratorToFail(string failReason)
         {
-            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<CustomAttributeBuilder>>._, A<IFakeCallProcessorProvider>._))
+            A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>._, A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
                 .Returns(new ProxyGeneratorResult(failReason));
         }
 

@@ -3,7 +3,6 @@ namespace FakeItEasy.IntegrationTests
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Reflection.Emit;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Tests;
@@ -51,14 +50,9 @@ namespace FakeItEasy.IntegrationTests
         public void Faked_object_with_additional_attributes_should_create_a_type_with_those_attributes()
         {
             // Arrange
-            var types = new Type[0];
-            var constructor = typeof(ForTestAttribute).GetConstructor(types);
-            var list = new object[0];
-            var attribute = new CustomAttributeBuilder(constructor, list);
-            var builder = new List<CustomAttributeBuilder> { attribute };
 
             // Act
-            var fake = A.Fake<IEmpty>(a => a.WithAdditionalAttributes(builder));
+            var fake = A.Fake<IEmpty>(a => a.WithAdditionalAttributes(() => new ForTestAttribute()));
 
             // Assert
             fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().HaveCount(1);
@@ -68,12 +62,7 @@ namespace FakeItEasy.IntegrationTests
         public void Additional_attributes_should_not_be_added_to_the_next_fake()
         {
             // Arrange
-            var types = new Type[0];
-            var constructor = typeof(ForTestAttribute).GetConstructor(types);
-            var list = new object[0];
-            var attribute = new CustomAttributeBuilder(constructor, list);
-            var builder = new List<CustomAttributeBuilder> { attribute };
-            A.Fake<IEmpty>(a => a.WithAdditionalAttributes(builder));
+            A.Fake<IEmpty>(a => a.WithAdditionalAttributes(() => new ForTestAttribute()));
 
             // Act
             var secondFake = A.Fake<IFormattable>();

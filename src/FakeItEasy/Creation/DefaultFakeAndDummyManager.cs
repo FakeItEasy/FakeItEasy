@@ -2,10 +2,10 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
-    using System.Reflection.Emit;
     using FakeItEasy.Core;
 
     /// <summary>
@@ -84,13 +84,13 @@ namespace FakeItEasy.Creation
             }
 
             public override IFakeOptions<T> WithAdditionalAttributes(
-                IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+                params Expression<Func<Attribute>>[] attributes)
             {
-                Guard.AgainstNull(customAttributeBuilders, nameof(customAttributeBuilders));
+                Guard.AgainstNull(attributes, nameof(attributes));
 
-                foreach (var customAttributeBuilder in customAttributeBuilders)
+                foreach (var attribute in attributes)
                 {
-                    this.proxyOptions.AddAttribute(customAttributeBuilder);
+                    this.proxyOptions.AddAttribute(attribute);
                 }
 
                 return this;

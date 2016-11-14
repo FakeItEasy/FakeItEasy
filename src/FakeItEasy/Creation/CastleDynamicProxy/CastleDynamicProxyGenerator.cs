@@ -5,13 +5,13 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
-    using System.Reflection.Emit;
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
 
     internal class CastleDynamicProxyGenerator
-        : IProxyGenerator
+        : FakeItEasy.Creation.IProxyGenerator
     {
         private static readonly IProxyGenerationHook ProxyGenerationHook = new InterceptEverythingHook();
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
@@ -26,15 +26,15 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             Type typeOfProxy,
             IEnumerable<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
-            IEnumerable<CustomAttributeBuilder> customAttributeBuilders,
+            IEnumerable<Expression<Func<Attribute>>> attributes,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            Guard.AgainstNull(customAttributeBuilders, nameof(customAttributeBuilders));
+            Guard.AgainstNull(attributes, nameof(attributes));
 
             var options = CreateProxyGenerationOptions();
-            foreach (CustomAttributeBuilder builder in customAttributeBuilders)
+            foreach (var attribute in attributes)
             {
-                options.AdditionalAttributes.Add(builder);
+                options.AdditionalAttributes.Add(CustomAttributeInfo.FromExpression(attribute));
             }
 
             return GenerateProxy(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
