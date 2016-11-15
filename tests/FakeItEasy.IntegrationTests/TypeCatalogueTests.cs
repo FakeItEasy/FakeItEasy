@@ -16,19 +16,12 @@ namespace FakeItEasy.IntegrationTests
         public void Should_warn_of_duplicate_input_assemblies_with_different_paths()
         {
             // Arrange
-            var currentDirectoryName = new DirectoryInfo(Environment.CurrentDirectory).Name;
-
-            // FakeItEasy.IntegrationTests.External has copies of many of the assemblies used in these
-            // tests as well. By specifying assembly paths from that directory, the catalog will see
-            // those assemblies in both locations, and should fail to load the duplicates.
-            var directoryToScan = Path.Combine(
-                Environment.CurrentDirectory,
-                Path.Combine(@"..\..\..\FakeItEasy.IntegrationTests.External\bin", currentDirectoryName));
+            var originalExternalDll = GetPathToOriginalExternalDll();
+            var copyOfExternalDll = GetPathToCopyOfExternalDll();
 
             var expectedMessageFormat =
-@"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\{0}\FakeItEasy.IntegrationTests.External.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
-
-            var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, currentDirectoryName);
+@"*Warning: FakeItEasy failed to load assembly '*{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
+            var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, copyOfExternalDll);
             string actualMessage;
 
             using (var messageStream = new MemoryStream())
@@ -41,7 +34,7 @@ namespace FakeItEasy.IntegrationTests
                 try
                 {
                     // Act
-                    catalogue.Load(Directory.GetFiles(directoryToScan, "*.dll"));
+                    catalogue.Load(new[] { originalExternalDll, copyOfExternalDll });
                 }
                 finally
                 {
@@ -109,7 +102,7 @@ namespace FakeItEasy.IntegrationTests
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
+            catalogue.Load(Enumerable.Empty<string>());
 
             // Assert
             catalogue.GetAvailableTypes().Should().Contain(typeof(A));
@@ -122,20 +115,20 @@ namespace FakeItEasy.IntegrationTests
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
+            catalogue.Load(Enumerable.Empty<string>());
 
             // Assert
             catalogue.GetAvailableTypes().Should().Contain(typeof(DoubleValueFormatter));
         }
 
         [Fact]
-        public void Should_be_able_to_get_types_from_external_assembly_in_directory()
+        public void Should_be_able_to_get_types_from_external_assembly()
         {
             // Arrange
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
+            catalogue.Load(new[] { GetPathToOriginalExternalDll() });
 
             // Assert
             catalogue.GetAvailableTypes().Select(type => type.FullName).Should().Contain("FakeItEasy.IntegrationTests.External.GuidValueFormatter");
@@ -148,10 +141,28 @@ namespace FakeItEasy.IntegrationTests
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
+            catalogue.Load(Enumerable.Empty<string>());
 
             // Assert
             catalogue.GetAvailableTypes().Should().NotContain(typeof(string));
+        }
+
+        private static string GetPathToOriginalExternalDll()
+        {
+            var currentDirectory = Environment.CurrentDirectory;
+
+            return Path.GetFullPath(Path.Combine(
+                currentDirectory,
+                @"..\..\..\FakeItEasy.IntegrationTests.External\bin",
+                new DirectoryInfo(currentDirectory).Name,
+                "FakeItEasy.IntegrationTests.External.dll"));
+        }
+
+        private static string GetPathToCopyOfExternalDll()
+        {
+            return Path.GetFullPath(Path.Combine(
+                Environment.CurrentDirectory,
+                "FakeItEasy.IntegrationTests.External.dll"));
         }
     }
 }
