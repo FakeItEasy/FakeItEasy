@@ -359,13 +359,6 @@ namespace FakeItEasy.Configuration
     {
         FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, TMember> valueProducer);
     }
-    public interface IStartConfiguration<TFake> : FakeItEasy.IHideObjectMembers
-    
-    {
-        FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall();
-        FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(System.Linq.Expressions.Expression<System.Func<TFake, TMember>> callSpecification);
-        FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallsTo(System.Linq.Expressions.Expression<System.Action<TFake>> callSpecification);
-    }
     public interface IVoidArgumentValidationConfiguration : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.IHideObjectMembers { }
     public interface IVoidConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.IHideObjectMembers { }
     public interface IWhereConfiguration<out T>
