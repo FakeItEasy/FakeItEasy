@@ -22,28 +22,14 @@ namespace FakeItEasy.IntegrationTests
             var expectedMessageFormat =
 @"*Warning: FakeItEasy failed to load assembly '*{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
             var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, copyOfExternalDll);
-            string actualMessage;
 
-            using (var messageStream = new MemoryStream())
-            using (var messageWriter = new StreamWriter(messageStream))
+            var catalogue = new TypeCatalogue();
+
+            // Act
+            var actualMessage = CaptureConsoleOutput(() => catalogue.Load(new[]
             {
-                var catalogue = new TypeCatalogue();
-
-                var originalWriter = Console.Out;
-                Console.SetOut(messageWriter);
-                try
-                {
-                    // Act
-                    catalogue.Load(new[] { originalExternalDll, copyOfExternalDll });
-                }
-                finally
-                {
-                    Console.SetOut(originalWriter);
-                }
-
-                messageWriter.Flush();
-                actualMessage = messageWriter.Encoding.GetString(messageStream.GetBuffer());
-            }
+                originalExternalDll, copyOfExternalDll
+            }));
 
             // Assert
             actualMessage.Should().Match(expectedMessage);
@@ -62,33 +48,18 @@ namespace FakeItEasy.IntegrationTests
             var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, badAssemblyFile);
             string actualMessage;
 
-            using (var stream = new MemoryStream())
-            using (var writer = new StreamWriter(stream))
+            var catalogue = new TypeCatalogue();
+
+            try
             {
-                var catalogue = new TypeCatalogue();
+                File.CreateText(badAssemblyFile).Dispose();
 
-                File.CreateText(badAssemblyFile).Close();
-                try
-                {
-                    var originalWriter = Console.Out;
-                    Console.SetOut(writer);
-                    try
-                    {
-                        // Act
-                        catalogue.Load(new[] { badAssemblyFile });
-                    }
-                    finally
-                    {
-                        Console.SetOut(originalWriter);
-                    }
-                }
-                finally
-                {
-                    File.Delete(badAssemblyFile);
-                }
-
-                writer.Flush();
-                actualMessage = writer.Encoding.GetString(stream.GetBuffer());
+                // Act
+                actualMessage = CaptureConsoleOutput(() => catalogue.Load(new[] { badAssemblyFile }));
+            }
+            finally
+            {
+                File.Delete(badAssemblyFile);
             }
 
             // Assert
@@ -145,6 +116,27 @@ namespace FakeItEasy.IntegrationTests
 
             // Assert
             catalogue.GetAvailableTypes().Should().NotContain(typeof(string));
+        }
+
+        private static string CaptureConsoleOutput(Action action)
+        {
+            using (var stream = new MemoryStream())
+            using (var writer = new StreamWriter(stream))
+            {
+                var originalWriter = Console.Out;
+                Console.SetOut(writer);
+                try
+                {
+                    action();
+                }
+                finally
+                {
+                    Console.SetOut(originalWriter);
+                }
+
+                writer.Flush();
+                return writer.Encoding.GetString(stream.ToArray());
+            }
         }
 
         private static string GetPathToOriginalExternalDll()
