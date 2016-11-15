@@ -27,7 +27,7 @@ When creating fakes you can, through a fluent interface, specify options for how
 
 * Specify arguments for the constructor of the faked type.
 * Specify additional interfaces that the fake should implement.
-* Assign additional custom attributes to the faked class.
+* Assign additional custom attributes to the faked type.
 * Cause a fake to have [strict mocking semantics](strict-fakes.md).
 * Configure all of a fake's methods to [use their original implementation](calling-base-methods.md).
 * Create a fake that wraps another object.
@@ -51,13 +51,9 @@ var foo = A.Fake<FooClass>(x => x.Implements(typeof(IFoo)));
 // or
 var foo = A.Fake<FooClass>(x => x.Implements<IFoo>());
 
-// Assigning custom attributes to the faked class.
-// Get a parameterless constructor for our attribute and create a builder
-var constructor = typeof(FooAttribute).GetConstructor(new Type[0]);
-var builder = new CustomAttributeBuilder(constructor, new object[0]);
-var builders = new List<CustomAttributeBuilder>() { builder };
-// foo and foo's type should both have "FooAttribute"
-var foo = A.Fake<IFoo>(x => x.WithAdditionalAttributes(builders));
+// Assigning custom attributes to the faked type.
+// foo's type should have "FooAttribute"
+var foo = A.Fake<IFoo>(x => x.WithAttributes(() => new FooAttribute()));
 
 // Create wrapper - unconfigured calls will be forwarded to wrapped
 var wrapped = new FooClass("foo", "bar");
