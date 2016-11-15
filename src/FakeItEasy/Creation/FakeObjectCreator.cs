@@ -114,7 +114,7 @@ namespace FakeItEasy.Creation
                     typeOfFake,
                     proxyOptions.AdditionalInterfacesToImplement,
                     argumentsForConstructor,
-                    proxyOptions.AdditionalAttributes,
+                    proxyOptions.Attributes,
                     fakeCallProcessorProvider);
         }
     }

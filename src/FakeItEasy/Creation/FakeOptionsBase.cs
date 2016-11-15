@@ -5,7 +5,6 @@ namespace FakeItEasy.Creation
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Reflection.Emit;
 
     internal abstract class FakeOptionsBase<T> : IFakeOptions<T>, IFakeOptions
     {
@@ -14,9 +13,9 @@ namespace FakeItEasy.Creation
             return (IFakeOptions)this.ConfigureFake(fake => action(fake));
         }
 
-        IFakeOptions IFakeOptions.WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders)
+        IFakeOptions IFakeOptions.WithAttributes(params Expression<Func<Attribute>>[] attributes)
         {
-            return (IFakeOptions)this.WithAdditionalAttributes(customAttributeBuilders);
+            return (IFakeOptions)this.WithAttributes(attributes);
         }
 
         IFakeOptions IFakeOptions.Implements(Type interfaceType)
@@ -58,7 +57,7 @@ namespace FakeItEasy.Creation
 
         public abstract IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
 
-        public abstract IFakeOptions<T> WithAdditionalAttributes(IEnumerable<CustomAttributeBuilder> customAttributeBuilders);
+        public abstract IFakeOptions<T> WithAttributes(params Expression<Func<Attribute>>[] attributes);
 
         public abstract IFakeOptions<T> Implements(Type interfaceType);
 

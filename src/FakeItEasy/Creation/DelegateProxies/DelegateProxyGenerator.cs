@@ -5,7 +5,6 @@ namespace FakeItEasy.Creation.DelegateProxies
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using System.Reflection.Emit;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
@@ -36,7 +35,7 @@ namespace FakeItEasy.Creation.DelegateProxies
             Type typeOfProxy,
             IEnumerable<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
-            IEnumerable<CustomAttributeBuilder> customAttributeBuilders,
+            IEnumerable<Expression<Func<Attribute>>> attributes,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             return this.GenerateProxy(

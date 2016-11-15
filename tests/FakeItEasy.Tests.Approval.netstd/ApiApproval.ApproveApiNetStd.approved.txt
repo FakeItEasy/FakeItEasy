@@ -436,9 +436,9 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions ConfigureFake(System.Action<object> action);
         FakeItEasy.Creation.IFakeOptions Implements(System.Type interfaceType);
         FakeItEasy.Creation.IFakeOptions Implements<TInterface>();
-        FakeItEasy.Creation.IFakeOptions WithAdditionalAttributes(System.Collections.Generic.IEnumerable<System.Reflection.Emit.CustomAttributeBuilder> customAttributeBuilders);
         FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor<TConstructor>(System.Linq.Expressions.Expression<System.Func<TConstructor>> constructorCall);
+        FakeItEasy.Creation.IFakeOptions WithAttributes(params System.Linq.Expressions.Expression<>[] attributes);
         FakeItEasy.Creation.IFakeOptionsForWrappers Wrapping(object wrappedInstance);
     }
     public interface IFakeOptions<T> : FakeItEasy.IHideObjectMembers
@@ -447,9 +447,9 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions<T> ConfigureFake(System.Action<T> action);
         FakeItEasy.Creation.IFakeOptions<T> Implements(System.Type interfaceType);
         FakeItEasy.Creation.IFakeOptions<T> Implements<TInterface>();
-        FakeItEasy.Creation.IFakeOptions<T> WithAdditionalAttributes(System.Collections.Generic.IEnumerable<System.Reflection.Emit.CustomAttributeBuilder> customAttributeBuilders);
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Linq.Expressions.Expression<System.Func<T>> constructorCall);
+        FakeItEasy.Creation.IFakeOptions<T> WithAttributes(params System.Linq.Expressions.Expression<>[] attributes);
         FakeItEasy.Creation.IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
     }
     public interface IFakeOptionsForWrappers : FakeItEasy.Creation.IFakeOptions, FakeItEasy.IHideObjectMembers { }

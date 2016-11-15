@@ -2,7 +2,7 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection.Emit;
+    using System.Linq.Expressions;
 
     internal interface IProxyOptions
     {
@@ -12,6 +12,6 @@ namespace FakeItEasy.Creation
 
         IEnumerable<Action<object>> ProxyConfigurationActions { get; }
 
-        IEnumerable<CustomAttributeBuilder> AdditionalAttributes { get; }
+        IEnumerable<Expression<Func<Attribute>>> Attributes { get; }
     }
 }

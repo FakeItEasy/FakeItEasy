@@ -2,7 +2,6 @@ namespace FakeItEasy.Specs
 {
     using System;
     using System.Linq;
-    using System.Reflection.Emit;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.SelfInitializedFakes;
@@ -545,15 +544,9 @@ namespace FakeItEasy.Specs
                 domainEvent.ID = this.nextID++;
                 domainEvent.Name = typeOfFake.Name;
             })
-                .WithAdditionalAttributes(new[] { CreateCustomAttributeBuilder() })
+                .WithAttributes(() => new ForTestAttribute())
                 .Implements(typeof(IDisposable))
                 .Implements<ICloneable>();
-        }
-
-        private static CustomAttributeBuilder CreateCustomAttributeBuilder()
-        {
-            var constructor = typeof(ForTestAttribute).GetConstructor(new Type[0]);
-            return new CustomAttributeBuilder(constructor, new object[0]);
         }
     }
 

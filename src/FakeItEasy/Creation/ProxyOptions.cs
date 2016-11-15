@@ -3,16 +3,16 @@ namespace FakeItEasy.Creation
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
-    using System.Reflection.Emit;
 
     internal class ProxyOptions : IProxyOptions
     {
         private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
         private readonly List<Action<object>> proxyConfigurationActions = new List<Action<object>>();
-        private readonly List<CustomAttributeBuilder> additionalAttributes = new List<CustomAttributeBuilder>();
+        private readonly List<Expression<Func<Attribute>>> attributes = new List<Expression<Func<Attribute>>>();
 
         public IEnumerable<object> ArgumentsForConstructor { get; set; }
 
@@ -20,7 +20,7 @@ namespace FakeItEasy.Creation
 
         public IEnumerable<Action<object>> ProxyConfigurationActions => this.proxyConfigurationActions;
 
-        public IEnumerable<CustomAttributeBuilder> AdditionalAttributes => this.additionalAttributes;
+        public IEnumerable<Expression<Func<Attribute>>> Attributes => this.attributes;
 
         public void AddInterfaceToImplement(Type interfaceType)
         {
@@ -43,9 +43,9 @@ namespace FakeItEasy.Creation
             this.proxyConfigurationActions.Add(action);
         }
 
-        public void AddAttribute(CustomAttributeBuilder attribute)
+        public void AddAttribute(Expression<Func<Attribute>> attribute)
         {
-            this.additionalAttributes.Add(attribute);
+            this.attributes.Add(attribute);
         }
     }
 }

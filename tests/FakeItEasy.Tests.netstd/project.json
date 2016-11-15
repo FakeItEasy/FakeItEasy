@@ -36,7 +36,7 @@
         "define": [ "NETCORE", "FEATURE_NETCORE_REFLECTION" ]
       },
       "dependencies": {
-        "Castle.Core": "4.0.0-beta001",
+        "Castle.Core": "4.0.0-beta002",
         "FakeItEasy": {
           "target": "project",
           "version": "99.99.99-wrapped"
