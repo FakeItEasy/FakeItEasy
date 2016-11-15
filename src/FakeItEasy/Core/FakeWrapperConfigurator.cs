@@ -38,9 +38,9 @@ namespace FakeItEasy.Core
             return this.fakeOptions.Wrapping(wrappedInstance);
         }
 
-        public override IFakeOptions<T> WithAdditionalAttributes(params Expression<Func<Attribute>>[] attributes)
+        public override IFakeOptions<T> WithAttributes(params Expression<Func<Attribute>>[] attributes)
         {
-            return this.fakeOptions.WithAdditionalAttributes(attributes);
+            return this.fakeOptions.WithAttributes(attributes);
         }
 
         public override IFakeOptions<T> Implements(Type interfaceType)

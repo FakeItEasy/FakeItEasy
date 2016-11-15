@@ -13,9 +13,9 @@ namespace FakeItEasy.Creation
             return (IFakeOptions)this.ConfigureFake(fake => action(fake));
         }
 
-        IFakeOptions IFakeOptions.WithAdditionalAttributes(params Expression<Func<Attribute>>[] attributes)
+        IFakeOptions IFakeOptions.WithAttributes(params Expression<Func<Attribute>>[] attributes)
         {
-            return (IFakeOptions)this.WithAdditionalAttributes(attributes);
+            return (IFakeOptions)this.WithAttributes(attributes);
         }
 
         IFakeOptions IFakeOptions.Implements(Type interfaceType)
@@ -57,7 +57,7 @@ namespace FakeItEasy.Creation
 
         public abstract IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
 
-        public abstract IFakeOptions<T> WithAdditionalAttributes(params Expression<Func<Attribute>>[] attributes);
+        public abstract IFakeOptions<T> WithAttributes(params Expression<Func<Attribute>>[] attributes);
 
         public abstract IFakeOptions<T> Implements(Type interfaceType);
 

@@ -83,7 +83,7 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
-            public override IFakeOptions<T> WithAdditionalAttributes(
+            public override IFakeOptions<T> WithAttributes(
                 params Expression<Func<Attribute>>[] attributes)
             {
                 Guard.AgainstNull(attributes, nameof(attributes));

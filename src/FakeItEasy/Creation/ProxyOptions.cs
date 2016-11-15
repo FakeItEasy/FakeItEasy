@@ -12,7 +12,7 @@ namespace FakeItEasy.Creation
     {
         private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
         private readonly List<Action<object>> proxyConfigurationActions = new List<Action<object>>();
-        private readonly List<Expression<Func<Attribute>>> additionalAttributes = new List<Expression<Func<Attribute>>>();
+        private readonly List<Expression<Func<Attribute>>> attributes = new List<Expression<Func<Attribute>>>();
 
         public IEnumerable<object> ArgumentsForConstructor { get; set; }
 
@@ -20,7 +20,7 @@ namespace FakeItEasy.Creation
 
         public IEnumerable<Action<object>> ProxyConfigurationActions => this.proxyConfigurationActions;
 
-        public IEnumerable<Expression<Func<Attribute>>> AdditionalAttributes => this.additionalAttributes;
+        public IEnumerable<Expression<Func<Attribute>>> Attributes => this.attributes;
 
         public void AddInterfaceToImplement(Type interfaceType)
         {
@@ -45,7 +45,7 @@ namespace FakeItEasy.Creation
 
         public void AddAttribute(Expression<Func<Attribute>> attribute)
         {
-            this.additionalAttributes.Add(attribute);
+            this.attributes.Add(attribute);
         }
     }
 }

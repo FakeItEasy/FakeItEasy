@@ -672,7 +672,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void WithAdditionalAttributes(
+        public void WithAttributes(
             IInterfaceThatWeWillAddAttributesTo1 fake,
             Action<IFakeOptions<IInterfaceThatWeWillAddAttributesTo1>> optionsBuilder)
         {
@@ -680,7 +680,7 @@ namespace FakeItEasy.Specs
                 .x(() =>
                 {
                     optionsBuilder = options => options
-                        .WithAdditionalAttributes(() => new ForTestAttribute());
+                        .WithAttributes(() => new ForTestAttribute());
                 });
 
             "When I create a fake using the options builder"
@@ -692,12 +692,12 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void WithAdditionalAttributesAndNullSetOfAttributes(
+        public void WithAttributesAndNullSetOfAttributes(
             Action<IFakeOptions<IInterfaceThatWeWillAddAttributesTo2>> optionsBuilder,
             Exception exception)
         {
             "Given an explicit options builder that adds a null attribute to a fake"
-                .x(() => optionsBuilder = options => options.WithAdditionalAttributes(null));
+                .x(() => optionsBuilder = options => options.WithAttributes(null));
 
             "When I create a fake using the options builder"
                 .x(() => exception = Record.Exception(() => this.CreateFake(optionsBuilder)));
@@ -708,7 +708,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void MultipleWithAdditionalAttributesConfigurations(
+        public void MultipleWithAttributesConfigurations(
             IInterfaceThatWeWillAddAttributesTo3 fake,
             Action<IFakeOptions<IInterfaceThatWeWillAddAttributesTo3>> optionsBuilder)
         {
@@ -716,8 +716,8 @@ namespace FakeItEasy.Specs
                 .x(() =>
                 {
                     optionsBuilder = options => options
-                        .WithAdditionalAttributes(() => new ScenarioAttribute())
-                        .WithAdditionalAttributes(() => new ExampleAttribute(), () => new DebuggerStepThroughAttribute());
+                        .WithAttributes(() => new ScenarioAttribute())
+                        .WithAttributes(() => new ExampleAttribute(), () => new DebuggerStepThroughAttribute());
                 });
 
             "When I create a fake using the options builder"
@@ -732,13 +732,13 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void WithSameAdditionalAttributes(
+        public void WithSameAttributes(
             IInterfaceThatWeWillAddAttributesTo1 fake1,
             IInterfaceThatWeWillAddAttributesTo1 fake2,
             Action<IFakeOptions<IInterfaceThatWeWillAddAttributesTo1>> optionsBuilder)
         {
             "Given an explicit options builder that adds an attribute to a fake"
-                .x(() => optionsBuilder = options => options.WithAdditionalAttributes(() => new ForTestAttribute()));
+                .x(() => optionsBuilder = options => options.WithAttributes(() => new ForTestAttribute()));
 
             "When I create a fake using the options builder"
                 .x(() => fake1 = A.Fake(optionsBuilder));
@@ -761,17 +761,17 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void WithDifferentAdditionalAttributes(
+        public void WithDifferentAttributes(
             IInterfaceThatWeWillAddAttributesTo1 fake1,
             IInterfaceThatWeWillAddAttributesTo1 fake2,
             Action<IFakeOptions<IInterfaceThatWeWillAddAttributesTo1>> optionsBuilder1,
             Action<IFakeOptions<IInterfaceThatWeWillAddAttributesTo1>> optionsBuilder2)
         {
             "Given an explicit options builder that adds an attribute to a fake"
-                .x(() => optionsBuilder1 = options => options.WithAdditionalAttributes(() => new ForTestAttribute()));
+                .x(() => optionsBuilder1 = options => options.WithAttributes(() => new ForTestAttribute()));
 
             "And another explicit options builder that adds another attribute to a fake"
-                .x(() => optionsBuilder2 = options => options.WithAdditionalAttributes(() => new DebuggerStepThroughAttribute()));
+                .x(() => optionsBuilder2 = options => options.WithAttributes(() => new DebuggerStepThroughAttribute()));
 
             "When I create a fake using the first options builder"
                 .x(() => fake1 = A.Fake(optionsBuilder1));

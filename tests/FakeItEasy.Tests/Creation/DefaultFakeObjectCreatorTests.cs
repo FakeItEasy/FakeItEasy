@@ -47,7 +47,7 @@ namespace FakeItEasy.Tests.Creation
                     typeof(IFoo),
                     options.AdditionalInterfacesToImplement,
                     options.ArgumentsForConstructor,
-                    options.AdditionalAttributes,
+                    options.Attributes,
                     A<IFakeCallProcessorProvider>._))
                 .MustHaveHappened();
         }

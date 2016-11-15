@@ -44,7 +44,7 @@ namespace FakeItEasy.Tests
                 x => !x.AdditionalInterfacesToImplement.Any()
                      && x.ArgumentsForConstructor == null
                      && !x.ProxyConfigurationActions.Any()
-                     && !x.AdditionalAttributes.Any(),
+                     && !x.Attributes.Any(),
                 x => x.Write("empty fake options"));
         }
 

@@ -544,7 +544,7 @@ namespace FakeItEasy.Specs
                 domainEvent.ID = this.nextID++;
                 domainEvent.Name = typeOfFake.Name;
             })
-                .WithAdditionalAttributes(() => new ForTestAttribute())
+                .WithAttributes(() => new ForTestAttribute())
                 .Implements(typeof(IDisposable))
                 .Implements<ICloneable>();
         }

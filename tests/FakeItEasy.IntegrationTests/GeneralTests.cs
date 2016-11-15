@@ -52,7 +52,7 @@ namespace FakeItEasy.IntegrationTests
             // Arrange
 
             // Act
-            var fake = A.Fake<IEmpty>(a => a.WithAdditionalAttributes(() => new ForTestAttribute()));
+            var fake = A.Fake<IEmpty>(a => a.WithAttributes(() => new ForTestAttribute()));
 
             // Assert
             fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().HaveCount(1);
@@ -62,7 +62,7 @@ namespace FakeItEasy.IntegrationTests
         public void Additional_attributes_should_not_be_added_to_the_next_fake()
         {
             // Arrange
-            A.Fake<IEmpty>(a => a.WithAdditionalAttributes(() => new ForTestAttribute()));
+            A.Fake<IEmpty>(a => a.WithAttributes(() => new ForTestAttribute()));
 
             // Act
             var secondFake = A.Fake<IFormattable>();

@@ -34,7 +34,7 @@ namespace FakeItEasy.Creation
         /// </summary>
         /// <param name="attributes">Expressions that create attributes to add to the proxy.</param>
         /// <returns>Options object.</returns>
-        IFakeOptions WithAdditionalAttributes(params Expression<Func<Attribute>>[] attributes);
+        IFakeOptions WithAttributes(params Expression<Func<Attribute>>[] attributes);
 
         /// <summary>
         /// Specifies an action that should be run over the fake object for the initial configuration (during the creation of the fake proxy).
