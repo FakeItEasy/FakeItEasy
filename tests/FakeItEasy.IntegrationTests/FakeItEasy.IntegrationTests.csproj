@@ -121,10 +121,6 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>xcopy /D /Y $(SolutionDir)\tests\FakeItEasy.IntegrationTests.External\$(OutDir)FakeItEasy.IntegrationTests.External.dll $(TargetDir)
-</PostBuildEvent>
-  </PropertyGroup>
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

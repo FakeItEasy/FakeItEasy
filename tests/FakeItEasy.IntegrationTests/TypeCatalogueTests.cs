@@ -18,6 +18,7 @@ namespace FakeItEasy.IntegrationTests
             // Arrange
             var originalExternalDll = GetPathToOriginalExternalDll();
             var copyOfExternalDll = GetPathToCopyOfExternalDll();
+            File.Copy(originalExternalDll, copyOfExternalDll, overwrite: true);
 
             var expectedMessageFormat =
 @"*Warning: FakeItEasy failed to load assembly '*{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
