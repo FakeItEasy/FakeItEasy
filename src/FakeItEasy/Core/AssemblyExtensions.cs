@@ -14,16 +14,7 @@ namespace FakeItEasy.Core
         {
             Guard.AgainstNull(assembly, nameof(assembly));
 
-#if FEATURE_REFLECTION_GETASSEMBLIES
             return assembly.GetReferencedAssemblies().Any(r => r.FullName == TypeCatalogue.FakeItEasyAssembly.FullName);
-#else
-            var fakeItEasyLibraryName = TypeCatalogue.FakeItEasyAssembly.GetName().Name;
-            var context = Microsoft.Extensions.DependencyModel.DependencyContext.Default;
-
-            var runtimeLib = context.RuntimeLibraries
-                .SingleOrDefault(library => string.Equals(library.Name, assembly.Name(), System.StringComparison.Ordinal));
-            return runtimeLib != null && runtimeLib.Dependencies.Any(dependency => string.Equals(dependency.Name, fakeItEasyLibraryName, System.StringComparison.Ordinal));
-#endif
         }
 
         /// <summary>

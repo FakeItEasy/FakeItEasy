@@ -5,6 +5,9 @@ namespace FakeItEasy.IntegrationTests
     using System.Globalization;
     using System.IO;
     using System.Linq;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using FakeItEasy.Core;
     using FluentAssertions;
     using Xunit;
@@ -12,45 +15,29 @@ namespace FakeItEasy.IntegrationTests
     public class TypeCatalogueTests
     {
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "No exception is thrown.")]
+#if FEATURE_NETCORE_REFLECTION
+        [Fact(Skip = "Loading assemblies from duplicate files does not throw an error on this platform.")]
+#else
         [Fact]
+#endif
         public void Should_warn_of_duplicate_input_assemblies_with_different_paths()
         {
             // Arrange
-            var currentDirectoryName = new DirectoryInfo(Environment.CurrentDirectory).Name;
-
-            // FakeItEasy.IntegrationTests.External has copies of many of the assemblies used in these
-            // tests as well. By specifying assembly paths from that directory, the catalog will see
-            // those assemblies in both locations, and should fail to load the duplicates.
-            var directoryToScan = Path.Combine(
-                Environment.CurrentDirectory,
-                Path.Combine(@"..\..\..\FakeItEasy.IntegrationTests.External\bin", currentDirectoryName));
+            var originalExternalDll = this.GetPathToOriginalExternalDll();
+            var copyOfExternalDll = this.GetPathToCopyOfExternalDll();
+            File.Copy(originalExternalDll, copyOfExternalDll, overwrite: true);
 
             var expectedMessageFormat =
-@"*Warning: FakeItEasy failed to load assembly '*FakeItEasy.IntegrationTests.External\bin\{0}\FakeItEasy.IntegrationTests.External.dll' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
+@"*Warning: FakeItEasy failed to load assembly '*{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
+            var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, copyOfExternalDll);
 
-            var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, currentDirectoryName);
-            string actualMessage;
+            var catalogue = new TypeCatalogue();
 
-            using (var messageStream = new MemoryStream())
-            using (var messageWriter = new StreamWriter(messageStream))
+            // Act
+            var actualMessage = CaptureConsoleOutput(() => catalogue.Load(new[]
             {
-                var catalogue = new TypeCatalogue();
-
-                var originalWriter = Console.Out;
-                Console.SetOut(messageWriter);
-                try
-                {
-                    // Act
-                    catalogue.Load(Directory.GetFiles(directoryToScan, "*.dll"));
-                }
-                finally
-                {
-                    Console.SetOut(originalWriter);
-                }
-
-                messageWriter.Flush();
-                actualMessage = messageWriter.Encoding.GetString(messageStream.GetBuffer());
-            }
+                originalExternalDll, copyOfExternalDll
+            }));
 
             // Assert
             actualMessage.Should().Match(expectedMessage);
@@ -63,39 +50,23 @@ namespace FakeItEasy.IntegrationTests
             // Arrange
             var badAssemblyFile = Path.GetTempFileName() + ".dll";
             var expectedMessageFormat =
-@"*Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.
-  *{0}*";
+@"*Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
 
             var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, badAssemblyFile);
             string actualMessage;
 
-            using (var stream = new MemoryStream())
-            using (var writer = new StreamWriter(stream))
+            var catalogue = new TypeCatalogue();
+
+            try
             {
-                var catalogue = new TypeCatalogue();
+                File.CreateText(badAssemblyFile).Dispose();
 
-                File.CreateText(badAssemblyFile).Close();
-                try
-                {
-                    var originalWriter = Console.Out;
-                    Console.SetOut(writer);
-                    try
-                    {
-                        // Act
-                        catalogue.Load(new[] { badAssemblyFile });
-                    }
-                    finally
-                    {
-                        Console.SetOut(originalWriter);
-                    }
-                }
-                finally
-                {
-                    File.Delete(badAssemblyFile);
-                }
-
-                writer.Flush();
-                actualMessage = writer.Encoding.GetString(stream.GetBuffer());
+                // Act
+                actualMessage = CaptureConsoleOutput(() => catalogue.Load(new[] { badAssemblyFile }));
+            }
+            finally
+            {
+                File.Delete(badAssemblyFile);
             }
 
             // Assert
@@ -109,7 +80,7 @@ namespace FakeItEasy.IntegrationTests
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
+            catalogue.Load(Enumerable.Empty<string>());
 
             // Assert
             catalogue.GetAvailableTypes().Should().Contain(typeof(A));
@@ -122,20 +93,20 @@ namespace FakeItEasy.IntegrationTests
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
+            catalogue.Load(Enumerable.Empty<string>());
 
             // Assert
             catalogue.GetAvailableTypes().Should().Contain(typeof(DoubleValueFormatter));
         }
 
         [Fact]
-        public void Should_be_able_to_get_types_from_external_assembly_in_directory()
+        public void Should_be_able_to_get_types_from_external_assembly()
         {
             // Arrange
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
+            catalogue.Load(new[] { this.GetPathToOriginalExternalDll() });
 
             // Assert
             catalogue.GetAvailableTypes().Select(type => type.FullName).Should().Contain("FakeItEasy.IntegrationTests.External.GuidValueFormatter");
@@ -148,10 +119,47 @@ namespace FakeItEasy.IntegrationTests
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Directory.GetFiles(Environment.CurrentDirectory, "*.dll"));
+            catalogue.Load(Enumerable.Empty<string>());
 
             // Assert
             catalogue.GetAvailableTypes().Should().NotContain(typeof(string));
+        }
+
+        private static string CaptureConsoleOutput(Action action)
+        {
+            using (var stream = new MemoryStream())
+            using (var writer = new StreamWriter(stream))
+            {
+                var originalWriter = Console.Out;
+                Console.SetOut(writer);
+                try
+                {
+                    action();
+                }
+                finally
+                {
+                    Console.SetOut(originalWriter);
+                }
+
+                writer.Flush();
+                return writer.Encoding.GetString(stream.ToArray());
+            }
+        }
+
+        private string GetPathToOriginalExternalDll()
+        {
+            var executingAssemblyPath = new Uri(this.GetType().GetTypeInfo().Assembly.Location).LocalPath
+                .Replace("FakeItEasy.IntegrationTests", "FakeItEasy.IntegrationTests.External")
+                .Replace("netcoreapp1.0", "netstandard1.6");
+            return Path.GetFullPath(executingAssemblyPath);
+        }
+
+        private string GetPathToCopyOfExternalDll()
+        {
+            var executingAssemblyPath = new Uri(this.GetType().GetTypeInfo().Assembly.Location).LocalPath;
+            var executingAssemblyDirectory = new DirectoryInfo(executingAssemblyPath).Parent.FullName;
+            return Path.GetFullPath(Path.Combine(
+                executingAssemblyDirectory, "FakeItEasy.IntegrationTests.External.dll"));
         }
     }
 }

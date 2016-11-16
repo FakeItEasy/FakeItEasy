@@ -21,6 +21,9 @@ namespace FakeItEasy.IntegrationTests
 
 #if FEATURE_BINARY_SERIALIZATION
         [Fact]
+#else
+        [Fact(Skip = "Binary serialization is not supported on this platform.")]
+#endif
         public void Should_be_able_to_use_a_fake_after_binary_deserializing_it()
         {
             // Arrange
@@ -32,9 +35,12 @@ namespace FakeItEasy.IntegrationTests
             // Assert
             deserializedPerson.Name.Should().Be(string.Empty, "because the default behavior should work");
         }
-#endif
 
+#if FEATURE_BINARY_SERIALIZATION
         [Fact]
+#else
+        [Fact(Skip = "Binary serialization is not supported on this platform.")]
+#endif
         public void Should_be_able_to_change_the_configuration_of_a_fake_after_binary_deserializing_it()
         {
             // Arrange
@@ -48,7 +54,9 @@ namespace FakeItEasy.IntegrationTests
             deserializedPerson.Name.Should().Be("Eric Cartman");
         }
 
+#if FEATURE_BINARY_SERIALIZATION
         [Serializable]
+#endif
         public class Person
         {
             public virtual string Name { get; set; }
