@@ -45,6 +45,7 @@ namespace FakeItEasy.Core
                                          new CallRuleMetadata { Rule = new ObjectMemberRule(this) },
                                          new CallRuleMetadata { Rule = new AutoFakePropertyRule(this) },
                                          new CallRuleMetadata { Rule = new PropertySetterRule(this) },
+                                         new CallRuleMetadata { Rule = new CancellationRule() },
                                          new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
                                      };
 
