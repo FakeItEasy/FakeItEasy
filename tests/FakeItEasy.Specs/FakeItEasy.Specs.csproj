@@ -85,6 +85,7 @@
     <Compile Include="AnyCallConfigurationSpecs.cs" />
     <Compile Include="ArgumentValueFormatterSpecs.cs" />
     <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
+    <Compile Include="CancellationSpecs.cs" />
     <Compile Include="ConfiguringPropertySetterSpecs.cs" />
     <Compile Include="DummyCreationSpecs.cs" />
     <Compile Include="FakeSpecs.cs" />
