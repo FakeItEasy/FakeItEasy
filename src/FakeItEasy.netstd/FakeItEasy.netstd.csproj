@@ -60,6 +60,9 @@
     <Compile Include="..\FakeItEasy\Configuration\PropertySetterConfiguration.cs">
       <Link>Configuration\PropertySetterConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\FakeManager.CancellationRule.cs">
+      <Link>Core\FakeManager.CancellationRule.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\ExceptionExtensions.cs">
       <Link>ExceptionExtensions.cs</Link>
     </Compile>
