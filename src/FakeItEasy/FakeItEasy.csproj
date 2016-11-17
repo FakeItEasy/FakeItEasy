@@ -261,7 +261,6 @@
     <Compile Include="Compatibility\ReflectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FakeItEasy.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
