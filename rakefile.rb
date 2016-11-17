@@ -9,7 +9,7 @@ nuget_command   = ".nuget/nuget.exe"
 gitlink_command = "packages/gitlink.2.3.0/lib/net45/GitLink.exe"
 xunit_command   = "packages/xunit.runner.console.2.0.0/tools/xunit.console.exe"
 
-solution        = "FakeItEasy.netstd.sln"
+solution        = "FakeItEasy.sln"
 assembly_info   = "src/CommonAssemblyInfo.cs"
 version         = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 #version_suffix  = ENV["VERSION_SUFFIX"]
