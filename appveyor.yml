@@ -12,7 +12,6 @@ install:
 
 build_script:
     - cmd: build.cmd
-    - cmd: build.netstd.cmd
 
 nuget:
     disable_publish_on_pr: true
@@ -20,7 +19,4 @@ nuget:
 test: off
 
 artifacts:
-    - path: .\artifacts\logs\*.*
-    - path: .\artifacts\output\*-netstd*.nupkg
-    - path: .\artifacts\output
-    - path: .\artifacts\tests\*.*
+    - path: .\artifacts\*\*
