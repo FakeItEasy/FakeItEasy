@@ -40,24 +40,17 @@ namespace FakeItEasy.Expressions
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            return this.DescriptionOfValidCall;
-        }
+        public override string ToString() => this.DescriptionOfValidCall;
 
         public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
         {
             this.ExpressionMatcher.UsePredicateToValidateArguments(argumentsPredicate);
         }
 
-        protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
-        {
-            return this.ExpressionMatcher.Matches(fakeObjectCall);
-        }
+        protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall) =>
+            this.ExpressionMatcher.Matches(fakeObjectCall);
 
-        protected override BuildableCallRule CloneCallSpecificationCore()
-        {
-            return new ExpressionCallRule(this.ExpressionMatcher);
-        }
+        protected override BuildableCallRule CloneCallSpecificationCore() =>
+            new ExpressionCallRule(this.ExpressionMatcher);
     }
 }
