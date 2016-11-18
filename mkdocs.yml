@@ -21,7 +21,7 @@ pages:
   - Assigning out and ref parameters: assigning-out-and-ref-parameters.md
   - Invoking Custom Code: invoking-custom-code.md
   - Calling base methods: calling-base-methods.md
-  - Limited Call Specifications: limited-call-specifications.md
+  - Changing behavior between calls: changing-behavior-between-calls.md
 - Argument constraints: argument-constraints.md
 - Assertion:
   - Assertion: assertion.md

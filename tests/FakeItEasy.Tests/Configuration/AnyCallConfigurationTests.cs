@@ -87,7 +87,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var factoryConfig = this.StubVoidConfig();
-            var doesNothingConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
+            var doesNothingConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
             A.CallTo(() => factoryConfig.DoesNothing()).Returns(doesNothingConfig);
 
             // Act
@@ -117,7 +117,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var factoryConfig = this.StubVoidConfig();
-            var throwsConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
+            var throwsConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
 
             A.CallTo(() => factoryConfig.Throws(A<ExceptionFactory>._)).Returns(throwsConfig);
 
@@ -178,7 +178,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var factoryConfig = this.StubVoidConfig();
-            var callsBaseConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
+            var callsBaseConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
 
             A.CallTo(() => factoryConfig.CallsBaseMethod()).Returns(callsBaseConfig);
 
@@ -193,10 +193,10 @@ namespace FakeItEasy.Tests.Configuration
         public void AssignsOutAndRefParametersLazily_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
-            Func<IFakeObjectCall, object[]> valueProducer = x => new object[] { "a", "b" };
+            Func<IFakeObjectCall, ICollection<object>> valueProducer = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
-            var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
+            var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
 
             A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(valueProducer)).Returns(nextConfig);
 
@@ -211,10 +211,10 @@ namespace FakeItEasy.Tests.Configuration
         public void AssignsOutAndRefParametersLazily_returns_configuration_produced_by_factory()
         {
             // Arrange
-            Func<IFakeObjectCall, object[]> valueProducer = x => new object[] { "a", "b" };
+            Func<IFakeObjectCall, ICollection<object>> valueProducer = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
-            var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration>();
+            var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
 
             A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(valueProducer)).Returns(nextConfig);
 

@@ -61,9 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\MethodInfoWrapper.cs" />
+    <Compile Include="LinkedListExtensions.cs" />
     <Compile Include="Configuration\IDoNothingConfiguration.cs" />
     <Compile Include="Configuration\IPropertySetterAnyValueConfiguration.cs" />
     <Compile Include="Configuration\IPropertySetterConfiguration.cs" />
+    <Compile Include="Configuration\IThenConfiguration.cs" />
     <Compile Include="Configuration\PropertySetterConfiguration.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

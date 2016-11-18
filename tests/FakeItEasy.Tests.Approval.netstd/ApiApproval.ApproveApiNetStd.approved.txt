@@ -100,14 +100,8 @@ namespace FakeItEasy
     }
     public class static ExceptionThrowerConfigurationExtensions
     {
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Exception exception) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Func<System.Exception> exceptionFactory) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws<T1>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Func<T1, System.Exception> exceptionFactory) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws<T1, T2>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Func<T1, T2, System.Exception> exceptionFactory) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws<T1, T2, T3>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Func<T1, T2, T3, System.Exception> exceptionFactory) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws<T1, T2, T3, T4>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration, System.Func<T1, T2, T3, T4, System.Exception> exceptionFactory) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws<T>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration configuration)
-            where T : System.Exception, new () { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration<TInterface> configuration, System.Exception exception) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> Throws<TInterface>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration<TInterface> configuration, System.Func<System.Exception> exceptionFactory) { }
     }
     public class ExpectationException : System.Exception
     {
@@ -204,11 +198,7 @@ namespace FakeItEasy
     }
     public class static OutAndRefParametersConfigurationExtensions
     {
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration configuration, params object[] values) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration configuration, System.Func<T1, object[]> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1, T2>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration configuration, System.Func<T1, T2, object[]> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1, T2, T3>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration configuration, System.Func<T1, T2, T3, object[]> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration configuration, System.Func<T1, T2, T3, T4, object[]> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParameters<TInterface>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface> configuration, params object[] values) { }
     }
     public class static OutputWriterExtensions
     {
@@ -237,8 +227,8 @@ namespace FakeItEasy
     }
     public class static RepeatConfigurationExtensions
     {
-        public static void Once(this FakeItEasy.Configuration.IRepeatConfiguration configuration) { }
-        public static void Twice(this FakeItEasy.Configuration.IRepeatConfiguration configuration) { }
+        public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Once<TInterface>(this FakeItEasy.Configuration.IRepeatConfiguration<TInterface> configuration) { }
+        public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Twice<TInterface>(this FakeItEasy.Configuration.IRepeatConfiguration<TInterface> configuration) { }
     }
     public abstract class Repeated
     {
@@ -251,18 +241,18 @@ namespace FakeItEasy
     }
     public class static ReturnValueConfigurationExtensions
     {
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, T value) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration Returns<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, T value) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, System.Func<T> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<T> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, TReturnType> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, TReturnType> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, TReturnType> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, TReturnType> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2, T3>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, T3, TReturnType> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2, T3>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, T3, TReturnType> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2, T3, T4>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, T3, T4, TReturnType> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily<TReturnType, T1, T2, T3, T4>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, T3, T4, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>> Returns<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, T value) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> Returns<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, T value) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>> ReturnsLazily<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, System.Func<T> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ReturnsLazily<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<T> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType>> ReturnsLazily<TReturnType, T1>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>>> ReturnsLazily<TReturnType, T1>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType>> ReturnsLazily<TReturnType, T1, T2>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>>> ReturnsLazily<TReturnType, T1, T2>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType>> ReturnsLazily<TReturnType, T1, T2, T3>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, T3, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>>> ReturnsLazily<TReturnType, T1, T2, T3>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, T3, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType>> ReturnsLazily<TReturnType, T1, T2, T3, T4>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, T3, T4, TReturnType> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>>> ReturnsLazily<TReturnType, T1, T2, T3, T4>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, T3, T4, TReturnType> valueProducer) { }
         public static void ReturnsNextFromSequence<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, params T[] values) { }
         public static void ReturnsNextFromSequence<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, params T[] values) { }
     }
@@ -294,14 +284,14 @@ namespace FakeItEasy.Configuration
         public FakeConfigurationException(string message) { }
         public FakeConfigurationException(string message, System.Exception innerException) { }
     }
-    public interface IAfterCallSpecifiedConfiguration : FakeItEasy.Configuration.IRepeatConfiguration, FakeItEasy.IHideObjectMembers { }
-    public interface IAfterCallSpecifiedWithOutAndRefParametersConfiguration : FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.Configuration.IRepeatConfiguration, FakeItEasy.IHideObjectMembers { }
-    public interface IAnyCallConfigurationWithNoReturnTypeSpecified : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.Configuration.IVoidArgumentValidationConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified>, FakeItEasy.IHideObjectMembers
+    public interface IAfterCallSpecifiedConfiguration<out TInterface> : FakeItEasy.Configuration.IRepeatConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
+    public interface IAfterCallSpecifiedWithOutAndRefParametersConfiguration<out TInterface> : FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface>, FakeItEasy.Configuration.IRepeatConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
+    public interface IAnyCallConfigurationWithNoReturnTypeSpecified : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IVoidArgumentValidationConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified>, FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType();
         FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>();
     }
-    public interface IAnyCallConfigurationWithReturnTypeSpecified<T> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T>, FakeItEasy.Configuration.IReturnValueConfiguration<T>, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<T>>, FakeItEasy.IHideObjectMembers { }
+    public interface IAnyCallConfigurationWithReturnTypeSpecified<T> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T>, FakeItEasy.Configuration.IReturnValueConfiguration<T>, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<T>>, FakeItEasy.IHideObjectMembers { }
     public interface IArgumentValidationConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     
     {
@@ -316,36 +306,51 @@ namespace FakeItEasy.Configuration
     {
         TInterface Invokes(System.Action<FakeItEasy.Core.IFakeObjectCall> action);
     }
-    public interface ICallBaseConfiguration : FakeItEasy.IHideObjectMembers
+    public interface ICallBaseConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    
     {
-        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration CallsBaseMethod();
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> CallsBaseMethod();
     }
-    public interface IDoNothingConfiguration
+    public interface IDoNothingConfiguration<out TInterface>
+    
     {
-        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration DoesNothing();
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> DoesNothing();
     }
-    public interface IExceptionThrowerConfiguration : FakeItEasy.IHideObjectMembers
+    public interface IExceptionThrowerConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    
     {
-        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration Throws(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> Throws(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> Throws<T1>(System.Func<T1, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> Throws<T1, T2>(System.Func<T1, T2, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> Throws<T1, T2, T3>(System.Func<T1, T2, T3, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> Throws<T1, T2, T3, T4>(System.Func<T1, T2, T3, T4, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> Throws<T>()
+            where T : System.Exception, new ();
     }
     public interface IOrderableCallAssertion : FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IOrderableCallAssertion Then(FakeItEasy.Configuration.UnorderedCallAssertion nextAssertion);
     }
-    public interface IOutAndRefParametersConfiguration
+    public interface IOutAndRefParametersConfiguration<out TInterface>
+    
     {
-        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Collections.Generic.ICollection<object>> valueProducer);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Collections.Generic.ICollection<object>> valueProducer);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1>(System.Func<T1, object[]> valueProducer);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2>(System.Func<T1, T2, object[]> valueProducer);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3>(System.Func<T1, T2, T3, object[]> valueProducer);
+        FakeItEasy.Configuration.IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(System.Func<T1, T2, T3, T4, object[]> valueProducer);
     }
-    public interface IPropertySetterAnyValueConfiguration<TValue> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IPropertySetterConfiguration, FakeItEasy.IHideObjectMembers
+    public interface IPropertySetterAnyValueConfiguration<TValue> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IPropertySetterConfiguration, FakeItEasy.IHideObjectMembers
     
     {
         FakeItEasy.Configuration.IPropertySetterConfiguration To(TValue value);
         FakeItEasy.Configuration.IPropertySetterConfiguration To(System.Linq.Expressions.Expression<System.Func<TValue>> valueConstraint);
     }
-    public interface IPropertySetterConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.IHideObjectMembers { }
-    public interface IRepeatConfiguration : FakeItEasy.IHideObjectMembers
+    public interface IPropertySetterConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.IHideObjectMembers { }
+    public interface IRepeatConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    
     {
-        void NumberOfTimes(int numberOfTimesToRepeat);
+        FakeItEasy.Configuration.IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimesToRepeat);
     }
     public interface IRepeatSpecification
     {
@@ -353,18 +358,23 @@ namespace FakeItEasy.Configuration
         FakeItEasy.Repeated Twice { get; }
         FakeItEasy.Repeated Times(int numberOfTimes);
     }
-    public interface IReturnValueArgumentValidationConfiguration<TMember> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IReturnValueConfiguration<TMember>, FakeItEasy.IHideObjectMembers { }
-    public interface IReturnValueConfiguration<TMember> : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.IHideObjectMembers
+    public interface IReturnValueArgumentValidationConfiguration<TMember> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IReturnValueConfiguration<TMember>, FakeItEasy.IHideObjectMembers { }
+    public interface IReturnValueConfiguration<TMember> : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.IHideObjectMembers
     
     {
-        FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, TMember> valueProducer);
+        FakeItEasy.Configuration.IAfterCallSpecifiedWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>> ReturnsLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, TMember> valueProducer);
     }
-    public interface IVoidArgumentValidationConfiguration : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.IHideObjectMembers { }
-    public interface IVoidConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration, FakeItEasy.Configuration.IDoNothingConfiguration, FakeItEasy.Configuration.IExceptionThrowerConfiguration, FakeItEasy.Configuration.IOutAndRefParametersConfiguration, FakeItEasy.IHideObjectMembers { }
-    public interface IWhereConfiguration<out T>
+    public interface IThenConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     
     {
-        T Where(System.Func<FakeItEasy.Core.IFakeObjectCall, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter);
+        TInterface Then { get; }
+    }
+    public interface IVoidArgumentValidationConfiguration : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.IHideObjectMembers { }
+    public interface IVoidConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.IHideObjectMembers { }
+    public interface IWhereConfiguration<out TInterface>
+    
+    {
+        TInterface Where(System.Func<FakeItEasy.Core.IFakeObjectCall, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter);
     }
     public sealed class UnorderedCallAssertion : FakeItEasy.Configuration.IOrderableCallAssertion, FakeItEasy.IHideObjectMembers
     {

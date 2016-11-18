@@ -6,7 +6,8 @@ namespace FakeItEasy.Configuration
 
     internal class RuleBuilder
         : IVoidArgumentValidationConfiguration,
-          IAfterCallSpecifiedWithOutAndRefParametersConfiguration
+          IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IVoidConfiguration>,
+          IThenConfiguration<IVoidConfiguration>
     {
         private readonly FakeAsserter.Factory asserterFactory;
         private readonly FakeManager manager;
@@ -30,11 +31,24 @@ namespace FakeItEasy.Configuration
 
         public BuildableCallRule RuleBeingBuilt { get; }
 
+        IVoidConfiguration IThenConfiguration<IVoidConfiguration>.Then => this.Then;
+
         public IEnumerable<ICompletedFakeObjectCall> Calls => this.manager.GetRecordedCalls();
 
         public ICallMatcher Matcher => new RuleMatcher(this);
 
-        public void NumberOfTimes(int numberOfTimesToRepeat)
+        private RuleBuilder Then
+        {
+            get
+            {
+                var newRule = this.RuleBeingBuilt.CloneCallSpecification();
+                return new RuleBuilder(newRule, this.manager, this.asserterFactory) { PreviousRule = this.RuleBeingBuilt };
+            }
+        }
+
+        private BuildableCallRule PreviousRule { get; set; }
+
+        public IThenConfiguration<IVoidConfiguration> NumberOfTimes(int numberOfTimesToRepeat)
         {
             if (numberOfTimesToRepeat <= 0)
             {
@@ -45,13 +59,39 @@ namespace FakeItEasy.Configuration
             }
 
             this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimesToRepeat;
+            return this;
         }
 
-        public virtual IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
+        public virtual IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
             this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseApplicator(x => { throw exceptionFactory(x); });
             return this;
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2, T3>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2, T3, T4>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T>() where T : Exception, new()
+        {
+            return this.Throws<IVoidConfiguration, T>();
         }
 
         public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
@@ -62,7 +102,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public virtual IAfterCallSpecifiedConfiguration DoesNothing()
+        public virtual IAfterCallSpecifiedConfiguration<IVoidConfiguration> DoesNothing()
         {
             this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseDefaultApplicator();
@@ -77,7 +117,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public virtual IAfterCallSpecifiedConfiguration CallsBaseMethod()
+        public virtual IAfterCallSpecifiedConfiguration<IVoidConfiguration> CallsBaseMethod()
         {
             this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseApplicator(x => { });
@@ -85,7 +125,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public virtual IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
+        public virtual IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -93,6 +133,26 @@ namespace FakeItEasy.Configuration
             this.RuleBeingBuilt.OutAndRefParametersValueProducer = valueProducer;
 
             return this;
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3, T4>(valueProducer);
         }
 
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
@@ -113,36 +173,81 @@ namespace FakeItEasy.Configuration
         {
             if (!this.wasRuleAdded)
             {
-                this.manager.AddRuleFirst(this.RuleBeingBuilt);
+                if (this.PreviousRule != null)
+                {
+                    this.manager.AddRuleAfter(this.PreviousRule, this.RuleBeingBuilt);
+                }
+                else
+                {
+                    this.manager.AddRuleFirst(this.RuleBeingBuilt);
+                }
+
                 this.wasRuleAdded = true;
             }
         }
 
         public class ReturnValueConfiguration<TMember>
-            : IAnyCallConfigurationWithReturnTypeSpecified<TMember>
+            : IAnyCallConfigurationWithReturnTypeSpecified<TMember>,
+              IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>>,
+              IThenConfiguration<IReturnValueConfiguration<TMember>>
         {
             public ReturnValueConfiguration(RuleBuilder parentConfiguration)
             {
                 this.ParentConfiguration = parentConfiguration;
             }
 
-            public RuleBuilder ParentConfiguration { get; }
-
             public ICallMatcher Matcher => this.ParentConfiguration.Matcher;
+
+            public IReturnValueConfiguration<TMember> Then
+            {
+                get
+                {
+                    var newConfiguration = this.ParentConfiguration.Then;
+                    return new ReturnValueConfiguration<TMember>(newConfiguration);
+                }
+            }
 
             public IEnumerable<ICompletedFakeObjectCall> Calls => this.ParentConfiguration.Calls;
 
-            public IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
+            private RuleBuilder ParentConfiguration { get; }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
             {
-                return this.ParentConfiguration.Throws(exceptionFactory);
+                this.ParentConfiguration.Throws(exceptionFactory);
+                return this;
             }
 
-            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration ReturnsLazily(Func<IFakeObjectCall, TMember> valueProducer)
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws<T1>(Func<T1, Exception> exceptionFactory)
+            {
+                return this.Throws<IReturnValueConfiguration<TMember>, T1>(exceptionFactory);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
+            {
+                return this.Throws<IReturnValueConfiguration<TMember>, T1, T2>(exceptionFactory);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
+            {
+                return this.Throws<IReturnValueConfiguration<TMember>, T1, T2, T3>(exceptionFactory);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
+            {
+                return this.Throws<IReturnValueConfiguration<TMember>, T1, T2, T3, T4>(exceptionFactory);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> Throws<T>() where T : Exception, new()
+            {
+                return this.Throws<IReturnValueConfiguration<TMember>, T>();
+            }
+
+            public IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>> ReturnsLazily(Func<IFakeObjectCall, TMember> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
                 this.ParentConfiguration.AddRuleIfNeeded();
                 this.ParentConfiguration.RuleBeingBuilt.UseApplicator(x => x.SetReturnValue(valueProducer(x)));
-                return this.ParentConfiguration;
+                return this;
             }
 
             public IReturnValueConfiguration<TMember> Invokes(Action<IFakeObjectCall> action)
@@ -151,9 +256,10 @@ namespace FakeItEasy.Configuration
                 return this;
             }
 
-            public IAfterCallSpecifiedConfiguration CallsBaseMethod()
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> CallsBaseMethod()
             {
-                return this.ParentConfiguration.CallsBaseMethod();
+                this.ParentConfiguration.CallsBaseMethod();
+                return this;
             }
 
             public IReturnValueConfiguration<TMember> WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
@@ -170,6 +276,38 @@ namespace FakeItEasy.Configuration
             public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
             {
                 this.ParentConfiguration.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
+                return this;
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
+            {
+                this.ParentConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
+                return this;
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer)
+            {
+                return this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1>(valueProducer);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer)
+            {
+                return this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2>(valueProducer);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer)
+            {
+                return this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2, T3>(valueProducer);
+            }
+
+            public IAfterCallSpecifiedConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer)
+            {
+                return this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2, T3, T4>(valueProducer);
+            }
+
+            public IThenConfiguration<IReturnValueConfiguration<TMember>> NumberOfTimes(int numberOfTimesToRepeat)
+            {
+                this.ParentConfiguration.NumberOfTimes(numberOfTimesToRepeat);
                 return this;
             }
         }

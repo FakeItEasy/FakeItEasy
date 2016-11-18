@@ -33,14 +33,39 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration<object>(this.manager, this.configuredRule);
         }
 
-        public IAfterCallSpecifiedConfiguration DoesNothing()
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> DoesNothing()
         {
             return this.VoidConfiguration.DoesNothing();
         }
 
-        public IAfterCallSpecifiedConfiguration Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
             return this.VoidConfiguration.Throws(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2, T3>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
+        {
+            return this.Throws<IVoidConfiguration, T1, T2, T3, T4>(exceptionFactory);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> Throws<T>() where T : Exception, new()
+        {
+            return this.Throws<IVoidConfiguration, T>();
         }
 
         public IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
@@ -48,14 +73,34 @@ namespace FakeItEasy.Configuration
             return this.VoidConfiguration.Invokes(action);
         }
 
-        public IAfterCallSpecifiedConfiguration CallsBaseMethod()
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> CallsBaseMethod()
         {
             return this.VoidConfiguration.CallsBaseMethod();
         }
 
-        public IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
         {
             return this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3>(valueProducer);
+        }
+
+        public IAfterCallSpecifiedConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer)
+        {
+            return this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3, T4>(valueProducer);
         }
 
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)

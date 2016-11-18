@@ -5,8 +5,6 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Reflection;
-    using FakeItEasy.Configuration;
 
     /// <summary>
     /// The central point in the API for proxied fake objects handles interception
@@ -180,6 +178,22 @@ namespace FakeItEasy.Core
         internal virtual void ClearUserRules()
         {
             this.AllUserRules.Clear();
+        }
+
+        /// <summary>
+        /// Adds a call rule to the fake object after the specified rule.
+        /// </summary>
+        /// <param name="previousRule">The rule after which to add a rule.</param>
+        /// <param name="newRule">The rule to add.</param>
+        internal void AddRuleAfter(IFakeObjectCallRule previousRule, IFakeObjectCallRule newRule)
+        {
+            var previousNode = this.AllUserRules.Nodes().FirstOrDefault(n => n.Value.Rule == previousRule);
+            if (previousNode == null)
+            {
+                throw new InvalidOperationException("The rule after which to add the new rule was not found in the list.");
+            }
+
+            this.AllUserRules.AddAfter(previousNode, new CallRuleMetadata { Rule = newRule });
         }
 
         private static void ApplyRule(CallRuleMetadata rule, IInterceptedFakeObjectCall fakeObjectCall)

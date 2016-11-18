@@ -7,7 +7,7 @@ namespace FakeItEasy
     using FakeItEasy.Configuration;
 
     /// <summary>
-    /// Provides extension methods for <see cref="IOutAndRefParametersConfiguration"/>.
+    /// Provides extension methods for <see cref="IOutAndRefParametersConfiguration{TInterface}"/>.
     /// </summary>
     public static class OutAndRefParametersConfigurationExtensions
     {
@@ -19,11 +19,12 @@ namespace FakeItEasy
         /// Any non out and ref parameters are ignored.
         /// The function will be called each time this call is made and can return different values.
         /// </summary>
+        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="values">The values.</param>
         /// <returns>A configuration object.</returns>
-        public static IAfterCallSpecifiedConfiguration AssignsOutAndRefParameters(
-            this IOutAndRefParametersConfiguration configuration, params object[] values)
+        public static IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParameters<TInterface>(
+            this IOutAndRefParametersConfiguration<TInterface> configuration, params object[] values)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
             Guard.AgainstNull(values, nameof(values));
@@ -37,6 +38,7 @@ namespace FakeItEasy
         /// Any non out and ref parameters are ignored.
         /// The function will be called each time this call is made and can return different values.
         /// </summary>
+        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the output values.</param>
@@ -44,8 +46,8 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public static IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1>(
-            this IOutAndRefParametersConfiguration configuration, Func<T1, object[]> valueProducer)
+        internal static IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<TInterface, T1>(
+            this IOutAndRefParametersConfiguration<TInterface> configuration, Func<T1, object[]> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -64,6 +66,7 @@ namespace FakeItEasy
         /// Any non out and ref parameters are ignored.
         /// The function will be called each time this call is made and can return different values.
         /// </summary>
+        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <param name="configuration">The configuration to extend.</param>
@@ -72,9 +75,9 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public static IAfterCallSpecifiedConfiguration
-            AssignsOutAndRefParametersLazily<T1, T2>(
-            this IOutAndRefParametersConfiguration configuration, Func<T1, T2, object[]> valueProducer)
+        internal static IAfterCallSpecifiedConfiguration<TInterface>
+            AssignsOutAndRefParametersLazily<TInterface, T1, T2>(
+            this IOutAndRefParametersConfiguration<TInterface> configuration, Func<T1, T2, object[]> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -93,6 +96,7 @@ namespace FakeItEasy
         /// Any non out and ref parameters are ignored.
         /// The function will be called each time this call is made and can return different values.
         /// </summary>
+        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
@@ -102,9 +106,9 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public static IAfterCallSpecifiedConfiguration
-            AssignsOutAndRefParametersLazily<T1, T2, T3>(
-            this IOutAndRefParametersConfiguration configuration, Func<T1, T2, T3, object[]> valueProducer)
+        internal static IAfterCallSpecifiedConfiguration<TInterface>
+            AssignsOutAndRefParametersLazily<TInterface, T1, T2, T3>(
+            this IOutAndRefParametersConfiguration<TInterface> configuration, Func<T1, T2, T3, object[]> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
@@ -123,6 +127,7 @@ namespace FakeItEasy
         /// Any non out and ref parameters are ignored.
         /// The function will be called each time this call is made and can return different values.
         /// </summary>
+        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
         /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
         /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
@@ -133,8 +138,8 @@ namespace FakeItEasy
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public static IAfterCallSpecifiedConfiguration AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(
-            this IOutAndRefParametersConfiguration configuration, Func<T1, T2, T3, T4, object[]> valueProducer)
+        internal static IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<TInterface, T1, T2, T3, T4>(
+            this IOutAndRefParametersConfiguration<TInterface> configuration, Func<T1, T2, T3, T4, object[]> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 

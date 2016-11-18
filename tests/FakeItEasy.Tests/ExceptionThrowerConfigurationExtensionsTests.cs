@@ -484,7 +484,7 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var ex = A.Dummy<Exception>();
-            var config = A.Fake<IExceptionThrowerConfiguration>();
+            var config = A.Fake<IExceptionThrowerConfiguration<IVoidConfiguration>>();
 
             // Act
             config.Throws(ex);
@@ -497,10 +497,10 @@ namespace FakeItEasy.Tests
         public void Should_configure_fake_to_throw_the_specified_exception_type()
         {
             // Arrange
-            var config = A.Fake<IExceptionThrowerConfiguration>();
+            var config = A.Fake<IExceptionThrowerConfiguration<IVoidConfiguration>>();
 
             // Act
-            config.Throws<InvalidOperationException>();
+            config.Throws(new InvalidOperationException());
 
             // Assert
             A.CallTo(() => config.Throws(FuncThatReturnsExceptionOfType<InvalidOperationException>())).MustHaveHappened();
@@ -512,7 +512,7 @@ namespace FakeItEasy.Tests
             // Arrange
             var exception = A.Dummy<Exception>();
             var factory = new Func<Exception>(() => exception);
-            var config = A.Fake<IExceptionThrowerConfiguration>();
+            var config = A.Fake<IExceptionThrowerConfiguration<IVoidConfiguration>>();
 
             // Act
             config.Throws(factory);

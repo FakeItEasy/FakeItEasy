@@ -160,6 +160,24 @@ namespace FakeItEasy.Configuration
 
         public abstract void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate);
 
+        /// <summary>
+        /// Clones the part of the rule that describes which call is being configured.
+        /// </summary>
+        /// <returns>The cloned rule.</returns>
+        public BuildableCallRule CloneCallSpecification()
+        {
+            var clone = this.CloneCallSpecificationCore();
+            clone.wherePredicates.AddRange(this.wherePredicates);
+            return clone;
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, returns a new instance of the same type and copies the call
+        /// specification members for that type.
+        /// </summary>
+        /// <returns>The cloned rule.</returns>
+        protected abstract BuildableCallRule CloneCallSpecificationCore();
+
         protected abstract bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall);
 
         /// <summary>

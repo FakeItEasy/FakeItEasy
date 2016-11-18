@@ -79,6 +79,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-3
 		docs\assigning-out-and-ref-parameters.md = docs\assigning-out-and-ref-parameters.md
 		docs\bootstrapper.md = docs\bootstrapper.md
 		docs\calling-base-methods.md = docs\calling-base-methods.md
+		docs\changing-behavior-between-calls.md = docs\changing-behavior-between-calls.md
 		docs\creating-fakes.md = docs\creating-fakes.md
 		docs\custom-dummy-creation.md = docs\custom-dummy-creation.md
 		docs\default-fake-behavior.md = docs\default-fake-behavior.md
