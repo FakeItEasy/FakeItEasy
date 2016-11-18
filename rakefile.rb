@@ -16,18 +16,22 @@ version_suffix  = ENV["VERSION_SUFFIX"]
 build           = (ENV["BUILD"] || "").rjust(6, "0");
 build_suffix    = version_suffix.to_s.empty? ? "" : "-build" + build;
 repo_url        = "https://github.com/FakeItEasy/FakeItEasy"
-nuspec          = "src/FakeItEasy/FakeItEasy.nuspec"
-analyzer_nuspec = "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.nuspec"
+nuspec          = "src/FakeItEasy.nuspec"
+analyzer_nuspec = "src/FakeItEasy.Analyzer.nuspec"
 logs            = "artifacts/logs"
 output          = File.absolute_path("artifacts/output")
 tests           = "artifacts/tests"
 packages        = File.absolute_path("packages")
 
-gitlinks        = ["FakeItEasy", "FakeItEasy.Analyzer"]
+gitlinks        = ["FakeItEasy", "FakeItEasy.Analyzer", "FakeItEasy.netstd"]
 
 unit_tests = [
   "tests/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
   "tests/FakeItEasy.Analyzer.Tests/bin/Release/FakeItEasy.Analyzer.Tests.dll"
+]
+
+netstd_unit_test_directories = [
+  "tests/FakeItEasy.Tests.netstd"
 ]
 
 integration_tests = [
@@ -35,12 +39,17 @@ integration_tests = [
   "tests/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"
 ]
 
+netstd_integration_test_directories = [
+  "tests/FakeItEasy.IntegrationTests.netstd"
+]
+
 specs = [
   "tests/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
 ]
 
 approval_tests = [
-  "tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll"
+  "tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll",
+  "tests/FakeItEasy.Tests.Approval.netstd/bin/Release/FakeItEasy.Tests.Approval.netstd.dll"
 ]
 
 repo = 'FakeItEasy/FakeItEasy'
@@ -101,9 +110,17 @@ task :vars do
 end
 
 desc "Restore NuGet packages"
-exec :restore do |cmd|
-  cmd.command = nuget_command
-  cmd.parameters "restore #{solution} -PackagesDirectory #{packages}"
+task :restore do
+  restore_cmd = Exec.new
+  restore_cmd.command = nuget_command
+  restore_cmd.parameters "restore #{solution} -PackagesDirectory #{packages}"
+  restore_cmd.execute
+
+  # performing restore on the solution doesn't restore
+  # all the xprojs' dependencies, so do them separately
+  (netstd_unit_test_directories + netstd_integration_test_directories).each do | test_directory |
+    restore_dependencies_for_project test_directory
+  end
 end
 
 directory logs
@@ -233,11 +250,13 @@ directory tests
 desc "Execute unit tests"
 task :unit => [:build, tests] do
     run_tests(unit_tests, xunit_command, tests)
+    run_netstd_tests(netstd_unit_test_directories, tests)
 end
 
 desc "Execute integration tests"
 task :integ => [:build, tests] do
     run_tests(integration_tests, xunit_command, tests)
+    run_netstd_tests(netstd_integration_test_directories, tests)
 end
 
 desc "Execute specifications"
@@ -343,6 +362,25 @@ def run_tests(test_assemblies, command, result_dir)
     xunit.options '-noshadow', '-nologo', '-notrait', '"explicit=yes"', '-xml', xml, '-html', html
     xunit.execute
   end
+end
+
+def run_netstd_tests(test_directories, result_dir)
+  test_directories.each do |test_directory|
+    xml = File.expand_path(File.join(result_dir, File.basename(test_directory) + '.TestResults.xml'))
+    # the xunit .NET Core runner can't produce HTML yet since XSLT isn't scheduled until .NET Core 1.2
+
+    test_cmd = Exec.new
+    test_cmd.command = "dotnet"
+    test_cmd.parameters "test -c Release #{test_directory} -nologo -notrait \"explicit=yes\" -xml #{xml}"
+    test_cmd.execute
+  end
+end
+
+def restore_dependencies_for_project(project_dir)
+  restore_cmd = Exec.new
+  restore_cmd.command = "dotnet"
+  restore_cmd.parameters "restore #{project_dir}"
+  restore_cmd.execute
 end
 
 # Load SSL cert file to enable Ruby SSL support.

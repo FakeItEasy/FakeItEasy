@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		.mailmap = .mailmap
+		appveyor.yml = appveyor.yml
 		build.cmd = build.cmd
 		CONTRIBUTING.md = CONTRIBUTING.md
 		FakeItEasy.Dictionary.xml = FakeItEasy.Dictionary.xml
@@ -16,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Gemfile = Gemfile
 		Gemfile.lock = Gemfile.lock
 		cacert.pem = cacert.pem
+		global.json = global.json
 		how_to_build.md = how_to_build.md
 		License.txt = License.txt
 		mkdocs.yml = mkdocs.yml
@@ -27,6 +29,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59466C4D-C407-4DD9-B77B-D99162B9FC7C}"
 	ProjectSection(SolutionItems) = preProject
 		src\CommonAssemblyInfo.cs = src\CommonAssemblyInfo.cs
+		src\FakeItEasy.Analyzer.nuspec = src\FakeItEasy.Analyzer.nuspec
+		src\FakeItEasy.nuspec = src\FakeItEasy.nuspec
 		src\ILMerge.Internalize.Exclude.txt = src\ILMerge.Internalize.Exclude.txt
 	EndProjectSection
 EndProject
@@ -123,6 +127,32 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Tests.Approval",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy", "src\FakeItEasy\FakeItEasy.csproj", "{74165807-676F-4464-B607-8770C13E8991}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.netstd", "src\FakeItEasy.netstd\FakeItEasy.netstd.csproj", "{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.Tests.netstd", "tests\FakeItEasy.Tests.netstd\FakeItEasy.Tests.netstd.xproj", "{AA7CF6E8-C3F2-43CC-A765-5B05AADED390}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E} = {CF137AE3-7C4F-41BD-A4AD-762BBED2255E}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wrap", "wrap", "{3192F732-5E1C-4B3A-9CB9-AF729A513941}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FakeItEasy", "FakeItEasy", "{E7190229-2F49-4FFF-ABA6-715D48C83BA1}"
+	ProjectSection(SolutionItems) = preProject
+		wrap\FakeItEasy\project.json = wrap\FakeItEasy\project.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Tests.Approval.netstd", "tests\FakeItEasy.Tests.Approval.netstd\FakeItEasy.Tests.Approval.netstd.csproj", "{BC38E29E-2915-4E3E-BC12-69226747E269}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E} = {CF137AE3-7C4F-41BD-A4AD-762BBED2255E}
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.IntegrationTests.netstd", "tests\FakeItEasy.IntegrationTests.netstd\FakeItEasy.IntegrationTests.netstd.xproj", "{CFCEF7CF-B06E-47C5-B1E4-59A41262DA8D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E} = {CF137AE3-7C4F-41BD-A4AD-762BBED2255E}
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.IntegrationTests.External.netstd", "tests\FakeItEasy.IntegrationTests.External.netstd\FakeItEasy.IntegrationTests.External.netstd.xproj", "{BB92D188-5666-46DC-935A-81F0C5173D20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +203,26 @@ Global
 		{74165807-676F-4464-B607-8770C13E8991}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74165807-676F-4464-B607-8770C13E8991}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74165807-676F-4464-B607-8770C13E8991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA7CF6E8-C3F2-43CC-A765-5B05AADED390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA7CF6E8-C3F2-43CC-A765-5B05AADED390}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA7CF6E8-C3F2-43CC-A765-5B05AADED390}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA7CF6E8-C3F2-43CC-A765-5B05AADED390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC38E29E-2915-4E3E-BC12-69226747E269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC38E29E-2915-4E3E-BC12-69226747E269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC38E29E-2915-4E3E-BC12-69226747E269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC38E29E-2915-4E3E-BC12-69226747E269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFCEF7CF-B06E-47C5-B1E4-59A41262DA8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFCEF7CF-B06E-47C5-B1E4-59A41262DA8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFCEF7CF-B06E-47C5-B1E4-59A41262DA8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFCEF7CF-B06E-47C5-B1E4-59A41262DA8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB92D188-5666-46DC-935A-81F0C5173D20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB92D188-5666-46DC-935A-81F0C5173D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB92D188-5666-46DC-935A-81F0C5173D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB92D188-5666-46DC-935A-81F0C5173D20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,6 +244,12 @@ Global
 		{9D4A41F1-D444-4244-AAAC-F610D9977B2F} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
 		{42A92357-2A87-4B87-A591-CA78B6CE4461} = {9D4A41F1-D444-4244-AAAC-F610D9977B2F}
 		{74165807-676F-4464-B607-8770C13E8991} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
+		{CF137AE3-7C4F-41BD-A4AD-762BBED2255E} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
+		{AA7CF6E8-C3F2-43CC-A765-5B05AADED390} = {DC5EAE30-96E3-4D38-B3C5-33E587C9FB76}
+		{E7190229-2F49-4FFF-ABA6-715D48C83BA1} = {3192F732-5E1C-4B3A-9CB9-AF729A513941}
+		{BC38E29E-2915-4E3E-BC12-69226747E269} = {9D4A41F1-D444-4244-AAAC-F610D9977B2F}
+		{CFCEF7CF-B06E-47C5-B1E4-59A41262DA8D} = {5D41D463-D53B-4ADC-90AD-44AA03D6340D}
+		{BB92D188-5666-46DC-935A-81F0C5173D20} = {5D41D463-D53B-4ADC-90AD-44AA03D6340D}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 0.1
