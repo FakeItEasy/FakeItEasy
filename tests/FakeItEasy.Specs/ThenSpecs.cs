@@ -46,11 +46,9 @@
                     foo.Bar();
                 });
 
-            "Then the first delegate is invoked once"
-                .x(() => A.CallTo(() => action1()).MustHaveHappened(Repeated.Exactly.Once));
-
-            "And the second delegate is invoked twice"
-                .x(() => A.CallTo(() => action2()).MustHaveHappened(Repeated.Exactly.Twice));
+            "Then the first delegate is invoked once, and the second delegate is invoked twice"
+                .x(() => A.CallTo(() => action1()).MustHaveHappened(Repeated.Exactly.Once)
+                    .Then(A.CallTo(() => action2()).MustHaveHappened(Repeated.Exactly.Twice)));
         }
 
         [Scenario]
@@ -150,11 +148,9 @@
                     exception = Record.Exception(() => foo.Bar(3));
                 });
 
-            "Then the first delegate is called once"
-                .x(() => A.CallTo(() => action1()).MustHaveHappened(Repeated.Exactly.Once));
-
-            "And the second delegate is called twice"
-                .x(() => A.CallTo(() => action2()).MustHaveHappened(Repeated.Exactly.Twice));
+            "Then the first delegate is invoked once, and the second delegate is invoked twice"
+                .x(() => A.CallTo(() => action1()).MustHaveHappened(Repeated.Exactly.Once)
+                    .Then(A.CallTo(() => action2()).MustHaveHappened(Repeated.Exactly.Twice)));
 
             "And the fourth call throws an exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
