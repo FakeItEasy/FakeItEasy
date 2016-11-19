@@ -32,7 +32,7 @@ namespace FakeItEasy.Tests.Configuration
 
             string StringReturn();
 
-            IHaveDifferentReturnValues SelfReturn();
+            DummyableClass DummyableReturn();
         }
 
         public static IEnumerable<object> DefaultReturnValueCases()
@@ -46,12 +46,12 @@ namespace FakeItEasy.Tests.Configuration
                 new
                 {
                     MethodName = "StringReturn",
-                    ExpectedReturnValue = (object)null
+                    ExpectedReturnValue = (object)string.Empty
                 },
                 new
                 {
-                    MethodName = "SelfReturn",
-                    ExpectedReturnValue = (object)null
+                    MethodName = "DummyableReturn",
+                    ExpectedReturnValue = (object)A.Dummy<DummyableClass>()
                 });
         }
 
@@ -282,6 +282,20 @@ namespace FakeItEasy.Tests.Configuration
 
             var exception = Record.Exception(() => this.rule.OutAndRefParametersValueProducer = x => new object[] { "test" });
             exception.Should().BeAnExceptionOfType<InvalidOperationException>();
+        }
+
+        private class DummyableClass
+        {
+        }
+
+        private class DummyableClassFactory: DummyFactory<DummyableClass>
+        {
+            private static readonly DummyableClass Instance = new DummyableClass();
+
+            protected override DummyableClass Create()
+            {
+                return Instance;
+            }
         }
 
         private class TestableCallRule

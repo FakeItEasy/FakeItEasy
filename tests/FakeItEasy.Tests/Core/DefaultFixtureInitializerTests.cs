@@ -132,7 +132,8 @@ namespace FakeItEasy.Tests.Core
             var fake = A.Fake<IFoo>();
 
             A.CallTo(() => this.sutInitializer.CreateSut(A<Type>._, A<Action<Type, object>>._))
-                .Invokes(x => x.GetArgument<Action<Type, object>>(1).Invoke(typeof(IFoo), fake));
+                .Invokes(x => x.GetArgument<Action<Type, object>>(1).Invoke(typeof(IFoo), fake))
+                .Returns(null);
 
             var sutFixture = new SutFixture();
 

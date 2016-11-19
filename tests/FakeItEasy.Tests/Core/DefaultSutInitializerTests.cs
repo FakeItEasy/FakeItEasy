@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Sdk;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
@@ -58,11 +59,10 @@ namespace FakeItEasy.Tests.Core
         public void Should_pass_empty_options_builder_to_fake_manager_for_each_constructor_argument()
         {
             // Arrange
-            this.StubFakeManagerWithFake<IFoo>();
-            this.StubFakeManagerWithFake<object>();
             var optionsBuilders = new List<Action<IFakeOptions>>();
             A.CallTo(() => this.fakeManager.CreateFake(A<Type>._, A<Action<IFakeOptions>>._))
-                .Invokes((Type type, Action<IFakeOptions> optionBuilder) => optionsBuilders.Add(optionBuilder));
+                .Invokes((Type type, Action<IFakeOptions> optionBuilder) => optionsBuilders.Add(optionBuilder))
+                .ReturnsLazily((Type type, Action<IFakeOptions> fakeOptionBuilder) => Create.Fake(type));
 
             // Act
             this.sutInitializer.CreateSut(typeof(TypeWithFakeableDependencies), (x, y) => { });

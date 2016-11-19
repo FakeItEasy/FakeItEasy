@@ -93,7 +93,7 @@ namespace FakeItEasy.Configuration
         /// </summary>
         public void UseDefaultApplicator()
         {
-            this.UseApplicator(call => call.SetReturnValue(call.Method.ReturnType.GetDefaultValue()));
+            this.UseApplicator(call => call.SetReturnValue(DefaultReturnValueRule.ResolveReturnValue(call)));
         }
 
         public virtual void Apply(IInterceptedFakeObjectCall fakeObjectCall)
