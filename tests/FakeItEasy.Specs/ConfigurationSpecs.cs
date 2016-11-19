@@ -16,6 +16,10 @@ namespace FakeItEasy.Specs
             int Baz();
 
             string Bas();
+
+            IFoo Bafoo();
+
+            IFoo Bafoo(out int i);
         }
 
         [Scenario]
@@ -395,7 +399,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void DoesNothingAfterStrictVoid(
+        public static void DoesNothingAfterStrictVoidDoesNotThrow(
             IFoo fake,
             Exception exception)
         {
@@ -413,7 +417,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void DoesNothingAfterStrictValueType(
+        public static void DoesNothingAfterStrictValueTypeKeepsDefaultReturnValue(
             IFoo fake,
             int result)
         {
@@ -426,12 +430,12 @@ namespace FakeItEasy.Specs
             "When I call a value type method"
                 .x(() => result = fake.Baz());
 
-            "Then it returns a default instance of the value type"
-                .x(() => result.Should().Be(0));
+            "Then it returns the same value as an unconfigured fake"
+                .x(() => result.Should().Be(A.Fake<IFoo>().Baz()));
         }
 
         [Scenario]
-        public static void DoesNothingAfterStrictReferenceType(
+        public static void DoesNothingAfterStrictNonFakeableReferenceTypeKeepsDefaultReturnValue(
             IFoo fake,
             string result)
         {
@@ -441,11 +445,29 @@ namespace FakeItEasy.Specs
             "And I configure all methods to do nothing"
                 .x(() => A.CallTo(fake).DoesNothing());
 
-            "When I call a reference type method"
+            "When I call a non-fakeable reference type method"
                 .x(() => result = fake.Bas());
 
-            "Then it returns null"
-                .x(() => result.Should().BeNull());
+            "Then it returns the same value as an unconfigured fake"
+                .x(() => result.Should().Be(A.Fake<IFoo>().Bas()));
+        }
+
+        [Scenario]
+        public static void DoesNothingAfterStrictFakeableReferenceTypeKeepsDefaultReturnValue(
+            IFoo fake,
+            IFoo result)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(options => options.Strict()));
+
+            "And I configure all methods to do nothing"
+                .x(() => A.CallTo(fake).DoesNothing());
+
+            "When I call a fakeable reference type method"
+                .x(() => result = fake.Bafoo());
+
+            "Then it returns the same value as an unconfigured fake"
+                .x(() => result.Should().Be(A.Fake<IFoo>().Bafoo()));
         }
 
         [Scenario]
@@ -534,7 +556,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void InvokesAfterStrictVoid(
+        public static void InvokesAfterStrictVoidDoesNotThrow(
             IFoo fake,
             Exception exception)
         {
@@ -552,7 +574,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void InvokesAfterStrictValueType(
+        public static void InvokesAfterStrictValueTypeKeepsDefaultReturnValue(
             IFoo fake,
             int result)
         {
@@ -565,12 +587,12 @@ namespace FakeItEasy.Specs
             "When I call the method"
                 .x(() => result = fake.Baz());
 
-            "Then it returns a default instance of the value type"
-                .x(() => result.Should().Be(0));
+            "Then it returns the same value as an unconfigured fake"
+                .x(() => result.Should().Be(A.Fake<IFoo>().Baz()));
         }
 
         [Scenario]
-        public static void InvokesAfterStrictReferenceType(
+        public static void InvokesAfterStrictNonFakeableReferenceTypeKeepsDefaultReturnValue(
             IFoo fake,
             string result)
         {
@@ -580,11 +602,48 @@ namespace FakeItEasy.Specs
             "And I configure all methods to invoke an action"
                 .x(() => A.CallTo(fake).Invokes(() => { }));
 
-            "When I call a reference type method"
+            "When I call a non-fakeable reference type method"
                 .x(() => result = fake.Bas());
 
-            "Then it returns null"
-                .x(() => result.Should().BeNull());
+            "Then it returns the same value as an unconfigured fake"
+                .x(() => result.Should().Be(A.Fake<IFoo>().Bas()));
+        }
+
+        [Scenario]
+        public static void InvokesAfterStrictFakeableableReferenceTypeKeepsDefaultReturnValue(
+            IFoo fake,
+            IFoo result)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(options => options.Strict()));
+
+            "And I configure all methods to invoke an action"
+                .x(() => A.CallTo(fake).Invokes(() => { }));
+
+            "When I call a fakeable reference type method"
+                .x(() => result = fake.Bafoo());
+
+            "Then it returns the same value as an unconfigured fake"
+                .x(() => result.Should().Be(A.Fake<IFoo>().Bafoo()));
+        }
+
+        [Scenario]
+        public static void AssignsOutAndRefParametersForAllMethodsKeepsDefaultReturnValue(
+            IFoo fake,
+            IFoo result,
+            int i)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And I configure all methods to assign out and ref parameters"
+                .x(() => A.CallTo(fake).AssignsOutAndRefParameters(0));
+
+            "When I call a reference type method"
+                .x(() => result = fake.Bafoo(out i));
+
+            "Then it returns the same value as an unconfigured fake"
+                .x(() => result.Should().Be(A.Fake<IFoo>().Bafoo(out i)));
         }
 
         [Scenario]
@@ -663,6 +722,45 @@ namespace FakeItEasy.Specs
             public sealed override int ReturnSomething()
             {
                 return 10;
+            }
+        }
+
+        public class Foo : IFoo
+        {
+
+            public void Bar()
+            {
+                throw new NotSupportedException();
+            }
+
+            public int Baz()
+            {
+                throw new NotSupportedException();
+            }
+
+            public string Bas()
+            {
+                throw new NotSupportedException();
+            }
+
+            public IFoo Bafoo()
+            {
+                throw new NotSupportedException();
+            }
+
+            public IFoo Bafoo(out int i)
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public class FooFactory : DummyFactory<IFoo>
+        {
+            public static IFoo Instance { get; } = new Foo();
+
+            protected override IFoo Create()
+            {
+                return Instance;
             }
         }
     }
