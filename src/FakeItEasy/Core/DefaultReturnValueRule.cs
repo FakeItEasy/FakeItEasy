@@ -1,7 +1,6 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using FakeItEasy.Creation;
 
 #if FEATURE_BINARY_SERIALIZATION
     [Serializable]
@@ -10,19 +9,6 @@ namespace FakeItEasy.Core
         : IFakeObjectCallRule
     {
         public int? NumberOfTimesToCall => null;
-
-        private static IFakeAndDummyManager FakeManager => ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
-
-        public static object ResolveReturnValue(IInterceptedFakeObjectCall fakeObjectCall)
-        {
-            object result;
-            if (!FakeManager.TryCreateDummy(fakeObjectCall.Method.ReturnType, out result))
-            {
-                return fakeObjectCall.Method.ReturnType.GetDefaultValue();
-            }
-
-            return result;
-        }
 
         public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
@@ -33,8 +19,7 @@ namespace FakeItEasy.Core
         {
             Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
-            var returnValue = ResolveReturnValue(fakeObjectCall);
-            fakeObjectCall.SetReturnValue(returnValue);
+            fakeObjectCall.SetReturnValue(fakeObjectCall.GetDefaultReturnValue());
         }
     }
 }

@@ -69,6 +69,9 @@
     <Compile Include="..\FakeItEasy\LinkedListExtensions.cs">
       <Link>LinkedListExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Core\InterceptedFakeObjectCallExtensions.cs">
+      <Link>Core\InterceptedFakeObjectCallExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
