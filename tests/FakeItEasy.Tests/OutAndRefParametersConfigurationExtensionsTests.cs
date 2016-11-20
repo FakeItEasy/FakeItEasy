@@ -35,7 +35,7 @@ namespace FakeItEasy.Tests
         public void AssignsOutAndRefParameters_should_return_configuration_returned_from_passed_in_configuration()
         {
             // Arrange
-            var expectedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IVoidConfiguration>>();
+            var expectedConfig = A.Fake<IAfterCallConfiguredWithOutAndRefParametersConfiguration<IVoidConfiguration>>();
             var config = A.Fake<IOutAndRefParametersConfiguration<IVoidConfiguration>>();
             A.CallTo(() => config.AssignsOutAndRefParametersLazily(
                     A<Func<IFakeObjectCall, ICollection<object>>>.That.Matches(x => (int)x.Invoke(null).First() == 10)))

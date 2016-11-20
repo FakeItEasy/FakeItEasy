@@ -10,6 +10,6 @@
         /// Configures the specified call to do nothing when called.
         /// </summary>
         /// <returns>A configuration object.</returns>
-        IAfterCallSpecifiedConfiguration<TInterface> DoesNothing();
+        IAfterCallConfiguredConfiguration<TInterface> DoesNothing();
     }
 }

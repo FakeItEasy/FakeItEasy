@@ -20,7 +20,7 @@ namespace FakeItEasy.Configuration
         /// <param name="valueProducer">A function that produces the output values.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
-        IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -34,7 +34,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -49,7 +49,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -65,7 +65,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -82,6 +82,6 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallSpecifiedConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer);
     }
 }

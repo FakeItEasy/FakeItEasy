@@ -15,6 +15,6 @@ namespace FakeItEasy.Configuration
         /// <returns>A configuration object.</returns>
         /// <exception cref="InvalidOperationException">The fake object is of an abstract type or an interface
         /// and no base method exists.</exception>
-        IAfterCallSpecifiedConfiguration<TInterface> CallsBaseMethod();
+        IAfterCallConfiguredConfiguration<TInterface> CallsBaseMethod();
     }
 }

@@ -55,7 +55,7 @@ namespace FakeItEasy.Tests
         public void Returns_should_return_configuration_returned_from_passed_in_configuration()
         {
             // Arrange
-            var expectedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<int>>>();
+            var expectedConfig = A.Fake<IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<int>>>();
             var config = A.Fake<IReturnValueConfiguration<int>>();
             A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.That.Matches(x => x.Invoke(null) == 10))).Returns(expectedConfig);
 
@@ -70,7 +70,7 @@ namespace FakeItEasy.Tests
         public void Returns_should_return_configuration_returned_from_passed_in_configuration_task()
         {
             // Arrange
-            var expectedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<int>>>>();
+            var expectedConfig = A.Fake<IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<int>>>>();
             var config = A.Fake<IReturnValueConfiguration<Task<int>>>();
             A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, Task<int>>>.That.Matches(x => x.Invoke(null).Result == 10))).Returns(expectedConfig);
 
@@ -841,7 +841,7 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var config = A.Fake<IReturnValueConfiguration<int>>();
-            var returnedConfig = A.Fake<IAfterCallSpecifiedWithOutAndRefParametersConfiguration<IReturnValueConfiguration<int>>>();
+            var returnedConfig = A.Fake<IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<int>>>();
 
             A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>._)).Returns(returnedConfig);
 

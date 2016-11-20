@@ -87,7 +87,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var factoryConfig = this.StubVoidConfig();
-            var doesNothingConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
+            var doesNothingConfig = A.Fake<IAfterCallConfiguredConfiguration<IVoidConfiguration>>();
             A.CallTo(() => factoryConfig.DoesNothing()).Returns(doesNothingConfig);
 
             // Act
@@ -117,7 +117,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var factoryConfig = this.StubVoidConfig();
-            var throwsConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
+            var throwsConfig = A.Fake<IAfterCallConfiguredConfiguration<IVoidConfiguration>>();
 
             A.CallTo(() => factoryConfig.Throws(A<ExceptionFactory>._)).Returns(throwsConfig);
 
@@ -178,7 +178,7 @@ namespace FakeItEasy.Tests.Configuration
         {
             // Arrange
             var factoryConfig = this.StubVoidConfig();
-            var callsBaseConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
+            var callsBaseConfig = A.Fake<IAfterCallConfiguredConfiguration<IVoidConfiguration>>();
 
             A.CallTo(() => factoryConfig.CallsBaseMethod()).Returns(callsBaseConfig);
 
@@ -196,7 +196,7 @@ namespace FakeItEasy.Tests.Configuration
             Func<IFakeObjectCall, ICollection<object>> valueProducer = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
-            var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
+            var nextConfig = A.Fake<IAfterCallConfiguredConfiguration<IVoidConfiguration>>();
 
             A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(valueProducer)).Returns(nextConfig);
 
@@ -214,7 +214,7 @@ namespace FakeItEasy.Tests.Configuration
             Func<IFakeObjectCall, ICollection<object>> valueProducer = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
-            var nextConfig = A.Fake<IAfterCallSpecifiedConfiguration<IVoidConfiguration>>();
+            var nextConfig = A.Fake<IAfterCallConfiguredConfiguration<IVoidConfiguration>>();
 
             A.CallTo(() => factoryConfig.AssignsOutAndRefParametersLazily(valueProducer)).Returns(nextConfig);
 

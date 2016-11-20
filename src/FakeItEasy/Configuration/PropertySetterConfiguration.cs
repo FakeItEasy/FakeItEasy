@@ -31,23 +31,23 @@ namespace FakeItEasy.Configuration
             return AsPropertySetterConfiguration(voidArgumentValidationConfiguration);
         }
 
-        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>
+        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>
             AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
                 .Throws(exceptionFactory);
 
-        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory) =>
+        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory) =>
             this.Throws<IPropertySetterConfiguration, T1>(exceptionFactory);
 
-        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory) =>
+        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory) =>
             this.Throws<IPropertySetterConfiguration, T1, T2>(exceptionFactory);
 
-        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory) =>
+        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory) =>
             this.Throws<IPropertySetterConfiguration, T1, T2, T3>(exceptionFactory);
 
-        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory) =>
+        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory) =>
             this.Throws<IPropertySetterConfiguration, T1, T2, T3, T4>(exceptionFactory);
 
-        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws<T>() where T : Exception, new() =>
+        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T>() where T : Exception, new() =>
             this.Throws<IPropertySetterConfiguration, T>();
 
         public IPropertySetterConfiguration Invokes(Action<IFakeObjectCall> action)
@@ -58,14 +58,14 @@ namespace FakeItEasy.Configuration
             return AsPropertySetterConfiguration(voidConfiguration);
         }
 
-        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> CallsBaseMethod() =>
+        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> CallsBaseMethod() =>
             AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
                 .CallsBaseMethod();
 
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
             this.CreateArgumentValidationConfiguration(this.parsedSetterExpression).MustHaveHappened(repeatConstraint);
 
-        public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> DoesNothing() =>
+        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>
             AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
                 .DoesNothing();
 
@@ -111,31 +111,31 @@ namespace FakeItEasy.Configuration
                 this.voidConfiguration = voidArgumentValidationConfiguration;
             }
 
-            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>
                 AsPropertySetterConfiguration(this.voidConfiguration).Throws(exceptionFactory);
 
-            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory) =>
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory) =>
                 this.Throws<IPropertySetterConfiguration, T1>(exceptionFactory);
 
-            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory) =>
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory) =>
                 this.Throws<IPropertySetterConfiguration, T1, T2>(exceptionFactory);
 
-            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory) =>
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory) =>
                 this.Throws<IPropertySetterConfiguration, T1, T2, T3>(exceptionFactory);
 
-            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory) =>
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory) =>
                 this.Throws<IPropertySetterConfiguration, T1, T2, T3, T4>(exceptionFactory);
 
-            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> Throws<T>() where T : Exception, new() =>
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T>() where T : Exception, new() =>
                 this.Throws<IPropertySetterConfiguration, T>();
 
-            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> CallsBaseMethod() =>
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> CallsBaseMethod() =>
                 AsPropertySetterConfiguration(this.voidConfiguration).CallsBaseMethod();
 
             public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
                 this.voidConfiguration.MustHaveHappened(repeatConstraint);
 
-            public IAfterCallSpecifiedConfiguration<IPropertySetterConfiguration> DoesNothing() =>
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>
                 AsPropertySetterConfiguration(this.voidConfiguration).DoesNothing();
 
             public IPropertySetterConfiguration Invokes(Action<IFakeObjectCall> action)

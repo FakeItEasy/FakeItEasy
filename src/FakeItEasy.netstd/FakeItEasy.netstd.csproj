@@ -48,6 +48,12 @@
     <Compile Include="..\FakeItEasy\Compatibility\MethodInfoWrapper.cs">
       <Link>Compatibility\MethodInfoWrapper.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IAfterCallConfiguredConfiguration.cs">
+      <Link>Configuration\IAfterCallConfiguredConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Configuration\IAfterCallConfiguredWithOutAndRefParametersConfiguration.cs">
+      <Link>Configuration\IAfterCallConfiguredWithOutAndRefParametersConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IDoNothingConfiguration.cs">
       <Link>Configuration\IDoNothingConfiguration.cs</Link>
     </Compile>
@@ -128,12 +134,6 @@
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\FakeConfigurationManager.cs">
       <Link>Configuration\FakeConfigurationManager.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\IAfterCallSpecifiedConfiguration.cs">
-      <Link>Configuration\IAfterCallSpecifiedConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs">
-      <Link>Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\FakeItEasy\Configuration\IOrderableCallAssertion.cs">
       <Link>Configuration\IOrderableCallAssertion.cs</Link>

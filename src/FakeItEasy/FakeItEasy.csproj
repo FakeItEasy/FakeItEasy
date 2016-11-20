@@ -90,8 +90,8 @@
     <Compile Include="Configuration\DefaultInterceptionAsserter.cs" />
     <Compile Include="Configuration\FakeConfigurationException.cs" />
     <Compile Include="Configuration\FakeConfigurationManager.cs" />
-    <Compile Include="Configuration\IAfterCallSpecifiedConfiguration.cs" />
-    <Compile Include="Configuration\IAfterCallSpecifiedWithOutAndRefParametersConfiguration.cs" />
+    <Compile Include="Configuration\IAfterCallConfiguredConfiguration.cs" />
+    <Compile Include="Configuration\IAfterCallConfiguredWithOutAndRefParametersConfiguration.cs" />
     <Compile Include="Configuration\IOrderableCallAssertion.cs" />
     <Compile Include="Configuration\IAnyCallConfiguration.cs" />
     <Compile Include="Configuration\IAnyCallConfigurationWithReturnTypeSpecified.cs" />
