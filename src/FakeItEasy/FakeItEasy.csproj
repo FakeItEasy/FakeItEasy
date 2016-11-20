@@ -68,6 +68,7 @@
     <Compile Include="Configuration\IThenConfiguration.cs" />
     <Compile Include="Configuration\PropertySetterConfiguration.cs" />
     <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="Core\InterceptedFakeObjectCallExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>

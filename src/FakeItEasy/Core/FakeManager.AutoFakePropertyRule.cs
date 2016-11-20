@@ -2,6 +2,7 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Linq;
+    using FakeItEasy.Creation;
 
     /// <content>Auto fake property rule.</content>
     public partial class FakeManager
@@ -36,7 +37,7 @@ namespace FakeItEasy.Core
                                   {
                                       Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.fakeManager)
                                       {
-                                          Value = DefaultReturnValue(fakeObjectCall),
+                                          Value = fakeObjectCall.GetDefaultReturnValue(),
                                           Indices = fakeObjectCall.Arguments.ToArray(),
                                       },
                                       CalledNumberOfTimes = 1
@@ -44,11 +45,6 @@ namespace FakeItEasy.Core
 
                 this.fakeManager.AllUserRules.AddFirst(newRule);
                 newRule.Rule.Apply(fakeObjectCall);
-            }
-
-            private static object DefaultReturnValue(IInterceptedFakeObjectCall fakeObjectCall)
-            {
-                return DefaultReturnValueRule.ResolveReturnValue(fakeObjectCall);
             }
         }
     }

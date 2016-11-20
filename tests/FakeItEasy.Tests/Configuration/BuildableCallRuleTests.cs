@@ -32,7 +32,7 @@ namespace FakeItEasy.Tests.Configuration
 
             string StringReturn();
 
-            IHaveDifferentReturnValues SelfReturn();
+            DummyableClass DummyableReturn();
         }
 
         public static IEnumerable<object> DefaultReturnValueCases()
@@ -40,18 +40,18 @@ namespace FakeItEasy.Tests.Configuration
             return TestCases.FromProperties(
                 new
                 {
-                    MethodName = "IntReturn",
+                    MethodName = nameof(IHaveDifferentReturnValues.IntReturn),
                     ExpectedReturnValue = (object)0
                 },
                 new
                 {
-                    MethodName = "StringReturn",
-                    ExpectedReturnValue = (object)null
+                    MethodName = nameof(IHaveDifferentReturnValues.StringReturn),
+                    ExpectedReturnValue = (object)string.Empty
                 },
                 new
                 {
-                    MethodName = "SelfReturn",
-                    ExpectedReturnValue = (object)null
+                    MethodName = nameof(IHaveDifferentReturnValues.DummyableReturn),
+                    ExpectedReturnValue = (object)A.Dummy<DummyableClass>()
                 });
         }
 
@@ -109,7 +109,7 @@ namespace FakeItEasy.Tests.Configuration
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
 
-            A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod("OutAndRef"));
+            A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod(nameof(IOutAndRef.OutAndRef)));
 
             // Act
             this.rule.Apply(call);
@@ -126,7 +126,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.UseApplicator(x => { });
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod("OutAndRef"));
+            A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod(nameof(IOutAndRef.OutAndRef)));
 
             var exception = Record.Exception(() =>
                 this.rule.Apply(call));
@@ -282,6 +282,20 @@ namespace FakeItEasy.Tests.Configuration
 
             var exception = Record.Exception(() => this.rule.OutAndRefParametersValueProducer = x => new object[] { "test" });
             exception.Should().BeAnExceptionOfType<InvalidOperationException>();
+        }
+
+        private class DummyableClass
+        {
+        }
+
+        private class DummyableClassFactory: DummyFactory<DummyableClass>
+        {
+            private static readonly DummyableClass Instance = new DummyableClass();
+
+            protected override DummyableClass Create()
+            {
+                return Instance;
+            }
         }
 
         private class TestableCallRule
