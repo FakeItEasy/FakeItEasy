@@ -164,7 +164,7 @@ namespace FakeItEasy.Specs
             public virtual IFoo FakeableProperty { get; set; }
         }
 
-        public class Foo: IFoo
+        public class Foo : IFoo
         {
             public bool IsADummy { get; set; }
         }

@@ -288,7 +288,7 @@ namespace FakeItEasy.Tests.Configuration
         {
         }
 
-        private class DummyableClassFactory: DummyFactory<DummyableClass>
+        private class DummyableClassFactory : DummyFactory<DummyableClass>
         {
             private static readonly DummyableClass Instance = new DummyableClass();
 
