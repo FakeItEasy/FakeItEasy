@@ -32,7 +32,11 @@ namespace FakeItEasy.Creation
         /// </summary>
         /// <param name="wrappedInstance">The object to delegate calls to.</param>
         /// <returns>Options object.</returns>
+#if FEATURE_SELF_INITIALIZED_FAKES
         IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
+#else
+        IFakeOptions<T> Wrapping(T wrappedInstance);
+#endif
 
         /// <summary>
         /// Specifies that the fake should be created with these additional attributes.
