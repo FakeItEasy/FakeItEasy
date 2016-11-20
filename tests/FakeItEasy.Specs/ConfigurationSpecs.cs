@@ -727,7 +727,6 @@ namespace FakeItEasy.Specs
 
         public class Foo : IFoo
         {
-
             public void Bar()
             {
                 throw new NotSupportedException();
