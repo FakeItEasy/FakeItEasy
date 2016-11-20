@@ -56,9 +56,13 @@ namespace FakeItEasy.Specs
                 .x(() => lazy.Value.Should().BeNull());
         }
 
-        public class FooFactory : DummyFactory<IFoo>, IFoo
+        public class Foo : IFoo
         {
-            public static IFoo Instance { get; } = new FooFactory();
+        }
+
+        public class FooFactory : DummyFactory<IFoo>
+        {
+            public static IFoo Instance { get; } = new Foo();
 
             protected override IFoo Create()
             {

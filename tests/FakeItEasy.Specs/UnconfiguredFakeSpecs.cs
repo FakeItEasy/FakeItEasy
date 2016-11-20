@@ -164,13 +164,16 @@ namespace FakeItEasy.Specs
             public virtual IFoo FakeableProperty { get; set; }
         }
 
-        public class FooFactory : DummyFactory<IFoo>, IFoo
+        public class Foo: IFoo
         {
             public bool IsADummy { get; set; }
+        }
 
+        public class FooFactory : DummyFactory<IFoo>
+        {
             protected override IFoo Create()
             {
-                return new FooFactory { IsADummy = true };
+                return new Foo { IsADummy = true };
             }
         }
     }
