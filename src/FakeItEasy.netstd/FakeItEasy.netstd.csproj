@@ -537,9 +537,6 @@
     <Compile Include="..\FakeItEasy\IFakeOptionsBuilder.cs">
       <Link>IFakeOptionsBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\IFileSystem.cs">
-      <Link>IFileSystem.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\IHideObjectMembers.cs">
       <Link>IHideObjectMembers.cs</Link>
     </Compile>
