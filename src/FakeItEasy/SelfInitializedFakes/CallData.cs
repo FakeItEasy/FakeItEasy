@@ -9,6 +9,7 @@ namespace FakeItEasy.SelfInitializedFakes
     /// DTO for recorded calls.
     /// </summary>
     [Serializable]
+    [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
     public class CallData
     {
         /// <summary>

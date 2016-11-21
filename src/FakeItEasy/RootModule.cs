@@ -69,6 +69,7 @@ namespace FakeItEasy
                 new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), c.Resolve<IEqualityComparer<IFakeObjectCall>>()));
 
 #if FEATURE_SELF_INITIALIZED_FAKES
+#pragma warning disable CS0618 // Type or member is obsolete
             container.RegisterSingleton<RecordingManager.Factory>(c =>
                 x => new RecordingManager(x));
 
@@ -77,6 +78,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton<FileStorage.Factory>(c =>
                 x => new FileStorage(x, c.Resolve<IFileSystem>()));
+#pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
             container.RegisterSingleton<ICallExpressionParser>(c =>
@@ -146,6 +148,7 @@ namespace FakeItEasy
         }
 
 #if FEATURE_SELF_INITIALIZED_FAKES
+        [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
         private class FileSystem : IFileSystem
         {
             public Stream Open(string fileName, FileMode mode)

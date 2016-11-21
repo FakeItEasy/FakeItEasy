@@ -302,6 +302,7 @@ namespace FakeItEasy
         public static TEventHandler With<TEventHandler>(params object[] arguments) { }
         public static FakeItEasy.Core.Raise<System.EventArgs> WithEmpty() { }
     }
+    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
     public class static Recorders
     {
         public static FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder FileRecorder(string fileName) { }
@@ -540,11 +541,13 @@ namespace FakeItEasy.Creation
     }
     public interface IFakeOptionsForWrappers : FakeItEasy.Creation.IFakeOptions, FakeItEasy.IHideObjectMembers
     {
+        [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
         FakeItEasy.Creation.IFakeOptions RecordedBy(FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder);
     }
     public interface IFakeOptionsForWrappers<T> : FakeItEasy.Creation.IFakeOptions<T>, FakeItEasy.IHideObjectMembers
     
     {
+        [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
         FakeItEasy.Creation.IFakeOptions<T> RecordedBy(FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder);
     }
     public interface ITaggable
@@ -568,6 +571,7 @@ namespace FakeItEasy.Sdk
 namespace FakeItEasy.SelfInitializedFakes
 {
     
+    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
     public class CallData
     {
         public CallData(System.Reflection.MethodInfo method, System.Collections.Generic.IEnumerable<object> outputArguments, object returnValue) { }
@@ -575,17 +579,20 @@ namespace FakeItEasy.SelfInitializedFakes
         public System.Collections.Generic.IEnumerable<object> OutputArguments { get; }
         public object ReturnValue { get; }
     }
+    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
     public interface ICallStorage
     {
         System.Collections.Generic.IEnumerable<FakeItEasy.SelfInitializedFakes.CallData> Load();
         void Save(System.Collections.Generic.IEnumerable<FakeItEasy.SelfInitializedFakes.CallData> calls);
     }
+    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
     public interface ISelfInitializingFakeRecorder : System.IDisposable
     {
         bool IsRecording { get; }
         void ApplyNext(FakeItEasy.Core.IInterceptedFakeObjectCall fakeObjectCall);
         void RecordCall(FakeItEasy.Core.ICompletedFakeObjectCall fakeObjectCall);
     }
+    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
     public class RecordingException : System.Exception
     {
         public RecordingException() { }
@@ -593,6 +600,7 @@ namespace FakeItEasy.SelfInitializedFakes
         public RecordingException(string message, System.Exception innerException) { }
         protected RecordingException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
+    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
     public class RecordingManager : FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder, System.IDisposable
     {
         public RecordingManager(FakeItEasy.SelfInitializedFakes.ICallStorage storage) { }

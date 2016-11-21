@@ -20,7 +20,9 @@ namespace FakeItEasy.Core
     {
         private readonly IFakeOptions<T> fakeOptions;
 #if FEATURE_SELF_INITIALIZED_FAKES
+#pragma warning disable CS0618 // Type or member is obsolete
         private ISelfInitializingFakeRecorder recorder;
+#pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
         public FakeWrapperConfigurator(IFakeOptions<T> fakeOptions, object wrappedObject)
@@ -61,12 +63,14 @@ namespace FakeItEasy.Core
         }
 
 #if FEATURE_SELF_INITIALIZED_FAKES
+        [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
         public IFakeOptions<T> RecordedBy(ISelfInitializingFakeRecorder fakeRecorder)
         {
             this.recorder = fakeRecorder;
             return this.fakeOptions;
         }
 
+        [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
         IFakeOptions IFakeOptionsForWrappers.RecordedBy(ISelfInitializingFakeRecorder fakeRecorder)
         {
             return (IFakeOptions)this.RecordedBy(fakeRecorder);
@@ -89,6 +93,7 @@ namespace FakeItEasy.Core
         }
 
 #if FEATURE_SELF_INITIALIZED_FAKES
+#pragma warning disable CS0618 // Type or member is obsolete
         private static void AddRecordingRuleWhenRecorderIsSpecified(ISelfInitializingFakeRecorder recorder, FakeManager fake, WrappedObjectRule wrapperRule)
         {
             if (recorder != null)
@@ -96,6 +101,7 @@ namespace FakeItEasy.Core
                 fake.AddRuleFirst(new SelfInitializationRule(wrapperRule, recorder));
             }
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
         private static WrappedObjectRule CreateAndAddWrapperRule(object wrappedInstance, FakeManager fake)

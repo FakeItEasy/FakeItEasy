@@ -1,5 +1,6 @@
 namespace FakeItEasy.Creation
 {
+    using System;
     using FakeItEasy.SelfInitializedFakes;
 
     /// <summary>
@@ -14,6 +15,7 @@ namespace FakeItEasy.Creation
         /// </summary>
         /// <param name="recorder">The recorder to use.</param>
         /// <returns>Options object.</returns>
+        [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
         IFakeOptions<T> RecordedBy(ISelfInitializingFakeRecorder recorder);
     }
 }

@@ -1,10 +1,12 @@
 namespace FakeItEasy
 {
+    using System;
     using FakeItEasy.SelfInitializedFakes;
 
     /// <summary>
     /// Provides methods for creating recorders for self initializing fakes.
     /// </summary>
+    [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
     public static class Recorders
     {
         /// <summary>

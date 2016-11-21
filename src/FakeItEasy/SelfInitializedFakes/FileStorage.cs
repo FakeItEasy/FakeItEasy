@@ -1,10 +1,12 @@
 namespace FakeItEasy.SelfInitializedFakes
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Runtime.Serialization.Formatters.Binary;
 
+    [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
     internal class FileStorage
         : ICallStorage
     {

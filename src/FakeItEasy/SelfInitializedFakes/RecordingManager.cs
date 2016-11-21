@@ -13,6 +13,7 @@ namespace FakeItEasy.SelfInitializedFakes
     /// using self initialized fakes.
     /// </summary>
     [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "Implements the Disposable method to support the using statement only.")]
+    [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
     public class RecordingManager : ISelfInitializingFakeRecorder
     {
         private readonly Queue<CallDataMetadata> callQueue;

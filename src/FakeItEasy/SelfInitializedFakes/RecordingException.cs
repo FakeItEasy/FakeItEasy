@@ -8,6 +8,7 @@ namespace FakeItEasy.SelfInitializedFakes
     /// fakes fails or when playback fails.
     /// </summary>
     [Serializable]
+    [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
     public class RecordingException
         : Exception
     {
