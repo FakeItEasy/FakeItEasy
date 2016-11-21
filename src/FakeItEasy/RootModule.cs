@@ -145,6 +145,7 @@ namespace FakeItEasy
             }
         }
 
+#if FEATURE_SELF_INITIALIZED_FAKES
         private class FileSystem : IFileSystem
         {
             public Stream Open(string fileName, FileMode mode)
@@ -162,6 +163,7 @@ namespace FakeItEasy
                 File.Create(fileName).Dispose();
             }
         }
+#endif
 
         private class SessionFakeObjectCreator
             : IFakeObjectCreator
