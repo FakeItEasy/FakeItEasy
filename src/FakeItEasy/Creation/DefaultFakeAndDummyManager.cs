@@ -96,7 +96,11 @@ namespace FakeItEasy.Creation
                 return this;
             }
 
+#if FEATURE_SELF_INITIALIZED_FAKES
             public override IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
+#else
+            public override IFakeOptions<T> Wrapping(T wrappedInstance)
+#endif
             {
                 Guard.AgainstNull(wrappedInstance, nameof(wrappedInstance));
 

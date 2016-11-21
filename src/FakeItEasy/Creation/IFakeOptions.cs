@@ -79,6 +79,10 @@ namespace FakeItEasy.Creation
         /// </summary>
         /// <param name="wrappedInstance">The object to delegate calls to.</param>
         /// <returns>Options object.</returns>
+#if FEATURE_SELF_INITIALIZED_FAKES
         IFakeOptionsForWrappers Wrapping(object wrappedInstance);
+#else
+        IFakeOptions Wrapping(object wrappedInstance);
+#endif
     }
 }

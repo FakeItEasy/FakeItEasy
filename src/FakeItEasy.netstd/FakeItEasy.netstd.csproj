@@ -408,12 +408,6 @@
     <Compile Include="..\FakeItEasy\Creation\IFakeOptions.of.T.cs">
       <Link>Creation\IFakeOptions.of.T.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsForWrappers.cs">
-      <Link>Creation\IFakeOptionsForWrappers.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy\Creation\IFakeOptionsForWrappers.of.T.cs">
-      <Link>Creation\IFakeOptionsForWrappers.of.T.cs</Link>
-    </Compile>
     <Compile Include="..\FakeItEasy\Creation\IProxyGenerator.cs">
       <Link>Creation\IProxyGenerator.cs</Link>
     </Compile>
