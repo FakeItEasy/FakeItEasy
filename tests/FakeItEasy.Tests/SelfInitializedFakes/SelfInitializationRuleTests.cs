@@ -1,3 +1,4 @@
+#pragma warning disable CS0618 // Type or member is obsolete
 namespace FakeItEasy.Tests.SelfInitializedFakes
 {
     using FakeItEasy.Core;

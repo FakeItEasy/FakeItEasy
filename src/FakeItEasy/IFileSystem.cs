@@ -1,10 +1,12 @@
 namespace FakeItEasy
 {
+    using System;
     using System.IO;
 
     /// <summary>
     /// Provides access to the file system.
     /// </summary>
+    [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
     internal interface IFileSystem
     {
         /// <summary>

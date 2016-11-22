@@ -37,6 +37,7 @@ namespace FakeItEasy.Tests.Core
         }
 
 #if FEATURE_SELF_INITIALIZED_FAKES
+#pragma warning disable CS0618 // Type or member is obsolete
         [Fact]
         public void ConfigureFakeToWrap_should_add_self_initialization_rule_when_recorder_is_specified()
         {
@@ -63,6 +64,7 @@ namespace FakeItEasy.Tests.Core
             Fake.GetFakeManager(this.faked).Rules
                 .Should().NotContain(item => item.GetType().IsAssignableFrom(typeof(SelfInitializationRule)));
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 #endif
     }
 }

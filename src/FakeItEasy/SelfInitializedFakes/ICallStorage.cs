@@ -1,11 +1,13 @@
 namespace FakeItEasy.SelfInitializedFakes
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
     /// Represents storage for recorded calls for self initializing
     /// fakes.
     /// </summary>
+    [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
     public interface ICallStorage
     {
         /// <summary>

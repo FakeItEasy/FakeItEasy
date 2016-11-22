@@ -406,6 +406,7 @@ namespace FakeItEasy.Specs
     {
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     public class WrapsAValidObjectOptionsBuilder : ConventionBasedOptionsBuilder
     {
         public static AWrappedType WrappedObject { get; } = A.Fake<AWrappedType>();
@@ -422,6 +423,7 @@ namespace FakeItEasy.Specs
             }
         }
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 
     public class Strict
     {

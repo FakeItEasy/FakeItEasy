@@ -1,11 +1,13 @@
 namespace FakeItEasy.SelfInitializedFakes
 {
+    using System;
     using FakeItEasy.Core;
 
     /// <summary>
     /// A call rule use for self initializing fakes, delegates call to
     /// be applied by the recorder.
     /// </summary>
+    [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
     internal class SelfInitializationRule
         : IFakeObjectCallRule
     {

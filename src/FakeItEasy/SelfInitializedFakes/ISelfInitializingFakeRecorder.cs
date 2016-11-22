@@ -6,6 +6,7 @@ namespace FakeItEasy.SelfInitializedFakes
     /// <summary>
     /// An interface for recorders that provides stored responses for self initializing fakes.
     /// </summary>
+    [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
     public interface ISelfInitializingFakeRecorder
         : IDisposable
     {
