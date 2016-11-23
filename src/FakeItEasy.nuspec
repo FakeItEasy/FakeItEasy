@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
     <id>FakeItEasy</id>
@@ -29,7 +29,7 @@
         <dependency id="System.Reflection.Extensions" version="4.0.1" />
         <dependency id="System.Reflection.TypeExtensions" version="4.1.0" />
         <dependency id="System.Runtime.Loader" version="4.0.0" />
-        <dependency id="Castle.Core" version="4.0.0-beta001" />
+        <dependency id="Castle.Core" version="4.0.0-beta002" />
       </group>
     </dependencies>
   </metadata>
