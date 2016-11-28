@@ -28,6 +28,10 @@ namespace FakeItEasy.Tests
 
             void ActionOfFour(string text1, string text2, string text3, string text4);
 
+            void ActionOfFive(int number1, int number2, int number3, int number4, int number5);
+
+            void ActionOfFive(string text1, string text2, string text3, string text4, string text5);
+
             int Request();
 
             int RequestOfOne(int number);
@@ -37,6 +41,8 @@ namespace FakeItEasy.Tests
             int RequestOfThree(int number1, int number2, int number3);
 
             int RequestOfFour(int number1, int number2, int number3, int number4);
+
+            int RequestOfFive(int number1, int number2, int number3, int number4, int number5);
         }
 
         [Fact]
@@ -659,6 +665,205 @@ namespace FakeItEasy.Tests
             Action act = () => fake.ActionOfFour(5, 8, 13, 20);
 
             AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.String)");
+        }
+
+        [Fact]
+        public void Invokes_with_5_arguments_should_use_invokes_with_action_having_5_arguments()
+        {
+            // Arrange
+            const int FirstArgument = 5;
+            const int SecondArgument = 8;
+            const int ThirdArgument = 13;
+            const int FourthArgument = 21;
+            const int FifthArgument = 34;
+
+            bool actionIsInvoked = false;
+            int? firstCollectedArgument = null;
+            int? secondCollectedArgument = null;
+            int? thirdCollectedArgument = null;
+            int? fourthCollectedArgument = null;
+            int? fifthCollectedArgument = null;
+
+            var fake = A.Fake<IInterface>();
+
+            // Act
+            A.CallTo(() => fake.ActionOfFive(A<int>._, A<int>._, A<int>._, A<int>._, A<int>._))
+                .Invokes((int i, int j, int k, int l, int m) =>
+                {
+                    actionIsInvoked = true;
+                    firstCollectedArgument = i;
+                    secondCollectedArgument = j;
+                    thirdCollectedArgument = k;
+                    fourthCollectedArgument = l;
+                    fifthCollectedArgument = m;
+                });
+
+            // Assert
+            fake.ActionOfFive(FirstArgument, SecondArgument, ThirdArgument, FourthArgument, FifthArgument);
+
+            actionIsInvoked.Should().BeTrue();
+            firstCollectedArgument.Should().Be(FirstArgument);
+            secondCollectedArgument.Should().Be(SecondArgument);
+            thirdCollectedArgument.Should().Be(ThirdArgument);
+            fourthCollectedArgument.Should().Be(FourthArgument);
+            fifthCollectedArgument.Should().Be(FifthArgument);
+        }
+
+        [Fact]
+        public void Invokes_with_5_arguments_should_support_overloads()
+        {
+            // Arrange
+            const string FirstArgument = "first argument";
+            const string SecondArgument = "second argument";
+            const string ThirdArgument = "third argument";
+            const string FourthArgument = "fourth argument";
+            const string FifthArgument = "fifth argument";
+
+            bool actionIsInvoked = false;
+            string firstCollectedArgument = null;
+            string secondCollectedArgument = null;
+            string thirdCollectedArgument = null;
+            string fourthCollectedArgument = null;
+            string fifthCollectedArgument = null;
+
+            var fake = A.Fake<IInterface>();
+
+            // Act
+            A.CallTo(() => fake.ActionOfFive(A<string>._, A<string>._, A<string>._, A<string>._, A<string>._))
+                .Invokes((string s, string t, string u, string v, string w) =>
+                {
+                    actionIsInvoked = true;
+                    firstCollectedArgument = s;
+                    secondCollectedArgument = t;
+                    thirdCollectedArgument = u;
+                    fourthCollectedArgument = v;
+                    fifthCollectedArgument = w;
+                });
+
+            // Assert
+            fake.ActionOfFive(FirstArgument, SecondArgument, ThirdArgument, FourthArgument, FifthArgument);
+
+            actionIsInvoked.Should().BeTrue();
+            firstCollectedArgument.Should().Be(FirstArgument);
+            secondCollectedArgument.Should().Be(SecondArgument);
+            thirdCollectedArgument.Should().Be(ThirdArgument);
+            fourthCollectedArgument.Should().Be(FourthArgument);
+            fifthCollectedArgument.Should().Be(FifthArgument);
+        }
+
+        [Fact]
+        public void Invokes_with_5_arguments_should_support_return_value()
+        {
+            // Arrange
+            const int ReturnValue = 0;
+
+            var fake = A.Fake<IInterface>();
+
+            // Act
+            A.CallTo(() => fake.RequestOfFive(A<int>._, A<int>._, A<int>._, A<int>._, A<int>._))
+                .Invokes((int i, int j, int k, int l, int m) => { })
+                .Returns(ReturnValue);
+
+            // Assert
+            var result = fake.RequestOfFive(5, 8, 13, 21, 34);
+
+            result.Should().Be(ReturnValue);
+        }
+
+        [Fact]
+        public void Invokes_with_5_arguments_should_throw_exception_when_argument_count_does_not_match()
+        {
+            // Arrange
+            var fake = A.Fake<IInterface>();
+
+            // Act
+            A.CallTo(() => fake.ActionOfFour(A<int>._, A<int>._, A<int>._, A<int>._))
+                .Invokes((int i, int j, int k, int l, int m) => { });
+
+            // Assert
+            Action act = () => fake.ActionOfFour(5, 8, 13, 21);
+
+            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)");
+        }
+
+        [Fact]
+        public void Invokes_with_5_arguments_should_throw_exception_when_first_argument_type_does_not_match()
+        {
+            // Arrange
+            var fake = A.Fake<IInterface>();
+
+            // Act
+            A.CallTo(() => fake.ActionOfFive(A<int>._, A<int>._, A<int>._, A<int>._, A<int>._))
+                .Invokes((string s, int i, int j, int k, int l) => { });
+
+            // Assert
+            Action act = () => fake.ActionOfFive(5, 8, 13, 20, 33);
+
+            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)", "(System.String, System.Int32, System.Int32, System.Int32, System.Int32)");
+        }
+
+        [Fact]
+        public void Invokes_with_5_arguments_should_throw_exception_when_second_argument_type_does_not_match()
+        {
+            // Arrange
+            var fake = A.Fake<IInterface>();
+
+            // Acct
+            A.CallTo(() => fake.ActionOfFive(A<int>._, A<int>._, A<int>._, A<int>._, A<int>._))
+                .Invokes((int i, string s, int j, int k, int l) => { });
+
+            // Assert
+            Action act = () => fake.ActionOfFive(5, 8, 13, 20, 33);
+
+            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.String, System.Int32, System.Int32, System.Int32)");
+        }
+
+        [Fact]
+        public void Invokes_with_5_arguments_should_throw_exception_when_third_argument_type_does_not_match()
+        {
+            // Arrange
+            var fake = A.Fake<IInterface>();
+
+            // Act
+            A.CallTo(() => fake.ActionOfFive(A<int>._, A<int>._, A<int>._, A<int>._, A<int>._))
+                .Invokes((int i, int j, string s, int k, int l) => { });
+
+            // Assert
+            Action act = () => fake.ActionOfFive(5, 8, 13, 20, 33);
+
+            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.String, System.Int32, System.Int32)");
+        }
+
+        [Fact]
+        public void Invokes_with_5_arguments_should_throw_exception_when_fourth_argument_type_does_not_match()
+        {
+            // Arrange
+            var fake = A.Fake<IInterface>();
+
+            // Act
+            A.CallTo(() => fake.ActionOfFive(A<int>._, A<int>._, A<int>._, A<int>._, A<int>._))
+                .Invokes((int i, int j, int k, string s, int l) => { });
+
+            // Assert
+            Action act = () => fake.ActionOfFive(5, 8, 13, 20, 33);
+
+            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.String, System.Int32)");
+        }
+
+        [Fact]
+        public void Invokes_with_5_arguments_should_throw_exception_when_fifth_argument_type_does_not_match()
+        {
+            // Arrange
+            var fake = A.Fake<IInterface>();
+
+            // Act
+            A.CallTo(() => fake.ActionOfFive(A<int>._, A<int>._, A<int>._, A<int>._, A<int>._))
+                .Invokes((int i, int j, int k, int l, string s) => { });
+
+            // Assert
+            Action act = () => fake.ActionOfFive(5, 8, 13, 20, 33);
+
+            AssertThatSignatureMismatchExceptionIsThrown(act, "(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)", "(System.Int32, System.Int32, System.Int32, System.Int32, System.String)");
         }
 
         private static void AssertThatSignatureMismatchExceptionIsThrown(Action act, string fakeSignature, string invokesSignature)
