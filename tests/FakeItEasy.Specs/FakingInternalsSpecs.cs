@@ -22,11 +22,9 @@ namespace FakeItEasy.Specs
                 .x(() => exception = Record.Exception(() => A.Fake<IInternal>()));
 
             "it should throw an exception with a message containing a hint at using internals visible to attribute"
-                .x(() =>
-                    {
-                        exception.Message.Should().Contain("Make it public, or internal and mark your assembly with");
-                        exception.Message.Should().Contain("[assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2\")]");
-                    });
+                .x(() => exception.Message.Should()
+                    .Contain("Make it public, or internal and mark your assembly with")
+                    .And.Match("*[assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2*\")]*"));
         }
 
         [Scenario]
@@ -40,8 +38,8 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should()
                              .Contain(
                                  "No usable default constructor was found on the type System.Collections.Generic.IList`1[FakeItEasy.Specs.IInternal]")
-                             .And.Contain(
-                                 "because type FakeItEasy.Specs.IInternal is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2"));
+                             .And.Match(
+                                 "*because type FakeItEasy.Specs.IInternal is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2*\")]*"));
         }
 
         [Scenario]

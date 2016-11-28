@@ -2,9 +2,12 @@ namespace FakeItEasy.Specs
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+#if FEATURE_SELF_INITIALIZED_FAKES
     using FakeItEasy.SelfInitializedFakes;
+#endif
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -39,14 +42,14 @@ namespace FakeItEasy.Specs
                 .x(() => fake.ID.Should().BeGreaterThan(0));
 
             "And the fake has the attribute"
-                .x(() => fake.GetType().GetCustomAttributes(inherit: false).Select(a => a.GetType())
+                .x(() => fake.GetType().GetTypeInfo().GetCustomAttributes(inherit: false).Select(a => a.GetType())
                     .Should().Contain(typeof(ForTestAttribute)));
 
             "And the fake implements the interface specified by parameter"
                 .x(() => fake.Should().BeAssignableTo<IDisposable>());
 
             "And the fake implements the interface specified by type parameter"
-                .x(() => fake.Should().BeAssignableTo<ICloneable>());
+                .x(() => fake.Should().BeAssignableTo<IComparable>());
         }
 
         [Scenario]
@@ -71,12 +74,14 @@ namespace FakeItEasy.Specs
             "Then the call is delegated to the wrapped object"
                 .x(() => A.CallTo(() => WrapsAValidObjectOptionsBuilder.WrappedObject.AMethod()).MustHaveHappened());
 
+#if FEATURE_SELF_INITIALIZED_FAKES
             "And the call is recorded"
                 .x(() =>
                 {
                     A.CallTo(() => WrapsAValidObjectOptionsBuilder.Recorder.RecordCall(A<ICompletedFakeObjectCall>._))
                         .MustHaveHappened();
                 });
+#endif
         }
 
         [Scenario]
@@ -411,15 +416,21 @@ namespace FakeItEasy.Specs
     {
         public static AWrappedType WrappedObject { get; } = A.Fake<AWrappedType>();
 
+#if FEATURE_SELF_INITIALIZED_FAKES
         public static ISelfInitializingFakeRecorder Recorder { get; } =
             A.Fake<ISelfInitializingFakeRecorder>(options =>
                 options.ConfigureFake(fake => A.CallTo(() => fake.IsRecording).Returns(true)));
+#endif
 
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
             if (options != null)
             {
+#if FEATURE_SELF_INITIALIZED_FAKES
                 options.Wrapping(WrappedObject).RecordedBy(Recorder);
+#else
+                options.Wrapping(WrappedObject);
+#endif
             }
         }
     }
@@ -530,7 +541,7 @@ namespace FakeItEasy.Specs
 
         public bool CanBuildOptionsForFakeOfType(Type type)
         {
-            return typeof(DomainEvent).IsAssignableFrom(type);
+            return typeof(DomainEvent).GetTypeInfo().IsAssignableFrom(type);
         }
 
         public void BuildOptions(Type typeOfFake, IFakeOptions options)
@@ -548,7 +559,7 @@ namespace FakeItEasy.Specs
             })
                 .WithAttributes(() => new ForTestAttribute())
                 .Implements(typeof(IDisposable))
-                .Implements<ICloneable>();
+                .Implements<IComparable>();
         }
     }
 
