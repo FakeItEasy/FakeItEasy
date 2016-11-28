@@ -13,6 +13,7 @@ solution        = "FakeItEasy.sln"
 assembly_info   = "src/CommonAssemblyInfo.cs"
 version         = IO.read(assembly_info)[/AssemblyInformationalVersion\("([^"]+)"\)/, 1]
 version_suffix  = ENV["VERSION_SUFFIX"]
+version_suffix  = version_suffix.to_s.empty? ? "-adhoc" : version_suffix
 build           = (ENV["BUILD"] || "").rjust(6, "0");
 build_suffix    = version_suffix.to_s.empty? ? "" : "-build" + build;
 repo_url        = "https://github.com/FakeItEasy/FakeItEasy"
