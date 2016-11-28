@@ -39,23 +39,15 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
 ## Building
 
-Using a command prompt, navigate to your clone root folder and execute one of two commands:
+Using a command prompt, navigate to your clone root folder and execute `build.cmd`.
 
-* `build.netstd.cmd`
-
-  This executes the default build tasks to produce both the .NET Standard and the .NET 4.0 artifacts.
-
-* `build.cmd`
-
-  This executes the default build tasks to produce only the .NET 4.0 artifacts, and should be used
-  when the build machine does not have tooling to build .NET Standard projects.
+This executes the default build tasks to produce both the .NET Standard and the .NET 4.0 artifacts.
 
 After the build has completed, the build artifacts will be located in `artifacts`.
 
 ## Extras
 
-`build.cmd` is a shortcut for `bundle exec rake` (and `build.netstd.cmd` for `bundle exec rake -f rakefile.netstd.rb`),
-so you can use all the usual command line argument that you would use with Rake, e.g.:
+`build.cmd` is a shortcut for `bundle exec rake -f rakefile.rb`, so you can use all the usual command line argument that you would use with Rake, e.g.:
 
 * View the full list of build tasks:
 
