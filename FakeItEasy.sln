@@ -153,6 +153,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.IntegrationTests
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.IntegrationTests.External.netstd", "tests\FakeItEasy.IntegrationTests.External.netstd\FakeItEasy.IntegrationTests.External.netstd.xproj", "{BB92D188-5666-46DC-935A-81F0C5173D20}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.Specs.netstd", "tests\FakeItEasy.Specs.netstd\FakeItEasy.Specs.netstd.xproj", "{317507FF-520B-41C7-B71C-73DDA068204F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -223,6 +225,10 @@ Global
 		{BB92D188-5666-46DC-935A-81F0C5173D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB92D188-5666-46DC-935A-81F0C5173D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB92D188-5666-46DC-935A-81F0C5173D20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{317507FF-520B-41C7-B71C-73DDA068204F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{317507FF-520B-41C7-B71C-73DDA068204F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{317507FF-520B-41C7-B71C-73DDA068204F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{317507FF-520B-41C7-B71C-73DDA068204F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -250,6 +256,7 @@ Global
 		{BC38E29E-2915-4E3E-BC12-69226747E269} = {9D4A41F1-D444-4244-AAAC-F610D9977B2F}
 		{CFCEF7CF-B06E-47C5-B1E4-59A41262DA8D} = {5D41D463-D53B-4ADC-90AD-44AA03D6340D}
 		{BB92D188-5666-46DC-935A-81F0C5173D20} = {5D41D463-D53B-4ADC-90AD-44AA03D6340D}
+		{317507FF-520B-41C7-B71C-73DDA068204F} = {575A3C3B-17BA-4A8A-9F53-05320913D0A6}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 0.1

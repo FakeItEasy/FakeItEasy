@@ -227,10 +227,10 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception message should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().Match(@"
 
   Assertion failed for the following call:
-    System.Collections.Generic.IDictionary`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]].TryGetValue(""any key"", <out parameter>)
+    System.Collections.Generic.IDictionary`2[[System.String, *, Version=4.0.0.0, Culture=neutral, PublicKeyToken=*],[System.String, *, Version=4.0.0.0, Culture=neutral, PublicKeyToken=*]].TryGetValue(""any key"", <out parameter>)
   Expected to find it at least once but no calls were made to the fake object.
 
 "));

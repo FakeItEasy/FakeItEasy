@@ -48,6 +48,10 @@ specs = [
   "tests/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
 ]
 
+netstd_spec_directories = [
+  "tests/FakeItEasy.Specs.netstd"
+]
+
 approval_tests = [
   "tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll",
   "tests/FakeItEasy.Tests.Approval.netstd/bin/Release/FakeItEasy.Tests.Approval.netstd.dll"
@@ -137,7 +141,7 @@ task :restore do
 
   # performing restore on the solution doesn't restore
   # all the xprojs' dependencies, so do them separately
-  (netstd_unit_test_directories + netstd_integration_test_directories).each do | test_directory |
+  (netstd_unit_test_directories + netstd_integration_test_directories + netstd_spec_directories).each do | test_directory |
     restore_dependencies_for_project test_directory
   end
 end
@@ -281,6 +285,7 @@ end
 desc "Execute specifications"
 task :spec => [:build, tests] do
     run_tests(specs, xunit_command, tests)
+    run_netstd_tests(netstd_spec_directories, tests)
 end
 
 desc "Execute approval tests"

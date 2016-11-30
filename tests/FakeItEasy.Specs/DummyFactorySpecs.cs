@@ -1,6 +1,7 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using System.Reflection;
     using FluentAssertions;
     using Xbehave;
 
@@ -67,7 +68,7 @@ namespace FakeItEasy.Specs
 
         public bool CanCreate(Type type)
         {
-            return typeof(DomainEvent).IsAssignableFrom(type);
+            return typeof(DomainEvent).GetTypeInfo().IsAssignableFrom(type);
         }
 
         public object Create(Type type)

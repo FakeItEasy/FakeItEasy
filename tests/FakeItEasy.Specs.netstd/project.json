@@ -1,0 +1,43 @@
+{
+  "name": "FakeItEasy.Specs",
+  "version": "1.0.0-*",
+  "description": "FakeItEasy.Specs.netstd Class Library",
+
+  "buildOptions": {
+    "keyFile": "../../FakeItEasy.snk",
+    "compile": {
+      "include": [
+        "../FakeItEasy.Specs/**/*.cs"
+      ],
+      "exclude": [
+        "../FakeItEasy.Specs/SelfInitializedFakesSpecs.cs",
+        "../FakeItEasy.Specs/DisposableSpecs.cs"
+      ]
+    }
+  },
+
+  "testRunner": "xunit",
+  "frameworks": {
+    "netcoreapp1.0": {
+      "buildOptions": {
+        "define": [ "FEATURE_NETCORE_REFLECTION" ]
+      },
+      "dependencies": {
+        "FakeItEasy": {
+          "target": "project",
+          "version": "99.99.99-wrapped"
+        },
+        "FakeItEasy.Tests.netstd": {
+          "target": "project",
+          "version": "1.0.0"
+        },
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        },
+        "Xbehave.Core": "2.2.0-beta0001-build680"
+      },
+      "imports": [ "dnxcore50", "portable-net451+win81" ]
+    }
+  }
+}
