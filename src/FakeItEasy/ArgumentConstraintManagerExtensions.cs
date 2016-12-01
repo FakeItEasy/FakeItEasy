@@ -274,7 +274,11 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static CancellationToken IsCancelled(this IArgumentConstraintManager<CancellationToken> manager)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(manager, nameof(manager));
+
+            return manager.Matches(
+                token => token.IsCancellationRequested,
+                x => x.Write("cancelled cancellation token"));
         }
 
         /// <summary>
@@ -284,7 +288,11 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static CancellationToken IsNotCancelled(this IArgumentConstraintManager<CancellationToken> manager)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(manager, nameof(manager));
+
+            return manager.Matches(
+                token => !token.IsCancellationRequested,
+                x => x.Write("non-cancelled cancellation token"));
         }
     }
 }
