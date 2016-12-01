@@ -112,12 +112,14 @@ namespace FakeItEasy
         public static T Contains<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, object value)
             where T : System.Collections.IEnumerable { }
         public static string EndsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
+        public static System.Threading.CancellationToken IsCancelled(this FakeItEasy.IArgumentConstraintManager<System.Threading.CancellationToken> manager) { }
         public static T IsEmpty<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
             where T : System.Collections.IEnumerable { }
         public static T IsEqualTo<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
         public static T IsGreaterThan<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value)
             where T : System.IComparable { }
         public static T IsInstanceOf<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Type type) { }
+        public static System.Threading.CancellationToken IsNotCancelled(this FakeItEasy.IArgumentConstraintManager<System.Threading.CancellationToken> manager) { }
         public static T IsNull<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
             where T :  class { }
         public static string IsNullOrEmpty(this FakeItEasy.IArgumentConstraintManager<string> manager) { }

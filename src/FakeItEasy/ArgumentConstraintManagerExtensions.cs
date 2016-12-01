@@ -9,6 +9,7 @@ namespace FakeItEasy
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
+    using System.Threading;
 
     /// <summary>
     /// Provides validation extensions for <see cref="IArgumentConstraintManager{T}"/>.
@@ -264,6 +265,26 @@ namespace FakeItEasy
             return manager.Matches(
                 x => ((object)x) != null && predicate(x),
                 descriptionWriter);
+        }
+
+        /// <summary>
+        /// Constrains the <see cref="CancellationToken"/> argument to be cancelled (<c>IsCancellationRequested</c> is true).
+        /// </summary>
+        /// <param name="manager">The constraint manager.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static CancellationToken IsCancelled(this IArgumentConstraintManager<CancellationToken> manager)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Constrains the <see cref="CancellationToken"/> argument to be not cancelled (<c>IsCancellationRequested</c> is false).
+        /// </summary>
+        /// <param name="manager">The constraint manager.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static CancellationToken IsNotCancelled(this IArgumentConstraintManager<CancellationToken> manager)
+        {
+            throw new NotImplementedException();
         }
     }
 }
