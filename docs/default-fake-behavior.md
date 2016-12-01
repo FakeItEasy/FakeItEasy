@@ -22,11 +22,20 @@ invoked on the fake, no action will be taken by the fake. It is as if
 the body of the member were empty. If the member has a return type (or
 is a get property), the return value will depend on the type `T` of
 the member:
-  
+
 * If `T` can be made into a [Dummy](dummies.md), then a Dummy `T` will
   be returned. Note that this may be a Fake or an instance of a
   concrete, pre-existing type;
-* othewise, `default(T)` will be returned.
+* otherwise, `default(T)` will be returned.
+
+### Cancellation tokens
+
+When a faked method that accepts a `CancellationToken` receives a cancelled token
+(i.e. with `IsCancellationRequested` set to `true`), it will either:
+
+* return a cancelled task, if it is asynchronous (i.e. if it returns a `Task` or
+  `Task<T>`);
+* throw an `OperationCanceledException`, if it is synchronous.
 
 ## Examples
 
@@ -55,7 +64,7 @@ public void Members_should_return_empty_string_default_or_fake_another_fake()
 
     Assert.AreEqual(default(int), fakeLibrary.IntProperty);
 
-    Assert.AreEqual(typeof(string), fakeLibrary.StringFunction().GetType()); 
+    Assert.AreEqual(typeof(string), fakeLibrary.StringFunction().GetType());
     Assert.AreEqual(string.Empty, fakeLibrary.StringFunction());
 
     Assert.IsInstanceOfType(fakeLibrary.FakeableClassFunction(), typeof(FakeableClass));
