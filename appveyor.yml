@@ -4,10 +4,10 @@ pull_requests:
   do_not_increment_build_number: true
 
 environment:
-    PATH: 'C:\Ruby200\bin;%PATH%'
     BUILD: $(APPVEYOR_BUILD_NUMBER)
 
 install:
+    - cmd: set PATH=C:\Ruby200\bin;%PATH%
     - cmd: bundle install
 
 build_script:
