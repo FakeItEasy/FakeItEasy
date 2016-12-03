@@ -37,7 +37,8 @@ namespace FakeItEasy.Core
 
             this.preUserRules = new[]
                                     {
-                                        new CallRuleMetadata { Rule = new EventRule(this) }
+                                        new CallRuleMetadata { Rule = new EventRule(this) },
+                                        new CallRuleMetadata { Rule = new CancellationRule() }
                                     };
             this.AllUserRules = new LinkedList<CallRuleMetadata>();
             this.postUserRules = new[]
