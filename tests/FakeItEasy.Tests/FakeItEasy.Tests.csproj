@@ -78,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionOverWriterValueFormatter.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\CancellationTokenConstraintTestsBase.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\CancellationTokenIsCancelledTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\CancellationTokenIsNotCancelledTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\CollectionContainsTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\CollectionIsEmptyTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\DerivedTypeArgumentTests.cs" />
