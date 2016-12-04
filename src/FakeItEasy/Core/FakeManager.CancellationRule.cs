@@ -24,6 +24,8 @@ namespace FakeItEasy.Core
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
+                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
+
                 var returnType = fakeObjectCall.Method.ReturnType;
                 if (typeof(Task).GetTypeInfo().IsAssignableFrom(returnType))
                 {
