@@ -288,6 +288,8 @@ namespace FakeItEasy.Tests.Configuration
         {
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+            Justification = "This class is loaded dynamically as an extension point")]
         private class DummyableClassFactory : DummyFactory<DummyableClass>
         {
             private static readonly DummyableClass Instance = new DummyableClass();
