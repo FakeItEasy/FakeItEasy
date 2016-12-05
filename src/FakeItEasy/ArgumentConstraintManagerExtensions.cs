@@ -268,31 +268,31 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Constrains the <see cref="CancellationToken"/> argument to be cancelled (<c>IsCancellationRequested</c> is true).
+        /// Constrains the <see cref="CancellationToken"/> argument to be canceled (<c>IsCancellationRequested</c> is true).
         /// </summary>
         /// <param name="manager">The constraint manager.</param>
         /// <returns>A dummy argument value.</returns>
-        public static CancellationToken IsCancelled(this IArgumentConstraintManager<CancellationToken> manager)
+        public static CancellationToken IsCanceled(this IArgumentConstraintManager<CancellationToken> manager)
         {
             Guard.AgainstNull(manager, nameof(manager));
 
             return manager.Matches(
                 token => token.IsCancellationRequested,
-                x => x.Write("cancelled cancellation token"));
+                x => x.Write("canceled cancellation token"));
         }
 
         /// <summary>
-        /// Constrains the <see cref="CancellationToken"/> argument to be not cancelled (<c>IsCancellationRequested</c> is false).
+        /// Constrains the <see cref="CancellationToken"/> argument to be not canceled (<c>IsCancellationRequested</c> is false).
         /// </summary>
         /// <param name="manager">The constraint manager.</param>
         /// <returns>A dummy argument value.</returns>
-        public static CancellationToken IsNotCancelled(this IArgumentConstraintManager<CancellationToken> manager)
+        public static CancellationToken IsNotCanceled(this IArgumentConstraintManager<CancellationToken> manager)
         {
             Guard.AgainstNull(manager, nameof(manager));
 
             return manager.Matches(
                 token => !token.IsCancellationRequested,
-                x => x.Write("non-cancelled cancellation token"));
+                x => x.Write("non-canceled cancellation token"));
         }
     }
 }

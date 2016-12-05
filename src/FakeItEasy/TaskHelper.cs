@@ -7,11 +7,11 @@ namespace FakeItEasy
 
     internal static class TaskHelper
     {
-        private static readonly ConcurrentDictionary<Type, Task> CachedCancelledTasks = new ConcurrentDictionary<Type, Task>();
+        private static readonly ConcurrentDictionary<Type, Task> CachedCanceledTasks = new ConcurrentDictionary<Type, Task>();
 
-        private static readonly MethodInfo CreateGenericCancelledTaskGenericDefinition =
+        private static readonly MethodInfo CreateGenericCanceledTaskGenericDefinition =
             typeof(TaskHelper).GetMethod(
-                nameof(CreateGenericCancelledTask),
+                nameof(CreateGenericCanceledTask),
                 BindingFlags.Static | BindingFlags.NonPublic);
 
         public static Task<T> FromResult<T>(T result)
@@ -21,28 +21,28 @@ namespace FakeItEasy
             return source.Task;
         }
 
-        public static Task Cancelled()
+        public static Task Canceled()
         {
-            return Cancelled(typeof(int));
+            return Canceled(typeof(int));
         }
 
-        public static Task Cancelled(Type resultType)
+        public static Task Canceled(Type resultType)
         {
             if (resultType == typeof(void))
             {
-                return Cancelled();
+                return Canceled();
             }
 
-            return CachedCancelledTasks.GetOrAdd(
+            return CachedCanceledTasks.GetOrAdd(
                 resultType,
                 type =>
                 {
-                    var method = CreateGenericCancelledTaskGenericDefinition.MakeGenericMethod(type);
+                    var method = CreateGenericCanceledTaskGenericDefinition.MakeGenericMethod(type);
                     return (Task)method.Invoke(null, new object[0]);
                 });
         }
 
-        private static Task<T> CreateGenericCancelledTask<T>()
+        private static Task<T> CreateGenericCanceledTask<T>()
         {
             var source = new TaskCompletionSource<T>();
             source.SetCanceled();

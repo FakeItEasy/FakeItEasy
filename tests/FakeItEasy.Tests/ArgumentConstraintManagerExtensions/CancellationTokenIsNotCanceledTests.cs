@@ -3,19 +3,19 @@
     using System.Threading;
     using Xunit;
 
-    public class CancellationTokenIsNotCancelledTests : CancellationTokenConstraintTestsBase
+    public class CancellationTokenIsNotCanceledTests : CancellationTokenConstraintTestsBase
     {
-        protected override string ExpectedDescription => "non-cancelled cancellation token";
+        protected override string ExpectedDescription => "non-canceled cancellation token";
 
         [Theory]
-        [MemberData(nameof(CancelledTokens))]
+        [MemberData(nameof(CanceledTokens))]
         public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
         {
             base.IsValid_should_return_false_for_invalid_values(invalidValue);
         }
 
         [Theory]
-        [MemberData(nameof(NonCancelledTokens))]
+        [MemberData(nameof(NonCanceledTokens))]
         public override void IsValid_should_return_true_for_valid_values(object validValue)
         {
             base.IsValid_should_return_true_for_valid_values(validValue);
@@ -23,7 +23,7 @@
 
         protected override void CreateConstraint(IArgumentConstraintManager<CancellationToken> scope)
         {
-            scope.IsNotCancelled();
+            scope.IsNotCanceled();
         }
     }
 }

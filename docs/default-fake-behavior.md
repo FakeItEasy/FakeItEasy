@@ -30,10 +30,10 @@ the member:
 
 ### Cancellation tokens
 
-When a faked method that accepts a `CancellationToken` receives a cancelled token
+When a faked method that accepts a `CancellationToken` receives a canceled token
 (i.e. with `IsCancellationRequested` set to `true`), it will either:
 
-* return a cancelled task, if it is asynchronous (i.e. if it returns a `Task` or
+* return a canceled task, if it is asynchronous (i.e. if it returns a `Task` or
   `Task<T>`);
 * throw an `OperationCanceledException`, if it is synchronous.
 
