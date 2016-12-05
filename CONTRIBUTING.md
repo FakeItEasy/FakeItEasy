@@ -71,7 +71,7 @@ Please do not add Resharper suppressions to code using comments. You may tweak y
 1. Work on your feature
 1. Rebase if required (see below)
 1. Run code analysis on the solution to ensure you have not introduced any violations
-1. Execute rake to ensure the build succeeds (see ['How to build'](https://github.com/FakeItEasy/FakeItEasy/blob/master/how_to_build.md "How to build"))
+1. Ensure the build succeeds (see ['How to build'](https://github.com/FakeItEasy/FakeItEasy/blob/master/how_to_build.md "How to build"))
 1. Push the branch up to GitHub (`git push origin myBranch`)
 1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub
 

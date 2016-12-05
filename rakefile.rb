@@ -75,7 +75,7 @@ Can be labelled **ready** when all other issues on this milestone are closed.
 - [ ] post link to tweet as comment here for easy retweeting ;-)
 - [ ] post tweet in [Gitter](https://gitter.im/FakeItEasy/FakeItEasy)
 - [ ] post a link to the GitHub Release in each issue in this milestone, with thanks to contributors
-- [ ] run `rake next_version[new_version]` to
+- [ ] run `build.cmd next_version[new_version]` to
     - create a pull request that changes the version in CommonAssemblyInfo.cs to the expected version (of form _xx.yy.zz_)
     - create a new draft GitHub Release
     - create a new milestone for the next release
@@ -98,7 +98,7 @@ Can be labelled **ready** when all other issues destined for this release are cl
 - [ ] tweet, mentioning contributors
 - [ ] post link to tweet as comment here for easy retweeting ;-)
 - [ ] post tweet in [Gitter](https://gitter.im/FakeItEasy/FakeItEasy)
-- [ ] if another pre-release is planned, run `rake pre_release[new_version]` to
+- [ ] if another pre-release is planned, use the `pre_release` task (e.g. `build.cmd pre_release[beta002]`) to
     - create a new draft GitHub Release
     - create a new issue (like this one) for the next release, adding it to the next RTM milestone
 - [ ] close this issue
@@ -156,7 +156,7 @@ end
 desc "Update version number and create pull request, milestone, release, and release checklist issue"
 task :next_version, :new_version do |asm, args|
   new_version = args.new_version or
-    fail "ERROR: A new version is required, e.g.: rake next_version[2.3.0]"
+    fail "ERROR: A new version is required, e.g.: build.cmd next_version[2.3.0]"
 
   current_branch = `git rev-parse --abbrev-ref HEAD`.strip()
 
@@ -219,7 +219,7 @@ end
 desc "Create GitHub Release and release checklist issue for pre-release build"
 task :pre_release, :version_suffix do |asm, args|
   version_suffix = args.version_suffix or
-    fail 'ERROR: A version suffix is required, e.g.: rake pre_release[beta001]'
+    fail 'ERROR: A version suffix is required, e.g.: build.cmd pre_release[beta001]'
 
   require 'octokit'
 
