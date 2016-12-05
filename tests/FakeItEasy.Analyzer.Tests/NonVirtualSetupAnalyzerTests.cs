@@ -385,7 +385,6 @@ namespace PrototypeProperty
                 });
          }
 
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DifferentNameThanOtherTests", Justification = "It's an identifier")]
         [Fact]
         public void Diagnostic_Should_Correctly_Reflect_Member_Name()
         {

@@ -5,6 +5,7 @@ namespace FakeItEasy.IntegrationTests
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Text;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
@@ -125,6 +126,7 @@ namespace FakeItEasy.IntegrationTests
             catalogue.GetAvailableTypes().Should().NotContain(typeof(string));
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Safe in this case")]
         private static string CaptureConsoleOutput(Action action)
         {
             using (var stream = new MemoryStream())

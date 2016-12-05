@@ -20,34 +20,36 @@ namespace FakeItEasy.Core
             public int? NumberOfTimesToCall => null;
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>
-                GetCancelledTokens(fakeObjectCall).Any();
+                GetCanceledTokens(fakeObjectCall).Any();
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
+                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
+
                 var returnType = fakeObjectCall.Method.ReturnType;
                 if (typeof(Task).GetTypeInfo().IsAssignableFrom(returnType))
                 {
                     Task task;
                     if (returnType == typeof(Task))
                     {
-                        task = TaskHelper.Cancelled();
+                        task = TaskHelper.Canceled();
                     }
                     else
                     {
                         var taskResultType = returnType.GetTypeInfo().GetGenericArguments()[0];
-                        task = TaskHelper.Cancelled(taskResultType);
+                        task = TaskHelper.Canceled(taskResultType);
                     }
 
                     fakeObjectCall.SetReturnValue(task);
                 }
                 else
                 {
-                    var token = GetCancelledTokens(fakeObjectCall).First();
+                    var token = GetCanceledTokens(fakeObjectCall).First();
                     token.ThrowIfCancellationRequested();
                 }
             }
 
-            private static IEnumerable<CancellationToken> GetCancelledTokens(IFakeObjectCall call)
+            private static IEnumerable<CancellationToken> GetCanceledTokens(IFakeObjectCall call)
             {
                 return call.Method.GetParameters()
                     .Select((param, index) => new { param, index })

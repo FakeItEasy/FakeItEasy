@@ -100,7 +100,6 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Be_Triggered_When_Call_Specification_Is_Not_Used()
         {
             var test = @"using FakeItEasy;
@@ -133,7 +132,6 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Be_Triggered_When_Call_Specification_Made_In_Global_Scope_Is_Not_Used()
         {
             var test = @"using static FakeItEasy.A;
@@ -166,7 +164,6 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_For_Call_To_With_No_Expression()
         {
             var test = @"using FakeItEasy;
@@ -198,8 +195,6 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithAnyArguments", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WithAnyArguments()
         {
             var test = @"using FakeItEasy;
@@ -231,8 +226,6 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithReturnType", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_Where()
         {
             var test = @"using FakeItEasy;
@@ -264,7 +257,6 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallToSet", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet()
         {
             var test = @"using FakeItEasy;
@@ -297,7 +289,6 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallToSet", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet_To_Value()
         {
             var test = @"using FakeItEasy;
@@ -330,7 +321,6 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallToSet", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet_To_Expression()
         {
             var test = @"using FakeItEasy;
@@ -363,8 +353,6 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "WithNonVoidReturnType", Justification = "It's an identifier")]
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WithNonVoidReturnType()
         {
             var test = @"using FakeItEasy;

@@ -350,8 +350,6 @@ namespace FakeItEasy.Specs
                 .x(() => result.Should().BeFalse());
         }
 
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "InvalidOperationException", Justification = "It's an identifier")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         [Scenario]
         public static void IgnoredArgumentConstraintOutsideCallSpec(
             Exception exception)
@@ -366,8 +364,6 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Be("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()"));
         }
 
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "InvalidOperationException", Justification = "Because it's the way it should be written")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "Because it's the way it should be written")]
         [Scenario]
         public static void ThatArgumentConstraintOutsideCallSpec(
             Exception exception)
