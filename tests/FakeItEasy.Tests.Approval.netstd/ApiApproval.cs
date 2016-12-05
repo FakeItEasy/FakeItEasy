@@ -16,7 +16,6 @@ namespace FakeItEasy.Tests.Approval
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFrom", Justification = "By design")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Std", Justification = "Controls the approved/received file name")]
         public void ApproveApiNetStd()
         {
             // Approvals and PublicApiGenerator aren't available for .NET Core, so

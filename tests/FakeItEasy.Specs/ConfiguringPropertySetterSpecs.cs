@@ -26,7 +26,6 @@ namespace FakeItEasy.Specs
             int MethodThatLooksLikeAPropertyGetter();
         }
 
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "propertySpecification", Justification = "It's an identifier")]
         [Scenario]
         public static void ConfiguringSetterWithNull(
             Exception exception)

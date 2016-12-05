@@ -84,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiApproval.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
