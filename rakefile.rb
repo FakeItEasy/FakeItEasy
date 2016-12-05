@@ -98,7 +98,7 @@ Can be labelled **ready** when all other issues destined for this release are cl
 - [ ] tweet, mentioning contributors
 - [ ] post link to tweet as comment here for easy retweeting ;-)
 - [ ] post tweet in [Gitter](https://gitter.im/FakeItEasy/FakeItEasy)
-- [ ] if another pre-release is planned, run `rake pre_release[new_version]` to
+- [ ] if another pre-release is planned, use the `pre_release` task (e.g. `rake pre_release[beta002]`) to
     - create a new draft GitHub Release
     - create a new issue (like this one) for the next release, adding it to the next RTM milestone
 - [ ] close this issue
