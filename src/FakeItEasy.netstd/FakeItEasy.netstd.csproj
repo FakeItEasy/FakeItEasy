@@ -45,6 +45,9 @@
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\FakeItEasy\AsyncReturnValueConfigurationExtensions.cs">
+      <Link>AsyncReturnValueConfigurationExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Compatibility\MethodInfoWrapper.cs">
       <Link>Compatibility\MethodInfoWrapper.cs</Link>
     </Compile>
