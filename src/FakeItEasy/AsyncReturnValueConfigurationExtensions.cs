@@ -20,7 +20,10 @@
             this IReturnValueConfiguration<Task> configuration,
             Exception exception)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exception, nameof(exception));
+
+            return configuration.ReturnsLazily(call => TaskHelper.FromException(exception));
         }
 
         /// <summary>
@@ -33,7 +36,10 @@
             this IReturnValueConfiguration<Task> configuration,
             Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return configuration.ReturnsLazily(call => TaskHelper.FromException(exceptionFactory(call)));
         }
 
         /// <summary>
@@ -46,7 +52,10 @@
             this IReturnValueConfiguration<Task> configuration,
             Func<Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return configuration.ReturnsLazily(call => TaskHelper.FromException(exceptionFactory()));
         }
 
         /// <summary>
@@ -60,7 +69,10 @@
             this IReturnValueConfiguration<Task> configuration,
             Func<T1, Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return configuration.ReturnsLazily((T1 arg1) => TaskHelper.FromException(exceptionFactory(arg1)));
         }
 
         /// <summary>
@@ -75,7 +87,12 @@
             this IReturnValueConfiguration<Task> configuration,
             Func<T1, T2, Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return
+                configuration.ReturnsLazily(
+                    (T1 arg1, T2 arg2) => TaskHelper.FromException(exceptionFactory(arg1, arg2)));
         }
 
         /// <summary>
@@ -91,7 +108,12 @@
             this IReturnValueConfiguration<Task> configuration,
             Func<T1, T2, T3, Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return
+                configuration.ReturnsLazily(
+                    (T1 arg1, T2 arg2, T3 arg3) => TaskHelper.FromException(exceptionFactory(arg1, arg2, arg3)));
         }
 
         /// <summary>
@@ -108,7 +130,13 @@
                 this IReturnValueConfiguration<Task> configuration,
                 Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return
+                configuration.ReturnsLazily(
+                    (T1 arg1, T2 arg2, T3 arg3, T4 arg4) =>
+                            TaskHelper.FromException(exceptionFactory(arg1, arg2, arg3, arg4)));
         }
 
         /// <summary>
@@ -116,12 +144,16 @@
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exception">The exception to set on the returned task when a call that matches is invoked.</param>
+        /// <typeparam name="T">The type of the returned task's result.</typeparam>
         /// <returns>Configuration object.</returns>
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T>(
             this IReturnValueConfiguration<Task<T>> configuration,
             Exception exception)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exception, nameof(exception));
+
+            return configuration.ReturnsLazily(call => TaskHelper.FromException<T>(exception));
         }
 
         /// <summary>
@@ -129,12 +161,16 @@
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to set on the returned task when a call that matches is invoked.</param>
+        /// <typeparam name="T">The type of the returned task's result.</typeparam>
         /// <returns>Configuration object.</returns>
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T>(
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return configuration.ReturnsLazily(call => TaskHelper.FromException<T>(exceptionFactory(call)));
         }
 
         /// <summary>
@@ -142,12 +178,16 @@
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to set on the returned task when a call that matches is invoked.</param>
+        /// <typeparam name="T">The type of the returned task's result.</typeparam>
         /// <returns>Configuration object.</returns>
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T>(
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return configuration.ReturnsLazily(call => TaskHelper.FromException<T>(exceptionFactory()));
         }
 
         /// <summary>
@@ -162,7 +202,10 @@
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<T1, Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return configuration.ReturnsLazily((T1 arg1) => TaskHelper.FromException<T>(exceptionFactory(arg1)));
         }
 
         /// <summary>
@@ -178,7 +221,12 @@
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<T1, T2, Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return
+                configuration.ReturnsLazily(
+                    (T1 arg1, T2 arg2) => TaskHelper.FromException<T>(exceptionFactory(arg1, arg2)));
         }
 
         /// <summary>
@@ -195,7 +243,12 @@
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<T1, T2, T3, Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return
+                configuration.ReturnsLazily(
+                    (T1 arg1, T2 arg2, T3 arg3) => TaskHelper.FromException<T>(exceptionFactory(arg1, arg2, arg3)));
         }
 
         /// <summary>
@@ -209,12 +262,17 @@
         /// <typeparam name="T3">The type of the third parameter of the exception factory.</typeparam>
         /// <typeparam name="T4">The type of the fourth parameter of the exception factory.</typeparam>
         /// <returns>Configuration object.</returns>
-        public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync
-            <T, T1, T2, T3, T4>(
+        public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T, T1, T2, T3, T4>(
                 this IReturnValueConfiguration<Task<T>> configuration,
                 Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
+            return
+                configuration.ReturnsLazily(
+                    (T1 arg1, T2 arg2, T3 arg3, T4 arg4) =>
+                            TaskHelper.FromException<T>(exceptionFactory(arg1, arg2, arg3, arg4)));
         }
     }
 }
