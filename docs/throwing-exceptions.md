@@ -38,3 +38,22 @@ A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
                                                 " is closed on " +
                                                 callObject.Arguments[0]));
 ```
+
+## Throwing exceptions from an async method
+
+When a method returns a `Task` or `Task<T>`, there are two ways it can indicate
+failure via an exception:
+
+- throw the exception synchronously, i.e. not actually return a `Task`
+- "throw asynchronously", i.e. return a failed task with the exception.
+
+The former is supported by the `Throws` method described above, in the same way as if the
+method was synchronous. The latter can be configured by using the `ThrowsAsync` method:
+
+```csharp
+A.CallTo(() => fakeShop.OrderSweetsAsync("cheeseburger"))
+ .ThrowsAsync(new ArgumentException("'cheeseburger' isn't a valid sweet category"));
+```
+
+This will cause the configured method to return a failed `Task` whose `Exception` property
+is set to the exception specified in `ThrowsAsync`.
