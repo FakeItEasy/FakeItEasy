@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncReturnValueConfigurationExtensions.cs" />
     <Compile Include="Compatibility\MethodInfoWrapper.cs" />
     <Compile Include="LinkedListExtensions.cs" />
     <Compile Include="Configuration\IDoNothingConfiguration.cs" />

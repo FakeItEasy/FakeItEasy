@@ -21,6 +21,18 @@ namespace FakeItEasy
             return source.Task;
         }
 
+        public static Task FromException(Exception exception)
+        {
+            return FromException<int>(exception);
+        }
+
+        public static Task<T> FromException<T>(Exception exception)
+        {
+            var source = new TaskCompletionSource<T>();
+            source.SetException(exception);
+            return source.Task;
+        }
+
         public static Task Canceled()
         {
             return Canceled(typeof(int));

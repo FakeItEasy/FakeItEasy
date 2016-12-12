@@ -110,6 +110,7 @@
     <Compile Include="CallMatchingSpecs.cs" />
     <Compile Include="AssignsOutAndRefParametersSpecs.cs" />
     <Compile Include="ThenSpecs.cs" />
+    <Compile Include="ThrowsAsyncSpecs.cs" />
     <Compile Include="UnconfiguredPropertySpecs.cs" />
     <Compile Include="CallsBaseMethodsFakeSpecs.cs" />
     <Compile Include="StrictFakeSpecs.cs" />
