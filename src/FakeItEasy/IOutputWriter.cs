@@ -5,7 +5,7 @@ namespace FakeItEasy
     /// <summary>
     /// Represents a text writer that writes to the output.
     /// </summary>
-    public interface IOutputWriter
+    public interface IOutputWriter : IHideObjectMembers
     {
         /// <summary>
         /// Writes the specified value to the output.

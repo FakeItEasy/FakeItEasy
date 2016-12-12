@@ -209,7 +209,7 @@ namespace FakeItEasy
         System.Type GetType();
         string ToString();
     }
-    public interface IOutputWriter
+    public interface IOutputWriter : FakeItEasy.IHideObjectMembers
     {
         System.IDisposable Indent();
         FakeItEasy.IOutputWriter Write(string value);
@@ -330,7 +330,7 @@ namespace FakeItEasy.Configuration
     {
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> CallsBaseMethod();
     }
-    public interface IDoNothingConfiguration<out TInterface>
+    public interface IDoNothingConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     
     {
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> DoesNothing();
@@ -350,7 +350,7 @@ namespace FakeItEasy.Configuration
     {
         FakeItEasy.Configuration.IOrderableCallAssertion Then(FakeItEasy.Configuration.UnorderedCallAssertion nextAssertion);
     }
-    public interface IOutAndRefParametersConfiguration<out TInterface>
+    public interface IOutAndRefParametersConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     
     {
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Collections.Generic.ICollection<object>> valueProducer);
@@ -371,7 +371,7 @@ namespace FakeItEasy.Configuration
     {
         FakeItEasy.Configuration.IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimesToRepeat);
     }
-    public interface IRepeatSpecification
+    public interface IRepeatSpecification : FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Repeated Once { get; }
         FakeItEasy.Repeated Twice { get; }
@@ -390,7 +390,7 @@ namespace FakeItEasy.Configuration
     }
     public interface IVoidArgumentValidationConfiguration : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.IHideObjectMembers { }
     public interface IVoidConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.IHideObjectMembers { }
-    public interface IWhereConfiguration<out TInterface>
+    public interface IWhereConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     
     {
         TInterface Where(System.Func<FakeItEasy.Core.IFakeObjectCall, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter);
