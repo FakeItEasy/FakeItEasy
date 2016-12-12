@@ -6,7 +6,7 @@ namespace FakeItEasy.Configuration
     /// Provides properties and methods to specify repeat.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
-    public interface IRepeatSpecification
+    public interface IRepeatSpecification : IHideObjectMembers
     {
         /// <summary>
         /// Specifies once as the repeat.

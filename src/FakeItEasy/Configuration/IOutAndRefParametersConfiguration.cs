@@ -9,7 +9,7 @@ namespace FakeItEasy.Configuration
     /// Lets the developer configure output values of out and ref parameters.
     /// </summary>
     /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-    public interface IOutAndRefParametersConfiguration<out TInterface>
+    public interface IOutAndRefParametersConfiguration<out TInterface> : IHideObjectMembers
     {
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.

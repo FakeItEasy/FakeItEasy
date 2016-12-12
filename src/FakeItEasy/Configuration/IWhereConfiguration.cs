@@ -7,7 +7,7 @@ namespace FakeItEasy.Configuration
     /// Provides a way to configure predicates for when a call should be applied.
     /// </summary>
     /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-    public interface IWhereConfiguration<out TInterface>
+    public interface IWhereConfiguration<out TInterface> : IHideObjectMembers
     {
         /// <summary>
         /// Applies a predicate to constrain which calls will be considered for interception.
