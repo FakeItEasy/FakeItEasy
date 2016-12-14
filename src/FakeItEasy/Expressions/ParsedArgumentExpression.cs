@@ -13,8 +13,6 @@ namespace FakeItEasy.Expressions
 
         public Expression Expression { get; }
 
-        public object Value => this.Expression.Evaluate();
-
         public ParameterInfo ArgumentInformation { get; }
     }
 }
