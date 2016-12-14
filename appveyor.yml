@@ -7,7 +7,7 @@ install:
     - cmd: bundle install
 
 build_script:
-    - cmd: build.netstd.cmd
+    - cmd: build.cmd
 
 nuget:
     disable_publish_on_pr: true
