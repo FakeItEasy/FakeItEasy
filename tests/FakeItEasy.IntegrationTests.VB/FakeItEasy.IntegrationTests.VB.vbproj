@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="IndexedPropertyTests.vb" />
     <Compile Include="RaisingEventsTests.vb" />
+    <Compile Include="RefArgumentConstraintTests.vb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -28,15 +28,18 @@ namespace FakeItEasy.Expressions
 
             var isByRefArgument = IsByRefArgument(argument);
 
-            if (isByRefArgument && IsOutArgument(argument))
-            {
-                return new OutArgumentConstraint(argument.Value);
-            }
-
-            var constraint = this.GetArgumentConstraintFromExpression(argument.Expression);
+            object argumentValue;
+            var constraint = this.GetArgumentConstraintFromExpression(argument.Expression, out argumentValue);
             if (isByRefArgument)
             {
-                constraint = new RefArgumentConstraint(constraint, argument.Value);
+                if (IsOutArgument(argument))
+                {
+                    constraint = new OutArgumentConstraint(argumentValue);
+                }
+                else
+                {
+                    constraint = new RefArgumentConstraint(constraint, argumentValue);
+                }
             }
 
             return constraint;
@@ -77,7 +80,7 @@ namespace FakeItEasy.Expressions
             return Expression.Lambda(expression).Compile().DynamicInvoke();
         }
 
-        private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression)
+        private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression, out object value)
         {
             object expressionValue = null;
 
@@ -85,6 +88,8 @@ namespace FakeItEasy.Expressions
             {
                 expressionValue = InvokeExpression(expression);
             });
+
+            value = expressionValue;
 
             return TryCreateConstraintFromTrappedConstraints(trappedConstraints.ToArray()) ?? CreateEqualityConstraint(expressionValue);
         }
@@ -95,7 +100,8 @@ namespace FakeItEasy.Expressions
 
             foreach (var argumentExpression in expression.Expressions)
             {
-                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression));
+                object ignored;
+                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression, out ignored));
             }
 
             return new AggregateArgumentConstraint(result);
