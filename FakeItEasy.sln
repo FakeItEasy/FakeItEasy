@@ -155,6 +155,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.IntegrationTests
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FakeItEasy.Specs.netstd", "tests\FakeItEasy.Specs.netstd\FakeItEasy.Specs.netstd.xproj", "{317507FF-520B-41C7-B71C-73DDA068204F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Analyzer.VisualBasic", "src\FakeItEasy.Analyzer.VisualBasic\FakeItEasy.Analyzer.VisualBasic.csproj", "{7BAEB7DC-635D-425B-94AB-826AB65FBBD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Analyzer.VisualBasic.Tests", "tests\FakeItEasy.Analyzer.VisualBasic.Tests\FakeItEasy.Analyzer.VisualBasic.Tests.csproj", "{C37E7B74-DCA9-47FF-BAA1-EBC2ECB2C72F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -229,6 +233,14 @@ Global
 		{317507FF-520B-41C7-B71C-73DDA068204F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{317507FF-520B-41C7-B71C-73DDA068204F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{317507FF-520B-41C7-B71C-73DDA068204F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BAEB7DC-635D-425B-94AB-826AB65FBBD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BAEB7DC-635D-425B-94AB-826AB65FBBD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BAEB7DC-635D-425B-94AB-826AB65FBBD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BAEB7DC-635D-425B-94AB-826AB65FBBD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C37E7B74-DCA9-47FF-BAA1-EBC2ECB2C72F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C37E7B74-DCA9-47FF-BAA1-EBC2ECB2C72F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C37E7B74-DCA9-47FF-BAA1-EBC2ECB2C72F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C37E7B74-DCA9-47FF-BAA1-EBC2ECB2C72F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -257,6 +269,8 @@ Global
 		{CFCEF7CF-B06E-47C5-B1E4-59A41262DA8D} = {5D41D463-D53B-4ADC-90AD-44AA03D6340D}
 		{BB92D188-5666-46DC-935A-81F0C5173D20} = {5D41D463-D53B-4ADC-90AD-44AA03D6340D}
 		{317507FF-520B-41C7-B71C-73DDA068204F} = {575A3C3B-17BA-4A8A-9F53-05320913D0A6}
+		{7BAEB7DC-635D-425B-94AB-826AB65FBBD7} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
+		{C37E7B74-DCA9-47FF-BAA1-EBC2ECB2C72F} = {DC5EAE30-96E3-4D38-B3C5-33E587C9FB76}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		version = 0.1

@@ -6,9 +6,14 @@
     using System.Linq;
     using System.Text;
     using Microsoft.CodeAnalysis;
+#if CSHARP
     using Microsoft.CodeAnalysis.CSharp;
+#endif
     using Microsoft.CodeAnalysis.Diagnostics;
     using Microsoft.CodeAnalysis.Text;
+#if VISUAL_BASIC
+    using Microsoft.CodeAnalysis.VisualBasic;
+#endif
 
     /// <summary>
     /// Class for turning strings into documents and getting the diagnostics on them.
@@ -18,7 +23,11 @@
     {
         private static readonly MetadataReference CorlibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
         private static readonly MetadataReference SystemCoreReference = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
+#if CSHARP
         private static readonly MetadataReference CSharpSymbolsReference = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
+#elif VISUAL_BASIC
+        private static readonly MetadataReference VisualBasicSymbolsReference = MetadataReference.CreateFromFile(typeof(VisualBasicCompilation).Assembly.Location);
+#endif
         private static readonly MetadataReference CodeAnalysisReference = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
         private static readonly MetadataReference FakeItEasyReference = MetadataReference.CreateFromFile(typeof(Fake).Assembly.Location);
 
@@ -143,7 +152,11 @@
         /// <param name="sources">Classes in the form of strings.</param>
         /// <param name="language">The language the source code is in.</param>
         /// <returns>A Project created out of the Documents created from the source strings.</returns>
+#if CSHARP
         private static Project CreateProject(string[] sources, string language = LanguageNames.CSharp)
+#elif VISUAL_BASIC
+        private static Project CreateProject(string[] sources, string language = LanguageNames.VisualBasic)
+#endif
         {
             string fileNamePrefix = DefaultFilePathPrefix;
             string fileExt = language == LanguageNames.CSharp ? CSharpDefaultFileExt : VisualBasicDefaultExt;
@@ -153,10 +166,18 @@
             var solution = new AdhocWorkspace()
                 .CurrentSolution
                 .AddProject(projectId, TestProjectName, TestProjectName, language)
+#if CSHARP
                 .WithProjectCompilationOptions(projectId, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+#elif VISUAL_BASIC
+                .WithProjectCompilationOptions(projectId, new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+#endif
                 .AddMetadataReference(projectId, CorlibReference)
                 .AddMetadataReference(projectId, SystemCoreReference)
+#if CSHARP
                 .AddMetadataReference(projectId, CSharpSymbolsReference)
+#elif VISUAL_BASIC
+                .AddMetadataReference(projectId, VisualBasicSymbolsReference)
+#endif
                 .AddMetadataReference(projectId, CodeAnalysisReference)
                 .AddMetadataReference(projectId, FakeItEasyReference);
 

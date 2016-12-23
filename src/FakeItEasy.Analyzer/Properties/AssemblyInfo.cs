@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyProduct("FakeItEasy.Analyzer")]
 [assembly: AssemblyTitle("FakeItEasy.Analyzer")]
-[assembly: AssemblyDescription("Diagnostic analyzers to warn about incorrect usage of FakeItEasy.")]
+[assembly: AssemblyDescription("Diagnostic analyzers to warn about incorrect usage of FakeItEasy in C# code.")]
 
 [assembly: CLSCompliant(false)]
 
