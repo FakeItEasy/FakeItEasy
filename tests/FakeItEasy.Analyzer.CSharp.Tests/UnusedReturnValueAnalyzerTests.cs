@@ -1,6 +1,5 @@
-﻿namespace FakeItEasy.Analyzer.Tests
+﻿namespace FakeItEasy.Analyzer.CSharp.Tests
 {
-    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Analyzer.Tests.Helpers;
     using FakeItEasy.Tests.TestHelpers;
     using Microsoft.CodeAnalysis;

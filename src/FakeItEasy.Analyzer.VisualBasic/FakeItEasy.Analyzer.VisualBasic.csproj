@@ -47,21 +47,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\FakeItEasy.Analyzer\DiagnosticDefinitions.cs">
-      <Link>DiagnosticDefinitions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy.Analyzer\NonVirtualSetupAnalyzer.cs">
-      <Link>NonVirtualSetupAnalyzer.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy.Analyzer\SymbolExtensions.cs">
-      <Link>SymbolExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy.Analyzer\SymbolHelpers.cs">
-      <Link>SymbolHelpers.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy.Analyzer\UnusedReturnValueAnalyzer.cs">
-      <Link>UnusedReturnValueAnalyzer.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -135,6 +120,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <Import Project="..\FakeItEasy.Analyzer.Shared\FakeItEasy.Analyzer.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\v4.5\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

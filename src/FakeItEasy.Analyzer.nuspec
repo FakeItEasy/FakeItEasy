@@ -15,10 +15,10 @@
     <tags>FakeItEasy, analyzers</tags>
   </metadata>
   <files>
-    <file src="FakeItEasy.Analyzer\bin\Release\FakeItEasy.Analyzer.dll" target="analyzers\dotnet\cs" />
-    <file src="FakeItEasy.Analyzer\bin\Release\FakeItEasy.Analyzer.pdb" target="analyzers\dotnet\cs" />
+    <file src="FakeItEasy.Analyzer.CSharp\bin\Release\FakeItEasy.Analyzer.CSharp.dll" target="analyzers\dotnet\cs" />
+    <file src="FakeItEasy.Analyzer.CSharp\bin\Release\FakeItEasy.Analyzer.CSharp.pdb" target="analyzers\dotnet\cs" />
     <file src="FakeItEasy.Analyzer.VisualBasic\bin\Release\FakeItEasy.Analyzer.VisualBasic.dll" target="analyzers\dotnet\vb" />
     <file src="FakeItEasy.Analyzer.VisualBasic\bin\Release\FakeItEasy.Analyzer.VisualBasic.pdb" target="analyzers\dotnet\vb" />
-    <file src="FakeItEasy.Analyzer\tools\*.ps1" target="tools\" />
+    <file src="FakeItEasy.Analyzer.Shared\tools\*.ps1" target="tools\" />
   </files>
 </package>

@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer.Tests
+﻿namespace FakeItEasy.Analyzer.CSharp.Tests
 {
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Analyzer.Tests.Helpers;

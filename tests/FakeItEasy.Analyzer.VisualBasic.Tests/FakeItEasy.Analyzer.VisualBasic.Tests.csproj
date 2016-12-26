@@ -123,21 +123,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\FakeItEasy.Analyzer.Tests\Helpers\CodeFixVerifier.cs">
-      <Link>Helpers\CodeFixVerifier.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy.Analyzer.Tests\Helpers\CodeFixVerifier.Helper.cs">
-      <Link>Helpers\CodeFixVerifier.Helper.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy.Analyzer.Tests\Helpers\DiagnosticResult.cs">
-      <Link>Helpers\DiagnosticResult.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy.Analyzer.Tests\Helpers\DiagnosticVerifier.cs">
-      <Link>Helpers\DiagnosticVerifier.cs</Link>
-    </Compile>
-    <Compile Include="..\FakeItEasy.Analyzer.Tests\Helpers\DiagnosticVerifier.Helper.cs">
-      <Link>Helpers\DiagnosticVerifier.Helper.cs</Link>
-    </Compile>
     <Compile Include="NonOverridableSetupAnalyzerTests.cs" />
     <Compile Include="UnusedReturnValueAnalyzerTests.cs" />
   </ItemGroup>
@@ -167,6 +152,7 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
+  <Import Project="..\FakeItEasy.Analyzer.Tests.Shared\FakeItEasy.Analyzer.Tests.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
