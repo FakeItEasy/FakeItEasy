@@ -290,7 +290,7 @@ namespace AnalyzerPrototypeSubjectStatic
         public void Test()
         {
             var foo = A.Fake<IFoo>();
-            A.CallTo(() => foo.Bar);
+            A.CallToSet(() => foo.Bar);
         }
     }
 
