@@ -150,7 +150,7 @@ namespace FakeItEasy.IntegrationTests
 
         private string GetPathToOriginalExternalDll()
         {
-            var executingAssemblyPath = new Uri(this.GetType().GetTypeInfo().Assembly.Location).LocalPath
+            var executingAssemblyPath = new Uri(this.GetType().GetTypeInfo().Assembly.CodeBase).LocalPath
                 .Replace("FakeItEasy.IntegrationTests", "FakeItEasy.IntegrationTests.External")
                 .Replace("netcoreapp1.0", "netstandard1.6");
             return Path.GetFullPath(executingAssemblyPath);
