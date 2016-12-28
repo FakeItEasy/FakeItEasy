@@ -4,9 +4,7 @@
 artifacts
 packages
 
-*.csproj.user
-*.vbproj.user
-*.xproj.user
+*.*proj.user
 *.lock.json
 *.ncb
 *.suo
