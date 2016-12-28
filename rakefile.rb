@@ -24,11 +24,12 @@ output          = File.absolute_path("artifacts/output")
 tests           = "artifacts/tests"
 packages        = File.absolute_path("packages")
 
-gitlinks        = ["FakeItEasy", "FakeItEasy.Analyzer", "FakeItEasy.netstd"]
+gitlinks        = ["FakeItEasy", "FakeItEasy.Analyzer.CSharp", "FakeItEasy.Analyzer.VisualBasic", "FakeItEasy.netstd"]
 
 unit_tests = [
   "tests/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
-  "tests/FakeItEasy.Analyzer.Tests/bin/Release/FakeItEasy.Analyzer.Tests.dll"
+  "tests/FakeItEasy.Analyzer.CSharp.Tests/bin/Release/FakeItEasy.Analyzer.CSharp.Tests.dll",
+  "tests/FakeItEasy.Analyzer.VisualBasic.Tests/bin/Release/FakeItEasy.Analyzer.VisualBasic.Tests.dll"
 ]
 
 netstd_unit_test_directories = [

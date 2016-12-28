@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer.Tests
+﻿namespace FakeItEasy.Analyzer.CSharp.Tests
 {
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Analyzer.Tests.Helpers;
@@ -290,7 +290,7 @@ namespace AnalyzerPrototypeSubjectStatic
         public void Test()
         {
             var foo = A.Fake<IFoo>();
-            A.CallTo(() => foo.Bar);
+            A.CallToSet(() => foo.Bar);
         }
     }
 

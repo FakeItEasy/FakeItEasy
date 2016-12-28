@@ -39,6 +39,7 @@
             return null;
         }
 
+#if CSHARP
         /// <summary>
         /// Called to test a C# code fix when applied on the inputted string as a source.
         /// </summary>
@@ -51,7 +52,7 @@
         {
             this.VerifyFix(LanguageNames.CSharp, this.GetCSharpDiagnosticAnalyzer(), this.GetCSharpCodeFixProvider(), oldSource, newSource, codeFixIndex, allowNewCompilerDiagnostics);
         }
-
+#elif VISUAL_BASIC
         /// <summary>
         /// Called to test a VB code fix when applied on the inputted string as a source.
         /// </summary>
@@ -60,10 +61,11 @@
         /// <param name="codeFixIndex">Index determining which code fix to apply if there are multiple.</param>
         /// <param name="allowNewCompilerDiagnostics">A boolean controlling whether or not the test will fail if the code fix introduces other warnings after being applied.</param>
         [SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Justification = "It's not intended to be a public API, so it doesn't matter")]
-        protected void VerifyBasicFix(string oldSource, string newSource, int? codeFixIndex = null, bool allowNewCompilerDiagnostics = false)
+        protected void VerifyVisualBasicFix(string oldSource, string newSource, int? codeFixIndex = null, bool allowNewCompilerDiagnostics = false)
         {
-            this.VerifyFix(LanguageNames.VisualBasic, this.GetBasicDiagnosticAnalyzer(), this.GetBasicCodeFixProvider(), oldSource, newSource, codeFixIndex, allowNewCompilerDiagnostics);
+            this.VerifyFix(LanguageNames.VisualBasic, this.GetVisualBasicDiagnosticAnalyzer(), this.GetBasicCodeFixProvider(), oldSource, newSource, codeFixIndex, allowNewCompilerDiagnostics);
         }
+#endif
 
         /// <summary>
         /// General verifier for code fixes.

@@ -3,11 +3,21 @@ namespace FakeItEasy.Analyzer
     using System;
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
+#if CSHARP
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+#endif
     using Microsoft.CodeAnalysis.Diagnostics;
+#if VISUAL_BASIC
+    using Microsoft.CodeAnalysis.VisualBasic;
+    using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+#endif
 
+#if CSHARP
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
+#elif VISUAL_BASIC
+    [DiagnosticAnalyzer(LanguageNames.VisualBasic)]
+#endif
     public class UnusedReturnValueAnalyzer : DiagnosticAnalyzer
     {
         private static readonly ImmutableDictionary<string, DiagnosticDescriptor> DiagnosticsMap = CreateDiagnosticsMap();

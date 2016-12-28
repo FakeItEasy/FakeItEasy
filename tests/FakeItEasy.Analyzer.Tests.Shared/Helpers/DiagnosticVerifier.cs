@@ -15,6 +15,7 @@
     /// </summary>
     public abstract partial class DiagnosticVerifier
     {
+#if CSHARP
         /// <summary>
         /// Called to test a C# DiagnosticAnalyzer when applied on the single inputted string as a source.
         /// Note: input a DiagnosticResult for each Diagnostic expected.
@@ -35,16 +36,28 @@
         {
             return null;
         }
+#elif VISUAL_BASIC
+        /// <summary>
+        /// Called to test a VB.NET DiagnosticAnalyzer when applied on the single inputted string as a source.
+        /// Note: input a DiagnosticResult for each Diagnostic expected.
+        /// </summary>
+        /// <param name="source">A class in the form of a string to run the analyzer on.</param>
+        /// <param name="expected"> DiagnosticResults that should appear after the analyzer is run on the source.</param>
+        internal void VerifyVisualBasicDiagnostic(string source, params DiagnosticResult[] expected)
+        {
+            this.VerifyDiagnostics(new[] { source }, LanguageNames.VisualBasic, this.GetVisualBasicDiagnosticAnalyzer(), expected);
+        }
 
         /// <summary>
         /// Get the Visual Basic analyzer being tested - to be implemented in non-abstract class.
         /// </summary>
         /// <returns>The diagnostic analyzer being tested.</returns>
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
-        protected virtual DiagnosticAnalyzer GetBasicDiagnosticAnalyzer()
+        protected virtual DiagnosticAnalyzer GetVisualBasicDiagnosticAnalyzer()
         {
             return null;
         }
+#endif
 
         /// <summary>
         /// Checks each of the actual Diagnostics found and compares them with the corresponding DiagnosticResult in the array of expected results.
