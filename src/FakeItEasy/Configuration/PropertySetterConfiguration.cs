@@ -112,7 +112,7 @@ namespace FakeItEasy.Configuration
             }
 
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>
-                AsPropertySetterConfiguration(this.voidConfiguration).Throws(exceptionFactory);
+                new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.Throws(exceptionFactory));
 
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory) =>
                 this.Throws<IPropertySetterConfiguration, T1>(exceptionFactory);
@@ -130,19 +130,44 @@ namespace FakeItEasy.Configuration
                 this.Throws<IPropertySetterConfiguration, T>();
 
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> CallsBaseMethod() =>
-                AsPropertySetterConfiguration(this.voidConfiguration).CallsBaseMethod();
+                new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.CallsBaseMethod());
 
             public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
                 this.voidConfiguration.MustHaveHappened(repeatConstraint);
 
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>
-                AsPropertySetterConfiguration(this.voidConfiguration).DoesNothing();
+                new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.DoesNothing());
 
             public IPropertySetterConfiguration Invokes(Action<IFakeObjectCall> action)
             {
                 this.voidConfiguration = this.voidConfiguration.Invokes(action);
                 return this;
             }
+        }
+
+        private class PropertySetterAfterCallConfiguredAdapter : IAfterCallConfiguredConfiguration<IPropertySetterConfiguration>
+        {
+            private readonly IAfterCallConfiguredConfiguration<IVoidConfiguration> voidAfterCallConfiguration;
+
+            public PropertySetterAfterCallConfiguredAdapter(IAfterCallConfiguredConfiguration<IVoidConfiguration> voidAfterCallConfiguration)
+            {
+                this.voidAfterCallConfiguration = voidAfterCallConfiguration;
+            }
+
+            public IThenConfiguration<IPropertySetterConfiguration> NumberOfTimes(int numberOfTimesToRepeat) =>
+                new PropertySetterThenAdapter(this.voidAfterCallConfiguration.NumberOfTimes(numberOfTimesToRepeat));
+        }
+
+        private class PropertySetterThenAdapter : IThenConfiguration<IPropertySetterConfiguration>
+        {
+            private readonly IThenConfiguration<IVoidConfiguration> voidThenConfiguration;
+
+            public PropertySetterThenAdapter(IThenConfiguration<IVoidConfiguration> voidThenConfiguration)
+            {
+                this.voidThenConfiguration = voidThenConfiguration;
+            }
+
+            public IPropertySetterConfiguration Then => AsPropertySetterConfiguration(this.voidThenConfiguration.Then);
         }
     }
 }
