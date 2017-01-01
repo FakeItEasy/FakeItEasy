@@ -24,6 +24,16 @@ namespace FakeItEasy.Expressions
             return ParseInvocationExpression((InvocationExpression)callExpression.Body);
         }
 
+        public ParsedCallExpression Parse(LambdaExpression callExpression, object fake)
+        {
+            // Unnatural fakes use an expression with a parameter (the fake).
+            // Transform it into an expression with no parameters and with
+            // references to the parameter replaced with the fake itself,
+            // so that it can be parsed the same way as for natural fakes.
+            var rewrittenCallExpression = ReplaceParameterWithFake(callExpression, fake);
+            return this.Parse(rewrittenCallExpression);
+        }
+
         private static ParsedCallExpression ParseInvocationExpression(InvocationExpression expression)
         {
             var target = expression.Expression.Evaluate();
@@ -62,6 +72,27 @@ namespace FakeItEasy.Expressions
                 calledMethod: property.GetGetMethod(true),
                 callTargetExpression: expression.Expression,
                 argumentsExpressions: null);
+        }
+
+        private static LambdaExpression ReplaceParameterWithFake(LambdaExpression callExpression, object fake)
+        {
+            var visitor = new ParameterValueReplacementVisitor(fake);
+            return Expression.Lambda(visitor.Visit(callExpression.Body));
+        }
+
+        private class ParameterValueReplacementVisitor : ExpressionVisitor
+        {
+            private readonly object fake;
+
+            public ParameterValueReplacementVisitor(object fake)
+            {
+                this.fake = fake;
+            }
+
+            protected override Expression VisitParameter(ParameterExpression node)
+            {
+                return Expression.Constant(this.fake, node.Type);
+            }
         }
     }
 }
