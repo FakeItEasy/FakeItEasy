@@ -46,6 +46,21 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration(this.manager, rule);
         }
 
+        public IPropertySetterAnyValueConfiguration<TValue> CallsToSet<TValue>(Expression<Func<TFake, TValue>> propertySpecification)
+        {
+            Guard.AgainstNull(propertySpecification, nameof(propertySpecification));
+
+            var parsedCallExpression = this.expressionParser.Parse(propertySpecification, this.manager.Object);
+            this.GuardAgainstWrongFake(parsedCallExpression.CallTarget);
+            this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
+
+            var parsedSetterCallExpression = PropertyExpressionHelper.BuildSetterFromGetter<TValue>(parsedCallExpression);
+
+            return new PropertySetterConfiguration<TValue>(
+                parsedSetterCallExpression,
+                this.CreateVoidArgumentValidationConfiguration);
+        }
+
         public IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall()
         {
             var rule = new AnyCallCallRule();
@@ -63,6 +78,12 @@ namespace FakeItEasy.Configuration
             {
                 throw new ArgumentException("The target of this call is not the fake object being configured.");
             }
+        }
+
+        private IVoidArgumentValidationConfiguration CreateVoidArgumentValidationConfiguration(ParsedCallExpression parsedCallExpression)
+        {
+            var rule = this.callRuleFactory.Invoke(parsedCallExpression);
+            return this.configurationFactory.CreateConfiguration(this.manager, rule);
         }
     }
 }

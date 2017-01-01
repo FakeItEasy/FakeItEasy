@@ -85,6 +85,17 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Configures calls to the setter of the specified property.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the property.</typeparam>
+        /// <param name="propertySpecification">An expression specifying the property to configure.</param>
+        /// <returns>A configuration object.</returns>
+        public IPropertySetterAnyValueConfiguration<TValue> CallsToSet<TValue>(Expression<Func<T, TValue>> propertySpecification)
+        {
+            return this.StartConfiguration.CallsToSet(propertySpecification);
+        }
+
+        /// <summary>
         /// Configures any call to the fake object.
         /// </summary>
         /// <returns>A configuration object.</returns>
