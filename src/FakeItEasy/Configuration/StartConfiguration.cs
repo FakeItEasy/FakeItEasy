@@ -26,9 +26,11 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
-            this.AssertThatMemberCanBeIntercepted(callSpecification);
+            var parsedCallExpression = this.expressionParser.Parse(callSpecification, this.manager.Object);
+            this.GuardAgainstWrongFake(parsedCallExpression.CallTarget);
+            this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
-            var rule = this.callRuleFactory(this.expressionParser.Parse(callSpecification));
+            var rule = this.callRuleFactory(parsedCallExpression);
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, rule);
         }
 
@@ -36,9 +38,11 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
-            this.AssertThatMemberCanBeIntercepted(callSpecification);
+            var parsedCallExpression = this.expressionParser.Parse(callSpecification, this.manager.Object);
+            this.GuardAgainstWrongFake(parsedCallExpression.CallTarget);
+            this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
-            var rule = this.callRuleFactory(this.expressionParser.Parse(callSpecification));
+            var rule = this.callRuleFactory(parsedCallExpression);
             return this.configurationFactory.CreateConfiguration(this.manager, rule);
         }
 
@@ -48,10 +52,17 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateAnyCallConfiguration(this.manager, rule);
         }
 
-        private void AssertThatMemberCanBeIntercepted(LambdaExpression callSpecification)
+        private void AssertThatMemberCanBeIntercepted(ParsedCallExpression parsedCall)
         {
-            var parsedCall = this.expressionParser.Parse(callSpecification);
             this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(parsedCall.CalledMethod, this.manager.Object);
+        }
+
+        private void GuardAgainstWrongFake(object callTarget)
+        {
+            if (callTarget != this.manager.Object)
+            {
+                throw new ArgumentException("The target of this call is not the fake object being configured.");
+            }
         }
     }
 }

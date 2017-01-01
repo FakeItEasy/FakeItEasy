@@ -11,6 +11,7 @@
     {
         public interface IFoo
         {
+
             void VoidMethod();
 
             int MethodWithResult();
@@ -157,6 +158,60 @@
 
             "Then it invokes the action"
                 .x(() => wasCalled.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void CallsToVoidWithCallToWrongFake(Fake<IFoo> fake, IFoo wrong, Exception exception)
+        {
+            "Given an unnatural fake"
+                .x(() => fake = new Fake<IFoo>());
+
+            "And an unrelated instance of the faked type"
+                .x(() => wrong = A.Fake<IFoo>());
+
+            "When I configure a fake with an expression that calls the wrong fake"
+                .x(() => exception = Record.Exception(() => fake.CallsTo(f => wrong.VoidMethod()).DoesNothing()));
+
+            "Then it throws an exception that describes the problem"
+                .x(() => exception
+                        .Should().BeAnExceptionOfType<ArgumentException>()
+                        .And.Message.Should().Be("The target of this call is not the fake object being configured."));
+        }
+
+        [Scenario]
+        public static void CallsToNonVoidWithCallToWrongFake(Fake<IFoo> fake, IFoo wrong, Exception exception)
+        {
+            "Given an unnatural fake"
+                .x(() => fake = new Fake<IFoo>());
+
+            "And an unrelated instance of the faked type"
+                .x(() => wrong = A.Fake<IFoo>());
+
+            "When I configure a fake with an expression that calls the wrong fake"
+                .x(() => exception = Record.Exception(() => fake.CallsTo(f => wrong.MethodWithResult()).Returns(42)));
+
+            "Then it throws an exception that describes the problem"
+                .x(() => exception
+                        .Should().BeAnExceptionOfType<ArgumentException>()
+                        .And.Message.Should().Be("The target of this call is not the fake object being configured."));
+        }
+
+        [Scenario]
+        public static void CallsToSetWithCallToWrongFake(Fake<IFoo> fake, IFoo wrong, Exception exception)
+        {
+            "Given an unnatural fake"
+                .x(() => fake = new Fake<IFoo>());
+
+            "And an unrelated instance of the faked type"
+                .x(() => wrong = A.Fake<IFoo>());
+
+            "When I configure a fake with an expression that calls the wrong fake"
+                .x(() => exception = Record.Exception(() => fake.CallsToSet(f => wrong.Bar).DoesNothing()));
+
+            "Then it throws an exception that describes the problem"
+                .x(() => exception
+                        .Should().BeAnExceptionOfType<ArgumentException>()
+                        .And.Message.Should().Be("The target of this call is not the fake object being configured."));
         }
 
         public class AClass
