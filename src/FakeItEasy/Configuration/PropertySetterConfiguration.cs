@@ -79,7 +79,7 @@ namespace FakeItEasy.Configuration
 
         private static IPropertySetterConfiguration AsPropertySetterConfiguration(
                 IVoidConfiguration voidArgumentValidationConfiguration) =>
-            new ProperySetterAdapter(voidArgumentValidationConfiguration);
+            new PropertySetterAdapter(voidArgumentValidationConfiguration);
 
         private ParsedCallExpression CreateSetterExpressionWithNewValue(Expression<Func<TValue>> valueExpression)
         {
@@ -102,11 +102,11 @@ namespace FakeItEasy.Configuration
                 ParsedCallExpression parsedSetter) =>
             this.voidArgumentValidationConfigurationFactory(parsedSetter);
 
-        private class ProperySetterAdapter : IPropertySetterConfiguration
+        private class PropertySetterAdapter : IPropertySetterConfiguration
         {
             private IVoidConfiguration voidConfiguration;
 
-            public ProperySetterAdapter(IVoidConfiguration voidArgumentValidationConfiguration)
+            public PropertySetterAdapter(IVoidConfiguration voidArgumentValidationConfiguration)
             {
                 this.voidConfiguration = voidArgumentValidationConfiguration;
             }
