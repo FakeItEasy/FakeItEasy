@@ -136,6 +136,78 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        [Example(int.MinValue)]
+        [Example(-42)]
+        [Example(0)]
+        [Example(42)]
+        [Example(int.MaxValue)]
+        public static void ConfiguringSetterToThrowForAnyValue(
+            int value,
+            IHaveInterestingProperties subject,
+            Exception exception)
+        {
+            "Given a Fake with a property"
+                .x(() => subject = A.Fake<IHaveInterestingProperties>());
+
+            "And assignment of the property is configured to throw an exception for any value"
+                .x(() => A.CallToSet(() => subject.ReadWriteProperty).Throws(new InvalidOperationException("oops")));
+
+            $"When I assign the property to {value}"
+                .x(() => exception = Record.Exception(() => subject.ReadWriteProperty = value));
+
+            "Then it throws the configured exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>().Which.Message.Should().Be("oops"));
+        }
+
+        [Scenario]
+        [Example(int.MinValue)]
+        [Example(-42)]
+        [Example(0)]
+        [Example(42)]
+        [Example(int.MaxValue)]
+        public static void ConfiguringSetterToDoNothingForAnyValue(
+            int value,
+            IHaveInterestingProperties subject,
+            Exception exception)
+        {
+            "Given a Fake with a property"
+                .x(() => subject = A.Fake<IHaveInterestingProperties>());
+
+            "And assignment of the property is configured to do nothing for any value"
+                .x(() => A.CallToSet(() => subject.ReadWriteProperty).DoesNothing());
+
+            $"When I assign the property to {value}"
+                .x(() => subject.ReadWriteProperty = value);
+
+            "Then the default behavior is suppressed and the assigned value is not returned"
+                .x(() => subject.ReadWriteProperty.Should().Be(0));
+        }
+
+        [Scenario]
+        [Example(int.MinValue)]
+        [Example(-42)]
+        [Example(0)]
+        [Example(42)]
+        [Example(int.MaxValue)]
+        public static void ConfiguringSetterToCallBaseMethodForAnyValue(
+            int value,
+            ClassWithInterestingProperties subject,
+            Exception exception)
+        {
+            "Given a Fake with a property"
+                .x(() => subject = A.Fake<ClassWithInterestingProperties>());
+
+            "And assignment of the property is configured to call the base implementation for any value"
+                .x(() => A.CallToSet(() => subject.ConfigurableProperty).CallsBaseMethod());
+
+            $"When I assign the property to {value}"
+                .x(() => subject.ConfigurableProperty = value);
+
+            "Then the base implementation is called"
+                .x(() => subject.WasBaseSetterCalled.Should().BeTrue());
+        }
+
+        [Scenario]
         public static void ConfigureIndexerWithWrongIndexes(
             IHaveInterestingProperties subject,
             bool wasConfiguredBehaviorUsed)
@@ -366,6 +438,14 @@ namespace FakeItEasy.Specs
 #pragma warning restore 649
 
             public int NonConfigurableProperty { get; set; }
+
+            public virtual int ConfigurableProperty
+            {
+                get { return 0; }
+                set { this.WasBaseSetterCalled = true; }
+            }
+
+            public bool WasBaseSetterCalled { get; private set; }
         }
     }
 }
