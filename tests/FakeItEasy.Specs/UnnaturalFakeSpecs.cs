@@ -11,6 +11,7 @@
     {
         public interface IFoo
         {
+            int Bar { get; set; }
 
             void VoidMethod();
 
@@ -194,6 +195,59 @@
                 .x(() => exception
                         .Should().BeAnExceptionOfType<ArgumentException>()
                         .And.Message.Should().Be("The target of this call is not the fake object being configured."));
+        }
+
+        [Scenario]
+        [Example(int.MinValue)]
+        [Example(-42)]
+        [Example(0)]
+        [Example(42)]
+        [Example(int.MaxValue)]
+        public static void CallsToSetAnyValue(int value, Fake<IFoo> fake, bool wasCalled)
+        {
+            "Given an unnatural fake"
+                .x(() => fake = new Fake<IFoo>());
+
+            "And assignment of a property is configured for any value"
+                .x(() => fake.CallsToSet(f => f.Bar).Invokes(call => wasCalled = true));
+
+            $"When I assign {value} to the property"
+                .x(() => fake.FakedObject.Bar = value);
+
+            "Then the configured behavior is used"
+                .x(() => wasCalled.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void CallsToSetSpecificValueAndAssigningThatValue(Fake<IFoo> fake, bool wasCalled)
+        {
+            "Given an unnatural fake"
+                .x(() => fake = new Fake<IFoo>());
+
+            "And assignment of a property is configured for a specific value"
+                .x(() => fake.CallsToSet(f => f.Bar).To(42).Invokes(call => wasCalled = true));
+
+            "When I assign that value to the property"
+                .x(() => fake.FakedObject.Bar = 42);
+
+            "Then the configured behavior is used"
+                .x(() => wasCalled.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void CallsToSetSpecificValueAndAssigningDifferentValue(Fake<IFoo> fake, bool wasCalled)
+        {
+            "Given an unnatural fake"
+                .x(() => fake = new Fake<IFoo>());
+
+            "And assignment of a property is configured for a specific value"
+                .x(() => fake.CallsToSet(f => f.Bar).To(42).Invokes(call => wasCalled = true));
+
+            "When I assign a different value to the property"
+                .x(() => fake.FakedObject.Bar = 3);
+
+            "Then the configured behavior is not used"
+                .x(() => wasCalled.Should().BeFalse());
         }
 
         [Scenario]
