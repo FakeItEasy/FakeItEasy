@@ -200,12 +200,14 @@ namespace FakeItEasy.Tests.Core
             var foo = A.Fake<IFoo>();
 
             foo.SomeProperty = 10;
-
             foo.SomeProperty.Should().Be(10);
+
+            foo.SomeProperty = 5;
+            foo.SomeProperty.Should().Be(5);
         }
 
         [Fact]
-        public void Object_properties_be_set_directly_and_configured_as_methods_interchangeably()
+        public void Object_properties_do_not_have_property_behavior_when_explicitly_configured()
         {
             var foo = A.Fake<IFoo>();
 
@@ -213,13 +215,13 @@ namespace FakeItEasy.Tests.Core
             foo.SomeProperty.Should().Be(2);
 
             foo.SomeProperty = 5;
-            foo.SomeProperty.Should().Be(5);
+            foo.SomeProperty.Should().Be(2);
 
             A.CallTo(() => foo.SomeProperty).Returns(20);
             foo.SomeProperty.Should().Be(20);
 
             foo.SomeProperty = 10;
-            foo.SomeProperty.Should().Be(10);
+            foo.SomeProperty.Should().Be(20);
         }
 
         [Fact]

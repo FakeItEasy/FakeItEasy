@@ -10,13 +10,11 @@ namespace FakeItEasy.Core
         private class PropertyBehaviorRule
             : IFakeObjectCallRule
         {
-            private readonly FakeManager fakeManager;
             private readonly MethodInfo propertyGetter;
             private readonly MethodInfo propertySetter;
 
-            public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter, FakeManager fakeManager)
+            public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter)
             {
-                this.fakeManager = fakeManager;
                 var property = GetProperty(propertyGetterOrSetter);
 
                 this.propertySetter = property.GetSetMethod();
@@ -39,25 +37,18 @@ namespace FakeItEasy.Core
                 return method.IsSpecialName && method.Name.StartsWith("get_", StringComparison.Ordinal);
             }
 
+            public bool IsMatchForSetter(IFakeObjectCall fakeObjectCall) => this.IsPropertySetter(fakeObjectCall);
+
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
-                return this.IsPropertySetter(fakeObjectCall) || this.IsPropertyGetter(fakeObjectCall);
+                return this.IsPropertyGetter(fakeObjectCall);
             }
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
-                if (this.IsPropertyGetter(fakeObjectCall))
-                {
-                    fakeObjectCall.SetReturnValue(this.Value);
-                }
-                else
-                {
-                    this.Value = fakeObjectCall.Arguments.Last();
-                }
-
-                this.fakeManager.MoveRuleToFront(this);
+                fakeObjectCall.SetReturnValue(this.Value);
             }
 
             private static PropertyInfo GetProperty(MethodInfo propertyGetterOrSetter)

@@ -202,19 +202,5 @@ namespace FakeItEasy.Core
             rule.CalledNumberOfTimes++;
             rule.Rule.Apply(fakeObjectCall);
         }
-
-        private void MoveRuleToFront(CallRuleMetadata rule)
-        {
-            if (this.AllUserRules.Remove(rule))
-            {
-                this.AllUserRules.AddFirst(rule);
-            }
-        }
-
-        private void MoveRuleToFront(IFakeObjectCallRule rule)
-        {
-            var metadata = this.AllRules.Single(x => x.Rule.Equals(rule));
-            this.MoveRuleToFront(metadata);
-        }
     }
 }
