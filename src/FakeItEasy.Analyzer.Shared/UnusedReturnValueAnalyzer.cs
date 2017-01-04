@@ -73,6 +73,7 @@ namespace FakeItEasy.Analyzer
                 "FakeItEasy.A.CallTo`1",
                 "FakeItEasy.A.CallToSet`1",
                 "FakeItEasy.Fake`1.CallsTo`1",
+                "FakeItEasy.Fake`1.CallsToSet`1",
                 "FakeItEasy.Fake`1.AnyCall",
                 "FakeItEasy.ArgumentValidationConfigurationExtensions.WithAnyArguments`1",
                 "FakeItEasy.WhereConfigurationExtensions.Where`1",

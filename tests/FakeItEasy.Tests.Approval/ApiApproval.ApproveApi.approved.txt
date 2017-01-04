@@ -222,6 +222,7 @@ namespace FakeItEasy
         public FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall() { }
         public FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallsTo(System.Linq.Expressions.Expression<System.Action<T>> callSpecification) { }
         public FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(System.Linq.Expressions.Expression<System.Func<T, TMember>> callSpecification) { }
+        public FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallsToSet<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>> propertySpecification) { }
     }
     [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.All)]
     public class FakeAttribute : System.Attribute
