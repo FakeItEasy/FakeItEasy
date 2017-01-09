@@ -28,6 +28,27 @@ the member:
   concrete, pre-existing type;
 * otherwise, `default(T)` will be returned.
 
+### Read/write properties
+
+By default, any overrideable property that has both a `set` and `get` accessor,
+and that has not been explicitly configured to behave otherwise, behaves like
+you might expect. Setting a value and then getting the value returns the value
+that was set.
+
+```csharp
+var fakeShop = A.Fake<ICandyShop>();
+
+fakeShop.Address = "123 Fake Street";
+
+System.Console.Out.Write(fakeShop.Address);
+// prints "123 Fake Street"
+```
+
+This behavior can be used to
+
+* supply values for the system under test to use (via the getter) or to
+* verify that the system under test performed the `set` action on the Fake
+
 ### Cancellation tokens
 
 When a faked method that accepts a `CancellationToken` receives a canceled token
