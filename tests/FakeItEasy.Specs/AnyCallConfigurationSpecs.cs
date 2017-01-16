@@ -8,6 +8,8 @@
         public interface IFoo
         {
             T Bar<T>() where T : class;
+
+            void Baz();
         }
 
         [Scenario]
@@ -28,7 +30,24 @@
         }
 
         [Scenario]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = nameof(IFoo), Justification = "It's an identifier")]
+        public static void WithNonVoidReturnTypeAndVoidMethod(
+            IFoo fake,
+            bool methodWasIntercepted)
+        {
+            "Given a fake with a void method"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And the fake is configured to set a flag for any non-void return type"
+                .x(() => A.CallTo(fake).WithNonVoidReturnType().Invokes(() => methodWasIntercepted = true));
+
+            "When the void method is called"
+                .x(() => fake.Baz());
+
+            "Then the flag is not set"
+                .x(() => methodWasIntercepted.Should().BeFalse());
+        }
+
+        [Scenario]
         public static void WithReturnType(
             IFoo fake,
             string returnValue)
