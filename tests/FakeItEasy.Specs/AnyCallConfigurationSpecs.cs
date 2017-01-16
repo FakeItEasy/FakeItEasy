@@ -1,7 +1,10 @@
 ﻿namespace FakeItEasy.Specs
 {
+    using System;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     public static class AnyCallConfigurationSpecs
     {
@@ -45,6 +48,22 @@
 
             "Then the flag is not set"
                 .x(() => methodWasIntercepted.Should().BeFalse());
+        }
+
+        [Scenario]
+        public static void WithNonVoidReturnTypeDescription(
+            IFoo fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "When an assertion is made that a non-void method was called"
+                .x(() => exception = Record.Exception(() => A.CallTo(fake).WithNonVoidReturnType().MustHaveHappened()));
+
+            "Then an exception is thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .WithMessage("*Any call with non-void return type to the fake object.*"));
         }
 
         [Scenario]

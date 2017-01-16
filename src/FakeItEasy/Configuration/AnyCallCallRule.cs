@@ -26,6 +26,11 @@ namespace FakeItEasy.Configuration
                     return "Any call with return type {0} to the fake object.".FormatInvariant(this.ApplicableToMembersWithReturnType.FullName);
                 }
 
+                if (this.ApplicableToAllNonVoidReturnTypes)
+                {
+                    return "Any call with non-void return type to the fake object.";
+                }
+
                 return "Any call made to the fake object.";
             }
         }
