@@ -39,9 +39,9 @@ namespace FakeItEasy.Configuration
         {
             return
                 this.argumentsPredicate(fakeObjectCall.Arguments) &&
-                    (this.ApplicableToMembersWithReturnType == null
-                    || (this.ApplicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType)
-                    || (this.ApplicableToAllNonVoidReturnTypes && fakeObjectCall.Method.ReturnType != typeof(void)));
+                ((this.ApplicableToMembersWithReturnType == null && !this.ApplicableToAllNonVoidReturnTypes)
+                 || (this.ApplicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType)
+                 || (this.ApplicableToAllNonVoidReturnTypes && fakeObjectCall.Method.ReturnType != typeof(void)));
         }
 
         protected override BuildableCallRule CloneCallSpecificationCore() =>

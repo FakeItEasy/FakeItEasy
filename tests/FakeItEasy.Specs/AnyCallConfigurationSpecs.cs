@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.Specs
 {
+    using System;
     using FluentAssertions;
     using Xbehave;
 
@@ -8,6 +9,8 @@
         public interface IFoo
         {
             T Bar<T>() where T : class;
+
+            void Baz();
         }
 
         [Scenario]
@@ -24,6 +27,24 @@
 
             "And the configured method returns null when called with generic argument IFoo"
                 .x(() => fake.Bar<IFoo>().Should().BeNull());
+        }
+
+        [Scenario]
+        public static void WithNonVoidReturnTypeAndVoidMethod(
+            IFoo fake,
+            bool methodWasIntercepted)
+        {
+            "Given a fake with a void method"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "When the fake is configured to set a flag for any non-void return type"
+                .x(() => A.CallTo(fake).WithNonVoidReturnType().Invokes(() => methodWasIntercepted = true));
+
+            "And the void method is called"
+                .x(() => fake.Baz());
+
+            "Then the flag is not set"
+                .x(() => methodWasIntercepted.Should().BeFalse());
         }
 
         [Scenario]
