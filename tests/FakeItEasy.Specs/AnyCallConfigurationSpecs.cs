@@ -83,5 +83,37 @@
             "And the configured method returns a dummy when called with generic argument IFoo"
                 .x(() => fake.Bar<IFoo>().Should().NotBeNull().And.BeAssignableTo<IFoo>());
         }
+
+        [Scenario]
+        public static void WithReturnTypeDescription(
+            IFoo fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "When an assertion is made that a method with a particular return type was called"
+                .x(() => exception = Record.Exception(() => A.CallTo(fake).WithReturnType<Guid>().MustHaveHappened()));
+
+            "Then an exception is thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .WithMessage("*Any call with return type System.Guid to the fake object.*"));
+        }
+
+        [Scenario]
+        public static void AnyCallDescription(
+            IFoo fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "When an assertion is made that any method was called"
+                .x(() => exception = Record.Exception(() => A.CallTo(fake).MustHaveHappened()));
+
+            "Then an exception is thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .WithMessage("*Any call made to the fake object.*"));
+        }
     }
 }
