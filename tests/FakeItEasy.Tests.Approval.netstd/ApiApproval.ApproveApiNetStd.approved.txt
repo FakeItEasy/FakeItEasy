@@ -98,6 +98,7 @@ namespace FakeItEasy
         public static TFake Invokes<TFake, T1, T2>(this FakeItEasy.Configuration.ICallbackConfiguration<TFake> configuration, System.Action<T1, T2> actionToInvoke) { }
         public static TFake Invokes<TFake, T1, T2, T3>(this FakeItEasy.Configuration.ICallbackConfiguration<TFake> configuration, System.Action<T1, T2, T3> actionToInvoke) { }
         public static TFake Invokes<TFake, T1, T2, T3, T4>(this FakeItEasy.Configuration.ICallbackConfiguration<TFake> configuration, System.Action<T1, T2, T3, T4> actionToInvoke) { }
+        public static TFake Invokes<TFake, T1, T2, T3, T4, T5>(this FakeItEasy.Configuration.ICallbackConfiguration<TFake> configuration, System.Action<T1, T2, T3, T4, T5> actionToInvoke) { }
     }
     public class static CompletedFakeObjectCallExtensions
     {

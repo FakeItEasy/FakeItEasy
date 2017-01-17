@@ -117,5 +117,30 @@ namespace FakeItEasy
                     actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
                 });
         }
+
+        /// <summary>
+        /// Executes the specified action when a matching call is being made.
+        /// </summary>
+        /// <param name="configuration">The configuration that is extended.</param>
+        /// <param name="actionToInvoke">The <see cref="Action{T1,T2,T3,T4,T5}"/> to invoke.</param>
+        /// <typeparam name="TFake">The type of fake object.</typeparam>
+        /// <typeparam name="T1">Type of the first argument of the faked method call.</typeparam>
+        /// <typeparam name="T2">Type of the second argument of the faked method call.</typeparam>
+        /// <typeparam name="T3">Type of the third argument of the faked method call.</typeparam>
+        /// <typeparam name="T4">Type of the fourth argument of the faked method call.</typeparam>
+        /// <typeparam name="T5">Type of the fifth argument of the faked method call.</typeparam>
+        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+        /// <returns>The fake object.</returns>
+        public static TFake Invokes<TFake, T1, T2, T3, T4, T5>(this ICallbackConfiguration<TFake> configuration, Action<T1, T2, T3, T4, T5> actionToInvoke)
+        {
+            Guard.AgainstNull(configuration, nameof(configuration));
+
+            return configuration.Invokes(call =>
+                {
+                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
+
+                    actionToInvoke(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4));
+                });
+        }
     }
 }
