@@ -140,7 +140,6 @@
     <Compile Include="ArgumentConstraintManagerExtensions\IsInstanceOfTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\IsNullTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\StringContainsTests.cs" />
-    <Compile Include="Configuration\AnyCallCallRuleTests.cs" />
     <Compile Include="Configuration\AnyCallConfigurationTests.cs" />
     <Compile Include="Configuration\FakeConfigurationExceptionTests.cs" />
     <Compile Include="Configuration\FakeConfigurationManagerTests.cs" />

@@ -26,6 +26,11 @@ namespace FakeItEasy.Configuration
                     return "Any call with return type {0} to the fake object.".FormatInvariant(this.ApplicableToMembersWithReturnType.FullName);
                 }
 
+                if (this.ApplicableToAllNonVoidReturnTypes)
+                {
+                    return "Any call with non-void return type to the fake object.";
+                }
+
                 return "Any call made to the fake object.";
             }
         }
@@ -37,11 +42,22 @@ namespace FakeItEasy.Configuration
 
         protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
-            return
-                this.argumentsPredicate(fakeObjectCall.Arguments) &&
-                    (this.ApplicableToMembersWithReturnType == null
-                    || (this.ApplicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType)
-                    || (this.ApplicableToAllNonVoidReturnTypes && fakeObjectCall.Method.ReturnType != typeof(void)));
+            if (!this.argumentsPredicate(fakeObjectCall.Arguments))
+            {
+                return false;
+            }
+
+            if (this.ApplicableToMembersWithReturnType != null)
+            {
+                return this.ApplicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType;
+            }
+
+            if (this.ApplicableToAllNonVoidReturnTypes)
+            {
+                return fakeObjectCall.Method.ReturnType != typeof(void);
+            }
+
+            return true;
         }
     }
 }

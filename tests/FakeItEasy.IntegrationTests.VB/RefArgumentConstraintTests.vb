@@ -5,8 +5,8 @@ Imports Xunit
 Public Class RefArgumentConstraintTests
 
     Public Interface IFoo
-        Function Bar(ByRef x As String) As Integer
-        Function Baz(<Out> ByRef x As String) As Integer
+        Function Bar(ByRef refParameter As String) As Integer
+        Function Baz(<Out> ByRef outParameter As String) As Integer
     End Interface
 
     <Fact>
