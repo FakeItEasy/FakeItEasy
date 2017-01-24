@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "Castle.Core": "4.0.0-beta002",
+    "Castle.Core": "4.0.0",
     "Microsoft.Extensions.DependencyModel": "1.0.0",
     "StyleCop.MSBuild": {
       "version": "4.7.54",
