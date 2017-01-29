@@ -194,6 +194,66 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallsTo()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var fake = new Fake<IFoo>();
+            fake.CallsTo(x => x.Bar());
+        }
+    }
+    interface IFoo { int Bar(); }
+}";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'fake.CallsTo(x => x.Bar())'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_AnyCall()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var fake = new Fake<IFoo>();
+            fake.AnyCall();
+        }
+    }
+    interface IFoo { int Bar(); }
+}";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'fake.AnyCall()'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WithAnyArguments()
         {
             var test = @"using FakeItEasy;
@@ -218,6 +278,37 @@ namespace TheNamespace
                     Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
                     Message =
                         "Unused call specification 'A.CallTo(() => foo.Bar()).WithAnyArguments()'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WithReturnType_With_No_Return_Specified()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var foo = A.Fake<IFoo>();
+            A.CallTo(foo).WithReturnType<int>();
+        }
+    }
+    interface IFoo { int Bar(); }
+}
+";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallTo(foo).WithReturnType<int>()'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
                 });
@@ -256,6 +347,67 @@ namespace TheNamespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_Where_With_No_Return_Type()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var fake = A.Fake<IFoo>();
+            A.CallTo(fake).Where(call => true, output => new object());
+        }
+    }
+    interface IFoo { int Bar(); }
+}
+";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallTo(fake).Where(call => true, output => new object())'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WhenArgumentsMatch_With_No_Return_Specified()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var foo = A.Fake<IFoo>();
+            A.CallTo(foo).WhenArgumentsMatch(x => true);
+        }
+    }
+    interface IFoo { int Bar(); }
+}";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallTo(foo).WhenArgumentsMatch(x => true)'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet()
         {
             var test = @"using FakeItEasy;
@@ -281,6 +433,37 @@ namespace TheNamespace
                     Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
                     Message =
                         "Unused call specification 'A.CallToSet(() => foo.Bar)'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
+                });
+        }
+
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallsToSet()
+        {
+            var test = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var fake = new Fake<IFoo>();
+            fake.CallsToSet(x => x.Bar());
+        }
+    }
+    interface IFoo { int Bar(); }
+}
+";
+
+            this.VerifyCSharpDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'fake.CallsToSet(x => x.Bar())'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
                 });
