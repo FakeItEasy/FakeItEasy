@@ -27,6 +27,17 @@ namespace FakeItEasy.Configuration
         ///   Initializes a new instance of the <see cref = "ArgumentCollection" /> class.
         /// </summary>
         /// <param name = "arguments">The arguments.</param>
+        /// <param name = "method">The method.</param>
+        [DebuggerStepThrough]
+        public ArgumentCollection(object[] arguments, MethodInfo method)
+            : this(arguments, GetArgumentNames(method))
+        {
+        }
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "ArgumentCollection" /> class.
+        /// </summary>
+        /// <param name = "arguments">The arguments.</param>
         /// <param name = "argumentNames">The argument names.</param>
         [DebuggerStepThrough]
         internal ArgumentCollection(object[] arguments, IEnumerable<string> argumentNames)
@@ -41,17 +52,6 @@ namespace FakeItEasy.Configuration
 
             this.arguments = arguments;
             this.ArgumentNames = argumentNames.ToArray();
-        }
-
-        /// <summary>
-        ///   Initializes a new instance of the <see cref = "ArgumentCollection" /> class.
-        /// </summary>
-        /// <param name = "arguments">The arguments.</param>
-        /// <param name = "method">The method.</param>
-        [DebuggerStepThrough]
-        internal ArgumentCollection(object[] arguments, MethodInfo method)
-            : this(arguments, GetArgumentNames(method))
-        {
         }
 
         /// <summary>

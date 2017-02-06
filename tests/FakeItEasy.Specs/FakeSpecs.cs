@@ -15,6 +15,12 @@
             void AnotherMethod();
 
             void AnotherMethod(string text);
+
+            string AMethodReturns();
+
+            string AnotherMethodReturns();
+
+            string AnotherMethodReturns(string text);
         }
 
         [Scenario]
@@ -94,6 +100,59 @@
 
             "Then it finds the matching call"
                 .x(() => matchedCalls.Select(c => c.Method.Name).Should().Equal("AnotherMethod"));
+        }
+
+        [Scenario]
+        public static void MatchingCallsWithReturnValueWithNoMatches(
+          IFoo fake,
+          IEnumerable<ICompletedFakeObjectCall> completedCalls,
+          IEnumerable<ICompletedFakeObjectCall> matchedCalls)
+        {
+            "Given a Fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And I make several calls to the Fake"
+                .x(() =>
+                {
+                    fake.AMethodReturns();
+                    fake.AnotherMethodReturns("houseboat");
+                });
+
+            "And I use the static Fake class to get the calls made on the Fake"
+                .x(() => completedCalls = Fake.GetCalls(fake));
+
+            "When I use Matching to find calls to a method with no matches"
+                .x(() => matchedCalls = completedCalls.Matching<IFoo>(c => c.AnotherMethodReturns("hovercraft")));
+
+            "Then it finds no calls"
+                .x(() => matchedCalls.Should().BeEmpty());
+        }
+
+        [Scenario]
+        public static void MatchingCallsWithReturnValueWithMatches(
+            IFoo fake,
+            IEnumerable<ICompletedFakeObjectCall> completedCalls,
+            IEnumerable<ICompletedFakeObjectCall> matchedCalls)
+        {
+            "Given a Fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And I make several calls to the Fake"
+                .x(() =>
+                {
+                    fake.AMethodReturns();
+                    fake.AnotherMethodReturns();
+                    fake.AnotherMethodReturns("houseboat");
+                });
+
+            "And I use the static Fake class to get the calls made on the Fake"
+                .x(() => completedCalls = Fake.GetCalls(fake));
+
+            "When I use Matching to find calls to a method with a match"
+                .x(() => matchedCalls = completedCalls.Matching<IFoo>(c => c.AnotherMethodReturns("houseboat")));
+
+            "Then it finds the matching call"
+                .x(() => matchedCalls.Select(c => c.Method.Name).Should().Equal("AnotherMethodReturns"));
         }
     }
 }
