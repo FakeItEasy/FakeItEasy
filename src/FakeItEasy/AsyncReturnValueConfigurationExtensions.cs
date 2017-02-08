@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -16,6 +17,7 @@
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exception">The exception to set on the returned task when a call that matches is invoked.</param>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task>> ThrowsAsync(
             this IReturnValueConfiguration<Task> configuration,
             Exception exception)
@@ -32,6 +34,7 @@
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to set on the returned task when a call that matches is invoked.</param>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task>> ThrowsAsync(
             this IReturnValueConfiguration<Task> configuration,
             Func<IFakeObjectCall, Exception> exceptionFactory)
@@ -48,6 +51,7 @@
         /// <param name="configuration">The configuration to use.</param>
         /// <param name="exceptionFactory">A function that returns the exception to set on the returned task when a call that matches is invoked.</param>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task>> ThrowsAsync(
             this IReturnValueConfiguration<Task> configuration,
             Func<Exception> exceptionFactory)
@@ -65,6 +69,7 @@
         /// <param name="exceptionFactory">A function that returns the exception to set on the returned task when a call that matches is invoked.</param>
         /// <typeparam name="T1">The type of the parameter of the exception factory.</typeparam>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task>> ThrowsAsync<T1>(
             this IReturnValueConfiguration<Task> configuration,
             Func<T1, Exception> exceptionFactory)
@@ -83,6 +88,7 @@
         /// <typeparam name="T2">The type of the second parameter of the exception factory.</typeparam>
         /// <param name="exceptionFactory">A function that returns the exception to set on the returned task when a call that matches is invoked.</param>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task>> ThrowsAsync<T1, T2>(
             this IReturnValueConfiguration<Task> configuration,
             Func<T1, T2, Exception> exceptionFactory)
@@ -104,6 +110,7 @@
         /// <typeparam name="T2">The type of the second parameter of the exception factory.</typeparam>
         /// <typeparam name="T3">The type of the third parameter of the exception factory.</typeparam>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task>> ThrowsAsync<T1, T2, T3>(
             this IReturnValueConfiguration<Task> configuration,
             Func<T1, T2, T3, Exception> exceptionFactory)
@@ -126,6 +133,7 @@
         /// <typeparam name="T3">The type of the third parameter of the exception factory.</typeparam>
         /// <typeparam name="T4">The type of the fourth parameter of the exception factory.</typeparam>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task>> ThrowsAsync<T1, T2, T3, T4>(
                 this IReturnValueConfiguration<Task> configuration,
                 Func<T1, T2, T3, T4, Exception> exceptionFactory)
@@ -146,6 +154,7 @@
         /// <param name="exception">The exception to set on the returned task when a call that matches is invoked.</param>
         /// <typeparam name="T">The type of the returned task's result.</typeparam>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T>(
             this IReturnValueConfiguration<Task<T>> configuration,
             Exception exception)
@@ -163,6 +172,7 @@
         /// <param name="exceptionFactory">A function that returns the exception to set on the returned task when a call that matches is invoked.</param>
         /// <typeparam name="T">The type of the returned task's result.</typeparam>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T>(
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<IFakeObjectCall, Exception> exceptionFactory)
@@ -180,6 +190,7 @@
         /// <param name="exceptionFactory">A function that returns the exception to set on the returned task when a call that matches is invoked.</param>
         /// <typeparam name="T">The type of the returned task's result.</typeparam>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T>(
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<Exception> exceptionFactory)
@@ -198,6 +209,7 @@
         /// <typeparam name="T">The type of the returned task's result.</typeparam>
         /// <typeparam name="T1">The type of the parameter of the exception factory.</typeparam>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T, T1>(
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<T1, Exception> exceptionFactory)
@@ -217,6 +229,7 @@
         /// <typeparam name="T2">The type of the second parameter of the exception factory.</typeparam>
         /// <param name="exceptionFactory">A function that returns the exception to set on the returned task when a call that matches is invoked.</param>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T, T1, T2>(
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<T1, T2, Exception> exceptionFactory)
@@ -239,6 +252,7 @@
         /// <typeparam name="T2">The type of the second parameter of the exception factory.</typeparam>
         /// <typeparam name="T3">The type of the third parameter of the exception factory.</typeparam>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T, T1, T2, T3>(
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<T1, T2, T3, Exception> exceptionFactory)
@@ -262,6 +276,7 @@
         /// <typeparam name="T3">The type of the third parameter of the exception factory.</typeparam>
         /// <typeparam name="T4">The type of the fourth parameter of the exception factory.</typeparam>
         /// <returns>Configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task<T>>> ThrowsAsync<T, T1, T2, T3, T4>(
                 this IReturnValueConfiguration<Task<T>> configuration,
                 Func<T1, T2, T3, T4, Exception> exceptionFactory)

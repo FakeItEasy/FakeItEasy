@@ -1,6 +1,7 @@
 namespace FakeItEasy.Expressions
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -89,6 +90,7 @@ namespace FakeItEasy.Expressions
                 this.fake = fake;
             }
 
+            [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Justification = "It's not public, and will never be called with a null value")]
             protected override Expression VisitParameter(ParameterExpression node)
             {
                 return Expression.Constant(this.fake, node.Type);

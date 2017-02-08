@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Specs
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -303,6 +304,8 @@
                 .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA2237:MarkISerializableTypesWithSerializable", Justification = "Irrelevant for test purposes, and not compatible with .NET Core")]
+        [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors", Justification = "Irrelevant for test purposes")]
         public class MyException : Exception
         {
         }
