@@ -167,8 +167,7 @@ namespace FakeItEasy.Specs
         [Example(int.MaxValue)]
         public static void ConfiguringSetterToDoNothingForAnyValue(
             int value,
-            IHaveInterestingProperties subject,
-            Exception exception)
+            IHaveInterestingProperties subject)
         {
             "Given a Fake with a property"
                 .x(() => subject = A.Fake<IHaveInterestingProperties>());
@@ -191,8 +190,7 @@ namespace FakeItEasy.Specs
         [Example(int.MaxValue)]
         public static void ConfiguringSetterToCallBaseMethodForAnyValue(
             int value,
-            ClassWithInterestingProperties subject,
-            Exception exception)
+            ClassWithInterestingProperties subject)
         {
             "Given a Fake with a property"
                 .x(() => subject = A.Fake<ClassWithInterestingProperties>());
