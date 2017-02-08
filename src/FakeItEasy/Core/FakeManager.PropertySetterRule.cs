@@ -32,17 +32,33 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
-                var newRule = new CallRuleMetadata
-                                  {
-                                      CalledNumberOfTimes = 1,
-                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.fakeManager)
-                                                 {
-                                                     Indices = fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1).ToArray(),
-                                                     Value = fakeObjectCall.Arguments.Last()
-                                                 }
-                                  };
+                // Setting the property adds a PropertyBehaviorRule to store the assigned value.
+                // The PropertyBehaviorRule is added at the end of user rules to avoid overriding
+                // explicit configurations of the property made with CallTo.
+                var existingRule = this.fakeManager
+                    .AllUserRules
+                    .Select(metadata => metadata.Rule)
+                    .OfType<PropertyBehaviorRule>()
+                    .LastOrDefault(rule => rule.IsMatchForSetter(fakeObjectCall));
 
-                this.fakeManager.AllUserRules.AddFirst(newRule);
+                if (existingRule != null)
+                {
+                    existingRule.Value = fakeObjectCall.Arguments.Last();
+                }
+                else
+                {
+                    var newRule = new CallRuleMetadata
+                    {
+                        CalledNumberOfTimes = 1,
+                        Rule = new PropertyBehaviorRule(fakeObjectCall.Method)
+                        {
+                            Indices = fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1).ToArray(),
+                            Value = fakeObjectCall.Arguments.Last()
+                        }
+                    };
+
+                    this.fakeManager.AllUserRules.AddLast(newRule);
+                }
             }
         }
     }

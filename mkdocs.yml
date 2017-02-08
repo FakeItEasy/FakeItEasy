@@ -17,7 +17,6 @@ pages:
   - Specifying Return Values: specifying-return-values.md
   - Throwing Exceptions: throwing-exceptions.md
   - Doing Nothing: doing-nothing.md
-  - Read/Write Property Behavior: read-write-property-behavior.md
   - Assigning out and ref parameters: assigning-out-and-ref-parameters.md
   - Invoking Custom Code: invoking-custom-code.md
   - Calling base methods: calling-base-methods.md

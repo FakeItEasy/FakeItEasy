@@ -35,7 +35,7 @@ namespace FakeItEasy.Core
 
                 var newRule = new CallRuleMetadata
                                   {
-                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method, this.fakeManager)
+                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method)
                                       {
                                           Value = fakeObjectCall.GetDefaultReturnValue(),
                                           Indices = fakeObjectCall.Arguments.ToArray(),
