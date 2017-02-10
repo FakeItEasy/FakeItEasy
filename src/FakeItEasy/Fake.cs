@@ -49,6 +49,16 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Clears all recorded calls of the faked object.
+        /// </summary>
+        /// <param name="fakedObject">The faked object to clear the recorded calls of.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
+        public static void ClearRecordedCalls(object fakedObject)
+        {
+            Facade.ClearRecordedCalls(fakedObject);
+        }
+
+        /// <summary>
         /// Sets a new fake to each property or field that is tagged with the FakeAttribute in the specified
         /// fixture.
         /// </summary>
