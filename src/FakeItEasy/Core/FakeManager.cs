@@ -182,6 +182,17 @@ namespace FakeItEasy.Core
         }
 
         /// <summary>
+        /// Removes any recorded calls.
+        /// </summary>
+        internal virtual void ClearRecordedCalls()
+        {
+            ICompletedFakeObjectCall ignored;
+            while (this.recordedCalls.TryDequeue(out ignored))
+            {
+            }
+        }
+
+        /// <summary>
         /// Adds a call rule to the fake object after the specified rule.
         /// </summary>
         /// <param name="previousRule">The rule after which to add a rule.</param>

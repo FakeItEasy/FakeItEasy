@@ -89,6 +89,34 @@ namespace FakeItEasy.Tests
         }
 
         [Fact]
+        public void ClearRecordedCalls_should_call_clear_recorded_calls_on_manager()
+        {
+            // Arrange
+            var fake = A.Dummy<object>();
+            var manager = A.Fake<FakeManager>();
+
+            A.CallTo(() => this.managerAccessor.GetFakeManager(fake)).Returns(manager);
+
+            // Act
+            this.facade.ClearRecordedCalls(fake);
+
+            // Assert
+            A.CallTo(() => manager.ClearRecordedCalls()).MustHaveHappened();
+        }
+
+        [Fact]
+        public void ClearRecordedCalls_should_be_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Expression<System.Action> call = () => this.facade.ClearRecordedCalls(A.Dummy<object>());
+            call.Should().BeNullGuarded();
+        }
+
+        [Fact]
         public void Initialize_should_call_initialize_on_fake_initializer()
         {
             // Arrange

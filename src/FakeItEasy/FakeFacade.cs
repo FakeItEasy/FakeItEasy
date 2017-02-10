@@ -37,6 +37,14 @@ namespace FakeItEasy
             manager.ClearUserRules();
         }
 
+        public virtual void ClearRecordedCalls(object fakedObject)
+        {
+            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+
+            var manager = this.fakeManagerAccessor.GetFakeManager(fakedObject);
+            manager.ClearRecordedCalls();
+        }
+
         public void InitializeFixture(object fixture)
         {
             Guard.AgainstNull(fixture, nameof(fixture));

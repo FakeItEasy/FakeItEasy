@@ -413,6 +413,21 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Fact]
+        public void Should_clear_all_recorded_calls_when_calling_clear_recorded_calls()
+        {
+            // Arrange
+            var manager = new FakeManager(typeof(int), 0);
+            manager.RecordCall(A.Dummy<ICompletedFakeObjectCall>());
+            manager.RecordCall(A.Dummy<ICompletedFakeObjectCall>());
+
+            // Act
+            manager.ClearRecordedCalls();
+
+            // Assert
+            manager.GetRecordedCalls().Should().BeEmpty();
+        }
+
+        [Fact]
         public void Should_invoke_listener_when_call_is_intercepted()
         {
             // Arrange
