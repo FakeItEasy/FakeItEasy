@@ -100,8 +100,7 @@ namespace FakeItEasy.IntegrationTests
       (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
       (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
 
-      Types marked with * could not be resolved, register them in the current
-      IFakeObjectContainer to enable these constructors.
+      Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
 
 ";
             exception.Should()

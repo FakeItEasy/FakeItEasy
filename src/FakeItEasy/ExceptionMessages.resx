@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicatorNotSetExceptionMessage" xml:space="preserve">
     <value>The Apply method of the ExpressionInterceptor may no be called before the Applicator property has been set.</value>
@@ -191,17 +191,6 @@ The following constructors failed:
   </data>
   <data name="FakeCreationExceptionDefaultMessage" xml:space="preserve">
     <value>Unable to create fake object.</value>
-  </data>
-  <data name="FailedToGenerateProxyPattern" xml:space="preserve">
-    <value>FakeItEasy failed to create fake object of type "{0}".
-
-1. The type is not registered in the current IFakeObjectContainer.
-2. The current IProxyGenerator failed to generate a proxy for the following reason:
-
-{1}</value>
-  </data>
-  <data name="UnableToCreateDummyPattern" xml:space="preserve">
-    <value>FakeItEasy was unable to create dummy of type "{0}", register it in the current IFakeObjectContainer to enable this.</value>
   </data>
   <data name="SpecifiedCallIsNotToFakedObject" xml:space="preserve">
     <value>The specified call is not made on a fake object.</value>

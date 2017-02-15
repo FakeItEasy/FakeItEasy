@@ -77,8 +77,7 @@ namespace FakeItEasy.Tests.Core
       (*System.Int32, System.String)
       (System.Object, *System.DateTime)
 
-      Types marked with * could not be resolved, register them in the current
-      IFakeObjectContainer to enable these constructors.
+      Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
 
 "
                 },
@@ -147,8 +146,7 @@ namespace FakeItEasy.Tests.Core
       (*System.Int32, System.String)
       (System.Object, *System.DateTime)
 
-      Types marked with * could not be resolved, register them in the current
-      IFakeObjectContainer to enable these constructors.
+      Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
 
 "
                 });

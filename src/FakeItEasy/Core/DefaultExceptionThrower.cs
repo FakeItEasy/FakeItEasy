@@ -78,7 +78,7 @@ namespace FakeItEasy.Core
 
                 message
                     .AppendLine()
-                    .AppendIndented("      ", "Types marked with * could not be resolved, register them in the current\r\nIFakeObjectContainer to enable these constructors.")
+                    .AppendIndented("      ", "Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.")
                     .AppendLine();
             }
         }
