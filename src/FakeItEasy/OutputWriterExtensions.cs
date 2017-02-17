@@ -2,6 +2,7 @@ namespace FakeItEasy
 {
     using System;
     using System.Globalization;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Provides extensions for <see cref="IOutputWriter"/>.
@@ -47,7 +48,7 @@ namespace FakeItEasy
             Guard.AgainstNull(writer, nameof(writer));
             Guard.AgainstNull(value, nameof(value));
 
-            writer.Write(value.ToString());
+            writer.Write(FakeObjectHelper.ToString(value));
             return writer;
         }
     }

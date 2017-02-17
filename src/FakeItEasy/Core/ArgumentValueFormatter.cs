@@ -115,7 +115,7 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
-                return argumentValue.ToString();
+                return FakeObjectHelper.ToString(argumentValue);
             }
         }
 
