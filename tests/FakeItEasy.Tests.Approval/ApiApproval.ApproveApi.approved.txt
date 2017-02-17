@@ -508,6 +508,12 @@ namespace FakeItEasy.Core
     {
         object ReturnValue { get; }
     }
+    public interface IFakeObject
+    {
+        bool Equals(object other);
+        int GetHashCode();
+        string ToString();
+    }
     public interface IFakeObjectCall
     {
         FakeItEasy.Configuration.ArgumentCollection Arguments { get; }
