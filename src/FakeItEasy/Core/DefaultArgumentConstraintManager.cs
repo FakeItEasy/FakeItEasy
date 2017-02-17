@@ -47,6 +47,8 @@ namespace FakeItEasy.Core
         private class MatchesConstraint
             : IArgumentConstraint
         {
+            private static readonly bool IsNullable = typeof(T).IsNullable();
+
             private readonly Func<T, bool> predicate;
             private readonly Action<IOutputWriter> descriptionWriter;
 
@@ -65,7 +67,17 @@ namespace FakeItEasy.Core
 
             bool IArgumentConstraint.IsValid(object argument)
             {
-                return (argument == null || argument is T) && this.predicate.Invoke((T)argument);
+                return this.IsValueValidForType(argument) && this.predicate.Invoke((T)argument);
+            }
+
+            private bool IsValueValidForType(object argument)
+            {
+                if (argument == null)
+                {
+                    return IsNullable;
+                }
+
+                return argument is T;
             }
         }
     }
