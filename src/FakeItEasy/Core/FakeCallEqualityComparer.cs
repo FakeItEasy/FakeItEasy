@@ -13,7 +13,7 @@ namespace FakeItEasy.Core
 
             return x.Method.Equals(y.Method)
                 && object.ReferenceEquals(x.FakedObject, y.FakedObject)
-                    && x.Arguments.SequenceEqual(y.Arguments);
+                    && x.Arguments.SequenceEqual(y.Arguments, FakeObjectHelper.EqualityComparer);
         }
 
         // NOTE (adamralph): based on http://stackoverflow.com/a/263416/49241
@@ -30,7 +30,7 @@ namespace FakeItEasy.Core
                 {
                     foreach (var argument in obj.Arguments)
                     {
-                        hash = (hash * 23) + (argument == null ? 0 : argument.GetHashCode());
+                        hash = (hash * 23) + (argument == null ? 0 : FakeObjectHelper.GetHashCode(argument));
                     }
                 }
             }

@@ -16,7 +16,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
 
         public bool IsValid(object argument)
         {
-            return object.Equals(this.ExpectedValue, argument);
+            return FakeObjectHelper.Equals(this.ExpectedValue, argument);
         }
 
         public override string ToString()
@@ -32,7 +32,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
                 return "\"{0}\"".FormatInvariant(stringValue);
             }
 
-            return this.ExpectedValue.ToString();
+            return FakeObjectHelper.ToString(this.ExpectedValue);
         }
 
         public void WriteDescription(IOutputWriter writer)

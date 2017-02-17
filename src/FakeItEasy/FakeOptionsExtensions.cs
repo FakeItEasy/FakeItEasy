@@ -21,12 +21,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(options, nameof(options));
 
-            Action<IFakeObjectCall> thrower = call =>
-                {
-                    throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(call.Method.Name));
-                };
-
-            return options.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
+            return options.ConfigureFake(fake => ConfigureStrictFake(fake));
         }
 
         /// <summary>
@@ -39,12 +34,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
 
-            Action<IFakeObjectCall> thrower = call =>
-                {
-                    throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(call.Method.Name));
-                };
-
-            return optionsBuilder.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
+            return optionsBuilder.ConfigureFake(ConfigureStrictFake);
         }
 
         /// <summary>
@@ -74,6 +64,18 @@ namespace FakeItEasy
             return optionsBuilder.ConfigureFake(fake => A.CallTo(fake)
                                                   .Where(call => !call.Method.IsAbstract)
                                                   .CallsBaseMethod());
+        }
+
+        private static void ConfigureStrictFake(object fake)
+        {
+            Action<IFakeObjectCall> thrower = call =>
+            {
+                throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(call.Method.Name));
+            };
+
+            A.CallTo(fake)
+                .Where(call => call.Method.DeclaringType != typeof(IFakeObject))
+                .Invokes(thrower);
         }
     }
 }

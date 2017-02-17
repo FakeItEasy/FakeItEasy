@@ -63,6 +63,8 @@
     <Compile Include="AsyncReturnValueConfigurationExtensions.cs" />
     <Compile Include="Compatibility\MethodInfoWrapper.cs" />
     <Compile Include="Configuration\PropertyExpressionHelper.cs" />
+    <Compile Include="Core\FakeObjectHelper.cs" />
+    <Compile Include="Core\IFakeObject.cs" />
     <Compile Include="LinkedListExtensions.cs" />
     <Compile Include="Configuration\IDoNothingConfiguration.cs" />
     <Compile Include="Configuration\IPropertySetterAnyValueConfiguration.cs" />

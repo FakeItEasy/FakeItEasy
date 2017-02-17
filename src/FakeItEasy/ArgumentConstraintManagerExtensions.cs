@@ -10,6 +10,7 @@ namespace FakeItEasy
     using System.Reflection;
 #endif
     using System.Threading;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Provides validation extensions for <see cref="IArgumentConstraintManager{T}"/>.
@@ -140,7 +141,7 @@ namespace FakeItEasy
             Guard.AgainstNull(manager, nameof(manager));
 
             return manager.Matches(
-                x => object.Equals(value, x),
+                x => FakeObjectHelper.Equals(value, x),
                 x => x.Write("equal to ").WriteArgumentValue(value));
         }
 
