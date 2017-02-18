@@ -188,6 +188,68 @@ End Namespace
 
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallsTo()
+        {
+            var test = @"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim fake = New Fake(Of IFoo)()
+            fake.CallsTo(Function(x) x.Bar())
+        End Sub
+    End Class
+
+    Interface IFoo
+        Function Bar() As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'fake.CallsTo(Function(x) x.Bar())'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 13) }
+                });
+        }
+
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_AnyCall()
+        {
+            var test = @"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim fake = New Fake(Of IFoo)()
+            fake.AnyCall()
+        End Sub
+    End Class
+
+    Interface IFoo
+        Function Bar() As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'fake.AnyCall()'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 13) }
+                });
+        }
+
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WithAnyArguments()
         {
             var test = @"Imports FakeItEasy
@@ -212,6 +274,37 @@ End Namespace
                     Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
                     Message =
                         "Unused call specification 'A.CallTo(Function() foo.Bar()).WithAnyArguments()'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 13) }
+                });
+        }
+
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WithReturnType_With_No_Return_Specified()
+        {
+            var test = @"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim foo = New Fake(Of IFoo)()
+            A.CallTo(foo).WithReturnType(Of Integer)()
+        End Sub
+    End Class
+
+    Interface IFoo
+        Function Bar() As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallTo(foo).WithReturnType(Of Integer)()'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 13) }
                 });
@@ -249,6 +342,66 @@ End Namespace
         }
 
         [Fact]
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_Where_With_No_Return_Type()
+        {
+            var test = @"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim foo = New Fake(Of IFoo)()
+            A.CallTo(foo).Where(Function() True, New Object())
+        End Sub
+    End Class
+
+    Interface IFoo
+        Function Bar() As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallTo(foo).Where(Function() True, New Object())'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 13) }
+                });
+        }
+
+        [Fact]
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_WhenArgumentsMatch_With_No_Return_Specified()
+        {
+            var test = @"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim foo = New Fake(Of IFoo)()
+            A.CallTo(foo).WhenArgumentsMatch(Function(x) True)
+        End Sub
+    End Class
+
+    Interface IFoo
+        Function Bar() As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'A.CallTo(foo).WhenArgumentsMatch(Function(x) True)'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 13) }
+                });
+        }
+
+        [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallToSet()
         {
@@ -274,6 +427,37 @@ End Namespace
                     Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
                     Message =
                         "Unused call specification 'A.CallToSet(Function() foo.Bar)'; did you forget to configure or assert the call?",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 13) }
+                });
+        }
+
+        [Fact]
+        [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
+        public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_CallsToSet()
+        {
+            var test = @"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim fake = New Fake(Of IFoo)()
+            fake.CallsToSet(Function(x) x.Bar())
+        End Sub
+    End Class
+
+    Interface IFoo
+        Function Bar() As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnostic(
+                test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Message =
+                        "Unused call specification 'fake.CallsToSet(Function(x) x.Bar())'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 13) }
                 });
