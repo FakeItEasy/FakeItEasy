@@ -36,7 +36,13 @@ namespace FakeItEasy
         [DebuggerStepThrough]
         public static bool CanBeInstantiatedAs(this Type type, Type targetType)
         {
-            return targetType.IsAssignableFrom(type) && !type.GetTypeInfo().IsAbstract;
+            if (!targetType.IsAssignableFrom(type))
+            {
+                return false;
+            }
+
+            var typeInfo = type.GetTypeInfo();
+            return !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
         }
     }
 }
