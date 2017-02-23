@@ -70,7 +70,7 @@ Can be labelled **ready** when all other issues on this milestone are closed.
     - [ ] ensure completeness of release notes, including non-owner contributors, if any (move release notes forward from any pre-releases to the current release)
     - [ ] attach main nupkg and analyzer nupkg
     - [ ] publish the release
-- [ ] push nupkgs to NuGet
+- [ ] push nupkgs to NuGet using the Deploy option on the AppVeyor build
 - [ ] tweet, mentioning contributors
 - [ ] post link to tweet as comment here for easy retweeting ;-)
 - [ ] post tweet in [Gitter](https://gitter.im/FakeItEasy/FakeItEasy)
@@ -94,7 +94,7 @@ Can be labelled **ready** when all other issues destined for this release are cl
     - [ ] ensure completeness of release notes, including non-owner contributors, if any
     - [ ] attach main nupkg and analyzer nupkg
     - [ ] publish the release
-- [ ] push nupkgs to NuGet
+- [ ] push nupkgs to NuGet using the Deploy option on the AppVeyor build
 - [ ] tweet, mentioning contributors
 - [ ] post link to tweet as comment here for easy retweeting ;-)
 - [ ] post tweet in [Gitter](https://gitter.im/FakeItEasy/FakeItEasy)
