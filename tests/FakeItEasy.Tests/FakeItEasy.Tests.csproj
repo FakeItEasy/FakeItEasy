@@ -110,6 +110,7 @@
     <Compile Include="TestHelpers\StringEnumerableExtensions.cs" />
     <Compile Include="TestHelpers\TypeExtensions.cs" />
     <Compile Include="TestHelpers\UsingCultureAttribute.cs" />
+    <Compile Include="TypeExtensionsTests.cs" />
     <Compile Include="WhereConfigurationExtensionsTests.cs" />
     <Compile Include="FakeOptionsExtensionsTests.cs" />
     <Compile Include="FakeObjectCallExtensionsTests.cs" />
