@@ -41,6 +41,11 @@ namespace FakeItEasy.Specs
             bool Validate([Out] string value);
         }
 
+        public interface IHaveANullableParameter
+        {
+            int Bar(int? x);
+        }
+
         [Scenario]
         public static void ParameterArrays(
             ITypeWithParameterArray fake)
@@ -348,6 +353,24 @@ namespace FakeItEasy.Specs
 
             "Then it should return the default value"
                 .x(() => result.Should().BeFalse());
+        }
+
+        [Scenario]
+        public static void ThatArgumentConstraintForValueTypeWithNullArgument(
+            IHaveANullableParameter subject,
+            int result)
+        {
+            "Given a fake with a method that accepts a nullable value type parameter"
+                .x(() => subject = A.Fake<IHaveANullableParameter>());
+
+            "And a call configured for a non-nullable argument of that type"
+                .x(() => A.CallTo(() => subject.Bar(A<int>._)).Returns(42));
+
+            "When I make a call to this method with a null argument"
+                .x(() => result = subject.Bar(null));
+
+            "Then it doesn't match the configured call"
+                .x(() => result.Should().Be(0));
         }
 
         [Scenario]

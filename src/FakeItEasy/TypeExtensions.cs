@@ -38,5 +38,12 @@ namespace FakeItEasy
         {
             return targetType.IsAssignableFrom(type) && !type.GetTypeInfo().IsAbstract;
         }
+
+        public static bool IsNullable(this Type type)
+        {
+            var typeInfo = type.GetTypeInfo();
+            return !typeInfo.IsValueType
+                || (typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>));
+        }
     }
 }
