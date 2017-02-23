@@ -181,7 +181,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
         private static IEnumerable<Type> GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
         {
-            return additionalInterfacesToImplement.Concat(typeof(ITaggable));
+            return additionalInterfacesToImplement.Concat(new[] { typeof(ITaggable), typeof(IFakeObject) });
         }
 
 #if FEATURE_BINARY_SERIALIZATION

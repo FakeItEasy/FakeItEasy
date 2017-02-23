@@ -2,6 +2,7 @@ namespace FakeItEasy
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using FakeItEasy.Core;
 
     internal class DefaultOutputWriter
         : IOutputWriter
@@ -53,7 +54,7 @@ namespace FakeItEasy
                 return this;
             }
 
-            this.Write(value.ToString());
+            this.Write(FakeObjectHelper.ToString(value));
             return this;
         }
 

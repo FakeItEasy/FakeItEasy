@@ -99,7 +99,7 @@ namespace FakeItEasy
                 return stringArgument.Length > 0 ? string.Concat("\"", stringArgument, "\"") : "<string.Empty>";
             }
 
-            return argument.ToString();
+            return FakeObjectHelper.ToString(argument);
         }
     }
 }
