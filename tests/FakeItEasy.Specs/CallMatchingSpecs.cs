@@ -3,6 +3,7 @@ namespace FakeItEasy.Specs
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -420,6 +421,62 @@ namespace FakeItEasy.Specs
                     $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({fakeDescription})"));
         }
 
+        [Scenario]
+        [MemberData("FakesWithBadToString")]
+        public static void PassingAFakeWithABadToStringToAMethod<T>(
+            T fake, string fakeDescription, IHaveOneGenericParameter anotherFake, Exception exception)
+        {
+            $"Given a fake {fakeDescription} with a ToString method which throws"
+                .x(() => A.CallTo(() => fake.ToString()).Throws<Exception>());
+
+            "And another fake"
+                .x(() => anotherFake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I assert that a call to the second fake must have happened with the first fake as an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => anotherFake.Bar(fake)).MustHaveHappened()));
+
+            "Then the call should be described in terms of the first fake"
+                .x(() => exception.Message.Should().Contain(
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({fakeDescription})"));
+        }
+
+        [Scenario]
+        public static void PassingAnObjectWithABadToStringToAMethod(
+            ToStringThrows obj, IHaveOneGenericParameter fake, Exception exception)
+        {
+            $"Given an object with a ToString method which throws"
+                .x(() => obj = new ToStringThrows());
+
+            "And a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I assert that a call to the fake must have happened with the object as an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(obj)).MustHaveHappened()));
+
+            "Then the call should be described in terms of the object"
+                .x(() => exception.Message.Should().Contain(
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({obj.GetType().ToString()})"));
+        }
+
+        [Scenario]
+        [MemberData("StrictFakes")]
+        public static void PassingAStrictFakeToAMethod<T>(
+            Func<T> createFake, string fakeDescription, T fake, IHaveOneGenericParameter anotherFake, Exception exception)
+        {
+            $"Given a strict fake {fakeDescription}"
+                .x(() => fake = createFake());
+
+            "And another fake"
+                .x(() => anotherFake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I assert that a call to the second fake must have happened with the first fake as an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => anotherFake.Bar(fake)).MustHaveHappened()));
+
+            "Then the call should be described in terms of the first fake"
+                .x(() => exception.Message.Should().Contain(
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({fakeDescription})"));
+        }
+
         public static IEnumerable<object[]> Fakes()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object).FullName };
@@ -429,12 +486,37 @@ namespace FakeItEasy.Specs
             yield return new object[] { A.Fake<Action<int>>(), typeof(Action<int>).ToString() };
         }
 
+        public static IEnumerable<object[]> FakesWithBadToString()
+        {
+            yield return new object[] { A.Fake<object>(), "Faked " + typeof(object).FullName };
+            yield return new object[] { A.Fake<object>(), "Faked " + typeof(object).ToString() };
+            yield return new object[] { A.Fake<List<int>>(), "Faked " + typeof(List<int>).FullName };
+            yield return new object[] { A.Fake<IList<int>>(), "Faked " + typeof(IList<int>).FullName };
+        }
+
+        public static IEnumerable<object[]> StrictFakes()
+        {
+            yield return new object[] { new Func<object>(() => A.Fake<object>(o => o.Strict())), "Faked " + typeof(object).FullName };
+            yield return new object[] { new Func<object>(() => A.Fake<object>(o => o.Strict())), "Faked " + typeof(object).ToString() };
+            yield return new object[] { new Func<object>(() => A.Fake<List<int>>(o => o.Strict())), "Faked " + typeof(List<int>).FullName };
+            yield return new object[] { new Func<object>(() => A.Fake<IList<int>>(o => o.Strict())), "Faked " + typeof(IList<int>).FullName };
+            yield return new object[] { new Func<object>(() => A.Fake<Action<int>>(o => o.Strict())), typeof(Action<int>).ToString() };
+        }
+
         public class Generic<T>
         {
         }
 
         public class Generic<T1, T2>
         {
+        }
+
+        public class ToStringThrows
+        {
+            public override string ToString()
+            {
+                throw new Exception();
+            }
         }
     }
 }
