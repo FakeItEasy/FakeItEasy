@@ -18,6 +18,7 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="fakedObject">The faked object to get the manager object for.</param>
         /// <returns>The fake object manager.</returns>
+        /// <exception cref="ArgumentException">If <paramref name="fakedObject"/> is not actually a faked object.</exception>
         [DebuggerStepThrough]
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static FakeManager GetFakeManager(object fakedObject)
@@ -55,6 +56,18 @@ namespace FakeItEasy
         public static void InitializeFixture(object fixture)
         {
             Facade.InitializeFixture(fixture);
+        }
+
+        /// <summary>
+        /// Gets the fake manager associated with the proxy, if any.
+        /// </summary>
+        /// <param name="fakedObject">The proxy to get the manager from.</param>
+        /// <returns>The fake manager, or <c>null</c> if <paramref name="fakedObject"/> is not actually a faked object.</returns>
+        [DebuggerStepThrough]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
+        internal static FakeManager TryGetFakeManager(object fakedObject)
+        {
+            return Facade.TryGetFakeManager(fakedObject);
         }
     }
 }
