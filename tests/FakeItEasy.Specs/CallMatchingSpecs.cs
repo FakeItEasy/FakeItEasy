@@ -401,6 +401,34 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Be("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()"));
         }
 
+        [Scenario]
+        [MemberData("Fakes")]
+        public static void PassingAFakeToAMethod<T>(
+            T fake, string fakeDescription, IHaveOneGenericParameter anotherFake, Exception exception)
+        {
+            $"Given a fake {fakeDescription}"
+                .x(() => { });
+
+            "And another fake"
+                .x(() => anotherFake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I assert that a call to the second fake must have happened with the first fake as an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => anotherFake.Bar(fake)).MustHaveHappened()));
+
+            "Then the call should be described in terms of the first fake"
+                .x(() => exception.Message.Should().Contain(
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({fakeDescription})"));
+        }
+
+        public static IEnumerable<object[]> Fakes()
+        {
+            yield return new object[] { A.Fake<object>(), "Faked " + typeof(object).FullName };
+            yield return new object[] { A.Fake<object>(), "Faked " + typeof(object).ToString() };
+            yield return new object[] { A.Fake<List<int>>(), "Faked " + typeof(List<int>).FullName };
+            yield return new object[] { A.Fake<IList<int>>(), "Faked " + typeof(IList<int>).FullName };
+            yield return new object[] { A.Fake<Action<int>>(), typeof(Action<int>).ToString() };
+        }
+
         public class Generic<T>
         {
         }
