@@ -1,5 +1,6 @@
 namespace FakeItEasy.Expressions.ArgumentConstraints
 {
+    using System;
     using FakeItEasy.Core;
 
     internal class EqualityArgumentConstraint
@@ -32,7 +33,17 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
                 return "\"{0}\"".FormatInvariant(stringValue);
             }
 
-            return this.ExpectedValue.ToString();
+            try
+            {
+                return this.ExpectedValue.ToString();
+            }
+            catch (Exception)
+            {
+                FakeManager manager = Fake.TryGetFakeManager(this.ExpectedValue);
+                return manager != null
+                    ? $"Faked {manager.FakeObjectType.FullName}"
+                    : this.ExpectedValue.GetType().ToString();
+            }
         }
 
         public void WriteDescription(IOutputWriter writer)

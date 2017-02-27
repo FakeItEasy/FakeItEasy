@@ -21,6 +21,13 @@ namespace FakeItEasy
             return this.fakeManagerAccessor.GetFakeManager(fakedObject);
         }
 
+        public virtual FakeManager TryGetFakeManager(object fakedObject)
+        {
+            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+
+            return this.fakeManagerAccessor.TryGetFakeManager(fakedObject);
+        }
+
         public virtual IEnumerable<ICompletedFakeObjectCall> GetCalls(object fakedObject)
         {
             Guard.AgainstNull(fakedObject, nameof(fakedObject));

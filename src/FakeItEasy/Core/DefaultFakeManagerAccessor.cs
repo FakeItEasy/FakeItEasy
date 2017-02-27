@@ -17,13 +17,12 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="proxy">The proxy to get the manager from.</param>
         /// <returns>A fake manager.</returns>
+        /// <exception cref="ArgumentException">If <paramref name="proxy"/> is not actually a faked object.</exception>
         public FakeManager GetFakeManager(object proxy)
         {
             Guard.AgainstNull(proxy, nameof(proxy));
 
-            var taggable = AsTaggable(proxy);
-
-            var result = taggable.Tag as FakeManager;
+            FakeManager result = this.TryGetFakeManager(proxy);
 
             if (result == null)
             {
@@ -31,6 +30,20 @@ namespace FakeItEasy.Core
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets the fake manager associated with the proxy, if any.
+        /// </summary>
+        /// <param name="proxy">The proxy to get the manager from.</param>
+        /// <returns>The fake manager, or <c>null</c> if <paramref name="proxy"/> is not actually a faked object.</returns>
+        public FakeManager TryGetFakeManager(object proxy)
+        {
+            Guard.AgainstNull(proxy, nameof(proxy));
+
+            var taggable = AsTaggable(proxy);
+
+            return taggable.Tag as FakeManager;
         }
 
         public void TagProxy(object proxy, FakeManager manager)
