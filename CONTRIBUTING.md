@@ -40,7 +40,7 @@ If your contribution changes the public API, you will initially have a test fail
 
 ## Spaces not Tabs
 
-Pull requests containing tabs will not be accepted. Make sure you set your editor to replace tabs with spaces. Indents for all file types should be 4 characters wide with the exception of Ruby (rakefile.rb) which should have indents 2 characters wide.
+Pull requests containing tabs will not be accepted. Make sure you set your editor to replace tabs with spaces. Indents for all file types should be 4 characters wide with the exception of JSON which should have indents 2 characters wide.
 
 ## Line Endings
 
