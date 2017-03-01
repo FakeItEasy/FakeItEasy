@@ -125,62 +125,77 @@ namespace FakeItEasy.Specs
         public void UnsubscribedEvent(
             Exception caughtException)
         {
-            "when raising unsubscribed event"
+            "Given an event with no subscribers"
+                .See(() => nameof(Fake.UnsubscribedEvent));
+
+            "When I raise the event"
                 .x(() => caughtException = Record.Exception(() => Fake.UnsubscribedEvent += Raise.WithEmpty()));
 
-            "it should not throw"
+            "Then the call doesn't throw"
                 .x(() => caughtException.Should().BeNull());
         }
 
         [Scenario]
         public void WithEmpty()
         {
-            "when raising event with empty arguments"
+            "Given an event of type EventHandler"
+                .See(() => nameof(Fake.SubscribedEvent));
+
+            "When I raise the event without specifying sender or arguments"
                 .x(() => Fake.SubscribedEvent += Raise.WithEmpty());
 
-            "it should pass the fake as sender"
+            "Then the fake is passed as the sender"
                 .x(() => CapturedSender.Should().BeSameAs(Fake));
 
-            "it should pass empty event arguments"
+            "And an empty EventArgs is passed as the event arguments"
                 .x(() => CapturedArgs1.Should().Be(EventArgs.Empty));
         }
 
         [Scenario]
         public void EventArguments()
         {
-            "when raising event passing arguments"
+            "Given an event of type EventHandler"
+                .See(() => nameof(Fake.SubscribedEvent));
+
+            "When I raise the event specifying only the event arguments"
                 .x(() => Fake.SubscribedEvent += Raise.With(this.eventArgs));
 
-            "it should pass the fake as sender"
+            "Then the fake is passed as the sender"
                 .x(() => CapturedSender.Should().BeSameAs(Fake));
 
-            "it should pass the event arguments"
+            "And the supplied value is passed as the event arguments"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.eventArgs));
         }
 
         [Scenario]
         public void SenderAndEventArguments()
         {
-            "when raising event passing sender and arguments"
+            "Given an event of type EventHandler"
+                .See(() => nameof(Fake.SubscribedEvent));
+
+            "When I raise the event specifying the sender and the event arguments"
                 .x(() => Fake.SubscribedEvent += Raise.With(SampleSender, this.eventArgs));
 
-            "it should pass the sender"
+            "Then the supplied sender is passed as the event sender"
                 .x(() => CapturedSender.Should().BeSameAs(SampleSender));
 
-            "it should pass the event arguments"
+            "And the supplied value is passed as the event arguments"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.eventArgs));
         }
 
         [Scenario]
         public void NullSenderAndEventArguments()
         {
-            "when raising event passing arguments and null sender"
+            "Given an event of type EventHandler"
+                .See(() => nameof(Fake.SubscribedEvent));
+
+            "When I raise the event specifying the event arguments and a null sender"
                 .x(() => Fake.SubscribedEvent += Raise.With(null, this.eventArgs));
 
-            "it should pass null as the sender"
+            "Then null is passed as the event sender"
                 .x(() => CapturedSender.Should().BeNull());
 
-            "it should pass the event arguments"
+            "And the supplied value is passed as the event arguments"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.eventArgs));
         }
 
@@ -189,59 +204,71 @@ namespace FakeItEasy.Specs
             int handler1InvocationCount,
             int handler2InvocationCount)
         {
-            "establish"
+            "Given an event of type EventHandler"
+                .See(() => nameof(Fake.SubscribedEvent));
+
+            "And the event has multiple subscribers"
                 .x(() =>
                     {
                         Fake.SubscribedEvent += (s, e) => handler1InvocationCount++;
                         Fake.SubscribedEvent += (s, e) => handler2InvocationCount++;
                     });
 
-            "when raising event with multiple subscribers"
+            "When I raise the event"
                 .x(() => Fake.SubscribedEvent += Raise.WithEmpty());
 
-            "it should invoke the first handler once"
+            "Then the first subscriber is invoked once"
                 .x(() => handler1InvocationCount.Should().Be(1));
 
-            "it should invoke the second handler once"
+            "And the second subscriber is invoked once"
                 .x(() => handler2InvocationCount.Should().Be(1));
         }
 
         [Scenario]
         public void CustomEventArguments()
         {
-            "when raising generic event passing arguments"
+            "Given an event of type EventHandler with custom event arguments type"
+                .See(() => nameof(Fake.GenericEvent));
+
+            "When I raise the event specifying only the event arguments"
                 .x(() => Fake.GenericEvent += Raise.With(this.customEventArgs));
 
-            "it should pass the fake as sender"
+            "Then the fake is passed as the sender"
                 .x(() => CapturedSender.Should().BeSameAs(Fake));
 
-            "it should pass the event arguments"
+            "And the supplied value is passed as the event arguments"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.customEventArgs));
         }
 
         [Scenario]
         public void SenderAndCustomEventArguments()
         {
-            "when raising generic event passing sender and arguments"
+            "Given an event of type EventHandler with custom event arguments type"
+                .See(() => nameof(Fake.GenericEvent));
+
+            "When I raise the event specifying the sender and the event arguments"
                 .x(() => Fake.GenericEvent += Raise.With(SampleSender, this.customEventArgs));
 
-            "it should pass the sender"
+            "Then the supplied sender is passed as the event sender"
                 .x(() => CapturedSender.Should().BeSameAs(SampleSender));
 
-            "it should pass the event arguments"
+            "And the supplied value is passed as the event arguments"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.customEventArgs));
         }
 
         [Scenario]
         public void NullSenderAndCustomEventArguments()
         {
-            "when raising generic event passing arguments and null sender"
+            "Given an event of type EventHandler with custom event arguments type"
+                .See(() => nameof(Fake.GenericEvent));
+
+            "When I raise the event specifying the event arguments and a null sender"
                 .x(() => Fake.GenericEvent += Raise.With(null, this.customEventArgs));
 
-            "it should pass null as the sender"
+            "Then null is passed as the event sender"
                 .x(() => CapturedSender.Should().BeNull());
 
-            "it should pass the event arguments"
+            "And the supplied value is passed as the event arguments"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.customEventArgs));
         }
 
@@ -249,13 +276,16 @@ namespace FakeItEasy.Specs
         [Scenario]
         public void EventArgumentsThatDoNotExtenedEventArg()
         {
-            "when raising event passing arguments"
+            "Given an event of type EventHandler with custom event arguments type that does not extend EventArgs"
+                .See(() => nameof(Fake.EventHandlerOfNonEventArgsEvent));
+
+            "When I raise the event specifying only the event arguments"
                 .x(() => Fake.EventHandlerOfNonEventArgsEvent += Raise.With(this.referenceTypeEventArgs));
 
-            "it should pass the fake as sender"
+            "Then the fake is passed as the sender"
                 .x(() => CapturedSender.Should().BeSameAs(Fake));
 
-            "it should pass the event arguments"
+            "And the supplied value is passed as the event arguments"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.referenceTypeEventArgs));
         }
 #endif
@@ -263,62 +293,78 @@ namespace FakeItEasy.Specs
         [Scenario]
         public void CustomEventHandler()
         {
-            "when raising custom event passing sender and arguments"
+            "Given an event of a custom delegate type that takes a sender and event arguments"
+                .See(() => nameof(Fake.CustomEvent));
+
+            "When I raise the event specifying the sender and the event arguments"
                 .x(() => Fake.CustomEvent += Raise.With<CustomEventHandler>(SampleSender, this.customEventArgs));
 
-            "it should pass the sender"
+            "Then the supplied sender is passed as the event sender"
                 .x(() => CapturedSender.Should().BeSameAs(SampleSender));
 
-            "it should pass the event arguments"
+            "And the supplied value is passed as the event arguments"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.customEventArgs));
         }
 
         [Scenario]
         public void ReferenceTypeEventHandler()
         {
-            "when raising reference type event passing arguments"
+            "Given an event of a custom delegate type taking only a reference type as an argument"
+                .See(() => nameof(Fake.ReferenceTypeEvent));
+
+            "When I raise the event specifying the arguments"
                 .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.referenceTypeEventArgs));
 
-            "it should pass the event arguments"
+            "Then the supplied value is passed as the event argument"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.referenceTypeEventArgs));
         }
 
         [Scenario]
         public void ReferenceTypeEventHandlerWithDerivedArguments()
         {
-            "when raising reference type event passing derived arguments"
+            "Given an event of a custom delegate type taking only a reference type as an argument"
+                .See(() => nameof(Fake.ReferenceTypeEvent));
+
+            "When I raise the event specifying an argument of a derived type"
                 .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.derivedReferenceTypeEventArgs));
 
-            "it should pass the event arguments"
+            "Then the supplied value is passed as the event argument"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.derivedReferenceTypeEventArgs));
         }
 
         [Scenario]
         public void ReferenceTypeEventHandlerWithInvalidArgumentType()
         {
-            "when raising reference type event passing invalid argument type"
-                .x(() => CatchException(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(new Hashtable())));
+            "Given an event of a custom delegate type taking only a reference type as an argument"
+                .See(() => nameof(Fake.ReferenceTypeEvent));
 
-            "it should fail with good message"
+            "When I raise the event specifying an argument of an invalid type"
+                .x(() => CatchException(() =>
+                        Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(new Hashtable())));
+
+            "Then the call fails with a meaningful message"
                 .x(() =>
-                    {
-                        const string ExpectedMessage =
-                    "The event has the signature (FakeItEasy.Specs.ReferenceType), " +
-                    "but the provided arguments have types (System.Collections.Hashtable).";
+                {
+                    const string ExpectedMessage =
+                        "The event has the signature (FakeItEasy.Specs.ReferenceType), " +
+                        "but the provided arguments have types (System.Collections.Hashtable).";
 
-                        CaughtException.Should().BeAnExceptionOfType<FakeConfigurationException>().And
+                    CaughtException.Should().BeAnExceptionOfType<FakeConfigurationException>().And
                         .Message.Should().Be(ExpectedMessage);
-                    });
+                });
         }
 
         [Scenario]
         public void ValueTypeEventHandlerWithNullValue()
         {
-            "when raising value type event passing null argument"
+            "Given an event of a custom delegate type taking only a value type as an argument"
+                .See(() => nameof(Fake.ValueTypeEvent));
+
+            "When I raise the event specifying a null argument"
                 .x(() => CatchException(() =>
                                         Fake.ValueTypeEvent += Raise.With<ValueTypeEventHandler>((object)null)));
 
-            "it should fail with good message"
+            "Then the call fails with a meaningful message"
                 .x(() => CaughtException.Should().BeAnExceptionOfType<FakeConfigurationException>()
                              .And.Message.Should().Be(
                                  "The event has the signature (System.Int32), but the provided arguments have types (<NULL>)."));
@@ -330,13 +376,16 @@ namespace FakeItEasy.Specs
             var eventArgs1 = 19;
             var eventArgs2 = true;
 
-            "when raising action event passing arguments"
+            "Given an event of type Action"
+                .See(() => nameof(Fake.ActionEvent));
+
+            "When I raise the event specifying the arguments"
                 .x(() => Fake.ActionEvent += Raise.With<Action<int, bool>>(eventArgs1, eventArgs2));
 
-            "it should pass the first argument"
+            "Then the first value is passed as the first event argument"
                 .x(() => CapturedArgs1.Should().Be(eventArgs1));
 
-            "it should pass the second argument"
+            "Then the second value is passed as the second event argument"
                 .x(() => CapturedArgs2.Should().Be(eventArgs2));
         }
 
