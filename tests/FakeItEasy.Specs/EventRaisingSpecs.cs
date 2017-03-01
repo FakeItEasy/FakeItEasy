@@ -123,16 +123,16 @@ namespace FakeItEasy.Specs
 
         [Scenario]
         public void UnsubscribedEvent(
-            Exception caughtException)
+            Exception exception)
         {
             "Given an event with no subscribers"
                 .See(() => nameof(Fake.UnsubscribedEvent));
 
             "When I raise the event"
-                .x(() => caughtException = Record.Exception(() => Fake.UnsubscribedEvent += Raise.WithEmpty()));
+                .x(() => exception = Record.Exception(() => Fake.UnsubscribedEvent += Raise.WithEmpty()));
 
             "Then the call doesn't throw"
-                .x(() => caughtException.Should().BeNull());
+                .x(() => exception.Should().BeNull());
         }
 
         [Scenario]
@@ -209,10 +209,10 @@ namespace FakeItEasy.Specs
 
             "And the event has multiple subscribers"
                 .x(() =>
-                    {
-                        Fake.SubscribedEvent += (s, e) => handler1InvocationCount++;
-                        Fake.SubscribedEvent += (s, e) => handler2InvocationCount++;
-                    });
+                {
+                    Fake.SubscribedEvent += (s, e) => handler1InvocationCount++;
+                    Fake.SubscribedEvent += (s, e) => handler2InvocationCount++;
+                });
 
             "When I raise the event"
                 .x(() => Fake.SubscribedEvent += Raise.WithEmpty());
@@ -326,72 +326,64 @@ namespace FakeItEasy.Specs
                 .See(() => nameof(Fake.ReferenceTypeEvent));
 
             "When I raise the event specifying an argument of a derived type"
-                .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.derivedReferenceTypeEventArgs));
+                .x(() => Fake.ReferenceTypeEvent +=
+                    Raise.With<ReferenceTypeEventHandler>(this.derivedReferenceTypeEventArgs));
 
             "Then the supplied value is passed as the event argument"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.derivedReferenceTypeEventArgs));
         }
 
         [Scenario]
-        public void ReferenceTypeEventHandlerWithInvalidArgumentType()
+        public void ReferenceTypeEventHandlerWithInvalidArgumentType(
+            Exception exception)
         {
+            const string ExpectedMessage =
+                "The event has the signature (FakeItEasy.Specs.ReferenceType), " +
+                "but the provided arguments have types (System.Collections.Hashtable).";
+
             "Given an event of a custom delegate type taking only a reference type as an argument"
                 .See(() => nameof(Fake.ReferenceTypeEvent));
 
             "When I raise the event specifying an argument of an invalid type"
-                .x(() => CatchException(() =>
+                .x(() => exception = Record.Exception(() =>
                         Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(new Hashtable())));
 
             "Then the call fails with a meaningful message"
-                .x(() =>
-                {
-                    const string ExpectedMessage =
-                        "The event has the signature (FakeItEasy.Specs.ReferenceType), " +
-                        "but the provided arguments have types (System.Collections.Hashtable).";
-
-                    CaughtException.Should().BeAnExceptionOfType<FakeConfigurationException>().And
-                        .Message.Should().Be(ExpectedMessage);
-                });
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
+                    .Message.Should().Be(ExpectedMessage));
         }
 
         [Scenario]
-        public void ValueTypeEventHandlerWithNullValue()
+        public void ValueTypeEventHandlerWithNullValue(
+            Exception exception)
         {
             "Given an event of a custom delegate type taking only a value type as an argument"
                 .See(() => nameof(Fake.ValueTypeEvent));
 
             "When I raise the event specifying a null argument"
-                .x(() => CatchException(() =>
-                                        Fake.ValueTypeEvent += Raise.With<ValueTypeEventHandler>((object)null)));
+                .x(() => exception = Record.Exception(() =>
+                        Fake.ValueTypeEvent += Raise.With<ValueTypeEventHandler>((object)null)));
 
             "Then the call fails with a meaningful message"
-                .x(() => CaughtException.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                             .And.Message.Should().Be(
-                                 "The event has the signature (System.Int32), but the provided arguments have types (<NULL>)."));
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                    .And.Message.Should().Be(
+                        "The event has the signature (System.Int32), but the provided arguments have types (<NULL>)."));
         }
 
         [Scenario]
         public void ActionEvent()
         {
-            var eventArgs1 = 19;
-            var eventArgs2 = true;
-
             "Given an event of type Action"
                 .See(() => nameof(Fake.ActionEvent));
 
             "When I raise the event specifying the arguments"
-                .x(() => Fake.ActionEvent += Raise.With<Action<int, bool>>(eventArgs1, eventArgs2));
+                .x(() => Fake.ActionEvent += Raise.With<Action<int, bool>>(19, true));
 
             "Then the first value is passed as the first event argument"
-                .x(() => CapturedArgs1.Should().Be(eventArgs1));
+                .x(() => CapturedArgs1.Should().Be(19));
 
             "Then the second value is passed as the second event argument"
-                .x(() => CapturedArgs2.Should().Be(eventArgs2));
-        }
-
-        private static void CatchException(Action action)
-        {
-            CaughtException = Record.Exception(action);
+                .x(() => CapturedArgs2.Should().Be(true));
         }
     }
 }
