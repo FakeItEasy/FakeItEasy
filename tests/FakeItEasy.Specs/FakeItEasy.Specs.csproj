@@ -24,7 +24,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FEATURE_SELF_INITIALIZED_FAKES</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_SELF_INITIALIZED_FAKES;FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -36,7 +36,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_SELF_INITIALIZED_FAKES</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_SELF_INITIALIZED_FAKES;FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>FakeItEasy.Specs.ruleset</CodeAnalysisRuleSet>

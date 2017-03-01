@@ -22,7 +22,10 @@ namespace FakeItEasy
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         /// <returns>A Raise(TEventArgs)-object that exposes the event handler to attach.</returns>
         [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "Must be visible to provide the event raising syntax.")]
-        public static Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e) where TEventArgs : EventArgs
+        public static Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e)
+#if FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS
+            where TEventArgs : EventArgs
+#endif
         {
             return new Raise<TEventArgs>(sender, e, ArgumentProviderMap);
         }
@@ -36,7 +39,10 @@ namespace FakeItEasy
         /// <returns>
         /// A Raise(TEventArgs)-object that exposes the event handler to attach.
         /// </returns>
-        public static Raise<TEventArgs> With<TEventArgs>(TEventArgs e) where TEventArgs : EventArgs
+        public static Raise<TEventArgs> With<TEventArgs>(TEventArgs e)
+#if FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS
+            where TEventArgs : EventArgs
+#endif
         {
             return new Raise<TEventArgs>(e, ArgumentProviderMap);
         }
