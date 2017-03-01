@@ -238,10 +238,8 @@ namespace FakeItEasy
     }
     public class static Raise
     {
-        public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e)
-            where TEventArgs : System.EventArgs { }
-        public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(TEventArgs e)
-            where TEventArgs : System.EventArgs { }
+        public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e) { }
+        public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(TEventArgs e) { }
         public static TEventHandler With<TEventHandler>(params object[] arguments) { }
         public static FakeItEasy.Core.Raise<System.EventArgs> WithEmpty() { }
     }
@@ -448,8 +446,7 @@ namespace FakeItEasy.Core
         void OnAfterCallIntercepted(FakeItEasy.Core.ICompletedFakeObjectCall interceptedCall, FakeItEasy.Core.IFakeObjectCallRule ruleThatWasApplied);
         void OnBeforeCallIntercepted(FakeItEasy.Core.IFakeObjectCall interceptedCall);
     }
-    public class Raise<TEventArgs> : FakeItEasy.Core.IEventRaiserArgumentProvider
-        where TEventArgs : System.EventArgs { }
+    public class Raise<TEventArgs> : FakeItEasy.Core.IEventRaiserArgumentProvider { }
 }
 namespace FakeItEasy.Creation
 {
