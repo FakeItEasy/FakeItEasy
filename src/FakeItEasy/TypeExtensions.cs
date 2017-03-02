@@ -19,10 +19,10 @@ namespace FakeItEasy
 
             if (!type.GetTypeInfo().IsGenericType)
             {
-                return type.FullName;
+                return type.ToString();
             }
 
-            var partName = type.FullName.Split('`')[0];
+            var partName = type.ToString().Split('`')[0];
             var genericArgNames = type.GetGenericArguments().Select(arg => arg.FullNameCSharp()).ToArray();
             return string.Format(CultureInfo.InvariantCulture, "{0}<{1}>", partName, string.Join(", ", genericArgNames));
         }

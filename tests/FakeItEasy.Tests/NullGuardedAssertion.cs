@@ -297,7 +297,7 @@ namespace FakeItEasy.Tests
                             }
                             else
                             {
-                                description.Write("threw unexpected {0}.".FormatInvariant(this.thrown.GetType().FullName));
+                                description.Write("threw unexpected {0}.".FormatInvariant(this.thrown.GetType().ToString()));
                             }
                         }
                     }
@@ -346,9 +346,9 @@ namespace FakeItEasy.Tests
                 }
 
 #if FEATURE_NETCORE_REFLECTION
-                protected override string CallDescription => this.constructorInfo.DeclaringType.FullName + ".ctor";
+                protected override string CallDescription => this.constructorInfo.DeclaringType.ToString() + ".ctor";
 #else
-                protected override string CallDescription => this.constructorInfo.ReflectedType.FullName + ".ctor";
+                protected override string CallDescription => this.constructorInfo.ReflectedType.ToString() + ".ctor";
 #endif
 
                 protected override void PerformCall(object[] arguments)

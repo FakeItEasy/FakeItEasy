@@ -64,7 +64,7 @@ namespace FakeItEasy.Expressions
         {
             var result = new StringBuilder();
 
-            result.Append(this.Method.DeclaringType.FullName);
+            result.Append(this.Method.DeclaringType);
             result.Append(".");
             result.Append(this.Method.Name);
             result.Append(this.Method.GetGenericArgumentsCSharp());

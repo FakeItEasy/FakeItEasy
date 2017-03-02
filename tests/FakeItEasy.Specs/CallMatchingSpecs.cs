@@ -236,7 +236,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Match(@"
 
   Assertion failed for the following call:
-    System.Collections.Generic.IDictionary`2[[System.String, *, Version=4.0.0.0, Culture=neutral, PublicKeyToken=*],[System.String, *, Version=4.0.0.0, Culture=neutral, PublicKeyToken=*]].TryGetValue(""any key"", <out parameter>)
+    System.Collections.Generic.IDictionary`2[System.String,System.String].TryGetValue(""any key"", <out parameter>)
   Expected to find it at least once but no calls were made to the fake object.
 
 "));
@@ -479,27 +479,24 @@ namespace FakeItEasy.Specs
 
         public static IEnumerable<object[]> Fakes()
         {
-            yield return new object[] { A.Fake<object>(), "Faked " + typeof(object).FullName };
-            yield return new object[] { A.Fake<object>(), "Faked " + typeof(object).ToString() };
-            yield return new object[] { A.Fake<List<int>>(), "Faked " + typeof(List<int>).FullName };
-            yield return new object[] { A.Fake<IList<int>>(), "Faked " + typeof(IList<int>).FullName };
+            yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
+            yield return new object[] { A.Fake<List<int>>(), "Faked " + typeof(List<int>) };
+            yield return new object[] { A.Fake<IList<int>>(), "Faked " + typeof(IList<int>) };
             yield return new object[] { A.Fake<Action<int>>(), typeof(Action<int>).ToString() };
         }
 
         public static IEnumerable<object[]> FakesWithBadToString()
         {
-            yield return new object[] { A.Fake<object>(), "Faked " + typeof(object).FullName };
-            yield return new object[] { A.Fake<object>(), "Faked " + typeof(object).ToString() };
-            yield return new object[] { A.Fake<List<int>>(), "Faked " + typeof(List<int>).FullName };
-            yield return new object[] { A.Fake<IList<int>>(), "Faked " + typeof(IList<int>).FullName };
+            yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
+            yield return new object[] { A.Fake<List<int>>(), "Faked " + typeof(List<int>) };
+            yield return new object[] { A.Fake<IList<int>>(), "Faked " + typeof(IList<int>) };
         }
 
         public static IEnumerable<object[]> StrictFakes()
         {
-            yield return new object[] { new Func<object>(() => A.Fake<object>(o => o.Strict())), "Faked " + typeof(object).FullName };
-            yield return new object[] { new Func<object>(() => A.Fake<object>(o => o.Strict())), "Faked " + typeof(object).ToString() };
-            yield return new object[] { new Func<object>(() => A.Fake<List<int>>(o => o.Strict())), "Faked " + typeof(List<int>).FullName };
-            yield return new object[] { new Func<object>(() => A.Fake<IList<int>>(o => o.Strict())), "Faked " + typeof(IList<int>).FullName };
+            yield return new object[] { new Func<object>(() => A.Fake<object>(o => o.Strict())), "Faked " + typeof(object) };
+            yield return new object[] { new Func<object>(() => A.Fake<List<int>>(o => o.Strict())), "Faked " + typeof(List<int>) };
+            yield return new object[] { new Func<object>(() => A.Fake<IList<int>>(o => o.Strict())), "Faked " + typeof(IList<int>) };
             yield return new object[] { new Func<object>(() => A.Fake<Action<int>>(o => o.Strict())), typeof(Action<int>).ToString() };
         }
 
