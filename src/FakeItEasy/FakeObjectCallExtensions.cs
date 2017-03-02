@@ -78,7 +78,7 @@ namespace FakeItEasy
         internal static string GetDescription(this IFakeObjectCall fakeObjectCall)
         {
             var method = fakeObjectCall.Method;
-            return "{0}.{1}({2})".FormatInvariant(method.DeclaringType.FullName, method.Name, GetParametersString(fakeObjectCall));
+            return "{0}.{1}({2})".FormatInvariant(method.DeclaringType.ToString(), method.Name, GetParametersString(fakeObjectCall));
         }
 
         private static string GetParametersString(IFakeObjectCall fakeObjectCall)

@@ -46,7 +46,7 @@ namespace FakeItEasy
 
         private static string BuildSignatureDescription(MethodInfo method)
         {
-            return method.GetParameters().ToCollectionString(x => x.ParameterType.FullName, ", ");
+            return method.GetParameters().ToCollectionString(x => x.ParameterType.ToString(), ", ");
         }
     }
 }
