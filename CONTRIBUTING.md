@@ -84,7 +84,7 @@ While you're working away in your branch it's quite possible that your upstream/
 1. [Stash](http://progit.org/book/ch6-3.html) any un-committed changes you need to
 1. `git checkout master`
 1. `git pull upstream master`
-1. `git checkout myBranch`
+1. `git checkout -b myBranch`
 1. `git rebase master myBranch`
 1. `git push origin master` - (optional) this this makes sure your remote master is up to date
 1. if you previously pushed your branch to your origin, you need to force push the rebased branch - `git push origin myBranch -f`
