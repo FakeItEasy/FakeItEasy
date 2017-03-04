@@ -2,7 +2,6 @@ namespace FakeItEasy
 {
     using System;
     using System.Diagnostics;
-    using System.Globalization;
     using System.Linq;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
@@ -23,8 +22,8 @@ namespace FakeItEasy
             }
 
             var partName = type.ToString().Split('`')[0];
-            var genericArgNames = type.GetGenericArguments().Select(arg => arg.FullNameCSharp()).ToArray();
-            return string.Format(CultureInfo.InvariantCulture, "{0}<{1}>", partName, string.Join(", ", genericArgNames));
+            var genericArgNames = string.Join(", ", type.GetGenericArguments().Select(arg => arg.FullNameCSharp()));
+            return $"{partName}<{genericArgNames}>";
         }
 
         [DebuggerStepThrough]

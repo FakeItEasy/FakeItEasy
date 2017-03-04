@@ -2,7 +2,6 @@ namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using FakeItEasy.Core;
     using FluentAssertions;
@@ -39,7 +38,7 @@ namespace FakeItEasy.Tests.Core
             foreach (var call in this.calls)
             {
                 var boundCallNumber = callNumber;
-                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("Fake call " + boundCallNumber.ToString(CultureInfo.CurrentCulture));
+                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("Fake call " + boundCallNumber);
                 callNumber++;
             }
 
@@ -123,7 +122,7 @@ namespace FakeItEasy.Tests.Core
 
             foreach (var call in this.calls)
             {
-                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns(string.Format(CultureInfo.InvariantCulture, "Fake call {0}", Guid.NewGuid()));
+                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("Fake call " + Guid.NewGuid());
             }
 
             A.CallTo(() => this.CallFormatter.GetDescription(this.calls[18])).Returns("Last call");

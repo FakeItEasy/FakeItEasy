@@ -78,7 +78,7 @@ namespace FakeItEasy
         internal static string GetDescription(this IFakeObjectCall fakeObjectCall)
         {
             var method = fakeObjectCall.Method;
-            return "{0}.{1}({2})".FormatInvariant(method.DeclaringType.ToString(), method.Name, GetParametersString(fakeObjectCall));
+            return $"{method.DeclaringType}.{method.Name}({GetParametersString(fakeObjectCall)})";
         }
 
         private static string GetParametersString(IFakeObjectCall fakeObjectCall)
@@ -96,7 +96,7 @@ namespace FakeItEasy
             var stringArgument = argument as string;
             if (stringArgument != null)
             {
-                return stringArgument.Length > 0 ? string.Concat("\"", stringArgument, "\"") : "<string.Empty>";
+                return stringArgument.Length > 0 ? $@"""{stringArgument}""" : "<string.Empty>";
             }
 
             return argument.ToString();

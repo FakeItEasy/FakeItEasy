@@ -77,7 +77,7 @@ namespace FakeItEasy
 
             public override string ToString()
             {
-                return "the number of times specified by the predicate '{0}'".FormatInvariant(this.repeatValidation.ToString());
+                return $"the number of times specified by the predicate '{this.repeatValidation}'";
             }
 
             internal override bool Matches(int repeat)
@@ -111,7 +111,7 @@ namespace FakeItEasy
 
             public Repeated Times(int numberOfTimes)
             {
-                return new RepeatedWithDescription(x => this.repeatValidator(x, numberOfTimes), "{0} {1} times".FormatInvariant(this.description, numberOfTimes));
+                return new RepeatedWithDescription(x => this.repeatValidator(x, numberOfTimes), $"{this.description} {numberOfTimes} times");
             }
 
             private class RepeatedWithDescription : Repeated

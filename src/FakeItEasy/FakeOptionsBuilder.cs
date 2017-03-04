@@ -46,8 +46,7 @@ namespace FakeItEasy
             if (!((IFakeOptionsBuilder)this).CanBuildOptionsForFakeOfType(typeOfFake))
             {
                 throw new InvalidOperationException(
-                    "Specified type '{0}' is not valid. Only '{1}' is allowed."
-                        .FormatInvariant(typeOfFake.FullNameCSharp(), typeof(TFake).FullNameCSharp()));
+                    $"Specified type '{typeOfFake.FullNameCSharp()}' is not valid. Only '{typeof(TFake).FullNameCSharp()}' is allowed.");
             }
 
             this.BuildOptions((IFakeOptions<TFake>)options);

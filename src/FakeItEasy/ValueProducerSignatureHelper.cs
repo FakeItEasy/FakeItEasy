@@ -17,7 +17,8 @@ namespace FakeItEasy
                 var fakeSignature = BuildSignatureDescription(callMethod);
                 var actionSignature = BuildSignatureDescription(valueProducerMethod);
 
-                throw new FakeConfigurationException("The faked method has the signature ({0}), but {2} was used with ({1}).".FormatInvariant(fakeSignature, actionSignature, nameOfFeature));
+                throw new FakeConfigurationException(
+                    $"The faked method has the signature ({fakeSignature}), but {nameOfFeature} was used with ({actionSignature}).");
             }
         }
 

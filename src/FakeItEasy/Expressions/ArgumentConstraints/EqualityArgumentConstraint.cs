@@ -32,7 +32,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             var stringValue = this.ExpectedValue as string;
             if (stringValue != null)
             {
-                return "\"{0}\"".FormatInvariant(stringValue);
+                return $@"""{stringValue}""";
             }
 
             try
@@ -43,7 +43,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             {
                 FakeManager manager = Fake.TryGetFakeManager(this.ExpectedValue);
                 return manager != null
-                    ? $"Faked {manager.FakeObjectType.ToString()}"
+                    ? "Faked " + manager.FakeObjectType
                     : this.ExpectedValue.GetType().ToString();
             }
         }

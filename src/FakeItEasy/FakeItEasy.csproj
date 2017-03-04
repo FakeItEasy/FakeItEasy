@@ -258,7 +258,6 @@
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="StringBuilderExtensions.cs" />
     <Compile Include="StringBuilderOutputWriter.cs" />
-    <Compile Include="StringExtensions.cs" />
     <Compile Include="TaskHelper.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="UnderTestAttribute.cs" />

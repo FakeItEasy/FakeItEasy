@@ -1,7 +1,6 @@
 namespace FakeItEasy
 {
     using System;
-    using System.Globalization;
 
     /// <summary>
     /// Provides extensions for <see cref="IOutputWriter"/>.
@@ -32,7 +31,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(writer, nameof(writer));
 
-            writer.Write(string.Format(CultureInfo.InvariantCulture, format, args));
+            writer.Write(string.Format(format, args));
             return writer;
         }
 

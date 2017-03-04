@@ -54,6 +54,10 @@ Try to keep lines of code no longer than 160 characters wide. This isn't a stric
 
 Try to keep your coding style in line with the existing code. It might not exactly match your preferred style but it's better to keep things consistent. StyleCop compliance is enforced through analysis on each build and the treatment of warnings as errors. Any StyleCop settings changes or suppressions must be clearly justified.
 
+## String Formatting
+
+Unless there is a compelling reason not to, for example when serializing data to be parsed later, use the current culture when formatting strings. When string formatting methods have an overload that implicitly uses the current culture, opt to use it instead of specifying the culture explicitly.
+
 ## Code Analysis
 
 Try to avoid introducing new code analysis warnings. Currently the codebase is free of warnings, and we would like to avoid the addition of new warnings. Any code analysis rule changes or suppressions must be clearly justified.

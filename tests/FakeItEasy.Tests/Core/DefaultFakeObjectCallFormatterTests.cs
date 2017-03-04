@@ -2,11 +2,9 @@ namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
     using System.Reflection;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
@@ -62,19 +60,18 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Fact]
-        [UsingCulture("en-US")]
         public void Should_write_argument_list()
         {
             // Arrange
             var call = this.CreateFakeCallToFoo("argument value", 1);
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("argument value")).Returns("\"argument value\"");
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("argument value")).Returns(@"""argument value""");
             A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(1)).Returns("1");
 
             // Act
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            description.Should().EndWith("(argument1: \"argument value\", argument2: 1)");
+            description.Should().EndWith(@"(argument1: ""argument value"", argument2: 1)");
         }
 
         [Fact]
@@ -123,13 +120,13 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var propertyGetter = typeof(TypeWithProperties).GetProperty("NormalProperty").GetSetMethod();
             var call = this.CreateFakeCall(typeof(TypeWithProperties), propertyGetter, "foo");
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("foo")).Returns("\"foo\"");
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("foo")).Returns(@"""foo""");
 
             // Act
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            description.Should().Be("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.NormalProperty = \"foo\"");
+            description.Should().Be(@"FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.NormalProperty = ""foo""");
         }
 
         [Fact]
@@ -154,13 +151,13 @@ namespace FakeItEasy.Tests.Core
             var propertyGetter = typeof(TypeWithProperties).GetProperty("Item").GetSetMethod();
             var call = this.CreateFakeCall(typeof(TypeWithProperties), propertyGetter, 0, "argument");
             A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(0)).Returns("0");
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("argument")).Returns("\"argument\"");
+            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("argument")).Returns(@"""argument""");
 
             // Act
             var description = this.formatter.GetDescription(call);
 
             // Assert
-            description.Should().Be("FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.Item[index: 0] = \"argument\"");
+            description.Should().Be(@"FakeItEasy.Tests.Core.DefaultFakeObjectCallFormatterTests+TypeWithProperties.Item[index: 0] = ""argument""");
         }
 
         private IFakeObjectCall CreateFakeCall(MethodInfo method, params object[] arguments)
@@ -201,7 +198,7 @@ namespace FakeItEasy.Tests.Core
             [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for testing.")]
             public string this[int index]
             {
-                get { return index.ToString(CultureInfo.InvariantCulture); }
+                get { return index.ToString(); }
                 set { }
             }
         }

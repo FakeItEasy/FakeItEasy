@@ -292,12 +292,11 @@ namespace FakeItEasy.Tests
                             if (argumentNullException != null)
                             {
                                 description.Write(
-                                    "threw ArgumentNullException with wrong argument name, it should be \"{0}\"."
-                                        .FormatInvariant(this.ArgumentName));
+                                    $@"threw ArgumentNullException with wrong argument name, it should be ""{this.ArgumentName}"".");
                             }
                             else
                             {
-                                description.Write("threw unexpected {0}.".FormatInvariant(this.thrown.GetType().ToString()));
+                                description.Write($"threw unexpected {this.thrown.GetType()}.");
                             }
                         }
                     }

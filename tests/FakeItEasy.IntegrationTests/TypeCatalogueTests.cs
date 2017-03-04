@@ -2,7 +2,6 @@ namespace FakeItEasy.IntegrationTests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -30,7 +29,7 @@ namespace FakeItEasy.IntegrationTests
 
             var expectedMessageFormat =
 @"*Warning: FakeItEasy failed to load assembly '*{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
-            var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, copyOfExternalDll);
+            var expectedMessage = string.Format(expectedMessageFormat, copyOfExternalDll);
 
             var catalogue = new TypeCatalogue();
 
@@ -53,7 +52,7 @@ namespace FakeItEasy.IntegrationTests
             var expectedMessageFormat =
 @"*Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
 
-            var expectedMessage = string.Format(CultureInfo.InvariantCulture, expectedMessageFormat, badAssemblyFile);
+            var expectedMessage = string.Format(expectedMessageFormat, badAssemblyFile);
             string actualMessage;
 
             var catalogue = new TypeCatalogue();

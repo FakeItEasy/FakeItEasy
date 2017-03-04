@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
-    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.Tests.TestHelpers;
@@ -23,7 +22,6 @@ namespace FakeItEasy.Tests.Core
         public void Create_should_guard_against_bad_type_argument()
         {
             string expectedMessage = string.Format(
-                CultureInfo.CurrentCulture,
                 "The {0} can only create dummies of type '{1}'.*",
                 typeof(TestableFakeFactory),
                 typeof(SomeType));
