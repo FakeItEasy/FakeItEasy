@@ -127,7 +127,6 @@
     <Compile Include="Creation\DefaultFakeObjectCreatorTests.cs" />
     <Compile Include="Creation\DelegateProxies\DelegateProxyGeneratorTests.cs" />
     <Compile Include="Creation\DummyValueCreationSessionTests.cs" />
-    <Compile Include="Creation\FakeOptionsConstraints.cs" />
     <Compile Include="Creation\ProxyGeneratorResultTests.cs" />
     <Compile Include="Core\DefaultExceptionThrowerTests.cs" />
     <Compile Include="Core\DefaultFakeManagerAccessorTests.cs" />
