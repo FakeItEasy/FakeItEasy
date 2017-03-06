@@ -8,7 +8,7 @@ Before starting work on a functional change, i.e. a new feature, a change to an 
 
 It is not necessary to raise an issue for non-functional changes, e.g. refactoring, adding tests, reformatting code, documentation, updating packages, etc.
 
-The coordinators will usually assign a priority to each issue from 1 (highest) to 3 (lowest) using the P1, P2 and P3 labels. Feel free to work on any issue you like but bear in mind that the higher the priority of an issue, the earlier the coordinators will direct attention to any comments or pull requests relating to it.
+The coordinators will usually assign a priority to each issue from 1 (highest) to 3 (lowest) using the [P1](https://github.com/FakeItEasy/FakeItEasy/labels/P1), [P2](https://github.com/FakeItEasy/FakeItEasy/labels/P2) and [P3](https://github.com/FakeItEasy/FakeItEasy/labels/P3) labels. Feel free to work on any issue you like but bear in mind that the higher the priority of an issue, the earlier the coordinators will direct attention to any comments or pull requests relating to it.
 
 ## Tests
 
@@ -16,7 +16,7 @@ Changes in functionality (new features, changed behavior, or bug fixes) should b
 
 There should be a high level of test coverage. When achieving proper coverage is impractical via acceptance tests, then integration tests or unit tests should be added.
 
-When writing integration or unit tests, use the 3A's pattern (Arrange, Act, Assert) with comments indicating each part.
+When writing integration or unit tests, use the [3A's pattern](http://defragdev.com/blog/?p=783) (Arrange, Act, Assert) with comments indicating each part.
 New or changed tests should use [FluentAssertions](https://github.com/dennisdoomen/fluentassertions) for the assertion phase.
 E.g.
 
@@ -60,7 +60,15 @@ Try to avoid introducing new code analysis warnings. Currently the codebase is f
 
 ## Resharper Artifacts
 
-Please do not add Resharper suppressions to code using comments. You may tweak your local Resharper settings but do not commit these to the repo. A definitive Resharper settings file is in the pipeline.
+Please do not add Resharper suppressions to code using comments. You may tweak your local Resharper settings but do not commit these to the repo.
+
+When configuring e.g. inspection severity, you can choose where to save the settings:
+
+* Solution "FakeItEasy" personal
+* Solution "FakeItEasy" team-shared
+* This computer
+
+You should pick either the "personal" or "this computer" option.
 
 ## Making Changes
 
@@ -86,7 +94,7 @@ While you're working away in your branch it's quite possible that your upstream/
 1. `git pull upstream master`
 1. `git checkout myBranch`
 1. `git rebase master myBranch`
-1. `git push origin master` - (optional) this this makes sure your remote master is up to date
+1. `git push origin master` - (optional) this makes sure your remote master is up to date 
 1. if you previously pushed your branch to your origin, you need to force push the rebased branch - `git push origin myBranch -f`
 
 This ensures that your history is "clean" i.e. you have one branch off from master followed by your changes in a straight line. Failing to do this ends up with several "messy" merges in your history, which we don't want. This is the reason why you should always work in a branch and you should never be working in, or sending pull requests from, master.
@@ -95,9 +103,16 @@ If you're working on a long running feature then you may want to do this quite o
 
 ## Sending a Pull Request
 
-While working on your feature you may well create several branches, which is fine, but before you send a pull request you should ensure that you have rebased back to a single "feature branch". We care about your commits and we care about your feature branch but we don't care about how many or which branches you created while you were working on it :-)
+While working on your feature you may well create several branches, which is fine, but before you send a pull request you should ensure that you have rebased back to a single ["feature branch"](https://martinfowler.com/bliki/FeatureBranch.html). We care about your commits and we care about your feature branch but we don't care about how many or which branches you created while you were working on it. :-)
 
 When you're ready to go you should confirm that you are up to date and rebased with upstream/master (see "Handling Updates from upstream/master" above) and then:
 
 1. `git push origin myBranch`
-1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub. Make sure you select `FakeItEasy/FakeItEasy` as the *base repo* and `master` as the *base branch*. Select your fork as the *head repo* and your branch as the *head branch*. The pull request should include a description starting with "Fixes #123." (using the real issue number, of course) if it fixes an issue. If there's no issue, be sure to clearly explain the intent of the change.
+1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub. Make sure to create the pull request using the information from the table below. The pull request should include a description starting with "Fixes #123." (using the real issue number, of course) if it fixes an issue. If there's no issue, be sure to clearly explain the intent of the change.
+
+|Field | Value     |
+|---- | ------------ |
+|base fork      | **FakeItEasy/FakeItEasy** *(always)*      |
+|base branch    | **master** *(always)* |
+|head fork      | *your fork*        |
+|head branch    | *your branch (myBranch)* |
