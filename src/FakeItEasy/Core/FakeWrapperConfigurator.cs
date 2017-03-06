@@ -13,9 +13,10 @@ namespace FakeItEasy.Core
     /// </summary>
     /// <typeparam name="T">The type of fake object generated.</typeparam>
     internal class FakeWrapperConfigurator<T>
-        : FakeOptionsBase<T>
 #if FEATURE_SELF_INITIALIZED_FAKES
-        , IFakeOptionsForWrappers<T>, IFakeOptionsForWrappers
+        : FakeOptionsBase<T>, IFakeOptionsForWrappers<T>, IFakeOptionsForWrappers
+#else
+        : FakeOptionsBase<T>
 #endif
     {
         private readonly IFakeOptions<T> fakeOptions;
