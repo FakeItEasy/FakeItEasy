@@ -75,12 +75,12 @@ You should pick either the "personal" or "this computer" option.
 1. [Fork](http://help.github.com/forking/) the  [FakeItEasy repository](https://github.com/FakeItEasy/FakeItEasy/) on GitHub
 1. Clone your fork locally
 1. Configure the upstream repo (`git remote add upstream git://github.com/FakeItEasy/FakeItEasy.git`)
-1. Create a local branch (`git checkout -b myBranch`)
+1. Create a local branch (`git checkout -b my-branch`)
 1. Work on your feature
 1. Rebase if required (see below)
 1. Run code analysis on the solution to ensure you have not introduced any violations
 1. Ensure the build succeeds (see ['How to build'](https://github.com/FakeItEasy/FakeItEasy/blob/master/how_to_build.md "How to build"))
-1. Push the branch up to GitHub (`git push origin myBranch`)
+1. Push the branch up to GitHub (`git push origin my-branch`)
 1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub
 
 You should **never** work on a clone of master and you should **never** send a pull request from master - always from a branch. The reasons for this are detailed below.
@@ -92,10 +92,10 @@ While you're working away in your branch it's quite possible that your upstream/
 1. [Stash](http://progit.org/book/ch6-3.html) any un-committed changes you need to
 1. `git checkout master`
 1. `git pull upstream master`
-1. `git checkout myBranch`
-1. `git rebase master myBranch`
-1. `git push origin master` - (optional) this makes sure your remote master is up to date 
-1. if you previously pushed your branch to your origin, you need to force push the rebased branch - `git push origin myBranch -f`
+1. `git checkout my-branch`
+1. `git rebase master my-branch`
+1. `git push origin master` - (optional) this makes sure your remote master is up to date
+1. if you previously pushed your branch to your origin, you need to force push the rebased branch - `git push origin my-branch -f`
 
 This ensures that your history is "clean" i.e. you have one branch off from master followed by your changes in a straight line. Failing to do this ends up with several "messy" merges in your history, which we don't want. This is the reason why you should always work in a branch and you should never be working in, or sending pull requests from, master.
 
@@ -103,16 +103,18 @@ If you're working on a long running feature then you may want to do this quite o
 
 ## Sending a Pull Request
 
-While working on your feature you may well create several branches, which is fine, but before you send a pull request you should ensure that you have rebased back to a single ["feature branch"](https://martinfowler.com/bliki/FeatureBranch.html). We care about your commits and we care about your feature branch but we don't care about how many or which branches you created while you were working on it. :-)
+While working on your feature you may well create several branches, which is fine, but before you send a pull request you should ensure that you have rebased back to a single ["feature branch"](https://martinfowler.com/bliki/FeatureBranch.html). We care about your commits and we care about your feature branch but we don't care about how many or which branches you created while you were working on it. :smile:
 
 When you're ready to go you should confirm that you are up to date and rebased with upstream/master (see "Handling Updates from upstream/master" above) and then:
 
-1. `git push origin myBranch`
-1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub. Make sure to create the pull request using the information from the table below. The pull request should include a description starting with "Fixes #123." (using the real issue number, of course) if it fixes an issue. If there's no issue, be sure to clearly explain the intent of the change.
+1. `git push origin my-branch`
+1. Send a [pull request](https://help.github.com/articles/using-pull-requests) in GitHub, selecting the following dropdown values:
 
-|Field | Value     |
-|---- | ------------ |
-|base fork      | **FakeItEasy/FakeItEasy** *(always)*      |
-|base branch    | **master** *(always)* |
-|head fork      | *your fork*        |
-|head branch    | *your branch (myBranch)* |
+| Dropdown      | Value                                             |
+|---------------|---------------------------------------------------|
+| **base fork** | `FakeItEasy/FakeItEasy`                           |
+| **base**      | `master`                                          |
+| **head fork** | `{your fork}` (e.g. `{your username}/FakeItEasy`) |
+| **compare**   | `my-branch`                                       |
+
+The pull request should include a description starting with "Fixes #123." (using the real issue number, of course) if it fixes an issue. If there's no issue, be sure to clearly explain the intent of the change.
