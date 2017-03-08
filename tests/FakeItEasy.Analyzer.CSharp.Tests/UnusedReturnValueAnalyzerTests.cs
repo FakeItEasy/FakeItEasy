@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.Analyzer.CSharp.Tests
 {
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Analyzer.Tests.Helpers;
     using FakeItEasy.Tests.TestHelpers;
     using Microsoft.CodeAnalysis;
@@ -345,6 +346,7 @@ namespace TheNamespace
                 });
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WhereWith", Justification = "Refers to the two words 'where with'")]
         [Fact]
         [UsingCulture("en-US")] // so that the message is in the expected language regardless of the OS language
         public void Diagnostic_Should_Have_The_Correct_Call_Description_If_Triggered_On_Where_With_No_Return_Type()

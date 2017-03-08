@@ -67,10 +67,10 @@ namespace FakeItEasy.Core
 
             bool IArgumentConstraint.IsValid(object argument)
             {
-                return this.IsValueValidForType(argument) && this.predicate.Invoke((T)argument);
+                return IsValueValidForType(argument) && this.predicate.Invoke((T)argument);
             }
 
-            private bool IsValueValidForType(object argument)
+            private static bool IsValueValidForType(object argument)
             {
                 if (argument == null)
                 {

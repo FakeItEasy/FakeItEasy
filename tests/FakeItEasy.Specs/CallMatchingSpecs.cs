@@ -421,6 +421,7 @@ namespace FakeItEasy.Specs
                     $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({fakeDescription})"));
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "ABad", Justification = "Refers to the two words 'a bad'")]
         [Scenario]
         [MemberData("FakesWithBadToString")]
         public static void PassingAFakeWithABadToStringToAMethod<T>(
@@ -440,6 +441,7 @@ namespace FakeItEasy.Specs
                     $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({fakeDescription})"));
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "ABad", Justification = "Refers to the two words 'a bad'")]
         [Scenario]
         public static void PassingAnObjectWithABadToStringToAMethod(
             ToStringThrows obj, IHaveOneGenericParameter fake, Exception exception)
@@ -510,6 +512,8 @@ namespace FakeItEasy.Specs
 
         public class ToStringThrows
         {
+            [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations", Justification = "Required for testing")]
+            [SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes", Justification = "Required for testing")]
             public override string ToString()
             {
                 throw new Exception();

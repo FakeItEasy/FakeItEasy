@@ -1,6 +1,7 @@
 namespace FakeItEasy.Expressions.ArgumentConstraints
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
 
     internal class EqualityArgumentConstraint
@@ -20,6 +21,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             return object.Equals(this.ExpectedValue, argument);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Any type of exception may be encountered.")]
         public override string ToString()
         {
             if (this.ExpectedValue == null)
