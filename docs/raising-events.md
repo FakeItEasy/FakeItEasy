@@ -36,9 +36,7 @@ robot.FellInLove += Raise.With(sender: robot, e: someEventArgs);
 
 Events of type `EventHandler<TEventArgs>` can be raised in exactly the same way. 
 
-Note that as of version 3.1.0, for the .NET Standard version of the FakeItEasy
-library, `TEventArgs` need not extend `EventArgs` to support the above syntax, but
-the .NET 4.0 library requires `TEventArgs` to extend `EventArgs`.
+Note that as of version 3.1.0, for the .NET Standard version of the FakeItEasy library, `TEventArgs` need not extend `EventArgs` to support the above syntax. The .NET 4.0 library still requires `TEventArgs` to extend `EventArgs`.
 
 If an event is defined using a **custom delegate**, then `Raise` needs
 a typeparam to help it out:
