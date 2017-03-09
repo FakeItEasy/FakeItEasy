@@ -24,11 +24,11 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="FakeItEasy\bin\Release\FakeItEasy.dll" target="lib\net40" />
-    <file src="FakeItEasy\bin\Release\FakeItEasy.pdb" target="lib\net40" />
-    <file src="FakeItEasy\bin\Release\FakeItEasy.xml" target="lib\net40" />
-    <file src="FakeItEasy.netstd\bin\Release\FakeItEasy.dll" target="lib\netstandard1.6" />
-    <file src="FakeItEasy.netstd\bin\Release\FakeItEasy.pdb" target="lib\netstandard1.6" />
-    <file src="FakeItEasy.netstd\bin\Release\FakeItEasy.xml" target="lib\netstandard1.6" />
+    <file src="FakeItEasy\bin\Release\net40\FakeItEasy.dll" target="lib\net40" />
+    <file src="FakeItEasy\bin\Release\net40\FakeItEasy.pdb" target="lib\net40" />
+    <file src="FakeItEasy\bin\Release\net40\FakeItEasy.xml" target="lib\net40" />
+    <file src="FakeItEasy\bin\Release\netstandard1.6\FakeItEasy.dll" target="lib\netstandard1.6" />
+    <file src="FakeItEasy\bin\Release\netstandard1.6\FakeItEasy.pdb" target="lib\netstandard1.6" />
+    <file src="FakeItEasy\bin\Release\netstandard1.6\FakeItEasy.xml" target="lib\netstandard1.6" />
   </files>
 </package>
