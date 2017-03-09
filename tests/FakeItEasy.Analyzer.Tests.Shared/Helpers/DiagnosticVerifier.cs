@@ -76,12 +76,11 @@
                 string diagnosticsOutput = actualResults.Any() ? FormatDiagnostics(analyzer, actualResults.ToArray()) : "    NONE.";
 
                 var message =
-                    FormattableString.Invariant(
-                        $@"Mismatch between number of diagnostics returned, expected ""{expectedCount}"" actual ""{actualCount}""
+                    $@"Mismatch between number of diagnostics returned, expected ""{expectedCount}"" actual ""{actualCount}""
 
 Diagnostics:
 {diagnosticsOutput}
-");
+";
                 Execute.Assertion.FailWith(message);
             }
 
@@ -95,11 +94,10 @@ Diagnostics:
                     if (actual.Location != Location.None)
                     {
                         var message =
-                            FormattableString.Invariant(
-                                $@"Expected:
+                            $@"Expected:
 A project diagnostic with No location
 Actual:
-{FormatDiagnostics(analyzer, actual)}");
+{FormatDiagnostics(analyzer, actual)}";
                         Execute.Assertion.FailWith(message);
                     }
                 }
@@ -111,10 +109,9 @@ Actual:
                     if (additionalLocations.Length != expected.Locations.Length - 1)
                     {
                         var message =
-                            FormattableString.Invariant(
-                                $@"Expected {expected.Locations.Length - 1} additional locations but got {additionalLocations.Length} for Diagnostic:
+                            $@"Expected {expected.Locations.Length - 1} additional locations but got {additionalLocations.Length} for Diagnostic:
     {FormatDiagnostics(analyzer, actual)}
-");
+";
                         Execute.Assertion.FailWith(message);
                     }
 
@@ -127,36 +124,33 @@ Actual:
                 if (actual.Id != expected.Id)
                 {
                     var message =
-                        FormattableString.Invariant(
-                            $@"Expected diagnostic id to be ""{expected.Id}"" was ""{actual.Id}""
+                        $@"Expected diagnostic id to be ""{expected.Id}"" was ""{actual.Id}""
 
 Diagnostic:
     {FormatDiagnostics(analyzer, actual)}
-");
+";
                     Execute.Assertion.FailWith(message);
                 }
 
                 if (actual.Severity != expected.Severity)
                 {
                     var message =
-                        FormattableString.Invariant(
                             $@"Expected diagnostic severity to be ""{expected.Severity}"" was ""{actual.Severity}""
 
 Diagnostic:
     {FormatDiagnostics(analyzer, actual)}
-");
+";
                     Execute.Assertion.FailWith(message);
                 }
 
                 if (actual.GetMessage() != expected.Message)
                 {
                     var message =
-                        FormattableString.Invariant(
                             $@"Expected diagnostic message to be ""{expected.Message}"" was ""{actual.GetMessage()}""
 
 Diagnostic:
     {FormatDiagnostics(analyzer, actual)}
-");
+";
                     Execute.Assertion.FailWith(message);
                 }
             }
@@ -174,12 +168,11 @@ Diagnostic:
             var actualSpan = actual.GetLineSpan();
 
             var message =
-                FormattableString.Invariant(
                     $@"Expected diagnostic to be in file ""{expected.Path}"" was actually in file ""{actualSpan.Path}""
 
 Diagnostic:
     {FormatDiagnostics(analyzer, diagnostic)}
-");
+";
             (actualSpan.Path == expected.Path || (actualSpan.Path != null && actualSpan.Path.Contains("Test0.") && expected.Path.Contains("Test.")))
                 .Should().BeTrue(message);
 
@@ -191,12 +184,11 @@ Diagnostic:
                 if (actualLinePosition.Line + 1 != expected.Line)
                 {
                     message =
-                        FormattableString.Invariant(
                             $@"Expected diagnostic to be on line ""{expected.Line}"" was actually on line ""{actualLinePosition.Line + 1}""
 
 Diagnostic:
     {FormatDiagnostics(analyzer, diagnostic)}
-");
+";
                     Execute.Assertion.FailWith(message);
                 }
             }
@@ -207,12 +199,11 @@ Diagnostic:
                 if (actualLinePosition.Character + 1 != expected.Column)
                 {
                     message =
-                        FormattableString.Invariant(
                             $@"Expected diagnostic to start at column ""{expected.Column}"" was actually at column ""{actualLinePosition.Character + 1}""
 
 Diagnostic:
     {FormatDiagnostics(analyzer, diagnostic)}
-");
+";
                     Execute.Assertion.FailWith(message);
                 }
             }
@@ -241,20 +232,19 @@ Diagnostic:
                         var location = diagnostics[i].Location;
                         if (location == Location.None)
                         {
-                            builder.Append(FormattableString.Invariant($"GetGlobalResult({analyzerType.Name}.{rule.Id})"));
+                            builder.Append($"GetGlobalResult({analyzerType.Name}.{rule.Id})");
                         }
                         else
                         {
                             location.IsInSource.Should()
-                                .BeTrue(FormattableString.Invariant(
-                                    $"Test base does not currently handle diagnostics in metadata locations. Diagnostic in metadata: {diagnostics[i]}\r\n"));
+                                .BeTrue(
+                                    $"Test base does not currently handle diagnostics in metadata locations. Diagnostic in metadata: {diagnostics[i]}\r\n");
 
                             string resultMethodName = diagnostics[i].Location.SourceTree.FilePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) ? "GetCSharpResultAt" : "GetBasicResultAt";
                             var linePosition = diagnostics[i].Location.GetLineSpan().StartLinePosition;
 
                             builder.Append(
-                                FormattableString.Invariant(
-                                    $"{resultMethodName}({linePosition.Line + 1}, {linePosition.Character + 1}, {analyzerType.Name}.{rule.Id})"));
+                                    $"{resultMethodName}({linePosition.Line + 1}, {linePosition.Character + 1}, {analyzerType.Name}.{rule.Id})");
                         }
 
                         if (i != diagnostics.Length - 1)

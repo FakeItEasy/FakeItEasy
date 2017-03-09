@@ -2,7 +2,6 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
@@ -28,11 +27,7 @@ namespace FakeItEasy.Creation
 
             if (!interfaceType.GetTypeInfo().IsInterface)
             {
-                throw new ArgumentException(
-                    string.Format(
-                        CultureInfo.CurrentCulture,
-                        "The specified type '{0}' is not an interface",
-                        interfaceType.FullNameCSharp()));
+                throw new ArgumentException($"The specified type '{interfaceType.FullNameCSharp()}' is not an interface");
             }
 
             this.additionalInterfacesToImplement.Add(interfaceType);

@@ -117,13 +117,12 @@
                     newCompilerDiagnostics = GetNewDiagnostics(compilerDiagnostics, GetCompilerDiagnostics(document));
 
                     string message =
-                        FormattableString.Invariant(
-                            $@"Fix introduced new compiler diagnostics:
+                        $@"Fix introduced new compiler diagnostics:
 {string.Join("\r\n", newCompilerDiagnostics.Select(d => d.ToString()))}
 
 New document:
 {document.GetSyntaxRootAsync().Result.ToFullString()}
-");
+";
                     Execute.Assertion.FailWith(message);
                 }
 

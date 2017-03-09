@@ -1,7 +1,6 @@
 namespace FakeItEasy.Creation
 {
     using System;
-    using System.Globalization;
     using System.Reflection;
 
     /// <summary>
@@ -47,7 +46,6 @@ namespace FakeItEasy.Creation
 
             this.ReasonForFailure =
                 string.Format(
-                    CultureInfo.CurrentCulture,
                     "{0}{1}An exception of type {2} was caught during this call. Its message was:{1}{3}{1}{4}",
                     reasonForFailure,
                     Environment.NewLine,

@@ -2,7 +2,6 @@ namespace FakeItEasy.Tests
 {
     using System;
     using System.Collections;
-    using System.Globalization;
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -35,7 +34,7 @@ namespace FakeItEasy.Tests
         {
             return scope.Matches(
                 x => object.Equals(expectedValue, x.Expression.Evaluate()),
-                string.Format(CultureInfo.InvariantCulture, "Expression that produces the value {0}", expectedValue));
+                "Expression that produces the value " + expectedValue);
         }
 
         internal static IProxyOptions IsEmpty(this IArgumentConstraintManager<IProxyOptions> scope)

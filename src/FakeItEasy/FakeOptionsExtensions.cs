@@ -22,9 +22,9 @@ namespace FakeItEasy
             Guard.AgainstNull(options, nameof(options));
 
             Action<IFakeObjectCall> thrower = call =>
-                {
-                    throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(call.Method.Name));
-                };
+            {
+                throw new ExpectationException($@"Call to non configured method ""{call.Method.Name}"" of strict fake.");
+            };
 
             return options.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
         }
@@ -40,9 +40,9 @@ namespace FakeItEasy
             Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
 
             Action<IFakeObjectCall> thrower = call =>
-                {
-                    throw new ExpectationException("Call to non configured method \"{0}\" of strict fake.".FormatInvariant(call.Method.Name));
-                };
+            {
+                throw new ExpectationException($@"Call to non configured method ""{call.Method.Name}"" of strict fake.");
+            };
 
             return optionsBuilder.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
         }

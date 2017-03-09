@@ -3,7 +3,6 @@ namespace FakeItEasy.Tests.Configuration
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
@@ -133,7 +132,7 @@ namespace FakeItEasy.Tests.Configuration
         private ArgumentCollection CreateFakeArgumentList(params object[] arguments)
         {
             return this.CreateFakeArgumentList(
-                Enumerable.Range(0, arguments.Length).Select(x => x.ToString(CultureInfo.CurrentCulture)).ToArray(),
+                Enumerable.Range(0, arguments.Length).Select(x => x.ToString()).ToArray(),
                 arguments);
         }
     }

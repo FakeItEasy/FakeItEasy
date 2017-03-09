@@ -1,7 +1,6 @@
 namespace FakeItEasy
 {
     using System;
-    using System.Globalization;
 
     /// <summary>
     /// A base implementation for factories for creating fake objects of type <typeparamref name="T"/>.
@@ -51,11 +50,7 @@ namespace FakeItEasy
         {
             if (type != typeof(T))
             {
-                var message = string.Format(
-                    CultureInfo.InvariantCulture,
-                    "The {0} can only create dummies of type '{1}'.",
-                    this.GetType(),
-                    typeof(T));
+                var message = $"The {this.GetType()} can only create dummies of type '{typeof(T)}'.";
 
                 throw new ArgumentException(message, nameof(type));
             }

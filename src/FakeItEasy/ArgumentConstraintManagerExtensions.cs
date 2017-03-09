@@ -3,7 +3,6 @@ namespace FakeItEasy
     using System;
     using System.Collections;
     using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
@@ -222,7 +221,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(manager, nameof(manager));
 
-            return manager.Matches(predicate, x => x.Write(string.Format(CultureInfo.CurrentCulture, descriptionFormat, args)));
+            return manager.Matches(predicate, x => x.Write(descriptionFormat, args));
         }
 
         /// <summary>

@@ -87,7 +87,7 @@ namespace FakeItEasy.Core
                     return false;
                 }
 
-                fakeObjectCall.SetReturnValue("Faked {0}".FormatInvariant(this.fakeManager.FakeObjectType.ToString()));
+                fakeObjectCall.SetReturnValue("Faked " + this.fakeManager.FakeObjectType);
 
                 return true;
             }

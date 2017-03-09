@@ -2,7 +2,6 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
 
@@ -90,7 +89,6 @@ namespace FakeItEasy.Creation
             if (typeof(TConstructor) != typeof(T))
             {
                 throw new ArgumentException(string.Format(
-                    CultureInfo.CurrentCulture,
                     ExceptionMessages.WrongConstructorExpressionTypeMessage,
                     typeof(T).FullNameCSharp(),
                     typeof(TConstructor).FullNameCSharp()));

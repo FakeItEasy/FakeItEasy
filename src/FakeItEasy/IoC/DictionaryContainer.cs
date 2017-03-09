@@ -35,7 +35,7 @@ namespace FakeItEasy.IoC
 
             if (!this.registeredServices.TryGetValue(componentType, out creator))
             {
-                throw new KeyNotFoundException("The specified service '{0}' was not registered in the container.".FormatInvariant(componentType));
+                throw new KeyNotFoundException($"The specified service '{componentType}' was not registered in the container.");
             }
 
             return creator.Invoke(this);
