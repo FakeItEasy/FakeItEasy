@@ -208,6 +208,7 @@ namespace FakeItEasy
     public class static Fake
     {
         public static void ClearConfiguration(object fakedObject) { }
+        public static void ClearRecordedCalls(object fakedObject) { }
         public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
         public static void InitializeFixture(object fixture) { }
