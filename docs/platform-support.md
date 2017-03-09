@@ -1,6 +1,3 @@
 # Platform support
 
-FakeItEasy officially supports the following platforms:
-
-* .NET Framework 4.0 onwards
-* .NET Standard 1.6
+See the "Dependencies" section of the [FakeItEasy NuGet Gallery page](https://www.nuget.org/packages/FakeItEasy) to see each released package's supported platforms and package dependencies.
