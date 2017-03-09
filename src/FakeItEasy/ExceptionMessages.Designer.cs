@@ -252,6 +252,17 @@ namespace FakeItEasy {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Object is not recognised as a fake.
+        /// </summary>
+        internal static string NotRecognizedAsAFake
+        {
+            get
+            {
+                return ResourceManager.GetString("NotRecognizedAsAFake", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to The Now-method on the event raise is not meant to be called directly, only use it to register to an event on a fake object that you want to be raised..
         /// </summary>
         internal static string NowCalledDirectly {

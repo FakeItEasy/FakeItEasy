@@ -99,7 +99,7 @@ namespace FakeItEasy.Tests.Core
             // Assert
             exception.Should()
                 .BeAnExceptionOfType<ArgumentException>()
-                .WithMessage("The specified object is not recognized as a fake object.");
+                .And.Message.Should().Match("Object 'Faked FakeItEasy.Creation.ITaggable' of type 'Castle.Proxies.ObjectProxy*' is not recognized as a fake object.");
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace FakeItEasy.Tests.Core
             // Assert
             exception.Should()
                 .BeAnExceptionOfType<ArgumentException>()
-                .WithMessage("The specified object is not recognized as a fake object.");
+                .And.Message.Should().Match("Object 'Faked FakeItEasy.Creation.ITaggable' of type 'Castle.Proxies.ObjectProxy*' is not recognized as a fake object.");
         }
     }
 }

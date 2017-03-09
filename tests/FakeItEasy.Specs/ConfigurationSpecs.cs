@@ -203,7 +203,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws an argument exception"
                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                   .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+                   .And.Message.Should().Contain("Object 'FakeItEasy.Specs.ConfigurationSpecs+BaseClass' of type 'FakeItEasy.Specs.ConfigurationSpecs+BaseClass' is not recognized as a fake object."));
         }
 
         [Scenario]
@@ -219,7 +219,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws an argument exception"
                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                   .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+                   .And.Message.Should().Contain("Object 'FakeItEasy.Specs.ConfigurationSpecs+BaseClass' of type 'FakeItEasy.Specs.ConfigurationSpecs+BaseClass' is not recognized as a fake object."));
         }
 
         [Scenario]
@@ -251,7 +251,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws an argument exception"
                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                   .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+                   .And.Message.Should().Contain("Object 'FakeItEasy.Specs.ConfigurationSpecs+DerivedClass' of type 'FakeItEasy.Specs.ConfigurationSpecs+DerivedClass' is not recognized as a fake object."));
         }
 
         [Scenario]
@@ -283,7 +283,7 @@ namespace FakeItEasy.Specs
 
              "Then it throws an argument exception"
                 .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                    .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+                    .And.Message.Should().Contain("Object 'FakeItEasy.Specs.ConfigurationSpecs+BaseClass' of type 'FakeItEasy.Specs.ConfigurationSpecs+BaseClass' is not recognized as a fake object."));
         }
 
         [Scenario]
@@ -315,7 +315,7 @@ namespace FakeItEasy.Specs
 
              "Then it throws an argument exception"
                 .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                    .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+                    .And.Message.Should().Contain("Object 'FakeItEasy.Specs.ConfigurationSpecs+DerivedClass' of type 'FakeItEasy.Specs.ConfigurationSpecs+DerivedClass' is not recognized as a fake object."));
         }
 
         [Scenario]
@@ -347,7 +347,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws an argument exception"
                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                   .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+                   .And.Message.Should().Contain("Object 'FakeItEasy.Specs.ConfigurationSpecs+BaseClass' of type 'FakeItEasy.Specs.ConfigurationSpecs+BaseClass' is not recognized as a fake object."));
         }
 
         [Scenario]
@@ -379,7 +379,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws an argument exception"
                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                   .And.Message.Should().Contain("The specified object is not recognized as a fake object."));
+                   .And.Message.Should().Contain("Object 'FakeItEasy.Specs.ConfigurationSpecs+DerivedClass' of type 'FakeItEasy.Specs.ConfigurationSpecs+DerivedClass' is not recognized as a fake object."));
         }
 
         [Scenario]
