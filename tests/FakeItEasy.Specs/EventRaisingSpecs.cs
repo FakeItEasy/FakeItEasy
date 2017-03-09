@@ -69,8 +69,6 @@ namespace FakeItEasy.Specs
 
         private static object CapturedArgs2 { get; set; }
 
-        private static object CaughtException { get; set; }
-
         [Background]
         public void Background()
         {
