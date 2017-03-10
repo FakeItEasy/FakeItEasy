@@ -95,5 +95,26 @@
             "Then it finds the matching call"
                 .x(() => matchedCalls.Select(c => c.Method.Name).Should().Equal("AnotherMethod"));
         }
+
+        [Scenario]
+        public static void ClearRecordedCalls(IFoo fake)
+        {
+            "Given a Fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And I make several calls to the Fake"
+                .x(() =>
+                {
+                    fake.AMethod();
+                    fake.AnotherMethod();
+                    fake.AnotherMethod("houseboat");
+                });
+
+            "When I clear the recorded calls"
+                .x(() => Fake.ClearRecordedCalls(fake));
+
+            "Then the recorded call list is empty"
+                .x(() => Fake.GetCalls(fake).Should().BeEmpty());
+        }
     }
 }

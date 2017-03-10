@@ -89,6 +89,18 @@ namespace FakeItEasy.Tests
         }
 
         [Fact]
+        public void ClearRecordedCalls_should_be_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Expression<System.Action> call = () => this.facade.ClearRecordedCalls(A.Dummy<object>());
+            call.Should().BeNullGuarded();
+        }
+
+        [Fact]
         public void Initialize_should_call_initialize_on_fake_initializer()
         {
             // Arrange

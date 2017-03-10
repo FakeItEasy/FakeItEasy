@@ -18,9 +18,10 @@ namespace FakeItEasy.Core
     {
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
-        private readonly ConcurrentQueue<ICompletedFakeObjectCall> recordedCalls;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
+
+        private ConcurrentQueue<ICompletedFakeObjectCall> recordedCalls;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeManager"/> class.
@@ -179,6 +180,14 @@ namespace FakeItEasy.Core
         internal virtual void ClearUserRules()
         {
             this.AllUserRules.Clear();
+        }
+
+        /// <summary>
+        /// Removes any recorded calls.
+        /// </summary>
+        internal virtual void ClearRecordedCalls()
+        {
+            this.recordedCalls = new ConcurrentQueue<ICompletedFakeObjectCall>();
         }
 
         /// <summary>
