@@ -88,10 +88,10 @@ namespace FakeItEasy.Creation
 
             if (typeof(TConstructor) != typeof(T))
             {
-                throw new ArgumentException(string.Format(
-                    ExceptionMessages.WrongConstructorExpressionTypeMessage,
-                    typeof(T).FullNameCSharp(),
-                    typeof(TConstructor).FullNameCSharp()));
+                throw new ArgumentException(
+                    ExceptionMessages.WrongConstructorExpressionTypeMessage.Format(
+                        typeof(T).FullNameCSharp(),
+                        typeof(TConstructor).FullNameCSharp()));
             }
         }
     }

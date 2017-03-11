@@ -63,6 +63,8 @@
     <Compile Include="AsyncReturnValueConfigurationExtensions.cs" />
     <Compile Include="Compatibility\MethodInfoWrapper.cs" />
     <Compile Include="Configuration\PropertyExpressionHelper.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\DynamicProxyResources.cs" />
+    <Compile Include="ExceptionMessages.cs" />
     <Compile Include="LinkedListExtensions.cs" />
     <Compile Include="Configuration\IDoNothingConfiguration.cs" />
     <Compile Include="Configuration\IPropertySetterAnyValueConfiguration.cs" />
@@ -179,7 +181,6 @@
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGenerator.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidator.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs" />
-    <Compile Include="Creation\CastleDynamicProxy\DynamicProxyResources.Designer.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManager.cs" />
     <Compile Include="Creation\DelegateProxies\DelegateProxyGenerator.cs" />
     <Compile Include="Creation\DummyValueCreationSession.cs" />
@@ -204,7 +205,6 @@
     <Compile Include="DefaultOutputWriter.cs" />
     <Compile Include="DummyFactory.cs" />
     <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="ExceptionMessages.Designer.cs" />
     <Compile Include="ExceptionThrowerConfigurationExtensions.cs" />
     <Compile Include="ExpectationException.cs" />
     <Compile Include="ExpressionExtensions.cs" />
@@ -281,10 +281,6 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx" />
-    <EmbeddedResource Include="ExceptionMessages.resx" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
     <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0&quot; /internalize:&quot;$(SolutionDir)\src\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
