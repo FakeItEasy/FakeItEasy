@@ -63,6 +63,16 @@
     <Compile Include="AsyncReturnValueConfigurationExtensions.cs" />
     <Compile Include="Compatibility\MethodInfoWrapper.cs" />
     <Compile Include="Configuration\PropertyExpressionHelper.cs" />
+    <Compile Include="Creation\CastleDynamicProxy\DynamicProxyResources.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DynamicProxyResources.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptionMessages.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionMessages.tt</DependentUpon>
+    </Compile>
     <Compile Include="LinkedListExtensions.cs" />
     <Compile Include="Configuration\IDoNothingConfiguration.cs" />
     <Compile Include="Configuration\IPropertySetterAnyValueConfiguration.cs" />
@@ -175,7 +185,6 @@
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyGenerator.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleDynamicProxyInterceptionValidator.cs" />
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs" />
-    <Compile Include="Creation\CastleDynamicProxy\DynamicProxyResources.Designer.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManager.cs" />
     <Compile Include="Creation\DelegateProxies\DelegateProxyGenerator.cs" />
     <Compile Include="Creation\DummyValueCreationSession.cs" />
@@ -200,7 +209,6 @@
     <Compile Include="DefaultOutputWriter.cs" />
     <Compile Include="DummyFactory.cs" />
     <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="ExceptionMessages.Designer.cs" />
     <Compile Include="ExceptionThrowerConfigurationExtensions.cs" />
     <Compile Include="ExpectationException.cs" />
     <Compile Include="ExpressionExtensions.cs" />
@@ -276,10 +284,26 @@
       <SubType>Designer</SubType>
     </CodeAnalysisDictionary>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx" />
-    <EmbeddedResource Include="ExceptionMessages.resx" />
+    <Content Include="Creation\CastleDynamicProxy\DynamicProxyResources.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DynamicProxyResources.cs</LastGenOutput>
+    </Content>
+    <Content Include="ExceptionMessages.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ExceptionMessages.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Creation\CastleDynamicProxy\DynamicProxyResources.resx">
+      <LastGenOutput>DynamicProxyResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExceptionMessages.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
