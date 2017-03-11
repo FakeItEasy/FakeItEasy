@@ -1,6 +1,6 @@
 namespace FakeItEasy.Messages
 {
-    internal class OnePlaceholderMessage
+    internal struct OnePlaceholderMessage
     {
         private readonly string format;
 
