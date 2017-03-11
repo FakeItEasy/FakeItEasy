@@ -87,6 +87,18 @@
     <Compile Include="..\FakeItEasy\Core\InterceptedFakeObjectCallExtensions.cs">
       <Link>Core\InterceptedFakeObjectCallExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Messages\NoPlaceholderMessage.cs">
+      <Link>Messages\NoPlaceholderMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Messages\OnePlaceholderMessage.cs">
+      <Link>Messages\OnePlaceholderMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Messages\ThreePlaceholderMessage.cs">
+      <Link>Messages\ThreePlaceholderMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\FakeItEasy\Messages\TwoPlaceholderMessage.cs">
+      <Link>Messages\TwoPlaceholderMessage.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
