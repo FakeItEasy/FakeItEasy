@@ -89,9 +89,9 @@ namespace FakeItEasy.Creation
             if (typeof(TConstructor) != typeof(T))
             {
                 throw new ArgumentException(
-                    ExceptionMessages.WrongConstructorExpressionTypeMessage.Format(
-                        typeof(T).FullNameCSharp(),
-                        typeof(TConstructor).FullNameCSharp()));
+                    ExceptionMessages.WrongConstructorExpressionTypeMessage(
+                        typeof(T),
+                        typeof(TConstructor)));
             }
         }
     }

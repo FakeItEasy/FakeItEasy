@@ -26,7 +26,7 @@ namespace FakeItEasy.Core
 
             if (result == null)
             {
-                throw new ArgumentException(ExceptionMessages.NotRecognizedAsAFake.Format(proxy.ToString(), proxy.GetType().FullNameCSharp()));
+                throw new ArgumentException(ExceptionMessages.NotRecognizedAsAFake(proxy, proxy.GetType()));
             }
 
             return result;

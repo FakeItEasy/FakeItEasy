@@ -1,22 +1,22 @@
 ﻿namespace FakeItEasy.Creation.CastleDynamicProxy
 {
-    using FakeItEasy.Messages;
+    using System;
 
     internal static class DynamicProxyResources
     {
-        public static NoPlaceholderMessage ArgumentsForConstructorDoesNotMatchAnyConstructorMessage =>
-            @"No constructor matches the passed arguments for constructor.";
+        public static string ArgumentsForConstructorDoesNotMatchAnyConstructorMessage =>
+            "No constructor matches the passed arguments for constructor.";
 
-        public static NoPlaceholderMessage ArgumentsForConstructorOnInterfaceTypeMessage =>
-            @"Arguments for constructor specified for interface type.";
+        public static string ArgumentsForConstructorOnInterfaceTypeMessage =>
+            "Arguments for constructor specified for interface type.";
 
-        public static OnePlaceholderMessage ProxyIsSealedTypeMessage =>
-            @"The type of proxy ""{0}"" is sealed.";
+        public static string ProxyIsSealedTypeMessage(Type type) =>
+            $@"The type of proxy ""{type}"" is sealed.";
 
-        public static OnePlaceholderMessage ProxyIsValueTypeMessage =>
-            @"The type of proxy must be an interface or a class but it was {0}.";
+        public static string ProxyIsValueTypeMessage(Type type) =>
+            $"The type of proxy must be an interface or a class but it was {type}.";
 
-        public static OnePlaceholderMessage ProxyTypeWithNoDefaultConstructorMessage =>
-            @"No usable default constructor was found on the type {0}.";
+        public static string ProxyTypeWithNoDefaultConstructorMessage(Type type) =>
+            $"No usable default constructor was found on the type {type}.";
     }
 }

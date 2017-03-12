@@ -77,7 +77,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             if (typeOfProxy.GetTypeInfo().IsSealed)
             {
-                return new ProxyGeneratorResult(DynamicProxyResources.ProxyIsSealedTypeMessage.Format(typeOfProxy));
+                return new ProxyGeneratorResult(DynamicProxyResources.ProxyIsSealedTypeMessage(typeOfProxy));
             }
 
             GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
@@ -135,12 +135,12 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
         private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy, Exception e)
         {
-            return new ProxyGeneratorResult(DynamicProxyResources.ProxyTypeWithNoDefaultConstructorMessage.Format(typeOfProxy), e);
+            return new ProxyGeneratorResult(DynamicProxyResources.ProxyTypeWithNoDefaultConstructorMessage(typeOfProxy), e);
         }
 
         private static ProxyGeneratorResult GetProxyResultForValueType(Type typeOfProxy)
         {
-            return new ProxyGeneratorResult(DynamicProxyResources.ProxyIsValueTypeMessage.Format(typeOfProxy));
+            return new ProxyGeneratorResult(DynamicProxyResources.ProxyIsValueTypeMessage(typeOfProxy));
         }
 
         private static object DoGenerateProxy(
