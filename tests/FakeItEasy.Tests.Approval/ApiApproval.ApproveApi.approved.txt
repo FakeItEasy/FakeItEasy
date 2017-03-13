@@ -134,6 +134,10 @@ namespace FakeItEasy
     }
     public class static ArgumentValidationConfigurationExtensions
     {
+        public static TInterface WhenArgumentsMatch<TInterface, T1>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration, System.Func<T1, bool> argumentsPredicate) { }
+        public static TInterface WhenArgumentsMatch<TInterface, T1, T2>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration, System.Func<T1, T2, bool> argumentsPredicate) { }
+        public static TInterface WhenArgumentsMatch<TInterface, T1, T2, T3>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration, System.Func<T1, T2, T3, bool> argumentsPredicate) { }
+        public static TInterface WhenArgumentsMatch<TInterface, T1, T2, T3, T4>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration, System.Func<T1, T2, T3, T4, bool> argumentsPredicate) { }
         public static TInterface WithAnyArguments<TInterface>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration) { }
     }
     public abstract class ArgumentValueFormatter<T> : FakeItEasy.IArgumentValueFormatter
