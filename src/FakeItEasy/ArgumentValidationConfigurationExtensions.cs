@@ -1,6 +1,9 @@
 namespace FakeItEasy
 {
     using System;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using FakeItEasy.Configuration;
 
     /// <summary>
@@ -8,6 +11,8 @@ namespace FakeItEasy
     /// </summary>
     public static class ArgumentValidationConfigurationExtensions
     {
+        private const string NameOfWhenArgumentsMatchFeature = "when arguments match";
+
         /// <summary>
         /// Specifies that a call to the configured call should be applied no matter what arguments
         /// are used in the call to the faked object.
@@ -34,7 +39,18 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, bool> argumentsPredicate)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+
+            return configuration.WhenArgumentsMatch(args =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                    args.Method,
+                    argumentsPredicate.GetMethodInfo(),
+                    NameOfWhenArgumentsMatchFeature);
+
+                return argumentsPredicate(args.Get<T1>(0));
+            });
         }
 
         /// <summary>
@@ -50,7 +66,18 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, T2, bool> argumentsPredicate)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+
+            return configuration.WhenArgumentsMatch(args =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                    args.Method,
+                    argumentsPredicate.GetMethodInfo(),
+                    NameOfWhenArgumentsMatchFeature);
+
+                return argumentsPredicate(args.Get<T1>(0), args.Get<T2>(1));
+            });
         }
 
         /// <summary>
@@ -67,7 +94,18 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, T2, T3, bool> argumentsPredicate)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+
+            return configuration.WhenArgumentsMatch(args =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                    args.Method,
+                    argumentsPredicate.GetMethodInfo(),
+                    NameOfWhenArgumentsMatchFeature);
+
+                return argumentsPredicate(args.Get<T1>(0), args.Get<T2>(1), args.Get<T3>(2));
+            });
         }
 
         /// <summary>
@@ -85,7 +123,18 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, T2, T3, T4, bool> argumentsPredicate)
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+
+            return configuration.WhenArgumentsMatch(args =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                    args.Method,
+                    argumentsPredicate.GetMethodInfo(),
+                    NameOfWhenArgumentsMatchFeature);
+
+                return argumentsPredicate(args.Get<T1>(0), args.Get<T2>(1), args.Get<T3>(2), args.Get<T4>(3));
+            });
         }
     }
 }

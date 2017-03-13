@@ -52,6 +52,7 @@ namespace FakeItEasy.Configuration
         internal ArgumentCollection(object[] arguments, MethodInfo method)
             : this(arguments, GetArgumentNames(method))
         {
+            this.Method = method;
         }
 
         /// <summary>
@@ -67,6 +68,8 @@ namespace FakeItEasy.Configuration
         ///   Gets the names of the arguments in the list.
         /// </summary>
         public IEnumerable<string> ArgumentNames { get; }
+
+        internal MethodInfo Method { get; }
 
         /// <summary>
         ///   Gets the argument at the specified index.
