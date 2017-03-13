@@ -18,7 +18,7 @@ namespace FakeItEasy.Core
         /// Initializes a new instance of the <see cref="FakeCreationException"/> class.
         /// </summary>
         public FakeCreationException()
-            : base(ExceptionMessages.FakeCreationExceptionDefaultMessage)
+            : base(ExceptionMessages.FakeCreationExceptionDefault)
         {
         }
 
