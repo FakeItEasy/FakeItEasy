@@ -26,7 +26,7 @@ namespace FakeItEasy.Core
 
             if (result == null)
             {
-                throw new ArgumentException("The specified object is not recognized as a fake object.");
+                throw new ArgumentException(string.Format(ExceptionMessages.NotRecognizedAsAFake, proxy.ToString(), proxy.GetType().FullNameCSharp()));
             }
 
             return result;

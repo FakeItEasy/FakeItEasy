@@ -208,4 +208,7 @@ The following constructors failed:
   <data name="FakeManagerWasInitializedWithDifferentProxyMessage" xml:space="preserve">
     <value>The fake manager was initialized for a different proxy.</value>
   </data>
+  <data name="NotRecognizedAsAFake" xml:space="preserve">
+    <value>Object '{0}' of type '{1}' is not recognized as a fake object.</value>
+  </data>
 </root>
