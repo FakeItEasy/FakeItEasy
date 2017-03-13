@@ -7,7 +7,7 @@
         public static string ArgumentNameDoesNotExist =>
             "The specified argument name does not exist in the ArgumentList.";
 
-        public static string NonConstructorExpressionMessage =>
+        public static string NonConstructorExpression =>
             "Only expression of the type ExpressionType.New (constructor calls) are accepted.";
 
         public static string NowCalledDirectly =>
@@ -16,7 +16,7 @@
         public static string NumberOfOutAndRefParametersDoesNotMatchCall =>
             "The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call.";
 
-        public static string WrongNumberOfArgumentNamesMessage =>
+        public static string WrongNumberOfArgumentNames =>
             "The number of argument names does not match the number of arguments.";
 
         public static string MethodMissmatchWhenPlayingBackRecording =>
@@ -25,10 +25,10 @@
         public static string NoMoreRecordedCalls =>
             "All the recorded calls has been applied, the recorded sequence is no longer valid.";
 
-        public static string FakeCreationExceptionDefaultMessage =>
+        public static string FakeCreationExceptionDefault =>
             "Unable to create fake object.";
 
-        public static string WrongConstructorExpressionTypeMessage(Type actualConstructorType, Type expectedConstructorType) =>
+        public static string WrongConstructorExpressionType(Type actualConstructorType, Type expectedConstructorType) =>
             $"Supplied constructor is for type {actualConstructorType.FullNameCSharp()}, but must be for {expectedConstructorType.FullNameCSharp()}.";
 
         public static string NotRecognizedAsAFake(object proxy, Type type) =>

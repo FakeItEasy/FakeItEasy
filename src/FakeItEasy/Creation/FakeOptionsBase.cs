@@ -83,13 +83,13 @@ namespace FakeItEasy.Creation
         {
             if (constructorCall.Body.NodeType != ExpressionType.New)
             {
-                throw new ArgumentException(ExceptionMessages.NonConstructorExpressionMessage);
+                throw new ArgumentException(ExceptionMessages.NonConstructorExpression);
             }
 
             if (typeof(TConstructor) != typeof(T))
             {
                 throw new ArgumentException(
-                    ExceptionMessages.WrongConstructorExpressionTypeMessage(
+                    ExceptionMessages.WrongConstructorExpressionType(
                         typeof(T),
                         typeof(TConstructor)));
             }

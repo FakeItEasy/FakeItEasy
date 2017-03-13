@@ -77,7 +77,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             if (typeOfProxy.GetTypeInfo().IsSealed)
             {
-                return new ProxyGeneratorResult(DynamicProxyResources.ProxyIsSealedTypeMessage(typeOfProxy));
+                return new ProxyGeneratorResult(DynamicProxyMessages.ProxyIsSealedType(typeOfProxy));
             }
 
             GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
@@ -89,7 +89,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         {
             if (typeOfProxy.GetTypeInfo().IsInterface && argumentsForConstructor != null)
             {
-                throw new ArgumentException(DynamicProxyResources.ArgumentsForConstructorOnInterfaceTypeMessage);
+                throw new ArgumentException(DynamicProxyMessages.ArgumentsForConstructorOnInterfaceType);
             }
         }
 
@@ -127,7 +127,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         {
             if (argumentsForConstructor != null)
             {
-                return new ProxyGeneratorResult(DynamicProxyResources.ArgumentsForConstructorDoesNotMatchAnyConstructorMessage, e);
+                return new ProxyGeneratorResult(DynamicProxyMessages.ArgumentsForConstructorDoesNotMatchAnyConstructor, e);
             }
 
             return GetProxyResultForNoDefaultConstructor(typeOfProxy, e);
@@ -135,12 +135,12 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
         private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy, Exception e)
         {
-            return new ProxyGeneratorResult(DynamicProxyResources.ProxyTypeWithNoDefaultConstructorMessage(typeOfProxy), e);
+            return new ProxyGeneratorResult(DynamicProxyMessages.ProxyTypeWithNoDefaultConstructor(typeOfProxy), e);
         }
 
         private static ProxyGeneratorResult GetProxyResultForValueType(Type typeOfProxy)
         {
-            return new ProxyGeneratorResult(DynamicProxyResources.ProxyIsValueTypeMessage(typeOfProxy));
+            return new ProxyGeneratorResult(DynamicProxyMessages.ProxyIsValueType(typeOfProxy));
         }
 
         private static object DoGenerateProxy(
