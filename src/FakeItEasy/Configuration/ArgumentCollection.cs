@@ -27,31 +27,22 @@ namespace FakeItEasy.Configuration
         ///   Initializes a new instance of the <see cref = "ArgumentCollection" /> class.
         /// </summary>
         /// <param name = "arguments">The arguments.</param>
-        /// <param name = "argumentNames">The argument names.</param>
+        /// <param name = "method">The method.</param>
         [DebuggerStepThrough]
-        internal ArgumentCollection(object[] arguments, IEnumerable<string> argumentNames)
+        internal ArgumentCollection(object[] arguments, MethodInfo method)
         {
             Guard.AgainstNull(arguments, nameof(arguments));
-            Guard.AgainstNull(argumentNames, nameof(argumentNames));
+            Guard.AgainstNull(method, nameof(method));
 
-            if (arguments.Length != argumentNames.Count())
+            var argumentNames = GetArgumentNames(method).ToArray();
+
+            if (arguments.Length != argumentNames.Length)
             {
                 throw new ArgumentException(ExceptionMessages.WrongNumberOfArgumentNames, nameof(argumentNames));
             }
 
             this.arguments = arguments;
-            this.ArgumentNames = argumentNames.ToArray();
-        }
-
-        /// <summary>
-        ///   Initializes a new instance of the <see cref = "ArgumentCollection" /> class.
-        /// </summary>
-        /// <param name = "arguments">The arguments.</param>
-        /// <param name = "method">The method.</param>
-        [DebuggerStepThrough]
-        internal ArgumentCollection(object[] arguments, MethodInfo method)
-            : this(arguments, GetArgumentNames(method))
-        {
+            this.ArgumentNames = argumentNames;
             this.Method = method;
         }
 

@@ -5,6 +5,7 @@ namespace FakeItEasy.Tests
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
@@ -15,7 +16,8 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var call = A.Fake<IFakeObjectCall>();
-            var arguments = new ArgumentCollection(new object[] { 1, 2 }, new[] { "argument1", "argument2" });
+            var method = FakeMethodHelper.CreateFakeMethod(new[] { "argument1", "argument2" });
+            var arguments = new ArgumentCollection(new object[] { 1, 2 }, method);
             A.CallTo(() => call.Arguments).Returns(arguments);
 
             // Act
@@ -30,7 +32,8 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             var call = A.Fake<IFakeObjectCall>();
-            var arguments = new ArgumentCollection(new object[] { 1, 2 }, new[] { "argument1", "argument2" });
+            var method = FakeMethodHelper.CreateFakeMethod(new[] { "argument1", "argument2" });
+            var arguments = new ArgumentCollection(new object[] { 1, 2 }, method);
             A.CallTo(() => call.Arguments).Returns(arguments);
 
             // Act
