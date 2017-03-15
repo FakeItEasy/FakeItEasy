@@ -19,13 +19,6 @@ namespace FakeItEasy.Tests.Configuration
         [Fact]
         public void Constructor_is_properly_guarded()
         {
-            Expression<Action> call = () => new ArgumentCollection(new object[] { "foo", 1 }, new[] { "foo", "bar" });
-            call.Should().BeNullGuarded();
-        }
-
-        [Fact]
-        public void Constructor_that_takes_method_is_properly_null_guarded()
-        {
             var method = typeof(IFoo).GetMethod("Bar", new[] { typeof(object), typeof(object) });
             Expression<Action> call = () => new ArgumentCollection(new object[] { "foo", 1 }, method);
             call.Should().BeNullGuarded();
@@ -45,7 +38,8 @@ namespace FakeItEasy.Tests.Configuration
         public void Constructor_should_throw_when_number_of_arguments_does_not_match_number_of_argument_names()
         {
             // act
-            var exception = Record.Exception(() => new ArgumentCollection(new object[] { 1, 2 }, new[] { "first", "second", "third" }));
+            var method = FakeMethodHelper.CreateFakeMethod(new[] { "first", "second", "third" });
+            var exception = Record.Exception(() => new ArgumentCollection(new object[] { 1, 2 }, method));
 
             // assert
             exception.Should().BeOfType<ArgumentException>();
@@ -124,9 +118,10 @@ namespace FakeItEasy.Tests.Configuration
         }
 #endif
 
-        private ArgumentCollection CreateFakeArgumentList(IEnumerable<string> argumentNames, params object[] arguments)
+        private ArgumentCollection CreateFakeArgumentList(string[] argumentNames, params object[] arguments)
         {
-            return new ArgumentCollection(arguments, argumentNames);
+            var method = FakeMethodHelper.CreateFakeMethod(argumentNames);
+            return new ArgumentCollection(arguments, method);
         }
 
         private ArgumentCollection CreateFakeArgumentList(params object[] arguments)

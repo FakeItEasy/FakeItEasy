@@ -81,7 +81,7 @@ this rather contrived example:
 
 ```csharp
 A<string>.That.Matches(s => s.Length == 3 && s[1] == 'X');
-``` 
+```
 
 FakeItEasy will evaluate the predicate against any supplied
 argument. The predicate can be supplied as an `Expression<Func<T,
@@ -116,7 +116,7 @@ For example, this test passes:
 ```csharp
 string configurationValue = "lollipop";
 A.CallTo(()=>aFakeDictionary.TryGetValue(theKey, out configurationValue))
- .Returns(true); 
+ .Returns(true);
 
 string fetchedValue = "licorice";
 var success = aFakeDictionary.TryGetValue(theKey, out fetchedValue);
@@ -156,5 +156,14 @@ A.CallTo(() => fake.Bar(null, 0))
     .WhenArgumentsMatch(args =>
         args.Get<string>("theString")
             .Equals(args.Get<int>("theInt").ToString()))
+    .Throws<Exception>();
+```
+
+Strongly typed overloads of `WhenArgumentsMatch` are also available:
+
+```csharp
+A.CallTo(() => fake.Bar(null, 0))
+    .WhenArgumentsMatch((string theString, int theInt) =>
+        theString.Equals(theInt.ToString()))
     .Throws<Exception>();
 ```

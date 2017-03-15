@@ -107,6 +107,7 @@
     <Compile Include="ArgumentValidationConfigurationExtensionsTests.cs" />
     <Compile Include="AssertConfigurationExtensionsTests.cs" />
     <Compile Include="TestHelpers\BinarySerializationHelper.cs" />
+    <Compile Include="TestHelpers\FakeMethodHelper.cs" />
     <Compile Include="TestHelpers\StringEnumerableExtensions.cs" />
     <Compile Include="TestHelpers\TypeExtensions.cs" />
     <Compile Include="TestHelpers\UsingCultureAttribute.cs" />

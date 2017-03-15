@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnyCallConfigurationSpecs.cs" />
+    <Compile Include="ArgumentMatchingSpecs.cs" />
     <Compile Include="ArgumentValueFormatterSpecs.cs" />
     <Compile Include="AssertingOnSetOnlyPropertiesSpecs.cs" />
     <Compile Include="CancellationSpecs.cs" />

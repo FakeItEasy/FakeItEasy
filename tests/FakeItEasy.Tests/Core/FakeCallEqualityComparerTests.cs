@@ -119,7 +119,7 @@ namespace FakeItEasy.Tests.Core
             var call = A.Fake<IFakeObjectCall>();
 
             A.CallTo(() => call.Method).Returns(ToStringMethod);
-            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { }, new string[] { }));
+            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { }, A.Fake<MethodInfo>()));
 
             return call;
         }
