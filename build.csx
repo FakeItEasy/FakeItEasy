@@ -2,11 +2,12 @@
 
 using static SimpleTargets;
 
-var  solutionName = "FakeItEasy";
+var solutionName = "FakeItEasy";
 
 var solution = "./" + solutionName + ".sln";
 var packagesDirectory = Path.GetFullPath("packages");
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
+var coverityProjectUrl = "https://scan.coverity.com/builds?project=FakeItEasy%2FFakeItEasy";
 var versionAssembly = "./src/FakeItEasy/bin/Release/FakeItEasy.dll";
 var nuspecs = Directory.GetFiles("./src", "*.nuspec");
 var gitlinks = Directory.GetDirectories("./src").Where(p => !p.EndsWith(".Shared")).Select(Path.GetFileName);
@@ -57,6 +58,8 @@ var gitlink = "./packages/gitlink.2.3.0/lib/net45/GitLink.exe";
 var xunit = "./packages/xunit.runner.console.2.0.0/tools/xunit.console.exe";
 
 // artifact locations
+var coverityDirectory = "./artifacts/coverity";
+var coverityResultsDirectory = "./artifacts/coverity/cov-int";
 var logsDirectory = "./artifacts/logs";
 var outputDirectory = "./artifacts/output";
 var testsDirectory = "./artifacts/tests";
@@ -68,11 +71,30 @@ targets.Add("default", DependsOn("gitlink", "unit", "integ", "spec", "approve", 
 
 targets.Add("outputDirectory", () => Directory.CreateDirectory(outputDirectory));
 
+targets.Add("coverityDirectory", () => Directory.CreateDirectory(coverityDirectory));
+
 targets.Add("logsDirectory", () => Directory.CreateDirectory(logsDirectory));
 
 targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
 
 targets.Add("build", DependsOn("clean", "outputDirectory", "restore"), () => RunMsBuild("Build"));
+
+targets.Add(
+    "coverity",
+    DependsOn("clean", "outputDirectory", "coverityDirectory", "restore"),
+    () =>
+    {
+        CoverityMsBuild();
+
+        var version = GetVersion();
+        var coverityToken = Environment.GetEnvironmentVariable("COVERITY_TOKEN");
+        var coverityEmail = Environment.GetEnvironmentVariable("COVERITY_EMAIL");
+        var repoCommitId = Environment.GetEnvironmentVariable("APPVEYOR_REPO_COMMIT");
+
+        var coverityZipFile = coverityDirectory + "/coverity.zip";
+        Cmd("7z", $"a -r {coverityZipFile} {coverityResultsDirectory}");
+        Cmd("curl", $@"--silent --show-error --form token={coverityToken} --form email={coverityEmail} --form file=@{coverityZipFile} --form version=""{version}"" --form description=""Build {version} ({repoCommitId})"" {coverityProjectUrl}");
+     });
 
 targets.Add("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
 
@@ -172,6 +194,14 @@ public void RunMsBuild(string target)
     Cmd(
         msBuild,
         $"{solution} /target:{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/{target}.log;Verbosity=Detailed;PerformanceSummary {packagesDirectoryOption}");
+}
+
+public void CoverityMsBuild()
+{
+    var packagesDirectoryOption = $"/p:NuGetPackagesDirectory={packagesDirectory}";
+    Cmd(
+        "cov-build",
+        $@"--dir {coverityResultsDirectory} ""{msBuild}"" {solution} /target:Build /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/Coverity-Build.log;Verbosity=Detailed;PerformanceSummary {packagesDirectoryOption}");
 }
 
 public void RunTests(IEnumerable<string> testDlls)
