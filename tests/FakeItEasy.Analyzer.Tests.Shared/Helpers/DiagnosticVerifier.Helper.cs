@@ -163,34 +163,41 @@
 
             var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
 
-            var solution = new AdhocWorkspace()
-                .CurrentSolution
-                .AddProject(projectId, TestProjectName, TestProjectName, language)
-#if CSHARP
-                .WithProjectCompilationOptions(projectId, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-#elif VISUAL_BASIC
-                .WithProjectCompilationOptions(projectId, new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-#endif
-                .AddMetadataReference(projectId, CorlibReference)
-                .AddMetadataReference(projectId, SystemCoreReference)
-#if CSHARP
-                .AddMetadataReference(projectId, CSharpSymbolsReference)
-#elif VISUAL_BASIC
-                .AddMetadataReference(projectId, VisualBasicSymbolsReference)
-#endif
-                .AddMetadataReference(projectId, CodeAnalysisReference)
-                .AddMetadataReference(projectId, FakeItEasyReference);
-
-            int count = 0;
-            foreach (var source in sources)
+            using (var adhocWorkspace = new AdhocWorkspace())
             {
-                var newFileName = fileNamePrefix + count + "." + fileExt;
-                var documentId = DocumentId.CreateNewId(projectId, debugName: newFileName);
-                solution = solution.AddDocument(documentId, newFileName, SourceText.From(source));
-                count++;
-            }
+                var solution = adhocWorkspace
+                    .CurrentSolution
+                    .AddProject(projectId, TestProjectName, TestProjectName, language)
+#if CSHARP
+                    .WithProjectCompilationOptions(
+                        projectId,
+                        new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+#elif VISUAL_BASIC
+                    .WithProjectCompilationOptions(
+                        projectId,
+                        new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+#endif
+                    .AddMetadataReference(projectId, CorlibReference)
+                    .AddMetadataReference(projectId, SystemCoreReference)
+#if CSHARP
+                    .AddMetadataReference(projectId, CSharpSymbolsReference)
+#elif VISUAL_BASIC
+                    .AddMetadataReference(projectId, VisualBasicSymbolsReference)
+#endif
+                    .AddMetadataReference(projectId, CodeAnalysisReference)
+                    .AddMetadataReference(projectId, FakeItEasyReference);
 
-            return solution.GetProject(projectId);
+                int count = 0;
+                foreach (var source in sources)
+                {
+                    var newFileName = fileNamePrefix + count + "." + fileExt;
+                    var documentId = DocumentId.CreateNewId(projectId, debugName: newFileName);
+                    solution = solution.AddDocument(documentId, newFileName, SourceText.From(source));
+                    count++;
+                }
+
+                return solution.GetProject(projectId);
+            }
         }
 
         /// <summary>
