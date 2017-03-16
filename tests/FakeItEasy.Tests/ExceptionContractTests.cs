@@ -40,10 +40,9 @@ namespace FakeItEasy.Tests
         public void Constructor_that_takes_message_should_set_message()
         {
             // Arrange
-            var constructor = this.GetMessageOnlyConstructor();
 
             // Act
-            var result = (T)constructor.Invoke(new object[] { "A message" });
+            var result = (T)Activator.CreateInstance(typeof(T), "A message");
 
             // Assert
             result.Message.Should().StartWith("A message");
@@ -73,10 +72,9 @@ namespace FakeItEasy.Tests
         public void Constructor_that_takes_message_and_inner_exception_should_set_message()
         {
             // Arrange
-            var constructor = this.GetMessageAndInnerExceptionConstructor();
 
             // Act
-            var result = (T)constructor.Invoke(new object[] { "A message", new InvalidOperationException() });
+            var result = (T)Activator.CreateInstance(typeof(T), "A message", new InvalidOperationException());
 
             // Assert
             result.Message.Should().Be("A message");
@@ -86,11 +84,10 @@ namespace FakeItEasy.Tests
         public void Constructor_that_takes_message_and_inner_exception_should_set_inner_exception()
         {
             // Arrange
-            var constructor = this.GetMessageAndInnerExceptionConstructor();
             var innerException = new InvalidOperationException();
 
             // Act
-            var result = (T)constructor.Invoke(new object[] { string.Empty, innerException });
+            var result = (T)Activator.CreateInstance(typeof(T), string.Empty, innerException);
 
             // Assert
             result.InnerException.Should().Be(innerException);
@@ -100,10 +97,9 @@ namespace FakeItEasy.Tests
         public void Exception_should_provide_default_constructor()
         {
             // Arrange
-            var constructor = typeof(T).GetConstructor(new Type[] { });
 
             // Act
-            constructor.Invoke(new object[] { });
+            var constructor = typeof(T).GetConstructor(new Type[] { });
 
             // Assert
             constructor.Should().NotBeNull("exception classes should provide a public default constructor.");
