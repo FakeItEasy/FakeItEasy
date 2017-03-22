@@ -1,5 +1,8 @@
 #load "packages/simple-targets-csx.5.2.0/simple-targets.csx"
 
+#r "System.Net.Http"
+
+using System.Net.Http;
 using static SimpleTargets;
 
 var solutionName = "FakeItEasy";
@@ -81,10 +84,13 @@ targets.Add("build", DependsOn("clean", "outputDirectory", "restore"), () => Run
 
 targets.Add(
     "coverity",
-    DependsOn("clean", "outputDirectory", "coverityDirectory", "restore"),
+    DependsOn("clean", "coverityDirectory", "restore"),
     () =>
     {
-        CoverityMsBuild();
+        var packagesDirectoryOption = $"/p:NuGetPackagesDirectory={packagesDirectory}";
+        Cmd(
+            "cov-build",
+            $@"--dir {coverityResultsDirectory} ""{msBuild}"" {solution} /target:Build /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/Coverity-Build.log;Verbosity=Detailed;PerformanceSummary {packagesDirectoryOption}");
 
         var version = GetVersion();
         var coverityToken = Environment.GetEnvironmentVariable("COVERITY_TOKEN");
@@ -93,8 +99,35 @@ targets.Add(
 
         var coverityZipFile = coverityDirectory + "/coverity.zip";
         Cmd("7z", $"a -r {coverityZipFile} {coverityResultsDirectory}");
-        Cmd("curl", $@"--silent --show-error --form token={coverityToken} --form email={coverityEmail} --form file=@{coverityZipFile} --form version=""{version}"" --form description=""Build {version} ({repoCommitId})"" {coverityProjectUrl}");
-     });
+
+        var client = new HttpClient();
+        client.Timeout = TimeSpan.FromMinutes(20);
+
+        var form = new MultipartFormDataContent();
+        form.Add(new StringContent(coverityToken), @"""token""");
+        form.Add(new StringContent(coverityEmail), @"""email""");
+        form.Add(new StringContent(version), @"""version""");
+        form.Add(new StringContent($"Build {version} ({repoCommitId})"), @"""description""");
+
+        StreamContent formFileField;
+        using (var fileStream = new FileStream(coverityZipFile, FileMode.Open, FileAccess.Read))
+        {
+            formFileField = new StreamContent(fileStream);
+
+            form.Add(formFileField, @"""file""", "coverity.zip");
+
+            Console.WriteLine("Uploading coverity scan...");
+            var postTask = client.PostAsync(coverityProjectUrl, form);
+            try
+            {
+                    postTask.Wait();
+            }
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
+            }
+        }
+    });
 
 targets.Add("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
 
@@ -194,14 +227,6 @@ public void RunMsBuild(string target)
     Cmd(
         msBuild,
         $"{solution} /target:{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/{target}.log;Verbosity=Detailed;PerformanceSummary {packagesDirectoryOption}");
-}
-
-public void CoverityMsBuild()
-{
-    var packagesDirectoryOption = $"/p:NuGetPackagesDirectory={packagesDirectory}";
-    Cmd(
-        "cov-build",
-        $@"--dir {coverityResultsDirectory} ""{msBuild}"" {solution} /target:Build /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/Coverity-Build.log;Verbosity=Detailed;PerformanceSummary {packagesDirectoryOption}");
 }
 
 public void RunTests(IEnumerable<string> testDlls)
