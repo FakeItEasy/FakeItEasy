@@ -8,7 +8,7 @@ namespace FakeItEasy.Tests
     {
         protected override LambdaExpression Create()
         {
-            return ExpressionHelper.CreateExpression<string>(x => x.Equals(null));
+            return ExpressionHelper.CreateExpression<string>(x => object.ReferenceEquals(x, null));
         }
     }
 }

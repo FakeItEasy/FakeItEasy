@@ -1,6 +1,7 @@
 #pragma warning disable CS0618 // Type or member is obsolete
 namespace FakeItEasy.Tests.SelfInitializedFakes
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -35,9 +36,10 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => call.Method).Returns(this.TypeWithOutAndRefFooMethod);
             A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, this.TypeWithOutAndRefFooMethod));
 
-            var recorder = this.CreateRecorder();
-
-            recorder.ApplyNext(call);
+            using (var recorder = this.CreateRecorder())
+            {
+                recorder.ApplyNext(call);
+            }
 
             A.CallTo(() => call.SetReturnValue(10)).MustHaveHappened();
             A.CallTo(() => call.SetArgumentValue(2, 10)).MustHaveHappened();
@@ -54,10 +56,11 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             A.CallTo(() => call.Method).Returns(this.TypeWithOutAndRefFooMethod);
             A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { 1, "2", null, null }, this.TypeWithOutAndRefFooMethod));
 
-            var recorder = this.CreateRecorder();
-
-            recorder.ApplyNext(call);
-            recorder.ApplyNext(call);
+            using (var recorder = this.CreateRecorder())
+            {
+                recorder.ApplyNext(call);
+                recorder.ApplyNext(call);
+            }
 
             A.CallTo(() => call.SetReturnValue(100)).MustHaveHappened(Repeated.Exactly.Once);
             A.CallTo(() => call.SetArgumentValue(2, 100)).MustHaveHappened(Repeated.Exactly.Once);
@@ -69,12 +72,15 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             // Arrange
             A.CallTo(() => this.callStorage.Load()).Returns(null);
-
-            // Act
-            var recorder = this.CreateRecorder();
+            bool recorderIsRecording;
+            using (var recorder = this.CreateRecorder())
+            {
+                // Act
+                recorderIsRecording = recorder.IsRecording;
+            }
 
             // Assert
-            recorder.IsRecording.Should().BeTrue();
+            recorderIsRecording.Should().BeTrue();
         }
 
         [Fact]
@@ -82,12 +88,15 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
         {
             // Arrange
             A.CallTo(() => this.callStorage.Load()).Returns(this.recordedCalls);
-
-            // Act
-            var recorder = this.CreateRecorder();
+            bool recorderIsRecording;
+            using (var recorder = this.CreateRecorder())
+            {
+                // Act
+                recorderIsRecording = recorder.IsRecording;
+            }
 
             // Assert
-            recorder.IsRecording.Should().BeFalse();
+            recorderIsRecording.Should().BeFalse();
         }
 
         [Fact]
@@ -97,14 +106,15 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             // Arrange
             var method = ExpressionHelper.GetMethod<IFoo>(x => x.Bar());
             this.recordedCalls.Add(new CallData(method, Enumerable.Empty<object>(), null));
-
             var call = this.CreateFakeCall(method);
+            Exception exception;
+            using (var recorder = this.CreateRecorder())
+            {
+                recorder.ApplyNext(call);
 
-            var recorder = this.CreateRecorder();
-            recorder.ApplyNext(call);
-
-            // Act
-            var exception = Record.Exception(() => recorder.ApplyNext(call));
+                // Act
+                exception = Record.Exception(() => recorder.ApplyNext(call));
+            }
 
             // Assert
             exception.Should()
@@ -119,10 +129,12 @@ namespace FakeItEasy.Tests.SelfInitializedFakes
             // Arrange
             this.recordedCalls.Add(new CallData(ExpressionHelper.GetMethod<IFoo>(x => x.Baz()), new object[] { }, null));
             var call = this.CreateFakeCall(ExpressionHelper.GetMethod<IFoo>(x => x.Bar()));
-            var recorder = this.CreateRecorder();
-
-            // Act
-            var exception = Record.Exception(() => recorder.ApplyNext(call));
+            Exception exception;
+            using (var recorder = this.CreateRecorder())
+            {
+                // Act
+                exception = Record.Exception(() => recorder.ApplyNext(call));
+            }
 
             // Assert
             exception.Should()

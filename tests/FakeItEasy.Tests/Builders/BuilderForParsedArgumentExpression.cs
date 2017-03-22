@@ -14,7 +14,7 @@ namespace FakeItEasy.Tests.Builders
 
         public BuilderForParsedArgumentExpression()
         {
-            this.FromFirstArgumentInMethodCall(() => this.Equals(null));
+            this.FromFirstArgumentInMethodCall(() => object.ReferenceEquals(null, this));
         }
 
         public BuilderForParsedArgumentExpression Expression(Action<BuilderForExpression> expressionBuilder)

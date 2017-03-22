@@ -9,8 +9,6 @@
     <Import_RootNamespace>FakeItEasy.Analyzer.Tests</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CodeFixVerifier.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CodeFixVerifier.Helper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DiagnosticResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DiagnosticVerifier.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DiagnosticVerifier.Helper.cs" />
