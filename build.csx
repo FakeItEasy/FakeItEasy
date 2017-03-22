@@ -112,7 +112,7 @@ targets.Add(
 
             using (var fileStream = new FileStream(coverityZipFile, FileMode.Open, FileAccess.Read))
             {
-                StreamContent formFileField = new StreamContent(fileStream);
+                var formFileField = new StreamContent(fileStream);
 
                 form.Add(formFileField, @"""file""", "coverity.zip");
 
