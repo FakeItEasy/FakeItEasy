@@ -6,37 +6,37 @@ namespace FakeItEasy.Specs
     using Xbehave;
     using Xunit;
 
-    public interface IMyInterface
-    {
-        void DoIt(Guid id);
-    }
-
     public static class StrictFakeSpecs
     {
+        public interface IMyInterface
+        {
+            void DoIt(Guid id);
+        }
+
         [Scenario]
         public static void RepeatedAssertion(
             IMyInterface fake,
             Exception exception)
         {
-            "establish"
-                .x(() =>
-                    {
-                        fake = A.Fake<IMyInterface>(o => o.Strict());
-                        ////fake = A.Fake<IMyInterface>();
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IMyInterface>(o => o.Strict()));
 
-                        A.CallTo(() => fake.DoIt(Guid.Empty)).Invokes(() => { });
+            "And I configure the fake to do nothing when a method is called with certain arguments"
+                .x(() => A.CallTo(() => fake.DoIt(Guid.Empty)).DoesNothing());
 
-                        fake.DoIt(Guid.Empty);
-                        fake.DoIt(Guid.Empty);
-                    });
+            "And I call the method with matching arguments"
+                .x(() => fake.DoIt(Guid.Empty));
 
-            "when asserting must have happened when did not happen"
+            "And I call the method with matching arguments again"
+                .x(() => fake.DoIt(Guid.Empty));
+
+            "When I assert that the method must have been called exactly once"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => fake.DoIt(Guid.Empty)).MustHaveHappened(Repeated.Exactly.Once)));
 
-            "it should throw an expectation exception"
+            "Then the assertion throws an expectation exception"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
-            "it should have an exception message containing the name of the method"
+            "And the exception message names the method"
                 .x(() => exception.Message.Should().Contain("DoIt"));
         }
     }
