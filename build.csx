@@ -100,31 +100,32 @@ targets.Add(
         var coverityZipFile = coverityDirectory + "/coverity.zip";
         Cmd("7z", $"a -r {coverityZipFile} {coverityResultsDirectory}");
 
-        var client = new HttpClient();
-        client.Timeout = TimeSpan.FromMinutes(20);
-
-        var form = new MultipartFormDataContent();
-        form.Add(new StringContent(coverityToken), @"""token""");
-        form.Add(new StringContent(coverityEmail), @"""email""");
-        form.Add(new StringContent(version), @"""version""");
-        form.Add(new StringContent($"Build {version} ({repoCommitId})"), @"""description""");
-
-        StreamContent formFileField;
-        using (var fileStream = new FileStream(coverityZipFile, FileMode.Open, FileAccess.Read))
+        using (var client = new HttpClient())
         {
-            formFileField = new StreamContent(fileStream);
+            client.Timeout = TimeSpan.FromMinutes(20);
 
-            form.Add(formFileField, @"""file""", "coverity.zip");
+            var form = new MultipartFormDataContent();
+            form.Add(new StringContent(coverityToken), @"""token""");
+            form.Add(new StringContent(coverityEmail), @"""email""");
+            form.Add(new StringContent(version), @"""version""");
+            form.Add(new StringContent($"Build {version} ({repoCommitId})"), @"""description""");
 
-            Console.WriteLine("Uploading coverity scan...");
-            var postTask = client.PostAsync(coverityProjectUrl, form);
-            try
+            using (var fileStream = new FileStream(coverityZipFile, FileMode.Open, FileAccess.Read))
             {
+                StreamContent formFileField = new StreamContent(fileStream);
+
+                form.Add(formFileField, @"""file""", "coverity.zip");
+
+                Console.WriteLine("Uploading coverity scan...");
+                var postTask = client.PostAsync(coverityProjectUrl, form);
+                try
+                {
                     postTask.Wait();
-            }
-            catch (AggregateException e)
-            {
-                throw e.InnerException;
+                }
+                catch (AggregateException e)
+                {
+                    throw e.InnerException;
+                }
             }
         }
     });
