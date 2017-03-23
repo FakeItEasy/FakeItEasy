@@ -3,27 +3,11 @@ namespace FakeItEasy.Tests
     using System;
     using System.Linq.Expressions;
     using FakeItEasy.Creation;
-    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
     public class FakeOptionsExtensionsTests
     {
-        [Fact]
-        public void Strict_should_configure_fake_to_throw_expectation_exception()
-        {
-            // Arrange
-            var foo = A.Fake<IFoo>(x => x.Strict());
-
-            // Act
-            var exception = Record.Exception(() => foo.Bar());
-
-            // Assert
-            exception.Should()
-                .BeAnExceptionOfType<ExpectationException>()
-                .WithMessage("Call to non configured method \"Bar\" of strict fake.");
-        }
-
         [Fact]
         public void Strict_should_return_configuration_object()
         {

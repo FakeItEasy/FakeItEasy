@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy
 {
     using System;
+    using FakeItEasy.Core;
 
     internal static class ExceptionMessages
     {
@@ -33,5 +34,11 @@
 
         public static string NotRecognizedAsAFake(object proxy, Type type) =>
             $"Object '{proxy}' of type '{type.FullNameCSharp()}' is not recognized as a fake object.";
+
+        public static string CallToUnconfiguredMethodOfStrictFake(IFakeObjectCall call)
+        {
+            var callFormatter = ServiceLocator.Current.Resolve<IFakeObjectCallFormatter>();
+            return $"Call to unconfigured method of strict fake: {callFormatter.GetDescription(call)}.";
+        }
     }
 }
