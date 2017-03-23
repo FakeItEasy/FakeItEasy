@@ -369,7 +369,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake.ExceptionFromVirtualMethodCallInConstructor
                     .Should()
                     .BeAnExceptionOfType<ExpectationException>()
-                    .WithMessage("Call to non configured method \"VirtualMethod\" of strict fake."));
+                    .WithMessage("Call to unconfigured method of strict fake: *VirtualMethod*"));
         }
 
         [Scenario]
@@ -392,7 +392,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception
                     .Should()
                     .BeAnExceptionOfType<ExpectationException>()
-                    .WithMessage("Call to non configured method \"VirtualMethod\" of strict fake."));
+                    .WithMessage("Call to unconfigured method of strict fake: *VirtualMethod*"));
         }
 
         [Scenario]
@@ -416,7 +416,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception
                     .Should()
                     .BeAnExceptionOfType<ExpectationException>()
-                    .WithMessage("Call to non configured method \"VirtualMethod\" of strict fake."));
+                    .WithMessage("Call to unconfigured method of strict fake: *VirtualMethod*"));
         }
 
         [Scenario]
@@ -441,7 +441,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception
                     .Should()
                     .BeAnExceptionOfType<ExpectationException>()
-                    .WithMessage("Call to non configured method \"VirtualMethod\" of strict fake."));
+                    .WithMessage("Call to unconfigured method of strict fake: *VirtualMethod*"));
         }
 
         [Scenario]
@@ -465,7 +465,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception
                     .Should()
                     .BeAnExceptionOfType<ExpectationException>()
-                    .WithMessage("Call to non configured method \"VirtualMethod\" of strict fake."));
+                    .WithMessage("Call to unconfigured method of strict fake: *VirtualMethod*"));
         }
 
         [Scenario]

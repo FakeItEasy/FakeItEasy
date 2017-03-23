@@ -23,7 +23,7 @@ namespace FakeItEasy
 
             Action<IFakeObjectCall> thrower = call =>
             {
-                throw new ExpectationException($@"Call to non configured method ""{call.Method.Name}"" of strict fake.");
+                throw new ExpectationException(ExceptionMessages.CallToUnconfiguredMethodOfStrictFake(call));
             };
 
             return options.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
@@ -41,7 +41,7 @@ namespace FakeItEasy
 
             Action<IFakeObjectCall> thrower = call =>
             {
-                throw new ExpectationException($@"Call to non configured method ""{call.Method.Name}"" of strict fake.");
+                throw new ExpectationException(ExceptionMessages.CallToUnconfiguredMethodOfStrictFake(call));
             };
 
             return optionsBuilder.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
