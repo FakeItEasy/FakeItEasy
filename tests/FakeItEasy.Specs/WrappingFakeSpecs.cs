@@ -6,7 +6,7 @@
     using Xbehave;
     using Xunit;
 
-    public class WrappingFakeSpecs
+    public static class WrappingFakeSpecs
     {
         public interface IFoo
         {
@@ -18,7 +18,7 @@
         }
 
         [Scenario]
-        public void NonVoidSuccess(
+        public static void NonVoidSuccess(
             Foo realObject,
             IFoo wrapper,
             int result)
@@ -40,7 +40,7 @@
         }
 
         [Scenario]
-        public void NonVoidException(
+        public static void NonVoidException(
             Foo realObject,
             IFoo wrapper,
             Exception exception)
@@ -65,7 +65,7 @@
         }
 
         [Scenario]
-        public void VoidSuccess(
+        public static void VoidSuccess(
             Foo realObject,
             IFoo wrapper)
         {
@@ -83,7 +83,7 @@
         }
 
         [Scenario]
-        public void VoidException(
+        public static void VoidException(
             Foo realObject,
             IFoo wrapper,
             Exception exception)
@@ -108,7 +108,7 @@
         }
 
         [Scenario]
-        public void OutAndRef(
+        public static void OutAndRef(
             Foo realObject,
             IFoo wrapper,
             int @ref,

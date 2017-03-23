@@ -7,7 +7,7 @@
     using FluentAssertions;
     using Xbehave;
 
-    public class ThrowsAsyncSpecs
+    public static class ThrowsAsyncSpecs
     {
         public interface IFoo
         {
@@ -33,7 +33,7 @@
         }
 
         [Scenario]
-        public void NoResultPassExceptionInstance(IFoo fake, Task task)
+        public static void NoResultPassExceptionInstance(IFoo fake, Task task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -52,7 +52,7 @@
         }
 
         [Scenario]
-        public void WithResultPassExceptionInstance(IFoo fake, Task<int> task)
+        public static void WithResultPassExceptionInstance(IFoo fake, Task<int> task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -71,7 +71,7 @@
         }
 
         [Scenario]
-        public void NoResultPassExceptionFactoryWithCallArg(IFoo fake, Task task)
+        public static void NoResultPassExceptionFactoryWithCallArg(IFoo fake, Task task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -90,7 +90,7 @@
         }
 
         [Scenario]
-        public void WithResultPassExceptionFactoryWithCallArg(IFoo fake, Task<int> task)
+        public static void WithResultPassExceptionFactoryWithCallArg(IFoo fake, Task<int> task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -109,7 +109,7 @@
         }
 
         [Scenario]
-        public void NoResultPassExceptionFactoryWithNoArgs(IFoo fake, Task task)
+        public static void NoResultPassExceptionFactoryWithNoArgs(IFoo fake, Task task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -128,7 +128,7 @@
         }
 
         [Scenario]
-        public void WithResultPassExceptionFactoryWithNoArgs(IFoo fake, Task<int> task)
+        public static void WithResultPassExceptionFactoryWithNoArgs(IFoo fake, Task<int> task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -147,7 +147,7 @@
         }
 
         [Scenario]
-        public void NoResultPassExceptionFactoryWithOneArg(IFoo fake, Task task)
+        public static void NoResultPassExceptionFactoryWithOneArg(IFoo fake, Task task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -166,7 +166,7 @@
         }
 
         [Scenario]
-        public void WithResultPassExceptionFactoryWithOneArg(IFoo fake, Task<int> task)
+        public static void WithResultPassExceptionFactoryWithOneArg(IFoo fake, Task<int> task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -185,7 +185,7 @@
         }
 
         [Scenario]
-        public void NoResultPassExceptionFactoryWithTwoArgs(IFoo fake, Task task)
+        public static void NoResultPassExceptionFactoryWithTwoArgs(IFoo fake, Task task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -205,7 +205,7 @@
         }
 
         [Scenario]
-        public void WithResultPassExceptionFactoryWithTwoArgs(IFoo fake, Task<int> task)
+        public static void WithResultPassExceptionFactoryWithTwoArgs(IFoo fake, Task<int> task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -225,7 +225,7 @@
         }
 
         [Scenario]
-        public void NoResultPassExceptionFactoryWithThreeArgs(IFoo fake, Task task)
+        public static void NoResultPassExceptionFactoryWithThreeArgs(IFoo fake, Task task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -245,7 +245,7 @@
         }
 
         [Scenario]
-        public void WithResultPassExceptionFactoryWithThreeArgs(IFoo fake, Task<int> task)
+        public static void WithResultPassExceptionFactoryWithThreeArgs(IFoo fake, Task<int> task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -265,7 +265,7 @@
         }
 
         [Scenario]
-        public void NoResultPassExceptionFactoryWithFourArgs(IFoo fake, Task task)
+        public static void NoResultPassExceptionFactoryWithFourArgs(IFoo fake, Task task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -285,7 +285,7 @@
         }
 
         [Scenario]
-        public void WithResultPassExceptionFactoryWithFourArgs(IFoo fake, Task<int> task)
+        public static void WithResultPassExceptionFactoryWithFourArgs(IFoo fake, Task<int> task)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());

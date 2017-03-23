@@ -8,7 +8,7 @@
     using Xbehave;
     using Xunit;
 
-    public class CancellationSpecs
+    public static class CancellationSpecs
     {
         public interface IFoo
         {
@@ -22,7 +22,7 @@
         }
 
         [Scenario]
-        public void NonCanceledToken(
+        public static void NonCanceledToken(
             IFoo fake,
             CancellationToken cancellationToken,
             int result)
@@ -41,7 +41,7 @@
         }
 
         [Scenario]
-        public void NonCanceledTokenWithConfiguredCall(
+        public static void NonCanceledTokenWithConfiguredCall(
             IFoo fake,
             CancellationToken cancellationToken,
             int result)
@@ -63,7 +63,7 @@
         }
 
         [Scenario]
-        public void CanceledToken(
+        public static void CanceledToken(
             IFoo fake,
             CancellationToken cancellationToken,
             Exception exception)
@@ -82,7 +82,7 @@
         }
 
         [Scenario]
-        public void CanceledTokenPassedAsObject(
+        public static void CanceledTokenPassedAsObject(
             IFoo fake,
             CancellationToken cancellationToken,
             int result)
@@ -101,7 +101,7 @@
         }
 
         [Scenario]
-        public void CanceledTokenWithConfiguredCallForAnyToken(
+        public static void CanceledTokenWithConfiguredCallForAnyToken(
             IFoo fake,
             CancellationToken cancellationToken,
             int result)
@@ -123,7 +123,7 @@
         }
 
         [Scenario]
-        public void CanceledTokenWithConfiguredCallForNonCanceledToken(
+        public static void CanceledTokenWithConfiguredCallForNonCanceledToken(
             IFoo fake,
             CancellationToken cancellationToken,
             Exception exception)
@@ -145,7 +145,7 @@
         }
 
         [Scenario]
-        public void AsyncWithResultNonCanceledToken(
+        public static void AsyncWithResultNonCanceledToken(
             IFoo fake,
             CancellationToken cancellationToken,
             Task<int> task)
@@ -167,7 +167,7 @@
         }
 
         [Scenario]
-        public void AsyncWithResultNonCanceledTokenWithConfiguredCall(
+        public static void AsyncWithResultNonCanceledTokenWithConfiguredCall(
             IFoo fake,
             CancellationToken cancellationToken,
             Task<int> task)
@@ -192,7 +192,7 @@
         }
 
         [Scenario]
-        public void AsyncWithResultCanceledToken(
+        public static void AsyncWithResultCanceledToken(
             IFoo fake,
             CancellationToken cancellationToken,
             Task<int> task)
@@ -211,7 +211,7 @@
         }
 
         [Scenario]
-        public void AsyncWithResultCanceledTokenWithConfiguredCallForAnyToken(
+        public static void AsyncWithResultCanceledTokenWithConfiguredCallForAnyToken(
             IFoo fake,
             CancellationToken cancellationToken,
             Task<int> task)
@@ -236,7 +236,7 @@
         }
 
         [Scenario]
-        public void AsyncWithResultCanceledTokenWithConfiguredCallForNonCanceledToken(
+        public static void AsyncWithResultCanceledTokenWithConfiguredCallForNonCanceledToken(
             IFoo fake,
             CancellationToken cancellationToken,
             Task<int> task)
@@ -258,7 +258,7 @@
         }
 
         [Scenario]
-        public void AsyncWithoutResultNonCanceledToken(
+        public static void AsyncWithoutResultNonCanceledToken(
             IFoo fake,
             CancellationToken cancellationToken,
             Task task)
@@ -277,7 +277,7 @@
         }
 
         [Scenario]
-        public void AsyncWithoutResultNonCanceledTokenWithConfiguredCall(
+        public static void AsyncWithoutResultNonCanceledTokenWithConfiguredCall(
             IFoo fake,
             CancellationToken cancellationToken,
             Task task)
@@ -299,7 +299,7 @@
         }
 
         [Scenario]
-        public void AsyncWithoutResultCanceledToken(
+        public static void AsyncWithoutResultCanceledToken(
             IFoo fake,
             CancellationToken cancellationToken,
             Task task)
@@ -318,7 +318,7 @@
         }
 
         [Scenario]
-        public void AsyncWithoutResultCanceledTokenWithConfiguredCallForAnyToken(
+        public static void AsyncWithoutResultCanceledTokenWithConfiguredCallForAnyToken(
             IFoo fake,
             CancellationToken cancellationToken,
             Task task)
@@ -340,7 +340,7 @@
         }
 
         [Scenario]
-        public void AsyncWithoutResultCanceledTokenWithConfiguredCallForNonCanceledToken(
+        public static void AsyncWithoutResultCanceledTokenWithConfiguredCallForNonCanceledToken(
             IFoo fake,
             CancellationToken cancellationToken,
             Task task)
