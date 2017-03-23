@@ -5,7 +5,7 @@ namespace FakeItEasy.Tests
     using FluentAssertions;
     using Xunit;
 
-    public class RepeatConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
+    public class RepeatConfigurationExtensionsTests
     {
         [Fact]
         public void Once_should_call_NumberOfTimes_with_1_as_argument()
