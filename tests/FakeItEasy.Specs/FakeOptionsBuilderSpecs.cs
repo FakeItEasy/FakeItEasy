@@ -14,10 +14,10 @@ namespace FakeItEasy.Specs
     using Xbehave;
     using Xunit;
 
-    public class FakeOptionsBuilderSpecs
+    public static class FakeOptionsBuilderSpecs
     {
         [Scenario]
-        public void FakeOptionsBuilderAppliesConfigureFake(
+        public static void FakeOptionsBuilderAppliesConfigureFake(
             RobotActivatedEvent fake)
         {
             "Given a type that has an implicit options builder defined"
@@ -53,7 +53,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void DefinedFakeOptionsBuilderWrapping(
+        public static void DefinedFakeOptionsBuilderWrapping(
             WrapsAValidObject fake)
         {
             "Given a type that has an implicit options builder defined"
@@ -85,7 +85,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void DefinedFakeOptionsBuilderWrappingNull(
+        public static void DefinedFakeOptionsBuilderWrappingNull(
             Exception exception)
         {
             "Given a type that has an implicit options builder defined"
@@ -102,7 +102,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void DefinedFakeOptionsBuilderMakingStrict(
+        public static void DefinedFakeOptionsBuilderMakingStrict(
             Strict fake,
             Exception exception)
         {
@@ -123,7 +123,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void DefinedFakeOptionsBuilderCallsBaseMethods(
+        public static void DefinedFakeOptionsBuilderCallsBaseMethods(
             CallsBaseMethods fake,
             string result)
         {
@@ -144,7 +144,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void DefinedFakeOptionsBuilderConstructorArgumentsByList(
+        public static void DefinedFakeOptionsBuilderConstructorArgumentsByList(
             ConstructorArgumentsSetByList fake)
         {
             "Given a type with a constructor that requires parameters"
@@ -164,7 +164,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void DefinedFakeOptionsBuilderConstructorArgumentsByConstructor(
+        public static void DefinedFakeOptionsBuilderConstructorArgumentsByConstructor(
             ConstructorArgumentsSetByConstructor fake)
         {
             "Given a type with a constructor that requires parameters"
@@ -184,7 +184,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void DefinedFakeOptionsBuilderConstructorArgumentsByConstructorForWrongType(
+        public static void DefinedFakeOptionsBuilderConstructorArgumentsByConstructorForWrongType(
             Exception exception)
         {
             "Given a type with a constructor that requires parameters"
@@ -205,7 +205,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void FakeOptionsBuilderPriority(
+        public static void FakeOptionsBuilderPriority(
             RobotRunsAmokEvent fake)
         {
             "Given a type"
@@ -225,7 +225,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void DuringConstruction(
+        public static void DuringConstruction(
             RobotRunsAmokEvent fake)
         {
             "Given a type with a parameterless constructor"
@@ -248,7 +248,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void GenericFakeOptionsBuilderDefaultPriority(
+        public static void GenericFakeOptionsBuilderDefaultPriority(
             IFakeOptionsBuilder builder,
             Priority priority)
         {
@@ -263,7 +263,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void GenericFakeOptionsBuilderBuildOptionsForMatchingType(
+        public static void GenericFakeOptionsBuilderBuildOptionsForMatchingType(
             SomeClass fake)
         {
             "Given a type with a parameterless constructor"
@@ -289,7 +289,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void GenericFakeOptionsBuilderBuildOptionsForDerivedType(
+        public static void GenericFakeOptionsBuilderBuildOptionsForDerivedType(
             SomeDerivedClass fake)
         {
             "Given a type with a parameterless constructor"
@@ -318,7 +318,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void GenericFakeOptionsBuilderBuildOptionsForParentType(
+        public static void GenericFakeOptionsBuilderBuildOptionsForParentType(
             SomeParentClass fake)
         {
             "Given a type with a parameterless constructor"

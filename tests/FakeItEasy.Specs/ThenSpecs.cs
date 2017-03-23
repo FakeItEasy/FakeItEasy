@@ -6,7 +6,7 @@
     using Xbehave;
     using Xunit;
 
-    public class ThenSpecs
+    public static class ThenSpecs
     {
         public interface IFoo
         {
@@ -18,7 +18,7 @@
         }
 
         [Scenario]
-        public void VoidMethodWithInvokes(
+        public static void VoidMethodWithInvokes(
             IFoo foo,
             Action action1,
             Action action2)
@@ -52,7 +52,7 @@
         }
 
         [Scenario]
-        public void VoidMethodWithThrows(
+        public static void VoidMethodWithThrows(
             IFoo foo,
             Action action,
             Exception exception)
@@ -84,7 +84,7 @@
         }
 
         [Scenario]
-        public void NonVoidMethodWithReturns(
+        public static void NonVoidMethodWithReturns(
             IFoo foo,
             int result1,
             int result2,
@@ -117,7 +117,7 @@
         }
 
         [Scenario]
-        public void AnyCallWithInvokesAndThrows(
+        public static void AnyCallWithInvokesAndThrows(
             IFoo foo,
             Action action1,
             Action action2,
@@ -157,7 +157,7 @@
         }
 
         [Scenario]
-        public void NonVoidMethodOverrideWithThen(
+        public static void NonVoidMethodOverrideWithThen(
             IFoo foo,
             int result1,
             int result2,
@@ -192,7 +192,7 @@
         }
 
         [Scenario]
-        public void NonVoidMethodThenAndOverride(
+        public static void NonVoidMethodThenAndOverride(
             IFoo foo,
             int result1,
             int result2,
