@@ -17,8 +17,8 @@
         public static string NumberOfOutAndRefParametersDoesNotMatchCall =>
             "The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call.";
 
-        public static string WrongNumberOfArgumentNames =>
-            "The number of argument names does not match the number of arguments.";
+        public static string WrongNumberOfArguments =>
+            "The number of arguments does not match the number of parameters of the method.";
 
         public static string MethodMissmatchWhenPlayingBackRecording =>
             "The method of the call did not match the method of the recorded call, the recorded sequence is no longer valid.";
