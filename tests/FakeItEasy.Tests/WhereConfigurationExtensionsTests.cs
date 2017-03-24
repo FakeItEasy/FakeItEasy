@@ -6,7 +6,7 @@ namespace FakeItEasy.Tests
     using FluentAssertions;
     using Xunit;
 
-    public class WhereConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
+    public class WhereConfigurationExtensionsTests
     {
         [Fact]
         public void Where_should_return_configuration_from_configuration()

@@ -6,7 +6,7 @@ namespace FakeItEasy.Tests
     using FluentAssertions;
     using Xunit;
 
-    public class ExceptionThrowerConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
+    public class ExceptionThrowerConfigurationExtensionsTests
     {
         public interface IInterface
         {

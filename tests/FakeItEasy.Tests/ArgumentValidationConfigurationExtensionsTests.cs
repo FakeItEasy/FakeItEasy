@@ -7,7 +7,7 @@ namespace FakeItEasy.Tests
     using FluentAssertions;
     using Xunit;
 
-    public class ArgumentValidationConfigurationExtensionsTests : ConfigurableServiceLocatorTestBase
+    public class ArgumentValidationConfigurationExtensionsTests
     {
         [Fact]
         public void WithAnyArguments_with_void_call_should_call_when_arguments_match_with_predicate_that_returns_true()
