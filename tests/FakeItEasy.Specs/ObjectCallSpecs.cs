@@ -67,8 +67,6 @@
 
         public class StringOutputWriter : IOutputWriter
         {
-            private static readonly IDisposable unindenter = new Unindenter();
-
             private readonly StringBuilder builder;
 
             public StringOutputWriter()
@@ -90,19 +88,12 @@
             public IDisposable Indent()
             {
                 // no tests require indenting yet
-                return unindenter;
+                return A.Dummy<IDisposable>();
             }
 
             public override string ToString()
             {
                 return this.builder.ToString();
-            }
-
-            private class Unindenter : IDisposable
-            {
-                public void Dispose()
-                {
-                }
             }
         }
     }
