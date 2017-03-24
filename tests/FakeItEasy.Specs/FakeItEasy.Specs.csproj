@@ -90,6 +90,7 @@
     <Compile Include="ConfiguringPropertySetterSpecs.cs" />
     <Compile Include="DummyCreationSpecs.cs" />
     <Compile Include="FakeSpecs.cs" />
+    <Compile Include="ObjectCallSpecs.cs" />
     <Compile Include="ReadWritePropertySpecs.cs" />
     <Compile Include="TaskSpecs.cs" />
     <Compile Include="ConfigurationSpecs.cs" />

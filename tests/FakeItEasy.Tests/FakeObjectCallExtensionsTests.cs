@@ -127,24 +127,6 @@ namespace FakeItEasy.Tests
         }
 
         [Fact]
-        public void Write_should_call_writer_registered_in_container_with_calls()
-        {
-            // Arrange
-            var calls = A.CollectionOfFake<IFakeObjectCall>(2);
-
-            var callWriter = A.Fake<CallWriter>();
-            this.StubResolve(callWriter);
-
-            var writer = A.Dummy<IOutputWriter>();
-
-            // Act
-            calls.Write(writer);
-
-            // Assert
-            A.CallTo(() => callWriter.WriteCalls(calls, writer)).MustHaveHappened();
-        }
-
-        [Fact]
         public void WriteToConsole_should_be_null_guarded()
         {
             // Arrange
