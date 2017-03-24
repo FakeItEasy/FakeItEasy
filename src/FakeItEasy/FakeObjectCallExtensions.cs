@@ -51,6 +51,7 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of the calls.</typeparam>
         /// <param name="calls">The calls to write.</param>
         /// <param name="writer">The writer to write the calls to.</param>
+        [Obsolete("This feature will be removed in version 4.0.0.")]
         public static void Write<T>(this IEnumerable<T> calls, IOutputWriter writer) where T : IFakeObjectCall
         {
             Guard.AgainstNull(calls, nameof(calls));
@@ -65,6 +66,7 @@ namespace FakeItEasy
         /// </summary>
         /// <typeparam name="T">The type of the calls.</typeparam>
         /// <param name="calls">The calls to write.</param>
+        [Obsolete("This feature will be removed in version 4.0.0.")]
         public static void WriteToConsole<T>(this IEnumerable<T> calls) where T : IFakeObjectCall
         {
             calls.Write(new DefaultOutputWriter(Console.Write));

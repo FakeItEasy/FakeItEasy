@@ -31,8 +31,10 @@
             "And I query the fake for its calls"
                 .x(() => calls = Fake.GetCalls(fake));
 
+#pragma warning disable CS0618 // Type or member is obsolete
             "When I write the calls to the output writer"
                 .x(() => calls.Write(writer));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             "Then the output lists the call"
                 .x(() => writer.ToString().Should().Be("1: FakeItEasy.Specs.ObjectCallSpecs+IFoo.VoidMethod()\r\n"));
@@ -56,8 +58,10 @@
             "And I query the fake for its calls"
                 .x(() => calls = Fake.GetCalls(fake));
 
+#pragma warning disable CS0618 // Type or member is obsolete
             "When I write the calls to the output writer"
                 .x(() => calls.Write(writer));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             "Then the output lists the calls"
                 .x(() => writer.ToString().Should().Be(
