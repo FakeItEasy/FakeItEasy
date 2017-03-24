@@ -1,6 +1,5 @@
 namespace FakeItEasy.Tests
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
@@ -9,7 +8,7 @@ namespace FakeItEasy.Tests
     using FluentAssertions;
     using Xunit;
 
-    public class FakeObjectCallExtensionsTests : ConfigurableServiceLocatorTestBase
+    public class FakeObjectCallExtensionsTests
     {
         [Fact]
         public void GetArgument_should_delegate_to_the_argument_collections_get_method_when_using_index()
@@ -136,38 +135,6 @@ namespace FakeItEasy.Tests
             // Assert
             Expression<System.Action> call = () => Enumerable.Empty<IFakeObjectCall>().WriteToConsole();
             call.Should().BeNullGuarded();
-        }
-
-        [Fact]
-        public void WriteToConsole_should_call_writer_registered_in_container_with_calls()
-        {
-            // Arrange
-            var calls = A.CollectionOfFake<IFakeObjectCall>(2);
-
-            var callWriter = A.Fake<CallWriter>();
-            this.StubResolve(callWriter);
-
-            // Act
-            calls.WriteToConsole();
-
-            // Assert
-            A.CallTo(() => callWriter.WriteCalls(calls, A<IOutputWriter>._)).MustHaveHappened();
-        }
-
-        [Fact]
-        public void WriteToConsole_should_call_writer_registered_in_container_with_console_out()
-        {
-            // Arrange
-            var calls = A.CollectionOfFake<IFakeObjectCall>(2);
-
-            var callWriter = A.Fake<CallWriter>();
-            this.StubResolve(callWriter);
-
-            // Act
-            calls.WriteToConsole();
-
-            // Assert
-            A.CallTo(() => callWriter.WriteCalls(A<IEnumerable<IFakeObjectCall>>._, A<IOutputWriter>._)).MustHaveHappened();
         }
 
         private static FakeCall CreateFakeCallToFooDotBar(object argument1, object argument2)
