@@ -170,7 +170,6 @@
     <Compile Include="LambdaExpressionDummyFactory.cs" />
     <Compile Include="OutputWriterExtensionsTests.cs" />
     <Compile Include="RepeatedTests.cs" />
-    <Compile Include="RecordersTests.cs" />
     <Compile Include="ReturnValueConfigurationExtensionsTests.cs">
       <SubType>Code</SubType>
     </Compile>
