@@ -83,7 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExceptionMessagesTests.cs" />
-    <Compile Include="Properties\XunitAssemblyInfo.cs" />
     <Compile Include="TypeCatalogueTests.cs" />
     <Compile Include="BootstrapperLocatorTests.cs" />
     <Compile Include="DoubleArgumentValueFormatter.cs" />
