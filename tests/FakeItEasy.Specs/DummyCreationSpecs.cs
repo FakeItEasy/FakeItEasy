@@ -63,7 +63,7 @@
                 .See<FooDummyFactory>();
 
             "When a dummy of that type is requested"
-                .x(() => dummy = A.Dummy<Foo>());
+                .x(() => dummy = this.CreateDummy<Foo>());
 
             "Then it returns a dummy created by the dummy factory"
                 .x(() => dummy.Bar.Should().Be(42));
