@@ -38,7 +38,7 @@ namespace FakeItEasy.Configuration
 
             if (arguments.Length != argumentNames.Length)
             {
-                throw new ArgumentException(ExceptionMessages.WrongNumberOfArgumentNames, nameof(argumentNames));
+                throw new ArgumentException(ExceptionMessages.WrongNumberOfArguments);
             }
 
             this.arguments = arguments;
