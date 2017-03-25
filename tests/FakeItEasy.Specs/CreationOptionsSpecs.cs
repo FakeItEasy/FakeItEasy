@@ -742,10 +742,10 @@ namespace FakeItEasy.Specs
                 .x(() => optionsBuilder = options => options.WithAttributes(() => new ForTestAttribute()));
 
             "When I create a fake using the options builder"
-                .x(() => fake1 = A.Fake(optionsBuilder));
+                .x(() => fake1 = this.CreateFake(optionsBuilder));
 
             "And another fake with the same options builder"
-                .x(() => fake2 = A.Fake(optionsBuilder));
+                .x(() => fake2 = this.CreateFake(optionsBuilder));
 
             "Then the fakes have the same type"
                 .x(() => fake1.GetType().Should().Be(fake2.GetType()));
@@ -775,10 +775,10 @@ namespace FakeItEasy.Specs
                 .x(() => optionsBuilder2 = options => options.WithAttributes(() => new DebuggerStepThroughAttribute()));
 
             "When I create a fake using the first options builder"
-                .x(() => fake1 = A.Fake(optionsBuilder1));
+                .x(() => fake1 = this.CreateFake(optionsBuilder1));
 
             "And another fake using the second options builder"
-                .x(() => fake2 = A.Fake(optionsBuilder2));
+                .x(() => fake2 = this.CreateFake(optionsBuilder2));
 
             "Then the fakes have different types"
                 .x(() => fake1.GetType().Should().NotBe(fake2.GetType()));
