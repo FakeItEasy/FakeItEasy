@@ -23,5 +23,6 @@ A .Net dynamic fake framework for creating all types of fake objects, mocks, stu
     * Unreleased packages built from latest source are on AppVeyor:<br>
       https://ci.appveyor.com/nuget/FakeItEasy
 
--
+---
+
 FakeItEasy logo designed by [Vanja Pakaski](https://github.com/vanpak).
