@@ -90,6 +90,7 @@ namespace FakeItEasy
         /// <typeparam name="TValue">The type of the property.</typeparam>
         /// <param name="propertySpecification">An expression specifying the property to configure.</param>
         /// <returns>A configuration object.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public IPropertySetterAnyValueConfiguration<TValue> CallsToSet<TValue>(Expression<Func<T, TValue>> propertySpecification)
         {
             return this.StartConfiguration.CallsToSet(propertySpecification);
