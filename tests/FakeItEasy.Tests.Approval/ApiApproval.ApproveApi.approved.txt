@@ -217,7 +217,7 @@ namespace FakeItEasy
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
         public static void InitializeFixture(object fixture) { }
     }
-    public class Fake<T> : FakeItEasy.Configuration.IStartConfiguration<T>, FakeItEasy.IHideObjectMembers
+    public class Fake<T> : FakeItEasy.IHideObjectMembers
     
     {
         public Fake() { }

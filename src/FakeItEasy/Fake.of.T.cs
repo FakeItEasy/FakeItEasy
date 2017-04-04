@@ -13,7 +13,7 @@ namespace FakeItEasy
     /// FakedObject-property.
     /// </summary>
     /// <typeparam name="T">The type of the faked object.</typeparam>
-    public class Fake<T> : IStartConfiguration<T>
+    public class Fake<T> : IHideObjectMembers
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Fake{T}"/> class.
