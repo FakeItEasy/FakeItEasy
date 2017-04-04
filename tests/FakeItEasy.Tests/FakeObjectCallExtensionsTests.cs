@@ -121,7 +121,9 @@ namespace FakeItEasy.Tests
         [Fact]
         public void Write_should_be_null_guarded()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             Expression<System.Action> call = () => Enumerable.Empty<IFakeObjectCall>().Write(A.Dummy<IOutputWriter>());
+#pragma warning restore CS0618 // Type or member is obsolete
             call.Should().BeNullGuarded();
         }
 
@@ -133,7 +135,9 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
+#pragma warning disable CS0618 // Type or member is obsolete
             Expression<System.Action> call = () => Enumerable.Empty<IFakeObjectCall>().WriteToConsole();
+#pragma warning restore CS0618 // Type or member is obsolete
             call.Should().BeNullGuarded();
         }
 
