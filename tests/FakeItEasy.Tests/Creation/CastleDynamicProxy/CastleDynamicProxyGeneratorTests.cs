@@ -197,7 +197,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var result = this.generator.GenerateProxy(typeof(SealedType), A.Dummy<IEnumerable<Type>>(), A.Dummy<IEnumerable<object>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
-            result.ReasonForFailure.Should().Be("The type of proxy \"FakeItEasy.Tests.Creation.CastleDynamicProxy.CastleDynamicProxyGeneratorTests+SealedType\" is sealed.");
+            result.ReasonForFailure.Should().Be("The type of proxy FakeItEasy.Tests.Creation.CastleDynamicProxy.CastleDynamicProxyGeneratorTests+SealedType is sealed.");
         }
 
         [Fact]

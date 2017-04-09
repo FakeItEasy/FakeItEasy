@@ -649,7 +649,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws an argument exception"
                 .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                    .WithMessage("*The specified type 'System.String' is not an interface*"));
+                    .WithMessage("*The specified type System.String is not an interface*"));
         }
 
         [Scenario]

@@ -122,7 +122,7 @@
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
   <data name="NonVirtualSetupSpecificationMessageFormat" xml:space="preserve">
-    <value>Non overridable member '{0}' cannot be intercepted.</value>
+    <value>Non overridable member {0} cannot be intercepted.</value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
   <data name="NonVirtualSetupSpecificationTitle" xml:space="preserve">

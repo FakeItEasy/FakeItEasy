@@ -38,8 +38,7 @@ namespace FakeItEasy.Configuration
                                                 "' refers to an indexed property that does not have a setter.");
                 }
 
-                throw new ArgumentException(
-                    "The property '" + propertyName + "' does not have a setter.");
+                throw new ArgumentException($"The property {propertyName} does not have a setter.");
             }
 
             var originalParameterInfos = indexerSetterInfo.GetParameters();

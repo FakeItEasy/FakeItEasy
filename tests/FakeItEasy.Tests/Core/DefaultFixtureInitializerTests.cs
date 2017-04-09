@@ -154,7 +154,7 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             exception.Should().BeAnExceptionOfType<InvalidOperationException>()
-                .WithMessage("A fake fixture can only contain one member marked \"under test\".");
+                .WithMessage($"A fake fixture can only contain one member marked with {nameof(UnderTestAttribute)}.");
         }
 
         public class Sut

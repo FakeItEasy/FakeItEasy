@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.Core
                     ReasonForFailureOfDefaultConstructor = "reason",
                     ResolvedConstructors = new ResolvedConstructor[] { },
                     ExpectedMessage = @"
-  Failed to create fake of type ""System.String"".
+  Failed to create fake of type System.String.
 
   Below is a list of reasons for failure per attempted constructor:
     No constructor arguments failed:
@@ -67,7 +67,7 @@ namespace FakeItEasy.Tests.Core
                         }
                     },
                     ExpectedMessage = @"
-  Failed to create fake of type ""System.Int32"".
+  Failed to create fake of type System.Int32.
 
   Below is a list of reasons for failure per attempted constructor:
     No constructor arguments failed:
@@ -134,7 +134,7 @@ namespace FakeItEasy.Tests.Core
                         }
                     },
                     ExpectedMessage = @"
-  Failed to create fake of type ""System.Int32"".
+  Failed to create fake of type System.Int32.
 
   Below is a list of reasons for failure per attempted constructor:
     No constructor arguments failed:
@@ -168,7 +168,7 @@ that spans a couple of lines.";
             // Assert
             var expectedMessage =
 @"
-  Failed to create fake of type ""System.String"" with the specified arguments for the constructor:
+  Failed to create fake of type System.String with the specified arguments for the constructor:
     a reason
     that spans a couple of lines.
 ";

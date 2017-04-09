@@ -15,9 +15,9 @@ namespace FakeItEasy.Core
 
             message
                 .AppendLine()
-                .AppendIndented("  ", "Failed to create fake of type \"")
+                .AppendIndented("  ", "Failed to create fake of type ")
                 .Append(typeOfFake)
-                .AppendLine("\" with the specified arguments for the constructor:")
+                .AppendLine(" with the specified arguments for the constructor:")
                 .AppendIndented("    ", reasonForFailure)
                 .AppendLine();
 
@@ -30,9 +30,9 @@ namespace FakeItEasy.Core
 
             message
                 .AppendLine()
-                .AppendIndented("  ", "Failed to create fake of type \"")
+                .AppendIndented("  ", "Failed to create fake of type ")
                 .Append(typeOfFake)
-                .AppendLine("\".")
+                .AppendLine(".")
                 .AppendLine()
                 .AppendIndented("  ", "Below is a list of reasons for failure per attempted constructor:")
                 .AppendLine()

@@ -134,7 +134,7 @@ End Namespace
                 {
                     Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
-                        "Non overridable member 'Bar' cannot be intercepted.",
+                        "Non overridable member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 33) }
                 });
@@ -165,7 +165,7 @@ End Namespace
                 {
                     Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
-                        "Non overridable member 'Bar' cannot be intercepted.",
+                        "Non overridable member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 5, 33) }
                 });
@@ -199,7 +199,7 @@ End Namespace
                 {
                     Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
-                        "Non overridable member 'Bar' cannot be intercepted.",
+                        "Non overridable member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 8, 26) }
                 });
@@ -231,7 +231,7 @@ End Namespace
                 {
                     Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
-                        "Non overridable member 'Bar' cannot be intercepted.",
+                        "Non overridable member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 33) }
                 });
@@ -332,7 +332,7 @@ End Namespace
                 {
                     Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
-                        "Non overridable member 'Bar' cannot be intercepted.",
+                        "Non overridable member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 36) }
                 });
@@ -364,7 +364,7 @@ End Namespace";
                 {
                     Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
-                        "Non overridable member 'DifferentNameThanOtherTests' cannot be intercepted.",
+                        "Non overridable member DifferentNameThanOtherTests cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 28) }
                 });

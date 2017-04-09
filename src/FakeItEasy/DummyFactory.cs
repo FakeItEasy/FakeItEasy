@@ -50,7 +50,7 @@ namespace FakeItEasy
         {
             if (type != typeof(T))
             {
-                var message = $"The {this.GetType()} can only create dummies of type '{typeof(T)}'.";
+                var message = $"The {this.GetType()} can only create dummies of type {typeof(T)}.";
 
                 throw new ArgumentException(message, nameof(type));
             }

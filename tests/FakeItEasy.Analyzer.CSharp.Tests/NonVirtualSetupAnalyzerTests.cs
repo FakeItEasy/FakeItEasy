@@ -154,7 +154,7 @@ namespace FakeItEasy.Analyzer.Tests
                 {
                     Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
-                        "Non virtual member 'Bar' cannot be intercepted.",
+                        "Non virtual member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
                 });
@@ -194,7 +194,7 @@ namespace FakeItEasy.Analyzer.Tests
      {
          Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
          Message =
-             "Non virtual member 'Bar' cannot be intercepted.",
+             "Non virtual member Bar cannot be intercepted.",
          Severity = DiagnosticSeverity.Warning,
          Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
      });
@@ -233,7 +233,7 @@ namespace AnalyzerPrototypeSubjectStatic
     {
         Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
         Message =
-            "Non virtual member 'Bar' cannot be intercepted.",
+            "Non virtual member Bar cannot be intercepted.",
         Severity = DiagnosticSeverity.Warning,
         Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 26) }
             });
@@ -271,7 +271,7 @@ namespace AnalyzerPrototypeSubjectStatic
         {
             Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
             Message =
-             "Non virtual member 'Bar' cannot be intercepted.",
+             "Non virtual member Bar cannot be intercepted.",
             Severity = DiagnosticSeverity.Warning,
             Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
         });
@@ -379,7 +379,7 @@ namespace PrototypeProperty
                 {
                     Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
-                        "Non virtual member 'Bar' cannot be intercepted.",
+                        "Non virtual member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 31) }
                 });
@@ -418,7 +418,7 @@ namespace PrototypeProperty
                 {
                     Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
                     Message =
-                     "Non virtual member 'DifferentNameThanOtherTests' cannot be intercepted.",
+                     "Non virtual member DifferentNameThanOtherTests cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 28) }
                 });

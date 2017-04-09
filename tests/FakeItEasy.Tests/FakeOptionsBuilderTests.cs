@@ -23,7 +23,7 @@ namespace FakeItEasy.Tests
 
             // Assert
             exception.Should().BeAnExceptionOfType<InvalidOperationException>()
-                .WithMessage("Specified type 'System.String' is not valid. Only 'FakeItEasy.Tests.FakeOptionsBuilderTests' is allowed.");
+                .WithMessage("Specified type System.String is not valid. Only FakeItEasy.Tests.FakeOptionsBuilderTests is allowed.");
         }
 
         [Fact]
