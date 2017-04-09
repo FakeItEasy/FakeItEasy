@@ -36,7 +36,7 @@ namespace FakeItEasy.Specs
             "Then an argument null exception is thrown"
                 .x(() => exception.Should().BeAnExceptionOfType<ArgumentNullException>());
 
-            "And the parameter name is 'propertySpecification'"
+            "And the parameter name is propertySpecification"
                 .x(() => exception.As<ArgumentNullException>().ParamName.Should().Be("propertySpecification"));
         }
 
@@ -71,7 +71,7 @@ namespace FakeItEasy.Specs
 
             "And the exception message indicates that the property is read-only"
                 .x(() => exception.Message.Should().Be(
-                    $"The property '{nameof(IHaveInterestingProperties.ReadOnlyProperty)}' does not have a setter."));
+                    $"The property {nameof(IHaveInterestingProperties.ReadOnlyProperty)} does not have a setter."));
         }
 
         [Scenario]

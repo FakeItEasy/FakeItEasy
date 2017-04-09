@@ -218,7 +218,7 @@ namespace FakeItEasy.Specs
             // These results demonstrate that the self-initialized fake relies on a script
             // defined by which methods are called, without regard to the arguments
             // passed to the methods.
-            "And the playback fake returns results in 'recorded order'"
+            "And the playback fake returns results in recorded order"
                 .x(() => countsDuringPlayback.Should().Equal(0x2, 0x1));
         }
 

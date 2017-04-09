@@ -33,7 +33,7 @@
             $"Supplied constructor is for type {actualConstructorType.FullNameCSharp()}, but must be for {expectedConstructorType.FullNameCSharp()}.";
 
         public static string NotRecognizedAsAFake(object proxy, Type type) =>
-            $"Object '{proxy}' of type '{type.FullNameCSharp()}' is not recognized as a fake object.";
+            $"Object '{proxy}' of type {type.FullNameCSharp()} is not recognized as a fake object.";
 
         public static string CallToUnconfiguredMethodOfStrictFake(IFakeObjectCall call)
         {

@@ -292,7 +292,7 @@ namespace FakeItEasy.Tests
                             if (argumentNullException != null)
                             {
                                 description.Write(
-                                    $@"threw ArgumentNullException with wrong argument name, it should be ""{this.ArgumentName}"".");
+                                    $"threw ArgumentNullException with wrong argument name, it should be {this.ArgumentName}.");
                             }
                             else
                             {

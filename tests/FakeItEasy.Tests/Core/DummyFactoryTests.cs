@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests.Core
         public void Create_should_guard_against_bad_type_argument()
         {
             string expectedMessage = string.Format(
-                "The {0} can only create dummies of type '{1}'.*",
+                "The {0} can only create dummies of type {1}.*",
                 typeof(TestableFakeFactory),
                 typeof(SomeType));
 

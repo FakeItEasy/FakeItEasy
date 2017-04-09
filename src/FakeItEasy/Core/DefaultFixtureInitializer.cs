@@ -31,7 +31,7 @@ namespace FakeItEasy.Core
 
             if (CountIsNoMoreThanOne(allSettersTaggedUnderTest))
             {
-                throw new InvalidOperationException("A fake fixture can only contain one member marked \"under test\".");
+                throw new InvalidOperationException($"A fake fixture can only contain one member marked with {nameof(UnderTestAttribute)}.");
             }
 
             return allSettersTaggedUnderTest.SingleOrDefault();

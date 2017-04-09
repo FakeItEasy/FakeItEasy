@@ -86,7 +86,7 @@ namespace FakeItEasy.Tests
         public void Assert_should_include_call_signature_and_missing_argument_name_in_error_message_when_ArgumentNullException_was_thrown_with_wrong_name()
         {
             AssertShouldFail(() => this.GuardedWithWrongName("foo")).And.Message.Should()
-                .Contain("(NULL) threw ArgumentNullException with wrong argument name, it should be \"a\".");
+                .Contain("(NULL) threw ArgumentNullException with wrong argument name, it should be a.");
         }
 
         [Fact]
