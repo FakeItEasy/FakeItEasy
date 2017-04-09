@@ -94,7 +94,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(3)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 3)
   Expected to find it at least once but found it #0 times among the calls:
     1: FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 1)
     2: FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 2)
@@ -126,7 +126,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<System.String, System.String>(<Ignored>, <Ignored>)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<System.String, System.String>(baz1: <Ignored>, baz2: <Ignored>)
   Expected to find it at least once but found it #0 times among the calls:
     1: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<System.Int32, System.Double>(baz1: 1, baz2: 2)
     2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.Boolean, System.Int64>, System.Int32>(baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
@@ -155,7 +155,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(<Ignored>)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: <Ignored>)
   Expected to find it at least once but no calls were made to the fake object.
 
 "));
@@ -182,7 +182,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.String>>(<Ignored>)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.String>>(baz: <Ignored>)
   Expected to find it at least once but no calls were made to the fake object.
 
 "));
@@ -236,7 +236,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Match(@"
 
   Assertion failed for the following call:
-    System.Collections.Generic.IDictionary`2[System.String,System.String].TryGetValue(""any key"", <out parameter>)
+    System.Collections.Generic.IDictionary`2[System.String,System.String].TryGetValue(key: ""any key"", value: <out parameter>)
   Expected to find it at least once but no calls were made to the fake object.
 
 "));
@@ -403,7 +403,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        [MemberData("Fakes")]
+        [MemberData(nameof(Fakes))]
         public static void PassingAFakeToAMethod<T>(
             T fake, string fakeDescription, IHaveOneGenericParameter anotherFake, Exception exception)
         {
@@ -418,7 +418,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the first fake"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({fakeDescription})"));
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">(baz: {fakeDescription})"));
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "ABad", Justification = "Refers to the two words 'a bad'")]
@@ -438,7 +438,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the first fake"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({fakeDescription})"));
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">(baz: {fakeDescription})"));
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "ABad", Justification = "Refers to the two words 'a bad'")]
@@ -457,7 +457,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the object"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({obj.GetType().ToString()})"));
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">(baz: {obj.GetType().ToString()})"));
         }
 
         [Scenario]
@@ -476,7 +476,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the first fake"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">({fakeDescription})"));
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">(baz: {fakeDescription})"));
         }
 
         public static IEnumerable<object[]> Fakes()

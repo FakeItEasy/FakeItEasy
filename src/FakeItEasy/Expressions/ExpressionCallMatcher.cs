@@ -116,20 +116,20 @@ namespace FakeItEasy.Expressions
         private void AppendArgumentsListString(StringBuilder result)
         {
             result.Append("(");
-            var firstArgument = true;
+            int index = 0;
+            var parameters = this.Method.GetParameters();
 
             foreach (var constraint in this.argumentConstraints)
             {
-                if (!firstArgument)
+                if (index > 0)
                 {
                     result.Append(", ");
                 }
-                else
-                {
-                    firstArgument = false;
-                }
 
+                var parameter = parameters[index];
+                result.Append(parameter.Name + ": ");
                 constraint.WriteDescription(new StringBuilderOutputWriter(result));
+                index++;
             }
 
             result.Append(")");

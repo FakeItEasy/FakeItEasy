@@ -145,7 +145,7 @@ namespace FakeItEasy.Tests.Expressions
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 
-            matcher.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(<FOO>, <FOO>)");
+            matcher.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <FOO>, argument2: <FOO>)");
 
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).MustHaveHappened(Repeated.Exactly.Twice);
         }
@@ -192,7 +192,7 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.UsePredicateToValidateArguments(x => true);
 
-            matcher.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(<Predicated>, <Predicated>)");
+            matcher.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <Predicated>, argument2: <Predicated>)");
         }
 
         [Fact]
