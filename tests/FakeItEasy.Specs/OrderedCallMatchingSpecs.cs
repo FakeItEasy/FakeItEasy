@@ -85,9 +85,9 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated exactly twice
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(2)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(3)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated exactly twice
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' repeated at least once
   The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) repeated 2 times
@@ -151,8 +151,8 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated at least once
   The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
@@ -228,9 +228,9 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)' repeated exactly twice
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(2)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(3)' repeated exactly once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated exactly twice
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' repeated exactly once
   The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) repeated 2 times
@@ -272,7 +272,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(1)
+    FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
   Expected to find it exactly once but found it #2 times among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)
