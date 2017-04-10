@@ -1,4 +1,4 @@
-namespace FakeItEasy.IntegrationTests
+﻿namespace FakeItEasy.IntegrationTests
 {
     using System;
     using System.Collections.Generic;
@@ -82,7 +82,7 @@ namespace FakeItEasy.IntegrationTests
                 @"
 
   The current proxy generator can not intercept the property System.Collections.Generic.Dictionary`2[System.String,System.Int32].Item[System.String key] for the following reason:
-    - Sealed methods can not be intercepted.
+    - Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.
 
 ";
 

@@ -1,4 +1,4 @@
-namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
+﻿namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             return TestCases.FromObject(
                 NonInterceptableTestCase.Create(
                     () => new object().GetType(),
-                    "Non virtual methods can not be intercepted."),
+                    "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."),
                 NonInterceptableTestCase.Create(
                     () => object.Equals("foo", "bar"),
                     "Static methods can not be intercepted."),
@@ -45,7 +45,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
                     "Extension methods can not be intercepted since they're static."),
                 NonInterceptableTestCase.Create(
                     () => new TypeWithSealedOverride().ToString(),
-                    "Sealed methods can not be intercepted."));
+                    "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
         }
 
         public static IEnumerable<object[]> InterceptableMethods()
