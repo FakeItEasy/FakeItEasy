@@ -36,16 +36,16 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             return TestCases.FromObject(
                 NonInterceptableTestCase.Create(
                     () => new object().GetType(),
-                    "Non virtual methods can not be intercepted."),
+                    "Non-virtual methods can not be intercepted. Virtual methods are methods explicitly marked virtual, overriding methods, abstract methods, and interface methods."),
                 NonInterceptableTestCase.Create(
                     () => object.Equals("foo", "bar"),
-                    "Static methods can not be intercepted."),
+                    "Non-virtual methods can not be intercepted. Virtual methods are methods explicitly marked virtual, overriding methods, abstract methods, and interface methods."),
                 NonInterceptableTestCase.Create(
                     () => "foo".Count(),
                     "Extension methods can not be intercepted since they're static."),
                 NonInterceptableTestCase.Create(
                     () => new TypeWithSealedOverride().ToString(),
-                    "Method should be marked as virtual, abstract or part of an Interface in oreder to be intercepted."));
+                    "Non-virtual methods can not be intercepted. Virtual methods are methods explicitly marked virtual, overriding methods, abstract methods, and interface methods."));
         }
 
         public static IEnumerable<object[]> InterceptableMethods()
