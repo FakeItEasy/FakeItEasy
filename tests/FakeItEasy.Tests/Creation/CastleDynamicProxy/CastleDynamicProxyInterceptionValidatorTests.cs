@@ -45,7 +45,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
                     "Extension methods can not be intercepted since they're static."),
                 NonInterceptableTestCase.Create(
                     () => new TypeWithSealedOverride().ToString(),
-                    "Sealed methods can not be intercepted."));
+                    "Method should be marked as virtual, abstract or part of an Interface in oreder to be intercepted."));
         }
 
         public static IEnumerable<object[]> InterceptableMethods()
