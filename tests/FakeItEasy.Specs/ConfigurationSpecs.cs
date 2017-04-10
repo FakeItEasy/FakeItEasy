@@ -267,7 +267,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                   .And.Message.Should().Contain("Sealed methods can not be intercepted."));
+                   .And.Message.Should().Contain("Method should be marked as virtual, abstract or part of an Interface in oreder to be intercepted."));
         }
 
         [Scenario]
