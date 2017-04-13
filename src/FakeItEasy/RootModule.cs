@@ -84,14 +84,19 @@ namespace FakeItEasy
             container.RegisterSingleton<ICallExpressionParser>(c =>
                 new CallExpressionParser());
 
-            container.Register<IFakeAndDummyManager>(c =>
-                                                         {
-                                                             var fakeCreator = new FakeObjectCreator(c.Resolve<IProxyGenerator>(), c.Resolve<IExceptionThrower>(), c.Resolve<FakeCallProcessorProvider.Factory>());
-                                                             var session = new DummyValueCreationSession(c.Resolve<DynamicDummyFactory>(), new SessionFakeObjectCreator(fakeCreator));
-                                                             var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
+            container.RegisterSingleton<IFakeAndDummyManager>(c =>
+            {
+                var fakeCreator = new FakeObjectCreator(
+                    c.Resolve<IProxyGenerator>(),
+                    c.Resolve<IExceptionThrower>(),
+                    c.Resolve<FakeCallProcessorProvider.Factory>());
+                DummyValueCreationSession.Factory sessionFactory = fakeObjectCreator => new DummyValueCreationSession(
+                    c.Resolve<DynamicDummyFactory>(),
+                    new SessionFakeObjectCreator(fakeObjectCreator));
+                var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
-                                                             return new DefaultFakeAndDummyManager(session, fakeCreator, fakeConfigurator);
-                                                         });
+                return new DefaultFakeAndDummyManager(sessionFactory, fakeCreator, fakeConfigurator);
+            });
 
             container.RegisterSingleton(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
 

@@ -35,6 +35,8 @@ namespace FakeItEasy.Creation
                 };
         }
 
+        public delegate IDummyValueCreationSession Factory(FakeObjectCreator creator);
+
         public bool TryResolveDummyValue(Type typeOfDummy, out object result)
         {
             result = default(object);

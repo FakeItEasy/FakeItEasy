@@ -16,11 +16,11 @@ namespace FakeItEasy.Creation
     {
         private readonly FakeObjectCreator fakeCreator;
         private readonly DynamicOptionsBuilder dynamicOptionsBuilder;
-        private readonly IDummyValueCreationSession session;
+        private readonly DummyValueCreationSession.Factory dummyCreationSessionFactory;
 
-        public DefaultFakeAndDummyManager(IDummyValueCreationSession session, FakeObjectCreator fakeCreator, DynamicOptionsBuilder dynamicOptionsBuilder)
+        public DefaultFakeAndDummyManager(DummyValueCreationSession.Factory dummyCreationSessionFactory, FakeObjectCreator fakeCreator, DynamicOptionsBuilder dynamicOptionsBuilder)
         {
-            this.session = session;
+            this.dummyCreationSessionFactory = dummyCreationSessionFactory;
             this.fakeCreator = fakeCreator;
             this.dynamicOptionsBuilder = dynamicOptionsBuilder;
         }
@@ -28,7 +28,7 @@ namespace FakeItEasy.Creation
         public object CreateDummy(Type typeOfDummy)
         {
             object result;
-            if (!this.session.TryResolveDummyValue(typeOfDummy, out result))
+            if (!this.CreateSession().TryResolveDummyValue(typeOfDummy, out result))
             {
                 throw new FakeCreationException();
             }
@@ -40,12 +40,12 @@ namespace FakeItEasy.Creation
         {
             var proxyOptions = this.BuildProxyOptions(typeOfFake, optionsBuilder);
 
-            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.session, throwOnFailure: true);
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.CreateSession(), throwOnFailure: true);
         }
 
         public bool TryCreateDummy(Type typeOfDummy, out object result)
         {
-            return this.session.TryResolveDummyValue(typeOfDummy, out result);
+            return this.CreateSession().TryResolveDummyValue(typeOfDummy, out result);
         }
 
         private static IFakeOptions CreateFakeOptions(Type typeOfFake, ProxyOptions proxyOptions)
@@ -55,6 +55,11 @@ namespace FakeItEasy.Creation
                 .GetConstructor(new[] { typeof(ProxyOptions) });
 
             return (IFakeOptions)optionsConstructor.Invoke(new object[] { proxyOptions });
+        }
+
+        private IDummyValueCreationSession CreateSession()
+        {
+            return this.dummyCreationSessionFactory.Invoke(this.fakeCreator);
         }
 
         private IProxyOptions BuildProxyOptions(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
