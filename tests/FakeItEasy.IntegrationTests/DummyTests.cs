@@ -2,6 +2,8 @@ namespace FakeItEasy.IntegrationTests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Threading;
+    using System.Threading.Tasks;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -45,8 +47,58 @@ namespace FakeItEasy.IntegrationTests
                 .Be(1, "the factory should've been cached after creating the first Dummy");
         }
 
+        [Fact]
+        public void Same_dummy_type_can_be_created_concurrently_on_different_threads()
+        {
+            // Simulate concurrent dummy type creation using manual reset events.
+            // Ensures that one ConcurrentCreationDummy dummy is created while
+            // the other is still being created.
+            // Guards against the concurrent creations being detected as a
+            // circular dependency and throwing an exception.
+            var makeOne = Task.Factory.StartNew(A.Dummy<ConcurrentCreationDummy>);
+            var makeTwo = Task.Factory.StartNew(() =>
+            {
+                ConcurrentCreationDummy.CreatingFirstInstance.Wait();
+                try
+                {
+                    A.Dummy<ConcurrentCreationDummy>();
+                }
+                finally
+                {
+                    ConcurrentCreationDummy.CreatedSecondInstance.Set();
+                }
+            });
+
+            var exception = Record.Exception(() => Task.WaitAll(makeOne, makeTwo));
+            exception.Should().BeNull("all creations should have succeeded");
+        }
+
         public class Dummy
         {
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1053:StaticHolderTypesShouldNotHaveConstructors", Justification = "Must not be static to make a Dummy.")]
+        public sealed class ConcurrentCreationDummy
+        {
+            private static int creationAttempts;
+
+            public ConcurrentCreationDummy()
+            {
+                if (IsCreatingFirstInstance())
+                {
+                    CreatingFirstInstance.Set();
+                    CreatedSecondInstance.Wait();
+                }
+            }
+
+            public static ManualResetEventSlim CreatingFirstInstance { get; } = new ManualResetEventSlim();
+
+            public static ManualResetEventSlim CreatedSecondInstance { get; } = new ManualResetEventSlim();
+
+            private static bool IsCreatingFirstInstance()
+            {
+                return Interlocked.Increment(ref creationAttempts) == 1;
+            }
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
