@@ -15,6 +15,9 @@ namespace FakeItEasy
     /// <typeparam name="T">The type of the faked object.</typeparam>
     public class Fake<T> : IHideObjectMembers
     {
+        private static readonly IFakeAndDummyManager FakeAndDummyManager =
+            ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Fake{T}"/> class.
         /// Creates a new fake object.
@@ -48,9 +51,6 @@ namespace FakeItEasy
         /// Gets all calls made to the faked object.
         /// </summary>
         public IEnumerable<ICompletedFakeObjectCall> RecordedCalls => FakeItEasy.Fake.GetCalls(this.FakedObject);
-
-        private static IFakeAndDummyManager FakeAndDummyManager =>
-            ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
 
         private IStartConfiguration<T> StartConfiguration
         {

@@ -16,7 +16,8 @@ namespace FakeItEasy.Tests
             {
                 new object[] { typeof(IExpressionCallMatcherFactory) },
                 new object[] { typeof(ExpressionArgumentConstraintFactory) },
-                new object[] { typeof(IProxyGenerator) }
+                new object[] { typeof(IProxyGenerator) },
+                new object[] { typeof(IFakeAndDummyManager) }
             };
         }
 
@@ -24,8 +25,8 @@ namespace FakeItEasy.Tests
         {
             return new[]
             {
-                new object[] { typeof(IFakeAndDummyManager) },
-                new object[] { typeof(IFixtureInitializer) }
+                new object[] { typeof(IFixtureInitializer) },
+                new object[] { typeof(FakeFacade) }
             };
         }
 
