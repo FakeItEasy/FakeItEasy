@@ -31,6 +31,11 @@ namespace FakeItEasy.Configuration
                     return "Any call with non-void return type to the fake object.";
                 }
 
+                if (this.ApplicableToAllNonVoidReturnTypes)
+                {
+                    return "Any call with non-void return type to the fake object.";
+                }
+
                 return "Any call made to the fake object.";
             }
         }
