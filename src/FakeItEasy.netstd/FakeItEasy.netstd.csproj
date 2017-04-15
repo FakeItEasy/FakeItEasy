@@ -81,6 +81,9 @@
     <Compile Include="..\FakeItEasy\Creation\CastleDynamicProxy\DynamicProxyMessages.cs">
       <Link>Creation\CastleDynamicProxy\DynamicProxyMessages.cs</Link>
     </Compile>
+    <Compile Include="..\FakeItEasy\Creation\DummyCreationSession.cs">
+      <Link>Creation\DummyCreationSession.cs</Link>
+    </Compile>
     <Compile Include="..\FakeItEasy\ExceptionExtensions.cs">
       <Link>ExceptionExtensions.cs</Link>
     </Compile>

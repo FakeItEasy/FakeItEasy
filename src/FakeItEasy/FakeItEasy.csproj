@@ -64,6 +64,7 @@
     <Compile Include="Compatibility\MethodInfoWrapper.cs" />
     <Compile Include="Configuration\PropertyExpressionHelper.cs" />
     <Compile Include="Creation\CastleDynamicProxy\DynamicProxyMessages.cs" />
+    <Compile Include="Creation\DummyCreationSession.cs" />
     <Compile Include="ExceptionMessages.cs" />
     <Compile Include="LinkedListExtensions.cs" />
     <Compile Include="Configuration\IDoNothingConfiguration.cs" />

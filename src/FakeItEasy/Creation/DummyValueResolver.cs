@@ -12,7 +12,7 @@ namespace FakeItEasy.Creation
     internal class DummyValueResolver : IDummyValueResolver
     {
         private readonly ResolveStrategy[] strategies;
-        private readonly HashSet<Type> typesCurrentlyBeingResolved;
+        private readonly DummyCreationSession session;
         private readonly Dictionary<Type, ResolveStrategy> strategyCache;
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace FakeItEasy.Creation
         /// <param name="fakeObjectCreator">The fake object creator.</param>
         public DummyValueResolver(DynamicDummyFactory dummyFactory, IFakeObjectCreator fakeObjectCreator)
         {
-            this.typesCurrentlyBeingResolved = new HashSet<Type>();
+            this.session = new DummyCreationSession();
             this.strategyCache = new Dictionary<Type, ResolveStrategy>();
             this.strategies = new ResolveStrategy[]
                 {
@@ -40,34 +40,18 @@ namespace FakeItEasy.Creation
         public bool TryResolveDummyValue(Type typeOfDummy, out object result)
         {
             result = default(object);
-            if (!this.EnsureThatResolvedTypeIsNotRecursive(typeOfDummy))
+            if (!this.session.TryBeginToResolveType(typeOfDummy))
             {
                 return false;
             }
 
             if (this.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy, out result))
             {
-                this.OnSuccessfulResolve(typeOfDummy);
+                this.session.OnSuccessfulResolve(typeOfDummy);
                 return true;
             }
 
             return false;
-        }
-
-        private bool EnsureThatResolvedTypeIsNotRecursive(Type typeOfDummy)
-        {
-            if (this.typesCurrentlyBeingResolved.Contains(typeOfDummy))
-            {
-                return false;
-            }
-
-            this.typesCurrentlyBeingResolved.Add(typeOfDummy);
-            return true;
-        }
-
-        private void OnSuccessfulResolve(Type typeOfDummy)
-        {
-            this.typesCurrentlyBeingResolved.Remove(typeOfDummy);
         }
 
         private bool TryResolveDummyValueWithAllAvailableStrategies(Type typeOfDummy, out object result)
