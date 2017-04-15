@@ -2,7 +2,7 @@ namespace FakeItEasy.Creation
 {
     using System;
 
-    internal interface IDummyValueCreationSession
+    internal interface IDummyValueResolver
     {
         bool TryResolveDummyValue(Type typeOfDummy, out object result);
     }

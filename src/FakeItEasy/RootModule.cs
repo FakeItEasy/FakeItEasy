@@ -90,12 +90,12 @@ namespace FakeItEasy
                     c.Resolve<IProxyGenerator>(),
                     c.Resolve<IExceptionThrower>(),
                     c.Resolve<FakeCallProcessorProvider.Factory>());
-                DummyValueCreationSession.Factory sessionFactory = fakeObjectCreator => new DummyValueCreationSession(
+                DummyValueResolver.Factory resolverFactory = fakeObjectCreator => new DummyValueResolver(
                     c.Resolve<DynamicDummyFactory>(),
-                    new SessionFakeObjectCreator(fakeObjectCreator));
+                    new ResolverFakeObjectCreator(fakeObjectCreator));
                 var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
-                return new DefaultFakeAndDummyManager(sessionFactory, fakeCreator, fakeConfigurator);
+                return new DefaultFakeAndDummyManager(resolverFactory, fakeCreator, fakeConfigurator);
             });
 
             container.RegisterSingleton(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
@@ -173,19 +173,19 @@ namespace FakeItEasy
         }
 #endif
 
-        private class SessionFakeObjectCreator
+        private class ResolverFakeObjectCreator
             : IFakeObjectCreator
         {
             private readonly FakeObjectCreator creator;
 
-            public SessionFakeObjectCreator(FakeObjectCreator creator)
+            public ResolverFakeObjectCreator(FakeObjectCreator creator)
             {
                 this.creator = creator;
             }
 
-            public bool TryCreateFakeObject(Type typeOfFake, DummyValueCreationSession session, out object result)
+            public bool TryCreateFakeObject(Type typeOfFake, DummyValueResolver resolver, out object result)
             {
-                result = this.creator.CreateFake(typeOfFake, new ProxyOptions(), session, false);
+                result = this.creator.CreateFake(typeOfFake, new ProxyOptions(), resolver, false);
                 return result != null;
             }
         }

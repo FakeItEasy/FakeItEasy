@@ -179,10 +179,10 @@
     <Compile Include="Creation\CastleDynamicProxy\CastleInvocationCallAdapter.cs" />
     <Compile Include="Creation\DefaultFakeAndDummyManager.cs" />
     <Compile Include="Creation\DelegateProxies\DelegateProxyGenerator.cs" />
-    <Compile Include="Creation\DummyValueCreationSession.cs" />
+    <Compile Include="Creation\DummyValueResolver.cs" />
     <Compile Include="Creation\FakeObjectCreator.cs" />
     <Compile Include="Creation\FakeOptionsBase.cs" />
-    <Compile Include="Creation\IDummyValueCreationSession.cs" />
+    <Compile Include="Creation\IDummyValueResolver.cs" />
     <Compile Include="Creation\IFakeAndDummyManager.cs" />
     <Compile Include="Creation\IFakeObjectCreator.cs" />
     <Compile Include="Creation\IFakeOptions.cs" />

@@ -38,7 +38,7 @@ namespace FakeItEasy.Tests.Creation
                 .Returns(new ProxyGeneratorResult(proxy));
 
             // Act
-            var createdFake = this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
+            var createdFake = this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueResolver>(), throwOnFailure: false);
 
             // Assert
             createdFake.Should().BeSameAs(proxy);
@@ -63,7 +63,7 @@ namespace FakeItEasy.Tests.Creation
             A.CallTo(() => this.fakeCallProcessorProviderFactory(A<Type>._, A<IProxyOptions>._)).Returns(fakeCallProcessorProvider);
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
+            this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueResolver>(), throwOnFailure: false);
 
             // Assert
             A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(IFoo), options)).MustHaveHappened();
@@ -76,16 +76,16 @@ namespace FakeItEasy.Tests.Creation
         public void Should_use_new_fake_call_processor_for_every_tried_constructor()
         {
             // Arrange
-            var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue(session, 1);
-            StubSessionWithDummyValue(session, "dummy");
+            var resolver = A.Fake<IDummyValueResolver>();
+            StubResolverWithDummyValue(resolver, 1);
+            StubResolverWithDummyValue(resolver, "dummy");
 
             this.StubProxyGeneratorToFail();
 
             var options = new ProxyOptions();
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
+            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, resolver, throwOnFailure: false);
 
             // Assert
             A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(TypeWithMultipleConstructors), options))
@@ -104,7 +104,7 @@ namespace FakeItEasy.Tests.Creation
             };
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueCreationSession>(), throwOnFailure: true);
+            this.fakeObjectCreator.CreateFake(typeof(IFoo), options, A.Dummy<IDummyValueResolver>(), throwOnFailure: true);
 
             // Assert
             A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeof(IFoo), "fail reason"))
@@ -118,7 +118,7 @@ namespace FakeItEasy.Tests.Creation
             this.StubProxyGeneratorToFail();
 
             // Act
-            var createdFake = this.fakeObjectCreator.CreateFake(typeof(IFoo), new ProxyOptions(), A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
+            var createdFake = this.fakeObjectCreator.CreateFake(typeof(IFoo), new ProxyOptions(), A.Dummy<IDummyValueResolver>(), throwOnFailure: false);
 
             // Assert
             createdFake.Should().BeNull();
@@ -131,7 +131,7 @@ namespace FakeItEasy.Tests.Creation
             this.StubProxyGeneratorToFail();
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(IFoo), new ProxyOptions(), A.Dummy<IDummyValueCreationSession>(), throwOnFailure: false);
+            this.fakeObjectCreator.CreateFake(typeof(IFoo), new ProxyOptions(), A.Dummy<IDummyValueResolver>(), throwOnFailure: false);
 
             // Assert
             A.CallTo(this.thrower).MustNotHaveHappened();
@@ -141,16 +141,16 @@ namespace FakeItEasy.Tests.Creation
         public void Should_try_with_resolved_constructors_in_the_correct_order()
         {
             // Arrange
-            var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue(session, 1);
-            StubSessionWithDummyValue(session, "dummy");
+            var resolver = A.Fake<IDummyValueResolver>();
+            StubResolverWithDummyValue(resolver, 1);
+            StubResolverWithDummyValue(resolver, "dummy");
 
             this.StubProxyGeneratorToFail();
 
             var options = new ProxyOptions();
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
+            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, resolver, throwOnFailure: false);
 
             // Assert
             A.CallTo(() =>
@@ -168,8 +168,8 @@ namespace FakeItEasy.Tests.Creation
         public void Should_not_try_to_resolve_constructors_when_arguments_for_constructor_are_specified()
         {
             // Arrange
-            var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue(session, 1);
+            var resolver = A.Fake<IDummyValueResolver>();
+            StubResolverWithDummyValue(resolver, 1);
 
             this.StubProxyGeneratorToFail();
 
@@ -179,7 +179,7 @@ namespace FakeItEasy.Tests.Creation
             };
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
+            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, resolver, throwOnFailure: false);
 
             // Assert
             A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithMultipleConstructors), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.Not.IsThisSequence(2, 2), A<IFakeCallProcessorProvider>._))
@@ -190,8 +190,8 @@ namespace FakeItEasy.Tests.Creation
         public void Should_return_first_successfully_generated_proxy()
         {
             // Arrange
-            var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue(session, 1);
+            var resolver = A.Fake<IDummyValueResolver>();
+            StubResolverWithDummyValue(resolver, 1);
 
             var options = new ProxyOptions();
 
@@ -204,7 +204,7 @@ namespace FakeItEasy.Tests.Creation
                 .Returns(new ProxyGeneratorResult(new object()));
 
             // Act
-            var createdFake = this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, session, throwOnFailure: false);
+            var createdFake = this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, resolver, throwOnFailure: false);
 
             // Assert
             createdFake.Should().BeSameAs(proxy);
@@ -214,12 +214,12 @@ namespace FakeItEasy.Tests.Creation
         public void Should_not_try_constructor_where_not_all_arguments_are_resolved()
         {
             // Arrange
-            var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue(session, 1);
-            StubSessionToFailForType<string>(session);
+            var resolver = A.Fake<IDummyValueResolver>();
+            StubResolverWithDummyValue(resolver, 1);
+            StubResolverToFailForType<string>(resolver);
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithConstructorThatTakesDifferentTypes), new ProxyOptions(), session, throwOnFailure: false);
+            this.fakeObjectCreator.CreateFake(typeof(TypeWithConstructorThatTakesDifferentTypes), new ProxyOptions(), resolver, throwOnFailure: false);
 
             // Assert
             A.CallTo(() => this.proxyGenerator.GenerateProxy(A<Type>._, A<IEnumerable<Type>>._, A<IEnumerable<object>>.That.Not.IsNull(), A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
@@ -230,14 +230,14 @@ namespace FakeItEasy.Tests.Creation
         public void Should_try_protected_constructors()
         {
             // Arrange
-            var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionWithDummyValue(session, 1);
+            var resolver = A.Fake<IDummyValueResolver>();
+            StubResolverWithDummyValue(resolver, 1);
             this.StubProxyGeneratorToFail();
 
             var options = new ProxyOptions();
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithProtectedConstructor), options, session, throwOnFailure: false);
+            this.fakeObjectCreator.CreateFake(typeof(TypeWithProtectedConstructor), options, resolver, throwOnFailure: false);
 
             // Assert
             A.CallTo(() => this.proxyGenerator.GenerateProxy(typeof(TypeWithProtectedConstructor), options.AdditionalInterfacesToImplement, A<IEnumerable<object>>.That.IsThisSequence(1), A<IEnumerable<Expression<Func<Attribute>>>>._, A<IFakeCallProcessorProvider>._))
@@ -248,14 +248,14 @@ namespace FakeItEasy.Tests.Creation
         public void Should_throw_when_no_resolved_constructor_was_successfully_used()
         {
             // Arrange
-            var session = A.Fake<IDummyValueCreationSession>();
-            StubSessionToFailForType<int>(session);
-            StubSessionWithDummyValue(session, "dummy");
+            var resolver = A.Fake<IDummyValueResolver>();
+            StubResolverToFailForType<int>(resolver);
+            StubResolverWithDummyValue(resolver, "dummy");
 
             this.StubProxyGeneratorToFail("failed");
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), new ProxyOptions(), session, throwOnFailure: true);
+            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), new ProxyOptions(), resolver, throwOnFailure: true);
 
             // Assert
             var expectedConstructors = new[]
@@ -297,17 +297,17 @@ namespace FakeItEasy.Tests.Creation
                 .MustHaveHappened();
         }
 
-        private static void StubSessionToFailForType<T>(IDummyValueCreationSession session)
+        private static void StubResolverToFailForType<T>(IDummyValueResolver resolver)
         {
             object outResult;
-            A.CallTo(() => session.TryResolveDummyValue(typeof(T), out outResult))
+            A.CallTo(() => resolver.TryResolveDummyValue(typeof(T), out outResult))
                 .Returns(false);
         }
 
-        private static void StubSessionWithDummyValue<T>(IDummyValueCreationSession session, T dummyValue)
+        private static void StubResolverWithDummyValue<T>(IDummyValueResolver resolver, T dummyValue)
         {
             object outResult;
-            A.CallTo(() => session.TryResolveDummyValue(typeof(T), out outResult))
+            A.CallTo(() => resolver.TryResolveDummyValue(typeof(T), out outResult))
                 .Returns(true)
                 .AssignsOutAndRefParameters(dummyValue);
         }

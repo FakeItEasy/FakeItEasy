@@ -9,18 +9,18 @@ namespace FakeItEasy.Creation
     using System.Threading.Tasks;
     using FakeItEasy.Core;
 
-    internal class DummyValueCreationSession : IDummyValueCreationSession
+    internal class DummyValueResolver : IDummyValueResolver
     {
         private readonly ResolveStrategy[] strategies;
         private readonly HashSet<Type> typesCurrentlyBeingResolved;
         private readonly Dictionary<Type, ResolveStrategy> strategyCache;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DummyValueCreationSession"/> class.
+        /// Initializes a new instance of the <see cref="DummyValueResolver"/> class.
         /// </summary>
         /// <param name="dummyFactory">The dummy factory.</param>
         /// <param name="fakeObjectCreator">The fake object creator.</param>
-        public DummyValueCreationSession(DynamicDummyFactory dummyFactory, IFakeObjectCreator fakeObjectCreator)
+        public DummyValueResolver(DynamicDummyFactory dummyFactory, IFakeObjectCreator fakeObjectCreator)
         {
             this.typesCurrentlyBeingResolved = new HashSet<Type>();
             this.strategyCache = new Dictionary<Type, ResolveStrategy>();
@@ -35,7 +35,7 @@ namespace FakeItEasy.Creation
                 };
         }
 
-        public delegate IDummyValueCreationSession Factory(FakeObjectCreator creator);
+        public delegate IDummyValueResolver Factory(FakeObjectCreator creator);
 
         public bool TryResolveDummyValue(Type typeOfDummy, out object result)
         {
@@ -111,19 +111,19 @@ namespace FakeItEasy.Creation
 
         private class ResolveByCreatingFakeStrategy : ResolveStrategy
         {
-            public ResolveByCreatingFakeStrategy(IFakeObjectCreator fakeCreator, DummyValueCreationSession session)
+            public ResolveByCreatingFakeStrategy(IFakeObjectCreator fakeCreator, DummyValueResolver resolver)
             {
                 this.FakeCreator = fakeCreator;
-                this.Session = session;
+                this.Resolver = resolver;
             }
 
             private IFakeObjectCreator FakeCreator { get; }
 
-            private DummyValueCreationSession Session { get; }
+            private DummyValueResolver Resolver { get; }
 
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
-                return this.FakeCreator.TryCreateFakeObject(typeOfDummy, this.Session, out result);
+                return this.FakeCreator.TryCreateFakeObject(typeOfDummy, this.Resolver, out result);
             }
         }
 
@@ -131,12 +131,12 @@ namespace FakeItEasy.Creation
         {
             private static readonly MethodInfo GenericFromResultMethodDefinition = CreateGenericFromResultMethodDefinition();
 
-            public ResolveByCreatingTaskStrategy(DummyValueCreationSession session)
+            public ResolveByCreatingTaskStrategy(DummyValueResolver resolver)
             {
-                this.Session = session;
+                this.Resolver = resolver;
             }
 
-            private DummyValueCreationSession Session { get; }
+            private DummyValueResolver Resolver { get; }
 
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
@@ -152,7 +152,7 @@ namespace FakeItEasy.Creation
                 {
                     var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
                     object taskResult;
-                    if (!this.Session.TryResolveDummyValue(typeOfTaskResult, out taskResult))
+                    if (!this.Resolver.TryResolveDummyValue(typeOfTaskResult, out taskResult))
                     {
                         taskResult = typeOfTaskResult.GetDefaultValue();
                     }
@@ -175,12 +175,12 @@ namespace FakeItEasy.Creation
 
         private class ResolveByCreatingLazyStrategy : ResolveStrategy
         {
-            public ResolveByCreatingLazyStrategy(DummyValueCreationSession session)
+            public ResolveByCreatingLazyStrategy(DummyValueResolver resolver)
             {
-                this.Session = session;
+                this.Resolver = resolver;
             }
 
-            private DummyValueCreationSession Session { get; }
+            private DummyValueResolver Resolver { get; }
 
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
             {
@@ -190,7 +190,7 @@ namespace FakeItEasy.Creation
                 {
                     var typeOfLazyResult = typeOfDummy.GetGenericArguments()[0];
                     object lazyResult;
-                    if (!this.Session.TryResolveDummyValue(typeOfLazyResult, out lazyResult))
+                    if (!this.Resolver.TryResolveDummyValue(typeOfLazyResult, out lazyResult))
                     {
                         lazyResult = typeOfLazyResult.GetDefaultValue();
                     }
@@ -221,12 +221,12 @@ namespace FakeItEasy.Creation
 
         private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy : ResolveStrategy
         {
-            public ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy(DummyValueCreationSession session)
+            public ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy(DummyValueResolver resolver)
             {
-                this.Session = session;
+                this.Resolver = resolver;
             }
 
-            private DummyValueCreationSession Session { get; }
+            private DummyValueResolver Resolver { get; }
 
             [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try method.")]
             public override bool TryCreateDummyValue(Type typeOfDummy, out object result)
@@ -271,7 +271,7 @@ namespace FakeItEasy.Creation
                 {
                     object resolvedType;
 
-                    if (!this.Session.TryResolveDummyValue(type, out resolvedType))
+                    if (!this.Resolver.TryResolveDummyValue(type, out resolvedType))
                     {
                         return null;
                     }
