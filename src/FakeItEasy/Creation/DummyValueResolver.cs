@@ -1,6 +1,7 @@
 namespace FakeItEasy.Creation
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -12,7 +13,7 @@ namespace FakeItEasy.Creation
     internal class DummyValueResolver : IDummyValueResolver
     {
         private readonly ResolveStrategy[] strategies;
-        private readonly Dictionary<Type, ResolveStrategy> strategyCache;
+        private readonly ConcurrentDictionary<Type, ResolveStrategy> strategyCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DummyValueResolver"/> class.
@@ -21,7 +22,7 @@ namespace FakeItEasy.Creation
         /// <param name="fakeObjectCreator">The fake object creator.</param>
         public DummyValueResolver(DynamicDummyFactory dummyFactory, IFakeObjectCreator fakeObjectCreator)
         {
-            this.strategyCache = new Dictionary<Type, ResolveStrategy>();
+            this.strategyCache = new ConcurrentDictionary<Type, ResolveStrategy>();
             this.strategies = new ResolveStrategy[]
                 {
                     new ResolveFromDummyFactoryStrategy(dummyFactory),
@@ -32,8 +33,6 @@ namespace FakeItEasy.Creation
                     new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy(this)
                 };
         }
-
-        public delegate IDummyValueResolver Factory(FakeObjectCreator creator);
 
         public bool TryResolveDummyValue(DummyCreationSession session, Type typeOfDummy, out object result)
         {
@@ -66,12 +65,12 @@ namespace FakeItEasy.Creation
             {
                 if (strategy.TryCreateDummyValue(session, typeOfDummy, out result))
                 {
-                    this.strategyCache.Add(typeOfDummy, strategy);
+                    this.strategyCache.TryAdd(typeOfDummy, strategy);
                     return true;
                 }
             }
 
-            this.strategyCache.Add(typeOfDummy, new UnableToResolveStrategy());
+            this.strategyCache.TryAdd(typeOfDummy, new UnableToResolveStrategy());
             return false;
         }
 

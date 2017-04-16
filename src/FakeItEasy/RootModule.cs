@@ -35,10 +35,6 @@ namespace FakeItEasy
                 new DynamicOptionsBuilder(
                     c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
 
-            container.RegisterSingleton(c =>
-                new DynamicDummyFactory(
-                    c.Resolve<IEnumerable<IDummyFactory>>()));
-
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(c));
 
             container.RegisterSingleton(c =>
@@ -90,12 +86,16 @@ namespace FakeItEasy
                     c.Resolve<IProxyGenerator>(),
                     c.Resolve<IExceptionThrower>(),
                     c.Resolve<FakeCallProcessorProvider.Factory>());
-                DummyValueResolver.Factory resolverFactory = fakeObjectCreator => new DummyValueResolver(
-                    c.Resolve<DynamicDummyFactory>(),
-                    new ResolverFakeObjectCreator(fakeObjectCreator));
                 var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
-                return new DefaultFakeAndDummyManager(resolverFactory, fakeCreator, fakeConfigurator);
+                var dynamicDummyFactory = new DynamicDummyFactory(c.Resolve<IEnumerable<IDummyFactory>>());
+                var objectCreator = new ResolverFakeObjectCreator(fakeCreator);
+                var dummyValueResolver = new DummyValueResolver(dynamicDummyFactory, objectCreator);
+
+                return new DefaultFakeAndDummyManager(
+                    dummyValueResolver,
+                    fakeCreator,
+                    fakeConfigurator);
             });
 
             container.RegisterSingleton(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
