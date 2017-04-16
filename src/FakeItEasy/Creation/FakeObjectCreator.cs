@@ -19,7 +19,7 @@ namespace FakeItEasy.Creation
             this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
         }
 
-        public object CreateFake(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver, bool throwOnFailure)
+        public object CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver, bool throwOnFailure)
         {
             var result = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
 
@@ -30,16 +30,16 @@ namespace FakeItEasy.Creation
 
             if (!result.ProxyWasSuccessfullyGenerated && proxyOptions.ArgumentsForConstructor == null)
             {
-                result = this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, resolver, result.ReasonForFailure, throwOnFailure);
+                result = this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, session, resolver, result.ReasonForFailure, throwOnFailure);
             }
 
             return result != null ? result.GeneratedProxy : null;
         }
 
-        private static ResolvedConstructor[] ResolveConstructors(Type typeOfFake, IDummyValueResolver resolver)
+        private static ResolvedConstructor[] ResolveConstructors(Type typeOfFake, DummyCreationSession session, IDummyValueResolver resolver)
         {
             return (from constructor in GetUsableConstructorsInOrder(typeOfFake)
-                    let constructorAndArguments = ResolveConstructorArguments(constructor, resolver)
+                    let constructorAndArguments = ResolveConstructorArguments(constructor, session, resolver)
                     select constructorAndArguments).ToArray();
         }
 
@@ -50,7 +50,7 @@ namespace FakeItEasy.Creation
                 .OrderByDescending(x => x.GetParameters().Length);
         }
 
-        private static ResolvedConstructor ResolveConstructorArguments(ConstructorInfo constructor, IDummyValueResolver resolver)
+        private static ResolvedConstructor ResolveConstructorArguments(ConstructorInfo constructor, DummyCreationSession session, IDummyValueResolver resolver)
         {
             var resolvedArguments = new List<ResolvedArgument>();
 
@@ -60,7 +60,7 @@ namespace FakeItEasy.Creation
 
                 var resolvedArgument = new ResolvedArgument
                                            {
-                                               WasResolved = resolver.TryResolveDummyValue(argument.ParameterType, out result),
+                                               WasResolved = resolver.TryResolveDummyValue(session, argument.ParameterType, out result),
                                                ResolvedValue = result,
                                                ArgumentType = argument.ParameterType
                                            };
@@ -82,9 +82,9 @@ namespace FakeItEasy.Creation
             }
         }
 
-        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver, string failReasonForDefaultConstructor, bool throwOnFailure)
+        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver, string failReasonForDefaultConstructor, bool throwOnFailure)
         {
-            var constructors = ResolveConstructors(typeOfFake, resolver);
+            var constructors = ResolveConstructors(typeOfFake, session, resolver);
 
             foreach (var constructor in constructors.Where(x => x.WasSuccessfullyResolved))
             {

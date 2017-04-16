@@ -183,9 +183,9 @@ namespace FakeItEasy
                 this.creator = creator;
             }
 
-            public bool TryCreateFakeObject(Type typeOfFake, DummyValueResolver resolver, out object result)
+            public bool TryCreateFakeObject(DummyCreationSession session, Type typeOfFake, DummyValueResolver resolver, out object result)
             {
-                result = this.creator.CreateFake(typeOfFake, new ProxyOptions(), resolver, false);
+                result = this.creator.CreateFake(typeOfFake, new ProxyOptions(), session, resolver, false);
                 return result != null;
             }
         }

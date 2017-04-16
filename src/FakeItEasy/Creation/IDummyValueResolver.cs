@@ -4,6 +4,6 @@ namespace FakeItEasy.Creation
 
     internal interface IDummyValueResolver
     {
-        bool TryResolveDummyValue(Type typeOfDummy, out object result);
+        bool TryResolveDummyValue(DummyCreationSession session, Type typeOfDummy, out object result);
     }
 }
