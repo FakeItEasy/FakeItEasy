@@ -38,7 +38,7 @@ namespace FakeItEasy.Tests.Configuration
             var expectedMessage =
 @"
 
-  The current proxy generator can not intercept the specified method for the following reason:
+  The current proxy generator can not intercept the method System.Object.ToString() for the following reason:
     - reason
 
 ";

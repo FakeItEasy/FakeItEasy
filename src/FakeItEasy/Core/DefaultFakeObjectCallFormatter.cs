@@ -1,7 +1,5 @@
 namespace FakeItEasy.Core
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -32,7 +30,7 @@ namespace FakeItEasy.Core
             var builder = new StringBuilder();
 
             builder
-                .Append(this.fakeManagerAccessor.GetFakeManager(call.FakedObject).FakeObjectType)
+                .Append(this.fakeManagerAccessor.GetFakeManager(call.FakedObject).FakeObjectType.FullNameCSharp())
                 .Append(".");
 
             AppendMethodName(builder, call.Method);
@@ -44,7 +42,7 @@ namespace FakeItEasy.Core
 
         private static ArgumentValueInfo[] GetArgumentsForArgumentsList(ArgumentValueInfo[] allArguments, MethodInfo method)
         {
-            if (IsPropertySetter(method))
+            if (method.IsPropertySetter())
             {
                 return allArguments.Take(allArguments.Length - 1).ToArray();
             }
@@ -54,7 +52,7 @@ namespace FakeItEasy.Core
 
         private static void AppendArgumentListPrefix(StringBuilder builder, MethodInfo method)
         {
-            if (IsPropertyGetterOrSetter(method))
+            if (method.IsPropertyGetterOrSetter())
             {
                 builder.Append("[");
             }
@@ -66,7 +64,7 @@ namespace FakeItEasy.Core
 
         private static void AppendArgumentListSuffix(StringBuilder builder, MethodInfo method)
         {
-            if (IsPropertyGetterOrSetter(method))
+            if (method.IsPropertyGetterOrSetter())
             {
                 builder.Append("]");
             }
@@ -78,7 +76,7 @@ namespace FakeItEasy.Core
 
         private static void AppendMethodName(StringBuilder builder, MethodInfo method)
         {
-            if (IsPropertyGetterOrSetter(method))
+            if (method.IsPropertyGetterOrSetter())
             {
                 builder.Append(method.Name.Substring(4));
             }
@@ -88,21 +86,6 @@ namespace FakeItEasy.Core
             }
 
             builder.Append(method.GetGenericArgumentsCSharp());
-        }
-
-        private static bool IsPropertyGetterOrSetter(MethodInfo method)
-        {
-            return IsPropertyGetter(method) || IsPropertySetter(method);
-        }
-
-        private static bool IsPropertySetter(MethodInfo method)
-        {
-            return method.IsSpecialName && method.Name.StartsWith("set_", StringComparison.Ordinal);
-        }
-
-        private static bool IsPropertyGetter(MethodInfo method)
-        {
-            return method.IsSpecialName && method.Name.StartsWith("get_", StringComparison.Ordinal);
         }
 
         private static void AppendArgumentSeparator(StringBuilder builder, int argumentIndex, int totalNumberOfArguments)
@@ -143,7 +126,7 @@ namespace FakeItEasy.Core
             var allArguments = GetArgumentValueInfos(call);
             var argumentsForArgumentList = GetArgumentsForArgumentsList(allArguments, call.Method);
 
-            if (argumentsForArgumentList.Length > 0 || !IsPropertyGetterOrSetter(call.Method))
+            if (argumentsForArgumentList.Length > 0 || !call.Method.IsPropertyGetterOrSetter())
             {
                 AppendArgumentListPrefix(builder, call.Method);
 
@@ -152,7 +135,7 @@ namespace FakeItEasy.Core
                 AppendArgumentListSuffix(builder, call.Method);
             }
 
-            if (IsPropertySetter(call.Method))
+            if (call.Method.IsPropertySetter())
             {
                 builder.Append(" = ");
                 builder.Append(this.argumentValueFormatter.GetArgumentValueAsString(allArguments[allArguments.Length - 1].ArgumentValue));
@@ -172,9 +155,9 @@ namespace FakeItEasy.Core
             return this.argumentValueFormatter.GetArgumentValueAsString(argumentValue);
         }
 
-        private void AppendArguments(StringBuilder builder, IEnumerable<ArgumentValueInfo> arguments)
+        private void AppendArguments(StringBuilder builder, ArgumentValueInfo[] arguments)
         {
-            var totalNumberOfArguments = arguments.Count();
+            var totalNumberOfArguments = arguments.Length;
             var callIndex = 0;
             foreach (var argument in arguments)
             {
