@@ -4,7 +4,7 @@
 
     internal static class InterceptedFakeObjectCallExtensions
     {
-        private static readonly IFakeAndDummyManager DummyManager = ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
+        private static IFakeAndDummyManager DummyManager => ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
 
         public static object GetDefaultReturnValue(this IInterceptedFakeObjectCall call)
         {

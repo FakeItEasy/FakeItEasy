@@ -13,7 +13,7 @@ namespace FakeItEasy.Sdk
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = nameof(A), Justification = "Is spelled correctly.")]
     public static class Create
     {
-        private static readonly IFakeAndDummyManager FakeAndDummyManager =
+        private static IFakeAndDummyManager FakeAndDummyManager =>
             ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
 
         /// <summary>
