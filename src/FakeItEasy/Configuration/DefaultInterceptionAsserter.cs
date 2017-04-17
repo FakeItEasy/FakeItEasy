@@ -19,12 +19,14 @@ namespace FakeItEasy.Configuration
             string failReason;
             if (!this.proxyGenerator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason))
             {
+                string memberType = method.IsPropertyGetterOrSetter() ? "property" : "method";
+                string description = method.GetDescription();
                 var message = new StringBuilder()
                     .AppendLine()
                     .AppendLine()
                     .Append("  ")
                     .AppendLine(
-                        "The current proxy generator can not intercept the specified method for the following reason:")
+                        $"The current proxy generator can not intercept the {memberType} {description} for the following reason:")
                     .Append("    - ")
                     .AppendLine(failReason)
                     .AppendLine().ToString();
