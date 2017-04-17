@@ -126,10 +126,10 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<System.String, System.String>(baz1: <Ignored>, baz2: <Ignored>)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[System.String,System.String](baz1: <Ignored>, baz2: <Ignored>)
   Expected to find it at least once but found it #0 times among the calls:
-    1: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<System.Int32, System.Double>(baz1: 1, baz2: 2)
-    2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.Boolean, System.Int64>, System.Int32>(baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
+    1: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[System.Int32,System.Double](baz1: 1, baz2: 2)
+    2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64],System.Int32](baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
 
 "));
         }
@@ -182,7 +182,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Be(@"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<FakeItEasy.Specs.CallMatchingSpecs+Generic<System.String>>(baz: <Ignored>)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[FakeItEasy.Specs.CallMatchingSpecs+Generic`1[System.String]](baz: <Ignored>)
   Expected to find it at least once but no calls were made to the fake object.
 
 "));
@@ -418,7 +418,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the first fake"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">(baz: {fakeDescription})"));
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {fakeDescription})"));
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "ABad", Justification = "Refers to the two words 'a bad'")]
@@ -438,7 +438,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the first fake"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">(baz: {fakeDescription})"));
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {fakeDescription})"));
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "ABad", Justification = "Refers to the two words 'a bad'")]
@@ -457,7 +457,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the object"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">(baz: {obj.GetType().ToString()})"));
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {obj.GetType().ToString()})"));
         }
 
         [Scenario]
@@ -476,7 +476,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the first fake"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar<").And.Subject.Should().Contain($">(baz: {fakeDescription})"));
+                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {fakeDescription})"));
         }
 
         public static IEnumerable<object[]> Fakes()

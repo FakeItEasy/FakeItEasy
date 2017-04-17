@@ -27,7 +27,7 @@ namespace FakeItEasy.Creation
 
             if (!interfaceType.GetTypeInfo().IsInterface)
             {
-                throw new ArgumentException($"The specified type {interfaceType.FullNameCSharp()} is not an interface");
+                throw new ArgumentException($"The specified type {interfaceType} is not an interface");
             }
 
             this.additionalInterfacesToImplement.Add(interfaceType);

@@ -10,7 +10,7 @@ namespace FakeItEasy
     /// </summary>
     internal static class MethodBaseExtensions
     {
-        public static string GetGenericArgumentsCSharp(this MethodBase method)
+        public static string GetGenericArgumentsString(this MethodBase method)
         {
             var genericArguments = method.GetGenericArguments();
             if (genericArguments.Length == 0)
@@ -18,7 +18,12 @@ namespace FakeItEasy
                 return string.Empty;
             }
 
-            return string.Concat("<", string.Join(", ", genericArguments.Select(type => type.FullNameCSharp()).ToArray()), ">");
+            return string.Concat(
+                "`",
+                genericArguments.Length,
+                "[",
+                string.Join(",", genericArguments.AsEnumerable()),
+                "]");
         }
 
         public static bool IsPropertyGetterOrSetter(this MethodBase method)
@@ -41,7 +46,7 @@ namespace FakeItEasy
             var builder = new StringBuilder();
 
             builder
-                .Append(method.DeclaringType.FullNameCSharp())
+                .Append(method.DeclaringType)
                 .Append(".");
 
             AppendMethodName(builder, method);
@@ -62,7 +67,7 @@ namespace FakeItEasy
                 builder.Append(method.Name);
             }
 
-            builder.Append(method.GetGenericArgumentsCSharp());
+            builder.Append(method.GetGenericArgumentsString());
         }
 
         private static void AppendParameterList(StringBuilder builder, MethodBase method)
@@ -109,7 +114,7 @@ namespace FakeItEasy
             {
                 AppendParameterSeparator(builder, i);
                 builder
-                    .Append(parameters[i].ParameterType.FullNameCSharp())
+                    .Append(parameters[i].ParameterType)
                     .Append(" ")
                     .Append(parameters[i].Name);
             }
