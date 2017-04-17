@@ -49,6 +49,7 @@ namespace FakeItEasy.IntegrationTests
             exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And.Message.Should().Be(expectedMessage);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "astatic", Justification = "Refers to the two words 'a static'.")]
         [Fact]
         public void Should_give_pretty_message_when_trying_to_fake_a_static_property()
         {
@@ -68,7 +69,7 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Fact]
-        public void Should_give_pretty_message_when_trying_to_fake_a_non_virtual_indexed_property()
+        public void Should_give_pretty_message_when_trying_to_fake_an_indexed_property_that_is_not_virtual()
         {
             // Arrange
             var fake = A.Fake<Dictionary<string, int>>();
