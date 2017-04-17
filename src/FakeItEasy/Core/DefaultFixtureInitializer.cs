@@ -25,6 +25,7 @@ namespace FakeItEasy.Core
             this.InitializeFakes(fixture, fakesUsedToCreateSut);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "UnderTestAttribute", Justification = "Refers to the type 'UnderTestAttribute'.")]
         private static SettableMemberInfo GetSutSetter(object fixture)
         {
             var allSettersTaggedUnderTest = GetMembersTaggedWithAttribute(fixture, typeof(UnderTestAttribute));
