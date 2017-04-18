@@ -67,7 +67,7 @@ namespace FakeItEasy.Expressions
             result.Append(this.Method.DeclaringType);
             result.Append(".");
             result.Append(this.Method.Name);
-            result.Append(this.Method.GetGenericArgumentsCSharp());
+            result.Append(this.Method.GetGenericArgumentsString());
 
             this.AppendArgumentsListString(result);
 

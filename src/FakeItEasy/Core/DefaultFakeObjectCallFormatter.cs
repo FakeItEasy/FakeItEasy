@@ -30,7 +30,7 @@ namespace FakeItEasy.Core
             var builder = new StringBuilder();
 
             builder
-                .Append(this.fakeManagerAccessor.GetFakeManager(call.FakedObject).FakeObjectType.FullNameCSharp())
+                .Append(this.fakeManagerAccessor.GetFakeManager(call.FakedObject).FakeObjectType)
                 .Append(".");
 
             AppendMethodName(builder, call.Method);
@@ -85,7 +85,7 @@ namespace FakeItEasy.Core
                 builder.Append(method.Name);
             }
 
-            builder.Append(method.GetGenericArgumentsCSharp());
+            builder.Append(method.GetGenericArgumentsString());
         }
 
         private static void AppendArgumentSeparator(StringBuilder builder, int argumentIndex, int totalNumberOfArguments)

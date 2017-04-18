@@ -2,7 +2,6 @@ namespace FakeItEasy
 {
     using System;
     using System.Diagnostics;
-    using System.Linq;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
@@ -12,20 +11,6 @@ namespace FakeItEasy
     /// </summary>
     internal static class TypeExtensions
     {
-        public static string FullNameCSharp(this Type type)
-        {
-            Guard.AgainstNull(type, nameof(type));
-
-            if (!type.GetTypeInfo().IsGenericType)
-            {
-                return type.ToString();
-            }
-
-            var partName = type.ToString().Split('`')[0];
-            var genericArgNames = string.Join(", ", type.GetGenericArguments().Select(arg => arg.FullNameCSharp()));
-            return $"{partName}<{genericArgNames}>";
-        }
-
         [DebuggerStepThrough]
         public static object GetDefaultValue(this Type type)
         {

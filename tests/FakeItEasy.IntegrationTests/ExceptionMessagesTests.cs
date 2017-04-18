@@ -41,7 +41,7 @@ namespace FakeItEasy.IntegrationTests
             var expectedMessage =
 @"
 
-  The current proxy generator can not intercept the method System.Linq.Enumerable.Any<System.Int32>(System.Collections.Generic.IEnumerable<System.Int32> source) for the following reason:
+  The current proxy generator can not intercept the method System.Linq.Enumerable.Any`1[System.Int32](System.Collections.Generic.IEnumerable`1[System.Int32] source) for the following reason:
     - Extension methods can not be intercepted since they're static.
 
 ";
@@ -81,7 +81,7 @@ namespace FakeItEasy.IntegrationTests
             var expectedMessage =
                 @"
 
-  The current proxy generator can not intercept the property System.Collections.Generic.Dictionary<System.String, System.Int32>.Item[System.String key] for the following reason:
+  The current proxy generator can not intercept the property System.Collections.Generic.Dictionary`2[System.String,System.Int32].Item[System.String key] for the following reason:
     - Sealed methods can not be intercepted.
 
 ";
