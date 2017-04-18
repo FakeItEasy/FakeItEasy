@@ -35,10 +35,6 @@ namespace FakeItEasy
                 new DynamicOptionsBuilder(
                     c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
 
-            container.RegisterSingleton(c =>
-                new DynamicDummyFactory(
-                    c.Resolve<IEnumerable<IDummyFactory>>()));
-
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(c));
 
             container.RegisterSingleton(c =>
@@ -90,12 +86,16 @@ namespace FakeItEasy
                     c.Resolve<IProxyGenerator>(),
                     c.Resolve<IExceptionThrower>(),
                     c.Resolve<FakeCallProcessorProvider.Factory>());
-                DummyValueCreationSession.Factory sessionFactory = fakeObjectCreator => new DummyValueCreationSession(
-                    c.Resolve<DynamicDummyFactory>(),
-                    new SessionFakeObjectCreator(fakeObjectCreator));
                 var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
-                return new DefaultFakeAndDummyManager(sessionFactory, fakeCreator, fakeConfigurator);
+                var dynamicDummyFactory = new DynamicDummyFactory(c.Resolve<IEnumerable<IDummyFactory>>());
+                var objectCreator = new ResolverFakeObjectCreator(fakeCreator);
+                var dummyValueResolver = new DummyValueResolver(dynamicDummyFactory, objectCreator);
+
+                return new DefaultFakeAndDummyManager(
+                    dummyValueResolver,
+                    fakeCreator,
+                    fakeConfigurator);
             });
 
             container.RegisterSingleton(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
@@ -173,19 +173,19 @@ namespace FakeItEasy
         }
 #endif
 
-        private class SessionFakeObjectCreator
+        private class ResolverFakeObjectCreator
             : IFakeObjectCreator
         {
             private readonly FakeObjectCreator creator;
 
-            public SessionFakeObjectCreator(FakeObjectCreator creator)
+            public ResolverFakeObjectCreator(FakeObjectCreator creator)
             {
                 this.creator = creator;
             }
 
-            public bool TryCreateFakeObject(Type typeOfFake, DummyValueCreationSession session, out object result)
+            public bool TryCreateFakeObject(DummyCreationSession session, Type typeOfFake, DummyValueResolver resolver, out object result)
             {
-                result = this.creator.CreateFake(typeOfFake, new ProxyOptions(), session, false);
+                result = this.creator.CreateFake(typeOfFake, new ProxyOptions(), session, resolver, false);
                 return result != null;
             }
         }
