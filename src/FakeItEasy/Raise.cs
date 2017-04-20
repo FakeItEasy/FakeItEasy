@@ -69,5 +69,15 @@ namespace FakeItEasy
         {
             return new DelegateRaiser<TEventHandler>(arguments, ArgumentProviderMap);
         }
+
+        /// <summary>
+        /// Raises an event with non-standard signature, resolving the actual delegate type dynamically.
+        /// </summary>
+        /// <param name="arguments">The arguments to send to the event handlers.</param>
+        /// <returns>A new object that knows how to raise events.</returns>
+        public static dynamic WithDynamic(params object[] arguments)
+        {
+            return new DynamicRaiser(arguments, ArgumentProviderMap);
+        }
     }
 }
