@@ -377,5 +377,132 @@ namespace FakeItEasy.Specs
             "Then the second value is passed as the second event argument"
                 .x(() => CapturedArgs2.Should().Be(true));
         }
+
+        [Scenario]
+        public void DynamicCustomEventHandler()
+        {
+            "Given an event of a custom delegate type that takes a sender and event arguments"
+                .See(() => nameof(Fake.CustomEvent));
+
+            "When I raise the event specifying the sender and the event arguments"
+                .x(() => Fake.CustomEvent += Raise.WithDynamic(SampleSender, this.customEventArgs));
+
+            "Then the supplied sender is passed as the event sender"
+                .x(() => CapturedSender.Should().BeSameAs(SampleSender));
+
+            "And the supplied value is passed as the event arguments"
+                .x(() => CapturedArgs1.Should().BeSameAs(this.customEventArgs));
+        }
+
+        [Scenario]
+        public void DynamicReferenceTypeEventHandler()
+        {
+            "Given an event of a custom delegate type taking only a reference type as an argument"
+                .See(() => nameof(Fake.ReferenceTypeEvent));
+
+            "When I raise the event specifying the arguments"
+                .x(() => Fake.ReferenceTypeEvent += Raise.WithDynamic(this.referenceTypeEventArgs));
+
+            "Then the supplied value is passed as the event argument"
+                .x(() => CapturedArgs1.Should().BeSameAs(this.referenceTypeEventArgs));
+        }
+
+        [Scenario]
+        public void DynamicReferenceTypeEventHandlerWithDerivedArguments()
+        {
+            "Given an event of a custom delegate type taking only a reference type as an argument"
+                .See(() => nameof(Fake.ReferenceTypeEvent));
+
+            "When I raise the event specifying an argument of a derived type"
+                .x(() => Fake.ReferenceTypeEvent +=
+                    Raise.WithDynamic(this.derivedReferenceTypeEventArgs));
+
+            "Then the supplied value is passed as the event argument"
+                .x(() => CapturedArgs1.Should().BeSameAs(this.derivedReferenceTypeEventArgs));
+        }
+
+        [Scenario]
+        public void DynamicReferenceTypeEventHandlerWithInvalidArgumentType(
+            Exception exception)
+        {
+            const string ExpectedMessage =
+                "The event has the signature (FakeItEasy.Specs.ReferenceType), " +
+                "but the provided arguments have types (System.Collections.Hashtable).";
+
+            "Given an event of a custom delegate type taking only a reference type as an argument"
+                .See(() => nameof(Fake.ReferenceTypeEvent));
+
+            "When I raise the event specifying an argument of an invalid type"
+                .x(() => exception = Record.Exception(() =>
+                    Fake.ReferenceTypeEvent += Raise.WithDynamic(new Hashtable())));
+
+            "Then the call fails with a meaningful message"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
+                    .Message.Should().Be(ExpectedMessage));
+        }
+
+        [Scenario]
+        public void DynamicValueTypeEventHandlerWithNullValue(
+            Exception exception)
+        {
+            "Given an event of a custom delegate type taking only a value type as an argument"
+                .See(() => nameof(Fake.ValueTypeEvent));
+
+            "When I raise the event specifying a null argument"
+                .x(() => exception = Record.Exception(() =>
+                    Fake.ValueTypeEvent += Raise.WithDynamic((object)null)));
+
+            "Then the call fails with a meaningful message"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                    .And.Message.Should().Be(
+                        "The event has the signature (System.Int32), but the provided arguments have types (<NULL>)."));
+        }
+
+        [Scenario]
+        public void DynamicActionEvent()
+        {
+            "Given an event of type Action"
+                .See(() => nameof(Fake.ActionEvent));
+
+            "When I raise the event specifying the arguments"
+                .x(() => Fake.ActionEvent += Raise.WithDynamic(19, true));
+
+            "Then the first value is passed as the first event argument"
+                .x(() => CapturedArgs1.Should().Be(19));
+
+            "Then the second value is passed as the second event argument"
+                .x(() => CapturedArgs2.Should().Be(true));
+        }
+
+        [Scenario]
+        public void DynamicRaiseAssignmentToNonDelegate(string s, Exception exception)
+        {
+            "When I assign Raise.WithDynamic to something that isn't a delegate"
+                .x(() => exception = Record.Exception(() => s = Raise.WithDynamic("foo", 42)));
+
+            "Then it throws an InvalidCastException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidCastException>());
+
+            "And the exception message describes the attempted cast"
+                .x(() => exception.Message.Should().Be(
+                    "Unable to cast object of type 'FakeItEasy.Core.DynamicRaiser' to type 'System.String'."));
+        }
+
+        [Scenario]
+        public void DynamicRaiseWithWrongArguments(Exception exception)
+        {
+            "Given an event of a custom delegate type that takes a sender and event arguments"
+                .See(() => nameof(Fake.CustomEvent));
+
+            "When I raise the event specifying incorrect arguments"
+                .x(() => exception = Record.Exception(() => Fake.CustomEvent += Raise.WithDynamic("foo", 42, true)));
+
+            "Then it throws a FakeConfigurationException"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>());
+
+            "And the exception message describes the expected and actual arguments"
+                .x(() => exception.Message.Should().Be(
+                    "The event has the signature (System.Object, FakeItEasy.Specs.CustomEventArgs), but the provided arguments have types (System.String, System.Int32, System.Boolean)."));
+        }
     }
 }
