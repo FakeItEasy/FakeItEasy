@@ -1,11 +1,11 @@
 namespace FakeItEasy
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
     using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
 
     /// <summary>
     /// Provides helper methods for checking the value producer signature against call signatures.
@@ -31,10 +31,8 @@ namespace FakeItEasy
                 return;
             }
 
-            var formatter = ServiceLocator.Current.Resolve<ArgumentValueFormatter>();
-
-            var fakeSignature = BuildSignatureDescription(callMethod.GetParameters().Select(p => (object)p.ParameterType), formatter);
-            var actionSignature = BuildSignatureDescription(values.Select(v => v == null ? null : (object)v.GetType()), formatter);
+            var fakeSignature = BuildSignatureDescription(callMethod.GetParameters().Select(p => p.ParameterType));
+            var actionSignature = BuildSignatureDescription(values.Select(v => v?.GetType()));
 
             throw new FakeConfigurationException(
                 $"The event has the signature ({fakeSignature}), but the provided arguments have types ({actionSignature}).");
@@ -92,12 +90,12 @@ namespace FakeItEasy
 
         private static string BuildSignatureDescription(MethodInfo method)
         {
-            return method.GetParameters().ToCollectionString(x => x.ParameterType.ToString(), ", ");
+            return BuildSignatureDescription(method.GetParameters().Select(p => p.ParameterType));
         }
 
-        private static string BuildSignatureDescription(IEnumerable<object> types, ArgumentValueFormatter formatter)
+        private static string BuildSignatureDescription(IEnumerable<Type> types)
         {
-            return types.ToCollectionString(formatter.GetArgumentValueAsString, ", ");
+            return types.ToCollectionString(t => t?.ToString() ?? "<NULL>", ", ");
         }
     }
 }
