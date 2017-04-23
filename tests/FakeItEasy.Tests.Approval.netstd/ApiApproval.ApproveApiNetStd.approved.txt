@@ -44,8 +44,14 @@ namespace FakeItEasy
             where T : System.IComparable { }
         public static T IsInstanceOf<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Type type) { }
         public static System.Threading.CancellationToken IsNotCanceled(this FakeItEasy.IArgumentConstraintManager<System.Threading.CancellationToken> manager) { }
+        public static T IsNotNull<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
+            where T :  class { }
+        public static System.Nullable<T> IsNotNull<T>(this FakeItEasy.IArgumentConstraintManager<System.Nullable<T>> manager)
+            where T :  struct { }
         public static T IsNull<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
             where T :  class { }
+        public static System.Nullable<T> IsNull<T>(this FakeItEasy.IArgumentConstraintManager<System.Nullable<T>> manager)
+            where T :  struct { }
         public static string IsNullOrEmpty(this FakeItEasy.IArgumentConstraintManager<string> manager) { }
         public static T IsSameAs<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
         public static T IsSameSequenceAs<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Collections.IEnumerable value)
