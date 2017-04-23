@@ -29,6 +29,17 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Constrains an argument so that it must be null (Nothing in VB).
+        /// </summary>
+        /// <typeparam name="T">The type of the argument.</typeparam>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static T? IsNull<T>(this IArgumentConstraintManager<T?> manager) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Constrains the string argument to contain the specified text.
         /// </summary>
         /// <param name="manager">The constraint manager to match the constraint.</param>
