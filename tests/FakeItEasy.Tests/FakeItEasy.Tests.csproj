@@ -84,6 +84,8 @@
     <Compile Include="ArgumentConstraintManagerExtensions\CollectionContainsTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\CollectionIsEmptyTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\DerivedTypeArgumentTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\IsNotNullTests.cs" />
+    <Compile Include="ArgumentConstraintManagerExtensions\NullableIsNotNullTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\NullableIsNullTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\SameAsConstraintTests.cs" />
     <Compile Include="ArgumentConstraintManagerExtensions\EqualToConstraintTests.cs" />
