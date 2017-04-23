@@ -9,6 +9,7 @@
     <Import_RootNamespace>FakeItEasy.Analyzer</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArgumentConstraintOutsideCallSpecAnalyzer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DiagnosticDefinitions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NonVirtualSetupAnalyzer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SymbolExtensions.cs" />

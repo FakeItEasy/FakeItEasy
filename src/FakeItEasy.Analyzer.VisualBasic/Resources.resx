@@ -141,4 +141,16 @@
     <value>Unused call specification</value>
     <comment>The title of the diagnostic.</comment>
   </data>
+  <data name="ArgumentConstraintOutsideCallSpecDescription" xml:space="preserve">
+    <value>Argument constraints can't be used outside call specifications.</value>
+    <comment>An optional longer localizable description of the diagnostic.</comment>
+  </data>
+  <data name="ArgumentConstraintOutsideCallSpecMessageFormat" xml:space="preserve">
+    <value>Argument constraint '{0}' is not valid outside a call specification.</value>
+    <comment>The format-able message the diagnostic displays.</comment>
+  </data>
+  <data name="ArgumentConstraintOutsideCallSpecTitle" xml:space="preserve">
+    <value>Argument constraint outside call specification.</value>
+    <comment>The title of the diagnostic.</comment>
+  </data>
 </root>

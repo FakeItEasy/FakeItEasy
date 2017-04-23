@@ -34,5 +34,16 @@
             // (in C#, ReducedFrom is always null)
             return method?.ReducedFrom ?? method;
         }
+
+        /// <summary>
+        /// Returns the accessed property for the member access expression.
+        /// </summary>
+        /// <param name="access">The member access expression from which to get the property symbol.</param>
+        /// <param name="context">The current analysis context.</param>
+        /// <returns>The symbol for the accessed property.</returns>
+        internal static IPropertySymbol GetAccessedPropertySymbol(MemberAccessExpressionSyntax access, SyntaxNodeAnalysisContext context)
+        {
+            return context.SemanticModel.GetSymbolInfo(access.Name).Symbol as IPropertySymbol;
+        }
     }
 }
