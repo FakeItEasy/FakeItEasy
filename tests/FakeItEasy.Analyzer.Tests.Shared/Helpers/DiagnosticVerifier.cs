@@ -32,10 +32,7 @@
         /// </summary>
         /// <returns>The diagnostic analyzer being tested.</returns>
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
-        protected virtual DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return null;
-        }
+        protected abstract DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer();
 #elif VISUAL_BASIC
         /// <summary>
         /// Called to test a VB.NET DiagnosticAnalyzer when applied on the single inputted string as a source.
@@ -53,10 +50,7 @@
         /// </summary>
         /// <returns>The diagnostic analyzer being tested.</returns>
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "It's not appropriate here")]
-        protected virtual DiagnosticAnalyzer GetVisualBasicDiagnosticAnalyzer()
-        {
-            return null;
-        }
+        protected abstract DiagnosticAnalyzer GetVisualBasicDiagnosticAnalyzer();
 #endif
 
         /// <summary>
