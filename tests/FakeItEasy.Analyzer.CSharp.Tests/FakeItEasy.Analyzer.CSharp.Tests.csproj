@@ -123,6 +123,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgumentConstraintOutsideCallSpecAnalyzerTests.cs" />
     <Compile Include="NonVirtualSetupAnalyzerTests.cs" />
     <Compile Include="UnusedReturnValueAnalyzerTests.cs" />
   </ItemGroup>
