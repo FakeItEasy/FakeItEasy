@@ -36,7 +36,9 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static T? IsNull<T>(this IArgumentConstraintManager<T?> manager) where T : struct
         {
-            throw new NotImplementedException();
+            Guard.AgainstNull(manager, nameof(manager));
+
+            return manager.Matches(x => x == null, x => x.Write("NULL"));
         }
 
         /// <summary>
