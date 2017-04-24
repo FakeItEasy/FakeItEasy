@@ -21,7 +21,13 @@
 #endif
     internal class NonVirtualSetupAnalyzer : DiagnosticAnalyzer
     {
-        private static readonly ImmutableHashSet<string> DiagnosticsMap = CreateDiagnosticsMap();
+        private static readonly ImmutableHashSet<string> CallSpecMethods =
+            ImmutableHashSet.Create(
+                StringComparer.Ordinal,
+                "FakeItEasy.A.CallTo",
+                "FakeItEasy.A.CallTo`1",
+                "FakeItEasy.A.CallToSet`1",
+                "FakeItEasy.Fake`1.CallsTo`1");
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetupSpecification);
 
@@ -109,20 +115,7 @@
             var methodFullName =
                 string.Concat(methodSymbol.ContainingType.GetFullName(), ".", methodSymbol.GetDecoratedName());
 
-            return DiagnosticsMap.Contains(methodFullName);
-        }
-
-        private static ImmutableHashSet<string> CreateDiagnosticsMap()
-        {
-            var callSpecMemberNames = new[]
-            {
-                "FakeItEasy.A.CallTo",
-                "FakeItEasy.A.CallTo`1",
-                "FakeItEasy.A.CallToSet`1",
-                "FakeItEasy.Fake`1.CallsTo`1"
-            };
-
-            return callSpecMemberNames.ToImmutableHashSet();
+            return CallSpecMethods.Contains(methodFullName);
         }
 
         private static bool IsProperty(SymbolInfo symbolInfo)
