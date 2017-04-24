@@ -61,6 +61,7 @@ used. There are a few built-in matchers:
 |Matcher|Tests for|
 |:------|:--------|
 |IsNull()|`null`|
+|IsNotNull()|not `null`|
 |IsEqualTo(other)|object equality using `object.Equals`|
 |IsSameAs(other)|object identity - like `object.ReferenceEquals`|
 |IsInstanceOf(type)|an argument that can be assigned to a variable of type `type`|

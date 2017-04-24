@@ -29,6 +29,45 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Constrains an argument so that it must be null (Nothing in VB).
+        /// </summary>
+        /// <typeparam name="T">The type of the argument.</typeparam>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static T? IsNull<T>(this IArgumentConstraintManager<T?> manager) where T : struct
+        {
+            Guard.AgainstNull(manager, nameof(manager));
+
+            return manager.Matches(x => x == null, x => x.Write("NULL"));
+        }
+
+        /// <summary>
+        /// Constrains an argument so that it must not be null (Nothing in VB).
+        /// </summary>
+        /// <typeparam name="T">The type of the argument.</typeparam>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static T IsNotNull<T>(this IArgumentConstraintManager<T> manager) where T : class
+        {
+            Guard.AgainstNull(manager, nameof(manager));
+
+            return manager.Matches(x => x != null, x => x.Write("NOT NULL"));
+        }
+
+        /// <summary>
+        /// Constrains an argument so that it must not be null (Nothing in VB).
+        /// </summary>
+        /// <typeparam name="T">The type of the argument.</typeparam>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static T? IsNotNull<T>(this IArgumentConstraintManager<T?> manager) where T : struct
+        {
+            Guard.AgainstNull(manager, nameof(manager));
+
+            return manager.Matches(x => x != null, x => x.Write("NOT NULL"));
+        }
+
+        /// <summary>
         /// Constrains the string argument to contain the specified text.
         /// </summary>
         /// <param name="manager">The constraint manager to match the constraint.</param>
