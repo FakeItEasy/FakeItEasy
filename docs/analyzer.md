@@ -18,7 +18,8 @@ PM> Install-Package FakeItEasy.Analyzer
 
 The analyzer currently provides two diagnostics:
 
-| Id             | Summary                          | Description                                                                            |
-|----------------|----------------------------------|----------------------------------------------------------------------------------------|
-| FakeItEasy0001 | Unused call specification        | Triggered when you specify a call but don't configure or assert it, making it a no-op. |
-| FakeItEasy0002 | Non-virtual member configuration | Triggered when you try to configure a non-virtual member, which cannot be faked.       |
+| Id             | Summary                               | Description                                                                                                                                           |
+|----------------|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| FakeItEasy0001 | Unused call specification             | Triggered when you specify a call but don't configure or assert it, making it a no-op.                                                                |
+| FakeItEasy0002 | Non-virtual member configuration      | Triggered when you try to configure a non-virtual member, which cannot be faked.                                                                      |
+| FakeItEasy0003 | Argument constraint outside call spec | Triggered when you try to use an [argument constraint](argument-constraints.md) outside of a [call specification](specifying-a-call-to-configure.md). |
