@@ -62,6 +62,33 @@ namespace FakeItEasy.Analyzer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Argument constraints can&apos;t be used outside call specifications..
+        /// </summary>
+        internal static string ArgumentConstraintOutsideCallSpecDescription {
+            get {
+                return ResourceManager.GetString("ArgumentConstraintOutsideCallSpecDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Argument constraint &apos;{0}&apos; is not valid outside a call specification..
+        /// </summary>
+        internal static string ArgumentConstraintOutsideCallSpecMessageFormat {
+            get {
+                return ResourceManager.GetString("ArgumentConstraintOutsideCallSpecMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Argument constraint outside call specification..
+        /// </summary>
+        internal static string ArgumentConstraintOutsideCallSpecTitle {
+            get {
+                return ResourceManager.GetString("ArgumentConstraintOutsideCallSpecTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Non virtual members can not be intercepted..
         /// </summary>
         internal static string NonVirtualSetupSpecificationDescription {
