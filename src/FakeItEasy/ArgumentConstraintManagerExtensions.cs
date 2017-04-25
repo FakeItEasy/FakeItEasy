@@ -34,6 +34,7 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of the argument.</typeparam>
         /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <returns>A dummy argument value.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static T? IsNull<T>(this IArgumentConstraintManager<T?> manager) where T : struct
         {
             Guard.AgainstNull(manager, nameof(manager));
@@ -60,6 +61,7 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of the argument.</typeparam>
         /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <returns>A dummy argument value.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static T? IsNotNull<T>(this IArgumentConstraintManager<T?> manager) where T : struct
         {
             Guard.AgainstNull(manager, nameof(manager));
