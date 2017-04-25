@@ -267,11 +267,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-<<<<<<< HEAD
-                   .And.Message.Should().Contain("Method should be marked as virtual, abstract or part of an Interface in oreder to be intercepted."));
-=======
                    .And.Message.Should().Contain("Method should be marked as virtual, abstract or part of an interface in order to be intercepted."));
->>>>>>> Improve helpful messages
         }
 
         [Scenario]
