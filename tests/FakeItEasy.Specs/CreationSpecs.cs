@@ -46,7 +46,8 @@ namespace FakeItEasy.Specs
         // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
         [Scenario]
         public void UseSuccessfulConstructor(
-            FakedClass fake)
+            FakedClass fake,
+            IEnumerable<int> parameterListLengthsForAttemptedConstructors)
         {
             "Given a class with multiple constructors"
                 .See<FakedClass>();
@@ -61,7 +62,15 @@ namespace FakeItEasy.Specs
                 .See(() => new FakedClass(A.Dummy<IDisposable>(), A.Dummy<string>()));
 
             "When I create a fake of the class"
-                .x(() => fake = this.CreateFake<FakedClass>());
+                .x(() =>
+                {
+                    lock (FakedClass.ParameterListLengthsForAttemptedConstructors)
+                    {
+                        FakedClass.ParameterListLengthsForAttemptedConstructors.Clear();
+                        fake = this.CreateFake<FakedClass>();
+                        parameterListLengthsForAttemptedConstructors = new List<int>(FakedClass.ParameterListLengthsForAttemptedConstructors);
+                    }
+                });
 
             "Then the fake is instantiated using the two-parameter constructor"
                 .x(() => fake.WasTwoParameterConstructorCalled.Should().BeTrue());
@@ -71,7 +80,7 @@ namespace FakeItEasy.Specs
                              .Should().BeFalse("because the parameterless constructor was called for a different fake object"));
 
             "And the one-parameter constructor was not tried"
-                .x(() => FakedClass.ParameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2));
+                .x(() => parameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2));
         }
 
         [Scenario]
