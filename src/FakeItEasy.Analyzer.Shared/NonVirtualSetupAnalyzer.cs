@@ -73,12 +73,10 @@
 
             var invocationExpression = (T)context.Node;
 
-            var invocationParent = invocationExpression
-                                    .Ancestors()
-                                    .OfType<InvocationExpressionSyntax>()
-                                    .FirstOrDefault();
+            var invocationParent = FindEnclosingInvocation(invocationExpression);
 
-            if (!IsSetupInvocation(context, invocationParent))
+            if (invocationParent == null ||
+                !IsSetupInvocation(context, invocationParent))
             {
                 return;
             }
@@ -90,6 +88,28 @@
                 Diagnostic diagnostic = Diagnostic.Create(DiagnosticDefinitions.NonVirtualSetupSpecification, location, symbolInfo.Symbol.Name);
                 context.ReportDiagnostic(diagnostic);
             }
+        }
+
+        private static InvocationExpressionSyntax FindEnclosingInvocation<T>(T invocationExpression) where T : ExpressionSyntax
+        {
+            foreach (var ancestor in invocationExpression.Ancestors())
+            {
+#if CSHARP
+                if (ancestor is ElementAccessExpressionSyntax)
+                {
+                    // The invocation expression being analyzed is nested within a property indexer,
+                    // so it is not a call to set up a non-virtual method.
+                    return null;
+                }
+#endif
+                var enclosingInvocation = ancestor as InvocationExpressionSyntax;
+                if (enclosingInvocation != null)
+                {
+                    return enclosingInvocation;
+                }
+            }
+
+            return null;
         }
 
         private static bool IsVirtual(SymbolInfo symbolInfo)

@@ -259,6 +259,26 @@ End Namespace
         }
 
         [Fact]
+        public void Diagnostic_Should_Not_Be_Triggered_For_Indexer_On_Interface()
+        {
+            const string Test = @"Imports FakeItEasy
+Namespace TheNamespace
+    Interface IHaveAnIndexer
+        Default Property Item(ByVal index As Integer) As Byte
+    End Interface
+
+    Class TheClass
+        Sub Test()
+            Dim fake = A.Fake(Of IHaveAnIndexer)()
+            A.CallTo(Function() fake(A(Of Integer).Ignored)).MustNotHaveHappened()
+        End Sub
+    End Class
+End Namespace
+";
+            this.VerifyVisualBasicDiagnostic(Test);
+        }
+
+        [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_MustOverride_Method()
         {
             const string Test = @"Namespace FakeItEasy.Analyzer.VisualBasic.Tests

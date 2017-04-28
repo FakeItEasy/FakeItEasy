@@ -303,6 +303,30 @@ namespace AnalyzerPrototypeSubjectStatic
         }
 
         [Fact]
+        public void Diagnostic_Should_Not_Be_Triggered_For_Indexer_On_Interface()
+        {
+            const string Test = @"
+namespace TheNamespace
+{
+    using FakeItEasy;
+
+    public interface IHaveAnIndexer { string this[int context] { get; } }
+
+    public class TheClass
+    {
+        public void Test()
+        {
+            var fake = A.Fake<IHaveAnIndexer>();
+            A.CallTo(() => fake[A<int>._]).MustHaveHappened();
+        }
+    }
+}
+";
+
+            this.VerifyCSharpDiagnostic(Test);
+        }
+
+        [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_Abstract_Method()
         {
             const string Test = @"
