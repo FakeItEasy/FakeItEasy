@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Immutable;
+    using System.Reflection;
     using Microsoft.CodeAnalysis;
 #if CSHARP
     using Microsoft.CodeAnalysis.CSharp;
@@ -27,6 +28,16 @@
                 "FakeItEasy.A.CallTo`1",
                 "FakeItEasy.A.CallToSet`1",
                 "FakeItEasy.Fake`1.CallsTo`1");
+
+        private static readonly ImmutableArray<Ancestor> ExpectedNodeHierarchy =
+            ImmutableArray.Create(
+#if VISUAL_BASIC
+                new Ancestor(typeof(ExpressionStatementSyntax), optional: true),
+#endif
+                new Ancestor(typeof(LambdaExpressionSyntax)),
+                new Ancestor(typeof(ArgumentSyntax)),
+                new Ancestor(typeof(ArgumentListSyntax)),
+                new Ancestor(typeof(InvocationExpressionSyntax)));
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetupSpecification);
 
@@ -96,23 +107,8 @@
 
             var invocationExpression = (T)context.Node;
 
-            var invocationParent =
-                (((invocationExpression.Parent as LambdaExpressionSyntax)
-                    ?.Parent as ArgumentSyntax)
-                        ?.Parent as ArgumentListSyntax)
-                            ?.Parent as InvocationExpressionSyntax;
+            var invocationParent = FindInvocationInHierarchy(invocationExpression);
 
-#if VISUAL_BASIC
-            if (invocationParent == null)
-            {
-                invocationParent =
-                    ((((invocationExpression.Parent as ExpressionStatementSyntax)
-                        ?.Parent as LambdaExpressionSyntax)
-                            ?.Parent as ArgumentSyntax)
-                                ?.Parent as ArgumentListSyntax)
-                                    ?.Parent as InvocationExpressionSyntax;
-            }
-#endif
             if (invocationParent == null || !IsSetupInvocation(context, invocationParent))
             {
                 return;
@@ -177,6 +173,41 @@
         private static bool IsInterfaceMember(SymbolInfo symbolInfo)
         {
             return symbolInfo.Symbol?.ContainingType?.TypeKind == TypeKind.Interface;
+        }
+
+        private static InvocationExpressionSyntax FindInvocationInHierarchy(SyntaxNode node)
+        {
+            SyntaxNode parent = null;
+            foreach (var ancestor in ExpectedNodeHierarchy)
+            {
+                parent = node.Parent;
+                if (!ancestor.Type.GetTypeInfo().IsAssignableFrom(parent.GetType().GetTypeInfo()))
+                {
+                    if (ancestor.Optional)
+                    {
+                        continue;
+                    }
+
+                    return null;
+                }
+
+                node = parent;
+            }
+
+            return parent as InvocationExpressionSyntax;
+        }
+
+        private class Ancestor
+        {
+            public Ancestor(Type type, bool optional = false)
+            {
+                this.Type = type;
+                this.Optional = optional;
+            }
+
+            public Type Type { get; }
+
+            public bool Optional { get; }
         }
     }
 }
