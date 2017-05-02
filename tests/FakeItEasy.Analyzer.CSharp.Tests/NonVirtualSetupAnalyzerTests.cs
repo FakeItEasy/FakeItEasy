@@ -327,6 +327,69 @@ namespace TheNamespace
         }
 
         [Fact]
+        public void Diagnostic_Should_Not_Be_Triggered_For_Virtual_Indexer()
+        {
+            const string Test = @"
+namespace TheNamespace
+{
+    using FakeItEasy;
+
+    public class Foo
+    {
+        public virtual string this[int context] => ""hello"";
+    }
+
+    public class TheClass
+    {
+        public void Test()
+        {
+            var fake = A.Fake<Foo>();
+            A.CallTo(() => fake[A<int>._]).MustHaveHappened();
+        }
+    }
+}
+";
+
+            this.VerifyCSharpDiagnostic(Test);
+        }
+
+        [Fact]
+        public void Diagnostic_Should_Be_Triggered_For_Non_Virtual_Indexer()
+        {
+            const string Test = @"
+namespace TheNamespace
+{
+    using FakeItEasy;
+
+    public class Foo
+    {
+        public string this[int context] => ""hello"";
+    }
+
+    public class TheClass
+    {
+        public void Test()
+        {
+            var fake = A.Fake<Foo>();
+            A.CallTo(() => fake[A<int>._]).MustHaveHappened();
+        }
+    }
+}
+";
+
+            this.VerifyCSharpDiagnostic(
+                Test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Message =
+                        "Non virtual member this[] cannot be intercepted.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 16, 28) }
+                });
+        }
+
+        [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_Abstract_Method()
         {
             const string Test = @"

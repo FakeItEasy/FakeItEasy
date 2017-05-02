@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Immutable;
-    using System.Linq;
     using Microsoft.CodeAnalysis;
 #if CSHARP
     using Microsoft.CodeAnalysis.CSharp;
@@ -45,6 +44,16 @@
             context.RegisterSyntaxNodeAction(
                 AnalyzeProperty,
                 SyntaxKind.SimpleMemberAccessExpression);
+
+#if CSHARP
+            context.RegisterSyntaxNodeAction(
+                AnalyzeCSharpIndexer,
+                SyntaxKind.ElementAccessExpression);
+#elif VISUAL_BASIC
+            context.RegisterSyntaxNodeAction(
+                AnalyzeVBIndexer,
+                SyntaxKind.InvocationExpression);
+#endif
         }
 
         private static void AnalyzeMethod(SyntaxNodeAnalysisContext context)
@@ -56,6 +65,20 @@
         {
             AnalyzeCall<MemberAccessExpressionSyntax>(context, IsProperty);
         }
+
+#if CSHARP
+        private static void AnalyzeCSharpIndexer(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzeCall<ElementAccessExpressionSyntax>(context, IsIndexer);
+        }
+#endif
+
+#if VISUAL_BASIC
+        private static void AnalyzeVBIndexer(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzeCall<InvocationExpressionSyntax>(context, IsIndexer);
+        }
+#endif
 
         private static void AnalyzeCall<T>(SyntaxNodeAnalysisContext context, Func<SymbolInfo, bool> includes) where T : ExpressionSyntax
         {
@@ -73,10 +96,24 @@
 
             var invocationExpression = (T)context.Node;
 
-            var invocationParent = FindEnclosingInvocation(invocationExpression);
+            var invocationParent =
+                (((invocationExpression.Parent as LambdaExpressionSyntax)
+                    ?.Parent as ArgumentSyntax)
+                        ?.Parent as ArgumentListSyntax)
+                            ?.Parent as InvocationExpressionSyntax;
 
-            if (invocationParent == null ||
-                !IsSetupInvocation(context, invocationParent))
+#if VISUAL_BASIC
+            if (invocationParent == null)
+            {
+                invocationParent =
+                    ((((invocationExpression.Parent as ExpressionStatementSyntax)
+                        ?.Parent as LambdaExpressionSyntax)
+                            ?.Parent as ArgumentSyntax)
+                                ?.Parent as ArgumentListSyntax)
+                                    ?.Parent as InvocationExpressionSyntax;
+            }
+#endif
+            if (invocationParent == null || !IsSetupInvocation(context, invocationParent))
             {
                 return;
             }
@@ -88,28 +125,6 @@
                 Diagnostic diagnostic = Diagnostic.Create(DiagnosticDefinitions.NonVirtualSetupSpecification, location, symbolInfo.Symbol.Name);
                 context.ReportDiagnostic(diagnostic);
             }
-        }
-
-        private static InvocationExpressionSyntax FindEnclosingInvocation<T>(T invocationExpression) where T : ExpressionSyntax
-        {
-            foreach (var ancestor in invocationExpression.Ancestors())
-            {
-#if CSHARP
-                if (ancestor is ElementAccessExpressionSyntax)
-                {
-                    // The invocation expression being analyzed is nested within a property indexer,
-                    // so it is not a call to set up a non-virtual method.
-                    return null;
-                }
-#endif
-                var enclosingInvocation = ancestor as InvocationExpressionSyntax;
-                if (enclosingInvocation != null)
-                {
-                    return enclosingInvocation;
-                }
-            }
-
-            return null;
         }
 
         private static bool IsVirtual(SymbolInfo symbolInfo)
@@ -146,6 +161,17 @@
         private static bool IsMethod(SymbolInfo symbolInfo)
         {
             return symbolInfo.Symbol?.Kind == SymbolKind.Method;
+        }
+
+        private static bool IsIndexer(SymbolInfo symbolInfo)
+        {
+            if (symbolInfo.Symbol?.Kind == SymbolKind.Property)
+            {
+                var propertySymbol = (IPropertySymbol)symbolInfo.Symbol;
+                return propertySymbol.IsIndexer;
+            }
+
+            return false;
         }
 
         private static bool IsInterfaceMember(SymbolInfo symbolInfo)
