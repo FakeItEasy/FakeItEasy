@@ -76,40 +76,42 @@ You should pick either the "personal" or "this computer" option.
 
 ## Making Changes
 
+FakeItEasy uses the git branching model known as [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/). As such, all development must be performed on a ["feature branch"](https://martinfowler.com/bliki/FeatureBranch.html) created from the main development branch, which is called `develop`. To submit a change:
+
 1. [Fork](http://help.github.com/forking/) the  [FakeItEasy repository](https://github.com/FakeItEasy/FakeItEasy/) on GitHub
 1. Clone your fork locally
 1. Configure the upstream repo (`git remote add upstream git://github.com/FakeItEasy/FakeItEasy.git`)
-1. Create a local branch (`git checkout -b my-branch`)
+1. Create a local branch (`git checkout -b my-branch develop`)
 1. Work on your feature
 1. Rebase if required (see below)
 1. Run code analysis on the solution to ensure you have not introduced any violations
-1. Ensure the build succeeds (see ['How to build'](https://github.com/FakeItEasy/FakeItEasy/blob/master/how_to_build.md "How to build"))
+1. Ensure the build succeeds (see ['How to build'](how_to_build.md "How to build"))
 1. Push the branch up to GitHub (`git push origin my-branch`)
 1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub
 
-You should **never** work on a clone of master and you should **never** send a pull request from master - always from a branch. The reasons for this are detailed below.
+You should **never** work on a clone of develop and you should **never** send a pull request from develop - always from a branch. The reasons for this are detailed below.
 
-## Handling Updates from upstream/master
+## Handling Updates from upstream/develop
 
-While you're working away in your branch it's quite possible that your upstream/master (most likely the canonical FakeItEasy version) may be updated. If this happens you should:
+While you're working away in your branch it's quite possible that your upstream/develop (most likely the canonical FakeItEasy version) may be updated. If this happens you should:
 
 1. [Stash](http://progit.org/book/ch6-3.html) any un-committed changes you need to
-1. `git checkout master`
-1. `git pull upstream master`
+1. `git checkout develop`
+1. `git pull upstream develop`
 1. `git checkout my-branch`
-1. `git rebase master my-branch`
-1. `git push origin master` - (optional) this makes sure your remote master is up to date
+1. `git rebase develop my-branch`
+1. `git push origin develop` - (optional) this makes sure your remote develop branch is up to date
 1. if you previously pushed your branch to your origin, you need to force push the rebased branch - `git push origin my-branch -f`
 
-This ensures that your history is "clean" i.e. you have one branch off from master followed by your changes in a straight line. Failing to do this ends up with several "messy" merges in your history, which we don't want. This is the reason why you should always work in a branch and you should never be working in, or sending pull requests from, master.
+This ensures that your history is "clean" i.e. you have one branch off from develop followed by your changes in a straight line. Failing to do this ends up with several "messy" merges in your history, which we don't want. This is the reason why you should always work in a branch and you should never be working in, or sending pull requests from, develop.
 
 If you're working on a long running feature then you may want to do this quite often, rather than run the risk of potential merge issues further down the line.
 
 ## Sending a Pull Request
 
-While working on your feature you may well create several branches, which is fine, but before you send a pull request you should ensure that you have rebased back to a single ["feature branch"](https://martinfowler.com/bliki/FeatureBranch.html). We care about your commits and we care about your feature branch but we don't care about how many or which branches you created while you were working on it. :smile:
+While working on your feature you may well create several branches, which is fine, but before you send a pull request you should ensure that you have rebased back to a single feature branch. We care about your commits and we care about your feature branch but we don't care about how many or which branches you created while you were working on it. :smile:
 
-When you're ready to go you should confirm that you are up to date and rebased with upstream/master (see "Handling Updates from upstream/master" above) and then:
+When you're ready to go you should confirm that you are up to date and rebased with upstream/develop (see "Handling Updates from upstream/develop" above) and then:
 
 1. `git push origin my-branch`
 1. Send a [pull request](https://help.github.com/articles/using-pull-requests) in GitHub, selecting the following dropdown values:
@@ -117,7 +119,7 @@ When you're ready to go you should confirm that you are up to date and rebased w
 | Dropdown      | Value                                             |
 |---------------|---------------------------------------------------|
 | **base fork** | `FakeItEasy/FakeItEasy`                           |
-| **base**      | `master`                                          |
+| **base**      | `develop`                                          |
 | **head fork** | `{your fork}` (e.g. `{your username}/FakeItEasy`) |
 | **compare**   | `my-branch`                                       |
 
