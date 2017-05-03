@@ -259,6 +259,83 @@ End Namespace
         }
 
         [Fact]
+        public void Diagnostic_Should_Not_Be_Triggered_For_Indexer_On_Interface()
+        {
+            const string Test = @"Imports FakeItEasy
+Namespace TheNamespace
+    Interface IHaveAnIndexer
+        Default Property Item(ByVal index As Integer) As Byte
+    End Interface
+
+    Class TheClass
+        Sub Test()
+            Dim fake = A.Fake(Of IHaveAnIndexer)()
+            A.CallTo(Function() fake(A(Of Integer).Ignored)).MustNotHaveHappened()
+        End Sub
+    End Class
+End Namespace
+";
+            this.VerifyVisualBasicDiagnostic(Test);
+        }
+
+        [Fact]
+        public void Diagnostic_Should_Not_Be_Triggered_For_Overridable_Indexer()
+        {
+            const string Test = @"Imports FakeItEasy
+Namespace TheNamespace
+    Class Foo
+        Public Default ReadOnly Overridable Property Item(ByVal index As Integer) As Byte
+            Get
+                Return 0
+            End Get
+        End Property
+    End Class
+
+    Class TheClass
+        Sub Test()
+            Dim fake = A.Fake(Of Foo)()
+            A.CallTo(Function() fake(A(Of Integer).Ignored)).MustNotHaveHappened()
+        End Sub
+    End Class
+End Namespace
+";
+            this.VerifyVisualBasicDiagnostic(Test);
+        }
+
+        [Fact]
+        public void Diagnostic_Should_Be_Triggered_For_Non_Overridable_Indexer()
+        {
+            const string Test = @"Imports FakeItEasy
+Namespace TheNamespace
+    Class Foo
+        Public Default ReadOnly Property Item(ByVal index As Integer) As Byte
+            Get
+                Return 0
+            End Get
+        End Property
+    End Class
+
+    Class TheClass
+        Sub Test()
+            Dim fake = A.Fake(Of Foo)()
+            A.CallTo(Function() fake(A(Of Integer).Ignored)).MustNotHaveHappened()
+        End Sub
+    End Class
+End Namespace
+";
+            this.VerifyVisualBasicDiagnostic(
+                Test,
+                new DiagnosticResult
+                {
+                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Message =
+                        "Non overridable member Item cannot be intercepted.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 14, 33) }
+                });
+        }
+
+        [Fact]
         public void Diagnostic_Should_Not_Be_Triggered_For_MustOverride_Method()
         {
             const string Test = @"Namespace FakeItEasy.Analyzer.VisualBasic.Tests

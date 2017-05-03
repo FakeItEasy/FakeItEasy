@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Immutable;
-    using System.Linq;
+    using System.Reflection;
     using Microsoft.CodeAnalysis;
 #if CSHARP
     using Microsoft.CodeAnalysis.CSharp;
@@ -29,6 +29,16 @@
                 "FakeItEasy.A.CallToSet`1",
                 "FakeItEasy.Fake`1.CallsTo`1");
 
+        private static readonly ImmutableArray<Ancestor> ExpectedNodeHierarchy =
+            ImmutableArray.Create(
+#if VISUAL_BASIC
+                new Ancestor(typeof(ExpressionStatementSyntax), optional: true),
+#endif
+                new Ancestor(typeof(LambdaExpressionSyntax)),
+                new Ancestor(typeof(ArgumentSyntax)),
+                new Ancestor(typeof(ArgumentListSyntax)),
+                new Ancestor(typeof(InvocationExpressionSyntax)));
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetupSpecification);
 
         public override void Initialize(AnalysisContext context)
@@ -45,6 +55,16 @@
             context.RegisterSyntaxNodeAction(
                 AnalyzeProperty,
                 SyntaxKind.SimpleMemberAccessExpression);
+
+#if CSHARP
+            context.RegisterSyntaxNodeAction(
+                AnalyzeCSharpIndexer,
+                SyntaxKind.ElementAccessExpression);
+#elif VISUAL_BASIC
+            context.RegisterSyntaxNodeAction(
+                AnalyzeVBIndexer,
+                SyntaxKind.InvocationExpression);
+#endif
         }
 
         private static void AnalyzeMethod(SyntaxNodeAnalysisContext context)
@@ -56,6 +76,20 @@
         {
             AnalyzeCall<MemberAccessExpressionSyntax>(context, IsProperty);
         }
+
+#if CSHARP
+        private static void AnalyzeCSharpIndexer(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzeCall<ElementAccessExpressionSyntax>(context, IsIndexer);
+        }
+#endif
+
+#if VISUAL_BASIC
+        private static void AnalyzeVBIndexer(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzeCall<InvocationExpressionSyntax>(context, IsIndexer);
+        }
+#endif
 
         private static void AnalyzeCall<T>(SyntaxNodeAnalysisContext context, Func<SymbolInfo, bool> includes) where T : ExpressionSyntax
         {
@@ -73,12 +107,9 @@
 
             var invocationExpression = (T)context.Node;
 
-            var invocationParent = invocationExpression
-                                    .Ancestors()
-                                    .OfType<InvocationExpressionSyntax>()
-                                    .FirstOrDefault();
+            var invocationParent = FindInvocationInHierarchy(invocationExpression);
 
-            if (!IsSetupInvocation(context, invocationParent))
+            if (invocationParent == null || !IsSetupInvocation(context, invocationParent))
             {
                 return;
             }
@@ -128,9 +159,55 @@
             return symbolInfo.Symbol?.Kind == SymbolKind.Method;
         }
 
+        private static bool IsIndexer(SymbolInfo symbolInfo)
+        {
+            if (symbolInfo.Symbol?.Kind == SymbolKind.Property)
+            {
+                var propertySymbol = (IPropertySymbol)symbolInfo.Symbol;
+                return propertySymbol.IsIndexer;
+            }
+
+            return false;
+        }
+
         private static bool IsInterfaceMember(SymbolInfo symbolInfo)
         {
             return symbolInfo.Symbol?.ContainingType?.TypeKind == TypeKind.Interface;
+        }
+
+        private static InvocationExpressionSyntax FindInvocationInHierarchy(SyntaxNode node)
+        {
+            SyntaxNode parent = null;
+            foreach (var ancestor in ExpectedNodeHierarchy)
+            {
+                parent = node.Parent;
+                if (!ancestor.Type.GetTypeInfo().IsAssignableFrom(parent.GetType().GetTypeInfo()))
+                {
+                    if (ancestor.Optional)
+                    {
+                        continue;
+                    }
+
+                    return null;
+                }
+
+                node = parent;
+            }
+
+            return parent as InvocationExpressionSyntax;
+        }
+
+        private class Ancestor
+        {
+            public Ancestor(Type type, bool optional = false)
+            {
+                this.Type = type;
+                this.Optional = optional;
+            }
+
+            public Type Type { get; }
+
+            public bool Optional { get; }
         }
     }
 }
