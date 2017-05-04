@@ -23,7 +23,7 @@ namespace FakeItEasy.Analyzer
         public static DiagnosticDescriptor ArgumentConstraintOutsideCallSpec { get; } =
             CreateDiagnosticDescriptor(
                 nameof(ArgumentConstraintOutsideCallSpec),
-                "FakeItEasy003",
+                "FakeItEasy0003",
                 "FakeItEasy.Usage",
                 DiagnosticSeverity.Warning,
                 true);
