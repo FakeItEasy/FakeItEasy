@@ -21,7 +21,7 @@ namespace FakeItEasy.IntegrationTests
 @"
 
   The current proxy generator can not intercept the method System.Object.Equals(System.Object objA, System.Object objB) for the following reason:
-    - Static methods can not be intercepted.
+    - Non-virtual methods can not be intercepted. Virtual methods are methods explicitly marked virtual, overriding methods, abstract methods, and interface methods.
 
 ";
 

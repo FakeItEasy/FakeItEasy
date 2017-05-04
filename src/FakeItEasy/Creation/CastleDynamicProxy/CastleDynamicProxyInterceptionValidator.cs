@@ -34,7 +34,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 var explicitImplementation = method.Name.Contains('.');
                 if (!explicitImplementation)
                 {
-                    return "Sealed methods can not be intercepted.";
+                    return "Non-virtual methods can not be intercepted. Virtual methods are methods explicitly marked virtual, overriding methods, abstract methods, and interface methods.";
                 }
             }
 
@@ -46,7 +46,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 }
                 else
                 {
-                    return "Static methods can not be intercepted.";
+                    return "Non-virtual methods can not be intercepted. Virtual methods are methods explicitly marked virtual, overriding methods, abstract methods, and interface methods.";
                 }
             }
 
