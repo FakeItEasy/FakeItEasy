@@ -25,7 +25,7 @@ namespace FakeItEasy.Analyzer
                 nameof(ArgumentConstraintOutsideCallSpec),
                 "FakeItEasy003",
                 "FakeItEasy.Usage",
-                DiagnosticSeverity.Error,
+                DiagnosticSeverity.Warning,
                 true);
 
         private static DiagnosticDescriptor CreateDiagnosticDescriptor(
