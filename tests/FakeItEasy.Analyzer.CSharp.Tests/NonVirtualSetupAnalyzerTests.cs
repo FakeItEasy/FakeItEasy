@@ -152,7 +152,7 @@ namespace FakeItEasy.Analyzer.Tests
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                         "Non virtual member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
@@ -192,7 +192,7 @@ namespace FakeItEasy.Analyzer.Tests
      Test,
      new DiagnosticResult
      {
-         Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+         Id = "FakeItEasy0002",
          Message =
              "Non virtual member Bar cannot be intercepted.",
          Severity = DiagnosticSeverity.Warning,
@@ -231,7 +231,7 @@ namespace AnalyzerPrototypeSubjectStatic
     Test,
     new DiagnosticResult
     {
-        Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+        Id = "FakeItEasy0002",
         Message =
             "Non virtual member Bar cannot be intercepted.",
         Severity = DiagnosticSeverity.Warning,
@@ -269,7 +269,7 @@ namespace AnalyzerPrototypeSubjectStatic
         Test,
         new DiagnosticResult
         {
-            Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+            Id = "FakeItEasy0002",
             Message =
              "Non virtual member Bar cannot be intercepted.",
             Severity = DiagnosticSeverity.Warning,
@@ -381,7 +381,7 @@ namespace TheNamespace
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                         "Non virtual member this[] cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
@@ -464,7 +464,7 @@ namespace PrototypeProperty
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                         "Non virtual member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
@@ -503,7 +503,7 @@ namespace PrototypeProperty
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                      "Non virtual member DifferentNameThanOtherTests cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,

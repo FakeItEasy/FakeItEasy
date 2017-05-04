@@ -117,7 +117,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallTo(Function() foo.Bar())'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -148,7 +148,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'CallTo(Function() foo.Bar())'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -179,7 +179,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallTo(foo)'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -210,7 +210,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'fake.CallsTo(Function(x) x.Bar())'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -241,7 +241,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'fake.AnyCall()'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -272,7 +272,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallTo(Function() foo.Bar()).WithAnyArguments()'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -303,7 +303,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallTo(foo).WithReturnType(Of Integer)()'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -334,7 +334,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallTo(foo).WithReturnType(Of Integer)().Where(Function(theCall) True)'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -365,7 +365,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallTo(foo).Where(Function() True, New Object())'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -395,7 +395,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallTo(foo).WhenArgumentsMatch(Function(x) True)'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -426,7 +426,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallToSet(Function() foo.Bar)'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -457,7 +457,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'fake.CallsToSet(Function(x) x.Bar())'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -488,7 +488,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallToSet(Function() foo.Bar).To(9)'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -519,7 +519,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallToSet(Function() foo.Bar).To(Function() A(Of Integer).That.Matches(Function(i) i > 3))'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
@@ -550,7 +550,7 @@ End Namespace
                 test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.UnusedCallSpecification.Id,
+                    Id = "FakeItEasy0001",
                     Message =
                         "Unused call specification 'A.CallTo(foo).WithNonVoidReturnType()'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,

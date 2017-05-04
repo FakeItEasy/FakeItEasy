@@ -37,7 +37,7 @@ End Namespace
                 code,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.ArgumentConstraintOutsideCallSpec.Id,
+                    Id = "FakeItEasy0003",
                     Message = $"Argument constraint '{constraint}' is not valid outside a call specification.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 5, 21) }
@@ -67,7 +67,7 @@ End Namespace
                 code,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.ArgumentConstraintOutsideCallSpec.Id,
+                    Id = "FakeItEasy0003",
                     Message = $"Argument constraint '{constraint}' is not valid outside a call specification.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 48) }
