@@ -44,7 +44,7 @@ namespace TheNamespace
                 {
                     Id = DiagnosticDefinitions.ArgumentConstraintOutsideCallSpec.Id,
                     Message = $"Argument constraint '{constraint}' is not valid outside a call specification.",
-                    Severity = DiagnosticSeverity.Error,
+                    Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 21) }
                 });
         }
@@ -75,7 +75,7 @@ namespace TheNamespace
                 {
                     Id = DiagnosticDefinitions.ArgumentConstraintOutsideCallSpec.Id,
                     Message = $"Argument constraint '{constraint}' is not valid outside a call specification.",
-                    Severity = DiagnosticSeverity.Error,
+                    Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 43) }
                 });
         }
