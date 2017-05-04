@@ -39,7 +39,7 @@ End Namespace
                 {
                     Id = DiagnosticDefinitions.ArgumentConstraintOutsideCallSpec.Id,
                     Message = $"Argument constraint '{constraint}' is not valid outside a call specification.",
-                    Severity = DiagnosticSeverity.Error,
+                    Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 5, 21) }
                 });
         }
@@ -69,7 +69,7 @@ End Namespace
                 {
                     Id = DiagnosticDefinitions.ArgumentConstraintOutsideCallSpec.Id,
                     Message = $"Argument constraint '{constraint}' is not valid outside a call specification.",
-                    Severity = DiagnosticSeverity.Error,
+                    Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 48) }
                 });
         }
