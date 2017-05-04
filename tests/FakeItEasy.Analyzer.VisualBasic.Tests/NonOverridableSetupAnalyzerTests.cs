@@ -132,7 +132,7 @@ End Namespace
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                         "Non overridable member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
@@ -163,7 +163,7 @@ End Namespace
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                         "Non overridable member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
@@ -197,7 +197,7 @@ End Namespace
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                         "Non overridable member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
@@ -229,7 +229,7 @@ End Namespace
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                         "Non overridable member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
@@ -327,7 +327,7 @@ End Namespace
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                         "Non overridable member Item cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
@@ -407,7 +407,7 @@ End Namespace
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                         "Non overridable member Bar cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
@@ -439,7 +439,7 @@ End Namespace";
                 Test,
                 new DiagnosticResult
                 {
-                    Id = DiagnosticDefinitions.NonVirtualSetupSpecification.Id,
+                    Id = "FakeItEasy0002",
                     Message =
                         "Non overridable member DifferentNameThanOtherTests cannot be intercepted.",
                     Severity = DiagnosticSeverity.Warning,
