@@ -89,7 +89,7 @@ FakeItEasy uses the git branching model known as [GitFlow](http://nvie.com/posts
 1. Push the branch up to GitHub (`git push origin my-branch`)
 1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub
 
-You should **never** work on a clone of develop and you should **never** send a pull request from develop - always from a branch. The reasons for this are detailed below.
+You should **never** work directly on the `develop` branch and you should **never** send a pull request from the `develop` branch - always from a feature branch. The reasons for this are detailed below.
 
 ## Handling Updates from upstream/develop
 
