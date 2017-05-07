@@ -1,4 +1,4 @@
-namespace FakeItEasy.Tests.Approval
+﻿namespace FakeItEasy.Tests.Approval
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.Approval
             string assemblyPath = Uri.UnescapeDataString(uri.Path);
             var containingDirectory = Path.GetDirectoryName(assemblyPath);
             var configurationName = new DirectoryInfo(containingDirectory).Name;
-            var assemblyFile = @"..\..\..\..\src\FakeItEasy.netstd\bin\" + configurationName + @"\FakeItEasy.dll";
+            var assemblyFile = $@"..\..\..\..\src\FakeItEasy\bin\{configurationName}\netstandard1.6\FakeItEasy.dll";
 
             var assembly = Assembly.LoadFrom(assemblyFile);
             Approvals.Verify(PublicApiGenerator.GetPublicApi(assembly));
