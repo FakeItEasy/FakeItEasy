@@ -33,8 +33,8 @@
             UriBuilder uri = new UriBuilder(new Uri(codeBase));
             string assemblyPath = Uri.UnescapeDataString(uri.Path);
             var containingDirectory = Path.GetDirectoryName(assemblyPath);
-            var configurationName = new DirectoryInfo(containingDirectory).Name;
-            var assemblyFile = $@"..\..\..\..\src\FakeItEasy\bin\{configurationName}\netstandard1.6\FakeItEasy.dll";
+            var configurationName = new DirectoryInfo(containingDirectory).Parent.Name;
+            var assemblyFile = $@"..\..\..\..\..\src\FakeItEasy\bin\{configurationName}\netstandard1.6\FakeItEasy.dll";
 
             var assembly = Assembly.LoadFrom(assemblyFile);
             Approvals.Verify(PublicApiGenerator.GetPublicApi(assembly));

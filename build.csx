@@ -40,7 +40,7 @@ var testSuites = new Dictionary<string, TestSuite[]>
     },
     ["approve"] = new TestSuite[]
     {
-        new ClassicTestSuite("tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll")
+        new DotnetTestSuite("tests/FakeItEasy.Tests.Approval")
     }
 };
 
@@ -48,6 +48,7 @@ var directoriesToRestore = new []
 {
     "src/FakeItEasy",
     "tests/FakeItEasy.Tests",
+    "tests/FakeItEasy.Tests.Approval",
     "tests/FakeItEasy.IntegrationTests",
     "tests/FakeItEasy.IntegrationTests.External",
     "tests/FakeItEasy.Specs",
