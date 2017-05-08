@@ -1,4 +1,4 @@
-namespace FakeItEasy.Configuration
+﻿namespace FakeItEasy.Configuration
 {
     using System.Diagnostics.CodeAnalysis;
 

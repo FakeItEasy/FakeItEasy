@@ -29,6 +29,7 @@
                 "FakeItEasy.A.CallToSet`1",
                 "FakeItEasy.Fake`1.CallsTo`1");
 
+#pragma warning disable SA1114 // Parameter list must follow declaration
         private static readonly ImmutableArray<Ancestor> ExpectedNodeHierarchy =
             ImmutableArray.Create(
 #if VISUAL_BASIC
@@ -38,6 +39,7 @@
                 new Ancestor(typeof(ArgumentSyntax)),
                 new Ancestor(typeof(ArgumentListSyntax)),
                 new Ancestor(typeof(InvocationExpressionSyntax)));
+#pragma warning restore SA1114 // Parameter list must follow declaration
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DiagnosticDefinitions.NonVirtualSetupSpecification);
 

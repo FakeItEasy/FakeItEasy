@@ -165,8 +165,8 @@ namespace FakeItEasy.Core
             public TypeMethodInfoPair(Type type, MethodInfo methodInfo)
                 : this()
             {
-                Type = type;
-                MethodInfo = methodInfo;
+                this.Type = type;
+                this.MethodInfo = methodInfo;
             }
 
             public MethodInfo MethodInfo { get; }
@@ -177,7 +177,7 @@ namespace FakeItEasy.Core
             {
                 unchecked
                 {
-                    return (Type.GetHashCode() * 23) + MethodInfo.GetHashCode();
+                    return (this.Type.GetHashCode() * 23) + this.MethodInfo.GetHashCode();
                 }
             }
 

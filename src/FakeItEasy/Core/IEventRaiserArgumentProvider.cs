@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     /// <summary>
     /// Used by the event raising rule of fake objects to get the event arguments used in

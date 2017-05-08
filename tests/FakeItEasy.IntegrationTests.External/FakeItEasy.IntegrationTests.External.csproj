@@ -20,6 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
   </ItemGroup>
 
