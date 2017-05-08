@@ -44,18 +44,6 @@ var testSuites = new Dictionary<string, TestSuite[]>
     }
 };
 
-var projectsToRestore = new []
-{
-    "src/FakeItEasy",
-    "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.CSharp.csproj",
-    "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.VisualBasic.csproj",
-    "tests/FakeItEasy.Tests",
-    "tests/FakeItEasy.Tests.Approval",
-    "tests/FakeItEasy.IntegrationTests",
-    "tests/FakeItEasy.IntegrationTests.External",
-    "tests/FakeItEasy.Specs",
-};
-
 // tool locations
 var vswhere = "./packages/vswhere.1.0.62/tools/vswhere.exe";
 var msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe";
@@ -140,10 +128,7 @@ targets.Add(
     () =>
     {
         Cmd(nuget, $"restore {solution} -PackagesDirectory {packagesDirectory}");
-        foreach (var project in projectsToRestore)
-        {
-            Cmd("dotnet", $"restore {project}");
-        }
+        Cmd("dotnet", $"restore");
     });
 
 targets.Add(
