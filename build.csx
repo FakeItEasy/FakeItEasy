@@ -13,7 +13,13 @@ var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 var coverityProjectUrl = "https://scan.coverity.com/builds?project=FakeItEasy%2FFakeItEasy";
 var versionAssembly = "./src/FakeItEasy/bin/Release/net40/FakeItEasy.dll";
 var nuspecs = Directory.GetFiles("./src", "*.nuspec");
-var gitlinks = Directory.GetDirectories("./src").Where(p => !p.EndsWith(".Shared")).Select(Path.GetFileName);
+var pdbs = new []
+{
+    "src/FakeItEasy/bin/Release/net40/FakeItEasy.pdb",
+    "src/FakeItEasy/bin/Release/netstandard1.6/FakeItEasy.pdb",
+    "src/FakeItEasy.Analyzer.Csharp/bin/Release/FakeItEasy.Analyzer.Csharp.pdb",
+    "src/FakeItEasy.Analyzer.VisualBasic/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
+};
 
 var testSuites = new Dictionary<string, TestSuite[]>
 {
@@ -170,8 +176,15 @@ targets.Add(
     });
 
 targets.Add(
-    "gitlink",
-    DependsOn("build"), () => Cmd(gitlink, $". -f {solution} -u {repoUrl} -include " + string.Join(",", gitlinks)));
+    "pdbgit",
+    DependsOn("build"),
+    () =>
+    {
+        foreach (var pdb in pdbs)
+        {
+            Cmd(pdbGit, $"-u {repoUrl} -s {pdb}");
+        }
+    });
 
 Run(Args, targets);
 
