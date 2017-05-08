@@ -128,8 +128,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FakeItEasy.Analyzer.VisualBasic\FakeItEasy.Analyzer.VisualBasic.csproj">
-      <Project>{7BAEB7DC-635D-425B-94AB-826AB65FBBD7}</Project>
+    <ProjectReference Include="..\..\src\FakeItEasy.Analyzer\FakeItEasy.Analyzer.VisualBasic.csproj">
+      <Project>{c0b3ef5f-222e-4fd4-9b42-161ac6c56cb5}</Project>
       <Name>FakeItEasy.Analyzer.VisualBasic</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj">

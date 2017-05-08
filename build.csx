@@ -17,8 +17,8 @@ var pdbs = new []
 {
     "src/FakeItEasy/bin/Release/net40/FakeItEasy.pdb",
     "src/FakeItEasy/bin/Release/netstandard1.6/FakeItEasy.pdb",
-    "src/FakeItEasy.Analyzer.Csharp/bin/Release/FakeItEasy.Analyzer.Csharp.pdb",
-    "src/FakeItEasy.Analyzer.VisualBasic/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
+    "src/FakeItEasy.Analyzer/bin/Release/netstandard1.1/FakeItEasy.Analyzer.Csharp.pdb",
+    "src/FakeItEasy.Analyzer/bin/Release/netstandard1.1/FakeItEasy.Analyzer.VisualBasic.pdb"
 };
 
 var testSuites = new Dictionary<string, TestSuite[]>
@@ -44,9 +44,11 @@ var testSuites = new Dictionary<string, TestSuite[]>
     }
 };
 
-var directoriesToRestore = new []
+var projectsToRestore = new []
 {
     "src/FakeItEasy",
+    "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.CSharp.csproj",
+    "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.VisualBasic.csproj",
     "tests/FakeItEasy.Tests",
     "tests/FakeItEasy.Tests.Approval",
     "tests/FakeItEasy.IntegrationTests",
@@ -138,9 +140,9 @@ targets.Add(
     () =>
     {
         Cmd(nuget, $"restore {solution} -PackagesDirectory {packagesDirectory}");
-        foreach (var projectDir in directoriesToRestore)
+        foreach (var project in projectsToRestore)
         {
-            Cmd(projectDir, "dotnet", "restore");
+            Cmd("dotnet", $"restore {project}");
         }
     });
 
