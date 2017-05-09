@@ -120,8 +120,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy", "src\FakeItEas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Analyzer.VisualBasic.Tests", "tests\FakeItEasy.Analyzer.VisualBasic.Tests\FakeItEasy.Analyzer.VisualBasic.Tests.csproj", "{C37E7B74-DCA9-47FF-BAA1-EBC2ECB2C72F}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FakeItEasy.Analyzer.Tests.Shared", "tests\FakeItEasy.Analyzer.Tests.Shared\FakeItEasy.Analyzer.Tests.Shared.shproj", "{D74665D8-D046-4C38-81D6-8AA7EAD68468}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Analyzer.CSharp", "src\FakeItEasy.Analyzer\FakeItEasy.Analyzer.CSharp.csproj", "{EF850910-1B7F-4824-8034-0A935B8C9152}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Analyzer.VisualBasic", "src\FakeItEasy.Analyzer\FakeItEasy.Analyzer.VisualBasic.csproj", "{C0B3EF5F-222E-4FD4-9B42-161AC6C56CB5}"
@@ -130,7 +128,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		tests\FakeItEasy.Analyzer.Tests.Shared\FakeItEasy.Analyzer.Tests.Shared.projitems*{38f3191b-1ce0-4ee0-930f-794a2f2f4cdb}*SharedItemsImports = 4
 		tests\FakeItEasy.Analyzer.Tests.Shared\FakeItEasy.Analyzer.Tests.Shared.projitems*{c37e7b74-dca9-47ff-baa1-ebc2ecb2c72f}*SharedItemsImports = 4
-		tests\FakeItEasy.Analyzer.Tests.Shared\FakeItEasy.Analyzer.Tests.Shared.projitems*{d74665d8-d046-4c38-81d6-8aa7ead68468}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -210,7 +207,6 @@ Global
 		{42A92357-2A87-4B87-A591-CA78B6CE4461} = {9D4A41F1-D444-4244-AAAC-F610D9977B2F}
 		{74165807-676F-4464-B607-8770C13E8991} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 		{C37E7B74-DCA9-47FF-BAA1-EBC2ECB2C72F} = {DC5EAE30-96E3-4D38-B3C5-33E587C9FB76}
-		{D74665D8-D046-4C38-81D6-8AA7EAD68468} = {DC5EAE30-96E3-4D38-B3C5-33E587C9FB76}
 		{EF850910-1B7F-4824-8034-0A935B8C9152} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 		{C0B3EF5F-222E-4FD4-9B42-161AC6C56CB5} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 	EndGlobalSection

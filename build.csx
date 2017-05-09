@@ -26,8 +26,8 @@ var testSuites = new Dictionary<string, TestSuite[]>
     ["unit"] = new TestSuite[]
     {
         new DotnetTestSuite("tests/FakeItEasy.Tests"),
-        new ClassicTestSuite("tests/FakeItEasy.Analyzer.CSharp.Tests/bin/Release/FakeItEasy.Analyzer.CSharp.Tests.dll"),
-        new ClassicTestSuite("tests/FakeItEasy.Analyzer.VisualBasic.Tests/bin/Release/FakeItEasy.Analyzer.VisualBasic.Tests.dll"),
+        new DotnetTestSuite("tests/FakeItEasy.Analyzer.CSharp.Tests"),
+        new DotnetTestSuite("tests/FakeItEasy.Analyzer.VisualBasic.Tests"),
     },
     ["integ"] = new TestSuite[]
     {
