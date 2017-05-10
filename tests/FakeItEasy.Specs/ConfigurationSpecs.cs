@@ -697,6 +697,7 @@ namespace FakeItEasy.Specs
 
             public void DoSomethingNonVirtual()
             {
+                this.WasCalled = true;
             }
 
             public virtual int ReturnSomething()
@@ -707,6 +708,7 @@ namespace FakeItEasy.Specs
 
             public int ReturnSomethingNonVirtual()
             {
+                this.WasCalled = true;
                 return 11;
             }
         }
