@@ -17,10 +17,6 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="ApprovalTests" Version="3.0.11" />
     <PackageReference Include="ApprovalUtilities" Version="3.0.11" />

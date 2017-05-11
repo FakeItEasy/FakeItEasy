@@ -16,10 +16,6 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
     <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION</DefineConstants>
   </PropertyGroup>

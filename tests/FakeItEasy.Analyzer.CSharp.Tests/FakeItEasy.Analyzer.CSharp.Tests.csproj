@@ -18,10 +18,6 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);CSHARP</DefineConstants>
   </PropertyGroup>
