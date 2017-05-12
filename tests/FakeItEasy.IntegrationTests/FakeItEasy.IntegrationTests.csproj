@@ -27,6 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="2.1.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" />
     <PackageReference Include="FluentAssertions" Version="4.19.2" />
     <PackageReference Include="xunit.core" Version="2.2.0" />
