@@ -93,12 +93,12 @@ namespace FakeItEasy
 
         private abstract class WriteState
         {
-            protected readonly DefaultOutputWriter Writer;
-
             public WriteState(DefaultOutputWriter writer)
             {
                 this.Writer = writer;
             }
+
+            protected DefaultOutputWriter Writer { get; }
 
             public abstract void Write(char c);
         }

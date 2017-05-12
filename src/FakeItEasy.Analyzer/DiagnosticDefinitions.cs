@@ -1,9 +1,22 @@
-namespace FakeItEasy.Analyzer
+﻿namespace FakeItEasy.Analyzer
 {
+    using System.Reflection;
+    using System.Resources;
     using Microsoft.CodeAnalysis;
 
     internal static class DiagnosticDefinitions
     {
+#if CSHARP
+        private const string ResourceBaseName = "FakeItEasy.Analyzer.CSharp.Resources";
+#elif VISUAL_BASIC
+        private const string ResourceBaseName = "FakeItEasy.Analyzer.VisualBasic.Resources";
+#endif
+
+        private static readonly ResourceManager ResourceManager =
+            new ResourceManager(
+                ResourceBaseName,
+                typeof(DiagnosticDefinitions).GetTypeInfo().Assembly);
+
         public static DiagnosticDescriptor UnusedCallSpecification { get; } =
             CreateDiagnosticDescriptor(
                 nameof(UnusedCallSpecification),
@@ -39,7 +52,7 @@ namespace FakeItEasy.Analyzer
 
         private static LocalizableResourceString GetDiagnosticResourceString(string name, string propertyName)
         {
-            return new LocalizableResourceString(name + propertyName, Resources.ResourceManager, typeof(Resources));
+            return new LocalizableResourceString(name + propertyName, ResourceManager, typeof(DiagnosticDefinitions));
         }
     }
 }

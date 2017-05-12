@@ -68,7 +68,6 @@ namespace FakeItEasy.Configuration
         /// <summary>
         /// Gets a description of calls the rule is applicable to.
         /// </summary>
-        /// <value></value>
         public abstract string DescriptionOfValidCall { get; }
 
         /// <summary>

@@ -6,7 +6,7 @@ namespace FakeItEasy.Tests
     using FluentAssertions;
     using Xunit;
 
-    public class MustHaveHappenedExtensionsTests
+    public class AssertConfigurationExtensionsTests
     {
         [Fact]
         public void MustHaveHappened_should_call_configuration_with_repeat_once()

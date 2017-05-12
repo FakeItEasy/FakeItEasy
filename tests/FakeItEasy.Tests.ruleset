@@ -28,4 +28,12 @@
     <Rule Id="CA2204" Action="None" />
     <Rule Id="CA2210" Action="None" />
   </Rules>
+
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA1107" Action="None" />
+    <Rule Id="SA1201" Action="None" />
+    <Rule Id="SA1401" Action="None" />
+    <Rule Id="SA1402" Action="None" />
+    <Rule Id="SA1649" Action="None" />
+  </Rules>
 </RuleSet>

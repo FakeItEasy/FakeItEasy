@@ -1,5 +1,9 @@
-namespace FakeItEasy.Tests.Approval
+﻿namespace FakeItEasy.Tests.Approval
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
     using ApprovalTests;
     using ApprovalTests.Reporters;
@@ -14,6 +18,26 @@ namespace FakeItEasy.Tests.Approval
         public void ApproveApi()
         {
             Approvals.Verify(PublicApiGenerator.GetPublicApi(typeof(A).Assembly));
+        }
+
+        [Fact]
+        [UseReporter(typeof(DiffReporter))]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFrom", Justification = "By design")]
+        public void ApproveApiNetStd()
+        {
+            // Approvals and PublicApiGenerator aren't available for .NET Core, so
+            // we'll load the .NET Standard FakeItEasy assembly from disk and
+            // examine it.
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uri = new UriBuilder(new Uri(codeBase));
+            string assemblyPath = Uri.UnescapeDataString(uri.Path);
+            var containingDirectory = Path.GetDirectoryName(assemblyPath);
+            var configurationName = new DirectoryInfo(containingDirectory).Parent.Name;
+            var assemblyFile = $@"..\..\..\..\..\src\FakeItEasy\bin\{configurationName}\netstandard1.6\FakeItEasy.dll";
+
+            var assembly = Assembly.LoadFrom(assemblyFile);
+            Approvals.Verify(PublicApiGenerator.GetPublicApi(assembly));
         }
     }
 }
