@@ -7,8 +7,7 @@
     using System.Threading;
     using Xunit.Sdk;
 
-    [SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments",
-        Justification = "No need to access culture name.")]
+    [SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments", Justification = "No need to access culture name.")]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class UsingCultureAttribute : BeforeAfterTestAttribute
     {

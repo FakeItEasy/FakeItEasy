@@ -52,7 +52,7 @@ Try to keep lines of code no longer than 160 characters wide. This isn't a stric
 
 ## Coding Style
 
-Try to keep your coding style in line with the existing code. It might not exactly match your preferred style but it's better to keep things consistent. StyleCop compliance is enforced through analysis on each build and the treatment of warnings as errors. Any StyleCop settings changes or suppressions must be clearly justified.
+Try to keep your coding style in line with the existing code. It might not exactly match your preferred style but it's better to keep things consistent. Coding style compliance is enforced through analysis on each build. Any StyleCop.Analyzers settings changes or suppressions must be clearly justified.
 
 ## String Formatting
 
