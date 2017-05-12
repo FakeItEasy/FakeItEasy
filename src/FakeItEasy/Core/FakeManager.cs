@@ -125,8 +125,7 @@ namespace FakeItEasy.Core
             this.interceptionListeners.AddFirst(listener);
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes",
-            Justification = "Explicit implementation to be able to make the IFakeCallProcessor interface internal.")]
+        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Explicit implementation to be able to make the IFakeCallProcessor interface internal.")]
         void IFakeCallProcessor.Process(IInterceptedFakeObjectCall fakeObjectCall)
         {
             foreach (var listener in this.interceptionListeners)

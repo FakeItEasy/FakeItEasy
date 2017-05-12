@@ -25,8 +25,7 @@ namespace FakeItEasy
         /// <c>true</c> if <paramref name="type"/> is <typeparamref name="TFake"/>.
         /// Otherwise <c>false</c>.
         /// </returns>
-        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes",
-            Justification = "Explicit implementation reduces the chance of misusing object. Explicit methods are superseded by BuildOptions(IFakeOptions<TFake>)")]
+        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Explicit implementation reduces the chance of misusing object. Explicit methods are superseded by BuildOptions(IFakeOptions<TFake>)")]
         bool IFakeOptionsBuilder.CanBuildOptionsForFakeOfType(Type type)
         {
             return type == typeof(TFake);
@@ -39,8 +38,7 @@ namespace FakeItEasy
         /// <param name="typeOfFake">The type the fake object represents.</param>
         /// <param name="options">The fake options to manipulate.</param>
         /// <exception cref="InvalidOperationException">When <paramref name="typeOfFake"/> is not <typeparamref name="TFake"/>.</exception>
-        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes",
-            Justification = "Explicit implementation reduces the chance of misusing object. Explicit methods are superseded by BuildOptions(IFakeOptions<TFake>)")]
+        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Explicit implementation reduces the chance of misusing object. Explicit methods are superseded by BuildOptions(IFakeOptions<TFake>)")]
         void IFakeOptionsBuilder.BuildOptions(Type typeOfFake, IFakeOptions options)
         {
             if (!((IFakeOptionsBuilder)this).CanBuildOptionsForFakeOfType(typeOfFake))
