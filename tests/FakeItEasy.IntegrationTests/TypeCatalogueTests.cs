@@ -22,7 +22,7 @@
             this.externalAssemblyGenerator = externalAssemblyGenerator;
         }
 
-        private ExternalAssemblyGenerator externalAssemblyGenerator;
+        private readonly ExternalAssemblyGenerator externalAssemblyGenerator;
 
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "No exception is thrown.")]
 #if FEATURE_NETCORE_REFLECTION
@@ -129,6 +129,23 @@
 
             // Assert
             catalogue.GetAvailableTypes().Should().NotContain(typeof(string));
+        }
+
+        [Fact]
+        public void Should_warn_if_some_types_cannot_be_loaded_from_external_assembly()
+        {
+            // Arrange
+            var catalogue = new TypeCatalogue();
+
+            // Act
+            string output = CaptureConsoleOutput(
+                () => catalogue.Load(new[] { this.externalAssemblyGenerator.AssemblyOriginalPath }));
+
+            // Assert
+            output.Should().Match(@"*Warning: FakeItEasy failed to get some types from assembly 'FakeItEasy.ExtensionPoints.External, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' while scanning for extension points. Some IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly might not be available.
+  System.Reflection.ReflectionTypeLoadException: *.
+  1 type(s) were not loaded for the following reasons:
+   - System.IO.FileNotFoundException: *");
         }
 
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Safe in this case")]
