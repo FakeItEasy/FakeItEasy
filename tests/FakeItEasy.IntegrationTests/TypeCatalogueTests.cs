@@ -11,6 +11,10 @@
     using FluentAssertions;
     using Xunit;
 
+    // Note: The console output is captured in all tests in this class, even when we don't need to use it.
+    // This is done in order to suppress a warning that sometimes occurs when these tests run after a fake
+    // has already been created. This situation normally happens only during tests, not during normal usage
+    // of the library.
     public class TypeCatalogueTests : IClassFixture<ExternalAssemblyGenerator>
     {
         public TypeCatalogueTests(ExternalAssemblyGenerator externalAssemblyGenerator)
@@ -82,7 +86,7 @@
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Enumerable.Empty<string>());
+            CaptureConsoleOutput(() => catalogue.Load(Enumerable.Empty<string>()));
 
             // Assert
             catalogue.GetAvailableTypes().Should().Contain(typeof(A));
@@ -95,7 +99,7 @@
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Enumerable.Empty<string>());
+            CaptureConsoleOutput(() => catalogue.Load(Enumerable.Empty<string>()));
 
             // Assert
             catalogue.GetAvailableTypes().Should().Contain(typeof(DoubleValueFormatter));
@@ -108,7 +112,7 @@
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(new[] { this.externalAssemblyGenerator.AssemblyOriginalPath });
+            CaptureConsoleOutput(() => catalogue.Load(new[] { this.externalAssemblyGenerator.AssemblyOriginalPath }));
 
             // Assert
             catalogue.GetAvailableTypes().Select(type => type.FullName).Should().Contain("FakeItEasy.IntegrationTests.External.GuidValueFormatter");
@@ -121,7 +125,7 @@
             var catalogue = new TypeCatalogue();
 
             // Act
-            catalogue.Load(Enumerable.Empty<string>());
+            CaptureConsoleOutput(() => catalogue.Load(Enumerable.Empty<string>()));
 
             // Assert
             catalogue.GetAvailableTypes().Should().NotContain(typeof(string));
