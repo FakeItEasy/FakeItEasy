@@ -104,7 +104,7 @@ namespace FakeItEasy
         [System.CLSCompliantAttribute(false)]
         public static T _ { get; }
         public static T Ignored { get; }
-        public static FakeItEasy.IArgumentConstraintManager<T> That { get; }
+        public static FakeItEasy.INegatableArgumentConstraintManager<T> That { get; }
     }
     public class static ArgumentConstraintManagerExtensions
     {
@@ -262,7 +262,6 @@ namespace FakeItEasy
     public interface IArgumentConstraintManager<T> : FakeItEasy.IHideObjectMembers
     
     {
-        FakeItEasy.IArgumentConstraintManager<T> Not { get; }
         T Matches(System.Func<T, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter);
     }
     public interface IArgumentValueFormatter
@@ -293,6 +292,11 @@ namespace FakeItEasy
         int GetHashCode();
         System.Type GetType();
         string ToString();
+    }
+    public interface INegatableArgumentConstraintManager<T> : FakeItEasy.IArgumentConstraintManager<T>, FakeItEasy.IHideObjectMembers
+    
+    {
+        FakeItEasy.IArgumentConstraintManager<T> Not { get; }
     }
     public interface IOutputWriter : FakeItEasy.IHideObjectMembers
     {
