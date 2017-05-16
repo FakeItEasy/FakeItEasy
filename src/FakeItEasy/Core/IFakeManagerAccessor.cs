@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
 
@@ -24,10 +24,10 @@ namespace FakeItEasy.Core
         FakeManager TryGetFakeManager(object proxy);
 
         /// <summary>
-        /// Tags a proxy object, so that it can accessed later by <see cref="GetFakeManager"/>.
+        /// Sets the fake manager for a proxy object, so that it can accessed later by <see cref="GetFakeManager"/>.
         /// </summary>
         /// <param name="proxy">The proxy to tag.</param>
         /// <param name="manager">The fake manager.</param>
-        void TagProxy(object proxy, FakeManager manager);
+        void SetFakeManager(object proxy, FakeManager manager);
     }
 }
