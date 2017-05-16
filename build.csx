@@ -61,7 +61,7 @@ static var testsDirectory = "./artifacts/tests";
 // targets
 var targets = new TargetDictionary();
 
-targets.Add("default", DependsOn("pdbgit", "unit", "integ", "spec", "approve", "pack"));
+targets.Add("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
 
 targets.Add("outputDirectory", () => Directory.CreateDirectory(outputDirectory));
 
@@ -71,7 +71,7 @@ targets.Add("logsDirectory", () => Directory.CreateDirectory(logsDirectory));
 
 targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
 
-targets.Add("build", DependsOn("clean", "outputDirectory", "restore"), () => RunMsBuild("Build"));
+targets.Add("build", DependsOn("clean", "restore"), () => RunMsBuild("Build"));
 
 targets.Add(
     "coverity",
@@ -153,7 +153,7 @@ targets.Add(
 
 targets.Add(
     "pack",
-    DependsOn("build", "outputDirectory"),
+    DependsOn("build", "outputDirectory", "pdbgit"),
     () =>
     {
         var version = GetVersion();
@@ -286,7 +286,7 @@ class DotnetTestSuite : TestSuite
     public override void Execute()
     {
         var xml = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileName(this.TestDirectory) + ".TestResults.xml"));
-        Cmd(this.TestDirectory, "dotnet", $"xunit -configuration Release -nologo -notrait \"explicit=yes\" -xml {xml}");
+        Cmd(this.TestDirectory, "dotnet", $"xunit -configuration Release -nologo -nobuild -notrait \"explicit=yes\" -xml {xml}");
     }
 }
 
