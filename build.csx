@@ -286,7 +286,7 @@ class DotnetTestSuite : TestSuite
     public override void Execute()
     {
         var xml = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileName(this.TestDirectory) + ".TestResults.xml"));
-        Cmd(this.TestDirectory, "dotnet", $"xunit -configuration Release -nologo -notrait \"explicit=yes\" -xml {xml}");
+        Cmd(this.TestDirectory, "dotnet", $"xunit -configuration Release -nologo -notrait \"explicit=yes\" -xml {xml} -nobuild");
     }
 }
 
