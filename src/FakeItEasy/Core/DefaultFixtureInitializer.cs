@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
@@ -10,12 +10,10 @@ namespace FakeItEasy.Core
         : IFixtureInitializer
     {
         private readonly IFakeAndDummyManager fakeAndDummyManager;
-        private readonly ISutInitializer sutInitializer;
 
-        public DefaultFixtureInitializer(IFakeAndDummyManager fakeAndDummyManager, ISutInitializer sutInitializer)
+        public DefaultFixtureInitializer(IFakeAndDummyManager fakeAndDummyManager)
         {
             this.fakeAndDummyManager = fakeAndDummyManager;
-            this.sutInitializer = sutInitializer;
         }
 
         public void InitializeFakes(object fixture)
@@ -106,7 +104,7 @@ namespace FakeItEasy.Core
             var setter = GetSutSetter(fixture);
             if (setter != null)
             {
-                var sut = this.sutInitializer.CreateSut(setter.MemberType, result.Add);
+                var sut = DefaultSutInitializer.CreateSut(setter.MemberType, result.Add);
                 setter.Setter(sut);
             }
 

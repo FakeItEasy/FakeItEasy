@@ -1,27 +1,20 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using FakeItEasy.Creation;
 
-    internal class DefaultSutInitializer
-        : ISutInitializer
+    using FakeItEasy.Sdk;
+
+    internal static class DefaultSutInitializer
     {
-        private readonly IFakeAndDummyManager fakeManager;
-
-        public DefaultSutInitializer(IFakeAndDummyManager fakeManager)
-        {
-            this.fakeManager = fakeManager;
-        }
-
-        public object CreateSut(Type typeOfSut, Action<Type, object> onFakeCreated)
+        public static object CreateSut(Type typeOfSut, Action<Type, object> onFakeCreated)
         {
             var constructorSignature = from parameter in GetWidestConstructor(typeOfSut).GetParameters()
                                        select parameter.ParameterType;
 
-            var resolvedArguments = this.ResolveArguments(constructorSignature, onFakeCreated);
+            var resolvedArguments = ResolveArguments(constructorSignature, onFakeCreated);
 
             var argumentsArray = constructorSignature.Select(x => resolvedArguments[x]).ToArray();
 
@@ -33,16 +26,16 @@ namespace FakeItEasy.Core
             return type.GetConstructors().OrderByDescending(x => x.GetParameters().Length).First();
         }
 
-        private Dictionary<Type, object> ResolveArguments(IEnumerable<Type> constructorSignature, Action<Type, object> onFakeCreated)
+        private static Dictionary<Type, object> ResolveArguments(IEnumerable<Type> constructorSignature, Action<Type, object> onFakeCreated)
         {
             return constructorSignature
                 .Distinct()
-                .ToDictionary(key => key, value => this.CreateFake(value, onFakeCreated));
+                .ToDictionary(key => key, value => CreateFake(value, onFakeCreated));
         }
 
-        private object CreateFake(Type typeOfFake, Action<Type, object> onFakeCreated)
+        private static object CreateFake(Type typeOfFake, Action<Type, object> onFakeCreated)
         {
-            var result = this.fakeManager.CreateFake(typeOfFake, options => { });
+            var result = Create.Fake(typeOfFake);
             onFakeCreated.Invoke(typeOfFake, result);
             return result;
         }
