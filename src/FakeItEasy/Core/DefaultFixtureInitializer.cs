@@ -4,23 +4,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using FakeItEasy.Creation;
+    using FakeItEasy.Sdk;
 
-    internal class DefaultFixtureInitializer
-        : IFixtureInitializer
+    internal static class DefaultFixtureInitializer
     {
-        private readonly IFakeAndDummyManager fakeAndDummyManager;
-
-        public DefaultFixtureInitializer(IFakeAndDummyManager fakeAndDummyManager)
+        public static void InitializeFakes(object fixture)
         {
-            this.fakeAndDummyManager = fakeAndDummyManager;
-        }
+            var fakesUsedToCreateSut = InitializeSut(fixture);
 
-        public void InitializeFakes(object fixture)
-        {
-            var fakesUsedToCreateSut = this.InitializeSut(fixture);
-
-            this.InitializeFakes(fixture, fakesUsedToCreateSut);
+            InitializeFakes(fixture, fakesUsedToCreateSut);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "UnderTestAttribute", Justification = "Refers to the type 'UnderTestAttribute'.")]
@@ -80,7 +72,7 @@
                     select attribute).Any();
         }
 
-        private void InitializeFakes(object fixture, Dictionary<Type, object> fakesUsedToCreateSut)
+        private static void InitializeFakes(object fixture, Dictionary<Type, object> fakesUsedToCreateSut)
         {
             var settersForTaggedMembers = GetMembersTaggedWithAttribute(fixture, typeof(FakeAttribute));
 
@@ -90,14 +82,14 @@
 
                 if (!fakesUsedToCreateSut.TryGetValue(setter.MemberType, out fake))
                 {
-                    fake = this.fakeAndDummyManager.CreateFake(setter.MemberType, options => { });
+                    fake = Create.Fake(setter.MemberType);
                 }
 
                 setter.Setter(fake);
             }
         }
 
-        private Dictionary<Type, object> InitializeSut(object fixture)
+        private static Dictionary<Type, object> InitializeSut(object fixture)
         {
             var result = new Dictionary<Type, object>();
 

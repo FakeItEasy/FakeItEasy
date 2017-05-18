@@ -8,16 +8,14 @@ namespace FakeItEasy.Tests
     public class FakeFacadeTests
     {
         private readonly IFakeManagerAccessor managerAccessor;
-        private readonly IFixtureInitializer fixtureInitializer;
 
         private readonly FakeFacade facade;
 
         public FakeFacadeTests()
         {
             this.managerAccessor = A.Fake<IFakeManagerAccessor>();
-            this.fixtureInitializer = A.Fake<IFixtureInitializer>();
 
-            this.facade = new FakeFacade(this.managerAccessor, this.fixtureInitializer);
+            this.facade = new FakeFacade(this.managerAccessor);
         }
 
         [Fact]
@@ -98,19 +96,6 @@ namespace FakeItEasy.Tests
             // Assert
             Expression<System.Action> call = () => this.facade.ClearRecordedCalls(A.Dummy<object>());
             call.Should().BeNullGuarded();
-        }
-
-        [Fact]
-        public void Initialize_should_call_initialize_on_fake_initializer()
-        {
-            // Arrange
-            var o = A.Dummy<object>();
-
-            // Act
-            this.facade.InitializeFixture(o);
-
-            // Assert
-            A.CallTo(() => this.fixtureInitializer.InitializeFakes(o)).MustHaveHappened();
         }
 
         [Fact]
