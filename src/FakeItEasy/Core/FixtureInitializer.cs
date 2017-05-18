@@ -6,7 +6,7 @@
     using System.Reflection;
     using FakeItEasy.Sdk;
 
-    internal static class DefaultFixtureInitializer
+    internal static class FixtureInitializer
     {
         public static void InitializeFakes(object fixture)
         {
@@ -96,7 +96,7 @@
             var setter = GetSutSetter(fixture);
             if (setter != null)
             {
-                var sut = DefaultSutInitializer.CreateSut(setter.MemberType, result.Add);
+                var sut = SutInitializer.CreateSut(setter.MemberType, result.Add);
                 setter.Setter(sut);
             }
 

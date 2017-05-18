@@ -7,7 +7,7 @@
 
     using FakeItEasy.Sdk;
 
-    internal static class DefaultSutInitializer
+    internal static class SutInitializer
     {
         public static object CreateSut(Type typeOfSut, Action<Type, object> onFakeCreated)
         {

@@ -54,7 +54,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(fixture, nameof(fixture));
 
-            DefaultFixtureInitializer.InitializeFakes(fixture);
+            FixtureInitializer.InitializeFakes(fixture);
         }
     }
 }
