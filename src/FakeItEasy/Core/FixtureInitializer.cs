@@ -10,9 +10,10 @@
     {
         public static void InitializeFakes(object fixture)
         {
-            var fakesUsedToCreateSut = InitializeSut(fixture);
+            var fakesCreatedForTypes = new Dictionary<Type, object>();
+            InitializeSut(fixture, fakesCreatedForTypes);
 
-            InitializeFakes(fixture, fakesUsedToCreateSut);
+            InitializeFakes(fixture, fakesCreatedForTypes);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "UnderTestAttribute", Justification = "Refers to the type 'UnderTestAttribute'.")]
@@ -89,26 +90,22 @@
             }
         }
 
-        private static Dictionary<Type, object> InitializeSut(object fixture)
+        private static void InitializeSut(object fixture, Dictionary<Type, object> fakesCreatedForTypes)
         {
-            var result = new Dictionary<Type, object>();
-
             var setter = GetSutSetter(fixture);
             if (setter != null)
             {
-                var sut = CreateSut(setter.MemberType, result.Add);
+                var sut = CreateSut(setter.MemberType, fakesCreatedForTypes);
                 setter.Setter(sut);
             }
-
-            return result;
         }
 
-        private static object CreateSut(Type typeOfSut, Action<Type, object> onFakeCreated)
+        private static object CreateSut(Type typeOfSut, Dictionary<Type, object> fakesCreatedForTypes)
         {
             var constructorSignature = from parameter in GetWidestConstructor(typeOfSut).GetParameters()
                                        select parameter.ParameterType;
 
-            var resolvedArguments = ResolveArguments(constructorSignature, onFakeCreated);
+            var resolvedArguments = ResolveArguments(constructorSignature, fakesCreatedForTypes);
 
             var argumentsArray = constructorSignature.Select(x => resolvedArguments[x]).ToArray();
 
@@ -120,18 +117,16 @@
             return type.GetConstructors().OrderByDescending(x => x.GetParameters().Length).First();
         }
 
-        private static Dictionary<Type, object> ResolveArguments(IEnumerable<Type> constructorSignature, Action<Type, object> onFakeCreated)
+        private static Dictionary<Type, object> ResolveArguments(IEnumerable<Type> constructorSignature, Dictionary<Type, object> fakesCreatedForTypes)
         {
             return constructorSignature
                 .Distinct()
-                .ToDictionary(key => key, value => CreateFake(value, onFakeCreated));
+                .ToDictionary(key => key, value => CreateFake(value, fakesCreatedForTypes));
         }
 
-        private static object CreateFake(Type typeOfFake, Action<Type, object> onFakeCreated)
+        private static object CreateFake(Type typeOfFake, Dictionary<Type, object> fakesCreatedForTypes)
         {
-            var result = Create.Fake(typeOfFake);
-            onFakeCreated.Invoke(typeOfFake, result);
-            return result;
+            return fakesCreatedForTypes[typeOfFake] = Create.Fake(typeOfFake);
         }
 
         private class SettableMemberInfo
