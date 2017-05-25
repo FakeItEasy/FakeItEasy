@@ -15,7 +15,7 @@ public interface IFoo
 }
 ```
 
-Then the arguments to Bar can be constrained used to limit call matching:
+Then the arguments to Bar can be constrained to limit call matching:
 ```csharp
 var foo = A.Fake<IFoo>();
 
@@ -28,12 +28,12 @@ Then FakeItEasy will look _only_ for calls made with the arguments
 When checking for argument equality, FakeItEasy uses
 `object.Equals`. If the type to be checked does not provide an
 adequate `Equals` method, you may have to use the `That.Matches`
-method described in [Custom Matching](#custom-matching). Be
+method described in [Custom matching](#custom-matching). Be
 particularly careful of types whose `Equals` methods perform reference
 equality rather than value equality. In that case, the objects have to
 be _the same object_ in order to match, and this sometimes produces
 unexpected results. When in doubt, verify the type's `Equals`
-behaviour manually.
+behavior manually.
 
 # Other matchers
 ## Ignoring arguments
@@ -85,8 +85,8 @@ A<string>.That.Matches(s => s.Length == 3 && s[1] == 'X');
 ```
 
 FakeItEasy will evaluate the predicate against any supplied
-argument. The predicate can be supplied as an `Expression<Func<T,
-bool>>` or as a `Func<T, bool>`. FakeItEasy can generate a description
+argument. The predicate can be supplied as an `Expression<Func<T, bool>>`
+or as a `Func<T, bool>`. FakeItEasy can generate a description
 of the matcher when an `Expression` is supplied (although you may
 supply your own as well), but you must supply a description when using
 a `Func`.
@@ -100,7 +100,7 @@ The `Ignored` (and `_`) and `That` matchers must be placed within the
 expression inside the `A.CallTo` call. This is because these special
 constraint methods do not return an actual matcher object. They tell
 FakeItEasy how to match the parameter via a special event that's fired
-then the constraint method is invoked. FakeItEasy only listens to the
+when the constraint method is invoked. FakeItEasy only listens to the
 events in the context of an `A.CallTo`.
 
 So, tempting as it might be to save one of the constraints away in a
