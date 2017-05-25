@@ -2,8 +2,6 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
     using System.Linq;
 
     internal class FakeAsserter : IFakeAsserter
@@ -23,12 +21,15 @@ namespace FakeItEasy.Core
         public delegate IFakeAsserter Factory(IEnumerable<IFakeObjectCall> calls);
 
         public virtual void AssertWasCalled(
-            Func<IFakeObjectCall, bool> callPredicate, string callDescription, Func<int, bool> repeatPredicate, string repeatDescription)
+            Func<IFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Func<int, bool> repeatPredicate, string repeatDescription)
         {
             var matchedCallCount = this.calls.Count(callPredicate);
             if (!repeatPredicate(matchedCallCount))
             {
-                var message = CreateExceptionMessage(this.calls, this.callWriter, callDescription, repeatDescription, matchedCallCount);
+                var description = new StringBuilderOutputWriter();
+                callDescriber.Invoke(description);
+
+                var message = CreateExceptionMessage(this.calls, this.callWriter, description.Builder.ToString(), repeatDescription, matchedCallCount);
                 throw new ExpectationException(message);
             }
         }

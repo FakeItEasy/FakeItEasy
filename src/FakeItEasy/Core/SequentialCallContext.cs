@@ -23,16 +23,16 @@ namespace FakeItEasy.Core
         public void CheckNextCall(
             FakeManager fakeManager,
             Func<IFakeObjectCall, bool> callPredicate,
-            string callDescription,
+            Action<IOutputWriter> callDescriber,
             Repeated repeatConstraint)
         {
             Guard.AgainstNull(fakeManager, nameof(fakeManager));
             Guard.AgainstNull(callPredicate, nameof(callPredicate));
-            Guard.AgainstNull(callDescription, nameof(callDescription));
+            Guard.AgainstNull(callDescriber, nameof(callDescriber));
             Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
             this.fakeManagers.Add(fakeManager);
             this.assertedCalls.Add(
-                new AssertedCall { CallDescription = callDescription, RepeatDescription = repeatConstraint.ToString() });
+                new AssertedCall { CallDescriber = callDescriber, RepeatDescription = repeatConstraint.ToString() });
 
             var allCalls = this.fakeManagers.SelectMany(f => f.GetRecordedCalls()).OrderBy(SequenceNumberManager.GetSequenceNumber).ToList();
 
@@ -75,7 +75,7 @@ namespace FakeItEasy.Core
                     foreach (var call in assertedCalls)
                     {
                         message.Write("'");
-                        message.Write(call.CallDescription);
+                        call.CallDescriber.Invoke(message);
                         message.Write("' ");
                         message.Write("repeated ");
                         message.Write(call.RepeatDescription);
@@ -97,7 +97,7 @@ namespace FakeItEasy.Core
 
         private struct AssertedCall
         {
-            public string CallDescription;
+            public Action<IOutputWriter> CallDescriber;
             public string RepeatDescription;
         }
     }

@@ -227,7 +227,6 @@ namespace FakeItEasy.Tests.Configuration
         public void Assert_with_void_call_should_assert_on_assertions_produced_by_factory()
         {
             // Arrange
-            A.CallTo(() => this.ruleProducedByFactory.DescriptionOfValidCall).Returns("call description");
 
             // Act
             this.builder.MustHaveHappened(Repeated.Exactly.Times(99));
@@ -235,7 +234,7 @@ namespace FakeItEasy.Tests.Configuration
             // Assert
             A.CallTo(() => this.asserter.AssertWasCalled(
                 A<Func<IFakeObjectCall, bool>>._,
-                "call description",
+                this.ruleProducedByFactory.WriteDescriptionOfValidCall,
                 A<Func<int, bool>>.That.Matches(x => x.Invoke(99)),
                 "exactly 99 times"))
                 .MustHaveHappened();
@@ -245,7 +244,6 @@ namespace FakeItEasy.Tests.Configuration
         public void Assert_with_function_call_should_assert_on_assertions_produced_by_factory()
         {
             // Arrange
-            A.CallTo(() => this.ruleProducedByFactory.DescriptionOfValidCall).Returns("call description");
 
             // Act
             var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>(this.builder);
@@ -254,7 +252,7 @@ namespace FakeItEasy.Tests.Configuration
             // Assert
             A.CallTo(() => this.asserter.AssertWasCalled(
                 A<Func<IFakeObjectCall, bool>>._,
-                "call description",
+                this.ruleProducedByFactory.WriteDescriptionOfValidCall,
                 A<Func<int, bool>>.That.Matches(x => x.Invoke(99)),
                 "exactly 99 times"))
                 .MustHaveHappened();

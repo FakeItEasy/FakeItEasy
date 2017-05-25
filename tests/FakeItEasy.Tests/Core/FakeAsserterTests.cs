@@ -25,7 +25,7 @@ namespace FakeItEasy.Tests.Core
 
             var asserter = this.CreateAsserter();
 
-            asserter.AssertWasCalled(x => true, string.Empty, x => x == 2, string.Empty);
+            asserter.AssertWasCalled(x => true, outputWriter => { }, x => x == 2, string.Empty);
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace FakeItEasy.Tests.Core
 
             var asserter = this.CreateAsserter();
 
-            var exception = Record.Exception(() => asserter.AssertWasCalled(x => true, string.Empty, x => false, string.Empty));
+            var exception = Record.Exception(() => asserter.AssertWasCalled(x => true, outputWriter => { }, x => false, string.Empty));
             exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
 
@@ -48,7 +48,7 @@ namespace FakeItEasy.Tests.Core
 
             var asserter = this.CreateAsserter();
 
-            asserter.AssertWasCalled(x => this.calls.IndexOf(x) == 0, string.Empty, x => { numberPassedToRepeatPredicate = x; return true; }, string.Empty);
+            asserter.AssertWasCalled(x => this.calls.IndexOf(x) == 0, outputWriter => { }, x => { numberPassedToRepeatPredicate = x; return true; }, string.Empty);
 
             numberPassedToRepeatPredicate.Should().Be(1);
         }
@@ -58,7 +58,7 @@ namespace FakeItEasy.Tests.Core
         {
             var asserter = this.CreateAsserter();
             var exception =
-                Record.Exception(() => asserter.AssertWasCalled(x => true, @"IFoo.Bar(1)", x => false, string.Empty));
+                Record.Exception(() => asserter.AssertWasCalled(x => true, outputWriter => outputWriter.Write("IFoo.Bar(1)"), x => false, string.Empty));
 
             var expectedMessage =
 @"
@@ -77,7 +77,7 @@ namespace FakeItEasy.Tests.Core
 
             var asserter = this.CreateAsserter();
             var exception = Record.Exception(() =>
-                asserter.AssertWasCalled(x => false, string.Empty, x => x == 2, "#2 times"));
+                asserter.AssertWasCalled(x => false, outputWriter => { }, x => x == 2, "#2 times"));
 
             var expectedMessage =
 @"
@@ -93,7 +93,7 @@ namespace FakeItEasy.Tests.Core
             this.StubCalls(2);
 
             var asserter = this.CreateAsserter();
-            var exception = Record.Exception(() => asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
+            var exception = Record.Exception(() => asserter.AssertWasCalled(x => false, outputWriter => { }, x => false, string.Empty));
 
             exception.Should().BeAnExceptionOfType<ExpectationException>();
             A.CallTo(() => this.callWriter.WriteCalls(A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls), A<IOutputWriter>._)).MustHaveHappened();
@@ -107,7 +107,7 @@ namespace FakeItEasy.Tests.Core
             var asserter = this.CreateAsserter();
 
             var exception = Record.Exception(() =>
-                asserter.AssertWasCalled(x => false, string.Empty, x => x == 2, "#2 times"));
+                asserter.AssertWasCalled(x => false, outputWriter => { }, x => x == 2, "#2 times"));
 
             var expectedMessage =
 @"
@@ -123,7 +123,7 @@ namespace FakeItEasy.Tests.Core
             var asserter = this.CreateAsserter();
 
             var exception = Record.Exception(() =>
-                asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
+                asserter.AssertWasCalled(x => false, outputWriter => { }, x => false, string.Empty));
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .And.Message.Should().EndWith(string.Concat(Environment.NewLine, Environment.NewLine));
@@ -135,7 +135,7 @@ namespace FakeItEasy.Tests.Core
             var asserter = this.CreateAsserter();
 
             var exception = Record.Exception(() =>
-                asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
+                asserter.AssertWasCalled(x => false, outputWriter => { }, x => false, string.Empty));
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .And.Message.Should().StartWith(Environment.NewLine);
