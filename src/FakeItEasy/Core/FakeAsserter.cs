@@ -21,15 +21,15 @@ namespace FakeItEasy.Core
         public delegate IFakeAsserter Factory(IEnumerable<IFakeObjectCall> calls);
 
         public virtual void AssertWasCalled(
-            Func<IFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Func<int, bool> repeatPredicate, string repeatDescription)
+            Func<IFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Repeated repeatConstraint)
         {
             var matchedCallCount = this.calls.Count(callPredicate);
-            if (!repeatPredicate(matchedCallCount))
+            if (!repeatConstraint.Matches(matchedCallCount))
             {
                 var description = new StringBuilderOutputWriter();
                 callDescriber.Invoke(description);
 
-                var message = CreateExceptionMessage(this.calls, this.callWriter, description.Builder.ToString(), repeatDescription, matchedCallCount);
+                var message = CreateExceptionMessage(this.calls, this.callWriter, description.Builder.ToString(), repeatConstraint.ToString(), matchedCallCount);
                 throw new ExpectationException(message);
             }
         }

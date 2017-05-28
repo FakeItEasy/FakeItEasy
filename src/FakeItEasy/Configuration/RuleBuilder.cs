@@ -143,7 +143,7 @@ namespace FakeItEasy.Configuration
 
             var asserter = this.asserterFactory.Invoke(this.Calls);
 
-            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint.Matches, repeatConstraint.ToString());
+            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
 
             return new UnorderedCallAssertion(this.manager, this.Matcher, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
         }
