@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
@@ -99,7 +99,7 @@ namespace FakeItEasy.Core
                     // Exclude the ReflectionOnly assemblies because we may fully load them later.
                     .Where(a => !a.ReflectionOnly)
 #endif
-                    .Where(a => !a.IsDynamic)
+                    .Where(a => !a.IsDynamic && !a.Name().Equals("DynamicProxyGenAssembly2", StringComparison.OrdinalIgnoreCase))
                     .Select(a => a.Location),
                 StringComparer.OrdinalIgnoreCase);
 
