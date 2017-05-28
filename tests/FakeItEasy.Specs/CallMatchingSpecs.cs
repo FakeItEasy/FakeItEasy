@@ -479,6 +479,25 @@ namespace FakeItEasy.Specs
                     $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {fakeDescription})"));
         }
 
+        [Scenario]
+        public static void UnusedArgumentMatcherDescriptionNotUsed(IHaveNoGenericParameters fake, Action<IOutputWriter> writerAction)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+
+            "And an action that describes an argument matcher"
+                .x(() => writerAction = A.Fake<Action<IOutputWriter>>());
+
+            "And I make a call to the fake"
+                .x(() => fake.Bar(7));
+
+            "When I assert that the call happened"
+                .x(() => A.CallTo(() => fake.Bar(A<int>.That.Matches(i => true, writerAction))).MustHaveHappened());
+
+            "Then the action is not triggered"
+                .x(() => A.CallTo(writerAction).MustNotHaveHappened());
+        }
+
         public static IEnumerable<object[]> Fakes()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
