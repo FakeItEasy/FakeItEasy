@@ -1,4 +1,4 @@
-namespace FakeItEasy.Creation.CastleDynamicProxy
+﻿namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
     using System.Linq;
@@ -34,7 +34,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 var explicitImplementation = method.Name.Contains('.');
                 if (!explicitImplementation)
                 {
-                    return "Sealed methods can not be intercepted.";
+                    return "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.";
                 }
             }
 
@@ -52,7 +52,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             if (!method.IsVirtual)
             {
-                return "Non virtual methods can not be intercepted.";
+                return "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.";
             }
 
             if (!Castle.DynamicProxy.Internal.InternalsUtil.IsAccessible(method))

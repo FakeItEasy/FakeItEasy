@@ -59,15 +59,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NonVirtualSetupSpecificationDescription" xml:space="preserve">
-    <value>Non overridable members can not be intercepted.</value>
+    <value>Non-overridable members can not be intercepted.</value>
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
   <data name="NonVirtualSetupSpecificationMessageFormat" xml:space="preserve">
-    <value>Non overridable member {0} cannot be intercepted.</value>
+    <value>Member {0} can not be intercepted. Only interface members and overrideable, overriding, and must override members can be intercepted.</value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
   <data name="NonVirtualSetupSpecificationTitle" xml:space="preserve">
-    <value>Non overridable setup specification</value>
+    <value>Non-overridable setup specification</value>
     <comment>The title of the diagnostic.</comment>
   </data>
   <data name="UnusedCallSpecificationDescription" xml:space="preserve">
