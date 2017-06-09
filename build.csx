@@ -8,10 +8,10 @@ using static SimpleTargets;
 var solutionName = "FakeItEasy";
 
 var solution = "./" + solutionName + ".sln";
+var versionInfoFile = "./src/VersionInfo.cs";
 var packagesDirectory = Path.GetFullPath("packages");
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 var coverityProjectUrl = "https://scan.coverity.com/builds?project=FakeItEasy%2FFakeItEasy";
-var versionAssembly = "./src/FakeItEasy/bin/Release/net40/FakeItEasy.dll";
 var nuspecs = Directory.GetFiles("./src", "*.nuspec");
 var pdbs = new []
 {
@@ -46,6 +46,7 @@ var testSuites = new Dictionary<string, TestSuite[]>
 
 // tool locations
 var vswhere = "./packages/vswhere.1.0.62/tools/vswhere.exe";
+var gitversion = "./packages/GitVersion.CommandLine.4.0.0-beta0012/tools/GitVersion.exe";
 var msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe";
 var nuget = "./.nuget/NuGet.exe";
 var pdbGit = "./packages/pdbGit.3.0.41/tools/PdbGit.exe";
@@ -71,7 +72,9 @@ targets.Add("logsDirectory", () => Directory.CreateDirectory(logsDirectory));
 
 targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
 
-targets.Add("build", DependsOn("clean", "restore"), () => RunMsBuild("Build"));
+targets.Add("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunMsBuild("Build"));
+
+targets.Add("versionInfoFile", () => Cmd(gitversion, $"/updateAssemblyInfo {versionInfoFile} /ensureAssemblyInfo"));
 
 targets.Add(
     "coverity",
@@ -83,7 +86,7 @@ targets.Add(
             "cov-build",
             $@"--dir {coverityResultsDirectory} ""{msBuild}"" {solution} /target:Build /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/Coverity-Build.log;Verbosity=Detailed;PerformanceSummary {packagesDirectoryOption}");
 
-        var version = GetVersion();
+        var version = ReadCmdOutput(".", gitversion, "/showvariable SemVer");
         var coverityToken = Environment.GetEnvironmentVariable("COVERITY_TOKEN");
         var coverityEmail = Environment.GetEnvironmentVariable("COVERITY_EMAIL");
         var repoCommitId = Environment.GetEnvironmentVariable("APPVEYOR_REPO_COMMIT");
@@ -156,7 +159,7 @@ targets.Add(
     DependsOn("build", "outputDirectory", "pdbgit"),
     () =>
     {
-        var version = GetVersion();
+        var version = ReadCmdOutput(".", gitversion, "/showvariable NuGetVersionV2");
         foreach (var nuspec in nuspecs)
         {
             Cmd(nuget, $"pack {nuspec} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
@@ -205,6 +208,30 @@ public static void Cmd(string workingDirectory, string fileName, string args)
     }
 }
 
+public string ReadCmdOutput(string workingDirectory, string fileName, string args)
+{
+    using (var process = new Process())
+    {
+        process.StartInfo = new ProcessStartInfo
+        {
+            FileName = fileName,
+            Arguments = args,
+            WorkingDirectory = workingDirectory,
+            UseShellExecute = false,
+            RedirectStandardOutput = true
+        };
+
+        process.Start();
+        process.WaitForExit();
+        if (process.ExitCode != 0)
+        {
+            throw new InvalidOperationException($"The {fileName} command exited with code {process.ExitCode}.");
+        }
+
+        return process.StandardOutput.ReadToEnd().Trim();
+    }
+}
+
 public void RunMsBuild(string target)
 {
     var packagesDirectoryOption = string.IsNullOrEmpty(packagesDirectory) ? "" : $"/p:NuGetPackagesDirectory={packagesDirectory}";
@@ -221,52 +248,15 @@ public void RunTests(string target)
     }
 }
 
-public string GetVersion()
-{
-    var  versionInfo = FileVersionInfo.GetVersionInfo(versionAssembly);
-    var version = versionInfo.ProductVersion;
-
-    var versionSuffix = Environment.GetEnvironmentVariable("VERSION_SUFFIX");
-
-    if (string.IsNullOrEmpty(versionSuffix))
-    {
-        return version;
-    }
-
-    var build = Environment.GetEnvironmentVariable("BUILD");
-    var buildSuffix = versionSuffix + "-build" + build.PadLeft(6, '0');
-    return version + buildSuffix;
-}
-
 public string GetVSLocation()
 {
-    using (var process = new Process())
+    var installationPath = ReadCmdOutput(".", $"\"{vswhere}\"", "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)");
+    if (string.IsNullOrEmpty(installationPath))
     {
-        process.StartInfo = new ProcessStartInfo
-        {
-            FileName = $"\"{vswhere}\"",
-            Arguments = "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)",
-            WorkingDirectory = ".",
-            UseShellExecute = false,
-            RedirectStandardOutput = true
-        };
-
-        process.Start();
-        process.WaitForExit();
-        if (process.ExitCode != 0)
-        {
-            throw new InvalidOperationException($"The vswhere command exited with code {process.ExitCode}.");
-        }
-        else
-        {
-            string installationPath = process.StandardOutput.ReadToEnd().Trim();
-            if (string.IsNullOrEmpty(installationPath))
-            {
-                throw new InvalidOperationException("Visual Studio 2017 was not found");
-            }
-            return installationPath;
-        }
+        throw new InvalidOperationException("Visual Studio 2017 was not found");
     }
+
+    return installationPath;
 }
 
 abstract class TestSuite

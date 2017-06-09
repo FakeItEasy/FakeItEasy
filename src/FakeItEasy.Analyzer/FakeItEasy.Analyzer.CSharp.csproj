@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
-    <Compile Include="../CommonAssemblyInfo.cs" />
+    <Compile Include="../*.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
