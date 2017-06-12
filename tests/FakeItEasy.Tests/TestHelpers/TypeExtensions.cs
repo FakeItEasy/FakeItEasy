@@ -5,7 +5,7 @@
     using System.Reflection;
 #endif
 
-    internal static class TypeExtensions
+    public static class TypeExtensions
     {
         // The FakeItEasy project (targeting net40) uses ILMerge to merge Castle.Core
         // (targeting net40) into its output, while the FakeItEasy.Tests project targets

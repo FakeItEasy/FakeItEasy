@@ -50,10 +50,20 @@ namespace FakeItEasy.Core
                         this.availableTypes.Add(type);
                     }
                 }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    // In this case, some types failed to load.
+                    // Just keep the types that were successfully loaded, and warn about the rest.
+                    foreach (var type in ex.Types.Where(t => t != null))
+                    {
+                        this.availableTypes.Add(type);
+                    }
+
+                    WarnFailedToGetSomeTypes(assembly, ex);
+                }
                 catch (Exception ex)
                 {
                     WarnFailedToGetTypes(assembly, ex);
-                    continue;
                 }
             }
         }
@@ -73,8 +83,6 @@ namespace FakeItEasy.Core
 #if FEATURE_REFLECTION_GETASSEMBLIES
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 #else
-            var fakeItEasyLibraryName = TypeCatalogue.FakeItEasyAssembly.GetName().Name;
-
             var context = DependencyContext.Default;
             var loadedAssemblies = context.RuntimeLibraries
                 .SelectMany(library => library.GetDefaultAssemblyNames(context))
@@ -107,7 +115,7 @@ namespace FakeItEasy.Core
         {
             foreach (var file in files)
             {
-                Assembly assembly = null;
+                Assembly assembly;
                 try
                 {
 #if FEATURE_REFLECTION_GETASSEMBLIES
@@ -148,25 +156,54 @@ namespace FakeItEasy.Core
         {
             Write(
                 ex,
-                "Warning: FakeItEasy failed to load assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.",
-                path);
+                $"Warning: FakeItEasy failed to load assembly '{path}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.");
         }
 
         private static void WarnFailedToGetTypes(Assembly assembly, Exception ex)
         {
             Write(
                 ex,
-                "Warning: FakeItEasy failed to get types from assembly '{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.",
-                assembly);
+                $"Warning: FakeItEasy failed to get types from assembly '{assembly}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.");
         }
 
-        private static void Write(Exception ex, string messageFormat, params object[] messageArgs)
+        private static void WarnFailedToGetSomeTypes(Assembly assembly, ReflectionTypeLoadException ex)
         {
             var writer = new DefaultOutputWriter(Console.Write);
-            writer.Write(messageFormat, messageArgs);
+            Write(
+                writer,
+                ex,
+                $"Warning: FakeItEasy failed to get some types from assembly '{assembly}' while scanning for extension points. Some IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly might not be available.");
+
+            using (writer.Indent())
+            {
+                int notLoadedCount = ex.Types.Count(t => t == null);
+                writer.Write($"{notLoadedCount} type(s) were not loaded for the following reasons:");
+                writer.WriteLine();
+                foreach (var loaderException in ex.LoaderExceptions)
+                {
+                    writer.Write(" - ");
+                    writer.Write(loaderException.GetType());
+                    writer.Write(": ");
+                    writer.Write(loaderException.Message);
+                    writer.WriteLine();
+                }
+            }
+        }
+
+        private static void Write(Exception ex, string message)
+        {
+            var writer = new DefaultOutputWriter(Console.Write);
+            Write(writer, ex, message);
+        }
+
+        private static void Write(IOutputWriter writer, Exception ex, string message)
+        {
+            writer.Write(message);
             writer.WriteLine();
             using (writer.Indent())
             {
+                writer.Write(ex.GetType());
+                writer.Write(": ");
                 writer.Write(ex.Message);
                 writer.WriteLine();
             }

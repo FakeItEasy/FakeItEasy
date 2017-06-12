@@ -27,7 +27,6 @@ namespace FakeItEasy.Core
         /// Gets the number of times this call rule is valid, if it's set
         /// to null its infinitely valid.
         /// </summary>
-        /// <value></value>
         public int? NumberOfTimesToCall => null;
 
         /// <summary>

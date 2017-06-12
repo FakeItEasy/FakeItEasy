@@ -1,4 +1,4 @@
-namespace FakeItEasy.IntegrationTests
+﻿namespace FakeItEasy.IntegrationTests
 {
     using System;
     using System.Collections.Generic;
@@ -120,7 +120,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Assert
             exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
-                .Message.Should().Contain("Non virtual");
+                .Message.Should().Contain("Non-virtual");
         }
 
         [Fact]
@@ -135,7 +135,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Assert
             exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
-                .Message.Should().Contain("Non virtual");
+                .Message.Should().Contain("Non-virtual");
         }
 
         [Fact]
@@ -150,7 +150,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Assert
             exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
-                .Message.Should().Contain("Non virtual");
+                .Message.Should().Contain("Non-virtual");
         }
 
         [Fact]

@@ -101,8 +101,7 @@ namespace FakeItEasy.IntegrationTests
             }
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
-            Justification = "Required for testing.")]
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Required for testing.")]
         private class NonInstance
         {
             private NonInstance()
@@ -111,8 +110,7 @@ namespace FakeItEasy.IntegrationTests
         }
     }
 
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass",
-        Justification = "Tidier.")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     public class DummyTestsDummyFactory : IDummyFactory
     {
         public Priority Priority => Priority.Default;

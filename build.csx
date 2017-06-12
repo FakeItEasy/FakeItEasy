@@ -8,69 +8,61 @@ using static SimpleTargets;
 var solutionName = "FakeItEasy";
 
 var solution = "./" + solutionName + ".sln";
+var versionInfoFile = "./src/VersionInfo.cs";
 var packagesDirectory = Path.GetFullPath("packages");
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 var coverityProjectUrl = "https://scan.coverity.com/builds?project=FakeItEasy%2FFakeItEasy";
-var versionAssembly = "./src/FakeItEasy/bin/Release/FakeItEasy.dll";
 var nuspecs = Directory.GetFiles("./src", "*.nuspec");
-var gitlinks = Directory.GetDirectories("./src").Where(p => !p.EndsWith(".Shared")).Select(Path.GetFileName);
-
-var unitTests = new []
+var pdbs = new []
 {
-    "tests/FakeItEasy.Tests/bin/Release/FakeItEasy.Tests.dll",
-    "tests/FakeItEasy.Analyzer.CSharp.Tests/bin/Release/FakeItEasy.Analyzer.CSharp.Tests.dll",
-    "tests/FakeItEasy.Analyzer.VisualBasic.Tests/bin/Release/FakeItEasy.Analyzer.VisualBasic.Tests.dll"
+    "src/FakeItEasy/bin/Release/net40/FakeItEasy.pdb",
+    "src/FakeItEasy/bin/Release/netstandard1.6/FakeItEasy.pdb",
+    "src/FakeItEasy.Analyzer/bin/Release/netstandard1.1/FakeItEasy.Analyzer.Csharp.pdb",
+    "src/FakeItEasy.Analyzer/bin/Release/netstandard1.1/FakeItEasy.Analyzer.VisualBasic.pdb"
 };
 
-var netstdUnitTestDirectories = new []
+var testSuites = new Dictionary<string, TestSuite[]>
 {
-    "tests/FakeItEasy.Tests.netstd"
-};
-
-var integrationTests = new []
-{
-    "tests/FakeItEasy.IntegrationTests/bin/Release/FakeItEasy.IntegrationTests.dll",
-    "tests/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"
-};
-
-var netstdIntegrationTestDirectories = new []
-{
-    "tests/FakeItEasy.IntegrationTests.netstd"
-};
-
-var specs = new []
-{
-    "tests/FakeItEasy.Specs/bin/Release/FakeItEasy.Specs.dll"
-};
-
-var netstdSpecDirectories = new []
-{
-    "tests/FakeItEasy.Specs.netstd"
-};
-
-var approvalTests = new []
-{
-    "tests/FakeItEasy.Tests.Approval/bin/Release/FakeItEasy.Tests.Approval.dll",
-    "tests/FakeItEasy.Tests.Approval.netstd/bin/Release/FakeItEasy.Tests.Approval.netstd.dll"
+    ["unit"] = new TestSuite[]
+    {
+        new DotnetTestSuite("tests/FakeItEasy.Tests"),
+        new DotnetTestSuite("tests/FakeItEasy.Analyzer.CSharp.Tests"),
+        new DotnetTestSuite("tests/FakeItEasy.Analyzer.VisualBasic.Tests"),
+    },
+    ["integ"] = new TestSuite[]
+    {
+        new DotnetTestSuite("tests/FakeItEasy.IntegrationTests"),
+        new ClassicTestSuite("tests/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"),
+    },
+    ["spec"] = new TestSuite[]
+    {
+        new DotnetTestSuite("tests/FakeItEasy.Specs")
+    },
+    ["approve"] = new TestSuite[]
+    {
+        new DotnetTestSuite("tests/FakeItEasy.Tests.Approval")
+    }
 };
 
 // tool locations
-var msBuild = $"{Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86)}/MSBuild/14.0/Bin/msbuild.exe";
+var vswhere = "./packages/vswhere.1.0.62/tools/vswhere.exe";
+var gitversion = "./packages/GitVersion.CommandLine.4.0.0-beta0012/tools/GitVersion.exe";
+var msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe";
 var nuget = "./.nuget/NuGet.exe";
-var gitlink = "./packages/gitlink.2.3.0/lib/net45/GitLink.exe";
-var xunit = "./packages/xunit.runner.console.2.0.0/tools/xunit.console.exe";
+var pdbGit = "./packages/pdbGit.3.0.41/tools/PdbGit.exe";
+static var xunit = "./packages/xunit.runner.console.2.0.0/tools/xunit.console.exe";
 
 // artifact locations
 var coverityDirectory = "./artifacts/coverity";
 var coverityResultsDirectory = "./artifacts/coverity/cov-int";
 var logsDirectory = "./artifacts/logs";
 var outputDirectory = "./artifacts/output";
-var testsDirectory = "./artifacts/tests";
+static var testsDirectory = "./artifacts/tests";
 
 // targets
 var targets = new TargetDictionary();
 
-targets.Add("default", DependsOn("gitlink", "unit", "integ", "spec", "approve", "pack"));
+targets.Add("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
 
 targets.Add("outputDirectory", () => Directory.CreateDirectory(outputDirectory));
 
@@ -80,7 +72,9 @@ targets.Add("logsDirectory", () => Directory.CreateDirectory(logsDirectory));
 
 targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
 
-targets.Add("build", DependsOn("clean", "outputDirectory", "restore"), () => RunMsBuild("Build"));
+targets.Add("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunMsBuild("Build"));
+
+targets.Add("versionInfoFile", () => Cmd(gitversion, $"/updateAssemblyInfo {versionInfoFile} /ensureAssemblyInfo"));
 
 targets.Add(
     "coverity",
@@ -92,7 +86,7 @@ targets.Add(
             "cov-build",
             $@"--dir {coverityResultsDirectory} ""{msBuild}"" {solution} /target:Build /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/Coverity-Build.log;Verbosity=Detailed;PerformanceSummary {packagesDirectoryOption}");
 
-        var version = GetVersion();
+        var version = ReadCmdOutput(".", gitversion, "/showvariable SemVer");
         var coverityToken = Environment.GetEnvironmentVariable("COVERITY_TOKEN");
         var coverityEmail = Environment.GetEnvironmentVariable("COVERITY_EMAIL");
         var repoCommitId = Environment.GetEnvironmentVariable("APPVEYOR_REPO_COMMIT");
@@ -136,51 +130,36 @@ targets.Add(
     "restore",
     () =>
     {
-        Cmd(nuget, $"restore {solution} -PackagesDirectory {packagesDirectory}");
-        foreach (var projectDir in netstdUnitTestDirectories.Concat(netstdIntegrationTestDirectories).Concat(netstdSpecDirectories))
-        {
-            Cmd(projectDir, "dotnet", "restore");
-        }
+        Cmd(nuget, $"restore {solution}");
+        Cmd("dotnet", $"restore");
     });
 
 targets.Add(
     "unit",
     DependsOn("build", "testsDirectory"),
-    () =>
-    {
-        RunTests(unitTests);
-        RunDotNetTests(netstdUnitTestDirectories);
-    });
+    () => RunTests("unit"));
 
 targets.Add(
     "integ",
     DependsOn("build", "testsDirectory"),
-    () =>
-    {
-        RunTests(integrationTests);
-        RunDotNetTests(netstdIntegrationTestDirectories);
-    });
+    () => RunTests("integ"));
 
 targets.Add(
     "spec",
     DependsOn("build", "testsDirectory"),
-    () =>
-    {
-        RunTests(specs);
-        RunDotNetTests(netstdSpecDirectories);
-    });
+    () => RunTests("spec"));
 
 targets.Add(
     "approve",
     DependsOn("build", "testsDirectory"),
-    () => RunTests(approvalTests));
+    () => RunTests("approve"));
 
 targets.Add(
     "pack",
-    DependsOn("build", "outputDirectory"),
+    DependsOn("build", "outputDirectory", "pdbgit"),
     () =>
     {
-        var version = GetVersion();
+        var version = ReadCmdOutput(".", gitversion, "/showvariable NuGetVersionV2");
         foreach (var nuspec in nuspecs)
         {
             Cmd(nuget, $"pack {nuspec} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
@@ -188,18 +167,25 @@ targets.Add(
     });
 
 targets.Add(
-    "gitlink",
-    DependsOn("build"), () => Cmd(gitlink, $". -f {solution} -u {repoUrl} -include " + string.Join(",", gitlinks)));
+    "pdbgit",
+    DependsOn("build"),
+    () =>
+    {
+        foreach (var pdb in pdbs)
+        {
+            Cmd(pdbGit, $"-u {repoUrl} -s {pdb}");
+        }
+    });
 
 Run(Args, targets);
 
 // helpers
-public void Cmd(string fileName, string args)
+public static void Cmd(string fileName, string args)
 {
     Cmd(".", fileName, args);
 }
 
-public void Cmd(string workingDirectory, string fileName, string args)
+public static void Cmd(string workingDirectory, string fileName, string args)
 {
     using (var process = new Process())
     {
@@ -222,6 +208,30 @@ public void Cmd(string workingDirectory, string fileName, string args)
     }
 }
 
+public string ReadCmdOutput(string workingDirectory, string fileName, string args)
+{
+    using (var process = new Process())
+    {
+        process.StartInfo = new ProcessStartInfo
+        {
+            FileName = fileName,
+            Arguments = args,
+            WorkingDirectory = workingDirectory,
+            UseShellExecute = false,
+            RedirectStandardOutput = true
+        };
+
+        process.Start();
+        process.WaitForExit();
+        if (process.ExitCode != 0)
+        {
+            throw new InvalidOperationException($"The {fileName} command exited with code {process.ExitCode}.");
+        }
+
+        return process.StandardOutput.ReadToEnd().Trim();
+    }
+}
+
 public void RunMsBuild(string target)
 {
     var packagesDirectoryOption = string.IsNullOrEmpty(packagesDirectory) ? "" : $"/p:NuGetPackagesDirectory={packagesDirectory}";
@@ -230,39 +240,60 @@ public void RunMsBuild(string target)
         $"{solution} /target:{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/{target}.log;Verbosity=Detailed;PerformanceSummary {packagesDirectoryOption}");
 }
 
-public void RunTests(IEnumerable<string> testDlls)
+public void RunTests(string target)
 {
-    foreach (var testDll in testDlls)
+    foreach (var testSuite in testSuites[target])
     {
-        var baseFileName = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileNameWithoutExtension(testDll))) + ".TestResults";
+        testSuite.Execute();
+    }
+}
+
+public string GetVSLocation()
+{
+    var installationPath = ReadCmdOutput(".", $"\"{vswhere}\"", "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)");
+    if (string.IsNullOrEmpty(installationPath))
+    {
+        throw new InvalidOperationException("Visual Studio 2017 was not found");
+    }
+
+    return installationPath;
+}
+
+abstract class TestSuite
+{
+    public abstract void Execute();
+}
+
+class DotnetTestSuite : TestSuite
+{
+    public DotnetTestSuite(string testDirectory)
+    {
+        this.TestDirectory = testDirectory;
+    }
+
+    public string TestDirectory { get; }
+
+    public override void Execute()
+    {
+        var xml = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileName(this.TestDirectory) + ".TestResults.xml"));
+        Cmd(this.TestDirectory, "dotnet", $"xunit -configuration Release -nologo -nobuild -notrait \"explicit=yes\" -xml {xml}");
+    }
+}
+
+class ClassicTestSuite : TestSuite
+{
+    public ClassicTestSuite(string assemblyPath)
+    {
+        this.AssemblyPath = assemblyPath;
+    }
+
+    public string AssemblyPath { get; }
+
+    public override void Execute()
+    {
+        var baseFileName = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileNameWithoutExtension(this.AssemblyPath))) + ".TestResults";
         var xml = baseFileName + ".xml";
         var html = baseFileName + ".html";
-        Cmd(xunit, $"{testDll} -noshadow -nologo -notrait \"explicit=yes\"' -xml {xml} -html {html}");
+        Cmd(xunit, $"{this.AssemblyPath} -noshadow -nologo -notrait \"explicit=yes\"' -xml {xml} -html {html}");
     }
-}
-
-public void RunDotNetTests(IEnumerable<string> testDirectories)
-{
-    foreach (var testDirectory in testDirectories)
-    {
-        var xml = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
-        Cmd(testDirectory, "dotnet", $"test -c Release -nologo -notrait \"explicit=yes\" -xml {xml}");
-    }
-}
-
-public string GetVersion()
-{
-    var  versionInfo = FileVersionInfo.GetVersionInfo(versionAssembly);
-    var version = versionInfo.ProductVersion;
-
-    var versionSuffix = Environment.GetEnvironmentVariable("VERSION_SUFFIX");
-
-    if (string.IsNullOrEmpty(versionSuffix))
-    {
-        return version;
-    }
-
-    var build = Environment.GetEnvironmentVariable("BUILD");
-    var buildSuffix = versionSuffix + "-build" + build.PadLeft(6, '0');
-    return version + buildSuffix;
 }

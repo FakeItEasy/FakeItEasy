@@ -45,9 +45,7 @@ namespace FakeItEasy.Specs
 
             event EventHandler<CustomEventArgs> GenericEvent;
 
-#if !FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS
             event EventHandler<ReferenceType> EventHandlerOfNonEventArgsEvent;
-#endif
 
             event CustomEventHandler CustomEvent;
 
@@ -82,13 +80,11 @@ namespace FakeItEasy.Specs
                 CapturedArgs1 = e;
             };
 
-#if !FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS
             Fake.EventHandlerOfNonEventArgsEvent += (sender, e) =>
             {
                 CapturedSender = sender;
                 CapturedArgs1 = e;
             };
-#endif
 
             Fake.GenericEvent += (sender, e) =>
             {
@@ -270,7 +266,6 @@ namespace FakeItEasy.Specs
                 .x(() => CapturedArgs1.Should().BeSameAs(this.customEventArgs));
         }
 
-#if !FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS
         [Scenario]
         public void EventArgumentsThatDoNotExtenedEventArg()
         {
@@ -286,7 +281,6 @@ namespace FakeItEasy.Specs
             "And the supplied value is passed as the event arguments"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.referenceTypeEventArgs));
         }
-#endif
 
         [Scenario]
         public void CustomEventHandler()

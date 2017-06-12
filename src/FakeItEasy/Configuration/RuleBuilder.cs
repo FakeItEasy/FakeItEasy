@@ -143,12 +143,9 @@ namespace FakeItEasy.Configuration
 
             var asserter = this.asserterFactory.Invoke(this.Calls);
 
-            var description = new StringBuilderOutputWriter();
-            this.RuleBeingBuilt.WriteDescriptionOfValidCall(description);
+            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
 
-            asserter.AssertWasCalled(this.Matcher.Matches, description.Builder.ToString(), repeatConstraint.Matches, repeatConstraint.ToString());
-
-            return new UnorderedCallAssertion(this.manager, this.Matcher, description.Builder.ToString(), repeatConstraint);
+            return new UnorderedCallAssertion(this.manager, this.Matcher, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
         }
 
         private void AddRuleIfNeeded()

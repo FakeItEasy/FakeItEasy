@@ -90,7 +90,7 @@ namespace FakeItEasy.Tests
             // Arrange
 
             // Act
-            var exception = Record.Exception(() => { foo.SomethingHappened += Raise.WithEmpty(); });
+            var exception = Record.Exception(() => { this.foo.SomethingHappened += Raise.WithEmpty(); });
 
             // Assert
             exception.Should().BeNull();

@@ -1,5 +1,6 @@
 namespace FakeItEasy.Configuration
 {
+    using System;
     using FakeItEasy.Core;
 
     /// <summary>
@@ -9,14 +10,14 @@ namespace FakeItEasy.Configuration
     {
         private readonly FakeManager fakeManager;
         private readonly ICallMatcher matcher;
-        private readonly string callDescription;
+        private readonly Action<IOutputWriter> callDescriber;
         private readonly Repeated repeatConstraint;
 
-        internal UnorderedCallAssertion(FakeManager fakeManager, ICallMatcher matcher, string callDescription, Repeated repeatConstraint)
+        internal UnorderedCallAssertion(FakeManager fakeManager, ICallMatcher matcher, Action<IOutputWriter> callDescriber, Repeated repeatConstraint)
         {
             this.fakeManager = fakeManager;
             this.matcher = matcher;
-            this.callDescription = callDescription;
+            this.callDescriber = callDescriber;
             this.repeatConstraint = repeatConstraint;
         }
 
@@ -35,7 +36,7 @@ namespace FakeItEasy.Configuration
 
         private void CheckCallHappenedInOrder(SequentialCallContext context)
         {
-            context.CheckNextCall(this.fakeManager, this.matcher.Matches, this.callDescription, this.repeatConstraint);
+            context.CheckNextCall(this.fakeManager, this.matcher.Matches, this.callDescriber, this.repeatConstraint);
         }
 
         private class OrderedCallAssertion : IOrderableCallAssertion

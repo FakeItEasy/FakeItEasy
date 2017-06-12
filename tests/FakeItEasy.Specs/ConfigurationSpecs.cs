@@ -1,4 +1,4 @@
-namespace FakeItEasy.Specs
+﻿namespace FakeItEasy.Specs
 {
     using System;
     using FakeItEasy.Configuration;
@@ -235,7 +235,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                    .And.Message.Should().Contain("Non virtual methods can not be intercepted."));
+                    .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -267,7 +267,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                   .And.Message.Should().Contain("Sealed methods can not be intercepted."));
+                   .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -299,7 +299,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                    .And.Message.Should().Contain("Non virtual methods can not be intercepted."));
+                    .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -331,7 +331,7 @@ namespace FakeItEasy.Specs
 
              "Then it throws a fake configuration exception"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                    .And.Message.Should().Contain("Sealed methods can not be intercepted."));
+                    .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -363,7 +363,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                    .And.Message.Should().Contain("Non virtual methods can not be intercepted."));
+                    .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -395,7 +395,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                   .And.Message.Should().Contain("Sealed methods can not be intercepted."));
+                   .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]

@@ -27,7 +27,9 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "But it's kinda cool right?")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [CLSCompliant(false)]
+#pragma warning disable SA1300 // Element must begin with upper-case letter
         public static T _ => Ignored;
+#pragma warning restore SA1300 // Element must begin with upper-case letter
 
         /// <summary>
         /// Gets a constraint that considers any value of an argument as valid.

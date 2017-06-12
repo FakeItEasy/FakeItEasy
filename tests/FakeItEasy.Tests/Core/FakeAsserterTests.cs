@@ -25,32 +25,33 @@ namespace FakeItEasy.Tests.Core
 
             var asserter = this.CreateAsserter();
 
-            asserter.AssertWasCalled(x => true, string.Empty, x => x == 2, string.Empty);
+            asserter.AssertWasCalled(x => true, outputWriter => { }, Repeated.Exactly.Twice);
         }
 
         [Fact]
-        public void AssertWasCalled_should_fail_when_the_repeatPredicate_returns_false_fro_the_number_of_matching_calls()
+        public void AssertWasCalled_should_fail_when_the_repeatPredicate_returns_false_for_the_number_of_matching_calls()
         {
             this.StubCalls(2);
 
             var asserter = this.CreateAsserter();
 
-            var exception = Record.Exception(() => asserter.AssertWasCalled(x => true, string.Empty, x => false, string.Empty));
+            var exception = Record.Exception(() => asserter.AssertWasCalled(x => true, outputWriter => { }, Repeated.Exactly.Times(5)));
             exception.Should().BeAnExceptionOfType<ExpectationException>();
         }
 
         [Fact]
         public void AssertWasCalled_should_pass_the_number_of_matching_calls_to_the_repeatPredicate()
         {
-            int? numberPassedToRepeatPredicate = null;
-
             this.StubCalls(4);
+
+            var repeatedConstraint = A.Fake<Repeated>();
+            A.CallTo(() => repeatedConstraint.Matches(A<int>._)).Returns(true);
 
             var asserter = this.CreateAsserter();
 
-            asserter.AssertWasCalled(x => this.calls.IndexOf(x) == 0, string.Empty, x => { numberPassedToRepeatPredicate = x; return true; }, string.Empty);
+            asserter.AssertWasCalled(x => this.calls.IndexOf(x) == 0, outputWriter => { }, repeatedConstraint);
 
-            numberPassedToRepeatPredicate.Should().Be(1);
+            A.CallTo(() => repeatedConstraint.Matches(1)).MustHaveHappened();
         }
 
         [Fact]
@@ -58,7 +59,7 @@ namespace FakeItEasy.Tests.Core
         {
             var asserter = this.CreateAsserter();
             var exception =
-                Record.Exception(() => asserter.AssertWasCalled(x => true, @"IFoo.Bar(1)", x => false, string.Empty));
+                Record.Exception(() => asserter.AssertWasCalled(x => true, outputWriter => outputWriter.Write("IFoo.Bar(1)"), A.Dummy<Repeated>()));
 
             var expectedMessage =
 @"
@@ -77,11 +78,11 @@ namespace FakeItEasy.Tests.Core
 
             var asserter = this.CreateAsserter();
             var exception = Record.Exception(() =>
-                asserter.AssertWasCalled(x => false, string.Empty, x => x == 2, "#2 times"));
+                asserter.AssertWasCalled(x => false, outputWriter => { }, Repeated.Exactly.Twice));
 
             var expectedMessage =
 @"
-  Expected to find it #2 times but found it #0 times among the calls:";
+  Expected to find it exactly twice but found it #0 times among the calls:";
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .And.Message.Should().Contain(expectedMessage);
@@ -93,7 +94,7 @@ namespace FakeItEasy.Tests.Core
             this.StubCalls(2);
 
             var asserter = this.CreateAsserter();
-            var exception = Record.Exception(() => asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
+            var exception = Record.Exception(() => asserter.AssertWasCalled(x => false, outputWriter => { }, A.Dummy<Repeated>()));
 
             exception.Should().BeAnExceptionOfType<ExpectationException>();
             A.CallTo(() => this.callWriter.WriteCalls(A<IEnumerable<IFakeObjectCall>>.That.IsThisSequence(this.calls), A<IOutputWriter>._)).MustHaveHappened();
@@ -107,11 +108,11 @@ namespace FakeItEasy.Tests.Core
             var asserter = this.CreateAsserter();
 
             var exception = Record.Exception(() =>
-                asserter.AssertWasCalled(x => false, string.Empty, x => x == 2, "#2 times"));
+                asserter.AssertWasCalled(x => false, outputWriter => { }, Repeated.Exactly.Twice));
 
             var expectedMessage =
 @"
-  Expected to find it #2 times but no calls were made to the fake object.";
+  Expected to find it exactly twice but no calls were made to the fake object.";
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .And.Message.Should().Contain(expectedMessage);
@@ -123,7 +124,7 @@ namespace FakeItEasy.Tests.Core
             var asserter = this.CreateAsserter();
 
             var exception = Record.Exception(() =>
-                asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
+                asserter.AssertWasCalled(x => false, outputWriter => { }, A.Dummy<Repeated>()));
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .And.Message.Should().EndWith(string.Concat(Environment.NewLine, Environment.NewLine));
@@ -135,7 +136,7 @@ namespace FakeItEasy.Tests.Core
             var asserter = this.CreateAsserter();
 
             var exception = Record.Exception(() =>
-                asserter.AssertWasCalled(x => false, string.Empty, x => false, string.Empty));
+                asserter.AssertWasCalled(x => false, outputWriter => { }, A.Dummy<Repeated>()));
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .And.Message.Should().StartWith(Environment.NewLine);

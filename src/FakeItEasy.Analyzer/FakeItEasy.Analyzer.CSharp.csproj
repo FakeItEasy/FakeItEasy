@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.1</TargetFrameworks>
+    <AssemblyName>FakeItEasy.Analyzer.CSharp</AssemblyName>
+    <RootNamespace>FakeItEasy.Analyzer</RootNamespace>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\FakeItEasy.snk</AssemblyOriginatorKeyFile>
+    <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>$(DefineConstants);CSHARP</DefineConstants>
+    <PackageTargetFallback>portable45-net45+win8</PackageTargetFallback>
+    <BaseIntermediateOutputPath>objcs\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="VisualBasic/Resources.resx" />
+    <Compile Remove="objvb\**" />
+    <EmbeddedResource Remove="objvb\**" />
+    <None Remove="objvb\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
+    <Compile Include="../*.cs" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="1.1.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Composition" Version="1.0.27" />
+  </ItemGroup>
+
+</Project>

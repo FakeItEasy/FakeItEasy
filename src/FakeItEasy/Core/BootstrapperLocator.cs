@@ -6,6 +6,7 @@ namespace FakeItEasy.Core
     using System.Reflection;
     using Microsoft.Extensions.DependencyModel;
 #endif
+
     /// <summary>
     /// Locate an <see cref="IBootstrapper"/> implementation.
     /// </summary>
