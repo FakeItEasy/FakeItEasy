@@ -6,6 +6,7 @@
 [Oo]bjvb
 artifacts
 packages
+src/VersionInfo.cs
 
 *.*proj.user
 *.lock.json

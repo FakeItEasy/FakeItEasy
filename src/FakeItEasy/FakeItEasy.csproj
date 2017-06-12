@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
-    <Compile Include="../CommonAssemblyInfo.cs" />
+    <Compile Include="../*.cs" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" />
   </ItemGroup>
 
