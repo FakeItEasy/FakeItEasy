@@ -55,12 +55,10 @@
                 return "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.";
             }
 
-            if (!Castle.DynamicProxy.Internal.InternalsUtil.IsAccessible(method))
+            string message;
+            if (!Castle.DynamicProxy.ProxyUtil.IsAccessible(method, out message))
             {
-                return string.Concat(
-                    "Methods not accessible to ",
-                    Castle.DynamicProxy.ModuleScope.DEFAULT_ASSEMBLY_NAME,
-                    " can not be intercepted.");
+                return message;
             }
 
             return null;

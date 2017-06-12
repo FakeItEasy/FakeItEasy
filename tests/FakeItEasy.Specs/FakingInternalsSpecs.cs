@@ -1,4 +1,4 @@
-namespace FakeItEasy.Specs
+﻿namespace FakeItEasy.Specs
 {
     using System;
     using System.Collections.Generic;
@@ -15,13 +15,16 @@ namespace FakeItEasy.Specs
     public static class FakingInternalsSpecs
     {
         [Scenario]
-        public static void InvisibleInternals(
+        public static void InvisibleInternalInterface(
             Exception exception)
         {
-            "when trying to fake invisible internals"
+            "Given an internal interface not visible to DynamicProxyGenAssembly2"
+                .See<IInternal>();
+
+            "When I try to fake the interface"
                 .x(() => exception = Record.Exception(() => A.Fake<IInternal>()));
 
-            "it should throw an exception with a message containing a hint at using internals visible to attribute"
+            "Then it throws an exception with a message containing a hint at using internals visible to attribute"
                 .x(() => exception.Message.Should()
                     .Contain("Make it public, or internal and mark your assembly with")
                     .And.Match("*[assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2*\")]*"));
@@ -31,10 +34,13 @@ namespace FakeItEasy.Specs
         public static void GenericTypeWithInternalTypeParameters(
             Exception exception)
         {
-            "when trying to fake generic type with internal type parameters"
+            "Given a public generic interface with a type parameter that is not visible to DynamicProxyGenAssembly2"
+                .See<IList<IInternal>>();
+
+            "When I try to fake the public interface"
                 .x(() => exception = Record.Exception(() => A.Fake<IList<IInternal>>()));
 
-            "it should throw an exception with a message containing a hint at using internals visible to attribute"
+            "Then it throws an exception with a message containing a hint at using internals visible to attribute"
                 .x(() => exception.Message.Should()
                              .Contain(
                                  "No usable default constructor was found on the type System.Collections.Generic.IList`1[FakeItEasy.Specs.IInternal]")
@@ -47,15 +53,21 @@ namespace FakeItEasy.Specs
             TypeWithInternalMethod fake,
             Exception exception)
         {
-            "establish"
+            const string ExpectedMessage = @"The current proxy generator can not intercept the method FakeItEasy.Specs.TypeWithInternalMethod.InternalMethod() for the following reason:
+    - Can not create proxy for method Int32 InternalMethod() because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2"")] attribute, because assembly FakeItEasy.Specs is not strong-named.";
+
+            "Given a public type with an internal method not visible to DynamicProxyGenAssembly2"
+                .See<TypeWithInternalMethod>();
+
+            "And I create a fake of the type"
                 .x(() => fake = A.Fake<TypeWithInternalMethod>());
 
-            "when trying to override internal method on type"
+            "When I override the internal method"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => fake.InternalMethod()).Returns(17)));
 
-            "it should throw an exception with a message complaining about accessibility"
+            "Then it throws an exception with a message containing a hint at using internals visible to attribute"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                             .And.Message.Should().Contain("not accessible to DynamicProxyGenAssembly2"));
+                             .And.Message.Should().Contain(ExpectedMessage));
         }
     }
 
