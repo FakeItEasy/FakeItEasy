@@ -53,21 +53,21 @@
             TypeWithInternalMethod fake,
             Exception exception)
         {
-            "Given a public type"
-                .See<TypeWithInternalMethod>();
+            const string ExpectedMessage = @"The current proxy generator can not intercept the method FakeItEasy.Specs.TypeWithInternalMethod.InternalMethod() for the following reason:
+    - Can not create proxy for method Int32 InternalMethod() because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2"")] attribute, because assembly FakeItEasy.Specs is not strong-named.";
 
-            "And the type has an internal method not visible to DynamicProxyGenAssembly2"
+            "Given a public type with an internal method not visible to DynamicProxyGenAssembly2"
                 .See<TypeWithInternalMethod>();
 
             "And I create a fake of the type"
-            .x(() => fake = A.Fake<TypeWithInternalMethod>());
+                .x(() => fake = A.Fake<TypeWithInternalMethod>());
 
-            "When I override the internal"
+            "When I override the internal method"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => fake.InternalMethod()).Returns(17)));
 
-            "Then it throws an exception with a message complaining about accessibility"
+            "Then it throws an exception with a message containing a hint at using internals visible to attribute"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                             .And.Message.Should().Contain("not accessible to DynamicProxyGenAssembly2"));
+                             .And.Message.Should().Contain(ExpectedMessage));
         }
     }
 
