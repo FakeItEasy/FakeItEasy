@@ -127,7 +127,7 @@ targets.Add(
     "restore",
     () =>
     {
-        Cmd(nuget, $"restore {solution} -PackagesDirectory {packagesDirectory}");
+        Cmd(nuget, $"restore {solution}");
         Cmd("dotnet", $"restore");
     });
 
