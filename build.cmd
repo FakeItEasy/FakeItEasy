@@ -5,7 +5,7 @@ pushd %~dp0
 setlocal
 
 rem options
-set NUGET_VERSION=3.5.0
+set NUGET_VERSION=4.1.0
 
 rem determine nuget cache dir
 set NUGET_CACHE_DIR=%LocalAppData%\.nuget\v%NUGET_VERSION%
@@ -19,16 +19,14 @@ if not exist %NUGET_CACHE_DIR%\NuGet.exe (
 )
 
 rem copy nuget locally
-if not exist .nuget\NuGet.exe (
-  if not exist .nuget md .nuget
-  copy %NUGET_CACHE_DIR%\NuGet.exe .nuget\NuGet.exe > nul
-)
+if not exist .nuget md .nuget
+copy /Y %NUGET_CACHE_DIR%\NuGet.exe .nuget\NuGet.exe > nul
 
 rem restore packages for build script
 .nuget\NuGet.exe restore .\packages.config -PackagesDirectory .\packages -Verbosity quiet
 
 rem run build script
-"%ProgramFiles(x86)%\MSBuild\14.0\Bin\csi.exe" .\build.csx %*
+".\packages\Microsoft.Net.Compilers.2.2.0\tools\csi.exe" .\build.csx %*
 
 rem return to original working directory
 popd
