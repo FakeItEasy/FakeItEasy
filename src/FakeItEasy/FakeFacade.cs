@@ -5,13 +5,11 @@ namespace FakeItEasy
 
     internal class FakeFacade
     {
-        private readonly IFixtureInitializer fakeInitializer;
         private readonly IFakeManagerAccessor fakeManagerAccessor;
 
-        public FakeFacade(IFakeManagerAccessor fakeManagerAccessor, IFixtureInitializer fakeInitializer)
+        public FakeFacade(IFakeManagerAccessor fakeManagerAccessor)
         {
             this.fakeManagerAccessor = fakeManagerAccessor;
-            this.fakeInitializer = fakeInitializer;
         }
 
         public virtual FakeManager GetFakeManager(object fakedObject)
@@ -56,7 +54,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(fixture, nameof(fixture));
 
-            this.fakeInitializer.InitializeFakes(fixture);
+            FixtureInitializer.InitializeFakes(fixture);
         }
     }
 }

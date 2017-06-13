@@ -38,7 +38,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
     <Compile Remove="RecordersTests.cs" />
-    <Compile Remove="SelfInitializedFakes/*.cs" />
+    <Compile Remove="SelfInitializedFakes\*.cs" />
   </ItemGroup>
 
 </Project>
