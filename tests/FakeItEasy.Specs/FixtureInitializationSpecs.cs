@@ -13,52 +13,52 @@
         [Scenario]
         public static void Initialization(ExampleFixture fixture)
         {
-            "given a test fixture"
+            "Given a test fixture"
                 .x(() => fixture = new ExampleFixture());
 
-            "when the fixture is initialized"
+            "When I initialize the fixture"
                 .x(() => Fake.InitializeFixture(fixture));
 
-            "then the sut should be set"
+            "Then the sut is set"
                 .x(() => fixture.Sut.Should().NotBeNull());
 
-            "and dependencies should be injected into the sut from the fixture"
+            "And dependencies are injected into the sut from the fixture"
                 .x(() => fixture.Sut.Foo.Should().BeSameAs(fixture.Foo));
 
-            "and dependencies should be injected into the sut even when not available in fixture"
+            "And dependencies are injected into the sut even when not available in fixture"
                 .x(() => fixture.Sut.ServiceProvider.Should().NotBeNull());
 
-            "and dependencies of the same type should be the same instance"
+            "And dependencies of the same type are the same instance"
                 .x(() => fixture.Sut.Foo.Should().BeSameAs(fixture.Sut.Foo2));
 
-            "and public attributed fixture fields should be set"
+            "And public attributed fixture fields are set"
                 .x(() => fixture.FooField.Should().NotBeNull());
 
-            "and public unattributed fixture fields should not be set"
+            "And public unattributed fixture fields are not set"
                 .x(() => fixture.UnattributedFooField.Should().BeNull());
 
-            "and private attributed fixture properties should be set"
+            "And private attributed fixture properties are set"
                 .x(() => typeof(ExampleFixture).GetProperty("PrivateFoo", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(fixture).Should().NotBeNull());
 
-            "and private attributed fixture fields should be set"
+            "And private attributed fixture fields are set"
                 .x(() => typeof(ExampleFixture).GetField("privateFoo", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(fixture).Should().NotBeNull());
 
-            "and public unattributed fixture properties should not be set"
+            "And public unattributed fixture properties are not set"
                 .x(() => fixture.UnattributedFoo.Should().BeNull());
         }
 
         public static void TwoSuts(TwoSutFixture fixture, Exception exception)
         {
-            "given a test fixture"
+            "Given a test fixture"
                 .x(() => fixture = new TwoSutFixture());
 
-            "and the fixture has two SUTs"
+            "And the fixture has two SUTs"
                 .See<TwoSutFixture>();
 
-            "when the fixture is initialized"
+            "When I initialize the fixture"
                 .x(() => exception = Record.Exception(() => Fake.InitializeFixture(fixture)));
 
-            "then it throws an exception"
+            "Then it throws an exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>()
                 .WithMessage($"A fake fixture can only contain one member marked with {nameof(UnderTestAttribute)}."));
         }
