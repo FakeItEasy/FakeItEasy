@@ -1,12 +1,8 @@
-namespace FakeItEasy.Tests.Core
+﻿namespace FakeItEasy.Tests.Core
 {
-    using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
-#if FEATURE_SELF_INITIALIZED_FAKES
-    using FakeItEasy.SelfInitializedFakes;
-#endif
     using FluentAssertions;
     using Xunit;
 
@@ -35,36 +31,5 @@ namespace FakeItEasy.Tests.Core
             Fake.GetFakeManager(this.faked).Rules
                 .Should().Contain(item => item.GetType().IsAssignableFrom(typeof(WrappedObjectRule)));
         }
-
-#if FEATURE_SELF_INITIALIZED_FAKES
-#pragma warning disable CS0618 // Type or member is obsolete
-        [Fact]
-        public void ConfigureFakeToWrap_should_add_self_initialization_rule_when_recorder_is_specified()
-        {
-            // Arrange
-            this.wrapperConfigurator.RecordedBy(A.Fake<ISelfInitializingFakeRecorder>());
-
-            // Act
-            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked);
-
-            // Assert
-            Fake.GetFakeManager(this.faked).Rules.First()
-                .Should().BeOfType<SelfInitializationRule>();
-        }
-
-        [Fact]
-        public void ConfigureFakeToWrap_should_not_add_self_initialization_rule_when_recorder_is_not_specified()
-        {
-            // Arrange
-
-            // Act
-            this.wrapperConfigurator.ConfigureFakeToWrap(this.faked);
-
-            // Assert
-            Fake.GetFakeManager(this.faked).Rules
-                .Should().NotContain(item => item.GetType().IsAssignableFrom(typeof(SelfInitializationRule)));
-        }
-#pragma warning restore CS0618 // Type or member is obsolete
-#endif
     }
 }

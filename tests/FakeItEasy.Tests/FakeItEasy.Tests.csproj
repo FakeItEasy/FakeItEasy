@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
-    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_THREAD_CURRENTCULTURE;FEATURE_SELF_INITIALIZED_FAKES</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_THREAD_CURRENTCULTURE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,7 +38,6 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
     <Compile Remove="RecordersTests.cs" />
-    <Compile Remove="SelfInitializedFakes\*.cs" />
   </ItemGroup>
 
 </Project>

@@ -1,30 +1,18 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using FakeItEasy.Creation;
-#if FEATURE_SELF_INITIALIZED_FAKES
-    using FakeItEasy.SelfInitializedFakes;
-#endif
 
     /// <summary>
     /// Handles configuring of fake objects to delegate all their calls to a wrapped instance.
     /// </summary>
     /// <typeparam name="T">The type of fake object generated.</typeparam>
     internal class FakeWrapperConfigurator<T>
-#if FEATURE_SELF_INITIALIZED_FAKES
-        : FakeOptionsBase<T>, IFakeOptionsForWrappers<T>, IFakeOptionsForWrappers
-#else
         : FakeOptionsBase<T>
-#endif
     {
         private readonly IFakeOptions<T> fakeOptions;
-#if FEATURE_SELF_INITIALIZED_FAKES
-#pragma warning disable CS0618 // Type or member is obsolete
-        private ISelfInitializingFakeRecorder recorder;
-#pragma warning restore CS0618 // Type or member is obsolete
-#endif
 
         public FakeWrapperConfigurator(IFakeOptions<T> fakeOptions, object wrappedObject)
         {
@@ -39,11 +27,7 @@ namespace FakeItEasy.Core
             return this.fakeOptions.WithArgumentsForConstructor(argumentsForConstructor);
         }
 
-#if FEATURE_SELF_INITIALIZED_FAKES
-        public override IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance)
-#else
         public override IFakeOptions<T> Wrapping(T wrappedInstance)
-#endif
         {
             return this.fakeOptions.Wrapping(wrappedInstance);
         }
@@ -63,21 +47,6 @@ namespace FakeItEasy.Core
             return this.fakeOptions.ConfigureFake(action);
         }
 
-#if FEATURE_SELF_INITIALIZED_FAKES
-        [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
-        public IFakeOptions<T> RecordedBy(ISelfInitializingFakeRecorder fakeRecorder)
-        {
-            this.recorder = fakeRecorder;
-            return this.fakeOptions;
-        }
-
-        [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
-        IFakeOptions IFakeOptionsForWrappers.RecordedBy(ISelfInitializingFakeRecorder fakeRecorder)
-        {
-            return (IFakeOptions)this.RecordedBy(fakeRecorder);
-        }
-#endif
-
         /// <summary>
         /// Configures the specified faked object to wrap the specified instance.
         /// </summary>
@@ -87,23 +56,7 @@ namespace FakeItEasy.Core
             var fake = Fake.GetFakeManager(fakedObject);
 
             var wrapperRule = CreateAndAddWrapperRule(this.WrappedObject, fake);
-
-#if FEATURE_SELF_INITIALIZED_FAKES
-            AddRecordingRuleWhenRecorderIsSpecified(this.recorder, fake, wrapperRule);
-#endif
         }
-
-#if FEATURE_SELF_INITIALIZED_FAKES
-#pragma warning disable CS0618 // Type or member is obsolete
-        private static void AddRecordingRuleWhenRecorderIsSpecified(ISelfInitializingFakeRecorder recorder, FakeManager fake, WrappedObjectRule wrapperRule)
-        {
-            if (recorder != null)
-            {
-                fake.AddRuleFirst(new SelfInitializationRule(wrapperRule, recorder));
-            }
-        }
-#pragma warning restore CS0618 // Type or member is obsolete
-#endif
 
         private static WrappedObjectRule CreateAndAddWrapperRule(object wrappedInstance, FakeManager fake)
         {

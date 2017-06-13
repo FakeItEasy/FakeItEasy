@@ -1,9 +1,8 @@
-namespace FakeItEasy
+﻿namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.IO;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -11,9 +10,6 @@ namespace FakeItEasy
     using FakeItEasy.Creation.DelegateProxies;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
-#if FEATURE_SELF_INITIALIZED_FAKES
-    using FakeItEasy.SelfInitializedFakes;
-#endif
 
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -63,19 +59,6 @@ namespace FakeItEasy
 
             container.RegisterSingleton(c =>
                 new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), c.Resolve<IEqualityComparer<IFakeObjectCall>>()));
-
-#if FEATURE_SELF_INITIALIZED_FAKES
-#pragma warning disable CS0618 // Type or member is obsolete
-            container.RegisterSingleton<RecordingManager.Factory>(c =>
-                x => new RecordingManager(x));
-
-            container.RegisterSingleton<IFileSystem>(c =>
-                new FileSystem());
-
-            container.RegisterSingleton<FileStorage.Factory>(c =>
-                x => new FileStorage(x, c.Resolve<IFileSystem>()));
-#pragma warning restore CS0618 // Type or member is obsolete
-#endif
 
             container.RegisterSingleton<ICallExpressionParser>(c =>
                 new CallExpressionParser());
@@ -146,27 +129,6 @@ namespace FakeItEasy
                     this.serviceLocator.Resolve<MethodInfoManager>());
             }
         }
-
-#if FEATURE_SELF_INITIALIZED_FAKES
-        [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
-        private class FileSystem : IFileSystem
-        {
-            public Stream Open(string fileName, FileMode mode)
-            {
-                return File.Open(fileName, mode);
-            }
-
-            public bool FileExists(string fileName)
-            {
-                return File.Exists(fileName);
-            }
-
-            public void Create(string fileName)
-            {
-                File.Create(fileName).Dispose();
-            }
-        }
-#endif
 
         private class ResolverFakeObjectCreator
             : IFakeObjectCreator

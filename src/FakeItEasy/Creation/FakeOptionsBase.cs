@@ -1,4 +1,4 @@
-namespace FakeItEasy.Creation
+﻿namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
@@ -32,17 +32,10 @@ namespace FakeItEasy.Creation
             return this.Implements(typeof(TInterface));
         }
 
-#if FEATURE_SELF_INITIALIZED_FAKES
-        IFakeOptionsForWrappers IFakeOptions.Wrapping(object wrappedInstance)
-        {
-            return (IFakeOptionsForWrappers)this.Wrapping((T)wrappedInstance);
-        }
-#else
         IFakeOptions IFakeOptions.Wrapping(object wrappedInstance)
         {
             return (IFakeOptions)this.Wrapping((T)wrappedInstance);
         }
-#endif
 
         public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
         {
@@ -61,11 +54,7 @@ namespace FakeItEasy.Creation
 
         public abstract IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
 
-#if FEATURE_SELF_INITIALIZED_FAKES
-        public abstract IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
-#else
         public abstract IFakeOptions<T> Wrapping(T wrappedInstance);
-#endif
 
         public abstract IFakeOptions<T> WithAttributes(params Expression<Func<Attribute>>[] attributes);
 

@@ -36,13 +36,6 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <Compile Remove="SelfInitializedFakes/**" />
-    <Compile Remove="Recorders.cs" />
-    <Compile Remove="Creation/IFakeOptionsForWrappers.cs" />
-    <Compile Remove="Creation/IFakeOptionsForWrappers.of.T.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
     <PackageReference Include="Castle.Core" Version="4.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.0.0" />
     <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
@@ -52,7 +45,7 @@
   <!-- .NET 4.5 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_SELF_INITIALIZED_FAKES</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
@@ -71,7 +64,7 @@
   <!-- .NET 4.0 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
-    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_SELF_INITIALIZED_FAKES;FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
