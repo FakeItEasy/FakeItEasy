@@ -46,33 +46,6 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Writes the calls in the collection to the specified output writer.
-        /// </summary>
-        /// <typeparam name="T">The type of the calls.</typeparam>
-        /// <param name="calls">The calls to write.</param>
-        /// <param name="writer">The writer to write the calls to.</param>
-        [Obsolete("This feature will be removed in version 4.0.0.")]
-        public static void Write<T>(this IEnumerable<T> calls, IOutputWriter writer) where T : IFakeObjectCall
-        {
-            Guard.AgainstNull(calls, nameof(calls));
-            Guard.AgainstNull(writer, nameof(writer));
-
-            var callWriter = ServiceLocator.Current.Resolve<CallWriter>();
-            callWriter.WriteCalls(calls.Cast<IFakeObjectCall>(), writer);
-        }
-
-        /// <summary>
-        /// Writes all calls in the collection to the console.
-        /// </summary>
-        /// <typeparam name="T">The type of the calls.</typeparam>
-        /// <param name="calls">The calls to write.</param>
-        [Obsolete("This feature will be removed in version 4.0.0.")]
-        public static void WriteToConsole<T>(this IEnumerable<T> calls) where T : IFakeObjectCall
-        {
-            calls.Write(new DefaultOutputWriter(Console.Write));
-        }
-
-        /// <summary>
         /// Gets the description of a call to a fake object.
         /// </summary>
         /// <param name="fakeObjectCall">The call to describe.</param>
