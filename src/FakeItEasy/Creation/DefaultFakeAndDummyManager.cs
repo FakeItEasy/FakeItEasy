@@ -99,10 +99,8 @@
             public override IFakeOptions<T> Wrapping(T wrappedInstance)
             {
                 Guard.AgainstNull(wrappedInstance, nameof(wrappedInstance));
-
-                var wrapper = new FakeWrapperConfigurator<T>(this, wrappedInstance);
-                this.ConfigureFake(fake => wrapper.ConfigureFakeToWrap(fake));
-                return wrapper;
+                this.ConfigureFake(fake => ConfigureFakeToWrap(fake, wrappedInstance));
+                return this;
             }
 
             public override IFakeOptions<T> Implements(Type interfaceType)
@@ -115,6 +113,13 @@
             {
                 this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
                 return this;
+            }
+
+            private static void ConfigureFakeToWrap(object fakedObject, object wrappedObject)
+            {
+                var manager = Fake.GetFakeManager(fakedObject);
+                var rule = new WrappedObjectRule(wrappedObject);
+                manager.AddRuleFirst(rule);
             }
         }
     }
