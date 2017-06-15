@@ -20,7 +20,7 @@
         <dependency id="Microsoft.Extensions.DependencyModel" version="1.0.0" />
         <dependency id="System.Collections.Concurrent" version="4.0.12" />
         <dependency id="System.Runtime.Loader" version="4.0.0" />
-        <dependency id="Castle.Core" version="4.0.0" />
+        <dependency id="Castle.Core" version="4.1.0" />
       </group>
     </dependencies>
   </metadata>
