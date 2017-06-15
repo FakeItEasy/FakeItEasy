@@ -111,10 +111,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
 
-            container.Register(c =>
-                new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFixtureInitializer>()));
-
-            container.Register<IFixtureInitializer>(c => new DefaultFixtureInitializer(c.Resolve<IFakeAndDummyManager>(), c.Resolve<ISutInitializer>()));
+            container.Register(c => new FakeFacade(c.Resolve<IFakeManagerAccessor>()));
 
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
@@ -125,8 +122,6 @@ namespace FakeItEasy
             container.Register<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
 
             container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write));
-
-            container.Register<ISutInitializer>(c => new DefaultSutInitializer(c.Resolve<IFakeAndDummyManager>()));
 
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
 
