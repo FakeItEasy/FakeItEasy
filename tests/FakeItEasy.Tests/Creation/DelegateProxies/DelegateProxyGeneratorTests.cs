@@ -11,14 +11,11 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
 
     public class DelegateProxyGeneratorTests
     {
-#pragma warning disable 649
-        [UnderTest]
-        private DelegateProxyGenerator generator;
-#pragma warning restore 649
+        private readonly DelegateProxyGenerator generator;
 
         public DelegateProxyGeneratorTests()
         {
-            Fake.InitializeFixture(this);
+            this.generator = new DelegateProxyGenerator();
         }
 
         private delegate void VoidDelegateWithOutputValue(out string result);
