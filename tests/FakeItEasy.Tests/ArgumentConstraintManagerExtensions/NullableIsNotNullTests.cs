@@ -31,6 +31,6 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
             base.IsValid_should_return_true_for_valid_values(validValue);
         }
 
-        protected override void CreateConstraint(IArgumentConstraintManager<int?> scope) => scope.IsNotNull();
+        protected override void CreateConstraint(INegatableArgumentConstraintManager<int?> scope) => scope.IsNotNull();
     }
 }

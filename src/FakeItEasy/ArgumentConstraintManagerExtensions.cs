@@ -1,4 +1,4 @@
-namespace FakeItEasy
+﻿namespace FakeItEasy
 {
     using System;
     using System.Collections;
@@ -48,7 +48,7 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of the argument.</typeparam>
         /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <returns>A dummy argument value.</returns>
-        public static T IsNotNull<T>(this IArgumentConstraintManager<T> manager) where T : class
+        public static T IsNotNull<T>(this INegatableArgumentConstraintManager<T> manager) where T : class
         {
             Guard.AgainstNull(manager, nameof(manager));
 
@@ -62,7 +62,7 @@ namespace FakeItEasy
         /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <returns>A dummy argument value.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
-        public static T? IsNotNull<T>(this IArgumentConstraintManager<T?> manager) where T : struct
+        public static T? IsNotNull<T>(this INegatableArgumentConstraintManager<T?> manager) where T : struct
         {
             Guard.AgainstNull(manager, nameof(manager));
 
@@ -326,7 +326,7 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="manager">The constraint manager.</param>
         /// <returns>A dummy argument value.</returns>
-        public static CancellationToken IsNotCanceled(this IArgumentConstraintManager<CancellationToken> manager)
+        public static CancellationToken IsNotCanceled(this INegatableArgumentConstraintManager<CancellationToken> manager)
         {
             Guard.AgainstNull(manager, nameof(manager));
 
