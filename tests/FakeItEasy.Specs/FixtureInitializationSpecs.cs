@@ -8,6 +8,7 @@
     using Xbehave;
     using Xunit;
 
+#pragma warning disable CS0618 // Type or member is obsolete
     public static class FixtureInitializationSpecs
     {
         [Scenario]
@@ -111,4 +112,5 @@
             public IFoo Foo2 { get; set; }
         }
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 }
