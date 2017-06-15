@@ -1,8 +1,6 @@
 ﻿namespace FakeItEasy.Creation
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
@@ -65,62 +63,6 @@
             this.dynamicOptionsBuilder.BuildOptions(typeOfFake, options);
             optionsBuilder.Invoke(options);
             return proxyOptions;
-        }
-
-        private class FakeOptions<T>
-            : FakeOptionsBase<T>
-        {
-            private readonly ProxyOptions proxyOptions;
-
-            public FakeOptions(ProxyOptions proxyOptions)
-            {
-                this.proxyOptions = proxyOptions;
-            }
-
-            public override IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
-            {
-                this.proxyOptions.ArgumentsForConstructor = argumentsForConstructor;
-                return this;
-            }
-
-            public override IFakeOptions<T> WithAttributes(
-                params Expression<Func<Attribute>>[] attributes)
-            {
-                Guard.AgainstNull(attributes, nameof(attributes));
-
-                foreach (var attribute in attributes)
-                {
-                    this.proxyOptions.AddAttribute(attribute);
-                }
-
-                return this;
-            }
-
-            public override IFakeOptions<T> Wrapping(T wrappedInstance)
-            {
-                Guard.AgainstNull(wrappedInstance, nameof(wrappedInstance));
-                this.ConfigureFake(fake => ConfigureFakeToWrap(fake, wrappedInstance));
-                return this;
-            }
-
-            public override IFakeOptions<T> Implements(Type interfaceType)
-            {
-                this.proxyOptions.AddInterfaceToImplement(interfaceType);
-                return this;
-            }
-
-            public override IFakeOptions<T> ConfigureFake(Action<T> action)
-            {
-                this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
-                return this;
-            }
-
-            private static void ConfigureFakeToWrap(object fakedObject, object wrappedObject)
-            {
-                var manager = Fake.GetFakeManager(fakedObject);
-                var rule = new WrappedObjectRule(wrappedObject);
-                manager.AddRuleFirst(rule);
-            }
         }
     }
 }
