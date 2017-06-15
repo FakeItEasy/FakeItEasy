@@ -255,9 +255,9 @@ namespace FakeItEasy
     public class static FakeOptionsExtensions
     {
         public static FakeItEasy.Creation.IFakeOptions<T> CallsBaseMethods<T>(this FakeItEasy.Creation.IFakeOptions<T> options) { }
-        public static FakeItEasy.Creation.IFakeOptions CallsBaseMethods(this FakeItEasy.Creation.IFakeOptions optionsBuilder) { }
+        public static FakeItEasy.Creation.IFakeOptions CallsBaseMethods(this FakeItEasy.Creation.IFakeOptions options) { }
         public static FakeItEasy.Creation.IFakeOptions<T> Strict<T>(this FakeItEasy.Creation.IFakeOptions<T> options) { }
-        public static FakeItEasy.Creation.IFakeOptions Strict(this FakeItEasy.Creation.IFakeOptions optionsBuilder) { }
+        public static FakeItEasy.Creation.IFakeOptions Strict(this FakeItEasy.Creation.IFakeOptions options) { }
     }
     public interface IArgumentConstraintManager<T> : FakeItEasy.IHideObjectMembers
     
