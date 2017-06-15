@@ -333,11 +333,6 @@ namespace FakeItEasy
         public static TEventHandler With<TEventHandler>(params object[] arguments) { }
         public static FakeItEasy.Core.Raise<System.EventArgs> WithEmpty() { }
     }
-    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
-    public class static Recorders
-    {
-        public static FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder FileRecorder(string fileName) { }
-    }
     public class static RepeatConfigurationExtensions
     {
         public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Once<TInterface>(this FakeItEasy.Configuration.IRepeatConfiguration<TInterface> configuration) { }
@@ -557,7 +552,7 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor<TConstructor>(System.Linq.Expressions.Expression<System.Func<TConstructor>> constructorCall);
         FakeItEasy.Creation.IFakeOptions WithAttributes(params System.Linq.Expressions.Expression<>[] attributes);
-        FakeItEasy.Creation.IFakeOptionsForWrappers Wrapping(object wrappedInstance);
+        FakeItEasy.Creation.IFakeOptions Wrapping(object wrappedInstance);
     }
     public interface IFakeOptions<T> : FakeItEasy.IHideObjectMembers
     
@@ -568,18 +563,7 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Linq.Expressions.Expression<System.Func<T>> constructorCall);
         FakeItEasy.Creation.IFakeOptions<T> WithAttributes(params System.Linq.Expressions.Expression<>[] attributes);
-        FakeItEasy.Creation.IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
-    }
-    public interface IFakeOptionsForWrappers : FakeItEasy.Creation.IFakeOptions, FakeItEasy.IHideObjectMembers
-    {
-        [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
-        FakeItEasy.Creation.IFakeOptions RecordedBy(FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder);
-    }
-    public interface IFakeOptionsForWrappers<T> : FakeItEasy.Creation.IFakeOptions<T>, FakeItEasy.IHideObjectMembers
-    
-    {
-        [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
-        FakeItEasy.Creation.IFakeOptions<T> RecordedBy(FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder recorder);
+        FakeItEasy.Creation.IFakeOptions<T> Wrapping(T wrappedInstance);
     }
     public interface ITaggable
     {
@@ -597,47 +581,5 @@ namespace FakeItEasy.Sdk
         public static object Dummy(System.Type typeOfDummy) { }
         public static object Fake(System.Type typeOfFake) { }
         public static object Fake(System.Type typeOfFake, System.Action<FakeItEasy.Creation.IFakeOptions> optionsBuilder) { }
-    }
-}
-namespace FakeItEasy.SelfInitializedFakes
-{
-    
-    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
-    public class CallData
-    {
-        public CallData(System.Reflection.MethodInfo method, System.Collections.Generic.IEnumerable<object> outputArguments, object returnValue) { }
-        public System.Reflection.MethodInfo Method { get; }
-        public System.Collections.Generic.IEnumerable<object> OutputArguments { get; }
-        public object ReturnValue { get; }
-    }
-    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
-    public interface ICallStorage
-    {
-        System.Collections.Generic.IEnumerable<FakeItEasy.SelfInitializedFakes.CallData> Load();
-        void Save(System.Collections.Generic.IEnumerable<FakeItEasy.SelfInitializedFakes.CallData> calls);
-    }
-    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
-    public interface ISelfInitializingFakeRecorder : System.IDisposable
-    {
-        bool IsRecording { get; }
-        void ApplyNext(FakeItEasy.Core.IInterceptedFakeObjectCall fakeObjectCall);
-        void RecordCall(FakeItEasy.Core.ICompletedFakeObjectCall fakeObjectCall);
-    }
-    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
-    public class RecordingException : System.Exception
-    {
-        public RecordingException() { }
-        public RecordingException(string message) { }
-        public RecordingException(string message, System.Exception innerException) { }
-        protected RecordingException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
-    }
-    [System.ObsoleteAttribute("Self-initializing fakes will be removed in version 4.0.0.")]
-    public class RecordingManager : FakeItEasy.SelfInitializedFakes.ISelfInitializingFakeRecorder, System.IDisposable
-    {
-        public RecordingManager(FakeItEasy.SelfInitializedFakes.ICallStorage storage) { }
-        public bool IsRecording { get; }
-        public void ApplyNext(FakeItEasy.Core.IInterceptedFakeObjectCall fakeObjectCall) { }
-        public virtual void Dispose() { }
-        public virtual void RecordCall(FakeItEasy.Core.ICompletedFakeObjectCall fakeObjectCall) { }
     }
 }

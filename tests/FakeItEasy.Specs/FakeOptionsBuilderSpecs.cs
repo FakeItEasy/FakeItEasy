@@ -1,13 +1,9 @@
-namespace FakeItEasy.Specs
+﻿namespace FakeItEasy.Specs
 {
     using System;
     using System.Linq;
     using System.Reflection;
-    using FakeItEasy.Core;
     using FakeItEasy.Creation;
-#if FEATURE_SELF_INITIALIZED_FAKES
-    using FakeItEasy.SelfInitializedFakes;
-#endif
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -73,15 +69,6 @@ namespace FakeItEasy.Specs
 
             "Then the call is delegated to the wrapped object"
                 .x(() => A.CallTo(() => WrapsAValidObjectOptionsBuilder.WrappedObject.AMethod()).MustHaveHappened());
-
-#if FEATURE_SELF_INITIALIZED_FAKES
-            "And the call is recorded"
-                .x(() =>
-                {
-                    A.CallTo(() => WrapsAValidObjectOptionsBuilder.Recorder.RecordCall(A<ICompletedFakeObjectCall>._))
-                        .MustHaveHappened();
-                });
-#endif
         }
 
         [Scenario]
@@ -416,21 +403,11 @@ namespace FakeItEasy.Specs
     {
         public static AWrappedType WrappedObject { get; } = A.Fake<AWrappedType>();
 
-#if FEATURE_SELF_INITIALIZED_FAKES
-        public static ISelfInitializingFakeRecorder Recorder { get; } =
-            A.Fake<ISelfInitializingFakeRecorder>(options =>
-                options.ConfigureFake(fake => A.CallTo(() => fake.IsRecording).Returns(true)));
-#endif
-
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
             if (options != null)
             {
-#if FEATURE_SELF_INITIALIZED_FAKES
-                options.Wrapping(WrappedObject).RecordedBy(Recorder);
-#else
                 options.Wrapping(WrappedObject);
-#endif
             }
         }
     }
