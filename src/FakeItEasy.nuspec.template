@@ -13,16 +13,7 @@
     <licenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</licenseUrl>
     <copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</copyright>
     <tags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</tags>
-    <dependencies>
-      <group targetFramework=".NETFramework4.0" />
-      <group targetFramework=".NETFramework4.5" />
-      <group targetFramework=".NETStandard1.6">
-        <dependency id="Microsoft.Extensions.DependencyModel" version="1.0.0" />
-        <dependency id="System.Collections.Concurrent" version="4.0.12" />
-        <dependency id="System.Runtime.Loader" version="4.0.0" />
-        <dependency id="Castle.Core" version="4.1.0" />
-      </group>
-    </dependencies>
+    <dependencies />
   </metadata>
   <files>
     <file src="FakeItEasy\bin\Release\net40\FakeItEasy.dll" target="lib\net40" />
