@@ -221,6 +221,7 @@ namespace FakeItEasy
         public static void ClearRecordedCalls(object fakedObject) { }
         public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
+        [System.ObsoleteAttribute("Test fixture initialization will be removed in version 5.0.0.")]
         public static void InitializeFixture(object fixture) { }
     }
     public class Fake<T> : FakeItEasy.IHideObjectMembers
@@ -236,6 +237,7 @@ namespace FakeItEasy
         public FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallsToSet<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>> propertySpecification) { }
     }
     [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.All)]
+    [System.ObsoleteAttribute("Test fixture initialization will be removed in version 5.0.0.")]
     public class FakeAttribute : System.Attribute
     {
         public FakeAttribute() { }
@@ -365,6 +367,7 @@ namespace FakeItEasy
         public static void ReturnsNextFromSequence<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, params T[] values) { }
     }
     [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.All)]
+    [System.ObsoleteAttribute("Test fixture initialization will be removed in version 5.0.0.")]
     public class UnderTestAttribute : System.Attribute
     {
         public UnderTestAttribute() { }

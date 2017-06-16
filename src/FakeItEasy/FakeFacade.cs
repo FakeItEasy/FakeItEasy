@@ -1,5 +1,6 @@
 namespace FakeItEasy
 {
+    using System;
     using System.Collections.Generic;
     using FakeItEasy.Core;
 
@@ -54,7 +55,9 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(fixture, nameof(fixture));
 
+#pragma warning disable CS0618 // Type or member is obsolete
             FixtureInitializer.InitializeFakes(fixture);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }

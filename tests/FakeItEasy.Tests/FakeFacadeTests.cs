@@ -106,7 +106,7 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-             Expression<System.Action> call = () => this.facade.InitializeFixture(new object());
+            Expression<System.Action> call = () => this.facade.InitializeFixture(new object());
             call.Should().BeNullGuarded();
         }
     }

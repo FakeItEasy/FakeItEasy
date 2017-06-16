@@ -13,24 +13,24 @@ namespace FakeItEasy.Tests.Core
         private readonly object proxy;
         private readonly FakeManager fakeManager;
 
-        [Fake]
-        private FakeManager.Factory fakeManagerFactory = null;
-
-        [Fake]
-        private IFakeManagerAccessor fakeManagerAccessor = null;
-
-        [Fake]
-        private Type typeOfFake = null;
-
-        [Fake]
-        private IProxyOptions proxyOptions = null;
-
-        [UnderTest]
-        private FakeManagerProvider fakeManagerProvider = null;
+        private readonly FakeManager.Factory fakeManagerFactory = null;
+        private readonly IFakeManagerAccessor fakeManagerAccessor = null;
+        private readonly Type typeOfFake = null;
+        private readonly IProxyOptions proxyOptions = null;
+        private readonly FakeManagerProvider fakeManagerProvider = null;
 
         public FakeManagerProviderTests()
         {
-            Fake.InitializeFixture(this);
+            this.fakeManagerFactory = A.Fake<FakeManager.Factory>();
+            this.fakeManagerAccessor = A.Fake<IFakeManagerAccessor>();
+            this.typeOfFake = A.Fake<Type>();
+            this.proxyOptions = A.Fake<IProxyOptions>();
+
+            this.fakeManagerProvider = new FakeManagerProvider(
+                this.fakeManagerFactory,
+                this.fakeManagerAccessor,
+                this.typeOfFake,
+                this.proxyOptions);
 
             this.proxy = new object();
             this.fakeManager = new FakeManager(typeof(int), this.proxy);

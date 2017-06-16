@@ -6,6 +6,7 @@
     using System.Reflection;
     using FakeItEasy.Sdk;
 
+    [Obsolete("Test fixture initialization will be removed in version 5.0.0.")]
     internal static class FixtureInitializer
     {
         public static void InitializeFakes(object fixture)
@@ -16,7 +17,6 @@
             InitializeFakes(fixture, fakesCreatedForTypes);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "UnderTestAttribute", Justification = "Refers to the type 'UnderTestAttribute'.")]
         private static SettableMemberInfo GetSutSetter(object fixture)
         {
             var allSettersTaggedUnderTest = GetMembersTaggedWithAttribute(fixture, typeof(UnderTestAttribute));

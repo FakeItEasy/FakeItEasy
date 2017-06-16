@@ -63,6 +63,7 @@ namespace FakeItEasy
         /// fixture.
         /// </summary>
         /// <param name="fixture">The object to initialize.</param>
+        [Obsolete("Test fixture initialization will be removed in version 5.0.0.")]
         public static void InitializeFixture(object fixture)
         {
             Facade.InitializeFixture(fixture);

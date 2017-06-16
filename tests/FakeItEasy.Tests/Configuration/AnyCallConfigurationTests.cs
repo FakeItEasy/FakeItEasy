@@ -9,21 +9,21 @@ namespace FakeItEasy.Tests.Configuration
     using Xunit;
     using ExceptionFactory = System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception>;
 
-    public class AnyCallConfigurationTests : AutoInitializedFixture
+    public class AnyCallConfigurationTests
     {
-#pragma warning disable 649
-        [Fake]
-        private IConfigurationFactory configurationFactory;
+        private readonly IConfigurationFactory configurationFactory;
+        private readonly FakeManager fakeObject;
+        private readonly AnyCallCallRule callRule;
 
-        [Fake]
-        private FakeManager fakeObject;
+        private readonly AnyCallConfiguration configuration;
 
-        [Fake]
-        private AnyCallCallRule callRule;
-
-        [UnderTest]
-        private AnyCallConfiguration configuration;
-#pragma warning restore 649
+        public AnyCallConfigurationTests()
+        {
+            this.fakeObject = A.Fake<FakeManager>();
+            this.callRule = A.Fake<AnyCallCallRule>();
+            this.configurationFactory = A.Fake<IConfigurationFactory>();
+            this.configuration = new AnyCallConfiguration(this.fakeObject, this.callRule, this.configurationFactory);
+        }
 
         public static IEnumerable<object[]> CallSpecificationActions =>
             TestCases.FromObject<Action<IAnyCallConfigurationWithNoReturnTypeSpecified>>(
