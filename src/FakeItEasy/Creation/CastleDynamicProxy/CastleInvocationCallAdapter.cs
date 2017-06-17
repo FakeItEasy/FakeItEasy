@@ -1,7 +1,8 @@
-namespace FakeItEasy.Creation.CastleDynamicProxy
+﻿namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
     using System.Diagnostics;
+    using System.Linq;
     using System.Reflection;
     using Castle.DynamicProxy;
     using FakeItEasy.Configuration;
@@ -14,9 +15,10 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     [Serializable]
 #endif
     internal class CastleInvocationCallAdapter
-        : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
+        : IInterceptedFakeObjectCall
     {
         private readonly IInvocation invocation;
+        private readonly object[] originalArguments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CastleInvocationCallAdapter"/> class.
@@ -26,17 +28,10 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         public CastleInvocationCallAdapter(IInvocation invocation)
         {
             this.invocation = invocation;
+            this.originalArguments = invocation.Arguments.ToArray();
             this.Method = invocation.Method;
-
             this.Arguments = new ArgumentCollection(invocation.Arguments, this.Method);
-
-            SequenceNumberManager.RecordSequenceNumber(this);
         }
-
-        /// <summary>
-        /// Gets the value set to be returned from the call.
-        /// </summary>
-        public object ReturnValue => this.invocation.ReturnValue;
 
         /// <summary>
         /// Gets the method that's called.
@@ -59,7 +54,11 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// <returns>A completed fake object call.</returns>
         public ICompletedFakeObjectCall AsReadOnly()
         {
-            return this;
+            return new CompletedFakeObjectCall(
+                this.FakedObject,
+                this.Method,
+                this.originalArguments,
+                this.invocation.ReturnValue);
         }
 
         /// <summary>

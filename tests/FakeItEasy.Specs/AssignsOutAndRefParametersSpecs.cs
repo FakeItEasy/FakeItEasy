@@ -1,4 +1,4 @@
-namespace FakeItEasy.Specs
+﻿namespace FakeItEasy.Specs
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -156,6 +156,32 @@ namespace FakeItEasy.Specs
 
             "And the out parameter is set to the specified value"
                 .x(() => outValue.Should().Be(99));
+        }
+
+        [Scenario]
+        public static void AssignOutAndRefParameterRecordedCall(
+            IHaveARef subject, string refValue)
+        {
+            "Given a fake with a method that has a ref parameter"
+                .x(() => subject = A.Fake<IHaveARef>());
+
+            "When the fake is configured to assign out and ref parameters when argument matches condition"
+                .x(() =>
+                {
+                    refValue = Condition;
+                    A.CallTo(() => subject.MightReturnAKnownValue(ref refValue))
+                        .AssignsOutAndRefParameters(KnownOutput);
+                });
+
+            "And the configured method is called"
+                .x(() => subject.MightReturnAKnownValue(ref refValue));
+
+            "The the assertion that a call with the expected value has happened succeeds"
+                .x(() =>
+                {
+                    string expectedValue = Condition;
+                    A.CallTo(() => subject.MightReturnAKnownValue(ref expectedValue)).MustHaveHappened();
+                });
         }
     }
 }

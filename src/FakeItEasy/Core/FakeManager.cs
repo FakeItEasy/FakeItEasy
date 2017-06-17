@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Concurrent;
@@ -170,6 +170,7 @@ namespace FakeItEasy.Core
         /// <param name="call">The call to remember.</param>
         internal void RecordCall(ICompletedFakeObjectCall call)
         {
+            SequenceNumberManager.RecordSequenceNumber(call);
             this.recordedCalls.Enqueue(call);
         }
 
