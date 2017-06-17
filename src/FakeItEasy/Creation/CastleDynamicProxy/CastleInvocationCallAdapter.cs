@@ -29,8 +29,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             this.Method = invocation.Method;
 
             this.Arguments = new ArgumentCollection(invocation.Arguments, this.Method);
-
-            SequenceNumberManager.RecordSequenceNumber(this);
         }
 
         /// <summary>
