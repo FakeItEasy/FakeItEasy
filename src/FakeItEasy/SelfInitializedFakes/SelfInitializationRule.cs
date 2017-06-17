@@ -1,6 +1,7 @@
-namespace FakeItEasy.SelfInitializedFakes
+﻿namespace FakeItEasy.SelfInitializedFakes
 {
     using System;
+    using System.Linq;
     using FakeItEasy.Core;
 
     /// <summary>
@@ -55,7 +56,12 @@ namespace FakeItEasy.SelfInitializedFakes
             if (this.recorder.IsRecording)
             {
                 this.wrappedRule.Apply(fakeObjectCall);
-                this.recorder.RecordCall(fakeObjectCall.AsReadOnly());
+                var completedFakeObjectCall = new CompletedFakeObjectCall(
+                    fakeObjectCall.FakedObject,
+                    fakeObjectCall.Method,
+                    fakeObjectCall.Arguments.ToArray(),
+                    fakeObjectCall.AsReadOnly().ReturnValue);
+                this.recorder.RecordCall(completedFakeObjectCall);
             }
             else
             {
