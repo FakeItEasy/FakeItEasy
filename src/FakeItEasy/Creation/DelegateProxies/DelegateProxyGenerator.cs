@@ -1,4 +1,4 @@
-namespace FakeItEasy.Creation.DelegateProxies
+﻿namespace FakeItEasy.Creation.DelegateProxies
 {
     using System;
     using System.Collections.Generic;
@@ -184,11 +184,14 @@ namespace FakeItEasy.Creation.DelegateProxies
             }
         }
 
-        private class DelegateFakeObjectCall : IInterceptedFakeObjectCall, ICompletedFakeObjectCall
+        private class DelegateFakeObjectCall : IInterceptedFakeObjectCall
         {
+            private readonly object[] originalArguments;
+
             public DelegateFakeObjectCall(Delegate instance, MethodInfo method, object[] arguments)
             {
                 this.FakedObject = instance;
+                this.originalArguments = arguments.ToArray();
                 this.Arguments = new ArgumentCollection(arguments, method);
                 this.Method = method;
             }
@@ -218,7 +221,11 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             public ICompletedFakeObjectCall AsReadOnly()
             {
-                return this;
+                return new CompletedFakeObjectCall(
+                    this.FakedObject,
+                    this.Method,
+                    this.originalArguments,
+                    this.ReturnValue);
             }
         }
     }
