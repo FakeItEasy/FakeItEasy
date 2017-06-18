@@ -1,9 +1,8 @@
-namespace FakeItEasy.Tests.Core
+﻿namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Linq.Expressions;
     using FakeItEasy.Core;
-    using FakeItEasy.Creation;
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -19,44 +18,15 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Fact]
-        public void TagProxy_should_be_null_guarded()
+        public void SetFakeManager_should_be_null_guarded()
         {
             // Arrange
 
             // Act
 
             // Assert
-            Expression<Action> call = () => this.accessor.TagProxy(A.Fake<object>(), A.Fake<FakeManager>());
+            Expression<Action> call = () => this.accessor.SetFakeManager(A.Fake<object>(), A.Fake<FakeManager>());
             call.Should().BeNullGuarded();
-        }
-
-        [Fact]
-        public void Should_set_fake_manager_to_tag()
-        {
-            // Arrange
-            var proxy = A.Fake<ITaggable>();
-            var fakeManager = A.Fake<FakeManager>();
-
-            // Act
-            this.accessor.TagProxy(proxy, fakeManager);
-
-            // Assert
-            proxy.Tag.Should().BeSameAs(fakeManager);
-        }
-
-        [Fact]
-        public void Should_get_fake_manager_from_tag()
-        {
-            // Arrange
-            var proxy = A.Fake<ITaggable>();
-            var fakeManager = A.Fake<FakeManager>();
-            proxy.Tag = fakeManager;
-
-            // Act
-            var result = this.accessor.GetFakeManager(proxy);
-
-            // Assert
-            result.Should().BeSameAs(fakeManager);
         }
 
         [Fact]
@@ -67,17 +37,17 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            Expression<Action> call = () => this.accessor.GetFakeManager(A.Fake<ITaggable>());
+            Expression<Action> call = () => this.accessor.GetFakeManager(new object());
             call.Should().BeNullGuarded();
         }
 
         [Fact]
-        public void Should_be_able_to_set_and_retrieve_fake_manager_from_non_taggable_objects()
+        public void Should_be_able_to_set_and_retrieve_fake_manager_from_any_object()
         {
             // Arrange
             var proxy = new object();
             var fakeManager = A.Fake<FakeManager>();
-            this.accessor.TagProxy(proxy, fakeManager);
+            this.accessor.SetFakeManager(proxy, fakeManager);
 
             // Act
             var manager = this.accessor.GetFakeManager(proxy);
@@ -87,27 +57,24 @@ namespace FakeItEasy.Tests.Core
         }
 
         [Fact]
-        public void Should_fail_when_getting_manager_from_object_where_a_fake_manager_has_not_been_attached()
+        public void TryGetFakeManager_should_return_manager_set_by_SetFakeManager()
         {
             // Arrange
-            var proxy = A.Fake<ITaggable>();
-            proxy.Tag = null;
+            var proxy = new object();
+            var fakeManager = A.Fake<FakeManager>();
 
             // Act
-            var exception = Record.Exception(() => this.accessor.GetFakeManager(proxy));
+            this.accessor.SetFakeManager(proxy, fakeManager);
 
             // Assert
-            exception.Should()
-                .BeAnExceptionOfType<ArgumentException>()
-                .And.Message.Should().Match("Object 'Faked FakeItEasy.Creation.ITaggable' of type Castle.Proxies.ObjectProxy* is not recognized as a fake object.");
+            this.accessor.TryGetFakeManager(proxy).Should().BeSameAs(fakeManager);
         }
 
         [Fact]
-        public void Should_fail_when_getting_manager_from_object_where_a_wrong_typed_fake_manager_has_been_attached()
+        public void Should_fail_when_getting_manager_from_object_where_a_fake_manager_has_not_been_attached()
         {
             // Arrange
-            var proxy = A.Fake<ITaggable>();
-            proxy.Tag = new object();
+            var proxy = new object();
 
             // Act
             var exception = Record.Exception(() => this.accessor.GetFakeManager(proxy));
@@ -115,7 +82,7 @@ namespace FakeItEasy.Tests.Core
             // Assert
             exception.Should()
                 .BeAnExceptionOfType<ArgumentException>()
-                .And.Message.Should().Match("Object 'Faked FakeItEasy.Creation.ITaggable' of type Castle.Proxies.ObjectProxy* is not recognized as a fake object.");
+                .And.Message.Should().Match("Object 'System.Object' of type System.Object* is not recognized as a fake object.");
         }
     }
 }

@@ -1,17 +1,19 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Runtime.CompilerServices;
-    using FakeItEasy.Creation;
 
     /// <summary>
     /// Default implementation of <see cref="IFakeManagerAccessor"/>.
     /// </summary>
+#if FEATURE_BINARY_SERIALIZATION
+    [Serializable]
+#endif
     internal class DefaultFakeManagerAccessor
         : IFakeManagerAccessor
     {
+        private static readonly ConditionalWeakTable<object, FakeManager> FakeManagers = new ConditionalWeakTable<object, FakeManager>();
+
         /// <summary>
         /// Gets the fake manager associated with the proxy.
         /// </summary>
@@ -41,59 +43,17 @@ namespace FakeItEasy.Core
         {
             Guard.AgainstNull(proxy, nameof(proxy));
 
-            var taggable = AsTaggable(proxy);
-
-            return taggable.Tag as FakeManager;
+            FakeManager fakeManager;
+            FakeManagers.TryGetValue(proxy, out fakeManager);
+            return fakeManager;
         }
 
-        public void TagProxy(object proxy, FakeManager manager)
+        public void SetFakeManager(object proxy, FakeManager manager)
         {
             Guard.AgainstNull(proxy, nameof(proxy));
             Guard.AgainstNull(manager, nameof(manager));
 
-            var taggable = AsTaggable(proxy);
-
-            taggable.Tag = manager;
-        }
-
-        private static ITaggable AsTaggable(object proxy)
-        {
-            var taggable = proxy as ITaggable;
-
-            if (taggable == null)
-            {
-                taggable = new TaggableAdaptor(proxy);
-            }
-
-            return taggable;
-        }
-
-        private class TaggableAdaptor : ITaggable
-        {
-            private static readonly ConditionalWeakTable<object, object> Tags = new ConditionalWeakTable<object, object>();
-            private readonly object taggedInstance;
-
-            public TaggableAdaptor(object taggedInstance)
-            {
-                this.taggedInstance = taggedInstance;
-            }
-
-            public object Tag
-            {
-                get
-                {
-                    object result = null;
-
-                    Tags.TryGetValue(this.taggedInstance, out result);
-
-                    return result;
-                }
-
-                set
-                {
-                    Tags.Add(this.taggedInstance, value);
-                }
-            }
+            FakeManagers.Add(proxy, manager);
         }
     }
 }

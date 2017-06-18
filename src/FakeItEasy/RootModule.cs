@@ -45,7 +45,7 @@
             container.Register<FakeAsserter.Factory>(c => calls => new FakeAsserter(calls, c.Resolve<CallWriter>()));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
-                (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy));
+                (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy, c.Resolve<IFakeManagerAccessor>()));
 
             container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
                 (typeOfFake, proxyOptions) =>

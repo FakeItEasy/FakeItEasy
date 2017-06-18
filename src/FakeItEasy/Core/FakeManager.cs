@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Concurrent;
@@ -28,7 +28,8 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="fakeObjectType">The faked type.</param>
         /// <param name="proxy">The faked proxy object.</param>
-        internal FakeManager(Type fakeObjectType, object proxy)
+        /// <param name="fakeManagerAccessor">The fake manager accessor.</param>
+        internal FakeManager(Type fakeObjectType, object proxy, IFakeManagerAccessor fakeManagerAccessor)
         {
             Guard.AgainstNull(fakeObjectType, nameof(fakeObjectType));
             Guard.AgainstNull(proxy, nameof(proxy));
@@ -43,7 +44,7 @@ namespace FakeItEasy.Core
             this.AllUserRules = new LinkedList<CallRuleMetadata>();
             this.postUserRules = new[]
                                      {
-                                         new CallRuleMetadata { Rule = new ObjectMemberRule(this) },
+                                         new CallRuleMetadata { Rule = new ObjectMemberRule(this, fakeManagerAccessor) },
                                          new CallRuleMetadata { Rule = new AutoFakePropertyRule(this) },
                                          new CallRuleMetadata { Rule = new PropertySetterRule(this) },
                                          new CallRuleMetadata { Rule = new CancellationRule() },
