@@ -171,6 +171,7 @@
         /// <param name="call">The call to remember.</param>
         internal void RecordCall(ICompletedFakeObjectCall call)
         {
+            SequenceNumberManager.RecordSequenceNumber(call);
             this.recordedCalls.Enqueue(call);
         }
 
