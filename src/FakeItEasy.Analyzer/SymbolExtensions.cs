@@ -67,5 +67,10 @@
 
             return method.Name + "`" + method.Arity;
         }
+
+        public static bool IsNullable(this INamedTypeSymbol type)
+        {
+            return type.GetFullName() == "System.Nullable`1";
+        }
     }
 }

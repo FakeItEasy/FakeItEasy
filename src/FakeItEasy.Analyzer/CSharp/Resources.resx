@@ -94,4 +94,13 @@
     <value>Argument constraint outside call specification.</value>
     <comment>The title of the diagnostic.</comment>
   </data>
+  <data name="ArgumentConstraintNullabilityMismatchTitle" xml:space="preserve">
+    <value>Argument constraint nullability mismatch</value>
+  </data>
+  <data name="ArgumentConstraintNullabilityMismatchDescription" xml:space="preserve">
+    <value>A non-nullable argument constraint is used for a nullable parameter.</value>
+  </data>
+  <data name="ArgumentConstraintNullabilityMismatchMessageFormat" xml:space="preserve">
+    <value>Parameter '{0}' of method '{1}' is nullable, but argument constraint '{2}' is not. Calls where this argument is null will not be matched.</value>
+  </data>
 </root>
