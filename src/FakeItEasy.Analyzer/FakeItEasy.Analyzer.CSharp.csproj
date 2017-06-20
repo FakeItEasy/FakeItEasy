@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.1</TargetFrameworks>
+    <TargetFramework>netstandard1.1</TargetFramework>
     <AssemblyName>FakeItEasy.Analyzer.CSharp</AssemblyName>
     <RootNamespace>FakeItEasy.Analyzer</RootNamespace>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -13,6 +13,21 @@
     <DefineConstants>$(DefineConstants);CSHARP</DefineConstants>
     <PackageTargetFallback>portable45-net45+win8</PackageTargetFallback>
     <BaseIntermediateOutputPath>objcs\</BaseIntermediateOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package properties">
+    <Title>FakeItEasy.Analyzer.CSharp</Title>
+    <Authors>Thomas Levesque, FakeItEasy contributors</Authors>
+    <Description>Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy in C#. Works in Visual Studio 2015 Update 1 or later.</Description>
+    <Copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</Copyright>
+    <PackageProjectUrl>http://fakeiteasy.github.io/</PackageProjectUrl>
+    <PackageIconUrl>http://fakeiteasy.github.io/img/fakeiteasy_logo_256_square_white.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</PackageLicenseUrl>
+    <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
+    <PackageTags>FakeItEasy, analyzers</PackageTags>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <BuildOutputTargetFolder>analyzers/dotnet/cs</BuildOutputTargetFolder>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +40,14 @@
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
     <Compile Include="../*.cs" />
+    <Content Include="$(OutputPath)FakeItEasy.Analyzer.CSharp.pdb">
+      <Pack>true</Pack>
+      <PackagePath>$(BuildOutputTargetFolder)/FakeItEasy.Analyzer.CSharp.pdb</PackagePath>
+    </Content>
+    <Content Include="tools/*.ps1">
+      <Pack>true</Pack>
+      <PackagePath>tools/%(Filename)%(Extension)</PackagePath>
+    </Content>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
