@@ -293,9 +293,10 @@ public void GenerateNuspec(string projectPath, string nuspecTemplatePath, string
         var references =
             from itemGroup in project.Root.Elements("ItemGroup")
             let condition = itemGroup.Attribute("Condition")?.Value.Trim()
-            where condition == $"'$(TargetFramework)' == '{tfm}'"
+            where condition == null || condition == $"'$(TargetFramework)' == '{tfm}'"
             from reference in itemGroup.Elements("PackageReference")
             where reference.Element("PrivateAssets") == null
+            && reference.Attribute("PrivateAssets") == null
             select new
             {
                 Id = reference.Attribute("Include").Value,

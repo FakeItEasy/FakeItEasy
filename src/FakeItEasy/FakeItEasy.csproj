@@ -49,12 +49,8 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <PackageReference Include="ILMerge" Version="2.14.1208">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Castle.Core" Version="4.1.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="ILMerge" Version="2.14.1208" PrivateAssets="all" />
+    <PackageReference Include="Castle.Core" Version="4.1.0" PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="ILMerge45" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net45'">
@@ -68,12 +64,8 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <PackageReference Include="ILMerge" Version="2.14.1208">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Castle.Core" Version="4.1.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="ILMerge" Version="2.14.1208" PrivateAssets="all" />
+    <PackageReference Include="Castle.Core" Version="4.1.0" PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="ILMerge40" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net40'">
