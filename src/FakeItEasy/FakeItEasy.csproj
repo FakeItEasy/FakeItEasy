@@ -13,7 +13,7 @@
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
     <Compile Include="../*.cs" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Debug -->
