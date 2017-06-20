@@ -10,10 +10,27 @@
     <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package properties">
+    <Title>FakeItEasy - Mocking made faking easy!</Title>
+    <Authors>Patrik Hägne, FakeItEasy contributors</Authors>
+    <Description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</Description>
+    <Copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</Copyright>
+    <PackageProjectUrl>https://fakeiteasy.github.io/</PackageProjectUrl>
+    <PackageIconUrl>https://fakeiteasy.github.io/img/fakeiteasy_logo_256_square_white.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</PackageLicenseUrl>
+    <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
+    <PackageTags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</PackageTags>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
     <Compile Include="../*.cs" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" PrivateAssets="all" />
+    <Content Include="$(OutputPath)/*/FakeItEasy.pdb">
+      <Pack>true</Pack>
+      <PackagePath>lib/%(RecursiveDir)FakeItEasy.pdb</PackagePath>
+    </Content>
   </ItemGroup>
 
   <!-- Debug -->

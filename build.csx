@@ -15,13 +15,7 @@ var packagesDirectory = Path.GetFullPath("packages");
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 var coverityProjectUrl = "https://scan.coverity.com/builds?project=FakeItEasy%2FFakeItEasy";
 var fakeItEasyProjectPath = "./src/FakeItEasy/FakeItEasy.csproj";
-var fakeItEasyNuspecTemplatePath = "./src/FakeItEasy.nuspec.template";
-var fakeItEasyNuspecPath = "./src/FakeItEasy.nuspec";
 var analyzerNuspecPath = "./src/FakeItEasy.Analyzer.nuspec";
-var nuspecs = new[] {
-    fakeItEasyNuspecPath,
-    analyzerNuspecPath,
-};
 
 var pdbs = new []
 {
@@ -66,7 +60,7 @@ static var xunit = "./packages/xunit.runner.console.2.0.0/tools/xunit.console.ex
 var coverityDirectory = "./artifacts/coverity";
 var coverityResultsDirectory = "./artifacts/coverity/cov-int";
 var logsDirectory = "./artifacts/logs";
-var outputDirectory = "./artifacts/output";
+var outputDirectory = Path.GetFullPath("./artifacts/output");
 static var testsDirectory = "./artifacts/tests";
 
 // targets
@@ -165,19 +159,13 @@ targets.Add(
     () => RunTests("approve"));
 
 targets.Add(
-    "nuspec",
-    () => GenerateNuspec(fakeItEasyProjectPath, fakeItEasyNuspecTemplatePath, fakeItEasyNuspecPath));
-
-targets.Add(
     "pack",
-    DependsOn("build", "outputDirectory", "pdbgit", "nuspec"),
+    DependsOn("build", "outputDirectory", "pdbgit"),
     () =>
     {
         var version = ReadCmdOutput(".", gitversion, "/showvariable NuGetVersionV2");
-        foreach (var nuspec in nuspecs)
-        {
-            Cmd(nuget, $"pack {nuspec} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
-        }
+        Cmd("dotnet", $"pack {fakeItEasyProjectPath} --configuration Release --no-build --output {outputDirectory} /p:Version={version}");
+        Cmd(nuget, $"pack {analyzerNuspecPath} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
     });
 
 targets.Add(
@@ -271,52 +259,6 @@ public string GetVSLocation()
     }
 
     return installationPath;
-}
-
-public void GenerateNuspec(string projectPath, string nuspecTemplatePath, string nuspecOutputPath)
-{
-    // Find the target frameworks from the project file
-    var project = XDocument.Load(projectPath);
-    var targetFrameworks =
-        project.Root
-            .Elements("PropertyGroup")
-            .Elements("TargetFrameworks")
-            .First().Value.Split(';');
-
-    // Load the template and find the <dependencies> element
-    var nuspec = XDocument.Load(nuspecTemplatePath);
-    var dependenciesElement = nuspec.Root.Element("metadata").Element("dependencies");
-
-    // Create dependency group for each target framework
-    foreach (var tfm in targetFrameworks)
-    {
-        var references =
-            from itemGroup in project.Root.Elements("ItemGroup")
-            let condition = itemGroup.Attribute("Condition")?.Value.Trim()
-            where condition == null || condition == $"'$(TargetFramework)' == '{tfm}'"
-            from reference in itemGroup.Elements("PackageReference")
-            where reference.Element("PrivateAssets") == null
-            && reference.Attribute("PrivateAssets") == null
-            select new
-            {
-                Id = reference.Attribute("Include").Value,
-                Version = reference.Attribute("Version").Value
-            };
-
-        var groupElement =
-            new XElement(
-                "group",
-                new XAttribute("targetFramework", tfm),
-                from r in references
-                select new XElement(
-                    "dependency",
-                    new XAttribute("id", r.Id),
-                    new XAttribute("version", r.Version)));
-
-        dependenciesElement.Add(groupElement);
-    }
-
-    nuspec.Save(nuspecOutputPath);
 }
 
 abstract class TestSuite
