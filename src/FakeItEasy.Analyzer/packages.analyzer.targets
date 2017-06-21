@@ -1,0 +1,15 @@
+<Project>
+
+  <PropertyGroup>
+    <PackageTags>FakeItEasy;analyzer</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Analyzer installation scripts -->
+    <Content Include="tools/*.ps1">
+      <Pack>true</Pack>
+      <PackagePath>tools/%(Filename)%(Extension)</PackagePath>
+    </Content>
+  </ItemGroup>
+
+</Project>

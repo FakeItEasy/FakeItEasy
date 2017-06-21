@@ -17,12 +17,13 @@
   </PropertyGroup>
 
   <Import Project="../packages.targets" />
+  <Import Project="packages.analyzer.targets" />
 
   <PropertyGroup Label="Package properties">
     <Title>FakeItEasy.Analyzer.VisualBasic</Title>
     <Authors>Thomas Levesque, FakeItEasy contributors</Authors>
     <Description>Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy in VB.NET. Works in Visual Studio 2015 Update 1 or later.</Description>
-    <PackageTags>FakeItEasy;analyzer</PackageTags>
+    <PackageTags>$(PackageTags);visualbasic;vb;vb.net</PackageTags>
     <BuildOutputTargetFolder>analyzers/dotnet/vb</BuildOutputTargetFolder>
   </PropertyGroup>
 
@@ -36,10 +37,6 @@
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
     <Compile Include="../*.cs" />
-    <Content Include="tools/*.ps1">
-      <Pack>true</Pack>
-      <PackagePath>tools/%(Filename)%(Extension)</PackagePath>
-    </Content>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
