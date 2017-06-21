@@ -385,7 +385,7 @@ namespace FakeItEasy.Specs
                 .See(() => nameof(Fake.CustomEvent));
 
             "When I raise the event specifying the sender and the event arguments"
-                .x(() => Fake.CustomEvent += Raise.WithDynamic(SampleSender, this.customEventArgs));
+                .x(() => Fake.CustomEvent += Raise.FreeForm.With(SampleSender, this.customEventArgs));
 
             "Then the supplied sender is passed as the event sender"
                 .x(() => CapturedSender.Should().BeSameAs(SampleSender));
@@ -401,7 +401,7 @@ namespace FakeItEasy.Specs
                 .See(() => nameof(Fake.ReferenceTypeEvent));
 
             "When I raise the event specifying the arguments"
-                .x(() => Fake.ReferenceTypeEvent += Raise.WithDynamic(this.referenceTypeEventArgs));
+                .x(() => Fake.ReferenceTypeEvent += Raise.FreeForm.With(this.referenceTypeEventArgs));
 
             "Then the supplied value is passed as the event argument"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.referenceTypeEventArgs));
@@ -415,7 +415,7 @@ namespace FakeItEasy.Specs
 
             "When I raise the event specifying an argument of a derived type"
                 .x(() => Fake.ReferenceTypeEvent +=
-                    Raise.WithDynamic(this.derivedReferenceTypeEventArgs));
+                    Raise.FreeForm.With(this.derivedReferenceTypeEventArgs));
 
             "Then the supplied value is passed as the event argument"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.derivedReferenceTypeEventArgs));
@@ -434,7 +434,7 @@ namespace FakeItEasy.Specs
 
             "When I raise the event specifying an argument of an invalid type"
                 .x(() => exception = Record.Exception(() =>
-                    Fake.ReferenceTypeEvent += Raise.WithDynamic(new Hashtable())));
+                    Fake.ReferenceTypeEvent += Raise.FreeForm.With(new Hashtable())));
 
             "Then the call fails with a meaningful message"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
@@ -450,7 +450,7 @@ namespace FakeItEasy.Specs
 
             "When I raise the event specifying a null argument"
                 .x(() => exception = Record.Exception(() =>
-                    Fake.ValueTypeEvent += Raise.WithDynamic((object)null)));
+                    Fake.ValueTypeEvent += Raise.FreeForm.With((object)null)));
 
             "Then the call fails with a meaningful message"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
@@ -465,7 +465,7 @@ namespace FakeItEasy.Specs
                 .See(() => nameof(Fake.ActionEvent));
 
             "When I raise the event specifying the arguments"
-                .x(() => Fake.ActionEvent += Raise.WithDynamic(19, true));
+                .x(() => Fake.ActionEvent += Raise.FreeForm.With(19, true));
 
             "Then the first value is passed as the first event argument"
                 .x(() => CapturedArgs1.Should().Be(19));
@@ -477,8 +477,8 @@ namespace FakeItEasy.Specs
         [Scenario]
         public void DynamicRaiseAssignmentToNonDelegate(string s, Exception exception)
         {
-            "When I assign Raise.WithDynamic to something that isn't a delegate"
-                .x(() => exception = Record.Exception(() => s = Raise.WithDynamic("foo", 42)));
+            "When I assign Raise.FreeForm.With to something that isn't a delegate"
+                .x(() => exception = Record.Exception(() => s = Raise.FreeForm.With("foo", 42)));
 
             "Then it throws an InvalidCastException"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidCastException>());
@@ -495,7 +495,7 @@ namespace FakeItEasy.Specs
                 .See(() => nameof(Fake.CustomEvent));
 
             "When I raise the event specifying incorrect arguments"
-                .x(() => exception = Record.Exception(() => Fake.CustomEvent += Raise.WithDynamic("foo", 42, true)));
+                .x(() => exception = Record.Exception(() => Fake.CustomEvent += Raise.FreeForm.With("foo", 42, true)));
 
             "Then it throws a FakeConfigurationException"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>());
