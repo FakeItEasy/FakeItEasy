@@ -16,7 +16,7 @@
     <Title>FakeItEasy - Mocking made faking easy!</Title>
     <Authors>Patrik Hägne, FakeItEasy contributors</Authors>
     <Description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</Description>
-    <PackageTags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</PackageTags>
+    <PackageTags>TDD;unittesting;mocks;mocking;fakes;faking;stubs;stubbing;spy;spies;doubles;isolation;substitutes;substitution</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

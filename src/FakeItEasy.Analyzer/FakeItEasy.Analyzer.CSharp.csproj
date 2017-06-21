@@ -22,7 +22,7 @@
     <Title>FakeItEasy.Analyzer.CSharp</Title>
     <Authors>Thomas Levesque, FakeItEasy contributors</Authors>
     <Description>Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy in C#. Works in Visual Studio 2015 Update 1 or later.</Description>
-    <PackageTags>FakeItEasy, analyzers</PackageTags>
+    <PackageTags>FakeItEasy;analyzer</PackageTags>
     <BuildOutputTargetFolder>analyzers/dotnet/cs</BuildOutputTargetFolder>
   </PropertyGroup>
 

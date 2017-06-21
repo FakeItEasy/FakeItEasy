@@ -12,7 +12,7 @@
     <iconUrl>http://fakeiteasy.github.io/img/fakeiteasy_logo_256_square_white.png</iconUrl>
     <licenseUrl>https://raw.githubusercontent.com/FakeItEasy/FakeItEasy/master/License.txt</licenseUrl>
     <copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</copyright>
-    <tags>FakeItEasy, analyzers</tags>
+    <tags>FakeItEasy analyzer</tags>
     <dependencies>
       <dependency id="FakeItEasy.Analyzer.CSharp" version="$version$" />
       <dependency id="FakeItEasy.Analyzer.VisualBasic" version="$version$" />
