@@ -8,24 +8,24 @@
     using Xbehave;
     using Xunit;
 
-    [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
-    public delegate void VoidDelegateWithOutAndRefParameters(
-        int byValueParameter, ref int byRefParameter, out int outParameter);
-
-    [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
-    public delegate int NonVoidDelegateWithOutAndRefParameters(
-        int byValueParameter, ref int byRefParameter, out int outParameter);
-
-    [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
-    public delegate void VoidDelegateWithRefParameter(ref string byRefParameter);
-
-    public interface IHaveARef
-    {
-        void MightReturnAKnownValue(ref string andThisIsWhoReallyDidIt);
-    }
-
     public static class AssignsOutAndRefParametersSpecs
     {
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
+        public delegate void VoidDelegateWithOutAndRefParameters(
+            int byValueParameter, ref int byRefParameter, out int outParameter);
+
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
+        public delegate int NonVoidDelegateWithOutAndRefParameters(
+            int byValueParameter, ref int byRefParameter, out int outParameter);
+
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "WithOut", Justification = "That's two words, not one")]
+        public delegate void VoidDelegateWithRefParameter(ref string byRefParameter);
+
+        public interface IHaveARef
+        {
+            void MightReturnAKnownValue(ref string andThisIsWhoReallyDidIt);
+        }
+
         private const string Condition = "someone_else";
         private const string KnownOutput = "you";
 
