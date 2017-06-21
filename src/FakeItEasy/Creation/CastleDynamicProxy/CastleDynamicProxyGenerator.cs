@@ -1,4 +1,4 @@
-namespace FakeItEasy.Creation.CastleDynamicProxy
+﻿namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;
@@ -6,6 +6,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Runtime.Serialization;
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
 
@@ -150,7 +151,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             IEnumerable<object> argumentsForConstructor,
             IInterceptor interceptor)
         {
-            var allInterfacesToImplement = GetAllInterfacesToImplement(additionalInterfacesToImplement);
+            var allInterfacesToImplement = additionalInterfacesToImplement;
 
             if (typeOfProxy.GetTypeInfo().IsInterface)
             {
@@ -176,11 +177,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 options,
                 argumentsArray,
                 interceptor);
-        }
-
-        private static IEnumerable<Type> GetAllInterfacesToImplement(IEnumerable<Type> additionalInterfacesToImplement)
-        {
-            return additionalInterfacesToImplement.Concat(typeof(ITaggable));
         }
 
 #if FEATURE_BINARY_SERIALIZATION
@@ -221,12 +217,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         private class ProxyInterceptor
             : IInterceptor
         {
-            private static readonly MethodInfo TagGetMethod = typeof(ITaggable).GetProperty("Tag").GetGetMethod();
-            private static readonly MethodInfo TagSetMethod = typeof(ITaggable).GetProperty("Tag").GetSetMethod();
-
             private readonly IFakeCallProcessorProvider fakeCallProcessorProvider;
-
-            private object tag;
 
             public ProxyInterceptor(IFakeCallProcessorProvider fakeCallProcessorProvider)
             {
@@ -236,21 +227,17 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             public void Intercept(IInvocation invocation)
             {
                 Guard.AgainstNull(invocation, nameof(invocation));
-
-                if (invocation.Method.Equals(TagGetMethod))
-                {
-                    invocation.ReturnValue = this.tag;
-                }
-                else if (invocation.Method.Equals(TagSetMethod))
-                {
-                    this.tag = invocation.Arguments[0];
-                }
-                else
-                {
-                    var call = new CastleInvocationCallAdapter(invocation);
-                    this.fakeCallProcessorProvider.Fetch(invocation.Proxy).Process(call);
-                }
+                var call = new CastleInvocationCallAdapter(invocation);
+                this.fakeCallProcessorProvider.Fetch(invocation.Proxy).Process(call);
             }
+
+#if FEATURE_BINARY_SERIALIZATION
+            [OnDeserialized]
+            public void OnDeserialized(StreamingContext context)
+            {
+                this.fakeCallProcessorProvider.EnsureManagerIsRegistered();
+            }
+#endif
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
     using FakeItEasy.Creation;
@@ -22,9 +22,6 @@ namespace FakeItEasy.Core
 #endif
         private readonly FakeManager.Factory fakeManagerFactory;
 
-#if FEATURE_BINARY_SERIALIZATION
-        [NonSerialized]
-#endif
         private readonly IFakeManagerAccessor fakeManagerAccessor;
 
 #if FEATURE_BINARY_SERIALIZATION
@@ -81,11 +78,16 @@ namespace FakeItEasy.Core
                 {
                     this.initializedFakeManager = this.fakeManagerFactory(this.typeOfFake, proxy);
 
-                    this.fakeManagerAccessor.TagProxy(proxy, this.initializedFakeManager);
+                    this.fakeManagerAccessor.SetFakeManager(proxy, this.initializedFakeManager);
 
                     this.ApplyInitialConfiguration(proxy);
                 }
             }
+        }
+
+        public void EnsureManagerIsRegistered()
+        {
+            this.fakeManagerAccessor.SetFakeManager(this.initializedFakeManager.Object, this.initializedFakeManager);
         }
 
         private void ApplyInitialConfiguration(object proxy)

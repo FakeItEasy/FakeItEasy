@@ -12,20 +12,17 @@ namespace FakeItEasy.Tests.Creation
 
     public class ProxyGeneratorSelectorTests
     {
-#pragma warning disable 649
-        [Fake]
-        private DelegateProxyGenerator delegateProxyGenerator;
+        private readonly DelegateProxyGenerator delegateProxyGenerator;
 
-        [Fake]
-        private IProxyGenerator defaultProxyGenerator;
+        private readonly IProxyGenerator defaultProxyGenerator;
 
-        [UnderTest]
-        private ProxyGeneratorSelector selector;
-#pragma warning restore 649
+        private readonly ProxyGeneratorSelector selector;
 
         public ProxyGeneratorSelectorTests()
         {
-            Fake.InitializeFixture(this);
+            this.delegateProxyGenerator = A.Fake<DelegateProxyGenerator>();
+            this.defaultProxyGenerator = A.Fake<IProxyGenerator>();
+            this.selector = new ProxyGeneratorSelector(this.delegateProxyGenerator, this.defaultProxyGenerator);
         }
 
         [Fact]

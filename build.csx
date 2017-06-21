@@ -1,8 +1,10 @@
 #load "packages/simple-targets-csx.5.2.0/simple-targets.csx"
 
 #r "System.Net.Http"
+#r "System.Xml.Linq"
 
 using System.Net.Http;
+using System.Xml.Linq;
 using static SimpleTargets;
 
 var solutionName = "FakeItEasy";
@@ -12,7 +14,9 @@ var versionInfoFile = "./src/VersionInfo.cs";
 var packagesDirectory = Path.GetFullPath("packages");
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 var coverityProjectUrl = "https://scan.coverity.com/builds?project=FakeItEasy%2FFakeItEasy";
-var nuspecs = Directory.GetFiles("./src", "*.nuspec");
+var fakeItEasyProjectPath = "./src/FakeItEasy/FakeItEasy.csproj";
+var analyzerNuspecPath = "./src/FakeItEasy.Analyzer.nuspec";
+
 var pdbs = new []
 {
     "src/FakeItEasy/bin/Release/net40/FakeItEasy.pdb",
@@ -56,7 +60,7 @@ static var xunit = "./packages/xunit.runner.console.2.0.0/tools/xunit.console.ex
 var coverityDirectory = "./artifacts/coverity";
 var coverityResultsDirectory = "./artifacts/coverity/cov-int";
 var logsDirectory = "./artifacts/logs";
-var outputDirectory = "./artifacts/output";
+var outputDirectory = Path.GetFullPath("./artifacts/output");
 static var testsDirectory = "./artifacts/tests";
 
 // targets
@@ -160,10 +164,8 @@ targets.Add(
     () =>
     {
         var version = ReadCmdOutput(".", gitversion, "/showvariable NuGetVersionV2");
-        foreach (var nuspec in nuspecs)
-        {
-            Cmd(nuget, $"pack {nuspec} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
-        }
+        Cmd("dotnet", $"pack {fakeItEasyProjectPath} --configuration Release --no-build --output {outputDirectory} /p:Version={version}");
+        Cmd(nuget, $"pack {analyzerNuspecPath} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
     });
 
 targets.Add(

@@ -8,6 +8,7 @@ namespace FakeItEasy
     /// </summary>
     [SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes", Justification = "Allows consumers to create their own testing DSL.")]
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    [Obsolete("Test fixture initialization will be removed in version 5.0.0.")]
     public class UnderTestAttribute : Attribute
     {
     }

@@ -1,31 +1,22 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using FakeItEasy.Creation;
+    using FakeItEasy.Sdk;
 
-    internal class DefaultFixtureInitializer
-        : IFixtureInitializer
+    [Obsolete("Test fixture initialization will be removed in version 5.0.0.")]
+    internal static class FixtureInitializer
     {
-        private readonly IFakeAndDummyManager fakeAndDummyManager;
-        private readonly ISutInitializer sutInitializer;
-
-        public DefaultFixtureInitializer(IFakeAndDummyManager fakeAndDummyManager, ISutInitializer sutInitializer)
+        public static void InitializeFakes(object fixture)
         {
-            this.fakeAndDummyManager = fakeAndDummyManager;
-            this.sutInitializer = sutInitializer;
+            var fakesCreatedForTypes = new Dictionary<Type, object>();
+            InitializeSut(fixture, fakesCreatedForTypes);
+
+            InitializeFakes(fixture, fakesCreatedForTypes);
         }
 
-        public void InitializeFakes(object fixture)
-        {
-            var fakesUsedToCreateSut = this.InitializeSut(fixture);
-
-            this.InitializeFakes(fixture, fakesUsedToCreateSut);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "UnderTestAttribute", Justification = "Refers to the type 'UnderTestAttribute'.")]
         private static SettableMemberInfo GetSutSetter(object fixture)
         {
             var allSettersTaggedUnderTest = GetMembersTaggedWithAttribute(fixture, typeof(UnderTestAttribute));
@@ -82,7 +73,7 @@ namespace FakeItEasy.Core
                     select attribute).Any();
         }
 
-        private void InitializeFakes(object fixture, Dictionary<Type, object> fakesUsedToCreateSut)
+        private static void InitializeFakes(object fixture, Dictionary<Type, object> fakesUsedToCreateSut)
         {
             var settersForTaggedMembers = GetMembersTaggedWithAttribute(fixture, typeof(FakeAttribute));
 
@@ -92,25 +83,50 @@ namespace FakeItEasy.Core
 
                 if (!fakesUsedToCreateSut.TryGetValue(setter.MemberType, out fake))
                 {
-                    fake = this.fakeAndDummyManager.CreateFake(setter.MemberType, options => { });
+                    fake = Create.Fake(setter.MemberType);
                 }
 
                 setter.Setter(fake);
             }
         }
 
-        private Dictionary<Type, object> InitializeSut(object fixture)
+        private static void InitializeSut(object fixture, Dictionary<Type, object> fakesCreatedForTypes)
         {
-            var result = new Dictionary<Type, object>();
-
             var setter = GetSutSetter(fixture);
             if (setter != null)
             {
-                var sut = this.sutInitializer.CreateSut(setter.MemberType, result.Add);
+                var sut = CreateSut(setter.MemberType, fakesCreatedForTypes);
                 setter.Setter(sut);
             }
+        }
 
-            return result;
+        private static object CreateSut(Type typeOfSut, Dictionary<Type, object> fakesCreatedForTypes)
+        {
+            var constructorSignature = from parameter in GetWidestConstructor(typeOfSut).GetParameters()
+                                       select parameter.ParameterType;
+
+            var resolvedArguments = ResolveArguments(constructorSignature, fakesCreatedForTypes);
+
+            var argumentsArray = constructorSignature.Select(x => resolvedArguments[x]).ToArray();
+
+            return Activator.CreateInstance(typeOfSut, argumentsArray);
+        }
+
+        private static ConstructorInfo GetWidestConstructor(Type type)
+        {
+            return type.GetConstructors().OrderByDescending(x => x.GetParameters().Length).First();
+        }
+
+        private static Dictionary<Type, object> ResolveArguments(IEnumerable<Type> constructorSignature, Dictionary<Type, object> fakesCreatedForTypes)
+        {
+            return constructorSignature
+                .Distinct()
+                .ToDictionary(key => key, value => CreateFake(value, fakesCreatedForTypes));
+        }
+
+        private static object CreateFake(Type typeOfFake, Dictionary<Type, object> fakesCreatedForTypes)
+        {
+            return fakesCreatedForTypes[typeOfFake] = Create.Fake(typeOfFake);
         }
 
         private class SettableMemberInfo

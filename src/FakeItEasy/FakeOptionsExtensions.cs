@@ -33,18 +33,18 @@ namespace FakeItEasy
         /// Makes the fake strict. This means that any call to the fake
         /// that has not been explicitly configured will throw an exception.
         /// </summary>
-        /// <param name="optionsBuilder">Action that builds options used to create the fake object.</param>
-        /// <returns>A configuration object.</returns>
-        public static IFakeOptions Strict(this IFakeOptions optionsBuilder)
+        /// <param name="options">Options used to create the fake object.</param>
+        /// <returns>An options object.</returns>
+        public static IFakeOptions Strict(this IFakeOptions options)
         {
-            Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
+            Guard.AgainstNull(options, nameof(options));
 
             Action<IFakeObjectCall> thrower = call =>
             {
                 throw new ExpectationException(ExceptionMessages.CallToUnconfiguredMethodOfStrictFake(call));
             };
 
-            return optionsBuilder.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
+            return options.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
         }
 
         /// <summary>
@@ -65,13 +65,13 @@ namespace FakeItEasy
         /// <summary>
         /// Makes the fake default to calling base methods, so long as they aren't abstract.
         /// </summary>
-        /// <param name="optionsBuilder">Action that builds options used to create the fake object.</param>
-        /// <returns>A configuration object.</returns>
-        public static IFakeOptions CallsBaseMethods(this IFakeOptions optionsBuilder)
+        /// <param name="options">Options used to create the fake object.</param>
+        /// <returns>An options object.</returns>
+        public static IFakeOptions CallsBaseMethods(this IFakeOptions options)
         {
-            Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
+            Guard.AgainstNull(options, nameof(options));
 
-            return optionsBuilder.ConfigureFake(fake => A.CallTo(fake)
+            return options.ConfigureFake(fake => A.CallTo(fake)
                                                   .Where(call => !call.Method.IsAbstract)
                                                   .CallsBaseMethod());
         }

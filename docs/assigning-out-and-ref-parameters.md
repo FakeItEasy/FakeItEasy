@@ -17,9 +17,12 @@ call being faked - the other arguments to the method should be
 omitted.
 
 While assigning out and ref parameters, the `Returns` method (or
-[some variant](specifying-return-values.md)) should be used to specify
-the return value for the method - `AssignsOutAndRefParameters` does
-not do this on its own.
+[some variant](specifying-return-values.md)) is often used to specify
+the return value for a non-void method - `AssignsOutAndRefParameters`
+does not do this on its own. If `AssignsOutAndRefParameters` is used
+without a `Returns`, the return value will be a [Dummy](dummies.md).
+When both `Returns` and `AssignsOutAndRefParameters` are used,
+`Returns` must be specified first.
 
 ##Assigning Values Calculated at Call Time
 

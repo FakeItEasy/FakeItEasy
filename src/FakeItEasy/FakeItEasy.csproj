@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net40;net45;netstandard1.6</TargetFrameworks>
@@ -10,10 +10,27 @@
     <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <PropertyGroup Label="Package properties">
+    <Title>FakeItEasy - Mocking made faking easy!</Title>
+    <Authors>Patrik Hägne, FakeItEasy contributors</Authors>
+    <Description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</Description>
+    <Copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</Copyright>
+    <PackageProjectUrl>https://fakeiteasy.github.io/</PackageProjectUrl>
+    <PackageIconUrl>https://fakeiteasy.github.io/img/fakeiteasy_logo_256_square_white.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</PackageLicenseUrl>
+    <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
+    <PackageTags>TDD unittesting mocks mocking fakes faking stubs stubbing spy spies doubles isolation substitutes substitution</PackageTags>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
     <Compile Include="../*.cs" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" PrivateAssets="all" />
+    <Content Include="$(OutputPath)/*/FakeItEasy.pdb">
+      <Pack>true</Pack>
+      <PackagePath>lib/%(RecursiveDir)FakeItEasy.pdb</PackagePath>
+    </Content>
   </ItemGroup>
 
   <!-- Debug -->
@@ -36,13 +53,6 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <Compile Remove="SelfInitializedFakes/**" />
-    <Compile Remove="Recorders.cs" />
-    <Compile Remove="Creation/IFakeOptionsForWrappers.cs" />
-    <Compile Remove="Creation/IFakeOptionsForWrappers.of.T.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
     <PackageReference Include="Castle.Core" Version="4.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.0.0" />
     <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
@@ -52,16 +62,12 @@
   <!-- .NET 4.5 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_SELF_INITIALIZED_FAKES</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <PackageReference Include="ILMerge" Version="2.14.1208">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Castle.Core" Version="4.1.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="ILMerge" Version="2.14.1208" PrivateAssets="all" />
+    <PackageReference Include="Castle.Core" Version="4.1.0" PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="ILMerge45" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net45'">
@@ -71,16 +77,12 @@
   <!-- .NET 4.0 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
-    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_SELF_INITIALIZED_FAKES;FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <PackageReference Include="ILMerge" Version="2.14.1208">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Castle.Core" Version="4.1.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="ILMerge" Version="2.14.1208" PrivateAssets="all" />
+    <PackageReference Include="Castle.Core" Version="4.1.0" PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="ILMerge40" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net40'">

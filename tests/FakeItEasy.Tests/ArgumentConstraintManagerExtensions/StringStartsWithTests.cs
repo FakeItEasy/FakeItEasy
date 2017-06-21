@@ -42,7 +42,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
             base.IsValid_should_return_true_for_valid_values(validValue);
         }
 
-        protected override void CreateConstraint(IArgumentConstraintManager<string> scope)
+        protected override void CreateConstraint(INegatableArgumentConstraintManager<string> scope)
         {
             scope.StartsWith("abc");
         }

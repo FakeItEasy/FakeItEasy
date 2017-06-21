@@ -118,29 +118,6 @@ namespace FakeItEasy.Tests
             description.Should().Be("FakeItEasy.Tests.IFoo.Bar(<string.Empty>, 123)");
         }
 
-        [Fact]
-        public void Write_should_be_null_guarded()
-        {
-#pragma warning disable CS0618 // Type or member is obsolete
-            Expression<System.Action> call = () => Enumerable.Empty<IFakeObjectCall>().Write(A.Dummy<IOutputWriter>());
-#pragma warning restore CS0618 // Type or member is obsolete
-            call.Should().BeNullGuarded();
-        }
-
-        [Fact]
-        public void WriteToConsole_should_be_null_guarded()
-        {
-            // Arrange
-
-            // Act
-
-            // Assert
-#pragma warning disable CS0618 // Type or member is obsolete
-            Expression<System.Action> call = () => Enumerable.Empty<IFakeObjectCall>().WriteToConsole();
-#pragma warning restore CS0618 // Type or member is obsolete
-            call.Should().BeNullGuarded();
-        }
-
         private static FakeCall CreateFakeCallToFooDotBar(object argument1, object argument2)
         {
             return FakeCall.Create<IFoo>("Bar", new[] { typeof(object), typeof(object) }, new[] { argument1, argument2 });

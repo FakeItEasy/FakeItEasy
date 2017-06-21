@@ -1,4 +1,4 @@
-namespace FakeItEasy.Tests.Creation
+﻿namespace FakeItEasy.Tests.Creation
 {
     using System;
     using System.Linq.Expressions;
@@ -43,7 +43,7 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
 
             // Act
-            var result = new ProxyGeneratorResult(A.Fake<ITaggable>());
+            var result = new ProxyGeneratorResult(new object());
 
             // Assert
             result.ProxyWasSuccessfullyGenerated.Should().BeTrue();
@@ -128,7 +128,7 @@ namespace FakeItEasy.Tests.Creation
         public void Should_set_proxy_when_constructor_with_proxy_is_used()
         {
             // Arrange
-            var proxy = A.Fake<ITaggable>();
+            var proxy = new object();
 
             // Act
             var result = new ProxyGeneratorResult(proxy);
@@ -157,7 +157,7 @@ namespace FakeItEasy.Tests.Creation
             // Act
 
             // Assert
-            Expression<Action> call = () => new ProxyGeneratorResult(A.Dummy<ITaggable>());
+            Expression<Action> call = () => new ProxyGeneratorResult(new object());
             call.Should().BeNullGuarded();
         }
     }

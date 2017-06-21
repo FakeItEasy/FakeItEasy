@@ -10,14 +10,15 @@ namespace FakeItEasy.Tests.Core
 
     public class DefaultFakeObjectCallFormatterTests
     {
-#pragma warning disable 649
-        [UnderTest]
-        private DefaultFakeObjectCallFormatter formatter;
-#pragma warning restore 649
+        private readonly DefaultFakeObjectCallFormatter formatter;
+        private readonly ArgumentValueFormatter argumentFormatter;
+        private readonly IFakeManagerAccessor fakeManagerAccessor;
 
         public DefaultFakeObjectCallFormatterTests()
         {
-            Fake.InitializeFixture(this);
+            this.argumentFormatter = A.Fake<ArgumentValueFormatter>();
+            this.fakeManagerAccessor = A.Fake<IFakeManagerAccessor>();
+            this.formatter = new DefaultFakeObjectCallFormatter(this.argumentFormatter, this.fakeManagerAccessor);
         }
 
         public interface ITypeWithMethodThatTakesArguments
@@ -26,12 +27,6 @@ namespace FakeItEasy.Tests.Core
 
             void MoreThanTwo(string one, string two, string three);
         }
-
-        [Fake]
-        private ArgumentValueFormatter ArgumentFormatter { get; set; }
-
-        [Fake]
-        private IFakeManagerAccessor FakeManagerAccessor { get; set; }
 
         [Fact]
         public void Should_start_with_method_name()
@@ -64,8 +59,8 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var call = this.CreateFakeCallToFoo("argument value", 1);
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("argument value")).Returns(@"""argument value""");
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(1)).Returns("1");
+            A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString("argument value")).Returns(@"""argument value""");
+            A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString(1)).Returns("1");
 
             // Act
             var description = this.formatter.GetDescription(call);
@@ -84,7 +79,7 @@ namespace FakeItEasy.Tests.Core
                 "two",
                 "three");
 
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(A<object>._))
+            A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString(A<object>._))
                 .ReturnsLazily(x => x.GetArgument<object>(0).ToString());
 
             // Act
@@ -120,7 +115,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var propertyGetter = typeof(TypeWithProperties).GetProperty("NormalProperty").GetSetMethod();
             var call = this.CreateFakeCall(typeof(TypeWithProperties), propertyGetter, "foo");
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("foo")).Returns(@"""foo""");
+            A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString("foo")).Returns(@"""foo""");
 
             // Act
             var description = this.formatter.GetDescription(call);
@@ -135,7 +130,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var propertyGetter = typeof(TypeWithProperties).GetProperty("Item").GetGetMethod();
             var call = this.CreateFakeCall(typeof(TypeWithProperties), propertyGetter, 0);
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(0)).Returns("0");
+            A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString(0)).Returns("0");
 
             // Act
             var description = this.formatter.GetDescription(call);
@@ -150,8 +145,8 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var propertyGetter = typeof(TypeWithProperties).GetProperty("Item").GetSetMethod();
             var call = this.CreateFakeCall(typeof(TypeWithProperties), propertyGetter, 0, "argument");
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString(0)).Returns("0");
-            A.CallTo(() => this.ArgumentFormatter.GetArgumentValueAsString("argument")).Returns(@"""argument""");
+            A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString(0)).Returns("0");
+            A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString("argument")).Returns(@"""argument""");
 
             // Act
             var description = this.formatter.GetDescription(call);
@@ -174,7 +169,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => call.FakedObject).Returns(A.Fake<object>());
 
             var fakeManager = A.Fake<FakeManager>();
-            A.CallTo(() => this.FakeManagerAccessor.GetFakeManager(call.FakedObject)).Returns(fakeManager);
+            A.CallTo(() => this.fakeManagerAccessor.GetFakeManager(call.FakedObject)).Returns(fakeManager);
             A.CallTo(() => fakeManager.FakeObjectType).Returns(typeOfFakeObject);
 
             return call;
