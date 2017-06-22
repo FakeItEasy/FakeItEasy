@@ -334,6 +334,11 @@ namespace FakeItEasy
             where TEventArgs : System.EventArgs { }
         public static TEventHandler With<TEventHandler>(params object[] arguments) { }
         public static FakeItEasy.Core.Raise<System.EventArgs> WithEmpty() { }
+        public class static FreeForm
+        {
+            [return: System.Runtime.CompilerServices.DynamicAttribute()]
+            public static object With(params object[] arguments) { }
+        }
     }
     public class static RepeatConfigurationExtensions
     {
