@@ -1,0 +1,20 @@
+<Project>
+
+  <PropertyGroup Label="Common package properties">
+    <Copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</Copyright>
+    <PackageProjectUrl>https://fakeiteasy.github.io/</PackageProjectUrl>
+    <PackageIconUrl>https://fakeiteasy.github.io/img/fakeiteasy_logo_256_square_white.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</PackageLicenseUrl>
+    <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include symbols in the package -->
+    <Content Include="$(OutputPath)/**/$(AssemblyName).pdb">
+      <Pack>true</Pack>
+      <PackagePath>$(BuildOutputTargetFolder)/%(RecursiveDir)$(AssemblyName).pdb</PackagePath>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.1</TargetFrameworks>
+    <TargetFramework>netstandard1.1</TargetFramework>
     <AssemblyName>FakeItEasy.Analyzer.CSharp</AssemblyName>
     <RootNamespace>FakeItEasy.Analyzer</RootNamespace>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -13,6 +13,18 @@
     <DefineConstants>$(DefineConstants);CSHARP</DefineConstants>
     <PackageTargetFallback>portable45-net45+win8</PackageTargetFallback>
     <BaseIntermediateOutputPath>objcs\</BaseIntermediateOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <Import Project="../packages.targets" />
+  <Import Project="packages.analyzer.targets" />
+
+  <PropertyGroup Label="Package properties">
+    <Title>FakeItEasy.Analyzer.CSharp</Title>
+    <Authors>Thomas Levesque, FakeItEasy contributors</Authors>
+    <Description>Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy in C#. Works in Visual Studio 2015 Update 1 or later.</Description>
+    <PackageTags>$(PackageTags);csharp;c#</PackageTags>
+    <BuildOutputTargetFolder>analyzers/dotnet/cs</BuildOutputTargetFolder>
   </PropertyGroup>
 
   <ItemGroup>

@@ -14,15 +14,21 @@ var versionInfoFile = "./src/VersionInfo.cs";
 var packagesDirectory = Path.GetFullPath("packages");
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 var coverityProjectUrl = "https://scan.coverity.com/builds?project=FakeItEasy%2FFakeItEasy";
-var fakeItEasyProjectPath = "./src/FakeItEasy/FakeItEasy.csproj";
-var analyzerNuspecPath = "./src/FakeItEasy.Analyzer.nuspec";
+
+var projectsToPack = new[]
+{
+    "./src/FakeItEasy/FakeItEasy.csproj",
+    "./src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.CSharp.csproj",
+    "./src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.VisualBasic.csproj"
+};
+var analyzerMetaPackageNuspecPath = "./src/FakeItEasy.Analyzer.nuspec";
 
 var pdbs = new []
 {
     "src/FakeItEasy/bin/Release/net40/FakeItEasy.pdb",
     "src/FakeItEasy/bin/Release/netstandard1.6/FakeItEasy.pdb",
-    "src/FakeItEasy.Analyzer/bin/Release/netstandard1.1/FakeItEasy.Analyzer.Csharp.pdb",
-    "src/FakeItEasy.Analyzer/bin/Release/netstandard1.1/FakeItEasy.Analyzer.VisualBasic.pdb"
+    "src/FakeItEasy.Analyzer/bin/Release/FakeItEasy.Analyzer.Csharp.pdb",
+    "src/FakeItEasy.Analyzer/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
 };
 
 var testSuites = new Dictionary<string, TestSuite[]>
@@ -164,8 +170,12 @@ targets.Add(
     () =>
     {
         var version = ReadCmdOutput(".", gitversion, "/showvariable NuGetVersionV2");
-        Cmd("dotnet", $"pack {fakeItEasyProjectPath} --configuration Release --no-build --output {outputDirectory} /p:Version={version}");
-        Cmd(nuget, $"pack {analyzerNuspecPath} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
+        foreach (var project in projectsToPack)
+        {
+            Cmd("dotnet", $"pack {project} --configuration Release --no-build --output {outputDirectory} /p:Version={version}");
+        }
+
+        Cmd(nuget, $"pack {analyzerMetaPackageNuspecPath} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
     });
 
 targets.Add(
