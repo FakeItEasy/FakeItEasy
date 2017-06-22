@@ -253,6 +253,8 @@ namespace FakeItEasy
     {
         public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e) { }
         public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(TEventArgs e) { }
+        [System.ObsoleteAttribute("Raise.With<TEventHandler> will be removed in version 5.0.0. Use Raise.FreeForm.Wi" +
+            "th instead.")]
         public static TEventHandler With<TEventHandler>(params object[] arguments) { }
         public static FakeItEasy.Core.Raise<System.EventArgs> WithEmpty() { }
         public class static FreeForm

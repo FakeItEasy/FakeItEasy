@@ -49,20 +49,11 @@ event CustomEventHandler CustomEvent;
 event FreeformEventHandler FreeformEvent;
 ```
 
-To do that, you can either:
-
-* use `Raise.FreeForm.With`, which automatically infers the correct delegate type:
+To do that, you can use `Raise.FreeForm.With`, which automatically infers the correct delegate type:
 
 ```csharp
 fake.CustomEvent += Raise.FreeForm.With(fake, sampleCustomEventArgs);
 fake.FreeformEvent += Raise.FreeForm.With(7);
-```
-
-* or specify the delegate type explicitly as a type parameter to `Raise.With`:
-
-```csharp
-fake.CustomEvent += Raise.With<CustomEventHandler>(fake, sampleCustomEventArgs);
-fake.FreeformEvent += Raise.With<FreeformHandler>(7);
 ```
 
 Just as when we're trying to

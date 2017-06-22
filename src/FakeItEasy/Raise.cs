@@ -65,6 +65,7 @@ namespace FakeItEasy
         /// <param name="arguments">The arguments to send to the event handlers.</param>
         /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/></typeparam>
         /// <returns>A new object that knows how to raise events.</returns>
+        [Obsolete("Raise.With<TEventHandler> will be removed in version 5.0.0. Use Raise.FreeForm.With instead.")]
         public static TEventHandler With<TEventHandler>(params object[] arguments)
         {
             return new DelegateRaiser<TEventHandler>(arguments, ArgumentProviderMap);
