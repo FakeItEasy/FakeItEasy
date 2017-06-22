@@ -289,7 +289,9 @@ namespace FakeItEasy.Specs
                 .See(() => nameof(Fake.CustomEvent));
 
             "When I raise the event specifying the sender and the event arguments"
+#pragma warning disable CS0618 // Type or member is obsolete
                 .x(() => Fake.CustomEvent += Raise.With<CustomEventHandler>(SampleSender, this.customEventArgs));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             "Then the supplied sender is passed as the event sender"
                 .x(() => CapturedSender.Should().BeSameAs(SampleSender));
@@ -305,7 +307,9 @@ namespace FakeItEasy.Specs
                 .See(() => nameof(Fake.ReferenceTypeEvent));
 
             "When I raise the event specifying the arguments"
+#pragma warning disable CS0618 // Type or member is obsolete
                 .x(() => Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(this.referenceTypeEventArgs));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             "Then the supplied value is passed as the event argument"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.referenceTypeEventArgs));
@@ -319,7 +323,9 @@ namespace FakeItEasy.Specs
 
             "When I raise the event specifying an argument of a derived type"
                 .x(() => Fake.ReferenceTypeEvent +=
+#pragma warning disable CS0618 // Type or member is obsolete
                     Raise.With<ReferenceTypeEventHandler>(this.derivedReferenceTypeEventArgs));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             "Then the supplied value is passed as the event argument"
                 .x(() => CapturedArgs1.Should().BeSameAs(this.derivedReferenceTypeEventArgs));
@@ -338,7 +344,9 @@ namespace FakeItEasy.Specs
 
             "When I raise the event specifying an argument of an invalid type"
                 .x(() => exception = Record.Exception(() =>
+#pragma warning disable CS0618 // Type or member is obsolete
                         Fake.ReferenceTypeEvent += Raise.With<ReferenceTypeEventHandler>(new Hashtable())));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             "Then the call fails with a meaningful message"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And
@@ -354,7 +362,9 @@ namespace FakeItEasy.Specs
 
             "When I raise the event specifying a null argument"
                 .x(() => exception = Record.Exception(() =>
+#pragma warning disable CS0618 // Type or member is obsolete
                         Fake.ValueTypeEvent += Raise.With<ValueTypeEventHandler>((object)null)));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             "Then the call fails with a meaningful message"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
@@ -369,7 +379,9 @@ namespace FakeItEasy.Specs
                 .See(() => nameof(Fake.ActionEvent));
 
             "When I raise the event specifying the arguments"
+#pragma warning disable CS0618 // Type or member is obsolete
                 .x(() => Fake.ActionEvent += Raise.With<Action<int, bool>>(19, true));
+#pragma warning restore CS0618 // Type or member is obsolete
 
             "Then the first value is passed as the first event argument"
                 .x(() => CapturedArgs1.Should().Be(19));
