@@ -131,7 +131,9 @@ Public Class RaisingEventsTests
         AddHandler target.DerivedEventHander, AddressOf HandlesDerivedEventHandler
 
         ' Act
+#Disable Warning BC40000 ' Type or member is obsolete
         AddHandler target.DerivedEventHander, Raise.With(Of IHaveEvents.DerivedEventHanderEventHandler)(aSender, New MyEventArgs())
+#Enable Warning BC40000 ' Type or member is obsolete
 
         ' Assert
         ReferenceEquals(capturedSender, aSender).Should().BeTrue()
@@ -148,7 +150,9 @@ Public Class RaisingEventsTests
         AddHandler target.DerivedEventHander, AddressOf HandlesDerivedEventHandler
 
         ' Act
+#Disable Warning BC40000 ' Type or member is obsolete
         AddHandler target.DerivedEventHander, Raise.With(Of IHaveEvents.DerivedEventHanderEventHandler)(aSender, eventArgs)
+#Enable Warning BC40000 ' Type or member is obsolete
 
         ' Assert
         ReferenceEquals(capturedEventArgs, eventArgs).Should().BeTrue()
@@ -165,7 +169,9 @@ Public Class RaisingEventsTests
         AddHandler target.ObjectEvent, AddressOf HandlesObjectEvent
 
         ' Act
+#Disable Warning BC40000 ' Type or member is obsolete
         AddHandler target.ObjectEvent, Raise.With(Of IHaveEvents.ObjectEventEventHandler)(anObject)
+#Enable Warning BC40000 ' Type or member is obsolete
 
         ' Assert
         ReferenceEquals(capturedObject, anObject).Should().BeTrue()
