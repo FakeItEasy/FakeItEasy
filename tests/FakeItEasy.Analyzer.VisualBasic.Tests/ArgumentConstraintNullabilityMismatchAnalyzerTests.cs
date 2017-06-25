@@ -2,10 +2,11 @@
 {
     using FakeItEasy.Analyzer.Tests.Helpers;
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CodeFixes;
     using Microsoft.CodeAnalysis.Diagnostics;
     using Xunit;
 
-    public class ArgumentConstraintNullabilityMismatchAnalyzerTests : DiagnosticVerifier
+    public class ArgumentConstraintNullabilityMismatchAnalyzerTests : CodeFixVerifier
     {
         private const string CodeTemplate = @"Imports FakeItEasy
 Namespace TheNamespace
@@ -102,9 +103,40 @@ End Namespace";
             this.VerifyVisualBasicDiagnostic(code);
         }
 
+        [Fact]
+        public void MakeConstraintNullable_CodeFix_should_replace_constraint_with_nullable_constraint()
+        {
+            string completeConstraint = "A(Of Integer).Ignored";
+            string call = $"foo.NullableParam({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = "A(Of Integer?).Ignored";
+            string fixedCall = $"foo.NullableParam({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 0);
+        }
+
+        [Fact]
+        public void MakeNotNullConstraint_CodeFix_should_replace_constraint_with_AThatIsNotNull()
+        {
+            string completeConstraint = "A(Of Integer).Ignored";
+            string call = $"foo.NullableParam({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = "A(Of Integer?).That.IsNotNull()";
+            string fixedCall = $"foo.NullableParam({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 1);
+        }
+
         protected override DiagnosticAnalyzer GetVisualBasicDiagnosticAnalyzer()
         {
             return new ArgumentConstraintNullabilityMismatchAnalyzer();
+        }
+
+        protected override CodeFixProvider GetVisualBasicCodeFixProvider()
+        {
+            return new ArgumentConstraintNullabilityMismatchCodeFixProvider();
         }
     }
 }

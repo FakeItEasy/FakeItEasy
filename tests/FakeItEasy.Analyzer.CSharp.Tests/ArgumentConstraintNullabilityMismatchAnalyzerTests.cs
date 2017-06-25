@@ -4,10 +4,11 @@
     using FakeItEasy.Analyzer.Tests.Helpers;
     using FakeItEasy.Tests;
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CodeFixes;
     using Microsoft.CodeAnalysis.Diagnostics;
     using Xunit;
 
-    public class ArgumentConstraintNullabilityMismatchAnalyzerTests : DiagnosticVerifier
+    public class ArgumentConstraintNullabilityMismatchAnalyzerTests : CodeFixVerifier
     {
         private const string CodeTemplate = @"using FakeItEasy;
 namespace TheNamespace
@@ -119,9 +120,42 @@ namespace TheNamespace
             this.VerifyCSharpDiagnostic(code);
         }
 
+        [Theory]
+        [MemberData(nameof(SupportedConstraints))]
+        public void MakeConstraintNullable_CodeFix_should_replace_constraint_with_nullable_constraint(string constraint)
+        {
+            string completeConstraint = $"A<int>.{constraint}";
+            string call = $"foo.NullableParam({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = $"A<int?>.{constraint}";
+            string fixedCall = $"foo.NullableParam({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyCSharpFix(code, fixedCode, codeFixIndex: 0);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedConstraints))]
+        public void MakeNotNullConstraint_CodeFix_should_replace_constraint_with_AThatIsNotNull(string constraint)
+        {
+            string completeConstraint = $"A<int>.{constraint}";
+            string call = $"foo.NullableParam({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = "A<int?>.That.IsNotNull()";
+            string fixedCall = $"foo.NullableParam({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyCSharpFix(code, fixedCode, codeFixIndex: 1);
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new ArgumentConstraintNullabilityMismatchAnalyzer();
+        }
+
+        protected override CodeFixProvider GetCSharpCodeFixProvider()
+        {
+            return new ArgumentConstraintNullabilityMismatchCodeFixProvider();
         }
     }
 }
