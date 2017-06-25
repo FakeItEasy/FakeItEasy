@@ -103,4 +103,10 @@
   <data name="ArgumentConstraintNullabilityMismatchMessageFormat" xml:space="preserve">
     <value>Parameter '{0}' of method '{1}' is nullable, but argument constraint '{2}' is not. Calls where this argument is null will not be matched.</value>
   </data>
+  <data name="MakeConstraintNullableCodeFixTitle">
+    <value>Change constraint type to nullable</value>
+  </data>
+  <data name="MakeNotNullConstraintCodeFixTitle">
+    <value>Change to 'not null' constraint (IsNotNull)</value>
+  </data>
 </root>
