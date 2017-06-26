@@ -1,5 +1,6 @@
 ﻿namespace FakeItEasy.Analyzer
 {
+    using System.Collections.Generic;
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 #if CSHARP
@@ -37,32 +38,32 @@
             }
 
             var argument = completeConstraint.Parent as ArgumentSyntax;
+#if CSHARP
+            var argumentList = argument?.Parent as BaseArgumentListSyntax;
+#elif VISUAL_BASIC
             var argumentList = argument?.Parent as ArgumentListSyntax;
-            var invocation = argumentList?.Parent as InvocationExpressionSyntax;
-            if (invocation == null)
+#endif
+
+            if (argumentList == null)
             {
                 return;
             }
 
-            // TODO: could be an indexer, not a method
-            var method = SymbolHelpers.GetCalledMethodSymbol(invocation, context);
-            if (method == null)
+            if (!TryGetNameAndParameters(context, argumentList.Parent, out string methodOrIndexerName, out var parameters))
             {
                 return;
             }
 
             int index = argumentList.Arguments.IndexOf(argument);
-            if (index < 0 || index >= method.Parameters.Length)
+            if (index < 0 || index >= parameters.Count)
             {
                 return;
             }
 
-            var parameter = method.Parameters[index];
-            var parameterType = parameter.Type as INamedTypeSymbol;
-            if (parameterType != null && parameterType.IsNullable())
+            var parameter = parameters[index];
+            if (parameter.Type is INamedTypeSymbol parameterType && parameterType.IsNullable())
             {
-                var nullableParameterType = (INamedTypeSymbol)parameter.Type;
-                var nonNullableParameterType = nullableParameterType.TypeArguments[0];
+                var nonNullableParameterType = parameterType.TypeArguments[0];
                 if (constraintType.Equals(nonNullableParameterType))
                 {
                     var descriptor = DiagnosticDefinitions.ArgumentConstraintNullabilityMismatch;
@@ -70,10 +71,64 @@
                         descriptor,
                         completeConstraint.GetLocation(),
                         parameter.Name,
-                        method.GetDecoratedName(),
+                        methodOrIndexerName,
                         completeConstraint.ToString());
                     context.ReportDiagnostic(diagnostic);
                 }
+            }
+        }
+
+        private static bool TryGetNameAndParameters(
+            SyntaxNodeAnalysisContext context,
+            SyntaxNode node,
+            out string methodOrIndexerName,
+            out IReadOnlyList<IParameterSymbol> parameters)
+        {
+            methodOrIndexerName = null;
+            parameters = null;
+
+            switch (node)
+            {
+                case InvocationExpressionSyntax invocation:
+                {
+                    var method = SymbolHelpers.GetCalledMethodSymbol(invocation, context);
+                    if (method == null)
+                    {
+#if VISUAL_BASIC
+                        var indexer = SymbolHelpers.GetAccessedIndexerSymbol(invocation, context);
+                        if (indexer == null)
+                        {
+                            return false;
+                        }
+
+                        methodOrIndexerName = indexer.Name;
+                        parameters = indexer.Parameters;
+                        return true;
+#else
+                        return false;
+#endif
+                    }
+
+                    parameters = method.Parameters;
+                    methodOrIndexerName = method.GetDecoratedName();
+                    return true;
+                }
+#if CSHARP
+                case ElementAccessExpressionSyntax elementAccess:
+                {
+                    var indexer = SymbolHelpers.GetAccessedIndexerSymbol(elementAccess, context);
+                    if (indexer == null)
+                    {
+                        return false;
+                    }
+
+                    methodOrIndexerName = indexer.Name;
+                    parameters = indexer.Parameters;
+                    return true;
+                }
+#endif
+                default:
+                    return false;
             }
         }
     }

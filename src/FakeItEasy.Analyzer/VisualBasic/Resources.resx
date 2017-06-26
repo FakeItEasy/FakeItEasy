@@ -101,7 +101,7 @@
     <value>A non-nullable argument constraint is used for a nullable parameter.</value>
   </data>
     <data name="ArgumentConstraintNullabilityMismatchMessageFormat" xml:space="preserve">
-    <value>Parameter '{0}' of method '{1}' is nullable, but argument constraint '{2}' is not. Calls where this argument is Nothing will not be matched.</value>
+    <value>Parameter '{0}' of method or indexer '{1}' is nullable, but argument constraint '{2}' is not. Calls where this argument is Nothing will not be matched.</value>
   </data>
   <data name="MakeConstraintNullableCodeFixTitle">
     <value>Change constraint type to nullable</value>

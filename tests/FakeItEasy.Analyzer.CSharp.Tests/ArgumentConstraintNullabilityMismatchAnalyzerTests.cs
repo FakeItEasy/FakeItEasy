@@ -18,16 +18,17 @@ namespace TheNamespace
         void TheTest()
         {{
             var foo = A.Fake<IFoo>();
-            A.CallTo(() => {0}).DoesNothing();
+            A.CallTo(() => {0}).Returns(42);
         }}
     }}
 
     interface IFoo
     {{
-        void NullableParam(int? x);
-        void OtherNullableParam(long? x);
-        void NonNullableParam(int x);
-        void OtherNonNullableParam(int x);
+        int NullableParam(int? x);
+        int OtherNullableParam(long? x);
+        int NonNullableParam(int x);
+        int OtherNonNullableParam(int x);
+        int this[int? x] {{ get; }}
     }}
 }}";
 
@@ -49,9 +50,28 @@ namespace TheNamespace
                 new DiagnosticResult
                 {
                     Id = "FakeItEasy0004",
-                    Message = $"Parameter 'x' of method 'NullableParam' is nullable, but argument constraint '{completeConstraint}' is not. Calls where this argument is null will not be matched.",
+                    Message = $"Parameter 'x' of method or indexer 'NullableParam' is nullable, but argument constraint '{completeConstraint}' is not. Calls where this argument is null will not be matched.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 46) }
+                });
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedConstraints))]
+        public void Diagnostic_should_be_triggered_when_non_nullable_constraint_is_used_for_nullable_parameter_for_indexer(string constraint)
+        {
+            string completeConstraint = $"A<int>.{constraint}";
+            string call = $"foo[{completeConstraint}]";
+            string code = string.Format(CodeTemplate, call);
+
+            this.VerifyCSharpDiagnostic(
+                code,
+                new DiagnosticResult
+                {
+                    Id = "FakeItEasy0004",
+                    Message = $"Parameter 'x' of method or indexer 'this[]' is nullable, but argument constraint '{completeConstraint}' is not. Calls where this argument is null will not be matched.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 32) }
                 });
         }
 
@@ -136,6 +156,20 @@ namespace TheNamespace
 
         [Theory]
         [MemberData(nameof(SupportedConstraints))]
+        public void MakeConstraintNullable_CodeFix_should_replace_constraint_with_nullable_constraint_for_indexer(string constraint)
+        {
+            string completeConstraint = $"A<int>.{constraint}";
+            string call = $"foo[{completeConstraint}]";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = $"A<int?>.{constraint}";
+            string fixedCall = $"foo[{fixedConstraint}]";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyCSharpFix(code, fixedCode, codeFixIndex: 0);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedConstraints))]
         public void MakeNotNullConstraint_CodeFix_should_replace_constraint_with_AThatIsNotNull(string constraint)
         {
             string completeConstraint = $"A<int>.{constraint}";
@@ -144,6 +178,20 @@ namespace TheNamespace
 
             string fixedConstraint = "A<int?>.That.IsNotNull()";
             string fixedCall = $"foo.NullableParam({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyCSharpFix(code, fixedCode, codeFixIndex: 1);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedConstraints))]
+        public void MakeNotNullConstraint_CodeFix_should_replace_constraint_with_AThatIsNotNull_for_indexer(string constraint)
+        {
+            string completeConstraint = $"A<int>.{constraint}";
+            string call = $"foo[{completeConstraint}]";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = "A<int?>.That.IsNotNull()";
+            string fixedCall = $"foo[{fixedConstraint}]";
             string fixedCode = string.Format(CodeTemplate, fixedCall);
             this.VerifyCSharpFix(code, fixedCode, codeFixIndex: 1);
         }

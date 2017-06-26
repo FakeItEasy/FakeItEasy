@@ -35,6 +35,30 @@
             return method?.ReducedFrom ?? method;
         }
 
+#if CSHARP
+        /// <summary>
+        /// Returns the accessed indexer symbol for the element access expression.
+        /// </summary>
+        /// <param name="elementAccess">The element access expression that the symbol is required.</param>
+        /// <param name="context">Current context.</param>
+        /// <returns>The symbol for the invocation call.</returns>
+        internal static IPropertySymbol GetAccessedIndexerSymbol(ElementAccessExpressionSyntax elementAccess, SyntaxNodeAnalysisContext context)
+        {
+            return context.SemanticModel.GetSymbolInfo(elementAccess).Symbol as IPropertySymbol;
+        }
+#elif VISUAL_BASIC
+        /// <summary>
+        /// Returns the accessed indexer symbol for the invocation expression.
+        /// </summary>
+        /// <param name="invocation">The invocation expression that the symbol is required.</param>
+        /// <param name="context">Current context.</param>
+        /// <returns>The symbol for the invocation call.</returns>
+        internal static IPropertySymbol GetAccessedIndexerSymbol(InvocationExpressionSyntax invocation, SyntaxNodeAnalysisContext context)
+        {
+            return context.SemanticModel.GetSymbolInfo(invocation).Symbol as IPropertySymbol;
+        }
+#endif
+
         /// <summary>
         /// Returns the accessed property for the member access expression.
         /// </summary>

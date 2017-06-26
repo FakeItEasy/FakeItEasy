@@ -13,15 +13,16 @@ Namespace TheNamespace
     Class TheClass
         Sub TheTest()
             Dim foo = A.Fake(Of IFoo)()
-            A.CallTo(Sub() {0}).DoesNothing()
+            A.CallTo(Function() {0}).Returns(42)
         End Sub
     End Class
 
     Interface IFoo
-        Sub NullableParam(ByVal x As Integer?)
-        Sub OtherNullableParam(ByVal x As Long?)
-        Sub NonNullableParam(ByVal x As Integer)
-        Sub OtherNonNullableParam(ByVal x As Long?)
+        Function NullableParam(ByVal x As Integer?) As Integer
+        Function OtherNullableParam(ByVal x As Long?) As Integer
+        Function NonNullableParam(ByVal x As Integer) As Integer
+        Function OtherNonNullableParam(ByVal x As Long?) As Integer
+        Default Readonly Property Item(ByVal x As Integer?) As Integer
     End Interface
 End Namespace";
 
@@ -37,9 +38,45 @@ End Namespace";
                 new DiagnosticResult
                 {
                     Id = "FakeItEasy0004",
-                    Message = $"Parameter 'x' of method 'NullableParam' is nullable, but argument constraint '{completeConstraint}' is not. Calls where this argument is Nothing will not be matched.",
+                    Message = $"Parameter 'x' of method or indexer 'NullableParam' is nullable, but argument constraint '{completeConstraint}' is not. Calls where this argument is Nothing will not be matched.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 46) }
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 51) }
+                });
+        }
+
+        [Fact]
+        public void Diagnostic_should_be_triggered_when_non_nullable_constraint_is_used_for_nullable_parameter_for_indexer()
+        {
+            string completeConstraint = $"A(Of Integer).Ignored";
+            string call = $"foo({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            this.VerifyVisualBasicDiagnostic(
+                code,
+                new DiagnosticResult
+                {
+                    Id = "FakeItEasy0004",
+                    Message = $"Parameter 'x' of method or indexer 'Item' is nullable, but argument constraint '{completeConstraint}' is not. Calls where this argument is Nothing will not be matched.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 37) }
+                });
+        }
+
+        [Fact]
+        public void Diagnostic_should_be_triggered_when_non_nullable_constraint_is_used_for_nullable_parameter_for_named_indexer()
+        {
+            string completeConstraint = $"A(Of Integer).Ignored";
+            string call = $"foo.Item({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            this.VerifyVisualBasicDiagnostic(
+                code,
+                new DiagnosticResult
+                {
+                    Id = "FakeItEasy0004",
+                    Message = $"Parameter 'x' of method or indexer 'Item' is nullable, but argument constraint '{completeConstraint}' is not. Calls where this argument is Nothing will not be matched.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 42) }
                 });
         }
 
@@ -117,6 +154,32 @@ End Namespace";
         }
 
         [Fact]
+        public void MakeConstraintNullable_CodeFix_should_replace_constraint_with_nullable_constraint_for_indexer()
+        {
+            string completeConstraint = "A(Of Integer).Ignored";
+            string call = $"foo({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = "A(Of Integer?).Ignored";
+            string fixedCall = $"foo({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 0);
+        }
+
+        [Fact]
+        public void MakeConstraintNullable_CodeFix_should_replace_constraint_with_nullable_constraint_for_named_indexer()
+        {
+            string completeConstraint = "A(Of Integer).Ignored";
+            string call = $"foo.Item({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = "A(Of Integer?).Ignored";
+            string fixedCall = $"foo.Item({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 0);
+        }
+
+        [Fact]
         public void MakeNotNullConstraint_CodeFix_should_replace_constraint_with_AThatIsNotNull()
         {
             string completeConstraint = "A(Of Integer).Ignored";
@@ -125,6 +188,32 @@ End Namespace";
 
             string fixedConstraint = "A(Of Integer?).That.IsNotNull()";
             string fixedCall = $"foo.NullableParam({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 1);
+        }
+
+        [Fact]
+        public void MakeNotNullConstraint_CodeFix_should_replace_constraint_with_AThatIsNotNull_for_indexer()
+        {
+            string completeConstraint = "A(Of Integer).Ignored";
+            string call = $"foo({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = "A(Of Integer?).That.IsNotNull()";
+            string fixedCall = $"foo({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 1);
+        }
+
+        [Fact]
+        public void MakeNotNullConstraint_CodeFix_should_replace_constraint_with_AThatIsNotNull_for_named_indexer()
+        {
+            string completeConstraint = "A(Of Integer).Ignored";
+            string call = $"foo.Item({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = "A(Of Integer?).That.IsNotNull()";
+            string fixedCall = $"foo.Item({fixedConstraint})";
             string fixedCode = string.Format(CodeTemplate, fixedCall);
             this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 1);
         }
