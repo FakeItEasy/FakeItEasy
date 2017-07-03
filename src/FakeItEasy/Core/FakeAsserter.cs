@@ -7,9 +7,9 @@ namespace FakeItEasy.Core
     internal class FakeAsserter : IFakeAsserter
     {
         private readonly CallWriter callWriter;
-        private readonly IEnumerable<IFakeObjectCall> calls;
+        private readonly IEnumerable<ICompletedFakeObjectCall> calls;
 
-        public FakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
+        public FakeAsserter(IEnumerable<ICompletedFakeObjectCall> calls, CallWriter callWriter)
         {
             Guard.AgainstNull(calls, nameof(calls));
             Guard.AgainstNull(callWriter, nameof(callWriter));
@@ -18,10 +18,10 @@ namespace FakeItEasy.Core
             this.callWriter = callWriter;
         }
 
-        public delegate IFakeAsserter Factory(IEnumerable<IFakeObjectCall> calls);
+        public delegate IFakeAsserter Factory(IEnumerable<ICompletedFakeObjectCall> calls);
 
         public virtual void AssertWasCalled(
-            Func<IFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Repeated repeatConstraint)
+            Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Repeated repeatConstraint)
         {
             var matchedCallCount = this.calls.Count(callPredicate);
             if (!repeatConstraint.Matches(matchedCallCount))

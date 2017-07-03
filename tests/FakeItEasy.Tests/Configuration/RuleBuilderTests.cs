@@ -229,7 +229,7 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             A.CallTo(() => this.asserter.AssertWasCalled(
-                A<Func<IFakeObjectCall, bool>>._,
+                A<Func<ICompletedFakeObjectCall, bool>>._,
                 this.ruleProducedByFactory.WriteDescriptionOfValidCall,
                 repeatedConstraint))
                 .MustHaveHappened();
@@ -247,7 +247,7 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             A.CallTo(() => this.asserter.AssertWasCalled(
-                A<Func<IFakeObjectCall, bool>>._,
+                A<Func<ICompletedFakeObjectCall, bool>>._,
                 this.ruleProducedByFactory.WriteDescriptionOfValidCall,
                 repeatedConstraint))
                 .MustHaveHappened();

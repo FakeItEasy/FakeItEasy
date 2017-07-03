@@ -9,12 +9,12 @@ namespace FakeItEasy.Tests.Core
 
     public class FakeAsserterTests
     {
-        private readonly List<IFakeObjectCall> calls;
+        private readonly List<ICompletedFakeObjectCall> calls;
         private readonly CallWriter callWriter;
 
         public FakeAsserterTests()
         {
-            this.calls = new List<IFakeObjectCall>();
+            this.calls = new List<ICompletedFakeObjectCall>();
             this.callWriter = A.Fake<CallWriter>();
         }
 
@@ -170,7 +170,9 @@ namespace FakeItEasy.Tests.Core
         {
             for (int i = 0; i < numberOfCalls; i++)
             {
-                this.calls.Add(A.Fake<IFakeObjectCall>());
+                var call = A.Fake<ICompletedFakeObjectCall>();
+                SequenceNumberManager.RecordSequenceNumber(call);
+                this.calls.Add(call);
             }
         }
     }
