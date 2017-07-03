@@ -142,6 +142,25 @@ namespace FakeItEasy.Tests.Core
                 .And.Message.Should().StartWith(Environment.NewLine);
         }
 
+        [Fact]
+        public void Exception_message_should_not_contain_matching_call_when_call_is_recorded_after_checking_count()
+        {
+            var asserter = this.CreateAsserter();
+
+            var repeatConstraint = A.Fake<Repeated>();
+
+            // This will cause the call to be recorded after checking the count
+            A.CallTo(() => repeatConstraint.Matches(A<int>._))
+                .Invokes(() => this.StubCalls(1))
+                .Returns(false);
+
+            var exception = Record.Exception(() =>
+                asserter.AssertWasCalled(x => true, outputWriter => { }, repeatConstraint));
+
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .And.Message.Should().Contain("no calls were made to the fake object.");
+        }
+
         private FakeAsserter CreateAsserter()
         {
             return new FakeAsserter(this.calls, this.callWriter);
