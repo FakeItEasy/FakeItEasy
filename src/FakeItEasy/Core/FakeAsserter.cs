@@ -23,13 +23,18 @@ namespace FakeItEasy.Core
         public virtual void AssertWasCalled(
             Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Repeated repeatConstraint)
         {
-            var matchedCallCount = this.calls.Count(callPredicate);
+            var lastCall = this.calls.LastOrDefault();
+            int lastSequenceNumber = lastCall != null ? SequenceNumberManager.GetSequenceNumber(lastCall) : -1;
+
+            bool IsBeforeAssertionStart(ICompletedFakeObjectCall call) => SequenceNumberManager.GetSequenceNumber(call) <= lastSequenceNumber;
+
+            var matchedCallCount = this.calls.Count(c => IsBeforeAssertionStart(c) && callPredicate(c));
             if (!repeatConstraint.Matches(matchedCallCount))
             {
                 var description = new StringBuilderOutputWriter();
                 callDescriber.Invoke(description);
 
-                var message = CreateExceptionMessage(this.calls, this.callWriter, description.Builder.ToString(), repeatConstraint.ToString(), matchedCallCount);
+                var message = CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), this.callWriter, description.Builder.ToString(), repeatConstraint.ToString(), matchedCallCount);
                 throw new ExpectationException(message);
             }
         }
