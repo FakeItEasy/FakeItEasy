@@ -7,9 +7,9 @@ namespace FakeItEasy.Core
     internal class FakeAsserter : IFakeAsserter
     {
         private readonly CallWriter callWriter;
-        private readonly IEnumerable<IFakeObjectCall> calls;
+        private readonly IEnumerable<ICompletedFakeObjectCall> calls;
 
-        public FakeAsserter(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter)
+        public FakeAsserter(IEnumerable<ICompletedFakeObjectCall> calls, CallWriter callWriter)
         {
             Guard.AgainstNull(calls, nameof(calls));
             Guard.AgainstNull(callWriter, nameof(callWriter));
@@ -18,18 +18,23 @@ namespace FakeItEasy.Core
             this.callWriter = callWriter;
         }
 
-        public delegate IFakeAsserter Factory(IEnumerable<IFakeObjectCall> calls);
+        public delegate IFakeAsserter Factory(IEnumerable<ICompletedFakeObjectCall> calls);
 
         public virtual void AssertWasCalled(
-            Func<IFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Repeated repeatConstraint)
+            Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Repeated repeatConstraint)
         {
-            var matchedCallCount = this.calls.Count(callPredicate);
+            var lastCall = this.calls.LastOrDefault();
+            int lastSequenceNumber = lastCall != null ? SequenceNumberManager.GetSequenceNumber(lastCall) : -1;
+
+            bool IsBeforeAssertionStart(ICompletedFakeObjectCall call) => SequenceNumberManager.GetSequenceNumber(call) <= lastSequenceNumber;
+
+            var matchedCallCount = this.calls.Count(c => IsBeforeAssertionStart(c) && callPredicate(c));
             if (!repeatConstraint.Matches(matchedCallCount))
             {
                 var description = new StringBuilderOutputWriter();
                 callDescriber.Invoke(description);
 
-                var message = CreateExceptionMessage(this.calls, this.callWriter, description.Builder.ToString(), repeatConstraint.ToString(), matchedCallCount);
+                var message = CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), this.callWriter, description.Builder.ToString(), repeatConstraint.ToString(), matchedCallCount);
                 throw new ExpectationException(message);
             }
         }
