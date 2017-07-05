@@ -1,6 +1,5 @@
 ﻿namespace FakeItEasy.Core
 {
-    using System.Linq;
     using System.Reflection;
     using FakeItEasy.Configuration;
 
@@ -11,6 +10,7 @@
             this.FakedObject = interceptedCall.FakedObject;
             this.Method = interceptedCall.Method;
             this.Arguments = new ArgumentCollection(arguments, this.Method);
+            this.ArgumentsAfterCall = interceptedCall.Arguments;
             this.ReturnValue = returnValue;
         }
 
@@ -19,6 +19,8 @@
         public MethodInfo Method { get; }
 
         public ArgumentCollection Arguments { get; }
+
+        public ArgumentCollection ArgumentsAfterCall { get; }
 
         public object FakedObject { get; }
     }

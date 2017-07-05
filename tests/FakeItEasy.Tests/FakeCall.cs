@@ -19,6 +19,8 @@ namespace FakeItEasy.Tests
 
         public ArgumentCollection Arguments { get; private set; }
 
+        public ArgumentCollection ArgumentsAfterCall => throw new NotImplementedException();
+
         public object ReturnValue { get; private set; }
 
         public object FakedObject { get; private set; }
