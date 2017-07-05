@@ -55,8 +55,7 @@
         public ICompletedFakeObjectCall AsReadOnly()
         {
             return new CompletedFakeObjectCall(
-                this.FakedObject,
-                this.Method,
+                this,
                 this.originalArguments,
                 this.invocation.ReturnValue);
         }

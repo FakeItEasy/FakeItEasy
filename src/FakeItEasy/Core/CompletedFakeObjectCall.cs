@@ -6,11 +6,11 @@
 
     internal class CompletedFakeObjectCall : ICompletedFakeObjectCall
     {
-        public CompletedFakeObjectCall(object fakedObject, MethodInfo method, object[] arguments, object returnValue)
+        public CompletedFakeObjectCall(IInterceptedFakeObjectCall interceptedCall, object[] arguments, object returnValue)
         {
-            this.FakedObject = fakedObject;
-            this.Method = method;
-            this.Arguments = new ArgumentCollection(arguments, method);
+            this.FakedObject = interceptedCall.FakedObject;
+            this.Method = interceptedCall.Method;
+            this.Arguments = new ArgumentCollection(arguments, this.Method);
             this.ReturnValue = returnValue;
         }
 
