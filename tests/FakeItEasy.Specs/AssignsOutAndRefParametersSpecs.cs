@@ -206,7 +206,7 @@
             "And the configured method is called"
                 .x(() => subject.MightReturnAKnownValue(ref refValue));
 
-            "The the assertion that a call with the expected value has happened succeeds"
+            "Then the assertion that a call with the expected value has happened succeeds"
                 .x(() =>
                 {
                     string expectedValue = Condition;
@@ -232,7 +232,7 @@
             "And the configured method is called"
                 .x(() => subject.Invoke(ref refValue));
 
-            "The the assertion that a call with the expected value has happened succeeds"
+            "Then the assertion that a call with the expected value has happened succeeds"
                 .x(() =>
                 {
                     string expectedValue = Condition;
