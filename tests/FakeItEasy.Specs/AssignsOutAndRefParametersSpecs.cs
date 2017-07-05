@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -212,6 +213,12 @@
                     string expectedValue = Condition;
                     A.CallTo(() => subject.MightReturnAKnownValue(ref expectedValue)).MustHaveHappened();
                 });
+
+            "And the call records the updated arguments"
+                .x(() =>
+                {
+                    Fake.GetCalls(subject).First().ArgumentsAfterCall[0].Should().Be(KnownOutput);
+                });
         }
 
         [Scenario]
@@ -237,6 +244,12 @@
                 {
                     string expectedValue = Condition;
                     A.CallTo(() => subject.Invoke(ref expectedValue)).MustHaveHappened();
+                });
+
+            "And the call records the updated arguments"
+                .x(() =>
+                {
+                    Fake.GetCalls(subject).First().ArgumentsAfterCall[0].Should().Be(KnownOutput);
                 });
         }
 

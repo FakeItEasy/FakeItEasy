@@ -441,6 +441,7 @@ namespace FakeItEasy.Core
     }
     public interface ICompletedFakeObjectCall : FakeItEasy.Core.IFakeObjectCall
     {
+        FakeItEasy.Configuration.ArgumentCollection ArgumentsAfterCall { get; }
         object ReturnValue { get; }
     }
     public interface IFakeObjectCall
