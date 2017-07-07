@@ -1,6 +1,5 @@
 ﻿namespace FakeItEasy.Analyzer
 {
-    using System;
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
 #if CSHARP
@@ -18,76 +17,36 @@
 #elif VISUAL_BASIC
     [DiagnosticAnalyzer(LanguageNames.VisualBasic)]
 #endif
-    public class ArgumentConstraintOutsideCallSpecAnalyzer : DiagnosticAnalyzer
+    public class ArgumentConstraintOutsideCallSpecAnalyzer : ArgumentConstraintAnalyzerBase
     {
-        private static readonly ImmutableHashSet<string> ArgumentConstraintProperties =
-            ImmutableHashSet.Create(
-                StringComparer.Ordinal,
-                "FakeItEasy.A`1._",
-                "FakeItEasy.A`1.Ignored",
-                "FakeItEasy.A`1.That");
-
         private static readonly ImmutableHashSet<string> MethodsSupportingArgumentConstraints =
             ImmutableHashSet.Create(
-                StringComparer.Ordinal,
                 "FakeItEasy.A.CallTo",
                 "FakeItEasy.A.CallTo`1",
                 "FakeItEasy.Fake`1.CallsTo",
                 "FakeItEasy.Fake`1.CallsTo`1",
                 "FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration`1.To");
 
+        private static readonly ImmutableHashSet<string> SupportedArgumentConstraintProperties =
+            ImmutableHashSet.Create(
+                "FakeItEasy.A`1._",
+                "FakeItEasy.A`1.Ignored",
+                "FakeItEasy.A`1.That");
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
             ImmutableArray.Create(DiagnosticDefinitions.ArgumentConstraintOutsideCallSpec);
 
-        public override void Initialize(AnalysisContext context)
+        protected override bool IsSupportedArgumentConstraintProperty(string fullName) =>
+            SupportedArgumentConstraintProperties.Contains(fullName);
+
+        protected override void AnalyzeArgumentConstraintCore(SyntaxNodeAnalysisContext context, SyntaxNode completeConstraint)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            context.RegisterSyntaxNodeAction(AnalyzeConstraint, SyntaxKind.SimpleMemberAccessExpression);
-        }
-
-        private static void AnalyzeConstraint(SyntaxNodeAnalysisContext context)
-        {
-            var memberAccess = context.Node as MemberAccessExpressionSyntax;
-            if (memberAccess == null)
-            {
-                return;
-            }
-
-            var propertySymbol = SymbolHelpers.GetAccessedPropertySymbol(memberAccess, context);
-            if (propertySymbol == null)
-            {
-                return;
-            }
-
-            var propertyFullName =
-                string.Concat(propertySymbol.ContainingType.GetFullName(), ".", propertySymbol.Name);
-
-            if (!ArgumentConstraintProperties.Contains(propertyFullName))
-            {
-                return;
-            }
-
             if (!IsInArgumentToMethodThatSupportsArgumentConstraints(context.Node, context))
             {
                 var descriptor = DiagnosticDefinitions.ArgumentConstraintOutsideCallSpec;
-                var completeNode = FindCompleteNode(context.Node);
-                var diagnostic = Diagnostic.Create(descriptor, completeNode.GetLocation(), completeNode.ToString());
+                var diagnostic = Diagnostic.Create(descriptor, completeConstraint.GetLocation(), completeConstraint.ToString());
                 context.ReportDiagnostic(diagnostic);
             }
-        }
-
-        private static SyntaxNode FindCompleteNode(SyntaxNode node)
-        {
-            while (node.Parent.Kind() == SyntaxKind.SimpleMemberAccessExpression || node.Parent.Kind() == SyntaxKind.InvocationExpression)
-            {
-                node = node.Parent;
-            }
-
-            return node;
         }
 
         private static bool IsInArgumentToMethodThatSupportsArgumentConstraints(SyntaxNode node, SyntaxNodeAnalysisContext context)

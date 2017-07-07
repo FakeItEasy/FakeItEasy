@@ -21,19 +21,37 @@
         /// <returns>The symbol for the invocation call.</returns>
         internal static IMethodSymbol GetCalledMethodSymbol(InvocationExpressionSyntax call, SyntaxNodeAnalysisContext context)
         {
-            var name = (call?.Expression as MemberAccessExpressionSyntax)?.Name
-                ?? call?.Expression as IdentifierNameSyntax;
-
-            var method =
-                name == null
-                    ? null
-                    : context.SemanticModel.GetSymbolInfo(name).Symbol as IMethodSymbol;
+            var method = context.SemanticModel.GetSymbolInfo(call).Symbol as IMethodSymbol;
 
             // In Roslyn for VB.NET, some generic extension methods are "reduced", i.e. WhereConfigurationExtensions.Where<T>
             // becomes WhereConfigurationExtensions.Where, as if it were non-generic. We need the non-reduced version.
             // (in C#, ReducedFrom is always null)
             return method?.ReducedFrom ?? method;
         }
+
+#if CSHARP
+        /// <summary>
+        /// Returns the accessed indexer symbol for the element access expression.
+        /// </summary>
+        /// <param name="elementAccess">The element access expression that the symbol is required.</param>
+        /// <param name="context">Current context.</param>
+        /// <returns>The symbol for the invocation call.</returns>
+        internal static IPropertySymbol GetAccessedIndexerSymbol(ElementAccessExpressionSyntax elementAccess, SyntaxNodeAnalysisContext context)
+        {
+            return context.SemanticModel.GetSymbolInfo(elementAccess).Symbol as IPropertySymbol;
+        }
+#elif VISUAL_BASIC
+        /// <summary>
+        /// Returns the accessed indexer symbol for the invocation expression.
+        /// </summary>
+        /// <param name="invocation">The invocation expression that the symbol is required.</param>
+        /// <param name="context">Current context.</param>
+        /// <returns>The symbol for the invocation call.</returns>
+        internal static IPropertySymbol GetAccessedIndexerSymbol(InvocationExpressionSyntax invocation, SyntaxNodeAnalysisContext context)
+        {
+            return context.SemanticModel.GetSymbolInfo(invocation).Symbol as IPropertySymbol;
+        }
+#endif
 
         /// <summary>
         /// Returns the accessed property for the member access expression.
@@ -43,7 +61,7 @@
         /// <returns>The symbol for the accessed property.</returns>
         internal static IPropertySymbol GetAccessedPropertySymbol(MemberAccessExpressionSyntax access, SyntaxNodeAnalysisContext context)
         {
-            return context.SemanticModel.GetSymbolInfo(access.Name).Symbol as IPropertySymbol;
+            return context.SemanticModel.GetSymbolInfo(access).Symbol as IPropertySymbol;
         }
     }
 }
