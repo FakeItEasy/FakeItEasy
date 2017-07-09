@@ -29,6 +29,7 @@
     <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="15.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="1.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="1.1.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.2.0" />
     <ProjectReference Include="..\..\src\FakeItEasy.Analyzer\FakeItEasy.Analyzer.CSharp.csproj" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj" />
