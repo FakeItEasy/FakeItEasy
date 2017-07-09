@@ -1,2 +1,3 @@
 ignore:
   commits-before: 2017-01-01T00:00:00
+legacy-semver-padding: 3
