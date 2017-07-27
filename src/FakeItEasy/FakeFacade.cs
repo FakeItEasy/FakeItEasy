@@ -1,17 +1,16 @@
 namespace FakeItEasy
 {
+    using System;
     using System.Collections.Generic;
     using FakeItEasy.Core;
 
     internal class FakeFacade
     {
-        private readonly IFixtureInitializer fakeInitializer;
         private readonly IFakeManagerAccessor fakeManagerAccessor;
 
-        public FakeFacade(IFakeManagerAccessor fakeManagerAccessor, IFixtureInitializer fakeInitializer)
+        public FakeFacade(IFakeManagerAccessor fakeManagerAccessor)
         {
             this.fakeManagerAccessor = fakeManagerAccessor;
-            this.fakeInitializer = fakeInitializer;
         }
 
         public virtual FakeManager GetFakeManager(object fakedObject)
@@ -56,7 +55,9 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(fixture, nameof(fixture));
 
-            this.fakeInitializer.InitializeFakes(fixture);
+#pragma warning disable CS0618 // Type or member is obsolete
+            FixtureInitializer.InitializeFakes(fixture);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }

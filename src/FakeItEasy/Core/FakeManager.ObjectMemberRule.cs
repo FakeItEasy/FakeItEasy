@@ -1,10 +1,9 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using FakeItEasy.Creation;
 
     /// <content>Object member rule.</content>
     public partial class FakeManager
@@ -24,10 +23,12 @@ namespace FakeItEasy.Core
                     };
 
             private readonly FakeManager fakeManager;
+            private readonly IFakeManagerAccessor fakeManagerAccessor;
 
-            public ObjectMemberRule(FakeManager fakeManager)
+            public ObjectMemberRule(FakeManager fakeManager, IFakeManagerAccessor fakeManagerAccessor)
             {
                 this.fakeManager = fakeManager;
+                this.fakeManagerAccessor = fakeManagerAccessor;
             }
 
             public int? NumberOfTimesToCall => null;
@@ -99,11 +100,12 @@ namespace FakeItEasy.Core
                     return false;
                 }
 
-                var argument = fakeObjectCall.Arguments[0] as ITaggable;
-
+                var argument = fakeObjectCall.Arguments[0];
                 if (argument != null)
                 {
-                    fakeObjectCall.SetReturnValue(argument.Tag.Equals(this.fakeManager));
+                    var argumentFakeManager = this.fakeManagerAccessor.TryGetFakeManager(argument);
+                    bool hasSameFakeManager = ReferenceEquals(argumentFakeManager, this.fakeManager);
+                    fakeObjectCall.SetReturnValue(hasSameFakeManager);
                 }
                 else
                 {

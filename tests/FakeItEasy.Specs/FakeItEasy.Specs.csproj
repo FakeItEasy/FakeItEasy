@@ -21,8 +21,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
-    <DefineConstants>$(DefineConstants);FEATURE_SELF_INITIALIZED_FAKES</DefineConstants>
+    <DefineConstants>$(DefineConstants)</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" />
@@ -38,7 +42,6 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
     <Compile Remove="DisposableSpecs.cs" />
-    <Compile Remove="SelfInitializedFakesSpecs.cs" />
   </ItemGroup>
 
 </Project>

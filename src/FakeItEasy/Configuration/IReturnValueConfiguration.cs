@@ -10,6 +10,7 @@ namespace FakeItEasy.Configuration
     /// <typeparam name="TMember">The type of the member.</typeparam>
     public interface IReturnValueConfiguration<TMember>
         : IExceptionThrowerConfiguration<IReturnValueConfiguration<TMember>>,
+          IOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>>,
           ICallbackConfiguration<IReturnValueConfiguration<TMember>>,
           IAssertConfiguration,
           ICallBaseConfiguration<IReturnValueConfiguration<TMember>>

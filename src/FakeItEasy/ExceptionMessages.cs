@@ -20,12 +20,6 @@
         public static string WrongNumberOfArguments =>
             "The number of arguments does not match the number of parameters of the method.";
 
-        public static string MethodMissmatchWhenPlayingBackRecording =>
-            "The method of the call did not match the method of the recorded call, the recorded sequence is no longer valid.";
-
-        public static string NoMoreRecordedCalls =>
-            "All the recorded calls has been applied, the recorded sequence is no longer valid.";
-
         public static string FakeCreationExceptionDefault =>
             "Unable to create fake object.";
 

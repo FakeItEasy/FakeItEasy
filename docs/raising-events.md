@@ -5,7 +5,7 @@ an event defined:
 
 ```csharp
 public interface IRobot
-{ 
+{
     event EventHandler FellInLove;
 }
 ```
@@ -18,12 +18,12 @@ raising with empty event args.
 
 ```csharp
 var robot = A.Fake<IRobot>();
-            
+
 robot.FellInLove += (s, e) =>
     {
         Console.WriteLine("Yay!");
     };
-         
+
 // Raise the event!
 robot.FellInLove += Raise.With(someEventArgs); // the "sender" will be robot
 
@@ -34,12 +34,12 @@ robot.FellInLove += Raise.WithEmpty(); // sender will be robot, args will be Eve
 robot.FellInLove += Raise.With(sender: robot, e: someEventArgs);
 ```
 
-Events of type `EventHandler<TEventArgs>` can be raised in exactly the same way. 
+Events of type `EventHandler<TEventArgs>` can be raised in exactly the same way.
 
-Note that as of version 3.1.0, for the .NET Standard version of the FakeItEasy library, `TEventArgs` need not extend `EventArgs` to support the above syntax. The .NET 4.0 library still requires `TEventArgs` to extend `EventArgs`.
+Note that for the .NET 4.0 version of the FakeItEasy library, `TEventArgs` needs to extend `EventArgs` to support the above syntax.
 
-If an event is defined using a **custom delegate**, then `Raise` needs
-a typeparam to help it out:
+It is also possible to raise events defined using a **custom delegate** (a.k.a
+"free-form delegate"), like these:
 
 ```csharp
 public delegate void CustomEventHandler(object sender, CustomEventArgs e);
@@ -47,9 +47,13 @@ public delegate void FreeformEventHandler(int count);
 …
 event CustomEventHandler CustomEvent;
 event FreeformEventHandler FreeformEvent;
-…
-fake.CustomEvent += Raise.With<CustomEventHandler>(fake, sampleCustomEventArgs);
-fake.FreeformEvent += Raise.With<FreeformHandler>(7);
+```
+
+To do that, you can use `Raise.FreeForm.With`, which automatically infers the correct delegate type:
+
+```csharp
+fake.CustomEvent += Raise.FreeForm.With(fake, sampleCustomEventArgs);
+fake.FreeformEvent += Raise.FreeForm.With(7);
 ```
 
 Just as when we're trying to

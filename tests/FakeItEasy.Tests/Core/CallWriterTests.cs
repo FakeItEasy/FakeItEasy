@@ -11,23 +11,20 @@ namespace FakeItEasy.Tests.Core
     {
         private readonly List<IFakeObjectCall> calls;
         private readonly StringBuilderOutputWriter writer;
+        private readonly IEqualityComparer<IFakeObjectCall> callComparer;
+        private readonly IFakeObjectCallFormatter callFormatter;
 
         public CallWriterTests()
         {
-            Fake.InitializeFixture(this);
+            this.callComparer = A.Fake<IEqualityComparer<IFakeObjectCall>>();
+            this.callFormatter = A.Fake<IFakeObjectCallFormatter>();
 
-            A.CallTo(() => this.CallFormatter.GetDescription(A<IFakeObjectCall>._))
+            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>._))
                 .Returns("Default call description");
 
             this.calls = new List<IFakeObjectCall>();
             this.writer = new StringBuilderOutputWriter();
         }
-
-        [Fake]
-        public IEqualityComparer<IFakeObjectCall> CallComparer { get; set; }
-
-        [Fake]
-        internal IFakeObjectCallFormatter CallFormatter { get; set; }
 
         [Fact]
         public void WriteCalls_should_list_the_calls_in_the_calls_collection()
@@ -38,7 +35,7 @@ namespace FakeItEasy.Tests.Core
             foreach (var call in this.calls)
             {
                 var boundCallNumber = callNumber;
-                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("Fake call " + boundCallNumber);
+                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("Fake call " + boundCallNumber);
                 callNumber++;
             }
 
@@ -67,10 +64,10 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             this.StubCalls(10);
 
-            A.CallTo(() => this.CallFormatter.GetDescription(A<IFakeObjectCall>._)).Returns("Fake call");
-            A.CallTo(() => this.CallFormatter.GetDescription(this.calls[9])).Returns("Other call");
+            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>._)).Returns("Fake call");
+            A.CallTo(() => this.callFormatter.GetDescription(this.calls[9])).Returns("Other call");
 
-            A.CallTo(() => this.CallComparer.Equals(A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]), A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]))).Returns(true);
+            A.CallTo(() => this.callComparer.Equals(A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]), A<IFakeObjectCall>.That.Not.IsEqualTo(this.calls[9]))).Returns(true);
 
             var callWriter = this.CreateWriter();
 
@@ -94,12 +91,12 @@ namespace FakeItEasy.Tests.Core
 
             foreach (var call in this.calls.Where((x, i) => i % 2 == 0))
             {
-                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("odd");
+                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("odd");
             }
 
             foreach (var call in this.calls.Where((x, i) => i % 2 != 0))
             {
-                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("even");
+                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("even");
             }
 
             var callWriter = this.CreateWriter();
@@ -122,10 +119,10 @@ namespace FakeItEasy.Tests.Core
 
             foreach (var call in this.calls)
             {
-                A.CallTo(() => this.CallFormatter.GetDescription(call)).Returns("Fake call " + Guid.NewGuid());
+                A.CallTo(() => this.callFormatter.GetDescription(call)).Returns("Fake call " + Guid.NewGuid());
             }
 
-            A.CallTo(() => this.CallFormatter.GetDescription(this.calls[18])).Returns("Last call");
+            A.CallTo(() => this.callFormatter.GetDescription(this.calls[18])).Returns("Last call");
 
             var callWriter = this.CreateWriter();
             callWriter.WriteCalls(this.calls, this.writer);
@@ -149,7 +146,7 @@ namespace FakeItEasy.Tests.Core
 second line";
 
             var callIndex = 0;
-            A.CallTo(() => this.CallFormatter.GetDescription(A<IFakeObjectCall>._)).ReturnsLazily(() => text + ++callIndex);
+            A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>._)).ReturnsLazily(() => text + ++callIndex);
 
             var callWriter = this.CreateWriter();
 
@@ -203,7 +200,7 @@ second line";
 
         private CallWriter CreateWriter()
         {
-            return new CallWriter(this.CallFormatter, this.CallComparer);
+            return new CallWriter(this.callFormatter, this.callComparer);
         }
 
         private void StubCalls(int numberOfCalls)

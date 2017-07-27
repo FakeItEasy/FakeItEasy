@@ -1,9 +1,8 @@
-namespace FakeItEasy
+﻿namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.IO;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -11,9 +10,6 @@ namespace FakeItEasy
     using FakeItEasy.Creation.DelegateProxies;
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
-#if FEATURE_SELF_INITIALIZED_FAKES
-    using FakeItEasy.SelfInitializedFakes;
-#endif
 
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -49,7 +45,7 @@ namespace FakeItEasy
             container.Register<FakeAsserter.Factory>(c => calls => new FakeAsserter(calls, c.Resolve<CallWriter>()));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
-                (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy));
+                (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy, c.Resolve<IFakeManagerAccessor>()));
 
             container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
                 (typeOfFake, proxyOptions) =>
@@ -63,19 +59,6 @@ namespace FakeItEasy
 
             container.RegisterSingleton(c =>
                 new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), c.Resolve<IEqualityComparer<IFakeObjectCall>>()));
-
-#if FEATURE_SELF_INITIALIZED_FAKES
-#pragma warning disable CS0618 // Type or member is obsolete
-            container.RegisterSingleton<RecordingManager.Factory>(c =>
-                x => new RecordingManager(x));
-
-            container.RegisterSingleton<IFileSystem>(c =>
-                new FileSystem());
-
-            container.RegisterSingleton<FileStorage.Factory>(c =>
-                x => new FileStorage(x, c.Resolve<IFileSystem>()));
-#pragma warning restore CS0618 // Type or member is obsolete
-#endif
 
             container.RegisterSingleton<ICallExpressionParser>(c =>
                 new CallExpressionParser());
@@ -111,10 +94,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
 
-            container.Register(c =>
-                new FakeFacade(c.Resolve<IFakeManagerAccessor>(), c.Resolve<IFixtureInitializer>()));
-
-            container.Register<IFixtureInitializer>(c => new DefaultFixtureInitializer(c.Resolve<IFakeAndDummyManager>(), c.Resolve<ISutInitializer>()));
+            container.Register(c => new FakeFacade(c.Resolve<IFakeManagerAccessor>()));
 
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
@@ -125,8 +105,6 @@ namespace FakeItEasy
             container.Register<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
 
             container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write));
-
-            container.Register<ISutInitializer>(c => new DefaultSutInitializer(c.Resolve<IFakeAndDummyManager>()));
 
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
 
@@ -152,27 +130,6 @@ namespace FakeItEasy
             }
         }
 
-#if FEATURE_SELF_INITIALIZED_FAKES
-        [Obsolete("Self-initializing fakes will be removed in version 4.0.0.")]
-        private class FileSystem : IFileSystem
-        {
-            public Stream Open(string fileName, FileMode mode)
-            {
-                return File.Open(fileName, mode);
-            }
-
-            public bool FileExists(string fileName)
-            {
-                return File.Exists(fileName);
-            }
-
-            public void Create(string fileName)
-            {
-                File.Create(fileName).Dispose();
-            }
-        }
-#endif
-
         private class ResolverFakeObjectCreator
             : IFakeObjectCreator
         {
@@ -193,7 +150,7 @@ namespace FakeItEasy
         private class ArgumentConstraintManagerFactory
             : IArgumentConstraintManagerFactory
         {
-            public IArgumentConstraintManager<T> Create<T>()
+            public INegatableArgumentConstraintManager<T> Create<T>()
             {
                 return new DefaultArgumentConstraintManager<T>(ArgumentConstraintTrap.ReportTrappedConstraint);
             }

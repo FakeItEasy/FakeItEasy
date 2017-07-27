@@ -15,18 +15,13 @@ namespace FakeItEasy.Tests.Configuration
     {
         private readonly RuleBuilder builder;
         private readonly FakeManager fakeManager;
-
-#pragma warning disable 649
-        [Fake]
-        private IFakeAsserter asserter;
-
-        [Fake]
-        private BuildableCallRule ruleProducedByFactory;
-#pragma warning restore 649
+        private readonly IFakeAsserter asserter;
+        private readonly BuildableCallRule ruleProducedByFactory;
 
         public RuleBuilderTests()
         {
-            Fake.InitializeFixture(this);
+            this.asserter = A.Fake<IFakeAsserter>();
+            this.ruleProducedByFactory = A.Fake<BuildableCallRule>();
 
             this.fakeManager = A.Fake<FakeManager>(o => o.CallsBaseMethods());
 
@@ -234,7 +229,7 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             A.CallTo(() => this.asserter.AssertWasCalled(
-                A<Func<IFakeObjectCall, bool>>._,
+                A<Func<ICompletedFakeObjectCall, bool>>._,
                 this.ruleProducedByFactory.WriteDescriptionOfValidCall,
                 repeatedConstraint))
                 .MustHaveHappened();
@@ -252,7 +247,7 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             A.CallTo(() => this.asserter.AssertWasCalled(
-                A<Func<IFakeObjectCall, bool>>._,
+                A<Func<ICompletedFakeObjectCall, bool>>._,
                 this.ruleProducedByFactory.WriteDescriptionOfValidCall,
                 repeatedConstraint))
                 .MustHaveHappened();

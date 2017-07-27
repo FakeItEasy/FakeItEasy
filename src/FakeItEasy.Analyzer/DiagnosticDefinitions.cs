@@ -6,16 +6,16 @@
 
     internal static class DiagnosticDefinitions
     {
+        internal static readonly ResourceManager ResourceManager =
+            new ResourceManager(
+                ResourceBaseName,
+                typeof(DiagnosticDefinitions).GetTypeInfo().Assembly);
+
 #if CSHARP
         private const string ResourceBaseName = "FakeItEasy.Analyzer.CSharp.Resources";
 #elif VISUAL_BASIC
         private const string ResourceBaseName = "FakeItEasy.Analyzer.VisualBasic.Resources";
 #endif
-
-        private static readonly ResourceManager ResourceManager =
-            new ResourceManager(
-                ResourceBaseName,
-                typeof(DiagnosticDefinitions).GetTypeInfo().Assembly);
 
         public static DiagnosticDescriptor UnusedCallSpecification { get; } =
             CreateDiagnosticDescriptor(
@@ -37,6 +37,14 @@
             CreateDiagnosticDescriptor(
                 nameof(ArgumentConstraintOutsideCallSpec),
                 "FakeItEasy0003",
+                "FakeItEasy.Usage",
+                DiagnosticSeverity.Warning,
+                true);
+
+        public static DiagnosticDescriptor ArgumentConstraintNullabilityMismatch { get; } =
+            CreateDiagnosticDescriptor(
+                nameof(ArgumentConstraintNullabilityMismatch),
+                "FakeItEasy0004",
                 "FakeItEasy.Usage",
                 DiagnosticSeverity.Warning,
                 true);

@@ -1,12 +1,20 @@
-namespace FakeItEasy.Creation
+﻿namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using FakeItEasy.Core;
 
-    internal abstract class FakeOptionsBase<T> : IFakeOptions<T>, IFakeOptions
+    internal class FakeOptions<T> : IFakeOptions<T>, IFakeOptions
     {
+        private readonly ProxyOptions proxyOptions;
+
+        public FakeOptions(ProxyOptions proxyOptions)
+        {
+            this.proxyOptions = proxyOptions;
+        }
+
         IFakeOptions IFakeOptions.ConfigureFake(Action<object> action)
         {
             return (IFakeOptions)this.ConfigureFake(fake => action(fake));
@@ -32,17 +40,10 @@ namespace FakeItEasy.Creation
             return this.Implements(typeof(TInterface));
         }
 
-#if FEATURE_SELF_INITIALIZED_FAKES
-        IFakeOptionsForWrappers IFakeOptions.Wrapping(object wrappedInstance)
-        {
-            return (IFakeOptionsForWrappers)this.Wrapping((T)wrappedInstance);
-        }
-#else
         IFakeOptions IFakeOptions.Wrapping(object wrappedInstance)
         {
             return (IFakeOptions)this.Wrapping((T)wrappedInstance);
         }
-#endif
 
         public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
         {
@@ -59,19 +60,50 @@ namespace FakeItEasy.Creation
             return (IFakeOptions)this.WithArgumentsForConstructor(argumentsForConstructor);
         }
 
-        public abstract IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
+        public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+        {
+            this.proxyOptions.ArgumentsForConstructor = argumentsForConstructor;
+            return this;
+        }
 
-#if FEATURE_SELF_INITIALIZED_FAKES
-        public abstract IFakeOptionsForWrappers<T> Wrapping(T wrappedInstance);
-#else
-        public abstract IFakeOptions<T> Wrapping(T wrappedInstance);
-#endif
+        public IFakeOptions<T> WithAttributes(
+            params Expression<Func<Attribute>>[] attributes)
+        {
+            Guard.AgainstNull(attributes, nameof(attributes));
 
-        public abstract IFakeOptions<T> WithAttributes(params Expression<Func<Attribute>>[] attributes);
+            foreach (var attribute in attributes)
+            {
+                this.proxyOptions.AddAttribute(attribute);
+            }
 
-        public abstract IFakeOptions<T> Implements(Type interfaceType);
+            return this;
+        }
 
-        public abstract IFakeOptions<T> ConfigureFake(Action<T> action);
+        public IFakeOptions<T> Wrapping(T wrappedInstance)
+        {
+            Guard.AgainstNull(wrappedInstance, nameof(wrappedInstance));
+            this.ConfigureFake(fake => ConfigureFakeToWrap(fake, wrappedInstance));
+            return this;
+        }
+
+        public IFakeOptions<T> Implements(Type interfaceType)
+        {
+            this.proxyOptions.AddInterfaceToImplement(interfaceType);
+            return this;
+        }
+
+        public IFakeOptions<T> ConfigureFake(Action<T> action)
+        {
+            this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
+            return this;
+        }
+
+        private static void ConfigureFakeToWrap(object fakedObject, object wrappedObject)
+        {
+            var manager = Fake.GetFakeManager(fakedObject);
+            var rule = new WrappedObjectRule(wrappedObject);
+            manager.AddRuleFirst(rule);
+        }
 
         private static IEnumerable<object> GetConstructorArgumentsFromExpression<TConstructor>(Expression<Func<TConstructor>> constructorCall)
         {

@@ -1,9 +1,9 @@
-namespace FakeItEasy.Core
+﻿namespace FakeItEasy.Core
 {
     using System;
 
     internal class DefaultArgumentConstraintManager<T>
-        : IArgumentConstraintManager<T>
+        : INegatableArgumentConstraintManager<T>
     {
         private readonly Action<IArgumentConstraint> onConstraintCreated;
 
@@ -29,8 +29,6 @@ namespace FakeItEasy.Core
             {
                 this.parent = parent;
             }
-
-            public IArgumentConstraintManager<T> Not => new NotArgumentConstraintManager(this);
 
             public T Matches(Func<T, bool> predicate, Action<IOutputWriter> descriptionWriter)
             {

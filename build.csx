@@ -1,8 +1,10 @@
 #load "packages/simple-targets-csx.5.2.0/simple-targets.csx"
 
 #r "System.Net.Http"
+#r "System.Xml.Linq"
 
 using System.Net.Http;
+using System.Xml.Linq;
 using static SimpleTargets;
 
 var solutionName = "FakeItEasy";
@@ -12,13 +14,21 @@ var versionInfoFile = "./src/VersionInfo.cs";
 var packagesDirectory = Path.GetFullPath("packages");
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 var coverityProjectUrl = "https://scan.coverity.com/builds?project=FakeItEasy%2FFakeItEasy";
-var nuspecs = Directory.GetFiles("./src", "*.nuspec");
+
+var projectsToPack = new[]
+{
+    "./src/FakeItEasy/FakeItEasy.csproj",
+    "./src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.CSharp.csproj",
+    "./src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.VisualBasic.csproj"
+};
+var analyzerMetaPackageNuspecPath = "./src/FakeItEasy.Analyzer.nuspec";
+
 var pdbs = new []
 {
     "src/FakeItEasy/bin/Release/net40/FakeItEasy.pdb",
     "src/FakeItEasy/bin/Release/netstandard1.6/FakeItEasy.pdb",
-    "src/FakeItEasy.Analyzer/bin/Release/netstandard1.1/FakeItEasy.Analyzer.Csharp.pdb",
-    "src/FakeItEasy.Analyzer/bin/Release/netstandard1.1/FakeItEasy.Analyzer.VisualBasic.pdb"
+    "src/FakeItEasy.Analyzer/bin/Release/FakeItEasy.Analyzer.Csharp.pdb",
+    "src/FakeItEasy.Analyzer/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
 };
 
 var testSuites = new Dictionary<string, TestSuite[]>
@@ -56,7 +66,7 @@ static var xunit = "./packages/xunit.runner.console.2.0.0/tools/xunit.console.ex
 var coverityDirectory = "./artifacts/coverity";
 var coverityResultsDirectory = "./artifacts/coverity/cov-int";
 var logsDirectory = "./artifacts/logs";
-var outputDirectory = "./artifacts/output";
+var outputDirectory = Path.GetFullPath("./artifacts/output");
 static var testsDirectory = "./artifacts/tests";
 
 // targets
@@ -160,10 +170,12 @@ targets.Add(
     () =>
     {
         var version = ReadCmdOutput(".", gitversion, "/showvariable NuGetVersionV2");
-        foreach (var nuspec in nuspecs)
+        foreach (var project in projectsToPack)
         {
-            Cmd(nuget, $"pack {nuspec} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
+            Cmd("dotnet", $"pack {project} --configuration Release --no-build --output {outputDirectory} /p:Version={version}");
         }
+
+        Cmd(nuget, $"pack {analyzerMetaPackageNuspecPath} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
     });
 
 targets.Add(

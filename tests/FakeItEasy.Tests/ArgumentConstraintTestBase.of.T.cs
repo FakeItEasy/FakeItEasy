@@ -12,6 +12,6 @@ namespace FakeItEasy.Tests
             this.CreateConstraint(new DefaultArgumentConstraintManager<T>(x => this.ConstraintField = x));
         }
 
-        protected abstract void CreateConstraint(IArgumentConstraintManager<T> scope);
+        protected abstract void CreateConstraint(INegatableArgumentConstraintManager<T> scope);
     }
 }

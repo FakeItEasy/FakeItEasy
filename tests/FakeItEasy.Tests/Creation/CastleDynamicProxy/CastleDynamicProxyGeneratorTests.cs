@@ -1,4 +1,4 @@
-namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
+﻿namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,6 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     using System.Reflection;
 #endif
     using FakeItEasy.Core;
-    using FakeItEasy.Creation;
     using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
@@ -51,7 +50,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
         [Theory]
         [MemberData(nameof(SupportedTypes))]
-        public void Should_return_proxy_that_can_be_tagged(Type typeOfProxy)
+        public void Should_return_proxy(Type typeOfProxy)
         {
             // Arrange
 
@@ -59,22 +58,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
-            result.GeneratedProxy.Should().NotBeNull().And.BeAssignableTo<ITaggable>();
-        }
-
-        [Theory]
-        [MemberData(nameof(SupportedTypes))]
-        public void Should_return_proxy_where_tag_can_be_set(Type typeOfProxy)
-        {
-            // Arrange
-            var tag = new object();
-
-            // Act
-            var proxy = (ITaggable)this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, A.Dummy<IFakeCallProcessorProvider>()).GeneratedProxy;
-            proxy.Tag = tag;
-
-            // Assert
-            proxy.Tag.Should().BeSameAs(tag);
+            result.GeneratedProxy.Should().NotBeNull();
         }
 
         [Theory]
@@ -433,6 +417,10 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             }
 
             public void EnsureInitialized(object proxy)
+            {
+            }
+
+            public void EnsureManagerIsRegistered()
             {
             }
         }
