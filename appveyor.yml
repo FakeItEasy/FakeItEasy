@@ -10,6 +10,10 @@ environment:
         secure: 9iw6ajDvltEymr75DhlRbH8X+2olJ8mbWLPqyYMmleg=
     COVERITY_TOKEN:
         secure: S9XU2JhyUK9XstLG3CN2vB5M8ce8zYZp5VECx3kvx24=
+    GITHUB_TOKEN:
+        secure: 5dFninlYVqNF98Pk9ykQwPU2pBFeQmbMOiFG2iSkg+hhcwF3UfmnDB07lvOwYtez
+    NUGET_API_KEY:
+        secure: BVzuxe9khaakJDNLAhtUM2w5G3gAkoOasCDAilstAtpLuCdFNfu3jrf0KrI5B1Bo
 
 build_script:
 - cmd: if defined APPVEYOR_SCHEDULED_BUILD (build.cmd coverity) else (build.cmd)
@@ -25,10 +29,5 @@ test: off
 artifacts:
     - path: .\artifacts\*\*
 
-deploy:
-    - provider: NuGet
-      api_key:
-          secure: BVzuxe9khaakJDNLAhtUM2w5G3gAkoOasCDAilstAtpLuCdFNfu3jrf0KrI5B1Bo
-      skip_symbols: true
-      on:
-          appveyor_repo_tag: true
+deploy_script:
+    - ps: ./deploy.ps1
