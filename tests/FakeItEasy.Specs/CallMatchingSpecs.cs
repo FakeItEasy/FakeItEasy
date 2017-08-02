@@ -3,7 +3,6 @@ namespace FakeItEasy.Specs
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Runtime.InteropServices;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -498,6 +497,76 @@ namespace FakeItEasy.Specs
                 .x(() => A.CallTo(writerAction).MustNotHaveHappened());
         }
 
+        [Scenario]
+        public static void PassingNestedIgnoredConstraintToAMethod(
+            IHaveOneGenericParameter fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I try to configure a method of the fake with an Ignored constraint nested in an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Dummy { X = A<string>.Ignored })).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void PassingNestedUnderscoreConstraintToAMethod(
+            IHaveOneGenericParameter fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I try to configure a method of the fake with a _ constraint nested in an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Dummy { X = A<string>._ })).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void PassingNestedThatMatchesConstraintToAMethod(
+            IHaveOneGenericParameter fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I try to configure a method of the fake with a That.Matches constraint nested in an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Dummy { X = A<string>.That.Matches(_ => true) })).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void PassingNestedThatNotMatchesConstraintToAMethod(
+            IHaveOneGenericParameter fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I try to configure a method of the fake with That.Not.Matches constraint nested in an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Dummy { X = A<string>.That.Not.Matches(_ => true) })).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void PassingNestedThatIsNotNullConstraintToAMethod(
+            IHaveOneGenericParameter fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I try to configure a method of the fake with a That.IsNotNull constraint nested in an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Dummy { X = A<string>.That.IsNotNull() })).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
         public static IEnumerable<object[]> Fakes()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
@@ -537,6 +606,11 @@ namespace FakeItEasy.Specs
             {
                 throw new Exception();
             }
+        }
+
+        public class Dummy
+        {
+            public string X { get; set; }
         }
     }
 }
