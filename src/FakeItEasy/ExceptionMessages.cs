@@ -23,6 +23,8 @@
         public static string FakeCreationExceptionDefault =>
             "Unable to create fake object.";
 
+        public static string ArgumentConstraintCannotBeNestedInArgument => "An argument constraint, such as That, Ignored, or _, cannot be nested in an argument.";
+
         public static string WrongConstructorExpressionType(Type actualConstructorType, Type expectedConstructorType) =>
             $"Supplied constructor is for type {actualConstructorType}, but must be for {expectedConstructorType}.";
 

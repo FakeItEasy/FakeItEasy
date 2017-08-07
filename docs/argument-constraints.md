@@ -168,3 +168,21 @@ A.CallTo(() => fake.Bar(null, 0))
         theString.Equals(theInt.ToString()))
     .Throws<Exception>();
 ```
+
+# Nested argument constraints
+
+Note that an argument constraint cannot be "nested" in an argument; the
+constraint has to be the whole argument. For instance, the following call
+configurations are invalid and will throw an exception:
+
+```
+A.CallTo(() => fake.Foo(new Bar(A<int>._))).Returns(42);
+A.CallTo(() => fake.Foo(new Bar { X = A<string>.That.Contains("hello") })).Returns(42);
+```
+
+To achieve the desired effect, you can do this instead:
+
+```
+A.CallTo(() => fake.Foo(A<Bar>._)).Returns(42);
+A.CallTo(() => fake.Foo(A<Bar>.That.Matches(bar => bar.X.Contains("hello")))).Returns(42);
+```
