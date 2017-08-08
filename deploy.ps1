@@ -8,7 +8,7 @@ $gitHubAuthToken = $env:GITHUB_TOKEN
 $nugetApiKey = $env:NUGET_API_KEY
 $repo = $env:APPVEYOR_REPO_NAME
 
-$nugetServer = nuget.org
+$nugetServer = "nuget.org"
 $artifactsPattern = "artifacts/output/*.nupkg"
 $releasesUrl = "https://api.github.com/repos/$repo/releases"
 $headers = @{
