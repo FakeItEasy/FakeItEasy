@@ -13,7 +13,7 @@ environment:
     GITHUB_TOKEN:
         secure: 5dFninlYVqNF98Pk9ykQwPU2pBFeQmbMOiFG2iSkg+hhcwF3UfmnDB07lvOwYtez
     NUGET_API_KEY:
-        secure: BVzuxe9khaakJDNLAhtUM2w5G3gAkoOasCDAilstAtpLuCdFNfu3jrf0KrI5B1Bo
+        secure: ynOI8xETJ5V28b5ij2huIKbWRvqJU8QtLtFf8FLTJCWbxmcVP/OPpcF4B8jcOOKW
 
 build_script:
 - cmd: if defined APPVEYOR_SCHEDULED_BUILD (build.cmd coverity) else (build.cmd)
