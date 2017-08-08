@@ -39,6 +39,6 @@ $artifacts | ForEach-Object {
 Write-Output "Pushing nupkgs to nuget.org"
 $artifacts | ForEach-Object {
     Write-Output "Pushing $($_.Name)"
-    .nuget/nuget.exe push -ApiKey $nugetApiKey -Source $nugetServer -NonInteractive -ForceEnglishOutput
+    .nuget/nuget.exe push $_ -ApiKey $nugetApiKey -Source $nugetServer -NonInteractive -ForceEnglishOutput
     Write-Output "Pushed  $($_.Name)"
 }
