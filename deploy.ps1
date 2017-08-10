@@ -1,3 +1,5 @@
+$ErrorActionPreference = "Stop"
+
 if (! $env:APPVEYOR_REPO_TAG_NAME) {
     Write-Output "No Appveyor tag name supplied. Not deploying."
     return
@@ -29,7 +31,12 @@ $headers["Content-type"] = "application/octet-stream"
 $uploadsUrl = "https://uploads.github.com/repos/$repo/releases/$($release.id)/assets?name="
 
 Write-Output "Uploading artifacts to GitHub release"
+
 $artifacts = Get-ChildItem -Path $artifactsPattern
+if (! $artifacts) {
+    throw "Can't find any artifacts to publish"
+}
+
 $artifacts | ForEach-Object {
     Write-Output "Uploading $($_.Name)"
     $asset = Invoke-RestMethod -Uri ($uploadsUrl + $_.Name) -Headers $headers -Method POST -InFile $_
@@ -40,5 +47,10 @@ Write-Output "Pushing nupkgs to nuget.org"
 $artifacts | ForEach-Object {
     Write-Output "Pushing $($_.Name)"
     .nuget/nuget.exe push $_ -ApiKey $nugetApiKey -Source $nugetServer -NonInteractive -ForceEnglishOutput
+    if ($LASTEXITCODE -ne 0) {
+        throw "Push failed with error $LASTEXITCODE"
+    }
     Write-Output "Pushed  $($_.Name)"
 }
+
+Write-Output "Finished deploying $releaseName"
