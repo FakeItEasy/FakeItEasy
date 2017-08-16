@@ -35,22 +35,22 @@ var testSuites = new Dictionary<string, TestSuite[]>
 {
     ["unit"] = new TestSuite[]
     {
-        new DotnetTestSuite("tests/FakeItEasy.Tests"),
-        new DotnetTestSuite("tests/FakeItEasy.Analyzer.CSharp.Tests"),
-        new DotnetTestSuite("tests/FakeItEasy.Analyzer.VisualBasic.Tests"),
+        new TestSuite("tests/FakeItEasy.Tests"),
+        new TestSuite("tests/FakeItEasy.Analyzer.CSharp.Tests"),
+        new TestSuite("tests/FakeItEasy.Analyzer.VisualBasic.Tests"),
     },
     ["integ"] = new TestSuite[]
     {
-        new DotnetTestSuite("tests/FakeItEasy.IntegrationTests"),
-        new ClassicTestSuite("tests/FakeItEasy.IntegrationTests.VB/bin/Release/FakeItEasy.IntegrationTests.VB.dll"),
+        new TestSuite("tests/FakeItEasy.IntegrationTests"),
+        new TestSuite("tests/FakeItEasy.IntegrationTests.VB"),
     },
     ["spec"] = new TestSuite[]
     {
-        new DotnetTestSuite("tests/FakeItEasy.Specs")
+        new TestSuite("tests/FakeItEasy.Specs")
     },
     ["approve"] = new TestSuite[]
     {
-        new DotnetTestSuite("tests/FakeItEasy.Tests.Approval")
+        new TestSuite("tests/FakeItEasy.Tests.Approval")
     }
 };
 
@@ -138,11 +138,7 @@ targets.Add("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
 
 targets.Add(
     "restore",
-    () =>
-    {
-        Cmd(nuget, $"restore {solution}");
-        Cmd("dotnet", $"restore");
-    });
+    () => Cmd("dotnet", $"restore"));
 
 targets.Add(
     "unit",
@@ -271,41 +267,18 @@ public string GetVSLocation()
     return installationPath;
 }
 
-abstract class TestSuite
+class TestSuite
 {
-    public abstract void Execute();
-}
-
-class DotnetTestSuite : TestSuite
-{
-    public DotnetTestSuite(string testDirectory)
+    public TestSuite(string testDirectory)
     {
         this.TestDirectory = testDirectory;
     }
 
     public string TestDirectory { get; }
 
-    public override void Execute()
+    public void Execute()
     {
         var xml = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileName(this.TestDirectory) + ".TestResults.xml"));
         Cmd(this.TestDirectory, "dotnet", $"xunit -configuration Release -nologo -nobuild -notrait \"explicit=yes\" -xml {xml}");
-    }
-}
-
-class ClassicTestSuite : TestSuite
-{
-    public ClassicTestSuite(string assemblyPath)
-    {
-        this.AssemblyPath = assemblyPath;
-    }
-
-    public string AssemblyPath { get; }
-
-    public override void Execute()
-    {
-        var baseFileName = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileNameWithoutExtension(this.AssemblyPath))) + ".TestResults";
-        var xml = baseFileName + ".xml";
-        var html = baseFileName + ".html";
-        Cmd(xunit, $"{this.AssemblyPath} -noshadow -nologo -notrait \"explicit=yes\"' -xml {xml} -html {html}");
     }
 }
