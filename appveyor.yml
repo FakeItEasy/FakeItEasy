@@ -16,7 +16,9 @@ environment:
         secure: ynOI8xETJ5V28b5ij2huIKbWRvqJU8QtLtFf8FLTJCWbxmcVP/OPpcF4B8jcOOKW
 
 build_script:
-- cmd: if defined APPVEYOR_SCHEDULED_BUILD (build.cmd coverity) else (build.cmd)
+- cmd: |
+    if defined APPVEYOR_SCHEDULED_BUILD (set BUILD_TARGET=coverity)
+    build.cmd %BUILD_TARGET%
 
 on_failure:
   - ps: $root = (Resolve-Path artifacts); [IO.Directory]::GetFiles($root.Path, '*.*', 'AllDirectories') | % { Push-AppveyorArtifact $_ -FileName $_.Substring($root.Path.Length + 1) -DeploymentName failed-build }
