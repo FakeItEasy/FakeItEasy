@@ -31,26 +31,26 @@ var pdbs = new []
     "src/FakeItEasy.Analyzer/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
 };
 
-var testSuites = new Dictionary<string, TestSuite[]>
+var testSuites = new Dictionary<string, string[]>
 {
-    ["unit"] = new TestSuite[]
+    ["unit"] = new[]
     {
-        new TestSuite("tests/FakeItEasy.Tests"),
-        new TestSuite("tests/FakeItEasy.Analyzer.CSharp.Tests"),
-        new TestSuite("tests/FakeItEasy.Analyzer.VisualBasic.Tests"),
+        "tests/FakeItEasy.Tests",
+        "tests/FakeItEasy.Analyzer.CSharp.Tests",
+        "tests/FakeItEasy.Analyzer.VisualBasic.Tests",
     },
-    ["integ"] = new TestSuite[]
+    ["integ"] = new[]
     {
-        new TestSuite("tests/FakeItEasy.IntegrationTests"),
-        new TestSuite("tests/FakeItEasy.IntegrationTests.VB"),
+        "tests/FakeItEasy.IntegrationTests",
+        "tests/FakeItEasy.IntegrationTests.VB",
     },
-    ["spec"] = new TestSuite[]
+    ["spec"] = new[]
     {
-        new TestSuite("tests/FakeItEasy.Specs")
+        "tests/FakeItEasy.Specs"
     },
-    ["approve"] = new TestSuite[]
+    ["approve"] = new[]
     {
-        new TestSuite("tests/FakeItEasy.Tests.Approval")
+        "tests/FakeItEasy.Tests.Approval"
     }
 };
 
@@ -250,10 +250,16 @@ public void RunMsBuild(string target)
 
 public void RunTests(string target)
 {
-    foreach (var testSuite in testSuites[target])
+    foreach (var directory in testSuites[target])
     {
-        testSuite.Execute();
+        RunTestsInDirectory(directory);
     }
+}
+
+public void RunTestsInDirectory(string testDirectory)
+{
+    var xml = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
+    Cmd(testDirectory, "dotnet", $"xunit -configuration Release -nologo -nobuild -notrait \"explicit=yes\" -xml {xml}");
 }
 
 public string GetVSLocation()
@@ -265,20 +271,4 @@ public string GetVSLocation()
     }
 
     return installationPath;
-}
-
-class TestSuite
-{
-    public TestSuite(string testDirectory)
-    {
-        this.TestDirectory = testDirectory;
-    }
-
-    public string TestDirectory { get; }
-
-    public void Execute()
-    {
-        var xml = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileName(this.TestDirectory) + ".TestResults.xml"));
-        Cmd(this.TestDirectory, "dotnet", $"xunit -configuration Release -nologo -nobuild -notrait \"explicit=yes\" -xml {xml}");
-    }
 }
