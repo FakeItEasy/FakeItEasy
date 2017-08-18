@@ -1,4 +1,4 @@
-﻿# How to build
+# How to build
 
 These instructions are *only* for building from the command line, which includes compilation, test execution and packaging. This is the simplest way to build.
 It also replicates the build on the Continuous Integration build server and is the best indicator of whether a pull request will build.
@@ -11,7 +11,7 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
 1. Ensure you have .NET framework 4.6.1 or later installed.
 
-1. Ensure you have Visual Studio 2017 or MSBuild 15 installed.
+1. Ensure you have version 15.3 or later of either Visual Studio 2017 or MSBuild installed.
 
 ## Building
 
