@@ -109,4 +109,13 @@
   <data name="MakeNotNullConstraintCodeFixTitle">
     <value>Change to 'not null' constraint (IsNotNull)</value>
   </data>
+  <data name="ArgumentConstraintTypeMismatchDescription" xml:space="preserve">
+    <value>A wrong-typed argument constraint is used for a parameter.</value>
+  </data>
+  <data name="ArgumentConstraintTypeMismatchMessageFormat" xml:space="preserve">
+    <value>Parameter '{0}' of method or indexer '{1}' has type {2}, but argument constraint '{3}' has type {4}. No calls can match this constraint.</value>
+  </data>
+  <data name="ArgumentConstraintTypeMismatchTitle" xml:space="preserve">
+    <value>Argument constraint type mismatch</value>
+  </data>
 </root>

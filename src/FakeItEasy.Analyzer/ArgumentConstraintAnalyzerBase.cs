@@ -26,7 +26,7 @@
 
         protected abstract bool IsSupportedArgumentConstraintProperty(string fullName);
 
-        protected abstract void AnalyzeArgumentConstraintCore(SyntaxNodeAnalysisContext context, SyntaxNode completeConstraint);
+        protected abstract void AnalyzeArgumentConstraintCore(string propertyFullName, SyntaxNodeAnalysisContext context, SyntaxNode completeConstraint);
 
         private static SyntaxNode GetCompleteConstraint(SyntaxNode node)
         {
@@ -62,7 +62,7 @@
 
             var completeConstraint = GetCompleteConstraint(context.Node);
 
-            this.AnalyzeArgumentConstraintCore(context, completeConstraint);
+            this.AnalyzeArgumentConstraintCore(propertyFullName, context, completeConstraint);
         }
     }
 }

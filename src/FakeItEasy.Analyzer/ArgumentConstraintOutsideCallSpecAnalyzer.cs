@@ -39,7 +39,7 @@ namespace FakeItEasy.Analyzer
         protected override bool IsSupportedArgumentConstraintProperty(string fullName) =>
             SupportedArgumentConstraintProperties.Contains(fullName);
 
-        protected override void AnalyzeArgumentConstraintCore(SyntaxNodeAnalysisContext context, SyntaxNode completeConstraint)
+        protected override void AnalyzeArgumentConstraintCore(string propertyFullName, SyntaxNodeAnalysisContext context, SyntaxNode completeConstraint)
         {
             if (!IsInArgumentToMethodThatSupportsArgumentConstraints(context.Node, context))
             {
