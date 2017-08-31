@@ -46,6 +46,11 @@ namespace FakeItEasy.Specs
             int Bar(int? x);
         }
 
+        public interface IIHaveACollectionParameter
+        {
+            int Bar(object[] args);
+        }
+
         [Scenario]
         public static void ParameterArrays(
             ITypeWithParameterArray fake)
@@ -129,6 +134,41 @@ namespace FakeItEasy.Specs
   Expected to find it at least once but found it #0 times among the calls:
     1: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[System.Int32,System.Double](baz1: 1, baz2: 2)
     2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64],System.Int32](baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
+
+"));
+        }
+
+        [Scenario]
+        public static void FailingMatchOfCollectionParameter(
+            IIHaveACollectionParameter fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IIHaveACollectionParameter>());
+
+            "And a call with argument [1, \"hello\", NULL, NULL, \"foo\", \"bar\"] made on this fake"
+                .x(() => fake.Bar(new object[] { 1, "hello", null, null, "foo", "bar" }));
+
+            "And a call with argument [null, 42] made on this fake"
+                .x(() => fake.Bar(new object[] { null, 42 }));
+
+            "When I assert that a call with an argument that is the same sequence as [null, 42, \"hello\"] has happened on this fake"
+                .x(() => exception = Record.Exception(
+                    () => A.CallTo(
+                            () => fake.Bar(A<object[]>.That.IsSameSequenceAs(new object[] { null, 42, "hello" })))
+                        .MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception message should tell us that the call was not matched, and include the values of the actual collection elements"
+                .x(() => exception.Message.Should().Be(@"
+
+  Assertion failed for the following call:
+    FakeItEasy.Specs.CallMatchingSpecs+IIHaveACollectionParameter.Bar(args: <NULL, 42, ""hello"">)
+  Expected to find it at least once but found it #0 times among the calls:
+    1: FakeItEasy.Specs.CallMatchingSpecs+IIHaveACollectionParameter.Bar(args: [1, ""hello"", … (2 more elements) …, ""foo"", ""bar""])
+    2: FakeItEasy.Specs.CallMatchingSpecs+IIHaveACollectionParameter.Bar(args: [<NULL>, 42])
 
 "));
         }

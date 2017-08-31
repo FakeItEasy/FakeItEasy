@@ -16,10 +16,6 @@ namespace FakeItEasy
         {
         }
 
-        public StringBuilder Builder
-        {
-            get;
-            private set;
-        }
+        public StringBuilder Builder { get; }
     }
 }
