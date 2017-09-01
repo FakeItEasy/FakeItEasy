@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Expressions
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using FakeItEasy.Configuration;
@@ -15,6 +16,7 @@ namespace FakeItEasy.Tests.Expressions
         private readonly ExpressionArgumentConstraintFactory constraintFactory;
         private readonly MethodInfoManager methodInfoManager;
         private readonly CallExpressionParser parser;
+        private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
 
         public ExpressionCallMatcherTests()
         {
@@ -25,6 +27,13 @@ namespace FakeItEasy.Tests.Expressions
 
             this.methodInfoManager = A.Fake<MethodInfoManager>();
             this.parser = new CallExpressionParser();
+            this.outputWriterFactory =
+                builder =>
+                    new StringBuilderOutputWriter(
+                        builder,
+                        new ArgumentValueFormatter(
+                            Enumerable.Empty<IArgumentValueFormatter>(),
+                            this.outputWriterFactory));
         }
 
         [Fact]
@@ -220,7 +229,7 @@ namespace FakeItEasy.Tests.Expressions
 
         private ExpressionCallMatcher CreateMatcher(ParsedCallExpression callSpecification)
         {
-            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager);
+            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager, this.outputWriterFactory);
         }
 
         private void StubMethodInfoManagerToReturn(bool returnValue)

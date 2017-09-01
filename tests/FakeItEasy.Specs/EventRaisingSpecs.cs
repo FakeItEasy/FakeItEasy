@@ -369,7 +369,7 @@ namespace FakeItEasy.Specs
             "Then the call fails with a meaningful message"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
                     .And.Message.Should().Be(
-                        "The event has the signature (System.Int32), but the provided arguments have types (<NULL>)."));
+                        "The event has the signature (System.Int32), but the provided arguments have types (NULL)."));
         }
 
         [Scenario]
@@ -467,7 +467,7 @@ namespace FakeItEasy.Specs
             "Then the call fails with a meaningful message"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
                     .And.Message.Should().Be(
-                        "The event has the signature (System.Int32), but the provided arguments have types (<NULL>)."));
+                        "The event has the signature (System.Int32), but the provided arguments have types (NULL)."));
         }
 
         [Scenario]

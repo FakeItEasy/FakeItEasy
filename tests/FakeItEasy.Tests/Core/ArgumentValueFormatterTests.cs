@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.Core
         {
             this.registeredTypeFormatters = new List<IArgumentValueFormatter>();
 
-            this.formatter = new ArgumentValueFormatter(this.registeredTypeFormatters);
+            this.formatter = new ArgumentValueFormatter(this.registeredTypeFormatters, ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>());
         }
 
         public static IEnumerable<object> SpecificCases()
@@ -54,7 +54,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetArgumentValueAsString(null);
 
             // Assert
-            description.Should().Be("<NULL>");
+            description.Should().Be("NULL");
         }
 
         [Fact]

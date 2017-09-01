@@ -3,18 +3,21 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     internal class SequentialCallContext
     {
         private readonly CallWriter callWriter;
+        private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
         private readonly HashSet<FakeManager> fakeManagers;
         private readonly List<AssertedCall> assertedCalls;
         private int currentSequenceNumber;
 
-        public SequentialCallContext(CallWriter callWriter)
+        public SequentialCallContext(CallWriter callWriter, StringBuilderOutputWriter.Factory outputWriterFactory)
         {
             Guard.AgainstNull(callWriter, nameof(callWriter));
             this.callWriter = callWriter;
+            this.outputWriterFactory = outputWriterFactory;
             this.fakeManagers = new HashSet<FakeManager>();
             this.assertedCalls = new List<AssertedCall>();
             this.currentSequenceNumber = -1;
@@ -53,14 +56,13 @@ namespace FakeItEasy.Core
 
             if (!repeatConstraint.Matches(matchedCallCount))
             {
-                ThrowExceptionWhenAssertionFailed(this.assertedCalls, this.callWriter, allCalls);
+                this.ThrowExceptionWhenAssertionFailed(allCalls);
             }
         }
 
-        private static void ThrowExceptionWhenAssertionFailed(
-            List<AssertedCall> assertedCalls, CallWriter callWriter, List<ICompletedFakeObjectCall> originalCallList)
+        private void ThrowExceptionWhenAssertionFailed(List<ICompletedFakeObjectCall> originalCallList)
         {
-            var message = new StringBuilderOutputWriter();
+            var message = this.outputWriterFactory(new StringBuilder());
 
             message.WriteLine();
             message.WriteLine();
@@ -72,7 +74,7 @@ namespace FakeItEasy.Core
 
                 using (message.Indent())
                 {
-                    foreach (var call in assertedCalls)
+                    foreach (var call in this.assertedCalls)
                     {
                         message.Write("'");
                         call.CallDescriber.Invoke(message);
@@ -88,7 +90,7 @@ namespace FakeItEasy.Core
 
                 using (message.Indent())
                 {
-                    callWriter.WriteCalls(originalCallList, message);
+                    this.callWriter.WriteCalls(originalCallList, message);
                 }
             }
 
