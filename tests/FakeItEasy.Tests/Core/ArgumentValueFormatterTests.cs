@@ -5,7 +5,6 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -153,7 +152,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var allArgumentValueFormatters = typeof(A).GetTypeInformation().Assembly.GetTypes()
                 .Where(t => t.CanBeInstantiatedAs(typeof(IArgumentValueFormatter)))
-                .Select(Activator.CreateInstance)
+                .Select(Sdk.Create.Dummy)
                 .Cast<IArgumentValueFormatter>();
 
             // Act

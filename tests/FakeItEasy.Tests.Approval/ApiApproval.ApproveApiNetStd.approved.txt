@@ -54,7 +54,7 @@ namespace FakeItEasy
             where T :  struct { }
         public static string IsNullOrEmpty(this FakeItEasy.IArgumentConstraintManager<string> manager) { }
         public static T IsSameAs<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
-        public static T IsSameSequenceAs<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Collections.IEnumerable value)
+        public static T IsSameSequenceAs<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Collections.IEnumerable values)
             where T : System.Collections.IEnumerable { }
         public static T Matches<T>(this FakeItEasy.IArgumentConstraintManager<T> scope, System.Func<T, bool> predicate, string description) { }
         public static T Matches<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, string descriptionFormat, params object[] args) { }

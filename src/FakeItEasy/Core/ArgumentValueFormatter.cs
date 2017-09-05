@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
@@ -21,6 +22,7 @@ namespace FakeItEasy.Core
                 new IArgumentValueFormatter[]
                     {
                         new DefaultStringFormatter(),
+                        new DefaultEnumerableValueFormatter(this),
                         new DefaultFormatter()
                     });
         }
@@ -116,6 +118,33 @@ namespace FakeItEasy.Core
                 Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
                 return argumentValue.ToString();
+            }
+        }
+
+        private class DefaultEnumerableValueFormatter
+            : ArgumentValueFormatter<IEnumerable>
+        {
+            private readonly ArgumentValueFormatter argumentValueFormatter;
+
+            public DefaultEnumerableValueFormatter(ArgumentValueFormatter argumentValueFormatter)
+            {
+                this.argumentValueFormatter = argumentValueFormatter;
+            }
+
+            public override Priority Priority => Priority.Internal;
+
+            protected override string GetStringValue(IEnumerable argumentValue)
+            {
+                Guard.AgainstNull(argumentValue, nameof(argumentValue));
+
+                var formattedValues =
+                    from object value in argumentValue
+                    select this.argumentValueFormatter.GetArgumentValueAsString(value);
+                var writer = new StringBuilderOutputWriter();
+                writer.Write("[");
+                writer.WriteArgumentValues(formattedValues, skipFormatting: true);
+                writer.Write("]");
+                return writer.Builder.ToString();
             }
         }
 

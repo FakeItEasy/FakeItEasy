@@ -1,28 +1,30 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Xunit;
 
-    public class IsSameSequenceAsTests
-        : ArgumentConstraintTestBase<IEnumerable<string>>
+    public class IsSameSequenceAsWithLongSequenceTests
+        : ArgumentConstraintTestBase<IEnumerable<int>>
     {
-        protected override string ExpectedDescription => "\"a\", \"b\", NULL, \"y\", \"z\"";
+        protected override string ExpectedDescription => "1, 2, … (6 more elements) …, 9, 10";
 
         public static IEnumerable<object[]> InvalidValues()
         {
             return TestCases.FromObject(
-                new[] { "1", "2", "x", "y" },
-                new string[] { },
+                new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
+                new int[] { },
                 null,
-                new[] { "a", "b", null, "z", "x" },
-                new[] { "a", "b" });
+                new[] { 1, 2, 3, 4 },
+                new[] { 9, 8 });
         }
 
         public static IEnumerable<object[]> ValidValues()
         {
             return TestCases.FromObject(
-                new[] { "a", "b", null, "y", "z" },
-                new List<string> { "a", "b", null, "y", "z" });
+                new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+                new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+                Enumerable.Range(1, 10));
         }
 
         [Theory]
@@ -39,9 +41,9 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
             base.IsValid_should_return_true_for_valid_values(validValue);
         }
 
-        protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string>> scope)
+        protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<int>> scope)
         {
-            scope.IsSameSequenceAs(new[] { "a", "b", null, "y", "z" });
+            scope.IsSameSequenceAs(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
         }
     }
 }

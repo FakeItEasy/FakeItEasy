@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy
+namespace FakeItEasy
 {
     using System;
     using System.Collections;
@@ -145,14 +145,15 @@
         /// as the specified collection.
         /// </summary>
         /// <param name="manager">The constraint manager to match the constraint.</param>
-        /// <param name="value">The sequence to test against.</param>
+        /// <param name="values">The sequence to test against.</param>
         /// <typeparam name="T">The type of argument to constrain.</typeparam>
         /// <returns>A dummy argument value.</returns>
-        public static T IsSameSequenceAs<T>(this IArgumentConstraintManager<T> manager, IEnumerable value) where T : IEnumerable
+        public static T IsSameSequenceAs<T>(this IArgumentConstraintManager<T> manager, IEnumerable values) where T : IEnumerable
         {
+            var list = values.AsList();
             return manager.NullCheckedMatches(
-                x => x.Cast<object>().SequenceEqual(value.Cast<object>()),
-                x => x.Write("specified sequence"));
+                x => x.Cast<object>().SequenceEqual(list),
+                x => x.WriteArgumentValues(list));
         }
 
         /// <summary>
