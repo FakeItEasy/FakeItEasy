@@ -1,0 +1,15 @@
+<Project>
+
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)FakeItEasy.snk</AssemblyOriginatorKeyFile>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)FakeItEasy.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" PrivateAssets="all" />
+    <CodeAnalysisDictionary Include="$(MSBuildThisFileDirectory)FakeItEasy.Dictionary.xml">
+      <Link>Properties\FakeItEasy.Dictionary.xml</Link>
+    </CodeAnalysisDictionary>
+  </ItemGroup>
+
+</Project>

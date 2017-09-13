@@ -6,11 +6,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\FakeItEasy.snk</AssemblyOriginatorKeyFile>
-    <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-
-  <Import Project="../packages.targets" />
 
   <PropertyGroup Label="Package properties">
     <Title>FakeItEasy - Mocking made faking easy!</Title>
@@ -20,9 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
     <Compile Include="../*.cs" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Debug -->
@@ -30,7 +24,7 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DebugType>full</DebugType>
   </PropertyGroup>
-  
+
   <!-- Release -->
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
