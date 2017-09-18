@@ -27,6 +27,7 @@ Namespace TheNamespace
         Function BaseClassParam(ByVal x as BaseClass) As Integer
         Function HasImplicitConversionParam(ByVal x as CanBeConvertedTo) as Integer
         Default Readonly Property Item(ByVal x As Integer?) As Integer
+        Default Readonly Property Item(ByVal x As Double, ByVal y as String) As Integer
     End Interface
 
     Class BaseClass
@@ -242,6 +243,34 @@ End Namespace
             this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 1);
         }
 
+        [Theory]
+        [MemberData(nameof(FakeItEasy0005SupportedConstraints))]
+        public void ChangeConstraintType_CodeFix_should_replace_constraint_with_proper_type(string constraint)
+        {
+            string completeConstraint = $"A(Of Integer).{constraint}";
+            string call = $"foo.NonNullableDoubleParam({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = $"A(Of Double).{constraint}";
+            string fixedCall = $"foo.NonNullableDoubleParam({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 0);
+        }
+
+        [Theory]
+        [MemberData(nameof(FakeItEasy0005SupportedConstraints))]
+        public void ChangeConstraintType_CodeFix_should_replace_constraint_with_proper_type_for_indexer(string constraint)
+        {
+            string completeConstraint = $"A(Of Short).{constraint}";
+            string call = $"foo.Item({completeConstraint}, \"hello\")";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = $"A(Of Double).{constraint}";
+            string fixedCall = $"foo.Item({fixedConstraint}, \"hello\")";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 0);
+        }
+
         protected override DiagnosticAnalyzer GetVisualBasicDiagnosticAnalyzer()
         {
             return new ArgumentConstraintTypeMismatchAnalyzer();
@@ -249,7 +278,7 @@ End Namespace
 
         protected override CodeFixProvider GetVisualBasicCodeFixProvider()
         {
-            return new ArgumentConstraintNullabilityMismatchCodeFixProvider();
+            return new ArgumentConstraintTypeMismatchCodeFixProvider();
         }
     }
 }

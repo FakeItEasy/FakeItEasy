@@ -31,6 +31,7 @@ namespace TheNamespace
         int BaseClassParam(BaseClass x);
         int HasImplicitConversionParam(CanBeConvertedTo x);
         int this[int? x] {{ get; }}
+        int this[double x, string s] {{ get; }}
     }}
 
     class BaseClass
@@ -251,6 +252,34 @@ namespace TheNamespace
             this.VerifyCSharpFix(code, fixedCode, codeFixIndex: 1);
         }
 
+        [Theory]
+        [MemberData(nameof(FakeItEasy0005SupportedConstraints))]
+        public void ChangeConstraintType_CodeFix_should_replace_constraint_with_proper_type(string constraint)
+        {
+            string completeConstraint = $"A<short>.{constraint}";
+            string call = $"foo.NonNullableDoubleParam({completeConstraint})";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = $"A<double>.{constraint}";
+            string fixedCall = $"foo.NonNullableDoubleParam({fixedConstraint})";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyCSharpFix(code, fixedCode, codeFixIndex: 0);
+        }
+
+        [Theory]
+        [MemberData(nameof(FakeItEasy0005SupportedConstraints))]
+        public void ChangeConstraintType_CodeFix_should_replace_constraint_with_proper_type_for_indexer(string constraint)
+        {
+            string completeConstraint = $"A<short>.{constraint}";
+            string call = $"foo[{completeConstraint}, \"hello\"]";
+            string code = string.Format(CodeTemplate, call);
+
+            string fixedConstraint = $"A<double>.{constraint}";
+            string fixedCall = $"foo[{fixedConstraint}, \"hello\"]";
+            string fixedCode = string.Format(CodeTemplate, fixedCall);
+            this.VerifyCSharpFix(code, fixedCode, codeFixIndex: 0);
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new ArgumentConstraintTypeMismatchAnalyzer();
@@ -258,7 +287,7 @@ namespace TheNamespace
 
         protected override CodeFixProvider GetCSharpCodeFixProvider()
         {
-            return new ArgumentConstraintNullabilityMismatchCodeFixProvider();
+            return new ArgumentConstraintTypeMismatchCodeFixProvider();
         }
     }
 }

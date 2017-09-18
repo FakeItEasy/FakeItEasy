@@ -20,6 +20,8 @@ namespace FakeItEasy.Analyzer
 #endif
     public class ArgumentConstraintTypeMismatchAnalyzer : ArgumentConstraintAnalyzerBase
     {
+        internal static readonly string ParameterTypeKey = "parameterType";
+
         private static readonly ImmutableHashSet<string> SupportedArgumentConstraintProperties =
             ImmutableHashSet.Create(
                 "FakeItEasy.A`1._",
@@ -100,10 +102,14 @@ namespace FakeItEasy.Analyzer
                     if (!conversionType.IsWidening || !conversionType.IsReference)
 #endif
                     {
+                        var propertiesBuilder = ImmutableDictionary.CreateBuilder<string, string>();
+                        propertiesBuilder.Add(ParameterTypeKey, parameterType.ToString());
+
                         var descriptor = DiagnosticDefinitions.ArgumentConstraintTypeMismatch;
                         var diagnostic = Diagnostic.Create(
                             descriptor,
                             completeConstraint.GetLocation(),
+                            propertiesBuilder.ToImmutable(),
                             parameter.Name,
                             methodOrIndexerName,
                             parameter.Type,
