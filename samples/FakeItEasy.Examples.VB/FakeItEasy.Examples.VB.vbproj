@@ -2,15 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <CodeAnalysisRuleSet>..\FakeItEasy.Examples.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
     <ProjectReference Include="..\FakeItEasy.Examples\FakeItEasy.Examples.csproj" />
   </ItemGroup>
