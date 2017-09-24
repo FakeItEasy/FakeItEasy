@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer.CSharp.Tests
+namespace FakeItEasy.Analyzer.CSharp.Tests
 {
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Analyzer.Tests.Helpers;
@@ -359,7 +359,7 @@ namespace TheNamespace
         void Test()
         {
             var fake = A.Fake<IFoo>();
-            A.CallTo(fake).Where(call => true, output => new object());
+            A.CallTo(fake).Where(call => true, null);
         }
     }
     interface IFoo { int Bar(); }
@@ -372,7 +372,7 @@ namespace TheNamespace
                 {
                     Id = "FakeItEasy0001",
                     Message =
-                        "Unused call specification 'A.CallTo(fake).Where(call => true, output => new object())'; did you forget to configure or assert the call?",
+                        "Unused call specification 'A.CallTo(fake).Where(call => true, null)'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 13) }
                 });

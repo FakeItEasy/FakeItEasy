@@ -179,7 +179,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
 #elif VISUAL_BASIC
                     .WithProjectCompilationOptions(
                         projectId,
-                        new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+                        new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optionStrict: OptionStrict.On))
 #endif
                     .AddMetadataReference(projectId, CorlibReference)
                     .AddMetadataReference(projectId, SystemCoreReference)
