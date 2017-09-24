@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer
+namespace FakeItEasy.Analyzer
 {
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
@@ -82,7 +82,7 @@
 
         private static bool SupportsArgumentConstraints(InvocationExpressionSyntax invocation, SyntaxNodeAnalysisContext context)
         {
-            var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(invocation, context);
+            var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(invocation, context, true);
             if (methodSymbol == null)
             {
                 return false;

@@ -1,5 +1,6 @@
-﻿namespace FakeItEasy.Analyzer
+namespace FakeItEasy.Analyzer
 {
+    using System.Linq;
     using Microsoft.CodeAnalysis;
 #if CSHARP
     using Microsoft.CodeAnalysis.CSharp;
@@ -18,10 +19,18 @@
         /// </summary>
         /// <param name="call">The invocation expression that the symbol is required.</param>
         /// <param name="context">Current context.</param>
+        /// <param name="useFirstCandidateIfNotResolved">Use the first candidate if symbol is not resolved.</param>
         /// <returns>The symbol for the invocation call.</returns>
-        internal static IMethodSymbol GetCalledMethodSymbol(InvocationExpressionSyntax call, SyntaxNodeAnalysisContext context)
+        internal static IMethodSymbol GetCalledMethodSymbol(InvocationExpressionSyntax call, SyntaxNodeAnalysisContext context, bool useFirstCandidateIfNotResolved = false)
         {
-            var method = context.SemanticModel.GetSymbolInfo(call).Symbol as IMethodSymbol;
+            var symbolInfo = context.SemanticModel.GetSymbolInfo(call);
+            var symbol = symbolInfo.Symbol;
+            if (symbol == null && useFirstCandidateIfNotResolved)
+            {
+                symbol = symbolInfo.CandidateSymbols.FirstOrDefault();
+            }
+
+            var method = symbol as IMethodSymbol;
 
             // In Roslyn for VB.NET, some generic extension methods are "reduced", i.e. WhereConfigurationExtensions.Where<T>
             // becomes WhereConfigurationExtensions.Where, as if it were non-generic. We need the non-reduced version.
