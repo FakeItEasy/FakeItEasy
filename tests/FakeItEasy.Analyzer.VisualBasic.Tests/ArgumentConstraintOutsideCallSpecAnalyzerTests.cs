@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer.VisualBasic.Tests
+namespace FakeItEasy.Analyzer.VisualBasic.Tests
 {
     using System.Collections.Generic;
     using FakeItEasy.Analyzer.Tests.Helpers;
@@ -204,6 +204,63 @@ End Namespace
 ";
 
             this.VerifyVisualBasicDiagnostic(code);
+        }
+
+        [Fact]
+        public void Diagnostic_should_not_be_triggered_if_constraint_inside_call_spec_contains_error()
+        {
+            string code = @"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim foo = A.Fake(Of IFoo)()
+            A.CallTo(Function() foo.Bar(A(Of Integer).That.Matches(Function(x) Test(x)))).Returns(42)
+        End Sub
+
+        Function Test(ByVal x As Byte) As Boolean
+            Return True
+        End Function
+    End Class
+
+    Interface IFoo
+        Function Bar(ByVal x As Integer) As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnosticWithCompilationErrors(code);
+        }
+
+        [Fact]
+        public void Diagnostic_should_be_triggered_if_constraint_outside_call_spec_contains_error()
+        {
+            string code = @"Imports FakeItEasy
+Namespace TheNamespace
+    Class TheClass
+        Sub Test()
+            Dim c = A(Of Integer).That.Matches(Function(x) Test(x))
+        End Sub
+
+        Function Test(ByVal x As Byte) As Boolean
+            Return True
+        End Function
+    End Class
+
+    Interface IFoo
+        Function Bar(ByVal x As Integer) As Integer
+    End Interface
+End Namespace
+";
+
+            this.VerifyVisualBasicDiagnosticWithCompilationErrors(
+                code,
+                new DiagnosticResult
+                {
+                    Id = "FakeItEasy0003",
+                    Message = "Argument constraint 'A(Of Integer).That.Matches(Function(x) Test(x))' is not valid outside a call specification.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.vb", 5, 21) }
+                });
         }
 
         protected override DiagnosticAnalyzer GetVisualBasicDiagnosticAnalyzer() =>
