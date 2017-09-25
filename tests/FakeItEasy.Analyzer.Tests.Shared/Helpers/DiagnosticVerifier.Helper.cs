@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer.Tests.Helpers
+namespace FakeItEasy.Analyzer.Tests.Helpers
 {
     using System;
     using System.Collections.Generic;
@@ -45,8 +45,9 @@
         /// </summary>
         /// <param name="analyzer">The analyzer to run on the documents.</param>
         /// <param name="documents">The Documents that the analyzer will be run on.</param>
+        /// <param name="allowCompilationErrors">Allow compiler errors.</param>
         /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location.</returns>
-        protected static Diagnostic[] GetSortedDiagnosticsFromDocuments(DiagnosticAnalyzer analyzer, Document[] documents)
+        protected static Diagnostic[] GetSortedDiagnosticsFromDocuments(DiagnosticAnalyzer analyzer, Document[] documents, bool allowCompilationErrors)
         {
             if (documents == null)
             {
@@ -64,7 +65,10 @@
             {
                 var compilationWithAnalyzers = project.GetCompilationAsync().Result.WithAnalyzers(ImmutableArray.Create(analyzer));
 
-                AssertThatCompilationSucceeded(compilationWithAnalyzers);
+                if (!allowCompilationErrors)
+                {
+                    AssertThatCompilationSucceeded(compilationWithAnalyzers);
+                }
 
                 var diags = compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result;
                 foreach (var diag in diags)
@@ -175,7 +179,7 @@
 #elif VISUAL_BASIC
                     .WithProjectCompilationOptions(
                         projectId,
-                        new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+                        new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optionStrict: OptionStrict.On))
 #endif
                     .AddMetadataReference(projectId, CorlibReference)
                     .AddMetadataReference(projectId, SystemCoreReference)
@@ -206,10 +210,11 @@
         /// <param name="sources">Classes in the form of strings.</param>
         /// <param name="language">The language the source classes are in.</param>
         /// <param name="analyzer">The analyzer to be run on the sources.</param>
+        /// <param name="allowCompilationErrors">Allow compiler errors.</param>
         /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location.</returns>
-        private static Diagnostic[] GetSortedDiagnostics(string[] sources, string language, DiagnosticAnalyzer analyzer)
+        private static Diagnostic[] GetSortedDiagnostics(string[] sources, string language, DiagnosticAnalyzer analyzer, bool allowCompilationErrors)
         {
-            return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language));
+            return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language), allowCompilationErrors);
         }
 
         /// <summary>
