@@ -245,7 +245,7 @@ public void RunMsBuild(string target)
     var packagesDirectoryOption = string.IsNullOrEmpty(packagesDirectory) ? "" : $"/p:NuGetPackagesDirectory={packagesDirectory}";
     Cmd(
         msBuild,
-        $"{solution} /target:{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/{target}.log;Verbosity=Detailed;PerformanceSummary {packagesDirectoryOption}");
+        $"{solution} /target:{target} /p:configuration=Release /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/{target}.binlog {packagesDirectoryOption}");
 }
 
 public void RunTests(string target)
