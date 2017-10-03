@@ -33,6 +33,7 @@ namespace Castle.DynamicProxy
     public interface IProxyTargetAccessor
     {
         object DynProxyGetTarget();
+        void DynProxySetTarget(object target);
         Castle.DynamicProxy.IInterceptor[] GetInterceptors();
     }
 }
