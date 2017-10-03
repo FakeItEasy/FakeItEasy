@@ -49,6 +49,14 @@
                 DiagnosticSeverity.Warning,
                 true);
 
+        public static DiagnosticDescriptor ArgumentConstraintTypeMismatch { get; } =
+            CreateDiagnosticDescriptor(
+                nameof(ArgumentConstraintTypeMismatch),
+                "FakeItEasy0005",
+                "FakeItEasy.Usage",
+                DiagnosticSeverity.Error,
+                true);
+
         private static DiagnosticDescriptor CreateDiagnosticDescriptor(
             string name, string id, string category, DiagnosticSeverity defaultSeverity, bool isEnabledByDefault)
         {
