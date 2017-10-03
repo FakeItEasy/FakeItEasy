@@ -54,7 +54,7 @@ namespace FakeItEasy.Tests
             return manager.NullCheckedMatches(
                 x =>
                 {
-                    var writer = new StringBuilderOutputWriter();
+                    var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
                     x.Invoke(writer);
 
                     return string.Equals(writer.Builder.ToString(), expectedValue, StringComparison.Ordinal);

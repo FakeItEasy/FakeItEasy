@@ -1,9 +1,6 @@
 namespace FakeItEasy.Tests
 {
-    using System.Reflection;
-    using System.Text;
     using FakeItEasy.Core;
-    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
@@ -30,11 +27,11 @@ namespace FakeItEasy.Tests
         [Fact]
         public virtual void Constraint_should_provide_correct_description()
         {
-            var output = new StringBuilder();
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
 
-            this.Constraint.WriteDescription(new StringBuilderOutputWriter(output));
+            this.Constraint.WriteDescription(writer);
 
-            output.ToString().Should().Be("<" + this.ExpectedDescription + ">");
+            writer.Builder.ToString().Should().Be("<" + this.ExpectedDescription + ">");
         }
     }
 }

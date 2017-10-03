@@ -11,11 +11,13 @@ namespace FakeItEasy.Tests.Core
     {
         private readonly List<ICompletedFakeObjectCall> calls;
         private readonly CallWriter callWriter;
+        private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
 
         public FakeAsserterTests()
         {
             this.calls = new List<ICompletedFakeObjectCall>();
             this.callWriter = A.Fake<CallWriter>();
+            this.outputWriterFactory = A.Fake<StringBuilderOutputWriter.Factory>();
         }
 
         [Fact]
@@ -163,7 +165,7 @@ namespace FakeItEasy.Tests.Core
 
         private FakeAsserter CreateAsserter()
         {
-            return new FakeAsserter(this.calls, this.callWriter);
+            return new FakeAsserter(this.calls, this.callWriter, this.outputWriterFactory);
         }
 
         private void StubCalls(int numberOfCalls)

@@ -1,6 +1,5 @@
 namespace FakeItEasy.Tests
 {
-    using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -102,7 +101,7 @@ namespace FakeItEasy.Tests
             var description = call.GetDescription();
 
             // Assert
-            description.Should().Be("FakeItEasy.Tests.IFoo.Bar(<NULL>, 123)");
+            description.Should().Be("FakeItEasy.Tests.IFoo.Bar(NULL, 123)");
         }
 
         [Fact]
@@ -115,7 +114,33 @@ namespace FakeItEasy.Tests
             var description = call.GetDescription();
 
             // Assert
-            description.Should().Be("FakeItEasy.Tests.IFoo.Bar(<string.Empty>, 123)");
+            description.Should().Be("FakeItEasy.Tests.IFoo.Bar(string.Empty, 123)");
+        }
+
+        [Fact]
+        public void GetDescription_should_render_argument_collection_elements_when_collection_has_5_elements_or_less()
+        {
+            // Arrange
+            var call = CreateFakeCallToFooDotBar(1, new[] { 1, 2, 3, 4, 5 });
+
+            // Act
+            var description = call.GetDescription();
+
+            // Assert
+            description.Should().Be("FakeItEasy.Tests.IFoo.Bar(1, [1, 2, 3, 4, 5])");
+        }
+
+        [Fact]
+        public void GetDescription_should_render_argument_collection_first_and_last_elements_when_collection_has_more_than_5_elements()
+        {
+            // Arrange
+            var call = CreateFakeCallToFooDotBar(1, new[] { 1, 2, 3, 4, 5, 6 });
+
+            // Act
+            var description = call.GetDescription();
+
+            // Assert
+            description.Should().Be("FakeItEasy.Tests.IFoo.Bar(1, [1, 2, … (2 more elements) …, 5, 6])");
         }
 
         private static FakeCall CreateFakeCallToFooDotBar(object argument1, object argument2)

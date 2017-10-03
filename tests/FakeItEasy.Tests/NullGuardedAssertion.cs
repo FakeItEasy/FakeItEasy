@@ -37,7 +37,7 @@ namespace FakeItEasy.Tests
                     return;
                 }
 
-                var builder = new StringBuilderOutputWriter();
+                var builder = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
                 this.WriteDescriptionTo(builder);
                 builder.WriteLine();
                 this.WriteActualValueTo(builder);

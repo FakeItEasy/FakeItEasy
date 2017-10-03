@@ -16,6 +16,7 @@ namespace FakeItEasy.Expressions
         : ICallMatcher
     {
         private readonly MethodInfoManager methodInfoManager;
+        private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
         private IEnumerable<IArgumentConstraint> argumentConstraints;
         private Func<ArgumentCollection, bool> argumentsPredicate;
 
@@ -25,15 +26,19 @@ namespace FakeItEasy.Expressions
         /// <param name="parsedExpression">The parsed call specification.</param>
         /// <param name="constraintFactory">The constraint factory.</param>
         /// <param name="methodInfoManager">The method info manager to use.</param>
-        public ExpressionCallMatcher(ParsedCallExpression parsedExpression, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager)
+        /// <param name="outputWriterFactory">The output writer factory to use.</param>
+        public ExpressionCallMatcher(ParsedCallExpression parsedExpression, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, StringBuilderOutputWriter.Factory outputWriterFactory)
         {
             this.methodInfoManager = methodInfoManager;
+            this.outputWriterFactory = outputWriterFactory;
 
             this.Method = parsedExpression.CalledMethod;
 
             this.argumentConstraints = GetArgumentConstraints(parsedExpression.ArgumentsExpressions, constraintFactory).ToArray();
             this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
         }
+
+        public delegate ExpressionCallMatcher Factory(ParsedCallExpression parsedExpression);
 
         /// <summary>
         /// Gets a human readable description of calls that will be matched by this
@@ -128,7 +133,7 @@ namespace FakeItEasy.Expressions
 
                 var parameter = parameters[index];
                 result.Append(parameter.Name + ": ");
-                constraint.WriteDescription(new StringBuilderOutputWriter(result));
+                constraint.WriteDescription(this.outputWriterFactory(result));
                 index++;
             }
 

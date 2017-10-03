@@ -5,6 +5,8 @@ namespace FakeItEasy.Core
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
+
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
@@ -14,7 +16,7 @@ namespace FakeItEasy.Core
         private readonly ConcurrentDictionary<Type, IArgumentValueFormatter> cachedFormatters;
         private readonly IEnumerable<IArgumentValueFormatter> typeFormatters;
 
-        public ArgumentValueFormatter(IEnumerable<IArgumentValueFormatter> typeFormatters)
+        public ArgumentValueFormatter(IEnumerable<IArgumentValueFormatter> typeFormatters, StringBuilderOutputWriter.Factory outputWriterFactory)
         {
             this.cachedFormatters = new ConcurrentDictionary<Type, IArgumentValueFormatter>();
 
@@ -22,7 +24,7 @@ namespace FakeItEasy.Core
                 new IArgumentValueFormatter[]
                     {
                         new DefaultStringFormatter(),
-                        new DefaultEnumerableValueFormatter(this),
+                        new DefaultEnumerableValueFormatter(outputWriterFactory),
                         new DefaultFormatter()
                     });
         }
@@ -31,7 +33,7 @@ namespace FakeItEasy.Core
         {
             if (argumentValue == null)
             {
-                return "<NULL>";
+                return "NULL";
             }
 
             var argumentType = argumentValue.GetType();
@@ -124,11 +126,11 @@ namespace FakeItEasy.Core
         private class DefaultEnumerableValueFormatter
             : ArgumentValueFormatter<IEnumerable>
         {
-            private readonly ArgumentValueFormatter argumentValueFormatter;
+            private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
 
-            public DefaultEnumerableValueFormatter(ArgumentValueFormatter argumentValueFormatter)
+            public DefaultEnumerableValueFormatter(StringBuilderOutputWriter.Factory outputWriterFactory)
             {
-                this.argumentValueFormatter = argumentValueFormatter;
+                this.outputWriterFactory = outputWriterFactory;
             }
 
             public override Priority Priority => Priority.Internal;
@@ -137,12 +139,9 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
-                var formattedValues =
-                    from object value in argumentValue
-                    select this.argumentValueFormatter.GetArgumentValueAsString(value);
-                var writer = new StringBuilderOutputWriter();
+                var writer = this.outputWriterFactory(new StringBuilder());
                 writer.Write("[");
-                writer.WriteArgumentValues(formattedValues, skipFormatting: true);
+                writer.WriteArgumentValues(argumentValue);
                 writer.Write("]");
                 return writer.Builder.ToString();
             }

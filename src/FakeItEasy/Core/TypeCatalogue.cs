@@ -168,7 +168,7 @@ namespace FakeItEasy.Core
 
         private static void WarnFailedToGetSomeTypes(Assembly assembly, ReflectionTypeLoadException ex)
         {
-            var writer = new DefaultOutputWriter(Console.Write);
+            var writer = CreateConsoleWriter();
             Write(
                 writer,
                 ex,
@@ -192,7 +192,7 @@ namespace FakeItEasy.Core
 
         private static void Write(Exception ex, string message)
         {
-            var writer = new DefaultOutputWriter(Console.Write);
+            var writer = CreateConsoleWriter();
             Write(writer, ex, message);
         }
 
@@ -207,6 +207,13 @@ namespace FakeItEasy.Core
                 writer.Write(ex.Message);
                 writer.WriteLine();
             }
+        }
+
+        private static IOutputWriter CreateConsoleWriter()
+        {
+            // We can pass null as the ArgumentValueFormatter, because we never call
+            // WriteArgumentValue on this writer.
+            return new DefaultOutputWriter(Console.Write, null);
         }
     }
 }
