@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using System.Collections.Generic;
@@ -54,7 +54,7 @@
             Exception exception)
         {
             const string ExpectedMessage = @"The current proxy generator can not intercept the method FakeItEasy.Specs.TypeWithInternalMethod.InternalMethod() for the following reason:
-    - Can not create proxy for method Int32 InternalMethod() because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2"")] attribute, because assembly FakeItEasy.Specs is not strong-named.";
+    - Can not create proxy for method Int32 InternalMethod() because it or its declaring type is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2"")] attribute, because assembly FakeItEasy.Specs is not strong-named.";
 
             "Given a public type with an internal method not visible to DynamicProxyGenAssembly2"
                 .See<TypeWithInternalMethod>();
