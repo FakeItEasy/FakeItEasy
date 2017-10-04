@@ -30,7 +30,7 @@
                 nameof(NonVirtualSetupSpecification),
                 "FakeItEasy0002",
                 "FakeItEasy.Usage",
-                DiagnosticSeverity.Warning,
+                DiagnosticSeverity.Error,
                 true);
 
         public static DiagnosticDescriptor ArgumentConstraintOutsideCallSpec { get; } =
