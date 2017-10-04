@@ -135,8 +135,11 @@ Sometimes individually constraining arguments isn't sufficient. In
 such a case, other methods may be used to determine which calls match
 the fake's configuration.
 
-`WithAnyArguments` ensures that no argument constraints will be applied when matching calls:
+_When using the following methods, any inline argument constraints are ignored, and only the
+special method is used to match the call._ Some arguments have to be supplied in order to satisfy the compiler,
+but the values will not be used, so you can supply whatever values make the code easiest for you to read.
 
+`WithAnyArguments` ensures that no argument constraints will be applied when matching calls:
 
 ```csharp
 A.CallTo(() => foo.Bar(null, 7)).WithAnyArguments().MustHaveHappened();

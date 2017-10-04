@@ -10,6 +10,9 @@ namespace FakeItEasy.Configuration
     {
         /// <summary>
         /// Configures the call to be accepted when the specified predicate returns true.
+        /// This method overrides any inline argument constraints (such as <see cref="A{T}.Ignored"/>,
+        /// implicit equality matchers, or anything else); only <paramref name="argumentsPredicate"/>
+        /// is considered when matching the call.
         /// </summary>
         /// <param name="argumentsPredicate">The argument predicate.</param>
         /// <returns>A configuration object.</returns>
