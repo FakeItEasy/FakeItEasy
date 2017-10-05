@@ -3,7 +3,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     using System.Collections.Generic;
     using Xunit;
 
-    public class IsSameSequenceAsTests
+    public abstract class IsSameSequenceAsTestsBase
         : ArgumentConstraintTestBase<IEnumerable<string>>
     {
         protected override string ExpectedDescription => "\"a\", \"b\", NULL, \"y\", \"z\"";
@@ -38,10 +38,21 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
         {
             base.IsValid_should_return_true_for_valid_values(validValue);
         }
+    }
 
+    public class IsSameSequenceAsTestsWithEnumerable : IsSameSequenceAsTestsBase
+    {
         protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string>> scope)
         {
-            scope.IsSameSequenceAs(new[] { "a", "b", null, "y", "z" });
+            scope.IsSameSequenceAs(new List<object> { "a", "b", null, "y", "z" });
+        }
+    }
+
+    public class IsSameSequenceAsTestsWithParams : IsSameSequenceAsTestsBase
+    {
+        protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string>> scope)
+        {
+            scope.IsSameSequenceAs("a", "b", null, "y", "z");
         }
     }
 }

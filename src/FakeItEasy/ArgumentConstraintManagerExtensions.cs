@@ -142,7 +142,7 @@ namespace FakeItEasy
 
         /// <summary>
         /// The tested argument collection should contain the same elements as the
-        /// as the specified collection.
+        /// specified collection, in the same order.
         /// </summary>
         /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <param name="values">The sequence to test against.</param>
@@ -154,6 +154,19 @@ namespace FakeItEasy
             return manager.NullCheckedMatches(
                 x => x.Cast<object>().SequenceEqual(list),
                 x => x.WriteArgumentValues(list));
+        }
+
+        /// <summary>
+        /// The tested argument collection should contain the same elements as the
+        /// specified collection, in the same order.
+        /// </summary>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="values">The sequence to test against.</param>
+        /// <typeparam name="T">The type of argument to constrain.</typeparam>
+        /// <returns>A dummy argument value.</returns>
+        public static T IsSameSequenceAs<T>(this IArgumentConstraintManager<T> manager, params object[] values) where T : IEnumerable
+        {
+            return manager.IsSameSequenceAs((IEnumerable)values);
         }
 
         /// <summary>
