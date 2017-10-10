@@ -1,25 +1,19 @@
 namespace FakeItEasy
 {
     using System.Text;
+    using FakeItEasy.Core;
 
     internal class StringBuilderOutputWriter
         : DefaultOutputWriter
     {
-        public StringBuilderOutputWriter(StringBuilder builder)
-            : base(c => builder.Append(c))
+        public StringBuilderOutputWriter(StringBuilder builder, ArgumentValueFormatter argumentValueFormatter)
+            : base(c => builder.Append(c), argumentValueFormatter)
         {
             this.Builder = builder;
         }
 
-        public StringBuilderOutputWriter()
-            : this(new StringBuilder())
-        {
-        }
+        public delegate StringBuilderOutputWriter Factory(StringBuilder builder);
 
-        public StringBuilder Builder
-        {
-            get;
-            private set;
-        }
+        public StringBuilder Builder { get; }
     }
 }

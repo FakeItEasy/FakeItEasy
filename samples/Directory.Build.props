@@ -1,0 +1,9 @@
+<Project>
+
+  <Import Project="../Directory.Build.props" />
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)FakeItEasy.Examples.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+</Project>

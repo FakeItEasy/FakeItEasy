@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer.VisualBasic.Tests
+namespace FakeItEasy.Analyzer.VisualBasic.Tests
 {
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Analyzer.Tests.Helpers;
@@ -351,7 +351,7 @@ Namespace TheNamespace
     Class TheClass
         Sub Test()
             Dim foo = New Fake(Of IFoo)()
-            A.CallTo(foo).Where(Function() True, New Object())
+            A.CallTo(foo).Where(Function() True, Nothing)
         End Sub
     End Class
 
@@ -367,7 +367,7 @@ End Namespace
                 {
                     Id = "FakeItEasy0001",
                     Message =
-                        "Unused call specification 'A.CallTo(foo).Where(Function() True, New Object())'; did you forget to configure or assert the call?",
+                        "Unused call specification 'A.CallTo(foo).Where(Function() True, Nothing)'; did you forget to configure or assert the call?",
                     Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 13) }
                 });

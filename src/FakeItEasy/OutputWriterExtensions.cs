@@ -1,6 +1,8 @@
 namespace FakeItEasy
 {
     using System;
+    using System.Collections;
+    using System.Linq;
 
     /// <summary>
     /// Provides extensions for <see cref="IOutputWriter"/>.
@@ -47,6 +49,66 @@ namespace FakeItEasy
             Guard.AgainstNull(value, nameof(value));
 
             writer.Write(value.ToString());
+            return writer;
+        }
+
+        /// <summary>
+        /// Formats the specified argument values as strings and writes them to the output.
+        /// </summary>
+        /// <param name="writer">The writer to write to.</param>
+        /// <param name="values">The values to write to the writer.</param>
+        /// <param name="skipFormatting">Specify that argument values should not be formatted.</param>
+        /// <returns>The writer.</returns>
+        internal static IOutputWriter WriteArgumentValues(this IOutputWriter writer, IEnumerable values, bool skipFormatting = false)
+        {
+            Guard.AgainstNull(writer, nameof(writer));
+            Guard.AgainstNull(values, nameof(values));
+
+            var list = values.AsList();
+            if (list.Count <= 5)
+            {
+                writer.WriteArgumentValuesImpl(list, skipFormatting);
+            }
+            else
+            {
+                writer.WriteArgumentValuesImpl(list.Take(2), skipFormatting);
+                int remainingCount = list.Count - 4;
+                writer.Write($", … ({remainingCount} more elements) …, ");
+                writer.WriteArgumentValuesImpl(list.Skip(list.Count - 2), skipFormatting);
+            }
+
+            return writer;
+        }
+
+        /// <summary>
+        /// Formats the specified argument values as strings and writes them to the output.
+        /// </summary>
+        /// <param name="writer">The writer to write to.</param>
+        /// <param name="values">The values to write to the writer.</param>
+        /// <param name="skipFormatting">Specify that argument values should not be formatted.</param>
+        /// <returns>The writer.</returns>
+        private static IOutputWriter WriteArgumentValuesImpl(this IOutputWriter writer, IEnumerable values, bool skipFormatting = false)
+        {
+            bool first = true;
+            foreach (var value in values)
+            {
+                if (!first)
+                {
+                    writer.Write(", ");
+                }
+
+                if (skipFormatting)
+                {
+                    writer.Write(value);
+                }
+                else
+                {
+                    writer.WriteArgumentValue(value);
+                }
+
+                first = false;
+            }
+
             return writer;
         }
     }

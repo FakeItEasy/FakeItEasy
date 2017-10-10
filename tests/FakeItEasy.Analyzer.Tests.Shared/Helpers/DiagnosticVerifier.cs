@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer.Tests.Helpers
+namespace FakeItEasy.Analyzer.Tests.Helpers
 {
     using System;
     using System.Collections.Generic;
@@ -24,7 +24,12 @@
         /// <param name="expected"> DiagnosticResults that should appear after the analyzer is run on the source.</param>
         internal void VerifyCSharpDiagnostic(string source, params DiagnosticResult[] expected)
         {
-            this.VerifyDiagnostics(new[] { source }, LanguageNames.CSharp, this.GetCSharpDiagnosticAnalyzer(), expected);
+            this.VerifyDiagnostics(new[] { source }, LanguageNames.CSharp, this.GetCSharpDiagnosticAnalyzer(), expected, false);
+        }
+
+        internal void VerifyCSharpDiagnosticWithCompilationErrors(string source, params DiagnosticResult[] expected)
+        {
+            this.VerifyDiagnostics(new[] { source }, LanguageNames.CSharp, this.GetCSharpDiagnosticAnalyzer(), expected, true);
         }
 
         /// <summary>
@@ -42,7 +47,12 @@
         /// <param name="expected"> DiagnosticResults that should appear after the analyzer is run on the source.</param>
         internal void VerifyVisualBasicDiagnostic(string source, params DiagnosticResult[] expected)
         {
-            this.VerifyDiagnostics(new[] { source }, LanguageNames.VisualBasic, this.GetVisualBasicDiagnosticAnalyzer(), expected);
+            this.VerifyDiagnostics(new[] { source }, LanguageNames.VisualBasic, this.GetVisualBasicDiagnosticAnalyzer(), expected, false);
+        }
+
+        internal void VerifyVisualBasicDiagnosticWithCompilationErrors(string source, params DiagnosticResult[] expected)
+        {
+            this.VerifyDiagnostics(new[] { source }, LanguageNames.VisualBasic, this.GetVisualBasicDiagnosticAnalyzer(), expected, true);
         }
 
         /// <summary>
@@ -263,9 +273,10 @@ Diagnostic:
         /// <param name="language">The language of the classes represented by the source strings.</param>
         /// <param name="analyzer">The analyzer to be run on the source code.</param>
         /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources.</param>
-        private void VerifyDiagnostics(string[] sources, string language, DiagnosticAnalyzer analyzer, params DiagnosticResult[] expected)
+        /// <param name="allowCompilationErrors">Allow compiler errors.</param>
+        private void VerifyDiagnostics(string[] sources, string language, DiagnosticAnalyzer analyzer, DiagnosticResult[] expected, bool allowCompilationErrors)
         {
-            var diagnostics = GetSortedDiagnostics(sources, language, analyzer);
+            var diagnostics = GetSortedDiagnostics(sources, language, analyzer, allowCompilationErrors);
             VerifyDiagnosticResults(diagnostics, analyzer, expected);
         }
     }

@@ -2,7 +2,6 @@ namespace FakeItEasy.Tests
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Text;
     using FakeItEasy.Core;
     using FluentAssertions;
     using Xunit;
@@ -41,10 +40,11 @@ namespace FakeItEasy.Tests
         public void Ignored_should_return_validator_with_correct_description()
         {
             // Arrange
-            var result = new StringBuilder();
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var result = writer.Builder;
 
             // Act
-            GetIgnoredConstraint<string>().WriteDescription(new StringBuilderOutputWriter(result));
+            GetIgnoredConstraint<string>().WriteDescription(writer);
 
             // Assert
             result.ToString().Should().Be("<Ignored>");
@@ -70,10 +70,11 @@ namespace FakeItEasy.Tests
         public void Underscore_should_return_validator_with_correct_description()
         {
             // Arrange
-            var result = new StringBuilder();
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var result = writer.Builder;
 
             // Act
-            GetUnderscoreConstraint<string>().WriteDescription(new StringBuilderOutputWriter(result));
+            GetUnderscoreConstraint<string>().WriteDescription(writer);
 
             // Assert
             result.ToString().Should().Be("<Ignored>");

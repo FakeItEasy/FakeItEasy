@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer.CSharp.Tests
+namespace FakeItEasy.Analyzer.CSharp.Tests
 {
     using System.Collections.Generic;
     using FakeItEasy.Analyzer.Tests.Helpers;
@@ -216,6 +216,61 @@ namespace TheNamespace
 ";
 
             this.VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void Diagnostic_should_not_be_triggered_if_constraint_inside_call_spec_contains_error()
+        {
+            string code = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var foo = A.Fake<IFoo>();
+            A.CallTo(() => foo.Bar(A<int>.That.Matches(x => Test(x)))).Returns(42);
+        }
+
+        bool Test(byte x) => true;
+    }
+
+    interface IFoo { void Bar(int x); }
+}
+";
+
+            this.VerifyCSharpDiagnosticWithCompilationErrors(code);
+        }
+
+        [Fact]
+        public void Diagnostic_should_be_triggered_if_constraint_outside_call_spec_contains_error()
+        {
+            string code = @"using FakeItEasy;
+namespace TheNamespace
+{
+    class TheClass
+    {
+        void Test()
+        {
+            var c = A<int>.That.Matches(x => Test(x));
+        }
+
+        bool Test(byte x) => true;
+    }
+
+    interface IFoo { void Bar(int x); }
+}
+";
+
+            this.VerifyCSharpDiagnosticWithCompilationErrors(
+                code,
+                new DiagnosticResult
+                {
+                    Id = "FakeItEasy0003",
+                    Message = "Argument constraint 'A<int>.That.Matches(x => Test(x))' is not valid outside a call specification.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 21) }
+                });
         }
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer() =>

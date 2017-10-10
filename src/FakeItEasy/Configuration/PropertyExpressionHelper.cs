@@ -59,7 +59,8 @@ namespace FakeItEasy.Configuration
             var matcher = new ExpressionCallMatcher(
                 parsedCallExpression,
                 ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>(),
-                ServiceLocator.Current.Resolve<MethodInfoManager>());
+                ServiceLocator.Current.Resolve<MethodInfoManager>(),
+                ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>());
 
             return matcher.DescriptionOfMatchingCall;
         }

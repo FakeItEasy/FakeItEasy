@@ -1,8 +1,9 @@
-﻿namespace FakeItEasy
+namespace FakeItEasy
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Text;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -37,12 +38,12 @@
                 new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
 
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>())));
+                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>(), c.Resolve<StringBuilderOutputWriter.Factory>())));
 
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
 
-            container.Register<FakeAsserter.Factory>(c => calls => new FakeAsserter(calls, c.Resolve<CallWriter>()));
+            container.Register<FakeAsserter.Factory>(c => calls => new FakeAsserter(calls, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
                 (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy, c.Resolve<IFakeManagerAccessor>()));
@@ -55,7 +56,7 @@
                 new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), c.Resolve<IFakeManagerAccessor>()));
 
             container.RegisterSingleton(c =>
-                new ArgumentValueFormatter(c.Resolve<IEnumerable<IArgumentValueFormatter>>()));
+                new ArgumentValueFormatter(c.Resolve<IEnumerable<IArgumentValueFormatter>>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
 
             container.RegisterSingleton(c =>
                 new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), c.Resolve<IEqualityComparer<IFakeObjectCall>>()));
@@ -104,11 +105,15 @@
 
             container.Register<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
 
-            container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write));
+            container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write, c.Resolve<ArgumentValueFormatter>()));
+
+            container.RegisterSingleton<StringBuilderOutputWriter.Factory>(c => builder => new StringBuilderOutputWriter(builder, c.Resolve<ArgumentValueFormatter>()));
+
+            container.Register(c => c.Resolve<StringBuilderOutputWriter.Factory>().Invoke(new StringBuilder()));
 
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
 
-            container.Register(c => new SequentialCallContext(c.Resolve<CallWriter>()));
+            container.Register(c => new SequentialCallContext(c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
         }
 
         private class ExpressionCallMatcherFactory
@@ -126,7 +131,8 @@
                 return new ExpressionCallMatcher(
                     callSpecification,
                     this.serviceLocator.Resolve<ExpressionArgumentConstraintFactory>(),
-                    this.serviceLocator.Resolve<MethodInfoManager>());
+                    this.serviceLocator.Resolve<MethodInfoManager>(),
+                    this.serviceLocator.Resolve<StringBuilderOutputWriter.Factory>());
             }
         }
 

@@ -135,7 +135,7 @@ End Namespace
                     Id = "FakeItEasy0002",
                     Message =
                         "Member Bar can not be intercepted. Only interface members and overrideable, overriding, and must override members can be intercepted.",
-                    Severity = DiagnosticSeverity.Warning,
+                    Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 33) }
                 });
         }
@@ -166,7 +166,7 @@ End Namespace
                     Id = "FakeItEasy0002",
                     Message =
                         "Member Bar can not be intercepted. Only interface members and overrideable, overriding, and must override members can be intercepted.",
-                    Severity = DiagnosticSeverity.Warning,
+                    Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 5, 33) }
                 });
         }
@@ -200,7 +200,7 @@ End Namespace
                     Id = "FakeItEasy0002",
                     Message =
                         "Member Bar can not be intercepted. Only interface members and overrideable, overriding, and must override members can be intercepted.",
-                    Severity = DiagnosticSeverity.Warning,
+                    Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 8, 26) }
                 });
         }
@@ -232,7 +232,7 @@ End Namespace
                     Id = "FakeItEasy0002",
                     Message =
                         "Member Bar can not be intercepted. Only interface members and overrideable, overriding, and must override members can be intercepted.",
-                    Severity = DiagnosticSeverity.Warning,
+                    Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 33) }
                 });
         }
@@ -330,7 +330,7 @@ End Namespace
                     Id = "FakeItEasy0002",
                     Message =
                         "Member Item can not be intercepted. Only interface members and overrideable, overriding, and must override members can be intercepted.",
-                    Severity = DiagnosticSeverity.Warning,
+                    Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 14, 33) }
                 });
         }
@@ -410,7 +410,7 @@ End Namespace
                     Id = "FakeItEasy0002",
                     Message =
                         "Member Bar can not be intercepted. Only interface members and overrideable, overriding, and must override members can be intercepted.",
-                    Severity = DiagnosticSeverity.Warning,
+                    Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 36) }
                 });
         }
@@ -442,7 +442,7 @@ End Namespace";
                     Id = "FakeItEasy0002",
                     Message =
                         "Member DifferentNameThanOtherTests can not be intercepted. Only interface members and overrideable, overriding, and must override members can be intercepted.",
-                    Severity = DiagnosticSeverity.Warning,
+                    Severity = DiagnosticSeverity.Error,
                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 28) }
                 });
         }

@@ -3,19 +3,22 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     internal class FakeAsserter : IFakeAsserter
     {
         private readonly CallWriter callWriter;
+        private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
         private readonly IEnumerable<ICompletedFakeObjectCall> calls;
 
-        public FakeAsserter(IEnumerable<ICompletedFakeObjectCall> calls, CallWriter callWriter)
+        public FakeAsserter(IEnumerable<ICompletedFakeObjectCall> calls, CallWriter callWriter, StringBuilderOutputWriter.Factory outputWriterFactory)
         {
             Guard.AgainstNull(calls, nameof(calls));
             Guard.AgainstNull(callWriter, nameof(callWriter));
 
             this.calls = calls;
             this.callWriter = callWriter;
+            this.outputWriterFactory = outputWriterFactory;
         }
 
         public delegate IFakeAsserter Factory(IEnumerable<ICompletedFakeObjectCall> calls);
@@ -31,29 +34,12 @@ namespace FakeItEasy.Core
             var matchedCallCount = this.calls.Count(c => IsBeforeAssertionStart(c) && callPredicate(c));
             if (!repeatConstraint.Matches(matchedCallCount))
             {
-                var description = new StringBuilderOutputWriter();
+                var description = this.outputWriterFactory(new StringBuilder());
                 callDescriber.Invoke(description);
 
-                var message = CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), this.callWriter, description.Builder.ToString(), repeatConstraint.ToString(), matchedCallCount);
+                var message = this.CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), description.Builder.ToString(), repeatConstraint.ToString(), matchedCallCount);
                 throw new ExpectationException(message);
             }
-        }
-
-        private static string CreateExceptionMessage(
-            IEnumerable<IFakeObjectCall> calls, CallWriter callWriter, string callDescription, string repeatDescription, int matchedCallCount)
-        {
-            var writer = new StringBuilderOutputWriter();
-            writer.WriteLine();
-
-            using (writer.Indent())
-            {
-                AppendCallDescription(callDescription, writer);
-                AppendExpectation(calls, repeatDescription, matchedCallCount, writer);
-                AppendCallList(calls, callWriter, writer);
-                writer.WriteLine();
-            }
-
-            return writer.Builder.ToString();
         }
 
         private static void AppendCallDescription(string callDescription, IOutputWriter writer)
@@ -91,6 +77,23 @@ namespace FakeItEasy.Core
             {
                 callWriter.WriteCalls(calls, writer);
             }
+        }
+
+        private string CreateExceptionMessage(
+            IEnumerable<IFakeObjectCall> calls, string callDescription, string repeatDescription, int matchedCallCount)
+        {
+            var writer = this.outputWriterFactory(new StringBuilder());
+            writer.WriteLine();
+
+            using (writer.Indent())
+            {
+                AppendCallDescription(callDescription, writer);
+                AppendExpectation(calls, repeatDescription, matchedCallCount, writer);
+                AppendCallList(calls, this.callWriter, writer);
+                writer.WriteLine();
+            }
+
+            return writer.Builder.ToString();
         }
     }
 }

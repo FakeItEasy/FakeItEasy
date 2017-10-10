@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer
+namespace FakeItEasy.Analyzer
 {
     using System.Collections.Immutable;
     using Microsoft.CodeAnalysis;
@@ -39,7 +39,7 @@
         protected override bool IsSupportedArgumentConstraintProperty(string fullName) =>
             SupportedArgumentConstraintProperties.Contains(fullName);
 
-        protected override void AnalyzeArgumentConstraintCore(SyntaxNodeAnalysisContext context, SyntaxNode completeConstraint)
+        protected override void AnalyzeArgumentConstraintCore(string propertyFullName, SyntaxNodeAnalysisContext context, SyntaxNode completeConstraint)
         {
             if (!IsInArgumentToMethodThatSupportsArgumentConstraints(context.Node, context))
             {
@@ -82,7 +82,7 @@
 
         private static bool SupportsArgumentConstraints(InvocationExpressionSyntax invocation, SyntaxNodeAnalysisContext context)
         {
-            var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(invocation, context);
+            var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(invocation, context, true);
             if (methodSymbol == null)
             {
                 return false;

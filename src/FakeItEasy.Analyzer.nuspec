@@ -5,7 +5,7 @@
     <version>$version$</version>
     <title>FakeItEasy.Analyzer</title>
     <authors>Thomas Levesque, FakeItEasy contributors</authors>
-    <description>Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy. Works in Visual Studio 2015 Update 1 or later.</description>
+    <description>A convenience package that installs the FakeItEasy Analyzer for both C# and Visual Basic. Clients using FakeItEasy from only one of the two languages should prefer FakeItEasy.Analyzer.CSharp or FakeItEasy.Analyzer.VisualBasic. Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy. Works in Visual Studio 2015 Update 1 or later.</description>
     <releaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</releaseNotes>
     <language>en-US</language>
     <projectUrl>http://fakeiteasy.github.io/</projectUrl>

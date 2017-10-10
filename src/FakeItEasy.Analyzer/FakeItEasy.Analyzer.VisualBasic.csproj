@@ -8,16 +8,11 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\FakeItEasy.snk</AssemblyOriginatorKeyFile>
-    <CodeAnalysisRuleSet>..\..\FakeItEasy.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>$(DefineConstants);VISUAL_BASIC</DefineConstants>
     <PackageTargetFallback>portable45-net45+win8</PackageTargetFallback>
     <BaseIntermediateOutputPath>objvb\</BaseIntermediateOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
-
-  <Import Project="../packages.targets" />
-  <Import Project="packages.analyzer.targets" />
 
   <PropertyGroup Label="Package properties">
     <Title>FakeItEasy.Analyzer.VisualBasic</Title>
@@ -35,21 +30,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <CodeAnalysisDictionary Include="..\..\FakeItEasy.Dictionary.xml" />
     <Compile Include="../*.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DebugType>full</DebugType>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Update="NetStandard.Library" Version="$(NetStandardImplicitPackageVersion)" PrivateAssets="all" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="1.1.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="1.1.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Composition" Version="1.0.27" PrivateAssets="all" />

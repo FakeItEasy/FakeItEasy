@@ -95,7 +95,7 @@ namespace FakeItEasy
 
         private static string BuildSignatureDescription(IEnumerable<Type> types)
         {
-            return types.ToCollectionString(t => t?.ToString() ?? "<NULL>", ", ");
+            return types.ToCollectionString(t => t?.ToString() ?? "NULL", ", ");
         }
     }
 }

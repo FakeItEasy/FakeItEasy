@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using System;
+    using System.Text;
 
     public class ActionOverWriterValueFormatter : ArgumentValueFormatter<Action<IOutputWriter>>
     {
@@ -8,7 +9,7 @@ namespace FakeItEasy.Tests
         {
             Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
-            var writer = new StringBuilderOutputWriter();
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
             argumentValue.Invoke(writer);
             return writer.Builder.ToString();
         }

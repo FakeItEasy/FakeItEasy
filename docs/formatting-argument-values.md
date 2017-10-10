@@ -77,7 +77,7 @@ extend or implement the formatter's type.
 Unless custom formatters are provided, FakeItEasy formats argument
 values like so:
 
-- the `null` value is formatted as `<null>`,
+- the `null` value is formatted as `NULL`,
 - the empty `string` is formatted as `string.Empty`,
 - other `string` values are formatted as `"the string value"`, including the quotation marks, and
 - any other value is formatted as its `ToString()` result

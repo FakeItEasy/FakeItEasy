@@ -235,7 +235,7 @@ namespace FakeItEasy.Tests.Configuration
             // Arrange
             this.rule.DescriptionOfValidCallReturnValue = "description";
 
-            var writer = new StringBuilderOutputWriter();
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
 
             // Act
             this.rule.WriteDescriptionOfValidCall(writer);
@@ -252,7 +252,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.ApplyWherePredicate(x => true, x => x.Write("description of first where"));
             this.rule.ApplyWherePredicate(x => true, x => x.Write("description of second where"));
 
-            var descriptionWriter = new StringBuilderOutputWriter();
+            var descriptionWriter = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
 
             // Act
             this.rule.WriteDescriptionOfValidCall(descriptionWriter);

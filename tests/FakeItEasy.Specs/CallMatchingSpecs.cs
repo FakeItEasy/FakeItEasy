@@ -3,7 +3,6 @@ namespace FakeItEasy.Specs
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Runtime.InteropServices;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -45,6 +44,11 @@ namespace FakeItEasy.Specs
         public interface IHaveANullableParameter
         {
             int Bar(int? x);
+        }
+
+        public interface IIHaveACollectionParameter
+        {
+            int Bar(object[] args);
         }
 
         [Scenario]
@@ -130,6 +134,41 @@ namespace FakeItEasy.Specs
   Expected to find it at least once but found it #0 times among the calls:
     1: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[System.Int32,System.Double](baz1: 1, baz2: 2)
     2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64],System.Int32](baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
+
+"));
+        }
+
+        [Scenario]
+        public static void FailingMatchOfCollectionParameter(
+            IIHaveACollectionParameter fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IIHaveACollectionParameter>());
+
+            "And a call with argument [1, \"hello\", NULL, NULL, \"foo\", \"bar\"] made on this fake"
+                .x(() => fake.Bar(new object[] { 1, "hello", null, null, "foo", "bar" }));
+
+            "And a call with argument [null, 42] made on this fake"
+                .x(() => fake.Bar(new object[] { null, 42 }));
+
+            "When I assert that a call with an argument that is the same sequence as [null, 42, \"hello\"] has happened on this fake"
+                .x(() => exception = Record.Exception(
+                    () => A.CallTo(
+                            () => fake.Bar(A<object[]>.That.IsSameSequenceAs(new object[] { null, 42, "hello" })))
+                        .MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception message should tell us that the call was not matched, and include the values of the actual collection elements"
+                .x(() => exception.Message.Should().Be(@"
+
+  Assertion failed for the following call:
+    FakeItEasy.Specs.CallMatchingSpecs+IIHaveACollectionParameter.Bar(args: <NULL, 42, ""hello"">)
+  Expected to find it at least once but found it #0 times among the calls:
+    1: FakeItEasy.Specs.CallMatchingSpecs+IIHaveACollectionParameter.Bar(args: [1, ""hello"", … (2 more elements) …, ""foo"", ""bar""])
+    2: FakeItEasy.Specs.CallMatchingSpecs+IIHaveACollectionParameter.Bar(args: [NULL, 42])
 
 "));
         }
@@ -498,6 +537,76 @@ namespace FakeItEasy.Specs
                 .x(() => A.CallTo(writerAction).MustNotHaveHappened());
         }
 
+        [Scenario]
+        public static void PassingNestedIgnoredConstraintToAMethod(
+            IHaveOneGenericParameter fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I try to configure a method of the fake with an Ignored constraint nested in an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Dummy { X = A<string>.Ignored })).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void PassingNestedUnderscoreConstraintToAMethod(
+            IHaveOneGenericParameter fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I try to configure a method of the fake with a _ constraint nested in an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Dummy { X = A<string>._ })).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void PassingNestedThatMatchesConstraintToAMethod(
+            IHaveOneGenericParameter fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I try to configure a method of the fake with a That.Matches constraint nested in an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Dummy { X = A<string>.That.Matches(_ => true) })).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void PassingNestedThatNotMatchesConstraintToAMethod(
+            IHaveOneGenericParameter fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I try to configure a method of the fake with That.Not.Matches constraint nested in an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Dummy { X = A<string>.That.Not.Matches(_ => true) })).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
+        [Scenario]
+        public static void PassingNestedThatIsNotNullConstraintToAMethod(
+            IHaveOneGenericParameter fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveOneGenericParameter>());
+
+            "When I try to configure a method of the fake with a That.IsNotNull constraint nested in an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Dummy { X = A<string>.That.IsNotNull() })).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
         public static IEnumerable<object[]> Fakes()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
@@ -537,6 +646,11 @@ namespace FakeItEasy.Specs
             {
                 throw new Exception();
             }
+        }
+
+        public class Dummy
+        {
+            public string X { get; set; }
         }
     }
 }

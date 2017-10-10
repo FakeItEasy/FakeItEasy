@@ -1,9 +1,12 @@
 namespace FakeItEasy.Core
 {
     using System;
+    using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
+
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
@@ -13,7 +16,7 @@ namespace FakeItEasy.Core
         private readonly ConcurrentDictionary<Type, IArgumentValueFormatter> cachedFormatters;
         private readonly IEnumerable<IArgumentValueFormatter> typeFormatters;
 
-        public ArgumentValueFormatter(IEnumerable<IArgumentValueFormatter> typeFormatters)
+        public ArgumentValueFormatter(IEnumerable<IArgumentValueFormatter> typeFormatters, StringBuilderOutputWriter.Factory outputWriterFactory)
         {
             this.cachedFormatters = new ConcurrentDictionary<Type, IArgumentValueFormatter>();
 
@@ -21,6 +24,7 @@ namespace FakeItEasy.Core
                 new IArgumentValueFormatter[]
                     {
                         new DefaultStringFormatter(),
+                        new DefaultEnumerableValueFormatter(outputWriterFactory),
                         new DefaultFormatter()
                     });
         }
@@ -29,7 +33,7 @@ namespace FakeItEasy.Core
         {
             if (argumentValue == null)
             {
-                return "<NULL>";
+                return "NULL";
             }
 
             var argumentType = argumentValue.GetType();
@@ -116,6 +120,30 @@ namespace FakeItEasy.Core
                 Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
                 return argumentValue.ToString();
+            }
+        }
+
+        private class DefaultEnumerableValueFormatter
+            : ArgumentValueFormatter<IEnumerable>
+        {
+            private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
+
+            public DefaultEnumerableValueFormatter(StringBuilderOutputWriter.Factory outputWriterFactory)
+            {
+                this.outputWriterFactory = outputWriterFactory;
+            }
+
+            public override Priority Priority => Priority.Internal;
+
+            protected override string GetStringValue(IEnumerable argumentValue)
+            {
+                Guard.AgainstNull(argumentValue, nameof(argumentValue));
+
+                var writer = this.outputWriterFactory(new StringBuilder());
+                writer.Write("[");
+                writer.WriteArgumentValues(argumentValue);
+                writer.Write("]");
+                return writer.Builder.ToString();
             }
         }
 

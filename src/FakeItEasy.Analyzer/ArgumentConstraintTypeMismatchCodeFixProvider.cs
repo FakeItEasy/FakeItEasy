@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer
+namespace FakeItEasy.Analyzer
 {
     using System.Collections.Immutable;
     using System.Linq;
@@ -20,18 +20,21 @@
 #elif VISUAL_BASIC
     [ExportCodeFixProvider(LanguageNames.VisualBasic)]
 #endif
-    public class ArgumentConstraintNullabilityMismatchCodeFixProvider : CodeFixProvider
+    public class ArgumentConstraintTypeMismatchCodeFixProvider : CodeFixProvider
     {
         private static readonly Task CompletedTask = Task.FromResult(false);
 
         public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-            ImmutableArray.Create(DiagnosticDefinitions.ArgumentConstraintNullabilityMismatch.Id);
+            ImmutableArray.Create(DiagnosticDefinitions.ArgumentConstraintNullabilityMismatch.Id, DiagnosticDefinitions.ArgumentConstraintTypeMismatch.Id);
 
         private static string MakeConstraintNullableCodeFixTitle =>
             DiagnosticDefinitions.ResourceManager.GetString(nameof(MakeConstraintNullableCodeFixTitle));
 
         private static string MakeNotNullConstraintCodeFixTitle =>
             DiagnosticDefinitions.ResourceManager.GetString(nameof(MakeNotNullConstraintCodeFixTitle));
+
+        private static string ChangeConstraintTypeCodeFixTitle =>
+            DiagnosticDefinitions.ResourceManager.GetString(nameof(ChangeConstraintTypeCodeFixTitle));
 
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -41,27 +44,38 @@
                 return CompletedTask;
             }
 
-            context.RegisterCodeFix(
-                CodeAction.Create(
-                    MakeConstraintNullableCodeFixTitle,
-                    ct => this.MakeConstraintNullableAsync(context, diagnostic, ct)),
-                diagnostic);
+            if (diagnostic.Descriptor.Id == DiagnosticDefinitions.ArgumentConstraintNullabilityMismatch.Id)
+            {
+                context.RegisterCodeFix(
+                  CodeAction.Create(
+                      MakeConstraintNullableCodeFixTitle,
+                      ct => MakeConstraintNullableAsync(context, diagnostic, ct)),
+                  diagnostic);
 
-            context.RegisterCodeFix(
-                CodeAction.Create(
-                    MakeNotNullConstraintCodeFixTitle,
-                    ct => this.MakeNotNullConstraintAsync(context, diagnostic, ct)),
-                diagnostic);
+                context.RegisterCodeFix(
+                    CodeAction.Create(
+                        MakeNotNullConstraintCodeFixTitle,
+                        ct => MakeNotNullConstraintAsync(context, diagnostic, ct)),
+                    diagnostic);
+            }
+            else if (diagnostic.Descriptor.Id == DiagnosticDefinitions.ArgumentConstraintTypeMismatch.Id)
+            {
+                context.RegisterCodeFix(
+                    CodeAction.Create(
+                        ChangeConstraintTypeCodeFixTitle,
+                        ct => ChangeConstraintTypeAsync(context, diagnostic, ct)),
+                    diagnostic);
+            }
 
             return CompletedTask;
         }
 
-        private static MemberAccessExpressionSyntax GetConstraintNode(Diagnostic diagnostic, SyntaxNode root)
+        private static SyntaxNode GetConstraintNode(Diagnostic diagnostic, SyntaxNode root)
         {
             // getInnermostNodeForTie: true to disambiguate between ArgumentSyntax and
             // MemberAccessExpressionSyntax, which have the same source span. We want the
             // MemberAccessExpressionSyntax node, which is the innermost one.
-            return root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) as MemberAccessExpressionSyntax;
+            return root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
         }
 
         private static MemberAccessExpressionSyntax SimpleMemberAccess(ExpressionSyntax expression, SimpleNameSyntax name)
@@ -73,14 +87,14 @@
 #endif
         }
 
-        private async Task<Document> MakeConstraintNullableAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> MakeConstraintNullableAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
             var root = await context.Document.GetSyntaxRootAsync(cancellationToken);
 
             var constraintNode = GetConstraintNode(diagnostic, root);
 
             // The A<T> type
-            var aType = constraintNode?.Expression as GenericNameSyntax;
+            var aType = (constraintNode as MemberAccessExpressionSyntax)?.Expression as GenericNameSyntax;
 
             // The T type
             var constraintType = aType?.TypeArgumentList.Arguments.FirstOrDefault();
@@ -97,14 +111,14 @@
             return context.Document;
         }
 
-        private async Task<Document> MakeNotNullConstraintAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
+        private static async Task<Document> MakeNotNullConstraintAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
             var root = await context.Document.GetSyntaxRootAsync(cancellationToken);
 
             var constraintNode = GetConstraintNode(diagnostic, root);
 
             // The A<T> type
-            var aType = constraintNode?.Expression as GenericNameSyntax;
+            var aType = (constraintNode as MemberAccessExpressionSyntax)?.Expression as GenericNameSyntax;
 
             // The T type
             var constraintType = aType?.TypeArgumentList.Arguments.FirstOrDefault();
@@ -136,6 +150,41 @@
             }
 
             return context.Document;
+        }
+
+        private static async Task<Document> ChangeConstraintTypeAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
+        {
+            var root = await context.Document.GetSyntaxRootAsync(cancellationToken);
+
+            // The T type
+            var constraintType = GetConstraintType(diagnostic, root);
+            if (constraintType != null)
+            {
+                var parameterTypeName = diagnostic.Properties[ArgumentConstraintTypeMismatchAnalyzer.ParameterTypeKey];
+                var parameterType = SyntaxFactory.ParseName(parameterTypeName);
+                var newRoot = root.ReplaceNode(constraintType, parameterType);
+                return context.Document.WithSyntaxRoot(newRoot);
+            }
+
+            return context.Document;
+        }
+
+        private static TypeSyntax GetConstraintType(Diagnostic diagnostic, SyntaxNode root)
+        {
+            var constraintNode = GetConstraintNode(diagnostic, root);
+            switch (constraintNode)
+            {
+                case MemberAccessExpressionSyntax memberAccessNode:
+                    var expressionNode = memberAccessNode.Expression as GenericNameSyntax;
+                    return expressionNode?.TypeArgumentList.Arguments.FirstOrDefault();
+                case InvocationExpressionSyntax invocationNode:
+                    var aTThatMatches = invocationNode.Expression as MemberAccessExpressionSyntax;
+                    var aTthat = aTThatMatches?.Expression as MemberAccessExpressionSyntax;
+                    var aT = aTthat?.Expression as GenericNameSyntax;
+                    return aT?.TypeArgumentList.Arguments.FirstOrDefault();
+            }
+
+            return null;
         }
     }
 }

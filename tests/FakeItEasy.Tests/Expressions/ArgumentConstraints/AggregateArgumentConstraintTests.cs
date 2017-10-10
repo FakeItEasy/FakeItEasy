@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
 {
     using System.Collections.Generic;
-    using System.Text;
     using FakeItEasy.Expressions.ArgumentConstraints;
     using FluentAssertions;
     using Xunit;
@@ -54,11 +53,11 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
         [Fact]
         public override void Constraint_should_provide_correct_description()
         {
-            var output = new StringBuilder();
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
 
-            this.ConstraintField.WriteDescription(new StringBuilderOutputWriter(output));
+            this.ConstraintField.WriteDescription(writer);
 
-            output.ToString().Should().Be(this.ExpectedDescription);
+            writer.Builder.ToString().Should().Be(this.ExpectedDescription);
         }
     }
 }

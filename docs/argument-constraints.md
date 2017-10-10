@@ -72,6 +72,7 @@ used. There are a few built-in matchers:
 |IsEmpty()|empty enumerable|
 |Contains(item)|item's presence in an enumerable|
 |IsSameSequenceAs(enumerable)|sequence equality, like `System.Linq.Enumerable.SequenceEqual`|
+|IsSameSequenceAs(value1, value2, ...)|sequence equality, like `System.Linq.Enumerable.SequenceEqual`|
 |Not|inverts the sense of the matcher|
 
 ## Custom matching
@@ -135,8 +136,11 @@ Sometimes individually constraining arguments isn't sufficient. In
 such a case, other methods may be used to determine which calls match
 the fake's configuration.
 
-`WithAnyArguments` ensures that no argument constraints will be applied when matching calls:
+_When using the following methods, any inline argument constraints are ignored, and only the
+special method is used to match the call._ Some arguments have to be supplied in order to satisfy the compiler,
+but the values will not be used, so you can supply whatever values make the code easiest for you to read.
 
+`WithAnyArguments` ensures that no argument constraints will be applied when matching calls:
 
 ```csharp
 A.CallTo(() => foo.Bar(null, 7)).WithAnyArguments().MustHaveHappened();
@@ -167,4 +171,22 @@ A.CallTo(() => fake.Bar(null, 0))
     .WhenArgumentsMatch((string theString, int theInt) =>
         theString.Equals(theInt.ToString()))
     .Throws<Exception>();
+```
+
+# Nested argument constraints
+
+Note that an argument constraint cannot be "nested" in an argument; the
+constraint has to be the whole argument. For instance, the following call
+configurations are invalid and will throw an exception:
+
+```
+A.CallTo(() => fake.Foo(new Bar(A<int>._))).Returns(42);
+A.CallTo(() => fake.Foo(new Bar { X = A<string>.That.Contains("hello") })).Returns(42);
+```
+
+To achieve the desired effect, you can do this instead:
+
+```
+A.CallTo(() => fake.Foo(A<Bar>._)).Returns(42);
+A.CallTo(() => fake.Foo(A<Bar>.That.Matches(bar => bar.X.Contains("hello")))).Returns(42);
 ```

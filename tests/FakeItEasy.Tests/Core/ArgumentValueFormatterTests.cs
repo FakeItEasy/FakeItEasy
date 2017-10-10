@@ -5,7 +5,6 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -20,7 +19,7 @@ namespace FakeItEasy.Tests.Core
         {
             this.registeredTypeFormatters = new List<IArgumentValueFormatter>();
 
-            this.formatter = new ArgumentValueFormatter(this.registeredTypeFormatters);
+            this.formatter = new ArgumentValueFormatter(this.registeredTypeFormatters, ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>());
         }
 
         public static IEnumerable<object> SpecificCases()
@@ -55,7 +54,7 @@ namespace FakeItEasy.Tests.Core
             var description = this.formatter.GetArgumentValueAsString(null);
 
             // Assert
-            description.Should().Be("<NULL>");
+            description.Should().Be("NULL");
         }
 
         [Fact]
@@ -153,7 +152,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var allArgumentValueFormatters = typeof(A).GetTypeInformation().Assembly.GetTypes()
                 .Where(t => t.CanBeInstantiatedAs(typeof(IArgumentValueFormatter)))
-                .Select(Activator.CreateInstance)
+                .Select(Sdk.Create.Dummy)
                 .Cast<IArgumentValueFormatter>();
 
             // Act

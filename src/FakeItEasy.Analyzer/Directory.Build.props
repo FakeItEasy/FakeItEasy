@@ -1,5 +1,7 @@
 <Project>
 
+  <Import Project="../Directory.Build.props" />
+
   <PropertyGroup>
     <PackageTags>FakeItEasy;analyzer</PackageTags>
   </PropertyGroup>
