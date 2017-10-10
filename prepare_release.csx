@@ -39,23 +39,9 @@ await UpdateRelease(existingRelease, version);
 await CreateNextRelease();
 await UpdateIssue(existingIssue, existingMilestone, version);
 await CreateNextIssue(existingIssue, nextMilestone);
-
-var referenceClient = gitHubClient.Git.Reference;
-
-Console.WriteLine($"Fetching reference to branch {releaseFromBranchName}...");
-var releaseFromBranch = await referenceClient.Get(repoOwner, repoName, $"heads/{releaseFromBranchName}");
-Console.WriteLine($"Fetched reference to branch {releaseFromBranch.Url}");
-
-Console.WriteLine($"Creating branch {releaseBranchName} from {releaseFromBranchName}...");
-var releaseBranch = await referenceClient.CreateBranch(repoOwner, repoName, releaseBranchName, releaseFromBranch);
-Console.WriteLine($"Created branch at {releaseBranch.Url}");
-
-Console.WriteLine($"Creating pull request to merge {releaseBranchName} into {targetBranchName}...");
-var pr = await gitHubClient.PullRequest.Create(
-    repoOwner,
-    repoName,
-    new NewPullRequest($"Release {version}", releaseBranchName, targetBranchName));
-Console.WriteLine($"Created pull request '{pr.Title}' at {pr.HtmlUrl}");
+var releaseFromBranch = await GetReleaseFromBranch();
+await CreateReleaseBranch(releaseBranchName, releaseFromBranch);
+await CreatePullRequest(version, releaseBranchName);
 
 public static GitHubClient GetAuthenticatedGitHubClient()
 {
@@ -168,4 +154,29 @@ public static async Task CreateNextIssue(Issue existingIssue, Milestone nextMile
     Console.WriteLine($"Creating new release issue '{newIssue.Title}'...");
     var nextIssue = await gitHubClient.Issue.Create(repoOwner, repoName, newIssue);
     Console.WriteLine($"Created new release issue #{nextIssue.Number}: '{newIssue.Title}'");
+}
+
+public static async Task<Reference> GetReleaseFromBranch()
+{
+    Console.WriteLine($"Fetching reference to branch {releaseFromBranchName}...");
+    var releaseFromBranch = await gitHubClient.Git.Reference.Get(repoOwner, repoName, $"heads/{releaseFromBranchName}");
+    Console.WriteLine($"Fetched reference to branch {releaseFromBranch.Url}");
+    return releaseFromBranch;
+}
+
+public static async Task CreateReleaseBranch(string releaseBranchName, Reference releaseFromBranch)
+{
+    Console.WriteLine($"Creating branch {releaseBranchName} from {releaseFromBranchName}...");
+    var releaseBranch = await gitHubClient.Git.Reference.CreateBranch(repoOwner, repoName, releaseBranchName, releaseFromBranch);
+    Console.WriteLine($"Created branch at {releaseBranch.Url}");
+}
+
+public static async Task CreatePullRequest(string version, string releaseBranchName)
+{
+    Console.WriteLine($"Creating pull request to merge {releaseBranchName} into {targetBranchName}...");
+    var pr = await gitHubClient.PullRequest.Create(
+        repoOwner,
+        repoName,
+        new NewPullRequest($"Release {version}", releaseBranchName, targetBranchName));
+    Console.WriteLine($"Created pull request '{pr.Title}' at {pr.HtmlUrl}");
 }
