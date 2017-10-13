@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Expressions
+namespace FakeItEasy.Expressions
 {
     using System;
     using System.Collections.Generic;
@@ -81,7 +81,7 @@
 
         private static void CheckArgumentExpressionIsValid(Expression expression)
         {
-            expression = GetExpressionWithoutBoxing(expression);
+            expression = GetExpressionWithoutConversion(expression);
 
             if (expression is MemberExpression)
             {
@@ -111,20 +111,15 @@
         }
 
         /// <summary>
-        /// Removes the explicit conversion introduced in a Linq expression by implicit boxing.
+        /// Removes the conversion node introduced in a Linq expression by implicit conversion.
         /// </summary>
-        /// <param name="expression">The expression from which to remove the boxing.</param>
-        /// <returns>The original expression, if no boxing is happening, or the expression that would be converted.</returns>
-        private static Expression GetExpressionWithoutBoxing(Expression expression)
+        /// <param name="expression">The expression from which to remove the conversion.</param>
+        /// <returns>The original expression, if no conversion is happening, or the expression that would be converted.</returns>
+        private static Expression GetExpressionWithoutConversion(Expression expression)
         {
-            if (expression.NodeType == ExpressionType.Convert &&
-                (expression.Type == typeof(object) || expression.Type.IsNullable() || expression.Type.GetTypeInfo().IsInterface))
+            if (expression is UnaryExpression conversion && conversion.NodeType == ExpressionType.Convert)
             {
-                var conversion = (UnaryExpression)expression;
-                if (conversion.Operand.Type.GetTypeInfo().IsValueType)
-                {
-                    return conversion.Operand;
-                }
+                return conversion.Operand;
             }
 
             return expression;
