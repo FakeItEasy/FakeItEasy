@@ -607,6 +607,26 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
+        [Scenario]
+        public static void PassingIgnoredConstraintWithWrongTypeToAMethod(
+            IHaveNoGenericParameters fake, Exception exception, bool wasCalled)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+
+            "When I try to configure a method of the fake with an Ignored constraint of the wrong type"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<byte>.Ignored)).Invokes(() => wasCalled = true)));
+
+            "And I call the method with any value"
+                .x(() => fake.Bar(default(byte)));
+
+            "Then the call configuration doesn't throw"
+                .x(() => exception.Should().BeNull());
+
+            "And the configured call isn't matched"
+                .x(() => wasCalled.Should().BeFalse());
+        }
+
         public static IEnumerable<object[]> Fakes()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
