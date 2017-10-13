@@ -27,8 +27,7 @@ namespace FakeItEasy.Expressions
 
             var isByRefArgument = IsByRefArgument(argument);
 
-            object argumentValue;
-            var constraint = this.GetArgumentConstraintFromExpression(argument.Expression, out argumentValue);
+            var constraint = this.GetArgumentConstraintFromExpression(argument.Expression, out var argumentValue);
             if (isByRefArgument)
             {
                 if (IsOutArgument(argument))
@@ -90,14 +89,7 @@ namespace FakeItEasy.Expressions
             }
 
             var visitor = new ArgumentConstraintExpressionVisitor();
-            var methodCallExpression = expression as MethodCallExpression;
-            if (methodCallExpression == null)
-            {
-                // An unknown kind of expression - could be a constructor, or almost anything else. Play it safe and
-                // check it out.
-                visitor.Visit(expression);
-            }
-            else
+            if (expression is MethodCallExpression methodCallExpression)
             {
                 // A method call. It might be A<T>.That.Matches, or one of the other extension methods, so don't
                 // check the method node itself. Instead, look at all the arguments (except the first, if it's an
@@ -107,6 +99,12 @@ namespace FakeItEasy.Expressions
                 {
                     visitor.Visit(argument);
                 }
+            }
+            else
+            {
+                // An unknown kind of expression - could be a constructor, or almost anything else. Play it safe and
+                // check it out.
+                visitor.Visit(expression);
             }
         }
 
@@ -147,8 +145,7 @@ namespace FakeItEasy.Expressions
 
             foreach (var argumentExpression in expression.Expressions)
             {
-                object ignored;
-                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression, out ignored));
+                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression, out _));
             }
 
             return new AggregateArgumentConstraint(result);
