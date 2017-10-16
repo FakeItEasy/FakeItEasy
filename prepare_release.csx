@@ -145,11 +145,12 @@ public static async Task UpdateIssue(Issue existingIssue, Milestone existingMile
 
 public static async Task CreateNextIssue(Issue existingIssue, Milestone nextMilestone)
 {
-    var newIssue = new NewIssue("Release vNext") { Milestone = nextMilestone.Number, Body = existingIssue.Body.Replace("[x]", "[ ]") };
-    foreach (var label in existingIssue.Labels)
+    var newIssue = new NewIssue("Release vNext")
     {
-        newIssue.Labels.Add(label.Name);
-    }
+        Milestone = nextMilestone.Number,
+        Body = existingIssue.Body.Replace("[x]", "[ ]"),
+        Labels = { "build", "documentation" }
+    };
 
     Console.WriteLine($"Creating new release issue '{newIssue.Title}'...");
     var nextIssue = await gitHubClient.Issue.Create(repoOwner, repoName, newIssue);
