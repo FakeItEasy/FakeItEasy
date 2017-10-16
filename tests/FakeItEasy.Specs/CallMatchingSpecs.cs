@@ -627,6 +627,20 @@ namespace FakeItEasy.Specs
                 .x(() => wasCalled.Should().BeFalse());
         }
 
+        [Scenario]
+        public static void PassingNestedConstraintInArgumentEndingWithProperty(
+            IHaveNoGenericParameters fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+
+            "When I try to configure a method of the fake with an Ignored constraint nested in an argument ending with a property"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Z(A<int>.Ignored).Value)).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
         public static IEnumerable<object[]> Fakes()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
@@ -671,6 +685,16 @@ namespace FakeItEasy.Specs
         public class Dummy
         {
             public string X { get; set; }
+        }
+
+        public class Z
+        {
+            public int Value { get; }
+
+            public Z(int value)
+            {
+                this.Value = value;
+            }
         }
     }
 }
