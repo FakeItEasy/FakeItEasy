@@ -82,9 +82,7 @@ namespace FakeItEasy.Expressions
         public virtual void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate)
         {
             this.argumentsPredicate = predicate;
-
-            var numberOfValidators = this.argumentConstraints.Count();
-            this.argumentConstraints = Enumerable.Repeat<IArgumentConstraint>(new PredicatedArgumentConstraint(), numberOfValidators);
+            this.argumentConstraints = this.argumentConstraints.Select(a => new PredicatedArgumentConstraint()).ToArray();
         }
 
         public Func<IFakeObjectCall, ICollection<object>> GetOutAndRefParametersValueProducer()
