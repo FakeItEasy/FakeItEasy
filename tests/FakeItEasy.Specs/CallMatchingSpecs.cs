@@ -414,6 +414,28 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void IgnoredArgumentConstraintForDifferentValueTypeWithNonNullArgument(
+            IHaveANullableParameter subject,
+            Exception exception,
+            int result)
+        {
+            "Given a fake with a method that accepts a nullable value type parameter"
+                .x(() => subject = A.Fake<IHaveANullableParameter>());
+
+            "And a call configured for any non-nullable argument of a different type"
+                .x(() => A.CallTo(() => subject.Bar(A<byte>._)).Returns(42));
+
+            "When I make a call to this method with a non-null argument"
+                .x(() => Record.Exception(() => result = subject.Bar(7)));
+
+            "Then it does not throw an exception"
+                .x(() => exception.Should().BeNull());
+
+            "And it does not match the configured call"
+                .x(() => result.Should().Be(0));
+        }
+
+        [Scenario]
         public static void IgnoredArgumentConstraintOutsideCallSpec(
             Exception exception)
         {
