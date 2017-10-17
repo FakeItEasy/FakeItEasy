@@ -115,9 +115,9 @@ namespace FakeItEasy.Expressions
         /// <returns>The original expression, if no conversion is happening, or the expression that would be converted.</returns>
         private static Expression GetExpressionWithoutConversion(Expression expression)
         {
-            if (expression is UnaryExpression conversion && conversion.NodeType == ExpressionType.Convert)
+            while (expression is UnaryExpression conversion && conversion.NodeType == ExpressionType.Convert)
             {
-                return conversion.Operand;
+                expression = conversion.Operand;
             }
 
             return expression;
