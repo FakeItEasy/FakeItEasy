@@ -82,9 +82,9 @@ namespace FakeItEasy.Expressions
         {
             expression = GetExpressionWithoutConversion(expression);
 
-            if (expression is MemberExpression)
+            if (expression is MemberExpression memberExpression && IsMemberOfA(memberExpression.Member))
             {
-                // It's A._, or A.Ignore, or some other property/field, so it's safe.
+                // It's A._, or A.Ignore, so it's safe.
                 return;
             }
 
@@ -121,6 +121,22 @@ namespace FakeItEasy.Expressions
             }
 
             return expression;
+        }
+
+        private static bool IsMemberOfA(MemberInfo member)
+        {
+            return GetGenericTypeDefinition(member.DeclaringType) == typeof(A<>);
+        }
+
+        private static Type GetGenericTypeDefinition(Type type)
+        {
+            var typeInfo = type.GetTypeInfo();
+            if (typeInfo.IsGenericType && !typeInfo.IsGenericTypeDefinition)
+            {
+                return typeInfo.GetGenericTypeDefinition();
+            }
+
+            return type;
         }
 
         private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression, out object value)
@@ -161,22 +177,6 @@ namespace FakeItEasy.Expressions
                 }
 
                 return base.VisitMember(node);
-            }
-
-            private static bool IsMemberOfA(MemberInfo member)
-            {
-                return GetGenericTypeDefinition(member.DeclaringType) == typeof(A<>);
-            }
-
-            private static Type GetGenericTypeDefinition(Type type)
-            {
-                var typeInfo = type.GetTypeInfo();
-                if (typeInfo.IsGenericType && !typeInfo.IsGenericTypeDefinition)
-                {
-                    return typeInfo.GetGenericTypeDefinition();
-                }
-
-                return type;
             }
         }
     }
