@@ -414,6 +414,28 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void IgnoredArgumentConstraintForDifferentValueTypeWithNonNullArgument(
+            IHaveANullableParameter subject,
+            Exception exception,
+            int result)
+        {
+            "Given a fake with a method that accepts a nullable value type parameter"
+                .x(() => subject = A.Fake<IHaveANullableParameter>());
+
+            "And a call configured for any non-nullable argument of a different type"
+                .x(() => A.CallTo(() => subject.Bar(A<byte>._)).Returns(42));
+
+            "When I make a call to this method with a non-null argument"
+                .x(() => Record.Exception(() => result = subject.Bar(7)));
+
+            "Then it does not throw an exception"
+                .x(() => exception.Should().BeNull());
+
+            "And it does not match the configured call"
+                .x(() => result.Should().Be(0));
+        }
+
+        [Scenario]
         public static void IgnoredArgumentConstraintOutsideCallSpec(
             Exception exception)
         {
@@ -607,6 +629,40 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
+        [Scenario]
+        public static void PassingIgnoredConstraintWithWrongTypeToAMethod(
+            IHaveNoGenericParameters fake, Exception exception, bool wasCalled)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+
+            "When I try to configure a method of the fake with an Ignored constraint of the wrong type"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<byte>.Ignored)).Invokes(() => wasCalled = true)));
+
+            "And I call the method with any value"
+                .x(() => fake.Bar(default(byte)));
+
+            "Then the call configuration doesn't throw"
+                .x(() => exception.Should().BeNull());
+
+            "And the configured call isn't matched"
+                .x(() => wasCalled.Should().BeFalse());
+        }
+
+        [Scenario]
+        public static void PassingNestedConstraintInArgumentEndingWithProperty(
+            IHaveNoGenericParameters fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+
+            "When I try to configure a method of the fake with an Ignored constraint nested in an argument ending with a property"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new Z(A<int>.Ignored).Value)).DoesNothing()));
+
+            "Then it throws an invalid operation exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+        }
+
         public static IEnumerable<object[]> Fakes()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
@@ -651,6 +707,16 @@ namespace FakeItEasy.Specs
         public class Dummy
         {
             public string X { get; set; }
+        }
+
+        public class Z
+        {
+            public int Value { get; }
+
+            public Z(int value)
+            {
+                this.Value = value;
+            }
         }
     }
 }

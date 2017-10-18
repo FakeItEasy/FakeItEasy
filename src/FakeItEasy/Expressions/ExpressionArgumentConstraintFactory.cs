@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Expressions
+namespace FakeItEasy.Expressions
 {
     using System;
     using System.Collections.Generic;
@@ -27,8 +27,7 @@
 
             var isByRefArgument = IsByRefArgument(argument);
 
-            object argumentValue;
-            var constraint = this.GetArgumentConstraintFromExpression(argument.Expression, out argumentValue);
+            var constraint = this.GetArgumentConstraintFromExpression(argument.Expression, out var argumentValue);
             if (isByRefArgument)
             {
                 if (IsOutArgument(argument))
@@ -81,23 +80,16 @@
 
         private static void CheckArgumentExpressionIsValid(Expression expression)
         {
-            expression = GetExpressionWithoutBoxing(expression);
+            expression = GetExpressionWithoutConversion(expression);
 
-            if (expression is MemberExpression)
+            if (expression is MemberExpression memberExpression && IsMemberOfA(memberExpression.Member))
             {
-                // It's A._, or A.Ignore, or some other property/field, so it's safe.
+                // It's A._, or A.Ignore, so it's safe.
                 return;
             }
 
             var visitor = new ArgumentConstraintExpressionVisitor();
-            var methodCallExpression = expression as MethodCallExpression;
-            if (methodCallExpression == null)
-            {
-                // An unknown kind of expression - could be a constructor, or almost anything else. Play it safe and
-                // check it out.
-                visitor.Visit(expression);
-            }
-            else
+            if (expression is MethodCallExpression methodCallExpression)
             {
                 // A method call. It might be A<T>.That.Matches, or one of the other extension methods, so don't
                 // check the method node itself. Instead, look at all the arguments (except the first, if it's an
@@ -108,26 +100,43 @@
                     visitor.Visit(argument);
                 }
             }
+            else
+            {
+                // An unknown kind of expression - could be a constructor, or almost anything else. Play it safe and
+                // check it out.
+                visitor.Visit(expression);
+            }
         }
 
         /// <summary>
-        /// Removes the explicit conversion introduced in a Linq expression by implicit boxing.
+        /// Removes the conversion node introduced in a Linq expression by implicit conversion.
         /// </summary>
-        /// <param name="expression">The expression from which to remove the boxing.</param>
-        /// <returns>The original expression, if no boxing is happening, or the expression that would be converted.</returns>
-        private static Expression GetExpressionWithoutBoxing(Expression expression)
+        /// <param name="expression">The expression from which to remove the conversion.</param>
+        /// <returns>The original expression, if no conversion is happening, or the expression that would be converted.</returns>
+        private static Expression GetExpressionWithoutConversion(Expression expression)
         {
-            if (expression.NodeType == ExpressionType.Convert &&
-                (expression.Type == typeof(object) || expression.Type.IsNullable() || expression.Type.GetTypeInfo().IsInterface))
+            while (expression is UnaryExpression conversion && conversion.NodeType == ExpressionType.Convert)
             {
-                var conversion = (UnaryExpression)expression;
-                if (conversion.Operand.Type.GetTypeInfo().IsValueType)
-                {
-                    return conversion.Operand;
-                }
+                expression = conversion.Operand;
             }
 
             return expression;
+        }
+
+        private static bool IsMemberOfA(MemberInfo member)
+        {
+            return GetGenericTypeDefinition(member.DeclaringType) == typeof(A<>);
+        }
+
+        private static Type GetGenericTypeDefinition(Type type)
+        {
+            var typeInfo = type.GetTypeInfo();
+            if (typeInfo.IsGenericType && !typeInfo.IsGenericTypeDefinition)
+            {
+                return typeInfo.GetGenericTypeDefinition();
+            }
+
+            return type;
         }
 
         private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression, out object value)
@@ -152,8 +161,7 @@
 
             foreach (var argumentExpression in expression.Expressions)
             {
-                object ignored;
-                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression, out ignored));
+                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression, out _));
             }
 
             return new AggregateArgumentConstraint(result);
@@ -169,22 +177,6 @@
                 }
 
                 return base.VisitMember(node);
-            }
-
-            private static bool IsMemberOfA(MemberInfo member)
-            {
-                return GetGenericTypeDefinition(member.DeclaringType) == typeof(A<>);
-            }
-
-            private static Type GetGenericTypeDefinition(Type type)
-            {
-                var typeInfo = type.GetTypeInfo();
-                if (typeInfo.IsGenericType && !typeInfo.IsGenericTypeDefinition)
-                {
-                    return typeInfo.GetGenericTypeDefinition();
-                }
-
-                return type;
             }
         }
     }
