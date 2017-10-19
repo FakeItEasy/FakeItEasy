@@ -1,5 +1,4 @@
 #r ".\packages\Octokit.0.26.0\lib\net45\Octokit.dll"
-#r ".\packages\system.runtime.interopservices.runtimeinformation\4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll"
 
 using System.Linq;
 
