@@ -4,6 +4,7 @@ namespace FakeItEasy.Specs
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
@@ -49,6 +50,11 @@ namespace FakeItEasy.Specs
         public interface IIHaveACollectionParameter
         {
             int Bar(object[] args);
+        }
+
+        public interface IHaveAnObjectParameter
+        {
+            int Bar(object arg);
         }
 
         [Scenario]
@@ -422,17 +428,14 @@ namespace FakeItEasy.Specs
             "Given a fake with a method that accepts a nullable value type parameter"
                 .x(() => subject = A.Fake<IHaveANullableParameter>());
 
-            "And a call configured for any non-nullable argument of a different type"
-                .x(() => A.CallTo(() => subject.Bar(A<byte>._)).Returns(42));
+            "When I try to configure a method of the fake for an Ignored argument of a different non-nullable type"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => subject.Bar(A<byte>.Ignored)).Returns(42)));
 
-            "When I make a call to this method with a non-null argument"
-                .x(() => Record.Exception(() => result = subject.Bar(7)));
+            "Then it throws a FakeConfigurationException"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>());
 
-            "Then it does not throw an exception"
-                .x(() => exception.Should().BeNull());
-
-            "And it does not match the configured call"
-                .x(() => result.Should().Be(0));
+            "And the message indicates the actual and expected types"
+                .x(() => exception.Message.Should().Be("Argument constraint is of type System.Byte, but parameter is of type System.Nullable`1[System.Int32]. No call can match this constraint."));
         }
 
         [Scenario]
@@ -479,7 +482,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the first fake"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {fakeDescription})"));
+                    "FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {fakeDescription})"));
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "ABad", Justification = "Refers to the two words 'a bad'")]
@@ -499,7 +502,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the first fake"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {fakeDescription})"));
+                    "FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {fakeDescription})"));
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "ABad", Justification = "Refers to the two words 'a bad'")]
@@ -507,7 +510,7 @@ namespace FakeItEasy.Specs
         public static void PassingAnObjectWithABadToStringToAMethod(
             ToStringThrows obj, IHaveOneGenericParameter fake, Exception exception)
         {
-            $"Given an object with a ToString method which throws"
+            "Given an object with a ToString method which throws"
                 .x(() => obj = new ToStringThrows());
 
             "And a fake"
@@ -518,7 +521,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the object"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {obj.GetType().ToString()})"));
+                    "FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {obj.GetType().ToString()})"));
         }
 
         [Scenario]
@@ -537,7 +540,7 @@ namespace FakeItEasy.Specs
 
             "Then the call should be described in terms of the first fake"
                 .x(() => exception.Message.Should().Contain(
-                    $"FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {fakeDescription})"));
+                    "FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[").And.Subject.Should().Contain($"](baz: {fakeDescription})"));
         }
 
         [Scenario]
@@ -631,22 +634,86 @@ namespace FakeItEasy.Specs
 
         [Scenario]
         public static void PassingIgnoredConstraintWithWrongTypeToAMethod(
-            IHaveNoGenericParameters fake, Exception exception, bool wasCalled)
+            IHaveNoGenericParameters fake,
+            Exception exception)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IHaveNoGenericParameters>());
 
             "When I try to configure a method of the fake with an Ignored constraint of the wrong type"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<byte>.Ignored)).Invokes(() => wasCalled = true)));
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<byte>.Ignored))));
 
-            "And I call the method with any value"
-                .x(() => fake.Bar(default(byte)));
+            "Then the call configuration throws a FakeConfigurationException"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>());
 
-            "Then the call configuration doesn't throw"
+            "And the message indicates the actual and expected types"
+                .x(() => exception.Message.Should().Be("Argument constraint is of type System.Byte, but parameter is of type System.Int32. No call can match this constraint."));
+        }
+
+        [Scenario]
+        public static void PassingHiddenConstraintWithWrongTypeToAMethod(
+            IHaveNoGenericParameters fake,
+            Func<int> constraintFactory,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+
+            "And a delegate that produces a constraint of the wrong type"
+                .x(() => constraintFactory = () => A<byte>.Ignored);
+
+            "When I try to configure a method of the fake with this delegate"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(constraintFactory()))));
+
+            "Then the call configuration throws a FakeConfigurationException"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>());
+
+            "And the message indicates the actual and expected types"
+                .x(() => exception.Message.Should().Be("Argument constraint is of type System.Byte, but parameter is of type System.Int32. No call can match this constraint."));
+        }
+
+        [Scenario]
+        public static void PassingIgnoredConstraintOfNonNullableTypeForNullableParameterToAMethod(
+            IHaveANullableParameter fake,
+            Exception exception,
+            int result)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveANullableParameter>());
+
+            "When I try to configure a method of the fake with an Ignored constraint of the non-nullable version of the parameter's type"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<int>.Ignored)).Returns(42)));
+
+            "And I call the method with a non-null argument"
+                .x(() => result = fake.Bar(0));
+
+            "Then the call configuration doesn't throw an exception"
                 .x(() => exception.Should().BeNull());
 
-            "And the configured call isn't matched"
-                .x(() => wasCalled.Should().BeFalse());
+            "And the call is matched"
+                .x(() => result.Should().Be(42));
+        }
+
+        [Scenario]
+        public static void PassingIgnoredConstraintOfDerivedTypeToAMethod(
+            IHaveAnObjectParameter fake,
+            Exception exception,
+            int result)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveAnObjectParameter>());
+
+            "When I try to configure a method of the fake with an Ignored constraint of a subclass of the parameter's type"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<Dummy>.Ignored)).Returns(42)));
+
+            "And I call the method with an argument of the constraint's type"
+                .x(() => result = fake.Bar(new Dummy()));
+
+            "Then the call configuration doesn't throw an exception"
+                .x(() => exception.Should().BeNull());
+
+            "And the call is matched"
+                .x(() => result.Should().Be(42));
         }
 
         [Scenario]
