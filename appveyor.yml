@@ -32,4 +32,4 @@ artifacts:
     - path: .\artifacts\*\*
 
 deploy_script:
-    - ps: ./deploy.ps1
+    - ps: .\tools\deploy.ps1

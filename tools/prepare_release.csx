@@ -4,6 +4,7 @@ using System.Linq;
 
 using Octokit;
 using Octokit.Helpers;
+using System.Runtime.CompilerServices;
 
 const string repoOwner = "FakeItEasy";
 const string repoName = "FakeItEasy";
@@ -51,7 +52,7 @@ public static GitHubClient GetAuthenticatedGitHubClient()
 
 public static string ReadGitHubToken()
 {
-    return File.ReadAllText(".githubtoken").Trim();
+    return File.ReadAllText(Path.Combine(GetCurrentScriptDirectory(), ".githubtoken")).Trim();
 }
 
 public static async Task<Milestone> GetExistingMilestone()
@@ -180,3 +181,5 @@ public static async Task CreatePullRequest(string version, string releaseBranchN
         new NewPullRequest($"Release {version}", releaseBranchName, targetBranchName));
     Console.WriteLine($"Created pull request '{pr.Title}' at {pr.HtmlUrl}");
 }
+
+public static string GetCurrentScriptDirectory([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
