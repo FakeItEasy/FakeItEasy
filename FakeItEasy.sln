@@ -10,17 +10,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.mailmap = .mailmap
 		appveyor.yml = appveyor.yml
 		build.cmd = build.cmd
-		build.csx = build.csx
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
-		FakeItEasy.Dictionary.xml = FakeItEasy.Dictionary.xml
-		FakeItEasy.ruleset = FakeItEasy.ruleset
-		FakeItEasy.snk = FakeItEasy.snk
 		GitVersion.yml = GitVersion.yml
 		global.json = global.json
 		how_to_build.md = how_to_build.md
 		License.txt = License.txt
-		mkdocs.yml = mkdocs.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -29,7 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59466C4D-C40
 		src\CommonAssemblyInfo.cs = src\CommonAssemblyInfo.cs
 		src\Directory.Build.props = src\Directory.Build.props
 		src\FakeItEasy.Analyzer.nuspec = src\FakeItEasy.Analyzer.nuspec
+		src\FakeItEasy.Dictionary.xml = src\FakeItEasy.Dictionary.xml
 		src\FakeItEasy.nuspec.template = src\FakeItEasy.nuspec.template
+		src\FakeItEasy.ruleset = src\FakeItEasy.ruleset
+		src\FakeItEasy.snk = src\FakeItEasy.snk
 		src\ILMerge.Internalize.Exclude.txt = src\ILMerge.Internalize.Exclude.txt
 	EndProjectSection
 EndProject
@@ -93,6 +91,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-3
 		docs\index.md = docs\index.md
 		docs\invoking-custom-code.md = docs\invoking-custom-code.md
 		docs\limited-call-specifications.md = docs\limited-call-specifications.md
+		docs\mkdocs.yml = docs\mkdocs.yml
 		docs\ordered-assertions.md = docs\ordered-assertions.md
 		docs\platform-support.md = docs\platform-support.md
 		docs\quickstart.md = docs\quickstart.md
@@ -126,6 +125,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Analyzer.CSharp", "src\FakeItEasy.Analyzer\FakeItEasy.Analyzer.CSharp.csproj", "{EF850910-1B7F-4824-8034-0A935B8C9152}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Analyzer.VisualBasic", "src\FakeItEasy.Analyzer\FakeItEasy.Analyzer.VisualBasic.csproj", "{C0B3EF5F-222E-4FD4-9B42-161AC6C56CB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{9D99B251-FB4F-49BF-8405-F6E0DE46EB32}"
+	ProjectSection(SolutionItems) = preProject
+		tools\build.csx = tools\build.csx
+		tools\deploy.ps1 = tools\deploy.ps1
+		tools\packages.config = tools\packages.config
+		tools\prepare_release.cmd = tools\prepare_release.cmd
+		tools\prepare_release.csx = tools\prepare_release.csx
+		tools\run-csx.cmd = tools\run-csx.cmd
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
