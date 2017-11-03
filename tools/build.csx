@@ -62,7 +62,6 @@ var gitversion = $"{toolsPackagesDirectory}/GitVersion.CommandLine.4.0.0-beta001
 var msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe";
 var nuget = $"{GetCurrentScriptDirectory()}/.nuget/NuGet.exe";
 var pdbGit = $"{toolsPackagesDirectory}/pdbGit.3.0.41/tools/PdbGit.exe";
-static var xunit = $"{toolsPackagesDirectory}/xunit.runner.console.2.0.0/tools/xunit.console.exe";
 
 // artifact locations
 var coverityDirectory = "./artifacts/coverity";
