@@ -90,10 +90,10 @@ namespace FakeItEasy.Specs
             int count,
             IList<ICollectionItem> fakes)
         {
-            "When I create a collection of {0} fakes"
+            $"When I create a collection of {count} fakes"
                 .x(() => fakes = this.CreateCollectionOfFake<ICollectionItem>(count));
 
-            "Then {0} items are created"
+            $"Then {count} items are created"
                 .x(() => fakes.Should().HaveCount(count));
 
             "And all items extend the specified type"
@@ -110,10 +110,10 @@ namespace FakeItEasy.Specs
             int count,
             IList<ICollectionItem> fakes)
         {
-            "When I create a collection of {0} fakes that also implement another interface"
+            $"When I create a collection of {count} fakes that also implement another interface"
                 .x(() => fakes = this.CreateCollectionOfFake<ICollectionItem>(count, options => options.Implements<IDisposable>()));
 
-            "Then {0} items are created"
+            $"Then {count} items are created"
                 .x(() => fakes.Should().HaveCount(count));
 
             "And all items extend the specified type and the extra interface"
