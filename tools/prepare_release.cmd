@@ -1,0 +1,1 @@
+@call %~dp0\run-csx.cmd %~dp0\prepare_release.csx %*

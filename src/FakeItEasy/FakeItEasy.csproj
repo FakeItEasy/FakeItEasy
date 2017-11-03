@@ -57,7 +57,7 @@
   </ItemGroup>
 
   <Target Name="ILMerge45" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net45'">
-    <Exec Command="&quot;$(NuGetPackageRoot)\ilmerge\2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5&quot; /internalize:&quot;..\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
+    <Exec Command="&quot;$(NuGetPackageRoot)\ilmerge\2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5&quot; /internalize:&quot;..\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
   </Target>
 
   <!-- .NET 4.0 -->
@@ -72,7 +72,7 @@
   </ItemGroup>
 
   <Target Name="ILMerge40" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net40'">
-    <Exec Command="&quot;$(NuGetPackageRoot)\ilmerge\2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0&quot; /internalize:&quot;..\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
+    <Exec Command="&quot;$(NuGetPackageRoot)\ilmerge\2.14.1208\tools\ILmerge.exe&quot; /keyfile:..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0&quot; /internalize:&quot;..\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
   </Target>
 
 </Project>
