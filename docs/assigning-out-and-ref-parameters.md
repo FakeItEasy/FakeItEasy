@@ -77,4 +77,4 @@ aFakeDictionary.TryGetValue(theKey, out fetchedValue);
 // fetchedValue is now "lollipop";
 ```
 
-If this behaviour is not desired, `AssignsOutAndRefParameters` (or `…Lazily`) can be used to provide different behaviour.
+If this behavior is not desired, `AssignsOutAndRefParameters` (or `…Lazily`) can be used to provide different behavior.
