@@ -107,17 +107,17 @@ events in the context of an `A.CallTo`.
 So, tempting as it might be to save one of the constraints away in a
 handy variable, don't do it.
 
-# Out parameters
+# `out` parameters
 
-The incoming argument value of out parameters is ignored when matching
-calls. The incoming value of an out parameter can't be seen by the
+The incoming argument value of `out` parameters is ignored when matching
+calls. The incoming value of an `out` parameter can't be seen by the
 method body anyhow, so there's no advantage to constraining by it.
 
 For example, this test passes:
 
 ```csharp
 string configurationValue = "lollipop";
-A.CallTo(()=>aFakeDictionary.TryGetValue(theKey, out configurationValue))
+A.CallTo(() => aFakeDictionary.TryGetValue(theKey, out configurationValue))
  .Returns(true);
 
 string fetchedValue = "licorice";
@@ -127,8 +127,24 @@ Assert.That(success, Is.True);
 ```
 
 See
-[Implicitly Assigning out Parameter Values](assigning-out-and-ref-parameters#implicitly-assigning-out-parameter-values)
+[Implicitly Assigning `out` Parameter Values](assigning-out-and-ref-parameters#implicitly-assigning-out-parameter-values)
 to learn how the initial `configurationValue` is used in this case.
+
+# `ref` parameters
+
+Due to the limitations of working with `ref` parameters in C#, only exact-value matching is possible using argument constraints,
+and the argument value must be compared against a local variable or a field:
+
+```csharp
+int someValue = 3;
+A.CallTo(() => aFake.aMethod(ref someValue)).Returns(true);
+```
+
+To perform more sophisticated matching of `ref` parameter values in C#, use constraints that work on the entire call, such as `WithAnyArguments`
+or `WhenArgumentsMatch`, described below.
+
+In addition to constraining by `ref` argument values, calls can be explicitly configured to
+[assign outgoing `ref` argument values](assigning-out-and-ref-parameters).
 
 # Overriding argument matchers
 
