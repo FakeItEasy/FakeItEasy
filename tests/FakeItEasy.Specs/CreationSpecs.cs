@@ -1,3 +1,4 @@
+
 namespace FakeItEasy.Specs
 {
     using System;
@@ -6,6 +7,7 @@ namespace FakeItEasy.Specs
     using System.Linq;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
     using Xunit;
@@ -15,6 +17,13 @@ namespace FakeItEasy.Specs
         [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
         public interface ICollectionItem
         {
+        }
+
+        public interface IInterfaceWithSimilarMethods
+        {
+            void Test1<T>(IEnumerable<T> enumerable);
+
+            void Test1<T>(IList<T> enumerable);
         }
 
         [Scenario]
@@ -121,6 +130,19 @@ namespace FakeItEasy.Specs
 
             "And all items are fakes"
                 .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) != null));
+        }
+
+        [Scenario]
+        public void InterfaceWithAlikeGenericMethod(IInterfaceWithSimilarMethods fake)
+        {
+            "Given an interface with an overloaded methods containing generic arguments"
+                .See<IInterfaceWithSimilarMethods>();
+
+            "When I create a fake of the interface"
+                .x(() => fake = this.CreateFake<IInterfaceWithSimilarMethods>());
+
+            "Then the fake is created"
+                .x(() => fake.Should().BeAFake());
         }
 
         protected abstract T CreateFake<T>();
