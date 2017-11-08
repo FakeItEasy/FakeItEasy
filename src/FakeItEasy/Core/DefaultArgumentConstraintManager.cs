@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
 
@@ -43,7 +43,7 @@
         }
 
         private class MatchesConstraint
-            : IArgumentConstraint
+            : ITypedArgumentConstraint
         {
             private static readonly bool IsNullable = typeof(T).IsNullable();
 
@@ -55,6 +55,8 @@
                 this.predicate = predicate;
                 this.descriptionWriter = descriptionWriter;
             }
+
+            public Type Type => typeof(T);
 
             void IArgumentConstraint.WriteDescription(IOutputWriter writer)
             {

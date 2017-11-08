@@ -6,6 +6,7 @@ namespace FakeItEasy.Expressions
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions.ArgumentConstraints;
 
@@ -20,14 +21,16 @@ namespace FakeItEasy.Expressions
 
         public virtual IArgumentConstraint GetArgumentConstraint(ParsedArgumentExpression argument)
         {
+            var parameterType = argument.ArgumentInformation.ParameterType;
+
             if (IsParamArrayExpression(argument))
             {
-                return this.CreateParamArrayConstraint((NewArrayExpression)argument.Expression);
+                return this.CreateParamArrayConstraint((NewArrayExpression)argument.Expression, parameterType);
             }
 
             var isByRefArgument = IsByRefArgument(argument);
 
-            var constraint = this.GetArgumentConstraintFromExpression(argument.Expression, out var argumentValue);
+            var constraint = this.GetArgumentConstraintFromExpression(argument.Expression, parameterType, out var argumentValue);
             if (isByRefArgument)
             {
                 if (IsOutArgument(argument))
@@ -139,7 +142,17 @@ namespace FakeItEasy.Expressions
             return type;
         }
 
-        private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression, out object value)
+        private static void CheckConstraintIsCompatibleWithParameterType(ITypedArgumentConstraint constraint, Type parameterType)
+        {
+            parameterType = parameterType.IsByRef ? parameterType.GetElementType() : parameterType;
+
+            if (!parameterType.IsAssignableFrom(constraint.Type))
+            {
+                throw new FakeConfigurationException(ExceptionMessages.ArgumentConstraintHasWrongType(constraint.Type, parameterType));
+            }
+        }
+
+        private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression, Type parameterType, out object value)
         {
             CheckArgumentExpressionIsValid(expression);
 
@@ -148,20 +161,26 @@ namespace FakeItEasy.Expressions
             var trappedConstraints = this.argumentConstraintTrapper.TrapConstraints(() =>
             {
                 expressionValue = InvokeExpression(expression);
-            });
+            }).ToList();
+
+            foreach (var constraint in trappedConstraints.OfType<ITypedArgumentConstraint>())
+            {
+                CheckConstraintIsCompatibleWithParameterType(constraint, parameterType);
+            }
 
             value = expressionValue;
 
             return TryCreateConstraintFromTrappedConstraints(trappedConstraints.ToArray()) ?? CreateEqualityConstraint(expressionValue);
         }
 
-        private IArgumentConstraint CreateParamArrayConstraint(NewArrayExpression expression)
+        private IArgumentConstraint CreateParamArrayConstraint(NewArrayExpression expression, Type parameterType)
         {
             var result = new List<IArgumentConstraint>();
+            var itemType = parameterType.GetElementType();
 
             foreach (var argumentExpression in expression.Expressions)
             {
-                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression, out _));
+                result.Add(this.GetArgumentConstraintFromExpression(argumentExpression, itemType, out _));
             }
 
             return new AggregateArgumentConstraint(result);

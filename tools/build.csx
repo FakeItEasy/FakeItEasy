@@ -1,17 +1,17 @@
-#load "packages/simple-targets-csx.5.2.0/simple-targets.csx"
+#load "packages/simple-targets-csx.5.3.0/simple-targets.csx"
 
 #r "System.Net.Http"
 #r "System.Xml.Linq"
 
 using System.Net.Http;
 using System.Xml.Linq;
+using System.Runtime.CompilerServices;
 using static SimpleTargets;
 
 var solutionName = "FakeItEasy";
 
 var solution = "./" + solutionName + ".sln";
 var versionInfoFile = "./src/VersionInfo.cs";
-var packagesDirectory = Path.GetFullPath("packages");
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 var coverityProjectUrl = "https://scan.coverity.com/builds?project=FakeItEasy%2FFakeItEasy";
 
@@ -55,12 +55,14 @@ var testSuites = new Dictionary<string, string[]>
 };
 
 // tool locations
-var vswhere = "./packages/vswhere.1.0.62/tools/vswhere.exe";
-var gitversion = "./packages/GitVersion.CommandLine.4.0.0-beta0012/tools/GitVersion.exe";
+
+static var toolsPackagesDirectory = Path.Combine(GetCurrentScriptDirectory(), "packages");
+var vswhere = $"{toolsPackagesDirectory}/vswhere.1.0.62/tools/vswhere.exe";
+var gitversion = $"{toolsPackagesDirectory}/GitVersion.CommandLine.4.0.0-beta0012/tools/GitVersion.exe";
 var msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe";
-var nuget = "./.nuget/NuGet.exe";
-var pdbGit = "./packages/pdbGit.3.0.41/tools/PdbGit.exe";
-static var xunit = "./packages/xunit.runner.console.2.0.0/tools/xunit.console.exe";
+var nuget = $"{GetCurrentScriptDirectory()}/.nuget/NuGet.exe";
+var pdbGit = $"{toolsPackagesDirectory}/pdbGit.3.0.41/tools/PdbGit.exe";
+static var xunit = $"{toolsPackagesDirectory}/xunit.runner.console.2.0.0/tools/xunit.console.exe";
 
 // artifact locations
 var coverityDirectory = "./artifacts/coverity";
@@ -91,10 +93,9 @@ targets.Add(
     DependsOn("clean", "coverityDirectory", "restore"),
     () =>
     {
-        var packagesDirectoryOption = $"/p:NuGetPackagesDirectory={packagesDirectory}";
         Cmd(
             "cov-build",
-            $@"--dir {coverityResultsDirectory} ""{msBuild}"" {solution} /target:Build /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/Coverity-Build.log;Verbosity=Detailed;PerformanceSummary {packagesDirectoryOption}");
+            $@"--dir {coverityResultsDirectory} ""{msBuild}"" {solution} /target:Build /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/Coverity-Build.log;Verbosity=Detailed;PerformanceSummary");
 
         var version = ReadCmdOutput(".", gitversion, "/showvariable SemVer");
         var coverityToken = Environment.GetEnvironmentVariable("COVERITY_TOKEN");
@@ -242,10 +243,9 @@ public string ReadCmdOutput(string workingDirectory, string fileName, string arg
 
 public void RunMsBuild(string target)
 {
-    var packagesDirectoryOption = string.IsNullOrEmpty(packagesDirectory) ? "" : $"/p:NuGetPackagesDirectory={packagesDirectory}";
     Cmd(
         msBuild,
-        $"{solution} /target:{target} /p:configuration=Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/{target}.binlog {packagesDirectoryOption}");
+        $"{solution} /target:{target} /p:configuration=Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/{target}.binlog");
 }
 
 public void RunTests(string target)
@@ -272,3 +272,5 @@ public string GetVSLocation()
 
     return installationPath;
 }
+
+public static string GetCurrentScriptDirectory([CallerFilePath] string path = null) => Path.GetDirectoryName(path);

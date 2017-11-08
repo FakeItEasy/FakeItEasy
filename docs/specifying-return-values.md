@@ -30,7 +30,7 @@ A.CallTo(() => fakeShop.SellSweetFromShelf())
 
 will first return `lollipop`, then `smarties`, then `wineGums`. The
 next call will not take an item from the sequence, but will rely on
-other configured (or default) behaviour.
+other configured (or default) behavior.
 
 On to the very powerful `ReturnsLazily`:
 

@@ -10,4 +10,4 @@ This is quite close to what a default Fake's unconfigured method will do, but th
 
 If the [Fake is strict](strict-fakes.md), an unconfigured call will throw an exception, so `DoesNothing` can be used to allow an exception.
 
-Or, `DoesNothing` can be used to change the behaviour that an already-configured call is supposed to have. For example, if a call is [set to throw an exception](throwing-exceptions.md), that can be overridden. For more on this kind of thing, see how to [override the behavior for a call](changing-behavior-between-calls.md#overriding-the-behavior-for-a-call).
+Or, `DoesNothing` can be used to change the behavior that an already-configured call is supposed to have. For example, if a call is [set to throw an exception](throwing-exceptions.md), that can be overridden. For more on this kind of thing, see how to [override the behavior for a call](changing-behavior-between-calls.md#overriding-the-behavior-for-a-call).

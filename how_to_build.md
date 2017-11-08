@@ -13,6 +13,8 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
 1. Ensure you have version 15.3 or later of either Visual Studio 2017 or MSBuild installed.
 
+1. Ensure you have .NET Core SDK 2.0.2 or later installed
+
 ## Building
 
 Using a command prompt, navigate to your clone root folder and execute `build.cmd`.

@@ -1,6 +1,6 @@
 # Specifying a Call to Configure
 
-One of the first steps in configuring a fake object's behaviour is to
+One of the first steps in configuring a fake object's behavior is to
 specify which call to configure. Like most FakeItEasy actions, this is
 done using a method on the `A` class: `A.CallTo`.
 

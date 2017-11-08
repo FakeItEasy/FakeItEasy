@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy
+namespace FakeItEasy
 {
     using System;
     using FakeItEasy.Core;
@@ -36,5 +36,8 @@
             var callFormatter = ServiceLocator.Current.Resolve<IFakeObjectCallFormatter>();
             return $"Call to unconfigured method of strict fake: {callFormatter.GetDescription(call)}.";
         }
+
+        public static string ArgumentConstraintHasWrongType(Type constraintType, Type parameterType) =>
+            $"Argument constraint is of type {constraintType}, but parameter is of type {parameterType}. No call can match this constraint.";
     }
 }
