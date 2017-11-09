@@ -1,4 +1,3 @@
-
 namespace FakeItEasy.Specs
 {
     using System;
