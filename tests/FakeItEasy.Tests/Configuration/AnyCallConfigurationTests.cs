@@ -319,7 +319,7 @@ namespace FakeItEasy.Tests.Configuration
 
         private IVoidArgumentValidationConfiguration StubVoidConfig()
         {
-            var result = A.Fake<IVoidArgumentValidationConfiguration>();
+            var result = A.Fake<IAnyCallConfigurationWithVoidReturnType>();
 
             A.CallTo(() => this.configurationFactory.CreateConfiguration(this.fakeObject, this.callRule)).Returns(result);
 

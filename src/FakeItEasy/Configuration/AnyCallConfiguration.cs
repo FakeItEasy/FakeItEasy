@@ -35,7 +35,8 @@ namespace FakeItEasy.Configuration
 
         public IAnyCallConfigurationWithVoidReturnType WithVoidReturnType()
         {
-            throw new NotImplementedException();
+            this.configuredRule.ApplicableToMembersWithReturnType = typeof(void);
+            return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule);
         }
 
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> DoesNothing() => this.VoidConfiguration.DoesNothing();
