@@ -25,7 +25,7 @@ namespace FakeItEasy.Configuration
         /// <summary>
         /// Matches calls that have void return type.
         /// </summary>
-        /// <returns>A configuratino object.</returns>
+        /// <returns>A configuration object.</returns>
         IAnyCallConfigurationWithVoidReturnType WithVoidReturnType();
     }
 }

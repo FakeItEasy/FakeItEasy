@@ -52,6 +52,9 @@ the fake to `A.CallTo` to refer to any method on the fake:
 ```csharp
 A.CallTo(fakeShop).Throws(new Exception());
 
+// Or limit the calls to void methods
+A.CallTo(fakeShop).WithVoidReturnType().Throws("sugar overflow");
+
 // Or limit the calls by return type
 A.CallTo(fakeShop).WithReturnType<string>().Returns("sugar tastes good");
 
