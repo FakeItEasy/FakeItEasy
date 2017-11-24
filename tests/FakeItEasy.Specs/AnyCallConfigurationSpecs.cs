@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using FakeItEasy.Tests.TestHelpers;
@@ -63,6 +63,56 @@
             "Then an exception is thrown"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .WithMessage("*Any call with non-void return type to the fake object.*"));
+        }
+
+        [Scenario]
+        public static void WithVoidReturnType(IFoo fake, bool methodWasIntercepted)
+        {
+            "Given a fake with a void method"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And the fake is configured to set a flag for any void method"
+                .x(() => A.CallTo(fake).WithVoidReturnType().Invokes(() => methodWasIntercepted = true));
+
+            "When a void method is called on the fake"
+                .x(() => fake.Baz());
+
+            "Then the flag is set"
+                .x(() => methodWasIntercepted.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void WithVoidReturnTypeAndNonVoidMethod(
+            IFoo fake,
+            bool methodWasIntercepted)
+        {
+            "Given a fake with void and non-void methods"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And the fake is configured to set a flag for any void method"
+                .x(() => A.CallTo(fake).WithVoidReturnType().Invokes(() => methodWasIntercepted = true));
+
+            "When a non-void method is called"
+                .x(() => fake.Bar<string>());
+
+            "Then the flag is not set"
+                .x(() => methodWasIntercepted.Should().BeFalse());
+        }
+
+        [Scenario]
+        public static void WithVoidReturnTypeDescription(
+            IFoo fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "When an assertion is made that a void method was called"
+                .x(() => exception = Record.Exception(() => A.CallTo(fake).WithVoidReturnType().MustHaveHappened()));
+
+            "Then an exception is thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .WithMessage("*Any call with void return type to the fake object.*"));
         }
 
         [Scenario]

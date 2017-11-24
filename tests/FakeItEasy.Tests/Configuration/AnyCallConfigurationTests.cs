@@ -29,6 +29,7 @@ namespace FakeItEasy.Tests.Configuration
             TestCases.FromObject<Action<IAnyCallConfigurationWithNoReturnTypeSpecified>>(
                 configuration => configuration.WithReturnType<int>(),
                 configuration => configuration.WithNonVoidReturnType(),
+                configuration => configuration.WithVoidReturnType(),
                 configuration => configuration.Where(call => true),
                 configuration => configuration.WhenArgumentsMatch(args => true));
 
@@ -67,6 +68,18 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             this.callRule.ApplicableToAllNonVoidReturnTypes.Should().BeTrue();
+        }
+
+        [Fact]
+        public void WithVoidReturnType_should_set_the_type_to_the_configured_rule()
+        {
+            // Arrange
+
+            // Act
+            this.configuration.WithVoidReturnType();
+
+            // Assert
+            this.callRule.ApplicableToMembersWithReturnType.Should().Be(typeof(void));
         }
 
         [Fact]
