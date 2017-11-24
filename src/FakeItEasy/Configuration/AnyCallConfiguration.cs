@@ -33,6 +33,12 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration<object>(this.manager, this.configuredRule);
         }
 
+        public IAnyCallConfigurationWithVoidReturnType WithVoidReturnType()
+        {
+            this.configuredRule.ApplicableToMembersWithReturnType = typeof(void);
+            return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule);
+        }
+
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> DoesNothing() => this.VoidConfiguration.DoesNothing();
 
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>

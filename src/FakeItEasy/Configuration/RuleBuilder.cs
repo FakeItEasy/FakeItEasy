@@ -5,7 +5,7 @@ namespace FakeItEasy.Configuration
     using FakeItEasy.Core;
 
     internal class RuleBuilder
-        : IVoidArgumentValidationConfiguration,
+        : IAnyCallConfigurationWithVoidReturnType,
           IAfterCallConfiguredWithOutAndRefParametersConfiguration<IVoidConfiguration>,
           IThenConfiguration<IVoidConfiguration>
     {
@@ -146,6 +146,12 @@ namespace FakeItEasy.Configuration
             asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
 
             return new UnorderedCallAssertion(this.manager, this.Matcher, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
+        }
+
+        public IAnyCallConfigurationWithVoidReturnType Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
+        {
+            this.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
+            return this;
         }
 
         private void AddRuleIfNeeded()

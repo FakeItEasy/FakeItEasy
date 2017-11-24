@@ -33,7 +33,7 @@ namespace FakeItEasy.Configuration
 
             private RuleBuilder.Factory BuilderFactory => this.Container.Resolve<RuleBuilder.Factory>();
 
-            public IVoidArgumentValidationConfiguration CreateConfiguration(FakeManager fakeObject, BuildableCallRule callRule)
+            public IAnyCallConfigurationWithVoidReturnType CreateConfiguration(FakeManager fakeObject, BuildableCallRule callRule)
             {
                 return this.BuilderFactory.Invoke(callRule, fakeObject);
             }
