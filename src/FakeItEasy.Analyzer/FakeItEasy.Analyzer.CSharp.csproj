@@ -20,7 +20,6 @@
     <Description>Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy in C#. Works in Visual Studio 2015 Update 1 or later.</Description>
     <PackageTags>$(PackageTags);csharp;c#</PackageTags>
     <BuildOutputTargetFolder>analyzers/dotnet/cs</BuildOutputTargetFolder>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>
