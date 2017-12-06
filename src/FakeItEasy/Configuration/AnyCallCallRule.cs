@@ -23,7 +23,14 @@ namespace FakeItEasy.Configuration
             {
                 if (this.ApplicableToMembersWithReturnType != null)
                 {
-                    return $"Any call with return type {this.ApplicableToMembersWithReturnType} to the fake object.";
+                    if (this.ApplicableToMembersWithReturnType == typeof(void))
+                    {
+                        return "Any call with void return type to the fake object.";
+                    }
+                    else
+                    {
+                        return $"Any call with return type {this.ApplicableToMembersWithReturnType} to the fake object.";
+                    }
                 }
 
                 if (this.ApplicableToAllNonVoidReturnTypes)

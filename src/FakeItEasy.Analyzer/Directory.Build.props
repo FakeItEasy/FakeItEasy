@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <PackageTags>FakeItEasy;analyzer</PackageTags>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>

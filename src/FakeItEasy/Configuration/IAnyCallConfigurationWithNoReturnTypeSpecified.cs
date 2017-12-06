@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Configuration
+namespace FakeItEasy.Configuration
 {
     using System.Diagnostics.CodeAnalysis;
 
@@ -21,5 +21,11 @@
         /// </summary>
         /// <returns>A configuration object.</returns>
         IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType();
+
+        /// <summary>
+        /// Matches calls that have void return type.
+        /// </summary>
+        /// <returns>A configuration object.</returns>
+        IAnyCallConfigurationWithVoidReturnType WithVoidReturnType();
     }
 }

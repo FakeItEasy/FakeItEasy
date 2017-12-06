@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 		how_to_build.md = how_to_build.md
 		License.txt = License.txt
+		mkdocs.yml = mkdocs.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -91,7 +92,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-3
 		docs\index.md = docs\index.md
 		docs\invoking-custom-code.md = docs\invoking-custom-code.md
 		docs\limited-call-specifications.md = docs\limited-call-specifications.md
-		docs\mkdocs.yml = docs\mkdocs.yml
 		docs\ordered-assertions.md = docs\ordered-assertions.md
 		docs\platform-support.md = docs\platform-support.md
 		docs\quickstart.md = docs\quickstart.md

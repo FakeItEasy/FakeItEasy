@@ -49,7 +49,8 @@ try {
     Write-Output "Pushing nupkgs to nuget.org"
     $artifacts | ForEach-Object {
         Write-Output "Pushing $($_.Name)"
-        .nuget/nuget.exe push $_ -ApiKey $nugetApiKey -Source $nugetServer -NonInteractive -ForceEnglishOutput
+        $nugetPath = Join-Path $PSScriptRoot .nuget/nuget.exe
+        & $nugetPath push $_ -ApiKey $nugetApiKey -Source $nugetServer -NonInteractive -ForceEnglishOutput
         if ($LASTEXITCODE -ne 0) {
             throw "Push failed with error $LASTEXITCODE"
         }

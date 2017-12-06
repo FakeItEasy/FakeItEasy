@@ -9,14 +9,7 @@
     <PackageLicenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</PackageLicenseUrl>
     <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
     <NoPackageAnalysis>true</NoPackageAnalysis>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);GetPackageFiles</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
-
-  <ItemGroup>
-    <!-- Include symbols in the package -->
-    <Content Include="$(OutputPath)/**/$(AssemblyName).pdb">
-      <Pack>true</Pack>
-      <PackagePath>$(BuildOutputTargetFolder)/%(RecursiveDir)$(AssemblyName).pdb</PackagePath>
-    </Content>
-  </ItemGroup>
 
 </Project>
