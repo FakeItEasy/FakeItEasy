@@ -84,7 +84,7 @@ namespace FakeItEasy.Tests.Core
 
             var expectedMessage =
 @"
-  Expected to find it exactly twice but was not found among the calls:";
+  Expected to find it exactly twice but didn't find it among the calls:";
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .And.Message.Should().Contain(expectedMessage);
@@ -99,7 +99,7 @@ namespace FakeItEasy.Tests.Core
             var exception = Record.Exception(() =>
                 asserter.AssertWasCalled(x => false, outputWriter => { }, Repeated.Exactly.Twice));
 
-            var expectedMessage = @"Expected to find it exactly twice but was not found among the calls:";
+            var expectedMessage = @"Expected to find it exactly twice but didn't find it among the calls:";
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .And.Message.Should().Contain(expectedMessage);

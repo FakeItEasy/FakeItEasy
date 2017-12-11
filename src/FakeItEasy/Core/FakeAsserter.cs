@@ -64,7 +64,7 @@ namespace FakeItEasy.Core
                 switch (matchedCallCount)
                 {
                     case 0:
-                        writer.Write("but was not found among the calls:");
+                        writer.Write("but didn't find it among the calls:");
                         break;
                     case 1:
                         writer.Write("but found it once among the calls:");

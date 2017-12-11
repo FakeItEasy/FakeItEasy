@@ -30,7 +30,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar(argument: """")
-  Expected to find it at least twice but was not found among the calls:
+  Expected to find it at least twice but didn't find it among the calls:
     1: FakeItEasy.Tests.IFoo.Bar() repeated 2 times
     ...
     3: FakeItEasy.Tests.IFoo.Bar(argument: ""test"")
@@ -61,7 +61,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar(argument: """")
-  Expected to find it at least twice but was not found among the calls:
+  Expected to find it at least twice but didn't find it among the calls:
     1: FakeItEasy.Tests.IFoo.Bar(
           argument1: 1,
           argument2: 2,
