@@ -273,7 +273,7 @@ namespace FakeItEasy.Specs
 
   Assertion failed for the following call:
     FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
-  Expected to find it exactly once but found it #2 times among the calls:
+  Expected to find it exactly once but found it twice among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)
     3: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
