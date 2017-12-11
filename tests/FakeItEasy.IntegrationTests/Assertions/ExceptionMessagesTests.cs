@@ -30,7 +30,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar(argument: """")
-  Expected to find it at least twice but found it #0 times among the calls:
+  Expected to find it at least twice but was not found among the calls:
     1: FakeItEasy.Tests.IFoo.Bar() repeated 2 times
     ...
     3: FakeItEasy.Tests.IFoo.Bar(argument: ""test"")
@@ -61,7 +61,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar(argument: """")
-  Expected to find it at least twice but found it #0 times among the calls:
+  Expected to find it at least twice but was not found among the calls:
     1: FakeItEasy.Tests.IFoo.Bar(
           argument1: 1,
           argument2: 2,
@@ -93,7 +93,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar(argument: <Ignored>, argument2: <Starts with ""lorem"">)
-  Expected to find it at least twice but found it #1 times among the calls:
+  Expected to find it at least twice but found it once among the calls:
     1: FakeItEasy.Tests.IFoo.Bar(argument: System.Object, argument2: ""lorem ipsum"")
 
 ";
@@ -118,7 +118,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Baz(argument: <Ignored>, argument2: <Starts with ""lorem"">)
-  Expected to find it at least twice but found it #1 times among the calls:
+  Expected to find it at least twice but found it once among the calls:
     1: FakeItEasy.Tests.IFoo.Baz(argument: System.Object, argument2: ""lorem ipsum"")
 
 ";

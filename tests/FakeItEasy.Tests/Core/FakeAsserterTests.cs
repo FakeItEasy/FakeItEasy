@@ -84,7 +84,67 @@ namespace FakeItEasy.Tests.Core
 
             var expectedMessage =
 @"
-  Expected to find it exactly twice but found it #0 times among the calls:";
+  Expected to find it exactly twice but was not found among the calls:";
+
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .And.Message.Should().Contain(expectedMessage);
+        }
+
+        [Fact]
+        public void Exception_message_should_write_no_call_was_made()
+        {
+            this.StubCalls(1);
+
+            var asserter = this.CreateAsserter();
+            var exception = Record.Exception(() =>
+                asserter.AssertWasCalled(x => false, outputWriter => { }, Repeated.Exactly.Twice));
+
+            var expectedMessage = @"Expected to find it exactly twice but was not found among the calls:";
+
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .And.Message.Should().Contain(expectedMessage);
+        }
+
+        [Fact]
+        public void Exception_message_should_write_one_call_was_made()
+        {
+            this.StubCalls(1);
+
+            var asserter = this.CreateAsserter();
+            var exception = Record.Exception(() =>
+                asserter.AssertWasCalled(x => true, outputWriter => { }, Repeated.Exactly.Twice));
+
+            var expectedMessage = @"Expected to find it exactly twice but found it once among the calls:";
+
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .And.Message.Should().Contain(expectedMessage);
+        }
+
+        [Fact]
+        public void Exception_message_should_write_two_calls_were_made()
+        {
+            this.StubCalls(2);
+
+            var asserter = this.CreateAsserter();
+            var exception = Record.Exception(() =>
+                asserter.AssertWasCalled(x => true, outputWriter => { }, Repeated.Exactly.Once));
+
+            var expectedMessage = @"Expected to find it exactly once but found it twice among the calls:";
+
+            exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .And.Message.Should().Contain(expectedMessage);
+        }
+
+        [Fact]
+        public void Exception_message_should_write_many_calls_were_made()
+        {
+            this.StubCalls(3);
+
+            var asserter = this.CreateAsserter();
+            var exception = Record.Exception(() =>
+                asserter.AssertWasCalled(x => true, outputWriter => { }, Repeated.Exactly.Twice));
+
+            var expectedMessage = @"Expected to find it exactly twice but found it 3 times among the calls:";
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .And.Message.Should().Contain(expectedMessage);

@@ -105,7 +105,7 @@ namespace FakeItEasy.Specs
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 3)
-  Expected to find it at least once but found it #0 times among the calls:
+  Expected to find it at least once but was not found among the calls:
     1: FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 1)
     2: FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 2)
 
@@ -137,7 +137,7 @@ namespace FakeItEasy.Specs
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[System.String,System.String](baz1: <Ignored>, baz2: <Ignored>)
-  Expected to find it at least once but found it #0 times among the calls:
+  Expected to find it at least once but was not found among the calls:
     1: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[System.Int32,System.Double](baz1: 1, baz2: 2)
     2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64],System.Int32](baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
 
@@ -172,7 +172,7 @@ namespace FakeItEasy.Specs
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IIHaveACollectionParameter.Bar(args: <NULL, 42, ""hello"">)
-  Expected to find it at least once but found it #0 times among the calls:
+  Expected to find it at least once but was not found among the calls:
     1: FakeItEasy.Specs.CallMatchingSpecs+IIHaveACollectionParameter.Bar(args: [1, ""hello"", … (2 more elements) …, ""foo"", ""bar""])
     2: FakeItEasy.Specs.CallMatchingSpecs+IIHaveACollectionParameter.Bar(args: [NULL, 42])
 
