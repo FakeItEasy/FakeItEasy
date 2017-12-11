@@ -61,7 +61,21 @@ namespace FakeItEasy.Core
 
             if (calls.Any())
             {
-                writer.Write("but found it #{0} times among the calls:", matchedCallCount);
+                switch (matchedCallCount)
+                {
+                    case 0:
+                        writer.Write("but didn't find it among the calls:");
+                        break;
+                    case 1:
+                        writer.Write("but found it once among the calls:");
+                        break;
+                    case 2:
+                        writer.Write("but found it twice among the calls:");
+                        break;
+                    default:
+                        writer.Write("but found it {0} times among the calls:", matchedCallCount);
+                        break;
+                }
             }
             else
             {
