@@ -9,10 +9,7 @@
 
   <ItemGroup>
     <!-- Analyzer installation scripts -->
-    <Content Include="tools/*.ps1">
-      <Pack>true</Pack>
-      <PackagePath>tools/%(Filename)%(Extension)</PackagePath>
-    </Content>
+    <Content Include="tools/*.ps1" Pack="true" PackagePath="tools/%(Filename)%(Extension)" />
   </ItemGroup>
 
 </Project>
