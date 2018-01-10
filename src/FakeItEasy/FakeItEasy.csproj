@@ -43,6 +43,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.0.0" />
     <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.0.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
   </ItemGroup>
 
   <!-- .NET 4.5 -->
@@ -52,6 +53,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <Reference Include="Microsoft.CSharp" />
     <PackageReference Include="ILMerge" Version="2.14.1208" PrivateAssets="all" />
     <PackageReference Include="Castle.Core" Version="4.2.1" PrivateAssets="all" />
   </ItemGroup>
@@ -67,6 +69,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+    <Reference Include="Microsoft.CSharp" />
     <PackageReference Include="ILMerge" Version="2.14.1208" PrivateAssets="all" />
     <PackageReference Include="Castle.Core" Version="4.2.1" PrivateAssets="all" />
   </ItemGroup>
