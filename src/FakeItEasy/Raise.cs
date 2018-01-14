@@ -73,6 +73,9 @@ namespace FakeItEasy
 
         /// <summary>
         /// Allows the developer to raise an event with a non-standard signature on a faked object.
+        /// Uses late binding, so requires a reference to Microsoft.CSharp when called from C#, and is not compatible
+        /// with all CLR languages (for example Visual Basic).
+        /// To raise non-standard events from other languages, use <see cref="Raise.FreeForm{TEventHandler}"/>.
         /// </summary>
         public static class FreeForm
         {
@@ -84,6 +87,26 @@ namespace FakeItEasy
             public static dynamic With(params object[] arguments)
             {
                 return new DynamicRaiser(arguments, ArgumentProviderMap);
+            }
+        }
+
+        /// <summary>
+        /// Allows the developer to raise an event with a non-standard signature on a faked object.
+        /// Intended to be used from languages, such as Visual Basic, that do not support late binding via dynamic
+        /// objects, or when a reference to Microsoft.CSharp is not desired.
+        /// Otherwise, prefer <see cref="Raise.FreeForm" />.
+        /// </summary>
+        /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/>.</typeparam>
+        public static class FreeForm<TEventHandler>
+        {
+            /// <summary>
+            /// Raises an event with non-standard signature.
+            /// </summary>
+            /// <param name="arguments">The arguments to send to the event handlers.</param>
+            /// <returns>A new object that knows how to raise events.</returns>
+            public static TEventHandler With(params object[] arguments)
+            {
+                return new DelegateRaiser<TEventHandler>(arguments, ArgumentProviderMap);
             }
         }
     }

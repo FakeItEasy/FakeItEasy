@@ -342,6 +342,11 @@ namespace FakeItEasy
             [return: System.Runtime.CompilerServices.DynamicAttribute()]
             public static object With(params object[] arguments) { }
         }
+        public class static FreeForm<TEventHandler>
+        
+        {
+            public static TEventHandler With(params object[] arguments) { }
+        }
     }
     public class static RepeatConfigurationExtensions
     {

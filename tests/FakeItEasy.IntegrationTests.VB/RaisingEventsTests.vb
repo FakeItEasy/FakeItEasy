@@ -176,4 +176,21 @@ Public Class RaisingEventsTests
         ' Assert
         ReferenceEquals(capturedObject, anObject).Should().BeTrue()
     End Sub
+
+    <Fact>
+    <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate",
+        Justification:="Required for testing.")>
+    Public Sub RaiseFreeform_ObjectEvent_sends_object()
+        'Arrange
+        Dim target = A.Fake(Of IHaveEvents)()
+        Dim anObject As Object = New Object()
+
+        AddHandler target.ObjectEvent, AddressOf HandlesObjectEvent
+
+        ' Act
+        AddHandler target.ObjectEvent, Raise.FreeForm(Of IHaveEvents.ObjectEventEventHandler).With(anObject)
+
+        ' Assert
+        ReferenceEquals(capturedObject, anObject).Should().BeTrue()
+    End Sub
 End Class
