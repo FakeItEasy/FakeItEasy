@@ -1,7 +1,6 @@
 # Raising events
 
-Let's say - for argument's sake - that we have an interface that has
-an event defined:
+Given a virtual or abstract event, or one defined on an interface:
 
 ```csharp
 public interface IRobot
@@ -56,10 +55,9 @@ fake.CustomEvent += Raise.FreeForm.With(fake, sampleCustomEventArgs);
 fake.FreeformEvent += Raise.FreeForm.With(7);
 ```
 
-Just as when we're trying to
-[override a method's behavior](what-can-be-faked#what-members-can-be-overriden.md),
-_for FakeItEasy to raise an event, the event must be virtual (if
-defined on a class) or defined on an interface_.
+Notes on `Raise.Freeform.With`:
+- it only works in C#, not in VB.NET, due to language limitations;
+- it uses late binding, so you need a reference to the `Microsoft.CSharp` assembly in order to use it.
 
 ## VB.Net
 
