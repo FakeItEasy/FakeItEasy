@@ -65,6 +65,20 @@ namespace FakeItEasy.Configuration
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
             this.CreateArgumentValidationConfiguration(this.parsedSetterExpression).MustHaveHappened(repeatConstraint);
 
+        public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
+        {
+            Guard.AgainstNull(timesOption, nameof(timesOption));
+
+            return this.MustHaveHappened(timesOption.ToRepeated(numberOfTimes));
+        }
+
+        public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
+        {
+            Guard.AgainstNull(predicate, nameof(predicate));
+
+            return this.MustHaveHappened(Repeated.Like(predicate));
+        }
+
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>
             AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
                 .DoesNothing();
@@ -134,6 +148,20 @@ namespace FakeItEasy.Configuration
 
             public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
                 this.voidConfiguration.MustHaveHappened(repeatConstraint);
+
+            public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
+            {
+                Guard.AgainstNull(timesOption, nameof(timesOption));
+
+                return this.MustHaveHappened(timesOption.ToRepeated(numberOfTimes));
+            }
+
+            public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
+            {
+                Guard.AgainstNull(predicate, nameof(predicate));
+
+                return this.MustHaveHappened(Repeated.Like(predicate));
+            }
 
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>
                 new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.DoesNothing());

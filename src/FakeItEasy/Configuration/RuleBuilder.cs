@@ -2,6 +2,7 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using FakeItEasy.Core;
 
     internal class RuleBuilder
@@ -148,6 +149,20 @@ namespace FakeItEasy.Configuration
             return new UnorderedCallAssertion(this.manager, this.Matcher, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
         }
 
+        public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
+        {
+            Guard.AgainstNull(timesOption, nameof(timesOption));
+
+            return this.MustHaveHappened(timesOption.ToRepeated(numberOfTimes));
+        }
+
+        public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
+        {
+            Guard.AgainstNull(predicate, nameof(predicate));
+
+            return this.MustHaveHappened(Repeated.Like(predicate));
+        }
+
         public IAnyCallConfigurationWithVoidReturnType Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
             this.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
@@ -239,6 +254,20 @@ namespace FakeItEasy.Configuration
 
             public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
                 this.ParentConfiguration.MustHaveHappened(repeatConstraint);
+
+            public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
+            {
+                Guard.AgainstNull(timesOption, nameof(timesOption));
+
+                return this.MustHaveHappened(timesOption.ToRepeated(numberOfTimes));
+            }
+
+            public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
+            {
+                Guard.AgainstNull(predicate, nameof(predicate));
+
+                return this.MustHaveHappened(Repeated.Like(predicate));
+            }
 
             public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
             {

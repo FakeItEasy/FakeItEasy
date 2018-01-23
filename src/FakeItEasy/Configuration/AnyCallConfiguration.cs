@@ -2,6 +2,7 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using FakeItEasy.Core;
 
     internal class AnyCallConfiguration
@@ -81,6 +82,20 @@ namespace FakeItEasy.Configuration
 
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
             this.VoidConfiguration.MustHaveHappened(repeatConstraint);
+
+        public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
+        {
+            Guard.AgainstNull(timesOption, nameof(timesOption));
+
+            return this.MustHaveHappened(timesOption.ToRepeated(numberOfTimes));
+        }
+
+        public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
+        {
+            Guard.AgainstNull(predicate, nameof(predicate));
+
+            return this.MustHaveHappened(Repeated.Like(predicate));
+        }
 
         public IAnyCallConfigurationWithNoReturnTypeSpecified Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
