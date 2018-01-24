@@ -23,7 +23,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.Biz();
 
             var exception = Record.Exception(() =>
-                A.CallTo(() => foo.Bar(string.Empty)).MustHaveHappened(Repeated.AtLeast.Twice));
+                A.CallTo(() => foo.Bar(string.Empty)).MustHaveHappenedTwiceOrMore());
 
             var expectedMessage =
 @"
@@ -54,7 +54,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.Bar();
 
             var exception = Record.Exception(() =>
-                A.CallTo(() => foo.Bar(string.Empty)).MustHaveHappened(Repeated.AtLeast.Twice));
+                A.CallTo(() => foo.Bar(string.Empty)).MustHaveHappenedTwiceOrMore());
 
             var expectedMessage =
 @"
@@ -86,7 +86,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Assert
             var exception = Record.Exception(() =>
-                A.CallTo(() => foo.Bar(A<object>._, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
+                A.CallTo(() => foo.Bar(A<object>._, A<string>.That.StartsWith("lorem"))).MustHaveHappenedTwiceOrMore());
 
             var expectedMessage =
 @"
@@ -110,7 +110,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
             // Act
             var exception = Record.Exception(() =>
-                A.CallTo(() => foo.Baz(A<object>._, A<string>.That.StartsWith("lorem"))).MustHaveHappened(Repeated.AtLeast.Twice));
+                A.CallTo(() => foo.Baz(A<object>._, A<string>.That.StartsWith("lorem"))).MustHaveHappenedTwiceOrMore());
 
             // Assert
             var expectedMessage =

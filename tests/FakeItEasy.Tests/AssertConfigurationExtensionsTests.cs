@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests
 
             // Assert
             A.CallTo(() => configuration.MustHaveHappened(A<Repeated>.That.Matches(x => x.Matches(1))))
-                .MustHaveHappened(Repeated.Exactly.Once); // avoid .MustHaveHappened(), since we're testing it
+                .MustHaveHappenedOnceExactly(); // avoid .MustHaveHappened(), since we're testing it
         }
 
         [Fact]

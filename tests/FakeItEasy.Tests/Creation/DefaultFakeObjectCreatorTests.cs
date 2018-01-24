@@ -89,7 +89,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Assert
             A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(TypeWithMultipleConstructors), options))
-                .MustHaveHappened(Repeated.Exactly.Times(3));
+                .MustHaveHappened(3, Times.Exactly);
         }
 
         [Fact]
