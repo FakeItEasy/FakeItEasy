@@ -80,7 +80,7 @@ namespace FakeItEasy.Core
 
                 if (call.Repeat > 1)
                 {
-                    writer.Write(" repeated ");
+                    writer.Write(" ");
                     writer.Write(call.Repeat);
                     writer.Write(" times");
                     writer.WriteLine();

@@ -31,7 +31,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
   Assertion failed for the following call:
     FakeItEasy.Tests.IFoo.Bar(argument: """")
   Expected to find it at least twice but didn't find it among the calls:
-    1: FakeItEasy.Tests.IFoo.Bar() repeated 2 times
+    1: FakeItEasy.Tests.IFoo.Bar() 2 times
     ...
     3: FakeItEasy.Tests.IFoo.Bar(argument: ""test"")
     4: FakeItEasy.Tests.IFoo.Bar(argument: 4/5/1977 12:00:00 AM, argument2: ""birthday"")
@@ -65,7 +65,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
     1: FakeItEasy.Tests.IFoo.Bar(
           argument1: 1,
           argument2: 2,
-          argument3: ""three"") repeated 2 times
+          argument3: ""three"") 2 times
     ...
     3: FakeItEasy.Tests.IFoo.Bar()
 
