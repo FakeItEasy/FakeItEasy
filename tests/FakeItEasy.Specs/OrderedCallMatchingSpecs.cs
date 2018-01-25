@@ -85,12 +85,12 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated exactly twice
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' exactly twice
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' at least once
   The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
-    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) repeated 2 times
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) 2 times
     ...
     4: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)"));
         }
@@ -151,8 +151,8 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' at least once
   The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
@@ -228,12 +228,12 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated exactly twice
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' repeated exactly once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' exactly twice
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' exactly once
   The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
-    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) repeated 2 times
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) 2 times
     ...
     4: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)"));
         }

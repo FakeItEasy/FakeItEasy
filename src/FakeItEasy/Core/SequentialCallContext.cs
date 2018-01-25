@@ -79,7 +79,6 @@ namespace FakeItEasy.Core
                         message.Write("'");
                         call.CallDescriber.Invoke(message);
                         message.Write("' ");
-                        message.Write("repeated ");
                         message.Write(call.RepeatDescription);
                         message.WriteLine();
                     }
