@@ -35,7 +35,17 @@ namespace FakeItEasy
         {
             internal override Repeated ToRepeated(int numberOfTimes)
             {
-                return Repeated.Exactly.Times(numberOfTimes);
+                switch (numberOfTimes)
+                {
+                    case 0:
+                        return Repeated.Never;
+                    case 1:
+                        return Repeated.Exactly.Once;
+                    case 2:
+                        return Repeated.Exactly.Twice;
+                    default:
+                        return Repeated.Exactly.Times(numberOfTimes);
+                }
             }
         }
 
@@ -43,7 +53,15 @@ namespace FakeItEasy
         {
             internal override Repeated ToRepeated(int numberOfTimes)
             {
-                return Repeated.AtLeast.Times(numberOfTimes);
+                switch (numberOfTimes)
+                {
+                    case 1:
+                        return Repeated.AtLeast.Once;
+                    case 2:
+                        return Repeated.AtLeast.Twice;
+                    default:
+                        return Repeated.AtLeast.Times(numberOfTimes);
+                }
             }
         }
 
@@ -51,7 +69,17 @@ namespace FakeItEasy
         {
             internal override Repeated ToRepeated(int numberOfTimes)
             {
-                return Repeated.NoMoreThan.Times(numberOfTimes);
+                switch (numberOfTimes)
+                {
+                    case 0:
+                        return Repeated.Never;
+                    case 1:
+                        return Repeated.NoMoreThan.Once;
+                    case 2:
+                        return Repeated.NoMoreThan.Twice;
+                    default:
+                        return Repeated.NoMoreThan.Times(numberOfTimes);
+                }
             }
         }
     }
