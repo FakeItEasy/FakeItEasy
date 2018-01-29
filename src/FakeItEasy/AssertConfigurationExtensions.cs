@@ -16,7 +16,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            return configuration.MustHaveHappened(Repeated.AtLeast.Once);
+            return configuration.MustHaveHappened(1, Times.OrMore);
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            configuration.MustHaveHappened(Repeated.Never);
+            configuration.MustHaveHappened(0, Times.Exactly);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            return configuration.MustHaveHappened(Repeated.Exactly.Once);
+            return configuration.MustHaveHappened(1, Times.Exactly);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            return configuration.MustHaveHappened(Repeated.AtLeast.Once);
+            return configuration.MustHaveHappened(1, Times.OrMore);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            return configuration.MustHaveHappened(Repeated.NoMoreThan.Once);
+            return configuration.MustHaveHappened(1, Times.OrLess);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            return configuration.MustHaveHappened(Repeated.Exactly.Twice);
+            return configuration.MustHaveHappened(2, Times.Exactly);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            return configuration.MustHaveHappened(Repeated.AtLeast.Twice);
+            return configuration.MustHaveHappened(2, Times.OrMore);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            return configuration.MustHaveHappened(Repeated.NoMoreThan.Twice);
+            return configuration.MustHaveHappened(2, Times.OrLess);
         }
     }
 }
