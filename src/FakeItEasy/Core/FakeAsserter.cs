@@ -24,7 +24,7 @@ namespace FakeItEasy.Core
         public delegate IFakeAsserter Factory(IEnumerable<ICompletedFakeObjectCall> calls);
 
         public virtual void AssertWasCalled(
-            Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Repeated repeatConstraint)
+            Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint)
         {
             var lastCall = this.calls.LastOrDefault();
             int lastSequenceNumber = lastCall != null ? SequenceNumberManager.GetSequenceNumber(lastCall) : -1;
@@ -32,12 +32,12 @@ namespace FakeItEasy.Core
             bool IsBeforeAssertionStart(ICompletedFakeObjectCall call) => SequenceNumberManager.GetSequenceNumber(call) <= lastSequenceNumber;
 
             var matchedCallCount = this.calls.Count(c => IsBeforeAssertionStart(c) && callPredicate(c));
-            if (!repeatConstraint.Matches(matchedCallCount))
+            if (!callCountConstraint.Matches(matchedCallCount))
             {
                 var description = this.outputWriterFactory(new StringBuilder());
                 callDescriber.Invoke(description);
 
-                var message = this.CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), description.Builder.ToString(), repeatConstraint.ToString(), matchedCallCount);
+                var message = this.CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), description.Builder.ToString(), callCountConstraint.ToString(), matchedCallCount);
                 throw new ExpectationException(message);
             }
         }

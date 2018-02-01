@@ -4,6 +4,6 @@ namespace FakeItEasy.Core
 
     internal interface IFakeAsserter
     {
-        void AssertWasCalled(Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Repeated repeatConstraint);
+        void AssertWasCalled(Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint);
     }
 }

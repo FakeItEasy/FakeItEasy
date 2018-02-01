@@ -69,14 +69,14 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(timesOption, nameof(timesOption));
 
-            return this.MustHaveHappened(timesOption.ToRepeated(numberOfTimes));
+            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression).MustHaveHappened(numberOfTimes, timesOption);
         }
 
         public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
         {
             Guard.AgainstNull(predicate, nameof(predicate));
 
-            return this.MustHaveHappened(Repeated.Like(predicate));
+            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression).MustHaveHappenedANumberOfTimesMatching(predicate);
         }
 
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>
@@ -153,14 +153,14 @@ namespace FakeItEasy.Configuration
             {
                 Guard.AgainstNull(timesOption, nameof(timesOption));
 
-                return this.MustHaveHappened(timesOption.ToRepeated(numberOfTimes));
+                return this.voidConfiguration.MustHaveHappened(numberOfTimes, timesOption);
             }
 
             public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
             {
                 Guard.AgainstNull(predicate, nameof(predicate));
 
-                return this.MustHaveHappened(Repeated.Like(predicate));
+                return this.voidConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
             }
 
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>

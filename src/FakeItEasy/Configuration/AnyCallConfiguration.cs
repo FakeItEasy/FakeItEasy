@@ -87,14 +87,14 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(timesOption, nameof(timesOption));
 
-            return this.MustHaveHappened(timesOption.ToRepeated(numberOfTimes));
+            return this.VoidConfiguration.MustHaveHappened(numberOfTimes, timesOption);
         }
 
         public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
         {
             Guard.AgainstNull(predicate, nameof(predicate));
 
-            return this.MustHaveHappened(Repeated.Like(predicate));
+            return this.VoidConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
         }
 
         public IAnyCallConfigurationWithNoReturnTypeSpecified Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)

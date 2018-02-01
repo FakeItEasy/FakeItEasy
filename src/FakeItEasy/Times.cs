@@ -1,6 +1,7 @@
 namespace FakeItEasy
 {
     using System.Diagnostics.CodeAnalysis;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Helps define the number of times to expect a faked call to have occurred.
@@ -29,56 +30,56 @@ namespace FakeItEasy
         /// </summary>
         public static Times OrLess { get; } = new TimesOrLess();
 
-        internal abstract Repeated ToRepeated(int numberOfTimes);
+        internal abstract CallCountConstraint ToCallCountConstraint(int numberOfTimes);
 
         private class TimesExactly : Times
         {
-            internal override Repeated ToRepeated(int numberOfTimes)
+            internal override CallCountConstraint ToCallCountConstraint(int numberOfTimes)
             {
                 switch (numberOfTimes)
                 {
                     case 0:
-                        return Repeated.Never;
+                        return new CallCountConstraint(n => n == 0, "never");
                     case 1:
-                        return Repeated.Exactly.Once;
+                        return new CallCountConstraint(n => n == 1, "exactly once");
                     case 2:
-                        return Repeated.Exactly.Twice;
+                        return new CallCountConstraint(n => n == 2, "exactly twice");
                     default:
-                        return Repeated.Exactly.Times(numberOfTimes);
+                        return new CallCountConstraint(n => n == numberOfTimes, $"exactly {numberOfTimes} times");
                 }
             }
         }
 
         private class TimesOrMore : Times
         {
-            internal override Repeated ToRepeated(int numberOfTimes)
+            internal override CallCountConstraint ToCallCountConstraint(int numberOfTimes)
             {
                 switch (numberOfTimes)
                 {
                     case 1:
-                        return Repeated.AtLeast.Once;
+                        return new CallCountConstraint(n => n >= 1, "at least once");
                     case 2:
-                        return Repeated.AtLeast.Twice;
+                        return new CallCountConstraint(n => n >= 2, "at least twice");
                     default:
-                        return Repeated.AtLeast.Times(numberOfTimes);
+                        return new CallCountConstraint(n => n >= numberOfTimes, $"at least {numberOfTimes} times");
                 }
             }
         }
 
         private class TimesOrLess : Times
         {
-            internal override Repeated ToRepeated(int numberOfTimes)
+            internal override CallCountConstraint ToCallCountConstraint(int numberOfTimes)
             {
                 switch (numberOfTimes)
                 {
                     case 0:
-                        return Repeated.Never;
+                        return new CallCountConstraint(n => n <= 0, "never");
                     case 1:
-                        return Repeated.NoMoreThan.Once;
+                        return new CallCountConstraint(n => n <= 1, "no more than once");
                     case 2:
-                        return Repeated.NoMoreThan.Twice;
+                        return new CallCountConstraint(n => n <= 2, "no more than twice");
                     default:
-                        return Repeated.NoMoreThan.Times(numberOfTimes);
+                        return new CallCountConstraint(n => n <= numberOfTimes, $"no more than {numberOfTimes} times");
                 }
             }
         }

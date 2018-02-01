@@ -27,22 +27,22 @@ namespace FakeItEasy.Core
             FakeManager fakeManager,
             Func<IFakeObjectCall, bool> callPredicate,
             Action<IOutputWriter> callDescriber,
-            Repeated repeatConstraint)
+            CallCountConstraint callCountConstraint)
         {
             Guard.AgainstNull(fakeManager, nameof(fakeManager));
             Guard.AgainstNull(callPredicate, nameof(callPredicate));
             Guard.AgainstNull(callDescriber, nameof(callDescriber));
-            Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
+            Guard.AgainstNull(callCountConstraint, nameof(callCountConstraint));
             this.fakeManagers.Add(fakeManager);
             this.assertedCalls.Add(
-                new AssertedCall { CallDescriber = callDescriber, RepeatDescription = repeatConstraint.ToString() });
+                new AssertedCall { CallDescriber = callDescriber, MatchingCountDescription = callCountConstraint.ToString() });
 
             var allCalls = this.fakeManagers.SelectMany(f => f.GetRecordedCalls()).OrderBy(SequenceNumberManager.GetSequenceNumber).ToList();
 
             int matchedCallCount = 0;
             foreach (var currentCall in allCalls.SkipWhile(c => SequenceNumberManager.GetSequenceNumber(c) <= this.currentSequenceNumber))
             {
-                if (repeatConstraint.Matches(matchedCallCount))
+                if (callCountConstraint.Matches(matchedCallCount))
                 {
                     return;
                 }
@@ -54,7 +54,7 @@ namespace FakeItEasy.Core
                 }
             }
 
-            if (!repeatConstraint.Matches(matchedCallCount))
+            if (!callCountConstraint.Matches(matchedCallCount))
             {
                 this.ThrowExceptionWhenAssertionFailed(allCalls);
             }
@@ -79,7 +79,7 @@ namespace FakeItEasy.Core
                         message.Write("'");
                         call.CallDescriber.Invoke(message);
                         message.Write("' ");
-                        message.Write(call.RepeatDescription);
+                        message.Write(call.MatchingCountDescription);
                         message.WriteLine();
                     }
                 }
@@ -99,7 +99,7 @@ namespace FakeItEasy.Core
         private struct AssertedCall
         {
             public Action<IOutputWriter> CallDescriber;
-            public string RepeatDescription;
+            public string MatchingCountDescription;
         }
     }
 }

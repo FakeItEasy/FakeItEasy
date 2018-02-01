@@ -4,6 +4,7 @@ namespace FakeItEasy
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
 
     /// <summary>
     /// Provides syntax for specifying the number of times a call must have occurred when asserting on
@@ -95,6 +96,12 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Creates a <c>CallCountConstraint</c> from this object.
+        /// </summary>
+        /// <returns>An equivalent <c>CallCountConstraint</c>.</returns>
+        internal abstract CallCountConstraint ToCallCountConstraint();
+
+        /// <summary>
         /// When implemented gets a value indicating if the repeat is matched
         /// by the Happened-instance.
         /// </summary>
@@ -120,6 +127,11 @@ namespace FakeItEasy
             internal override bool Matches(int repeat)
             {
                 return this.repeatValidation.Compile().Invoke(repeat);
+            }
+
+            internal override CallCountConstraint ToCallCountConstraint()
+            {
+                return new CallCountConstraint(this.repeatValidation.Compile(), $"the number of times specified by the predicate '{this.repeatValidation}'");
             }
         }
 
@@ -171,6 +183,11 @@ namespace FakeItEasy
                 {
                     return this.repeatValidator(repeat);
                 }
+
+                internal override CallCountConstraint ToCallCountConstraint()
+                {
+                    return new CallCountConstraint(this.repeatValidator, this.description);
+                }
             }
         }
 
@@ -184,6 +201,11 @@ namespace FakeItEasy
             internal override bool Matches(int repeat)
             {
                 return repeat == 0;
+            }
+
+            internal override CallCountConstraint ToCallCountConstraint()
+            {
+                return new CallCountConstraint(n => n == 0, this.ToString());
             }
         }
     }

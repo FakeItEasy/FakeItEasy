@@ -142,31 +142,36 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
 
-            var asserter = this.asserterFactory.Invoke(this.Calls);
-
-            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
-
-            return new UnorderedCallAssertion(this.manager, this.Matcher, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
+            return this.MustHaveHappened(repeatConstraint.ToCallCountConstraint());
         }
 
         public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
         {
             Guard.AgainstNull(timesOption, nameof(timesOption));
 
-            return this.MustHaveHappened(timesOption.ToRepeated(numberOfTimes));
+            return this.MustHaveHappened(timesOption.ToCallCountConstraint(numberOfTimes));
         }
 
         public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
         {
             Guard.AgainstNull(predicate, nameof(predicate));
 
-            return this.MustHaveHappened(Repeated.Like(predicate));
+            return this.MustHaveHappened(new CallCountConstraint(predicate.Compile(), $"the number of times specified by the predicate '{predicate}'"));
         }
 
         public IAnyCallConfigurationWithVoidReturnType Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
             this.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
             return this;
+        }
+
+        private UnorderedCallAssertion MustHaveHappened(CallCountConstraint callCountConstraint)
+        {
+            var asserter = this.asserterFactory.Invoke(this.Calls);
+
+            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.WriteDescriptionOfValidCall, callCountConstraint);
+
+            return new UnorderedCallAssertion(this.manager, this.Matcher, this.RuleBeingBuilt.WriteDescriptionOfValidCall, callCountConstraint);
         }
 
         private void AddRuleIfNeeded()
@@ -259,14 +264,14 @@ namespace FakeItEasy.Configuration
             {
                 Guard.AgainstNull(timesOption, nameof(timesOption));
 
-                return this.MustHaveHappened(timesOption.ToRepeated(numberOfTimes));
+                return this.ParentConfiguration.MustHaveHappened(numberOfTimes, timesOption);
             }
 
             public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
             {
                 Guard.AgainstNull(predicate, nameof(predicate));
 
-                return this.MustHaveHappened(Repeated.Like(predicate));
+                return this.ParentConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
             }
 
             public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)

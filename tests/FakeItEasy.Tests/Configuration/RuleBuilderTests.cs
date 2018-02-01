@@ -219,41 +219,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void Assert_with_void_call_should_assert_on_assertions_produced_by_factory()
-        {
-            // Arrange
-            var repeatedConstraint = Repeated.Exactly.Times(99);
-
-            // Act
-            this.builder.MustHaveHappened(repeatedConstraint);
-
-            // Assert
-            A.CallTo(() => this.asserter.AssertWasCalled(
-                A<Func<ICompletedFakeObjectCall, bool>>._,
-                this.ruleProducedByFactory.WriteDescriptionOfValidCall,
-                repeatedConstraint))
-                .MustHaveHappened();
-        }
-
-        [Fact]
-        public void Assert_with_function_call_should_assert_on_assertions_produced_by_factory()
-        {
-            // Arrange
-            var repeatedConstraint = Repeated.Exactly.Times(99);
-
-            // Act
-            var returnConfig = new RuleBuilder.ReturnValueConfiguration<int>(this.builder);
-            returnConfig.MustHaveHappened(repeatedConstraint);
-
-            // Assert
-            A.CallTo(() => this.asserter.AssertWasCalled(
-                A<Func<ICompletedFakeObjectCall, bool>>._,
-                this.ruleProducedByFactory.WriteDescriptionOfValidCall,
-                repeatedConstraint))
-                .MustHaveHappened();
-        }
-
-        [Fact]
         public void Where_should_apply_where_predicate_to_built_rule()
         {
             // Arrange
