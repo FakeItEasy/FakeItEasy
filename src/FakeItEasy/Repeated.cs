@@ -101,14 +101,6 @@ namespace FakeItEasy
         /// <returns>An equivalent <c>CallCountConstraint</c>.</returns>
         internal abstract CallCountConstraint ToCallCountConstraint();
 
-        /// <summary>
-        /// When implemented gets a value indicating if the repeat is matched
-        /// by the Happened-instance.
-        /// </summary>
-        /// <param name="repeat">The repeat of a call.</param>
-        /// <returns>True if the repeat is a match.</returns>
-        internal abstract bool Matches(int repeat);
-
         private class ExpressionRepeated
             : Repeated
         {
@@ -117,16 +109,6 @@ namespace FakeItEasy
             public ExpressionRepeated(Expression<Func<int, bool>> repeatValidation)
             {
                 this.repeatValidation = repeatValidation;
-            }
-
-            public override string ToString()
-            {
-                return $"the number of times specified by the predicate '{this.repeatValidation}'";
-            }
-
-            internal override bool Matches(int repeat)
-            {
-                return this.repeatValidation.Compile().Invoke(repeat);
             }
 
             internal override CallCountConstraint ToCallCountConstraint()
@@ -174,16 +156,6 @@ namespace FakeItEasy
                     this.description = description;
                 }
 
-                public override string ToString()
-                {
-                    return this.description;
-                }
-
-                internal override bool Matches(int repeat)
-                {
-                    return this.repeatValidator(repeat);
-                }
-
                 internal override CallCountConstraint ToCallCountConstraint()
                 {
                     return new CallCountConstraint(this.repeatValidator, this.description);
@@ -193,16 +165,6 @@ namespace FakeItEasy
 
         private class NeverRepeated : Repeated
         {
-            public override string ToString()
-            {
-                return "never";
-            }
-
-            internal override bool Matches(int repeat)
-            {
-                return repeat == 0;
-            }
-
             internal override CallCountConstraint ToCallCountConstraint()
             {
                 return new CallCountConstraint(n => n == 0, this.ToString());
