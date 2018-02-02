@@ -41,11 +41,11 @@ namespace FakeItEasy
                     case 0:
                         return new CallCountConstraint(n => n == 0, "never");
                     case 1:
-                        return new CallCountConstraint(n => n == 1, "exactly once");
+                        return new CallCountConstraint(n => n == 1, "once exactly");
                     case 2:
-                        return new CallCountConstraint(n => n == 2, "exactly twice");
+                        return new CallCountConstraint(n => n == 2, "twice exactly");
                     default:
-                        return new CallCountConstraint(n => n == numberOfTimes, $"exactly {numberOfTimes} times");
+                        return new CallCountConstraint(n => n == numberOfTimes, $"{numberOfTimes} times exactly");
                 }
             }
         }
@@ -57,11 +57,11 @@ namespace FakeItEasy
                 switch (numberOfTimes)
                 {
                     case 1:
-                        return new CallCountConstraint(n => n >= 1, "at least once");
+                        return new CallCountConstraint(n => n >= 1, "once or more");
                     case 2:
-                        return new CallCountConstraint(n => n >= 2, "at least twice");
+                        return new CallCountConstraint(n => n >= 2, "twice or more");
                     default:
-                        return new CallCountConstraint(n => n >= numberOfTimes, $"at least {numberOfTimes} times");
+                        return new CallCountConstraint(n => n >= numberOfTimes, $"{numberOfTimes} times or more");
                 }
             }
         }
@@ -75,11 +75,11 @@ namespace FakeItEasy
                     case 0:
                         return new CallCountConstraint(n => n <= 0, "never");
                     case 1:
-                        return new CallCountConstraint(n => n <= 1, "no more than once");
+                        return new CallCountConstraint(n => n <= 1, "once or less");
                     case 2:
-                        return new CallCountConstraint(n => n <= 2, "no more than twice");
+                        return new CallCountConstraint(n => n <= 2, "twice or less");
                     default:
-                        return new CallCountConstraint(n => n <= numberOfTimes, $"no more than {numberOfTimes} times");
+                        return new CallCountConstraint(n => n <= numberOfTimes, $"{numberOfTimes} times or less");
                 }
             }
         }

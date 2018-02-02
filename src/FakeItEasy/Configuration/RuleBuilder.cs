@@ -156,7 +156,7 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(predicate, nameof(predicate));
 
-            return this.MustHaveHappened(new CallCountConstraint(predicate.Compile(), $"the number of times specified by the predicate '{predicate}'"));
+            return this.MustHaveHappened(new CallCountConstraint(predicate.Compile(), $"a number of times matching the predicate '{predicate}'"));
         }
 
         public IAnyCallConfigurationWithVoidReturnType Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
