@@ -161,6 +161,12 @@ namespace FakeItEasy
     public class static AssertConfigurationExtensions
     {
         public static FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
+        public static FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappenedOnceExactly(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
+        public static FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappenedOnceOrLess(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
+        public static FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappenedOnceOrMore(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
+        public static FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappenedTwiceExactly(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
+        public static FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappenedTwiceOrLess(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
+        public static FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappenedTwiceOrMore(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
         public static void MustNotHaveHappened(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
     }
     public class static AsyncReturnValueConfigurationExtensions
@@ -379,6 +385,12 @@ namespace FakeItEasy
         public static void ReturnsNextFromSequence<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, params T[] values) { }
         public static void ReturnsNextFromSequence<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, params T[] values) { }
     }
+    public abstract class Times
+    {
+        public static FakeItEasy.Times Exactly { get; }
+        public static FakeItEasy.Times OrLess { get; }
+        public static FakeItEasy.Times OrMore { get; }
+    }
     [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.All)]
     [System.ObsoleteAttribute("Test fixture initialization will be removed in version 5.0.0.")]
     public class UnderTestAttribute : System.Attribute
@@ -427,6 +439,8 @@ namespace FakeItEasy.Configuration
     public interface IAssertConfiguration : FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(FakeItEasy.Repeated repeatConstraint);
+        FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(int numberOfTimes, FakeItEasy.Times timesOption);
+        FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(System.Linq.Expressions.Expression<System.Func<int, bool>> predicate);
     }
     public interface ICallbackConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     

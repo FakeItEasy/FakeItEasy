@@ -24,7 +24,7 @@ namespace FakeItEasy.Core
         public delegate IFakeAsserter Factory(IEnumerable<ICompletedFakeObjectCall> calls);
 
         public virtual void AssertWasCalled(
-            Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, Repeated repeatConstraint)
+            Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint)
         {
             var lastCall = this.calls.LastOrDefault();
             int lastSequenceNumber = lastCall != null ? SequenceNumberManager.GetSequenceNumber(lastCall) : -1;
@@ -32,12 +32,12 @@ namespace FakeItEasy.Core
             bool IsBeforeAssertionStart(ICompletedFakeObjectCall call) => SequenceNumberManager.GetSequenceNumber(call) <= lastSequenceNumber;
 
             var matchedCallCount = this.calls.Count(c => IsBeforeAssertionStart(c) && callPredicate(c));
-            if (!repeatConstraint.Matches(matchedCallCount))
+            if (!callCountConstraint.Matches(matchedCallCount))
             {
                 var description = this.outputWriterFactory(new StringBuilder());
                 callDescriber.Invoke(description);
 
-                var message = this.CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), description.Builder.ToString(), repeatConstraint.ToString(), matchedCallCount);
+                var message = this.CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), description.Builder.ToString(), callCountConstraint.ToString(), matchedCallCount);
                 throw new ExpectationException(message);
             }
         }
@@ -55,9 +55,9 @@ namespace FakeItEasy.Core
             }
         }
 
-        private static void AppendExpectation(IEnumerable<IFakeObjectCall> calls, string repeatDescription, int matchedCallCount, IOutputWriter writer)
+        private static void AppendExpectation(IEnumerable<IFakeObjectCall> calls, string callCountDescription, int matchedCallCount, IOutputWriter writer)
         {
-            writer.Write("Expected to find it {0} ", repeatDescription);
+            writer.Write("Expected to find it {0} ", callCountDescription);
 
             if (calls.Any())
             {
@@ -94,7 +94,7 @@ namespace FakeItEasy.Core
         }
 
         private string CreateExceptionMessage(
-            IEnumerable<IFakeObjectCall> calls, string callDescription, string repeatDescription, int matchedCallCount)
+            IEnumerable<IFakeObjectCall> calls, string callDescription, string callCountDescription, int matchedCallCount)
         {
             var writer = this.outputWriterFactory(new StringBuilder());
             writer.WriteLine();
@@ -102,7 +102,7 @@ namespace FakeItEasy.Core
             using (writer.Indent())
             {
                 AppendCallDescription(callDescription, writer);
-                AppendExpectation(calls, repeatDescription, matchedCallCount, writer);
+                AppendExpectation(calls, callCountDescription, matchedCallCount, writer);
                 AppendCallList(calls, this.callWriter, writer);
                 writer.WriteLine();
             }

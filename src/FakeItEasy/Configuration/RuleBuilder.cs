@@ -2,6 +2,7 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using FakeItEasy.Core;
 
     internal class RuleBuilder
@@ -48,17 +49,17 @@ namespace FakeItEasy.Configuration
 
         private BuildableCallRule PreviousRule { get; set; }
 
-        public IThenConfiguration<IVoidConfiguration> NumberOfTimes(int numberOfTimesToRepeat)
+        public IThenConfiguration<IVoidConfiguration> NumberOfTimes(int numberOfTimes)
         {
-            if (numberOfTimesToRepeat <= 0)
+            if (numberOfTimes <= 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(numberOfTimesToRepeat),
-                    numberOfTimesToRepeat,
-                    "The number of times to repeat is not greater than zero.");
+                    nameof(numberOfTimes),
+                    numberOfTimes,
+                    "The number of times to occur is not greater than zero.");
             }
 
-            this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimesToRepeat;
+            this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimes;
             return this;
         }
 
@@ -141,17 +142,36 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
 
-            var asserter = this.asserterFactory.Invoke(this.Calls);
+            return this.MustHaveHappened(repeatConstraint.ToCallCountConstraint());
+        }
 
-            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
+        public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
+        {
+            Guard.AgainstNull(timesOption, nameof(timesOption));
 
-            return new UnorderedCallAssertion(this.manager, this.Matcher, this.RuleBeingBuilt.WriteDescriptionOfValidCall, repeatConstraint);
+            return this.MustHaveHappened(timesOption.ToCallCountConstraint(numberOfTimes));
+        }
+
+        public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
+        {
+            Guard.AgainstNull(predicate, nameof(predicate));
+
+            return this.MustHaveHappened(new CallCountConstraint(predicate.Compile(), $"a number of times matching the predicate '{predicate}'"));
         }
 
         public IAnyCallConfigurationWithVoidReturnType Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
             this.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
             return this;
+        }
+
+        private UnorderedCallAssertion MustHaveHappened(CallCountConstraint callCountConstraint)
+        {
+            var asserter = this.asserterFactory.Invoke(this.Calls);
+
+            asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.WriteDescriptionOfValidCall, callCountConstraint);
+
+            return new UnorderedCallAssertion(this.manager, this.Matcher, this.RuleBeingBuilt.WriteDescriptionOfValidCall, callCountConstraint);
         }
 
         private void AddRuleIfNeeded()
@@ -240,6 +260,20 @@ namespace FakeItEasy.Configuration
             public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
                 this.ParentConfiguration.MustHaveHappened(repeatConstraint);
 
+            public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
+            {
+                Guard.AgainstNull(timesOption, nameof(timesOption));
+
+                return this.ParentConfiguration.MustHaveHappened(numberOfTimes, timesOption);
+            }
+
+            public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
+            {
+                Guard.AgainstNull(predicate, nameof(predicate));
+
+                return this.ParentConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
+            }
+
             public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
             {
                 this.ParentConfiguration.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
@@ -264,9 +298,9 @@ namespace FakeItEasy.Configuration
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer) =>
                 this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2, T3, T4>(valueProducer);
 
-            public IThenConfiguration<IReturnValueConfiguration<TMember>> NumberOfTimes(int numberOfTimesToRepeat)
+            public IThenConfiguration<IReturnValueConfiguration<TMember>> NumberOfTimes(int numberOfTimes)
             {
-                this.ParentConfiguration.NumberOfTimes(numberOfTimesToRepeat);
+                this.ParentConfiguration.NumberOfTimes(numberOfTimes);
                 return this;
             }
         }

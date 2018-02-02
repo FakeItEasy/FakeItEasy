@@ -92,7 +92,7 @@
             fakeCallProcessor1.Should().BeSameAs(fakeCallProcessor2);
             fakeCallProcessor2.Should().BeSameAs(fakeCallProcessor3);
 
-            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -106,7 +106,7 @@
             this.fakeManagerProvider.EnsureInitialized(this.proxy);
 
             // Assert
-            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappenedOnceExactly();
         }
 
         private static FakeManager GetInitializedFakeManager(FakeManagerProvider fakeManagerProvider)

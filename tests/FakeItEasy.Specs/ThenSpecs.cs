@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using FakeItEasy.Tests.TestHelpers;
@@ -47,8 +47,8 @@
                 });
 
             "Then the first delegate is invoked once, and the second delegate is invoked twice"
-                .x(() => A.CallTo(() => action1()).MustHaveHappened(Repeated.Exactly.Once)
-                    .Then(A.CallTo(() => action2()).MustHaveHappened(Repeated.Exactly.Twice)));
+                .x(() => A.CallTo(() => action1()).MustHaveHappenedOnceExactly()
+                    .Then(A.CallTo(() => action2()).MustHaveHappenedTwiceExactly()));
         }
 
         [Scenario]
@@ -77,7 +77,7 @@
                 });
 
             "Then the delegate is invoked twice"
-                .x(() => A.CallTo(() => action()).MustHaveHappened(Repeated.Exactly.Twice));
+                .x(() => A.CallTo(() => action()).MustHaveHappenedTwiceExactly());
 
             "And the third call throws an exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
@@ -149,8 +149,8 @@
                 });
 
             "Then the first delegate is invoked once, and the second delegate is invoked twice"
-                .x(() => A.CallTo(() => action1()).MustHaveHappened(Repeated.Exactly.Once)
-                    .Then(A.CallTo(() => action2()).MustHaveHappened(Repeated.Exactly.Twice)));
+                .x(() => A.CallTo(() => action1()).MustHaveHappenedOnceExactly()
+                    .Then(A.CallTo(() => action2()).MustHaveHappenedTwiceExactly()));
 
             "And the fourth call throws an exception"
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
