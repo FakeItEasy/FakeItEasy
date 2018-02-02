@@ -49,17 +49,17 @@ namespace FakeItEasy.Configuration
 
         private BuildableCallRule PreviousRule { get; set; }
 
-        public IThenConfiguration<IVoidConfiguration> NumberOfTimes(int numberOfTimesToRepeat)
+        public IThenConfiguration<IVoidConfiguration> NumberOfTimes(int numberOfTimes)
         {
-            if (numberOfTimesToRepeat <= 0)
+            if (numberOfTimes <= 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(numberOfTimesToRepeat),
-                    numberOfTimesToRepeat,
-                    "The number of times to repeat is not greater than zero.");
+                    nameof(numberOfTimes),
+                    numberOfTimes,
+                    "The number of times to occur is not greater than zero.");
             }
 
-            this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimesToRepeat;
+            this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimes;
             return this;
         }
 
@@ -298,9 +298,9 @@ namespace FakeItEasy.Configuration
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer) =>
                 this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2, T3, T4>(valueProducer);
 
-            public IThenConfiguration<IReturnValueConfiguration<TMember>> NumberOfTimes(int numberOfTimesToRepeat)
+            public IThenConfiguration<IReturnValueConfiguration<TMember>> NumberOfTimes(int numberOfTimes)
             {
-                this.ParentConfiguration.NumberOfTimes(numberOfTimesToRepeat);
+                this.ParentConfiguration.NumberOfTimes(numberOfTimes);
                 return this;
             }
         }

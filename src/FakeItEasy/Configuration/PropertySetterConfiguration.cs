@@ -182,8 +182,8 @@ namespace FakeItEasy.Configuration
                 this.voidAfterCallConfiguration = voidAfterCallConfiguration;
             }
 
-            public IThenConfiguration<IPropertySetterConfiguration> NumberOfTimes(int numberOfTimesToRepeat) =>
-                new PropertySetterThenAdapter(this.voidAfterCallConfiguration.NumberOfTimes(numberOfTimesToRepeat));
+            public IThenConfiguration<IPropertySetterConfiguration> NumberOfTimes(int numberOfTimes) =>
+                new PropertySetterThenAdapter(this.voidAfterCallConfiguration.NumberOfTimes(numberOfTimes));
         }
 
         private class PropertySetterThenAdapter : IThenConfiguration<IPropertySetterConfiguration>
