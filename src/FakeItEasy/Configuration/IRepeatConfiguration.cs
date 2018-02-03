@@ -9,8 +9,8 @@ namespace FakeItEasy.Configuration
         /// <summary>
         /// Specifies the number of times the configured behavior should be applied.
         /// </summary>
-        /// <param name="numberOfTimesToRepeat">The number of times the configured behavior should be applied.</param>
+        /// <param name="numberOfTimes">The number of times the configured behavior should be applied.</param>
         /// <returns>A configuration object that lets you define the subsequent behavior.</returns>
-        IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimesToRepeat);
+        IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimes);
     }
 }
