@@ -493,7 +493,7 @@ namespace FakeItEasy.Configuration
     public interface IRepeatConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     
     {
-        FakeItEasy.Configuration.IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimesToRepeat);
+        FakeItEasy.Configuration.IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimes);
     }
     public interface IRepeatSpecification : FakeItEasy.IHideObjectMembers
     {
