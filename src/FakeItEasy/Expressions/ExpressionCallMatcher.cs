@@ -71,8 +71,7 @@ namespace FakeItEasy.Expressions
 
             result.Append(this.Method.DeclaringType);
             result.Append(".");
-            result.Append(this.Method.Name);
-            result.Append(this.Method.GetGenericArgumentsString());
+            this.AppendMethodName(result);
 
             this.AppendArgumentsListString(result);
 
@@ -116,26 +115,86 @@ namespace FakeItEasy.Expressions
             return this.methodInfoManager.WillInvokeSameMethodOnTarget(type, first, second);
         }
 
-        private void AppendArgumentsListString(StringBuilder result)
+        private void AppendMethodName(StringBuilder result)
         {
-            result.Append("(");
-            int index = 0;
-            var parameters = this.Method.GetParameters();
-
-            foreach (var constraint in this.argumentConstraints)
+            if (this.Method.IsPropertyGetterOrSetter())
             {
-                if (index > 0)
-                {
-                    result.Append(", ");
-                }
-
-                var parameter = parameters[index];
-                result.Append(parameter.Name + ": ");
-                constraint.WriteDescription(this.outputWriterFactory(result));
-                index++;
+                result.Append(this.Method.Name.Substring(4));
+            }
+            else
+            {
+                result.Append(this.Method.Name);
             }
 
-            result.Append(")");
+            result.Append(this.Method.GetGenericArgumentsString());
+        }
+
+        private void AppendArgumentsListString(StringBuilder result)
+        {
+            var constraints = this.GetArgumentConstraintsForArgumentsList();
+            if (constraints.Any() || !this.Method.IsPropertyGetterOrSetter())
+            {
+                this.AppendArgumentListPrefix(result);
+                int index = 0;
+                var parameters = this.Method.GetParameters();
+
+                foreach (var constraint in constraints)
+                {
+                    if (index > 0)
+                    {
+                        result.Append(", ");
+                    }
+
+                    var parameter = parameters[index];
+                    result.Append(parameter.Name + ": ");
+                    constraint.WriteDescription(this.outputWriterFactory(result));
+                    index++;
+                }
+
+                this.AppendArgumentListSuffix(result);
+            }
+
+            if (this.Method.IsPropertySetter())
+            {
+                result.Append(" = ");
+                var valueConstraint = this.argumentConstraints.Last();
+                valueConstraint.WriteDescription(this.outputWriterFactory(result));
+            }
+        }
+
+        private IList<IArgumentConstraint> GetArgumentConstraintsForArgumentsList()
+        {
+            var list = this.argumentConstraints.ToList();
+            if (this.Method.IsPropertySetter())
+            {
+                list.RemoveAt(list.Count - 1);
+            }
+
+            return list;
+        }
+
+        private void AppendArgumentListPrefix(StringBuilder builder)
+        {
+            if (this.Method.IsPropertyGetterOrSetter())
+            {
+                builder.Append("[");
+            }
+            else
+            {
+                builder.Append("(");
+            }
+        }
+
+        private void AppendArgumentListSuffix(StringBuilder builder)
+        {
+            if (this.Method.IsPropertyGetterOrSetter())
+            {
+                builder.Append("]");
+            }
+            else
+            {
+                builder.Append(")");
+            }
         }
 
         private bool ArgumentsMatches(ArgumentCollection argumentCollection)
