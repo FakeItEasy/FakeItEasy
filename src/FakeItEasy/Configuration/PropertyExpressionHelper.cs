@@ -26,8 +26,8 @@ namespace FakeItEasy.Configuration
                 .Concat(new[] { parsedCallExpression.CalledMethod.ReturnType })
                 .ToArray();
 
-            var indexerSetterInfo = parsedCallExpression.CallTarget.GetType()
-                .GetMethod("set_" + propertyName, parameterTypes);
+            var callTargetType = Fake.GetFakeManager(parsedCallExpression.CallTarget).FakeObjectType;
+            var indexerSetterInfo = callTargetType.GetMethod("set_" + propertyName, parameterTypes);
 
             if (indexerSetterInfo == null)
             {
