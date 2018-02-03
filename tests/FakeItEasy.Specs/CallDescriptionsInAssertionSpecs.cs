@@ -72,7 +72,7 @@ namespace FakeItEasy.Specs
 
             "And the exception should correctly describe the asserted call"
                 .x(() => exception.Message.Should().Match(
-                    "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.get_Baz()\r\n*"));
+                    "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz\r\n*"));
         }
 
         [Scenario]
@@ -96,7 +96,27 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void AssertedCallDescriptionForPropertySetter(IFoo fake, Exception exception)
+        public void AssertedCallDescriptionForPropertySetterWithAnyValue(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And no call is made to the fake"
+                .x(() => { });
+
+            "When I assert that a property setter was called"
+                .x(() => exception = Record.Exception(() => A.CallToSet(() => fake.Baz).MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception should correctly describe the asserted call"
+                .x(() => exception.Message.Should().Match(
+                    "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz = <Ignored>\r\n*"));
+        }
+
+        [Scenario]
+        public void AssertedCallDescriptionForPropertySetterWithConstantValue(IFoo fake, Exception exception)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -112,11 +132,31 @@ namespace FakeItEasy.Specs
 
             "And the exception should correctly describe the asserted call"
                 .x(() => exception.Message.Should().Match(
-                    "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.set_Baz(value: 42)\r\n*"));
+                    "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz = 42\r\n*"));
         }
 
         [Scenario]
-        public void ActualCallDescriptionForPropertySetter(IFoo fake, Exception exception)
+        public void AssertedCallDescriptionForPropertySetterWithConstrainedValue(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And no call is made to the fake"
+                .x(() => { });
+
+            "When I assert that a property setter was called"
+                .x(() => exception = Record.Exception(() => A.CallToSet(() => fake.Baz).To(() => A<int>.That.Matches(i => i % 2 == 0, "an even number")).MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception should correctly describe the asserted call"
+                .x(() => exception.Message.Should().Match(
+                    "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz = <an even number>\r\n*"));
+        }
+
+        [Scenario]
+        public void ActualCallDescriptionForPropertySetterWithConstantValue(IFoo fake, Exception exception)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
