@@ -59,15 +59,8 @@ namespace FakeItEasy.Analyzer
             }
 
             var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(call, context);
-            if (methodSymbol == null)
-            {
-                return;
-            }
-
-            var methodFullName =
-                string.Concat(methodSymbol.ContainingType.GetFullName(), ".", methodSymbol.GetDecoratedName());
-
-            if (!CallSpecMethods.Contains(methodFullName))
+            if (methodSymbol == null ||
+                !CallSpecMethods.Contains(methodSymbol.GetFullName()))
             {
                 return;
             }

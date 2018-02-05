@@ -68,6 +68,15 @@
             return method.Name + "`" + method.Arity;
         }
 
+        /// <summary>
+        /// Returns the full name of a method, including the type it's defined on, and decorated with
+        /// its arity if it's a generic method.
+        /// </summary>
+        /// <param name="method">The method for which to get the full name.</param>
+        /// <returns>The full name of the method.</returns>
+        public static string GetFullName(this IMethodSymbol method) =>
+            method.ContainingType.GetFullName() + '.' + method.GetDecoratedName();
+
         public static bool IsNullable(this INamedTypeSymbol type)
         {
             return type.GetFullName() == "System.Nullable`1";
