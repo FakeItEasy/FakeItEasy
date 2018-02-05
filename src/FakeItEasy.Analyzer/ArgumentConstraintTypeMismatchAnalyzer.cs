@@ -158,17 +158,17 @@ namespace FakeItEasy.Analyzer
                     }
 #if CSHARP
                 case ElementAccessExpressionSyntax elementAccess:
-                {
-                    var indexer = SymbolHelpers.GetAccessedIndexerSymbol(elementAccess, context);
-                    if (indexer == null)
                     {
-                        return false;
-                    }
+                        var indexer = SymbolHelpers.GetAccessedIndexerSymbol(elementAccess, context);
+                        if (indexer == null)
+                        {
+                            return false;
+                        }
 
-                    methodOrIndexerName = indexer.Name;
-                    parameters = indexer.Parameters;
-                    return true;
-                }
+                        methodOrIndexerName = indexer.Name;
+                        parameters = indexer.Parameters;
+                        return true;
+                    }
 #endif
                 default:
                     return false;
