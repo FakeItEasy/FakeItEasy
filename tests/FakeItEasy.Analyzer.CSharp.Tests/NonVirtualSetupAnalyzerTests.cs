@@ -148,7 +148,7 @@ namespace FakeItEasy.Analyzer.Tests
 
 ";
 
-           this.VerifyCSharpDiagnostic(
+            this.VerifyCSharpDiagnostic(
                 Test,
                 new DiagnosticResult
                 {
@@ -227,16 +227,16 @@ namespace AnalyzerPrototypeSubjectStatic
 }
 ";
 
-    this.VerifyCSharpDiagnostic(
-    Test,
-    new DiagnosticResult
-    {
-        Id = "FakeItEasy0002",
-        Message =
-            "Member Bar can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.",
-        Severity = DiagnosticSeverity.Error,
-        Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 26) }
-            });
+            this.VerifyCSharpDiagnostic(
+                Test,
+                new DiagnosticResult
+                {
+                    Id = "FakeItEasy0002",
+                    Message =
+                        "Member Bar can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.",
+                    Severity = DiagnosticSeverity.Error,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 26) }
+                });
         }
 
         [Fact]

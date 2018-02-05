@@ -281,7 +281,7 @@
             "When I start to configure a non-virtual non-void method on the object"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => notAFake.ReturnSomethingNonVirtual())));
 
-             "Then it throws an argument exception"
+            "Then it throws an argument exception"
                 .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
                     .And.Message.Should().Contain("Object 'FakeItEasy.Specs.ConfigurationSpecs+BaseClass' of type FakeItEasy.Specs.ConfigurationSpecs+BaseClass is not recognized as a fake object."));
         }
@@ -313,7 +313,7 @@
             "When I start to configure a sealed non-void method on the object"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => notAFake.ReturnSomething())));
 
-             "Then it throws an argument exception"
+            "Then it throws an argument exception"
                 .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
                     .And.Message.Should().Contain("Object 'FakeItEasy.Specs.ConfigurationSpecs+DerivedClass' of type FakeItEasy.Specs.ConfigurationSpecs+DerivedClass is not recognized as a fake object."));
         }
@@ -329,7 +329,7 @@
             "When I start to configure a sealed non-void method on the fake"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => fake.ReturnSomething())));
 
-             "Then it throws a fake configuration exception"
+            "Then it throws a fake configuration exception"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
                     .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
         }
