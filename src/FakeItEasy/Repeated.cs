@@ -4,23 +4,42 @@ namespace FakeItEasy
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
+    using FakeItEasy.Core;
 
     /// <summary>
-    /// Provides syntax for specifying the number of times a call must have been repeated when asserting on
+    /// Provides syntax for specifying the number of times a call must have occurred when asserting on
     /// fake object calls.
     /// </summary>
-    /// <example><code>A.CallTo(() => foo.Bar()).Assert(Happened.Once.Exactly);</code></example>
+    /// <remarks>
+    /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
+    /// version 5.0.0 and removed in version 6.0.0.
+    /// Prefer <see cref="IAssertConfiguration"/> methods and <see cref="AssertConfigurationExtensions"/>
+    /// extension methods that do not use <c>Repeated</c>.
+    /// </remarks>
+    /// <example><code>A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Once);</code></example>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
     public abstract class Repeated
     {
         /// <summary>
         /// Asserts that a call has not happened at all.
         /// </summary>
+        /// <remarks>
+        /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
+        /// version 5.0.0 and removed in version 6.0.0.
+        /// Prefer <see cref="AssertConfigurationExtensions.MustNotHaveHappened"/>.
+        /// </remarks>
         public static Repeated Never => new NeverRepeated();
 
         /// <summary>
         /// The call must have happened exactly the number of times that is specified in the next step.
         /// </summary>
+        /// <remarks>
+        /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
+        /// version 5.0.0 and removed in version 6.0.0.
+        /// Prefer <see cref="AssertConfigurationExtensions.MustHaveHappenedOnceExactly"/>,
+        /// <see cref="AssertConfigurationExtensions.MustHaveHappenedTwiceExactly"/>, or
+        /// <see cref="IAssertConfiguration.MustHaveHappened(Int32, Times)"/> (using <see cref="Times.Exactly"/>).
+        /// </remarks>
         public static IRepeatSpecification Exactly
         {
             get { return new RepeatSpecification((actual, expected) => actual == expected, "exactly"); }
@@ -30,6 +49,13 @@ namespace FakeItEasy
         /// The call must have happened any number of times greater than or equal to the number of times that is specified
         /// in the next step.
         /// </summary>
+        /// <remarks>
+        /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
+        /// version 5.0.0 and removed in version 6.0.0.
+        /// Prefer <see cref="AssertConfigurationExtensions.MustHaveHappenedOnceOrMore"/>,
+        /// <see cref="AssertConfigurationExtensions.MustHaveHappenedTwiceOrMore"/>, or
+        /// <see cref="IAssertConfiguration.MustHaveHappened(Int32, Times)"/> (using <see cref="Times.OrMore"/>).
+        /// </remarks>
         public static IRepeatSpecification AtLeast
         {
             get { return new RepeatSpecification((actual, expected) => actual >= expected, "at least"); }
@@ -39,6 +65,13 @@ namespace FakeItEasy
         /// The call must have happened any number of times less than or equal to the number of times that is specified
         /// in the next step.
         /// </summary>
+        /// <remarks>
+        /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
+        /// version 5.0.0 and removed in version 6.0.0.
+        /// Prefer <see cref="AssertConfigurationExtensions.MustHaveHappenedOnceOrLess"/>,
+        /// <see cref="AssertConfigurationExtensions.MustHaveHappenedTwiceOrLess"/>, or
+        /// <see cref="IAssertConfiguration.MustHaveHappened(Int32, Times)"/> (using <see cref="Times.OrLess"/>).
+        /// </remarks>
         public static IRepeatSpecification NoMoreThan
         {
             get { return new RepeatSpecification((actual, expected) => actual <= expected, "no more than"); }
@@ -51,6 +84,11 @@ namespace FakeItEasy
         /// <param name="repeatValidation">A predicate that specifies the number of times
         /// a call must have been made.</param>
         /// <returns>A Repeated-instance.</returns>
+        /// <remarks>
+        /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
+        /// version 5.0.0 and removed in version 6.0.0.
+        /// <see cref="IAssertConfiguration.MustHaveHappenedANumberOfTimesMatching"/>.
+        /// </remarks>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static Repeated Like(Expression<Func<int, bool>> repeatValidation)
         {
@@ -58,12 +96,10 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// When implemented gets a value indicating if the repeat is matched
-        /// by the Happened-instance.
+        /// Creates a <c>CallCountConstraint</c> from this object.
         /// </summary>
-        /// <param name="repeat">The repeat of a call.</param>
-        /// <returns>True if the repeat is a match.</returns>
-        internal abstract bool Matches(int repeat);
+        /// <returns>An equivalent <c>CallCountConstraint</c>.</returns>
+        internal abstract CallCountConstraint ToCallCountConstraint();
 
         private class ExpressionRepeated
             : Repeated
@@ -75,14 +111,9 @@ namespace FakeItEasy
                 this.repeatValidation = repeatValidation;
             }
 
-            public override string ToString()
+            internal override CallCountConstraint ToCallCountConstraint()
             {
-                return $"the number of times specified by the predicate '{this.repeatValidation}'";
-            }
-
-            internal override bool Matches(int repeat)
-            {
-                return this.repeatValidation.Compile().Invoke(repeat);
+                return new CallCountConstraint(this.repeatValidation.Compile(), $"the number of times specified by the predicate '{this.repeatValidation}'");
             }
         }
 
@@ -125,28 +156,18 @@ namespace FakeItEasy
                     this.description = description;
                 }
 
-                public override string ToString()
+                internal override CallCountConstraint ToCallCountConstraint()
                 {
-                    return this.description;
-                }
-
-                internal override bool Matches(int repeat)
-                {
-                    return this.repeatValidator(repeat);
+                    return new CallCountConstraint(this.repeatValidator, this.description);
                 }
             }
         }
 
         private class NeverRepeated : Repeated
         {
-            public override string ToString()
+            internal override CallCountConstraint ToCallCountConstraint()
             {
-                return "never";
-            }
-
-            internal override bool Matches(int repeat)
-            {
-                return repeat == 0;
+                return new CallCountConstraint(n => n == 0, this.ToString());
             }
         }
     }

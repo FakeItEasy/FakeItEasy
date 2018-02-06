@@ -65,6 +65,20 @@ namespace FakeItEasy.Configuration
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
             this.CreateArgumentValidationConfiguration(this.parsedSetterExpression).MustHaveHappened(repeatConstraint);
 
+        public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
+        {
+            Guard.AgainstNull(timesOption, nameof(timesOption));
+
+            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression).MustHaveHappened(numberOfTimes, timesOption);
+        }
+
+        public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
+        {
+            Guard.AgainstNull(predicate, nameof(predicate));
+
+            return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression).MustHaveHappenedANumberOfTimesMatching(predicate);
+        }
+
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>
             AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
                 .DoesNothing();
@@ -135,6 +149,20 @@ namespace FakeItEasy.Configuration
             public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
                 this.voidConfiguration.MustHaveHappened(repeatConstraint);
 
+            public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
+            {
+                Guard.AgainstNull(timesOption, nameof(timesOption));
+
+                return this.voidConfiguration.MustHaveHappened(numberOfTimes, timesOption);
+            }
+
+            public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
+            {
+                Guard.AgainstNull(predicate, nameof(predicate));
+
+                return this.voidConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
+            }
+
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>
                 new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.DoesNothing());
 
@@ -154,8 +182,8 @@ namespace FakeItEasy.Configuration
                 this.voidAfterCallConfiguration = voidAfterCallConfiguration;
             }
 
-            public IThenConfiguration<IPropertySetterConfiguration> NumberOfTimes(int numberOfTimesToRepeat) =>
-                new PropertySetterThenAdapter(this.voidAfterCallConfiguration.NumberOfTimes(numberOfTimesToRepeat));
+            public IThenConfiguration<IPropertySetterConfiguration> NumberOfTimes(int numberOfTimes) =>
+                new PropertySetterThenAdapter(this.voidAfterCallConfiguration.NumberOfTimes(numberOfTimes));
         }
 
         private class PropertySetterThenAdapter : IThenConfiguration<IPropertySetterConfiguration>

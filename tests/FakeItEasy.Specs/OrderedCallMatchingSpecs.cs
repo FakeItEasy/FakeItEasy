@@ -47,7 +47,35 @@ namespace FakeItEasy.Specs
             "And a call on the Fake, passing argument 3"
                 .x(() => fake.Bar(3));
 
-            "When I assert that a call with argument 1 was made exactly twice, then a call with argument 2, and then a call with argument 3"
+            "When I assert that a call with argument 1 was made twice exactly, then a call with argument 2, and then a call with argument 3"
+                .x(() => exception = Record.Exception(() =>
+                    A.CallTo(() => fake.Bar(1)).MustHaveHappenedTwiceExactly()
+                        .Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened())
+                        .Then(A.CallTo(() => fake.Bar(3)).MustHaveHappened())));
+
+            "Then the assertion should pass"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
+        public static void OrderedAssertionsUsingRepeatedInOrder(IFoo fake, Exception exception)
+        {
+            "Given a Fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
+
+            "And a call on the Fake, passing argument 2"
+                .x(() => fake.Bar(2));
+
+            "And a call on the Fake, passing argument 3"
+                .x(() => fake.Bar(3));
+
+            "When I use Repeated to assert that a call with argument 1 was made twice exactly, then a call with argument 2, and then a call with argument 3"
                 .x(() => exception = Record.Exception(() =>
                     A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Twice)
                         .Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened())
@@ -75,7 +103,45 @@ namespace FakeItEasy.Specs
             "And a call on the Fake, passing argument 2"
                 .x(() => fake.Bar(2));
 
-            "When I assert that a call with argument 1 was made exactly twice, then a call with argument 2, and then a call with argument 3"
+            "When I assert that a call with argument 1 was made twice exactly, then a call with argument 2, and then a call with argument 3"
+                .x(() => exception = Record.Exception(() =>
+                    A.CallTo(() => fake.Bar(1)).MustHaveHappenedTwiceExactly()
+                        .Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened())
+                        .Then(A.CallTo(() => fake.Bar(3)).MustHaveHappened())));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
+
+  Assertion failed for the following calls:
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' twice exactly
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' once or more
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' once or more
+  The calls were found but not in the correct order among the calls:
+    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) 2 times
+    ...
+    4: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)"));
+        }
+
+        [Scenario]
+        public static void OrderedAssertionsUsingRepeatedOutOfOrder(IFoo fake, Exception exception)
+        {
+            "Given a Fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call on the Fake, passing argument 3"
+                .x(() => fake.Bar(3));
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
+
+            "And a call on the Fake, passing argument 2"
+                .x(() => fake.Bar(2));
+
+            "When I use Repeated to assert that a call with argument 1 was made twice exactly, then a call with argument 2, and then a call with argument 3"
                 .x(() => exception = Record.Exception(() =>
                     A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Twice)
                         .Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened())
@@ -85,12 +151,12 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated exactly twice
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' exactly twice
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' once or more
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' once or more
   The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
-    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) repeated 2 times
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) 2 times
     ...
     4: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)"));
         }
@@ -151,8 +217,8 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated at least once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' once or more
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' once or more
   The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
@@ -181,13 +247,47 @@ namespace FakeItEasy.Specs
             "And a call on the Fake, passing argument 3"
                 .x(() => fake.Bar(3));
 
-            "When I assert that a call with argument 1 was made exactly once"
+            "When I assert that a call with argument 1 was made once exactly"
+                .x(() => lastAssertion = A.CallTo(() => fake.Bar(1)).MustHaveHappenedOnceExactly());
+
+            "And then a call with argument 2"
+                .x(() => lastAssertion = lastAssertion.Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened()));
+
+            "And then a call with argument 3 once exactly"
+                .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => fake.Bar(3)).MustHaveHappenedOnceExactly())));
+
+            "Then the assertions should pass"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
+        public static void MultistepOrderedAssertionsUsingRepeatedInOrder(
+            IFoo fake,
+            Exception exception,
+            IOrderableCallAssertion lastAssertion)
+        {
+            "Given a Fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
+
+            "And a call on the Fake, passing argument 2"
+                .x(() => fake.Bar(2));
+
+            "And a call on the Fake, passing argument 2"
+                .x(() => fake.Bar(2));
+
+            "And a call on the Fake, passing argument 3"
+                .x(() => fake.Bar(3));
+
+            "When I use Repeated to assert that a call with argument 1 was made once exactly"
                 .x(() => lastAssertion = A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Once));
 
             "And then a call with argument 2"
                 .x(() => lastAssertion = lastAssertion.Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened()));
 
-            "And then a call with argument 3 exactly once"
+            "And then a call with argument 3 once exactly"
                 .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => fake.Bar(3)).MustHaveHappened(Repeated.Exactly.Once))));
 
             "Then the assertions should pass"
@@ -215,25 +315,69 @@ namespace FakeItEasy.Specs
             "And a call on the Fake, passing argument 2"
                 .x(() => fake.Bar(2));
 
-            "When I assert that a call with argument 1 was made exactly twice"
+            "When I assert that a call with argument 1 was made twice exactly"
+                .x(() => lastAssertion = A.CallTo(() => fake.Bar(1)).MustHaveHappenedTwiceExactly());
+
+            "And then a call with argument 2"
+                .x(() => lastAssertion = lastAssertion.Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened()));
+
+            "And then that a call with argument 3 was made once exactly"
+                .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => fake.Bar(3)).MustHaveHappenedOnceExactly())));
+
+            "Then the last assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
+
+  Assertion failed for the following calls:
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' twice exactly
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' once or more
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' once exactly
+  The calls were found but not in the correct order among the calls:
+    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) 2 times
+    ...
+    4: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)"));
+        }
+
+        [Scenario]
+        public static void MultistepOrderedAssertionsUsingRepeatedOutOfOrder(
+            IFoo fake,
+            Exception exception,
+            IOrderableCallAssertion lastAssertion)
+        {
+            "Given a Fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call on the Fake, passing argument 3"
+                .x(() => fake.Bar(3));
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
+
+            "And a call on the Fake, passing argument 2"
+                .x(() => fake.Bar(2));
+
+            "When I use Repeated to assert that a call with argument 1 was made twice exactly"
                 .x(() => lastAssertion = A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Twice));
 
             "And then a call with argument 2"
                 .x(() => lastAssertion = lastAssertion.Then(A.CallTo(() => fake.Bar(2)).MustHaveHappened()));
 
-            "And then that a call with argument 3 was made exactly once"
+            "And then that a call with argument 3 was made once exactly"
                 .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => fake.Bar(3)).MustHaveHappened(Repeated.Exactly.Once))));
 
             "Then the last assertion should fail"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
 
   Assertion failed for the following calls:
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' repeated exactly twice
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' repeated at least once
-    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' repeated exactly once
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' exactly twice
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)' once or more
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)' exactly once
   The calls were found but not in the correct order among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 3)
-    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) repeated 2 times
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) 2 times
     ...
     4: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)"));
         }
@@ -242,7 +386,7 @@ namespace FakeItEasy.Specs
         // in place since ordered assertions were introduced: the
         // MustHaveHappened is executed first and checks all calls.
         [Scenario]
-        public static void OrderedAssertionWithRepeatConstraintFailure(
+        public static void OrderedAssertionWithCallCountConstraintFailure(
             IFoo fake,
             IOrderableCallAssertion lastAssertion,
             Exception exception)
@@ -262,7 +406,50 @@ namespace FakeItEasy.Specs
             "When I assert that a call with argument 2 was made"
                 .x(() => lastAssertion = A.CallTo(() => fake.Bar(2)).MustHaveHappened());
 
-            "And then that a call with argument 1 was made exactly once"
+            "And then that a call with argument 1 was made once exactly"
+                .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => fake.Bar(1)).MustHaveHappenedOnceExactly())));
+
+            "Then the last assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the message should say that the call to Bar(1) was found too many times"
+                .x(() => exception.Message.Should().Be(@"
+
+  Assertion failed for the following call:
+    FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
+  Expected to find it once exactly but found it twice among the calls:
+    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)
+    3: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
+
+"));
+        }
+
+        // This is perhaps not the most intuitive behavior, but has been
+        // in place since ordered assertions were introduced: the
+        // MustHaveHappened is executed first and checks all calls.
+        [Scenario]
+        public static void OrderedAssertionWithCallCountConstraintFailureUsingRepeated(
+            IFoo fake,
+            IOrderableCallAssertion lastAssertion,
+            Exception exception)
+        {
+            "Given a Fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
+
+            "And a call on the Fake, passing argument 2"
+                .x(() => fake.Bar(2));
+
+            "And a call on the Fake, passing argument 1"
+                .x(() => fake.Bar(1));
+
+            "When I assert that a call with argument 2 was made"
+                .x(() => lastAssertion = A.CallTo(() => fake.Bar(2)).MustHaveHappened());
+
+            "And then that a call with argument 1 was made once exactly using Repeated"
                 .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => fake.Bar(1)).MustHaveHappened(Repeated.Exactly.Once))));
 
             "Then the last assertion should fail"
@@ -273,7 +460,7 @@ namespace FakeItEasy.Specs
 
   Assertion failed for the following call:
     FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
-  Expected to find it exactly once but found it #2 times among the calls:
+  Expected to find it exactly once but found it twice among the calls:
     1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)
     2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)
     3: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)

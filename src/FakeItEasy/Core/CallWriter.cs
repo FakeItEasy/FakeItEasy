@@ -32,7 +32,7 @@ namespace FakeItEasy.Core
 
                 if (i > 0 && this.callComparer.Equals(callInfos[callInfos.Count - 1].Call, call))
                 {
-                    callInfos[callInfos.Count - 1].Repeat++;
+                    callInfos[callInfos.Count - 1].NumberOfOccurrences++;
                 }
                 else
                 {
@@ -78,10 +78,10 @@ namespace FakeItEasy.Core
                     writer.Write(call.StringRepresentation);
                 }
 
-                if (call.Repeat > 1)
+                if (call.NumberOfOccurrences > 1)
                 {
-                    writer.Write(" repeated ");
-                    writer.Write(call.Repeat);
+                    writer.Write(" ");
+                    writer.Write(call.NumberOfOccurrences);
                     writer.Write(" times");
                     writer.WriteLine();
                     writer.Write("...");
@@ -101,14 +101,14 @@ namespace FakeItEasy.Core
         {
             public CallInfo()
             {
-                this.Repeat = 1;
+                this.NumberOfOccurrences = 1;
             }
 
             public IFakeObjectCall Call { get; set; }
 
             public int CallNumber { get; set; }
 
-            public int Repeat { get; set; }
+            public int NumberOfOccurrences { get; set; }
 
             public string StringRepresentation { get; set; }
 

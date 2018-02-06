@@ -1,53 +1,60 @@
 # Assertion
 
 Assertion uses exactly the same syntax as configuration to specify the
-call to be asserted, followed by `.MustHaveHappened(Repeated)`, where
-`Repeated` specifies the number of expected repetitions.
+call to be asserted, followed by a method call beginning with `.MustHaveHappened`.
 
-Two extension methods are provided for convenience:
+The two most common forms of assertion are :
 
-* `MustHaveHappened()` (no arguments) ignores the number of times the call was made, and 
+* `MustHaveHappened()` (no arguments) asserts that the call was made 1 or more times, and 
 * `MustNotHaveHappened()` asserts that the specified call did not happen at all.
 
 Arguments are constrained using
 [Argument Constraints](argument-constraints.md) just like when
 configuring calls.
 
-#Details
-##Syntax
+# Syntax
 
 ```csharp
-// Asserting that a call has happened at least once.
-// The following two lines are equivalent.
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.AtLeast.Once);    // or
 A.CallTo(() => foo.Bar()).MustHaveHappened();
+A.CallTo(() => foo.Bar()).MustNotHaveHappened();
 
-// To contrast, assert that a call has happened exactly once.
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Once);
+A.CallTo(() => foo.Bar()).MustHaveHappenedOnceExactly();
+A.CallTo(() => foo.Bar()).MustHaveHappenedOnceOrMore();
+A.CallTo(() => foo.Bar()).MustHaveHappenedOnceOrLess();
 
-// Asserting that a call has not happened.
-// The following two lines are equivalent.
-A.CallTo(() => foo.Bar()).MustNotHaveHappened();    // or
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Never);
+A.CallTo(() => foo.Bar()).MustHaveHappenedTwiceExactly();
+A.CallTo(() => foo.Bar()).MustHaveHappenedTwiceOrMore();
+A.CallTo(() => foo.Bar()).MustHaveHappenedTwiceOrLess();
+
+A.CallTo(() => foo.Bar()).MustHaveHappened(4, Times.Exactly);
+A.CallTo(() => foo.Bar()).MustHaveHappened(6, Times.OrMore);
+A.CallTo(() => foo.Bar()).MustHaveHappened(7, Times.OrLess);
+
+A.CallTo(() => foo.Bar()).MustHaveHappenedANumberOfTimesMatching(n => n % 2 == 0);
 ```
 
-#Specifying Repeat
+## Using the legacy `MustHaveHappened(Repeated)` overload:
+
+This documentation has been retained here, for now, as a convenience to
+users of versions of FakeItEasy that predate 4.4.0.
+
+**The `Repeated` class will be removed in the future, so no new code should be written
+that uses these methods, and existing code should be converted to use the API described above.** 
 
 ```csharp
-// Using the Repeated class:
-Repeated.AtLeast.Once // The call must have happened once or more.
-Repeated.Exactly.Once // The call must have happened exaclty one time
-    
-Repeated.AtLeast.Twice // The call must have happened twice or more.
-Repeated.Exactly.Twice // The call must have happened twice exactly.
-Repeated.NoMoreThan.Twice // The call must have happened zero, one, or two times.
+A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Once);
+A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.AtLeast.Once);
+A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.NoMoreThan.Once);
 
-Repeated.AtLeast.Times(10) // The call must have happened ten times or more
-Repeated.Exactly.Times(10) // The call must have happened ten times exactly
-Repeated.NoMoreThan.Times(10) // The call must have happened any number of times between zero and ten.
-    
-// Using a predicate.
-Repeated.Like(x => x % 2 == 0) // The call must have happened an even number of times.
+A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Twice);
+A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.AtLeast.Twice);
+A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.NoMoreThan.Twice);
+
+A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Times(4));
+A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Times(6));
+A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.NoMoreThan.Times(7));
+
+A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Like(x => x % 2 == 0));
 ```
 
 # Asserting Calls Made with Mutable Arguments

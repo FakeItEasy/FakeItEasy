@@ -78,12 +78,8 @@
 
   <!-- Include PDB in package -->
 
-  <Target Name="GetPackageFiles">
-    <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)$(AssemblyName).pdb">
-        <PackagePath>$(BuildOutputTargetFolder)/$(TargetFramework)</PackagePath>
-      </TfmSpecificPackageFile>
-    </ItemGroup>
-  </Target>
+  <ItemGroup>
+    <None Include="$(OutputPath)/**/$(AssemblyName).pdb" Pack="true" PackagePath="lib" Visible="false" />
+  </ItemGroup>
 
 </Project>
