@@ -14,6 +14,7 @@ namespace FakeItEasy.Analyzer
     using Microsoft.CodeAnalysis.VisualBasic;
     using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 #endif
+    using static FakeItEasy.Analyzer.SyntaxHelpers;
 
 #if CSHARP
     [ExportCodeFixProvider(LanguageNames.CSharp)]
@@ -76,15 +77,6 @@ namespace FakeItEasy.Analyzer
             // MemberAccessExpressionSyntax, which have the same source span. We want the
             // MemberAccessExpressionSyntax node, which is the innermost one.
             return root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
-        }
-
-        private static MemberAccessExpressionSyntax SimpleMemberAccess(ExpressionSyntax expression, SimpleNameSyntax name)
-        {
-#if CSHARP
-            return SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, name);
-#elif VISUAL_BASIC
-            return SyntaxFactory.SimpleMemberAccessExpression(expression, name);
-#endif
         }
 
         private static async Task<Document> MakeConstraintNullableAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)

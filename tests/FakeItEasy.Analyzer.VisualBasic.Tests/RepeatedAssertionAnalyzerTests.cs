@@ -4,10 +4,11 @@ namespace FakeItEasy.Analyzer.VisualBasic.Tests
     using FakeItEasy.Analyzer.Tests.Helpers;
     using FakeItEasy.Tests;
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CodeFixes;
     using Microsoft.CodeAnalysis.Diagnostics;
     using Xunit;
 
-    public class RepeatedAssertionAnalyzerTests : DiagnosticVerifier
+    public class RepeatedAssertionAnalyzerTests : CodeFixVerifier
     {
         private const string CodeTemplate = @"Imports FakeItEasy
 Namespace TheNamespace
@@ -47,9 +48,24 @@ End Namespace";
                  });
         }
 
+        [Theory]
+        [MemberData(nameof(AssertionsAndTheirReplacements))]
+        public void ChangeAssertion_CodeFix_Should_Replace_Assertion_With_Repeatedless_Assertion(string assertion, string fixedAssertion)
+        {
+            string code = string.Format(CodeTemplate, assertion);
+            string fixedCode = string.Format(CodeTemplate, fixedAssertion);
+
+            this.VerifyVisualBasicFix(code, fixedCode, codeFixIndex: 0);
+        }
+
         protected override DiagnosticAnalyzer GetVisualBasicDiagnosticAnalyzer()
         {
             return new RepeatedAssertionAnalyzer();
+        }
+
+        protected override CodeFixProvider GetVisualBasicCodeFixProvider()
+        {
+            return new RepeatedAssertionCodeFixProvider();
         }
 
         private static IEnumerable<object[]> AssertionsThatDoNotUseRepeated() =>
@@ -74,5 +90,21 @@ End Namespace";
                 "MustHaveHappened(Repeated.AtLeast.Twice)",
                 "MustHaveHappened(Repeated.NoMoreThan.Times(3))",
                 "MustHaveHappened(Repeated.Like(Function(n) n < 3 Or n > 19))");
+
+        private static IEnumerable<object[]> AssertionsAndTheirReplacements() =>
+            new[]
+            {
+                new[] { "MustHaveHappened(Repeated.Never)", "MustNotHaveHappened()" },
+                new[] { "MustHaveHappened(Repeated.Exactly.Once)", "MustHaveHappenedOnceExactly()" },
+                new[] { "MustHaveHappened(Repeated.AtLeast.Once)", "MustHaveHappenedOnceOrMore()" },
+                new[] { "MustHaveHappened(Repeated.NoMoreThan.Once)", "MustHaveHappenedOnceOrLess()" },
+                new[] { "MustHaveHappened(Repeated.Exactly.Twice)", "MustHaveHappenedTwiceExactly()" },
+                new[] { "MustHaveHappened(Repeated.AtLeast.Twice)", "MustHaveHappenedTwiceOrMore()" },
+                new[] { "MustHaveHappened(Repeated.NoMoreThan.Twice)", "MustHaveHappenedTwiceOrLess()" },
+                new[] { "MustHaveHappened(Repeated.Exactly.Times(4))", "MustHaveHappened(4, Times.Exactly)" },
+                new[] { "MustHaveHappened(Repeated.AtLeast.Times(5))", "MustHaveHappened(5, Times.OrMore)" },
+                new[] { "MustHaveHappened(Repeated.NoMoreThan.Times(6))", "MustHaveHappened(6, Times.OrLess)" },
+                new[] { "MustHaveHappened(Repeated.Like(Function(n) n Mod 2 = 0))", "MustHaveHappenedANumberOfTimesMatching(Function(n) n Mod 2 = 0)" },
+            };
     }
 }

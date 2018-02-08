@@ -2,6 +2,10 @@ namespace FakeItEasy.Analyzer
 {
     using System;
     using System.Collections.Immutable;
+    using System.Linq;
+#if CSHARP
+    using FakeItEasy.Analyzer;
+#endif
     using Microsoft.CodeAnalysis;
 #if CSHARP
     using Microsoft.CodeAnalysis.CSharp;
@@ -36,19 +40,19 @@ namespace FakeItEasy.Analyzer
 
         private static void AnalyzeCall(SyntaxNodeAnalysisContext context)
         {
-            if (!(context.Node is InvocationExpressionSyntax call))
-            {
-                return;
-            }
-
-            if (call.ArgumentList.Arguments.Count != 1 ||
+            if (!(context.Node is InvocationExpressionSyntax call) ||
+                call.ArgumentList.Arguments.Count != 1 ||
                 GetTypeName(context, call.ArgumentList.Arguments[0]) != "FakeItEasy.Repeated")
             {
                 return;
             }
 
-            var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(call, context);
-            if (methodSymbol?.GetFullName() != "FakeItEasy.Configuration.IAssertConfiguration.MustHaveHappened")
+            // Abort if the called method isn't MustHaveHappened or if the referenced version of
+            // FakeItEasy doesn't support the new assertion API, as evidenced by the absence of the
+            // MustHaveHappenedANumberOfTimesMatching method.
+            var calledMethod = SymbolHelpers.GetCalledMethodSymbol(call, context);
+            if (calledMethod.GetFullName() != "FakeItEasy.Configuration.IAssertConfiguration.MustHaveHappened" ||
+                !calledMethod.ContainingType.MemberNames.Contains("MustHaveHappenedANumberOfTimesMatching"))
             {
                 return;
             }
@@ -66,11 +70,7 @@ namespace FakeItEasy.Analyzer
 
         private static string GetTypeName(SyntaxNodeAnalysisContext context, ArgumentSyntax argument)
         {
-#if CSHARP
-            return context.SemanticModel.GetTypeInfo(argument.Expression).ConvertedType.ToString();
-#elif VISUAL_BASIC
             return context.SemanticModel.GetTypeInfo(argument.GetExpression()).ConvertedType.ToString();
-#endif
         }
     }
 }

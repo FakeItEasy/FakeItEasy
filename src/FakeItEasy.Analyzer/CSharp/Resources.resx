@@ -130,4 +130,7 @@
   <data name="RepeatedAssertionTitle" xml:space="preserve">
     <value>Assertion uses legacy Repeated class.</value>
   </data>
+    <data name="ChangeAssertionToNotUseRepeatedCodeFixTitle" xml:space="preserve">
+    <value>Change assertion to not use the Repeated class</value>
+  </data>
 </root>
