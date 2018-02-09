@@ -121,7 +121,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
 
             // after applying all of the code fixes, compare the resulting string to the inputted one
             var actual = GetStringFromDocument(document);
-            newSource.Should().Be(actual);
+            actual.Should().Be(newSource);
         }
     }
 }
