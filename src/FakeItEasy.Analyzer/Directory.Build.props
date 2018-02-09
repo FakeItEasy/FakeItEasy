@@ -5,6 +5,7 @@
   <PropertyGroup>
     <PackageTags>FakeItEasy;analyzer</PackageTags>
     <IncludeBuildOutput>false</IncludeBuildOutput>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)FakeItEasy.Analyzer.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
