@@ -144,7 +144,7 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         [Fact]
-        public void ToString_should_write_full_method_name_with_type_name_and_arguments_list()
+        public void DescriptionOfMatchingCall_should_write_full_method_name_with_type_name_and_arguments_list()
         {
             var constraint = A.Fake<IArgumentConstraint>();
             A.CallTo(() => constraint.WriteDescription(A<IOutputWriter>._))
@@ -154,7 +154,7 @@ namespace FakeItEasy.Tests.Expressions
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 
-            matcher.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <FOO>, argument2: <FOO>)");
+            matcher.DescriptionOfMatchingCall.Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <FOO>, argument2: <FOO>)");
 
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).MustHaveHappenedTwiceExactly();
         }
@@ -195,13 +195,13 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         [Fact]
-        public void ToString_should_write_predicate_when_predicate_is_used_to_validate_arguments()
+        public void DescriptionOfMatchingCall_should_write_predicate_when_predicate_is_used_to_validate_arguments()
         {
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(null, null));
 
             matcher.UsePredicateToValidateArguments(x => true);
 
-            matcher.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <Predicated>, argument2: <Predicated>)");
+            matcher.DescriptionOfMatchingCall.Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <Predicated>, argument2: <Predicated>)");
         }
 
         [Fact]
@@ -229,7 +229,7 @@ namespace FakeItEasy.Tests.Expressions
 
         private ExpressionCallMatcher CreateMatcher(ParsedCallExpression callSpecification)
         {
-            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager, this.outputWriterFactory);
+            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager, new CallConstraintDescriber(this.outputWriterFactory));
         }
 
         private void StubMethodInfoManagerToReturn(bool returnValue)

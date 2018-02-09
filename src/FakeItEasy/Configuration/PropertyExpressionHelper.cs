@@ -4,7 +4,6 @@ namespace FakeItEasy.Configuration
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using FakeItEasy.Core;
     using FakeItEasy.Expressions;
 
     internal class PropertyExpressionHelper
@@ -56,13 +55,10 @@ namespace FakeItEasy.Configuration
 
         private static string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
         {
-            var matcher = new ExpressionCallMatcher(
-                parsedCallExpression,
-                ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>(),
-                ServiceLocator.Current.Resolve<MethodInfoManager>(),
-                ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>());
+            var constraintFactory = ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>();
+            var describer = ServiceLocator.Current.Resolve<CallConstraintDescriber>();
 
-            return matcher.DescriptionOfMatchingCall;
+            return describer.GetDescriptionOfMatchingCall(parsedCallExpression.CalledMethod, parsedCallExpression.ArgumentsExpressions.Select(constraintFactory.GetArgumentConstraint));
         }
 
         private static string GetPropertyName(ParsedCallExpression parsedCallExpression)

@@ -72,7 +72,7 @@ namespace FakeItEasy.Expressions
             return new ParsedCallExpression(
                 calledMethod: property.GetGetMethod(true),
                 callTargetExpression: expression.Expression,
-                argumentsExpressions: null);
+                argumentsExpressions: Enumerable.Empty<ParsedArgumentExpression>());
         }
 
         private static LambdaExpression ReplaceParameterWithFake(LambdaExpression callExpression, object fake)
