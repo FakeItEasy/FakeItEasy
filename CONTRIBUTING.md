@@ -95,7 +95,7 @@ You should **never** work directly on the `develop` branch and you should **neve
 
 While you're working away in your branch it's quite possible that your upstream/develop (most likely the canonical FakeItEasy version) may be updated. If this happens you should:
 
-1. [Stash](http://progit.org/book/ch6-3.html) any un-committed changes you need to
+1. [Stash](https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning) any un-committed changes you need to
 1. `git checkout develop`
 1. `git pull upstream develop`
 1. `git checkout my-branch`
