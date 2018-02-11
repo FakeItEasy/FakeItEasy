@@ -200,7 +200,7 @@ namespace FakeItEasy.Tests
 
                             var nullException = ex.InnerException as ArgumentNullException;
                             if (nullException == null ||
-                                !callThatShouldThrow.ArgumentName.Equals(nullException.ParamName))
+                                callThatShouldThrow.ArgumentName != nullException.ParamName)
                             {
                                 result.Add(callThatShouldThrow);
                             }

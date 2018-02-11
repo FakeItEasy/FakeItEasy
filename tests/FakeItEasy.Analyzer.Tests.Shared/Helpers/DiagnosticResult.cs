@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer.Tests.Helpers
+namespace FakeItEasy.Analyzer.Tests.Helpers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -49,7 +49,7 @@
             {
                 if (this.locations == null)
                 {
-                    this.locations = new DiagnosticResultLocation[] { };
+                    this.locations = Array.Empty<DiagnosticResultLocation>();
                 }
 
                 return this.locations;

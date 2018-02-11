@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Concurrent;
@@ -18,10 +18,12 @@
     {
         private readonly CallRuleMetadata[] postUserRules;
         private readonly CallRuleMetadata[] preUserRules;
+#pragma warning disable CA2235 // Mark all non-serializable fields
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
 
         private ConcurrentQueue<ICompletedFakeObjectCall> recordedCalls;
+#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeManager"/> class.
@@ -66,13 +68,16 @@
         /// <summary>
         /// Gets the faked proxy object.
         /// </summary>
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Object", Justification = "Renaming this property would be a breaking change.")]
+#pragma warning disable CA1716, CA1720 // Identifier contains keyword, Identifier contains type name
         public virtual object Object => this.objectReference.Target;
+#pragma warning restore CA1716, CA1720 // Identifier contains keyword, Identifier contains type name
 
         /// <summary>
         /// Gets the faked type.
         /// </summary>
+#pragma warning disable CA2235 // Mark all non-serializable fields
         public virtual Type FakeObjectType { get; }
+#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Gets the interceptions that are currently registered with the fake object.
@@ -82,7 +87,9 @@
             get { return this.AllUserRules.Select(x => x.Rule); }
         }
 
+#pragma warning disable CA2235 // Mark all non-serializable fields
         internal LinkedList<CallRuleMetadata> AllUserRules { get; }
+#pragma warning restore CA2235 // Mark all non-serializable fields
 
         private IEnumerable<CallRuleMetadata> AllRules =>
             this.preUserRules.Concat(this.AllUserRules.Concat(this.postUserRules));

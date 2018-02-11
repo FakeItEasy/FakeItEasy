@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
+namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;
@@ -148,7 +148,7 @@
             // Arrange
             // Here we can't use A.Dummy<IFakeCallProcessorProvider>() because the EnsureInitialized() call within GenerateProxy()
             // triggers the Castle issue #65 (https://github.com/castleproject/Core/issues/65)
-            var result = this.generator.GenerateProxy(typeOfProxy, new Type[] { }, null, new SerializableFakeCallProcessorProvider());
+            var result = this.generator.GenerateProxy(typeOfProxy, Type.EmptyTypes, null, new SerializableFakeCallProcessorProvider());
             var proxy = result.GeneratedProxy;
 
             // Act

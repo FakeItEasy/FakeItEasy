@@ -26,13 +26,13 @@ namespace FakeItEasy.Tests.Expressions
         public void Should_return_parsed_expression_with_instance_method_set()
         {
             // Arrange
-            var call = Call(() => string.Empty.Equals(null));
+            var call = Call(() => string.Empty.Equals(null, StringComparison.CurrentCulture));
 
             // Act
             var result = this.parser.Parse(call);
 
             // Assert
-            result.CalledMethod.Should().BeSameAs(GetMethod<string>("Equals", typeof(string)));
+            result.CalledMethod.Should().BeSameAs(GetMethod<string>("Equals", typeof(string), typeof(StringComparison)));
         }
 
         [Fact]
@@ -176,7 +176,7 @@ namespace FakeItEasy.Tests.Expressions
         {
             return typeof(T)
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(x => x.Name.Equals(propertyName))
+                .Where(x => x.Name == propertyName)
                 .Select(x => x.GetGetMethod(true))
                 .Single();
         }

@@ -97,7 +97,7 @@ namespace FakeItEasy.Tests.TestHelpers
                 var property = (PropertyInfo)propertyCall.Member;
 
                 method = property.GetGetMethod(true);
-                arguments = new object[] { };
+                arguments = Array.Empty<object>();
             }
 
             return new ArgumentCollection(arguments, method);

@@ -29,8 +29,8 @@ namespace FakeItEasy.Tests.Creation
         public void Should_delegate_calls_to_delegate_generator_when_generating_delegate_proxy()
         {
             // Arrange
-            var additionalInterfaces = new Type[] { };
-            var argumentsForConstructor = new object[] { };
+            var additionalInterfaces = Type.EmptyTypes;
+            var argumentsForConstructor = Array.Empty<object>();
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             var expected = A.Dummy<ProxyGeneratorResult>();
@@ -48,8 +48,8 @@ namespace FakeItEasy.Tests.Creation
         public void Should_delegate_calls_to_default_generator_when_generating_non_delegate_proxy()
         {
             // Arrange
-            var additionalInterfaces = new Type[] { };
-            var argumentsForConstructor = new object[] { };
+            var additionalInterfaces = Type.EmptyTypes;
+            var argumentsForConstructor = Array.Empty<object>();
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             var expected = A.Dummy<ProxyGeneratorResult>();

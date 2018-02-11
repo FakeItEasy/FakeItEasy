@@ -20,7 +20,7 @@ namespace FakeItEasy.Analyzer
 #endif
     public class ArgumentConstraintTypeMismatchAnalyzer : ArgumentConstraintAnalyzerBase
     {
-        internal static readonly string ParameterTypeKey = "parameterType";
+        internal const string ParameterTypeKey = "parameterType";
 
         private static readonly ImmutableHashSet<string> SupportedArgumentConstraintProperties =
             ImmutableHashSet.Create(

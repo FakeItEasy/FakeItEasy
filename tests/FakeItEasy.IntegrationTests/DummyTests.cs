@@ -55,8 +55,8 @@ namespace FakeItEasy.IntegrationTests
             // the other is still being created.
             // Guards against the concurrent creations being detected as a
             // circular dependency and throwing an exception.
-            var makeOne = Task.Factory.StartNew(A.Dummy<ConcurrentCreationDummy>);
-            var makeTwo = Task.Factory.StartNew(() =>
+            var makeOne = Task.Run(() => A.Dummy<ConcurrentCreationDummy>());
+            var makeTwo = Task.Run(() =>
             {
                 ConcurrentCreationDummy.CreatingFirstInstance.Wait();
                 try

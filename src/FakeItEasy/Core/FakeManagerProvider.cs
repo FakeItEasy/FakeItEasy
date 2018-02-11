@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using FakeItEasy.Creation;
@@ -35,7 +35,9 @@
         private readonly IProxyOptions proxyOptions;
 
         // We want to lock accesses to initializedFakeManager to guarantee thread-safety (see IFakeCallProcessorProvider documentation):
+#pragma warning disable CA2235 // Mark all non-serializable fields
         private readonly object initializedFakeManagerLock = new object();
+#pragma warning restore CA2235 // Mark all non-serializable fields
 
         private FakeManager initializedFakeManager;
 

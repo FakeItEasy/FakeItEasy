@@ -45,7 +45,7 @@ namespace FakeItEasy.Tests.Core
             var wrapped = A.Fake<IFoo>();
             A.CallTo(() => wrapped.Baz()).Returns(returnValue);
 
-            var call = FakeCall.Create<IFoo>("Baz", new Type[] { }, new object[] { });
+            var call = FakeCall.Create<IFoo>("Baz", Type.EmptyTypes, Array.Empty<object>());
 
             var rule = this.CreateRule(wrapped);
             rule.Apply(call);

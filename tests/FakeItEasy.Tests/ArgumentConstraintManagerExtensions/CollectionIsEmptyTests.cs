@@ -1,5 +1,6 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
@@ -23,7 +24,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
             return TestCases.FromObject(
                 new List<object>(),
                 Enumerable.Empty<object>(),
-                new object[0]);
+                Array.Empty<object>());
         }
 
         [Theory]

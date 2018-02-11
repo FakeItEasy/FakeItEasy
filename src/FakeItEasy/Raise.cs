@@ -77,7 +77,9 @@ namespace FakeItEasy
         /// with all CLR languages (for example Visual Basic).
         /// To raise non-standard events from other languages, use <see cref="Raise.FreeForm{TEventHandler}"/>.
         /// </summary>
+#pragma warning disable CA1034 // Do not nest type
         public static class FreeForm
+#pragma warning restore CA1034 // Do not nest type
         {
             /// <summary>
             /// Raises an event with non-standard signature, resolving the actual delegate type dynamically.
@@ -97,14 +99,18 @@ namespace FakeItEasy
         /// Otherwise, prefer <see cref="Raise.FreeForm" />.
         /// </summary>
         /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/>.</typeparam>
+#pragma warning disable CA1034 // Do not nest type
         public static class FreeForm<TEventHandler>
+#pragma warning restore CA1034 // Do not nest type
         {
             /// <summary>
             /// Raises an event with non-standard signature.
             /// </summary>
             /// <param name="arguments">The arguments to send to the event handlers.</param>
             /// <returns>A new object that knows how to raise events.</returns>
+#pragma warning disable CA1000 // Do not declare static members on generic types
             public static TEventHandler With(params object[] arguments)
+#pragma warning restore CA1000 // Do not declare static members on generic types
             {
                 return new DelegateRaiser<TEventHandler>(arguments, ArgumentProviderMap);
             }

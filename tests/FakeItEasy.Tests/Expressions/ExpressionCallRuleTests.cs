@@ -50,7 +50,9 @@ namespace FakeItEasy.Tests.Expressions
         [Fact]
         public void Constructor_should_be_null_guarded()
         {
+#pragma warning disable CA1806 // Do not ignore method results
             Expression<Action> call = () => new ExpressionCallRule(this.callMatcher);
+#pragma warning restore CA1806 // Do not ignore method results
             call.Should().BeNullGuarded();
         }
 

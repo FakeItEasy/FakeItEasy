@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Generic;
@@ -14,12 +14,14 @@
         private class ObjectMemberRule
             : IFakeObjectCallRule
         {
+#pragma warning disable CA2235 // Mark all non-serializable fields
             private static readonly List<MethodInfo> ObjectMethods =
+#pragma warning restore CA2235 // Mark all non-serializable fields
                 new List<MethodInfo>
                     {
                         typeof(object).GetMethod("Equals", new[] { typeof(object) }),
-                        typeof(object).GetMethod("ToString", new Type[] { }),
-                        typeof(object).GetMethod("GetHashCode", new Type[] { })
+                        typeof(object).GetMethod("ToString", Type.EmptyTypes),
+                        typeof(object).GetMethod("GetHashCode", Type.EmptyTypes)
                     };
 
             private readonly FakeManager fakeManager;

@@ -160,7 +160,7 @@ namespace FakeItEasy.Core
             return type.GetInterfaces().Any(x => x.Equals(interfaceType));
         }
 
-        private struct TypeMethodInfoPair
+        private struct TypeMethodInfoPair : IEquatable<TypeMethodInfoPair>
         {
             public TypeMethodInfoPair(Type type, MethodInfo methodInfo)
                 : this()
@@ -186,6 +186,11 @@ namespace FakeItEasy.Core
             {
                 var other = (TypeMethodInfoPair)obj;
 
+                return this.Equals(other);
+            }
+
+            public bool Equals(TypeMethodInfoPair other)
+            {
                 return this.Type == other.Type && this.MethodInfo == other.MethodInfo;
             }
         }
