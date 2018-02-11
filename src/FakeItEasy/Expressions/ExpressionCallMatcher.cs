@@ -4,7 +4,6 @@ namespace FakeItEasy.Expressions
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions.ArgumentConstraints;
@@ -16,7 +15,7 @@ namespace FakeItEasy.Expressions
         : ICallMatcher
     {
         private readonly MethodInfoManager methodInfoManager;
-        private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
+        private readonly CallConstraintDescriber callConstraintConstraintDescriber;
         private IEnumerable<IArgumentConstraint> argumentConstraints;
         private Func<ArgumentCollection, bool> argumentsPredicate;
 
@@ -26,25 +25,22 @@ namespace FakeItEasy.Expressions
         /// <param name="parsedExpression">The parsed call specification.</param>
         /// <param name="constraintFactory">The constraint factory.</param>
         /// <param name="methodInfoManager">The method info manager to use.</param>
-        /// <param name="outputWriterFactory">The output writer factory to use.</param>
-        public ExpressionCallMatcher(ParsedCallExpression parsedExpression, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, StringBuilderOutputWriter.Factory outputWriterFactory)
+        /// <param name="callConstraintConstraintDescriber">The call constraint describer to use.</param>
+        public ExpressionCallMatcher(ParsedCallExpression parsedExpression, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager, CallConstraintDescriber callConstraintConstraintDescriber)
         {
             this.methodInfoManager = methodInfoManager;
-            this.outputWriterFactory = outputWriterFactory;
-
+            this.callConstraintConstraintDescriber = callConstraintConstraintDescriber;
             this.Method = parsedExpression.CalledMethod;
 
             this.argumentConstraints = GetArgumentConstraints(parsedExpression.ArgumentsExpressions, constraintFactory).ToArray();
             this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
         }
 
-        public delegate ExpressionCallMatcher Factory(ParsedCallExpression parsedExpression);
-
         /// <summary>
         /// Gets a human readable description of calls that will be matched by this
         /// matcher.
         /// </summary>
-        public virtual string DescriptionOfMatchingCall => this.ToString();
+        public virtual string DescriptionOfMatchingCall => this.callConstraintConstraintDescriber.GetDescriptionOfMatchingCall(this.Method, this.argumentConstraints);
 
         private MethodInfo Method { get; }
 
@@ -59,23 +55,6 @@ namespace FakeItEasy.Expressions
 
             return this.InvokesSameMethodOnTarget(call.FakedObject.GetType(), call.Method, this.Method)
                 && this.ArgumentsMatches(call.Arguments);
-        }
-
-        /// <summary>
-        /// Gets a description of the call.
-        /// </summary>
-        /// <returns>Description of the call.</returns>
-        public override string ToString()
-        {
-            var result = new StringBuilder();
-
-            result.Append(this.Method.DeclaringType);
-            result.Append(".");
-            this.AppendMethodName(result);
-
-            this.AppendArgumentsListString(result);
-
-            return result.ToString();
         }
 
         public virtual void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate)
@@ -98,103 +77,13 @@ namespace FakeItEasy.Expressions
             return null;
         }
 
-        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<ParsedArgumentExpression> argumentExpressions, ExpressionArgumentConstraintFactory constraintFactory)
-        {
-            if (argumentExpressions == null)
-            {
-                return Enumerable.Empty<IArgumentConstraint>();
-            }
-
-            return
-                from argument in argumentExpressions
-                select constraintFactory.GetArgumentConstraint(argument);
-        }
+        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<ParsedArgumentExpression> argumentExpressions, ExpressionArgumentConstraintFactory constraintFactory) =>
+            from argument in argumentExpressions
+            select constraintFactory.GetArgumentConstraint(argument);
 
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
         {
             return this.methodInfoManager.WillInvokeSameMethodOnTarget(type, first, second);
-        }
-
-        private void AppendMethodName(StringBuilder result)
-        {
-            if (this.Method.IsPropertyGetterOrSetter())
-            {
-                result.Append(this.Method.Name.Substring(4));
-            }
-            else
-            {
-                result.Append(this.Method.Name);
-            }
-
-            result.Append(this.Method.GetGenericArgumentsString());
-        }
-
-        private void AppendArgumentsListString(StringBuilder result)
-        {
-            var constraints = this.GetArgumentConstraintsForArgumentsList();
-            if (constraints.Any() || !this.Method.IsPropertyGetterOrSetter())
-            {
-                this.AppendArgumentListPrefix(result);
-                int index = 0;
-                var parameters = this.Method.GetParameters();
-
-                foreach (var constraint in constraints)
-                {
-                    if (index > 0)
-                    {
-                        result.Append(", ");
-                    }
-
-                    var parameter = parameters[index];
-                    result.Append(parameter.Name + ": ");
-                    constraint.WriteDescription(this.outputWriterFactory(result));
-                    index++;
-                }
-
-                this.AppendArgumentListSuffix(result);
-            }
-
-            if (this.Method.IsPropertySetter())
-            {
-                result.Append(" = ");
-                var valueConstraint = this.argumentConstraints.Last();
-                valueConstraint.WriteDescription(this.outputWriterFactory(result));
-            }
-        }
-
-        private IList<IArgumentConstraint> GetArgumentConstraintsForArgumentsList()
-        {
-            var list = this.argumentConstraints.ToList();
-            if (this.Method.IsPropertySetter())
-            {
-                list.RemoveAt(list.Count - 1);
-            }
-
-            return list;
-        }
-
-        private void AppendArgumentListPrefix(StringBuilder builder)
-        {
-            if (this.Method.IsPropertyGetterOrSetter())
-            {
-                builder.Append("[");
-            }
-            else
-            {
-                builder.Append("(");
-            }
-        }
-
-        private void AppendArgumentListSuffix(StringBuilder builder)
-        {
-            if (this.Method.IsPropertyGetterOrSetter())
-            {
-                builder.Append("]");
-            }
-            else
-            {
-                builder.Append(")");
-            }
         }
 
         private bool ArgumentsMatches(ArgumentCollection argumentCollection)
