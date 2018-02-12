@@ -234,7 +234,7 @@ namespace FakeItEasy.Tests.Expressions
 
         private ExpressionCallMatcher CreateMatcher(ParsedCallExpression callSpecification)
         {
-            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager, new CallConstraintDescriber(this.outputWriterFactory));
+            return new ExpressionCallMatcher(callSpecification, this.constraintFactory, this.methodInfoManager);
         }
 
         private void StubMethodInfoManagerToReturn(bool returnValue)
