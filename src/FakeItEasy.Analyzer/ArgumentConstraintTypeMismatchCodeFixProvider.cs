@@ -1,6 +1,7 @@
 namespace FakeItEasy.Analyzer
 {
     using System.Collections.Immutable;
+    using System.Globalization;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -29,13 +30,13 @@ namespace FakeItEasy.Analyzer
             ImmutableArray.Create(DiagnosticDefinitions.ArgumentConstraintNullabilityMismatch.Id, DiagnosticDefinitions.ArgumentConstraintTypeMismatch.Id);
 
         private static string MakeConstraintNullableCodeFixTitle =>
-            DiagnosticDefinitions.ResourceManager.GetString(nameof(MakeConstraintNullableCodeFixTitle));
+            DiagnosticDefinitions.ResourceManager.GetString(nameof(MakeConstraintNullableCodeFixTitle), CultureInfo.CurrentUICulture);
 
         private static string MakeNotNullConstraintCodeFixTitle =>
-            DiagnosticDefinitions.ResourceManager.GetString(nameof(MakeNotNullConstraintCodeFixTitle));
+            DiagnosticDefinitions.ResourceManager.GetString(nameof(MakeNotNullConstraintCodeFixTitle), CultureInfo.CurrentUICulture);
 
         private static string ChangeConstraintTypeCodeFixTitle =>
-            DiagnosticDefinitions.ResourceManager.GetString(nameof(ChangeConstraintTypeCodeFixTitle));
+            DiagnosticDefinitions.ResourceManager.GetString(nameof(ChangeConstraintTypeCodeFixTitle), CultureInfo.CurrentUICulture);
 
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -81,7 +82,7 @@ namespace FakeItEasy.Analyzer
 
         private static async Task<Document> MakeConstraintNullableAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
-            var root = await context.Document.GetSyntaxRootAsync(cancellationToken);
+            var root = await context.Document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var constraintNode = GetConstraintNode(diagnostic, root);
 
@@ -105,7 +106,7 @@ namespace FakeItEasy.Analyzer
 
         private static async Task<Document> MakeNotNullConstraintAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
-            var root = await context.Document.GetSyntaxRootAsync(cancellationToken);
+            var root = await context.Document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var constraintNode = GetConstraintNode(diagnostic, root);
 
@@ -146,7 +147,7 @@ namespace FakeItEasy.Analyzer
 
         private static async Task<Document> ChangeConstraintTypeAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
-            var root = await context.Document.GetSyntaxRootAsync(cancellationToken);
+            var root = await context.Document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             // The T type
             var constraintType = GetConstraintType(diagnostic, root);

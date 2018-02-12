@@ -4,6 +4,7 @@ namespace FakeItEasy
     using System.Collections.Concurrent;
     using System.Reflection;
     using System.Threading.Tasks;
+    using FakeItEasy.Compatibility;
 
     internal static class TaskHelper
     {
@@ -50,7 +51,7 @@ namespace FakeItEasy
                 type =>
                 {
                     var method = CreateGenericCanceledTaskGenericDefinition.MakeGenericMethod(type);
-                    return (Task)method.Invoke(null, new object[0]);
+                    return (Task)method.Invoke(null, ArrayHelper.Empty<object>());
                 });
         }
 

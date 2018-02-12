@@ -278,7 +278,7 @@ namespace FakeItEasy.Tests.Configuration
         [Fact]
         public void OutAndRefParameterProducer_should_not_be_settable_more_than_once()
         {
-            this.rule.OutAndRefParametersValueProducer = x => new object[0];
+            this.rule.OutAndRefParametersValueProducer = x => Array.Empty<object>();
 
             var exception = Record.Exception(() => this.rule.OutAndRefParametersValueProducer = x => new object[] { "test" });
             exception.Should().BeAnExceptionOfType<InvalidOperationException>();

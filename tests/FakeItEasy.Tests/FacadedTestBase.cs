@@ -30,14 +30,14 @@ namespace FakeItEasy.Tests
 
         private bool IsExcluedMethod(MethodInfo facadedMethod)
         {
-            return facadedMethod.Name.Equals("ReferenceEquals") || facadedMethod.Name.Equals("Equals");
+            return facadedMethod.Name == "ReferenceEquals" || facadedMethod.Name == "Equals";
         }
 
         private bool NameSignatureAndReturnTypeEquals(MethodInfo method1, MethodInfo method2)
         {
             return
                 object.Equals(method1.ReturnType, method2.ReturnType)
-                && string.Equals(method1.Name, method2.Name)
+                && method1.Name == method2.Name
                 && this.AllArgumentsEquals(method1, method2);
         }
 
@@ -59,7 +59,7 @@ namespace FakeItEasy.Tests
                         }))
             {
                 if (!object.Equals(argument.Method1Parameter.ParameterType, argument.Method2Parameter.ParameterType) ||
-                    !string.Equals(argument.Method1Parameter.Name, argument.Method2Parameter.Name))
+                    argument.Method1Parameter.Name != argument.Method2Parameter.Name)
                 {
                     return false;
                 }

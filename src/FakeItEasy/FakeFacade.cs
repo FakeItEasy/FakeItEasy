@@ -51,7 +51,9 @@ namespace FakeItEasy
             manager.ClearRecordedCalls();
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public void InitializeFixture(object fixture)
+#pragma warning restore CA1822 // Mark members as static
         {
             Guard.AgainstNull(fixture, nameof(fixture));
 

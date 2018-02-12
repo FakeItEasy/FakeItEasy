@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Creation.CastleDynamicProxy
+namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
     using System.Diagnostics;
@@ -18,7 +18,9 @@
         : IInterceptedFakeObjectCall
     {
         private readonly IInvocation invocation;
+#pragma warning disable CA2235 // Mark all non-serializable fields
         private readonly object[] originalArguments;
+#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CastleInvocationCallAdapter"/> class.
@@ -36,7 +38,9 @@
         /// <summary>
         /// Gets the method that's called.
         /// </summary>
+#pragma warning disable CA2235 // Mark all non-serializable fields
         public MethodInfo Method { get; }
+#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Gets the arguments used in the call.

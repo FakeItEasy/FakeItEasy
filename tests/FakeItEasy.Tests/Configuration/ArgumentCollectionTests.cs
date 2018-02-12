@@ -20,7 +20,9 @@ namespace FakeItEasy.Tests.Configuration
         public void Constructor_is_properly_guarded()
         {
             var method = typeof(IFoo).GetMethod("Bar", new[] { typeof(object), typeof(object) });
+#pragma warning disable CA1806 // Do not ignore method results
             Expression<Action> call = () => new ArgumentCollection(new object[] { "foo", 1 }, method);
+#pragma warning restore CA1806 // Do not ignore method results
             call.Should().BeNullGuarded();
         }
 

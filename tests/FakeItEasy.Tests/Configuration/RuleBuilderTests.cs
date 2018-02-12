@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests.Configuration
                 configuration => configuration.DoesNothing(),
                 configuration => configuration.Throws<Exception>(),
                 configuration => configuration.Invokes(DoNothing),
-                configuration => configuration.AssignsOutAndRefParametersLazily(_ => new object[0]));
+                configuration => configuration.AssignsOutAndRefParametersLazily(_ => Array.Empty<object>()));
 
         public static IEnumerable<object[]> BehaviorDefinitionActionsForNonVoid =>
             TestCases.FromObject<Action<IAnyCallConfigurationWithReturnTypeSpecified<int>>>(

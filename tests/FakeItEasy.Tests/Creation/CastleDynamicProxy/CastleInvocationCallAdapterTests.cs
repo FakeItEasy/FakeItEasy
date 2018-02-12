@@ -15,8 +15,8 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         {
             var invocation = A.Fake<IInvocation>();
 
-            A.CallTo(() => invocation.Arguments).Returns(new object[] { });
-            A.CallTo(() => invocation.Method).Returns(typeof(IFoo).GetMethod("Bar", new Type[] { }));
+            A.CallTo(() => invocation.Arguments).Returns(Array.Empty<object>());
+            A.CallTo(() => invocation.Method).Returns(typeof(IFoo).GetMethod("Bar", Type.EmptyTypes));
 
             var adapter = new CastleInvocationCallAdapter(invocation);
 
@@ -29,8 +29,8 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         public void SetArgumentValue_sets_the_argument_value_of_the_invocation()
         {
             var invocation = A.Fake<IInvocation>();
-            A.CallTo(() => invocation.Arguments).Returns(new object[] { });
-            A.CallTo(() => invocation.Method).Returns(typeof(IFoo).GetMethod("Bar", new Type[] { }));
+            A.CallTo(() => invocation.Arguments).Returns(Array.Empty<object>());
+            A.CallTo(() => invocation.Method).Returns(typeof(IFoo).GetMethod("Bar", Type.EmptyTypes));
 
             var adapter = new CastleInvocationCallAdapter(invocation);
 

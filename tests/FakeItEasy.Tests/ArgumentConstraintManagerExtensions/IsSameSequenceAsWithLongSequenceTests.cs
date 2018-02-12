@@ -1,5 +1,6 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
@@ -13,7 +14,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
         {
             return TestCases.FromObject(
                 new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
-                new int[] { },
+                Array.Empty<int>(),
                 null,
                 new[] { 1, 2, 3, 4 },
                 new[] { 9, 8 });

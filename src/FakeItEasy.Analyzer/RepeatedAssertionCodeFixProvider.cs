@@ -1,6 +1,7 @@
 namespace FakeItEasy.Analyzer
 {
     using System.Collections.Immutable;
+    using System.Globalization;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace FakeItEasy.Analyzer
             ImmutableArray.Create(DiagnosticDefinitions.RepeatedAssertion.Id);
 
         private static string ChangeAssertionToNotUseRepeatedCodeFixTitle =>
-            DiagnosticDefinitions.ResourceManager.GetString(nameof(ChangeAssertionToNotUseRepeatedCodeFixTitle));
+            DiagnosticDefinitions.ResourceManager.GetString(nameof(ChangeAssertionToNotUseRepeatedCodeFixTitle), CultureInfo.CurrentUICulture);
 
         public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -60,7 +61,7 @@ namespace FakeItEasy.Analyzer
             Diagnostic diagnostic,
             CancellationToken cancellationToken)
         {
-            var root = await context.Document.GetSyntaxRootAsync(cancellationToken);
+            var root = await context.Document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             // The complete assertion call, e.g. A.CallTo(() => fake.Method()).MustHaveHappened(Repeated.Exactly.Once).
             var mustHaveHappenedNode = GetMustHaveHappened(diagnostic, root);
@@ -82,12 +83,12 @@ namespace FakeItEasy.Analyzer
                     newAssertionNode = newAssertionNode.WithArgumentList(ArgumentList());
                     break;
                 case "Like":
-                    var mustHaveHappenedANumberOfTimesMatchingArguments = BuildMustHaveHappenedANumberOfTimesMatchingArgumentsFromRepeated(newAssertionNode, repeatedNode);
+                    var mustHaveHappenedANumberOfTimesMatchingArguments = BuildMustHaveHappenedANumberOfTimesMatchingArgumentsFromRepeated(repeatedNode);
                     newAssertionNode = RenameAssertion(newAssertionNode, "MustHaveHappenedANumberOfTimesMatching");
                     newAssertionNode = newAssertionNode.ReplaceArguments(mustHaveHappenedANumberOfTimesMatchingArguments);
                     break;
                 case "Times":
-                    var mustHaveHappenedArguments = BuildNewMustHaveHappenedArgumentsFromRepeated(newAssertionNode, repeatedNode);
+                    var mustHaveHappenedArguments = BuildNewMustHaveHappenedArgumentsFromRepeated(repeatedNode);
                     newAssertionNode = newAssertionNode.ReplaceArguments(mustHaveHappenedArguments);
                     break;
             }
@@ -96,9 +97,7 @@ namespace FakeItEasy.Analyzer
             return context.Document.WithSyntaxRoot(newRoot);
         }
 
-        private static SeparatedSyntaxList<ArgumentSyntax> BuildNewMustHaveHappenedArgumentsFromRepeated(
-            InvocationExpressionSyntax newAssertionNode,
-            ArgumentSyntax repeatedNode)
+        private static SeparatedSyntaxList<ArgumentSyntax> BuildNewMustHaveHappenedArgumentsFromRepeated(ArgumentSyntax repeatedNode)
         {
             // The original argument was Repeated.<comparisonType>.Times.
             var comparisonType = GetComparisonType(repeatedNode);
@@ -115,9 +114,7 @@ namespace FakeItEasy.Analyzer
                 });
         }
 
-        private static SeparatedSyntaxList<ArgumentSyntax> BuildMustHaveHappenedANumberOfTimesMatchingArgumentsFromRepeated(
-            InvocationExpressionSyntax assertionNode,
-            ArgumentSyntax repeatedNode)
+        private static SeparatedSyntaxList<ArgumentSyntax> BuildMustHaveHappenedANumberOfTimesMatchingArgumentsFromRepeated(ArgumentSyntax repeatedNode)
         {
             // The repeated node is something like Repeated.Like(n => n % 2 == 0).
             // Fetch its expression, which will be the Like call, and grab its argument (there's only one) to use as the

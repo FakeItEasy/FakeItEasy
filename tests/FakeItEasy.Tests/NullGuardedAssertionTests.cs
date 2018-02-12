@@ -45,7 +45,9 @@ namespace FakeItEasy.Tests
         [Fact]
         public void Assert_should_pass_when_call_is_properly_guarded_constructor()
         {
+#pragma warning disable CA1806 // Do not ignore method results
             AssertShouldPass(() => new ClassWithProperlyGuardedConstructor("foo"));
+#pragma warning restore CA1806 // Do not ignore method results
         }
 
         [Fact]
@@ -63,7 +65,9 @@ namespace FakeItEasy.Tests
         [Fact]
         public void Assert_should_include_method_signature_in_error_message_when_call_is_non_guarded_constructor()
         {
+#pragma warning disable CA1806 // Do not ignore method results
             AssertShouldFail(() => new ClassWithNonProperlyGuardedConstructor("foo", "bar")).And
+#pragma warning restore CA1806 // Do not ignore method results
                 .Message.Should().Contain("Expected calls to FakeItEasy.Tests.NullGuardedAssertionTests+ClassWithNonProperlyGuardedConstructor.ctor([String] a, [String] b) to be null guarded.");
         }
 

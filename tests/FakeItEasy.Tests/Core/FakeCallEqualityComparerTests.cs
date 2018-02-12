@@ -9,7 +9,7 @@ namespace FakeItEasy.Tests.Core
 
     public class FakeCallEqualityComparerTests
     {
-        private static readonly MethodInfo ToStringMethod = typeof(object).GetMethod("ToString", new Type[] { });
+        private static readonly MethodInfo ToStringMethod = typeof(object).GetMethod("ToString", Type.EmptyTypes);
         private static readonly MethodInfo EqualsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
 
         private readonly FakeCallEqualityComparer comparer;
@@ -119,7 +119,7 @@ namespace FakeItEasy.Tests.Core
             var call = A.Fake<IFakeObjectCall>();
 
             A.CallTo(() => call.Method).Returns(ToStringMethod);
-            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(new object[] { }, A.Fake<MethodInfo>()));
+            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(Array.Empty<object>(), A.Fake<MethodInfo>()));
 
             return call;
         }

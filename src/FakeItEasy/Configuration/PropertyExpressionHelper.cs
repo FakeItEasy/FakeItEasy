@@ -4,6 +4,7 @@ namespace FakeItEasy.Configuration
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using FakeItEasy.Compatibility;
     using FakeItEasy.Expressions;
 
     internal class PropertyExpressionHelper
@@ -19,7 +20,7 @@ namespace FakeItEasy.Configuration
                                             "' must refer to a property or indexer getter, but doesn't.");
             }
 
-            var parsedArgumentExpressions = parsedCallExpression.ArgumentsExpressions ?? new ParsedArgumentExpression[0];
+            var parsedArgumentExpressions = parsedCallExpression.ArgumentsExpressions ?? ArrayHelper.Empty<ParsedArgumentExpression>();
             var parameterTypes = parsedArgumentExpressions
                 .Select(p => p.ArgumentInformation.ParameterType)
                 .Concat(new[] { parsedCallExpression.CalledMethod.ReturnType })

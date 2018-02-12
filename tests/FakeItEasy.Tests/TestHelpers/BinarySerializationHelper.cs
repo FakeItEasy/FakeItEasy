@@ -8,7 +8,9 @@ namespace FakeItEasy.Tests.TestHelpers
 
     public static class BinarySerializationHelper
     {
+#pragma warning disable CA1801 // parameter not used
         public static T SerializeAndDeserialize<T>(T value)
+#pragma warning restore CA1801 // parameter not used
         {
 #if FEATURE_BINARY_SERIALIZATION
             T result;

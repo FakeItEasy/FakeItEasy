@@ -256,7 +256,7 @@ namespace FakeItEasy.Tests.Creation
 
         private DynamicDummyFactory CreateDummyFactoryThatMakesNoDummy()
         {
-            return new DynamicDummyFactory(new IDummyFactory[0]);
+            return new DynamicDummyFactory(Array.Empty<IDummyFactory>());
         }
 
         public class ClassWithDefaultConstructor
