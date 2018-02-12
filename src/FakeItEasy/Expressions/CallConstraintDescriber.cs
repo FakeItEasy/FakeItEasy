@@ -3,7 +3,6 @@ namespace FakeItEasy.Expressions
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
     using FakeItEasy.Core;
 
     /// <summary>
@@ -23,29 +22,25 @@ namespace FakeItEasy.Expressions
         }
 
         /// <summary>
-        /// Gets a human readable description of the call constraint
-        /// matcher.
+        /// Writes a human readable description of the call constraint
+        /// matcher to the supplied writer.
         /// </summary>
+        /// <param name="writer">The writer on which to describe the call.</param>
         /// <param name="method">The method to describe.</param>
         /// <param name="argumentConstraints">The argument constraints applied to the method.</param>
-        /// <returns>A human readable description of the call constraint.</returns>
-        public string GetDescriptionOfMatchingCall(MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
+        public void DescribeCallOn(IOutputWriter writer, MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
         {
-            var result = new StringBuilder();
+            writer.Write(method.DeclaringType);
+            writer.Write(".");
+            WriteMethodName(writer, method);
 
-            result.Append(method.DeclaringType);
-            result.Append(".");
-            AppendMethodName(result, method);
-
-            this.AppendArgumentsListString(result, method, argumentConstraints);
-
-            return result.ToString();
+            this.WriteArgumentsListString(writer, method, argumentConstraints);
         }
 
-        private static void AppendMethodName(StringBuilder result, MethodInfo method)
+        private static void WriteMethodName(IOutputWriter writer, MethodInfo method)
         {
-            result.Append(method.IsPropertyGetterOrSetter() ? method.Name.Substring(4) : method.Name);
-            result.Append(method.GetGenericArgumentsString());
+            writer.Write(method.IsPropertyGetterOrSetter() ? method.Name.Substring(4) : method.Name);
+            writer.Write(method.GetGenericArgumentsString());
         }
 
         private static IList<IArgumentConstraint> GetArgumentConstraintsForArgumentsList(MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
@@ -59,19 +54,18 @@ namespace FakeItEasy.Expressions
             return list;
         }
 
-        private static void AppendArgumentListPrefix(StringBuilder builder, MethodInfo method) =>
-            builder.Append(method.IsPropertyGetterOrSetter() ? '[' : '(');
+        private static void WriteArgumentListPrefix(IOutputWriter writer, MethodInfo method) =>
+            writer.Write(method.IsPropertyGetterOrSetter() ? '[' : '(');
 
-        private static void AppendArgumentListSuffix(StringBuilder builder, MethodInfo method) =>
-            builder.Append(method.IsPropertyGetterOrSetter() ? ']' : ')');
+        private static void WriteArgumentListSuffix(IOutputWriter writer, MethodInfo method) =>
+            writer.Write(method.IsPropertyGetterOrSetter() ? ']' : ')');
 
-        private void AppendArgumentsListString(StringBuilder result, MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
+        private void WriteArgumentsListString(IOutputWriter writer, MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
         {
             var constraints = GetArgumentConstraintsForArgumentsList(method, argumentConstraints);
-            var stringBuilderOutputWriter = this.outputWriterFactory(result);
             if (constraints.Any() || !method.IsPropertyGetterOrSetter())
             {
-                AppendArgumentListPrefix(result, method);
+                WriteArgumentListPrefix(writer, method);
                 int index = 0;
                 var parameters = method.GetParameters();
 
@@ -79,23 +73,23 @@ namespace FakeItEasy.Expressions
                 {
                     if (index > 0)
                     {
-                        result.Append(", ");
+                        writer.Write(", ");
                     }
 
                     var parameter = parameters[index];
-                    result.Append(parameter.Name + ": ");
-                    constraint.WriteDescription(stringBuilderOutputWriter);
+                    writer.Write(parameter.Name).Write(": ");
+                    constraint.WriteDescription(writer);
                     index++;
                 }
 
-                AppendArgumentListSuffix(result, method);
+                WriteArgumentListSuffix(writer, method);
             }
 
             if (method.IsPropertySetter())
             {
-                result.Append(" = ");
+                writer.Write(" = ");
                 var valueConstraint = argumentConstraints.Last();
-                valueConstraint.WriteDescription(stringBuilderOutputWriter);
+                valueConstraint.WriteDescription(writer);
             }
         }
     }

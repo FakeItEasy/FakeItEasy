@@ -30,17 +30,9 @@ namespace FakeItEasy.Expressions
         /// <returns>A rule instance.</returns>
         public delegate ExpressionCallRule Factory(ParsedCallExpression callSpecification);
 
-        public override string DescriptionOfValidCall => this.ExpressionMatcher.DescriptionOfMatchingCall;
-
         private ExpressionCallMatcher ExpressionMatcher { get; }
 
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString() => this.DescriptionOfValidCall;
+        public override void DescribeCallOn(IOutputWriter writer) => this.ExpressionMatcher.DescribeCallOn(writer);
 
         public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
         {
