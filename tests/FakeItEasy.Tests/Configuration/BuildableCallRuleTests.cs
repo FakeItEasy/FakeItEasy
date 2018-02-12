@@ -314,7 +314,7 @@ namespace FakeItEasy.Tests.Configuration
 
             public bool OnIsApplicableToWasCalled { get; private set; }
 
-            public override string DescriptionOfValidCall => this.DescriptionOfValidCallReturnValue;
+            public override void DescribeCallOn(IOutputWriter writer) => writer.Write(this.DescriptionOfValidCallReturnValue);
 
             public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> argumentsPredicate)
             {

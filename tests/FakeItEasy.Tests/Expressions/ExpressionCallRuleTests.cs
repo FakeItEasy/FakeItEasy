@@ -80,13 +80,15 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         [Fact]
-        public void DescriptionOfValidCall_should_return_expressionMatcher_ToString()
+        public void DescribeCallOn_should_write_expressionMatcher_description()
         {
-            A.CallTo(() => this.callMatcher.DescriptionOfMatchingCall).Returns("foo");
+            var fakeWriter = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            A.CallTo(() => this.callMatcher.DescribeCallOn(A<IOutputWriter>._)).Invokes((IOutputWriter w) => w.Write("foo"));
 
             var rule = this.CreateRule();
 
-            rule.DescriptionOfValidCall.Should().Be("foo");
+            rule.WriteDescriptionOfValidCall(fakeWriter);
+            fakeWriter.Builder.ToString().Should().Be("foo");
         }
 
         [Fact]

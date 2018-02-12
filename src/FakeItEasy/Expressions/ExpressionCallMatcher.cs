@@ -36,13 +36,13 @@ namespace FakeItEasy.Expressions
             this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
         }
 
-        /// <summary>
-        /// Gets a human readable description of calls that will be matched by this
-        /// matcher.
-        /// </summary>
-        public virtual string DescriptionOfMatchingCall => this.callConstraintConstraintDescriber.GetDescriptionOfMatchingCall(this.Method, this.argumentConstraints);
-
         private MethodInfo Method { get; }
+
+        /// <summary>
+        /// Writes a description of calls the rule is applicable to.
+        /// </summary>
+        /// <param name="writer">The writer on which to describe the call.</param>
+        public virtual void DescribeCallOn(IOutputWriter writer) => this.callConstraintConstraintDescriber.DescribeCallOn(writer, this.Method, this.argumentConstraints);
 
         /// <summary>
         /// Matches the specified call against the expression.

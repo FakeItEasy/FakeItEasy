@@ -66,9 +66,10 @@ namespace FakeItEasy.Configuration
         public virtual int? NumberOfTimesToCall { get; set; }
 
         /// <summary>
-        /// Gets a description of calls the rule is applicable to.
+        /// Writes a description of calls the rule is applicable to.
         /// </summary>
-        public abstract string DescriptionOfValidCall { get; }
+        /// <param name="writer">The writer on which to describe the call.</param>
+        public abstract void DescribeCallOn(IOutputWriter writer);
 
         /// <summary>
         /// Sets an action that is called by the <see cref="Apply"/> method to apply this
@@ -132,7 +133,7 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(writer, nameof(writer));
 
-            writer.Write(this.DescriptionOfValidCall);
+            this.DescribeCallOn(writer);
 
             Func<string> wherePrefix = () =>
             {

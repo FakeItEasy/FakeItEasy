@@ -154,8 +154,10 @@ namespace FakeItEasy.Tests.Expressions
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 
-            matcher.DescriptionOfMatchingCall.Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <FOO>, argument2: <FOO>)");
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            matcher.DescribeCallOn(writer);
 
+            writer.Builder.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <FOO>, argument2: <FOO>)");
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).MustHaveHappenedTwiceExactly();
         }
 
@@ -201,7 +203,10 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.UsePredicateToValidateArguments(x => true);
 
-            matcher.DescriptionOfMatchingCall.Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <Predicated>, argument2: <Predicated>)");
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            matcher.DescribeCallOn(writer);
+
+            writer.Builder.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <Predicated>, argument2: <Predicated>)");
         }
 
         [Fact]

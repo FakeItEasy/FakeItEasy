@@ -56,10 +56,12 @@ namespace FakeItEasy.Configuration
 
         private static string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
         {
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
             var constraintFactory = ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>();
             var describer = ServiceLocator.Current.Resolve<CallConstraintDescriber>();
 
-            return describer.GetDescriptionOfMatchingCall(parsedCallExpression.CalledMethod, parsedCallExpression.ArgumentsExpressions.Select(constraintFactory.GetArgumentConstraint));
+            describer.DescribeCallOn(writer, parsedCallExpression.CalledMethod, parsedCallExpression.ArgumentsExpressions.Select(constraintFactory.GetArgumentConstraint));
+            return writer.Builder.ToString();
         }
 
         private static string GetPropertyName(ParsedCallExpression parsedCallExpression)
