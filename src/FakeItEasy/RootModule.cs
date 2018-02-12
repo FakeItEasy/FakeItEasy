@@ -16,8 +16,7 @@ namespace FakeItEasy
     /// Handles the registration of root dependencies in an IoC-container.
     /// </summary>
     [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
-    internal class RootModule
-        : Module
+    internal static class RootModule
     {
         /// <summary>
         /// Registers the dependencies.
@@ -26,7 +25,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "Container configuration.")]
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
-        public override void RegisterDependencies(DictionaryContainer container)
+        public static void RegisterDependencies(DictionaryContainer container)
         {
             container.RegisterSingleton(c =>
                 new DynamicOptionsBuilder(
