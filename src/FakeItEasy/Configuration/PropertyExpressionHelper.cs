@@ -58,9 +58,8 @@ namespace FakeItEasy.Configuration
         {
             var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
             var constraintFactory = ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>();
-            var describer = ServiceLocator.Current.Resolve<CallConstraintDescriber>();
 
-            describer.DescribeCallOn(writer, parsedCallExpression.CalledMethod, parsedCallExpression.ArgumentsExpressions.Select(constraintFactory.GetArgumentConstraint));
+            CallConstraintDescriber.DescribeCallOn(writer, parsedCallExpression.CalledMethod, parsedCallExpression.ArgumentsExpressions.Select(constraintFactory.GetArgumentConstraint));
             return writer.Builder.ToString();
         }
 

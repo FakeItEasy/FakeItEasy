@@ -33,13 +33,11 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(c));
 
-            container.RegisterSingleton(c => new CallConstraintDescriber(c.Resolve<StringBuilderOutputWriter.Factory>()));
-
             container.RegisterSingleton(c =>
                 new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
 
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>(), c.Resolve<CallConstraintDescriber>())));
+                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>())));
 
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
@@ -127,14 +125,10 @@ namespace FakeItEasy
                 this.serviceLocator = serviceLocator;
             }
 
-            public ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification)
-            {
-                return new ExpressionCallMatcher(
+            public ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification) => new ExpressionCallMatcher(
                     callSpecification,
                     this.serviceLocator.Resolve<ExpressionArgumentConstraintFactory>(),
-                    this.serviceLocator.Resolve<MethodInfoManager>(),
-                    this.serviceLocator.Resolve<CallConstraintDescriber>());
-            }
+                    this.serviceLocator.Resolve<MethodInfoManager>());
         }
 
         private class ResolverFakeObjectCreator
