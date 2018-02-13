@@ -10,9 +10,9 @@ namespace FakeItEasy
         static ServiceLocator()
         {
             var container = new DictionaryContainer();
-            new RootModule().RegisterDependencies(container);
-            new ConfigurationModule().RegisterDependencies(container);
-            new ImportsModule().RegisterDependencies(container);
+            RootModule.RegisterDependencies(container);
+            ConfigurationModule.RegisterDependencies(container);
+            ImportsModule.RegisterDependencies(container);
             Current = container;
         }
 

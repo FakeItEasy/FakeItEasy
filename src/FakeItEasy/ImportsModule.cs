@@ -4,10 +4,9 @@ namespace FakeItEasy
     using FakeItEasy.Core;
     using FakeItEasy.IoC;
 
-    internal class ImportsModule
-        : Module
+    internal static class ImportsModule
     {
-        public override void RegisterDependencies(DictionaryContainer container)
+        public static void RegisterDependencies(DictionaryContainer container)
         {
             var bootstrapper = BootstrapperLocator.FindBootstrapper();
 
