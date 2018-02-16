@@ -26,8 +26,14 @@ namespace FakeItEasy.Configuration
                 .Concat(new[] { parsedCallExpression.CalledMethod.ReturnType })
                 .ToArray();
 
-            var callTargetType = Fake.GetFakeManager(parsedCallExpression.CallTarget).FakeObjectType;
-            var indexerSetterInfo = callTargetType.GetMethod("set_" + propertyName, parameterTypes);
+            // The DeclaringType may be null, so fall back to the faked object type.
+            // (It's unlikely to happen, though, and would require the client code to have passed a specially
+            // constructed expression to ACallToSet; perhaps a dynamically generated method created
+            // via lightweight code generation.)
+            var callTargetType = parsedCallExpression.CalledMethod.DeclaringType
+                                 ?? Fake.GetFakeManager(parsedCallExpression.CallTarget).FakeObjectType;
+            var setPropertyName = "set_" + propertyName;
+            var indexerSetterInfo = callTargetType.GetMethod(setPropertyName, parameterTypes);
 
             if (indexerSetterInfo == null)
             {
