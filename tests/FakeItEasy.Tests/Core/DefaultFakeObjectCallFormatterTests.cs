@@ -45,7 +45,7 @@ namespace FakeItEasy.Tests.Core
         public void Should_write_empty_argument_list()
         {
             // Arrange
-            var call = this.CreateFakeCall(typeof(object).GetMethod("ToString", new Type[] { }));
+            var call = this.CreateFakeCall(typeof(object).GetMethod("ToString", Type.EmptyTypes));
 
             // Act
             var description = this.formatter.GetDescription(call);

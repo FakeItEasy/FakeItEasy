@@ -17,7 +17,7 @@ namespace FakeItEasy.Tests.Core
                 {
                     TypeOfFake = typeof(string),
                     ReasonForFailureOfDefaultConstructor = "reason",
-                    ResolvedConstructors = new ResolvedConstructor[] { },
+                    ResolvedConstructors = Array.Empty<ResolvedConstructor>(),
                     ExpectedMessage = @"
   Failed to create fake of type System.String.
 

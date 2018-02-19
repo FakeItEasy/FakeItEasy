@@ -22,8 +22,9 @@ namespace FakeItEasy.Tests
         {
             Action<IFakeOptions<Foo>> optionsBuilder = x => { };
 
-            Expression<Action> call = () =>
-                new Fake<Foo>(optionsBuilder);
+#pragma warning disable CA1806 // Do not ignore method results
+            Expression<Action> call = () => new Fake<Foo>(optionsBuilder);
+#pragma warning restore CA1806 // Do not ignore method results
             call.Should().BeNullGuarded();
         }
 

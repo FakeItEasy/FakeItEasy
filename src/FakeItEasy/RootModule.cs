@@ -16,8 +16,7 @@ namespace FakeItEasy
     /// Handles the registration of root dependencies in an IoC-container.
     /// </summary>
     [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
-    internal class RootModule
-        : Module
+    internal static class RootModule
     {
         /// <summary>
         /// Registers the dependencies.
@@ -26,7 +25,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "Container configuration.")]
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
-        public override void RegisterDependencies(DictionaryContainer container)
+        public static void RegisterDependencies(DictionaryContainer container)
         {
             container.RegisterSingleton(c =>
                 new DynamicOptionsBuilder(
@@ -38,7 +37,7 @@ namespace FakeItEasy
                 new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
 
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>(), c.Resolve<StringBuilderOutputWriter.Factory>())));
+                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>())));
 
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
@@ -126,14 +125,10 @@ namespace FakeItEasy
                 this.serviceLocator = serviceLocator;
             }
 
-            public ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification)
-            {
-                return new ExpressionCallMatcher(
+            public ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification) => new ExpressionCallMatcher(
                     callSpecification,
                     this.serviceLocator.Resolve<ExpressionArgumentConstraintFactory>(),
-                    this.serviceLocator.Resolve<MethodInfoManager>(),
-                    this.serviceLocator.Resolve<StringBuilderOutputWriter.Factory>());
-            }
+                    this.serviceLocator.Resolve<MethodInfoManager>());
         }
 
         private class ResolverFakeObjectCreator

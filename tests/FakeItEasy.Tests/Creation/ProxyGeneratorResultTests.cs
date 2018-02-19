@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Creation
+namespace FakeItEasy.Tests.Creation
 {
     using System;
     using System.Linq.Expressions;
@@ -145,7 +145,9 @@
             // Act
 
             // Assert
+#pragma warning disable CA1806 // Do not ignore method results
             Expression<Action> call = () => new ProxyGeneratorResult("reason");
+#pragma warning restore CA1806 // Do not ignore method results
             call.Should().BeNullGuarded();
         }
 
@@ -157,7 +159,9 @@
             // Act
 
             // Assert
+#pragma warning disable CA1806 // Do not ignore method results
             Expression<Action> call = () => new ProxyGeneratorResult(new object());
+#pragma warning restore CA1806 // Do not ignore method results
             call.Should().BeNullGuarded();
         }
     }

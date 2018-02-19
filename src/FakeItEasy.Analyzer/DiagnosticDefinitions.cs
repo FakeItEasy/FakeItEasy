@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer
+namespace FakeItEasy.Analyzer
 {
     using System.Reflection;
     using System.Resources;
@@ -55,6 +55,14 @@
                 "FakeItEasy0005",
                 "FakeItEasy.Usage",
                 DiagnosticSeverity.Error,
+                true);
+
+        public static DiagnosticDescriptor RepeatedAssertion { get; } =
+            CreateDiagnosticDescriptor(
+                nameof(RepeatedAssertion),
+                "FakeItEasy0006",
+                "FakeItEasy.Usage",
+                DiagnosticSeverity.Warning,
                 true);
 
         private static DiagnosticDescriptor CreateDiagnosticDescriptor(

@@ -39,7 +39,9 @@ This documentation has been retained here, for now, as a convenience to
 users of versions of FakeItEasy that predate 4.4.0.
 
 **The `Repeated` class will be removed in the future, so no new code should be written
-that uses these methods, and existing code should be converted to use the API described above.** 
+that uses these methods, and existing code should be converted to use the API described above.
+This can easily be done using the FakeItEasy0006 code fix included in the
+[FakeItEasy Roslyn analyzer](analyzer.md).** 
 
 ```csharp
 A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Once);

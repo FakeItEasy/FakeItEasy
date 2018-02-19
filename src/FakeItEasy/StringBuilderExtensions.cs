@@ -1,6 +1,7 @@
 namespace FakeItEasy
 {
     using System.Text;
+    using FakeItEasy.Compatibility;
 
     /// <summary>
     /// Provides extension methods for <see cref="StringBuilder"/>.
@@ -9,7 +10,7 @@ namespace FakeItEasy
     {
         public static StringBuilder AppendIndented(this StringBuilder builder, string indentString, string value)
         {
-            var lines = value == null ? new string[] { } : value.Split('\n');
+            var lines = value?.Split('\n') ?? ArrayHelper.Empty<string>();
 
             for (var i = 0; i < lines.Length; i++)
             {

@@ -4,10 +4,9 @@ namespace FakeItEasy.Configuration
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using FakeItEasy.Core;
     using FakeItEasy.Expressions;
 
-    internal class PropertyExpressionHelper
+    internal static class PropertyExpressionHelper
     {
         public static ParsedCallExpression BuildSetterFromGetter<TValue>(
             ParsedCallExpression parsedCallExpression)
@@ -20,18 +19,23 @@ namespace FakeItEasy.Configuration
                                             "' must refer to a property or indexer getter, but doesn't.");
             }
 
-            var parsedArgumentExpressions = parsedCallExpression.ArgumentsExpressions ?? new ParsedArgumentExpression[0];
-            var parameterTypes = parsedArgumentExpressions
+            var parameterTypes = parsedCallExpression.ArgumentsExpressions
                 .Select(p => p.ArgumentInformation.ParameterType)
                 .Concat(new[] { parsedCallExpression.CalledMethod.ReturnType })
                 .ToArray();
 
-            var callTargetType = Fake.GetFakeManager(parsedCallExpression.CallTarget).FakeObjectType;
-            var indexerSetterInfo = callTargetType.GetMethod("set_" + propertyName, parameterTypes);
+            // The DeclaringType may be null, so fall back to the faked object type.
+            // (It's unlikely to happen, though, and would require the client code to have passed a specially
+            // constructed expression to ACallToSet; perhaps a dynamically generated method created
+            // via lightweight code generation.)
+            var callTargetType = parsedCallExpression.CalledMethod.DeclaringType
+                                 ?? Fake.GetFakeManager(parsedCallExpression.CallTarget).FakeObjectType;
+            var setPropertyName = "set_" + propertyName;
+            var indexerSetterInfo = callTargetType.GetMethod(setPropertyName, parameterTypes);
 
             if (indexerSetterInfo == null)
             {
-                if (parsedArgumentExpressions.Any())
+                if (parsedCallExpression.ArgumentsExpressions.Any())
                 {
                     var expressionDescription = GetExpressionDescription(parsedCallExpression);
                     throw new ArgumentException("Expression '" + expressionDescription +
@@ -47,7 +51,7 @@ namespace FakeItEasy.Configuration
                 BuildArgumentThatMatchesAnything<TValue>(),
                 originalParameterInfos.Last());
 
-            var arguments = parsedArgumentExpressions
+            var arguments = parsedCallExpression.ArgumentsExpressions
                 .Take(originalParameterInfos.Length - 1)
                 .Concat(new[] { newParsedSetterValueExpression });
 
@@ -56,13 +60,11 @@ namespace FakeItEasy.Configuration
 
         private static string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
         {
-            var matcher = new ExpressionCallMatcher(
-                parsedCallExpression,
-                ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>(),
-                ServiceLocator.Current.Resolve<MethodInfoManager>(),
-                ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>());
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var constraintFactory = ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>();
 
-            return matcher.DescriptionOfMatchingCall;
+            CallConstraintDescriber.DescribeCallOn(writer, parsedCallExpression.CalledMethod, parsedCallExpression.ArgumentsExpressions.Select(constraintFactory.GetArgumentConstraint));
+            return writer.Builder.ToString();
         }
 
         private static string GetPropertyName(ParsedCallExpression parsedCallExpression)

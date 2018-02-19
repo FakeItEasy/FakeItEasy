@@ -139,16 +139,7 @@
         private static bool IsSetupInvocation(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax parent)
         {
             var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(parent, context);
-
-            if (methodSymbol == null)
-            {
-                return false;
-            }
-
-            var methodFullName =
-                string.Concat(methodSymbol.ContainingType.GetFullName(), ".", methodSymbol.GetDecoratedName());
-
-            return CallSpecMethods.Contains(methodFullName);
+            return methodSymbol != null && CallSpecMethods.Contains(methodSymbol.GetFullName());
         }
 
         private static bool IsProperty(SymbolInfo symbolInfo)

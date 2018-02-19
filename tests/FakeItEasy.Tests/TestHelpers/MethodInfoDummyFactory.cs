@@ -7,7 +7,7 @@ namespace FakeItEasy.Tests.TestHelpers
     {
         protected override MethodInfo Create()
         {
-            return typeof(object).GetMethod("ToString", new Type[] { });
+            return typeof(object).GetMethod("ToString", Type.EmptyTypes);
         }
     }
 }

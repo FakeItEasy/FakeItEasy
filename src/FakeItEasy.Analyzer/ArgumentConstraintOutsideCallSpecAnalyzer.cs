@@ -88,10 +88,7 @@ namespace FakeItEasy.Analyzer
                 return false;
             }
 
-            var methodFullName =
-                string.Concat(methodSymbol.ContainingType.GetFullName(), ".", methodSymbol.GetDecoratedName());
-
-            if (MethodsSupportingArgumentConstraints.Contains(methodFullName))
+            if (MethodsSupportingArgumentConstraints.Contains(methodSymbol.GetFullName()))
             {
                 return methodSymbol.Parameters.Length == 1
                        && (methodSymbol.Parameters[0].Type as INamedTypeSymbol)?.GetFullName() == "System.Linq.Expressions.Expression`1";

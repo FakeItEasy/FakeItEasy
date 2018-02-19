@@ -87,7 +87,7 @@ namespace FakeItEasy.Tests.Core
             IArgumentConstraint lateStartingResult = null;
 
             // Act
-            var earlyStartingTask = Task.Factory.StartNew(() =>
+            var earlyStartingTask = Task.Run(() =>
             {
                 earlyStartingResult = this.trap.TrapConstraints(() =>
                 {
@@ -98,7 +98,7 @@ namespace FakeItEasy.Tests.Core
                 }).SingleOrDefault();
             });
 
-            var lateStartingTask = Task.Factory.StartNew(() =>
+            var lateStartingTask = Task.Run(() =>
             {
                 lateStartingLock.Wait();
 

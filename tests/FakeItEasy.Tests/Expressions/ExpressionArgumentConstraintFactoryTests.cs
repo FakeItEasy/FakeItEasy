@@ -184,7 +184,7 @@ namespace FakeItEasy.Tests.Expressions
             {
                 Guard.AgainstNull(call, nameof(call));
 
-                if (call.Method.Name.Equals("TrapConstraints"))
+                if (call.Method.Name == "TrapConstraints")
                 {
                     this.realTrap.TrapConstraints(call.GetArgument<Action>(0));
                 }

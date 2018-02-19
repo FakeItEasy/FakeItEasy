@@ -1,6 +1,7 @@
 namespace FakeItEasy.Analyzer
 {
     using System.Collections.Immutable;
+    using System.Globalization;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace FakeItEasy.Analyzer
     using Microsoft.CodeAnalysis.VisualBasic;
     using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 #endif
+    using static FakeItEasy.Analyzer.SyntaxHelpers;
 
 #if CSHARP
     [ExportCodeFixProvider(LanguageNames.CSharp)]
@@ -28,13 +30,13 @@ namespace FakeItEasy.Analyzer
             ImmutableArray.Create(DiagnosticDefinitions.ArgumentConstraintNullabilityMismatch.Id, DiagnosticDefinitions.ArgumentConstraintTypeMismatch.Id);
 
         private static string MakeConstraintNullableCodeFixTitle =>
-            DiagnosticDefinitions.ResourceManager.GetString(nameof(MakeConstraintNullableCodeFixTitle));
+            DiagnosticDefinitions.ResourceManager.GetString(nameof(MakeConstraintNullableCodeFixTitle), CultureInfo.CurrentUICulture);
 
         private static string MakeNotNullConstraintCodeFixTitle =>
-            DiagnosticDefinitions.ResourceManager.GetString(nameof(MakeNotNullConstraintCodeFixTitle));
+            DiagnosticDefinitions.ResourceManager.GetString(nameof(MakeNotNullConstraintCodeFixTitle), CultureInfo.CurrentUICulture);
 
         private static string ChangeConstraintTypeCodeFixTitle =>
-            DiagnosticDefinitions.ResourceManager.GetString(nameof(ChangeConstraintTypeCodeFixTitle));
+            DiagnosticDefinitions.ResourceManager.GetString(nameof(ChangeConstraintTypeCodeFixTitle), CultureInfo.CurrentUICulture);
 
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -78,18 +80,9 @@ namespace FakeItEasy.Analyzer
             return root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true);
         }
 
-        private static MemberAccessExpressionSyntax SimpleMemberAccess(ExpressionSyntax expression, SimpleNameSyntax name)
-        {
-#if CSHARP
-            return SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, name);
-#elif VISUAL_BASIC
-            return SyntaxFactory.SimpleMemberAccessExpression(expression, name);
-#endif
-        }
-
         private static async Task<Document> MakeConstraintNullableAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
-            var root = await context.Document.GetSyntaxRootAsync(cancellationToken);
+            var root = await context.Document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var constraintNode = GetConstraintNode(diagnostic, root);
 
@@ -113,7 +106,7 @@ namespace FakeItEasy.Analyzer
 
         private static async Task<Document> MakeNotNullConstraintAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
-            var root = await context.Document.GetSyntaxRootAsync(cancellationToken);
+            var root = await context.Document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var constraintNode = GetConstraintNode(diagnostic, root);
 
@@ -154,7 +147,7 @@ namespace FakeItEasy.Analyzer
 
         private static async Task<Document> ChangeConstraintTypeAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
         {
-            var root = await context.Document.GetSyntaxRootAsync(cancellationToken);
+            var root = await context.Document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             // The T type
             var constraintType = GetConstraintType(diagnostic, root);

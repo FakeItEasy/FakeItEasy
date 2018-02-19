@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using System.Reflection;
@@ -91,9 +91,9 @@
             public IFoo UnattributedFooField;
 
             [Fake]
-#pragma warning disable CS0169 // it's used by reflection
+#pragma warning disable CS0169, CA1823 // it's used by reflection
             private IFoo privateFoo;
-#pragma warning restore CS0169
+#pragma warning restore CS0169, CA1823
         }
 
         public class SutExample

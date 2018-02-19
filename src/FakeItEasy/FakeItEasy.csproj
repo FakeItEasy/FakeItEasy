@@ -35,7 +35,7 @@
   <!-- .NET Standard 1.6 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION;FEATURE_EXCEPTION_DISPATCH_INFO</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION;FEATURE_EXCEPTION_DISPATCH_INFO;FEATURE_ARRAY_EMPTY</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">

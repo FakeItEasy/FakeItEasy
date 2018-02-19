@@ -17,28 +17,26 @@ namespace FakeItEasy.Configuration
 
         public bool ApplicableToAllNonVoidReturnTypes { get; set; }
 
-        public override string DescriptionOfValidCall
+        public override void DescribeCallOn(IOutputWriter writer)
         {
-            get
+            if (this.ApplicableToMembersWithReturnType != null)
             {
-                if (this.ApplicableToMembersWithReturnType != null)
+                if (this.ApplicableToMembersWithReturnType == typeof(void))
                 {
-                    if (this.ApplicableToMembersWithReturnType == typeof(void))
-                    {
-                        return "Any call with void return type to the fake object.";
-                    }
-                    else
-                    {
-                        return $"Any call with return type {this.ApplicableToMembersWithReturnType} to the fake object.";
-                    }
+                    writer.Write("Any call with void return type to the fake object.");
                 }
-
-                if (this.ApplicableToAllNonVoidReturnTypes)
+                else
                 {
-                    return "Any call with non-void return type to the fake object.";
+                    writer.Write("Any call with return type ").Write(this.ApplicableToMembersWithReturnType).Write(" to the fake object.");
                 }
-
-                return "Any call made to the fake object.";
+            }
+            else if (this.ApplicableToAllNonVoidReturnTypes)
+            {
+                writer.Write("Any call with non-void return type to the fake object.");
+            }
+            else
+            {
+                writer.Write("Any call made to the fake object.");
             }
         }
 

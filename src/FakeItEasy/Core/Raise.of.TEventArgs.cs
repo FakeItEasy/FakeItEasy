@@ -71,7 +71,9 @@ namespace FakeItEasy.Core
             return new[] { this.hasSender ? this.eventSender : fake, this.eventArguments };
         }
 
+#pragma warning disable CA1822 // Mark members as static
         private void Now(object sender, TEventArgs e)
+#pragma warning restore CA1822 // Mark members as static
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
         }

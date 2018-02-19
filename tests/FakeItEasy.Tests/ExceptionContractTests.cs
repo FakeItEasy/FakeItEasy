@@ -99,7 +99,7 @@ namespace FakeItEasy.Tests
             // Arrange
 
             // Act
-            var constructor = typeof(T).GetConstructor(new Type[] { });
+            var constructor = typeof(T).GetConstructor(Type.EmptyTypes);
 
             // Assert
             constructor.Should().NotBeNull("exception classes should provide a public default constructor.");

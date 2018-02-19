@@ -4,10 +4,9 @@ namespace FakeItEasy.Configuration
     using FakeItEasy.Expressions;
     using FakeItEasy.IoC;
 
-    internal class ConfigurationModule
-        : Module
+    internal static class ConfigurationModule
     {
-        public override void RegisterDependencies(DictionaryContainer container)
+        public static void RegisterDependencies(DictionaryContainer container)
         {
             container.RegisterSingleton<IConfigurationFactory>(c =>
                 new ConfigurationFactory(c));

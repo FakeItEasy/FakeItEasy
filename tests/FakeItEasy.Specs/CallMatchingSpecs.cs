@@ -422,8 +422,7 @@ namespace FakeItEasy.Specs
         [Scenario]
         public static void IgnoredArgumentConstraintForDifferentValueTypeWithNonNullArgument(
             IHaveANullableParameter subject,
-            Exception exception,
-            int result)
+            Exception exception)
         {
             "Given a fake with a method that accepts a nullable value type parameter"
                 .x(() => subject = A.Fake<IHaveANullableParameter>());

@@ -19,7 +19,9 @@ namespace FakeItEasy.Tests
 
         public ArgumentCollection Arguments { get; private set; }
 
+#pragma warning disable CA1065 // Do not raise exceptions in unexpected locations
         public ArgumentCollection ArgumentsAfterCall => throw new NotImplementedException();
+#pragma warning restore CA1065 // Do not raise exceptions in unexpected locations
 
         public object ReturnValue { get; private set; }
 
@@ -44,7 +46,7 @@ namespace FakeItEasy.Tests
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "By design.")]
         public static FakeCall Create<T>(string methodName) where T : class
         {
-            return Create<T>(methodName, new Type[] { }, new object[] { });
+            return Create<T>(methodName, Type.EmptyTypes, Array.Empty<object>());
         }
 
         public void SetReturnValue(object value)

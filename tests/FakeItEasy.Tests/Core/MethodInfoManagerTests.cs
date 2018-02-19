@@ -211,16 +211,14 @@ namespace FakeItEasy.Tests.Core
             {
             }
 
-            public T GetDefault<T>()
-            {
-                return default(T);
-            }
+            public T GetDefault<T>() => default(T);
 
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "other", Justification = "Required for testing.")]
-            public bool Equals(Base other)
-            {
-                return true;
-            }
+            public bool Equals(Base other) => true;
+
+            public override bool Equals(object other) => true;
+
+            public override int GetHashCode() => 0;
         }
 
         public class Derived : Base
