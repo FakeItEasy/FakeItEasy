@@ -8,6 +8,11 @@ var foo = A.Fake<IFoo>();
 ```
 This will return a faked object that is an actual instance of the type specified (`IFoo` in this case).
 
+You can create a fake delegate with the same syntax:
+```csharp
+var func = A.Fake<Func<string, int>>();
+```
+
 You can also create a collection of fakes by writing:
 ```csharp
 var foos = A.CollectionOfFake<Foo>(10);

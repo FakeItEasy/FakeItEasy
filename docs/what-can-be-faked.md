@@ -13,7 +13,7 @@ following entities can be faked:
     * are not sealed,
     * are not static, and
     * have at least one public or protected constructor whose arguments FakeItEasy can construct or obtain
-
+* delegates
 
 Note that special steps will need to be taken to
 [fake internal interfaces and classes](how-to-fake-internal-types.md).
