@@ -88,7 +88,7 @@ with the _current_ state.
 
 If your test or production code must mutate call arguments between the
 time of the call and the assertion time, you must look for some other
-way to very the call. Perhaps using `IsSameAs` will suffice, if the
+way to verify the call. Perhaps using `IsSameAs` will suffice, if the
 correct behavior of the System Under Test can otherwise be
 inferred. Or consider using [Invokes](invoking-custom-code.md) to
 create a snapshot of the object and interrogate it later:
