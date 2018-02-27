@@ -52,6 +52,30 @@ namespace TheNamespace
                  });
         }
 
+        [Fact]
+        public void Analyzer_Should_Not_Throw_When_Expression_Has_No_Type()
+        {
+            string code = @"namespace TheNamespace
+{
+    class TheClass
+    {
+        void TheTest()
+        {
+            #pragma warning disable CS0219 // (variable assigned but never used)
+            // Expression nameof(IFoo.Method) has no type
+            var s = nameof(IFoo.Method);
+        }
+
+        interface IFoo
+        {
+            void Method();
+        }
+    }
+}";
+
+            this.VerifyCSharpDiagnostic(code);
+        }
+
         [Theory]
         [MemberData(nameof(AssertionsAndTheirReplacements))]
         public void ChangeAssertion_CodeFix_Should_Replace_Assertion_With_Repeatedless_Assertion(string assertion, string fixedAssertion)
