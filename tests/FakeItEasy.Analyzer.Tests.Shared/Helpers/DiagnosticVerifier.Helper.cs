@@ -4,6 +4,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
+    using System.Runtime.ExceptionServices;
     using System.Text;
     using Microsoft.CodeAnalysis;
 #if CSHARP
@@ -61,9 +62,15 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
             }
 
             var diagnostics = new List<Diagnostic>();
+            var analyzerExceptions = new List<Exception>();
             foreach (var project in projects)
             {
-                var compilationWithAnalyzers = project.GetCompilationAsync().Result.WithAnalyzers(ImmutableArray.Create(analyzer));
+                var options = new CompilationWithAnalyzersOptions(
+                    new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty),
+                    (exception, diagnosticAnalyzer, diagnostic) => analyzerExceptions.Add(exception),
+                    false,
+                    true);
+                var compilationWithAnalyzers = project.GetCompilationAsync().Result.WithAnalyzers(ImmutableArray.Create(analyzer), options);
 
                 if (!allowCompilationErrors)
                 {
@@ -71,6 +78,19 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
                 }
 
                 var diags = compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result;
+
+                if (analyzerExceptions.Any())
+                {
+                    if (analyzerExceptions.Count == 1)
+                    {
+                        ExceptionDispatchInfo.Capture(analyzerExceptions[0]).Throw();
+                    }
+                    else
+                    {
+                        throw new AggregateException("Multiple exceptions thrown during analysis", analyzerExceptions);
+                    }
+                }
+
                 foreach (var diag in diags)
                 {
                     if (diag.Location == Location.None || diag.Location.IsInMetadata)
