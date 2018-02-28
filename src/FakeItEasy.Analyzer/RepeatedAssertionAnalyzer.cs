@@ -70,7 +70,7 @@ namespace FakeItEasy.Analyzer
 
         private static string GetTypeName(SyntaxNodeAnalysisContext context, ArgumentSyntax argument)
         {
-            return context.SemanticModel.GetTypeInfo(argument.GetExpression()).ConvertedType.ToString();
+            return context.SemanticModel.GetTypeInfo(argument.GetExpression()).ConvertedType?.ToString();
         }
     }
 }

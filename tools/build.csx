@@ -259,7 +259,7 @@ public void RunTests(string target)
 public void RunTestsInDirectory(string testDirectory)
 {
     var xml = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
-    Cmd(testDirectory, "dotnet", $"xunit -configuration Release -nologo -nobuild -notrait \"explicit=yes\" -xml {xml}");
+    Cmd(testDirectory, "dotnet", $"xunit -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}");
 }
 
 public string GetVSLocation()
