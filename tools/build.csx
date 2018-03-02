@@ -1,10 +1,5 @@
 #load "packages/simple-targets-csx.6.0.0/contentFiles/csx/any/simple-targets.csx"
 
-#r "System.Net.Http"
-#r "System.Xml.Linq"
-
-using System.Net.Http;
-using System.Xml.Linq;
 using System.Runtime.CompilerServices;
 using static SimpleTargets;
 
@@ -13,7 +8,6 @@ var solutionName = "FakeItEasy";
 var solution = "./" + solutionName + ".sln";
 var versionInfoFile = "./src/VersionInfo.cs";
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
-var coverityProjectUrl = "https://scan.coverity.com/builds?project=FakeItEasy%2FFakeItEasy";
 
 var projectsToPack = new[]
 {
@@ -65,8 +59,6 @@ var pdbGit = $"{toolsPackagesDirectory}/pdbGit.3.0.41/tools/PdbGit.exe";
 static var xunit = $"{toolsPackagesDirectory}/xunit.runner.console.2.0.0/tools/xunit.console.exe";
 
 // artifact locations
-var coverityDirectory = "./artifacts/coverity";
-var coverityResultsDirectory = "./artifacts/coverity/cov-int";
 var logsDirectory = "./artifacts/logs";
 var outputDirectory = Path.GetFullPath("./artifacts/output");
 static var testsDirectory = "./artifacts/tests";
@@ -78,8 +70,6 @@ targets.Add("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
 
 targets.Add("outputDirectory", () => Directory.CreateDirectory(outputDirectory));
 
-targets.Add("coverityDirectory", () => Directory.CreateDirectory(coverityDirectory));
-
 targets.Add("logsDirectory", () => Directory.CreateDirectory(logsDirectory));
 
 targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
@@ -87,53 +77,6 @@ targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
 targets.Add("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunMsBuild("Build"));
 
 targets.Add("versionInfoFile", () => Cmd(gitversion, $"/updateAssemblyInfo {versionInfoFile} /ensureAssemblyInfo"));
-
-targets.Add(
-    "coverity",
-    DependsOn("clean", "coverityDirectory", "restore"),
-    () =>
-    {
-        Cmd(
-            "cov-build",
-            $@"--dir {coverityResultsDirectory} ""{msBuild}"" {solution} /target:Build /p:configuration=Release /nr:false /verbosity:minimal /nologo /fl /flp:LogFile=artifacts/logs/Coverity-Build.log;Verbosity=Detailed;PerformanceSummary");
-
-        var version = ReadCmdOutput(".", gitversion, "/showvariable SemVer");
-        var coverityToken = Environment.GetEnvironmentVariable("COVERITY_TOKEN");
-        var coverityEmail = Environment.GetEnvironmentVariable("COVERITY_EMAIL");
-        var repoCommitId = Environment.GetEnvironmentVariable("APPVEYOR_REPO_COMMIT");
-
-        var coverityZipFile = coverityDirectory + "/coverity.zip";
-        Cmd("7z", $"a -r {coverityZipFile} {coverityResultsDirectory}");
-
-        using (var client = new HttpClient())
-        {
-            client.Timeout = TimeSpan.FromMinutes(20);
-
-            var form = new MultipartFormDataContent();
-            form.Add(new StringContent(coverityToken), @"""token""");
-            form.Add(new StringContent(coverityEmail), @"""email""");
-            form.Add(new StringContent(version), @"""version""");
-            form.Add(new StringContent($"Build {version} ({repoCommitId})"), @"""description""");
-
-            using (var fileStream = new FileStream(coverityZipFile, FileMode.Open, FileAccess.Read))
-            {
-                var formFileField = new StreamContent(fileStream);
-
-                form.Add(formFileField, @"""file""", "coverity.zip");
-
-                Console.WriteLine("Uploading coverity scan...");
-                var postTask = client.PostAsync(coverityProjectUrl, form);
-                try
-                {
-                    postTask.Wait();
-                }
-                catch (AggregateException e)
-                {
-                    throw e.InnerException;
-                }
-            }
-        }
-    });
 
 targets.Add("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
 
