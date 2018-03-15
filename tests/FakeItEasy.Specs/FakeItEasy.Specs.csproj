@@ -14,10 +14,6 @@
     <DefineConstants>$(DefineConstants);FEATURE_IN_PARAM</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
