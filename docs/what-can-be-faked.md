@@ -44,6 +44,6 @@ overridden if they are:
 Note that this means that static members, including extension methods,
 **cannot** be overridden.
 
-### Methods with reference return values
+### Methods that return values by reference
 
-Methods with [reference return values](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/ref-returns#what-is-a-reference-return-value) can not be invoked on a Fake. Any attempt to do so will result in a `NullReferenceException` being thrown. 
+Methods that return values by reference (officially called "[reference return values](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/ref-returns#what-is-a-reference-return-value)") cannot be invoked on a Fake. Any attempt to do so will result in a `NullReferenceException` being thrown.
