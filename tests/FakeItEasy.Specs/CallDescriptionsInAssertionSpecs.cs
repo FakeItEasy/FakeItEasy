@@ -12,6 +12,8 @@ namespace FakeItEasy.Specs
         {
             int Bar(int i);
 
+            int Bar(HasCustomValueFormatter x);
+
             int Baz { get; set; }
         }
 
@@ -173,6 +175,41 @@ namespace FakeItEasy.Specs
             "And the exception correctly describes the actual call that was made"
                 .x(() => exception.Message.Should().Match(
                     "*\r\n    1: FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz = 42\r\n*"));
+        }
+
+        [Scenario]
+        public void AssertedCallDescriptionWithCustomValueFormatter(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And the fake has a method with a parameter that has a custom argument value formatter"
+                .See<IFoo>(foo => foo.Bar(default(HasCustomValueFormatter)));
+
+            "And no call is made to the fake"
+                .x(() => { });
+
+            "When I assert that the method was called"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new HasCustomValueFormatter())).MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception should correctly describe the asserted call, using the appropriate argument value formatter"
+                .x(() => exception.Message.Should().Match(
+                    "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Bar(x: hello world)\r\n*"));
+        }
+
+        public class HasCustomValueFormatter
+        {
+        }
+
+        public class HasCustomValueFormatterValueFormatter : ArgumentValueFormatter<HasCustomValueFormatter>
+        {
+            protected override string GetStringValue(HasCustomValueFormatter argumentValue)
+            {
+                return "hello world";
+            }
         }
     }
 }
