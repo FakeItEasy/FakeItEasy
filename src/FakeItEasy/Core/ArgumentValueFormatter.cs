@@ -74,40 +74,11 @@ namespace FakeItEasy.Core
         private IArgumentValueFormatter ResolveTypeFormatter(Type forType)
         {
             return
-                (from formatter in this.typeFormatters
-                 where formatter.ForType.IsAssignableFrom(forType)
-                 select formatter)
-                .Min(f => new RangedFormatter(f, GetDistanceFromKnownType(f.ForType, forType)))
-                .Formatter;
-        }
-
-        /// <summary>
-        /// Holds a formatter as well as the distance between a type to be formatted
-        /// and the type for which the formatted is registered.
-        /// </summary>
-        private class RangedFormatter : IComparable<RangedFormatter>
-        {
-            private readonly int distanceFromKnownType;
-
-            public RangedFormatter(IArgumentValueFormatter formatter, int distanceFromKnownType)
-            {
-                this.Formatter = formatter;
-                this.distanceFromKnownType = distanceFromKnownType;
-            }
-
-            public IArgumentValueFormatter Formatter { get; }
-
-            public int CompareTo(RangedFormatter other)
-            {
-                Guard.AgainstNull(other, nameof(other));
-
-                if (other.distanceFromKnownType == this.distanceFromKnownType)
-                {
-                    return other.Formatter.Priority.CompareTo(this.Formatter.Priority);
-                }
-
-                return this.distanceFromKnownType.CompareTo(other.distanceFromKnownType);
-            }
+                this.typeFormatters
+                    .Where(formatter => formatter.ForType.IsAssignableFrom(forType))
+                    .OrderBy(formatter => GetDistanceFromKnownType(formatter.ForType, forType))
+                    .ThenByDescending(formatter => formatter.Priority)
+                    .First();
         }
 
         private class DefaultFormatter
