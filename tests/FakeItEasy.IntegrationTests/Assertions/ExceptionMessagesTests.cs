@@ -29,7 +29,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 @"
 
   Assertion failed for the following call:
-    FakeItEasy.Tests.IFoo.Bar(argument: """")
+    FakeItEasy.Tests.IFoo.Bar(argument: string.Empty)
   Expected to find it twice or more but didn't find it among the calls:
     1: FakeItEasy.Tests.IFoo.Bar() 2 times
     ...
@@ -60,7 +60,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 @"
 
   Assertion failed for the following call:
-    FakeItEasy.Tests.IFoo.Bar(argument: """")
+    FakeItEasy.Tests.IFoo.Bar(argument: string.Empty)
   Expected to find it twice or more but didn't find it among the calls:
     1: FakeItEasy.Tests.IFoo.Bar(
           argument1: 1,

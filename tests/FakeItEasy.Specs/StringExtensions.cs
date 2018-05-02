@@ -10,7 +10,7 @@ namespace FakeItEasy.Specs
     {
         /// <summary>
         /// Creates a step builder that can be used to refer to a type.
-        /// Useful when we want to establish a condition with actually performing an action.
+        /// Useful when we want to establish a condition without actually performing an action.
         /// </summary>
         /// <typeparam name="T">The type to look at.</typeparam>
         /// <param name="text">A description of the type's relevant quality.</param>
@@ -24,7 +24,7 @@ namespace FakeItEasy.Specs
         /// <summary>
         /// Creates a step builder that can be used to refer to a method that
         /// creates a type, such as a constructor.
-        /// Useful when we want to establish a condition with actually performing an action.
+        /// Useful when we want to establish a condition without actually performing an action.
         /// </summary>
         /// <typeparam name="T">The type to look at.</typeparam>
         /// <param name="text">A description of the method's relevant quality.</param>
@@ -41,7 +41,7 @@ namespace FakeItEasy.Specs
 
         /// <summary>
         /// Creates a step builder that can be used to refer to a type's method.
-        /// Useful when we want to establish a condition with actually performing an action.
+        /// Useful when we want to establish a condition without actually performing an action.
         /// </summary>
         /// <typeparam name="T">The type to look at.</typeparam>
         /// <param name="text">A description of the method's relevant quality.</param>
@@ -54,8 +54,22 @@ namespace FakeItEasy.Specs
         }
 
         /// <summary>
+        /// Creates a step builder that can be used to refer to a type's method.
+        /// Useful when we want to establish a condition without actually performing an action.
+        /// </summary>
+        /// <typeparam name="T">The type to look at.</typeparam>
+        /// <param name="text">A description of the method's relevant quality.</param>
+        /// <param name="action">The method to look at. Will not be executed.</param>
+        /// <returns>A step builder.</returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "action", Justification = "Used to indicate the method to see.")]
+        public static IStepBuilder See<T>(this string text, Action<T> action)
+        {
+            return text.x(() => { });
+        }
+
+        /// <summary>
         /// Creates a step builder that can be used to refer to something.
-        /// Useful when we want to establish a condition with actually performing an action.
+        /// Useful when we want to establish a condition without actually performing an action.
         /// </summary>
         /// <remarks>Should only be used when no type-safe variant of <c>See</c> applies.</remarks>
         /// <param name="text">A description of the thing's relevant quality.</param>
