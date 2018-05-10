@@ -56,11 +56,21 @@ namespace FakeItEasy.Creation
 
             foreach (var argument in constructor.GetParameters())
             {
-                object result;
+                bool wasResolved;
+                object result = null;
+
+                try
+                {
+                    wasResolved = resolver.TryResolveDummyValue(session, argument.ParameterType, out result);
+                }
+                catch
+                {
+                    wasResolved = false;
+                }
 
                 var resolvedArgument = new ResolvedArgument
                                            {
-                                               WasResolved = resolver.TryResolveDummyValue(session, argument.ParameterType, out result),
+                                               WasResolved = wasResolved,
                                                ResolvedValue = result,
                                                ArgumentType = argument.ParameterType
                                            };
