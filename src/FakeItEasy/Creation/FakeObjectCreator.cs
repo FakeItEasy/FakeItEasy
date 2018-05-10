@@ -36,11 +36,10 @@ namespace FakeItEasy.Creation
             return result != null ? result.GeneratedProxy : null;
         }
 
-        private static ResolvedConstructor[] ResolveConstructors(Type typeOfFake, DummyCreationSession session, IDummyValueResolver resolver)
+        private static IEnumerable<ResolvedConstructor> ResolveConstructors(Type typeOfFake, DummyCreationSession session, IDummyValueResolver resolver)
         {
-            return (from constructor in GetUsableConstructorsInOrder(typeOfFake)
-                    let constructorAndArguments = ResolveConstructorArguments(constructor, session, resolver)
-                    select constructorAndArguments).ToArray();
+            return GetUsableConstructorsInOrder(typeOfFake)
+                .Select(constructor => ResolveConstructorArguments(constructor, session, resolver));
         }
 
         private static IEnumerable<ConstructorInfo> GetUsableConstructorsInOrder(Type type)
@@ -96,21 +95,29 @@ namespace FakeItEasy.Creation
         {
             var constructors = ResolveConstructors(typeOfFake, session, resolver);
 
-            foreach (var constructor in constructors.Where(x => x.WasSuccessfullyResolved))
+            // Save the constructors as we try them. Avoids eager evaluation and double evaluation
+            // of constructors enumerable.
+            var consideredConstructors = new List<ResolvedConstructor>();
+            foreach (var constructor in constructors)
             {
-                var result = this.GenerateProxy(typeOfFake, proxyOptions, constructor.Arguments.Select(x => x.ResolvedValue));
-
-                if (result.ProxyWasSuccessfullyGenerated)
+                if (constructor.WasSuccessfullyResolved)
                 {
-                    return result;
+                    var result = this.GenerateProxy(typeOfFake, proxyOptions, constructor.Arguments.Select(x => x.ResolvedValue));
+
+                    if (result.ProxyWasSuccessfullyGenerated)
+                    {
+                        return result;
+                    }
+
+                    constructor.ReasonForFailure = result.ReasonForFailure;
                 }
 
-                constructor.ReasonForFailure = result.ReasonForFailure;
+                consideredConstructors.Add(constructor);
             }
 
             if (throwOnFailure)
             {
-                this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeOfFake, failReasonForDefaultConstructor, constructors);
+                this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeOfFake, failReasonForDefaultConstructor, consideredConstructors);
             }
 
             return null;
