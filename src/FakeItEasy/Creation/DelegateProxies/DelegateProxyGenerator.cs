@@ -15,6 +15,7 @@
             Type typeOfProxy,
             IEnumerable<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
+            IEnumerable<Expression<Func<Attribute>>> attributes,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
@@ -29,17 +30,6 @@
 
             fakeCallProcessorProvider.EnsureInitialized(eventRaiser.Instance);
             return new ProxyGeneratorResult(eventRaiser.Instance);
-        }
-
-        public virtual ProxyGeneratorResult GenerateProxy(
-            Type typeOfProxy,
-            IEnumerable<Type> additionalInterfacesToImplement,
-            IEnumerable<object> argumentsForConstructor,
-            IEnumerable<Expression<Func<Attribute>>> attributes,
-            IFakeCallProcessorProvider fakeCallProcessorProvider)
-        {
-            return this.GenerateProxy(
-                typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
         }
 
         public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
