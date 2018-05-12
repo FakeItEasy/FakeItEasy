@@ -33,14 +33,17 @@ namespace FakeItEasy.Creation
             return generator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
-        private static bool IsDelegateType(Type typeOfProxy)
+        public bool CanGenerateProxy(Type typeOfProxy, out string failReason)
         {
-            return typeOfProxy != null && typeOfProxy.GetTypeInfo().IsSubclassOf(typeof(Delegate));
+            return this.delegateProxyGenerator.CanGenerateProxy(typeOfProxy, out failReason) ||
+                this.defaultProxyGenerator.CanGenerateProxy(typeOfProxy, out failReason);
         }
 
         private IProxyGenerator SelectProxyGenerator(Type typeOfProxy)
         {
-            return IsDelegateType(typeOfProxy) ? this.delegateProxyGenerator : this.defaultProxyGenerator;
+            return this.delegateProxyGenerator.CanGenerateProxy(typeOfProxy, out string reasonCannotGenerate)
+                ? this.delegateProxyGenerator
+                : this.defaultProxyGenerator;
         }
     }
 }

@@ -162,11 +162,7 @@ namespace FakeItEasy.Specs
             "And the exception message indicates the reason for failure"
                 .x(() => exception.Message.Should().Be(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+SealedClass.
-
-  Below is a list of reasons for failure per attempted constructor:
-    No constructor arguments failed:
-      The type of proxy FakeItEasy.Specs.CreationSpecsBase+SealedClass is sealed.
-
+    The type of proxy FakeItEasy.Specs.CreationSpecsBase+SealedClass is sealed.
 "));
         }
 
@@ -185,11 +181,7 @@ namespace FakeItEasy.Specs
             "And the exception message indicates the reason for failure"
                 .x(() => exception.Message.Should().Be(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct.
-
-  Below is a list of reasons for failure per attempted constructor:
-    No constructor arguments failed:
-      The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
-
+    The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
 "));
         }
 

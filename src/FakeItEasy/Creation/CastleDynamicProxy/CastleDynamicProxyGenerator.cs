@@ -34,14 +34,9 @@
             Guard.AgainstNull(attributes, nameof(attributes));
             Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
 
-            if (typeOfProxy.GetTypeInfo().IsValueType)
+            if (!this.CanGenerateProxy(typeOfProxy, out string failReason))
             {
-                return GetProxyResultForValueType(typeOfProxy);
-            }
-
-            if (typeOfProxy.GetTypeInfo().IsSealed)
-            {
-                return new ProxyGeneratorResult(DynamicProxyMessages.ProxyIsSealedType(typeOfProxy));
+                return new ProxyGeneratorResult(failReason);
             }
 
             GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
@@ -58,6 +53,24 @@
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
         {
             return this.interceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
+        }
+
+        public bool CanGenerateProxy(Type typeOfProxy, out string failReason)
+        {
+            if (typeOfProxy.GetTypeInfo().IsValueType)
+            {
+                failReason = DynamicProxyMessages.ProxyIsValueType(typeOfProxy);
+                return false;
+            }
+
+            if (typeOfProxy.GetTypeInfo().IsSealed)
+            {
+                failReason = DynamicProxyMessages.ProxyIsSealedType(typeOfProxy);
+                return false;
+            }
+
+            failReason = null;
+            return true;
         }
 
         private static ProxyGenerationOptions CreateProxyGenerationOptions()
@@ -116,11 +129,6 @@
         private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy, Exception e)
         {
             return new ProxyGeneratorResult(DynamicProxyMessages.ProxyTypeWithNoDefaultConstructor(typeOfProxy), e);
-        }
-
-        private static ProxyGeneratorResult GetProxyResultForValueType(Type typeOfProxy)
-        {
-            return new ProxyGeneratorResult(DynamicProxyMessages.ProxyIsValueType(typeOfProxy));
         }
 
         private static object DoGenerateProxy(
