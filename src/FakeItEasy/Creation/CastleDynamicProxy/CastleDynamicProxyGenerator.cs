@@ -29,36 +29,9 @@
             IEnumerable<Expression<Func<Attribute>>> attributes,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            Guard.AgainstNull(attributes, nameof(attributes));
-
-            var options = CreateProxyGenerationOptions();
-            foreach (var attribute in attributes)
-            {
-                options.AdditionalAttributes.Add(CustomAttributeInfo.FromExpression(attribute));
-            }
-
-            return GenerateProxy(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
-        }
-
-        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
-        {
-            return this.interceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
-        }
-
-        private static ProxyGenerationOptions CreateProxyGenerationOptions()
-        {
-            return new ProxyGenerationOptions(ProxyGenerationHook);
-        }
-
-        private static ProxyGeneratorResult GenerateProxy(
-            Type typeOfProxy,
-            ProxyGenerationOptions options,
-            IEnumerable<Type> additionalInterfacesToImplement,
-            IEnumerable<object> argumentsForConstructor,
-            IFakeCallProcessorProvider fakeCallProcessorProvider)
-        {
             Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
             Guard.AgainstNull(additionalInterfacesToImplement, nameof(additionalInterfacesToImplement));
+            Guard.AgainstNull(attributes, nameof(attributes));
             Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
 
             if (typeOfProxy.GetTypeInfo().IsValueType)
@@ -73,7 +46,23 @@
 
             GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
 
+            var options = CreateProxyGenerationOptions();
+            foreach (var attribute in attributes)
+            {
+                options.AdditionalAttributes.Add(CustomAttributeInfo.FromExpression(attribute));
+            }
+
             return CreateProxyGeneratorResult(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
+        }
+
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
+        {
+            return this.interceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
+        }
+
+        private static ProxyGenerationOptions CreateProxyGenerationOptions()
+        {
+            return new ProxyGenerationOptions(ProxyGenerationHook);
         }
 
         private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
