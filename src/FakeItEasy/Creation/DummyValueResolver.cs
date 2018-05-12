@@ -221,18 +221,18 @@ namespace FakeItEasy.Creation
                 foreach (var constructor in GetConstructorsInOrder(typeOfDummy))
                 {
                     var parameterTypes = constructor.GetParameters().Select(x => x.ParameterType);
-                    var resolvedArguments = this.ResolveAllTypes(session, parameterTypes);
-
-                    if (resolvedArguments != null)
+                    try
                     {
-                        try
+                        var resolvedArguments = this.ResolveAllTypes(session, parameterTypes);
+
+                        if (resolvedArguments != null)
                         {
                             result = Activator.CreateInstance(typeOfDummy, resolvedArguments.ToArray());
                             return true;
                         }
-                        catch
-                        {
-                        }
+                    }
+                    catch
+                    {
                     }
                 }
 
