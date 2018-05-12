@@ -19,13 +19,6 @@ namespace FakeItEasy.Creation
             this.defaultProxyGenerator = defaultProxyGenerator;
         }
 
-        public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IFakeCallProcessorProvider fakeCallProcessorProvider)
-        {
-            var generator = this.SelectProxyGenerator(typeOfProxy);
-
-            return generator.GenerateProxy(typeOfProxy, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
-        }
-
         public ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<Expression<Func<Attribute>>> attributes, IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             var generator = this.SelectProxyGenerator(typeOfProxy);

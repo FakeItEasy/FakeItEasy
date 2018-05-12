@@ -25,17 +25,6 @@ namespace FakeItEasy.Creation
         ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<Expression<Func<Attribute>>> attributes, IFakeCallProcessorProvider fakeCallProcessorProvider);
 
         /// <summary>
-        /// Generates a proxy of the specified type and returns a result object containing information
-        /// about the success of the generation and the proxy if it was generated.
-        /// </summary>
-        /// <param name="typeOfProxy">The type of proxy to generate.</param>
-        /// <param name="additionalInterfacesToImplement">Interfaces to be implemented by the proxy.</param>
-        /// <param name="argumentsForConstructor">Arguments to pass to the constructor of the type in <paramref name="typeOfProxy" />.</param>
-        /// <param name="fakeCallProcessorProvider">The call processor provider.</param>
-        /// <returns>A result containing the generated proxy.</returns>
-        ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IFakeCallProcessorProvider fakeCallProcessorProvider);
-
-        /// <summary>
         /// Gets a value indicating whether the specified member can be intercepted by the proxy generator.
         /// </summary>
         /// <param name="method">The member to test.</param>
