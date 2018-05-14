@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.Creation
 {
     using System;
+    using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
@@ -31,14 +32,15 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var additionalInterfaces = Type.EmptyTypes;
             var argumentsForConstructor = Array.Empty<object>();
+            var additionalAttributes = Array.Empty<Expression<Func<Attribute>>>();
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             var expected = A.Dummy<ProxyGeneratorResult>();
-            A.CallTo(() => this.delegateProxyGenerator.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider))
+            A.CallTo(() => this.delegateProxyGenerator.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, additionalAttributes, fakeCallProcessorProvider))
                 .Returns(expected);
 
             // Act
-            var result = this.selector.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider);
+            var result = this.selector.GenerateProxy(typeof(Action), additionalInterfaces, argumentsForConstructor, additionalAttributes, fakeCallProcessorProvider);
 
             // Assert
             result.Should().BeSameAs(expected);
@@ -50,14 +52,15 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var additionalInterfaces = Type.EmptyTypes;
             var argumentsForConstructor = Array.Empty<object>();
+            var additionalAttributes = Array.Empty<Expression<Func<Attribute>>>();
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             var expected = A.Dummy<ProxyGeneratorResult>();
-            A.CallTo(() => this.defaultProxyGenerator.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider))
+            A.CallTo(() => this.defaultProxyGenerator.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, additionalAttributes, fakeCallProcessorProvider))
                 .Returns(expected);
 
             // Act
-            var result = this.selector.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, fakeCallProcessorProvider);
+            var result = this.selector.GenerateProxy(typeof(object), additionalInterfaces, argumentsForConstructor, additionalAttributes, fakeCallProcessorProvider);
 
             // Assert
             result.Should().BeSameAs(expected);

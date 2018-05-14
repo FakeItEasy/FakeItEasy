@@ -40,16 +40,6 @@
             return GenerateProxy(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
         }
 
-        public ProxyGeneratorResult GenerateProxy(
-            Type typeOfProxy,
-            IEnumerable<Type> additionalInterfacesToImplement,
-            IEnumerable<object> argumentsForConstructor,
-            IFakeCallProcessorProvider fakeCallProcessorProvider)
-        {
-            var options = CreateProxyGenerationOptions();
-            return GenerateProxy(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
-        }
-
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
         {
             return this.interceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);

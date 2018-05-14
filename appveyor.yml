@@ -6,19 +6,13 @@ pull_requests:
 
 environment:
     BUILD: $(APPVEYOR_BUILD_NUMBER)
-    COVERITY_EMAIL:
-        secure: 9iw6ajDvltEymr75DhlRbH8X+2olJ8mbWLPqyYMmleg=
-    COVERITY_TOKEN:
-        secure: S9XU2JhyUK9XstLG3CN2vB5M8ce8zYZp5VECx3kvx24=
     GITHUB_TOKEN:
         secure: 5dFninlYVqNF98Pk9ykQwPU2pBFeQmbMOiFG2iSkg+hhcwF3UfmnDB07lvOwYtez
     NUGET_API_KEY:
         secure: ynOI8xETJ5V28b5ij2huIKbWRvqJU8QtLtFf8FLTJCWbxmcVP/OPpcF4B8jcOOKW
 
 build_script:
-- cmd: |
-    if defined APPVEYOR_SCHEDULED_BUILD (set BUILD_TARGET=coverity)
-    build.cmd %BUILD_TARGET%
+- cmd: build.cmd
 
 on_failure:
   - ps: $root = (Resolve-Path artifacts); [IO.Directory]::GetFiles($root.Path, '*.*', 'AllDirectories') | % { Push-AppveyorArtifact $_ -FileName $_.Substring($root.Path.Length + 1) -DeploymentName failed-build }

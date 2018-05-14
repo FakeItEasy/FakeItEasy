@@ -486,7 +486,7 @@ namespace FakeItEasy.Specs
 
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "ABad", Justification = "Refers to the two words 'a bad'")]
         [Scenario]
-        [MemberData("FakesWithBadToString")]
+        [MemberData(nameof(FakesWithBadToString))]
         public static void PassingAFakeWithABadToStringToAMethod<T>(
             T fake, string fakeDescription, IHaveOneGenericParameter anotherFake, Exception exception)
         {
@@ -524,7 +524,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        [MemberData("StrictFakes")]
+        [MemberData(nameof(StrictFakes))]
         public static void PassingAStrictFakeToAMethod<T>(
             Func<T> createFake, string fakeDescription, T fake, IHaveOneGenericParameter anotherFake, Exception exception)
         {
@@ -732,23 +732,18 @@ namespace FakeItEasy.Specs
         public static IEnumerable<object[]> Fakes()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
-            yield return new object[] { A.Fake<List<int>>(), "Faked " + typeof(List<int>) };
-            yield return new object[] { A.Fake<IList<int>>(), "Faked " + typeof(IList<int>) };
+            yield return new object[] { A.Fake<IList<int>>(), "[]" };
             yield return new object[] { A.Fake<Action<int>>(), typeof(Action<int>).ToString() };
         }
 
         public static IEnumerable<object[]> FakesWithBadToString()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
-            yield return new object[] { A.Fake<List<int>>(), "Faked " + typeof(List<int>) };
-            yield return new object[] { A.Fake<IList<int>>(), "Faked " + typeof(IList<int>) };
         }
 
         public static IEnumerable<object[]> StrictFakes()
         {
             yield return new object[] { new Func<object>(() => A.Fake<object>(o => o.Strict())), "Faked " + typeof(object) };
-            yield return new object[] { new Func<object>(() => A.Fake<List<int>>(o => o.Strict())), "Faked " + typeof(List<int>) };
-            yield return new object[] { new Func<object>(() => A.Fake<IList<int>>(o => o.Strict())), "Faked " + typeof(IList<int>) };
             yield return new object[] { new Func<object>(() => A.Fake<Action<int>>(o => o.Strict())), typeof(Action<int>).ToString() };
         }
 

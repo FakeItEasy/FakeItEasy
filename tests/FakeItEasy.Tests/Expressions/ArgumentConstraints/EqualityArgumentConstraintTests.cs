@@ -57,7 +57,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
         {
             var validator = new EqualityArgumentConstraint(null);
 
-            validator.ToString().Should().Be("<NULL>");
+            validator.ToString().Should().Be("NULL");
         }
 
         [Fact]

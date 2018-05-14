@@ -24,20 +24,11 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Any type of exception may be encountered.")]
         public override string ToString()
         {
-            if (this.ExpectedValue == null)
-            {
-                return "<NULL>";
-            }
-
-            var stringValue = this.ExpectedValue as string;
-            if (stringValue != null)
-            {
-                return $@"""{stringValue}""";
-            }
-
             try
             {
-                return this.ExpectedValue.ToString();
+                var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+                writer.WriteArgumentValue(this.ExpectedValue);
+                return writer.Builder.ToString();
             }
             catch (Exception)
             {

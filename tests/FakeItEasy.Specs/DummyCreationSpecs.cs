@@ -1,7 +1,8 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using FakeItEasy.Tests.TestHelpers;
@@ -83,6 +84,86 @@
                 .x(() => dummies.Should().HaveCount(10));
         }
 
+        [Scenario]
+        public void ClassWhoseLongerConstructorThrowsCreation(
+            ClassWhoseLongerConstructorThrows dummy)
+        {
+            "Given a type with multiple constructors"
+                .See<ClassWhoseLongerConstructorThrows>();
+
+            "And its longer constructor throws"
+                .See(() => new ClassWhoseLongerConstructorThrows(0, 0));
+
+            "When a dummy of that type is requested"
+                .x(() => dummy = this.CreateDummy<ClassWhoseLongerConstructorThrows>());
+
+            "Then it returns a dummy"
+                .x(() => dummy.Should().NotBeNull());
+
+            "And the dummy is created via the shorter constructor"
+                .x(() => dummy.CalledConstructor.Should().Be("(int)"));
+        }
+
+        [Scenario]
+        public void SealedClassWhoseLongerConstructorThrowsCreation(
+            SealedClassWhoseLongerConstructorThrows dummy)
+        {
+            "Given a sealed type with multiple constructors"
+                .See<SealedClassWhoseLongerConstructorThrows>();
+
+            "And its longer constructor throws"
+                .See(() => new SealedClassWhoseLongerConstructorThrows(0, 0));
+
+            "When a dummy of that type is requested"
+                .x(() => dummy = this.CreateDummy<SealedClassWhoseLongerConstructorThrows>());
+
+            "Then it returns a dummy"
+                .x(() => dummy.Should().NotBeNull());
+
+            "And the dummy is created via the shorter constructor"
+                .x(() => dummy.CalledConstructor.Should().Be("(int)"));
+        }
+
+        [Scenario]
+        public void ClassWithLongConstructorWhoseArgumentsCannotBeResolvedCreation(
+            ClassWithLongConstructorWhoseArgumentsCannotBeResolved dummy)
+        {
+            "Given a type with multiple constructors"
+                .See<ClassWithLongConstructorWhoseArgumentsCannotBeResolved>();
+
+            "And its longer constructor's argument cannot be resolved"
+                .See(() => new ClassWithLongConstructorWhoseArgumentsCannotBeResolved(default(ClassWhoseDummyFactoryThrows), default(int)));
+
+            "When a dummy of that type is requested"
+                .x(() => dummy = this.CreateDummy<ClassWithLongConstructorWhoseArgumentsCannotBeResolved>());
+
+            "Then it returns a dummy"
+                .x(() => dummy.Should().NotBeNull());
+
+            "And the dummy is created via the shorter constructor"
+                .x(() => dummy.CalledConstructor.Should().Be("(int)"));
+        }
+
+        [Scenario]
+        public void SealedClassWithLongConstructorWhoseArgumentsCannotBeResolvedCreation(
+            SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved dummy)
+        {
+            "Given a sealed type with multiple constructors"
+                .See<SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved>();
+
+            "And its longer constructor's argument cannot be resolved"
+                .See(() => new SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved(default(ClassWhoseDummyFactoryThrows), default(int)));
+
+            "When a dummy of that type is requested"
+                .x(() => dummy = this.CreateDummy<SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved>());
+
+            "Then it returns a dummy"
+                .x(() => dummy.Should().NotBeNull());
+
+            "And the dummy is created via the shorter constructor"
+                .x(() => dummy.CalledConstructor.Should().Be("(int)"));
+        }
+
         protected abstract T CreateDummy<T>();
 
         protected abstract IList<T> CreateCollectionOfDummy<T>(int count);
@@ -97,6 +178,92 @@
             protected override Foo Create()
             {
                 return new Foo { Bar = 42 };
+            }
+        }
+
+        public class ClassWhoseLongerConstructorThrows
+        {
+            public string CalledConstructor { get; }
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "i", Justification = "Required for testing.")]
+            public ClassWhoseLongerConstructorThrows(int i)
+            {
+                this.CalledConstructor = "(int)";
+            }
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "i", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "j", Justification = "Required for testing.")]
+            public ClassWhoseLongerConstructorThrows(int i, int j)
+            {
+                this.CalledConstructor = "(int, int)";
+                throw new Exception("(int, int) constructor threw");
+            }
+        }
+
+        public sealed class SealedClassWhoseLongerConstructorThrows
+        {
+            public string CalledConstructor { get; }
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "i", Justification = "Required for testing.")]
+            public SealedClassWhoseLongerConstructorThrows(int i)
+            {
+                this.CalledConstructor = "(int)";
+            }
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "i", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "j", Justification = "Required for testing.")]
+            public SealedClassWhoseLongerConstructorThrows(int i, int j)
+            {
+                this.CalledConstructor = "(int, int)";
+                throw new Exception("(int, int) constructor threw");
+            }
+        }
+
+        public class ClassWithLongConstructorWhoseArgumentsCannotBeResolved
+        {
+            public string CalledConstructor { get; }
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "i", Justification = "Required for testing.")]
+            public ClassWithLongConstructorWhoseArgumentsCannotBeResolved(int i)
+            {
+                this.CalledConstructor = "(int)";
+            }
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "c", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "i", Justification = "Required for testing.")]
+            public ClassWithLongConstructorWhoseArgumentsCannotBeResolved(ClassWhoseDummyFactoryThrows c, int i)
+            {
+                this.CalledConstructor = "(ClassWhoseDummyFactoryThrows, int)";
+            }
+        }
+
+        public sealed class SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved
+        {
+            public string CalledConstructor { get; }
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "i", Justification = "Required for testing.")]
+            public SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved(int i)
+            {
+                this.CalledConstructor = "(int)";
+            }
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "c", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "i", Justification = "Required for testing.")]
+            public SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved(ClassWhoseDummyFactoryThrows c, int i)
+            {
+                this.CalledConstructor = "(ClassWhoseDummyFactoryThrows, int)";
+            }
+        }
+
+        public class ClassWhoseDummyFactoryThrows
+        {
+        }
+
+        public class ClassWhoseDummyFactoryThrowsFactory : DummyFactory<ClassWhoseDummyFactoryThrows>
+        {
+            protected override ClassWhoseDummyFactoryThrows Create()
+            {
+                throw new Exception("dummy factory threw");
             }
         }
     }

@@ -64,7 +64,7 @@ namespace FakeItEasy.Specs
                 .See(() => new FakedClass());
 
             "And the class has a one-parameter constructor"
-                .See(() => new FakedClass(A.Dummy<IDisposable>()));
+                .See(() => new FakedClass(A.Dummy<ArgumentThatShouldNeverBeResolved>()));
 
             "And the class has a two-parameter constructor"
                 .See(() => new FakedClass(A.Dummy<IDisposable>(), A.Dummy<string>()));
@@ -89,6 +89,9 @@ namespace FakeItEasy.Specs
 
             "And the one-parameter constructor was not tried"
                 .x(() => parameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2));
+
+            "And the argument for the unused constructor was never resolved"
+                .x(() => ArgumentThatShouldNeverBeResolved.WasResolved.Should().BeFalse());
         }
 
         [Scenario]
@@ -173,7 +176,7 @@ namespace FakeItEasy.Specs
 
             [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "This anti-pattern is part of the the tested scenario.")]
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "someInterface", Justification = "This is just a dummy argument.")]
-            public FakedClass(IDisposable someInterface)
+            public FakedClass(ArgumentThatShouldNeverBeResolved argument)
             {
                 ParameterListLengthsForAttemptedConstructors.Add(1);
             }
@@ -192,6 +195,16 @@ namespace FakeItEasy.Specs
             public bool WasParameterlessConstructorCalled { get; set; }
 
             public bool WasTwoParameterConstructorCalled { get; set; }
+        }
+
+        public class ArgumentThatShouldNeverBeResolved
+        {
+            public static bool WasResolved { get; private set; }
+
+            public ArgumentThatShouldNeverBeResolved()
+            {
+                WasResolved = true;
+            }
         }
     }
 

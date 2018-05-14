@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
 {
     using System;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation.DelegateProxies;
@@ -37,7 +38,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
 
             // Act
             var result = this.generator.GenerateProxy(
-                delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
+                delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.ProxyWasSuccessfullyGenerated.Should().BeTrue();
@@ -54,7 +55,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
 
             // Act
             var result = this.generator.GenerateProxy(
-                nonDelegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
+                nonDelegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.ProxyWasSuccessfullyGenerated.Should().BeFalse();
@@ -72,7 +73,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
 
             // Act
             var result = this.generator.GenerateProxy(
-                delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), A.Dummy<IFakeCallProcessorProvider>());
+                delegateType, Enumerable.Empty<Type>(), Enumerable.Empty<object>(), Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.GeneratedProxy.GetType().Should().Be(delegateType);
@@ -86,7 +87,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
 
             // Act
             var proxyGeneratorResult = this.generator.GenerateProxy(
-                typeof(Action), Enumerable.Empty<Type>(), null, fakeCallProcessorProvider);
+                typeof(Action), Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
 
             // Assert
             A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).MustNotHaveHappened();
@@ -305,7 +306,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).Returns(fakeCallProcessor);
 
             return (T)this.generator
-                .GenerateProxy(typeof(T), Enumerable.Empty<Type>(), Enumerable.Empty<object>(), fakeCallProcessorProvider)
+                .GenerateProxy(typeof(T), Enumerable.Empty<Type>(), Enumerable.Empty<object>(), Array.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider)
                 .GeneratedProxy;
         }
     }
