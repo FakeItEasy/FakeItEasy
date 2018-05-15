@@ -20,6 +20,8 @@ namespace FakeItEasy.Tests.Creation
         public FakeObjectCreatorTests()
         {
             this.proxyGenerator = A.Fake<IProxyGenerator>();
+            string s;
+            A.CallTo(() => this.proxyGenerator.CanGenerateProxy(A<Type>._, out s)).WithAnyArguments().Returns(true);
             this.thrower = A.Fake<IExceptionThrower>();
             this.fakeCallProcessorProviderFactory = A.Fake<FakeCallProcessorProvider.Factory>();
 

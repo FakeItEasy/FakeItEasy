@@ -21,6 +21,16 @@ namespace FakeItEasy.Creation
 
         public object CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver, bool throwOnFailure)
         {
+            if (!this.proxyGenerator.CanGenerateProxy(typeOfFake, out string reasonCannotGenerate))
+            {
+                if (throwOnFailure)
+                {
+                    this.thrower.ThrowFailedToGenerateProxyWithoutTryingConstructors(typeOfFake, reasonCannotGenerate);
+                }
+
+                return null;
+            }
+
             var result = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
 
             if (throwOnFailure)

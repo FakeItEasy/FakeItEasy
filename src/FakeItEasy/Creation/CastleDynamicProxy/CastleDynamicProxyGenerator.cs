@@ -29,7 +29,17 @@
             IEnumerable<Expression<Func<Attribute>>> attributes,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
+            Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
+            Guard.AgainstNull(additionalInterfacesToImplement, nameof(additionalInterfacesToImplement));
             Guard.AgainstNull(attributes, nameof(attributes));
+            Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
+
+            if (!this.CanGenerateProxy(typeOfProxy, out string failReason))
+            {
+                return new ProxyGeneratorResult(failReason);
+            }
+
+            GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
 
             var options = CreateProxyGenerationOptions();
             foreach (var attribute in attributes)
@@ -37,7 +47,7 @@
                 options.AdditionalAttributes.Add(CustomAttributeInfo.FromExpression(attribute));
             }
 
-            return GenerateProxy(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
+            return CreateProxyGeneratorResult(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
         }
 
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
@@ -45,35 +55,27 @@
             return this.interceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
-        private static ProxyGenerationOptions CreateProxyGenerationOptions()
+        public bool CanGenerateProxy(Type typeOfProxy, out string failReason)
         {
-            return new ProxyGenerationOptions(ProxyGenerationHook);
-        }
-
-        private static ProxyGeneratorResult GenerateProxy(
-            Type typeOfProxy,
-            ProxyGenerationOptions options,
-            IEnumerable<Type> additionalInterfacesToImplement,
-            IEnumerable<object> argumentsForConstructor,
-            IFakeCallProcessorProvider fakeCallProcessorProvider)
-        {
-            Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
-            Guard.AgainstNull(additionalInterfacesToImplement, nameof(additionalInterfacesToImplement));
-            Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
-
             if (typeOfProxy.GetTypeInfo().IsValueType)
             {
-                return GetProxyResultForValueType(typeOfProxy);
+                failReason = DynamicProxyMessages.ProxyIsValueType(typeOfProxy);
+                return false;
             }
 
             if (typeOfProxy.GetTypeInfo().IsSealed)
             {
-                return new ProxyGeneratorResult(DynamicProxyMessages.ProxyIsSealedType(typeOfProxy));
+                failReason = DynamicProxyMessages.ProxyIsSealedType(typeOfProxy);
+                return false;
             }
 
-            GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
+            failReason = null;
+            return true;
+        }
 
-            return CreateProxyGeneratorResult(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
+        private static ProxyGenerationOptions CreateProxyGenerationOptions()
+        {
+            return new ProxyGenerationOptions(ProxyGenerationHook);
         }
 
         private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
@@ -127,11 +129,6 @@
         private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy, Exception e)
         {
             return new ProxyGeneratorResult(DynamicProxyMessages.ProxyTypeWithNoDefaultConstructor(typeOfProxy), e);
-        }
-
-        private static ProxyGeneratorResult GetProxyResultForValueType(Type typeOfProxy)
-        {
-            return new ProxyGeneratorResult(DynamicProxyMessages.ProxyIsValueType(typeOfProxy));
         }
 
         private static object DoGenerateProxy(

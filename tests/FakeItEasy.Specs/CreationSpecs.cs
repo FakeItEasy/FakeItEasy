@@ -147,6 +147,44 @@ namespace FakeItEasy.Specs
                 .x(() => fake.Should().BeAFake());
         }
 
+        [Scenario]
+        public void SealedClassCannotBeFaked(Exception exception)
+        {
+            "Given a sealed class"
+                .See<SealedClass>();
+
+            "When I create a fake of the class"
+                .x(() => exception = Record.Exception(() => this.CreateFake<SealedClass>()));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+SealedClass.
+    The type of proxy FakeItEasy.Specs.CreationSpecsBase+SealedClass is sealed.
+"));
+        }
+
+        [Scenario]
+        public void StructCannotBeFaked(Exception exception)
+        {
+            "Given a struct"
+                .See<Struct>();
+
+            "When I create a fake of the struct"
+                .x(() => exception = Record.Exception(() => this.CreateFake<Struct>()));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct.
+    The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
+"));
+        }
+
         protected abstract T CreateFake<T>();
 
         protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder);
@@ -205,6 +243,14 @@ namespace FakeItEasy.Specs
             {
                 WasResolved = true;
             }
+        }
+
+        public sealed class SealedClass
+        {
+        }
+
+        public struct Struct
+        {
         }
     }
 

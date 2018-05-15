@@ -9,6 +9,21 @@ namespace FakeItEasy.Core
     internal class DefaultExceptionThrower
         : IExceptionThrower
     {
+        public void ThrowFailedToGenerateProxyWithoutTryingConstructors(Type typeOfFake, string reasonForFailure)
+        {
+            var message = new StringBuilder();
+
+            message
+                .AppendLine()
+                .AppendIndented("  ", "Failed to create fake of type ")
+                .Append(typeOfFake)
+                .AppendLine(".")
+                .AppendIndented("    ", reasonForFailure)
+                .AppendLine();
+
+            throw new FakeCreationException(message.ToString());
+        }
+
         public void ThrowFailedToGenerateProxyWithArgumentsForConstructor(Type typeOfFake, string reasonForFailure)
         {
             var message = new StringBuilder();
