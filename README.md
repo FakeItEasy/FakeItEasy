@@ -18,7 +18,8 @@ A .Net dynamic fake framework for creating all types of fake objects, mocks, stu
 * [Documentation](http://fakeiteasy.readthedocs.io/en/stable/)
 * [Chat](https://gitter.im/FakeItEasy/FakeItEasy)
 * NuGet packages:
-    * [Official releases on NuGet.org](https://www.nuget.org/profiles/FakeItEasy "FakeItEasy's packages on NuGet.org"), including pre-release builds targeting .NET Standard 1.6/.NET Core 1.0
+    * [Official releases on NuGet.org](https://www.nuget.org/profiles/FakeItEasy "FakeItEasy's packages on NuGet.org"), targeting
+      .NETStandard 1.6, .NETFramework 4.5, and .NETFramework 4.0
     * Unreleased packages built from latest source are on AppVeyor:<br>
       https://ci.appveyor.com/nuget/FakeItEasy
 
