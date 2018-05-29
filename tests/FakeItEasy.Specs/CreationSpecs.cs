@@ -235,7 +235,7 @@ namespace FakeItEasy.Specs
             public bool WasTwoParameterConstructorCalled { get; set; }
         }
 
-        public class ArgumentThatShouldNeverBeResolved
+        public sealed class ArgumentThatShouldNeverBeResolved
         {
             public static bool WasResolved { get; private set; }
 
