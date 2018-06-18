@@ -39,7 +39,7 @@ namespace FakeItEasy.Core
             throw new FakeCreationException(message.ToString());
         }
 
-        public void ThrowFailedToGenerateProxyWithResolvedConstructors(Type typeOfFake, string reasonForFailureOfUnspecifiedConstructor, IEnumerable<ResolvedConstructor> resolvedConstructors)
+        public void ThrowFailedToGenerateProxyWithResolvedConstructors(Type typeOfFake, IEnumerable<ResolvedConstructor> resolvedConstructors)
         {
             var message = new StringBuilder();
 
@@ -50,21 +50,26 @@ namespace FakeItEasy.Core
                 .AppendLine(".")
                 .AppendLine()
                 .AppendIndented("  ", "Below is a list of reasons for failure per attempted constructor:")
-                .AppendLine()
-                .AppendIndented("    ", "No constructor arguments failed:")
-                .AppendLine()
-                .AppendIndented("      ", reasonForFailureOfUnspecifiedConstructor)
                 .AppendLine();
 
             if (resolvedConstructors.Any(x => x.WasSuccessfullyResolved))
             {
                 foreach (var constructor in resolvedConstructors.Where(x => x.WasSuccessfullyResolved))
                 {
-                    message
-                        .AppendIndented("    ", "Constructor with signature (")
-                        .Append(constructor.Arguments.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
-                        .AppendLine(") failed:")
-                        .AppendIndented("      ", constructor.ReasonForFailure)
+                    if (constructor.Arguments == null)
+                    {
+                        message
+                            .AppendIndented("    ", "No constructor arguments failed:");
+                    }
+                    else
+                    {
+                        message
+                            .AppendIndented("    ", "Constructor with signature (")
+                            .Append(constructor.Arguments.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
+                            .AppendLine(") failed:");
+                    }
+
+                    message.AppendIndented("      ", constructor.ReasonForFailure)
                         .AppendLine();
                 }
             }

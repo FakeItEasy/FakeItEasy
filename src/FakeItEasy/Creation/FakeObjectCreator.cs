@@ -31,25 +31,40 @@ namespace FakeItEasy.Creation
                 return null;
             }
 
-            var result = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
-
-            if (throwOnFailure)
+            ProxyGeneratorResult result;
+            if (proxyOptions.ArgumentsForConstructor != null)
             {
-                this.AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(typeOfFake, result, proxyOptions);
+                result = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
+
+                if (!result.ProxyWasSuccessfullyGenerated)
+                {
+                    if (throwOnFailure)
+                    {
+                        this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeOfFake, result.ReasonForFailure);
+                    }
+
+                    return null;
+                }
+
+                return result.GeneratedProxy;
             }
 
-            if (!result.ProxyWasSuccessfullyGenerated && proxyOptions.ArgumentsForConstructor == null)
-            {
-                result = this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, session, resolver, result.ReasonForFailure, throwOnFailure);
-            }
+            result = this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, session, resolver, throwOnFailure);
 
-            return result != null ? result.GeneratedProxy : null;
+            return result?.GeneratedProxy;
         }
 
         private static IEnumerable<ResolvedConstructor> ResolveConstructors(Type typeOfFake, DummyCreationSession session, IDummyValueResolver resolver)
         {
-            return GetUsableConstructorsInOrder(typeOfFake)
-                .Select(constructor => ResolveConstructorArguments(constructor, session, resolver));
+            // Always try the parameterless constructor first, and indicate it by using null Arguments.
+            // Non-null Arguments cannot be used when faking an interface.
+            yield return new ResolvedConstructor();
+
+            foreach (var resolvedConstructor in GetUsableConstructorsInOrder(typeOfFake)
+                .Select(constructor => ResolveConstructorArguments(constructor, session, resolver)))
+            {
+                yield return resolvedConstructor;
+            }
         }
 
         private static IEnumerable<ConstructorInfo> GetUsableConstructorsInOrder(Type type)
@@ -93,15 +108,7 @@ namespace FakeItEasy.Creation
                        };
         }
 
-        private void AssertThatProxyWasGeneratedWhenArgumentsForConstructorAreSpecified(Type typeOfFake, ProxyGeneratorResult result, IProxyOptions proxyOptions)
-        {
-            if (!result.ProxyWasSuccessfullyGenerated && proxyOptions.ArgumentsForConstructor != null)
-            {
-                this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeOfFake, result.ReasonForFailure);
-            }
-        }
-
-        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver, string failReasonForDefaultConstructor, bool throwOnFailure)
+        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver, bool throwOnFailure)
         {
             var constructors = ResolveConstructors(typeOfFake, session, resolver);
 
@@ -112,7 +119,7 @@ namespace FakeItEasy.Creation
             {
                 if (constructor.WasSuccessfullyResolved)
                 {
-                    var result = this.GenerateProxy(typeOfFake, proxyOptions, constructor.Arguments.Select(x => x.ResolvedValue));
+                    var result = this.GenerateProxy(typeOfFake, proxyOptions, constructor.Arguments?.Select(x => x.ResolvedValue));
 
                     if (result.ProxyWasSuccessfullyGenerated)
                     {
@@ -127,7 +134,7 @@ namespace FakeItEasy.Creation
 
             if (throwOnFailure)
             {
-                this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeOfFake, failReasonForDefaultConstructor, consideredConstructors);
+                this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeOfFake, consideredConstructors);
             }
 
             return null;
