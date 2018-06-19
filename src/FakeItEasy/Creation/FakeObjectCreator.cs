@@ -56,28 +56,37 @@ namespace FakeItEasy.Creation
 
         private static IEnumerable<ResolvedConstructor> ResolveConstructors(Type typeOfFake, DummyCreationSession session, IDummyValueResolver resolver)
         {
-            // Always try the parameterless constructor first, and indicate it by using null Arguments.
-            // Non-null Arguments cannot be used when faking an interface.
-            yield return new ResolvedConstructor();
-
-            foreach (var resolvedConstructor in GetUsableParamterTypeListsInOrder(typeOfFake)
+            foreach (var resolvedConstructor in GetUsableParameterTypeListsInOrder(typeOfFake)
                 .Select(parameterTypeList => ResolveConstructorArguments(parameterTypeList, session, resolver)))
             {
                 yield return resolvedConstructor;
             }
         }
 
-        private static IEnumerable<Type[]> GetUsableParamterTypeListsInOrder(Type type)
+        private static IEnumerable<Type[]> GetUsableParameterTypeListsInOrder(Type type)
         {
-            return type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            // Always try the parameterless constructor first, and indicate it by using a null list of parameter types, since
+            // a null set of constructor arguments works for faking types with a parameterless constructor and is required
+            // when faking an interface.
+            yield return null;
+
+            foreach (var parameterTypeList in type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 .Select(c => c.GetParameters())
                 .Where(pa => pa.Length > 0)
                 .OrderByDescending(pa => pa.Length)
-                .Select(pa => pa.Select(p => p.ParameterType).ToArray());
+                .Select(pa => pa.Select(p => p.ParameterType).ToArray()))
+            {
+                yield return parameterTypeList;
+            }
         }
 
         private static ResolvedConstructor ResolveConstructorArguments(Type[] parameterTypes, DummyCreationSession session, IDummyValueResolver resolver)
         {
+            if (parameterTypes == null)
+            {
+                return new ResolvedConstructor();
+            }
+
             var resolvedArguments = new List<ResolvedArgument>();
 
             foreach (var parameterType in parameterTypes)
