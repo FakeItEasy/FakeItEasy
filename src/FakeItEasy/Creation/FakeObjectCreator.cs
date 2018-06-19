@@ -54,15 +54,6 @@ namespace FakeItEasy.Creation
             return result?.GeneratedProxy;
         }
 
-        private static IEnumerable<ResolvedConstructor> ResolveConstructors(Type typeOfFake, DummyCreationSession session, IDummyValueResolver resolver)
-        {
-            foreach (var resolvedConstructor in GetUsableParameterTypeListsInOrder(typeOfFake)
-                .Select(parameterTypeList => ResolveConstructorArguments(parameterTypeList, session, resolver)))
-            {
-                yield return resolvedConstructor;
-            }
-        }
-
         private static IEnumerable<Type[]> GetUsableParameterTypeListsInOrder(Type type)
         {
             // Always try the parameterless constructor first, and indicate it by using a null list of parameter types, since
@@ -121,13 +112,12 @@ namespace FakeItEasy.Creation
 
         private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver, bool throwOnFailure)
         {
-            var constructors = ResolveConstructors(typeOfFake, session, resolver);
-
             // Save the constructors as we try them. Avoids eager evaluation and double evaluation
             // of constructors enumerable.
             var consideredConstructors = new List<ResolvedConstructor>();
-            foreach (var constructor in constructors)
+            foreach (var parameterTypes in GetUsableParameterTypeListsInOrder(typeOfFake))
             {
+                var constructor = ResolveConstructorArguments(parameterTypes, session, resolver);
                 if (constructor.WasSuccessfullyResolved)
                 {
                     var result = this.GenerateProxy(typeOfFake, proxyOptions, constructor.Arguments?.Select(x => x.ResolvedValue));
