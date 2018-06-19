@@ -60,32 +60,34 @@ namespace FakeItEasy.Creation
             // Non-null Arguments cannot be used when faking an interface.
             yield return new ResolvedConstructor();
 
-            foreach (var resolvedConstructor in GetUsableConstructorsInOrder(typeOfFake)
-                .Select(constructor => ResolveConstructorArguments(constructor, session, resolver)))
+            foreach (var resolvedConstructor in GetUsableParamterTypeListsInOrder(typeOfFake)
+                .Select(parameterTypeList => ResolveConstructorArguments(parameterTypeList, session, resolver)))
             {
                 yield return resolvedConstructor;
             }
         }
 
-        private static IEnumerable<ConstructorInfo> GetUsableConstructorsInOrder(Type type)
+        private static IEnumerable<Type[]> GetUsableParamterTypeListsInOrder(Type type)
         {
             return type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .Where(x => x.GetParameters().Length > 0)
-                .OrderByDescending(x => x.GetParameters().Length);
+                .Select(c => c.GetParameters())
+                .Where(pa => pa.Length > 0)
+                .OrderByDescending(pa => pa.Length)
+                .Select(pa => pa.Select(p => p.ParameterType).ToArray());
         }
 
-        private static ResolvedConstructor ResolveConstructorArguments(ConstructorInfo constructor, DummyCreationSession session, IDummyValueResolver resolver)
+        private static ResolvedConstructor ResolveConstructorArguments(Type[] parameterTypes, DummyCreationSession session, IDummyValueResolver resolver)
         {
             var resolvedArguments = new List<ResolvedArgument>();
 
-            foreach (var argument in constructor.GetParameters())
+            foreach (var parameterType in parameterTypes)
             {
                 bool wasResolved;
                 object result = null;
 
                 try
                 {
-                    wasResolved = resolver.TryResolveDummyValue(session, argument.ParameterType, out result);
+                    wasResolved = resolver.TryResolveDummyValue(session, parameterType, out result);
                 }
                 catch
                 {
@@ -96,7 +98,7 @@ namespace FakeItEasy.Creation
                                            {
                                                WasResolved = wasResolved,
                                                ResolvedValue = result,
-                                               ArgumentType = argument.ParameterType
+                                               ArgumentType = parameterType
                                            };
 
                 resolvedArguments.Add(resolvedArgument);
