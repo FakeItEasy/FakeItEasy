@@ -1,6 +1,7 @@
 namespace FakeItEasy.Creation
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -11,12 +12,14 @@ namespace FakeItEasy.Creation
         private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
         private readonly IProxyGenerator proxyGenerator;
         private readonly IExceptionThrower thrower;
+        private readonly ConcurrentDictionary<Type, Type[]> parameterTypesCache;
 
         public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
         {
             this.proxyGenerator = proxyGenerator;
             this.thrower = thrower;
             this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
+            this.parameterTypesCache = new ConcurrentDictionary<Type, Type[]>();
         }
 
         public object CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver, bool throwOnFailure)
@@ -115,9 +118,10 @@ namespace FakeItEasy.Creation
             // Save the constructors as we try them. Avoids eager evaluation and double evaluation
             // of constructors enumerable.
             var consideredConstructors = new List<ResolvedConstructor>();
-            foreach (var parameterTypes in GetUsableParameterTypeListsInOrder(typeOfFake))
+
+            if (this.parameterTypesCache.TryGetValue(typeOfFake, out Type[] cachedParameterTypes))
             {
-                var constructor = ResolveConstructorArguments(parameterTypes, session, resolver);
+                var constructor = ResolveConstructorArguments(cachedParameterTypes, session, resolver);
                 if (constructor.WasSuccessfullyResolved)
                 {
                     var result = this.GenerateProxy(typeOfFake, proxyOptions, constructor.Arguments?.Select(x => x.ResolvedValue));
@@ -131,6 +135,27 @@ namespace FakeItEasy.Creation
                 }
 
                 consideredConstructors.Add(constructor);
+            }
+            else
+            {
+                foreach (var parameterTypes in GetUsableParameterTypeListsInOrder(typeOfFake))
+                {
+                    var constructor = ResolveConstructorArguments(parameterTypes, session, resolver);
+                    if (constructor.WasSuccessfullyResolved)
+                    {
+                        var result = this.GenerateProxy(typeOfFake, proxyOptions, constructor.Arguments?.Select(x => x.ResolvedValue));
+
+                        if (result.ProxyWasSuccessfullyGenerated)
+                        {
+                            this.parameterTypesCache[typeOfFake] = parameterTypes;
+                            return result;
+                        }
+
+                        constructor.ReasonForFailure = result.ReasonForFailure;
+                    }
+
+                    consideredConstructors.Add(constructor);
+                }
             }
 
             if (throwOnFailure)

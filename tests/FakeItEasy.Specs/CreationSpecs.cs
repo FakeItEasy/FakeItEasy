@@ -89,7 +89,7 @@ namespace FakeItEasy.Specs
                              .Should().BeFalse("because the parameterless constructor was called for a different fake object"));
 
             "And the one-parameter constructor was not tried"
-                .x(() => parameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2));
+                .x(() => parameterListLengthsForAttemptedConstructors.Should().NotContain(1));
 
             "And the argument for the unused constructor was never resolved"
                 .x(() => ArgumentThatShouldNeverBeResolved.WasResolved.Should().BeFalse());
