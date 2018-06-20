@@ -65,10 +65,10 @@ namespace FakeItEasy.Specs
                 .See(() => new FakedClass());
 
             "And the class has a one-parameter constructor"
-                .See(() => new FakedClass(A.Dummy<ArgumentThatShouldNeverBeResolved>()));
+                .See(() => new FakedClass(default));
 
             "And the class has a two-parameter constructor"
-                .See(() => new FakedClass(A.Dummy<IDisposable>(), A.Dummy<string>()));
+                .See(() => new FakedClass(default, default));
 
             "When I create a fake of the class"
                 .x(() =>
@@ -107,10 +107,10 @@ namespace FakeItEasy.Specs
                 .See(() => new ClassWhosePreferredConstructorsThrow());
 
             "And the class has a two-parameter constructor that throws"
-                .See(() => new ClassWhosePreferredConstructorsThrow(A.Dummy<IDisposable>(), A.Dummy<string>()));
+                .See(() => new ClassWhosePreferredConstructorsThrow(default, default));
 
             "And the class has a one-parameter constructor that succeeds"
-                .See(() => new ClassWhosePreferredConstructorsThrow(A.Dummy<int>()));
+                .See(() => new ClassWhosePreferredConstructorsThrow(default));
 
             "When I create a fake of the class"
                 .x(() => fake1 = this.CreateFake<ClassWhosePreferredConstructorsThrow>());
