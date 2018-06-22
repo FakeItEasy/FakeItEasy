@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.Core
   Failed to create fake of type System.String.
 
   Below is a list of reasons for failure per attempted constructor:
-    No constructor arguments failed:
+    Constructor with signature () failed:
       reason
 
 "
@@ -72,7 +72,7 @@ namespace FakeItEasy.Tests.Core
   Failed to create fake of type System.Int32.
 
   Below is a list of reasons for failure per attempted constructor:
-    No constructor arguments failed:
+    Constructor with signature () failed:
       reason
       on two lines
     The following constructors were not tried:
@@ -142,7 +142,7 @@ namespace FakeItEasy.Tests.Core
   Failed to create fake of type System.Int32.
 
   Below is a list of reasons for failure per attempted constructor:
-    No constructor arguments failed:
+    Constructor with signature () failed:
       reason
       on two lines
     Constructor with signature (System.String) failed:

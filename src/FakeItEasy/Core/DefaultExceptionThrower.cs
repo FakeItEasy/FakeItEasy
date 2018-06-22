@@ -56,20 +56,11 @@ namespace FakeItEasy.Core
             {
                 foreach (var constructor in resolvedConstructors.Where(x => x.WasSuccessfullyResolved))
                 {
-                    if (constructor.Arguments == null)
-                    {
-                        message
-                            .AppendIndented("    ", "No constructor arguments failed:");
-                    }
-                    else
-                    {
-                        message
-                            .AppendIndented("    ", "Constructor with signature (")
-                            .Append(constructor.Arguments.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
-                            .AppendLine(") failed:");
-                    }
-
-                    message.AppendIndented("      ", constructor.ReasonForFailure)
+                    message
+                        .AppendIndented("    ", "Constructor with signature (")
+                        .Append(constructor.Arguments?.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
+                        .AppendLine(") failed:")
+                        .AppendIndented("      ", constructor.ReasonForFailure)
                         .AppendLine();
                 }
             }
