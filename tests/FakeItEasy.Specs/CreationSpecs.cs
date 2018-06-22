@@ -4,6 +4,7 @@ namespace FakeItEasy.Specs
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Threading;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;
@@ -64,10 +65,10 @@ namespace FakeItEasy.Specs
                 .See(() => new FakedClass());
 
             "And the class has a one-parameter constructor"
-                .See(() => new FakedClass(A.Dummy<ArgumentThatShouldNeverBeResolved>()));
+                .See(() => new FakedClass(default));
 
             "And the class has a two-parameter constructor"
-                .See(() => new FakedClass(A.Dummy<IDisposable>(), A.Dummy<string>()));
+                .See(() => new FakedClass(default, default));
 
             "When I create a fake of the class"
                 .x(() =>
@@ -88,10 +89,73 @@ namespace FakeItEasy.Specs
                              .Should().BeFalse("because the parameterless constructor was called for a different fake object"));
 
             "And the one-parameter constructor was not tried"
-                .x(() => parameterListLengthsForAttemptedConstructors.Should().BeEquivalentTo(0, 2));
+                .x(() => parameterListLengthsForAttemptedConstructors.Should().NotContain(1));
 
             "And the argument for the unused constructor was never resolved"
                 .x(() => ArgumentThatShouldNeverBeResolved.WasResolved.Should().BeFalse());
+        }
+
+        [Scenario]
+        public void CacheSuccessfulConstructor(
+            ClassWhosePreferredConstructorsThrow fake1,
+            ClassWhosePreferredConstructorsThrow fake2)
+        {
+            "Given a class with multiple constructors"
+                .See<ClassWhosePreferredConstructorsThrow>();
+
+            "And the class has a parameterless constructor that throws"
+                .See(() => new ClassWhosePreferredConstructorsThrow());
+
+            "And the class has a two-parameter constructor that throws"
+                .See(() => new ClassWhosePreferredConstructorsThrow(default, default));
+
+            "And the class has a one-parameter constructor that succeeds"
+                .See(() => new ClassWhosePreferredConstructorsThrow(default));
+
+            "When I create a fake of the class"
+                .x(() => fake1 = this.CreateFake<ClassWhosePreferredConstructorsThrow>());
+
+            "And I create another fake of the class"
+                .x(() => fake2 = this.CreateFake<ClassWhosePreferredConstructorsThrow>());
+
+            "Then the two fakes are distinct"
+                .x(() => fake1.Should().NotBeSameAs(fake2));
+
+            "And the parameterless constructor was only called once"
+                .x(() => ClassWhosePreferredConstructorsThrow.NumberOfTimesParameterlessConstructorWasCalled.Should().Be(1));
+
+            "And the two-parameter constructor was only called once"
+                .x(() => ClassWhosePreferredConstructorsThrow.NumberOfTimesTwoParameterConstructorWasCalled.Should().Be(1));
+        }
+
+        public class ClassWhosePreferredConstructorsThrow
+        {
+            public static int NumberOfTimesParameterlessConstructorWasCalled => numberOfTimesParameterlessConstructorWasCalled;
+
+            public static int NumberOfTimesTwoParameterConstructorWasCalled => numberOfTimesTwoParameterConstructorWasCalled;
+
+            private static int numberOfTimesTwoParameterConstructorWasCalled;
+
+            private static int numberOfTimesParameterlessConstructorWasCalled;
+
+            public ClassWhosePreferredConstructorsThrow()
+            {
+                Interlocked.Increment(ref numberOfTimesParameterlessConstructorWasCalled);
+                throw new NotImplementedException();
+            }
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "anInt", Justification = "This is just a dummy argument.")]
+            public ClassWhosePreferredConstructorsThrow(int anInt)
+            {
+            }
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "disposable", Justification = "This is just a dummy argument.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "aString", Justification = "This is just a dummy argument.")]
+            public ClassWhosePreferredConstructorsThrow(IDisposable disposable, string aString)
+            {
+                Interlocked.Increment(ref numberOfTimesTwoParameterConstructorWasCalled);
+                throw new NotImplementedException();
+            }
         }
 
         [Scenario]

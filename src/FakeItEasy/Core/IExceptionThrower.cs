@@ -10,6 +10,6 @@ namespace FakeItEasy.Core
 
         void ThrowFailedToGenerateProxyWithArgumentsForConstructor(Type typeOfFake, string reasonForFailure);
 
-        void ThrowFailedToGenerateProxyWithResolvedConstructors(Type typeOfFake, string reasonForFailureOfUnspecifiedConstructor, IEnumerable<ResolvedConstructor> resolvedConstructors);
+        void ThrowFailedToGenerateProxyWithResolvedConstructors(Type typeOfFake, IEnumerable<ResolvedConstructor> resolvedConstructors);
     }
 }

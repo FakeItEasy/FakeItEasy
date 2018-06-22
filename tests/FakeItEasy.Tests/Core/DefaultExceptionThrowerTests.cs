@@ -16,8 +16,7 @@ namespace FakeItEasy.Tests.Core
                 new DefaultExceptionThrowerTestCase("only parameterless constructor")
                 {
                     TypeOfFake = typeof(string),
-                    ReasonForFailureOfDefaultConstructor = "reason",
-                    ResolvedConstructors = Array.Empty<ResolvedConstructor>(),
+                    ResolvedConstructors = new[] { new ResolvedConstructor { ReasonForFailure = "reason" } },
                     ExpectedMessage = @"
   Failed to create fake of type System.String.
 
@@ -30,9 +29,12 @@ namespace FakeItEasy.Tests.Core
                 new DefaultExceptionThrowerTestCase("multi-line reason for constructor failure")
                 {
                     TypeOfFake = typeof(int),
-                    ReasonForFailureOfDefaultConstructor = "reason\r\non two lines",
                     ResolvedConstructors = new[]
                     {
+                        new ResolvedConstructor
+                        {
+                            ReasonForFailure = "reason\r\non two lines"
+                        },
                         new ResolvedConstructor
                         {
                             Arguments = new[]
@@ -84,9 +86,12 @@ namespace FakeItEasy.Tests.Core
                 new DefaultExceptionThrowerTestCase("parameterful constructor failed")
                 {
                     TypeOfFake = typeof(int),
-                    ReasonForFailureOfDefaultConstructor = "reason\r\non two lines",
                     ResolvedConstructors = new[]
                     {
+                        new ResolvedConstructor
+                        {
+                            ReasonForFailure = "reason\r\non two lines"
+                        },
                         new ResolvedConstructor
                         {
                             Arguments = new[]
@@ -188,7 +193,7 @@ that spans a couple of lines.";
             // Act
             var exception = Record.Exception(
                 () => thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
-                    testCase.TypeOfFake, testCase.ReasonForFailureOfDefaultConstructor, testCase.ResolvedConstructors));
+                    testCase.TypeOfFake, testCase.ResolvedConstructors));
 
             // Assert
             exception.Should()
@@ -206,8 +211,6 @@ that spans a couple of lines.";
             }
 
             internal Type TypeOfFake { get; set; }
-
-            internal string ReasonForFailureOfDefaultConstructor { get; set; }
 
             internal ResolvedConstructor[] ResolvedConstructors { get; set; }
 

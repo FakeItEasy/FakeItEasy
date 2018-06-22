@@ -264,6 +264,10 @@ namespace FakeItEasy.Tests.Creation
             {
                 new ResolvedConstructor
                 {
+                    ReasonForFailure = "failed"
+                },
+                new ResolvedConstructor
+                {
                     Arguments = new[]
                     {
                         new ResolvedArgument
@@ -295,7 +299,7 @@ namespace FakeItEasy.Tests.Creation
                 }
             };
 
-            A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeof(TypeWithMultipleConstructors), "failed", this.ConstructorsEquivalentTo(expectedConstructors)))
+            A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeof(TypeWithMultipleConstructors), this.ConstructorsEquivalentTo(expectedConstructors)))
                 .MustHaveHappened();
         }
 
@@ -327,6 +331,16 @@ namespace FakeItEasy.Tests.Creation
                     foreach (var constructorPair in x.Zip(constructors, (constructor1, constructor2) => new { Constructor1 = constructor1, Constructor2 = constructor2 }))
                     {
                         if (constructorPair.Constructor1.ReasonForFailure != constructorPair.Constructor2.ReasonForFailure)
+                        {
+                            return false;
+                        }
+
+                        if (constructorPair.Constructor1.Arguments == null && constructorPair.Constructor2.Arguments == null)
+                        {
+                            return true;
+                        }
+
+                        if (constructorPair.Constructor1.Arguments == null || constructorPair.Constructor2.Arguments == null)
                         {
                             return false;
                         }
