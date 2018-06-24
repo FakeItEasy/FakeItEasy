@@ -1,7 +1,8 @@
-#load "packages/simple-targets-csx.6.0.0/contentFiles/csx/any/simple-targets.csx"
+#r "packages/Bullseye.1.0.0-rc.3/lib/netstandard2.0/Bullseye.dll"
 
 using System.Runtime.CompilerServices;
-using static SimpleTargets;
+using Bullseye;
+using static Bullseye.Targets;
 
 var solutionName = "FakeItEasy";
 
@@ -64,47 +65,45 @@ var outputDirectory = Path.GetFullPath("./artifacts/output");
 static var testsDirectory = "./artifacts/tests";
 
 // targets
-var targets = new TargetDictionary();
+Targets.Add("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
 
-targets.Add("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
+Targets.Add("outputDirectory", () => Directory.CreateDirectory(outputDirectory));
 
-targets.Add("outputDirectory", () => Directory.CreateDirectory(outputDirectory));
+Targets.Add("logsDirectory", () => Directory.CreateDirectory(logsDirectory));
 
-targets.Add("logsDirectory", () => Directory.CreateDirectory(logsDirectory));
+Targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
 
-targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
+Targets.Add("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunMsBuild("Build"));
 
-targets.Add("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunMsBuild("Build"));
+Add("versionInfoFile", () => Cmd(gitversion, $"/updateAssemblyInfo {versionInfoFile} /ensureAssemblyInfo"));
 
-targets.Add("versionInfoFile", () => Cmd(gitversion, $"/updateAssemblyInfo {versionInfoFile} /ensureAssemblyInfo"));
+Targets.Add("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
 
-targets.Add("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
-
-targets.Add(
+Targets.Add(
     "restore",
     () => Cmd("dotnet", $"restore"));
 
-targets.Add(
+Targets.Add(
     "unit",
     DependsOn("build", "testsDirectory"),
     () => RunTests("unit"));
 
-targets.Add(
+Targets.Add(
     "integ",
     DependsOn("build", "testsDirectory"),
     () => RunTests("integ"));
 
-targets.Add(
+Targets.Add(
     "spec",
     DependsOn("build", "testsDirectory"),
     () => RunTests("spec"));
 
-targets.Add(
+Targets.Add(
     "approve",
     DependsOn("build", "testsDirectory"),
     () => RunTests("approve"));
 
-targets.Add(
+Targets.Add(
     "pack",
     DependsOn("build", "outputDirectory", "pdbgit"),
     () =>
@@ -118,7 +117,7 @@ targets.Add(
         Cmd(nuget, $"pack {analyzerMetaPackageNuspecPath} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
     });
 
-targets.Add(
+Targets.Add(
     "pdbgit",
     DependsOn("build"),
     () =>
@@ -129,7 +128,7 @@ targets.Add(
         }
     });
 
-Run(Args, targets);
+Targets.Run(Args);
 
 // helpers
 public static void Cmd(string fileName, string args)
