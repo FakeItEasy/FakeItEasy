@@ -54,9 +54,7 @@ var testSuites = new Dictionary<string, string[]>
 // tool locations
 
 static var toolsPackagesDirectory = Path.Combine(GetCurrentScriptDirectory(), "packages");
-var vswhere = $"{toolsPackagesDirectory}/vswhere.1.0.62/tools/vswhere.exe";
 var gitversion = $"{toolsPackagesDirectory}/GitVersion.CommandLine.4.0.0-beta0012/tools/GitVersion.exe";
-var msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe";
 var nuget = $"{GetCurrentScriptDirectory()}/.nuget/NuGet.exe";
 var pdbGit = $"{toolsPackagesDirectory}/pdbGit.3.0.41/tools/PdbGit.exe";
 static var xunit = $"{toolsPackagesDirectory}/xunit.runner.console.2.0.0/tools/xunit.console.exe";
@@ -75,11 +73,11 @@ Targets.Add("logsDirectory", () => Directory.CreateDirectory(logsDirectory));
 
 Targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
 
-Targets.Add("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunMsBuild("Build"));
+Targets.Add("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunDotNet("build"));
 
 Add("versionInfoFile", () => Run(gitversion, $"/updateAssemblyInfo {versionInfoFile} /ensureAssemblyInfo"));
 
-Targets.Add("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
+Targets.Add("clean",() => RunDotNet("clean"));
 
 Targets.Add(
     "restore",
@@ -133,11 +131,11 @@ Targets.Add(
 Targets.Run(Args);
 
 // helpers
-public void RunMsBuild(string target)
+public void RunDotNet(string command)
 {
     Run(
-        msBuild,
-        $"{solution} /target:{target} /p:configuration=Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/{target}.binlog");
+        "dotnet",
+        $"{command} {solution} --configuration Release --verbosity minimal");
 }
 
 public void RunTests(string target)
@@ -152,17 +150,6 @@ public void RunTestsInDirectory(string testDirectory)
 {
     var xml = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
     Run("dotnet", $"xunit -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}", testDirectory);
-}
-
-public string GetVSLocation()
-{
-    var installationPath = Read($"\"{vswhere}\"", "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)", ".");
-    if (string.IsNullOrEmpty(installationPath))
-    {
-        throw new InvalidOperationException("Visual Studio 2017 was not found");
-    }
-
-    return installationPath.Trim();
 }
 
 public static string GetCurrentScriptDirectory([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
