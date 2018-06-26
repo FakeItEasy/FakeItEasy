@@ -6,9 +6,7 @@ using Bullseye;
 using static Bullseye.Targets;
 using static SimpleExec.Command;
 
-var solutionName = "FakeItEasy";
-
-var solution = "./" + solutionName + ".sln";
+var solution = "./FakeItEasy.sln";
 var versionInfoFile = "./src/VersionInfo.cs";
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 
