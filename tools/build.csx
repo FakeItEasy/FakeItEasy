@@ -157,7 +157,7 @@ public void RunTestsInDirectory(string testDirectory)
 public string GetVSLocation()
 {
     var installationPath = Read($"\"{vswhere}\"", "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)", ".");
-    if (string.IsNullOrEmpty(installationPath))
+    if (string.IsNullOrWhiteSpace(installationPath))
     {
         throw new InvalidOperationException("Visual Studio 2017 was not found");
     }
