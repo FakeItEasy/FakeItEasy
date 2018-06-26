@@ -77,7 +77,7 @@ Targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
 
 Targets.Add("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunMsBuild("Build"));
 
-Add("versionInfoFile", () => Run(gitversion, $"/updateAssemblyInfo {versionInfoFile} /ensureAssemblyInfo"));
+Targets.Add("versionInfoFile", () => Run(gitversion, $"/updateAssemblyInfo {versionInfoFile} /ensureAssemblyInfo"));
 
 Targets.Add("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
 
