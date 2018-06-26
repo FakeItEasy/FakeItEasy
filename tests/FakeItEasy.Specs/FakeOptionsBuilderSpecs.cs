@@ -398,7 +398,6 @@
     {
     }
 
-#pragma warning disable CS0618 // Type or member is obsolete
     public class WrapsAValidObjectOptionsBuilder : ConventionBasedOptionsBuilder
     {
         public static AWrappedType WrappedObject { get; } = A.Fake<AWrappedType>();
@@ -411,7 +410,6 @@
             }
         }
     }
-#pragma warning restore CS0618 // Type or member is obsolete
 
     public class Strict
     {
