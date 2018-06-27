@@ -131,6 +131,28 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void ExceptionInDummyFactory(MyDummy dummy, Exception exception)
+        {
+            "Given a type"
+                .See<MyDummy>();
+
+            "And a dummy factory for this type that throws"
+                .See<MyDummyFactory>();
+
+            "When I try to create a dummy for this type"
+                .x(() => exception = Record.Exception(() => dummy = A.Dummy<MyDummy>()));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Dummy factory 'FakeItEasy.Specs.UserCallbackExceptionSpecs+MyDummyFactory' threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
+        [Scenario]
         public void ExceptionInWhenArgumentsMatchPredicateForExpressionCallSpec(IFoo fake, Exception exception)
         {
             "Given a fake"
@@ -354,6 +376,19 @@ namespace FakeItEasy.Specs
             protected override string GetStringValue(HasCustomValueFormatter argumentValue)
             {
                 throw new MyException("Oops");
+            }
+        }
+
+        public class MyDummy
+        {
+        }
+
+        public class MyDummyFactory : DummyFactory<MyDummy>
+        {
+            protected override MyDummy Create()
+            {
+                ThrowException();
+                return default;
             }
         }
     }
