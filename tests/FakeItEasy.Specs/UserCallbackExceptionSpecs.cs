@@ -310,6 +310,28 @@ namespace FakeItEasy.Specs
                 .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
         }
 
+        [Scenario]
+        public void ExceptionInCallback(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call to the fake is configured with a callback that throws an exception"
+                .x(() => A.CallTo(() => fake.Bar(0)).Invokes(() => ThrowException()));
+
+            "When the configured method is called"
+                .x(() => exception = Record.Exception(() => fake.Bar(0)));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Callback threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
         private static bool ThrowException()
         {
             throw new MyException("Oops");
