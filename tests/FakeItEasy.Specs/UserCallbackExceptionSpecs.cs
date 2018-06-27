@@ -172,6 +172,72 @@ namespace FakeItEasy.Specs
                 .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
         }
 
+        [Scenario]
+        public void ExceptionInWherePredicate(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And calls configured on this fake with a call filter predicate that throws an exception"
+                .x(() => A.CallTo(fake).Where(call => ThrowException()).DoesNothing());
+
+            "When a call to any method of the fake is made"
+                .x(() => exception = Record.Exception(() => fake.Bar(0)));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Call filter <call => ThrowException()> threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
+        [Scenario]
+        public void ExceptionInWhereDescription(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And no call to the fake is made"
+                .x(() => { });
+
+            "When an assertion is made with a call filter whose description throws an exception"
+                .x(() => exception = Record.Exception(() => A.CallTo(fake).Where(call => true, o => o.Write(ThrowException())).MustHaveHappened()));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Call filter description threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
+        [Scenario]
+        public void ExceptionInWherePredicateAndInDescription(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And calls configured on this fake with a call filter predicate that throws an exception and whose description also throws an exception"
+                .x(() => A.CallTo(fake).Where(call => ThrowException(), o => o.Write(ThrowException())).DoesNothing());
+
+            "When a call to any method of the fake is made"
+                .x(() => exception = Record.Exception(() => fake.Bar(0)));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Call filter description threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
         private static bool ThrowException()
         {
             throw new MyException("Oops");
