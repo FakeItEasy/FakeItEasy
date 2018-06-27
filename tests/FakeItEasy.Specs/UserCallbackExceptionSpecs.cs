@@ -11,6 +11,8 @@ namespace FakeItEasy.Specs
         public interface IFoo
         {
             int Bar(int x);
+
+            int Baz(HasCustomValueFormatter d);
         }
 
         [Scenario]
@@ -101,6 +103,31 @@ namespace FakeItEasy.Specs
                 .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
         }
 
+        [Scenario]
+        public void ExceptionInCustomArgumentValueFormatter(IFoo fake, Exception exception)
+        {
+            "Given a custom argument value formatter that throws an exception"
+                .See<HasCustomValueFormatterValueFormatter>();
+
+            "And a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And no call is made to the fake"
+                .x(() => { });
+
+            "When an assertion using an argument of the type with the throwing formatter is made on the fake"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Baz(new HasCustomValueFormatter())).MustHaveHappened()));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Custom argument value formatter 'FakeItEasy.Specs.UserCallbackExceptionSpecs+HasCustomValueFormatterValueFormatter' threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
         private static bool ThrowException()
         {
             throw new MyException("Oops");
@@ -111,6 +138,18 @@ namespace FakeItEasy.Specs
             public MyException(string message, Exception inner = null)
                 : base(message, inner)
             {
+            }
+        }
+
+        public class HasCustomValueFormatter
+        {
+        }
+
+        public class HasCustomValueFormatterValueFormatter : ArgumentValueFormatter<HasCustomValueFormatter>
+        {
+            protected override string GetStringValue(HasCustomValueFormatter argumentValue)
+            {
+                throw new MyException("Oops");
             }
         }
     }
