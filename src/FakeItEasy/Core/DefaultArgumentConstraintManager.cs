@@ -61,7 +61,15 @@ namespace FakeItEasy.Core
             void IArgumentConstraint.WriteDescription(IOutputWriter writer)
             {
                 writer.Write("<");
-                this.descriptionWriter.Invoke(writer);
+                try
+                {
+                    this.descriptionWriter.Invoke(writer);
+                }
+                catch (Exception ex)
+                {
+                    throw new UserCallbackException($"Argument matcher description threw an exception. See inner exception for details.", ex);
+                }
+
                 writer.Write(">");
             }
 
