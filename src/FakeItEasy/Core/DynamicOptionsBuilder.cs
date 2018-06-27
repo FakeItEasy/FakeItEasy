@@ -37,7 +37,14 @@ namespace FakeItEasy.Core
 
             if (fakeOptionsBuilder != null)
             {
-                fakeOptionsBuilder.BuildOptions(typeOfFake, fakeOptions);
+                try
+                {
+                    fakeOptionsBuilder.BuildOptions(typeOfFake, fakeOptions);
+                }
+                catch (Exception ex)
+                {
+                    throw new UserCallbackException($"Fake options builder '{fakeOptionsBuilder.GetType()}' threw an exception. See inner exception for details.", ex);
+                }
             }
         }
     }
