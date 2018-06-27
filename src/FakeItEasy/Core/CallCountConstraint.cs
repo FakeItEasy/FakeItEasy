@@ -15,7 +15,14 @@ namespace FakeItEasy.Core
 
         public bool Matches(int callCount)
         {
-            return this.predicate.Invoke(callCount);
+            try
+            {
+                return this.predicate.Invoke(callCount);
+            }
+            catch (Exception ex)
+            {
+                throw new UserCallbackException($"Call count constraint <{this.description}> threw an exception. See inner exception for details.", ex);
+            }
         }
 
         public override string ToString()
