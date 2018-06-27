@@ -128,6 +128,50 @@ namespace FakeItEasy.Specs
                 .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
         }
 
+        [Scenario]
+        public void ExceptionInWhenArgumentsMatchPredicateForExpressionCallSpec(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a method configured on this fake with a WhenArgumentsMatch predicate that throws an exception"
+                .x(() => A.CallTo(() => fake.Bar(0)).WhenArgumentsMatch(args => ThrowException()).Returns(0));
+
+            "When a call to the configured method is made"
+                .x(() => exception = Record.Exception(() => fake.Bar(0)));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Arguments predicate threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
+        [Scenario]
+        public void ExceptionInWhenArgumentsMatchPredicateForAnyCallSpec(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And calls configured on this fake with a WhenArgumentsMatch predicate that throws an exception"
+                .x(() => A.CallTo(fake).WhenArgumentsMatch(args => ThrowException()).DoesNothing());
+
+            "When a call to any method of the fake is made"
+                .x(() => exception = Record.Exception(() => fake.Bar(0)));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Arguments predicate threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
         private static bool ThrowException()
         {
             throw new MyException("Oops");
