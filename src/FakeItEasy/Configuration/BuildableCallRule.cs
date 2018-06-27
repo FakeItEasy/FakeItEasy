@@ -102,7 +102,14 @@ namespace FakeItEasy.Configuration
 
             foreach (var action in this.Actions)
             {
-                action.Invoke(fakeObjectCall);
+                try
+                {
+                    action.Invoke(fakeObjectCall);
+                }
+                catch (Exception ex) when (!(ex is FakeConfigurationException))
+                {
+                    throw new UserCallbackException("Callback threw an exception. See inner exception for details.", ex);
+                }
             }
 
             this.applicator.Invoke(fakeObjectCall);
