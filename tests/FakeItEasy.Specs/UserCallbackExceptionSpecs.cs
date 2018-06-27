@@ -13,6 +13,8 @@ namespace FakeItEasy.Specs
             int Bar(int x);
 
             int Baz(HasCustomValueFormatter d);
+
+            void OutAndRef(ref int x, out string s);
         }
 
         [Scenario]
@@ -255,6 +257,28 @@ namespace FakeItEasy.Specs
 
             "And its message should describe where the exception was thrown from"
                 .x(() => exception.Message.Should().Be("Return value producer threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
+        [Scenario]
+        public void ExceptionInOutAndRefValueProducer(IFoo fake, Exception exception, int x, string s)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call to the fake is configured with an out and ref value producer that throws an exception"
+                .x(() => A.CallTo(() => fake.OutAndRef(ref x, out s)).AssignsOutAndRefParametersLazily(call => new object[] { ThrowException() }));
+
+            "When the configured method is called"
+                .x(() => exception = Record.Exception(() => fake.OutAndRef(ref x, out s)));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Out and ref parameter value producer threw an exception. See inner exception for details."));
 
             "And the inner exception should be the original exception"
                 .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
