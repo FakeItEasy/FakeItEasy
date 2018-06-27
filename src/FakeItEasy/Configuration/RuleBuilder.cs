@@ -66,7 +66,20 @@ namespace FakeItEasy.Configuration
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
             this.AddRuleIfNeeded();
-            this.RuleBeingBuilt.UseApplicator(x => { throw exceptionFactory(x); });
+            this.RuleBeingBuilt.UseApplicator(call =>
+            {
+                Exception exceptionToThrow;
+                try
+                {
+                    exceptionToThrow = exceptionFactory(call);
+                }
+                catch (Exception ex) when (!(ex is FakeConfigurationException))
+                {
+                    throw new UserCallbackException("Exception factory threw an exception. See inner exception for details.", ex);
+                }
+
+                throw exceptionToThrow;
+            });
             return this;
         }
 
