@@ -47,7 +47,7 @@ namespace FakeItEasy.Core
             }
             catch (Exception ex)
             {
-                throw new UserCallbackException($"Dummy factory '{dummyFactory.GetType()}' threw an exception. See inner exception for details.", ex);
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Dummy factory '{dummyFactory.GetType()}'"), ex);
             }
 
             return true;

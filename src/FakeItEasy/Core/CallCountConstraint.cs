@@ -21,7 +21,7 @@ namespace FakeItEasy.Core
             }
             catch (Exception ex)
             {
-                throw new UserCallbackException($"Call count constraint <{this.description}> threw an exception. See inner exception for details.", ex);
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Call count constraint <{this.description}>"), ex);
             }
         }
 

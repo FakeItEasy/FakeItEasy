@@ -75,7 +75,7 @@ namespace FakeItEasy.Configuration
                 }
                 catch (Exception ex) when (!(ex is FakeConfigurationException))
                 {
-                    throw new UserCallbackException("Exception factory threw an exception. See inner exception for details.", ex);
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Exception factory"), ex);
                 }
 
                 throw exceptionToThrow;
@@ -257,7 +257,7 @@ namespace FakeItEasy.Configuration
                     }
                     catch (Exception ex) when (!(ex is FakeConfigurationException))
                     {
-                        throw new UserCallbackException("Return value producer threw an exception. See inner exception for details.", ex);
+                        throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Return value producer"), ex);
                     }
 
                     call.SetReturnValue(returnValue);

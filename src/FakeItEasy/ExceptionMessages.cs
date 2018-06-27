@@ -39,5 +39,8 @@ namespace FakeItEasy
 
         public static string ArgumentConstraintHasWrongType(Type constraintType, Type parameterType) =>
             $"Argument constraint is of type {constraintType}, but parameter is of type {parameterType}. No call can match this constraint.";
+
+        public static string UserCallbackThrewAnException(string callbackDescription) =>
+            $"{callbackDescription} threw an exception. See inner exception for details.";
     }
 }

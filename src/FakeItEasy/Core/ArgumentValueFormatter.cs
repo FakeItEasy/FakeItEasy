@@ -46,7 +46,7 @@ namespace FakeItEasy.Core
             }
             catch (Exception ex) when (formatter.GetType().GetTypeInfo().Assembly != typeof(ArgumentValueFormatter).GetTypeInfo().Assembly)
             {
-                throw new UserCallbackException($"Custom argument value formatter '{formatter}' threw an exception. See inner exception for details.", ex);
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Custom argument value formatter '{formatter}'"), ex);
             }
         }
 

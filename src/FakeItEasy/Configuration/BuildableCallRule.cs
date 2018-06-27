@@ -108,7 +108,7 @@ namespace FakeItEasy.Configuration
                 }
                 catch (Exception ex) when (!(ex is FakeConfigurationException))
                 {
-                    throw new UserCallbackException("Callback threw an exception. See inner exception for details.", ex);
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Callback"), ex);
                 }
             }
 
@@ -228,7 +228,7 @@ namespace FakeItEasy.Configuration
             }
             catch (Exception ex) when (!(ex is FakeConfigurationException))
             {
-                throw new UserCallbackException("Out and ref parameter value producer threw an exception. See inner exception for details.", ex);
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Out and ref parameter value producer"), ex);
             }
 
             if (values.Count != indexes.Count)
@@ -261,7 +261,7 @@ namespace FakeItEasy.Configuration
                 }
                 catch (Exception ex)
                 {
-                    throw new UserCallbackException("Call filter description threw an exception. See inner exception for details.", ex);
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Call filter description"), ex);
                 }
             }
 
@@ -273,7 +273,7 @@ namespace FakeItEasy.Configuration
                 }
                 catch (Exception ex)
                 {
-                    throw new UserCallbackException($"Call filter <{this.GetDescription()}> threw an exception. See inner exception for details.", ex);
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Call filter <{this.GetDescription()}>"), ex);
                 }
             }
 

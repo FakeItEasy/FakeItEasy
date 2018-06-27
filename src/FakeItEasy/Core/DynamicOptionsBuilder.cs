@@ -43,7 +43,7 @@ namespace FakeItEasy.Core
                 }
                 catch (Exception ex)
                 {
-                    throw new UserCallbackException($"Fake options builder '{fakeOptionsBuilder.GetType()}' threw an exception. See inner exception for details.", ex);
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Fake options builder '{fakeOptionsBuilder.GetType()}'"), ex);
                 }
             }
         }

@@ -56,7 +56,7 @@ namespace FakeItEasy.Configuration
             }
             catch (Exception ex) when (!(ex is FakeConfigurationException))
             {
-                throw new UserCallbackException("Arguments predicate threw an exception. See inner exception for details.", ex);
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Arguments predicate"), ex);
             }
 
             if (this.ApplicableToMembersWithReturnType != null)

@@ -67,7 +67,7 @@ namespace FakeItEasy.Core
                 }
                 catch (Exception ex)
                 {
-                    throw new UserCallbackException($"Argument matcher description threw an exception. See inner exception for details.", ex);
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Argument matcher description"), ex);
                 }
 
                 writer.Write(">");
@@ -86,7 +86,7 @@ namespace FakeItEasy.Core
                 }
                 catch (Exception ex)
                 {
-                    throw new UserCallbackException($"Argument matcher {this.GetDescription()} threw an exception. See inner exception for details.", ex);
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Argument matcher {this.GetDescription()}"), ex);
                 }
             }
 
