@@ -67,7 +67,19 @@ namespace FakeItEasy.Core
 
             bool IArgumentConstraint.IsValid(object argument)
             {
-                return IsValueValidForType(argument) && this.predicate.Invoke((T)argument);
+                if (!IsValueValidForType(argument))
+                {
+                    return false;
+                }
+
+                try
+                {
+                    return this.predicate.Invoke((T)argument);
+                }
+                catch (Exception ex)
+                {
+                    throw new UserCallbackException($"Argument matcher {this.GetDescription()} threw an exception. See inner exception for details.", ex);
+                }
             }
 
             private static bool IsValueValidForType(object argument)
@@ -78,6 +90,13 @@ namespace FakeItEasy.Core
                 }
 
                 return argument is T;
+            }
+
+            private string GetDescription()
+            {
+                var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+                ((IArgumentConstraint)this).WriteDescription(writer);
+                return writer.Builder.ToString();
             }
         }
     }
