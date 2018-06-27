@@ -235,7 +235,20 @@ namespace FakeItEasy.Configuration
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
                 this.ParentConfiguration.AddRuleIfNeeded();
-                this.ParentConfiguration.RuleBeingBuilt.UseApplicator(x => x.SetReturnValue(valueProducer(x)));
+                this.ParentConfiguration.RuleBeingBuilt.UseApplicator(call =>
+                {
+                    TMember returnValue;
+                    try
+                    {
+                        returnValue = valueProducer(call);
+                    }
+                    catch (Exception ex) when (!(ex is FakeConfigurationException))
+                    {
+                        throw new UserCallbackException("Return value producer threw an exception. See inner exception for details.", ex);
+                    }
+
+                    call.SetReturnValue(returnValue);
+                });
                 return this;
             }
 
