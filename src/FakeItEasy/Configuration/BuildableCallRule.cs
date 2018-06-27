@@ -214,7 +214,16 @@ namespace FakeItEasy.Configuration
             }
 
             var indexes = GetIndexesOfOutAndRefParameters(fakeObjectCall);
-            var values = this.OutAndRefParametersValueProducer(fakeObjectCall);
+            ICollection<object> values;
+            try
+            {
+                values = this.OutAndRefParametersValueProducer(fakeObjectCall);
+            }
+            catch (Exception ex) when (!(ex is FakeConfigurationException))
+            {
+                throw new UserCallbackException("Out and ref parameter value producer threw an exception. See inner exception for details.", ex);
+            }
+
             if (values.Count != indexes.Count)
             {
                 throw new InvalidOperationException(ExceptionMessages.NumberOfOutAndRefParametersDoesNotMatchCall);
