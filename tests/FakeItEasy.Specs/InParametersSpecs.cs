@@ -19,7 +19,6 @@ namespace FakeItEasy.Specs
             int Foo(in int x);
         }
 
-#if FEATURE_IN_PARAM
         [Scenario]
         public void FakingInParam(IInParam fake, int argument, int result)
         {
@@ -36,25 +35,10 @@ namespace FakeItEasy.Specs
                 .x(() => result.Should().Be(42));
         }
 
-// Below are characterization tests, representing the current capabilities of the code, not the desired state.
-// If these tests start failing, update them and fix the "What can be faked" documentation page.
-//
-// See https://github.com/castleproject/Core/issues/339 for more details about the limitation.
-#else
-        [Scenario]
-        public void FakingInParam(Exception exception)
-        {
-            "Given an interface with a method that takes an 'in' parameter"
-                .See<IInParam>();
-
-            "When I create a fake of the interface"
-                .x(() => exception = Record.Exception(() => A.Fake<IInParam>()));
-
-            "Then it throws"
-                .x(() => exception.Should().BeAnExceptionOfType<FakeCreationException>());
-        }
-#endif
-
+        // A characterization test, representing the current capabilities of the code, not the desired state.
+        // If it start failing, update it and fix the "What can be faked" documentation page.
+        //
+        // https://github.com/FakeItEasy/FakeItEasy/issues/1382 tracks this failing.
         [Scenario]
         public void FakingGenericInParam(Exception exception)
         {
