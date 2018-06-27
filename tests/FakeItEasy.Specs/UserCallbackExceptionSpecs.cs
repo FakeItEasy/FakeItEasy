@@ -1,6 +1,7 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
@@ -15,6 +16,10 @@ namespace FakeItEasy.Specs
             int Baz(HasCustomValueFormatter d);
 
             void OutAndRef(ref int x, out string s);
+        }
+
+        public interface IHasFakeOptionsBuilder
+        {
         }
 
         [Scenario]
@@ -147,6 +152,28 @@ namespace FakeItEasy.Specs
 
             "And its message should describe where the exception was thrown from"
                 .x(() => exception.Message.Should().Be("Dummy factory 'FakeItEasy.Specs.UserCallbackExceptionSpecs+MyDummyFactory' threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
+        [Scenario]
+        public void ExceptionInFakeOptionsBuilder(IHasFakeOptionsBuilder fake, Exception exception)
+        {
+            "Given a type"
+                .See<IHasFakeOptionsBuilder>();
+
+            "And an option builder for this type that throws"
+                .See<BadOptionsBuilder>();
+
+            "When I try to create a fake of this type"
+                .x(() => exception = Record.Exception(() => fake = A.Fake<IHasFakeOptionsBuilder>()));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Fake options builder 'FakeItEasy.Specs.UserCallbackExceptionSpecs+BadOptionsBuilder' threw an exception. See inner exception for details."));
 
             "And the inner exception should be the original exception"
                 .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
@@ -389,6 +416,14 @@ namespace FakeItEasy.Specs
             {
                 ThrowException();
                 return default;
+            }
+        }
+
+        public class BadOptionsBuilder : FakeOptionsBuilder<IHasFakeOptionsBuilder>
+        {
+            protected override void BuildOptions(IFakeOptions<IHasFakeOptionsBuilder> options)
+            {
+                ThrowException();
             }
         }
     }
