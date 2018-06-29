@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using System.Linq;
@@ -85,7 +85,8 @@
                 .x(() => exception = Record.Exception(() => A.Fake<WrapsNull>()));
 
             "Then an argument null exception is thrown"
-                .x(() => exception.Should().BeAnExceptionOfType<ArgumentNullException>());
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>()
+                    .WithInnerException<ArgumentException>());
         }
 
         [Scenario]
@@ -187,8 +188,9 @@
                 .x(() => exception = Record.Exception(() => A.Fake<ConstructorArgumentsSetByConstructorForWrongType>()));
 
             "Then an exception is thrown"
-                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
-                    .WithMessage("Supplied constructor is for type FakeItEasy.Specs.ConstructorArgumentsSetByConstructorForWrongType, but must be for FakeItEasy.Specs.ConstructorArgumentsSetByConstructor."));
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>()
+                    .WithInnerException<ArgumentException>()
+                    .WithInnerMessage("Supplied constructor is for type FakeItEasy.Specs.ConstructorArgumentsSetByConstructorForWrongType, but must be for FakeItEasy.Specs.ConstructorArgumentsSetByConstructor."));
         }
 
         [Scenario]

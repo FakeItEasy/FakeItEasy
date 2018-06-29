@@ -47,9 +47,16 @@ namespace FakeItEasy.Configuration
 
         protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
-            if (!this.argumentsPredicate(fakeObjectCall.Arguments))
+            try
             {
-                return false;
+                if (!this.argumentsPredicate(fakeObjectCall.Arguments))
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex) when (!(ex is FakeConfigurationException))
+            {
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Arguments predicate"), ex);
             }
 
             if (this.ApplicableToMembersWithReturnType != null)

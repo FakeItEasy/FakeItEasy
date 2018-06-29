@@ -30,7 +30,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
                 writer.WriteArgumentValue(this.ExpectedValue);
                 return writer.Builder.ToString();
             }
-            catch (Exception)
+            catch (Exception ex) when (!(ex is UserCallbackException))
             {
                 FakeManager manager = Fake.TryGetFakeManager(this.ExpectedValue);
                 return manager != null

@@ -41,7 +41,15 @@ namespace FakeItEasy.Core
                 return false;
             }
 
-            fakeObject = dummyFactory.Create(typeOfDummy);
+            try
+            {
+                fakeObject = dummyFactory.Create(typeOfDummy);
+            }
+            catch (Exception ex)
+            {
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Dummy factory '{dummyFactory.GetType()}'"), ex);
+            }
+
             return true;
         }
     }
