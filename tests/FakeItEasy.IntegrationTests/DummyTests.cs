@@ -4,7 +4,6 @@ namespace FakeItEasy.IntegrationTests
     using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Threading.Tasks;
-    using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
@@ -21,20 +20,6 @@ namespace FakeItEasy.IntegrationTests
         {
             var dummy = A.Dummy<ITypeWithNoDummyFactory>();
             dummy.Should().BeAFake();
-        }
-
-        [Fact]
-        public void Correct_exception_should_be_thrown_when_dummy_is_requested_for_unfakeable_type_with_no_dummy_factory()
-        {
-            var exception = Record.Exception(() => A.Dummy<NonInstance>());
-            exception.Should().BeAnExceptionOfType<FakeCreationException>();
-        }
-
-        [Fact]
-        public void Correct_exception_should_be_thrown_when_dummy_collection_is_requested_for_unfakeable_type_with_no_dummy_factory()
-        {
-            var exception = Record.Exception(() => A.CollectionOfDummy<NonInstance>(1));
-            exception.Should().BeAnExceptionOfType<FakeCreationException>();
         }
 
         [Fact]
@@ -98,14 +83,6 @@ namespace FakeItEasy.IntegrationTests
             private static bool IsCreatingFirstInstance()
             {
                 return Interlocked.Increment(ref creationAttempts) == 1;
-            }
-        }
-
-        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Required for testing.")]
-        private class NonInstance
-        {
-            private NonInstance()
-            {
             }
         }
     }

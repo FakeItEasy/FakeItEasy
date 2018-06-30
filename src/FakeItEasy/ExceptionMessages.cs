@@ -20,6 +20,9 @@ namespace FakeItEasy
         public static string WrongNumberOfArguments =>
             "The number of arguments does not match the number of parameters of the method.";
 
+        public static string DummyCreationExceptionDefault =>
+            "Unable to create dummy object.";
+
         public static string FakeCreationExceptionDefault =>
             "Unable to create fake object.";
 

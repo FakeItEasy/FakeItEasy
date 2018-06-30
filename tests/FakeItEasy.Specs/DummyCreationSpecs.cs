@@ -6,9 +6,11 @@ namespace FakeItEasy.Specs
     using System.IO;
     using System.Linq;
     using System.Threading;
+    using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     public abstract class DummyCreationSpecsBase
     {
@@ -192,6 +194,179 @@ namespace FakeItEasy.Specs
 
             "And the dummy is created via the shorter constructor"
                 .x(() => dummy.CalledConstructor.Should().Be("(int)"));
+        }
+
+        [Scenario]
+        public void ClassWithRecursiveDependencyCreation(Exception exception)
+        {
+            "Given a type that can't be made into a Dummy because it has a recursive dependency"
+                .See<ClassWithRecursiveDependency>();
+
+            "When a dummy of that type is requested"
+                .x(() => exception = Record.Exception(() => this.CreateDummy<ClassWithRecursiveDependency>()));
+
+            "Then it throws an exception of type DummyCreationException"
+                .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
+
+            "And its message indicates that a dummy couldn't be created due to the dependency"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithRecursiveDependency:
+
+  Below is a list of reasons for failure per attempted constructor:
+    The following constructors were not tried:
+      (*FakeItEasy.Specs.DummyCreationSpecsBase+AnIntermediateClassInTheRecursiveDependencyChain)
+
+      Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
+
+"));
+        }
+
+        [Scenario]
+        public void ClassWithNoPublicConstructorCreation(Exception exception)
+        {
+            "Given a type that can't be made into a Dummy because it has no public constructor"
+                .See<ClassWithNoPublicConstructors>();
+
+            "When a dummy of that type is requested"
+                .x(() => exception = Record.Exception(() => this.CreateDummy<ClassWithNoPublicConstructors>()));
+
+            "Then it throws an exception of type DummyCreationException"
+                .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
+
+            "And its message indicates that a dummy couldn't be created"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoPublicConstructors:
+    It has no public constructors.
+"));
+        }
+
+        [Scenario]
+        public void ClassWhoseOnlyConstructorThrowsCreation(Exception exception)
+        {
+            "Given a type that can't be made into a Dummy because its only public constructor throws"
+                .See<ClassWithNoPublicConstructors>();
+
+            "When a dummy of that type is requested"
+                .x(() => exception = Record.Exception(() => this.CreateDummy<ClassWithThrowingConstructor>()));
+
+            "Then it throws an exception of type DummyCreationException"
+                .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
+
+            "And its message indicates that a dummy couldn't be created"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithThrowingConstructor:
+
+  Below is a list of reasons for failure per attempted constructor:
+    Constructor with signature () failed:
+      constructor threw
+
+"));
+        }
+
+        [Scenario]
+        public void PrivateAbstractClassCreation(Exception exception)
+        {
+            "Given a type that can't be made into a Dummy because is a private abstract class"
+                .See<PrivateAbstractClass>();
+
+            "When a dummy of that type is requested"
+                .x(() => exception = Record.Exception(() => this.CreateDummy<PrivateAbstractClass>()));
+
+            "Then it throws an exception of type DummyCreationException"
+                .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
+
+            "And its message indicates that a dummy couldn't be created"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+PrivateAbstractClass:
+    It is abstract.
+"));
+        }
+
+        [Scenario]
+        public void ClassWhoseConstructorArgumentsCannotBeResolvedCreation(Exception exception)
+        {
+            "Given a type that can't be made into a Dummy because the arguments for its constructor cannot be resolved"
+                .See<ClassWithNoResolvableConstructors>();
+
+            "When a dummy of that type is requested"
+                .x(() => exception = Record.Exception(() => this.CreateDummy<ClassWithNoResolvableConstructors>()));
+
+            "Then it throws an exception of type DummyCreationException"
+                .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
+
+            "And its message indicates that a dummy couldn't be created"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoResolvableConstructors:
+
+  Below is a list of reasons for failure per attempted constructor:
+    The following constructors were not tried:
+      (*FakeItEasy.Specs.DummyCreationSpecsBase+ClassWhoseDummyFactoryThrows)
+
+      Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
+
+"));
+        }
+
+        [Scenario]
+        public void CollectionOfClassWithNoPublicConstructor(Exception exception)
+        {
+            "Given a type that can't be made into a Dummy"
+                .See<ClassWithNoPublicConstructors>();
+
+            "When a collection of dummies of that type is requested"
+                .x(() => exception = Record.Exception(() => this.CreateCollectionOfDummy<ClassWithNoPublicConstructors>(1)));
+
+            "Then it throws an exception of type DummyCreationException"
+                .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
+
+            "And its message indicates that a dummy couldn't be created"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoPublicConstructors:
+    It has no public constructors.
+"));
+        }
+
+        public class ClassWithNoPublicConstructors
+        {
+            private ClassWithNoPublicConstructors()
+            {
+            }
+        }
+
+        public class ClassWithRecursiveDependency
+        {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "a", Justification = "Required for testing.")]
+            public ClassWithRecursiveDependency(AnIntermediateClassInTheRecursiveDependencyChain a)
+            {
+            }
+        }
+
+        public class AnIntermediateClassInTheRecursiveDependencyChain
+        {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "c", Justification = "Required for testing.")]
+            public AnIntermediateClassInTheRecursiveDependencyChain(ClassWithRecursiveDependency c)
+            {
+            }
+        }
+
+        public class ClassWithThrowingConstructor
+        {
+            public ClassWithThrowingConstructor()
+            {
+                throw new Exception("constructor threw");
+            }
+        }
+
+        public class ClassWithNoResolvableConstructors
+        {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "c", Justification = "Required for testing.")]
+            public ClassWithNoResolvableConstructors(ClassWhoseDummyFactoryThrows c)
+            {
+            }
+        }
+
+        private abstract class PrivateAbstractClass
+        {
         }
 
         protected abstract T CreateDummy<T>();
