@@ -1,6 +1,7 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -18,6 +19,7 @@ namespace FakeItEasy.Specs
             void OutAndRef(ref int x, out string s);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "Required for testing.")]
         public interface IHasFakeOptionsBuilder
         {
         }
