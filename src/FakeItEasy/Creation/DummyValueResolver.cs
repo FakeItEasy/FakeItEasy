@@ -202,6 +202,8 @@ namespace FakeItEasy.Creation
 
         private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy : ResolveStrategy
         {
+            private readonly ConcurrentDictionary<Type, ConstructorInfo> cachedConstructors = new ConcurrentDictionary<Type, ConstructorInfo>();
+
             public ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy(DummyValueResolver resolver)
             {
                 this.Resolver = resolver;
@@ -218,21 +220,20 @@ namespace FakeItEasy.Creation
                     return false;
                 }
 
+                if (this.cachedConstructors.TryGetValue(typeOfDummy, out ConstructorInfo cachedConstructor))
+                {
+                    if (this.TryCreateDummyValueUsingConstructor(session, cachedConstructor, out result))
+                    {
+                        return true;
+                    }
+                }
+
                 foreach (var constructor in GetConstructorsInOrder(typeOfDummy))
                 {
-                    var parameterTypes = constructor.GetParameters().Select(x => x.ParameterType);
-                    try
+                    if (this.TryCreateDummyValueUsingConstructor(session, constructor, out result))
                     {
-                        var resolvedArguments = this.ResolveAllTypes(session, parameterTypes);
-
-                        if (resolvedArguments != null)
-                        {
-                            result = Activator.CreateInstance(typeOfDummy, resolvedArguments.ToArray());
-                            return true;
-                        }
-                    }
-                    catch
-                    {
+                        this.cachedConstructors[typeOfDummy] = constructor;
+                        return true;
                     }
                 }
 
@@ -242,6 +243,27 @@ namespace FakeItEasy.Creation
             private static IEnumerable<ConstructorInfo> GetConstructorsInOrder(Type type)
             {
                 return type.GetConstructors().OrderBy(x => x.GetParameters().Length).Reverse();
+            }
+
+            private bool TryCreateDummyValueUsingConstructor(DummyCreationSession session, ConstructorInfo constructor, out object result)
+            {
+                var parameterTypes = constructor.GetParameters().Select(x => x.ParameterType);
+                try
+                {
+                    var resolvedArguments = this.ResolveAllTypes(session, parameterTypes);
+
+                    if (resolvedArguments != null)
+                    {
+                        result = constructor.Invoke(resolvedArguments.ToArray());
+                        return true;
+                    }
+                }
+                catch
+                {
+                }
+
+                result = default(object);
+                return false;
             }
 
             private IEnumerable<object> ResolveAllTypes(DummyCreationSession session, IEnumerable<Type> types)

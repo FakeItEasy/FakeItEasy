@@ -4,10 +4,7 @@ namespace FakeItEasy.Creation
 
     internal class ResolvedConstructor
     {
-        public bool WasSuccessfullyResolved
-        {
-            get { return !this.Arguments.Any(x => !x.WasResolved); }
-        }
+        public bool WasSuccessfullyResolved => this.Arguments?.All(x => x.WasResolved) ?? true;
 
         public ResolvedArgument[] Arguments { get; set; }
 

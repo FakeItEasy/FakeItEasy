@@ -9,6 +9,21 @@ namespace FakeItEasy.Core
     internal class DefaultExceptionThrower
         : IExceptionThrower
     {
+        public void ThrowFailedToGenerateProxyWithoutTryingConstructors(Type typeOfFake, string reasonForFailure)
+        {
+            var message = new StringBuilder();
+
+            message
+                .AppendLine()
+                .AppendIndented("  ", "Failed to create fake of type ")
+                .Append(typeOfFake)
+                .AppendLine(".")
+                .AppendIndented("    ", reasonForFailure)
+                .AppendLine();
+
+            throw new FakeCreationException(message.ToString());
+        }
+
         public void ThrowFailedToGenerateProxyWithArgumentsForConstructor(Type typeOfFake, string reasonForFailure)
         {
             var message = new StringBuilder();
@@ -24,7 +39,7 @@ namespace FakeItEasy.Core
             throw new FakeCreationException(message.ToString());
         }
 
-        public void ThrowFailedToGenerateProxyWithResolvedConstructors(Type typeOfFake, string reasonForFailureOfUnspecifiedConstructor, IEnumerable<ResolvedConstructor> resolvedConstructors)
+        public void ThrowFailedToGenerateProxyWithResolvedConstructors(Type typeOfFake, IEnumerable<ResolvedConstructor> resolvedConstructors)
         {
             var message = new StringBuilder();
 
@@ -35,10 +50,6 @@ namespace FakeItEasy.Core
                 .AppendLine(".")
                 .AppendLine()
                 .AppendIndented("  ", "Below is a list of reasons for failure per attempted constructor:")
-                .AppendLine()
-                .AppendIndented("    ", "No constructor arguments failed:")
-                .AppendLine()
-                .AppendIndented("      ", reasonForFailureOfUnspecifiedConstructor)
                 .AppendLine();
 
             if (resolvedConstructors.Any(x => x.WasSuccessfullyResolved))
@@ -47,7 +58,7 @@ namespace FakeItEasy.Core
                 {
                     message
                         .AppendIndented("    ", "Constructor with signature (")
-                        .Append(constructor.Arguments.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
+                        .Append(constructor.Arguments?.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
                         .AppendLine(") failed:")
                         .AppendIndented("      ", constructor.ReasonForFailure)
                         .AppendLine();

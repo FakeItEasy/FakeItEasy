@@ -61,13 +61,33 @@ namespace FakeItEasy.Core
             void IArgumentConstraint.WriteDescription(IOutputWriter writer)
             {
                 writer.Write("<");
-                this.descriptionWriter.Invoke(writer);
+                try
+                {
+                    this.descriptionWriter.Invoke(writer);
+                }
+                catch (Exception ex)
+                {
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Argument matcher description"), ex);
+                }
+
                 writer.Write(">");
             }
 
             bool IArgumentConstraint.IsValid(object argument)
             {
-                return IsValueValidForType(argument) && this.predicate.Invoke((T)argument);
+                if (!IsValueValidForType(argument))
+                {
+                    return false;
+                }
+
+                try
+                {
+                    return this.predicate.Invoke((T)argument);
+                }
+                catch (Exception ex)
+                {
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Argument matcher {this.GetDescription()}"), ex);
+                }
             }
 
             private static bool IsValueValidForType(object argument)
@@ -78,6 +98,13 @@ namespace FakeItEasy.Core
                 }
 
                 return argument is T;
+            }
+
+            private string GetDescription()
+            {
+                var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+                ((IArgumentConstraint)this).WriteDescription(writer);
+                return writer.Builder.ToString();
             }
         }
     }

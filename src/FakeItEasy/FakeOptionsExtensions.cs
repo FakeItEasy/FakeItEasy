@@ -1,7 +1,5 @@
 namespace FakeItEasy
 {
-    using System;
-
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
 
@@ -21,12 +19,11 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(options, nameof(options));
 
-            Action<IFakeObjectCall> thrower = call =>
+            return options.ConfigureFake(fake =>
             {
-                throw new ExpectationException(ExceptionMessages.CallToUnconfiguredMethodOfStrictFake(call));
-            };
-
-            return options.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
+                var manager = Fake.GetFakeManager(fake);
+                manager.AddRuleFirst(new StrictFakeRule());
+            });
         }
 
         /// <summary>
@@ -39,12 +36,11 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(options, nameof(options));
 
-            Action<IFakeObjectCall> thrower = call =>
+            return options.ConfigureFake(fake =>
             {
-                throw new ExpectationException(ExceptionMessages.CallToUnconfiguredMethodOfStrictFake(call));
-            };
-
-            return options.ConfigureFake(fake => A.CallTo(fake).Invokes(thrower));
+                var manager = Fake.GetFakeManager(fake);
+                manager.AddRuleFirst(new StrictFakeRule());
+            });
         }
 
         /// <summary>

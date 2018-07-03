@@ -1,11 +1,12 @@
-#load "packages/simple-targets-csx.6.0.0/contentFiles/csx/any/simple-targets.csx"
+#r "packages/Bullseye.1.0.0-rc.5/lib/netstandard2.0/Bullseye.dll"
+#r "packages/SimpleExec.2.1.0/lib/netstandard1.3/SimpleExec.dll"
 
 using System.Runtime.CompilerServices;
-using static SimpleTargets;
+using Bullseye;
+using static Bullseye.Targets;
+using static SimpleExec.Command;
 
-var solutionName = "FakeItEasy";
-
-var solution = "./" + solutionName + ".sln";
+var solution = "./FakeItEasy.sln";
 var versionInfoFile = "./src/VersionInfo.cs";
 var repoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 
@@ -64,129 +65,75 @@ var outputDirectory = Path.GetFullPath("./artifacts/output");
 static var testsDirectory = "./artifacts/tests";
 
 // targets
-var targets = new TargetDictionary();
+Targets.Add("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
 
-targets.Add("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
+Targets.Add("outputDirectory", () => Directory.CreateDirectory(outputDirectory));
 
-targets.Add("outputDirectory", () => Directory.CreateDirectory(outputDirectory));
+Targets.Add("logsDirectory", () => Directory.CreateDirectory(logsDirectory));
 
-targets.Add("logsDirectory", () => Directory.CreateDirectory(logsDirectory));
+Targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
 
-targets.Add("testsDirectory", () => Directory.CreateDirectory(testsDirectory));
+Targets.Add("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunMsBuild("Build"));
 
-targets.Add("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunMsBuild("Build"));
+Targets.Add("versionInfoFile", () => Run(gitversion, $"/updateAssemblyInfo {versionInfoFile} /ensureAssemblyInfo"));
 
-targets.Add("versionInfoFile", () => Cmd(gitversion, $"/updateAssemblyInfo {versionInfoFile} /ensureAssemblyInfo"));
+Targets.Add("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
 
-targets.Add("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
-
-targets.Add(
+Targets.Add(
     "restore",
-    () => Cmd("dotnet", $"restore"));
+    () => Run("dotnet", $"restore"));
 
-targets.Add(
+Targets.Add(
     "unit",
     DependsOn("build", "testsDirectory"),
     () => RunTests("unit"));
 
-targets.Add(
+Targets.Add(
     "integ",
     DependsOn("build", "testsDirectory"),
     () => RunTests("integ"));
 
-targets.Add(
+Targets.Add(
     "spec",
     DependsOn("build", "testsDirectory"),
     () => RunTests("spec"));
 
-targets.Add(
+Targets.Add(
     "approve",
     DependsOn("build", "testsDirectory"),
     () => RunTests("approve"));
 
-targets.Add(
+Targets.Add(
     "pack",
     DependsOn("build", "outputDirectory", "pdbgit"),
     () =>
     {
-        var version = ReadCmdOutput(".", gitversion, "/showvariable NuGetVersionV2");
+        var version = Read(gitversion, "/showvariable NuGetVersionV2", ".");
         foreach (var project in projectsToPack)
         {
-            Cmd("dotnet", $"pack {project} --configuration Release --no-build --output {outputDirectory} /p:Version={version}");
+            Run("dotnet", $"pack {project} --configuration Release --no-build --output {outputDirectory} /p:Version={version}");
         }
 
-        Cmd(nuget, $"pack {analyzerMetaPackageNuspecPath} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
+        Run(nuget, $"pack {analyzerMetaPackageNuspecPath} -Version {version} -OutputDirectory {outputDirectory} -NoPackageAnalysis");
     });
 
-targets.Add(
+Targets.Add(
     "pdbgit",
     DependsOn("build"),
     () =>
     {
         foreach (var pdb in pdbs)
         {
-            Cmd(pdbGit, $"-u {repoUrl} -s {pdb}");
+            Run(pdbGit, $"-u {repoUrl} -s {pdb}");
         }
     });
 
-Run(Args, targets);
+Targets.Run(Args);
 
 // helpers
-public static void Cmd(string fileName, string args)
-{
-    Cmd(".", fileName, args);
-}
-
-public static void Cmd(string workingDirectory, string fileName, string args)
-{
-    using (var process = new Process())
-    {
-        process.StartInfo = new ProcessStartInfo
-        {
-            FileName = $"\"{fileName}\"",
-            Arguments = args,
-            WorkingDirectory = workingDirectory,
-            UseShellExecute = false,
-        };
-
-        var workingDirectoryMessage = workingDirectory == "." ? "" : $" in '{process.StartInfo.WorkingDirectory}'";
-        Console.WriteLine($"Running '{process.StartInfo.FileName} {process.StartInfo.Arguments}'{workingDirectoryMessage}...");
-        process.Start();
-        process.WaitForExit();
-        if (process.ExitCode != 0)
-        {
-            throw new InvalidOperationException($"The command exited with code {process.ExitCode}.");
-        }
-    }
-}
-
-public string ReadCmdOutput(string workingDirectory, string fileName, string args)
-{
-    using (var process = new Process())
-    {
-        process.StartInfo = new ProcessStartInfo
-        {
-            FileName = fileName,
-            Arguments = args,
-            WorkingDirectory = workingDirectory,
-            UseShellExecute = false,
-            RedirectStandardOutput = true
-        };
-
-        process.Start();
-        process.WaitForExit();
-        if (process.ExitCode != 0)
-        {
-            throw new InvalidOperationException($"The {fileName} command exited with code {process.ExitCode}.");
-        }
-
-        return process.StandardOutput.ReadToEnd().Trim();
-    }
-}
-
 public void RunMsBuild(string target)
 {
-    Cmd(
+    Run(
         msBuild,
         $"{solution} /target:{target} /p:configuration=Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/{target}.binlog");
 }
@@ -202,18 +149,18 @@ public void RunTests(string target)
 public void RunTestsInDirectory(string testDirectory)
 {
     var xml = Path.GetFullPath(Path.Combine(testsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
-    Cmd(testDirectory, "dotnet", $"xunit -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}");
+    Run("dotnet", $"xunit -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}", testDirectory);
 }
 
 public string GetVSLocation()
 {
-    var installationPath = ReadCmdOutput(".", $"\"{vswhere}\"", "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)");
-    if (string.IsNullOrEmpty(installationPath))
+    var installationPath = Read($"\"{vswhere}\"", "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)", ".");
+    if (string.IsNullOrWhiteSpace(installationPath))
     {
         throw new InvalidOperationException("Visual Studio 2017 was not found");
     }
 
-    return installationPath;
+    return installationPath.Trim();
 }
 
 public static string GetCurrentScriptDirectory([CallerFilePath] string path = null) => Path.GetDirectoryName(path);

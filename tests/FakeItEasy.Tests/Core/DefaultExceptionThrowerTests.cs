@@ -16,13 +16,12 @@ namespace FakeItEasy.Tests.Core
                 new DefaultExceptionThrowerTestCase("only parameterless constructor")
                 {
                     TypeOfFake = typeof(string),
-                    ReasonForFailureOfDefaultConstructor = "reason",
-                    ResolvedConstructors = Array.Empty<ResolvedConstructor>(),
+                    ResolvedConstructors = new[] { new ResolvedConstructor { ReasonForFailure = "reason" } },
                     ExpectedMessage = @"
   Failed to create fake of type System.String.
 
   Below is a list of reasons for failure per attempted constructor:
-    No constructor arguments failed:
+    Constructor with signature () failed:
       reason
 
 "
@@ -30,9 +29,12 @@ namespace FakeItEasy.Tests.Core
                 new DefaultExceptionThrowerTestCase("multi-line reason for constructor failure")
                 {
                     TypeOfFake = typeof(int),
-                    ReasonForFailureOfDefaultConstructor = "reason\r\non two lines",
                     ResolvedConstructors = new[]
                     {
+                        new ResolvedConstructor
+                        {
+                            ReasonForFailure = "reason\r\non two lines"
+                        },
                         new ResolvedConstructor
                         {
                             Arguments = new[]
@@ -70,7 +72,7 @@ namespace FakeItEasy.Tests.Core
   Failed to create fake of type System.Int32.
 
   Below is a list of reasons for failure per attempted constructor:
-    No constructor arguments failed:
+    Constructor with signature () failed:
       reason
       on two lines
     The following constructors were not tried:
@@ -84,9 +86,12 @@ namespace FakeItEasy.Tests.Core
                 new DefaultExceptionThrowerTestCase("parameterful constructor failed")
                 {
                     TypeOfFake = typeof(int),
-                    ReasonForFailureOfDefaultConstructor = "reason\r\non two lines",
                     ResolvedConstructors = new[]
                     {
+                        new ResolvedConstructor
+                        {
+                            ReasonForFailure = "reason\r\non two lines"
+                        },
                         new ResolvedConstructor
                         {
                             Arguments = new[]
@@ -137,7 +142,7 @@ namespace FakeItEasy.Tests.Core
   Failed to create fake of type System.Int32.
 
   Below is a list of reasons for failure per attempted constructor:
-    No constructor arguments failed:
+    Constructor with signature () failed:
       reason
       on two lines
     Constructor with signature (System.String) failed:
@@ -188,7 +193,7 @@ that spans a couple of lines.";
             // Act
             var exception = Record.Exception(
                 () => thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(
-                    testCase.TypeOfFake, testCase.ReasonForFailureOfDefaultConstructor, testCase.ResolvedConstructors));
+                    testCase.TypeOfFake, testCase.ResolvedConstructors));
 
             // Assert
             exception.Should()
@@ -206,8 +211,6 @@ that spans a couple of lines.";
             }
 
             internal Type TypeOfFake { get; set; }
-
-            internal string ReasonForFailureOfDefaultConstructor { get; set; }
 
             internal ResolvedConstructor[] ResolvedConstructors { get; set; }
 

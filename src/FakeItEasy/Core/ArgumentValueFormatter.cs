@@ -40,7 +40,14 @@ namespace FakeItEasy.Core
 
             var formatter = this.cachedFormatters.GetOrAdd(argumentType, this.ResolveTypeFormatter);
 
-            return formatter.GetArgumentValueAsString(argumentValue);
+            try
+            {
+                return formatter.GetArgumentValueAsString(argumentValue);
+            }
+            catch (Exception ex) when (formatter.GetType().GetTypeInfo().Assembly != typeof(ArgumentValueFormatter).GetTypeInfo().Assembly)
+            {
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Custom argument value formatter '{formatter}'"), ex);
+            }
         }
 
         private static int GetDistanceFromKnownType(Type comparedType, Type knownType)

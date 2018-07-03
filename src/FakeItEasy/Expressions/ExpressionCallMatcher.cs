@@ -17,6 +17,7 @@ namespace FakeItEasy.Expressions
         private readonly MethodInfoManager methodInfoManager;
         private IEnumerable<IArgumentConstraint> argumentConstraints;
         private Func<ArgumentCollection, bool> argumentsPredicate;
+        private bool useExplicitArgumentsPredicate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpressionCallMatcher" /> class.
@@ -58,6 +59,7 @@ namespace FakeItEasy.Expressions
         {
             this.argumentsPredicate = predicate;
             this.argumentConstraints = this.argumentConstraints.Select(a => new PredicatedArgumentConstraint()).ToArray();
+            this.useExplicitArgumentsPredicate = true;
         }
 
         public Func<IFakeObjectCall, ICollection<object>> GetOutAndRefParametersValueProducer()
@@ -85,7 +87,14 @@ namespace FakeItEasy.Expressions
 
         private bool ArgumentsMatches(ArgumentCollection argumentCollection)
         {
-            return this.argumentsPredicate(argumentCollection);
+            try
+            {
+                return this.argumentsPredicate(argumentCollection);
+            }
+            catch (Exception ex) when (this.useExplicitArgumentsPredicate && !(ex is FakeConfigurationException))
+            {
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Arguments predicate"), ex);
+            }
         }
 
         private bool ArgumentsMatchesArgumentConstraints(ArgumentCollection argumentCollection)

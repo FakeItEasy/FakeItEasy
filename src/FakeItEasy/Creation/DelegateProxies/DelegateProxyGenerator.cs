@@ -20,9 +20,9 @@
         {
             Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
 
-            if (!typeof(Delegate).IsAssignableFrom(typeOfProxy))
+            if (!this.CanGenerateProxy(typeOfProxy, out string reasonCannotGenerate))
             {
-                return new ProxyGeneratorResult("The delegate proxy generator can only create proxies for delegate types.");
+                return new ProxyGeneratorResult(reasonCannotGenerate);
             }
 
             var invokeMethod = typeOfProxy.GetMethod("Invoke");
@@ -39,6 +39,18 @@
             if (method.Name != "Invoke")
             {
                 failReason = "Only the Invoke method can be intercepted on delegates.";
+                return false;
+            }
+
+            failReason = null;
+            return true;
+        }
+
+        public bool CanGenerateProxy(Type typeOfProxy, out string failReason)
+        {
+            if (!typeof(Delegate).IsAssignableFrom(typeOfProxy))
+            {
+                failReason = "The delegate proxy generator can only create proxies for delegate types.";
                 return false;
             }
 

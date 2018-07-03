@@ -5,6 +5,7 @@ namespace FakeItEasy.Specs
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
+    using System.Threading;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
@@ -86,7 +87,7 @@ namespace FakeItEasy.Specs
 
         [Scenario]
         public void ClassWhoseLongerConstructorThrowsCreation(
-            ClassWhoseLongerConstructorThrows dummy)
+            ClassWhoseLongerConstructorThrows dummy1, ClassWhoseLongerConstructorThrows dummy2)
         {
             "Given a type with multiple constructors"
                 .See<ClassWhoseLongerConstructorThrows>();
@@ -94,14 +95,29 @@ namespace FakeItEasy.Specs
             "And its longer constructor throws"
                 .See(() => new ClassWhoseLongerConstructorThrows(0, 0));
 
-            "When a dummy of that type is requested"
-                .x(() => dummy = this.CreateDummy<ClassWhoseLongerConstructorThrows>());
+            "And a dummy of that type is requested"
+                .x(() => dummy1 = this.CreateDummy<ClassWhoseLongerConstructorThrows>());
 
-            "Then it returns a dummy"
-                .x(() => dummy.Should().NotBeNull());
+            "And another dummy of that type is requested"
+                .x(() => dummy2 = this.CreateDummy<ClassWhoseLongerConstructorThrows>());
+
+            "Then it returns a dummy from the first request"
+                .x(() => dummy1.Should().NotBeNull());
 
             "And the dummy is created via the shorter constructor"
-                .x(() => dummy.CalledConstructor.Should().Be("(int)"));
+                .x(() => dummy1.CalledConstructor.Should().Be("(int)"));
+
+            "And it returns a dummy from the second request"
+                .x(() => dummy2.Should().NotBeNull());
+
+            "And that dummy is created via the shorter constructor"
+                .x(() => dummy2.CalledConstructor.Should().Be("(int)"));
+
+            "And the dummies are distinct"
+                .x(() => dummy1.Should().NotBeSameAs(dummy2));
+
+            "And the longer constructor was only attempted once"
+                .x(() => ClassWhoseLongerConstructorThrows.NumberOfTimesLongerConstructorWasCalled.Should().Be(1));
         }
 
         [Scenario]
@@ -181,8 +197,10 @@ namespace FakeItEasy.Specs
             }
         }
 
-        public class ClassWhoseLongerConstructorThrows
+        public sealed class ClassWhoseLongerConstructorThrows
         {
+            private static int numberOfTimesLongerConstructorWasCalled;
+
             public string CalledConstructor { get; }
 
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "i", Justification = "Required for testing.")]
@@ -196,8 +214,11 @@ namespace FakeItEasy.Specs
             public ClassWhoseLongerConstructorThrows(int i, int j)
             {
                 this.CalledConstructor = "(int, int)";
+                Interlocked.Increment(ref numberOfTimesLongerConstructorWasCalled);
                 throw new Exception("(int, int) constructor threw");
             }
+
+            public static int NumberOfTimesLongerConstructorWasCalled => numberOfTimesLongerConstructorWasCalled;
         }
 
         public sealed class SealedClassWhoseLongerConstructorThrows

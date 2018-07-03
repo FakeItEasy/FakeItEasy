@@ -102,7 +102,14 @@ namespace FakeItEasy.Configuration
 
             foreach (var action in this.Actions)
             {
-                action.Invoke(fakeObjectCall);
+                try
+                {
+                    action.Invoke(fakeObjectCall);
+                }
+                catch (Exception ex) when (!(ex is FakeConfigurationException))
+                {
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Callback"), ex);
+                }
             }
 
             this.applicator.Invoke(fakeObjectCall);
@@ -121,7 +128,7 @@ namespace FakeItEasy.Configuration
         /// <returns>True if the rule applies to the call.</returns>
         public virtual bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
-            return this.wherePredicates.All(x => x.Predicate.Invoke(fakeObjectCall))
+            return this.wherePredicates.All(x => x.Matches(fakeObjectCall))
                 && this.OnIsApplicableTo(fakeObjectCall);
         }
 
@@ -143,12 +150,12 @@ namespace FakeItEasy.Configuration
 
             using (writer.Indent())
             {
-                foreach (var wherePredicateDescriptionWriter in this.wherePredicates.Select(x => x.DescriptionWriter))
+                foreach (var wherePredicate in this.wherePredicates)
                 {
                     writer.WriteLine();
                     writer.Write(wherePrefix.Invoke());
                     writer.Write(" ");
-                    wherePredicateDescriptionWriter.Invoke(writer);
+                    wherePredicate.WriteDescription(writer);
                 }
             }
         }
@@ -214,7 +221,16 @@ namespace FakeItEasy.Configuration
             }
 
             var indexes = GetIndexesOfOutAndRefParameters(fakeObjectCall);
-            var values = this.OutAndRefParametersValueProducer(fakeObjectCall);
+            ICollection<object> values;
+            try
+            {
+                values = this.OutAndRefParametersValueProducer(fakeObjectCall);
+            }
+            catch (Exception ex) when (!(ex is FakeConfigurationException))
+            {
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Out and ref parameter value producer"), ex);
+            }
+
             if (values.Count != indexes.Count)
             {
                 throw new InvalidOperationException(ExceptionMessages.NumberOfOutAndRefParametersDoesNotMatchCall);
@@ -228,15 +244,45 @@ namespace FakeItEasy.Configuration
 
         private class WherePredicate
         {
+            private readonly Func<IFakeObjectCall, bool> predicate;
+            private readonly Action<IOutputWriter> descriptionWriter;
+
             public WherePredicate(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
             {
-                this.Predicate = predicate;
-                this.DescriptionWriter = descriptionWriter;
+                this.predicate = predicate;
+                this.descriptionWriter = descriptionWriter;
             }
 
-            public Func<IFakeObjectCall, bool> Predicate { get; }
+            public void WriteDescription(IOutputWriter writer)
+            {
+                try
+                {
+                    this.descriptionWriter.Invoke(writer);
+                }
+                catch (Exception ex)
+                {
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Call filter description"), ex);
+                }
+            }
 
-            public Action<IOutputWriter> DescriptionWriter { get; }
+            public bool Matches(IFakeObjectCall call)
+            {
+                try
+                {
+                    return this.predicate.Invoke(call);
+                }
+                catch (Exception ex)
+                {
+                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Call filter <{this.GetDescription()}>"), ex);
+                }
+            }
+
+            private string GetDescription()
+            {
+                var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+                this.WriteDescription(writer);
+                return writer.Builder.ToString();
+            }
         }
     }
 }

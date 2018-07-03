@@ -99,12 +99,16 @@ namespace FakeItEasy.Configuration
 
         public IAnyCallConfigurationWithNoReturnTypeSpecified Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
+            Guard.AgainstNull(predicate, nameof(predicate));
+
             this.configuredRule.ApplyWherePredicate(predicate, descriptionWriter);
             return this;
         }
 
         public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
         {
+            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+
             this.configuredRule.UsePredicateToValidateArguments(argumentsPredicate);
             return this;
         }

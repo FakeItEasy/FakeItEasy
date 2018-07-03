@@ -399,6 +399,13 @@ namespace FakeItEasy
     {
         public UnderTestAttribute() { }
     }
+    public class UserCallbackException : System.Exception
+    {
+        public UserCallbackException() { }
+        public UserCallbackException(string message) { }
+        public UserCallbackException(string message, System.Exception innerException) { }
+        protected UserCallbackException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
     public class static WhereConfigurationExtensions
     {
         public static T Where<T>(this FakeItEasy.Configuration.IWhereConfiguration<T> configuration, System.Linq.Expressions.Expression<System.Func<FakeItEasy.Core.IFakeObjectCall, bool>> predicate) { }
