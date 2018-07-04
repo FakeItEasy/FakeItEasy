@@ -15,6 +15,10 @@
     <PackageTags>TDD;unittesting;mocks;mocking;fakes;faking;stubs;stubbing;spy;spies;doubles;isolation;substitutes;substitution</PackageTags>
   </PropertyGroup>
 
+  <PropertyGroup Label="Common referenced package versions">
+    <CastleCoreVersion>4.3.1</CastleCoreVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="../*.cs" />
   </ItemGroup>
@@ -39,7 +43,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <PackageReference Include="Castle.Core" Version="4.3.1" />
+    <PackageReference Include="Castle.Core" Version="$(CastleCoreVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.0.0" />
     <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.0.0" />
@@ -53,7 +57,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <PackageReference Include="ILMerge" Version="2.14.1208" PrivateAssets="all" />
-    <PackageReference Include="Castle.Core" Version="4.2.1" PrivateAssets="all" />
+    <PackageReference Include="Castle.Core" Version="$(CastleCoreVersion)" PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="ILMerge45" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net45'">
@@ -68,7 +72,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
     <PackageReference Include="ILMerge" Version="2.14.1208" PrivateAssets="all" />
-    <PackageReference Include="Castle.Core" Version="4.2.1" PrivateAssets="all" />
+    <PackageReference Include="Castle.Core" Version="$(CastleCoreVersion)" PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="ILMerge40" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net40'">
