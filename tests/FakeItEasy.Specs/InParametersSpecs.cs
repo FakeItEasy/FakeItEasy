@@ -19,6 +19,8 @@ namespace FakeItEasy.Specs
             int Foo(in int x);
         }
 
+        public delegate void DelegateWithInParam(in int i);
+
         [Scenario]
         public void FakingInParam(IInParam fake, int argument, int result)
         {
@@ -49,6 +51,25 @@ namespace FakeItEasy.Specs
 
             "When the method is called"
                 .x(() => fake.Foo(argument));
+
+            "Then the 'in' argument retains its original value"
+                .x(() => argument.Should().Be(17));
+        }
+
+        [Scenario]
+        public void SettingInParamDelegate(DelegateWithInParam fake, int argument)
+        {
+            "Given a faked delegate with a method that takes an 'in' parameter"
+                .x(() => fake = A.Fake<DelegateWithInParam>());
+
+            "And the 'in' argument has a known value"
+                .x(() => argument = 17);
+
+            "And a call to this method is configured to set a new value for the parameter"
+                .x(() => A.CallTo(() => fake.Invoke(A<int>._)).AssignsOutAndRefParameters(19));
+
+            "When the method is called"
+                .x(() => fake.Invoke(argument));
 
             "Then the 'in' argument retains its original value"
                 .x(() => argument.Should().Be(17));
