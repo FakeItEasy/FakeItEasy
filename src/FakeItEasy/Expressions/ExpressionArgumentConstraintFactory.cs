@@ -28,10 +28,10 @@ namespace FakeItEasy.Expressions
                 return this.CreateParamArrayConstraint((NewArrayExpression)argument.Expression, parameterType);
             }
 
-            var isByRefArgument = IsByRefArgument(argument);
+            var isOutOrRefArgument = argument.ArgumentInformation.IsOutOrRef();
 
             var constraint = this.GetArgumentConstraintFromExpression(argument.Expression, parameterType, out var argumentValue);
-            if (isByRefArgument)
+            if (isOutOrRefArgument)
             {
                 if (IsOutArgument(argument))
                 {
@@ -64,11 +64,6 @@ namespace FakeItEasy.Expressions
         private static bool IsOutArgument(ParsedArgumentExpression argument)
         {
             return argument.ArgumentInformation.IsOut;
-        }
-
-        private static bool IsByRefArgument(ParsedArgumentExpression argument)
-        {
-            return argument.ArgumentInformation.ParameterType.IsByRef;
         }
 
         private static IArgumentConstraint CreateEqualityConstraint(object expressionValue)
