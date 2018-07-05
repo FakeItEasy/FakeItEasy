@@ -38,41 +38,43 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void SettingInParamInterface(IInParam fake, int argument)
+        public void SettingInParamInterface(IInParam fake, Exception exception)
         {
             "Given a faked interface with a method that takes an 'in' parameter"
                 .x(() => fake = A.Fake<IInParam>());
-
-            "And the 'in' argument has a known value"
-                .x(() => argument = 17);
 
             "And a call to this method is configured to set a new value for the parameter"
                 .x(() => A.CallTo(() => fake.Foo(A<int>._)).AssignsOutAndRefParameters(19));
 
             "When the method is called"
-                .x(() => fake.Foo(argument));
+                .x(() => exception = Record.Exception(() => fake.Foo(A.Dummy<int>())));
 
-            "Then the 'in' argument retains its original value"
-                .x(() => argument.Should().Be(17));
+            "Then it throws an exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+
+            "And the exception message indicates that the out and ref parameter counts don't agree"
+                .x(() => exception.Message.Should()
+                    .Be("The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call."));
         }
 
         [Scenario]
-        public void SettingInParamDelegate(DelegateWithInParam fake, int argument)
+        public void SettingInParamDelegate(DelegateWithInParam fake, Exception exception)
         {
             "Given a faked delegate with a method that takes an 'in' parameter"
                 .x(() => fake = A.Fake<DelegateWithInParam>());
-
-            "And the 'in' argument has a known value"
-                .x(() => argument = 17);
 
             "And a call to this method is configured to set a new value for the parameter"
                 .x(() => A.CallTo(() => fake.Invoke(A<int>._)).AssignsOutAndRefParameters(19));
 
             "When the method is called"
-                .x(() => fake.Invoke(argument));
+                .x(() => exception = Record.Exception(() => fake.Invoke(A.Dummy<int>())));
 
-            "Then the 'in' argument retains its original value"
-                .x(() => argument.Should().Be(17));
+            "Then it throws an exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+
+            "And the exception message indicates that the out and ref parameter counts don't agree"
+                .x(() => exception.Message.Should()
+                    .Be("The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call."));
         }
 
         // A characterization test, representing the current capabilities of the code, not the desired state.

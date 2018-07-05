@@ -204,7 +204,7 @@ namespace FakeItEasy.Configuration
             var arguments = fakeObjectCall.Method.GetParameters();
             for (var i = 0; i < arguments.Length; i++)
             {
-                if (arguments[i].ParameterType.IsByRef)
+                if (arguments[i].IsOutOrRef())
                 {
                     indexes.Add(i);
                 }

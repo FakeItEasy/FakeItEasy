@@ -40,7 +40,7 @@
   <!-- .NET Standard 1.6 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION;FEATURE_EXCEPTION_DISPATCH_INFO;FEATURE_ARRAY_EMPTY</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION;FEATURE_EXCEPTION_DISPATCH_INFO;FEATURE_ARRAY_EMPTY;FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
@@ -53,7 +53,7 @@
   <!-- .NET 4.5 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
