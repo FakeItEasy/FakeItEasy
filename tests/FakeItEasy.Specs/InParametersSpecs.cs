@@ -19,6 +19,8 @@ namespace FakeItEasy.Specs
             int Foo(in int x);
         }
 
+        public delegate void DelegateWithInParam(in int i);
+
         [Scenario]
         public void FakingInParam(IInParam fake, int argument, int result)
         {
@@ -33,6 +35,46 @@ namespace FakeItEasy.Specs
 
             "Then it returns the configured value"
                 .x(() => result.Should().Be(42));
+        }
+
+        [Scenario]
+        public void SettingInParamInterface(IInParam fake, Exception exception)
+        {
+            "Given a faked interface with a method that takes an 'in' parameter"
+                .x(() => fake = A.Fake<IInParam>());
+
+            "And a call to this method is configured to set a new value for the parameter"
+                .x(() => A.CallTo(() => fake.Foo(A<int>._)).AssignsOutAndRefParameters(19));
+
+            "When the method is called"
+                .x(() => exception = Record.Exception(() => fake.Foo(A.Dummy<int>())));
+
+            "Then it throws an exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+
+            "And the exception message indicates that the out and ref parameter counts don't agree"
+                .x(() => exception.Message.Should()
+                    .Be("The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call."));
+        }
+
+        [Scenario]
+        public void SettingInParamDelegate(DelegateWithInParam fake, Exception exception)
+        {
+            "Given a faked delegate with a method that takes an 'in' parameter"
+                .x(() => fake = A.Fake<DelegateWithInParam>());
+
+            "And a call to this method is configured to set a new value for the parameter"
+                .x(() => A.CallTo(() => fake.Invoke(A<int>._)).AssignsOutAndRefParameters(19));
+
+            "When the method is called"
+                .x(() => exception = Record.Exception(() => fake.Invoke(A.Dummy<int>())));
+
+            "Then it throws an exception"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+
+            "And the exception message indicates that the out and ref parameter counts don't agree"
+                .x(() => exception.Message.Should()
+                    .Be("The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call."));
         }
 
         // A characterization test, representing the current capabilities of the code, not the desired state.
