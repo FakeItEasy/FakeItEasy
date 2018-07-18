@@ -3,7 +3,6 @@ namespace FakeItEasy.Tests.Creation
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
@@ -246,63 +245,6 @@ namespace FakeItEasy.Tests.Creation
                 .MustHaveHappened();
         }
 
-        [Fact]
-        public void Should_throw_when_no_resolved_constructor_was_successfully_used()
-        {
-            // Arrange
-            var resolver = A.Fake<IDummyValueResolver>();
-            StubResolverToFailForType<int>(resolver);
-            StubResolverWithDummyValue(resolver, "dummy");
-
-            this.StubProxyGeneratorToFail("failed");
-
-            // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), new ProxyOptions(), new DummyCreationSession(), resolver, throwOnFailure: true);
-
-            // Assert
-            var expectedConstructors = new[]
-            {
-                new ResolvedConstructor
-                {
-                    ReasonForFailure = "failed"
-                },
-                new ResolvedConstructor
-                {
-                    Arguments = new[]
-                    {
-                        new ResolvedArgument
-                        {
-                            ArgumentType = typeof(int),
-                            ResolvedValue = null,
-                            WasResolved = false
-                        },
-                        new ResolvedArgument
-                        {
-                            ArgumentType = typeof(int),
-                            ResolvedValue = null,
-                            WasResolved = false
-                        }
-                    }
-                },
-                new ResolvedConstructor
-                {
-                    ReasonForFailure = "failed",
-                    Arguments = new[]
-                    {
-                        new ResolvedArgument
-                        {
-                            ArgumentType = typeof(string),
-                            ResolvedValue = "dummy",
-                            WasResolved = true
-                        }
-                    }
-                }
-            };
-
-            A.CallTo(() => this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeof(TypeWithMultipleConstructors), this.ConstructorsEquivalentTo(expectedConstructors)))
-                .MustHaveHappened();
-        }
-
         private static void StubResolverToFailForType<T>(IDummyValueResolver resolver)
         {
             object outResult;
@@ -316,57 +258,6 @@ namespace FakeItEasy.Tests.Creation
             A.CallTo(() => resolver.TryResolveDummyValue(A<DummyCreationSession>._, typeof(T), out outResult))
                 .Returns(true)
                 .AssignsOutAndRefParameters(dummyValue);
-        }
-
-        private IEnumerable<ResolvedConstructor> ConstructorsEquivalentTo(IEnumerable<ResolvedConstructor> constructors)
-        {
-            return A<IEnumerable<ResolvedConstructor>>.That.Matches(
-                x =>
-                {
-                    if (x.Count() != constructors.Count())
-                    {
-                        return false;
-                    }
-
-                    foreach (var constructorPair in x.Zip(constructors, (constructor1, constructor2) => new { Constructor1 = constructor1, Constructor2 = constructor2 }))
-                    {
-                        if (constructorPair.Constructor1.ReasonForFailure != constructorPair.Constructor2.ReasonForFailure)
-                        {
-                            return false;
-                        }
-
-                        if (constructorPair.Constructor1.Arguments == null && constructorPair.Constructor2.Arguments == null)
-                        {
-                            return true;
-                        }
-
-                        if (constructorPair.Constructor1.Arguments == null || constructorPair.Constructor2.Arguments == null)
-                        {
-                            return false;
-                        }
-
-                        if (constructorPair.Constructor1.Arguments.Length != constructorPair.Constructor2.Arguments.Length)
-                        {
-                            return false;
-                        }
-
-                        foreach (var argumentPair in constructorPair.Constructor1.Arguments.Zip(constructorPair.Constructor2.Arguments, (argument1, argument2) => new { Argument1 = argument1, Argument2 = argument2 }))
-                        {
-                            var isEqual =
-                                object.Equals(argumentPair.Argument1.ArgumentType, argumentPair.Argument2.ArgumentType)
-                                && object.Equals(argumentPair.Argument1.ResolvedValue, argumentPair.Argument2.ResolvedValue)
-                                && argumentPair.Argument1.WasResolved == argumentPair.Argument2.WasResolved;
-
-                            if (!isEqual)
-                            {
-                                return false;
-                            }
-                        }
-                    }
-
-                    return true;
-                },
-                "Matching constructor");
         }
 
         private void StubProxyGeneratorToFail(string failReason)
