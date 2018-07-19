@@ -58,7 +58,7 @@ namespace FakeItEasy.Core
                 {
                     message
                         .AppendIndented("    ", "Constructor with signature (")
-                        .Append(constructor.Arguments?.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
+                        .Append(constructor.Arguments.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
                         .AppendLine(") failed:")
                         .AppendIndented("      ", constructor.ReasonForFailure)
                         .AppendLine();

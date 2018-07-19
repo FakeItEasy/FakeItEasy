@@ -4,9 +4,15 @@ namespace FakeItEasy.Creation
 
     internal class ResolvedConstructor
     {
-        public bool WasSuccessfullyResolved => this.Arguments?.All(x => x.WasResolved) ?? true;
+        public ResolvedConstructor(ResolvedArgument[] resolvedArguments)
+        {
+            Guard.AgainstNull(resolvedArguments, nameof(resolvedArguments));
+            this.Arguments = resolvedArguments;
+        }
 
-        public ResolvedArgument[] Arguments { get; set; }
+        public bool WasSuccessfullyResolved => this.Arguments.All(x => x.WasResolved);
+
+        public ResolvedArgument[] Arguments { get; }
 
         public string ReasonForFailure { get; set; }
     }

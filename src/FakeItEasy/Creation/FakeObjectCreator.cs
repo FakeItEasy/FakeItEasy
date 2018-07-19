@@ -59,10 +59,8 @@ namespace FakeItEasy.Creation
 
         private static IEnumerable<Type[]> GetUsableParameterTypeListsInOrder(Type type)
         {
-            // Always try the parameterless constructor first, and indicate it by using a null list of parameter types, since
-            // a null set of constructor arguments works for faking types with a parameterless constructor and is required
-            // when faking an interface.
-            yield return null;
+            // Always try the parameterless constructor first, since it works for faking interfaces as well as classes.
+            yield return Type.EmptyTypes;
 
             foreach (var parameterTypeList in type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 .Select(c => c.GetParameters())
@@ -76,15 +74,11 @@ namespace FakeItEasy.Creation
 
         private static ResolvedConstructor ResolveConstructorArguments(Type[] parameterTypes, DummyCreationSession session, IDummyValueResolver resolver)
         {
-            if (parameterTypes == null)
-            {
-                return new ResolvedConstructor();
-            }
+            var resolvedArguments = new ResolvedArgument[parameterTypes.Length];
 
-            var resolvedArguments = new List<ResolvedArgument>();
-
-            foreach (var parameterType in parameterTypes)
+            for (var i = 0; i < parameterTypes.Length; i++)
             {
+                var parameterType = parameterTypes[i];
                 bool wasResolved;
                 object result = null;
 
@@ -97,20 +91,24 @@ namespace FakeItEasy.Creation
                     wasResolved = false;
                 }
 
-                var resolvedArgument = new ResolvedArgument
-                                           {
-                                               WasResolved = wasResolved,
-                                               ResolvedValue = result,
-                                               ArgumentType = parameterType
-                                           };
-
-                resolvedArguments.Add(resolvedArgument);
+                resolvedArguments[i] = new ResolvedArgument
+                {
+                    WasResolved = wasResolved,
+                    ResolvedValue = result,
+                    ArgumentType = parameterType
+                };
             }
 
-            return new ResolvedConstructor
-                       {
-                           Arguments = resolvedArguments.ToArray()
-                       };
+            return new ResolvedConstructor(resolvedArguments);
+        }
+
+        private static IEnumerable<object> GetArgumentsForConstructor(ResolvedConstructor constructor)
+        {
+            // Interface proxy creation requires a null argumentsForConstructor, and null also works
+            // for parameterless class constructors, so reduce an empty argument list to null.
+            return constructor.Arguments.Any()
+                ? constructor.Arguments.Select(x => x.ResolvedValue)
+                : null;
         }
 
         private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver, bool throwOnFailure)
@@ -124,7 +122,8 @@ namespace FakeItEasy.Creation
                 var constructor = ResolveConstructorArguments(cachedParameterTypes, session, resolver);
                 if (constructor.WasSuccessfullyResolved)
                 {
-                    var result = this.GenerateProxy(typeOfFake, proxyOptions, constructor.Arguments?.Select(x => x.ResolvedValue));
+                    var argumentsForConstructor = GetArgumentsForConstructor(constructor);
+                    var result = this.GenerateProxy(typeOfFake, proxyOptions, argumentsForConstructor);
 
                     if (result.ProxyWasSuccessfullyGenerated)
                     {
@@ -143,7 +142,8 @@ namespace FakeItEasy.Creation
                     var constructor = ResolveConstructorArguments(parameterTypes, session, resolver);
                     if (constructor.WasSuccessfullyResolved)
                     {
-                        var result = this.GenerateProxy(typeOfFake, proxyOptions, constructor.Arguments?.Select(x => x.ResolvedValue));
+                        var argumentsForConstructor = GetArgumentsForConstructor(constructor);
+                        var result = this.GenerateProxy(typeOfFake, proxyOptions, argumentsForConstructor);
 
                         if (result.ProxyWasSuccessfullyGenerated)
                         {
