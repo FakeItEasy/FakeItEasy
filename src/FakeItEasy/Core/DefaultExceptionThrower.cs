@@ -17,7 +17,7 @@ namespace FakeItEasy.Core
                 .AppendLine()
                 .AppendIndented("  ", "Failed to create fake of type ")
                 .Append(typeOfFake)
-                .AppendLine(".")
+                .AppendLine(":")
                 .AppendIndented("    ", reasonForFailure)
                 .AppendLine();
 
@@ -32,7 +32,7 @@ namespace FakeItEasy.Core
                 .AppendLine()
                 .AppendIndented("  ", "Failed to create fake of type ")
                 .Append(typeOfFake)
-                .AppendLine(" with the specified arguments for the constructor:")
+                .AppendLine(":")
                 .AppendIndented("    ", reasonForFailure)
                 .AppendLine();
 
@@ -47,7 +47,7 @@ namespace FakeItEasy.Core
                 .AppendLine()
                 .AppendIndented("  ", "Failed to create fake of type ")
                 .Append(typeOfFake)
-                .AppendLine(".")
+                .AppendLine(":")
                 .AppendLine()
                 .AppendIndented("  ", "Below is a list of reasons for failure per attempted constructor:")
                 .AppendLine();
