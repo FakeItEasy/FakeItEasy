@@ -44,7 +44,7 @@ namespace FakeItEasy.Specs
 
             "And the exception message indicates why construction failed"
                 .x(() => exception.Message.Should().StartWith(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+ClassWhoseConstructorThrows.
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+ClassWhoseConstructorThrows:
 
   Below is a list of reasons for failure per attempted constructor:
     Constructor with signature () failed:
@@ -81,7 +81,7 @@ namespace FakeItEasy.Specs
 
             "And the exception message indicates why construction failed"
                 .x(() => exception.Message.Should().Match(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+ClassWithMultipleConstructors.
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+ClassWithMultipleConstructors:
 
   Below is a list of reasons for failure per attempted constructor:
     Constructor with signature () failed:
@@ -276,7 +276,7 @@ namespace FakeItEasy.Specs
 
             "And the exception message indicates the reason for failure"
                 .x(() => exception.Message.Should().Be(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+SealedClass.
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+SealedClass:
     The type of proxy FakeItEasy.Specs.CreationSpecsBase+SealedClass is sealed.
 "));
         }
@@ -295,7 +295,7 @@ namespace FakeItEasy.Specs
 
             "And the exception message indicates the reason for failure"
                 .x(() => exception.Message.Should().StartWith(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct.
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct:
     The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
 "));
         }
@@ -315,7 +315,7 @@ namespace FakeItEasy.Specs
 
             "And the exception message indicates the reason for failure"
                 .x(() => exception.Message.Should().StartWith(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+AClassThatCouldBeFakedWithTheRightConstructorArguments with the specified arguments for the constructor:
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+AClassThatCouldBeFakedWithTheRightConstructorArguments:
     No constructor matches the passed arguments for constructor.
     An exception of type Castle.DynamicProxy.InvalidProxyConstructorArgumentsException was caught during this call. Its message was:
     Can not instantiate proxy of class: FakeItEasy.Specs.CreationSpecsBase+AClassThatCouldBeFakedWithTheRightConstructorArguments.
