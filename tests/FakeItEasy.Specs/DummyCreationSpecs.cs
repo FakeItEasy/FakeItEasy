@@ -55,6 +55,20 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void NullableTypeCreation(
+            int? dummy)
+        {
+            "Given a nullable type"
+                .See<int?>();
+
+            "When a dummy of that type is requested"
+                .x(() => dummy = this.CreateDummy<int?>());
+
+            "Then it returns the default value for that type"
+                .x(() => dummy.Should().Be(default(int?)));
+        }
+
+        [Scenario]
         public void TypeWithDummyFactoryCreation(
             Foo dummy)
         {
