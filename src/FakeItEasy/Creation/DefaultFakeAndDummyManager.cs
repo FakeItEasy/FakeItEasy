@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Creation
+namespace FakeItEasy.Creation
 {
     using System;
 #if FEATURE_NETCORE_REFLECTION
@@ -38,7 +38,7 @@
         {
             var proxyOptions = this.BuildProxyOptions(typeOfFake, optionsBuilder);
 
-            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, new DummyCreationSession(), this.dummyValueResolver, throwOnFailure: true);
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, new DummyCreationSession(), this.dummyValueResolver).Result;
         }
 
         public bool TryCreateDummy(Type typeOfDummy, out object result)

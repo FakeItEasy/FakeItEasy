@@ -16,6 +16,8 @@ namespace FakeItEasy.Tests.Creation
         public DummyValueResolverTests()
         {
             this.fakeObjectCreator = A.Fake<IFakeObjectCreator>();
+            A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(A<DummyCreationSession>._, A<Type>._, A<DummyValueResolver>._))
+                .ReturnsLazily((DummyCreationSession session, Type type, DummyValueResolver resolver) => CreationResult.FailedToCreate(type, string.Empty));
         }
 
         public static IEnumerable<object[]> DummiesInContainer()
@@ -243,10 +245,8 @@ namespace FakeItEasy.Tests.Creation
 
         private void StubFakeObjectCreatorWithValue<T>(T value)
         {
-            object output;
-            A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(A<DummyCreationSession>._, typeof(T), A<DummyValueResolver>._, out output))
-                .Returns(true)
-                .AssignsOutAndRefParameters(value);
+            A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(A<DummyCreationSession>._, typeof(T), A<DummyValueResolver>._))
+                .Returns(CreationResult.SuccessfullyCreated(value));
         }
 
         private DynamicDummyFactory CreateDummyFactoryThatMakes(object value)

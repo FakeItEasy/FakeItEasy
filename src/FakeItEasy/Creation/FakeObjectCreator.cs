@@ -11,50 +11,35 @@ namespace FakeItEasy.Creation
     {
         private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
         private readonly IProxyGenerator proxyGenerator;
-        private readonly IExceptionThrower thrower;
         private readonly ConcurrentDictionary<Type, Type[]> parameterTypesCache;
 
-        public FakeObjectCreator(IProxyGenerator proxyGenerator, IExceptionThrower thrower, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
+        public FakeObjectCreator(IProxyGenerator proxyGenerator, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
         {
             this.proxyGenerator = proxyGenerator;
-            this.thrower = thrower;
             this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
             this.parameterTypesCache = new ConcurrentDictionary<Type, Type[]>();
         }
 
-        public object CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver, bool throwOnFailure)
+        public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
         {
             if (!this.proxyGenerator.CanGenerateProxy(typeOfFake, out string reasonCannotGenerate))
             {
-                if (throwOnFailure)
-                {
-                    this.thrower.ThrowFailedToGenerateProxyWithoutTryingConstructors(typeOfFake, reasonCannotGenerate);
-                }
-
-                return null;
+                return CreationResult.FailedToCreate(typeOfFake, reasonCannotGenerate);
             }
 
-            ProxyGeneratorResult result;
             if (proxyOptions.ArgumentsForConstructor != null)
             {
-                result = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
+                var proxyGeneratorResult = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
 
-                if (!result.ProxyWasSuccessfullyGenerated)
+                if (!proxyGeneratorResult.ProxyWasSuccessfullyGenerated)
                 {
-                    if (throwOnFailure)
-                    {
-                        this.thrower.ThrowFailedToGenerateProxyWithArgumentsForConstructor(typeOfFake, result.ReasonForFailure);
-                    }
-
-                    return null;
+                    return CreationResult.FailedToCreate(typeOfFake, proxyGeneratorResult.ReasonForFailure);
                 }
 
-                return result.GeneratedProxy;
+                return CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy);
             }
 
-            result = this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, session, resolver, throwOnFailure);
-
-            return result?.GeneratedProxy;
+            return this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, session, resolver);
         }
 
         private static IEnumerable<Type[]> GetUsableParameterTypeListsInOrder(Type type)
@@ -111,7 +96,7 @@ namespace FakeItEasy.Creation
                 : null;
         }
 
-        private ProxyGeneratorResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver, bool throwOnFailure)
+        private CreationResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
         {
             // Save the constructors as we try them. Avoids eager evaluation and double evaluation
             // of constructors enumerable.
@@ -127,7 +112,7 @@ namespace FakeItEasy.Creation
 
                     if (result.ProxyWasSuccessfullyGenerated)
                     {
-                        return result;
+                        return CreationResult.SuccessfullyCreated(result.GeneratedProxy);
                     }
 
                     constructor.ReasonForFailure = result.ReasonForFailure;
@@ -148,7 +133,7 @@ namespace FakeItEasy.Creation
                         if (result.ProxyWasSuccessfullyGenerated)
                         {
                             this.parameterTypesCache[typeOfFake] = parameterTypes;
-                            return result;
+                            return CreationResult.SuccessfullyCreated(result.GeneratedProxy);
                         }
 
                         constructor.ReasonForFailure = result.ReasonForFailure;
@@ -158,12 +143,7 @@ namespace FakeItEasy.Creation
                 }
             }
 
-            if (throwOnFailure)
-            {
-                this.thrower.ThrowFailedToGenerateProxyWithResolvedConstructors(typeOfFake, consideredConstructors);
-            }
-
-            return null;
+            return CreationResult.FailedToCreate(typeOfFake, consideredConstructors);
         }
 
         private ProxyGeneratorResult GenerateProxy(Type typeOfFake, IProxyOptions proxyOptions, IEnumerable<object> argumentsForConstructor)

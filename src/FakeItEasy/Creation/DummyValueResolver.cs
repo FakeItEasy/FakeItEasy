@@ -104,7 +104,9 @@ namespace FakeItEasy.Creation
 
             public override bool TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy, out object result)
             {
-                return this.FakeCreator.TryCreateFakeObject(session, typeOfDummy, this.Resolver, out result);
+                var creationResult = this.FakeCreator.TryCreateFakeObject(session, typeOfDummy, this.Resolver);
+                result = creationResult.WasSuccessful ? creationResult.Result : null;
+                return creationResult.WasSuccessful;
             }
         }
 
