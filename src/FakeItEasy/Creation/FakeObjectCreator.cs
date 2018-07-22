@@ -64,24 +64,23 @@ namespace FakeItEasy.Creation
             for (var i = 0; i < parameterTypes.Length; i++)
             {
                 var parameterType = parameterTypes[i];
-                bool wasResolved;
-                object result = null;
 
+                var resolvedArgument = new ResolvedArgument { ArgumentType = parameterType };
                 try
                 {
-                    wasResolved = resolver.TryResolveDummyValue(session, parameterType, out result);
+                    var creationResult = resolver.TryResolveDummyValue(session, parameterType);
+                    resolvedArgument.WasResolved = creationResult.WasSuccessful;
+                    if (creationResult.WasSuccessful)
+                    {
+                        resolvedArgument.ResolvedValue = creationResult.GetResultAsDummy();
+                    }
                 }
                 catch
                 {
-                    wasResolved = false;
+                    resolvedArgument.WasResolved = false;
                 }
 
-                resolvedArguments[i] = new ResolvedArgument
-                {
-                    WasResolved = wasResolved,
-                    ResolvedValue = result,
-                    ArgumentType = parameterType
-                };
+                resolvedArguments[i] = resolvedArgument;
             }
 
             return new ResolvedConstructor(resolvedArguments);

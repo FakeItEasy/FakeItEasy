@@ -25,25 +25,27 @@ namespace FakeItEasy.Creation
 
         public object CreateDummy(Type typeOfDummy)
         {
-            object result;
-            if (!this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy, out result))
-            {
-                throw new FakeCreationException();
-            }
-
-            return result;
+            return this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy).GetResultAsDummy();
         }
 
         public object CreateFake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
             var proxyOptions = this.BuildProxyOptions(typeOfFake, optionsBuilder);
 
-            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, new DummyCreationSession(), this.dummyValueResolver).Result;
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, new DummyCreationSession(), this.dummyValueResolver).GetResultAsFake();
         }
 
         public bool TryCreateDummy(Type typeOfDummy, out object result)
         {
-            return this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy, out result);
+            var creationResult = this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy);
+            if (creationResult.WasSuccessful)
+            {
+                result = creationResult.GetResultAsDummy();
+                return true;
+            }
+
+            result = default;
+            return false;
         }
 
         private static IFakeOptions CreateFakeOptions(Type typeOfFake, ProxyOptions proxyOptions)

@@ -32,19 +32,6 @@ namespace FakeItEasy.Creation
 
         public bool WasSuccessful { get; }
 
-        public object Result
-        {
-            get
-            {
-                if (this.WasSuccessful)
-                {
-                    return this.result;
-                }
-
-                throw new FakeCreationException(this.GetFailedToCreateResultMessage());
-            }
-        }
-
         public static CreationResult SuccessfullyCreated(object result)
         {
             return new CreationResult(result);
@@ -60,13 +47,33 @@ namespace FakeItEasy.Creation
             return new CreationResult(type, null, consideredConstructors);
         }
 
-        private string GetFailedToCreateResultMessage()
+        public object GetResultAsFake()
+        {
+            if (this.WasSuccessful)
+            {
+                return this.result;
+            }
+
+            throw new FakeCreationException(this.GetFailedToCreateResultMessage("fake"));
+        }
+
+        public object GetResultAsDummy()
+        {
+            if (this.WasSuccessful)
+            {
+                return this.result;
+            }
+
+            throw new DummyCreationException(this.GetFailedToCreateResultMessage("dummy"));
+        }
+
+        private string GetFailedToCreateResultMessage(string typeOfResult)
         {
             var message = new StringBuilder();
 
             message
                 .AppendLine()
-                .AppendIndented("  ", "Failed to create fake of type ")
+                .AppendIndented("  ", $"Failed to create {typeOfResult} of type ")
                 .Append(this.type)
                 .AppendLine(":");
 

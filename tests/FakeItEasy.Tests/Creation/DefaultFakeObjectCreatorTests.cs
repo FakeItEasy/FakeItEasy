@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests.Creation
             var fakeCreationResult = this.fakeObjectCreator.CreateFake(typeof(IFoo), options, new DummyCreationSession(), A.Dummy<IDummyValueResolver>());
 
             // Assert
-            fakeCreationResult.Result.Should().BeSameAs(proxy);
+            fakeCreationResult.GetResultAsFake().Should().BeSameAs(proxy);
 
             A.CallTo(() => this.proxyGenerator.GenerateProxy(
                     typeof(IFoo),
@@ -104,7 +104,7 @@ namespace FakeItEasy.Tests.Creation
             };
 
             // Act
-            var exception = Record.Exception(() => this.fakeObjectCreator.CreateFake(typeof(IFoo), options, new DummyCreationSession(), A.Dummy<IDummyValueResolver>()).Result);
+            var exception = Record.Exception(() => this.fakeObjectCreator.CreateFake(typeof(IFoo), options, new DummyCreationSession(), A.Dummy<IDummyValueResolver>()).GetResultAsFake());
 
             // Assert
             exception.Should().BeAnExceptionOfType<FakeCreationException>().Which
@@ -194,7 +194,7 @@ namespace FakeItEasy.Tests.Creation
             var fakeCreationResult = this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, new DummyCreationSession(), resolver);
 
             // Assert
-            fakeCreationResult.Result.Should().BeSameAs(proxy);
+            fakeCreationResult.GetResultAsFake().Should().BeSameAs(proxy);
         }
 
         [Fact]
@@ -233,17 +233,14 @@ namespace FakeItEasy.Tests.Creation
 
         private static void StubResolverToFailForType<T>(IDummyValueResolver resolver)
         {
-            object outResult;
-            A.CallTo(() => resolver.TryResolveDummyValue(A<DummyCreationSession>._, typeof(T), out outResult))
-                .Returns(false);
+            A.CallTo(() => resolver.TryResolveDummyValue(A<DummyCreationSession>._, typeof(T)))
+                .Returns(CreationResult.FailedToCreate(typeof(T), "failed"));
         }
 
         private static void StubResolverWithDummyValue<T>(IDummyValueResolver resolver, T dummyValue)
         {
-            object outResult;
-            A.CallTo(() => resolver.TryResolveDummyValue(A<DummyCreationSession>._, typeof(T), out outResult))
-                .Returns(true)
-                .AssignsOutAndRefParameters(dummyValue);
+            A.CallTo(() => resolver.TryResolveDummyValue(A<DummyCreationSession>._, typeof(T)))
+                .Returns(CreationResult.SuccessfullyCreated(dummyValue));
         }
 
         private void StubProxyGeneratorToFail(string failReason)
