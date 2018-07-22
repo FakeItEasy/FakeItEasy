@@ -57,35 +57,6 @@ namespace FakeItEasy.Creation
             }
         }
 
-        private static ResolvedConstructor ResolveConstructorArguments(Type[] parameterTypes, DummyCreationSession session, IDummyValueResolver resolver)
-        {
-            var resolvedArguments = new ResolvedArgument[parameterTypes.Length];
-
-            for (var i = 0; i < parameterTypes.Length; i++)
-            {
-                var parameterType = parameterTypes[i];
-
-                var resolvedArgument = new ResolvedArgument { ArgumentType = parameterType };
-                try
-                {
-                    var creationResult = resolver.TryResolveDummyValue(session, parameterType);
-                    resolvedArgument.WasResolved = creationResult.WasSuccessful;
-                    if (creationResult.WasSuccessful)
-                    {
-                        resolvedArgument.ResolvedValue = creationResult.GetResultAsDummy();
-                    }
-                }
-                catch
-                {
-                    resolvedArgument.WasResolved = false;
-                }
-
-                resolvedArguments[i] = resolvedArgument;
-            }
-
-            return new ResolvedConstructor(resolvedArguments);
-        }
-
         private static IEnumerable<object> GetArgumentsForConstructor(ResolvedConstructor constructor)
         {
             // Interface proxy creation requires a null argumentsForConstructor, and null also works
@@ -103,7 +74,7 @@ namespace FakeItEasy.Creation
 
             if (this.parameterTypesCache.TryGetValue(typeOfFake, out Type[] cachedParameterTypes))
             {
-                var constructor = ResolveConstructorArguments(cachedParameterTypes, session, resolver);
+                var constructor = new ResolvedConstructor(cachedParameterTypes, session, resolver);
                 if (constructor.WasSuccessfullyResolved)
                 {
                     var argumentsForConstructor = GetArgumentsForConstructor(constructor);
@@ -123,7 +94,7 @@ namespace FakeItEasy.Creation
             {
                 foreach (var parameterTypes in GetUsableParameterTypeListsInOrder(typeOfFake))
                 {
-                    var constructor = ResolveConstructorArguments(parameterTypes, session, resolver);
+                    var constructor = new ResolvedConstructor(parameterTypes, session, resolver);
                     if (constructor.WasSuccessfullyResolved)
                     {
                         var argumentsForConstructor = GetArgumentsForConstructor(constructor);

@@ -215,7 +215,10 @@ namespace FakeItEasy.Creation
 
                 if (this.cachedConstructors.TryGetValue(typeOfDummy, out ConstructorInfo cachedConstructor))
                 {
-                    var resolvedConstructor = this.ResolveConstructorArguments(cachedConstructor, session);
+                    var resolvedConstructor = new ResolvedConstructor(
+                        cachedConstructor.GetParameters().Select(pi => pi.ParameterType),
+                        session,
+                        this.Resolver);
                     if (resolvedConstructor.WasSuccessfullyResolved)
                     {
                         if (TryCreateDummyValueUsingConstructor(cachedConstructor, resolvedConstructor, out object result))
@@ -230,7 +233,10 @@ namespace FakeItEasy.Creation
                 {
                     foreach (var constructor in GetConstructorsInOrder(typeOfDummy))
                     {
-                        var resolvedConstructor = this.ResolveConstructorArguments(constructor, session);
+                        var resolvedConstructor = new ResolvedConstructor(
+                            constructor.GetParameters().Select(pi => pi.ParameterType),
+                            session,
+                            this.Resolver);
 
                         if (resolvedConstructor.WasSuccessfullyResolved && TryCreateDummyValueUsingConstructor(constructor, resolvedConstructor, out object result))
                         {
@@ -268,37 +274,6 @@ namespace FakeItEasy.Creation
                     resolvedConstructor.ReasonForFailure = e.InnerException.Message;
                     return false;
                 }
-            }
-
-            private ResolvedConstructor ResolveConstructorArguments(ConstructorInfo constructor, DummyCreationSession session)
-            {
-                var parameterInfos = constructor.GetParameters();
-                var resolvedArguments = new ResolvedArgument[parameterInfos.Length];
-
-                for (var index = 0; index < parameterInfos.Length; index++)
-                {
-                    var parameterInfo = parameterInfos[index];
-                    var parameterType = parameterInfo.ParameterType;
-
-                    var resolvedArgument = new ResolvedArgument { ArgumentType = parameterType };
-                    try
-                    {
-                        var creationResult = this.Resolver.TryResolveDummyValue(session, parameterType);
-                        resolvedArgument.WasResolved = creationResult.WasSuccessful;
-                        if (creationResult.WasSuccessful)
-                        {
-                            resolvedArgument.ResolvedValue = creationResult.GetResultAsDummy();
-                        }
-                    }
-                    catch
-                    {
-                        resolvedArgument.WasResolved = false;
-                    }
-
-                    resolvedArguments[index] = resolvedArgument;
-                }
-
-                return new ResolvedConstructor(resolvedArguments);
             }
         }
 
