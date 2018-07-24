@@ -24,7 +24,7 @@ namespace FakeItEasy.Creation
         {
             if (!this.proxyGenerator.CanGenerateProxy(typeOfFake, out string reasonCannotGenerate))
             {
-                return CreationResult.FailedToCreate(typeOfFake, reasonCannotGenerate);
+                return CreationResult.FailedToCreateFake(typeOfFake, reasonCannotGenerate);
             }
 
             if (proxyOptions.ArgumentsForConstructor != null)
@@ -33,7 +33,7 @@ namespace FakeItEasy.Creation
 
                 if (!proxyGeneratorResult.ProxyWasSuccessfullyGenerated)
                 {
-                    return CreationResult.FailedToCreate(typeOfFake, proxyGeneratorResult.ReasonForFailure);
+                    return CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
                 }
 
                 return CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy);
@@ -113,7 +113,7 @@ namespace FakeItEasy.Creation
                 }
             }
 
-            return CreationResult.FailedToCreate(typeOfFake, consideredConstructors);
+            return CreationResult.FailedToCreateFake(typeOfFake, consideredConstructors);
         }
 
         private ProxyGeneratorResult GenerateProxy(Type typeOfFake, IProxyOptions proxyOptions, IEnumerable<object> argumentsForConstructor)

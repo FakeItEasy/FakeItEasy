@@ -25,14 +25,14 @@ namespace FakeItEasy.Creation
 
         public object CreateDummy(Type typeOfDummy)
         {
-            return this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy).GetResultAsDummy();
+            return this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy).Result;
         }
 
         public object CreateFake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
             var proxyOptions = this.BuildProxyOptions(typeOfFake, optionsBuilder);
 
-            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, new DummyCreationSession(), this.dummyValueResolver).GetResultAsFake();
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, new DummyCreationSession(), this.dummyValueResolver).Result;
         }
 
         public bool TryCreateDummy(Type typeOfDummy, out object result)
@@ -40,7 +40,7 @@ namespace FakeItEasy.Creation
             var creationResult = this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy);
             if (creationResult.WasSuccessful)
             {
-                result = creationResult.GetResultAsDummy();
+                result = creationResult.Result;
                 return true;
             }
 

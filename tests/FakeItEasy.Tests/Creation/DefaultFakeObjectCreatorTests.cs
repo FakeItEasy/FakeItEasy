@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests.Creation
             var fakeCreationResult = this.fakeObjectCreator.CreateFake(typeof(IFoo), options, new DummyCreationSession(), A.Dummy<IDummyValueResolver>());
 
             // Assert
-            fakeCreationResult.GetResultAsFake().Should().BeSameAs(proxy);
+            fakeCreationResult.Result.Should().BeSameAs(proxy);
 
             A.CallTo(() => this.proxyGenerator.GenerateProxy(
                     typeof(IFoo),
@@ -104,7 +104,7 @@ namespace FakeItEasy.Tests.Creation
             };
 
             // Act
-            var exception = Record.Exception(() => this.fakeObjectCreator.CreateFake(typeof(IFoo), options, new DummyCreationSession(), A.Dummy<IDummyValueResolver>()).GetResultAsFake());
+            var exception = Record.Exception(() => this.fakeObjectCreator.CreateFake(typeof(IFoo), options, new DummyCreationSession(), A.Dummy<IDummyValueResolver>()).Result);
 
             // Assert
             exception.Should().BeAnExceptionOfType<FakeCreationException>().Which
@@ -194,7 +194,7 @@ namespace FakeItEasy.Tests.Creation
             var fakeCreationResult = this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, new DummyCreationSession(), resolver);
 
             // Assert
-            fakeCreationResult.GetResultAsFake().Should().BeSameAs(proxy);
+            fakeCreationResult.Result.Should().BeSameAs(proxy);
         }
 
         [Fact]
@@ -234,7 +234,7 @@ namespace FakeItEasy.Tests.Creation
         private static void StubResolverToFailForType<T>(IDummyValueResolver resolver)
         {
             A.CallTo(() => resolver.TryResolveDummyValue(A<DummyCreationSession>._, typeof(T)))
-                .Returns(CreationResult.FailedToCreate(typeof(T), "failed"));
+                .Returns(CreationResult.FailedToCreateFake(typeof(T), "failed"));
         }
 
         private static void StubResolverWithDummyValue<T>(IDummyValueResolver resolver, T dummyValue)

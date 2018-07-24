@@ -35,7 +35,7 @@ namespace FakeItEasy.Creation
                     resolvedArgument.WasResolved = creationResult.WasSuccessful;
                     if (creationResult.WasSuccessful)
                     {
-                        resolvedArgument.ResolvedValue = creationResult.GetResultAsDummy();
+                        resolvedArgument.ResolvedValue = creationResult.Result;
                     }
                 }
                 catch

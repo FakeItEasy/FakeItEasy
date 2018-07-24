@@ -17,7 +17,7 @@ namespace FakeItEasy.Tests.Creation
         {
             this.fakeObjectCreator = A.Fake<IFakeObjectCreator>();
             A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(A<DummyCreationSession>._, A<Type>._, A<DummyValueResolver>._))
-                .ReturnsLazily((DummyCreationSession session, Type type, DummyValueResolver resolver) => CreationResult.FailedToCreate(type, string.Empty));
+                .ReturnsLazily((DummyCreationSession session, Type type, DummyValueResolver resolver) => CreationResult.FailedToCreateDummy(type, string.Empty));
         }
 
         public static IEnumerable<object[]> DummiesInContainer()
@@ -44,7 +44,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
-            result.GetResultAsDummy().Should().BeSameAs(dummyForContainer);
+            result.Result.Should().BeSameAs(dummyForContainer);
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
-            result.GetResultAsDummy().Should().BeSameAs(fake);
+            result.Result.Should().BeSameAs(fake);
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
-            result.GetResultAsDummy().Should().Be(0);
+            result.Result.Should().Be(0);
         }
 
         [Fact]
@@ -109,7 +109,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
-            result.GetResultAsDummy().Should().BeOfType<ClassWithDefaultConstructor>();
+            result.Result.Should().BeOfType<ClassWithDefaultConstructor>();
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
-            result.GetResultAsDummy().Should().BeOfType<TypeWithResolvableConstructorArguments<string, IFoo>>();
+            result.Result.Should().BeOfType<TypeWithResolvableConstructorArguments<string, IFoo>>();
         }
 
         [Fact]
@@ -159,7 +159,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
-            result.GetResultAsDummy().Should().Be("dummy value");
+            result.Result.Should().Be("dummy value");
         }
 
         [Fact]
@@ -187,7 +187,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Act
             var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeWithMultipleConstructorsOfDifferentWidth));
-            var typedDummy = (TypeWithMultipleConstructorsOfDifferentWidth)result.GetResultAsDummy();
+            var typedDummy = (TypeWithMultipleConstructorsOfDifferentWidth)result.Result;
 
             // Assert
             typedDummy.WidestConstructorWasCalled.Should().BeTrue();
@@ -226,7 +226,7 @@ namespace FakeItEasy.Tests.Creation
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
-            var dummy = result.GetResultAsDummy();
+            var dummy = result.Result;
             dummy.Should().BeOfType<Lazy<IFoo>>();
             ((Lazy<IFoo>)dummy).Value.Should().BeSameAs(fake);
         }
