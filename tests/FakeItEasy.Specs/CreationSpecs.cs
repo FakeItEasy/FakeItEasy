@@ -89,16 +89,18 @@ namespace FakeItEasy.Specs
       An exception of type System.Exception was caught during this call. Its message was:
       parameterless constructor failed
          *FakeItEasy.Specs.CreationSpecsBase.ClassWithMultipleConstructors..ctor()*
+
     Constructor with signature (System.String) failed:
       No constructor matches the passed arguments for constructor.
       An exception of type System.Exception was caught during this call. Its message was:
       string constructor failed
       with reason on two lines
          *FakeItEasy.Specs.CreationSpecsBase.ClassWithMultipleConstructors..ctor(String s)*
-    The following constructors were not tried:
-      (*FakeItEasy.Specs.CreationSpecsBase+UnresolvableArgument, System.String)
 
-      Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
+  The constructors with the following signatures were not tried:
+    (*FakeItEasy.Specs.CreationSpecsBase+UnresolvableArgument, System.String)
+
+    Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
 
 "));
         }

@@ -209,24 +209,17 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
 
             "And its message indicates that a dummy couldn't be created due to the dependency"
-                .x(() => exception.Message.Should().StartWith(@"
+                .x(() => exception.Message.Should().Be(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithRecursiveDependency:
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
     It is not a value type.
 
-  Below is a list of reasons for failure per attempted constructor:
-    Constructor with signature () failed:
-      No usable default constructor was found on the type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithRecursiveDependency.
-      An exception of type Castle.DynamicProxy.InvalidProxyConstructorArgumentsException was caught during this call. Its message was:
-      Can not instantiate proxy of class: FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithRecursiveDependency.
-      Could not find a parameterless constructor.
-").And.EndWith(@"
-    The following constructors were not tried:
-      (*FakeItEasy.Specs.DummyCreationSpecsBase+AnIntermediateClassInTheRecursiveDependencyChain)
+  The constructors with the following signatures were not tried:
+    (*FakeItEasy.Specs.DummyCreationSpecsBase+AnIntermediateClassInTheRecursiveDependencyChain)
 
-      Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
+    Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
 
 "));
         }
@@ -329,25 +322,17 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
 
             "And its message indicates that a dummy couldn't be created"
-                .x(() => exception.Message.Should().StartWith(@"
+                .x(() => exception.Message.Should().Be(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoResolvableConstructors:
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
     It is not a value type.
 
-  Below is a list of reasons for failure per attempted constructor:
-    Constructor with signature () failed:
-      No usable default constructor was found on the type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoResolvableConstructors.
-      An exception of type Castle.DynamicProxy.InvalidProxyConstructorArgumentsException was caught during this call. Its message was:
-      Can not instantiate proxy of class: FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoResolvableConstructors.
-      Could not find a parameterless constructor.
-").And.EndWith(@"
+  The constructors with the following signatures were not tried:
+    (*FakeItEasy.Specs.DummyCreationSpecsBase+ClassWhoseDummyFactoryThrows)
 
-    The following constructors were not tried:
-      (*FakeItEasy.Specs.DummyCreationSpecsBase+ClassWhoseDummyFactoryThrows)
-
-      Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
+    Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
 
 "));
         }
