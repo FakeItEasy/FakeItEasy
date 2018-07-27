@@ -42,14 +42,65 @@ namespace FakeItEasy.Specs
             "Then it throws a fake creation exception"
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
-            "And the exception message includes the original exception type"
-                .x(() => exception.Message.Should().Contain("of type System.NotSupportedException"));
+            "And the exception message indicates why construction failed"
+                .x(() => exception.Message.Should().StartWith(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+ClassWhoseConstructorThrows:
 
-            "And the exception message includes the original exception message"
-                .x(() => exception.Message.Should().Contain("I don't like being constructed."));
+  Below is a list of reasons for failure per attempted constructor:
+    Constructor with signature () failed:
+      No usable default constructor was found on the type FakeItEasy.Specs.CreationSpecsBase+ClassWhoseConstructorThrows.
+      An exception of type System.NotSupportedException was caught during this call. Its message was:
+      I don't like being constructed.
+"));
 
             "And the exception message includes the original exception stack trace"
                 .x(() => exception.Message.Should().Contain("FakeItEasy.Specs.CreationSpecsBase.ClassWhoseConstructorThrows..ctor()"));
+        }
+
+        [Scenario]
+        public void FailureViaMultipleConstructors(
+            Exception exception)
+        {
+            "Given a class with multiple constructors"
+                .See<ClassWithMultipleConstructors>();
+
+            "And one constructor throws"
+                .See(() => new ClassWithMultipleConstructors());
+
+            "And another constructor throws"
+                .See(() => new ClassWithMultipleConstructors(default(string)));
+
+            "And a third constructor has an argument that cannot be resolved"
+                .See(() => new ClassWithMultipleConstructors(default(UnresolvableArgument), default(string)));
+
+            "When I create a fake of the class"
+                .x(() => exception = Record.Exception(() => this.CreateFake<ClassWithMultipleConstructors>()));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates why construction failed"
+                .x(() => exception.Message.Should().Match(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+ClassWithMultipleConstructors:
+
+  Below is a list of reasons for failure per attempted constructor:
+    Constructor with signature () failed:
+      No usable default constructor was found on the type FakeItEasy.Specs.CreationSpecsBase+ClassWithMultipleConstructors.
+      An exception of type System.Exception was caught during this call. Its message was:
+      parameterless constructor failed
+         *FakeItEasy.Specs.CreationSpecsBase.ClassWithMultipleConstructors..ctor()*
+    Constructor with signature (System.String) failed:
+      No constructor matches the passed arguments for constructor.
+      An exception of type System.Exception was caught during this call. Its message was:
+      string constructor failed
+      with reason on two lines
+         *FakeItEasy.Specs.CreationSpecsBase.ClassWithMultipleConstructors..ctor(String s)*
+    The following constructors were not tried:
+      (*FakeItEasy.Specs.CreationSpecsBase+UnresolvableArgument, System.String)
+
+      Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
+
+"));
         }
 
         // This spec proves that we can cope with throwing constructors (e.g. ensures that FakeManagers won't be reused):
@@ -225,7 +276,7 @@ namespace FakeItEasy.Specs
 
             "And the exception message indicates the reason for failure"
                 .x(() => exception.Message.Should().Be(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+SealedClass.
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+SealedClass:
     The type of proxy FakeItEasy.Specs.CreationSpecsBase+SealedClass is sealed.
 "));
         }
@@ -243,10 +294,34 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().Be(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct.
+                .x(() => exception.Message.Should().StartWith(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct:
     The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
 "));
+        }
+
+        [Scenario]
+        public void CannotFakeWithBadConstructorArguments(Exception exception)
+        {
+            "Given a fakeable class"
+                .See<AClassThatCouldBeFakedWithTheRightConstructorArguments>();
+
+            "When I create a fake of the class supplying invalid constructor arguments"
+                .x(() => exception = Record.Exception(() => this.CreateFake<AClassThatCouldBeFakedWithTheRightConstructorArguments>(options =>
+                    options.WithArgumentsForConstructor(new object[] { 7, "magenta" }))));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().StartWith(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+AClassThatCouldBeFakedWithTheRightConstructorArguments:
+    No constructor matches the passed arguments for constructor.
+    An exception of type Castle.DynamicProxy.InvalidProxyConstructorArgumentsException was caught during this call. Its message was:
+    Can not instantiate proxy of class: FakeItEasy.Specs.CreationSpecsBase+AClassThatCouldBeFakedWithTheRightConstructorArguments.
+    Could not find a constructor that would match given arguments:
+    System.Int32
+    System.String"));
         }
 
         protected abstract T CreateFake<T>();
@@ -315,6 +390,29 @@ namespace FakeItEasy.Specs
 
         public struct Struct
         {
+        }
+
+        public class AClassThatCouldBeFakedWithTheRightConstructorArguments
+        {
+        }
+
+        public sealed class UnresolvableArgument
+        {
+            public UnresolvableArgument() => throw new InvalidOperationException();
+        }
+
+        public class ClassWithMultipleConstructors
+        {
+            public ClassWithMultipleConstructors() => throw new Exception("parameterless constructor failed");
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "s", Justification = "Required for testing.")]
+            public ClassWithMultipleConstructors(string s) => throw new Exception("string constructor failed\r\nwith reason on two lines");
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "u", Justification = "Required for testing.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "s", Justification = "Required for testing.")]
+            public ClassWithMultipleConstructors(UnresolvableArgument u, string s)
+            {
+            }
         }
     }
 

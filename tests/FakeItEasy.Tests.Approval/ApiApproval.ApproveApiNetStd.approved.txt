@@ -452,6 +452,12 @@ namespace FakeItEasy.Configuration
 namespace FakeItEasy.Core
 {
     
+    public class DummyCreationException : System.Exception
+    {
+        public DummyCreationException() { }
+        public DummyCreationException(string message) { }
+        public DummyCreationException(string message, System.Exception innerException) { }
+    }
     public class FakeCreationException : System.Exception
     {
         public FakeCreationException() { }

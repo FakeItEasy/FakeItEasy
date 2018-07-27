@@ -34,59 +34,56 @@ namespace FakeItEasy.Creation
                 };
         }
 
-        public bool TryResolveDummyValue(DummyCreationSession session, Type typeOfDummy, out object result)
+        public CreationResult TryResolveDummyValue(DummyCreationSession session, Type typeOfDummy)
         {
-            result = default(object);
             if (!session.TryBeginToResolveType(typeOfDummy))
             {
-                return false;
+                return CreationResult.FailedToCreateDummy(typeOfDummy, "Recursive dependency detected. Already resolving " + typeOfDummy + '.');
             }
 
-            if (this.TryResolveDummyValueWithAllAvailableStrategies(session, typeOfDummy, out result))
+            var creationResult = this.TryResolveDummyValueWithAllAvailableStrategies(session, typeOfDummy);
+            if (creationResult.WasSuccessful)
             {
                 session.OnSuccessfulResolve(typeOfDummy);
-                return true;
             }
 
-            return false;
+            return creationResult;
         }
 
-        private bool TryResolveDummyValueWithAllAvailableStrategies(DummyCreationSession session, Type typeOfDummy, out object result)
+        private CreationResult TryResolveDummyValueWithAllAvailableStrategies(DummyCreationSession session, Type typeOfDummy)
         {
-            result = default(object);
-
-            ResolveStrategy cachedStrategy;
-            if (this.strategyCache.TryGetValue(typeOfDummy, out cachedStrategy))
+            if (this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy cachedStrategy))
             {
-                return cachedStrategy.TryCreateDummyValue(session, typeOfDummy, out result);
+                return cachedStrategy.TryCreateDummyValue(session, typeOfDummy);
             }
 
+            CreationResult creationResult = null;
             foreach (var strategy in this.strategies)
             {
-                if (strategy.TryCreateDummyValue(session, typeOfDummy, out result))
+                var thisCreationResult = strategy.TryCreateDummyValue(session, typeOfDummy);
+                if (thisCreationResult.WasSuccessful)
                 {
                     this.strategyCache.TryAdd(typeOfDummy, strategy);
-                    return true;
+                    return thisCreationResult;
                 }
+
+                creationResult = CreationResult.MergeIntoDummyResult(creationResult, thisCreationResult);
             }
 
-            this.strategyCache.TryAdd(typeOfDummy, new UnableToResolveStrategy());
-            return false;
+            this.strategyCache.TryAdd(typeOfDummy, new UnableToResolveStrategy(creationResult));
+            return creationResult;
         }
 
         private class ResolveByActivatingValueTypeStrategy : ResolveStrategy
         {
-            public override bool TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy, out object result)
+            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
             {
-                result = default(object);
-
                 if (typeOfDummy.GetTypeInfo().IsValueType && typeOfDummy != typeof(void))
                 {
-                    result = Activator.CreateInstance(typeOfDummy);
-                    return true;
+                    return CreationResult.SuccessfullyCreated(Activator.CreateInstance(typeOfDummy));
                 }
 
-                return false;
+                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not a value type.");
             }
         }
 
@@ -102,10 +99,8 @@ namespace FakeItEasy.Creation
 
             private DummyValueResolver Resolver { get; }
 
-            public override bool TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy, out object result)
-            {
-                return this.FakeCreator.TryCreateFakeObject(session, typeOfDummy, this.Resolver, out result);
-            }
+            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy) =>
+                this.FakeCreator.TryCreateFakeObject(session, typeOfDummy, this.Resolver);
         }
 
         private class ResolveByCreatingTaskStrategy : ResolveStrategy
@@ -119,31 +114,26 @@ namespace FakeItEasy.Creation
 
             private DummyValueResolver Resolver { get; }
 
-            public override bool TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy, out object result)
+            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
             {
-                result = default(object);
-
                 if (typeOfDummy == typeof(Task))
                 {
-                    result = TaskHelper.FromResult(default(object));
-                    return true;
+                    return CreationResult.SuccessfullyCreated(TaskHelper.FromResult(default(object)));
                 }
 
                 if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Task<>))
                 {
                     var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
-                    object taskResult;
-                    if (!this.Resolver.TryResolveDummyValue(session, typeOfTaskResult, out taskResult))
-                    {
-                        taskResult = typeOfTaskResult.GetDefaultValue();
-                    }
+                    var creationResult = this.Resolver.TryResolveDummyValue(session, typeOfTaskResult);
+                    object taskResult = creationResult.WasSuccessful
+                        ? creationResult.Result
+                        : typeOfTaskResult.GetDefaultValue();
 
                     var method = GenericFromResultMethodDefinition.MakeGenericMethod(typeOfTaskResult);
-                    result = method.Invoke(null, new[] { taskResult });
-                    return true;
+                    return CreationResult.SuccessfullyCreated(method.Invoke(null, new[] { taskResult }));
                 }
 
-                return false;
+                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not a Task.");
             }
 
             private static MethodInfo CreateGenericFromResultMethodDefinition()
@@ -163,28 +153,25 @@ namespace FakeItEasy.Creation
 
             private DummyValueResolver Resolver { get; }
 
-            public override bool TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy, out object result)
+            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
             {
-                result = default(object);
-
                 if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Lazy<>))
                 {
                     var typeOfLazyResult = typeOfDummy.GetGenericArguments()[0];
-                    object lazyResult;
-                    if (!this.Resolver.TryResolveDummyValue(session, typeOfLazyResult, out lazyResult))
-                    {
-                        lazyResult = typeOfLazyResult.GetDefaultValue();
-                    }
+                    var creationResult = this.Resolver.TryResolveDummyValue(session, typeOfLazyResult);
+                    object lazyResult = creationResult.WasSuccessful
+                        ? creationResult.Result
+                        : typeOfLazyResult.GetDefaultValue();
 
                     var funcType = typeof(Func<>).MakeGenericType(typeOfLazyResult);
 
                     var method = CreateGenericFromResultMethodDefinition().MakeGenericMethod(typeOfLazyResult);
                     var func = method.Invoke(null, new[] { lazyResult });
-                    result = typeOfDummy.GetConstructor(new[] { funcType, typeof(bool) }).Invoke(new[] { func, true });
-                    return true;
+                    var dummy = typeOfDummy.GetConstructor(new[] { funcType, typeof(bool) }).Invoke(new[] { func, true });
+                    return CreationResult.SuccessfullyCreated(dummy);
                 }
 
-                return false;
+                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not a Lazy.");
             }
 
             private static MethodInfo CreateGenericFromResultMethodDefinition()
@@ -212,32 +199,63 @@ namespace FakeItEasy.Creation
             private DummyValueResolver Resolver { get; }
 
             [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try method.")]
-            public override bool TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy, out object result)
+            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
             {
-                result = default(object);
-                if (typeof(Delegate).IsAssignableFrom(typeOfDummy) || typeOfDummy.GetTypeInfo().IsAbstract)
+                if (typeof(Delegate).IsAssignableFrom(typeOfDummy))
                 {
-                    return false;
+                    return CreationResult.FailedToCreateDummy(typeOfDummy, "It is a Delegate.");
                 }
+
+                if (typeOfDummy.GetTypeInfo().IsAbstract)
+                {
+                    return CreationResult.FailedToCreateDummy(typeOfDummy, "It is abstract.");
+                }
+
+                // Save the constructors as we try them. Avoids eager evaluation and double evaluation
+                // of constructors enumerable.
+                var consideredConstructors = new List<ResolvedConstructor>();
 
                 if (this.cachedConstructors.TryGetValue(typeOfDummy, out ConstructorInfo cachedConstructor))
                 {
-                    if (this.TryCreateDummyValueUsingConstructor(session, cachedConstructor, out result))
+                    var resolvedConstructor = new ResolvedConstructor(
+                        cachedConstructor.GetParameters().Select(pi => pi.ParameterType),
+                        session,
+                        this.Resolver);
+                    if (resolvedConstructor.WasSuccessfullyResolved)
                     {
-                        return true;
+                        if (TryCreateDummyValueUsingConstructor(cachedConstructor, resolvedConstructor, out object result))
+                        {
+                            return CreationResult.SuccessfullyCreated(result);
+                        }
+
+                        consideredConstructors.Add(resolvedConstructor);
                     }
                 }
-
-                foreach (var constructor in GetConstructorsInOrder(typeOfDummy))
+                else
                 {
-                    if (this.TryCreateDummyValueUsingConstructor(session, constructor, out result))
+                    foreach (var constructor in GetConstructorsInOrder(typeOfDummy))
                     {
-                        this.cachedConstructors[typeOfDummy] = constructor;
-                        return true;
+                        var resolvedConstructor = new ResolvedConstructor(
+                            constructor.GetParameters().Select(pi => pi.ParameterType),
+                            session,
+                            this.Resolver);
+
+                        if (resolvedConstructor.WasSuccessfullyResolved && TryCreateDummyValueUsingConstructor(constructor, resolvedConstructor, out object result))
+                        {
+                            this.cachedConstructors[typeOfDummy] = constructor;
+                            return CreationResult.SuccessfullyCreated(result);
+                        }
+
+                        consideredConstructors.Add(resolvedConstructor);
                     }
                 }
 
-                return false;
+                if (consideredConstructors.Any())
+                {
+                    return CreationResult.FailedToCreateDummy(typeOfDummy, consideredConstructors);
+                }
+
+                return CreationResult.FailedToCreateDummy(typeOfDummy, "It has no public constructors.");
             }
 
             private static IEnumerable<ConstructorInfo> GetConstructorsInOrder(Type type)
@@ -245,44 +263,19 @@ namespace FakeItEasy.Creation
                 return type.GetConstructors().OrderBy(x => x.GetParameters().Length).Reverse();
             }
 
-            private bool TryCreateDummyValueUsingConstructor(DummyCreationSession session, ConstructorInfo constructor, out object result)
+            private static bool TryCreateDummyValueUsingConstructor(ConstructorInfo constructor, ResolvedConstructor resolvedConstructor, out object result)
             {
-                var parameterTypes = constructor.GetParameters().Select(x => x.ParameterType);
                 try
                 {
-                    var resolvedArguments = this.ResolveAllTypes(session, parameterTypes);
-
-                    if (resolvedArguments != null)
-                    {
-                        result = constructor.Invoke(resolvedArguments.ToArray());
-                        return true;
-                    }
+                    result = constructor.Invoke(resolvedConstructor.Arguments.Select(a => a.ResolvedValue).ToArray());
+                    return true;
                 }
-                catch
+                catch (TargetInvocationException e)
                 {
+                    result = default;
+                    resolvedConstructor.ReasonForFailure = e.InnerException.Message;
+                    return false;
                 }
-
-                result = default(object);
-                return false;
-            }
-
-            private IEnumerable<object> ResolveAllTypes(DummyCreationSession session, IEnumerable<Type> types)
-            {
-                var result = new List<object>();
-
-                foreach (var type in types)
-                {
-                    object resolvedType;
-
-                    if (!this.Resolver.TryResolveDummyValue(session, type, out resolvedType))
-                    {
-                        return null;
-                    }
-
-                    result.Add(resolvedType);
-                }
-
-                return result;
             }
         }
 
@@ -295,23 +288,32 @@ namespace FakeItEasy.Creation
 
             private DynamicDummyFactory DummyFactory { get; }
 
-            public override bool TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy, out object result)
+            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
             {
-                return this.DummyFactory.TryCreateDummyObject(typeOfDummy, out result);
+                var success = this.DummyFactory.TryCreateDummyObject(typeOfDummy, out object result);
+                return success
+                    ? CreationResult.SuccessfullyCreated(result)
+                    : CreationResult.FailedToCreateDummy(typeOfDummy, "No Dummy Factory produced a result.");
             }
         }
 
         private abstract class ResolveStrategy
         {
-            public abstract bool TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy, out object result);
+            public abstract CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy);
         }
 
         private class UnableToResolveStrategy : ResolveStrategy
         {
-            public override bool TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy, out object result)
+            private readonly CreationResult creationResult;
+
+            public UnableToResolveStrategy(CreationResult creationResult)
             {
-                result = default(object);
-                return false;
+                this.creationResult = creationResult;
+            }
+
+            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
+            {
+                return this.creationResult;
             }
         }
     }

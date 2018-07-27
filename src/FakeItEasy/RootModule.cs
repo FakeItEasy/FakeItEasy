@@ -67,7 +67,6 @@ namespace FakeItEasy
             {
                 var fakeCreator = new FakeObjectCreator(
                     c.Resolve<IProxyGenerator>(),
-                    c.Resolve<IExceptionThrower>(),
                     c.Resolve<FakeCallProcessorProvider.Factory>());
                 var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
@@ -89,8 +88,6 @@ namespace FakeItEasy
 
             container.RegisterSingleton(
                 c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
-
-            container.RegisterSingleton<IExceptionThrower>(c => new DefaultExceptionThrower());
 
             container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
 
@@ -141,10 +138,9 @@ namespace FakeItEasy
                 this.creator = creator;
             }
 
-            public bool TryCreateFakeObject(DummyCreationSession session, Type typeOfFake, DummyValueResolver resolver, out object result)
+            public CreationResult TryCreateFakeObject(DummyCreationSession session, Type typeOfFake, DummyValueResolver resolver)
             {
-                result = this.creator.CreateFake(typeOfFake, new ProxyOptions(), session, resolver, false);
-                return result != null;
+                return this.creator.CreateFake(typeOfFake, new ProxyOptions(), session, resolver);
             }
         }
 
