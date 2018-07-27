@@ -161,55 +161,53 @@ namespace FakeItEasy.Creation
             message
                 .AppendLine();
 
-            if (this.consideredConstructors != null && this.consideredConstructors.Any())
+            if (this.consideredConstructors != null && this.consideredConstructors.Any(x => x.WasSuccessfullyResolved))
             {
                 message
                     .AppendLine()
-                    .AppendIndented("  ", "Below is a list of reasons for failure per attempted constructor:")
-                    .AppendLine();
+                    .AppendIndented("  ", "Below is a list of reasons for failure per attempted constructor:");
 
-                if (this.consideredConstructors.Any(x => x.WasSuccessfullyResolved))
+                foreach (var constructor in this.consideredConstructors.Where(x => x.WasSuccessfullyResolved))
                 {
-                    foreach (var constructor in this.consideredConstructors.Where(x => x.WasSuccessfullyResolved))
-                    {
-                        message
-                            .AppendIndented("    ", "Constructor with signature (")
-                            .Append(constructor.Arguments.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
-                            .AppendLine(") failed:")
-                            .AppendIndented("      ", constructor.ReasonForFailure)
-                            .AppendLine();
-                    }
+                    message
+                        .AppendLine()
+                        .AppendIndented("    ", "Constructor with signature (")
+                        .Append(constructor.Arguments.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
+                        .AppendLine(") failed:")
+                        .AppendIndented("      ", constructor.ReasonForFailure)
+                        .AppendLine();
                 }
-
-                this.AppendNonTriedConstructors(message);
-                message
-                    .AppendLine();
             }
 
+            this.AppendNonTriedConstructors(message);
             return message.ToString();
         }
 
         private void AppendNonTriedConstructors(StringBuilder message)
         {
-            if (this.consideredConstructors.Any(x => !x.WasSuccessfullyResolved))
+            if (this.consideredConstructors == null || this.consideredConstructors.All(x => x.WasSuccessfullyResolved))
+            {
+                return;
+            }
+
+            message
+                .AppendLine()
+                .AppendIndented("  ", "The constructors with the following signatures were not tried:")
+                .AppendLine();
+
+            foreach (var resolvedConstructor in this.consideredConstructors.Where(x => !x.WasSuccessfullyResolved))
             {
                 message
-                    .AppendLine()
-                    .AppendIndented("    ", "The following constructors were not tried:")
-                    .AppendLine();
-
-                foreach (var resolvedConstructor in this.consideredConstructors.Where(x => !x.WasSuccessfullyResolved))
-                {
-                    message.Append("      (");
-                    message.Append(resolvedConstructor.Arguments.ToCollectionString(x => x.WasResolved ? x.ArgumentType.ToString() : String.Concat("*", x.ArgumentType.ToString()), ", "));
-                    message.AppendLine(")");
-                }
-
-                message
-                    .AppendLine()
-                    .AppendIndented("      ", "Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.")
-                    .AppendLine();
+                    .Append("    (")
+                    .Append(resolvedConstructor.Arguments.ToCollectionString(x => x.WasResolved ? x.ArgumentType.ToString() : String.Concat("*", x.ArgumentType.ToString()), ", "))
+                    .AppendLine(")");
             }
+
+            message
+                .AppendLine()
+                .AppendIndented("    ", "Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.")
+                .AppendLine()
+                .AppendLine();
         }
 
         private class ResolvedConstructorComparer : IEqualityComparer<ResolvedConstructor>
