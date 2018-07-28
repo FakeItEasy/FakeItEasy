@@ -44,13 +44,23 @@ namespace FakeItEasy.Creation
 
         private static IEnumerable<Type[]> GetUsableParameterTypeListsInOrder(Type type)
         {
-            // Always try the parameterless constructor first, since it works for faking interfaces as well as classes.
-            yield return Type.EmptyTypes;
+            var allConstructors = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-            foreach (var parameterTypeList in type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            // Always try the parameterless constructor even if there are no constuctors on the type. Some proxy generators
+            // can proxy types without constructors, such as interfaces.
+            if (!allConstructors.Any())
+            {
+                yield return Type.EmptyTypes;
+                yield break;
+            }
+
+            // Offer up all the constructors as possibilities.
+            // The 0-length constructor has always been tried first, which is advantageous because it's very easy to
+            // resolve the arguments. On the other hand, it can result in a less-configurable, Fake with more concrete
+            // (non-Faked) collaborators.
+            foreach (var parameterTypeList in allConstructors
                 .Select(c => c.GetParameters())
-                .Where(pa => pa.Length > 0)
-                .OrderByDescending(pa => pa.Length)
+                .OrderByDescending(pa => pa.Length == 0 ? int.MaxValue : pa.Length)
                 .Select(pa => pa.Select(p => p.ParameterType).ToArray()))
             {
                 yield return parameterTypeList;
