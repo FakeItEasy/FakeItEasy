@@ -7,21 +7,16 @@ done using a method on the `A` class: `A.CallTo`.
 ## Specifying a method call or property `get` using an Expression
 
 ```csharp
-A.CallTo(() => fakeShop.GetTopSellingCandy())
-A.CallTo(() => fakeShop.Address)
+A.CallTo(() => fakeShop.GetTopSellingCandy()).Returns(lollipop);
+A.CallTo(() => fakeShop.Address).Returns("123 Fake Street");
 ```
 
 The expressions in the above example are not evaluated by FakeItEasy:
 no call to `GetTopSellingCandy` or `Address` is made. The expressions
-are just used to identify which call to configure.
-
+are just used to identify which call to configure, after which
 `A.CallTo` returns an object that can be used to specify how the fake
-should behave when the call is made. For example:
+should behave when the call is made.
 
-```csharp
-A.CallTo(() => fakeShop.GetTopSellingCandy())
-                       .Returns(lollipop);
-```
 
 Many types of actions can be specified, including
 [returning various values](specifying-return-values.md),
