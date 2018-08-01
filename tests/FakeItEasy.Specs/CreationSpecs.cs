@@ -326,6 +326,19 @@ namespace FakeItEasy.Specs
     System.String"));
         }
 
+        [Scenario]
+        public void FakeDelegateCreation(Func<int> fake)
+        {
+            "Given a delegate"
+                .See<Func<int>>();
+
+            "When I create a fake of the delegate"
+                .x(() => fake = this.CreateFake<Func<int>>());
+
+            "Then it creates the fake"
+                .x(() => fake.Should().NotBeNull());
+        }
+
         protected abstract T CreateFake<T>();
 
         protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder);
