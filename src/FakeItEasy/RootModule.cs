@@ -66,8 +66,9 @@ namespace FakeItEasy
             container.RegisterSingleton<IFakeAndDummyManager>(c =>
             {
                 var fakeCreator = new FakeObjectCreator(
-                    c.Resolve<IProxyGenerator>(),
-                    c.Resolve<FakeCallProcessorProvider.Factory>());
+                    c.Resolve<FakeCallProcessorProvider.Factory>(),
+                    c.Resolve<CastleDynamicProxyGenerator>(),
+                    c.Resolve<DelegateProxyGenerator>());
                 var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
                 var dynamicDummyFactory = new DynamicDummyFactory(c.Resolve<IEnumerable<IDummyFactory>>());
