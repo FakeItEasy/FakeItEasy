@@ -9,16 +9,21 @@ namespace FakeItEasy.Creation
 
     internal class FakeObjectCreator
     {
-        private readonly CreationStrategy delegateCreationStrategy;
-        private readonly CreationStrategy defaultCreationStrategy;
+        private readonly ICreationStrategy delegateCreationStrategy;
+        private readonly ICreationStrategy defaultCreationStrategy;
 
         public FakeObjectCreator(
             FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory,
             IProxyGenerator castleDynamicProxyGenerator,
             IProxyGenerator delegateProxyGenerator)
         {
-            this.delegateCreationStrategy = new CreationStrategy(delegateProxyGenerator, fakeCallProcessorProviderFactory);
-            this.defaultCreationStrategy = new CreationStrategy(castleDynamicProxyGenerator, fakeCallProcessorProviderFactory);
+            this.delegateCreationStrategy = new DelegateCreationStrategy(delegateProxyGenerator, fakeCallProcessorProviderFactory);
+            this.defaultCreationStrategy = new CastleDynamicProxyCreationStrategy(castleDynamicProxyGenerator, fakeCallProcessorProviderFactory);
+        }
+
+        private interface ICreationStrategy
+        {
+            CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver);
         }
 
         public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
@@ -32,13 +37,45 @@ namespace FakeItEasy.Creation
             return this.defaultCreationStrategy.CreateFake(typeOfFake, proxyOptions, session, resolver);
         }
 
-        private class CreationStrategy
+        private class DelegateCreationStrategy : ICreationStrategy
+        {
+            private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
+            private readonly IProxyGenerator proxyGenerator;
+
+            public DelegateCreationStrategy(IProxyGenerator proxyGenerator, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
+            {
+                this.proxyGenerator = proxyGenerator;
+                this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
+            }
+
+            public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
+            {
+                if (!this.proxyGenerator.CanGenerateProxy(typeOfFake, out string reasonCannotGenerate))
+                {
+                    return CreationResult.FailedToCreateFake(typeOfFake, reasonCannotGenerate);
+                }
+
+                var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
+                var proxyGeneratorResult = this.proxyGenerator.GenerateProxy(
+                    typeOfFake,
+                    proxyOptions.AdditionalInterfacesToImplement,
+                    argumentsForConstructor: null,
+                    proxyOptions.Attributes,
+                    fakeCallProcessorProvider);
+
+                return proxyGeneratorResult.ProxyWasSuccessfullyGenerated
+                    ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
+                    : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
+            }
+        }
+
+        private class CastleDynamicProxyCreationStrategy : ICreationStrategy
         {
             private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
             private readonly IProxyGenerator proxyGenerator;
             private readonly ConcurrentDictionary<Type, Type[]> parameterTypesCache;
 
-            public CreationStrategy(IProxyGenerator proxyGenerator, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
+            public CastleDynamicProxyCreationStrategy(IProxyGenerator proxyGenerator, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
             {
                 this.proxyGenerator = proxyGenerator;
                 this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
@@ -56,12 +93,9 @@ namespace FakeItEasy.Creation
                 {
                     var proxyGeneratorResult = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
 
-                    if (!proxyGeneratorResult.ProxyWasSuccessfullyGenerated)
-                    {
-                        return CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
-                    }
-
-                    return CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy);
+                    return proxyGeneratorResult.ProxyWasSuccessfullyGenerated
+                        ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
+                        : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
                 }
 
                 return this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, session, resolver);
