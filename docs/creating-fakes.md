@@ -28,15 +28,16 @@ IList<object> fakes = Create.CollectionOfFake(type, 10);
 ```
 
 ##Explicit Creation Options
-When creating fakes you can, through a fluent interface, specify options for how the fake should be created:
+When creating fakes you can, through a fluent interface, specify options for how the fake should be created, depending on the type of fake being made:
 
-* Specify arguments for the constructor of the faked type.
-* Specify additional interfaces that the fake should implement.
-* Assign additional custom attributes to the faked type.
-* Cause a fake to have [strict mocking semantics](strict-fakes.md).
-* Configure all of a fake's methods to [use their original implementation](calling-base-methods.md).
-* Create a fake that wraps another object.
-  * Specify a recorder for wrapping fakes.
+| Option                                                                                            | Applies to    |
+|---------------------------------------------------------------------------------------------------|---------------|
+| Specify arguments for the constructor of the faked type                                           | non-delegates |
+| Specify additional interfaces that the fake should implemen                                       | non-delegates |
+| Assign additional custom attributes to the faked type                                             | non-delegates |
+| Cause a fake to have [strict mocking semantics](strict-fakes.md)                                  | any fake      |
+| Configure all of a fake's methods to [use their original implementation](calling-base-methods.md) | classes       |
+| Create a fake that wraps another object, and optinally specify a recorder                         | any fake      |
 
 Examples:
 
