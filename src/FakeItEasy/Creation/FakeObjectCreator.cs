@@ -9,33 +9,50 @@ namespace FakeItEasy.Creation
 
     internal class FakeObjectCreator
     {
-        private readonly ICreationStrategy delegateCreationStrategy;
-        private readonly ICreationStrategy defaultCreationStrategy;
+        private readonly ICreationStrategy[] strategies;
 
         public FakeObjectCreator(
             FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory,
             IProxyGenerator castleDynamicProxyGenerator,
             IProxyGenerator delegateProxyGenerator)
         {
-            this.delegateCreationStrategy = new DelegateCreationStrategy(delegateProxyGenerator, fakeCallProcessorProviderFactory);
-            this.defaultCreationStrategy = new CastleDynamicProxyCreationStrategy(castleDynamicProxyGenerator, fakeCallProcessorProviderFactory);
+            this.strategies = new ICreationStrategy[]
+            {
+                new DelegateCreationStrategy(delegateProxyGenerator, fakeCallProcessorProviderFactory),
+                new DefaultCreationStrategy(castleDynamicProxyGenerator, fakeCallProcessorProviderFactory),
+            };
         }
 
+        /// <summary>
+        /// Has the ability to create fakes of one or more types. The contract (which may need to be adjusted if additional strategies are
+        /// added) is that clients will check <see cref="IsResponsibleForCreating"/> before attempting <see cref="CreateFake"/>.
+        /// It is assumed that one strategy is a default or "catch-all" strategy that will attempt to create fakes of any types
+        /// that the other strategies pass on.
+        /// </summary>
         private interface ICreationStrategy
         {
+            /// <summary>
+            /// Indicates whether this strategy should be used to attempt to create a fake <paramref name="typeOfFake"/>.
+            /// Success does not indicate that <see cref="CreateFake"/> will pass, but does mean that this is the best (only) strategy
+            /// that's suitable to make the attempt.
+            /// </summary>
+            /// <param name="typeOfFake">The type that might be faked.</param>
+            /// <returns><c>true</c> if this strategy can be used to create fake <paramref name="typeOfFake"/>s.</returns>
+            bool IsResponsibleForCreating(Type typeOfFake);
+
+            /// <summary>
+            /// Creates a fake <paramref name="typeOfFake"/>.
+            /// </summary>
+            /// <param name="typeOfFake">The type of fake to create.</param>
+            /// <param name="proxyOptions">Customizations to be applied to the fake.</param>
+            /// <param name="session">Records all dummies being created by the current call chain.</param>
+            /// <param name="resolver">A source of dummy values, should any be needed.</param>
+            /// <returns>A creation result indicating success (and including the fake value) or failure.</returns>
             CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver);
         }
 
-        public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
-        {
-            var result = this.delegateCreationStrategy.CreateFake(typeOfFake, proxyOptions, session, resolver);
-            if (result.WasSuccessful)
-            {
-                return result;
-            }
-
-            return this.defaultCreationStrategy.CreateFake(typeOfFake, proxyOptions, session, resolver);
-        }
+        public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver) =>
+            this.strategies.First(s => s.IsResponsibleForCreating(typeOfFake)).CreateFake(typeOfFake, proxyOptions, session, resolver);
 
         private class DelegateCreationStrategy : ICreationStrategy
         {
@@ -48,13 +65,10 @@ namespace FakeItEasy.Creation
                 this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
             }
 
+            public bool IsResponsibleForCreating(Type typeOfFake) => this.proxyGenerator.CanGenerateProxy(typeOfFake, out _);
+
             public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
             {
-                if (!this.proxyGenerator.CanGenerateProxy(typeOfFake, out string reasonCannotGenerate))
-                {
-                    return CreationResult.FailedToCreateFake(typeOfFake, reasonCannotGenerate);
-                }
-
                 var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
                 var proxyGeneratorResult = this.proxyGenerator.GenerateProxy(
                     typeOfFake,
@@ -69,18 +83,20 @@ namespace FakeItEasy.Creation
             }
         }
 
-        private class CastleDynamicProxyCreationStrategy : ICreationStrategy
+        private class DefaultCreationStrategy : ICreationStrategy
         {
             private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
             private readonly IProxyGenerator proxyGenerator;
             private readonly ConcurrentDictionary<Type, Type[]> parameterTypesCache;
 
-            public CastleDynamicProxyCreationStrategy(IProxyGenerator proxyGenerator, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
+            public DefaultCreationStrategy(IProxyGenerator proxyGenerator, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
             {
                 this.proxyGenerator = proxyGenerator;
                 this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
                 this.parameterTypesCache = new ConcurrentDictionary<Type, Type[]>();
             }
+
+            public bool IsResponsibleForCreating(Type typeOfFake) => true;
 
             public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
             {
