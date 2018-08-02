@@ -9,7 +9,7 @@ environment:
     GITHUB_TOKEN:
         secure: 5dFninlYVqNF98Pk9ykQwPU2pBFeQmbMOiFG2iSkg+hhcwF3UfmnDB07lvOwYtez
     NUGET_API_KEY:
-        secure: ynOI8xETJ5V28b5ij2huIKbWRvqJU8QtLtFf8FLTJCWbxmcVP/OPpcF4B8jcOOKW
+        secure: COpoeqj1SAECW663nwrEcZr3bIqAryNuYZ+tv1uaFgoxhXQw+GEQyYDQXrRvXWkR
 
 build_script:
 - cmd: build.cmd
