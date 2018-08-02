@@ -69,6 +69,21 @@ namespace FakeItEasy.Creation
 
             public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
             {
+                if (proxyOptions.Attributes.Any())
+                {
+                    return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot have custom attributes applied to them.");
+                }
+
+                if (proxyOptions.ArgumentsForConstructor != null && proxyOptions.ArgumentsForConstructor.Any())
+                {
+                    return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot be made using explicit constructor arguments.");
+                }
+
+                if (proxyOptions.AdditionalInterfacesToImplement.Any())
+                {
+                    return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot be made to implement additional interfaces.");
+                }
+
                 var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
                 var proxyGeneratorResult = this.proxyGenerator.GenerateProxy(
                     typeOfFake,
