@@ -12,11 +12,11 @@ namespace FakeItEasy.Creation
     internal class DefaultFakeAndDummyManager
         : IFakeAndDummyManager
     {
-        private readonly FakeObjectCreator fakeCreator;
+        private readonly IFakeObjectCreator fakeCreator;
         private readonly DynamicOptionsBuilder dynamicOptionsBuilder;
         private readonly IDummyValueResolver dummyValueResolver;
 
-        public DefaultFakeAndDummyManager(IDummyValueResolver dummyValueResolver, FakeObjectCreator fakeCreator, DynamicOptionsBuilder dynamicOptionsBuilder)
+        public DefaultFakeAndDummyManager(IDummyValueResolver dummyValueResolver, IFakeObjectCreator fakeCreator, DynamicOptionsBuilder dynamicOptionsBuilder)
         {
             this.dummyValueResolver = dummyValueResolver;
             this.fakeCreator = fakeCreator;

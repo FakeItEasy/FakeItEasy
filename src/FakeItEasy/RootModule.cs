@@ -67,16 +67,16 @@ namespace FakeItEasy
                 container.Resolve<FakeCallProcessorProvider.Factory>(),
                 container.Resolve<CastleDynamicProxyInterceptionValidator>(),
                 container.Resolve<DelegateProxyInterceptionValidator>()));
+            container.RegisterSingleton<IFakeObjectCreator>(c => c.Resolve<FakeObjectCreator>());
             container.RegisterSingleton<IMethodInterceptionValidator>(c => c.Resolve<FakeObjectCreator>());
 
             container.RegisterSingleton<IFakeAndDummyManager>(c =>
             {
-                var fakeCreator = c.Resolve<FakeObjectCreator>();
+                var fakeCreator = c.Resolve<IFakeObjectCreator>();
                 var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
                 var dynamicDummyFactory = new DynamicDummyFactory(c.Resolve<IEnumerable<IDummyFactory>>());
-                var objectCreator = new ResolverFakeObjectCreator(fakeCreator);
-                var dummyValueResolver = new DummyValueResolver(dynamicDummyFactory, objectCreator);
+                var dummyValueResolver = new DummyValueResolver(dynamicDummyFactory, fakeCreator);
 
                 return new DefaultFakeAndDummyManager(
                     dummyValueResolver,
@@ -125,22 +125,6 @@ namespace FakeItEasy
                     callSpecification,
                     this.serviceLocator.Resolve<ExpressionArgumentConstraintFactory>(),
                     this.serviceLocator.Resolve<MethodInfoManager>());
-        }
-
-        private class ResolverFakeObjectCreator
-            : IFakeObjectCreator
-        {
-            private readonly FakeObjectCreator creator;
-
-            public ResolverFakeObjectCreator(FakeObjectCreator creator)
-            {
-                this.creator = creator;
-            }
-
-            public CreationResult TryCreateFakeObject(DummyCreationSession session, Type typeOfFake, DummyValueResolver resolver)
-            {
-                return this.creator.CreateFake(typeOfFake, new ProxyOptions(), session, resolver);
-            }
         }
 
         private class ArgumentConstraintManagerFactory

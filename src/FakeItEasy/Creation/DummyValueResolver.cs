@@ -100,7 +100,7 @@ namespace FakeItEasy.Creation
             private DummyValueResolver Resolver { get; }
 
             public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy) =>
-                this.FakeCreator.TryCreateFakeObject(session, typeOfDummy, this.Resolver);
+                this.FakeCreator.CreateFake(typeOfDummy, new ProxyOptions(), session, this.Resolver);
         }
 
         private class ResolveByCreatingTaskStrategy : ResolveStrategy

@@ -10,7 +10,7 @@ namespace FakeItEasy.Creation
     using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Creation.DelegateProxies;
 
-    internal class FakeObjectCreator : IMethodInterceptionValidator
+    internal class FakeObjectCreator : IFakeObjectCreator, IMethodInterceptionValidator
     {
         private readonly ICreationStrategy[] strategies;
 
