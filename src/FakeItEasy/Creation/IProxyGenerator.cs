@@ -2,9 +2,7 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
-    using System.Reflection;
     using FakeItEasy.Core;
 
     /// <summary>
@@ -31,15 +29,5 @@ namespace FakeItEasy.Creation
         /// <param name="fakeCallProcessorProvider">The call processor provider.</param>
         /// <returns>A result containing the generated proxy.</returns>
         ProxyGeneratorResult GenerateProxy(Type typeOfProxy, IEnumerable<Type> additionalInterfacesToImplement, IEnumerable<object> argumentsForConstructor, IEnumerable<Expression<Func<Attribute>>> attributes, IFakeCallProcessorProvider fakeCallProcessorProvider);
-
-        /// <summary>
-        /// Gets a value indicating whether the specified member can be intercepted by the proxy generator.
-        /// </summary>
-        /// <param name="method">The member to test.</param>
-        /// <param name="callTarget">The instance the method will be called on.</param>
-        /// <param name="failReason">The reason the method can not be intercepted.</param>
-        /// <returns>True if the member can be intercepted.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
-        bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason);
     }
 }

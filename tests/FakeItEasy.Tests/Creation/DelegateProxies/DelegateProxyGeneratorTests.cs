@@ -264,39 +264,6 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             fakedObject.Should().BeSameAs(proxy);
         }
 
-        [Fact]
-        [UsingCulture("en-US")]
-        public void Should_return_false_for_non_invoke_method_when_asking_if_it_can_be_intercepted()
-        {
-            // Arrange
-            var d = new Func<int>(() => 10);
-            var getHashCode = d.GetType().GetMethod("GetHashCode");
-            string reason;
-
-            // Act
-            var result = this.generator.MethodCanBeInterceptedOnInstance(getHashCode, d, out reason);
-
-            // Assert
-            result.Should().BeFalse();
-            reason.Should().Be("Only the Invoke method can be intercepted on delegates.");
-        }
-
-        [Fact]
-        public void Should_return_true_for_invoke_method_when_asking_if_it_can_be_intercepted()
-        {
-            // Arrange
-            var d = new Func<int>(() => 10);
-            var invoke = d.GetType().GetMethod("Invoke");
-            string reason;
-
-            // Act
-            var result = this.generator.MethodCanBeInterceptedOnInstance(invoke, d, out reason);
-
-            // Assert
-            result.Should().BeTrue();
-            reason.Should().BeNull();
-        }
-
         private T GenerateProxy<T>(Action<IInterceptedFakeObjectCall> fakeCallProcessorAction)
         {
             var fakeCallProcessor = A.Fake<IFakeCallProcessor>();

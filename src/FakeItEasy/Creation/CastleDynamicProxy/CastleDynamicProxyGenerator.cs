@@ -15,12 +15,6 @@
     {
         private static readonly IProxyGenerationHook ProxyGenerationHook = new InterceptEverythingHook();
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
-        private readonly CastleDynamicProxyInterceptionValidator interceptionValidator;
-
-        public CastleDynamicProxyGenerator(CastleDynamicProxyInterceptionValidator interceptionValidator)
-        {
-            this.interceptionValidator = interceptionValidator;
-        }
 
         public ProxyGeneratorResult GenerateProxy(
             Type typeOfProxy,
@@ -48,11 +42,6 @@
             }
 
             return CreateProxyGeneratorResult(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
-        }
-
-        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
-        {
-            return this.interceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
         public bool CanGenerateProxy(Type typeOfProxy, out string failReason)

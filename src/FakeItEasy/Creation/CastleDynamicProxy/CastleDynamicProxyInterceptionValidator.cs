@@ -5,7 +5,7 @@
     using System.Reflection;
     using FakeItEasy.Core;
 
-    internal class CastleDynamicProxyInterceptionValidator
+    internal class CastleDynamicProxyInterceptionValidator : IMethodInterceptionValidator
     {
         private readonly MethodInfoManager methodInfoManager;
 
@@ -14,7 +14,7 @@
             this.methodInfoManager = methodInfoManager;
         }
 
-        public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
         {
             var invokedMethod = this.GetInvokedMethod(method, callTarget);
 
@@ -55,8 +55,7 @@
                 return "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.";
             }
 
-            string message;
-            if (!Castle.DynamicProxy.ProxyUtil.IsAccessible(method, out message))
+            if (!Castle.DynamicProxy.ProxyUtil.IsAccessible(method, out var message))
             {
                 return message;
             }

@@ -32,20 +32,6 @@
             return new ProxyGeneratorResult(eventRaiser.Instance);
         }
 
-        public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
-        {
-            Guard.AgainstNull(method, nameof(method));
-
-            if (method.Name != "Invoke")
-            {
-                failReason = "Only the Invoke method can be intercepted on delegates.";
-                return false;
-            }
-
-            failReason = null;
-            return true;
-        }
-
         public bool CanGenerateProxy(Type typeOfProxy, out string failReason)
         {
             if (!typeof(Delegate).IsAssignableFrom(typeOfProxy))

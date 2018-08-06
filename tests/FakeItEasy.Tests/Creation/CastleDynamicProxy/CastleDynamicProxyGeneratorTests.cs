@@ -17,13 +17,10 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     public class CastleDynamicProxyGeneratorTests
     {
         private readonly CastleDynamicProxyGenerator generator;
-        private readonly CastleDynamicProxyInterceptionValidator interceptionValidator;
 
         public CastleDynamicProxyGeneratorTests()
         {
-            this.interceptionValidator = A.Fake<CastleDynamicProxyInterceptionValidator>();
-
-            this.generator = new CastleDynamicProxyGenerator(this.interceptionValidator);
+            this.generator = new CastleDynamicProxyGenerator();
         }
 
         public interface IInterfaceType
@@ -300,21 +297,6 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             // Assert
             toStringResult.Should().Be("interception return value");
-        }
-
-        [Fact]
-        public void Should_delegate_to_interception_validator_when_validating_if_method_can_be_intercepted()
-        {
-            // Arrange
-            var method = typeof(object).GetMethod("ToString");
-            var instance = new object();
-
-            // Act
-            this.generator.MethodCanBeInterceptedOnInstance(method, instance, out Ignore.This<string>().Value);
-
-            // Assert
-            A.CallTo(() => this.interceptionValidator
-                .MethodCanBeInterceptedOnInstance(method, instance, out Ignore.This<string>().Value)).MustHaveHappened();
         }
 
         private static IFakeCallProcessorProvider CreateFakeCallProcessorProvider(Action<IInterceptedFakeObjectCall> fakeCallProcessorAction)

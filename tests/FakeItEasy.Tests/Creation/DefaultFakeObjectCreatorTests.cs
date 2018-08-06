@@ -25,7 +25,12 @@ namespace FakeItEasy.Tests.Creation
             A.CallTo(() => this.castleDynamicProxyGenerator.CanGenerateProxy(A<Type>._, out s)).WithAnyArguments().Returns(true);
             this.fakeCallProcessorProviderFactory = A.Fake<FakeCallProcessorProvider.Factory>();
 
-            this.fakeObjectCreator = new FakeObjectCreator(this.fakeCallProcessorProviderFactory, this.castleDynamicProxyGenerator, this.delegateProxyGenerator);
+            this.fakeObjectCreator = new FakeObjectCreator(
+                this.fakeCallProcessorProviderFactory,
+                this.castleDynamicProxyGenerator,
+                A.Dummy<IMethodInterceptionValidator>(),
+                this.delegateProxyGenerator,
+                A.Dummy<IMethodInterceptionValidator>());
         }
 
         [Fact]

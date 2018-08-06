@@ -15,12 +15,14 @@ namespace FakeItEasy.Creation
         public FakeObjectCreator(
             FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory,
             IProxyGenerator castleDynamicProxyGenerator,
-            IProxyGenerator delegateProxyGenerator)
+            IMethodInterceptionValidator castleMethodInterceptionValidator,
+            IProxyGenerator delegateProxyGenerator,
+            IMethodInterceptionValidator delegateMethodInterceptionValidator)
         {
             this.strategies = new ICreationStrategy[]
             {
-                new DelegateCreationStrategy(delegateProxyGenerator, fakeCallProcessorProviderFactory),
-                new DefaultCreationStrategy(castleDynamicProxyGenerator, fakeCallProcessorProviderFactory),
+                new DelegateCreationStrategy(delegateProxyGenerator, delegateMethodInterceptionValidator, fakeCallProcessorProviderFactory),
+                new DefaultCreationStrategy(castleDynamicProxyGenerator, castleMethodInterceptionValidator, fakeCallProcessorProviderFactory),
             };
         }
 
@@ -64,11 +66,16 @@ namespace FakeItEasy.Creation
         private class DelegateCreationStrategy : ICreationStrategy
         {
             private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
+            private readonly IMethodInterceptionValidator methodInterceptionValidator;
             private readonly IProxyGenerator proxyGenerator;
 
-            public DelegateCreationStrategy(IProxyGenerator proxyGenerator, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
+            public DelegateCreationStrategy(
+                IProxyGenerator proxyGenerator,
+                IMethodInterceptionValidator methodInterceptionValidator,
+                FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
             {
                 this.proxyGenerator = proxyGenerator;
+                this.methodInterceptionValidator = methodInterceptionValidator;
                 this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
             }
 
@@ -105,18 +112,23 @@ namespace FakeItEasy.Creation
             }
 
             public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
-                this.proxyGenerator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
+                this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
         private class DefaultCreationStrategy : ICreationStrategy
         {
             private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
+            private readonly IMethodInterceptionValidator methodInterceptionValidator;
             private readonly IProxyGenerator proxyGenerator;
             private readonly ConcurrentDictionary<Type, Type[]> parameterTypesCache;
 
-            public DefaultCreationStrategy(IProxyGenerator proxyGenerator, FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
+            public DefaultCreationStrategy(
+                IProxyGenerator proxyGenerator,
+                IMethodInterceptionValidator methodInterceptionValidator,
+                FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory)
             {
                 this.proxyGenerator = proxyGenerator;
+                this.methodInterceptionValidator = methodInterceptionValidator;
                 this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
                 this.parameterTypesCache = new ConcurrentDictionary<Type, Type[]>();
             }
@@ -143,7 +155,7 @@ namespace FakeItEasy.Creation
             }
 
             public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
-                this.proxyGenerator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
+                this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
 
             private static IEnumerable<Type[]> GetUsableParameterTypeListsInOrder(Type type)
             {
