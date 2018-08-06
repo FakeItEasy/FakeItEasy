@@ -3,11 +3,12 @@ namespace FakeItEasy.Creation
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;
 
-    internal class FakeObjectCreator
+    internal class FakeObjectCreator : IMethodInterceptionValidator
     {
         private readonly ICreationStrategy[] strategies;
 
@@ -49,10 +50,16 @@ namespace FakeItEasy.Creation
             /// <param name="resolver">A source of dummy values, should any be needed.</param>
             /// <returns>A creation result indicating success (and including the fake value) or failure.</returns>
             CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver);
+
+            bool MethodCanBeInterceptedOnInstance(MethodInfo method, object fake, out string failReason);
         }
 
         public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver) =>
             this.strategies.First(s => s.IsResponsibleForCreating(typeOfFake)).CreateFake(typeOfFake, proxyOptions, session, resolver);
+
+        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
+            this.strategies.First(s => s.IsResponsibleForCreating(callTarget?.GetType())).MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
 
         private class DelegateCreationStrategy : ICreationStrategy
         {
@@ -96,6 +103,9 @@ namespace FakeItEasy.Creation
                     ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
                     : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
             }
+
+            public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
+                this.proxyGenerator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
         private class DefaultCreationStrategy : ICreationStrategy
@@ -131,6 +141,9 @@ namespace FakeItEasy.Creation
 
                 return this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, session, resolver);
             }
+
+            public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
+                this.proxyGenerator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
 
             private static IEnumerable<Type[]> GetUsableParameterTypeListsInOrder(Type type)
             {

@@ -63,12 +63,15 @@ namespace FakeItEasy
             container.RegisterSingleton<ICallExpressionParser>(c =>
                 new CallExpressionParser());
 
+            container.RegisterSingleton(c => new FakeObjectCreator(
+                container.Resolve<FakeCallProcessorProvider.Factory>(),
+                container.Resolve<CastleDynamicProxyGenerator>(),
+                container.Resolve<DelegateProxyGenerator>()));
+            container.RegisterSingleton<IMethodInterceptionValidator>(c => c.Resolve<FakeObjectCreator>());
+
             container.RegisterSingleton<IFakeAndDummyManager>(c =>
             {
-                var fakeCreator = new FakeObjectCreator(
-                    c.Resolve<FakeCallProcessorProvider.Factory>(),
-                    c.Resolve<CastleDynamicProxyGenerator>(),
-                    c.Resolve<DelegateProxyGenerator>());
+                var fakeCreator = c.Resolve<FakeObjectCreator>();
                 var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
                 var dynamicDummyFactory = new DynamicDummyFactory(c.Resolve<IEnumerable<IDummyFactory>>());
@@ -85,8 +88,6 @@ namespace FakeItEasy
 
             container.RegisterSingleton(c => new DelegateProxyGenerator());
 
-            container.RegisterSingleton<IProxyGenerator>(c => new ProxyGeneratorSelector(c.Resolve<DelegateProxyGenerator>(), c.Resolve<CastleDynamicProxyGenerator>()));
-
             container.RegisterSingleton(
                 c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
 
@@ -96,7 +97,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
-            container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IProxyGenerator>()));
+            container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
 
             container.Register<IArgumentConstraintTrapper>(c => new ArgumentConstraintTrap());
 
