@@ -10,13 +10,12 @@
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
 
-    internal class CastleDynamicProxyGenerator
-        : FakeItEasy.Creation.IProxyGenerator
+    internal static class CastleDynamicProxyGenerator
     {
         private static readonly IProxyGenerationHook ProxyGenerationHook = new InterceptEverythingHook();
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
 
-        public ProxyGeneratorResult GenerateProxy(
+        public static ProxyGeneratorResult GenerateProxy(
             Type typeOfProxy,
             IEnumerable<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
@@ -28,7 +27,7 @@
             Guard.AgainstNull(attributes, nameof(attributes));
             Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
 
-            if (!this.CanGenerateProxy(typeOfProxy, out string failReason))
+            if (!CanGenerateProxy(typeOfProxy, out string failReason))
             {
                 return new ProxyGeneratorResult(failReason);
             }
@@ -44,7 +43,7 @@
             return CreateProxyGeneratorResult(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
         }
 
-        public bool CanGenerateProxy(Type typeOfProxy, out string failReason)
+        public static bool CanGenerateProxy(Type typeOfProxy, out string failReason)
         {
             if (typeOfProxy.GetTypeInfo().IsValueType)
             {

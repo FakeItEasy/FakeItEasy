@@ -8,19 +8,15 @@
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
-    internal class DelegateProxyGenerator
-        : IProxyGenerator
+    internal static class DelegateProxyGenerator
     {
-        public virtual ProxyGeneratorResult GenerateProxy(
+        public static ProxyGeneratorResult GenerateProxy(
             Type typeOfProxy,
-            IEnumerable<Type> additionalInterfacesToImplement,
-            IEnumerable<object> argumentsForConstructor,
-            IEnumerable<Expression<Func<Attribute>>> attributes,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
 
-            if (!this.CanGenerateProxy(typeOfProxy, out string reasonCannotGenerate))
+            if (!CanGenerateProxy(typeOfProxy, out string reasonCannotGenerate))
             {
                 return new ProxyGeneratorResult(reasonCannotGenerate);
             }
@@ -32,7 +28,7 @@
             return new ProxyGeneratorResult(eventRaiser.Instance);
         }
 
-        public bool CanGenerateProxy(Type typeOfProxy, out string failReason)
+        public static bool CanGenerateProxy(Type typeOfProxy, out string failReason)
         {
             if (!typeof(Delegate).IsAssignableFrom(typeOfProxy))
             {

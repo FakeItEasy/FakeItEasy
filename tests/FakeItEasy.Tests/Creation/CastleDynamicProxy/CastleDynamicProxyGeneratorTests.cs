@@ -16,13 +16,6 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
     public class CastleDynamicProxyGeneratorTests
     {
-        private readonly CastleDynamicProxyGenerator generator;
-
-        public CastleDynamicProxyGeneratorTests()
-        {
-            this.generator = new CastleDynamicProxyGenerator();
-        }
-
         public interface IInterfaceType
         {
             void Foo(int argument1, int argument2);
@@ -52,7 +45,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = CastleDynamicProxyGenerator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.GeneratedProxy.Should().NotBeNull();
@@ -65,7 +58,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = CastleDynamicProxyGenerator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.GeneratedProxy.Should().NotBeNull()
@@ -79,7 +72,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = CastleDynamicProxyGenerator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.ProxyWasSuccessfullyGenerated.Should().BeTrue();
@@ -92,7 +85,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = CastleDynamicProxyGenerator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.ProxyWasSuccessfullyGenerated.Should().BeFalse();
@@ -107,7 +100,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             var fakeCallProcessorProvider = CreateFakeCallProcessorProvider(c => interceptedFakeObjectCall = c);
 
-            var result = this.generator.GenerateProxy(typeThatImplementsInterfaceType, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
+            var result = CastleDynamicProxyGenerator.GenerateProxy(typeThatImplementsInterfaceType, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
 
             var proxy = (IInterfaceType)result.GeneratedProxy;
 
@@ -130,7 +123,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             // Act
-            this.generator.GenerateProxy(typeThatImplementsInterfaceType, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
+            CastleDynamicProxyGenerator.GenerateProxy(typeThatImplementsInterfaceType, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
 
             // Assert
             A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).MustNotHaveHappened();
@@ -145,7 +138,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
             // Here we can't use A.Dummy<IFakeCallProcessorProvider>() because the EnsureInitialized() call within GenerateProxy()
             // triggers the Castle issue #65 (https://github.com/castleproject/Core/issues/65)
-            var result = this.generator.GenerateProxy(typeOfProxy, Type.EmptyTypes, null, Enumerable.Empty<Expression<Func<Attribute>>>(), new SerializableFakeCallProcessorProvider());
+            var result = CastleDynamicProxyGenerator.GenerateProxy(typeOfProxy, Type.EmptyTypes, null, Enumerable.Empty<Expression<Func<Attribute>>>(), new SerializableFakeCallProcessorProvider());
             var proxy = result.GeneratedProxy;
 
             // Act
@@ -163,7 +156,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(typeof(int), Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = CastleDynamicProxyGenerator.GenerateProxy(typeof(int), Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.ReasonForFailure.Should().Be("The type of proxy must be an interface or a class but it was System.Int32.");
@@ -175,7 +168,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(typeof(SealedType), A.Dummy<IEnumerable<Type>>(), A.Dummy<IEnumerable<object>>(), Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = CastleDynamicProxyGenerator.GenerateProxy(typeof(SealedType), A.Dummy<IEnumerable<Type>>(), A.Dummy<IEnumerable<object>>(), Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.ReasonForFailure.Should().Be("The type of proxy FakeItEasy.Tests.Creation.CastleDynamicProxy.CastleDynamicProxyGeneratorTests+SealedType is sealed.");
@@ -188,7 +181,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(typeof(ClassWithPrivateConstructor), Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = CastleDynamicProxyGenerator.GenerateProxy(typeof(ClassWithPrivateConstructor), Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.ReasonForFailure.Should().StartWith("No usable default constructor was found on the type");
@@ -202,7 +195,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
             // Act
             var type = Type.GetType("FluentAssertions.Common.NullReflector, FluentAssertions.Core");
-            var result = this.generator.GenerateProxy(type, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = CastleDynamicProxyGenerator.GenerateProxy(type, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.ReasonForFailure.Should().StartWith("No usable default constructor was found on the type FluentAssertions.Common.NullReflector.\r\nAn exception of type Castle.DynamicProxy.Generators.GeneratorException was caught during this call. Its message was:\r\nCan not create proxy for type FluentAssertions.Common.NullReflector because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7\")] attribute, because assembly FluentAssertions.Core is strong-named.");
@@ -215,7 +208,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(typeOfProxy, new[] { typeof(IFoo) }, null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            var result = CastleDynamicProxyGenerator.GenerateProxy(typeOfProxy, new[] { typeof(IFoo) }, null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
 
             // Assert
             result.GeneratedProxy.Should().NotBeNull().And.BeAssignableTo<IFoo>();
@@ -229,7 +222,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Act
 
             // Assert
-            Expression<Action> call = () => this.generator.GenerateProxy(typeof(IInterfaceType), Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            Expression<Action> call = () => CastleDynamicProxyGenerator.GenerateProxy(typeof(IInterfaceType), Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
             call.Should().BeNullGuarded();
         }
 
@@ -239,7 +232,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(
+            var result = CastleDynamicProxyGenerator.GenerateProxy(
                 typeof(TypeWithArgumentsForConstructor),
                 Enumerable.Empty<Type>(),
                 new object[] { 10 },
@@ -258,7 +251,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Arrange
 
             // Act
-            var result = this.generator.GenerateProxy(
+            var result = CastleDynamicProxyGenerator.GenerateProxy(
                 typeof(TypeWithArgumentsForConstructor),
                 Enumerable.Empty<Type>(),
                 new object[] { "no constructor takes a string" },
@@ -277,7 +270,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var arguments = new object[] { "no constructor on interface " };
 
             // Act
-            var ex = Record.Exception(() => this.generator.GenerateProxy(typeof(IInterfaceType), Enumerable.Empty<Type>(), arguments, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>()));
+            var ex = Record.Exception(() => CastleDynamicProxyGenerator.GenerateProxy(typeof(IInterfaceType), Enumerable.Empty<Type>(), arguments, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>()));
 
             // Assert
             ex.Should().BeAnExceptionOfType<ArgumentException>()
@@ -292,7 +285,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var fakeCallProcessorProvider = CreateFakeCallProcessorProvider(c => c.SetReturnValue("interception return value"));
 
             // Act
-            var proxy = this.generator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
+            var proxy = CastleDynamicProxyGenerator.GenerateProxy(typeOfProxy, Enumerable.Empty<Type>(), null, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
             var toStringResult = proxy.GeneratedProxy.ToString();
 
             // Assert
