@@ -37,7 +37,7 @@ When creating fakes you can, through a fluent interface, specify options for how
 | Assign additional custom attributes to the faked type                                             | non-delegates |
 | Cause a fake to have [strict mocking semantics](strict-fakes.md)                                  | any fake      |
 | Configure all of a fake's methods to [use their original implementation](calling-base-methods.md) | classes       |
-| Create a fake that wraps another object, and optinally specify a recorder                         | any fake      |
+| Create a fake that wraps another object                                                           | any fake      |
 
 Examples:
 
