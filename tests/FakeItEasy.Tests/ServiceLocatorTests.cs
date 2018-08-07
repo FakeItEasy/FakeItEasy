@@ -15,7 +15,6 @@ namespace FakeItEasy.Tests
             {
                 new object[] { typeof(IExpressionCallMatcherFactory) },
                 new object[] { typeof(ExpressionArgumentConstraintFactory) },
-                new object[] { typeof(IProxyGenerator) },
                 new object[] { typeof(IFakeAndDummyManager) }
             };
         }

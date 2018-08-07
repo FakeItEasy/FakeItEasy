@@ -326,6 +326,76 @@ namespace FakeItEasy.Specs
     System.String"));
         }
 
+        [Scenario]
+        public void FakeDelegateCreation(Func<int> fake)
+        {
+            "Given a delegate"
+                .See<Func<int>>();
+
+            "When I create a fake of the delegate"
+                .x(() => fake = this.CreateFake<Func<int>>());
+
+            "Then it creates the fake"
+                .x(() => fake.Should().NotBeNull());
+        }
+
+        [Scenario]
+        public void FakeDelegateCreationWithAttributes(Exception exception)
+        {
+            "Given a delegate"
+                .See<Func<int>>();
+
+            "When I create a fake of the delegate with custom attributes"
+                .x(() => exception = Record.Exception(() => this.CreateFake<Func<int>>(options => options.WithAttributes(() => new ObsoleteAttribute()))));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create fake of type System.Func`1[System.Int32]:
+    Faked delegates cannot have custom attributes applied to them.
+"));
+        }
+
+        [Scenario]
+        public void FakeDelegateCreationWithArgumentsForConstructor(Exception exception)
+        {
+            "Given a delegate"
+                .See<Func<int>>();
+
+            "When I create a fake of the delegate using explicit constructor arguments"
+                .x(() => exception = Record.Exception(() => this.CreateFake<Func<int>>(options => options.WithArgumentsForConstructor(new object[] { 7 }))));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create fake of type System.Func`1[System.Int32]:
+    Faked delegates cannot be made using explicit constructor arguments.
+"));
+        }
+
+        [Scenario]
+        public void FakeDelegateCreationWithAdditionalInterfaces(Exception exception)
+        {
+            "Given a delegate"
+                .See<Func<int>>();
+
+            "When I create a fake of the delegate with additional implemented interfaces"
+                .x(() => exception = Record.Exception(() => this.CreateFake<Func<int>>(options => options.Implements<IList<string>>())));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().Be(@"
+  Failed to create fake of type System.Func`1[System.Int32]:
+    Faked delegates cannot be made to implement additional interfaces.
+"));
+        }
+
         protected abstract T CreateFake<T>();
 
         protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder);

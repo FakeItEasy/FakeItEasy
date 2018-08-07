@@ -4,6 +4,6 @@ namespace FakeItEasy.Creation
 
     internal interface IFakeObjectCreator
     {
-        CreationResult TryCreateFakeObject(DummyCreationSession session, Type typeOfFake, DummyValueResolver resolver);
+        CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver);
     }
 }

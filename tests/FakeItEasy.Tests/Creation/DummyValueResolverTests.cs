@@ -16,8 +16,8 @@ namespace FakeItEasy.Tests.Creation
         public DummyValueResolverTests()
         {
             this.fakeObjectCreator = A.Fake<IFakeObjectCreator>();
-            A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(A<DummyCreationSession>._, A<Type>._, A<DummyValueResolver>._))
-                .ReturnsLazily((DummyCreationSession session, Type type, DummyValueResolver resolver) => CreationResult.FailedToCreateDummy(type, string.Empty));
+            A.CallTo(() => this.fakeObjectCreator.CreateFake(A<Type>._, A<IProxyOptions>._, A<DummyCreationSession>._, A<IDummyValueResolver>._))
+                .ReturnsLazily((Type type, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver) => CreationResult.FailedToCreateDummy(type, string.Empty));
         }
 
         public static IEnumerable<object[]> DummiesInContainer()
@@ -233,7 +233,7 @@ namespace FakeItEasy.Tests.Creation
 
         private void StubFakeObjectCreatorWithValue<T>(T value)
         {
-            A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(A<DummyCreationSession>._, typeof(T), A<DummyValueResolver>._))
+            A.CallTo(() => this.fakeObjectCreator.CreateFake(typeof(T), A<IProxyOptions>._, A<DummyCreationSession>._, A<IDummyValueResolver>._))
                 .Returns(CreationResult.SuccessfullyCreated(value));
         }
 
