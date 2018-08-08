@@ -96,11 +96,11 @@
 
             // Assert
             const string ExpectedMessage = @"
-    The following constructors were not tried:
-      (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
-      (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
+  The constructors with the following signatures were not tried:
+    (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
+    (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
 
-      Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
+    Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.
 
 ";
             exception.Should()

@@ -16,6 +16,8 @@ namespace FakeItEasy.Tests.Creation
         public DummyValueResolverTests()
         {
             this.fakeObjectCreator = A.Fake<IFakeObjectCreator>();
+            A.CallTo(() => this.fakeObjectCreator.CreateFake(A<Type>._, A<IProxyOptions>._, A<DummyCreationSession>._, A<IDummyValueResolver>._))
+                .ReturnsLazily((Type type, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver) => CreationResult.FailedToCreateDummy(type, string.Empty));
         }
 
         public static IEnumerable<object[]> DummiesInContainer()
@@ -38,16 +40,15 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), dummyForContainer.GetType(), out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), dummyForContainer.GetType());
 
             // Assert
-            result.Should().BeTrue();
-            dummy.Should().BeSameAs(dummyForContainer);
+            result.WasSuccessful.Should().BeTrue();
+            result.Result.Should().BeSameAs(dummyForContainer);
         }
 
         [Fact]
-        public void Should_return_false_when_type_cannot_be_created()
+        public void Should_return_failed_creation_result_when_type_cannot_be_created()
         {
             // Arrange
             var resolver = new DummyValueResolver(
@@ -55,12 +56,10 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeThatCanNotBeInstantiated), out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeThatCanNotBeInstantiated));
 
             // Assert
-            result.Should().BeFalse();
-            dummy.Should().BeNull();
+            result.WasSuccessful.Should().BeFalse();
         }
 
         [Fact]
@@ -74,12 +73,11 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(IFoo), out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(IFoo));
 
             // Assert
-            result.Should().BeTrue();
-            dummy.Should().BeSameAs(fake);
+            result.WasSuccessful.Should().BeTrue();
+            result.Result.Should().BeSameAs(fake);
         }
 
         [Fact]
@@ -91,12 +89,11 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(int), out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(int));
 
             // Assert
-            result.Should().BeTrue();
-            dummy.Should().Be(0);
+            result.WasSuccessful.Should().BeTrue();
+            result.Result.Should().Be(0);
         }
 
         [Fact]
@@ -108,12 +105,11 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(ClassWithDefaultConstructor), out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(ClassWithDefaultConstructor));
 
             // Assert
-            result.Should().BeTrue();
-            dummy.Should().BeOfType<ClassWithDefaultConstructor>();
+            result.WasSuccessful.Should().BeTrue();
+            result.Result.Should().BeOfType<ClassWithDefaultConstructor>();
         }
 
         [Fact]
@@ -126,12 +122,11 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeWithResolvableConstructorArguments<string, IFoo>), out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeWithResolvableConstructorArguments<string, IFoo>));
 
             // Assert
-            result.Should().BeTrue();
-            dummy.Should().BeOfType<TypeWithResolvableConstructorArguments<string, IFoo>>();
+            result.WasSuccessful.Should().BeTrue();
+            result.Result.Should().BeOfType<TypeWithResolvableConstructorArguments<string, IFoo>>();
         }
 
         [Fact]
@@ -143,11 +138,10 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeWithCircularDependency), out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeWithCircularDependency));
 
             // Assert
-            result.Should().BeFalse();
+            result.WasSuccessful.Should().BeFalse();
         }
 
         [Fact]
@@ -158,19 +152,18 @@ namespace FakeItEasy.Tests.Creation
                 this.CreateDummyFactoryThatMakes("dummy value"),
                 this.fakeObjectCreator);
 
-            object dummy;
-            resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(string), out dummy);
+            resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(string));
 
             // Act
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(string), out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(string));
 
             // Assert
-            result.Should().BeTrue();
-            dummy.Should().Be("dummy value");
+            result.WasSuccessful.Should().BeTrue();
+            result.Result.Should().Be("dummy value");
         }
 
         [Fact]
-        public void Should_return_false_when_default_constructor_throws()
+        public void Should_return_failed_result_when_default_constructor_throws()
         {
             // Arrange
             var resolver = new DummyValueResolver(
@@ -178,11 +171,10 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeWithDefaultConstructorThatThrows), out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeWithDefaultConstructorThatThrows));
 
             // Assert
-            result.Should().BeFalse();
+            result.WasSuccessful.Should().BeFalse();
         }
 
         [Fact]
@@ -194,9 +186,8 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeWithMultipleConstructorsOfDifferentWidth), out dummy);
-            var typedDummy = (TypeWithMultipleConstructorsOfDifferentWidth)dummy;
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(TypeWithMultipleConstructorsOfDifferentWidth));
+            var typedDummy = (TypeWithMultipleConstructorsOfDifferentWidth)result.Result;
 
             // Assert
             typedDummy.WidestConstructorWasCalled.Should().BeTrue();
@@ -206,7 +197,7 @@ namespace FakeItEasy.Tests.Creation
         [InlineData(typeof(void))]
         [InlineData(typeof(Func<int>))]
         [InlineData(typeof(Action))]
-        public void Should_return_false_for_restricted_types(Type restrictedType)
+        public void Should_return_failed_result_for_restricted_types(Type restrictedType)
         {
             // Arrange
             var resolver = new DummyValueResolver(
@@ -214,11 +205,10 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), restrictedType, out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), restrictedType);
 
             // Assert
-            result.Should().BeFalse();
+            result.WasSuccessful.Should().BeFalse();
         }
 
         [Fact]
@@ -232,21 +222,19 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            object dummy;
-            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(Lazy<IFoo>), out dummy);
+            var result = resolver.TryResolveDummyValue(new DummyCreationSession(), typeof(Lazy<IFoo>));
 
             // Assert
-            result.Should().BeTrue();
+            result.WasSuccessful.Should().BeTrue();
+            var dummy = result.Result;
             dummy.Should().BeOfType<Lazy<IFoo>>();
             ((Lazy<IFoo>)dummy).Value.Should().BeSameAs(fake);
         }
 
         private void StubFakeObjectCreatorWithValue<T>(T value)
         {
-            object output;
-            A.CallTo(() => this.fakeObjectCreator.TryCreateFakeObject(A<DummyCreationSession>._, typeof(T), A<DummyValueResolver>._, out output))
-                .Returns(true)
-                .AssignsOutAndRefParameters(value);
+            A.CallTo(() => this.fakeObjectCreator.CreateFake(typeof(T), A<IProxyOptions>._, A<DummyCreationSession>._, A<IDummyValueResolver>._))
+                .Returns(CreationResult.SuccessfullyCreated(value));
         }
 
         private DynamicDummyFactory CreateDummyFactoryThatMakes(object value)

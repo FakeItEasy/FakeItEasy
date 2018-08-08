@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Creation
+namespace FakeItEasy.Creation
 {
     using System;
 #if FEATURE_NETCORE_REFLECTION
@@ -12,11 +12,11 @@
     internal class DefaultFakeAndDummyManager
         : IFakeAndDummyManager
     {
-        private readonly FakeObjectCreator fakeCreator;
+        private readonly IFakeObjectCreator fakeCreator;
         private readonly DynamicOptionsBuilder dynamicOptionsBuilder;
         private readonly IDummyValueResolver dummyValueResolver;
 
-        public DefaultFakeAndDummyManager(IDummyValueResolver dummyValueResolver, FakeObjectCreator fakeCreator, DynamicOptionsBuilder dynamicOptionsBuilder)
+        public DefaultFakeAndDummyManager(IDummyValueResolver dummyValueResolver, IFakeObjectCreator fakeCreator, DynamicOptionsBuilder dynamicOptionsBuilder)
         {
             this.dummyValueResolver = dummyValueResolver;
             this.fakeCreator = fakeCreator;
@@ -25,25 +25,27 @@
 
         public object CreateDummy(Type typeOfDummy)
         {
-            object result;
-            if (!this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy, out result))
-            {
-                throw new FakeCreationException();
-            }
-
-            return result;
+            return this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy).Result;
         }
 
         public object CreateFake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
             var proxyOptions = this.BuildProxyOptions(typeOfFake, optionsBuilder);
 
-            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, new DummyCreationSession(), this.dummyValueResolver, throwOnFailure: true);
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, new DummyCreationSession(), this.dummyValueResolver).Result;
         }
 
         public bool TryCreateDummy(Type typeOfDummy, out object result)
         {
-            return this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy, out result);
+            var creationResult = this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy);
+            if (creationResult.WasSuccessful)
+            {
+                result = creationResult.Result;
+                return true;
+            }
+
+            result = default;
+            return false;
         }
 
         private static IFakeOptions CreateFakeOptions(Type typeOfFake, ProxyOptions proxyOptions)

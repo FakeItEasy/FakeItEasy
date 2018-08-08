@@ -63,17 +63,20 @@ namespace FakeItEasy
             container.RegisterSingleton<ICallExpressionParser>(c =>
                 new CallExpressionParser());
 
+            container.RegisterSingleton(c => new FakeObjectCreator(
+                container.Resolve<FakeCallProcessorProvider.Factory>(),
+                container.Resolve<CastleDynamicProxyInterceptionValidator>(),
+                container.Resolve<DelegateProxyInterceptionValidator>()));
+            container.RegisterSingleton<IFakeObjectCreator>(c => c.Resolve<FakeObjectCreator>());
+            container.RegisterSingleton<IMethodInterceptionValidator>(c => c.Resolve<FakeObjectCreator>());
+
             container.RegisterSingleton<IFakeAndDummyManager>(c =>
             {
-                var fakeCreator = new FakeObjectCreator(
-                    c.Resolve<IProxyGenerator>(),
-                    c.Resolve<IExceptionThrower>(),
-                    c.Resolve<FakeCallProcessorProvider.Factory>());
+                var fakeCreator = c.Resolve<IFakeObjectCreator>();
                 var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
 
                 var dynamicDummyFactory = new DynamicDummyFactory(c.Resolve<IEnumerable<IDummyFactory>>());
-                var objectCreator = new ResolverFakeObjectCreator(fakeCreator);
-                var dummyValueResolver = new DummyValueResolver(dynamicDummyFactory, objectCreator);
+                var dummyValueResolver = new DummyValueResolver(dynamicDummyFactory, fakeCreator);
 
                 return new DefaultFakeAndDummyManager(
                     dummyValueResolver,
@@ -81,16 +84,9 @@ namespace FakeItEasy
                     fakeConfigurator);
             });
 
-            container.RegisterSingleton(c => new CastleDynamicProxyGenerator(c.Resolve<CastleDynamicProxyInterceptionValidator>()));
+            container.RegisterSingleton(c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
 
-            container.RegisterSingleton(c => new DelegateProxyGenerator());
-
-            container.RegisterSingleton<IProxyGenerator>(c => new ProxyGeneratorSelector(c.Resolve<DelegateProxyGenerator>(), c.Resolve<CastleDynamicProxyGenerator>()));
-
-            container.RegisterSingleton(
-                c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
-
-            container.RegisterSingleton<IExceptionThrower>(c => new DefaultExceptionThrower());
+            container.RegisterSingleton(c => new DelegateProxyInterceptionValidator());
 
             container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
 
@@ -98,7 +94,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
-            container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IProxyGenerator>()));
+            container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
 
             container.Register<IArgumentConstraintTrapper>(c => new ArgumentConstraintTrap());
 
@@ -129,23 +125,6 @@ namespace FakeItEasy
                     callSpecification,
                     this.serviceLocator.Resolve<ExpressionArgumentConstraintFactory>(),
                     this.serviceLocator.Resolve<MethodInfoManager>());
-        }
-
-        private class ResolverFakeObjectCreator
-            : IFakeObjectCreator
-        {
-            private readonly FakeObjectCreator creator;
-
-            public ResolverFakeObjectCreator(FakeObjectCreator creator)
-            {
-                this.creator = creator;
-            }
-
-            public bool TryCreateFakeObject(DummyCreationSession session, Type typeOfFake, DummyValueResolver resolver, out object result)
-            {
-                result = this.creator.CreateFake(typeOfFake, new ProxyOptions(), session, resolver, false);
-                return result != null;
-            }
         }
 
         private class ArgumentConstraintManagerFactory
