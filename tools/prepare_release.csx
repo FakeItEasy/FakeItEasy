@@ -1,15 +1,18 @@
 #r ".\packages\Octokit.0.26.0\lib\net45\Octokit.dll"
 
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 using Octokit;
 using Octokit.Helpers;
-using System.Runtime.CompilerServices;
 
 const string repoOwner = "FakeItEasy";
 const string repoName = "FakeItEasy";
 const string releaseFromBranchName = "develop";
 const string targetBranchName = "master";
+const string existingReleaseName = "vNext";
+const string nextReleaseName = existingReleaseName;
 
 var version = Args.FirstOrDefault();
 if (version == null)
@@ -22,8 +25,18 @@ var releaseBranchName = $"release/{version}";
 static var gitHubClient = GetAuthenticatedGitHubClient();
 
 var existingMilestone = await GetExistingMilestone();
+
+var issuesInExistingMilestone = await GetIssuesInMilestone(existingMilestone);
+var existingReleaseIssue = TakeExistingReleaseIssue(issuesInExistingMilestone);
+
 var existingRelease = await GetExistingRelease();
-var existingIssue = await GetExistingIssue(existingMilestone);
+var issuesReferencedFromRelease = GetIssuesReferencedFromRelease(existingRelease);
+
+if (!CrossReferenceIssues(issuesInExistingMilestone, issuesReferencedFromRelease))
+{
+    return;
+}
+
 Milestone nextMilestone;
 if (IsPreRelease(version))
 {
@@ -37,8 +50,8 @@ else
 
 await UpdateRelease(existingRelease, version);
 await CreateNextRelease();
-await UpdateIssue(existingIssue, existingMilestone, version);
-await CreateNextIssue(existingIssue, nextMilestone);
+await UpdateIssue(existingReleaseIssue, existingMilestone, version);
+await CreateNextIssue(existingReleaseIssue, nextMilestone);
 var releaseFromBranch = await GetReleaseFromBranch();
 await CreateReleaseBranch(releaseBranchName, releaseFromBranch);
 await CreatePullRequest(version, releaseBranchName);
@@ -57,31 +70,101 @@ public static string ReadGitHubToken()
 
 public static async Task<Milestone> GetExistingMilestone()
 {
-    Console.WriteLine("Fetching milestone 'vNext'...");
+    Console.WriteLine($"Fetching milestone '{existingReleaseName}'...");
     var milestoneRequest = new MilestoneRequest { State = ItemStateFilter.Open };
     var existingMilestone = (await gitHubClient.Issue.Milestone.GetAllForRepository(repoOwner, repoName, milestoneRequest))
-        .Single(milestone => milestone.Title == "vNext");
+        .Single(milestone => milestone.Title == existingReleaseName);
     Console.WriteLine($"Fetched milestone '{existingMilestone.Title}'");
     return existingMilestone;
 }
 
 public static async Task<Release> GetExistingRelease()
 {
-    Console.WriteLine("Fetching GitHub release 'vNext'...");
+    Console.WriteLine($"Fetching GitHub release '{existingReleaseName}'...");
     var existingRelease = (await gitHubClient.Repository.Release.GetAll(repoOwner, repoName))
-        .Single(release => release.Name == "vNext" && release.Draft == true);
+        .Single(release => release.Name == existingReleaseName && release.Draft == true);
     Console.WriteLine($"Fetched GitHub release '{existingRelease.Name}'");
     return existingRelease;
 }
 
-public static async Task<Issue> GetExistingIssue(Milestone existingMilestone)
+public static async Task<IList<Issue>> GetIssuesInMilestone(Milestone milestone)
 {
-    Console.WriteLine("Fetching release issue 'Release vNext'...");
-    var issueRequest = new RepositoryIssueRequest { Milestone = existingMilestone.Number.ToString(), State = ItemStateFilter.Open };
-    var existingIssue = (await gitHubClient.Issue.GetAllForRepository(repoOwner, repoName, issueRequest))
-        .Single(issue => issue.Title == "Release vNext");
-    Console.WriteLine($"Fetched release issue #{existingIssue.Number}: '{existingIssue.Title}'");
-    return existingIssue;
+    Console.WriteLine($"Fetching issues in milestone '{milestone.Title}'...'");
+    var issueRequest = new RepositoryIssueRequest { Milestone = milestone.Number.ToString(), State = ItemStateFilter.All };
+    var issues = (await gitHubClient.Issue.GetAllForRepository(repoOwner, repoName, issueRequest)).ToList();
+    Console.WriteLine($"Fetched {issues.Count} issues in milestone '{milestone.Title}'");
+    return issues;
+}
+
+public static IEnumerable<string> GetIssuesReferencedFromRelease(Release release)
+{
+    var issuesReferencedFromRelease = new HashSet<string>();
+    foreach (Match match in Regex.Matches(release.Body, @"\(#(<issueNumber>[0-9]+)\)"))
+    {
+        issuesReferencedFromRelease.Add(match.Groups["issueNumber"].Value);
+    }
+    return issuesReferencedFromRelease;
+}
+
+public static Issue TakeExistingReleaseIssue(IList<Issue> issues)
+{
+    var issue = issues.Single(i => i.Title == $"Release {existingReleaseName}");
+    Console.WriteLine($"Found release issue #{issue.Number}: '{issue.Title}'");
+    issues.Remove(issue);
+    return issue;
+}
+
+public static bool CrossReferenceIssues(IEnumerable<Issue> issuesInMilestone, IEnumerable<string> issueNumbersReferencedFromRelease)
+{
+    var issueNumbersInMilestone = issuesInMilestone.Select(i => i.Number.ToString());
+    var issueNumbersInReleaseButNotMilestone = issueNumbersReferencedFromRelease.Except(issueNumbersInMilestone).ToList();
+    var issuesInMilestoneButNotRelease = issuesInMilestone.Where(i => !issueNumbersReferencedFromRelease.Contains(i.Number.ToString())).ToList();
+
+    if (!issuesInMilestoneButNotRelease.Any() && !issueNumbersInReleaseButNotMilestone.Any())
+    {
+        Console.WriteLine("The release refers to the same issues included in the milestone. Congratulations.");
+        return true;
+    }
+
+    Console.WriteLine();
+
+    if (issuesInMilestoneButNotRelease.Any())
+    {
+        Console.WriteLine("The following issues are linked to the milestone but not referenced in the release:");
+        foreach (var issue in issuesInMilestoneButNotRelease)
+        {
+            Console.WriteLine($"  #{issue.Number}: {issue.Title}");
+        }
+
+        Console.WriteLine();
+    }
+
+    if (issueNumbersInReleaseButNotMilestone.Any())
+    {
+        Console.WriteLine("The following issues are referenced in the release but not linked to the milestone:");
+        foreach (var issueNumber in issueNumbersInReleaseButNotMilestone)
+        {
+            Console.WriteLine($"  #{issueNumber}");
+        }
+
+        Console.WriteLine();
+    }
+
+    Console.WriteLine($"Prepare release anyhow? (y/N)");
+    var response = Console.ReadLine().Trim();
+    if (string.Equals(response, "y", StringComparison.InvariantCultureIgnoreCase))
+    {
+        return true;
+    }
+    else if (string.Equals(response, "n", StringComparison.InvariantCultureIgnoreCase))
+    {
+        return false;
+    }
+    else
+    {
+        Console.WriteLine($"Unknown response '{response}' received. Treating as 'n'.");
+        return false;
+    }
 }
 
 public static bool IsPreRelease(string version)
@@ -99,7 +182,7 @@ public static async Task RenameMilestone(Milestone existingMilestone, string ver
 
 public static async Task<Milestone> CreateNextMilestone()
 {
-    var newMilestone = new NewMilestone("vNext");
+    var newMilestone = new NewMilestone(nextReleaseName);
     Console.WriteLine($"Creating new milestone '{newMilestone.Title}'...");
     var nextMilestone = (await gitHubClient.Issue.Milestone.Create(repoOwner, repoName, newMilestone));
     Console.WriteLine($"Created new milestone '{nextMilestone.Title}'");
@@ -129,7 +212,7 @@ public static async Task CreateNextRelease()
 ### With special thanks for contributions to this release from:
 * Real Name - @githubhandle";
 
-    var newRelease = new NewRelease("vNext") { Draft = true, Name = "vNext", Body = newReleaseBody.Trim() };
+    var newRelease = new NewRelease(nextReleaseName) { Draft = true, Name = nextReleaseName, Body = newReleaseBody.Trim() };
     Console.WriteLine($"Creating new GitHub release '{newRelease.Name}'...");
     var nextRelease = await gitHubClient.Repository.Release.Create(repoOwner, repoName, newRelease);
     Console.WriteLine($"Created new GitHub release '{nextRelease.Name}'");
@@ -145,7 +228,7 @@ public static async Task UpdateIssue(Issue existingIssue, Milestone existingMile
 
 public static async Task CreateNextIssue(Issue existingIssue, Milestone nextMilestone)
 {
-    var newIssue = new NewIssue("Release vNext")
+    var newIssue = new NewIssue($"Release {nextReleaseName}")
     {
         Milestone = nextMilestone.Number,
         Body = existingIssue.Body.Replace("[x]", "[ ]"),
