@@ -26,10 +26,10 @@ if not exist %TOOLS_DIR%\.nuget md %TOOLS_DIR%\.nuget
 copy /Y %NUGET_CACHE_DIR%\NuGet.exe %TOOLS_DIR%\.nuget\NuGet.exe > nul
 
 rem restore packages for build script
-%TOOLS_DIR%\.nuget\NuGet.exe restore %TOOLS_DIR%\packages.config -PackagesDirectory %TOOLS_DIR%\packages -Verbosity quiet
+%TOOLS_DIR%\.nuget\NuGet.exe install %TOOLS_DIR%\packages.config -OutputDirectory %TOOLS_DIR%\packages -Verbosity quiet -ExcludeVersion
 
 rem run build script
-"%TOOLS_DIR%\packages\Microsoft.Net.Compilers.2.2.0\tools\csi.exe" %*
+"%TOOLS_DIR%\packages\Microsoft.Net.Compilers\tools\csi.exe" %*
 
 rem return to original working directory
 popd
