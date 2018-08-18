@@ -1,1 +1,1 @@
-@call %~dp0\tools\run-csx.cmd %~dp0\tools\build.csx %*
+@powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command "%~dp0\tools\run-csx.ps1 %~dp0\tools\build.csx %*"
