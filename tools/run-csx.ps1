@@ -27,9 +27,24 @@ if (!(Test-Path $NuGetDir)) {
 }
 Copy-Item $NuGetCacheFile $NuGetExe
 
-# restore packages for build script
 $PackagesConfig = "$ToolsDir\packages.config"
 $PackagesDir = "$ToolsDir\packages"
+
+# check if packages have changed
+$PackagesHashFile = "$ToolsDir\packages.config.sha1"
+$PreviousPackagesHash = ""
+if (Test-Path $PackagesHashFile) {
+    $PreviousPackagesHash = (Get-Content $PackagesHashFile).Trim()
+}
+$PackagesHash = (Get-FileHash -Algorithm SHA1 -Path $PackagesConfig).Hash
+# if packages.config has changed, clear packages and store new hash
+if ($PackagesHash -ne $PreviousPackagesHash) {
+    Write-Host "$PackagesConfig has changed, reinstalling packages..."
+    Remove-Item -Recurse -Force $PackagesDir
+    Set-Content $PackagesHashFile $PackagesHash
+}
+
+# restore packages for build script
 & $NuGetExe install $PackagesConfig -OutputDirectory $PackagesDir -Verbosity quiet -ExcludeVersion
 
 # run build script
