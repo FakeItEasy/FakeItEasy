@@ -1,5 +1,5 @@
-#r "packages/Bullseye.1.1.0-rc.2/lib/netstandard2.0/Bullseye.dll"
-#r "packages/SimpleExec.2.2.0/lib/netstandard2.0/SimpleExec.dll"
+#r "packages/Bullseye/lib/netstandard2.0/Bullseye.dll"
+#r "packages/SimpleExec/lib/netstandard1.3/SimpleExec.dll"
 
 using System.Runtime.CompilerServices;
 using static Bullseye.Targets;
@@ -51,12 +51,12 @@ var testSuites = new Dictionary<string, string[]>
 // tool locations
 
 static var toolsPackagesDirectory = Path.Combine(GetCurrentScriptDirectory(), "packages");
-var vswhere = $"{toolsPackagesDirectory}/vswhere.1.0.62/tools/vswhere.exe";
-var gitversion = $"{toolsPackagesDirectory}/GitVersion.CommandLine.4.0.0-beta0012/tools/GitVersion.exe";
+var vswhere = $"{toolsPackagesDirectory}/vswhere/tools/vswhere.exe";
+var gitversion = $"{toolsPackagesDirectory}/GitVersion.CommandLine/tools/GitVersion.exe";
 var msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe";
 var nuget = $"{GetCurrentScriptDirectory()}/.nuget/NuGet.exe";
-var pdbGit = $"{toolsPackagesDirectory}/pdbGit.3.0.41/tools/PdbGit.exe";
-static var xunit = $"{toolsPackagesDirectory}/xunit.runner.console.2.0.0/tools/xunit.console.exe";
+var pdbGit = $"{toolsPackagesDirectory}/pdbGit/tools/PdbGit.exe";
+static var xunit = $"{toolsPackagesDirectory}/xunit.runner.console/tools/xunit.console.exe";
 
 // artifact locations
 var logsDirectory = "./artifacts/logs";

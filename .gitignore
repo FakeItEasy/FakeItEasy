@@ -9,6 +9,7 @@ artifacts
 packages
 src/VersionInfo.cs
 src/FakeItEasy.nuspec
+tools/packages.config.sha1
 
 *.*proj.user
 *.lock.json

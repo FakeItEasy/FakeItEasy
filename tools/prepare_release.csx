@@ -1,4 +1,4 @@
-#r ".\packages\Octokit.0.26.0\lib\net45\Octokit.dll"
+#r ".\packages\Octokit\lib\net45\Octokit.dll"
 
 using System.Linq;
 using System.Runtime.CompilerServices;
