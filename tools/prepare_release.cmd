@@ -1,1 +1,1 @@
-@powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command "%~dp0\tools\run-csx.ps1 %~dp0\tools\prepare-release.csx %*"
+dotnet run --project "%~dp0\FakeItEasy.PrepareRelease\FakeItEasy.PrepareRelease.csproj" -- %*
