@@ -1,12 +1,10 @@
 .githubtoken
-.nuget
 .vs
 [Oo]bj
 [Bb]in
 [Oo]bjcs
 [Oo]bjvb
 artifacts
-packages
 src/VersionInfo.cs
 src/FakeItEasy.nuspec
 tools/packages.config.sha1
