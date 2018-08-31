@@ -1,0 +1,13 @@
+<Project>
+
+    <Import Project="../Directory.Build.props" />
+
+    <PropertyGroup>
+        <NoWarn>$(NoWarn),SA0001</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Remove="Microsoft.CodeAnalysis.FxCopAnalyzers" />
+    </ItemGroup>
+
+</Project>
