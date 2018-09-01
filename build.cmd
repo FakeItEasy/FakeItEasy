@@ -1,1 +1,3 @@
-@dotnet run --project "%~dp0\tools\FakeItEasy.Build\FakeItEasy.Build.csproj" -- %*
+@pushd %~dp0
+@dotnet run --project ".\tools\FakeItEasy.Build\FakeItEasy.Build.csproj" -- %*
+@popd
