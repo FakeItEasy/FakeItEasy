@@ -3,24 +3,23 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.CompilerServices;
     using static Bullseye.Targets;
     using static SimpleExec.Command;
 
     public class Program
     {
-        private const string TestsDirectory = "./artifacts/tests";
-        private const string LogsDirectory = "./artifacts/logs";
-        private const string Solution = "./FakeItEasy.sln";
-        private const string VersionInfoFile = "./src/VersionInfo.cs";
+        private const string TestsDirectory = "artifacts/tests";
+        private const string LogsDirectory = "artifacts/logs";
+        private const string Solution = "FakeItEasy.sln";
+        private const string VersionInfoFile = "src/VersionInfo.cs";
         private const string RepoUrl = "https://github.com/FakeItEasy/FakeItEasy";
-        private const string AnalyzerMetaPackageNuspecPath = "./src/FakeItEasy.Analyzer.nuspec";
+        private const string AnalyzerMetaPackageNuspecPath = "src/FakeItEasy.Analyzer.nuspec";
 
         private static readonly string[] ProjectsToPack =
         {
-            "./src/FakeItEasy/FakeItEasy.csproj",
-            "./src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.CSharp.csproj",
-            "./src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.VisualBasic.csproj"
+            "src/FakeItEasy/FakeItEasy.csproj",
+            "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.CSharp.csproj",
+            "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.VisualBasic.csproj"
         };
 
         private static readonly string[] Pdbs =
@@ -55,7 +54,7 @@
             }
         };
 
-        private static readonly string OutputDirectory = Path.GetFullPath("./artifacts/output");
+        private static readonly string OutputDirectory = Path.GetFullPath("artifacts/output");
 
         private static readonly string MsBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe";
 
@@ -104,7 +103,7 @@
                 DependsOn("build", "outputDirectory", "pdbgit"),
                 () =>
                 {
-                    var version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2", ".");
+                    var version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2");
                     foreach (var project in ProjectsToPack)
                     {
                         Run("dotnet", $"pack {project} --configuration Release --no-build --output {OutputDirectory} /p:Version={version}");
@@ -145,7 +144,7 @@
 
         private static string GetVSLocation()
         {
-            var installationPath = Read($"\"{ToolPaths.VSWhere}\"", "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)", ".");
+            var installationPath = Read($"\"{ToolPaths.VSWhere}\"", "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)");
             if (string.IsNullOrWhiteSpace(installationPath))
             {
                 throw new InvalidOperationException("Visual Studio 2017 was not found");
