@@ -81,29 +81,14 @@
                 "restore",
                 () => Run("dotnet", $"restore"));
 
-            Target(
-                "unit",
-                DependsOn("build", "testsDirectory"),
-                forEach: TestSuites["unit"],
-                action: testDirectory => RunTests(testDirectory));
-
-            Target(
-                "integ",
-                DependsOn("build", "testsDirectory"),
-                forEach: TestSuites["integ"],
-                action: testDirectory => RunTests(testDirectory));
-
-            Target(
-                "spec",
-                DependsOn("build", "testsDirectory"),
-                forEach: TestSuites["spec"],
-                action: testDirectory => RunTests(testDirectory));
-
-            Target(
-                "approve",
-                DependsOn("build", "testsDirectory"),
-                forEach: TestSuites["approve"],
-                action: testDirectory => RunTests(testDirectory));
+            foreach (var testSuite in TestSuites)
+            {
+                Target(
+                    testSuite.Key,
+                    DependsOn("build", "testsDirectory"),
+                    forEach: testSuite.Value,
+                    action: testDirectory => RunTests(testDirectory));
+            }
 
             Target("get-version", () => version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2"));
 
