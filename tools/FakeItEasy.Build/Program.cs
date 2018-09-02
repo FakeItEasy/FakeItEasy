@@ -56,7 +56,7 @@
 
         private static readonly string OutputDirectory = Path.GetFullPath("artifacts/output");
 
-        private static readonly string MsBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe";
+        private static string msBuild = null;
 
         public static void Main(string[] args)
         {
@@ -68,11 +68,13 @@
 
             Target("testsDirectory", () => Directory.CreateDirectory(TestsDirectory));
 
-            Target("build", DependsOn("clean", "restore", "versionInfoFile"), () => RunMsBuild("Build"));
+            Target("find-msbuild", () => msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe");
+
+            Target("build", DependsOn("clean", "restore", "versionInfoFile", "find-msbuild"), () => RunMsBuild("Build"));
 
             Target("versionInfoFile", () => Run(ToolPaths.GitVersion, $"/updateAssemblyInfo {VersionInfoFile} /ensureAssemblyInfo"));
 
-            Target("clean", DependsOn("logsDirectory"), () => RunMsBuild("Clean"));
+            Target("clean", DependsOn("logsDirectory", "find-msbuild"), () => RunMsBuild("Clean"));
 
             Target(
                 "restore",
@@ -124,7 +126,7 @@
         private static void RunMsBuild(string target)
         {
             Run(
-                MsBuild,
+                msBuild,
                 $"{Solution} /target:{target} /p:configuration=Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/{target}.binlog");
         }
 
