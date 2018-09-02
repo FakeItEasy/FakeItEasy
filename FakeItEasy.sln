@@ -121,12 +121,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Analyzer.VisualB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{9D99B251-FB4F-49BF-8405-F6E0DE46EB32}"
 	ProjectSection(SolutionItems) = preProject
-		tools\build.csx = tools\build.csx
 		tools\deploy.ps1 = tools\deploy.ps1
-		tools\packages.config = tools\packages.config
 		tools\prepare_release.cmd = tools\prepare_release.cmd
-		tools\prepare_release.csx = tools\prepare_release.csx
-		tools\run-csx.cmd = tools\run-csx.cmd
 	EndProjectSection
 EndProject
 Global
