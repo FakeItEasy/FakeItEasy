@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../FakeItEasy.Analyzer.Shared/Directory.Build.props" />
-
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
     <RootNamespace>FakeItEasy.Analyzer</RootNamespace>
@@ -32,5 +30,7 @@
     <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="$(OutputPath)$(AssemblyName).pdb" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
+
+  <Import Project="..\FakeItEasy.Analyzer.Shared\FakeItEasy.Analyzer.Shared.projitems" Label="Shared" />
 
 </Project>
