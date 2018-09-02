@@ -57,6 +57,7 @@
         private static readonly string OutputDirectory = Path.GetFullPath("artifacts/output");
 
         private static string msBuild = null;
+        private static string version = null;
 
         public static void Main(string[] args)
         {
@@ -80,39 +81,31 @@
                 "restore",
                 () => Run("dotnet", $"restore"));
 
-            Target(
-                "unit",
-                DependsOn("build", "testsDirectory"),
-                () => RunTests("unit"));
+            foreach (var testSuite in TestSuites)
+            {
+                Target(
+                    testSuite.Key,
+                    DependsOn("build", "testsDirectory"),
+                    forEach: testSuite.Value,
+                    action: testDirectory => RunTests(testDirectory));
+            }
+
+            Target("get-version", () => version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2"));
 
             Target(
-                "integ",
-                DependsOn("build", "testsDirectory"),
-                () => RunTests("integ"));
+                "pack-projects",
+                DependsOn("build", "outputDirectory", "pdbgit", "get-version"),
+                forEach: ProjectsToPack,
+                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {OutputDirectory} /p:Version={version}"));
 
             Target(
-                "spec",
-                DependsOn("build", "testsDirectory"),
-                () => RunTests("spec"));
-
-            Target(
-                "approve",
-                DependsOn("build", "testsDirectory"),
-                () => RunTests("approve"));
+                "pack-nuspecs",
+                DependsOn("outputDirectory", "get-version"),
+                () => Run(ToolPaths.NuGet, $"pack {AnalyzerMetaPackageNuspecPath} -Version {version} -OutputDirectory {OutputDirectory} -NoPackageAnalysis"));
 
             Target(
                 "pack",
-                DependsOn("build", "outputDirectory", "pdbgit"),
-                () =>
-                {
-                    var version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2");
-                    foreach (var project in ProjectsToPack)
-                    {
-                        Run("dotnet", $"pack {project} --configuration Release --no-build --output {OutputDirectory} /p:Version={version}");
-                    }
-
-                    Run(ToolPaths.NuGet, $"pack {AnalyzerMetaPackageNuspecPath} -Version {version} -OutputDirectory {OutputDirectory} -NoPackageAnalysis");
-                });
+                DependsOn("pack-projects", "pack-nuspecs"));
 
             Target(
                 "pdbgit",
@@ -130,15 +123,7 @@
                 $"{Solution} /target:{target} /p:configuration=Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/{target}.binlog");
         }
 
-        private static void RunTests(string target)
-        {
-            foreach (var directory in TestSuites[target])
-            {
-                RunTestsInDirectory(directory);
-            }
-        }
-
-        private static void RunTestsInDirectory(string testDirectory)
+        private static void RunTests(string testDirectory)
         {
             var xml = Path.GetFullPath(Path.Combine(TestsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
             Run("dotnet", $"xunit -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}", testDirectory);
