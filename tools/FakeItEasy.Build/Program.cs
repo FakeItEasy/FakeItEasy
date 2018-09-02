@@ -71,11 +71,9 @@
 
             Target("find-msbuild", () => msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe");
 
-            Target("build", DependsOn("clean", "restore", "versionInfoFile", "find-msbuild"), () => RunMsBuild("Build"));
+            Target("build", DependsOn("restore", "versionInfoFile", "find-msbuild"), () => RunMsBuild("Build"));
 
             Target("versionInfoFile", () => Run(ToolPaths.GitVersion, $"/updateAssemblyInfo {VersionInfoFile} /ensureAssemblyInfo"));
-
-            Target("clean", DependsOn("logsDirectory", "find-msbuild"), () => RunMsBuild("Clean"));
 
             Target(
                 "restore",
