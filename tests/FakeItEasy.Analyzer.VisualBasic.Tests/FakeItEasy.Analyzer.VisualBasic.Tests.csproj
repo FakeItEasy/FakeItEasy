@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="1.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="1.1.0" />
     <PackageReference Include="System.Collections.Immutable" Version="1.2.0" />
-    <ProjectReference Include="..\..\src\FakeItEasy.Analyzer\FakeItEasy.Analyzer.VisualBasic.csproj" />
+    <ProjectReference Include="..\..\src\FakeItEasy.Analyzer.VisualBasic\FakeItEasy.Analyzer.VisualBasic.csproj" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj" />
   </ItemGroup>

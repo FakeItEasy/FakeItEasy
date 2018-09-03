@@ -18,8 +18,8 @@
         private static readonly string[] ProjectsToPack =
         {
             "src/FakeItEasy/FakeItEasy.csproj",
-            "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.CSharp.csproj",
-            "src/FakeItEasy.Analyzer/FakeItEasy.Analyzer.VisualBasic.csproj"
+            "src/FakeItEasy.Analyzer.CSharp/FakeItEasy.Analyzer.CSharp.csproj",
+            "src/FakeItEasy.Analyzer.VisualBasic/FakeItEasy.Analyzer.VisualBasic.csproj"
         };
 
         private static readonly string[] Pdbs =
@@ -27,8 +27,8 @@
             "src/FakeItEasy/bin/Release/net40/FakeItEasy.pdb",
             "src/FakeItEasy/bin/Release/net45/FakeItEasy.pdb",
             "src/FakeItEasy/bin/Release/netstandard1.6/FakeItEasy.pdb",
-            "src/FakeItEasy.Analyzer/bin/Release/FakeItEasy.Analyzer.Csharp.pdb",
-            "src/FakeItEasy.Analyzer/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
+            "src/FakeItEasy.Analyzer.CSharp/bin/Release/FakeItEasy.Analyzer.Csharp.pdb",
+            "src/FakeItEasy.Analyzer.VisualBasic/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
         };
 
         private static readonly IReadOnlyDictionary<string, string[]> TestSuites = new Dictionary<string, string[]>
