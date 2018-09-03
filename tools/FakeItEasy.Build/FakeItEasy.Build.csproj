@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bullseye" Version="1.1.0" />
+    <PackageReference Include="Bullseye" Version="1.2.0" />
     <PackageReference Include="SimpleExec" Version="2.3.0" />
     <PackageReference Include="GitVersion.CommandLine" Version="4.0.0-beta0012" ToolName="GitVersion" ToolExe="GitVersion.exe" />
     <PackageReference Include="PdbGit" Version="3.0.41" ToolName="PdbGit" ToolExe="PdbGit.exe" />
