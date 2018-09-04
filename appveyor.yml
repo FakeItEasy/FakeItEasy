@@ -26,4 +26,4 @@ artifacts:
     - path: .\artifacts\*\*
 
 deploy_script:
-    - ps: .\tools\deploy.ps1
+    - cmd: tools\deploy.cmd

@@ -7,10 +7,14 @@
 
   <ItemGroup>
     <PackageReference Include="Octokit" Version="$(OctokitVersion)" />
+    <PackageReference Include="SimpleExec" Version="$(SimpleExecVersion)" />
+    <PackageReference Include="NuGet.CommandLine" Version="$(NuGetVersion)" ToolName="NuGet" ToolExe="nuget.exe" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="../GitHubTokenSource.cs" />
   </ItemGroup>
+
+  <Import Project="../FakeItEasy.ToolPaths.targets" />
 
 </Project>

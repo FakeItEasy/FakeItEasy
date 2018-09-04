@@ -7,6 +7,7 @@
     using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
+    using FakeItEasy.Tools;
     using Octokit;
     using Octokit.Helpers;
 
@@ -66,14 +67,9 @@
 
         public static GitHubClient GetAuthenticatedGitHubClient()
         {
-            var token = ReadGitHubToken();
+            var token = GitHubTokenSource.GetAccessToken();
             var credentials = new Credentials(token);
             return new GitHubClient(new ProductHeaderValue("FakeItEasy-build-scripts")) { Credentials = credentials };
-        }
-
-        public static string ReadGitHubToken()
-        {
-            return File.ReadAllText(Path.Combine(GetCurrentScriptDirectory(), ".githubtoken")).Trim();
         }
 
         public static async Task<Milestone> GetExistingMilestone(this IGitHubClient gitHubClient)
@@ -273,7 +269,5 @@
                 new NewPullRequest($"Release {version}", releaseBranchName, TargetBranchName));
             Console.WriteLine($"Created pull request '{pr.Title}' at {pr.HtmlUrl}");
         }
-
-        public static string GetCurrentScriptDirectory([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
     }
 }

@@ -1,0 +1,27 @@
+<Project>
+
+  <Target Name="GenerateToolPaths" BeforeTargets="BeforeBuild">
+    <PropertyGroup>
+      <ClassName>ToolPaths</ClassName>
+      <OutputFile>$(ClassName).cs</OutputFile>
+    </PropertyGroup>
+    <ItemGroup>
+      <Tool Include="@(PackageReference)" Condition="'%(PackageReference.ToolName)' != ''" />
+      <Compile Remove="$(OutputFile)" />
+      <Compile Include="$(OutputFile)" />
+    </ItemGroup>
+    <PropertyGroup>
+      <Semicolon>%3B</Semicolon>
+      <Indent>%20%20%20%20%20%20%20%20</Indent>
+      <FileContent><![CDATA[namespace $(RootNamespace)
+{
+    internal static class $(ClassName)
+    {
+@(Tool -> '$(Indent)public const string %(ToolName) = @"$(NuGetPackageRoot)%(Identity)\%(Version)\tools\%(ToolExe)"$(Semicolon)')
+    }
+}]]></FileContent>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(OutputFile)" Overwrite="true" Encoding="UTF-8" Lines="$(FileContent)" />
+  </Target>
+
+</Project>
