@@ -213,17 +213,18 @@
         public static async Task CreateNextRelease(this IGitHubClient gitHubClient)
         {
             const string newReleaseBody = @"
-        ### Changed
+### Changed
 
-        ### New
-        * Issue Title (#12345)
+### New
+* Issue Title (#12345)
 
-        ### Fixed
+### Fixed
 
-        ### Additional Items
+### Additional Items
 
-        ### With special thanks for contributions to this release from:
-        * Real Name - @githubhandle";
+### With special thanks for contributions to this release from:
+* Real Name - @githubhandle
+";
 
             var newRelease = new NewRelease(NextReleaseName) { Draft = true, Name = NextReleaseName, Body = newReleaseBody.Trim() };
             Console.WriteLine($"Creating new GitHub release '{newRelease.Name}'...");
