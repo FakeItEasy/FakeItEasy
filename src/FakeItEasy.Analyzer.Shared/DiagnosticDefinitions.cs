@@ -11,11 +11,7 @@ namespace FakeItEasy.Analyzer
                 ResourceBaseName,
                 typeof(DiagnosticDefinitions).GetTypeInfo().Assembly);
 
-#if CSHARP
-        private const string ResourceBaseName = "FakeItEasy.Analyzer.CSharp.Resources";
-#elif VISUAL_BASIC
-        private const string ResourceBaseName = "FakeItEasy.Analyzer.VisualBasic.Resources";
-#endif
+        private const string ResourceBaseName = "FakeItEasy.Analyzer.Resources";
 
         public static DiagnosticDescriptor UnusedCallSpecification { get; } =
             CreateDiagnosticDescriptor(

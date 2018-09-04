@@ -1,1 +1,3 @@
-@call %~dp0\tools\run-csx.cmd %~dp0\tools\build.csx %*
+@pushd %~dp0
+@dotnet run --project ".\tools\FakeItEasy.Build\FakeItEasy.Build.csproj" -- %*
+@popd

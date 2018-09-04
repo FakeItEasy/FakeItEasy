@@ -25,7 +25,7 @@ After the build has completed, the build artifacts will be located in `artifacts
 
 ## Extras
 
-`build.cmd` wraps a [simple-targets-csx](https://github.com/adamralph/simple-targets-csx) script, so you can use all the usual command line arguments that you would use with simple-targets-csx , e.g.:
+`build.cmd` wraps a [Bullseye](https://github.com/adamralph/bullseye) targets project, so you can use all the usual command line arguments that you would use with Bullseye, e.g.:
 
 * View the full list of build targets:
 

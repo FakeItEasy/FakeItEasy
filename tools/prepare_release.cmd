@@ -1,1 +1,1 @@
-@call %~dp0\run-csx.cmd %~dp0\prepare_release.csx %*
+dotnet run --project "%~dp0\FakeItEasy.PrepareRelease\FakeItEasy.PrepareRelease.csproj" -- %*

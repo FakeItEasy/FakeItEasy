@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
-    <AssemblyName>FakeItEasy.Analyzer.VisualBasic</AssemblyName>
     <RootNamespace>FakeItEasy.Analyzer</RootNamespace>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -10,7 +9,6 @@
     <SignAssembly>true</SignAssembly>
     <DefineConstants>$(DefineConstants);VISUAL_BASIC</DefineConstants>
     <PackageTargetFallback>portable45-net45+win8</PackageTargetFallback>
-    <BaseIntermediateOutputPath>objvb\</BaseIntermediateOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
@@ -19,25 +17,6 @@
     <Authors>Thomas Levesque, FakeItEasy contributors</Authors>
     <Description>Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy in VB.NET. Works in Visual Studio 2015 Update 1 or later.</Description>
     <PackageTags>$(PackageTags);visualbasic;vb;vb.net</PackageTags>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="CSharp/Resources.resx" />
-    <Compile Remove="objcs\**" />
-    <EmbeddedResource Remove="objcs\**" />
-    <None Remove="objcs\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="../*.cs" />
-  </ItemGroup>
-
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -51,5 +30,7 @@
     <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/vb" Visible="false" />
     <None Include="$(OutputPath)$(AssemblyName).pdb" Pack="true" PackagePath="analyzers/dotnet/vb" Visible="false" />
   </ItemGroup>
+    
+  <Import Project="..\FakeItEasy.Analyzer.Shared\FakeItEasy.Analyzer.Shared.projitems" Label="Shared" />
 
 </Project>
