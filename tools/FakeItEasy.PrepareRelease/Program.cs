@@ -102,10 +102,18 @@
 
         public static IEnumerable<string> GetIssuesReferencedFromRelease(Release release)
         {
+            // Release bodies should contain references to fixed issues in the form 
+            // (#1234), or (#1234, #1235, #1236) if multiple issues apply to a topic.
+            // It's hard (impossible?) to harvest values from a repeated capture group,
+            // so grab everything between the ()s and split manually.
             var issuesReferencedFromRelease = new HashSet<string>();
-            foreach (Match match in Regex.Matches(release.Body, @"\(#(<issueNumber>[0-9]+)\)"))
+            foreach (Match match in Regex.Matches(release.Body, @"\((?<issueNumbers>#[0-9]+((, )#[0-9]+)*)\)"))
             {
-                issuesReferencedFromRelease.Add(match.Groups["issueNumber"].Value);
+                var issueNumbers = match.Groups["issueNumbers"].Value;
+                foreach (var issueNumber in issueNumbers.Split(new char[] { '#', ' ', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    issuesReferencedFromRelease.Add(issueNumber);
+                }
             }
 
             return issuesReferencedFromRelease;
@@ -205,17 +213,18 @@
         public static async Task CreateNextRelease(this IGitHubClient gitHubClient)
         {
             const string newReleaseBody = @"
-        ### Changed
+### Changed
 
-        ### New
-        * Issue Title (#12345)
+### New
+* Issue Title (#12345)
 
-        ### Fixed
+### Fixed
 
-        ### Additional Items
+### Additional Items
 
-        ### With special thanks for contributions to this release from:
-        * Real Name - @githubhandle";
+### With special thanks for contributions to this release from:
+* Real Name - @githubhandle
+";
 
             var newRelease = new NewRelease(NextReleaseName) { Draft = true, Name = NextReleaseName, Body = newReleaseBody.Trim() };
             Console.WriteLine($"Creating new GitHub release '{newRelease.Name}'...");
