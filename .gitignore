@@ -8,7 +8,7 @@ artifacts
 src/VersionInfo.cs
 src/FakeItEasy.nuspec
 tools/packages.config.sha1
-tools/FakeItEasy.Build/ToolPaths.cs
+tools/*/ToolPaths.cs
 
 *.*proj.user
 *.lock.json

@@ -8,36 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="Bullseye" Version="1.2.0" />
-    <PackageReference Include="SimpleExec" Version="2.3.0" />
+    <PackageReference Include="SimpleExec" Version="$(SimpleExecVersion)" />
     <PackageReference Include="GitVersion.CommandLine" Version="4.0.0-beta0012" ToolName="GitVersion" ToolExe="GitVersion.exe" />
     <PackageReference Include="PdbGit" Version="3.0.41" ToolName="PdbGit" ToolExe="PdbGit.exe" />
     <PackageReference Include="xunit.runner.console" Version="2.0.0" ToolName="XUnit" ToolExe="xunit.console.exe" />
     <PackageReference Include="vswhere" Version="1.0.62" ToolName="VSWhere" ToolExe="vswhere.exe" />
-    <PackageReference Include="NuGet.CommandLine" Version="4.1.0" ToolName="NuGet" ToolExe="nuget.exe" />
+    <PackageReference Include="NuGet.CommandLine" Version="$(NuGetVersion)" ToolName="NuGet" ToolExe="nuget.exe" />
   </ItemGroup>
 
-  <Target Name="GenerateToolPaths" BeforeTargets="BeforeBuild">
-    <PropertyGroup>
-      <ClassName>ToolPaths</ClassName>
-      <OutputFile>$(ClassName).cs</OutputFile>
-    </PropertyGroup>
-    <ItemGroup>
-      <Tool Include="@(PackageReference)" Condition="'%(PackageReference.ToolName)' != ''" />
-      <Compile Remove="$(OutputFile)" />
-      <Compile Include="$(OutputFile)" />
-    </ItemGroup>
-    <PropertyGroup>
-      <Semicolon>%3B</Semicolon>
-      <Indent>%20%20%20%20%20%20%20%20</Indent>
-      <FileContent><![CDATA[namespace FakeItEasy.Build
-{
-    internal static class $(ClassName)
-    {
-@(Tool -> '$(Indent)public const string %(ToolName) = @"$(NuGetPackageRoot)%(Identity)\%(Version)\tools\%(ToolExe)"$(Semicolon)')
-    }
-}]]></FileContent>
-    </PropertyGroup>
-    <WriteLinesToFile File="$(OutputFile)" Overwrite="true" Encoding="UTF-8" Lines="$(FileContent)" />
-  </Target>
+  <Import Project="../FakeItEasy.ToolPaths.targets" />
 
 </Project>
