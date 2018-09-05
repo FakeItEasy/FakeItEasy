@@ -18,8 +18,4 @@
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
-    <Compile Remove="RecordersTests.cs" />
-  </ItemGroup>
-
 </Project>
