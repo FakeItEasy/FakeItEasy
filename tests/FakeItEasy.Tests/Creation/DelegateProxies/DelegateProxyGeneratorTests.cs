@@ -10,13 +10,13 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
 
     public class DelegateProxyGeneratorTests
     {
-        private delegate void VoidDelegateWithOutputValue(out string result);
+        public delegate void VoidDelegateWithOutputValue(out string result);
 
-        private delegate string NonVoidDelegateWithOutputValue(out int result);
+        public delegate string NonVoidDelegateWithOutputValue(out int result);
 
-        private delegate void VoidDelegateWithRefValue(ref string result);
+        public delegate void VoidDelegateWithRefValue(ref string result);
 
-        private delegate string NonVoidDelegateWithRefValue(ref int result);
+        public delegate string NonVoidDelegateWithRefValue(ref int result);
 
         [Theory]
         [InlineData(typeof(Func<int>))]
