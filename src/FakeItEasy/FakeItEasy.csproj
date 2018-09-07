@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Common referenced package versions">
-    <CastleCoreVersion>4.3.1</CastleCoreVersion>
+    <CastleCoreVersion>0.0.431</CastleCoreVersion>
     <ILMergeVersion>2.14.1208</ILMergeVersion>
   </PropertyGroup>
 
