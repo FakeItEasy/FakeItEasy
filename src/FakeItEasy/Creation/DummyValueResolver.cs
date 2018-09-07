@@ -28,8 +28,8 @@ namespace FakeItEasy.Creation
                     new ResolveFromDummyFactoryStrategy(dummyFactory),
                     new ResolveByCreatingTaskStrategy(this),
                     new ResolveByCreatingLazyStrategy(this),
-                    new ResolveByCreatingFakeStrategy(fakeObjectCreator, this),
                     new ResolveByActivatingValueTypeStrategy(),
+                    new ResolveByCreatingFakeStrategy(fakeObjectCreator, this),
                     new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy(this)
                 };
         }
