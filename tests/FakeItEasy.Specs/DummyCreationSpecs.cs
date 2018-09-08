@@ -71,6 +71,27 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void StringCreation(
+            string dummy1,
+            string dummy2)
+        {
+            "When a dummy string is requested"
+                .x(() => dummy1 = this.CreateDummy<string>());
+
+            "And another dummy string is requested"
+                .x(() => dummy2 = this.CreateDummy<string>());
+
+            "Then it returns an empty string the first time"
+                .x(() => dummy1.Should().Be(string.Empty));
+
+            "Then it returns an empty string the second time"
+                .x(() => dummy2.Should().Be(string.Empty));
+
+            "And the two strings are the same reference"
+                .x(() => dummy1.Should().BeSameAs(dummy2));
+        }
+
+        [Scenario]
         public void TypeWithDummyFactoryCreation(
             Foo dummy)
         {
