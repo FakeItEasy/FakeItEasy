@@ -56,7 +56,6 @@
 
         private static readonly string OutputDirectory = Path.GetFullPath("artifacts/output");
 
-        private static string msBuild = null;
         private static string version = null;
 
         public static void Main(string[] args)
@@ -69,15 +68,12 @@
 
             Target("testsDirectory", () => Directory.CreateDirectory(TestsDirectory));
 
-            Target("find-msbuild", () => msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe");
-
-            Target("build", DependsOn("restore", "versionInfoFile", "find-msbuild"), () => RunMsBuild("Build"));
+            Target(
+                "build",
+                DependsOn("versionInfoFile"),
+                () => Run("dotnet", $"build {Solution} -c Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/build.binlog"));
 
             Target("versionInfoFile", () => Run(ToolPaths.GitVersion, $"/updateAssemblyInfo {VersionInfoFile} /ensureAssemblyInfo"));
-
-            Target(
-                "restore",
-                () => Run("dotnet", $"restore"));
 
             foreach (var testSuite in TestSuites)
             {
@@ -114,28 +110,10 @@
             RunTargets(args);
         }
 
-        private static void RunMsBuild(string target)
-        {
-            Run(
-                msBuild,
-                $"{Solution} /target:{target} /p:configuration=Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/{target}.binlog");
-        }
-
         private static void RunTests(string testDirectory)
         {
             var xml = Path.GetFullPath(Path.Combine(TestsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
             Run("dotnet", $"xunit -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}", testDirectory);
-        }
-
-        private static string GetVSLocation()
-        {
-            var installationPath = Read($"\"{ToolPaths.VSWhere}\"", "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)");
-            if (string.IsNullOrWhiteSpace(installationPath))
-            {
-                throw new InvalidOperationException("Visual Studio 2017 was not found");
-            }
-
-            return installationPath.Trim();
         }
     }
 }

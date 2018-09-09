@@ -12,7 +12,6 @@
     <PackageReference Include="GitVersion.CommandLine" Version="4.0.0-beta0012" ToolName="GitVersion" ToolExe="GitVersion.exe" />
     <PackageReference Include="PdbGit" Version="3.0.41" ToolName="PdbGit" ToolExe="PdbGit.exe" />
     <PackageReference Include="xunit.runner.console" Version="2.0.0" ToolName="XUnit" ToolExe="xunit.console.exe" />
-    <PackageReference Include="vswhere" Version="1.0.62" ToolName="VSWhere" ToolExe="vswhere.exe" />
     <PackageReference Include="NuGet.CommandLine" Version="$(NuGetVersion)" ToolName="NuGet" ToolExe="nuget.exe" />
   </ItemGroup>
 
