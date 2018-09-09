@@ -11,7 +11,11 @@ namespace FakeItEasy.IntegrationTests
 
         public static string Contains(this IArgumentConstraintManager<string> scope, string value)
         {
+#if FEATURE_STRING_CONTAINS_COMPARISONTYPE
+            return scope.Matches(x => x.Contains(value, StringComparison.CurrentCulture), $@"Contains ""{value}""");
+#else
             return scope.Matches(x => x.Contains(value), $@"Contains ""{value}""");
+#endif
         }
     }
 }

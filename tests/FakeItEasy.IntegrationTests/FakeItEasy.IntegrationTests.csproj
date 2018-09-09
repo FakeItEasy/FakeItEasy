@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
-    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION;FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
