@@ -81,8 +81,8 @@
                 Target(
                     testSuite.Key,
                     DependsOn("build", "testsDirectory"),
-                    forEach: testSuite.Value.SelectMany(project => GetFrameworks(project).Select(framework => new { Project = project, Framework = framework })),
-                    action: tests => RunTests(tests.Project, tests.Framework));
+                    forEach: GetDirectoriesAndFrameworks(testSuite.Value),
+                    action: tests => RunTests(tests.directory, tests.framework));
             }
 
             Target("get-version", () => version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2"));
@@ -111,16 +111,23 @@
             RunTargets(args);
         }
 
+        private static IEnumerable<(string directory, string framework)> GetDirectoriesAndFrameworks(string[] directories) =>
+            from directory in directories from framework in GetFrameworks(directory) select (directory, framework);
+
+        private static string[] GetFrameworks(string directory)
+        {
+            var filename = $"{directory.Split('/').Last()}.{(directory.Contains("VB") ? "vbproj" : "csproj")}";
+
+            return File.ReadAllText($"{directory}/{filename}")
+                .Split("<TargetFrameworks>", 2)[1]
+                .Split("</TargetFrameworks>", 2)[0]
+                .Split(';');
+        }
+
         private static void RunTests(string testDirectory, string framework)
         {
             var xml = Path.GetFullPath(Path.Combine(TestsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
             Run("dotnet", $"xunit -framework {framework} -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}", testDirectory);
         }
-
-        private static string[] GetFrameworks(string project) =>
-            File.ReadAllText($"{project}/{project.Split('/').Last()}.{(project.Contains("VB") ? "vbproj" : "csproj")}")
-                .Split("<TargetFrameworks>", 2)[1]
-                .Split("</TargetFrameworks>", 2)[0]
-                .Split(';');
     }
 }
