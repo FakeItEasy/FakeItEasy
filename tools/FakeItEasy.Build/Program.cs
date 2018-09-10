@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using static Bullseye.Targets;
     using static SimpleExec.Command;
 
@@ -80,8 +81,8 @@
                 Target(
                     testSuite.Key,
                     DependsOn("build", "testsDirectory"),
-                    forEach: testSuite.Value,
-                    action: testDirectory => RunTests(testDirectory));
+                    forEach: testSuite.Value.SelectMany(project => GetFrameworks(project).Select(framework => new { Project = project, Framework = framework })),
+                    action: tests => RunTests(tests.Project, tests.Framework));
             }
 
             Target("get-version", () => version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2"));
@@ -110,10 +111,16 @@
             RunTargets(args);
         }
 
-        private static void RunTests(string testDirectory)
+        private static void RunTests(string testDirectory, string framework)
         {
             var xml = Path.GetFullPath(Path.Combine(TestsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
-            Run("dotnet", $"xunit -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}", testDirectory);
+            Run("dotnet", $"xunit -framework {framework} -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}", testDirectory);
         }
+
+        private static string[] GetFrameworks(string project) =>
+            File.ReadAllText($"{project}/{project.Split('/').Last()}.{(project.Contains("VB") ? "vbproj" : "csproj")}")
+                .Split("<TargetFrameworks>", 2)[1]
+                .Split("</TargetFrameworks>", 2)[0]
+                .Split(';');
     }
 }
