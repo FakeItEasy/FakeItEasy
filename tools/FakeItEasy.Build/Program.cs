@@ -1,6 +1,5 @@
 ﻿namespace FakeItEasy.Build
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using static Bullseye.Targets;
@@ -8,7 +7,6 @@
 
     public class Program
     {
-        private const string TestsDirectory = "artifacts/tests";
         private const string LogsDirectory = "artifacts/logs";
         private const string Solution = "FakeItEasy.sln";
         private const string VersionInfoFile = "src/VersionInfo.cs";
@@ -66,8 +64,6 @@
 
             Target("logsDirectory", () => Directory.CreateDirectory(LogsDirectory));
 
-            Target("testsDirectory", () => Directory.CreateDirectory(TestsDirectory));
-
             Target(
                 "build",
                 DependsOn("versionInfoFile"),
@@ -79,7 +75,7 @@
             {
                 Target(
                     testSuite.Key,
-                    DependsOn("build", "testsDirectory"),
+                    DependsOn("build"),
                     forEach: testSuite.Value,
                     action: testDirectory => RunTests(testDirectory));
             }
@@ -110,10 +106,7 @@
             RunTargets(args);
         }
 
-        private static void RunTests(string testDirectory)
-        {
-            var xml = Path.GetFullPath(Path.Combine(TestsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
-            Run("dotnet", $"xunit -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}", testDirectory);
-        }
+        private static void RunTests(string testDirectory) =>
+            Run("dotnet", "test --configuration Release --no-build -- RunConfiguration.NoAutoReporters=true", testDirectory);
     }
 }
