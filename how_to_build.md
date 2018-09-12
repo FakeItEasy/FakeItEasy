@@ -16,9 +16,11 @@ Ensure that the following are installed:
 
 1. .NET 3.5, required by ILMerge
 
-1. a very recent version of Visual Studio 2017 (currently this means 15.7 or later) or the Build Tools for Visual Studio 2017
+1. a recent version of Visual Studio 2017 (currently this means 15.7 or later) or the Build Tools for Visual Studio 2017
 
-1. a very recent version of the .NET Core SDK (currently this means 2.1.3 or later)
+1. a recent version of the .NET Core 1.0 Runtime (currently this means 1.0.12 or later)
+
+1. a recent version of the .NET Core 2.1 SDK (currently this means 2.1.3 or later)
 
 ## Building
 
