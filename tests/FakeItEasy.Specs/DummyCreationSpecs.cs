@@ -136,8 +136,8 @@ namespace FakeItEasy.Specs
             // unsuccessful constructors may be called more than once, so serialize dummy
             // creation for this test.
             "And nobody else is trying to create a dummy of the class right now"
-                .x(() => ClassWhoseLongerConstructorThrows.DummyingLock.Wait(TimeSpan.FromSeconds(30)))
-                .Teardown(() => ClassWhoseLongerConstructorThrows.DummyingLock.Set());
+                .x(() => Monitor.TryEnter(typeof(ClassWhoseLongerConstructorThrows), TimeSpan.FromSeconds(30)).Should().BeTrue("we must enter the monitor"))
+                .Teardown(() => Monitor.Exit(typeof(ClassWhoseLongerConstructorThrows)));
 
             "When a dummy of that type is requested"
                 .x(() => dummy1 = this.CreateDummy<ClassWhoseLongerConstructorThrows>());
@@ -456,8 +456,6 @@ namespace FakeItEasy.Specs
 
         public sealed class ClassWhoseLongerConstructorThrows
         {
-            public static ManualResetEventSlim DummyingLock { get; } = new ManualResetEventSlim(true);
-
             private static int numberOfTimesLongerConstructorWasCalled;
 
             public string CalledConstructor { get; }
