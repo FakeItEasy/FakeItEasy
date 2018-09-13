@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests
 {
     using System;
     using System.Collections.Generic;
@@ -55,6 +55,15 @@
                     systemAssemblyLocation
                 });
         }
+
+#if REQUIRES_NETSTANDARD_REFERENCE
+        private static string GetNetStandardAssemblyLocation()
+        {
+            var assembly = AppDomain.CurrentDomain.GetAssemblies()
+                .First(a => string.Equals(a.GetName().Name, "netstandard", StringComparison.OrdinalIgnoreCase));
+            return assembly.Location;
+        }
+#endif
 
         private string baseDirectory;
 
@@ -129,12 +138,15 @@ namespace FakeItEasy.IntegrationTests.External
 ";
 
             var references = GetFrameworkAssemblyLocations()
-            .Concat(new[]
-            {
-                typeof(A).GetTypeInformation().Assembly.Location,
-                this.AssemblyDependencyPath
-            })
-            .Select(l => MetadataReference.CreateFromFile(l));
+                .Concat(new[]
+                {
+                    typeof(A).GetTypeInformation().Assembly.Location,
+#if REQUIRES_NETSTANDARD_REFERENCE
+                    GetNetStandardAssemblyLocation(),
+#endif
+                    this.AssemblyDependencyPath
+                })
+                .Select(l => MetadataReference.CreateFromFile(l));
 
             var compilation = CSharpCompilation.Create(
                 AssemblyName,
