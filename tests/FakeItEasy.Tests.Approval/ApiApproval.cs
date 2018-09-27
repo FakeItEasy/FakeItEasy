@@ -31,9 +31,17 @@
         [Fact]
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveApiNetStd()
+        public void ApproveApiNetStd16()
         {
             ApproveApi("netstandard1.6");
+        }
+
+        [Fact]
+        [UseReporter(typeof(DiffReporter))]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public void ApproveApiNetStd20()
+        {
+            ApproveApi("netstandard2.0");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

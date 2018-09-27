@@ -6,7 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Octokit" Version="0.26.0" />
+    <PackageReference Include="Octokit" Version="$(OctokitVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../GitHubTokenSource.cs" />
   </ItemGroup>
 
 </Project>

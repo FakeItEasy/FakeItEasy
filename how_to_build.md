@@ -9,17 +9,24 @@ At the time of writing the build is only confirmed to work on Windows using the 
 
 ## Prerequisites
 
-1. Ensure you have .NET framework 4.6.1 or later installed.
+The build requires that a few pieces of software be installed on the host computer. We're somewhat aggressive about adoptiong new language features and the like, so rather than specifying exactly which versions are required, we'll tend toward
+"latest" or "at least" forms of guidance. If it seems you have an incompatible version of the software, prefer to upgrade rather than downgrade.
 
-1. Ensure you have version 15.3 or later of either Visual Studio 2017 or MSBuild installed.
+Ensure that the following are installed:
 
-1. Ensure you have .NET Core SDK 2.0.2 or later installed
+1. .NET 3.5, required by ILMerge
+
+1. a recent version of Visual Studio 2017 (currently this means 15.7 or later) or the Build Tools for Visual Studio 2017
+
+1. a recent version of the .NET Core 1.0 Runtime (currently this means 1.0.12 or later)
+
+1. a recent version of the .NET Core 2.1 SDK (currently this means 2.1.3 or later)
 
 ## Building
 
 Using a command prompt, navigate to your clone root folder and execute `build.cmd`.
 
-This executes the default build targets to produce both the .NET Standard and the .NET 4.0 artifacts.
+This executes the default build targets to produce both .NET Standard and .NET Framework artifacts.
 
 After the build has completed, the build artifacts will be located in `artifacts`.
 

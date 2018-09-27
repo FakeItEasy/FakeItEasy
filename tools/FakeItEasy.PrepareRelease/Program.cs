@@ -7,6 +7,7 @@
     using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
+    using FakeItEasy.Tools;
     using Octokit;
     using Octokit.Helpers;
 
@@ -66,14 +67,9 @@
 
         public static GitHubClient GetAuthenticatedGitHubClient()
         {
-            var token = ReadGitHubToken();
+            var token = GitHubTokenSource.GetAccessToken();
             var credentials = new Credentials(token);
             return new GitHubClient(new ProductHeaderValue("FakeItEasy-build-scripts")) { Credentials = credentials };
-        }
-
-        public static string ReadGitHubToken()
-        {
-            return File.ReadAllText(Path.Combine(GetCurrentScriptDirectory(), ".githubtoken")).Trim();
         }
 
         public static async Task<Milestone> GetExistingMilestone(this IGitHubClient gitHubClient)
@@ -106,10 +102,18 @@
 
         public static IEnumerable<string> GetIssuesReferencedFromRelease(Release release)
         {
+            // Release bodies should contain references to fixed issues in the form 
+            // (#1234), or (#1234, #1235, #1236) if multiple issues apply to a topic.
+            // It's hard (impossible?) to harvest values from a repeated capture group,
+            // so grab everything between the ()s and split manually.
             var issuesReferencedFromRelease = new HashSet<string>();
-            foreach (Match match in Regex.Matches(release.Body, @"\(#(<issueNumber>[0-9]+)\)"))
+            foreach (Match match in Regex.Matches(release.Body, @"\((?<issueNumbers>#[0-9]+((, )#[0-9]+)*)\)"))
             {
-                issuesReferencedFromRelease.Add(match.Groups["issueNumber"].Value);
+                var issueNumbers = match.Groups["issueNumbers"].Value;
+                foreach (var issueNumber in issueNumbers.Split(new char[] { '#', ' ', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    issuesReferencedFromRelease.Add(issueNumber);
+                }
             }
 
             return issuesReferencedFromRelease;
@@ -209,17 +213,18 @@
         public static async Task CreateNextRelease(this IGitHubClient gitHubClient)
         {
             const string newReleaseBody = @"
-        ### Changed
+### Changed
 
-        ### New
-        * Issue Title (#12345)
+### New
+* Issue Title (#12345)
 
-        ### Fixed
+### Fixed
 
-        ### Additional Items
+### Additional Items
 
-        ### With special thanks for contributions to this release from:
-        * Real Name - @githubhandle";
+### With special thanks for contributions to this release from:
+* Real Name - @githubhandle
+";
 
             var newRelease = new NewRelease(NextReleaseName) { Draft = true, Name = NextReleaseName, Body = newReleaseBody.Trim() };
             Console.WriteLine($"Creating new GitHub release '{newRelease.Name}'...");
@@ -273,7 +278,5 @@
                 new NewPullRequest($"Release {version}", releaseBranchName, TargetBranchName));
             Console.WriteLine($"Created pull request '{pr.Title}' at {pr.HtmlUrl}");
         }
-
-        public static string GetCurrentScriptDirectory([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
     }
 }

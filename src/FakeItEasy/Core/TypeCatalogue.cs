@@ -95,7 +95,7 @@ namespace FakeItEasy.Core
             // Find the paths of already loaded assemblies so we don't double scan them.
             var loadedAssemblyFiles = new HashSet<string>(
                 loadedAssemblies
-#if FEATURE_REFLECTION_GETASSEMBLIES
+#if FEATURE_REFLECTIONONLYLOAD
                     // Exclude the ReflectionOnly assemblies because we may fully load them later.
                     .Where(a => !a.ReflectionOnly)
 #endif
@@ -118,10 +118,12 @@ namespace FakeItEasy.Core
                 Assembly assembly;
                 try
                 {
-#if FEATURE_REFLECTION_GETASSEMBLIES
+#if FEATURE_REFLECTIONONLYLOAD
                     assembly = Assembly.ReflectionOnlyLoadFrom(file);
-#else
+#elif USE_RUNTIMELOADER
                     assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
+#else
+                    assembly = Assembly.LoadFrom(file);
 #endif
                 }
                 catch (Exception ex)
@@ -135,7 +137,7 @@ namespace FakeItEasy.Core
                     continue;
                 }
 
-#if FEATURE_REFLECTION_GETASSEMBLIES
+#if FEATURE_REFLECTIONONLYLOAD
                 // A reflection-only loaded assembly can't be scanned for types, so fully load it before returning it.
                 try
                 {

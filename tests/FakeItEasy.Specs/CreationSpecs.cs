@@ -169,8 +169,8 @@ namespace FakeItEasy.Specs
             // unsuccessful constructors may be called more than once, so serialize fake
             // creation for this test.
             "And nobody else is trying to fake the class right now"
-                .x(() => ClassWhosePreferredConstructorsThrow.FakingLock.Wait(TimeSpan.FromSeconds(30)))
-                .Teardown(() => ClassWhosePreferredConstructorsThrow.FakingLock.Set());
+                .x(() => Monitor.TryEnter(typeof(ClassWhosePreferredConstructorsThrow), TimeSpan.FromSeconds(30)).Should().BeTrue("we must enter the monitor"))
+                .Teardown(() => Monitor.Exit(typeof(ClassWhosePreferredConstructorsThrow)));
 
             "When I create a fake of the class"
                 .x(() => fake1 = this.CreateFake<ClassWhosePreferredConstructorsThrow>());
@@ -190,8 +190,6 @@ namespace FakeItEasy.Specs
 
         public class ClassWhosePreferredConstructorsThrow
         {
-            public static ManualResetEventSlim FakingLock { get; } = new ManualResetEventSlim(true);
-
             public static int NumberOfTimesParameterlessConstructorWasCalled => numberOfTimesParameterlessConstructorWasCalled;
 
             public static int NumberOfTimesTwoParameterConstructorWasCalled => numberOfTimesTwoParameterConstructorWasCalled;

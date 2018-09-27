@@ -1,6 +1,5 @@
 ﻿namespace FakeItEasy.Build
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using static Bullseye.Targets;
@@ -8,7 +7,6 @@
 
     public class Program
     {
-        private const string TestsDirectory = "artifacts/tests";
         private const string LogsDirectory = "artifacts/logs";
         private const string Solution = "FakeItEasy.sln";
         private const string VersionInfoFile = "src/VersionInfo.cs";
@@ -27,6 +25,7 @@
             "src/FakeItEasy/bin/Release/net40/FakeItEasy.pdb",
             "src/FakeItEasy/bin/Release/net45/FakeItEasy.pdb",
             "src/FakeItEasy/bin/Release/netstandard1.6/FakeItEasy.pdb",
+            "src/FakeItEasy/bin/Release/netstandard2.0/FakeItEasy.pdb",
             "src/FakeItEasy.Analyzer.CSharp/bin/Release/FakeItEasy.Analyzer.Csharp.pdb",
             "src/FakeItEasy.Analyzer.VisualBasic/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
         };
@@ -56,7 +55,6 @@
 
         private static readonly string OutputDirectory = Path.GetFullPath("artifacts/output");
 
-        private static string msBuild = null;
         private static string version = null;
 
         public static void Main(string[] args)
@@ -67,23 +65,18 @@
 
             Target("logsDirectory", () => Directory.CreateDirectory(LogsDirectory));
 
-            Target("testsDirectory", () => Directory.CreateDirectory(TestsDirectory));
-
-            Target("find-msbuild", () => msBuild = $"{GetVSLocation()}/MSBuild/15.0/Bin/MSBuild.exe");
-
-            Target("build", DependsOn("restore", "versionInfoFile", "find-msbuild"), () => RunMsBuild("Build"));
+            Target(
+                "build",
+                DependsOn("versionInfoFile"),
+                () => Run("dotnet", $"build {Solution} -c Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/build.binlog"));
 
             Target("versionInfoFile", () => Run(ToolPaths.GitVersion, $"/updateAssemblyInfo {VersionInfoFile} /ensureAssemblyInfo"));
-
-            Target(
-                "restore",
-                () => Run("dotnet", $"restore"));
 
             foreach (var testSuite in TestSuites)
             {
                 Target(
                     testSuite.Key,
-                    DependsOn("build", "testsDirectory"),
+                    DependsOn("build"),
                     forEach: testSuite.Value,
                     action: testDirectory => RunTests(testDirectory));
             }
@@ -114,28 +107,7 @@
             RunTargets(args);
         }
 
-        private static void RunMsBuild(string target)
-        {
-            Run(
-                msBuild,
-                $"{Solution} /target:{target} /p:configuration=Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/{target}.binlog");
-        }
-
-        private static void RunTests(string testDirectory)
-        {
-            var xml = Path.GetFullPath(Path.Combine(TestsDirectory, Path.GetFileName(testDirectory) + ".TestResults.xml"));
-            Run("dotnet", $"xunit -configuration Release -nologo -nobuild -noautoreporters -notrait \"explicit=yes\" -xml {xml}", testDirectory);
-        }
-
-        private static string GetVSLocation()
-        {
-            var installationPath = Read($"\"{ToolPaths.VSWhere}\"", "-nologo -latest -property installationPath -requires Microsoft.Component.MSBuild -version [15,16)");
-            if (string.IsNullOrWhiteSpace(installationPath))
-            {
-                throw new InvalidOperationException("Visual Studio 2017 was not found");
-            }
-
-            return installationPath.Trim();
-        }
+        private static void RunTests(string testDirectory) =>
+            Run("dotnet", "test --configuration Release --no-build -- RunConfiguration.NoAutoReporters=true", testDirectory);
     }
 }
