@@ -6,9 +6,9 @@ namespace FakeItEasy
 
     /// <summary>
     /// Hides standard Object members to make fluent interfaces
-    /// easier to read. Found in the source of Autofac: <see cref="!:http://code.google.com/p/autofac/"/>
+    /// easier to read. Found in the source of Autofac: <see cref="!:https://code.google.com/p/autofac/"/>
     /// Based on blog post here:
-    /// <see cref="!:http://www.clariusconsulting.net/blogs/kzu/archive/2008/03/10/58301.aspx"/>
+    /// <see cref="!:http://blogs.clariusconsulting.net/kzu/how-to-hide-system-object-members-from-your-interfaces/"/>
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IHideObjectMembers

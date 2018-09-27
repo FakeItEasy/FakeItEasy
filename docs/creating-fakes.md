@@ -74,7 +74,7 @@ mentioned above.
 
 ##Unnatural fakes
 
-For those accustomed to [Moq](http://www.moqthis.com/) there is an
+For those accustomed to [Moq](https://www.moqthis.com/) there is an
 alternative way of creating fakes through the `new Fake<T>`
 syntax. The fake provides a fluent interface for configuring the faked
 object:
@@ -86,4 +86,4 @@ fake.CallsTo(x => x.Bar("some argument")).Returns("some return value");
 var foo = fake.FakeObject;
 ```
 
-For an alternative look at migrating from Moq to FakeItEasy, see Daniel Marbach's blog post that talks about [Migration from Moq to FakeItEasy with Resharper Search Patterns](http://www.planetgeek.ch/2013/07/18/migration-from-moq-to-fakeiteasy-with-resharper-search-patterns/).
+For an alternative look at migrating from Moq to FakeItEasy, see Daniel Marbach's blog post that talks about [Migration from Moq to FakeItEasy with Resharper Search Patterns](https://www.planetgeek.ch/2013/07/18/migration-from-moq-to-fakeiteasy-with-resharper-search-patterns/).
