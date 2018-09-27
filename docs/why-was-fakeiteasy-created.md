@@ -10,7 +10,7 @@ constructs referenced (such as `DummyDefinitions`) have changed or
 been renamed in newer versions of FakeItEasy.
 
 The question on Stack Overflow:
-"[Are fakes better than Mocks?](http://stackoverflow.com/questions/4001101/are-fakes-better-than-mocks)"
+"[Are fakes better than Mocks?](https://stackoverflow.com/questions/4001101/are-fakes-better-than-mocks)"
 
 #Patrik H&auml;gne's answer
 

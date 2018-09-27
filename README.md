@@ -1,4 +1,4 @@
-![Are you mocking me?](http://fakeiteasy.github.io/img/fakeiteasy_logo_256.png)
+![Are you mocking me?](https://fakeiteasy.github.io/img/fakeiteasy_logo_256.png)
 
 [![NuGet version](https://img.shields.io/nuget/v/FakeItEasy.svg?style=flat)](https://www.nuget.org/packages/FakeItEasy)
 [![Build status](https://ci.appveyor.com/api/projects/status/tmxobysgprwpecsb/branch/develop?svg=true)](https://ci.appveyor.com/project/FakeItEasy/fakeiteasy/branch/develop)
@@ -13,9 +13,9 @@ A .Net dynamic fake framework for creating all types of fake objects, mocks, stu
 
 ## It's faking amazing!
 
-* [Website](http://fakeiteasy.github.io/)
-* [Quickstart](http://fakeiteasy.readthedocs.io/en/stable/quickstart/)
-* [Documentation](http://fakeiteasy.readthedocs.io/en/stable/)
+* [Website](https://fakeiteasy.github.io/)
+* [Quickstart](https://fakeiteasy.readthedocs.io/en/stable/quickstart/)
+* [Documentation](https://fakeiteasy.readthedocs.io/en/stable/)
 * [Chat](https://gitter.im/FakeItEasy/FakeItEasy)
 * NuGet packages:
     * [Official releases on NuGet.org](https://www.nuget.org/profiles/FakeItEasy "FakeItEasy's packages on NuGet.org"), targeting:

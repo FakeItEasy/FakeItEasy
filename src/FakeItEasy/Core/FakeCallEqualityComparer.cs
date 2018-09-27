@@ -16,7 +16,7 @@ namespace FakeItEasy.Core
                     && x.Arguments.SequenceEqual(y.Arguments);
         }
 
-        // NOTE (adamralph): based on http://stackoverflow.com/a/263416/49241
+        // NOTE (adamralph): based on https://stackoverflow.com/a/263416/49241
         public int GetHashCode(IFakeObjectCall obj)
         {
             Guard.AgainstNull(obj, nameof(obj));
