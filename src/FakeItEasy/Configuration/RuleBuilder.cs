@@ -180,7 +180,7 @@ namespace FakeItEasy.Configuration
 
         private UnorderedCallAssertion MustHaveHappened(CallCountConstraint callCountConstraint)
         {
-            var asserter = this.asserterFactory.Invoke(this.Calls);
+            var asserter = this.asserterFactory.Invoke(this.Calls, this.manager.GetLastRecordedSequenceNumber());
 
             asserter.AssertWasCalled(this.Matcher.Matches, this.RuleBeingBuilt.WriteDescriptionOfValidCall, callCountConstraint);
 

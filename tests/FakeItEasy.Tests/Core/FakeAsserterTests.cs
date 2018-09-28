@@ -36,7 +36,7 @@ namespace FakeItEasy.Tests.Core
 
         private FakeAsserter CreateAsserter()
         {
-            return new FakeAsserter(this.calls, this.callWriter, this.outputWriterFactory);
+            return new FakeAsserter(this.calls, 0, this.callWriter, this.outputWriterFactory);
         }
 
         private void StubCalls(int numberOfCalls)

@@ -10,26 +10,25 @@ namespace FakeItEasy.Core
         private readonly CallWriter callWriter;
         private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
         private readonly IEnumerable<ICompletedFakeObjectCall> calls;
+        private readonly int lastSequenceNumber;
 
-        public FakeAsserter(IEnumerable<ICompletedFakeObjectCall> calls, CallWriter callWriter, StringBuilderOutputWriter.Factory outputWriterFactory)
+        public FakeAsserter(IEnumerable<ICompletedFakeObjectCall> calls, int lastSequenceNumber, CallWriter callWriter, StringBuilderOutputWriter.Factory outputWriterFactory)
         {
             Guard.AgainstNull(calls, nameof(calls));
             Guard.AgainstNull(callWriter, nameof(callWriter));
 
             this.calls = calls;
+            this.lastSequenceNumber = lastSequenceNumber;
             this.callWriter = callWriter;
             this.outputWriterFactory = outputWriterFactory;
         }
 
-        public delegate IFakeAsserter Factory(IEnumerable<ICompletedFakeObjectCall> calls);
+        public delegate IFakeAsserter Factory(IEnumerable<ICompletedFakeObjectCall> calls, int lastSequenceNumber);
 
         public virtual void AssertWasCalled(
             Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint)
         {
-            var lastCall = this.calls.LastOrDefault();
-            int lastSequenceNumber = lastCall != null ? SequenceNumberManager.GetSequenceNumber(lastCall) : -1;
-
-            bool IsBeforeAssertionStart(ICompletedFakeObjectCall call) => SequenceNumberManager.GetSequenceNumber(call) <= lastSequenceNumber;
+            bool IsBeforeAssertionStart(ICompletedFakeObjectCall call) => SequenceNumberManager.GetSequenceNumber(call) <= this.lastSequenceNumber;
 
             var matchedCallCount = this.calls.Count(c => IsBeforeAssertionStart(c) && callPredicate(c));
             if (!callCountConstraint.Matches(matchedCallCount))

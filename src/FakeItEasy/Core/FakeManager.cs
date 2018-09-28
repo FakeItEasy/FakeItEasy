@@ -5,6 +5,7 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Threading;
 
     /// <summary>
     /// The central point in the API for proxied fake objects handles interception
@@ -24,6 +25,7 @@ namespace FakeItEasy.Core
 
         private ConcurrentQueue<ICompletedFakeObjectCall> recordedCalls;
 #pragma warning restore CA2235 // Mark all non-serializable fields
+        private int lastSequenceNumber = -1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeManager"/> class.
@@ -163,6 +165,8 @@ namespace FakeItEasy.Core
             }
         }
 
+        internal int GetLastRecordedSequenceNumber() => this.lastSequenceNumber;
+
         /// <summary>
         /// Returns a list of all calls on the managed object.
         /// </summary>
@@ -178,7 +182,8 @@ namespace FakeItEasy.Core
         /// <param name="call">The call to remember.</param>
         internal void RecordCall(ICompletedFakeObjectCall call)
         {
-            SequenceNumberManager.RecordSequenceNumber(call);
+            int sequenceNumber = SequenceNumberManager.RecordSequenceNumber(call);
+            this.UpdateLastSequenceNumber(sequenceNumber);
             this.recordedCalls.Enqueue(call);
         }
 
@@ -218,6 +223,23 @@ namespace FakeItEasy.Core
         {
             rule.CalledNumberOfTimes++;
             rule.Rule.Apply(fakeObjectCall);
+        }
+
+        private void UpdateLastSequenceNumber(int sequenceNumber)
+        {
+            //// Set the specified sequence number as the last sequence number if it's greater than the current last sequence number.
+            //// We use this number in FakeAsserter to separate calls made before the assertion starts from those made during the
+            //// assertion.
+            //// Because lastSequenceNumber might be changed by another thread after the comparison, we use CompareExchange to
+            //// only assign it if it has the same value as the one we compared with. If it's not the case, we retry.
+
+            int last;
+            do
+            {
+                last = this.lastSequenceNumber;
+            }
+            while (sequenceNumber > last &&
+                   sequenceNumber != Interlocked.CompareExchange(ref this.lastSequenceNumber, sequenceNumber, last));
         }
     }
 }
