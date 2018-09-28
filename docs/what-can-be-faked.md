@@ -3,7 +3,7 @@
 ## What types can be faked?
 
 FakeItEasy uses
-[Castle DynamicProxy](http://www.castleproject.org/projects/dynamicproxy/)
+[Castle DynamicProxy](https://www.castleproject.org/projects/dynamicproxy/)
 to create fakes. Thus, it can fake just about anything that could
 normally be overridden, extended, or implemented.  This means that the
 following entities can be faked:

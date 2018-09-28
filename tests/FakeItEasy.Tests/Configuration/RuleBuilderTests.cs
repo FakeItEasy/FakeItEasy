@@ -303,7 +303,7 @@ namespace FakeItEasy.Tests.Configuration
 
         private RuleBuilder CreateBuilder(BuildableCallRule ruleBeingBuilt)
         {
-            return new RuleBuilder(ruleBeingBuilt, this.fakeManager, x => this.asserter);
+            return new RuleBuilder(ruleBeingBuilt, this.fakeManager, (x, y) => this.asserter);
         }
 
         private RuleBuilder.ReturnValueConfiguration<int> CreateTestableReturnConfiguration()

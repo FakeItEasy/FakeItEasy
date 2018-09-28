@@ -42,7 +42,7 @@ namespace FakeItEasy
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
 
-            container.Register<FakeAsserter.Factory>(c => calls => new FakeAsserter(calls, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+            container.Register<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
                 (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy, c.Resolve<IFakeManagerAccessor>()));

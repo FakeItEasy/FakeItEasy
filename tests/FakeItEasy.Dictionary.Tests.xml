@@ -1,4 +1,4 @@
-<!-- NOTE (adamralph): For more info see: http://msdn.microsoft.com/en-us/library/bb514188.aspx -->
+<!-- NOTE (adamralph): For more info see: https://docs.microsoft.com/en-us/visualstudio/code-quality/how-to-customize-the-code-analysis-dictionary -->
 <Dictionary>
   <Words>
     <Recognized>
