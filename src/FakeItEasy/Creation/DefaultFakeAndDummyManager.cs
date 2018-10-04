@@ -1,9 +1,8 @@
 namespace FakeItEasy.Creation
 {
     using System;
-#if FEATURE_NETCORE_REFLECTION
+    using System.Collections.Concurrent;
     using System.Reflection;
-#endif
     using FakeItEasy.Core;
 
     /// <summary>
@@ -12,6 +11,8 @@ namespace FakeItEasy.Creation
     internal class DefaultFakeAndDummyManager
         : IFakeAndDummyManager
     {
+        private static readonly ConcurrentDictionary<Type, Func<ProxyOptions, IFakeOptions>> FakeOptionsFactoryCache = new ConcurrentDictionary<Type, Func<ProxyOptions, IFakeOptions>>();
+
         private readonly IFakeObjectCreator fakeCreator;
         private readonly DynamicOptionsBuilder dynamicOptionsBuilder;
         private readonly IDummyValueResolver dummyValueResolver;
@@ -48,19 +49,20 @@ namespace FakeItEasy.Creation
             return false;
         }
 
-        private static IFakeOptions CreateFakeOptions(Type typeOfFake, ProxyOptions proxyOptions)
-        {
-            var optionsConstructor = typeof(FakeOptions<>)
-                .MakeGenericType(typeOfFake)
-                .GetConstructor(new[] { typeof(ProxyOptions) });
+        private static IFakeOptions CreateFakeOptions<T>(ProxyOptions proxyOptions) => new FakeOptions<T>(proxyOptions);
 
-            return (IFakeOptions)optionsConstructor.Invoke(new object[] { proxyOptions });
+        private static Func<ProxyOptions, IFakeOptions> GetFakeOptionsFactory(Type typeOfFake)
+        {
+            var method = typeof(DefaultFakeAndDummyManager).GetMethod(nameof(CreateFakeOptions), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(typeOfFake);
+
+            return (Func<ProxyOptions, IFakeOptions>)method.CreateDelegate(typeof(Func<ProxyOptions, IFakeOptions>));
         }
 
         private IProxyOptions BuildProxyOptions(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
             var proxyOptions = new ProxyOptions();
-            var options = CreateFakeOptions(typeOfFake, proxyOptions);
+            var fakeOptionsFactory = FakeOptionsFactoryCache.GetOrAdd(typeOfFake, GetFakeOptionsFactory);
+            var options = fakeOptionsFactory.Invoke(proxyOptions);
 
             this.dynamicOptionsBuilder.BuildOptions(typeOfFake, options);
             optionsBuilder.Invoke(options);
