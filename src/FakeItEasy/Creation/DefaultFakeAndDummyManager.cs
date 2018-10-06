@@ -14,14 +14,14 @@ namespace FakeItEasy.Creation
         private static readonly ConcurrentDictionary<Type, Func<ProxyOptions, IFakeOptions>> FakeOptionsFactoryCache = new ConcurrentDictionary<Type, Func<ProxyOptions, IFakeOptions>>();
 
         private readonly IFakeObjectCreator fakeCreator;
-        private readonly DynamicOptionsBuilder dynamicOptionsBuilder;
+        private readonly ImplicitOptionsBuilderCatalogue implicitOptionsBuilderCatalogue;
         private readonly IDummyValueResolver dummyValueResolver;
 
-        public DefaultFakeAndDummyManager(IDummyValueResolver dummyValueResolver, IFakeObjectCreator fakeCreator, DynamicOptionsBuilder dynamicOptionsBuilder)
+        public DefaultFakeAndDummyManager(IDummyValueResolver dummyValueResolver, IFakeObjectCreator fakeCreator, ImplicitOptionsBuilderCatalogue implicitOptionsBuilderCatalogue)
         {
             this.dummyValueResolver = dummyValueResolver;
             this.fakeCreator = fakeCreator;
-            this.dynamicOptionsBuilder = dynamicOptionsBuilder;
+            this.implicitOptionsBuilderCatalogue = implicitOptionsBuilderCatalogue;
         }
 
         public object CreateDummy(Type typeOfDummy)
@@ -60,12 +60,32 @@ namespace FakeItEasy.Creation
 
         private IProxyOptions BuildProxyOptions(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
-            var proxyOptions = new ProxyOptions();
-            var fakeOptionsFactory = FakeOptionsFactoryCache.GetOrAdd(typeOfFake, GetFakeOptionsFactory);
-            var options = fakeOptionsFactory.Invoke(proxyOptions);
+            var implicitOptionsBuilder = this.implicitOptionsBuilderCatalogue.GetImplicitOptionsBuilder(typeOfFake);
 
-            this.dynamicOptionsBuilder.BuildOptions(typeOfFake, options);
-            optionsBuilder.Invoke(options);
+            if (implicitOptionsBuilder == null && optionsBuilder == null)
+            {
+                return ProxyOptions.Default;
+            }
+
+            var proxyOptions = new ProxyOptions();
+            var fakeOptions = FakeOptionsFactoryCache.GetOrAdd(typeOfFake, GetFakeOptionsFactory).Invoke(proxyOptions);
+
+            if (implicitOptionsBuilder != null)
+            {
+                try
+                {
+                    implicitOptionsBuilder.BuildOptions(typeOfFake, fakeOptions);
+                }
+                catch (Exception ex)
+                {
+                    throw new UserCallbackException(
+                        ExceptionMessages.UserCallbackThrewAnException($"Fake options builder '{implicitOptionsBuilder.GetType()}'"),
+                        ex);
+                }
+            }
+
+            optionsBuilder?.Invoke(fakeOptions);
+
             return proxyOptions;
         }
     }
