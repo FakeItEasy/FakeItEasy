@@ -21,7 +21,7 @@ namespace FakeItEasy
         /// </summary>
         public Fake()
         {
-            this.FakedObject = CreateFake(x => { });
+            this.FakedObject = (T)FakeAndDummyManager.CreateFake(typeof(T), null);
         }
 
         /// <summary>

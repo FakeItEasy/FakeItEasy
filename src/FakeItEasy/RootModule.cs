@@ -28,7 +28,7 @@ namespace FakeItEasy
         public static void RegisterDependencies(DictionaryContainer container)
         {
             container.RegisterSingleton(c =>
-                new DynamicOptionsBuilder(
+                new ImplicitOptionsBuilderCatalogue(
                     c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
 
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(c));
@@ -73,7 +73,7 @@ namespace FakeItEasy
             container.RegisterSingleton<IFakeAndDummyManager>(c =>
             {
                 var fakeCreator = c.Resolve<IFakeObjectCreator>();
-                var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
+                var fakeConfigurator = c.Resolve<ImplicitOptionsBuilderCatalogue>();
 
                 var dynamicDummyFactory = new DynamicDummyFactory(c.Resolve<IEnumerable<IDummyFactory>>());
                 var dummyValueResolver = new DummyValueResolver(dynamicDummyFactory, fakeCreator);
