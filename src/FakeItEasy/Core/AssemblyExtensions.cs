@@ -16,15 +16,5 @@ namespace FakeItEasy.Core
 
             return assembly.GetReferencedAssemblies().Any(r => r.FullName == TypeCatalogue.FakeItEasyAssembly.FullName);
         }
-
-        /// <summary>
-        /// Gets the simple name of the assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>The simple name of the assembly.</returns>
-        public static string Name(this Assembly assembly)
-        {
-            return new AssemblyName(assembly.FullName).Name;
-        }
     }
 }
