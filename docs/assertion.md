@@ -107,7 +107,11 @@ aList.Add(4);
 Assert.That(capturedList, Is.EqualTo(new List<int> {1, 2, 3}));
 ```
 
-#VB.Net
+# More advanced assertions
+
+If the built-in assertion API isn't sufficient, you can also examine the list of recorded calls directly, as described in [Getting the list of calls made on a fake](advanced-usage.md#getting-the-list-of-calls-made-on-a-fake).
+
+# VB.NET
 
 ```
 ' Functions and Subs can be asserted using their respective keywords
