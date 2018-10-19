@@ -35,6 +35,7 @@ pages:
 - Formatting Argument Values: formatting-argument-values.md
 - Scanning for Extension Points: scanning-for-extension-points.md
 - Bootstrapper: bootstrapper.md
+- Advanced usage: advanced-usage.md
 - Analyzer: analyzer.md
 - Snippets for FakeItEasy in SideWaffle: snippets-for-fakeiteasy-in-sidewaffle.md
 - Platform support: platform-support.md
