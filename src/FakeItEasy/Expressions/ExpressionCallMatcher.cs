@@ -64,16 +64,22 @@ namespace FakeItEasy.Expressions
 
         public Func<IFakeObjectCall, ICollection<object>> GetOutAndRefParametersValueProducer()
         {
-            var values = this.argumentConstraints.OfType<IArgumentValueProvider>()
-                .Select(valueProvidingConstraint => valueProvidingConstraint.Value)
-                .ToList();
+            IList<object> values = null;
 
-            if (values.Any())
+            foreach (var argumentConstraint in this.argumentConstraints)
             {
-                return call => values;
+                if (argumentConstraint is IArgumentValueProvider valueProvidingConstraint)
+                {
+                    if (values == null)
+                    {
+                        values = new List<object>();
+                    }
+
+                    values.Add(valueProvidingConstraint.Value);
+                }
             }
 
-            return null;
+            return values == null ? (Func<IFakeObjectCall, ICollection<object>>)null : call => values;
         }
 
         private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<ParsedArgumentExpression> argumentExpressions, ExpressionArgumentConstraintFactory constraintFactory) =>
