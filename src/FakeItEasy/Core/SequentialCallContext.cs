@@ -23,6 +23,8 @@ namespace FakeItEasy.Core
             this.currentSequenceNumber = -1;
         }
 
+        public delegate SequentialCallContext Factory();
+
         public void CheckNextCall(
             FakeManager fakeManager,
             Func<IFakeObjectCall, bool> callPredicate,

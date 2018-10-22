@@ -24,7 +24,6 @@ namespace FakeItEasy.Tests
         {
             return new[]
             {
-                new object[] { typeof(SequentialCallContext) },
                 new object[] { typeof(StringBuilderOutputWriter) },
             };
         }

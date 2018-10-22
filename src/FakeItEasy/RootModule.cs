@@ -106,7 +106,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
 
-            container.Register(c => new SequentialCallContext(c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+            container.RegisterSingleton<SequentialCallContext.Factory>(c => () => new SequentialCallContext(c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
         }
 
         private class ExpressionCallMatcherFactory
