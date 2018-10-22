@@ -27,6 +27,21 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
         public static void RegisterDependencies(DictionaryContainer container)
         {
+            var bootstrapper = BootstrapperLocator.FindBootstrapper();
+
+            container.RegisterSingleton(c =>
+                new TypeCatalogueInstanceProvider(c.Resolve<ITypeCatalogue>()));
+            container.RegisterSingleton<ITypeCatalogue>(c =>
+            {
+                var typeCatalogue = new TypeCatalogue();
+                typeCatalogue.Load(bootstrapper.GetAssemblyFileNamesToScanForExtensions());
+                return typeCatalogue;
+            });
+
+            RegisterEnumerableInstantiatedFromTypeCatalogue<IArgumentValueFormatter>(container);
+            RegisterEnumerableInstantiatedFromTypeCatalogue<IDummyFactory>(container);
+            RegisterEnumerableInstantiatedFromTypeCatalogue<IFakeOptionsBuilder>(container);
+
             var methodInfoManager = new MethodInfoManager();
             var argumentConstraintTrap = new ArgumentConstraintTrap();
             var expressionArgumentConstraintFactory = new ExpressionArgumentConstraintFactory(argumentConstraintTrap);
@@ -103,6 +118,24 @@ namespace FakeItEasy
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
 
             container.RegisterSingleton<SequentialCallContext.Factory>(c => () => new SequentialCallContext(c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+
+            container.RegisterSingleton<IConfigurationFactory>(c =>
+                new ConfigurationFactory(c));
+
+            container.RegisterSingleton<IStartConfigurationFactory>(c =>
+                new StartConfigurationFactory(c));
+
+            container.RegisterSingleton<RuleBuilder.Factory>(c =>
+                (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>()));
+
+            container.RegisterSingleton<IFakeConfigurationManager>(c =>
+                new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), c.Resolve<ExpressionCallRule.Factory>(), c.Resolve<ICallExpressionParser>(), c.Resolve<IInterceptionAsserter>()));
+        }
+
+        private static void RegisterEnumerableInstantiatedFromTypeCatalogue<T>(DictionaryContainer container)
+        {
+            container.RegisterSingleton(c =>
+                c.Resolve<TypeCatalogueInstanceProvider>().InstantiateAllOfType<T>());
         }
 
         private class ExpressionCallMatcherFactory
@@ -129,6 +162,54 @@ namespace FakeItEasy
             public INegatableArgumentConstraintManager<T> Create<T>()
             {
                 return new DefaultArgumentConstraintManager<T>(ArgumentConstraintTrap.ReportTrappedConstraint);
+            }
+        }
+
+        private class ConfigurationFactory : IConfigurationFactory
+        {
+            public ConfigurationFactory(DictionaryContainer container)
+            {
+                this.Container = container;
+            }
+
+            private DictionaryContainer Container { get; }
+
+            private RuleBuilder.Factory BuilderFactory => this.Container.Resolve<RuleBuilder.Factory>();
+
+            public IAnyCallConfigurationWithVoidReturnType CreateConfiguration(FakeManager fakeObject, BuildableCallRule callRule)
+            {
+                return this.BuilderFactory.Invoke(callRule, fakeObject);
+            }
+
+            public IAnyCallConfigurationWithReturnTypeSpecified<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule)
+            {
+                var parent = this.BuilderFactory.Invoke(callRule, fakeObject);
+                return new RuleBuilder.ReturnValueConfiguration<TMember>(parent);
+            }
+
+            public IAnyCallConfigurationWithNoReturnTypeSpecified CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule)
+            {
+                return new AnyCallConfiguration(fakeObject, callRule, this.Container.Resolve<IConfigurationFactory>());
+            }
+        }
+
+        private class StartConfigurationFactory : IStartConfigurationFactory
+        {
+            public StartConfigurationFactory(DictionaryContainer container)
+            {
+                this.Container = container;
+            }
+
+            private DictionaryContainer Container { get; }
+
+            public IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeManager fakeObject)
+            {
+                return new StartConfiguration<TFake>(
+                    fakeObject,
+                    this.Container.Resolve<ExpressionCallRule.Factory>(),
+                    this.Container.Resolve<IConfigurationFactory>(),
+                    this.Container.Resolve<ICallExpressionParser>(),
+                    this.Container.Resolve<IInterceptionAsserter>());
             }
         }
     }

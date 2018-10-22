@@ -3,7 +3,6 @@ namespace FakeItEasy
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using FakeItEasy.Configuration;
     using FakeItEasy.IoC;
 
     internal class ServiceLocator
@@ -14,8 +13,6 @@ namespace FakeItEasy
         {
             var containerBuilder = new DictionaryContainer();
             RootModule.RegisterDependencies(containerBuilder);
-            ConfigurationModule.RegisterDependencies(containerBuilder);
-            ImportsModule.RegisterDependencies(containerBuilder);
             Current = new ServiceLocator(containerBuilder.Build());
         }
 
