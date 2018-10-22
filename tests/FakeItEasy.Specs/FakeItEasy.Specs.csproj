@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xbehave.Core" Version="2.2.0-beta0001-build680" />
+    <PackageReference Include="Xbehave.Core" Version="2.4.0" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
     <ProjectReference Include="..\..\tests\FakeItEasy.Tests\FakeItEasy.Tests.csproj" />
   </ItemGroup>
