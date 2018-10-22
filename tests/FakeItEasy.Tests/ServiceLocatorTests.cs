@@ -2,7 +2,6 @@ namespace FakeItEasy.Tests
 {
     using System;
     using System.Collections.Generic;
-    using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
     using FluentAssertions;
@@ -20,14 +19,6 @@ namespace FakeItEasy.Tests
             };
         }
 
-        public static IEnumerable<object[]> NonSingletonTypes()
-        {
-            return new[]
-            {
-                new object[] { typeof(StringBuilderOutputWriter) },
-            };
-        }
-
         [Fact]
         public void Current_should_not_be_null()
         {
@@ -42,16 +33,6 @@ namespace FakeItEasy.Tests
             var second = ServiceLocator.Current.Resolve(type);
 
             second.Should().BeSameAs(first);
-        }
-
-        [Theory]
-        [MemberData(nameof(NonSingletonTypes))]
-        public void Should_be_registered_as_non_singleton(Type type)
-        {
-            var first = ServiceLocator.Current.Resolve(type);
-            var second = ServiceLocator.Current.Resolve(type);
-
-            second.Should().NotBeSameAs(first);
         }
     }
 }

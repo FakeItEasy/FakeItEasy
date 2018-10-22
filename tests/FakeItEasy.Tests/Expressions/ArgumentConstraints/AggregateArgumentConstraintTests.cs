@@ -53,7 +53,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
         [Fact]
         public override void Constraint_should_provide_correct_description()
         {
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
 
             this.ConstraintField.WriteDescription(writer);
 

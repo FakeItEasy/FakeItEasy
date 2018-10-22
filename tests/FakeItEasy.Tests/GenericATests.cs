@@ -40,7 +40,7 @@ namespace FakeItEasy.Tests
         public void Ignored_should_return_validator_with_correct_description()
         {
             // Arrange
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
             var result = writer.Builder;
 
             // Act
@@ -70,7 +70,7 @@ namespace FakeItEasy.Tests
         public void Underscore_should_return_validator_with_correct_description()
         {
             // Arrange
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
             var result = writer.Builder;
 
             // Act

@@ -60,7 +60,7 @@ namespace FakeItEasy.Configuration
 
         private static string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
         {
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
             var constraintFactory = ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>();
 
             CallConstraintDescriber.DescribeCallOn(writer, parsedCallExpression.CalledMethod, parsedCallExpression.ArgumentsExpressions.Select(constraintFactory.GetArgumentConstraint));

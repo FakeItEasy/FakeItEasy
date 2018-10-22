@@ -23,7 +23,7 @@ namespace FakeItEasy.Tests.Core
                 .Returns("Default call description");
 
             this.calls = new List<IFakeObjectCall>();
-            this.writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            this.writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
         }
 
         [Fact]

@@ -100,9 +100,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write, c.Resolve<ArgumentValueFormatter>()));
 
-            container.RegisterSingleton<StringBuilderOutputWriter.Factory>(c => builder => new StringBuilderOutputWriter(builder, c.Resolve<ArgumentValueFormatter>()));
-
-            container.Register(c => c.Resolve<StringBuilderOutputWriter.Factory>().Invoke(new StringBuilder()));
+            container.RegisterSingleton<StringBuilderOutputWriter.Factory>(c => () => new StringBuilderOutputWriter(new StringBuilder(), c.Resolve<ArgumentValueFormatter>()));
 
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
 

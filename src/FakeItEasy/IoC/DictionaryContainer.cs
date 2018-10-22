@@ -42,17 +42,6 @@ namespace FakeItEasy.IoC
         }
 
         /// <summary>
-        /// Registers the specified resolver.
-        /// </summary>
-        /// <typeparam name="T">The type of component to register.</typeparam>
-        /// <param name="resolver">The resolver.</param>
-        [DebuggerStepThrough]
-        internal void Register<T>(Func<DictionaryContainer, T> resolver)
-        {
-            this.registeredServices.Add(typeof(T), c => resolver.Invoke(c));
-        }
-
-        /// <summary>
         /// Registers the specified resolver as a singleton.
         /// </summary>
         /// <typeparam name="T">The type of component to register.</typeparam>
@@ -61,8 +50,7 @@ namespace FakeItEasy.IoC
         internal void RegisterSingleton<T>(Func<DictionaryContainer, T> resolver)
         {
             var singletonResolver = new SingletonResolver<T>(resolver);
-
-            this.Register(singletonResolver.Resolve);
+            this.registeredServices.Add(typeof(T), c => singletonResolver.Resolve(c));
         }
 
         private class SingletonResolver<T>

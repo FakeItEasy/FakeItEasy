@@ -64,7 +64,7 @@ namespace FakeItEasy.Core
 
         private void ThrowExceptionWhenAssertionFailed(List<ICompletedFakeObjectCall> originalCallList)
         {
-            var message = this.outputWriterFactory(new StringBuilder());
+            var message = this.outputWriterFactory.Invoke();
 
             message.WriteLine();
             message.WriteLine();
