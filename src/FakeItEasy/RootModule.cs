@@ -42,7 +42,7 @@ namespace FakeItEasy
             container.RegisterSingleton(c =>
                 new MethodInfoManager());
 
-            container.Register<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+            container.RegisterSingleton<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
                 (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy, c.Resolve<IFakeManagerAccessor>()));
@@ -94,11 +94,11 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
-            container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
+            container.RegisterSingleton<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
 
-            container.Register<IArgumentConstraintTrapper>(c => new ArgumentConstraintTrap());
+            container.RegisterSingleton<IArgumentConstraintTrapper>(c => new ArgumentConstraintTrap());
 
-            container.Register<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
+            container.RegisterSingleton<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
 
             container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write, c.Resolve<ArgumentValueFormatter>()));
 

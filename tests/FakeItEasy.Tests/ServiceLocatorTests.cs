@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests
 {
     using System;
     using System.Collections.Generic;
+    using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Expressions;
     using FluentAssertions;
@@ -23,8 +24,9 @@ namespace FakeItEasy.Tests
         {
             return new[]
             {
-                new object[] { typeof(IArgumentConstraintManagerFactory) },
-                new object[] { typeof(FakeFacade) }
+                new object[] { typeof(FakeFacade) },
+                new object[] { typeof(SequentialCallContext) },
+                new object[] { typeof(StringBuilderOutputWriter) },
             };
         }
 
