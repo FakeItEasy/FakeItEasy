@@ -31,7 +31,7 @@ namespace FakeItEasy
                 new ImplicitOptionsBuilderCatalogue(
                     c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
 
-            container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(c));
+            container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory());
 
             container.RegisterSingleton(c =>
                 new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
@@ -110,17 +110,10 @@ namespace FakeItEasy
         private class ExpressionCallMatcherFactory
             : IExpressionCallMatcherFactory
         {
-            private readonly ServiceLocator serviceLocator;
-
-            public ExpressionCallMatcherFactory(ServiceLocator serviceLocator)
-            {
-                this.serviceLocator = serviceLocator;
-            }
-
             public ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification) => new ExpressionCallMatcher(
                     callSpecification,
-                    this.serviceLocator.Resolve<ExpressionArgumentConstraintFactory>(),
-                    this.serviceLocator.Resolve<MethodInfoManager>());
+                    ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>(),
+                    ServiceLocator.Current.Resolve<MethodInfoManager>());
         }
 
         private class ArgumentConstraintManagerFactory

@@ -1,36 +1,22 @@
 namespace FakeItEasy.Tests
 {
-    using System;
-    using System.Collections.Generic;
     using FakeItEasy.Creation;
-    using FakeItEasy.Expressions;
     using FluentAssertions;
     using Xunit;
 
     public class ServiceLocatorTests
     {
-        public static IEnumerable<object[]> SingletonTypes()
-        {
-            return new[]
-            {
-                new object[] { typeof(IExpressionCallMatcherFactory) },
-                new object[] { typeof(ExpressionArgumentConstraintFactory) },
-                new object[] { typeof(IFakeAndDummyManager) }
-            };
-        }
-
         [Fact]
         public void Current_should_not_be_null()
         {
             ServiceLocator.Current.Should().NotBeNull();
         }
 
-        [Theory]
-        [MemberData(nameof(SingletonTypes))]
-        public void Should_be_registered_as_singleton(Type type)
+        [Fact]
+        public void Should_be_registered_as_singleton()
         {
-            var first = ServiceLocator.Current.Resolve(type);
-            var second = ServiceLocator.Current.Resolve(type);
+            var first = ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
+            var second = ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
 
             second.Should().BeSameAs(first);
         }
