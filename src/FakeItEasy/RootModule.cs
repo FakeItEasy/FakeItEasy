@@ -29,26 +29,19 @@ namespace FakeItEasy
         {
             var bootstrapper = BootstrapperLocator.FindBootstrapper();
 
-            container.RegisterSingleton(c =>
-                new TypeCatalogueInstanceProvider(c.Resolve<ITypeCatalogue>()));
-            container.RegisterSingleton<ITypeCatalogue>(c =>
-            {
-                var typeCatalogue = new TypeCatalogue();
-                typeCatalogue.Load(bootstrapper.GetAssemblyFileNamesToScanForExtensions());
-                return typeCatalogue;
-            });
+            var typeCatalogue = new TypeCatalogue();
+            typeCatalogue.Load(bootstrapper.GetAssemblyFileNamesToScanForExtensions());
+            var typeCatalogueInstanceProvider = new TypeCatalogueInstanceProvider(typeCatalogue);
 
-            RegisterEnumerableInstantiatedFromTypeCatalogue<IArgumentValueFormatter>(container);
-            RegisterEnumerableInstantiatedFromTypeCatalogue<IDummyFactory>(container);
-            RegisterEnumerableInstantiatedFromTypeCatalogue<IFakeOptionsBuilder>(container);
+            var argumentValueFormatters = typeCatalogueInstanceProvider.InstantiateAllOfType<IArgumentValueFormatter>();
+            var dummyFactories = typeCatalogueInstanceProvider.InstantiateAllOfType<IDummyFactory>();
+            var fakeOptionsBuilders = typeCatalogueInstanceProvider.InstantiateAllOfType<IFakeOptionsBuilder>();
+
+            var implicitOptionsBuilderCatalogue = new ImplicitOptionsBuilderCatalogue(fakeOptionsBuilders);
 
             var methodInfoManager = new MethodInfoManager();
             var argumentConstraintTrap = new ArgumentConstraintTrap();
             var expressionArgumentConstraintFactory = new ExpressionArgumentConstraintFactory(argumentConstraintTrap);
-
-            container.RegisterSingleton(c =>
-                new ImplicitOptionsBuilderCatalogue(
-                    c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
 
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
@@ -70,7 +63,7 @@ namespace FakeItEasy
                 new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), c.Resolve<IFakeManagerAccessor>()));
 
             container.RegisterSingleton(c =>
-                new ArgumentValueFormatter(c.Resolve<IEnumerable<IArgumentValueFormatter>>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+                new ArgumentValueFormatter(argumentValueFormatters, c.Resolve<StringBuilderOutputWriter.Factory>()));
 
             container.RegisterSingleton(c =>
                 new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), c.Resolve<IEqualityComparer<IFakeObjectCall>>()));
@@ -88,15 +81,11 @@ namespace FakeItEasy
             container.RegisterSingleton<IFakeAndDummyManager>(c =>
             {
                 var fakeCreator = c.Resolve<IFakeObjectCreator>();
-                var fakeConfigurator = c.Resolve<ImplicitOptionsBuilderCatalogue>();
-
-                var dynamicDummyFactory = new DynamicDummyFactory(c.Resolve<IEnumerable<IDummyFactory>>());
-                var dummyValueResolver = new DummyValueResolver(dynamicDummyFactory, fakeCreator);
 
                 return new DefaultFakeAndDummyManager(
-                    dummyValueResolver,
+                    new DummyValueResolver(new DynamicDummyFactory(dummyFactories), fakeCreator),
                     fakeCreator,
-                    fakeConfigurator);
+                    implicitOptionsBuilderCatalogue);
             });
 
             container.RegisterSingleton(c => new CastleDynamicProxyInterceptionValidator(methodInfoManager));
@@ -130,12 +119,6 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IFakeConfigurationManager>(c =>
                 new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), c.Resolve<ExpressionCallRule.Factory>(), c.Resolve<ICallExpressionParser>(), c.Resolve<IInterceptionAsserter>()));
-        }
-
-        private static void RegisterEnumerableInstantiatedFromTypeCatalogue<T>(DictionaryContainer container)
-        {
-            container.RegisterSingleton(c =>
-                c.Resolve<TypeCatalogueInstanceProvider>().InstantiateAllOfType<T>());
         }
 
         private class ExpressionCallMatcherFactory
