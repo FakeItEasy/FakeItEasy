@@ -117,7 +117,7 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
-                var writer = this.outputWriterFactory(new StringBuilder());
+                var writer = this.outputWriterFactory.Invoke();
                 writer.Write("[");
                 writer.WriteArgumentValues(argumentValue);
                 writer.Write("]");

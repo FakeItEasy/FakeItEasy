@@ -420,6 +420,52 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        [Example(null)]
+        [Example("")]
+        [Example("hello world")]
+        [Example("foo")]
+        public static void IgnoredArgumentConstraintMatchesAnything(
+            string value,
+            ITypeWithParameterArray subject,
+            bool wasCalled)
+        {
+            "Given a fake"
+                .x(() => subject = A.Fake<ITypeWithParameterArray>());
+
+            "And a call configured to ignore the first argument using the Ignored member"
+                .x(() => A.CallTo(() => subject.MethodWithParameterArray(A<string>.Ignored)).Invokes(() => wasCalled = true));
+
+            $"When I make a call to this method with the value '{value}"
+                .x(() => subject.MethodWithParameterArray(value));
+
+            "Then the argument is matched"
+                .x(() => wasCalled.Should().BeTrue());
+        }
+
+        [Scenario]
+        [Example(null)]
+        [Example("")]
+        [Example("hello world")]
+        [Example("foo")]
+        public static void IgnoredArgumentConstraintUsingUnderscoreMatchesAnything(
+            string value,
+            ITypeWithParameterArray subject,
+            bool wasCalled)
+        {
+            "Given a fake"
+                .x(() => subject = A.Fake<ITypeWithParameterArray>());
+
+            "And a call configured to ignore the first argument using the Ignored member"
+                .x(() => A.CallTo(() => subject.MethodWithParameterArray(A<string>._)).Invokes(() => wasCalled = true));
+
+            $"When I make a call to this method with the value '{value}"
+                .x(() => subject.MethodWithParameterArray(value));
+
+            "Then the argument is matched"
+                .x(() => wasCalled.Should().BeTrue());
+        }
+
+        [Scenario]
         public static void IgnoredArgumentConstraintForDifferentValueTypeWithNonNullArgument(
             IHaveANullableParameter subject,
             Exception exception)

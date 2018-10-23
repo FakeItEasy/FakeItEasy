@@ -27,22 +27,22 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
         public static void RegisterDependencies(DictionaryContainer container)
         {
+            var methodInfoManager = new MethodInfoManager();
+            var argumentConstraintTrap = new ArgumentConstraintTrap();
+            var expressionArgumentConstraintFactory = new ExpressionArgumentConstraintFactory(argumentConstraintTrap);
+
             container.RegisterSingleton(c =>
                 new ImplicitOptionsBuilderCatalogue(
                     c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
 
-            container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(c));
+            container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
-            container.RegisterSingleton(c =>
-                new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
+            container.RegisterSingleton(c => expressionArgumentConstraintFactory);
 
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>())));
+                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, expressionArgumentConstraintFactory, methodInfoManager)));
 
-            container.RegisterSingleton(c =>
-                new MethodInfoManager());
-
-            container.Register<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+            container.RegisterSingleton<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
                 (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy, c.Resolve<IFakeManagerAccessor>()));
@@ -84,47 +84,43 @@ namespace FakeItEasy
                     fakeConfigurator);
             });
 
-            container.RegisterSingleton(c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
+            container.RegisterSingleton(c => new CastleDynamicProxyInterceptionValidator(methodInfoManager));
 
             container.RegisterSingleton(c => new DelegateProxyInterceptionValidator());
 
             container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
 
-            container.Register(c => new FakeFacade(c.Resolve<IFakeManagerAccessor>()));
-
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
-            container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
+            container.RegisterSingleton<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
 
-            container.Register<IArgumentConstraintTrapper>(c => new ArgumentConstraintTrap());
-
-            container.Register<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
+            container.RegisterSingleton<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
 
             container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write, c.Resolve<ArgumentValueFormatter>()));
 
-            container.RegisterSingleton<StringBuilderOutputWriter.Factory>(c => builder => new StringBuilderOutputWriter(builder, c.Resolve<ArgumentValueFormatter>()));
-
-            container.Register(c => c.Resolve<StringBuilderOutputWriter.Factory>().Invoke(new StringBuilder()));
+            container.RegisterSingleton<StringBuilderOutputWriter.Factory>(c => () => new StringBuilderOutputWriter(new StringBuilder(), c.Resolve<ArgumentValueFormatter>()));
 
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
 
-            container.Register(c => new SequentialCallContext(c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+            container.RegisterSingleton<SequentialCallContext.Factory>(c => () => new SequentialCallContext(c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
         }
 
         private class ExpressionCallMatcherFactory
             : IExpressionCallMatcherFactory
         {
-            private readonly ServiceLocator serviceLocator;
+            private readonly ExpressionArgumentConstraintFactory expressionArgumentConstraintFactory;
+            private readonly MethodInfoManager methodInfoManager;
 
-            public ExpressionCallMatcherFactory(ServiceLocator serviceLocator)
+            public ExpressionCallMatcherFactory(ExpressionArgumentConstraintFactory expressionArgumentConstraintFactory, MethodInfoManager methodInfoManager)
             {
-                this.serviceLocator = serviceLocator;
+                this.expressionArgumentConstraintFactory = expressionArgumentConstraintFactory;
+                this.methodInfoManager = methodInfoManager;
             }
 
             public ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification) => new ExpressionCallMatcher(
                     callSpecification,
-                    this.serviceLocator.Resolve<ExpressionArgumentConstraintFactory>(),
-                    this.serviceLocator.Resolve<MethodInfoManager>());
+                    this.expressionArgumentConstraintFactory,
+                    this.methodInfoManager);
         }
 
         private class ArgumentConstraintManagerFactory

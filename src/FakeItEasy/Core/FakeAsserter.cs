@@ -33,7 +33,7 @@ namespace FakeItEasy.Core
             var matchedCallCount = this.calls.Count(c => IsBeforeAssertionStart(c) && callPredicate(c));
             if (!callCountConstraint.Matches(matchedCallCount))
             {
-                var description = this.outputWriterFactory(new StringBuilder());
+                var description = this.outputWriterFactory.Invoke();
                 callDescriber.Invoke(description);
 
                 var message = this.CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), description.Builder.ToString(), callCountConstraint.ToString(), matchedCallCount);
@@ -95,7 +95,7 @@ namespace FakeItEasy.Core
         private string CreateExceptionMessage(
             IEnumerable<IFakeObjectCall> calls, string callDescription, string callCountDescription, int matchedCallCount)
         {
-            var writer = this.outputWriterFactory(new StringBuilder());
+            var writer = this.outputWriterFactory.Invoke();
             writer.WriteLine();
 
             using (writer.Indent())

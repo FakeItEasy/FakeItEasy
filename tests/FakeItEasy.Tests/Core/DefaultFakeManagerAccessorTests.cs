@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Linq.Expressions;
