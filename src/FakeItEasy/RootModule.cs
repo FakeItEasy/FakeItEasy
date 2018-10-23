@@ -27,20 +27,20 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
         public static void RegisterDependencies(DictionaryContainer container)
         {
+            var methodInfoManager = new MethodInfoManager();
+            var argumentConstraintTrap = new ArgumentConstraintTrap();
+            var expressionArgumentConstraintFactory = new ExpressionArgumentConstraintFactory(argumentConstraintTrap);
+
             container.RegisterSingleton(c =>
                 new ImplicitOptionsBuilderCatalogue(
                     c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
 
-            container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory());
+            container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
-            container.RegisterSingleton(c =>
-                new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
+            container.RegisterSingleton(c => expressionArgumentConstraintFactory);
 
             container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>())));
-
-            container.RegisterSingleton(c =>
-                new MethodInfoManager());
+                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, expressionArgumentConstraintFactory, methodInfoManager)));
 
             container.RegisterSingleton<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
 
@@ -84,7 +84,7 @@ namespace FakeItEasy
                     fakeConfigurator);
             });
 
-            container.RegisterSingleton(c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
+            container.RegisterSingleton(c => new CastleDynamicProxyInterceptionValidator(methodInfoManager));
 
             container.RegisterSingleton(c => new DelegateProxyInterceptionValidator());
 
@@ -93,8 +93,6 @@ namespace FakeItEasy
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
             container.RegisterSingleton<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
-
-            container.RegisterSingleton<IArgumentConstraintTrapper>(c => new ArgumentConstraintTrap());
 
             container.RegisterSingleton<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
 
@@ -110,10 +108,19 @@ namespace FakeItEasy
         private class ExpressionCallMatcherFactory
             : IExpressionCallMatcherFactory
         {
+            private readonly ExpressionArgumentConstraintFactory expressionArgumentConstraintFactory;
+            private readonly MethodInfoManager methodInfoManager;
+
+            public ExpressionCallMatcherFactory(ExpressionArgumentConstraintFactory expressionArgumentConstraintFactory, MethodInfoManager methodInfoManager)
+            {
+                this.expressionArgumentConstraintFactory = expressionArgumentConstraintFactory;
+                this.methodInfoManager = methodInfoManager;
+            }
+
             public ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification) => new ExpressionCallMatcher(
                     callSpecification,
-                    ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>(),
-                    ServiceLocator.Current.Resolve<MethodInfoManager>());
+                    this.expressionArgumentConstraintFactory,
+                    this.methodInfoManager);
         }
 
         private class ArgumentConstraintManagerFactory
