@@ -44,6 +44,11 @@ namespace FakeItEasy
 
             var fakeManagerAccessor = new DefaultFakeManagerAccessor();
 
+            var fakeObjectCreator = new FakeObjectCreator(
+                FakeCallProcessorProviderFactory,
+                new CastleDynamicProxyInterceptionValidator(methodInfoManager),
+                new DelegateProxyInterceptionValidator());
+
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
             container.RegisterSingleton(c => expressionArgumentConstraintFactory);
@@ -65,24 +70,13 @@ namespace FakeItEasy
             container.RegisterSingleton<ICallExpressionParser>(c =>
                 new CallExpressionParser());
 
-            container.RegisterSingleton(c => new FakeObjectCreator(
-                FakeCallProcessorProviderFactory,
-                new CastleDynamicProxyInterceptionValidator(methodInfoManager),
-                new DelegateProxyInterceptionValidator()));
-            container.RegisterSingleton<IFakeObjectCreator>(c => c.Resolve<FakeObjectCreator>());
-            container.RegisterSingleton<IMethodInterceptionValidator>(c => c.Resolve<FakeObjectCreator>());
-
             container.RegisterSingleton<IFakeAndDummyManager>(c =>
-            {
-                var fakeCreator = c.Resolve<IFakeObjectCreator>();
+                new DefaultFakeAndDummyManager(
+                    new DummyValueResolver(new DynamicDummyFactory(dummyFactories), fakeObjectCreator),
+                    fakeObjectCreator,
+                    implicitOptionsBuilderCatalogue));
 
-                return new DefaultFakeAndDummyManager(
-                    new DummyValueResolver(new DynamicDummyFactory(dummyFactories), fakeCreator),
-                    fakeCreator,
-                    implicitOptionsBuilderCatalogue);
-            });
-
-            container.RegisterSingleton<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
+            container.RegisterSingleton<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(fakeObjectCreator));
 
             container.RegisterSingleton<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
 
@@ -96,7 +90,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IConfigurationFactory>(c =>
                 new ConfigurationFactory(c));
-
+        
             container.RegisterSingleton<IStartConfigurationFactory>(c =>
                 new StartConfigurationFactory(c));
 
