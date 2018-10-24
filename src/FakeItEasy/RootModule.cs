@@ -53,9 +53,6 @@ namespace FakeItEasy
 
             container.RegisterSingleton(c => expressionArgumentConstraintFactory);
 
-            container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, expressionArgumentConstraintFactory, methodInfoManager)));
-
             container.RegisterSingleton<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
 
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
@@ -92,13 +89,13 @@ namespace FakeItEasy
                 new ConfigurationFactory(c));
         
             container.RegisterSingleton<IStartConfigurationFactory>(c =>
-                new StartConfigurationFactory(c));
+                new StartConfigurationFactory(c, ExpressionCallRuleFactory));
 
             container.RegisterSingleton<RuleBuilder.Factory>(c =>
                 (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>()));
 
             container.RegisterSingleton<IFakeConfigurationManager>(c =>
-                new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), c.Resolve<ExpressionCallRule.Factory>(), c.Resolve<ICallExpressionParser>(), c.Resolve<IInterceptionAsserter>()));
+                new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), ExpressionCallRuleFactory, c.Resolve<ICallExpressionParser>(), c.Resolve<IInterceptionAsserter>()));
 
             container.RegisterSingleton<IFakeManagerAccessor>(c => fakeManagerAccessor);
 
@@ -107,6 +104,9 @@ namespace FakeItEasy
 
             IFakeCallProcessorProvider FakeCallProcessorProviderFactory(Type typeOfFake, IProxyOptions proxyOptions) =>
                 new FakeManagerProvider(FakeManagerFactory, fakeManagerAccessor, typeOfFake, proxyOptions);
+
+            ExpressionCallRule ExpressionCallRuleFactory(ParsedCallExpression callSpecification) =>
+                new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, expressionArgumentConstraintFactory, methodInfoManager));
         }
 
         private class ExpressionCallMatcherFactory
@@ -166,9 +166,12 @@ namespace FakeItEasy
 
         private class StartConfigurationFactory : IStartConfigurationFactory
         {
-            public StartConfigurationFactory(DictionaryContainer container)
+            private readonly ExpressionCallRule.Factory expressionCallRuleFactory;
+
+            public StartConfigurationFactory(DictionaryContainer container, ExpressionCallRule.Factory expressionCallRuleFactory)
             {
                 this.Container = container;
+                this.expressionCallRuleFactory = expressionCallRuleFactory;
             }
 
             private DictionaryContainer Container { get; }
@@ -177,7 +180,7 @@ namespace FakeItEasy
             {
                 return new StartConfiguration<TFake>(
                     fakeObject,
-                    this.Container.Resolve<ExpressionCallRule.Factory>(),
+                    this.expressionCallRuleFactory,
                     this.Container.Resolve<IConfigurationFactory>(),
                     this.Container.Resolve<ICallExpressionParser>(),
                     this.Container.Resolve<IInterceptionAsserter>());
