@@ -80,14 +80,10 @@ namespace FakeItEasy
 
             container.RegisterSingleton<SequentialCallContext.Factory>(c => SequentialCallContextFactory);
 
-            container.RegisterSingleton<IConfigurationFactory>(c =>
-                new ConfigurationFactory(c));
+            container.RegisterSingleton<IConfigurationFactory>(c => new ConfigurationFactory(RuleBuilderFactory));
 
             container.RegisterSingleton<IStartConfigurationFactory>(c =>
                 new StartConfigurationFactory(c, ExpressionCallRuleFactory, callExpressionParser, interceptionAsserter));
-
-            container.RegisterSingleton<RuleBuilder.Factory>(c =>
-                (rule, fake) => new RuleBuilder(rule, fake, FakeAsserterFactory));
 
             container.RegisterSingleton<IFakeConfigurationManager>(c =>
                 new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), ExpressionCallRuleFactory, callExpressionParser, interceptionAsserter));
@@ -114,6 +110,9 @@ namespace FakeItEasy
 
             SequentialCallContext SequentialCallContextFactory() =>
                 new SequentialCallContext(callWriter, stringBuilderOutputWriterFactory.Create);
+
+            RuleBuilder RuleBuilderFactory(BuildableCallRule rule, FakeManager fake) =>
+                new RuleBuilder(rule, fake, FakeAsserterFactory);
         }
 
         private class StringBuilderOutputWriterFactory
@@ -160,29 +159,27 @@ namespace FakeItEasy
 
         private class ConfigurationFactory : IConfigurationFactory
         {
-            public ConfigurationFactory(DictionaryContainer container)
+            private readonly RuleBuilder.Factory ruleBuilderFactory;
+
+            public ConfigurationFactory(RuleBuilder.Factory ruleBuilderFactory)
             {
-                this.Container = container;
+                this.ruleBuilderFactory = ruleBuilderFactory;
             }
-
-            private DictionaryContainer Container { get; }
-
-            private RuleBuilder.Factory BuilderFactory => this.Container.Resolve<RuleBuilder.Factory>();
 
             public IAnyCallConfigurationWithVoidReturnType CreateConfiguration(FakeManager fakeObject, BuildableCallRule callRule)
             {
-                return this.BuilderFactory.Invoke(callRule, fakeObject);
+                return this.ruleBuilderFactory.Invoke(callRule, fakeObject);
             }
 
             public IAnyCallConfigurationWithReturnTypeSpecified<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule)
             {
-                var parent = this.BuilderFactory.Invoke(callRule, fakeObject);
+                var parent = this.ruleBuilderFactory.Invoke(callRule, fakeObject);
                 return new RuleBuilder.ReturnValueConfiguration<TMember>(parent);
             }
 
             public IAnyCallConfigurationWithNoReturnTypeSpecified CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule)
             {
-                return new AnyCallConfiguration(fakeObject, callRule, this.Container.Resolve<IConfigurationFactory>());
+                return new AnyCallConfiguration(fakeObject, callRule, this);
             }
         }
 
