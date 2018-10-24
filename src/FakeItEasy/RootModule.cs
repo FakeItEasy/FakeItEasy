@@ -1,7 +1,6 @@
 namespace FakeItEasy
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using FakeItEasy.Configuration;
@@ -65,7 +64,7 @@ namespace FakeItEasy
                 new ArgumentValueFormatter(argumentValueFormatters, c.Resolve<StringBuilderOutputWriter.Factory>()));
 
             container.RegisterSingleton(c =>
-                new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), c.Resolve<IEqualityComparer<IFakeObjectCall>>()));
+                new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), new FakeCallEqualityComparer()));
 
             container.RegisterSingleton<ICallExpressionParser>(c =>
                 new CallExpressionParser());
@@ -90,8 +89,6 @@ namespace FakeItEasy
             container.RegisterSingleton(c => new CastleDynamicProxyInterceptionValidator(methodInfoManager));
 
             container.RegisterSingleton(c => new DelegateProxyInterceptionValidator());
-
-            container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
             container.RegisterSingleton<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
 
