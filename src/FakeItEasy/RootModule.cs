@@ -57,17 +57,15 @@ namespace FakeItEasy
             var stringBuilderOutputWriterFactory = new StringBuilderOutputWriterFactory(new Lazy<ArgumentValueFormatter>(() => argumentValueFormatter));
             argumentValueFormatter = new ArgumentValueFormatter(argumentValueFormatters, stringBuilderOutputWriterFactory.Create);
 
+            var fakeObjectCallFormatter = new DefaultFakeObjectCallFormatter(argumentValueFormatter, fakeManagerAccessor);
+
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
             container.RegisterSingleton(c => expressionArgumentConstraintFactory);
 
             container.RegisterSingleton<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), stringBuilderOutputWriterFactory.Create));
 
-            container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
-                new DefaultFakeObjectCallFormatter(argumentValueFormatter, fakeManagerAccessor));
-
-            container.RegisterSingleton(c =>
-                new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), new FakeCallEqualityComparer()));
+            container.RegisterSingleton(c => new CallWriter(fakeObjectCallFormatter, new FakeCallEqualityComparer()));
 
             container.RegisterSingleton<IFakeAndDummyManager>(c =>
                 new DefaultFakeAndDummyManager(
@@ -98,6 +96,8 @@ namespace FakeItEasy
             container.RegisterSingleton<ICallExpressionParser>(c => callExpressionParser);
 
             container.RegisterSingleton<StringBuilderOutputWriter.Factory>(c => stringBuilderOutputWriterFactory.Create);
+
+            container.RegisterSingleton<IFakeObjectCallFormatter>(c => fakeObjectCallFormatter);
 
             FakeManager FakeManagerFactory(Type fakeObjectType, object proxy) =>
                 new FakeManager(fakeObjectType, proxy, fakeManagerAccessor);
