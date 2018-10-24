@@ -66,8 +66,6 @@ namespace FakeItEasy
 
             container.RegisterSingleton(c => expressionArgumentConstraintFactory);
 
-            container.RegisterSingleton<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), stringBuilderOutputWriterFactory.Create));
-
             container.RegisterSingleton(c => new CallWriter(fakeObjectCallFormatter, new FakeCallEqualityComparer()));
 
             container.RegisterSingleton<IFakeAndDummyManager>(c =>
