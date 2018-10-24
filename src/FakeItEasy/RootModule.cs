@@ -49,6 +49,8 @@ namespace FakeItEasy
                 new CastleDynamicProxyInterceptionValidator(methodInfoManager),
                 new DelegateProxyInterceptionValidator());
 
+            var callExpressionParser = new CallExpressionParser();
+
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
             container.RegisterSingleton(c => expressionArgumentConstraintFactory);
@@ -64,8 +66,6 @@ namespace FakeItEasy
             container.RegisterSingleton(c =>
                 new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), new FakeCallEqualityComparer()));
 
-            container.RegisterSingleton<ICallExpressionParser>(c =>
-                new CallExpressionParser());
 
             container.RegisterSingleton<IFakeAndDummyManager>(c =>
                 new DefaultFakeAndDummyManager(
@@ -89,15 +89,17 @@ namespace FakeItEasy
                 new ConfigurationFactory(c));
         
             container.RegisterSingleton<IStartConfigurationFactory>(c =>
-                new StartConfigurationFactory(c, ExpressionCallRuleFactory));
+                new StartConfigurationFactory(c, ExpressionCallRuleFactory, callExpressionParser));
 
             container.RegisterSingleton<RuleBuilder.Factory>(c =>
                 (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>()));
 
             container.RegisterSingleton<IFakeConfigurationManager>(c =>
-                new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), ExpressionCallRuleFactory, c.Resolve<ICallExpressionParser>(), c.Resolve<IInterceptionAsserter>()));
+                new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), ExpressionCallRuleFactory, callExpressionParser, c.Resolve<IInterceptionAsserter>()));
 
             container.RegisterSingleton<IFakeManagerAccessor>(c => fakeManagerAccessor);
+
+            container.RegisterSingleton<ICallExpressionParser>(c => callExpressionParser);
 
             FakeManager FakeManagerFactory(Type fakeObjectType, object proxy) =>
                 new FakeManager(fakeObjectType, proxy, fakeManagerAccessor);
@@ -167,11 +169,16 @@ namespace FakeItEasy
         private class StartConfigurationFactory : IStartConfigurationFactory
         {
             private readonly ExpressionCallRule.Factory expressionCallRuleFactory;
+            private readonly ICallExpressionParser callExpressionParser;
 
-            public StartConfigurationFactory(DictionaryContainer container, ExpressionCallRule.Factory expressionCallRuleFactory)
+            public StartConfigurationFactory(
+                DictionaryContainer container,
+                ExpressionCallRule.Factory expressionCallRuleFactory,
+                ICallExpressionParser callExpressionParser)
             {
                 this.Container = container;
                 this.expressionCallRuleFactory = expressionCallRuleFactory;
+                this.callExpressionParser = callExpressionParser;
             }
 
             private DictionaryContainer Container { get; }
@@ -182,7 +189,7 @@ namespace FakeItEasy
                     fakeObject,
                     this.expressionCallRuleFactory,
                     this.Container.Resolve<IConfigurationFactory>(),
-                    this.Container.Resolve<ICallExpressionParser>(),
+                    this.callExpressionParser,
                     this.Container.Resolve<IInterceptionAsserter>());
             }
         }
