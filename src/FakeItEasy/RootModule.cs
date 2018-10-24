@@ -67,7 +67,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton(c => new FakeObjectCreator(
                 FakeCallProcessorProviderFactory,
-                container.Resolve<CastleDynamicProxyInterceptionValidator>(),
+                new CastleDynamicProxyInterceptionValidator(methodInfoManager),
                 container.Resolve<DelegateProxyInterceptionValidator>()));
             container.RegisterSingleton<IFakeObjectCreator>(c => c.Resolve<FakeObjectCreator>());
             container.RegisterSingleton<IMethodInterceptionValidator>(c => c.Resolve<FakeObjectCreator>());
@@ -81,8 +81,6 @@ namespace FakeItEasy
                     fakeCreator,
                     implicitOptionsBuilderCatalogue);
             });
-
-            container.RegisterSingleton(c => new CastleDynamicProxyInterceptionValidator(methodInfoManager));
 
             container.RegisterSingleton(c => new DelegateProxyInterceptionValidator());
 
