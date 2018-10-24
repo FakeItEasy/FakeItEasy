@@ -53,17 +53,18 @@ namespace FakeItEasy
 
             var interceptionAsserter = new DefaultInterceptionAsserter(fakeObjectCreator);
 
+            ArgumentValueFormatter argumentValueFormatter = null;
+            var stringBuilderOutputWriterFactory = new StringBuilderOutputWriterFactory(new Lazy<ArgumentValueFormatter>(() => argumentValueFormatter));
+            argumentValueFormatter = new ArgumentValueFormatter(argumentValueFormatters, stringBuilderOutputWriterFactory.Create);
+
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
             container.RegisterSingleton(c => expressionArgumentConstraintFactory);
 
-            container.RegisterSingleton<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+            container.RegisterSingleton<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), stringBuilderOutputWriterFactory.Create));
 
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
-                new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), fakeManagerAccessor));
-
-            container.RegisterSingleton(c =>
-                new ArgumentValueFormatter(argumentValueFormatters, c.Resolve<StringBuilderOutputWriter.Factory>()));
+                new DefaultFakeObjectCallFormatter(argumentValueFormatter, fakeManagerAccessor));
 
             container.RegisterSingleton(c =>
                 new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), new FakeCallEqualityComparer()));
@@ -76,13 +77,9 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
 
-            container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write, c.Resolve<ArgumentValueFormatter>()));
-
-            container.RegisterSingleton<StringBuilderOutputWriter.Factory>(c => () => new StringBuilderOutputWriter(new StringBuilder(), c.Resolve<ArgumentValueFormatter>()));
-
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
 
-            container.RegisterSingleton<SequentialCallContext.Factory>(c => () => new SequentialCallContext(c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+            container.RegisterSingleton<SequentialCallContext.Factory>(c => () => new SequentialCallContext(c.Resolve<CallWriter>(), stringBuilderOutputWriterFactory.Create));
 
             container.RegisterSingleton<IConfigurationFactory>(c =>
                 new ConfigurationFactory(c));
@@ -100,6 +97,8 @@ namespace FakeItEasy
 
             container.RegisterSingleton<ICallExpressionParser>(c => callExpressionParser);
 
+            container.RegisterSingleton<StringBuilderOutputWriter.Factory>(c => stringBuilderOutputWriterFactory.Create);
+
             FakeManager FakeManagerFactory(Type fakeObjectType, object proxy) =>
                 new FakeManager(fakeObjectType, proxy, fakeManagerAccessor);
 
@@ -108,6 +107,21 @@ namespace FakeItEasy
 
             ExpressionCallRule ExpressionCallRuleFactory(ParsedCallExpression callSpecification) =>
                 new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, expressionArgumentConstraintFactory, methodInfoManager));
+        }
+
+        private class StringBuilderOutputWriterFactory
+        {
+            private Lazy<ArgumentValueFormatter> argumentValueFormatter;
+
+            public StringBuilderOutputWriterFactory(Lazy<ArgumentValueFormatter> argumentValueFormatterService)
+            {
+                this.argumentValueFormatter = argumentValueFormatterService;
+            }
+
+            public StringBuilderOutputWriter Create()
+            {
+                return new StringBuilderOutputWriter(new StringBuilder(), this.argumentValueFormatter.Value);
+            }
         }
 
         private class ExpressionCallMatcherFactory
