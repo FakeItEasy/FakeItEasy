@@ -1,6 +1,7 @@
 namespace FakeItEasy
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using FakeItEasy.Configuration;
@@ -59,6 +60,8 @@ namespace FakeItEasy
 
             var fakeObjectCallFormatter = new DefaultFakeObjectCallFormatter(argumentValueFormatter, fakeManagerAccessor);
 
+            var callWriter = new CallWriter(fakeObjectCallFormatter, new FakeCallEqualityComparer());
+
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
             container.RegisterSingleton(c => expressionArgumentConstraintFactory);
@@ -77,7 +80,7 @@ namespace FakeItEasy
 
             container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
 
-            container.RegisterSingleton<SequentialCallContext.Factory>(c => () => new SequentialCallContext(c.Resolve<CallWriter>(), stringBuilderOutputWriterFactory.Create));
+            container.RegisterSingleton<SequentialCallContext.Factory>(c => SequentialCallContextFactory);
 
             container.RegisterSingleton<IConfigurationFactory>(c =>
                 new ConfigurationFactory(c));
@@ -86,7 +89,7 @@ namespace FakeItEasy
                 new StartConfigurationFactory(c, ExpressionCallRuleFactory, callExpressionParser, interceptionAsserter));
 
             container.RegisterSingleton<RuleBuilder.Factory>(c =>
-                (rule, fake) => new RuleBuilder(rule, fake, c.Resolve<FakeAsserter.Factory>()));
+                (rule, fake) => new RuleBuilder(rule, fake, FakeAsserterFactory));
 
             container.RegisterSingleton<IFakeConfigurationManager>(c =>
                 new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), ExpressionCallRuleFactory, callExpressionParser, interceptionAsserter));
@@ -107,6 +110,12 @@ namespace FakeItEasy
 
             ExpressionCallRule ExpressionCallRuleFactory(ParsedCallExpression callSpecification) =>
                 new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, expressionArgumentConstraintFactory, methodInfoManager));
+
+            IFakeAsserter FakeAsserterFactory(IEnumerable<ICompletedFakeObjectCall> calls, int lastSequenceNumber) =>
+                new FakeAsserter(calls, lastSequenceNumber, callWriter, stringBuilderOutputWriterFactory.Create);
+
+            SequentialCallContext SequentialCallContextFactory() =>
+                new SequentialCallContext(callWriter, stringBuilderOutputWriterFactory.Create);
         }
 
         private class StringBuilderOutputWriterFactory
