@@ -53,10 +53,6 @@ namespace FakeItEasy
 
             container.RegisterSingleton<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
 
-            container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
-                (typeOfFake, proxyOptions) =>
-                    new FakeManagerProvider(FakeManagerFactory, fakeManagerAccessor, typeOfFake, proxyOptions));
-
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
                 new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), fakeManagerAccessor));
 
@@ -70,7 +66,7 @@ namespace FakeItEasy
                 new CallExpressionParser());
 
             container.RegisterSingleton(c => new FakeObjectCreator(
-                container.Resolve<FakeCallProcessorProvider.Factory>(),
+                FakeCallProcessorProviderFactory,
                 container.Resolve<CastleDynamicProxyInterceptionValidator>(),
                 container.Resolve<DelegateProxyInterceptionValidator>()));
             container.RegisterSingleton<IFakeObjectCreator>(c => c.Resolve<FakeObjectCreator>());
@@ -118,6 +114,9 @@ namespace FakeItEasy
 
             FakeManager FakeManagerFactory(Type fakeObjectType, object proxy) =>
                 new FakeManager(fakeObjectType, proxy, fakeManagerAccessor);
+
+            IFakeCallProcessorProvider FakeCallProcessorProviderFactory(Type typeOfFake, IProxyOptions proxyOptions) =>
+                new FakeManagerProvider(FakeManagerFactory, fakeManagerAccessor, typeOfFake, proxyOptions);
         }
 
         private class ExpressionCallMatcherFactory
