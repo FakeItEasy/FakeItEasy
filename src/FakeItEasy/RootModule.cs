@@ -43,6 +43,8 @@ namespace FakeItEasy
             var argumentConstraintTrap = new ArgumentConstraintTrap();
             var expressionArgumentConstraintFactory = new ExpressionArgumentConstraintFactory(argumentConstraintTrap);
 
+            var fakeManagerAccessor = new DefaultFakeManagerAccessor();
+
             container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
             container.RegisterSingleton(c => expressionArgumentConstraintFactory);
@@ -53,14 +55,14 @@ namespace FakeItEasy
             container.RegisterSingleton<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
 
             container.RegisterSingleton<FakeManager.Factory>(c =>
-                (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy, c.Resolve<IFakeManagerAccessor>()));
+                (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy, fakeManagerAccessor));
 
             container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
                 (typeOfFake, proxyOptions) =>
-                    new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), typeOfFake, proxyOptions));
+                    new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), fakeManagerAccessor, typeOfFake, proxyOptions));
 
             container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
-                new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), c.Resolve<IFakeManagerAccessor>()));
+                new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), fakeManagerAccessor));
 
             container.RegisterSingleton(c =>
                 new ArgumentValueFormatter(argumentValueFormatters, c.Resolve<StringBuilderOutputWriter.Factory>()));
@@ -92,8 +94,6 @@ namespace FakeItEasy
 
             container.RegisterSingleton(c => new DelegateProxyInterceptionValidator());
 
-            container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
-
             container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
 
             container.RegisterSingleton<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
@@ -119,6 +119,8 @@ namespace FakeItEasy
 
             container.RegisterSingleton<IFakeConfigurationManager>(c =>
                 new FakeConfigurationManager(c.Resolve<IConfigurationFactory>(), c.Resolve<ExpressionCallRule.Factory>(), c.Resolve<ICallExpressionParser>(), c.Resolve<IInterceptionAsserter>()));
+
+            container.RegisterSingleton<IFakeManagerAccessor>(c => fakeManagerAccessor);
         }
 
         private class ExpressionCallMatcherFactory
