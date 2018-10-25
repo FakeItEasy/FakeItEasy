@@ -279,7 +279,7 @@ namespace FakeItEasy.Configuration
 
             private string GetDescription()
             {
-                var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
+                var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
                 this.WriteDescription(writer);
                 return writer.Builder.ToString();
             }

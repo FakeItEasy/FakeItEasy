@@ -14,7 +14,7 @@ namespace FakeItEasy.Sdk
     public static class Create
     {
         private static IFakeAndDummyManager FakeAndDummyManager =>
-            ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
+            ServiceLocator.Resolve<IFakeAndDummyManager>();
 
         /// <summary>
         /// Creates a fake object of the specified type.

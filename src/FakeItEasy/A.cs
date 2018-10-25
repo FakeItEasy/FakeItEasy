@@ -16,10 +16,10 @@ namespace FakeItEasy
     public static class A
     {
         private static IFakeAndDummyManager FakeAndDummyManager =>
-            ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
+            ServiceLocator.Resolve<IFakeAndDummyManager>();
 
         private static IFakeConfigurationManager ConfigurationManager =>
-            ServiceLocator.Current.Resolve<IFakeConfigurationManager>();
+            ServiceLocator.Resolve<IFakeConfigurationManager>();
 
         /// <summary>
         /// Creates a fake object of the type T.

@@ -11,7 +11,7 @@ namespace FakeItEasy
     public static class Raise
     {
         private static readonly EventHandlerArgumentProviderMap ArgumentProviderMap =
-            ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+            ServiceLocator.Resolve<EventHandlerArgumentProviderMap>();
 
         /// <summary>
         /// Raises an event on a faked object by attaching the event handler produced by the method

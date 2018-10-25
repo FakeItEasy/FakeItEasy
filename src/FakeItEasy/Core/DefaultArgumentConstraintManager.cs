@@ -102,7 +102,7 @@ namespace FakeItEasy.Core
 
             private string GetDescription()
             {
-                var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
+                var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
                 ((IArgumentConstraint)this).WriteDescription(writer);
                 return writer.Builder.ToString();
             }

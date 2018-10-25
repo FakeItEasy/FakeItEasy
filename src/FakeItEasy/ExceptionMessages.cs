@@ -36,7 +36,7 @@ namespace FakeItEasy
 
         public static string CallToUnconfiguredMethodOfStrictFake(IFakeObjectCall call)
         {
-            var callFormatter = ServiceLocator.Current.Resolve<IFakeObjectCallFormatter>();
+            var callFormatter = ServiceLocator.Resolve<IFakeObjectCallFormatter>();
             return $"Call to unconfigured method of strict fake: {callFormatter.GetDescription(call)}.";
         }
 

@@ -7,16 +7,10 @@ namespace FakeItEasy.Tests
     public class ServiceLocatorTests
     {
         [Fact]
-        public void Current_should_not_be_null()
-        {
-            ServiceLocator.Current.Should().NotBeNull();
-        }
-
-        [Fact]
         public void Should_be_registered_as_singleton()
         {
-            var first = ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
-            var second = ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
+            var first = ServiceLocator.Resolve<IFakeAndDummyManager>();
+            var second = ServiceLocator.Resolve<IFakeAndDummyManager>();
 
             second.Should().BeSameAs(first);
         }

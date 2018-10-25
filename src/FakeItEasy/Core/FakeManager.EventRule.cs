@@ -22,7 +22,7 @@ namespace FakeItEasy.Core
             [NonSerialized]
 #endif
             private readonly EventHandlerArgumentProviderMap eventHandlerArgumentProviderMap =
-                ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+                ServiceLocator.Resolve<EventHandlerArgumentProviderMap>();
 
 #if FEATURE_BINARY_SERIALIZATION
             [NonSerialized]

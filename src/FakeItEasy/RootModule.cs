@@ -10,7 +10,6 @@ namespace FakeItEasy
     using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Creation.DelegateProxies;
     using FakeItEasy.Expressions;
-    using FakeItEasy.IoC;
 
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -18,14 +17,12 @@ namespace FakeItEasy
     [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
     internal static class RootModule
     {
-        /// <summary>
-        /// Registers the dependencies.
-        /// </summary>
-        /// <param name="container">The container to register the dependencies in.</param>
-        [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "Container configuration.")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
-        public static void RegisterDependencies(DictionaryContainer container)
+        public interface IServiceRegistrar
+        {
+            void Register<T>(T service);
+        }
+
+        public static void RegisterDependencies(IServiceRegistrar registrar)
         {
             var bootstrapper = BootstrapperLocator.FindBootstrapper();
 
@@ -64,35 +61,35 @@ namespace FakeItEasy
 
             var configurationFactory = new ConfigurationFactory(RuleBuilderFactory);
 
-            container.Register<IExpressionCallMatcherFactory>(new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
+            registrar.Register<IExpressionCallMatcherFactory>(new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
-            container.Register(expressionArgumentConstraintFactory);
+            registrar.Register(expressionArgumentConstraintFactory);
 
-            container.Register<IFakeAndDummyManager>(
+            registrar.Register<IFakeAndDummyManager>(
                 new DefaultFakeAndDummyManager(
                     new DummyValueResolver(new DynamicDummyFactory(dummyFactories), fakeObjectCreator),
                     fakeObjectCreator,
                     implicitOptionsBuilderCatalogue));
 
-            container.Register<IArgumentConstraintManagerFactory>(new ArgumentConstraintManagerFactory());
+            registrar.Register<IArgumentConstraintManagerFactory>(new ArgumentConstraintManagerFactory());
 
-            container.Register(new EventHandlerArgumentProviderMap());
+            registrar.Register(new EventHandlerArgumentProviderMap());
 
-            container.Register<SequentialCallContext.Factory>(SequentialCallContextFactory);
+            registrar.Register<SequentialCallContext.Factory>(SequentialCallContextFactory);
 
-            container.Register<IStartConfigurationFactory>(
+            registrar.Register<IStartConfigurationFactory>(
                 new StartConfigurationFactory(ExpressionCallRuleFactory, configurationFactory, callExpressionParser, interceptionAsserter));
 
-            container.Register<IFakeConfigurationManager>(
+            registrar.Register<IFakeConfigurationManager>(
                 new FakeConfigurationManager(configurationFactory, ExpressionCallRuleFactory, callExpressionParser, interceptionAsserter));
 
-            container.Register<IFakeManagerAccessor>(fakeManagerAccessor);
+            registrar.Register<IFakeManagerAccessor>(fakeManagerAccessor);
 
-            container.Register<ICallExpressionParser>(callExpressionParser);
+            registrar.Register<ICallExpressionParser>(callExpressionParser);
 
-            container.Register<StringBuilderOutputWriter.Factory>(stringBuilderOutputWriterFactory.Create);
+            registrar.Register<StringBuilderOutputWriter.Factory>(stringBuilderOutputWriterFactory.Create);
 
-            container.Register<IFakeObjectCallFormatter>(fakeObjectCallFormatter);
+            registrar.Register<IFakeObjectCallFormatter>(fakeObjectCallFormatter);
 
             FakeManager FakeManagerFactory(Type fakeObjectType, object proxy) =>
                 new FakeManager(fakeObjectType, proxy, fakeManagerAccessor);
