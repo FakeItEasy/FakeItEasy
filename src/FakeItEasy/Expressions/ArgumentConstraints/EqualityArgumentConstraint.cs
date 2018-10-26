@@ -26,7 +26,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
         {
             try
             {
-                var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
+                var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
                 writer.WriteArgumentValue(this.ExpectedValue);
                 return writer.Builder.ToString();
             }

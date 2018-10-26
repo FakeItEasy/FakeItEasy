@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests.Core
         {
             this.registeredTypeFormatters = new List<IArgumentValueFormatter>();
 
-            this.formatter = new ArgumentValueFormatter(this.registeredTypeFormatters, ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>());
+            this.formatter = new ArgumentValueFormatter(this.registeredTypeFormatters, ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>());
         }
 
         public static IEnumerable<object> SpecificCases()

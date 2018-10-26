@@ -6,19 +6,12 @@ namespace FakeItEasy.Tests.TestHelpers
     using System.Reflection;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Expressions;
 
     internal static class ExpressionHelper
     {
         public static Expression<Action<T>> CreateExpression<T>(Expression<Action<T>> expression)
         {
             return expression;
-        }
-
-        public static ExpressionCallRule CreateRule<TFake>(Expression<Action<TFake>> expression)
-        {
-            var parsedExpression = ServiceLocator.Current.Resolve<ICallExpressionParser>().Parse(expression);
-            return GetCallRuleFactory().Invoke(parsedExpression);
         }
 
         public static IInterceptedFakeObjectCall CreateFakeCall<TFake, TReturn>(Expression<Func<TFake, TReturn>> callSpecification)
@@ -29,17 +22,6 @@ namespace FakeItEasy.Tests.TestHelpers
         public static IInterceptedFakeObjectCall CreateFakeCall<TFake>(Expression<Action<TFake>> callSpecification)
         {
             return CreateFakeCall(A.Fake<TFake>(), callSpecification);
-        }
-
-        public static MethodInfo GetMethod<T>(Expression<Action<T>> methodAccess)
-        {
-            var methodExpression = (MethodCallExpression)methodAccess.Body;
-            return methodExpression.Method;
-        }
-
-        private static ExpressionCallRule.Factory GetCallRuleFactory()
-        {
-            return ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>();
         }
 
         private static IInterceptedFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)

@@ -50,13 +50,13 @@ namespace FakeItEasy
         public IEnumerable<ICompletedFakeObjectCall> RecordedCalls => FakeItEasy.Fake.GetCalls(this.FakedObject);
 
         private static IFakeAndDummyManager FakeAndDummyManager =>
-            ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
+            ServiceLocator.Resolve<IFakeAndDummyManager>();
 
         private IStartConfiguration<T> StartConfiguration
         {
             get
             {
-                var factory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
+                var factory = ServiceLocator.Resolve<IStartConfigurationFactory>();
                 return factory.CreateConfiguration<T>(FakeItEasy.Fake.GetFakeManager(this.FakedObject));
             }
         }

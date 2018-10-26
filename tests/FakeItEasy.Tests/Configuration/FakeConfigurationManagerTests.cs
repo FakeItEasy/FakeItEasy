@@ -16,7 +16,6 @@ namespace FakeItEasy.Tests.Configuration
         private IConfigurationFactory configurationFactory;
         private FakeConfigurationManager configurationManager;
         private ExpressionCallRule.Factory ruleFactory;
-        private ExpressionCallRule ruleReturnedFromFactory;
         private CallExpressionParser callExpressionParser;
         private IInterceptionAsserter interceptionAsserter;
 
@@ -32,20 +31,6 @@ namespace FakeItEasy.Tests.Configuration
                 (@this, foo) => @this.configurationManager.CallToSet(() => foo.SomeProperty),
                 (@this, foo) => @this.configurationManager.CallTo(foo));
 
-        // Callto
-        [Fact]
-        public void CallTo_with_void_call_should_call_configuration_factory_with_call_rule_from_factory()
-        {
-            // Arrange
-            var foo = A.Fake<IFoo>();
-
-            // Act
-            this.configurationManager.CallTo(() => foo.Bar());
-
-            // Assert
-            A.CallTo(() => this.configurationFactory.CreateConfiguration(A<FakeManager>._, this.ruleReturnedFromFactory)).MustHaveHappened();
-        }
-
         [Fact]
         public void CallTo_with_void_call_should_be_null_guarded()
         {
@@ -58,20 +43,6 @@ namespace FakeItEasy.Tests.Configuration
             Expression<Action> call = () =>
                 this.configurationManager.CallTo(() => foo.Bar());
             call.Should().BeNullGuarded();
-        }
-
-        // CallTo with function calls
-        [Fact]
-        public void CallTo_with_function_call_should_call_configuration_factory_with_call_rule_from_factory()
-        {
-            // Arrange
-            var foo = A.Fake<IFoo>();
-
-            // Act
-            this.configurationManager.CallTo(() => foo.Baz());
-
-            // Assert
-            A.CallTo(() => this.configurationFactory.CreateConfiguration<int>(A<FakeManager>._, this.ruleReturnedFromFactory)).MustHaveHappened();
         }
 
         [Fact]
@@ -177,10 +148,7 @@ namespace FakeItEasy.Tests.Configuration
             this.callExpressionParser = new CallExpressionParser();
             this.interceptionAsserter = A.Fake<IInterceptionAsserter>();
 
-            Expression<Action<IFoo>> dummyExpression = x => x.Bar();
-            var parsedDummyExpression = this.callExpressionParser.Parse(dummyExpression);
-            this.ruleReturnedFromFactory = ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>().Invoke(parsedDummyExpression);
-            this.ruleFactory = x => this.ruleReturnedFromFactory;
+            this.ruleFactory = x => null;
 
             this.configurationManager = this.CreateManager();
         }

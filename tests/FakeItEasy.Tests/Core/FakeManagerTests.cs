@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Collections.Generic;
@@ -264,7 +264,7 @@
         {
             // Arrange
             var fake = this.CreateFakeManager<IFoo>();
-            var rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());
+            var rule = A.Dummy<IFakeObjectCallRule>();
             fake.AddRuleFirst(rule);
 
             // Act
@@ -279,13 +279,13 @@
         {
             // Arrange
             var fake = this.CreateFakeManager<IFoo>();
-            var rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());
+            var rule = A.Dummy<IFakeObjectCallRule>();
 
             // Act
             fake.RemoveRule(rule);
 
             // Assert
-            fake.Rules.Should().NotContain(rule);
+            fake.Rules.Should().BeEmpty();
         }
 
         [Fact]
@@ -297,7 +297,7 @@
             // Act
 
             // Assert
-            Expression<Action> call = () => fake.RemoveRule(ExpressionHelper.CreateRule<IFoo>(x => x.Bar()));
+            Expression<Action> call = () => fake.RemoveRule(A.Dummy<IFakeObjectCallRule>());
             call.Should().BeNullGuarded();
         }
 
@@ -306,7 +306,7 @@
         {
             // Arrange
             var fake = this.CreateFakeManager<IFoo>();
-            var rule = A.Fake<IFakeObjectCallRule>();
+            var rule = A.Dummy<IFakeObjectCallRule>();
 
             // Act
             fake.AddRuleLast(rule);

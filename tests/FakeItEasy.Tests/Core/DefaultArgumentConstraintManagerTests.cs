@@ -133,7 +133,7 @@ namespace FakeItEasy.Tests.Core
         public void Should_create_constraint_that_writes_beginning_and_end_of_argument_constraint()
         {
             // Arrange
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
+            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
 
             // Act
             this.constraintManager.Matches(x => true, x => x.Write("foo"));

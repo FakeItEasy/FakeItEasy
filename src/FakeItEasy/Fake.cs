@@ -11,7 +11,7 @@ namespace FakeItEasy
     /// </summary>
     public static class Fake
     {
-        private static readonly IFakeManagerAccessor FakeManagerAccessor = ServiceLocator.Current.Resolve<IFakeManagerAccessor>();
+        private static readonly IFakeManagerAccessor FakeManagerAccessor = ServiceLocator.Resolve<IFakeManagerAccessor>();
 
         /// <summary>
         /// Gets the fake object that manages the faked object.

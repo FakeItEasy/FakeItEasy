@@ -1,30 +1,14 @@
 namespace FakeItEasy
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.IoC;
 
-    internal class ServiceLocator
+    internal static class ServiceLocator
     {
-        private readonly IDictionary<Type, object> registeredServices;
-
         static ServiceLocator()
         {
-            var containerBuilder = new DictionaryContainer();
-            RootModule.RegisterDependencies(containerBuilder);
-            ConfigurationModule.RegisterDependencies(containerBuilder);
-            ImportsModule.RegisterDependencies(containerBuilder);
-            Current = new ServiceLocator(containerBuilder.Build());
+            RootModule.RegisterDependencies(new ServiceRegistrar());
         }
-
-        private ServiceLocator(IDictionary<Type, object> registeredServices)
-        {
-            this.registeredServices = registeredServices;
-        }
-
-        internal static ServiceLocator Current { get; }
 
         /// <summary>
         /// Resolves an instance of the specified service type.
@@ -32,14 +16,25 @@ namespace FakeItEasy
         /// <typeparam name="T">Type of the service.</typeparam>
         /// <returns>An instance of the service type.</returns>
         [DebuggerStepThrough]
-        internal T Resolve<T>()
+        internal static T Resolve<T>()
         {
-            if (this.registeredServices.TryGetValue(typeof(T), out object service))
-            {
-                return (T)service;
-            }
+            var service = Service<T>.Instance;
+            return service == null
+                ? throw new KeyNotFoundException($"The specified service {typeof(T)} was not registered.")
+                : service;
+        }
 
-            throw new KeyNotFoundException($"The specified service {typeof(T)} was not registered.");
+        private static class Service<T>
+        {
+            public static T Instance { get; set; }
+        }
+
+        private class ServiceRegistrar : RootModule.IServiceRegistrar
+        {
+            public void Register<T>(T service)
+            {
+                Service<T>.Instance = service;
+            }
         }
     }
 }

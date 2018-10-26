@@ -16,7 +16,7 @@ namespace FakeItEasy
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
         public static INegatableArgumentConstraintManager<T> That =>
-            ServiceLocator.Current.Resolve<IArgumentConstraintManagerFactory>().Create<T>();
+            ServiceLocator.Resolve<IArgumentConstraintManagerFactory>().Create<T>();
 
         /// <summary>
         /// Gets a constraint that considers any value of an argument as valid.

@@ -82,7 +82,7 @@ namespace FakeItEasy.Tests.Expressions
         [Fact]
         public void DescribeCallOn_should_write_expressionMatcher_description()
         {
-            var fakeWriter = ServiceLocator.Current.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
+            var fakeWriter = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
             A.CallTo(() => this.callMatcher.DescribeCallOn(A<IOutputWriter>._)).Invokes((IOutputWriter w) => w.Write("foo"));
 
             var rule = this.CreateRule();
