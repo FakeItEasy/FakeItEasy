@@ -71,11 +71,6 @@ namespace FakeItEasy.Expressions
             return new EqualityArgumentConstraint(expressionValue);
         }
 
-        private static object InvokeExpression(Expression expression)
-        {
-            return Expression.Lambda(expression).Compile().DynamicInvoke();
-        }
-
         private static void CheckArgumentExpressionIsValid(Expression expression)
         {
             expression = GetExpressionWithoutConversion(expression);
@@ -155,7 +150,7 @@ namespace FakeItEasy.Expressions
 
             var trappedConstraints = this.argumentConstraintTrapper.TrapConstraints(() =>
             {
-                expressionValue = InvokeExpression(expression);
+                expressionValue = expression.Evaluate();
             }).ToList();
 
             foreach (var constraint in trappedConstraints.OfType<ITypedArgumentConstraint>())
