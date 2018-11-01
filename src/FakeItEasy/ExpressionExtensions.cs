@@ -41,6 +41,7 @@ namespace FakeItEasy
         //     A<SomethingA>._
         //     myObj.someProperty
         // - method calls
+        // - array creation (including params arrays)
         private static bool TryFastEvaluate(Expression expression, out object result)
         {
             result = null;
@@ -122,6 +123,21 @@ namespace FakeItEasy
                     }
 
                     break;
+
+                case ExpressionType.NewArrayInit:
+                    var newArrayExpression = (NewArrayExpression)expression;
+                    object[] arrayItems = new object[newArrayExpression.Expressions.Count];
+
+                    for (int i = 0; i < newArrayExpression.Expressions.Count; i++)
+                    {
+                        if (!TryFastEvaluate(newArrayExpression.Expressions[i], out arrayItems[i]))
+                        {
+                            return false;
+                        }
+                    }
+
+                    result = arrayItems;
+                    return true;
             }
 
             return false;
