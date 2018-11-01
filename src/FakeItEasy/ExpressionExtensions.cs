@@ -1,6 +1,5 @@
 namespace FakeItEasy
 {
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -41,7 +40,7 @@ namespace FakeItEasy
         //     A<SomethingA>.Ignored
         //     A<SomethingA>._
         //     myObj.someProperty
-        // - trivial method calls with no arguments (A.ToString(), B.GetType(), Factory.Create())
+        // - method calls
         private static bool TryFastEvaluate(Expression expression, out object result)
         {
             result = null;
@@ -90,15 +89,22 @@ namespace FakeItEasy
                 case ExpressionType.Call:
                     var callExpression = (MethodCallExpression)expression;
 
-                    // for now, handling only very trivial call expressions with no arguments, like 'GetBlarg()'
-                    // because anything else might get complicated quickly (method overloads etc.)
-                    if (!callExpression.Arguments.Any() && TryFastEvaluate(callExpression.Object, out object targetObject))
+                    if (!TryFastEvaluate(callExpression.Object, out object target))
                     {
-                        result = callExpression.Method.Invoke(targetObject, null);
-                        return true;
+                        return false;
                     }
 
-                    break;
+                    object[] argumentValues = new object[callExpression.Arguments.Count];
+                    for (int i = 0; i < callExpression.Arguments.Count; i++)
+                    {
+                        if (!TryFastEvaluate(callExpression.Arguments[i], out argumentValues[i]))
+                        {
+                            return false;
+                        }
+                    }
+
+                    result = callExpression.Method.Invoke(target, argumentValues);
+                    return true;
 
                 case ExpressionType.Convert:
                     var unaryExpression = (UnaryExpression)expression;
