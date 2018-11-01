@@ -4,7 +4,6 @@
     <TargetFramework>netstandard1.1</TargetFramework>
     <RootNamespace>FakeItEasy.Analyzer</RootNamespace>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <DefineConstants>$(DefineConstants);VISUAL_BASIC</DefineConstants>
