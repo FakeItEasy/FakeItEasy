@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFrameworks>net40;net45;netstandard1.6;netstandard2.0</TargetFrameworks>
     <AssemblyName>FakeItEasy</AssemblyName>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <PropertyGroup Label="Package properties">
+    <Product>FakeItEasy</Product>
     <Title>FakeItEasy - Mocking made faking easy!</Title>
     <Authors>Patrik Hägne, FakeItEasy contributors</Authors>
     <Description>It's faking amazing! The easy mocking framework for .NET that works great in C# and VB.NET alike. No need to know the difference between a stub, a mock or a spy, everything's a fake! The easy to use, refactoring friendly API makes faking a breeze.</Description>

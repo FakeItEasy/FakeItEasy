@@ -9,7 +9,6 @@
     {
         private const string LogsDirectory = "artifacts/logs";
         private const string Solution = "FakeItEasy.sln";
-        private const string VersionInfoFile = "src/VersionInfo.cs";
         private const string RepoUrl = "https://github.com/FakeItEasy/FakeItEasy";
 
         private static readonly string[] ProjectsToPack =
@@ -54,8 +53,6 @@
 
         private static readonly string OutputDirectory = Path.GetFullPath("artifacts/output");
 
-        private static string version = null;
-
         public static void Main(string[] args)
         {
             Target("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
@@ -66,10 +63,7 @@
 
             Target(
                 "build",
-                DependsOn("versionInfoFile"),
                 () => Run("dotnet", $"build {Solution} -c Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/build.binlog"));
-
-            Target("versionInfoFile", () => Run(ToolPaths.GitVersion, $"/updateAssemblyInfo {VersionInfoFile} /ensureAssemblyInfo"));
 
             foreach (var testSuite in TestSuites)
             {
@@ -80,13 +74,11 @@
                     action: testDirectory => RunTests(testDirectory));
             }
 
-            Target("get-version", () => version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2"));
-
             Target(
                 "pack",
-                DependsOn("build", "outputDirectory", "pdbgit", "get-version"),
+                DependsOn("build", "outputDirectory", "pdbgit"),
                 forEach: ProjectsToPack,
-                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {OutputDirectory} /p:Version={version}"));
+                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {OutputDirectory}"));
 
             Target(
                 "pdbgit",
