@@ -4,7 +4,6 @@
     <TargetFramework>netstandard1.1</TargetFramework>
     <RootNamespace>FakeItEasy.Analyzer</RootNamespace>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <DefineConstants>$(DefineConstants);VISUAL_BASIC</DefineConstants>
@@ -13,6 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package properties">
+    <Product>FakeItEasy.Analyzer.VisualBasic</Product>
     <Title>FakeItEasy.Analyzer.VisualBasic</Title>
     <Authors>Thomas Levesque, FakeItEasy contributors</Authors>
     <Description>Provides diagnostic analyzers to warn about incorrect usage of FakeItEasy in VB.NET. Works in Visual Studio 2015 Update 1 or later.</Description>

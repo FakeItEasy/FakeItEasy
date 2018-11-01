@@ -9,7 +9,6 @@
     {
         private const string LogsDirectory = "artifacts/logs";
         private const string Solution = "FakeItEasy.sln";
-        private const string VersionInfoFile = "src/VersionInfo.cs";
         private const string RepoUrl = "https://github.com/FakeItEasy/FakeItEasy";
         private const string AnalyzerMetaPackageNuspecPath = "src/FakeItEasy.Analyzer.nuspec";
 
@@ -55,8 +54,6 @@
 
         private static readonly string OutputDirectory = Path.GetFullPath("artifacts/output");
 
-        private static string version = null;
-
         public static void Main(string[] args)
         {
             Target("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
@@ -67,10 +64,7 @@
 
             Target(
                 "build",
-                DependsOn("versionInfoFile"),
                 () => Run("dotnet", $"build {Solution} -c Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/build.binlog"));
-
-            Target("versionInfoFile", () => Run(ToolPaths.GitVersion, $"/updateAssemblyInfo {VersionInfoFile} /ensureAssemblyInfo"));
 
             foreach (var testSuite in TestSuites)
             {
@@ -81,22 +75,11 @@
                     action: testDirectory => RunTests(testDirectory));
             }
 
-            Target("get-version", () => version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2"));
-
-            Target(
-                "pack-projects",
-                DependsOn("build", "outputDirectory", "pdbgit", "get-version"),
-                forEach: ProjectsToPack,
-                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {OutputDirectory} /p:Version={version}"));
-
-            Target(
-                "pack-nuspecs",
-                DependsOn("outputDirectory", "get-version"),
-                () => Run(ToolPaths.NuGet, $"pack {AnalyzerMetaPackageNuspecPath} -Version {version} -OutputDirectory {OutputDirectory} -NoPackageAnalysis"));
-
             Target(
                 "pack",
-                DependsOn("pack-projects", "pack-nuspecs"));
+                DependsOn("build", "outputDirectory", "pdbgit"),
+                forEach: ProjectsToPack,
+                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {OutputDirectory}"));
 
             Target(
                 "pdbgit",
