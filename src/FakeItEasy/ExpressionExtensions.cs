@@ -20,7 +20,12 @@ namespace FakeItEasy
         /// <returns>The value returned from the delegate compiled from the expression.</returns>
         public static object Evaluate(this Expression expression)
         {
-            return EvaluateOptimized(expression);
+            if (TryFastEvaluate(expression, out object result))
+            {
+                return result;
+            }
+
+            return Expression.Lambda(expression).Compile().DynamicInvoke();
         }
 
         // About the optimizations:
@@ -37,17 +42,20 @@ namespace FakeItEasy
         //     A<SomethingA>._
         //     myObj.someProperty
         // - trivial method calls with no arguments (A.ToString(), B.GetType(), Factory.Create())
-        private static object EvaluateOptimized(this Expression expression)
+        private static bool TryFastEvaluate(Expression expression, out object result)
         {
+            result = null;
+
             if (expression == null)
             {
-                return null;
+                return true;
             }
 
             switch (expression.NodeType)
             {
                 case ExpressionType.Constant:
-                    return ((ConstantExpression)expression).Value;
+                    result = ((ConstantExpression)expression).Value;
+                    return true;
 
                 case ExpressionType.MemberAccess:
                     var memberExpression = (MemberExpression)expression;
@@ -55,14 +63,26 @@ namespace FakeItEasy
                     var fieldInfo = memberExpression.Member as FieldInfo;
                     if (fieldInfo != null)
                     {
-                        return fieldInfo.GetValue(EvaluateOptimized(memberExpression.Expression));
+                        if (TryFastEvaluate(memberExpression.Expression, out object memberResult))
+                        {
+                            result = fieldInfo.GetValue(memberResult);
+                            return true;
+                        }
+
+                        return false;
                     }
 
                     var propertyInfo = memberExpression.Member as PropertyInfo;
                     if (propertyInfo != null)
                     {
                         // index = null: this is always fine since it's a MemberAccess expression, not an IndexExpression
-                        return propertyInfo.GetValue(EvaluateOptimized(memberExpression.Expression), null);
+                        if (TryFastEvaluate(memberExpression.Expression, out object memberResult))
+                        {
+                            result = propertyInfo.GetValue(memberResult, null);
+                            return true;
+                        }
+
+                        return false;
                     }
 
                     break;
@@ -72,10 +92,10 @@ namespace FakeItEasy
 
                     // for now, handling only very trivial call expressions with no arguments, like 'GetBlarg()'
                     // because anything else might get complicated quickly (method overloads etc.)
-                    if (!callExpression.Arguments.Any())
+                    if (!callExpression.Arguments.Any() && TryFastEvaluate(callExpression.Object, out object targetObject))
                     {
-                        var targetObject = EvaluateOptimized(callExpression.Object);
-                        return callExpression.Method.Invoke(targetObject, null);
+                        result = callExpression.Method.Invoke(targetObject, null);
+                        return true;
                     }
 
                     break;
@@ -87,17 +107,18 @@ namespace FakeItEasy
                     if (unaryExpression.Type == typeof(object))
                     {
                         // in principle, we would first evaluate it without the boxing, and then box/cast to object...
-                        // ...but EvaluateOptimized already boxes before returning, so no explicit cast needed.
-                        object obj = EvaluateOptimized(unaryExpression.Operand); // declaring an explicitly typed variable to ensure we're really boxing
-                        return obj;
+                        // ...but TryFastEvaluate already boxes before returning, so no explicit cast needed.
+                        if (TryFastEvaluate(unaryExpression.Operand, out object operand))
+                        {
+                            result = operand;
+                            return true;
+                        }
                     }
 
                     break;
             }
 
-            // when we didn't know how to evaluate the tree, fall back to compiling into a delegate and invoking the expression
-            var lambda = Expression.Lambda(expression).Compile();
-            return lambda.DynamicInvoke();
+            return false;
         }
     }
 }
