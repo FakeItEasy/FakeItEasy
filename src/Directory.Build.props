@@ -11,4 +11,8 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MinVer" Version="1.0.0-alpha.9" PrivateAssets="All" />
+  </ItemGroup>
+
 </Project>

@@ -5,7 +5,6 @@
 [Oo]bjcs
 [Oo]bjvb
 artifacts
-src/VersionInfo.cs
 src/FakeItEasy.nuspec
 tools/packages.config.sha1
 tools/*/ToolPaths.cs
