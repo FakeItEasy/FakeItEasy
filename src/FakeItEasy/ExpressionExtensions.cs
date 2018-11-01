@@ -42,6 +42,7 @@ namespace FakeItEasy
         //     myObj.someProperty
         // - method calls
         // - array creation (including params arrays)
+        // - quoted expressions
         private static bool TryFastEvaluate(Expression expression, out object result)
         {
             result = null;
@@ -108,18 +109,14 @@ namespace FakeItEasy
                     return true;
 
                 case ExpressionType.Convert:
-                    var unaryExpression = (UnaryExpression)expression;
+                    var convertExpression = (UnaryExpression)expression;
 
                     // for now, handling only 'boxing/casting to object' expressions like '3' used as an argument to a function which takes an object[] array parameter.
-                    if (unaryExpression.Type == typeof(object))
+                    if (convertExpression.Type == typeof(object))
                     {
                         // in principle, we would first evaluate it without the boxing, and then box/cast to object...
                         // ...but TryFastEvaluate already boxes before returning, so no explicit cast needed.
-                        if (TryFastEvaluate(unaryExpression.Operand, out object operand))
-                        {
-                            result = operand;
-                            return true;
-                        }
+                        return TryFastEvaluate(convertExpression.Operand, out result);
                     }
 
                     break;
@@ -137,6 +134,14 @@ namespace FakeItEasy
                     }
 
                     result = arrayItems;
+                    return true;
+
+                case ExpressionType.Quote:
+                    // We've wrapped an expression inside another expression. This should mean that the inner
+                    // expression is the desired result.
+                    var quoteExpression = (UnaryExpression)expression;
+
+                    result = quoteExpression.Operand;
                     return true;
             }
 
