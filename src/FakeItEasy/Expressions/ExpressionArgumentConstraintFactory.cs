@@ -53,12 +53,12 @@ namespace FakeItEasy.Expressions
 
         private static bool IsParamArrayExpression(ParsedArgumentExpression argument)
         {
-            return IsTaggedWithParamArrayAttribute(argument) && argument.Expression is NewArrayExpression;
+            return argument.Expression is NewArrayExpression && IsTaggedWithParamArrayAttribute(argument);
         }
 
         private static bool IsTaggedWithParamArrayAttribute(ParsedArgumentExpression argument)
         {
-            return argument.ArgumentInformation.GetCustomAttributes(typeof(ParamArrayAttribute), true).Any();
+            return argument.ArgumentInformation.IsDefined(typeof(ParamArrayAttribute), true);
         }
 
         private static bool IsOutArgument(ParsedArgumentExpression argument)
