@@ -30,7 +30,13 @@ namespace FakeItEasy.Expressions
             this.methodInfoManager = methodInfoManager;
             this.Method = parsedExpression.CalledMethod;
 
-            this.argumentConstraints = GetArgumentConstraints(parsedExpression.ArgumentsExpressions, constraintFactory).ToArray();
+            var constraints = new IArgumentConstraint[parsedExpression.ArgumentsExpressions.Length];
+            for (var i = 0; i < constraints.Length; i++)
+            {
+                constraints[i] = constraintFactory.GetArgumentConstraint(parsedExpression.ArgumentsExpressions[i]);
+            }
+
+            this.argumentConstraints = constraints;
             this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
         }
 
@@ -81,10 +87,6 @@ namespace FakeItEasy.Expressions
 
             return values == null ? (Func<IFakeObjectCall, ICollection<object>>)null : call => values;
         }
-
-        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<ParsedArgumentExpression> argumentExpressions, ExpressionArgumentConstraintFactory constraintFactory) =>
-            from argument in argumentExpressions
-            select constraintFactory.GetArgumentConstraint(argument);
 
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
         {
