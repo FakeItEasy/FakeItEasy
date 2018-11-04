@@ -102,9 +102,9 @@ namespace FakeItEasy.Configuration
                 valueExpression.Body,
                 originalParameterInfos.Last());
 
-            var arguments = this.parsedSetterExpression.ArgumentsExpressions
-                .Take(originalParameterInfos.Length - 1)
-                .Concat(new[] { parsedValueExpression });
+            var arguments = new ParsedArgumentExpression[originalParameterInfos.Length];
+            Array.Copy(this.parsedSetterExpression.ArgumentsExpressions, arguments, originalParameterInfos.Length - 1);
+            arguments[originalParameterInfos.Length - 1] = parsedValueExpression;
 
             return new ParsedCallExpression(
                 this.parsedSetterExpression.CalledMethod,
