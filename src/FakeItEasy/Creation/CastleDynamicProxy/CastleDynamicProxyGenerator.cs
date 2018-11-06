@@ -1,7 +1,8 @@
-﻿namespace FakeItEasy.Creation.CastleDynamicProxy
+namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
@@ -17,7 +18,7 @@
 
         public static ProxyGeneratorResult GenerateProxy(
             Type typeOfProxy,
-            IEnumerable<Type> additionalInterfacesToImplement,
+            ReadOnlyCollection<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
             IEnumerable<Expression<Func<Attribute>>> attributes,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
@@ -78,7 +79,7 @@
         private static ProxyGeneratorResult CreateProxyGeneratorResult(
             Type typeOfProxy,
             ProxyGenerationOptions options,
-            IEnumerable<Type> additionalInterfacesToImplement,
+            ReadOnlyCollection<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
@@ -122,16 +123,24 @@
         private static object DoGenerateProxy(
             Type typeOfProxy,
             ProxyGenerationOptions options,
-            IEnumerable<Type> additionalInterfacesToImplement,
+            ReadOnlyCollection<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
             IInterceptor interceptor)
         {
-            var allInterfacesToImplement = additionalInterfacesToImplement;
+            Type[] allInterfacesToImplement;
 
             if (typeOfProxy.GetTypeInfo().IsInterface)
             {
-                allInterfacesToImplement = new[] { typeOfProxy }.Concat(allInterfacesToImplement);
+                allInterfacesToImplement = new Type[1 + additionalInterfacesToImplement.Count];
+                additionalInterfacesToImplement.CopyTo(allInterfacesToImplement, 1);
+
+                allInterfacesToImplement[0] = typeOfProxy;
                 typeOfProxy = typeof(object);
+            }
+            else
+            {
+                allInterfacesToImplement = new Type[additionalInterfacesToImplement.Count];
+                additionalInterfacesToImplement.CopyTo(allInterfacesToImplement, 0);
             }
 
             return GenerateClassProxy(typeOfProxy, options, argumentsForConstructor, interceptor, allInterfacesToImplement);
@@ -142,13 +151,13 @@
             ProxyGenerationOptions options,
             IEnumerable<object> argumentsForConstructor,
             IInterceptor interceptor,
-            IEnumerable<Type> allInterfacesToImplement)
+            Type[] allInterfacesToImplement)
         {
             var argumentsArray = argumentsForConstructor?.ToArray();
 
             return ProxyGenerator.CreateClassProxy(
                 typeOfProxy,
-                allInterfacesToImplement.ToArray(),
+                allInterfacesToImplement,
                 options,
                 argumentsArray,
                 interceptor);
