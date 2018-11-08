@@ -2,13 +2,14 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq.Expressions;
 
     internal interface IProxyOptions
     {
         IEnumerable<object> ArgumentsForConstructor { get; }
 
-        IEnumerable<Type> AdditionalInterfacesToImplement { get; }
+        ReadOnlyCollection<Type> AdditionalInterfacesToImplement { get; }
 
         IEnumerable<Action<object>> ProxyConfigurationActions { get; }
 

@@ -2,6 +2,7 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
@@ -18,7 +19,7 @@ namespace FakeItEasy.Creation
 
         public IEnumerable<object> ArgumentsForConstructor { get; set; }
 
-        public IEnumerable<Type> AdditionalInterfacesToImplement => this.additionalInterfacesToImplement;
+        public ReadOnlyCollection<Type> AdditionalInterfacesToImplement => this.additionalInterfacesToImplement.AsReadOnly();
 
         public IEnumerable<Action<object>> ProxyConfigurationActions => this.proxyConfigurationActions;
 
@@ -50,7 +51,7 @@ namespace FakeItEasy.Creation
         {
             public IEnumerable<object> ArgumentsForConstructor { get; } = null;
 
-            public IEnumerable<Type> AdditionalInterfacesToImplement { get; } = Type.EmptyTypes;
+            public ReadOnlyCollection<Type> AdditionalInterfacesToImplement { get; } = new ReadOnlyCollection<Type>(new List<Type>());
 
             public IEnumerable<Action<object>> ProxyConfigurationActions { get; } = Enumerable.Empty<Action<object>>();
 
