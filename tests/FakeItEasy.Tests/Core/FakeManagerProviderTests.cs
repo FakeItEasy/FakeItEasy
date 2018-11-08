@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Reflection;
@@ -32,7 +32,7 @@
                 this.proxyOptions);
 
             this.proxy = new object();
-            this.fakeManager = new FakeManager(typeof(int), this.proxy, null);
+            this.fakeManager = new FakeManager(typeof(int), this.proxy);
             A.CallTo(() => this.fakeManagerFactory(A<Type>._, this.proxy)).Returns(this.fakeManager);
         }
 

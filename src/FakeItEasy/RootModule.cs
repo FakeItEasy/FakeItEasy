@@ -92,7 +92,7 @@ namespace FakeItEasy
             registrar.Register<IFakeObjectCallFormatter>(fakeObjectCallFormatter);
 
             FakeManager FakeManagerFactory(Type fakeObjectType, object proxy) =>
-                new FakeManager(fakeObjectType, proxy, fakeManagerAccessor);
+                new FakeManager(fakeObjectType, proxy);
 
             IFakeCallProcessorProvider FakeCallProcessorProviderFactory(Type typeOfFake, IProxyOptions proxyOptions) =>
                 new FakeManagerProvider(FakeManagerFactory, fakeManagerAccessor, typeOfFake, proxyOptions);

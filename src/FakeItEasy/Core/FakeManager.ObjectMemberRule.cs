@@ -12,7 +12,7 @@ namespace FakeItEasy.Core
         [Serializable]
 #endif
         private class ObjectMemberRule
-            : IFakeObjectCallRule
+            : SharedFakeObjectCallRule
         {
 #pragma warning disable CA2235 // Mark all non-serializable fields
             private static readonly List<MethodInfo> ObjectMethods =
@@ -24,35 +24,25 @@ namespace FakeItEasy.Core
                         typeof(object).GetMethod("GetHashCode", Type.EmptyTypes)
                     };
 
-            private readonly FakeManager fakeManager;
-            private readonly IFakeManagerAccessor fakeManagerAccessor;
-
-            public ObjectMemberRule(FakeManager fakeManager, IFakeManagerAccessor fakeManagerAccessor)
-            {
-                this.fakeManager = fakeManager;
-                this.fakeManagerAccessor = fakeManagerAccessor;
-            }
-
-            public int? NumberOfTimesToCall => null;
-
-            public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
+            public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
                 return IsObjetMethod(fakeObjectCall);
             }
 
-            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+            public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                if (this.TryHandleToString(fakeObjectCall))
+                var fakeManager = Fake.GetFakeManager(fakeObjectCall.FakedObject);
+                if (TryHandleToString(fakeObjectCall, fakeManager))
                 {
                     return;
                 }
 
-                if (this.TryHandleGetHashCode(fakeObjectCall))
+                if (TryHandleGetHashCode(fakeObjectCall, fakeManager))
                 {
                     return;
                 }
 
-                if (this.TryHandleEquals(fakeObjectCall))
+                if (TryHandleEquals(fakeObjectCall, fakeManager))
                 {
                     return;
                 }
@@ -61,9 +51,9 @@ namespace FakeItEasy.Core
             private static bool IsSameMethod(MethodInfo first, MethodInfo second)
             {
                 return first.DeclaringType == second.DeclaringType
-                   && first.MetadataToken == second.MetadataToken
-                   && first.Module == second.Module
-                   && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
+                       && first.MetadataToken == second.MetadataToken
+                       && first.Module == second.Module
+                       && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
             }
 
             private static bool IsObjetMethod(IFakeObjectCall fakeObjectCall)
@@ -71,31 +61,31 @@ namespace FakeItEasy.Core
                 return ObjectMethods.Any(m => IsSameMethod(m, fakeObjectCall.Method));
             }
 
-            private bool TryHandleGetHashCode(IInterceptedFakeObjectCall fakeObjectCall)
+            private static bool TryHandleGetHashCode(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
                 if (!IsSameMethod(fakeObjectCall.Method, ObjectMethods[2]))
                 {
                     return false;
                 }
 
-                fakeObjectCall.SetReturnValue(this.fakeManager.GetHashCode());
+                fakeObjectCall.SetReturnValue(fakeManager.GetHashCode());
 
                 return true;
             }
 
-            private bool TryHandleToString(IInterceptedFakeObjectCall fakeObjectCall)
+            private static bool TryHandleToString(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
                 if (!IsSameMethod(fakeObjectCall.Method, ObjectMethods[1]))
                 {
                     return false;
                 }
 
-                fakeObjectCall.SetReturnValue("Faked " + this.fakeManager.FakeObjectType);
+                fakeObjectCall.SetReturnValue("Faked " + fakeManager.FakeObjectType);
 
                 return true;
             }
 
-            private bool TryHandleEquals(IInterceptedFakeObjectCall fakeObjectCall)
+            private static bool TryHandleEquals(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
                 if (!IsSameMethod(fakeObjectCall.Method, ObjectMethods[0]))
                 {
@@ -105,8 +95,8 @@ namespace FakeItEasy.Core
                 var argument = fakeObjectCall.Arguments[0];
                 if (argument != null)
                 {
-                    var argumentFakeManager = this.fakeManagerAccessor.TryGetFakeManager(argument);
-                    bool hasSameFakeManager = ReferenceEquals(argumentFakeManager, this.fakeManager);
+                    var argumentFakeManager = Fake.TryGetFakeManager(argument);
+                    bool hasSameFakeManager = ReferenceEquals(argumentFakeManager, fakeManager);
                     fakeObjectCall.SetReturnValue(hasSameFakeManager);
                 }
                 else

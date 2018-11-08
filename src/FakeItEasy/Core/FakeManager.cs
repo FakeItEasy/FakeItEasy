@@ -17,8 +17,18 @@ namespace FakeItEasy.Core
 #endif
     public partial class FakeManager : IFakeCallProcessor
     {
-        private readonly CallRuleMetadata[] postUserRules;
-        private readonly CallRuleMetadata[] preUserRules;
+#pragma warning disable CA2235 // Mark all non-serializable fields
+        private static readonly SharedFakeObjectCallRule[] PostUserRules =
+        {
+            new ObjectMemberRule(),
+            new AutoFakePropertyRule(),
+            new PropertySetterRule(),
+            new CancellationRule(),
+            new DefaultReturnValueRule(),
+        };
+#pragma warning restore CA2235 // Mark all non-serializable fields
+
+        private readonly IFakeObjectCallRule[] preUserRules;
 #pragma warning disable CA2235 // Mark all non-serializable fields
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
@@ -32,8 +42,7 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="fakeObjectType">The faked type.</param>
         /// <param name="proxy">The faked proxy object.</param>
-        /// <param name="fakeManagerAccessor">The fake manager accessor.</param>
-        internal FakeManager(Type fakeObjectType, object proxy, IFakeManagerAccessor fakeManagerAccessor)
+        internal FakeManager(Type fakeObjectType, object proxy)
         {
             Guard.AgainstNull(fakeObjectType, nameof(fakeObjectType));
             Guard.AgainstNull(proxy, nameof(proxy));
@@ -41,19 +50,11 @@ namespace FakeItEasy.Core
             this.objectReference = new WeakReference(proxy);
             this.FakeObjectType = fakeObjectType;
 
-            this.preUserRules = new[]
-                                    {
-                                        new CallRuleMetadata { Rule = new EventRule(this) }
-                                    };
+            this.preUserRules = new IFakeObjectCallRule[]
+            {
+                new EventRule(this),
+            };
             this.AllUserRules = new LinkedList<CallRuleMetadata>();
-            this.postUserRules = new[]
-                                     {
-                                         new CallRuleMetadata { Rule = new ObjectMemberRule(this, fakeManagerAccessor) },
-                                         new CallRuleMetadata { Rule = new AutoFakePropertyRule(this) },
-                                         new CallRuleMetadata { Rule = new PropertySetterRule(this) },
-                                         new CallRuleMetadata { Rule = new CancellationRule() },
-                                         new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
-                                     };
 
             this.recordedCalls = new ConcurrentQueue<ICompletedFakeObjectCall>();
             this.interceptionListeners = new LinkedList<IInterceptionListener>();
@@ -92,9 +93,6 @@ namespace FakeItEasy.Core
 #pragma warning disable CA2235 // Mark all non-serializable fields
         internal LinkedList<CallRuleMetadata> AllUserRules { get; }
 #pragma warning restore CA2235 // Mark all non-serializable fields
-
-        private IEnumerable<CallRuleMetadata> AllRules =>
-            this.preUserRules.Concat(this.AllUserRules.Concat(this.postUserRules));
 
         /// <summary>
         /// Adds a call rule to the fake object.
@@ -143,14 +141,10 @@ namespace FakeItEasy.Core
                 listener.OnBeforeCallIntercepted(fakeObjectCall);
             }
 
-            var ruleToUse =
-                (from rule in this.AllRules
-                 where rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes()
-                 select rule).First();
-
+            IFakeObjectCallRule ruleUsed = null;
             try
             {
-                ApplyRule(ruleToUse, fakeObjectCall);
+                this.ApplyBestRule(fakeObjectCall, out ruleUsed);
             }
             finally
             {
@@ -160,7 +154,7 @@ namespace FakeItEasy.Core
 
                 foreach (var listener in this.interceptionListeners.Reverse())
                 {
-                    listener.OnAfterCallIntercepted(readonlyCall, ruleToUse.Rule);
+                    listener.OnAfterCallIntercepted(readonlyCall, ruleUsed);
                 }
             }
         }
@@ -219,10 +213,47 @@ namespace FakeItEasy.Core
             this.AllUserRules.AddAfter(previousNode, new CallRuleMetadata { Rule = newRule });
         }
 
-        private static void ApplyRule(CallRuleMetadata rule, IInterceptedFakeObjectCall fakeObjectCall)
+        // Apply the best rule to the call. There will always be at least one applicable rule, and the rule used will
+        // be returned in the ruleUsed out parameter. An out parameter was used instead of the return value because it
+        // made it easier to return the value even when the rule throws an exception. Another solution might have been
+        // to catch the exception, which would then need to be bundled into a return object with the rule and eventually
+        // rethrown.
+        private void ApplyBestRule(IInterceptedFakeObjectCall fakeObjectCall, out IFakeObjectCallRule ruleUsed)
         {
-            rule.CalledNumberOfTimes++;
-            rule.Rule.Apply(fakeObjectCall);
+            foreach (var preUserRule in this.preUserRules)
+            {
+                if (preUserRule.IsApplicableTo(fakeObjectCall))
+                {
+                    ruleUsed = preUserRule;
+                    preUserRule.Apply(fakeObjectCall);
+                    return;
+                }
+            }
+
+            foreach (var rule in this.AllUserRules)
+            {
+                if (rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes())
+                {
+                    ruleUsed = rule.Rule;
+                    rule.CalledNumberOfTimes++;
+                    rule.Rule.Apply(fakeObjectCall);
+                    return;
+                }
+            }
+
+            foreach (var postUserRule in PostUserRules)
+            {
+                if (postUserRule.IsApplicableTo(fakeObjectCall))
+                {
+                    ruleUsed = postUserRule;
+                    postUserRule.Apply(fakeObjectCall);
+                    return;
+                }
+            }
+
+            // The last rule in the postUserRules is applicable to all calls, so this line is here to satisfy
+            // the compiler. ruleUsed will always have been set and we will have returned before now.
+            ruleUsed = null;
         }
 
         private void UpdateLastSequenceNumber(int sequenceNumber)
@@ -240,6 +271,15 @@ namespace FakeItEasy.Core
             }
             while (sequenceNumber > last &&
                    sequenceNumber != Interlocked.CompareExchange(ref this.lastSequenceNumber, sequenceNumber, last));
+        }
+
+        private abstract class SharedFakeObjectCallRule : IFakeObjectCallRule
+        {
+            int? IFakeObjectCallRule.NumberOfTimesToCall => null;
+
+            public abstract bool IsApplicableTo(IFakeObjectCall fakeObjectCall);
+
+            public abstract void Apply(IInterceptedFakeObjectCall fakeObjectCall);
         }
     }
 }
