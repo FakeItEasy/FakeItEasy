@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp1.0;netcoreapp2.1</TargetFrameworks>
     <AssemblyName>FakeItEasy.Specs</AssemblyName>
     <CodeAnalysisRuleset>FakeItEasy.Specs.ruleset</CodeAnalysisRuleset>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
@@ -19,5 +20,9 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
     <Compile Remove="DisposableSpecs.cs" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
+    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION</DefineConstants>
+  </PropertyGroup>
 
 </Project>

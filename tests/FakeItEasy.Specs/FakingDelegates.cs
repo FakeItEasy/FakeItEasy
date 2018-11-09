@@ -1,12 +1,17 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
     using Xunit;
 
     public static class FakingDelegates
     {
+        public delegate void VoidDelegateWithOutAndRefValues(out string outString, ref int refInt);
+
+        public delegate int NonVoidDelegateWithOutAndRefValues(ref string refString, out int outInt);
+
         [Scenario]
         public static void WithoutConfiguration(Func<string, int> fakedDelegate)
         {
@@ -85,6 +90,72 @@ namespace FakeItEasy.Specs
 
             "Then it returns the configured value"
                 .x(() => result.Should().Be(10));
+        }
+
+        [Scenario]
+        public static void CannotBeConfiguredToCallBaseMethod(Action fake, Exception exception)
+        {
+            "Given a fake delegate"
+                .x(() => fake = A.Fake<Action>());
+
+            "And I configure it to call its base method"
+                .x(() => A.CallTo(() => fake.Invoke()).CallsBaseMethod());
+
+            "When I invoke it"
+                .x(() => exception = Record.Exception(() => fake.Invoke()));
+
+            "Then it throws a not supported exception"
+                .x(() => exception.Should()
+                    .BeAnExceptionOfType<NotSupportedException>()
+                    .WithMessage("Can not configure a delegate proxy to call base method."));
+        }
+
+        [Scenario]
+        public static void SetOutAndRefVoid(VoidDelegateWithOutAndRefValues fake, string theOutParameter, int theRefParameter)
+        {
+            "Given a fake delegate with void return and out and ref parameters"
+                .x(() => fake = A.Fake<VoidDelegateWithOutAndRefValues>());
+
+            "And I configure it to set ref and out parameters"
+                .x(() =>
+                {
+                    string outString;
+                    int refInt = 0;
+                    A.CallTo(() => fake.Invoke(out outString, ref refInt)).AssignsOutAndRefParameters("fancy out string", 3);
+                });
+
+            "When I invoke it"
+                .x(() => fake.Invoke(out theOutParameter, ref theRefParameter));
+
+            "Then it sets the proper out value"
+                .x(() => theOutParameter.Should().Be("fancy out string"));
+
+            "And it sets the proper ref value"
+                .x(() => theRefParameter.Should().Be(3));
+        }
+
+        [Scenario]
+        public static void SetOutAndRefNonVoid(NonVoidDelegateWithOutAndRefValues fake, string theRefParameter, int theOutParameter)
+        {
+            "Given a fake delegate with non-void return and out and ref parameters"
+                .x(() => fake = A.Fake<NonVoidDelegateWithOutAndRefValues>());
+
+            "And I configure it to set ref and out parameters"
+                .x(() =>
+                {
+                    string refString = null;
+                    int outInt;
+                    A.CallTo(() => fake.Invoke(ref refString, out outInt)).AssignsOutAndRefParameters("fancy ref string", 5);
+                });
+
+            "When I invoke it"
+                .x(() => fake.Invoke(ref theRefParameter, out theOutParameter));
+
+            "Then it sets the proper ref value"
+                .x(() => theRefParameter.Should().Be("fancy ref string"));
+
+            "And it sets the proper out value"
+                .x(() => theOutParameter.Should().Be(5));
         }
     }
 }

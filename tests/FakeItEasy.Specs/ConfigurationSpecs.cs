@@ -1,6 +1,7 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -20,6 +21,32 @@
             IFoo Bafoo();
 
             IFoo Bafoo(out int i);
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface IInterface
+        {
+        }
+
+        [Scenario]
+        [InlineData(typeof(IInterface))]
+        [InlineData(typeof(AbstractClass))]
+        [InlineData(typeof(ClassWithProtectedConstructor))]
+        [InlineData(typeof(ClassWithInternalConstructorVisibleToDynamicProxy))]
+        [InlineData(typeof(InternalClassVisibleToDynamicProxy))]
+        public static void ConfigureToString(Type typeOfFake, object fake, string stringResult)
+        {
+            "Given a fake"
+                .x(() => fake = Sdk.Create.Fake(typeOfFake));
+
+            "And I configure the fake's ToString method"
+                .x(() => A.CallTo(() => fake.ToString()).Returns("I configured " + typeOfFake + ".ToString()"));
+
+            "When I call the method"
+                .x(() => stringResult = fake.ToString());
+
+            "Then it returns the configured value"
+                .x(() => stringResult.Should().Be("I configured " + typeOfFake + ".ToString()"));
         }
 
         [Scenario]

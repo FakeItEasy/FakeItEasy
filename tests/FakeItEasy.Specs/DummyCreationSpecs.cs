@@ -322,7 +322,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
 
             "And its message indicates that a dummy couldn't be created"
-                .x(() => exception.Message.Should().StartWith(@"
+                .x(() => exception.Message.Should().Match(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+PrivateAbstractClass:
     No Dummy Factory produced a result.
     It is not a Task.
@@ -334,7 +334,7 @@ namespace FakeItEasy.Specs
     Constructor with signature () failed:
       No usable default constructor was found on the type FakeItEasy.Specs.DummyCreationSpecsBase+PrivateAbstractClass.
       An exception of type Castle.DynamicProxy.Generators.GeneratorException was caught during this call. Its message was:
-      Can not create proxy for type FakeItEasy.Specs.DummyCreationSpecsBase+PrivateAbstractClass because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(""DynamicProxyGenAssembly2"")] attribute, because assembly FakeItEasy.Specs is not strong-named."));
+      Can not create proxy for type FakeItEasy.Specs.DummyCreationSpecsBase+PrivateAbstractClass because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(*DynamicProxyGenAssembly2*)] attribute*"));
         }
 
         [Scenario]
