@@ -3,11 +3,12 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+#if FEATURE_BINARY_SERIALIZATION
     using System.Runtime.Serialization;
+#endif
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
 
@@ -16,7 +17,47 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         private static readonly IProxyGenerationHook ProxyGenerationHook = new InterceptEverythingHook();
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
 
-        public static ProxyGeneratorResult GenerateProxy(
+        public static ProxyGeneratorResult GenerateInterfaceProxy(
+            Type typeOfProxy,
+            ReadOnlyCollection<Type> additionalInterfacesToImplement,
+            IEnumerable<Expression<Func<Attribute>>> attributes,
+            IFakeCallProcessorProvider fakeCallProcessorProvider)
+        {
+            Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
+            Guard.AgainstNull(additionalInterfacesToImplement, nameof(additionalInterfacesToImplement));
+            Guard.AgainstNull(attributes, nameof(attributes));
+            Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
+
+            var options = CreateProxyGenerationOptions();
+            foreach (var attribute in attributes)
+            {
+                options.AdditionalAttributes.Add(CustomAttributeInfo.FromExpression(attribute));
+            }
+
+            var allInterfacesToImplement = new Type[1 + additionalInterfacesToImplement.Count];
+            additionalInterfacesToImplement.CopyTo(allInterfacesToImplement, 1);
+            allInterfacesToImplement[0] = typeOfProxy;
+
+            object proxy;
+            try
+            {
+                proxy = ProxyGenerator.CreateClassProxy(
+                    typeof(object),
+                    allInterfacesToImplement,
+                    options,
+                    (object[])null,
+                    new ProxyInterceptor(fakeCallProcessorProvider));
+            }
+            catch (Exception e)
+            {
+                return GetResultForFailedProxyGeneration(typeOfProxy, null, e);
+            }
+
+            fakeCallProcessorProvider.EnsureInitialized(proxy);
+            return new ProxyGeneratorResult(generatedProxy: proxy);
+        }
+
+        public static ProxyGeneratorResult GenerateClassProxy(
             Type typeOfProxy,
             ReadOnlyCollection<Type> additionalInterfacesToImplement,
             IEnumerable<object> argumentsForConstructor,
@@ -33,15 +74,42 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 return new ProxyGeneratorResult(failReason);
             }
 
-            GuardAgainstConstructorArgumentsForInterfaceType(typeOfProxy, argumentsForConstructor);
-
             var options = CreateProxyGenerationOptions();
             foreach (var attribute in attributes)
             {
                 options.AdditionalAttributes.Add(CustomAttributeInfo.FromExpression(attribute));
             }
 
-            return CreateProxyGeneratorResult(typeOfProxy, options, additionalInterfacesToImplement, argumentsForConstructor, fakeCallProcessorProvider);
+            Type[] allInterfacesToImplement;
+            if (additionalInterfacesToImplement.Count == 0)
+            {
+                allInterfacesToImplement = Type.EmptyTypes;
+            }
+            else
+            {
+                allInterfacesToImplement = new Type[additionalInterfacesToImplement.Count];
+                additionalInterfacesToImplement.CopyTo(allInterfacesToImplement, 0);
+            }
+
+            var argumentsArray = argumentsForConstructor?.ToArray();
+
+            object proxy;
+            try
+            {
+                proxy = ProxyGenerator.CreateClassProxy(
+                    typeOfProxy,
+                    allInterfacesToImplement,
+                    options,
+                    argumentsArray,
+                    new ProxyInterceptor(fakeCallProcessorProvider));
+            }
+            catch (Exception e)
+            {
+                return GetResultForFailedProxyGeneration(typeOfProxy, argumentsArray, e);
+            }
+
+            fakeCallProcessorProvider.EnsureInitialized(proxy);
+            return new ProxyGeneratorResult(generatedProxy: proxy);
         }
 
         public static bool CanGenerateProxy(Type typeOfProxy, out string failReason)
@@ -67,44 +135,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             return new ProxyGenerationOptions(ProxyGenerationHook);
         }
 
-        private static void GuardAgainstConstructorArgumentsForInterfaceType(Type typeOfProxy, IEnumerable<object> argumentsForConstructor)
-        {
-            if (typeOfProxy.GetTypeInfo().IsInterface && argumentsForConstructor != null)
-            {
-                throw new ArgumentException(DynamicProxyMessages.ArgumentsForConstructorOnInterfaceType);
-            }
-        }
-
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate since the method tries to create a proxy and returns a result object where success is reported.")]
-        private static ProxyGeneratorResult CreateProxyGeneratorResult(
-            Type typeOfProxy,
-            ProxyGenerationOptions options,
-            ReadOnlyCollection<Type> additionalInterfacesToImplement,
-            IEnumerable<object> argumentsForConstructor,
-            IFakeCallProcessorProvider fakeCallProcessorProvider)
-        {
-            var interceptor = new ProxyInterceptor(fakeCallProcessorProvider);
-            object proxy;
-
-            try
-            {
-                proxy = DoGenerateProxy(
-                    typeOfProxy,
-                    options,
-                    additionalInterfacesToImplement,
-                    argumentsForConstructor,
-                    interceptor);
-            }
-            catch (Exception e)
-            {
-                return GetResultForFailedProxyGeneration(typeOfProxy, argumentsForConstructor, e);
-            }
-
-            fakeCallProcessorProvider.EnsureInitialized(proxy);
-
-            return new ProxyGeneratorResult(generatedProxy: proxy);
-        }
-
         private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, Exception e)
         {
             if (argumentsForConstructor != null)
@@ -118,49 +148,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy, Exception e)
         {
             return new ProxyGeneratorResult(DynamicProxyMessages.ProxyTypeWithNoDefaultConstructor(typeOfProxy), e);
-        }
-
-        private static object DoGenerateProxy(
-            Type typeOfProxy,
-            ProxyGenerationOptions options,
-            ReadOnlyCollection<Type> additionalInterfacesToImplement,
-            IEnumerable<object> argumentsForConstructor,
-            IInterceptor interceptor)
-        {
-            Type[] allInterfacesToImplement;
-
-            if (typeOfProxy.GetTypeInfo().IsInterface)
-            {
-                allInterfacesToImplement = new Type[1 + additionalInterfacesToImplement.Count];
-                additionalInterfacesToImplement.CopyTo(allInterfacesToImplement, 1);
-
-                allInterfacesToImplement[0] = typeOfProxy;
-                typeOfProxy = typeof(object);
-            }
-            else
-            {
-                allInterfacesToImplement = new Type[additionalInterfacesToImplement.Count];
-                additionalInterfacesToImplement.CopyTo(allInterfacesToImplement, 0);
-            }
-
-            return GenerateClassProxy(typeOfProxy, options, argumentsForConstructor, interceptor, allInterfacesToImplement);
-        }
-
-        private static object GenerateClassProxy(
-            Type typeOfProxy,
-            ProxyGenerationOptions options,
-            IEnumerable<object> argumentsForConstructor,
-            IInterceptor interceptor,
-            Type[] allInterfacesToImplement)
-        {
-            var argumentsArray = argumentsForConstructor?.ToArray();
-
-            return ProxyGenerator.CreateClassProxy(
-                typeOfProxy,
-                allInterfacesToImplement,
-                options,
-                argumentsArray,
-                interceptor);
         }
 
 #if FEATURE_BINARY_SERIALIZATION

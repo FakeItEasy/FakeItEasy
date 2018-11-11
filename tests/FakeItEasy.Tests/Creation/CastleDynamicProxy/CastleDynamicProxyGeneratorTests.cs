@@ -21,19 +21,32 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         {
         }
 
-        [Theory]
-        [InlineData(typeof(IInterfaceType))]
-        [InlineData(typeof(AbstractClass))]
-        [InlineData(typeof(ClassWithProtectedConstructor))]
-        [InlineData(typeof(ClassWithInternalConstructorVisibleToDynamicProxy))]
-        [InlineData(typeof(InternalClassVisibleToDynamicProxy))]
-        public void Should_ensure_fake_call_processor_is_initialized_but_not_fetched_when_no_method_on_fake_is_called(Type typeThatImplementsInterfaceType)
+        [Fact]
+        public void Should_ensure_fake_call_processor_is_initialized_but_not_fetched_when_no_method_on_fake_interface_is_called()
         {
             // Arrange
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             // Act
-            CastleDynamicProxyGenerator.GenerateProxy(typeThatImplementsInterfaceType, this.noAdditionalInterfaces, null, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
+            CastleDynamicProxyGenerator.GenerateInterfaceProxy(typeof(IInterfaceType), this.noAdditionalInterfaces, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
+
+            // Assert
+            A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).MustNotHaveHappened();
+            A.CallTo(() => fakeCallProcessorProvider.EnsureInitialized(A<object>._)).MustHaveHappened();
+        }
+
+        [Theory]
+        [InlineData(typeof(AbstractClass))]
+        [InlineData(typeof(ClassWithProtectedConstructor))]
+        [InlineData(typeof(ClassWithInternalConstructorVisibleToDynamicProxy))]
+        [InlineData(typeof(InternalClassVisibleToDynamicProxy))]
+        public void Should_ensure_fake_call_processor_is_initialized_but_not_fetched_when_no_method_on_fake_class_is_called(Type typeToProxy)
+        {
+            // Arrange
+            var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
+
+            // Act
+            CastleDynamicProxyGenerator.GenerateClassProxy(typeToProxy, this.noAdditionalInterfaces, null, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
 
             // Assert
             A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).MustNotHaveHappened();
@@ -41,22 +54,31 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         }
 
         [Fact]
-        public void GenerateProxy_should_be_null_guarded()
+        public void GenerateInterfaceProxy_should_be_null_guarded()
         {
             // Arrange
 
             // Act
 
             // Assert
-            Expression<Action> call = () => CastleDynamicProxyGenerator.GenerateProxy(typeof(IInterfaceType), this.noAdditionalInterfaces, null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            Expression<Action> call = () => CastleDynamicProxyGenerator.GenerateInterfaceProxy(typeof(IInterfaceType), this.noAdditionalInterfaces, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            call.Should().BeNullGuarded();
+        }
+
+        [Fact]
+        public void GenerateClassProxy_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Expression<Action> call = () => CastleDynamicProxyGenerator.GenerateClassProxy(typeof(AbstractClass), this.noAdditionalInterfaces, null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
             call.Should().BeNullGuarded();
         }
 
         public abstract class AbstractClass
         {
-            public virtual void Foo(int argument1, int argument2)
-            {
-            }
         }
 
         public class ClassWithProtectedConstructor

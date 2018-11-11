@@ -13,16 +13,18 @@ namespace FakeItEasy.Creation
     internal class FakeObjectCreator : IFakeObjectCreator, IMethodInterceptionValidator
     {
         private readonly ICreationStrategy[] strategies;
+        private readonly DefaultCreationStrategy defaultCreationStrategy;
 
         public FakeObjectCreator(
             FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory,
             IMethodInterceptionValidator castleMethodInterceptionValidator,
             IMethodInterceptionValidator delegateMethodInterceptionValidator)
         {
+            this.defaultCreationStrategy = new DefaultCreationStrategy(castleMethodInterceptionValidator, fakeCallProcessorProviderFactory);
             this.strategies = new ICreationStrategy[]
             {
                 new DelegateCreationStrategy(delegateMethodInterceptionValidator, fakeCallProcessorProviderFactory),
-                new DefaultCreationStrategy(castleMethodInterceptionValidator, fakeCallProcessorProviderFactory),
+                this.defaultCreationStrategy,
             };
         }
 
@@ -56,8 +58,15 @@ namespace FakeItEasy.Creation
             bool MethodCanBeInterceptedOnInstance(MethodInfo method, object fake, out string failReason);
         }
 
-        public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver) =>
-            this.strategies.First(s => s.IsResponsibleForCreating(typeOfFake)).CreateFake(typeOfFake, proxyOptions, session, resolver);
+        public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
+        {
+            if (typeOfFake.GetTypeInfo().IsInterface)
+            {
+                return this.defaultCreationStrategy.CreateFakeInterface(typeOfFake, proxyOptions);
+            }
+
+            return this.strategies.First(s => s.IsResponsibleForCreating(typeOfFake)).CreateFake(typeOfFake, proxyOptions, session, resolver);
+        }
 
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
@@ -120,6 +129,24 @@ namespace FakeItEasy.Creation
                 this.methodInterceptionValidator = methodInterceptionValidator;
                 this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
                 this.parameterTypesCache = new ConcurrentDictionary<Type, Type[]>();
+            }
+
+            public CreationResult CreateFakeInterface(Type typeOfFake, IProxyOptions proxyOptions)
+            {
+                if (proxyOptions.ArgumentsForConstructor != null)
+                {
+                    throw new ArgumentException(DynamicProxyMessages.ArgumentsForConstructorOnInterfaceType);
+                }
+
+                var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
+                var proxyGeneratorResult = CastleDynamicProxyGenerator.GenerateInterfaceProxy(
+                    typeOfFake,
+                    proxyOptions.AdditionalInterfacesToImplement,
+                    proxyOptions.Attributes,
+                    fakeCallProcessorProvider);
+                return proxyGeneratorResult.ProxyWasSuccessfullyGenerated
+                    ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
+                    : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
             }
 
             public bool IsResponsibleForCreating(Type typeOfFake) => true;
@@ -234,7 +261,7 @@ namespace FakeItEasy.Creation
             {
                 var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
 
-                return CastleDynamicProxyGenerator.GenerateProxy(
+                return CastleDynamicProxyGenerator.GenerateClassProxy(
                     typeOfFake,
                     proxyOptions.AdditionalInterfacesToImplement,
                     argumentsForConstructor,
