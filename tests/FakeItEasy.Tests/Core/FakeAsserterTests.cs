@@ -8,13 +8,13 @@ namespace FakeItEasy.Tests.Core
 
     public class FakeAsserterTests
     {
-        private readonly List<ICompletedFakeObjectCall> calls;
+        private readonly List<CompletedFakeObjectCall> calls;
         private readonly CallWriter callWriter;
         private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
 
         public FakeAsserterTests()
         {
-            this.calls = new List<ICompletedFakeObjectCall>();
+            this.calls = new List<CompletedFakeObjectCall>();
             this.callWriter = A.Fake<CallWriter>();
             this.outputWriterFactory = A.Fake<StringBuilderOutputWriter.Factory>();
         }
@@ -43,9 +43,8 @@ namespace FakeItEasy.Tests.Core
         {
             for (int i = 0; i < numberOfCalls; i++)
             {
-                var call = A.Fake<ICompletedFakeObjectCall>();
-                SequenceNumberManager.RecordSequenceNumber(call);
-                this.calls.Add(call);
+                var completedFakeObjectCall = A.Dummy<CompletedFakeObjectCall>();
+                this.calls.Add(completedFakeObjectCall);
             }
         }
     }

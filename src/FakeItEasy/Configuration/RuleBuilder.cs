@@ -34,7 +34,7 @@ namespace FakeItEasy.Configuration
 
         IVoidConfiguration IThenConfiguration<IVoidConfiguration>.Then => this.Then;
 
-        public IEnumerable<ICompletedFakeObjectCall> Calls => this.manager.GetRecordedCalls();
+        public IEnumerable<CompletedFakeObjectCall> Calls => this.manager.GetRecordedCalls();
 
         public ICallMatcher Matcher => new RuleMatcher(this);
 
