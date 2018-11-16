@@ -16,13 +16,13 @@ namespace FakeItEasy.Core
         private class EventRule
             : IFakeObjectCallRule
         {
-            private readonly FakeManager fakeManager;
-
 #if FEATURE_BINARY_SERIALIZATION
             [NonSerialized]
 #endif
-            private readonly EventHandlerArgumentProviderMap eventHandlerArgumentProviderMap =
+            private static readonly EventHandlerArgumentProviderMap EventHandlerArgumentProviderMap =
                 ServiceLocator.Resolve<EventHandlerArgumentProviderMap>();
+
+            private readonly FakeManager fakeManager;
 
 #if FEATURE_BINARY_SERIALIZATION
             [NonSerialized]
@@ -68,7 +68,7 @@ namespace FakeItEasy.Core
                 if (eventCall.IsEventRegistration())
                 {
                     IEventRaiserArgumentProvider argumentProvider;
-                    if (this.eventHandlerArgumentProviderMap.TryTakeArgumentProviderFor(
+                    if (EventHandlerArgumentProviderMap.TryTakeArgumentProviderFor(
                         eventCall.EventHandler,
                         out argumentProvider))
                     {

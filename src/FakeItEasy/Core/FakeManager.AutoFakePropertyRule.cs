@@ -1,8 +1,9 @@
 namespace FakeItEasy.Core
 {
+#if FEATURE_BINARY_SERIALIZATION
     using System;
+#endif
     using System.Linq;
-    using FakeItEasy.Creation;
 
     /// <content>Auto fake property rule.</content>
     public partial class FakeManager
@@ -11,25 +12,16 @@ namespace FakeItEasy.Core
         [Serializable]
 #endif
         private class AutoFakePropertyRule
-            : IFakeObjectCallRule
+            : SharedFakeObjectCallRule
         {
-            private readonly FakeManager fakeManager;
-
-            public AutoFakePropertyRule(FakeManager fakeManager)
-            {
-                this.fakeManager = fakeManager;
-            }
-
-            public int? NumberOfTimesToCall => null;
-
-            public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
+            public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
                 return PropertyBehaviorRule.IsPropertyGetter(fakeObjectCall.Method);
             }
 
-            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+            public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
@@ -43,7 +35,7 @@ namespace FakeItEasy.Core
                                       CalledNumberOfTimes = 1
                                   };
 
-                this.fakeManager.AllUserRules.AddFirst(newRule);
+                Fake.GetFakeManager(fakeObjectCall.FakedObject).AllUserRules.AddFirst(newRule);
                 newRule.Rule.Apply(fakeObjectCall);
             }
         }

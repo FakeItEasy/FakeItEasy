@@ -1,6 +1,8 @@
 namespace FakeItEasy.Core
 {
+#if FEATURE_BINARY_SERIALIZATION
     using System;
+#endif
     using System.Collections.Generic;
     using System.Linq;
 #if FEATURE_NETCORE_REFLECTION
@@ -15,14 +17,12 @@ namespace FakeItEasy.Core
 #if FEATURE_BINARY_SERIALIZATION
         [Serializable]
 #endif
-        private class CancellationRule : IFakeObjectCallRule
+        private class CancellationRule : SharedFakeObjectCallRule
         {
-            public int? NumberOfTimesToCall => null;
-
-            public bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>
+            public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>
                 GetCanceledTokens(fakeObjectCall).Any();
 
-            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+            public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
