@@ -1,6 +1,7 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -15,6 +16,11 @@ namespace FakeItEasy.Specs
     public abstract class CreationOptionsSpecsBase
     {
         [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface IInterfaceType
+        {
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
         public interface IInterfaceThatWeWillAddAttributesTo1
         {
         }
@@ -27,6 +33,13 @@ namespace FakeItEasy.Specs
         [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
         public interface IInterfaceThatWeWillAddAttributesTo3
         {
+        }
+
+        public interface IFakeCreator
+        {
+            Type FakeType { get; }
+
+            object CreateFake(Action<IFakeOptions> optionsBuilder, CreationOptionsSpecsBase testRunner);
         }
 
         [Scenario]
@@ -620,16 +633,21 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        [MemberData(nameof(SupportedTypes))]
         public void Implements(
-            MakesVirtualCallInConstructor fake,
-            Action<IFakeOptions<MakesVirtualCallInConstructor>> optionsBuilder)
+            IFakeCreator fakeCreator,
+            Action<IFakeOptions> optionsBuilder,
+            object fake)
         {
-            "Given an explicit options builder that makes a fake implement an interface"
+            "Given a type to fake"
+                .See(() => fakeCreator.FakeType.ToString());
+
+            "And an explicit options builder that makes a fake implement an interface"
                 .x(() => optionsBuilder = options => options
                     .Implements(typeof(IDisposable)));
 
-            "When I create a fake using the options builder"
-                .x(() => fake = this.CreateFake(optionsBuilder));
+            "When I create the fake using the options builder"
+                .x(() => fake = fakeCreator.CreateFake(optionsBuilder, this));
 
             "Then it implements the interface"
                 .x(() => fake.Should().BeAssignableTo<IDisposable>());
@@ -891,6 +909,30 @@ namespace FakeItEasy.Specs
         }
 
         protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder);
+
+        private static IEnumerable<object[]> SupportedTypes()
+        {
+            return TestCases.FromObject(
+                new FakeCreator<IInterfaceType>(),
+                new FakeCreator<AbstractClass>(),
+                new FakeCreator<ClassWithProtectedConstructor>(),
+                new FakeCreator<ClassWithInternalConstructorVisibleToDynamicProxy>(),
+                new FakeCreator<InternalClassVisibleToDynamicProxy>());
+        }
+
+        private class FakeCreator<TFake> : IFakeCreator
+        {
+            public Type FakeType => typeof(TFake);
+
+            public object CreateFake(Action<IFakeOptions> optionsBuilder, CreationOptionsSpecsBase testRunner)
+            {
+                return testRunner.CreateFake((Action<IFakeOptions<TFake>>)TypedOptionsBuilder);
+
+                void TypedOptionsBuilder(IFakeOptions<TFake> options) => optionsBuilder((IFakeOptions)options);
+            }
+
+            public override string ToString() => typeof(TFake).Name;
+        }
     }
 
     public class GenericCreationOptionsSpecs : CreationOptionsSpecsBase
@@ -921,6 +963,17 @@ namespace FakeItEasy.Specs
         public override string VirtualMethod(string parameter)
         {
             return this.virtualMethodReturnValue;
+        }
+    }
+
+    public abstract class AbstractClass
+    {
+    }
+
+    public class ClassWithProtectedConstructor
+    {
+        protected ClassWithProtectedConstructor()
+        {
         }
     }
 }
