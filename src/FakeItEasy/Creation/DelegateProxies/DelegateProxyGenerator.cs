@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Creation.DelegateProxies
+namespace FakeItEasy.Creation.DelegateProxies
 {
     using System;
     using System.Collections.Generic;
@@ -16,28 +16,11 @@
         {
             Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
 
-            if (!CanGenerateProxy(typeOfProxy, out string reasonCannotGenerate))
-            {
-                return new ProxyGeneratorResult(reasonCannotGenerate);
-            }
-
             var invokeMethod = typeOfProxy.GetMethod("Invoke");
             var eventRaiser = new DelegateCallInterceptedEventRaiser(fakeCallProcessorProvider, invokeMethod, typeOfProxy);
 
             fakeCallProcessorProvider.EnsureInitialized(eventRaiser.Instance);
             return new ProxyGeneratorResult(eventRaiser.Instance);
-        }
-
-        public static bool CanGenerateProxy(Type typeOfProxy, out string failReason)
-        {
-            if (!typeof(Delegate).IsAssignableFrom(typeOfProxy))
-            {
-                failReason = "The delegate proxy generator can only create proxies for delegate types.";
-                return false;
-            }
-
-            failReason = null;
-            return true;
         }
 
         private static Delegate CreateDelegateProxy(
