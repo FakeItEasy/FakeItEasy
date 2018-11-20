@@ -15,19 +15,15 @@ namespace FakeItEasy.Core
             : SharedFakeObjectCallRule
         {
 #pragma warning disable CA2235 // Mark all non-serializable fields
-            private static readonly List<MethodInfo> ObjectMethods =
+            private static readonly MethodInfo EqualsMethod = typeof(object).GetMethod(nameof(object.Equals), new[] { typeof(object) });
+            private static readonly MethodInfo ToStringMethod = typeof(object).GetMethod(nameof(object.ToString), Type.EmptyTypes);
+            private static readonly MethodInfo GetHashCodeMethod = typeof(object).GetMethod(nameof(object.GetHashCode), Type.EmptyTypes);
 #pragma warning restore CA2235 // Mark all non-serializable fields
-                new List<MethodInfo>
-                    {
-                        typeof(object).GetMethod("Equals", new[] { typeof(object) }),
-                        typeof(object).GetMethod("ToString", Type.EmptyTypes),
-                        typeof(object).GetMethod("GetHashCode", Type.EmptyTypes)
-                    };
 
-            public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
-            {
-                return IsObjetMethod(fakeObjectCall);
-            }
+            public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>
+                IsSameMethod(fakeObjectCall.Method, EqualsMethod) ||
+                IsSameMethod(fakeObjectCall.Method, ToStringMethod) ||
+                IsSameMethod(fakeObjectCall.Method, GetHashCodeMethod);
 
             public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
@@ -56,14 +52,9 @@ namespace FakeItEasy.Core
                        && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
             }
 
-            private static bool IsObjetMethod(IFakeObjectCall fakeObjectCall)
-            {
-                return ObjectMethods.Any(m => IsSameMethod(m, fakeObjectCall.Method));
-            }
-
             private static bool TryHandleGetHashCode(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
-                if (!IsSameMethod(fakeObjectCall.Method, ObjectMethods[2]))
+                if (!IsSameMethod(fakeObjectCall.Method, GetHashCodeMethod))
                 {
                     return false;
                 }
@@ -75,7 +66,7 @@ namespace FakeItEasy.Core
 
             private static bool TryHandleToString(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
-                if (!IsSameMethod(fakeObjectCall.Method, ObjectMethods[1]))
+                if (!IsSameMethod(fakeObjectCall.Method, ToStringMethod))
                 {
                     return false;
                 }
@@ -87,7 +78,7 @@ namespace FakeItEasy.Core
 
             private static bool TryHandleEquals(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
-                if (!IsSameMethod(fakeObjectCall.Method, ObjectMethods[0]))
+                if (!IsSameMethod(fakeObjectCall.Method, EqualsMethod))
                 {
                     return false;
                 }
