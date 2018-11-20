@@ -5,6 +5,9 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+#if FEATURE_BINARY_SERIALIZATION
+    using System.Runtime.Serialization;
+#endif
     using System.Threading;
 
     /// <summary>
@@ -32,9 +35,13 @@ namespace FakeItEasy.Core
 #pragma warning disable CA2235 // Mark all non-serializable fields
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
-
-        private ConcurrentQueue<ICompletedFakeObjectCall> recordedCalls;
 #pragma warning restore CA2235 // Mark all non-serializable fields
+
+#if FEATURE_BINARY_SERIALIZATION
+        [NonSerialized]
+#endif
+        private ConcurrentQueue<CompletedFakeObjectCall> recordedCalls;
+
         private int lastSequenceNumber = -1;
 
         /// <summary>
@@ -56,7 +63,7 @@ namespace FakeItEasy.Core
             };
             this.AllUserRules = new LinkedList<CallRuleMetadata>();
 
-            this.recordedCalls = new ConcurrentQueue<ICompletedFakeObjectCall>();
+            this.recordedCalls = new ConcurrentQueue<CompletedFakeObjectCall>();
             this.interceptionListeners = new LinkedList<IInterceptionListener>();
         }
 
@@ -134,7 +141,7 @@ namespace FakeItEasy.Core
         }
 
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Explicit implementation to be able to make the IFakeCallProcessor interface internal.")]
-        void IFakeCallProcessor.Process(IInterceptedFakeObjectCall fakeObjectCall)
+        void IFakeCallProcessor.Process(InterceptedFakeObjectCall fakeObjectCall)
         {
             foreach (var listener in this.interceptionListeners)
             {
@@ -165,20 +172,9 @@ namespace FakeItEasy.Core
         /// Returns a list of all calls on the managed object.
         /// </summary>
         /// <returns>A list of all calls on the managed object.</returns>
-        internal IEnumerable<ICompletedFakeObjectCall> GetRecordedCalls()
+        internal IEnumerable<CompletedFakeObjectCall> GetRecordedCalls()
         {
             return this.recordedCalls;
-        }
-
-        /// <summary>
-        /// Records that a call has occurred on the managed object.
-        /// </summary>
-        /// <param name="call">The call to remember.</param>
-        internal void RecordCall(ICompletedFakeObjectCall call)
-        {
-            int sequenceNumber = SequenceNumberManager.RecordSequenceNumber(call);
-            this.UpdateLastSequenceNumber(sequenceNumber);
-            this.recordedCalls.Enqueue(call);
         }
 
         /// <summary>
@@ -194,7 +190,7 @@ namespace FakeItEasy.Core
         /// </summary>
         internal virtual void ClearRecordedCalls()
         {
-            this.recordedCalls = new ConcurrentQueue<ICompletedFakeObjectCall>();
+            this.recordedCalls = new ConcurrentQueue<CompletedFakeObjectCall>();
         }
 
         /// <summary>
@@ -256,6 +252,16 @@ namespace FakeItEasy.Core
             ruleUsed = null;
         }
 
+        /// <summary>
+        /// Records that a call has occurred on the managed object.
+        /// </summary>
+        /// <param name="call">The call to remember.</param>
+        private void RecordCall(CompletedFakeObjectCall call)
+        {
+            this.UpdateLastSequenceNumber(call.SequenceNumber);
+            this.recordedCalls.Enqueue(call);
+        }
+
         private void UpdateLastSequenceNumber(int sequenceNumber)
         {
             //// Set the specified sequence number as the last sequence number if it's greater than the current last sequence number.
@@ -272,6 +278,14 @@ namespace FakeItEasy.Core
             while (sequenceNumber > last &&
                    sequenceNumber != Interlocked.CompareExchange(ref this.lastSequenceNumber, sequenceNumber, last));
         }
+
+#if FEATURE_BINARY_SERIALIZATION
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            this.recordedCalls = new ConcurrentQueue<CompletedFakeObjectCall>();
+        }
+#endif
 
         private abstract class SharedFakeObjectCallRule : IFakeObjectCallRule
         {

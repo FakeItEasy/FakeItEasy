@@ -3,7 +3,6 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     internal class SequentialCallContext
     {
@@ -39,10 +38,10 @@ namespace FakeItEasy.Core
             this.assertedCalls.Add(
                 new AssertedCall { CallDescriber = callDescriber, MatchingCountDescription = callCountConstraint.ToString() });
 
-            var allCalls = this.fakeManagers.SelectMany(f => f.GetRecordedCalls()).OrderBy(SequenceNumberManager.GetSequenceNumber).ToList();
+            var allCalls = this.fakeManagers.SelectMany(f => f.GetRecordedCalls()).OrderBy(call => call.SequenceNumber).ToList();
 
             int matchedCallCount = 0;
-            foreach (var currentCall in allCalls.SkipWhile(c => SequenceNumberManager.GetSequenceNumber(c) <= this.currentSequenceNumber))
+            foreach (var currentCall in allCalls.SkipWhile(c => c.SequenceNumber <= this.currentSequenceNumber))
             {
                 if (callCountConstraint.Matches(matchedCallCount))
                 {
@@ -52,7 +51,7 @@ namespace FakeItEasy.Core
                 if (callPredicate(currentCall))
                 {
                     matchedCallCount++;
-                    this.currentSequenceNumber = SequenceNumberManager.GetSequenceNumber(currentCall);
+                    this.currentSequenceNumber = currentCall.SequenceNumber;
                 }
             }
 
@@ -62,7 +61,7 @@ namespace FakeItEasy.Core
             }
         }
 
-        private void ThrowExceptionWhenAssertionFailed(List<ICompletedFakeObjectCall> originalCallList)
+        private void ThrowExceptionWhenAssertionFailed(List<CompletedFakeObjectCall> originalCallList)
         {
             var message = this.outputWriterFactory.Invoke();
 

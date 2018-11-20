@@ -100,7 +100,7 @@ namespace FakeItEasy
             ExpressionCallRule ExpressionCallRuleFactory(ParsedCallExpression callSpecification) =>
                 new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, expressionArgumentConstraintFactory, methodInfoManager));
 
-            IFakeAsserter FakeAsserterFactory(IEnumerable<ICompletedFakeObjectCall> calls, int lastSequenceNumber) =>
+            IFakeAsserter FakeAsserterFactory(IEnumerable<CompletedFakeObjectCall> calls, int lastSequenceNumber) =>
                 new FakeAsserter(calls, lastSequenceNumber, callWriter, stringBuilderOutputWriterFactory.Create);
 
             SequentialCallContext SequentialCallContextFactory() =>

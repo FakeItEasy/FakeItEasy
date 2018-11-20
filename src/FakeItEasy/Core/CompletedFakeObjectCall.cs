@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System.Reflection;
     using FakeItEasy.Configuration;
@@ -12,6 +12,7 @@
             this.Arguments = new ArgumentCollection(arguments, this.Method);
             this.ArgumentsAfterCall = interceptedCall.Arguments;
             this.ReturnValue = returnValue;
+            this.SequenceNumber = SequenceNumberManager.GetNextSequenceNumber();
         }
 
         public object ReturnValue { get; }
@@ -23,5 +24,7 @@
         public ArgumentCollection ArgumentsAfterCall { get; }
 
         public object FakedObject { get; }
+
+        public int SequenceNumber { get; }
     }
-}
+}

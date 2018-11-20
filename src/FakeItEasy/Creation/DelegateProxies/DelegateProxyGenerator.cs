@@ -151,7 +151,7 @@ namespace FakeItEasy.Creation.DelegateProxies
             }
         }
 
-        private class DelegateFakeObjectCall : IInterceptedFakeObjectCall
+        private class DelegateFakeObjectCall : InterceptedFakeObjectCall
         {
             private readonly object[] originalArguments;
 
@@ -165,28 +165,28 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             public object ReturnValue { get; private set; }
 
-            public MethodInfo Method { get; }
+            public override MethodInfo Method { get; }
 
-            public ArgumentCollection Arguments { get; }
+            public override ArgumentCollection Arguments { get; }
 
-            public object FakedObject { get; }
+            public override object FakedObject { get; }
 
-            public void SetReturnValue(object value)
+            public override void SetReturnValue(object value)
             {
                 this.ReturnValue = value;
             }
 
-            public void CallBaseMethod()
+            public override void CallBaseMethod()
             {
                 throw new NotSupportedException("Can not configure a delegate proxy to call base method.");
             }
 
-            public void SetArgumentValue(int index, object value)
+            public override void SetArgumentValue(int index, object value)
             {
                 this.Arguments.GetUnderlyingArgumentsArray()[index] = value;
             }
 
-            public ICompletedFakeObjectCall AsReadOnly()
+            public override CompletedFakeObjectCall AsReadOnly()
             {
                 return new CompletedFakeObjectCall(
                     this,
