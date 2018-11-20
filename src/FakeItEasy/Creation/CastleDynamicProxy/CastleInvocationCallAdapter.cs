@@ -1,10 +1,7 @@
 namespace FakeItEasy.Creation.CastleDynamicProxy
 {
-#if FEATURE_BINARY_SERIALIZATION
     using System;
-#endif
     using System.Diagnostics;
-    using System.Linq;
     using System.Reflection;
     using Castle.DynamicProxy;
     using FakeItEasy.Configuration;
@@ -32,7 +29,9 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         public CastleInvocationCallAdapter(IInvocation invocation)
         {
             this.invocation = invocation;
-            this.originalArguments = invocation.Arguments.ToArray();
+            var savedArguments = new object[invocation.Arguments.Length];
+            Array.Copy(invocation.Arguments, savedArguments, savedArguments.Length);
+            this.originalArguments = savedArguments;
             this.Method = invocation.Method;
             this.Arguments = new ArgumentCollection(invocation.Arguments, invocation.Method);
         }
