@@ -56,22 +56,6 @@ namespace FakeItEasy.Specs
                 .x(() => fake.Should().BeAssignableTo(fakeCreator.FakeType));
         }
 
-#if FEATURE_BINARY_SERIALIZATION
-        [Scenario]
-        [MemberData(nameof(SerializableTypes))]
-        public void SerializingSupportedTypes(IFakeCreator fakeCreator, object fake)
-        {
-            "Given a serializable fake type"
-                .See(fakeCreator.FakeType.ToString());
-
-            "When I create a fake of the supported type"
-                .x(() => fake = fakeCreator.CreateFake(this));
-
-            "Then the fake can be serialized and deserialized"
-                .x(() => BinarySerializationHelper.SerializeAndDeserialize(fake).Should().BeAssignableTo(fakeCreator.FakeType));
-    }
-#endif
-
         [Scenario]
         public void ThrowingConstructor(
             Exception exception)
@@ -626,29 +610,10 @@ namespace FakeItEasy.Specs
             }
         }
 
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
-        public class TypeWithArgumentsForConstructor
-        {
-            public TypeWithArgumentsForConstructor(int argument)
-            {
-                this.Argument = argument;
-            }
-
-            public int Argument { get; set; }
-        }
-
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         public abstract class AbstractClass
         {
         }
 
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         public class ClassWithProtectedConstructor
         {
             protected ClassWithProtectedConstructor()
@@ -656,9 +621,6 @@ namespace FakeItEasy.Specs
             }
         }
 
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         public class ClassWithPrivateConstructor
         {
             private ClassWithPrivateConstructor()
@@ -675,19 +637,6 @@ namespace FakeItEasy.Specs
             new FakeCreator<Action>(),
             new FakeCreator<Func<int, string>>(),
             new FakeCreator<EventHandler<EventArgs>>());
-
-#if FEATURE_BINARY_SERIALIZATION
-        private static IEnumerable<object[]> SerializableTypes()
-        {
-            foreach (var supportedType in SupportedTypes())
-            {
-                if (!typeof(Delegate).IsAssignableFrom(supportedType[0].GetType().GenericTypeArguments[0]))
-                {
-                    yield return supportedType;
-                }
-            }
-        }
-#endif
 
         private class FakeCreator<TFake> : IFakeCreator
         {
