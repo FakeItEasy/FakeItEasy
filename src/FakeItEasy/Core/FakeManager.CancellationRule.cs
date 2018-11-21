@@ -20,7 +20,7 @@ namespace FakeItEasy.Core
         private class CancellationRule : SharedFakeObjectCallRule
         {
             public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>
-                GetCanceledTokens(fakeObjectCall).Any();
+                GetCanceledToken(fakeObjectCall).HasValue;
 
             public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
@@ -44,18 +44,26 @@ namespace FakeItEasy.Core
                 }
                 else
                 {
-                    var token = GetCanceledTokens(fakeObjectCall).First();
-                    token.ThrowIfCancellationRequested();
+                    GetCanceledToken(fakeObjectCall)?.ThrowIfCancellationRequested();
                 }
             }
 
-            private static IEnumerable<CancellationToken> GetCanceledTokens(IFakeObjectCall call)
+            private static CancellationToken? GetCanceledToken(IFakeObjectCall call)
             {
-                return call.Method.GetParameters()
-                    .Select((param, index) => new { param, index })
-                    .Where(x => x.param.ParameterType == typeof(CancellationToken))
-                    .Select(x => (CancellationToken)call.Arguments[x.index])
-                    .Where(token => token.IsCancellationRequested);
+                var parameters = call.Method.GetParameters();
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    if (parameters[i].ParameterType == typeof(CancellationToken))
+                    {
+                        var token = (CancellationToken)call.Arguments[i];
+                        if (token.IsCancellationRequested)
+                        {
+                            return token;
+                        }
+                    }
+                }
+
+                return null;
             }
         }
     }

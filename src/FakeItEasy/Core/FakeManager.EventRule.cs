@@ -154,6 +154,9 @@ namespace FakeItEasy.Core
 
             private class EventCall
             {
+                private static readonly Func<EventInfo, MethodInfo> GetAddMethod = e => e.GetAddMethod();
+                private static readonly Func<EventInfo, MethodInfo> GetRemoveMethod = e => e.GetRemoveMethod();
+
                 private EventCall()
                 {
                 }
@@ -179,11 +182,35 @@ namespace FakeItEasy.Core
 
                 public static EventInfo GetEvent(MethodInfo eventAdderOrRemover)
                 {
+                    if (!eventAdderOrRemover.IsSpecialName)
+                    {
+                        return null;
+                    }
+
+                    Func<EventInfo, MethodInfo> getMethod;
+                    if (eventAdderOrRemover.Name.StartsWith("add_", StringComparison.Ordinal))
+                    {
+                        getMethod = GetAddMethod;
+                    }
+                    else if (eventAdderOrRemover.Name.StartsWith("remove_", StringComparison.Ordinal))
+                    {
+                        getMethod = GetRemoveMethod;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                    var eventInfos = eventAdderOrRemover.DeclaringType.GetEvents();
+                    if (eventInfos.Length == 0)
+                    {
+                        return null;
+                    }
+
+                    var adderOrRemoverDefinition = eventAdderOrRemover.GetBaseDefinition();
                     return
-                        (from e in eventAdderOrRemover.DeclaringType.GetEvents()
-                         where object.Equals(e.GetAddMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
-                             || object.Equals(e.GetRemoveMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
-                         select e).SingleOrDefault();
+                        eventInfos.SingleOrDefault(e =>
+                            Equals(getMethod(e).GetBaseDefinition(), adderOrRemoverDefinition));
                 }
 
                 public bool IsEventRegistration()
