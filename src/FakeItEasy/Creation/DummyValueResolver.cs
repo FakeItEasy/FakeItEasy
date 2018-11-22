@@ -36,6 +36,11 @@ namespace FakeItEasy.Creation
 
         public CreationResult TryResolveDummyValue(DummyCreationSession session, Type typeOfDummy)
         {
+            if (this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy cachedStrategy))
+            {
+                return cachedStrategy.TryCreateDummyValue(session, typeOfDummy);
+            }
+
             if (!session.TryBeginToResolveType(typeOfDummy))
             {
                 return CreationResult.FailedToCreateDummy(typeOfDummy, "Recursive dependency detected. Already resolving " + typeOfDummy + '.');
@@ -52,11 +57,6 @@ namespace FakeItEasy.Creation
 
         private CreationResult TryResolveDummyValueWithAllAvailableStrategies(DummyCreationSession session, Type typeOfDummy)
         {
-            if (this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy cachedStrategy))
-            {
-                return cachedStrategy.TryCreateDummyValue(session, typeOfDummy);
-            }
-
             CreationResult creationResult = null;
             foreach (var strategy in this.strategies)
             {
