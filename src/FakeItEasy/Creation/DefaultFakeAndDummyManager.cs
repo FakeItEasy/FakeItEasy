@@ -26,19 +26,19 @@ namespace FakeItEasy.Creation
 
         public object CreateDummy(Type typeOfDummy)
         {
-            return this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy).Result;
+            return this.dummyValueResolver.TryResolveDummyValue(typeOfDummy).Result;
         }
 
         public object CreateFake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
             var proxyOptions = this.BuildProxyOptions(typeOfFake, optionsBuilder);
 
-            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, new DummyCreationSession(), this.dummyValueResolver).Result;
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.dummyValueResolver).Result;
         }
 
         public bool TryCreateDummy(Type typeOfDummy, out object result)
         {
-            var creationResult = this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy);
+            var creationResult = this.dummyValueResolver.TryResolveDummyValue(typeOfDummy);
             if (creationResult.WasSuccessful)
             {
                 result = creationResult.Result;
