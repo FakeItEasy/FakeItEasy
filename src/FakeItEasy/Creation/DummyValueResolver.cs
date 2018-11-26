@@ -26,57 +26,86 @@ namespace FakeItEasy.Creation
             this.strategies = new ResolveStrategy[]
                 {
                     new ResolveFromDummyFactoryStrategy(dummyFactory),
-                    new ResolveByCreatingTaskStrategy(this),
-                    new ResolveByCreatingLazyStrategy(this),
+                    new ResolveByCreatingTaskStrategy(),
+                    new ResolveByCreatingLazyStrategy(),
                     new ResolveByActivatingValueTypeStrategy(),
-                    new ResolveByCreatingFakeStrategy(fakeObjectCreator, this),
-                    new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy(this)
+                    new ResolveByCreatingFakeStrategy(fakeObjectCreator),
+                    new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy()
                 };
         }
 
-        public CreationResult TryResolveDummyValue(DummyCreationSession session, Type typeOfDummy)
-        {
-            if (!session.TryBeginToResolveType(typeOfDummy))
-            {
-                return CreationResult.FailedToCreateDummy(typeOfDummy, "Recursive dependency detected. Already resolving " + typeOfDummy + '.');
-            }
-
-            var creationResult = this.TryResolveDummyValueWithAllAvailableStrategies(session, typeOfDummy);
-            if (creationResult.WasSuccessful)
-            {
-                session.OnSuccessfulResolve(typeOfDummy);
-            }
-
-            return creationResult;
-        }
-
-        private CreationResult TryResolveDummyValueWithAllAvailableStrategies(DummyCreationSession session, Type typeOfDummy)
+        public CreationResult TryResolveDummyValue(Type typeOfDummy)
         {
             if (this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy cachedStrategy))
             {
-                return cachedStrategy.TryCreateDummyValue(session, typeOfDummy);
+                return cachedStrategy.TryCreateDummyValue(typeOfDummy, this);
             }
 
-            CreationResult creationResult = null;
-            foreach (var strategy in this.strategies)
+            var resolver = new LoopDetectingResolver(this.strategies, this.strategyCache);
+            return resolver.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy);
+        }
+
+        private class LoopDetectingResolver : IDummyValueResolver
+        {
+            private readonly ResolveStrategy[] strategies;
+            private readonly ConcurrentDictionary<Type, ResolveStrategy> strategyCache;
+            private readonly HashSet<Type> typesCurrentlyBeingResolved;
+
+            public LoopDetectingResolver(ResolveStrategy[] strategies, ConcurrentDictionary<Type, ResolveStrategy> strategyCache)
             {
-                var thisCreationResult = strategy.TryCreateDummyValue(session, typeOfDummy);
-                if (thisCreationResult.WasSuccessful)
+                this.strategies = strategies;
+                this.strategyCache = strategyCache;
+                this.typesCurrentlyBeingResolved = new HashSet<Type>();
+            }
+
+            public CreationResult TryResolveDummyValue(Type typeOfDummy)
+            {
+                if (this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy cachedStrategy))
                 {
-                    this.strategyCache.TryAdd(typeOfDummy, strategy);
-                    return thisCreationResult;
+                    return cachedStrategy.TryCreateDummyValue(typeOfDummy, this);
                 }
 
-                creationResult = CreationResult.MergeIntoDummyResult(creationResult, thisCreationResult);
+                if (!this.TryBeginToResolveType(typeOfDummy))
+                {
+                    return CreationResult.FailedToCreateDummy(typeOfDummy, "Recursive dependency detected. Already resolving " + typeOfDummy + '.');
+                }
+
+                var creationResult = this.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy);
+                if (creationResult.WasSuccessful)
+                {
+                    this.OnSuccessfulResolve(typeOfDummy);
+                }
+
+                return creationResult;
             }
 
-            this.strategyCache.TryAdd(typeOfDummy, new UnableToResolveStrategy(creationResult));
-            return creationResult;
+            public CreationResult TryResolveDummyValueWithAllAvailableStrategies(Type typeOfDummy)
+            {
+                CreationResult creationResult = null;
+                foreach (var strategy in this.strategies)
+                {
+                    var thisCreationResult = strategy.TryCreateDummyValue(typeOfDummy, this);
+                    if (thisCreationResult.WasSuccessful)
+                    {
+                        this.strategyCache.TryAdd(typeOfDummy, strategy);
+                        return thisCreationResult;
+                    }
+
+                    creationResult = CreationResult.MergeIntoDummyResult(creationResult, thisCreationResult);
+                }
+
+                this.strategyCache.TryAdd(typeOfDummy, new UnableToResolveStrategy(creationResult));
+                return creationResult;
+            }
+
+            private bool TryBeginToResolveType(Type typeOfDummy) => this.typesCurrentlyBeingResolved.Add(typeOfDummy);
+
+            private void OnSuccessfulResolve(Type typeOfDummy) => this.typesCurrentlyBeingResolved.Remove(typeOfDummy);
         }
 
         private class ResolveByActivatingValueTypeStrategy : ResolveStrategy
         {
-            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
+            public override CreationResult TryCreateDummyValue(Type typeOfDummy, IDummyValueResolver resolver)
             {
                 if (typeOfDummy.GetTypeInfo().IsValueType && typeOfDummy != typeof(void))
                 {
@@ -89,32 +118,22 @@ namespace FakeItEasy.Creation
 
         private class ResolveByCreatingFakeStrategy : ResolveStrategy
         {
-            public ResolveByCreatingFakeStrategy(IFakeObjectCreator fakeCreator, DummyValueResolver resolver)
+            public ResolveByCreatingFakeStrategy(IFakeObjectCreator fakeCreator)
             {
                 this.FakeCreator = fakeCreator;
-                this.Resolver = resolver;
             }
 
             private IFakeObjectCreator FakeCreator { get; }
 
-            private DummyValueResolver Resolver { get; }
-
-            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy) =>
-                this.FakeCreator.CreateFake(typeOfDummy, new ProxyOptions(), session, this.Resolver);
+            public override CreationResult TryCreateDummyValue(Type typeOfDummy, IDummyValueResolver resolver) =>
+                this.FakeCreator.CreateFake(typeOfDummy, new ProxyOptions(), resolver);
         }
 
         private class ResolveByCreatingTaskStrategy : ResolveStrategy
         {
             private static readonly MethodInfo GenericFromResultMethodDefinition = CreateGenericFromResultMethodDefinition();
 
-            public ResolveByCreatingTaskStrategy(DummyValueResolver resolver)
-            {
-                this.Resolver = resolver;
-            }
-
-            private DummyValueResolver Resolver { get; }
-
-            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
+            public override CreationResult TryCreateDummyValue(Type typeOfDummy, IDummyValueResolver resolver)
             {
                 if (typeOfDummy == typeof(Task))
                 {
@@ -124,7 +143,7 @@ namespace FakeItEasy.Creation
                 if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Task<>))
                 {
                     var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
-                    var creationResult = this.Resolver.TryResolveDummyValue(session, typeOfTaskResult);
+                    var creationResult = resolver.TryResolveDummyValue(typeOfTaskResult);
                     object taskResult = creationResult.WasSuccessful
                         ? creationResult.Result
                         : typeOfTaskResult.GetDefaultValue();
@@ -146,19 +165,12 @@ namespace FakeItEasy.Creation
 
         private class ResolveByCreatingLazyStrategy : ResolveStrategy
         {
-            public ResolveByCreatingLazyStrategy(DummyValueResolver resolver)
-            {
-                this.Resolver = resolver;
-            }
-
-            private DummyValueResolver Resolver { get; }
-
-            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
+            public override CreationResult TryCreateDummyValue(Type typeOfDummy, IDummyValueResolver resolver)
             {
                 if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Lazy<>))
                 {
                     var typeOfLazyResult = typeOfDummy.GetGenericArguments()[0];
-                    var creationResult = this.Resolver.TryResolveDummyValue(session, typeOfLazyResult);
+                    var creationResult = resolver.TryResolveDummyValue(typeOfLazyResult);
                     object lazyResult = creationResult.WasSuccessful
                         ? creationResult.Result
                         : typeOfLazyResult.GetDefaultValue();
@@ -191,15 +203,8 @@ namespace FakeItEasy.Creation
         {
             private readonly ConcurrentDictionary<Type, ConstructorInfo> cachedConstructors = new ConcurrentDictionary<Type, ConstructorInfo>();
 
-            public ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy(DummyValueResolver resolver)
-            {
-                this.Resolver = resolver;
-            }
-
-            private DummyValueResolver Resolver { get; }
-
             [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try method.")]
-            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
+            public override CreationResult TryCreateDummyValue(Type typeOfDummy, IDummyValueResolver resolver)
             {
                 if (typeof(Delegate).IsAssignableFrom(typeOfDummy))
                 {
@@ -219,8 +224,7 @@ namespace FakeItEasy.Creation
                 {
                     var resolvedConstructor = new ResolvedConstructor(
                         cachedConstructor.GetParameters().Select(pi => pi.ParameterType),
-                        session,
-                        this.Resolver);
+                        resolver);
                     if (resolvedConstructor.WasSuccessfullyResolved)
                     {
                         if (TryCreateDummyValueUsingConstructor(cachedConstructor, resolvedConstructor, out object result))
@@ -237,8 +241,7 @@ namespace FakeItEasy.Creation
                     {
                         var resolvedConstructor = new ResolvedConstructor(
                             constructor.GetParameters().Select(pi => pi.ParameterType),
-                            session,
-                            this.Resolver);
+                            resolver);
 
                         if (resolvedConstructor.WasSuccessfullyResolved && TryCreateDummyValueUsingConstructor(constructor, resolvedConstructor, out object result))
                         {
@@ -288,7 +291,7 @@ namespace FakeItEasy.Creation
 
             private DynamicDummyFactory DummyFactory { get; }
 
-            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
+            public override CreationResult TryCreateDummyValue(Type typeOfDummy, IDummyValueResolver resolver)
             {
                 var success = this.DummyFactory.TryCreateDummyObject(typeOfDummy, out object result);
                 return success
@@ -299,7 +302,7 @@ namespace FakeItEasy.Creation
 
         private abstract class ResolveStrategy
         {
-            public abstract CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy);
+            public abstract CreationResult TryCreateDummyValue(Type typeOfDummy, IDummyValueResolver resolver);
         }
 
         private class UnableToResolveStrategy : ResolveStrategy
@@ -311,7 +314,7 @@ namespace FakeItEasy.Creation
                 this.creationResult = creationResult;
             }
 
-            public override CreationResult TryCreateDummyValue(DummyCreationSession session, Type typeOfDummy)
+            public override CreationResult TryCreateDummyValue(Type typeOfDummy, IDummyValueResolver resolver)
             {
                 return this.creationResult;
             }

@@ -32,7 +32,7 @@ namespace FakeItEasy.Tests.Creation
             var options = new ProxyOptions();
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, new DummyCreationSession(), dummyValueResolver);
+            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, dummyValueResolver);
 
             // Assert
             A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(TypeWithMultipleConstructors), options))
@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests.Creation
 
         private static void StubResolverWithDummyValue<T>(IDummyValueResolver resolver, T dummyValue)
         {
-            A.CallTo(() => resolver.TryResolveDummyValue(A<DummyCreationSession>._, typeof(T)))
+            A.CallTo(() => resolver.TryResolveDummyValue(typeof(T)))
                 .Returns(CreationResult.SuccessfullyCreated(dummyValue));
         }
 
