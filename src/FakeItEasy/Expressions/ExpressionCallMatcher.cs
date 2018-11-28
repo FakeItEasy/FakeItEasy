@@ -15,7 +15,7 @@ namespace FakeItEasy.Expressions
         : ICallMatcher
     {
         private readonly MethodInfoManager methodInfoManager;
-        private IEnumerable<IArgumentConstraint> argumentConstraints;
+        private IArgumentConstraint[] argumentConstraints;
         private Func<ArgumentCollection, bool> argumentsPredicate;
         private bool useExplicitArgumentsPredicate;
 
@@ -107,10 +107,15 @@ namespace FakeItEasy.Expressions
 
         private bool ArgumentsMatchesArgumentConstraints(ArgumentCollection argumentCollection)
         {
-            return argumentCollection
-                .AsEnumerable()
-                .Zip(this.argumentConstraints, (x, y) => new { ArgumentValue = x, Constraint = y })
-                .All(x => x.Constraint.IsValid(x.ArgumentValue));
+            for (int i = 0; i < argumentCollection.Count; ++i)
+            {
+                if (!this.argumentConstraints[i].IsValid(argumentCollection[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private class PredicatedArgumentConstraint
