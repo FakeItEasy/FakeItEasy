@@ -11,7 +11,6 @@
         private const string Solution = "FakeItEasy.sln";
         private const string VersionInfoFile = "src/VersionInfo.cs";
         private const string RepoUrl = "https://github.com/FakeItEasy/FakeItEasy";
-        private const string AnalyzerMetaPackageNuspecPath = "src/FakeItEasy.Analyzer.nuspec";
 
         private static readonly string[] ProjectsToPack =
         {
@@ -84,19 +83,10 @@
             Target("get-version", () => version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2"));
 
             Target(
-                "pack-projects",
+                "pack",
                 DependsOn("build", "outputDirectory", "pdbgit", "get-version"),
                 forEach: ProjectsToPack,
                 action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {OutputDirectory} /p:Version={version}"));
-
-            Target(
-                "pack-nuspecs",
-                DependsOn("outputDirectory", "get-version"),
-                () => Run(ToolPaths.NuGet, $"pack {AnalyzerMetaPackageNuspecPath} -Version {version} -OutputDirectory {OutputDirectory} -NoPackageAnalysis"));
-
-            Target(
-                "pack",
-                DependsOn("pack-projects", "pack-nuspecs"));
 
             Target(
                 "pdbgit",

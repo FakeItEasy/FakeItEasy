@@ -11,7 +11,6 @@
     <PackageReference Include="SimpleExec" Version="$(SimpleExecVersion)" />
     <PackageReference Include="GitVersion.CommandLine" Version="4.0.0-beta0012" ToolName="GitVersion" ToolExe="GitVersion.exe" />
     <PackageReference Include="PdbGit" Version="3.0.41" ToolName="PdbGit" ToolExe="PdbGit.exe" />
-    <PackageReference Include="NuGet.CommandLine" Version="$(NuGetVersion)" ToolName="NuGet" ToolExe="nuget.exe" />
   </ItemGroup>
 
   <Import Project="../FakeItEasy.ToolPaths.targets" />
