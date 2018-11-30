@@ -45,10 +45,5 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="returnValue">The return value.</param>
         public abstract void SetReturnValue(object returnValue);
-
-        ICompletedFakeObjectCall IInterceptedFakeObjectCall.AsReadOnly()
-        {
-            return this.AsReadOnly();
-        }
     }
 }

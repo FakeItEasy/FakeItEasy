@@ -27,21 +27,10 @@ namespace FakeItEasy.Tests.TestHelpers
         private static IInterceptedFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)
         {
             var result = A.Fake<IInterceptedFakeObjectCall>();
-            var frozen = A.Fake<ICompletedFakeObjectCall>();
 
             A.CallTo(() => result.Method).Returns(GetMethodInfo(callSpecification));
-            A.CallTo(() => frozen.Method).Returns(GetMethodInfo(callSpecification));
-
             A.CallTo(() => result.FakedObject).Returns(fakedObject);
-            A.CallTo(() => frozen.FakedObject).Returns(fakedObject);
-
             A.CallTo(() => result.Arguments).Returns(CreateArgumentCollection(callSpecification));
-            A.CallTo(() => frozen.Arguments).Returns(CreateArgumentCollection(callSpecification));
-
-            A.CallTo(() => frozen.ReturnValue)
-                .ReturnsLazily(x => Fake.GetCalls(result).Matching<IInterceptedFakeObjectCall>(c => c.SetReturnValue(A<object>._)).Last().Arguments[0]);
-
-            A.CallTo(() => result.AsReadOnly()).Returns(frozen);
 
             return result;
         }
