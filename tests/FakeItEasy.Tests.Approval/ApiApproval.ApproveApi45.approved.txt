@@ -576,7 +576,6 @@ namespace FakeItEasy.Core
     }
     public interface IInterceptedFakeObjectCall : FakeItEasy.Core.IFakeObjectCall
     {
-        FakeItEasy.Core.ICompletedFakeObjectCall AsReadOnly();
         void CallBaseMethod();
         void SetArgumentValue(int index, object value);
         void SetReturnValue(object value);
