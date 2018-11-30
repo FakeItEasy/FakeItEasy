@@ -239,6 +239,7 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
+        #pragma warning disable CS0618
         public void Assert_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
@@ -250,6 +251,7 @@ namespace FakeItEasy.Tests.Configuration
             // Assert
             A.CallTo(() => factoryConfig.MustHaveHappened(A<Repeated>._)).MustHaveHappened();
         }
+        #pragma warning restore CS0618
 
         [Fact]
         public void Where_should_apply_where_predicate_on_rule()

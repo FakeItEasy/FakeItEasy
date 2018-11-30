@@ -11,6 +11,7 @@ namespace FakeItEasy.Analyzer.VisualBasic.Tests
     public class RepeatedAssertionAnalyzerTests : CodeFixVerifier
     {
         private const string CodeTemplate = @"Imports FakeItEasy
+#Disable Warning BC40000
 Namespace TheNamespace
     Class TheClass
         Sub Test()
@@ -42,9 +43,9 @@ End Namespace";
                  new DiagnosticResult
                  {
                      Id = "FakeItEasy0006",
-                     Message = "The MustHaveHappened(Repeated) assertion is being retired, and will be deprecated in FakeItEasy version 5.0.0 and removed in version 6.0.0.",
+                     Message = "The MustHaveHappened(Repeated) assertion is obsolete, and will be removed in version 6.0.0.",
                      Severity = DiagnosticSeverity.Warning,
-                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 6, 43) }
+                     Locations = new[] { new DiagnosticResultLocation("Test0.vb", 7, 43) }
                  });
         }
 

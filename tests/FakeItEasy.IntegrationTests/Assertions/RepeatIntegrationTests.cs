@@ -5,6 +5,8 @@ namespace FakeItEasy.IntegrationTests.Assertions
     using FluentAssertions;
     using Xunit;
 
+    #pragma warning disable CS0618
+
     public class RepeatIntegrationTests
     {
         private readonly IFoo foo;
