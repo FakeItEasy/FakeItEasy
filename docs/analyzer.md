@@ -6,13 +6,10 @@ bugs at runtime.
 
 ## Installation
 
-The analyzer works in Visual Studio 2015 Update 1 or later. It can be installed
-[from NuGet](https://www.nuget.org/packages/FakeItEasy.Analyzer) for each project
-that needs it:
-
-```
-PM> Install-Package FakeItEasy.Analyzer
-```
+The analyzer works in Visual Studio 2015 Update 1 or later. Install one of these
+NuGet packages in each project that needs it:
+- For C# projects: [FakeItEasy.Analyzer.CSharp](https://www.nuget.org/packages/FakeItEasy.Analyzer.CSharp)
+- For VB.NET projects: [FakeItEasy.Analyzer.VisualBasic](https://www.nuget.org/packages/FakeItEasy.Analyzer.VisualBasic)
 
 ## Diagnostics
 
