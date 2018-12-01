@@ -66,7 +66,7 @@ event FreeformEventHandler FreeformEvent;
 event CustomEventHandler CustomEvent;
 ```
 
-### From C#
+### From C&#x23;
 To raise a free-form event from C#, use `Raise.FreeForm.With`, which automatically infers the correct delegate type:
 
 ```csharp
@@ -77,11 +77,11 @@ fake.CustomEvent += Raise.FreeForm.With(fake, sampleCustomEventArgs);
 Due to language limitations, `Raise.Freeform.With` does not work in VB.NET, and it uses late binding, so you need a reference to the `Microsoft.CSharp` assembly in order to use it.
 
 ### From VB.NET
-To raise a free-form event from VB.NET, you must use `Raise.FreeForm<TEventHandler>.With`:
+To raise a free-form event from VB.NET, you must use `Raise.FreeForm(Of TEventHandler).With`:
 
-```csharp
-fake.FreeformEvent += Raise.FreeForm<FreeformEventHandler>.With(7);
-fake.CustomEvent += Raise.FreeForm<CustomEventHandler>.With(fake, sampleCustomEventArgs);
+```vbnet
+AddHandler fake.FreeformEvent, Raise.FreeForm(Of FreeformEventHandler).With(7)
+AddHandler fake.CustomEvent, Raise.FreeForm(Of CustomEventHandler).With(fake, sampleCustomEventArgs)
 ```
 
 Specifying the type of the event handler gets around the language restrictions in VB.NET.
