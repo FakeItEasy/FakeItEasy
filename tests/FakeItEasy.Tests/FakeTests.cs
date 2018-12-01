@@ -53,19 +53,5 @@ namespace FakeItEasy.Tests
             Expression<Action> call = () => Fake.ClearRecordedCalls(A.Dummy<object>());
             call.Should().BeNullGuarded();
         }
-
-        [Fact]
-        public void Initialize_should_be_guarded()
-        {
-            // Arrange
-
-            // Act
-
-            // Assert
-#pragma warning disable CS0618 // Type or member is obsolete
-                Expression<Action> call = () => Fake.InitializeFixture(new object());
-#pragma warning restore CS0618 // Type or member is obsolete
-                call.Should().BeNullGuarded();
-        }
     }
 }

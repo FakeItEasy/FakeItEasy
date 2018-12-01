@@ -69,19 +69,6 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Sets a new fake to each property or field that is tagged with the FakeAttribute in the specified
-        /// fixture.
-        /// </summary>
-        /// <param name="fixture">The object to initialize.</param>
-        [Obsolete("Test fixture initialization will be removed in version 5.0.0.")]
-        public static void InitializeFixture(object fixture)
-        {
-            Guard.AgainstNull(fixture, nameof(fixture));
-
-            FixtureInitializer.InitializeFakes(fixture);
-        }
-
-        /// <summary>
         /// Gets the fake manager associated with the proxy, if any.
         /// </summary>
         /// <param name="fakedObject">The proxy to get the manager from.</param>
