@@ -180,7 +180,7 @@ namespace FakeItEasy.Tests.Expressions
             {
             }
 
-            public void OnAfterCallIntercepted(ICompletedFakeObjectCall call, IFakeObjectCallRule ruleThatWasApplied)
+            public void OnAfterCallIntercepted(ICompletedFakeObjectCall call)
             {
                 Guard.AgainstNull(call, nameof(call));
 

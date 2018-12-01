@@ -384,17 +384,13 @@ namespace FakeItEasy.Tests.Core
             var listener = A.Fake<IInterceptionListener>();
             var manager = new FakeManager(typeof(int), 0);
 
-            var selectedRule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => selectedRule.IsApplicableTo(interceptedCall)).Returns(true);
-
-            manager.AddRuleFirst(selectedRule);
             manager.AddInterceptionListener(listener);
 
             // Act
             ProcessFakeObjectCall(manager, interceptedCall);
 
             // Assert
-            A.CallTo(() => listener.OnAfterCallIntercepted(completedCall, selectedRule)).MustHaveHappened();
+            A.CallTo(() => listener.OnAfterCallIntercepted(completedCall)).MustHaveHappened();
         }
 
         [Fact]
@@ -408,18 +404,18 @@ namespace FakeItEasy.Tests.Core
             var listener = A.Fake<IInterceptionListener>();
             var manager = new FakeManager(typeof(int), 0);
 
-            var selectedRule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => selectedRule.IsApplicableTo(interceptedCall)).Returns(true);
-            A.CallTo(() => selectedRule.Apply(A<IInterceptedFakeObjectCall>._)).Throws(new InvalidOperationException());
+            var ruleThatThrows = A.Fake<IFakeObjectCallRule>();
+            A.CallTo(() => ruleThatThrows.IsApplicableTo(interceptedCall)).Returns(true);
+            A.CallTo(() => ruleThatThrows.Apply(A<IInterceptedFakeObjectCall>._)).Throws(new InvalidOperationException());
 
-            manager.AddRuleFirst(selectedRule);
+            manager.AddRuleFirst(ruleThatThrows);
             manager.AddInterceptionListener(listener);
 
             // Act
             Record.Exception(() => ProcessFakeObjectCall(manager, interceptedCall));
 
             // Assert
-            A.CallTo(() => listener.OnAfterCallIntercepted(completedCall, selectedRule)).MustHaveHappened();
+            A.CallTo(() => listener.OnAfterCallIntercepted(completedCall)).MustHaveHappened();
         }
 
         [Fact]
@@ -439,8 +435,8 @@ namespace FakeItEasy.Tests.Core
             // Assert
             A.CallTo(() => listener2.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened()
                 .Then(A.CallTo(() => listener1.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened())
-                .Then(A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened())
-                .Then(A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened());
+                .Then(A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._)).MustHaveHappened())
+                .Then(A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._)).MustHaveHappened());
         }
 
         private static FakeCallRule CreateApplicableInterception()

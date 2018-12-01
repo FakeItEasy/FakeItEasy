@@ -161,7 +161,7 @@ namespace FakeItEasy.Core
 
                 for (var listenerNode = this.interceptionListeners.Last; listenerNode != null; listenerNode = listenerNode.Previous)
                 {
-                    listenerNode.Value.OnAfterCallIntercepted(readonlyCall, ruleUsed);
+                    listenerNode.Value.OnAfterCallIntercepted(readonlyCall);
                 }
             }
         }
