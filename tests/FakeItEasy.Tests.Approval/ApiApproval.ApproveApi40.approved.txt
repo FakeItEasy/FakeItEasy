@@ -354,13 +354,28 @@ namespace FakeItEasy
         public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Once<TInterface>(this FakeItEasy.Configuration.IRepeatConfiguration<TInterface> configuration) { }
         public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Twice<TInterface>(this FakeItEasy.Configuration.IRepeatConfiguration<TInterface> configuration) { }
     }
+    [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use variant" +
+        "s of MustHaveHappened that specify the number of calls instead.")]
     public abstract class Repeated
     {
         protected Repeated() { }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedOnceOrMore, MustHaveHappenedTwiceOrMore, or MustHaveHappened(int, Times" +
+            ") instead.")]
         public static FakeItEasy.Configuration.IRepeatSpecification AtLeast { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedOnceExactly, MustHaveHappenedTwiceExactly, or MustHaveHappened(int, Tim" +
+            "es) instead.")]
         public static FakeItEasy.Configuration.IRepeatSpecification Exactly { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustNot" +
+            "HaveHappened instead.")]
         public static FakeItEasy.Repeated Never { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedOnceOrLess, MustHaveHappenedTwiceOrLess, or MustHaveHappened(int, Times" +
+            ") instead.")]
         public static FakeItEasy.Configuration.IRepeatSpecification NoMoreThan { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedANumberOfTimesMatching instead.")]
         public static FakeItEasy.Repeated Like(System.Linq.Expressions.Expression<System.Func<int, bool>> repeatValidation) { }
     }
     public class static ReturnValueConfigurationExtensions
@@ -434,6 +449,8 @@ namespace FakeItEasy.Configuration
     }
     public interface IAssertConfiguration : FakeItEasy.IHideObjectMembers
     {
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use other v" +
+            "ariants of MustHaveHappened instead.")]
         FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(FakeItEasy.Repeated repeatConstraint);
         FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(int numberOfTimes, FakeItEasy.Times timesOption);
         FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(System.Linq.Expressions.Expression<System.Func<int, bool>> predicate);
@@ -489,10 +506,20 @@ namespace FakeItEasy.Configuration
     {
         FakeItEasy.Configuration.IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimes);
     }
+    [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use variant" +
+        "s of MustHaveHappened that specify the number of calls instead.")]
     public interface IRepeatSpecification : FakeItEasy.IHideObjectMembers
     {
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedOnceExactly, MustHaveHappenedOnceOrMore, or MustHaveHappenedOnceOrLess " +
+            "instead.")]
         FakeItEasy.Repeated Once { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedTwiceExactly, MustHaveHappenedTwiceOrMore, or MustHaveHappenedTwiceOrLe" +
+            "ss instead.")]
         FakeItEasy.Repeated Twice { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappened(int, Times) instead.")]
         FakeItEasy.Repeated Times(int numberOfTimes);
     }
     public interface IReturnValueArgumentValidationConfiguration<TMember> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IReturnValueConfiguration<TMember>, FakeItEasy.IHideObjectMembers { }

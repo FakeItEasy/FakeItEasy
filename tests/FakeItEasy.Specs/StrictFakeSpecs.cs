@@ -87,6 +87,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        #pragma warning disable CS0618
         public static void RepeatedAssertion(
             IMyInterface fake,
             Exception exception)
@@ -112,5 +113,6 @@ namespace FakeItEasy.Specs
             "And the exception message names the method"
                 .x(() => exception.Message.Should().Contain("DoIt"));
         }
+        #pragma warning restore CS0618
     }
 }

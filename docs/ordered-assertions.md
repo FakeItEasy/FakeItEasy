@@ -89,9 +89,9 @@ The test will now fail with the following exception message:
 
 <pre>
  Assertion failed for the following calls:
-    'OrderedAssertsDemo.IUnitOfWorkFactory.BeginWork()' repeated once
-    'OrderedAssertsDemo.IDoSomethingPrettyUseful.JustDoIt()' repeated once
-    'System.IDisposable.Dispose()' repeated once
+    'OrderedAssertsDemo.IUnitOfWorkFactory.BeginWork()' once or more
+    'OrderedAssertsDemo.IDoSomethingPrettyUseful.JustDoIt()' once or more
+    'System.IDisposable.Dispose()' once or more
   The calls where found but not in the correct order among the calls:
     1.  'OrderedAssertsDemo.IUnitOfWorkFactory.BeginWork()'
     2.  'System.IDisposable.Dispose()'

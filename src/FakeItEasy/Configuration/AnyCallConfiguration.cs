@@ -80,6 +80,7 @@ namespace FakeItEasy.Configuration
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer) =>
             this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3, T4>(valueProducer);
 
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
             this.VoidConfiguration.MustHaveHappened(repeatConstraint);
 

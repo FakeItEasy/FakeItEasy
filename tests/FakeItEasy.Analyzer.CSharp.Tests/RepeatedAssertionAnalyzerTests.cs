@@ -11,6 +11,7 @@ namespace FakeItEasy.Analyzer.CSharp.Tests
     public class RepeatedAssertionAnalyzerTests : CodeFixVerifier
     {
         private const string CodeTemplate = @"using FakeItEasy;
+#pragma warning disable CS0618
 namespace TheNamespace
 {{
     class TheClass
@@ -46,16 +47,18 @@ namespace TheNamespace
                  new DiagnosticResult
                  {
                      Id = "FakeItEasy0006",
-                     Message = "The MustHaveHappened(Repeated) assertion is being retired, and will be deprecated in FakeItEasy version 5.0.0 and removed in version 6.0.0.",
+                     Message = "The MustHaveHappened(Repeated) assertion is obsolete, and will be removed in version 6.0.0.",
                      Severity = DiagnosticSeverity.Warning,
-                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 9, 43) }
+                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 43) }
                  });
         }
 
         [Fact]
         public void Analyzer_Should_Not_Throw_When_Expression_Has_No_Type()
         {
-            string code = @"namespace TheNamespace
+            string code = @"#pragma warning disable CS0618
+
+namespace TheNamespace
 {
     class TheClass
     {

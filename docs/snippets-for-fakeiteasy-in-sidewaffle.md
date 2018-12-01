@@ -31,19 +31,19 @@ A.CallTo(() => fake.Method()).MustHaveHappened();
 ##Call To - Must Have Happened Exactly Once
 Shortcut: acallmust1
 ```csharp
-A.CallTo(() => fake.Method()).MustHaveHappened(Repeated.Exactly.Once);  
+A.CallTo(() => fake.Method()).MustHaveHappenedOnceExactly();
 ```
 
 ##Call To - Must Have Happened Exactly Twice
 Shortcut: acallmust2
 ```csharp
-A.CallTo(() => fake.Method()).MustHaveHappened(Repeated.Exactly.Twice);
+A.CallTo(() => fake.Method()).MustHaveHappenedTwiceExactly();
 ```
 
 ##Call To - Must Have Happened Exactly Times
 Shortcut: acallmustx
 ```csharp
-A.CallTo(() => fake.Method()).MustHaveHappened(Repeated.Exactly.Times(3));
+A.CallTo(() => fake.Method()).MustHaveHappened(3, Times.Exactly);
 ```
 
 ##Call To - Must Not Have Happened
