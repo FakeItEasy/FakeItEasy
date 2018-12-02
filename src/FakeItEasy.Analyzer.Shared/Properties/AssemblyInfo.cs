@@ -1,16 +1,5 @@
-﻿using System;
-using System.Reflection;
+using System;
 using System.Runtime.CompilerServices;
-
-#if CSHARP
-[assembly: AssemblyProduct("FakeItEasy.Analyzer.CSharp")]
-[assembly: AssemblyTitle("FakeItEasy.Analyzer.CSharp")]
-[assembly: AssemblyDescription("Diagnostic analyzers to warn about incorrect usage of FakeItEasy in C# code.")]
-#elif VISUAL_BASIC
-[assembly: AssemblyProduct("FakeItEasy.Analyzer.VisualBasic")]
-[assembly: AssemblyTitle("FakeItEasy.Analyzer.VisualBasic")]
-[assembly: AssemblyDescription("Diagnostic analyzers to warn about incorrect usage of FakeItEasy in VB.NET code.")]
-#endif
 
 [assembly: CLSCompliant(false)]
 
