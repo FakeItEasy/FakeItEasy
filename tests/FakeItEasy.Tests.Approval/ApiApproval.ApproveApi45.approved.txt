@@ -232,7 +232,6 @@ namespace FakeItEasy
         public ExpectationException() { }
         public ExpectationException(string message) { }
         public ExpectationException(string message, System.Exception innerException) { }
-        protected ExpectationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public class static Fake
     {
@@ -405,7 +404,6 @@ namespace FakeItEasy
         public UserCallbackException() { }
         public UserCallbackException(string message) { }
         public UserCallbackException(string message, System.Exception innerException) { }
-        protected UserCallbackException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public class static WhereConfigurationExtensions
     {
@@ -429,7 +427,6 @@ namespace FakeItEasy.Configuration
         public FakeConfigurationException() { }
         public FakeConfigurationException(string message) { }
         public FakeConfigurationException(string message, System.Exception innerException) { }
-        protected FakeConfigurationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public interface IAfterCallConfiguredConfiguration<out TInterface> : FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
     public interface IAfterCallConfiguredWithOutAndRefParametersConfiguration<out TInterface> : FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface>, FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
@@ -552,14 +549,12 @@ namespace FakeItEasy.Core
         public DummyCreationException() { }
         public DummyCreationException(string message) { }
         public DummyCreationException(string message, System.Exception innerException) { }
-        protected DummyCreationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public class FakeCreationException : System.Exception
     {
         public FakeCreationException() { }
         public FakeCreationException(string message) { }
         public FakeCreationException(string message, System.Exception innerException) { }
-        protected FakeCreationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public class FakeManager : FakeItEasy.Core.IFakeCallProcessor
     {

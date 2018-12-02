@@ -2,28 +2,11 @@ namespace FakeItEasy.Tests
 {
     using System;
     using System.Reflection;
-    using System.Runtime.Serialization;
     using FluentAssertions;
     using Xunit;
 
     public abstract class ExceptionContractTests<T> where T : Exception
     {
-#if FEATURE_BINARY_SERIALIZATION
-        [Fact]
-        public void Exception_should_provide_serialization_constructor()
-        {
-            // Arrange
-
-            // Act
-            var constructor = typeof(T).GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(SerializationInfo), typeof(StreamingContext) }, null);
-
-            // Assert
-            constructor.Should().NotBeNull("exception classes should implement a constructor serialization constructor");
-            constructor.IsPublic.Should().BeFalse("serialization constructor should be protected, not public");
-            constructor.IsPrivate.Should().BeFalse("serialization constructor should be protected, not private");
-        }
-#endif
-
         [Fact]
         public void Exception_should_provide_message_only_constructor()
         {
@@ -47,14 +30,6 @@ namespace FakeItEasy.Tests
             // Assert
             result.Message.Should().StartWith("A message");
         }
-
-#if FEATURE_BINARY_SERIALIZATION
-        [Fact]
-        public void Exception_should_be_serializable()
-        {
-            this.CreateException().Should().BeBinarySerializable();
-        }
-#endif
 
         [Fact]
         public void Exception_should_provide_message_and_inner_exception_constructor()
