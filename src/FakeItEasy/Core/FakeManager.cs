@@ -148,10 +148,9 @@ namespace FakeItEasy.Core
                 listenerNode.Value.OnBeforeCallIntercepted(fakeObjectCall);
             }
 
-            IFakeObjectCallRule ruleUsed = null;
             try
             {
-                this.ApplyBestRule(fakeObjectCall, out ruleUsed);
+                this.ApplyBestRule(fakeObjectCall);
             }
             finally
             {
@@ -214,13 +213,12 @@ namespace FakeItEasy.Core
         // made it easier to return the value even when the rule throws an exception. Another solution might have been
         // to catch the exception, which would then need to be bundled into a return object with the rule and eventually
         // rethrown.
-        private void ApplyBestRule(IInterceptedFakeObjectCall fakeObjectCall, out IFakeObjectCallRule ruleUsed)
+        private void ApplyBestRule(IInterceptedFakeObjectCall fakeObjectCall)
         {
             foreach (var preUserRule in this.preUserRules)
             {
                 if (preUserRule.IsApplicableTo(fakeObjectCall))
                 {
-                    ruleUsed = preUserRule;
                     preUserRule.Apply(fakeObjectCall);
                     return;
                 }
@@ -230,7 +228,6 @@ namespace FakeItEasy.Core
             {
                 if (rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes())
                 {
-                    ruleUsed = rule.Rule;
                     rule.CalledNumberOfTimes++;
                     rule.Rule.Apply(fakeObjectCall);
                     return;
@@ -241,15 +238,10 @@ namespace FakeItEasy.Core
             {
                 if (postUserRule.IsApplicableTo(fakeObjectCall))
                 {
-                    ruleUsed = postUserRule;
                     postUserRule.Apply(fakeObjectCall);
                     return;
                 }
             }
-
-            // The last rule in the postUserRules is applicable to all calls, so this line is here to satisfy
-            // the compiler. ruleUsed will always have been set and we will have returned before now.
-            ruleUsed = null;
         }
 
         /// <summary>
