@@ -5,29 +5,29 @@ namespace FakeItEasy.Tests
     using FluentAssertions;
     using Xunit;
 
-    public class RepeatConfigurationExtensionsTests
+    public class BehaviorLifetimeConfigurationExtensionsTests
     {
         [Fact]
         public void Once_should_call_NumberOfTimes_with_1_as_argument()
         {
             // Arrange
-            var repeatConfig = A.Fake<IRepeatConfiguration<IVoidConfiguration>>();
+            var behaviorLifetimeConfiguration = A.Fake<IBehaviorLifetimeConfiguration<IVoidConfiguration>>();
 
             // Act
-            repeatConfig.Once();
+            behaviorLifetimeConfiguration.Once();
 
             // Assert
-            A.CallTo(() => repeatConfig.NumberOfTimes(1)).MustHaveHappened();
+            A.CallTo(() => behaviorLifetimeConfiguration.NumberOfTimes(1)).MustHaveHappened();
         }
 
         [Fact]
         public void Once_should_throw_when_configuration_is_null()
         {
             // Arrange
-            IRepeatConfiguration<IVoidConfiguration> repeatConfig = null;
+            IBehaviorLifetimeConfiguration<IVoidConfiguration> behaviorLifetimeConfiguration = null;
 
             // Act
-            var exception = Record.Exception(() => repeatConfig.Once());
+            var exception = Record.Exception(() => behaviorLifetimeConfiguration.Once());
 
             // Assert
             exception.Should().BeOfType<ArgumentNullException>();
@@ -37,23 +37,23 @@ namespace FakeItEasy.Tests
         public void Twice_should_call_NumberOfTimes_with_2_as_argument()
         {
             // Arrange
-            var repeatConfig = A.Fake<IRepeatConfiguration<IVoidConfiguration>>();
+            var behaviorLifetimeConfiguration = A.Fake<IBehaviorLifetimeConfiguration<IVoidConfiguration>>();
 
             // Act
-            repeatConfig.Twice();
+            behaviorLifetimeConfiguration.Twice();
 
             // Assert
-            A.CallTo(() => repeatConfig.NumberOfTimes(2)).MustHaveHappened();
+            A.CallTo(() => behaviorLifetimeConfiguration.NumberOfTimes(2)).MustHaveHappened();
         }
 
         [Fact]
         public void Twice_should_throw_when_configuration_is_null()
         {
             // Arrange
-            IRepeatConfiguration<IVoidConfiguration> repeatConfig = null;
+            IBehaviorLifetimeConfiguration<IVoidConfiguration> behaviorLifetimeConfiguration = null;
 
             // Act
-            var exception = Record.Exception(() => repeatConfig.Twice());
+            var exception = Record.Exception(() => behaviorLifetimeConfiguration.Twice());
 
             // Assert
             exception.Should().BeOfType<ArgumentNullException>();
