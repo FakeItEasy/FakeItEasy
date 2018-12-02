@@ -121,9 +121,9 @@ class MyListener : IInterceptionListener
         Console.WriteLine($"A call to '{interceptedCall.Method}' is about to be processed");
     }
 
-    public void OnAfterCallIntercepted(ICompletedFakeObjectCall interceptedCall, IFakeObjectCallRule ruleThatWasApplied)
+    public void OnAfterCallIntercepted(ICompletedFakeObjectCall interceptedCall)
     {
-        Console.WriteLine($"A call to '{interceptedCall.Method}' has been processed using the rule '{ruleThatWasApplied}'");
+        Console.WriteLine($"A call to '{interceptedCall.Method}' has been processed");
     }
 }
 
@@ -141,5 +141,5 @@ The code above prints:
 ```
 A call to 'Void Baz()' is about to be processed
 Hello world
-A call to 'Void Baz()' has been processed using the rule 'FakeItEasy.Expressions.ExpressionCallRule'
+A call to 'Void Baz()' has been processed
 ```
