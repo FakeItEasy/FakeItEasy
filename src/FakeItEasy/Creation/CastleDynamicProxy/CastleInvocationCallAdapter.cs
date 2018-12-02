@@ -10,16 +10,11 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     /// <summary>
     /// An adapter that adapts an <see cref="IInvocation" /> to a <see cref="IFakeObjectCall" />.
     /// </summary>
-#if FEATURE_BINARY_SERIALIZATION
-    [Serializable]
-#endif
     internal class CastleInvocationCallAdapter
         : InterceptedFakeObjectCall
     {
         private readonly IInvocation invocation;
-#pragma warning disable CA2235 // Mark all non-serializable fields
         private readonly object[] originalArguments;
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CastleInvocationCallAdapter"/> class.
@@ -39,9 +34,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// <summary>
         /// Gets the method that's called.
         /// </summary>
-#pragma warning disable CA2235 // Mark all non-serializable fields
         public override MethodInfo Method { get; }
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Gets the arguments used in the call.

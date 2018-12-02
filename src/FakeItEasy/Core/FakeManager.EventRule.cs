@@ -9,24 +9,15 @@ namespace FakeItEasy.Core
     /// <content>Event rule.</content>
     public partial class FakeManager
     {
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Would provide no benefit since there is no place from where to call the Dispose-method.")]
         private class EventRule
             : IFakeObjectCallRule
         {
-#if FEATURE_BINARY_SERIALIZATION
-            [NonSerialized]
-#endif
             private static readonly EventHandlerArgumentProviderMap EventHandlerArgumentProviderMap =
                 ServiceLocator.Resolve<EventHandlerArgumentProviderMap>();
 
             private readonly FakeManager fakeManager;
 
-#if FEATURE_BINARY_SERIALIZATION
-            [NonSerialized]
-#endif
             private Dictionary<object, Delegate> registeredEventHandlersField;
 
             public EventRule(FakeManager fakeManager)

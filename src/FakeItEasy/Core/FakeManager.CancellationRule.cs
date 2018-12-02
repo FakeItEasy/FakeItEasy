@@ -1,10 +1,5 @@
 namespace FakeItEasy.Core
 {
-#if FEATURE_BINARY_SERIALIZATION
-    using System;
-#endif
-    using System.Collections.Generic;
-    using System.Linq;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
@@ -14,9 +9,6 @@ namespace FakeItEasy.Core
     /// <content>Event rule.</content>
     public partial class FakeManager
     {
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         private class CancellationRule : SharedFakeObjectCallRule
         {
             public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>

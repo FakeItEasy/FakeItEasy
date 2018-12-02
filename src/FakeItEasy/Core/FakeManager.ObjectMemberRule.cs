@@ -1,24 +1,18 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
     /// <content>Object member rule.</content>
     public partial class FakeManager
     {
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         private class ObjectMemberRule
             : SharedFakeObjectCallRule
         {
-#pragma warning disable CA2235 // Mark all non-serializable fields
             private static readonly MethodInfo EqualsMethod = typeof(object).GetMethod(nameof(object.Equals), new[] { typeof(object) });
             private static readonly MethodInfo ToStringMethod = typeof(object).GetMethod(nameof(object.ToString), Type.EmptyTypes);
             private static readonly MethodInfo GetHashCodeMethod = typeof(object).GetMethod(nameof(object.GetHashCode), Type.EmptyTypes);
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
             public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>
                 IsSameMethod(fakeObjectCall.Method, EqualsMethod) ||

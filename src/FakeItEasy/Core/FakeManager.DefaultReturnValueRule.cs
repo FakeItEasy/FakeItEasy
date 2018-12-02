@@ -1,15 +1,8 @@
 namespace FakeItEasy.Core
 {
-#if FEATURE_BINARY_SERIALIZATION
-    using System;
-#endif
-
     /// <content>Default return value rule.</content>
     public partial class FakeManager
     {
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         private class DefaultReturnValueRule
             : SharedFakeObjectCallRule
         {
