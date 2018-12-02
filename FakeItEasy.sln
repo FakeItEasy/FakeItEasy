@@ -63,6 +63,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2EED
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-377B-47C4-8644-AF1F4FD669E2}"
 	ProjectSection(SolutionItems) = preProject
+		docs\advanced-usage.md = docs\advanced-usage.md
 		docs\analyzer.md = docs\analyzer.md
 		docs\argument-constraints.md = docs\argument-constraints.md
 		docs\assertion.md = docs\assertion.md

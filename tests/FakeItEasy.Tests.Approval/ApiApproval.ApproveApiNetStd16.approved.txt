@@ -512,7 +512,7 @@ namespace FakeItEasy.Core
     }
     public interface IInterceptionListener
     {
-        void OnAfterCallIntercepted(FakeItEasy.Core.ICompletedFakeObjectCall interceptedCall, FakeItEasy.Core.IFakeObjectCallRule ruleThatWasApplied);
+        void OnAfterCallIntercepted(FakeItEasy.Core.ICompletedFakeObjectCall interceptedCall);
         void OnBeforeCallIntercepted(FakeItEasy.Core.IFakeObjectCall interceptedCall);
     }
     public class Raise<TEventArgs> : FakeItEasy.Core.IEventRaiserArgumentProvider { }
