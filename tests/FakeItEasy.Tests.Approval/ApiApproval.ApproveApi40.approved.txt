@@ -94,11 +94,15 @@ namespace FakeItEasy
         public static FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T> CallTo<T>(System.Linq.Expressions.Expression<System.Func<T>> callSpecification) { }
         public static FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(System.Linq.Expressions.Expression<System.Func<TValue>> propertySpecification) { }
         public static System.Collections.Generic.IList<T> CollectionOfDummy<T>(int numberOfDummies) { }
-        public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes) { }
-        public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
+        public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes)
+            where T :  class { }
+        public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder)
+            where T :  class { }
         public static T Dummy<T>() { }
-        public static T Fake<T>() { }
-        public static T Fake<T>(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
+        public static T Fake<T>()
+            where T :  class { }
+        public static T Fake<T>(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder)
+            where T :  class { }
     }
     public class static A<T>
     
@@ -233,7 +237,7 @@ namespace FakeItEasy
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
     }
     public class Fake<T> : FakeItEasy.IHideObjectMembers
-    
+        where T :  class
     {
         public Fake() { }
         public Fake(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
@@ -341,7 +345,7 @@ namespace FakeItEasy
             public static object With(params object[] arguments) { }
         }
         public class static FreeForm<TEventHandler>
-        
+            where TEventHandler : System.Delegate
         {
             public static TEventHandler With(params object[] arguments) { }
         }

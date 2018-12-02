@@ -908,7 +908,7 @@ namespace FakeItEasy.Specs
                 .WithMessage("*Only expression of the type ExpressionType.New (constructor calls) are accepted.*"));
         }
 
-        protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder);
+        protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder) where T : class;
 
         private static IEnumerable<object[]> SupportedTypes()
         {
@@ -920,7 +920,7 @@ namespace FakeItEasy.Specs
                 new FakeCreator<InternalClassVisibleToDynamicProxy>());
         }
 
-        private class FakeCreator<TFake> : IFakeCreator
+        private class FakeCreator<TFake> : IFakeCreator where TFake : class
         {
             public Type FakeType => typeof(TFake);
 

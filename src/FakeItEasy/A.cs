@@ -27,7 +27,7 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of fake object to create.</typeparam>
         /// <returns>A fake object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
-        public static T Fake<T>()
+        public static T Fake<T>() where T : class
         {
             return (T)FakeAndDummyManager.CreateFake(typeof(T), null);
         }
@@ -40,7 +40,7 @@ namespace FakeItEasy
         /// <returns>A fake object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
-        public static T Fake<T>(Action<IFakeOptions<T>> optionsBuilder)
+        public static T Fake<T>(Action<IFakeOptions<T>> optionsBuilder) where T : class
         {
             Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
 
@@ -54,7 +54,7 @@ namespace FakeItEasy
         /// <param name="numberOfFakes">The number of fakes in the collection.</param>
         /// <returns>A collection of fake objects of the specified type.</returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
-        public static IList<T> CollectionOfFake<T>(int numberOfFakes)
+        public static IList<T> CollectionOfFake<T>(int numberOfFakes) where T : class
         {
             return Enumerable.Range(0, numberOfFakes).Select(_ => Fake<T>()).ToList();
         }
@@ -67,9 +67,9 @@ namespace FakeItEasy
         /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
         /// <returns>A collection of fake objects of the specified type.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
-        public static IList<T> CollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder)
+        public static IList<T> CollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder) where T : class
         {
-            return Enumerable.Range(0, numberOfFakes).Select(_ => Fake<T>(optionsBuilder)).ToList();
+            return Enumerable.Range(0, numberOfFakes).Select(_ => Fake(optionsBuilder)).ToList();
         }
 
         /// <summary>

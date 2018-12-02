@@ -86,9 +86,9 @@ namespace FakeItEasy
         /// objects, or when a reference to Microsoft.CSharp is not desired.
         /// Otherwise, prefer <see cref="Raise.FreeForm" />.
         /// </summary>
-        /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/>.</typeparam>
+        /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
 #pragma warning disable CA1034 // Do not nest type
-        public static class FreeForm<TEventHandler>
+        public static class FreeForm<TEventHandler> where TEventHandler : Delegate
 #pragma warning restore CA1034 // Do not nest type
         {
             /// <summary>
