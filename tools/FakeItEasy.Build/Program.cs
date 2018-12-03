@@ -1,16 +1,12 @@
 ﻿namespace FakeItEasy.Build
 {
     using System.Collections.Generic;
-    using System.IO;
+    using System.Linq;
     using static Bullseye.Targets;
     using static SimpleExec.Command;
 
     public class Program
     {
-        private const string LogsDirectory = "artifacts/logs";
-        private const string Solution = "FakeItEasy.sln";
-        private const string RepoUrl = "https://github.com/FakeItEasy/FakeItEasy";
-
         private static readonly string[] ProjectsToPack =
         {
             "src/FakeItEasy/FakeItEasy.csproj",
@@ -51,19 +47,13 @@
             }
         };
 
-        private static readonly string OutputDirectory = Path.GetFullPath("artifacts/output");
-
         public static void Main(string[] args)
         {
             Target("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
 
-            Target("outputDirectory", () => Directory.CreateDirectory(OutputDirectory));
-
-            Target("logsDirectory", () => Directory.CreateDirectory(LogsDirectory));
-
             Target(
                 "build",
-                () => Run("dotnet", $"build {Solution} -c Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/build.binlog"));
+                () => Run("dotnet", "build FakeItEasy.sln -c Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/build.binlog"));
 
             foreach (var testSuite in TestSuites)
             {
@@ -71,25 +61,22 @@
                     testSuite.Key,
                     DependsOn("build"),
                     forEach: testSuite.Value,
-                    action: testDirectory => RunTests(testDirectory));
+                    action: testDirectory => Run("dotnet", "test --configuration Release --no-build -- RunConfiguration.NoAutoReporters=true", testDirectory));
             }
 
             Target(
                 "pack",
-                DependsOn("build", "outputDirectory", "pdbgit"),
+                DependsOn("build", "pdbgit"),
                 forEach: ProjectsToPack,
-                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {OutputDirectory}"));
+                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output artifacts/output"));
 
             Target(
                 "pdbgit",
                 DependsOn("build"),
                 forEach: Pdbs,
-                action: pdb => Run(ToolPaths.PdbGit, $"-u {RepoUrl} -s {pdb}"));
+                action: pdb => Run(ToolPaths.PdbGit, $"-u https://github.com/FakeItEasy/FakeItEasy -s {pdb}"));
 
             RunTargets(args);
         }
-
-        private static void RunTests(string testDirectory) =>
-            Run("dotnet", "test --configuration Release --no-build -- RunConfiguration.NoAutoReporters=true", testDirectory);
     }
 }
