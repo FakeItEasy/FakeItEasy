@@ -326,6 +326,25 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void PrivateDelegateCannotBeFaked(Exception exception)
+        {
+            "Given a private delegate"
+                .See<PrivateDelegate>();
+
+            "When I create a fake of the delegate"
+                .x(() => exception = Record.Exception(this.CreateFake<PrivateDelegate>));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().Match(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+PrivateDelegate:
+    Can not create proxy for type FakeItEasy.Specs.CreationSpecsBase+PrivateDelegate because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(*DynamicProxyGenAssembly2*)] attribute*
+"));
+        }
+
+        [Scenario]
         public void ClassWithPrivateConstructorCannotBeFaked(Exception exception)
         {
             "Given a class with a private constructor"
@@ -635,6 +654,8 @@ namespace FakeItEasy.Specs
         private class PrivateClass
         {
         }
+
+        private delegate void PrivateDelegate();
     }
 
     public class GenericCreationSpecs : CreationSpecsBase

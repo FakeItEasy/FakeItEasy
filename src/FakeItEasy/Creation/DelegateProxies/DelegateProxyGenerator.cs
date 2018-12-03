@@ -5,11 +5,14 @@ namespace FakeItEasy.Creation.DelegateProxies
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using Castle.DynamicProxy;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     internal static class DelegateProxyGenerator
     {
+        private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
+
         public static ProxyGeneratorResult GenerateProxy(
             Type typeOfProxy,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
@@ -17,6 +20,21 @@ namespace FakeItEasy.Creation.DelegateProxies
             Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
 
             var invokeMethod = typeOfProxy.GetMethod("Invoke");
+
+            if (!ProxyUtil.IsAccessible(typeOfProxy))
+            {
+                try
+                {
+                    // This is the only way to get the proper error message.
+                    // The need for this will go away when we start really using DynamicProxy to generate delegate proxies.
+                    ProxyGenerator.CreateClassProxy(typeOfProxy);
+                }
+                catch (Exception ex)
+                {
+                    return new ProxyGeneratorResult(ex.Message);
+                }
+            }
+
             var eventRaiser = new DelegateCallInterceptedEventRaiser(fakeCallProcessorProvider, invokeMethod, typeOfProxy);
 
             fakeCallProcessorProvider.EnsureInitialized(eventRaiser.Instance);
