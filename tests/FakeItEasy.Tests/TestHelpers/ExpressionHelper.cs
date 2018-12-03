@@ -15,11 +15,13 @@ namespace FakeItEasy.Tests.TestHelpers
         }
 
         public static IInterceptedFakeObjectCall CreateFakeCall<TFake, TReturn>(Expression<Func<TFake, TReturn>> callSpecification)
+            where TFake : class
         {
             return CreateFakeCall(A.Fake<TFake>(), callSpecification);
         }
 
         public static IInterceptedFakeObjectCall CreateFakeCall<TFake>(Expression<Action<TFake>> callSpecification)
+            where TFake : class
         {
             return CreateFakeCall(A.Fake<TFake>(), callSpecification);
         }

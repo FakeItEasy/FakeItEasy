@@ -370,25 +370,6 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void StructCannotBeFaked(Exception exception)
-        {
-            "Given a struct"
-                .See<Struct>();
-
-            "When I create a fake of the struct"
-                .x(() => exception = Record.Exception(() => this.CreateFake<Struct>()));
-
-            "Then it throws a fake creation exception"
-                .x(() => exception.Should().BeOfType<FakeCreationException>());
-
-            "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().StartWith(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct:
-    The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
-"));
-        }
-
-        [Scenario]
         public void CannotFakeInterfaceWithConstructorArguments(Exception exception)
         {
             "Given a fakeable interface"
@@ -513,13 +494,13 @@ namespace FakeItEasy.Specs
 "));
         }
 
-        protected abstract T CreateFake<T>();
+        protected abstract T CreateFake<T>() where T : class;
 
-        protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder);
+        protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder) where T : class;
 
-        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes);
+        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes) where T : class;
 
-        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder);
+        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder) where T : class;
 
         public class ClassWhoseConstructorThrows
         {
@@ -638,7 +619,7 @@ namespace FakeItEasy.Specs
             new FakeCreator<Func<int, string>>(),
             new FakeCreator<EventHandler<EventArgs>>());
 
-        private class FakeCreator<TFake> : IFakeCreator
+        private class FakeCreator<TFake> : IFakeCreator where TFake : class
         {
             public Type FakeType => typeof(TFake);
 
@@ -681,6 +662,25 @@ namespace FakeItEasy.Specs
 
     public class NonGenericCreationSpecs : CreationSpecsBase
     {
+        [Scenario]
+        public void StructCannotBeFaked(Exception exception)
+        {
+            "Given a struct"
+                .See<Struct>();
+
+            "When I create a fake of the struct"
+                .x(() => exception = Record.Exception(() => (Struct)Sdk.Create.Fake(typeof(Struct))));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().StartWith(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct:
+    The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
+"));
+        }
+
         protected override T CreateFake<T>()
         {
             return (T)Sdk.Create.Fake(typeof(T));

@@ -449,7 +449,7 @@ namespace FakeItEasy.Tests.Core
             fakeCallProcessor.Process(interceptedCall);
         }
 
-        private FakeManager CreateFakeManager<T>()
+        private FakeManager CreateFakeManager<T>() where T : class
         {
             var result = A.Fake<T>();
             this.MakeSureThatWeakReferenceDoesNotGetCollected(result);
