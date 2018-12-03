@@ -1,6 +1,7 @@
 namespace FakeItEasy.Creation.DelegateProxies
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -12,6 +13,7 @@ namespace FakeItEasy.Creation.DelegateProxies
     internal static class DelegateProxyGenerator
     {
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
+        private static readonly ConcurrentDictionary<Type, bool> AccessibleToDynamicProxyCache = new ConcurrentDictionary<Type, bool>();
 
         public static ProxyGeneratorResult GenerateProxy(
             Type typeOfProxy,
@@ -21,7 +23,7 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             var invokeMethod = typeOfProxy.GetMethod("Invoke");
 
-            if (!ProxyUtil.IsAccessible(typeOfProxy))
+            if (!IsAccessibleToDynamicProxy(typeOfProxy))
             {
                 try
                 {
@@ -39,6 +41,27 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             fakeCallProcessorProvider.EnsureInitialized(eventRaiser.Instance);
             return new ProxyGeneratorResult(eventRaiser.Instance);
+        }
+
+        private static bool IsAccessibleToDynamicProxy(Type type)
+        {
+            return AccessibleToDynamicProxyCache.GetOrAdd(type, IsAccessibleImpl);
+
+            bool IsAccessibleImpl(Type t)
+            {
+                if (!ProxyUtil.IsAccessible(t))
+                {
+                    return false;
+                }
+
+                var info = t.GetTypeInfo();
+                if (info.IsGenericType && !info.IsGenericTypeDefinition)
+                {
+                    return t.GetGenericArguments().All(IsAccessibleToDynamicProxy);
+                }
+
+                return true;
+            }
         }
 
         private static Delegate CreateDelegateProxy(
