@@ -4,7 +4,7 @@ namespace FakeItEasy.Configuration
     /// Provides configuration to specify the number of times a configured behavior should be applied.
     /// </summary>
     /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-    public interface IRepeatConfiguration<out TInterface> : IHideObjectMembers
+    public interface IBehaviorLifetimeConfiguration<out TInterface> : IHideObjectMembers
     {
         /// <summary>
         /// Specifies the number of times the configured behavior should be applied.
