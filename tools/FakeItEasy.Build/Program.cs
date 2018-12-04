@@ -1,7 +1,7 @@
 ﻿namespace FakeItEasy.Build
 {
     using System.Collections.Generic;
-    using System.Linq;
+    using System.IO;
     using static Bullseye.Targets;
     using static SimpleExec.Command;
 
@@ -68,7 +68,7 @@
                 "pack",
                 DependsOn("build", "pdbgit"),
                 forEach: ProjectsToPack,
-                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output artifacts/output"));
+                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {Path.GetFullPath("artifacts/output")}"));
 
             Target(
                 "pdbgit",
