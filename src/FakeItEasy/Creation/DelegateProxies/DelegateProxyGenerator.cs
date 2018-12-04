@@ -1,15 +1,20 @@
 namespace FakeItEasy.Creation.DelegateProxies
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using Castle.DynamicProxy;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     internal static class DelegateProxyGenerator
     {
+        private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
+        private static readonly ConcurrentDictionary<Type, bool> AccessibleToDynamicProxyCache = new ConcurrentDictionary<Type, bool>();
+
         public static ProxyGeneratorResult GenerateProxy(
             Type typeOfProxy,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
@@ -17,10 +22,46 @@ namespace FakeItEasy.Creation.DelegateProxies
             Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
 
             var invokeMethod = typeOfProxy.GetMethod("Invoke");
+
+            if (!IsAccessibleToDynamicProxy(typeOfProxy))
+            {
+                try
+                {
+                    // This is the only way to get the proper error message.
+                    // The need for this will go away when we start really using DynamicProxy to generate delegate proxies.
+                    ProxyGenerator.CreateClassProxy(typeOfProxy);
+                }
+                catch (Exception ex)
+                {
+                    return new ProxyGeneratorResult(ex.Message);
+                }
+            }
+
             var eventRaiser = new DelegateCallInterceptedEventRaiser(fakeCallProcessorProvider, invokeMethod, typeOfProxy);
 
             fakeCallProcessorProvider.EnsureInitialized(eventRaiser.Instance);
             return new ProxyGeneratorResult(eventRaiser.Instance);
+        }
+
+        private static bool IsAccessibleToDynamicProxy(Type type)
+        {
+            return AccessibleToDynamicProxyCache.GetOrAdd(type, IsAccessibleImpl);
+
+            bool IsAccessibleImpl(Type t)
+            {
+                if (!ProxyUtil.IsAccessible(t))
+                {
+                    return false;
+                }
+
+                var info = t.GetTypeInfo();
+                if (info.IsGenericType && !info.IsGenericTypeDefinition)
+                {
+                    return t.GetGenericArguments().All(IsAccessibleToDynamicProxy);
+                }
+
+                return true;
+            }
         }
 
         private static Delegate CreateDelegateProxy(
