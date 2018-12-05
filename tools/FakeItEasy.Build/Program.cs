@@ -76,7 +76,7 @@
                 forEach: Pdbs,
                 action: pdb => Run(ToolPaths.PdbGit, $"-u https://github.com/FakeItEasy/FakeItEasy -s {pdb}"));
 
-            RunTargets(args);
+            RunTargetsAndExit(args);
         }
     }
 }
