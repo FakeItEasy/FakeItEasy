@@ -17,13 +17,8 @@
     <ProjectReference Include="..\..\tests\FakeItEasy.Tests\FakeItEasy.Tests.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
-    <Compile Remove="SerializationSpecs.cs" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
     <Compile Remove="DisposableSpecs.cs" />
-    <Compile Remove="SerializationSpecs.cs" />
   </ItemGroup>
 
 </Project>

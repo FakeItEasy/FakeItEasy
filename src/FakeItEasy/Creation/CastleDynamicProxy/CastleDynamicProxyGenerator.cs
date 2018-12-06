@@ -6,9 +6,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-#if FEATURE_BINARY_SERIALIZATION
-    using System.Runtime.Serialization;
-#endif
     using Castle.DynamicProxy;
     using FakeItEasy.Core;
 
@@ -150,9 +147,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             return new ProxyGeneratorResult(DynamicProxyMessages.ProxyTypeWithNoDefaultConstructor(typeOfProxy), e);
         }
 
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         private class InterceptEverythingHook
             : IProxyGenerationHook
         {
@@ -182,9 +176,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             }
         }
 
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         private class ProxyInterceptor
             : IInterceptor
         {
@@ -201,14 +192,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 var call = new CastleInvocationCallAdapter(invocation);
                 this.fakeCallProcessorProvider.Fetch(invocation.Proxy).Process(call);
             }
-
-#if FEATURE_BINARY_SERIALIZATION
-            [OnDeserialized]
-            public void OnDeserialized(StreamingContext context)
-            {
-                this.fakeCallProcessorProvider.EnsureManagerIsRegistered();
-            }
-#endif
         }
     }
 }

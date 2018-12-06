@@ -18,9 +18,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the method that's called.
         /// </summary>
-#pragma warning disable CA2235 // Mark all non-serializable fields
         public abstract MethodInfo Method { get; }
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Freezes the call so that it can no longer be modified.

@@ -1,10 +1,5 @@
 namespace FakeItEasy.Core
 {
-    using System;
-
-#if FEATURE_BINARY_SERIALIZATION
-    [Serializable]
-#endif
     internal class StrictFakeRule : IFakeObjectCallRule
     {
         public int? NumberOfTimesToCall => null;

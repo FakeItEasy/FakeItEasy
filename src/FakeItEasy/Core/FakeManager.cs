@@ -5,9 +5,6 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-#if FEATURE_BINARY_SERIALIZATION
-    using System.Runtime.Serialization;
-#endif
     using System.Threading;
 
     /// <summary>
@@ -15,12 +12,8 @@ namespace FakeItEasy.Core
     /// of fake object calls by using a set of rules. User defined rules can be inserted
     /// by using the AddRule-method.
     /// </summary>
-#if FEATURE_BINARY_SERIALIZATION
-    [Serializable]
-#endif
     public partial class FakeManager : IFakeCallProcessor
     {
-#pragma warning disable CA2235 // Mark all non-serializable fields
         private static readonly SharedFakeObjectCallRule[] PostUserRules =
         {
             new ObjectMemberRule(),
@@ -29,17 +22,11 @@ namespace FakeItEasy.Core
             new CancellationRule(),
             new DefaultReturnValueRule(),
         };
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         private readonly IFakeObjectCallRule[] preUserRules;
-#pragma warning disable CA2235 // Mark all non-serializable fields
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
-#if FEATURE_BINARY_SERIALIZATION
-        [NonSerialized]
-#endif
         private ConcurrentQueue<CompletedFakeObjectCall> recordedCalls;
 
         private int lastSequenceNumber = -1;
@@ -85,9 +72,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the faked type.
         /// </summary>
-#pragma warning disable CA2235 // Mark all non-serializable fields
         public virtual Type FakeObjectType { get; }
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Gets the interceptions that are currently registered with the fake object.
@@ -97,9 +82,7 @@ namespace FakeItEasy.Core
             get { return this.AllUserRules.Select(x => x.Rule); }
         }
 
-#pragma warning disable CA2235 // Mark all non-serializable fields
         internal LinkedList<CallRuleMetadata> AllUserRules { get; }
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Adds a call rule to the fake object.
@@ -270,14 +253,6 @@ namespace FakeItEasy.Core
             while (sequenceNumber > last &&
                    sequenceNumber != Interlocked.CompareExchange(ref this.lastSequenceNumber, sequenceNumber, last));
         }
-
-#if FEATURE_BINARY_SERIALIZATION
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context)
-        {
-            this.recordedCalls = new ConcurrentQueue<CompletedFakeObjectCall>();
-        }
-#endif
 
         private abstract class SharedFakeObjectCallRule : IFakeObjectCallRule
         {

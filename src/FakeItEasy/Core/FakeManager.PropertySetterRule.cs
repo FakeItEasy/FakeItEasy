@@ -1,14 +1,10 @@
 namespace FakeItEasy.Core
 {
-    using System;
     using System.Linq;
 
     /// <content>Property setter rule.</content>
     public partial class FakeManager
     {
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         private class PropertySetterRule
             : SharedFakeObjectCallRule
         {

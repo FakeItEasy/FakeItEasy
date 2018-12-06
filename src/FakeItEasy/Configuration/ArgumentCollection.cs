@@ -11,9 +11,6 @@ namespace FakeItEasy.Configuration
     /// <summary>
     ///   A collection of method arguments.
     /// </summary>
-#if FEATURE_BINARY_SERIALIZATION
-    [Serializable]
-#endif
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Best name to describe the type.")]
     public class ArgumentCollection
         : IEnumerable<object>
@@ -21,10 +18,8 @@ namespace FakeItEasy.Configuration
         /// <summary>
         ///   The arguments this collection contains.
         /// </summary>
-#pragma warning disable CA2235 // Mark all non-serializable fields
         private readonly object[] arguments;
         private readonly Lazy<string[]> argumentNames;
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ArgumentCollection" /> class.
@@ -61,9 +56,7 @@ namespace FakeItEasy.Configuration
         /// </summary>
         public IEnumerable<string> ArgumentNames => this.argumentNames.Value;
 
-#pragma warning disable CA2235 // Mark all non-serializable fields
         internal MethodInfo Method { get; }
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         ///   Gets the argument at the specified index.
