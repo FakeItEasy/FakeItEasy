@@ -3,6 +3,9 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using FakeItEasy.Core;
 
     internal class RuleBuilder
@@ -123,6 +126,11 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsBaseMethod()
         {
+            if (this.manager.FakeObjectType.GetTypeInfo().IsSubclassOf(typeof(Delegate)))
+            {
+                throw new FakeConfigurationException(ExceptionMessages.DelegateCannotCallBaseMethod);
+            }
+
             this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseApplicator(x => { });
             this.RuleBeingBuilt.CallBaseMethod = true;
