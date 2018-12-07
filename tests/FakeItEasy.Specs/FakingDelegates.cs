@@ -1,6 +1,7 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
@@ -98,16 +99,13 @@ namespace FakeItEasy.Specs
             "Given a fake delegate"
                 .x(() => fake = A.Fake<Action>());
 
-            "And I configure it to call its base method"
-                .x(() => A.CallTo(() => fake.Invoke()).CallsBaseMethod());
-
-            "When I invoke it"
-                .x(() => exception = Record.Exception(() => fake.Invoke()));
+            "When I configure it to call its base method"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Invoke()).CallsBaseMethod()));
 
             "Then it throws a not supported exception"
                 .x(() => exception.Should()
-                    .BeAnExceptionOfType<NotSupportedException>()
-                    .WithMessage("Can not configure a delegate proxy to call base method."));
+                    .BeAnExceptionOfType<FakeConfigurationException>()
+                    .WithMessage("Can not configure a delegate proxy to call a base method."));
         }
 
         [Scenario]

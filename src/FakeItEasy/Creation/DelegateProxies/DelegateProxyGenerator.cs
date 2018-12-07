@@ -219,7 +219,7 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             public override void CallBaseMethod()
             {
-                throw new NotSupportedException("Can not configure a delegate proxy to call base method.");
+                throw new FakeConfigurationException(ExceptionMessages.DelegateCannotCallBaseMethod);
             }
 
             public override void SetArgumentValue(int index, object value)
