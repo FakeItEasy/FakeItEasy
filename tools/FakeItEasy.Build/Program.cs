@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.IO;
+    using SimpleExec;
     using static Bullseye.Targets;
     using static SimpleExec.Command;
 
@@ -76,7 +77,7 @@
                 forEach: Pdbs,
                 action: pdb => Run(ToolPaths.PdbGit, $"-u https://github.com/FakeItEasy/FakeItEasy -s {pdb}"));
 
-            RunTargetsAndExit(args);
+            RunTargetsAndExit<CommandException>(args);
         }
     }
 }
