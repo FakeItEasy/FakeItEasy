@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.PrepareRelease
+namespace FakeItEasy.PrepareRelease
 {
     using System;
     using System.Collections.Generic;
@@ -15,8 +15,6 @@
     {
         private const string RepoOwner = "FakeItEasy";
         private const string RepoName = "FakeItEasy";
-        private const string ReleaseFromBranchName = "develop";
-        private const string TargetBranchName = "master";
         private const string ExistingReleaseName = "vNext";
         private const string NextReleaseName = ExistingReleaseName;
 
@@ -27,8 +25,6 @@
             {
                 throw new Exception("No version supplied");
             }
-
-            var releaseBranchName = $"release/{version}";
 
             var gitHubClient = GetAuthenticatedGitHubClient();
 
@@ -60,9 +56,6 @@
             await gitHubClient.CreateNextRelease();
             await gitHubClient.UpdateIssue(existingReleaseIssue, existingMilestone, version);
             await gitHubClient.CreateNextIssue(existingReleaseIssue, nextMilestone);
-            var releaseFromBranch = await gitHubClient.GetReleaseFromBranch();
-            await gitHubClient.CreateReleaseBranch(releaseBranchName, releaseFromBranch);
-            await gitHubClient.CreatePullRequest(version, releaseBranchName);
         }
 
         public static GitHubClient GetAuthenticatedGitHubClient()
@@ -252,31 +245,6 @@
             Console.WriteLine($"Creating new release issue '{newIssue.Title}'...");
             var nextIssue = await gitHubClient.Issue.Create(RepoOwner, RepoName, newIssue);
             Console.WriteLine($"Created new release issue #{nextIssue.Number}: '{newIssue.Title}'");
-        }
-
-        public static async Task<Reference> GetReleaseFromBranch(this IGitHubClient gitHubClient)
-        {
-            Console.WriteLine($"Fetching reference to branch {ReleaseFromBranchName}...");
-            var releaseFromBranch = await gitHubClient.Git.Reference.Get(RepoOwner, RepoName, $"heads/{ReleaseFromBranchName}");
-            Console.WriteLine($"Fetched reference to branch {releaseFromBranch.Url}");
-            return releaseFromBranch;
-        }
-
-        public static async Task CreateReleaseBranch(this IGitHubClient gitHubClient, string releaseBranchName, Reference releaseFromBranch)
-        {
-            Console.WriteLine($"Creating branch {releaseBranchName} from {ReleaseFromBranchName}...");
-            var releaseBranch = await gitHubClient.Git.Reference.CreateBranch(RepoOwner, RepoName, releaseBranchName, releaseFromBranch);
-            Console.WriteLine($"Created branch at {releaseBranch.Url}");
-        }
-
-        public static async Task CreatePullRequest(this IGitHubClient gitHubClient, string version, string releaseBranchName)
-        {
-            Console.WriteLine($"Creating pull request to merge {releaseBranchName} into {TargetBranchName}...");
-            var pr = await gitHubClient.PullRequest.Create(
-                RepoOwner,
-                RepoName,
-                new NewPullRequest($"Release {version}", releaseBranchName, TargetBranchName));
-            Console.WriteLine($"Created pull request '{pr.Title}' at {pr.HtmlUrl}");
         }
     }
 }
