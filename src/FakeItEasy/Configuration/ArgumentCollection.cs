@@ -11,9 +11,6 @@ namespace FakeItEasy.Configuration
     /// <summary>
     ///   A collection of method arguments.
     /// </summary>
-#if FEATURE_BINARY_SERIALIZATION
-    [Serializable]
-#endif
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Best name to describe the type.")]
     public class ArgumentCollection
         : IEnumerable<object>
@@ -21,9 +18,8 @@ namespace FakeItEasy.Configuration
         /// <summary>
         ///   The arguments this collection contains.
         /// </summary>
-#pragma warning disable CA2235 // Mark all non-serializable fields
         private readonly object[] arguments;
-#pragma warning restore CA2235 // Mark all non-serializable fields
+        private readonly Lazy<string[]> argumentNames;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ArgumentCollection" /> class.
@@ -36,16 +32,14 @@ namespace FakeItEasy.Configuration
             Guard.AgainstNull(arguments, nameof(arguments));
             Guard.AgainstNull(method, nameof(method));
 
-            var argumentNames = GetArgumentNames(method).ToArray();
-
-            if (arguments.Length != argumentNames.Length)
+            if (arguments.Length != method.GetParameters().Length)
             {
                 throw new ArgumentException(ExceptionMessages.WrongNumberOfArguments);
             }
 
             this.arguments = arguments;
-            this.ArgumentNames = argumentNames;
             this.Method = method;
+            this.argumentNames = new Lazy<string[]>(this.GetArgumentNames);
         }
 
         /// <summary>
@@ -54,17 +48,15 @@ namespace FakeItEasy.Configuration
         public int Count
         {
             [DebuggerStepThrough]
-            get { return this.arguments.Length; }
+            get => this.arguments.Length;
         }
 
         /// <summary>
         ///   Gets the names of the arguments in the list.
         /// </summary>
-        public IEnumerable<string> ArgumentNames { get; }
+        public IEnumerable<string> ArgumentNames => this.argumentNames.Value;
 
-#pragma warning disable CA2235 // Mark all non-serializable fields
         internal MethodInfo Method { get; }
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         ///   Gets the argument at the specified index.
@@ -78,14 +70,14 @@ namespace FakeItEasy.Configuration
         }
 
         /// <summary>
-        ///   Returns an enumerator that iterates through the collection or arguments.
+        ///   Returns an enumerator that iterates through the collection of argument values.
         /// </summary>
         /// <returns>
         ///   A <see cref = "T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         /// </returns>
         public IEnumerator<object> GetEnumerator()
         {
-            return this.arguments.Cast<object>().GetEnumerator();
+            return ((IEnumerable<object>)this.arguments).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -124,25 +116,17 @@ namespace FakeItEasy.Configuration
             return this.arguments;
         }
 
-        [DebuggerStepThrough]
-        private static IEnumerable<string> GetArgumentNames(MethodInfo method)
-        {
-            Guard.AgainstNull(method, nameof(method));
-
-            return method.GetParameters().Select(x => x.Name);
-        }
+        private string[] GetArgumentNames() => this.Method.GetParameters().Select(x => x.Name).ToArray();
 
         private int GetArgumentIndex(string argumentName)
         {
-            var index = 0;
-            foreach (var name in this.ArgumentNames)
+            var names = this.argumentNames.Value;
+            for (int index = 0; index < names.Length; ++index)
             {
-                if (name.Equals(argumentName, StringComparison.Ordinal))
+                if (names[index].Equals(argumentName, StringComparison.Ordinal))
                 {
                     return index;
                 }
-
-                index++;
             }
 
             throw new ArgumentException(ExceptionMessages.ArgumentNameDoesNotExist, nameof(argumentName));

@@ -9,10 +9,10 @@ namespace FakeItEasy.Core
     {
         private readonly CallWriter callWriter;
         private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
-        private readonly IEnumerable<ICompletedFakeObjectCall> calls;
+        private readonly IEnumerable<CompletedFakeObjectCall> calls;
         private readonly int lastSequenceNumber;
 
-        public FakeAsserter(IEnumerable<ICompletedFakeObjectCall> calls, int lastSequenceNumber, CallWriter callWriter, StringBuilderOutputWriter.Factory outputWriterFactory)
+        public FakeAsserter(IEnumerable<CompletedFakeObjectCall> calls, int lastSequenceNumber, CallWriter callWriter, StringBuilderOutputWriter.Factory outputWriterFactory)
         {
             Guard.AgainstNull(calls, nameof(calls));
             Guard.AgainstNull(callWriter, nameof(callWriter));
@@ -23,17 +23,17 @@ namespace FakeItEasy.Core
             this.outputWriterFactory = outputWriterFactory;
         }
 
-        public delegate IFakeAsserter Factory(IEnumerable<ICompletedFakeObjectCall> calls, int lastSequenceNumber);
+        public delegate IFakeAsserter Factory(IEnumerable<CompletedFakeObjectCall> calls, int lastSequenceNumber);
 
         public virtual void AssertWasCalled(
             Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint)
         {
-            bool IsBeforeAssertionStart(ICompletedFakeObjectCall call) => SequenceNumberManager.GetSequenceNumber(call) <= this.lastSequenceNumber;
+            bool IsBeforeAssertionStart(CompletedFakeObjectCall call) => call.SequenceNumber <= this.lastSequenceNumber;
 
             var matchedCallCount = this.calls.Count(c => IsBeforeAssertionStart(c) && callPredicate(c));
             if (!callCountConstraint.Matches(matchedCallCount))
             {
-                var description = this.outputWriterFactory(new StringBuilder());
+                var description = this.outputWriterFactory.Invoke();
                 callDescriber.Invoke(description);
 
                 var message = this.CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), description.Builder.ToString(), callCountConstraint.ToString(), matchedCallCount);
@@ -95,7 +95,7 @@ namespace FakeItEasy.Core
         private string CreateExceptionMessage(
             IEnumerable<IFakeObjectCall> calls, string callDescription, string callCountDescription, int matchedCallCount)
         {
-            var writer = this.outputWriterFactory(new StringBuilder());
+            var writer = this.outputWriterFactory.Invoke();
             writer.WriteLine();
 
             using (writer.Indent())

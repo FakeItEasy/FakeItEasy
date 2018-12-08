@@ -1,4 +1,4 @@
-﻿#if !FEATURE_NETCORE_REFLECTION
+#if !FEATURE_NETCORE_REFLECTION
 namespace FakeItEasy
 {
     using System;
@@ -37,6 +37,18 @@ namespace FakeItEasy
         public static InterfaceMapping GetRuntimeInterfaceMap(this Type type, Type interfaceType)
         {
             return type.GetInterfaceMap(interfaceType);
+        }
+
+        /// <summary>
+        /// This allows the usage of new Reflection API MethodInfo.CreateDelegate(Type) on .NET Framework.
+        /// It delegates to the Delegate.CreateDelegate(Type, MethodInfo) method.
+        /// </summary>
+        /// <param name="method">The method to conver to a delegate.</param>
+        /// <param name="typeOfDelegate">The type of delegate to create.</param>
+        /// <returns>The new delegate.</returns>
+        public static Delegate CreateDelegate(this MethodInfo method, Type typeOfDelegate)
+        {
+            return Delegate.CreateDelegate(typeOfDelegate, method);
         }
     }
 }

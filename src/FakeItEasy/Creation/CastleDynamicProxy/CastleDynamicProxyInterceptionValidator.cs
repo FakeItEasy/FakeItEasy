@@ -24,7 +24,7 @@
 
         private static string GetReasonForWhyMethodCanNotBeIntercepted(MethodInfo method)
         {
-            if (IsDynamicProxyType(method.DeclaringType))
+            if (Castle.DynamicProxy.ProxyUtil.IsProxyType(method.DeclaringType))
             {
                 return null;
             }
@@ -61,12 +61,6 @@
             }
 
             return null;
-        }
-
-        private static bool IsDynamicProxyType(Type declaringType)
-        {
-            return declaringType != null &&
-                   declaringType.GetTypeInfo().Assembly.Name() == Castle.DynamicProxy.ModuleScope.DEFAULT_ASSEMBLY_NAME;
         }
 
         private MethodInfo GetInvokedMethod(MethodInfo method, object callTarget)

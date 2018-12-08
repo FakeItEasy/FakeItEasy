@@ -1,11 +1,6 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-
-[assembly: AssemblyProduct("FakeItEasy")]
-[assembly: AssemblyTitle("FakeItEasy")]
-[assembly: AssemblyDescription("The FakeItEasy dynamic fake framework.")]
 
 [assembly: CLSCompliant(true)]
 

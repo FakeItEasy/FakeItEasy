@@ -28,6 +28,8 @@ namespace FakeItEasy
 
         public static string ArgumentConstraintCannotBeNestedInArgument => "An argument constraint, such as That, Ignored, or _, cannot be nested in an argument.";
 
+        public static string DelegateCannotCallBaseMethod => "Can not configure a delegate proxy to call a base method.";
+
         public static string WrongConstructorExpressionType(Type actualConstructorType, Type expectedConstructorType) =>
             $"Supplied constructor is for type {actualConstructorType}, but must be for {expectedConstructorType}.";
 
@@ -36,7 +38,7 @@ namespace FakeItEasy
 
         public static string CallToUnconfiguredMethodOfStrictFake(IFakeObjectCall call)
         {
-            var callFormatter = ServiceLocator.Current.Resolve<IFakeObjectCallFormatter>();
+            var callFormatter = ServiceLocator.Resolve<IFakeObjectCallFormatter>();
             return $"Call to unconfigured method of strict fake: {callFormatter.GetDescription(call)}.";
         }
 

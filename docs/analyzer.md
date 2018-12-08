@@ -6,13 +6,10 @@ bugs at runtime.
 
 ## Installation
 
-The analyzer works in Visual Studio 2015 Update 1 or later. It can be installed
-[from NuGet](https://www.nuget.org/packages/FakeItEasy.Analyzer) for each project
-that needs it:
-
-```
-PM> Install-Package FakeItEasy.Analyzer
-```
+The analyzer works in Visual Studio 2015 Update 1 or later. Install one of these
+NuGet packages in each project that needs it:
+- For C# projects: [FakeItEasy.Analyzer.CSharp](https://www.nuget.org/packages/FakeItEasy.Analyzer.CSharp)
+- For VB.NET projects: [FakeItEasy.Analyzer.VisualBasic](https://www.nuget.org/packages/FakeItEasy.Analyzer.VisualBasic)
 
 ## Diagnostics
 
@@ -25,4 +22,4 @@ The analyzer currently provides the following diagnostics:
 | FakeItEasy0003 | Argument constraint outside call spec    | no        | Triggered when you try to use an [argument constraint](argument-constraints.md) outside of a [call specification](specifying-a-call-to-configure.md). |
 | FakeItEasy0004 | Argument constraint nullability mismatch | yes       | Triggered when you use a non-nullable [argument constraint](argument-constraints.md) for a nullable parameter. Calls where the argument is null won't be matched. If this is intentional, consider using `A<T?>.That.IsNotNull()` instead. If it's not, make the argument constraint nullable (`A<T?>`). |
 | FakeItEasy0005 | Argument constraint type mismatch        | yes       | Triggered when you use an [argument constraint](argument-constraints.md) whose type doesn't match the parameter. No such calls can be matched.        |
-| FakeItEasy0006 | Assertion uses legacy Repeated class     | yes       | Triggered when you make an assertion using the [legacy `MustHaveHappened(Repeated)` overload](assertion.md#using-the-legacy-musthavehappenedrepeated-overload).|                                                         |
+| FakeItEasy0006 | Assertion uses legacy Repeated class     | yes       | Triggered when you make an assertion using the obsolete `MustHaveHappened(Repeated)` overload.|                                                         |

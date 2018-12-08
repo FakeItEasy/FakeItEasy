@@ -62,6 +62,7 @@ namespace FakeItEasy.Configuration
             AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
                 .CallsBaseMethod();
 
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
             this.CreateArgumentValidationConfiguration(this.parsedSetterExpression).MustHaveHappened(repeatConstraint);
 
@@ -102,9 +103,9 @@ namespace FakeItEasy.Configuration
                 valueExpression.Body,
                 originalParameterInfos.Last());
 
-            var arguments = this.parsedSetterExpression.ArgumentsExpressions
-                .Take(originalParameterInfos.Length - 1)
-                .Concat(new[] { parsedValueExpression });
+            var arguments = new ParsedArgumentExpression[originalParameterInfos.Length];
+            Array.Copy(this.parsedSetterExpression.ArgumentsExpressions, arguments, originalParameterInfos.Length - 1);
+            arguments[originalParameterInfos.Length - 1] = parsedValueExpression;
 
             return new ParsedCallExpression(
                 this.parsedSetterExpression.CalledMethod,
@@ -146,6 +147,7 @@ namespace FakeItEasy.Configuration
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> CallsBaseMethod() =>
                 new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.CallsBaseMethod());
 
+            [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
             public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
                 this.voidConfiguration.MustHaveHappened(repeatConstraint);
 

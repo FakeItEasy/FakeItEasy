@@ -115,7 +115,7 @@ namespace FakeItEasy.Tests
         public void Should_not_leak_handlers_when_raising()
         {
             // Arrange
-            var eventHandlerArgumentProvider = ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+            var eventHandlerArgumentProvider = ServiceLocator.Resolve<EventHandlerArgumentProviderMap>();
 
             this.foo.SomethingHappened += this.Foo_SomethingHappened;
 

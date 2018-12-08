@@ -2,7 +2,6 @@ namespace FakeItEasy.Examples.ExampleObjects
 {
     using System;
 
-    [Serializable]
     public class WidgetEventArgs
         : EventArgs
     {

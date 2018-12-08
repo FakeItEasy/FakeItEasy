@@ -15,7 +15,7 @@ namespace FakeItEasy.Expressions
         : ICallMatcher
     {
         private readonly MethodInfoManager methodInfoManager;
-        private IEnumerable<IArgumentConstraint> argumentConstraints;
+        private IArgumentConstraint[] argumentConstraints;
         private Func<ArgumentCollection, bool> argumentsPredicate;
         private bool useExplicitArgumentsPredicate;
 
@@ -30,7 +30,13 @@ namespace FakeItEasy.Expressions
             this.methodInfoManager = methodInfoManager;
             this.Method = parsedExpression.CalledMethod;
 
-            this.argumentConstraints = GetArgumentConstraints(parsedExpression.ArgumentsExpressions, constraintFactory).ToArray();
+            var constraints = new IArgumentConstraint[parsedExpression.ArgumentsExpressions.Length];
+            for (var i = 0; i < constraints.Length; i++)
+            {
+                constraints[i] = constraintFactory.GetArgumentConstraint(parsedExpression.ArgumentsExpressions[i]);
+            }
+
+            this.argumentConstraints = constraints;
             this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
         }
 
@@ -64,21 +70,23 @@ namespace FakeItEasy.Expressions
 
         public Func<IFakeObjectCall, ICollection<object>> GetOutAndRefParametersValueProducer()
         {
-            var values = this.argumentConstraints.OfType<IArgumentValueProvider>()
-                .Select(valueProvidingConstraint => valueProvidingConstraint.Value)
-                .ToList();
+            IList<object> values = null;
 
-            if (values.Any())
+            foreach (var argumentConstraint in this.argumentConstraints)
             {
-                return call => values;
+                if (argumentConstraint is IArgumentValueProvider valueProvidingConstraint)
+                {
+                    if (values == null)
+                    {
+                        values = new List<object>();
+                    }
+
+                    values.Add(valueProvidingConstraint.Value);
+                }
             }
 
-            return null;
+            return values == null ? (Func<IFakeObjectCall, ICollection<object>>)null : call => values;
         }
-
-        private static IEnumerable<IArgumentConstraint> GetArgumentConstraints(IEnumerable<ParsedArgumentExpression> argumentExpressions, ExpressionArgumentConstraintFactory constraintFactory) =>
-            from argument in argumentExpressions
-            select constraintFactory.GetArgumentConstraint(argument);
 
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
         {
@@ -99,10 +107,15 @@ namespace FakeItEasy.Expressions
 
         private bool ArgumentsMatchesArgumentConstraints(ArgumentCollection argumentCollection)
         {
-            return argumentCollection
-                .AsEnumerable()
-                .Zip(this.argumentConstraints, (x, y) => new { ArgumentValue = x, Constraint = y })
-                .All(x => x.Constraint.IsValid(x.ArgumentValue));
+            for (int i = 0; i < argumentCollection.Count; ++i)
+            {
+                if (!this.argumentConstraints[i].IsValid(argumentCollection[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private class PredicatedArgumentConstraint

@@ -12,19 +12,23 @@ namespace FakeItEasy.Core
     /// of fake object calls by using a set of rules. User defined rules can be inserted
     /// by using the AddRule-method.
     /// </summary>
-#if FEATURE_BINARY_SERIALIZATION
-    [Serializable]
-#endif
     public partial class FakeManager : IFakeCallProcessor
     {
-        private readonly CallRuleMetadata[] postUserRules;
-        private readonly CallRuleMetadata[] preUserRules;
-#pragma warning disable CA2235 // Mark all non-serializable fields
+        private static readonly SharedFakeObjectCallRule[] PostUserRules =
+        {
+            new ObjectMemberRule(),
+            new AutoFakePropertyRule(),
+            new PropertySetterRule(),
+            new CancellationRule(),
+            new DefaultReturnValueRule(),
+        };
+
+        private readonly IFakeObjectCallRule[] preUserRules;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
 
-        private ConcurrentQueue<ICompletedFakeObjectCall> recordedCalls;
-#pragma warning restore CA2235 // Mark all non-serializable fields
+        private ConcurrentQueue<CompletedFakeObjectCall> recordedCalls;
+
         private int lastSequenceNumber = -1;
 
         /// <summary>
@@ -32,8 +36,7 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="fakeObjectType">The faked type.</param>
         /// <param name="proxy">The faked proxy object.</param>
-        /// <param name="fakeManagerAccessor">The fake manager accessor.</param>
-        internal FakeManager(Type fakeObjectType, object proxy, IFakeManagerAccessor fakeManagerAccessor)
+        internal FakeManager(Type fakeObjectType, object proxy)
         {
             Guard.AgainstNull(fakeObjectType, nameof(fakeObjectType));
             Guard.AgainstNull(proxy, nameof(proxy));
@@ -41,21 +44,13 @@ namespace FakeItEasy.Core
             this.objectReference = new WeakReference(proxy);
             this.FakeObjectType = fakeObjectType;
 
-            this.preUserRules = new[]
-                                    {
-                                        new CallRuleMetadata { Rule = new EventRule(this) }
-                                    };
+            this.preUserRules = new IFakeObjectCallRule[]
+            {
+                new EventRule(this),
+            };
             this.AllUserRules = new LinkedList<CallRuleMetadata>();
-            this.postUserRules = new[]
-                                     {
-                                         new CallRuleMetadata { Rule = new ObjectMemberRule(this, fakeManagerAccessor) },
-                                         new CallRuleMetadata { Rule = new AutoFakePropertyRule(this) },
-                                         new CallRuleMetadata { Rule = new PropertySetterRule(this) },
-                                         new CallRuleMetadata { Rule = new CancellationRule() },
-                                         new CallRuleMetadata { Rule = new DefaultReturnValueRule() }
-                                     };
 
-            this.recordedCalls = new ConcurrentQueue<ICompletedFakeObjectCall>();
+            this.recordedCalls = new ConcurrentQueue<CompletedFakeObjectCall>();
             this.interceptionListeners = new LinkedList<IInterceptionListener>();
         }
 
@@ -77,9 +72,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the faked type.
         /// </summary>
-#pragma warning disable CA2235 // Mark all non-serializable fields
         public virtual Type FakeObjectType { get; }
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Gets the interceptions that are currently registered with the fake object.
@@ -89,12 +82,7 @@ namespace FakeItEasy.Core
             get { return this.AllUserRules.Select(x => x.Rule); }
         }
 
-#pragma warning disable CA2235 // Mark all non-serializable fields
         internal LinkedList<CallRuleMetadata> AllUserRules { get; }
-#pragma warning restore CA2235 // Mark all non-serializable fields
-
-        private IEnumerable<CallRuleMetadata> AllRules =>
-            this.preUserRules.Concat(this.AllUserRules.Concat(this.postUserRules));
 
         /// <summary>
         /// Adds a call rule to the fake object.
@@ -136,21 +124,16 @@ namespace FakeItEasy.Core
         }
 
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Explicit implementation to be able to make the IFakeCallProcessor interface internal.")]
-        void IFakeCallProcessor.Process(IInterceptedFakeObjectCall fakeObjectCall)
+        void IFakeCallProcessor.Process(InterceptedFakeObjectCall fakeObjectCall)
         {
-            foreach (var listener in this.interceptionListeners)
+            for (var listenerNode = this.interceptionListeners.First; listenerNode != null; listenerNode = listenerNode.Next)
             {
-                listener.OnBeforeCallIntercepted(fakeObjectCall);
+                listenerNode.Value.OnBeforeCallIntercepted(fakeObjectCall);
             }
-
-            var ruleToUse =
-                (from rule in this.AllRules
-                 where rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes()
-                 select rule).First();
 
             try
             {
-                ApplyRule(ruleToUse, fakeObjectCall);
+                this.ApplyBestRule(fakeObjectCall);
             }
             finally
             {
@@ -158,9 +141,9 @@ namespace FakeItEasy.Core
 
                 this.RecordCall(readonlyCall);
 
-                foreach (var listener in this.interceptionListeners.Reverse())
+                for (var listenerNode = this.interceptionListeners.Last; listenerNode != null; listenerNode = listenerNode.Previous)
                 {
-                    listener.OnAfterCallIntercepted(readonlyCall, ruleToUse.Rule);
+                    listenerNode.Value.OnAfterCallIntercepted(readonlyCall);
                 }
             }
         }
@@ -171,20 +154,9 @@ namespace FakeItEasy.Core
         /// Returns a list of all calls on the managed object.
         /// </summary>
         /// <returns>A list of all calls on the managed object.</returns>
-        internal IEnumerable<ICompletedFakeObjectCall> GetRecordedCalls()
+        internal IEnumerable<CompletedFakeObjectCall> GetRecordedCalls()
         {
             return this.recordedCalls;
-        }
-
-        /// <summary>
-        /// Records that a call has occurred on the managed object.
-        /// </summary>
-        /// <param name="call">The call to remember.</param>
-        internal void RecordCall(ICompletedFakeObjectCall call)
-        {
-            int sequenceNumber = SequenceNumberManager.RecordSequenceNumber(call);
-            this.UpdateLastSequenceNumber(sequenceNumber);
-            this.recordedCalls.Enqueue(call);
         }
 
         /// <summary>
@@ -200,7 +172,7 @@ namespace FakeItEasy.Core
         /// </summary>
         internal virtual void ClearRecordedCalls()
         {
-            this.recordedCalls = new ConcurrentQueue<ICompletedFakeObjectCall>();
+            this.recordedCalls = new ConcurrentQueue<CompletedFakeObjectCall>();
         }
 
         /// <summary>
@@ -219,10 +191,50 @@ namespace FakeItEasy.Core
             this.AllUserRules.AddAfter(previousNode, new CallRuleMetadata { Rule = newRule });
         }
 
-        private static void ApplyRule(CallRuleMetadata rule, IInterceptedFakeObjectCall fakeObjectCall)
+        // Apply the best rule to the call. There will always be at least one applicable rule, and the rule used will
+        // be returned in the ruleUsed out parameter. An out parameter was used instead of the return value because it
+        // made it easier to return the value even when the rule throws an exception. Another solution might have been
+        // to catch the exception, which would then need to be bundled into a return object with the rule and eventually
+        // rethrown.
+        private void ApplyBestRule(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            rule.CalledNumberOfTimes++;
-            rule.Rule.Apply(fakeObjectCall);
+            foreach (var preUserRule in this.preUserRules)
+            {
+                if (preUserRule.IsApplicableTo(fakeObjectCall))
+                {
+                    preUserRule.Apply(fakeObjectCall);
+                    return;
+                }
+            }
+
+            foreach (var rule in this.AllUserRules)
+            {
+                if (rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes())
+                {
+                    rule.CalledNumberOfTimes++;
+                    rule.Rule.Apply(fakeObjectCall);
+                    return;
+                }
+            }
+
+            foreach (var postUserRule in PostUserRules)
+            {
+                if (postUserRule.IsApplicableTo(fakeObjectCall))
+                {
+                    postUserRule.Apply(fakeObjectCall);
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Records that a call has occurred on the managed object.
+        /// </summary>
+        /// <param name="call">The call to remember.</param>
+        private void RecordCall(CompletedFakeObjectCall call)
+        {
+            this.UpdateLastSequenceNumber(call.SequenceNumber);
+            this.recordedCalls.Enqueue(call);
         }
 
         private void UpdateLastSequenceNumber(int sequenceNumber)
@@ -240,6 +252,15 @@ namespace FakeItEasy.Core
             }
             while (sequenceNumber > last &&
                    sequenceNumber != Interlocked.CompareExchange(ref this.lastSequenceNumber, sequenceNumber, last));
+        }
+
+        private abstract class SharedFakeObjectCallRule : IFakeObjectCallRule
+        {
+            int? IFakeObjectCallRule.NumberOfTimesToCall => null;
+
+            public abstract bool IsApplicableTo(IFakeObjectCall fakeObjectCall);
+
+            public abstract void Apply(IInterceptedFakeObjectCall fakeObjectCall);
         }
     }
 }

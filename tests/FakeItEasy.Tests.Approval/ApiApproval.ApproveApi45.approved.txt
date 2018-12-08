@@ -94,11 +94,15 @@ namespace FakeItEasy
         public static FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T> CallTo<T>(System.Linq.Expressions.Expression<System.Func<T>> callSpecification) { }
         public static FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(System.Linq.Expressions.Expression<System.Func<TValue>> propertySpecification) { }
         public static System.Collections.Generic.IList<T> CollectionOfDummy<T>(int numberOfDummies) { }
-        public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes) { }
-        public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
+        public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes)
+            where T :  class { }
+        public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder)
+            where T :  class { }
         public static T Dummy<T>() { }
-        public static T Fake<T>() { }
-        public static T Fake<T>(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
+        public static T Fake<T>()
+            where T :  class { }
+        public static T Fake<T>(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder)
+            where T :  class { }
     }
     public class static A<T>
     
@@ -187,6 +191,11 @@ namespace FakeItEasy
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ThrowsAsync<T, T1, T2, T3>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<T1, T2, T3, System.Exception> exceptionFactory) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ThrowsAsync<T, T1, T2, T3, T4>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<T1, T2, T3, T4, System.Exception> exceptionFactory) { }
     }
+    public class static BehaviorLifetimeConfigurationExtensions
+    {
+        public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Once<TInterface>(this FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface> configuration) { }
+        public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Twice<TInterface>(this FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface> configuration) { }
+    }
     public class static CallbackConfigurationExtensions
     {
         public static TFake Invokes<TFake>(this FakeItEasy.Configuration.ICallbackConfiguration<TFake> configuration, System.Action actionToInvoke) { }
@@ -223,7 +232,6 @@ namespace FakeItEasy
         public ExpectationException() { }
         public ExpectationException(string message) { }
         public ExpectationException(string message, System.Exception innerException) { }
-        protected ExpectationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public class static Fake
     {
@@ -231,11 +239,9 @@ namespace FakeItEasy
         public static void ClearRecordedCalls(object fakedObject) { }
         public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
-        [System.ObsoleteAttribute("Test fixture initialization will be removed in version 5.0.0.")]
-        public static void InitializeFixture(object fixture) { }
     }
     public class Fake<T> : FakeItEasy.IHideObjectMembers
-    
+        where T :  class
     {
         public Fake() { }
         public Fake(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder) { }
@@ -245,12 +251,6 @@ namespace FakeItEasy
         public FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallsTo(System.Linq.Expressions.Expression<System.Action<T>> callSpecification) { }
         public FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(System.Linq.Expressions.Expression<System.Func<T, TMember>> callSpecification) { }
         public FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallsToSet<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>> propertySpecification) { }
-    }
-    [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.All)]
-    [System.ObsoleteAttribute("Test fixture initialization will be removed in version 5.0.0.")]
-    public class FakeAttribute : System.Attribute
-    {
-        public FakeAttribute() { }
     }
     public class static FakeObjectCallExtensions
     {
@@ -340,9 +340,6 @@ namespace FakeItEasy
     {
         public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e) { }
         public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(TEventArgs e) { }
-        [System.ObsoleteAttribute("Raise.With<TEventHandler> will be removed in version 5.0.0. Use Raise.FreeForm.Wi" +
-            "th instead.")]
-        public static TEventHandler With<TEventHandler>(params object[] arguments) { }
         public static FakeItEasy.Core.Raise<System.EventArgs> WithEmpty() { }
         public class static FreeForm
         {
@@ -350,23 +347,33 @@ namespace FakeItEasy
             public static object With(params object[] arguments) { }
         }
         public class static FreeForm<TEventHandler>
-        
+            where TEventHandler : System.Delegate
         {
             public static TEventHandler With(params object[] arguments) { }
         }
     }
-    public class static RepeatConfigurationExtensions
-    {
-        public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Once<TInterface>(this FakeItEasy.Configuration.IRepeatConfiguration<TInterface> configuration) { }
-        public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Twice<TInterface>(this FakeItEasy.Configuration.IRepeatConfiguration<TInterface> configuration) { }
-    }
+    [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use variant" +
+        "s of MustHaveHappened that specify the number of calls instead.")]
     public abstract class Repeated
     {
         protected Repeated() { }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedOnceOrMore, MustHaveHappenedTwiceOrMore, or MustHaveHappened(int, Times" +
+            ") instead.")]
         public static FakeItEasy.Configuration.IRepeatSpecification AtLeast { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedOnceExactly, MustHaveHappenedTwiceExactly, or MustHaveHappened(int, Tim" +
+            "es) instead.")]
         public static FakeItEasy.Configuration.IRepeatSpecification Exactly { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustNot" +
+            "HaveHappened instead.")]
         public static FakeItEasy.Repeated Never { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedOnceOrLess, MustHaveHappenedTwiceOrLess, or MustHaveHappened(int, Times" +
+            ") instead.")]
         public static FakeItEasy.Configuration.IRepeatSpecification NoMoreThan { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedANumberOfTimesMatching instead.")]
         public static FakeItEasy.Repeated Like(System.Linq.Expressions.Expression<System.Func<int, bool>> repeatValidation) { }
     }
     public class static ReturnValueConfigurationExtensions
@@ -392,18 +399,11 @@ namespace FakeItEasy
         public static FakeItEasy.Times OrLess { get; }
         public static FakeItEasy.Times OrMore { get; }
     }
-    [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.All)]
-    [System.ObsoleteAttribute("Test fixture initialization will be removed in version 5.0.0.")]
-    public class UnderTestAttribute : System.Attribute
-    {
-        public UnderTestAttribute() { }
-    }
     public class UserCallbackException : System.Exception
     {
         public UserCallbackException() { }
         public UserCallbackException(string message) { }
         public UserCallbackException(string message, System.Exception innerException) { }
-        protected UserCallbackException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public class static WhereConfigurationExtensions
     {
@@ -427,10 +427,9 @@ namespace FakeItEasy.Configuration
         public FakeConfigurationException() { }
         public FakeConfigurationException(string message) { }
         public FakeConfigurationException(string message, System.Exception innerException) { }
-        protected FakeConfigurationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
-    public interface IAfterCallConfiguredConfiguration<out TInterface> : FakeItEasy.Configuration.IRepeatConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
-    public interface IAfterCallConfiguredWithOutAndRefParametersConfiguration<out TInterface> : FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface>, FakeItEasy.Configuration.IRepeatConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
+    public interface IAfterCallConfiguredConfiguration<out TInterface> : FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
+    public interface IAfterCallConfiguredWithOutAndRefParametersConfiguration<out TInterface> : FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface>, FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
     public interface IAnyCallConfigurationWithNoReturnTypeSpecified : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IVoidArgumentValidationConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified>, FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType();
@@ -446,9 +445,16 @@ namespace FakeItEasy.Configuration
     }
     public interface IAssertConfiguration : FakeItEasy.IHideObjectMembers
     {
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use other v" +
+            "ariants of MustHaveHappened instead.")]
         FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(FakeItEasy.Repeated repeatConstraint);
         FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(int numberOfTimes, FakeItEasy.Times timesOption);
         FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(System.Linq.Expressions.Expression<System.Func<int, bool>> predicate);
+    }
+    public interface IBehaviorLifetimeConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    
+    {
+        FakeItEasy.Configuration.IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimes);
     }
     public interface ICallbackConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     
@@ -496,15 +502,20 @@ namespace FakeItEasy.Configuration
         FakeItEasy.Configuration.IPropertySetterConfiguration To(System.Linq.Expressions.Expression<System.Func<TValue>> valueConstraint);
     }
     public interface IPropertySetterConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.IHideObjectMembers { }
-    public interface IRepeatConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
-    
-    {
-        FakeItEasy.Configuration.IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimes);
-    }
+    [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use variant" +
+        "s of MustHaveHappened that specify the number of calls instead.")]
     public interface IRepeatSpecification : FakeItEasy.IHideObjectMembers
     {
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedOnceExactly, MustHaveHappenedOnceOrMore, or MustHaveHappenedOnceOrLess " +
+            "instead.")]
         FakeItEasy.Repeated Once { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappenedTwiceExactly, MustHaveHappenedTwiceOrMore, or MustHaveHappenedTwiceOrLe" +
+            "ss instead.")]
         FakeItEasy.Repeated Twice { get; }
+        [System.ObsoleteAttribute("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHav" +
+            "eHappened(int, Times) instead.")]
         FakeItEasy.Repeated Times(int numberOfTimes);
     }
     public interface IReturnValueArgumentValidationConfiguration<TMember> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IReturnValueConfiguration<TMember>, FakeItEasy.IHideObjectMembers { }
@@ -538,14 +549,12 @@ namespace FakeItEasy.Core
         public DummyCreationException() { }
         public DummyCreationException(string message) { }
         public DummyCreationException(string message, System.Exception innerException) { }
-        protected DummyCreationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public class FakeCreationException : System.Exception
     {
         public FakeCreationException() { }
         public FakeCreationException(string message) { }
         public FakeCreationException(string message, System.Exception innerException) { }
-        protected FakeCreationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public class FakeManager : FakeItEasy.Core.IFakeCallProcessor
     {
@@ -576,14 +585,13 @@ namespace FakeItEasy.Core
     }
     public interface IInterceptedFakeObjectCall : FakeItEasy.Core.IFakeObjectCall
     {
-        FakeItEasy.Core.ICompletedFakeObjectCall AsReadOnly();
         void CallBaseMethod();
         void SetArgumentValue(int index, object value);
         void SetReturnValue(object value);
     }
     public interface IInterceptionListener
     {
-        void OnAfterCallIntercepted(FakeItEasy.Core.ICompletedFakeObjectCall interceptedCall, FakeItEasy.Core.IFakeObjectCallRule ruleThatWasApplied);
+        void OnAfterCallIntercepted(FakeItEasy.Core.ICompletedFakeObjectCall interceptedCall);
         void OnBeforeCallIntercepted(FakeItEasy.Core.IFakeObjectCall interceptedCall);
     }
     public class Raise<TEventArgs> : FakeItEasy.Core.IEventRaiserArgumentProvider { }

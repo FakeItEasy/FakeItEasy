@@ -1,11 +1,9 @@
-﻿namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Reflection;
-    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
@@ -16,12 +14,10 @@
     {
         private static readonly IFakeObjectCallRule NonApplicableInterception = new FakeCallRule { IsApplicableTo = x => false };
         private readonly List<object> createdFakes;
-        private readonly IFakeManagerAccessor fakeManagerAccessor;
 
         public FakeManagerTests()
         {
             this.createdFakes = new List<object>();
-            this.fakeManagerAccessor = A.Fake<IFakeManagerAccessor>();
         }
 
         [Fact]
@@ -264,7 +260,7 @@
         {
             // Arrange
             var fake = this.CreateFakeManager<IFoo>();
-            var rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());
+            var rule = A.Dummy<IFakeObjectCallRule>();
             fake.AddRuleFirst(rule);
 
             // Act
@@ -279,13 +275,13 @@
         {
             // Arrange
             var fake = this.CreateFakeManager<IFoo>();
-            var rule = ExpressionHelper.CreateRule<IFoo>(x => x.Bar());
+            var rule = A.Dummy<IFakeObjectCallRule>();
 
             // Act
             fake.RemoveRule(rule);
 
             // Assert
-            fake.Rules.Should().NotContain(rule);
+            fake.Rules.Should().BeEmpty();
         }
 
         [Fact]
@@ -297,7 +293,7 @@
             // Act
 
             // Assert
-            Expression<Action> call = () => fake.RemoveRule(ExpressionHelper.CreateRule<IFoo>(x => x.Bar()));
+            Expression<Action> call = () => fake.RemoveRule(A.Dummy<IFakeObjectCallRule>());
             call.Should().BeNullGuarded();
         }
 
@@ -306,7 +302,7 @@
         {
             // Arrange
             var fake = this.CreateFakeManager<IFoo>();
-            var rule = A.Fake<IFakeObjectCallRule>();
+            var rule = A.Dummy<IFakeObjectCallRule>();
 
             // Act
             fake.AddRuleLast(rule);
@@ -331,73 +327,13 @@
         }
 
         [Fact]
-        public void Should_return_fake_and_type_when_ToString_is_intercepted_but_not_configured()
-        {
-            this.Should_set_default_return_value_when_object_method_has_not_been_configured(typeof(object).GetMethod("ToString"), x => "Faked FakeItEasy.Tests.IFoo");
-        }
-
-        [Fact]
-        public void Should_return_hash_code_of_fake_manager_when_GetHashCode_has_not_been_configured()
-        {
-            this.Should_set_default_return_value_when_object_method_has_not_been_configured(typeof(object).GetMethod("GetHashCode"), x => x.GetHashCode());
-        }
-
-        [Fact]
-        public void Should_return_false_for_equals_method_when_fake_managers_are_not_the_same()
-        {
-            // Arrange
-            var interceptingProxy = new object();
-            var interceptingProxyManager = new FakeManager(typeof(int), 0, this.fakeManagerAccessor);
-            this.SetManager(interceptingProxy, interceptingProxyManager);
-            var proxyPassedToEquals = new object();
-            this.SetManager(proxyPassedToEquals, new FakeManager(typeof(int), 0, this.fakeManagerAccessor));
-
-            var equalsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
-
-            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => interceptedCall.Method).Returns(equalsMethod);
-            A.CallTo(() => interceptedCall.FakedObject).Returns(proxyPassedToEquals);
-            A.CallTo(() => interceptedCall.Arguments).Returns(new ArgumentCollection(new object[] { proxyPassedToEquals }, interceptedCall.Method));
-
-            // Act
-            ProcessFakeObjectCall(interceptingProxyManager, interceptedCall);
-
-            // Assert
-            A.CallTo(() => interceptedCall.SetReturnValue(false)).MustHaveHappened();
-        }
-
-        [Fact]
-        public void Should_return_true_for_equals_method_when_fake_managers_are_the_same()
-        {
-            // Arrange
-            var interceptingProxy = new object();
-            var interceptingProxyManager = new FakeManager(typeof(int), 0, this.fakeManagerAccessor);
-            this.SetManager(interceptingProxy, interceptingProxyManager);
-            var proxyPassedToEquals = new object();
-            this.SetManager(proxyPassedToEquals, interceptingProxyManager);
-
-            var equalsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
-
-            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => interceptedCall.Method).Returns(equalsMethod);
-            A.CallTo(() => interceptedCall.FakedObject).Returns(proxyPassedToEquals);
-            A.CallTo(() => interceptedCall.Arguments).Returns(new ArgumentCollection(new object[] { proxyPassedToEquals }, interceptedCall.Method));
-
-            // Act
-            ProcessFakeObjectCall(interceptingProxyManager, interceptedCall);
-
-            // Assert
-            A.CallTo(() => interceptedCall.SetReturnValue(true)).MustHaveHappened();
-        }
-
-        [Fact]
         public void Constructor_should_set_fake_type_and_fake_object()
         {
             // Arrange
             var proxy = "some string";
 
             // Act
-            var fakeManager = new FakeManager(typeof(string), proxy, this.fakeManagerAccessor);
+            var fakeManager = new FakeManager(typeof(string), proxy);
 
             // Assert
             fakeManager.FakeObjectType.Should().Be(typeof(string));
@@ -408,7 +344,7 @@
         public void Should_clear_all_added_rules_when_calling_clear_user_rules()
         {
             // Arrange
-            var manager = new FakeManager(typeof(int), 0, this.fakeManagerAccessor);
+            var manager = new FakeManager(typeof(int), 0);
             manager.AddRuleFirst(A.Dummy<IFakeObjectCallRule>());
             manager.AddRuleLast(A.Dummy<IFakeObjectCallRule>());
 
@@ -423,10 +359,10 @@
         public void Should_invoke_listener_when_call_is_intercepted()
         {
             // Arrange
-            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>();
+            var interceptedCall = A.Fake<InterceptedFakeObjectCall>();
 
             var listener = A.Fake<IInterceptionListener>();
-            var manager = new FakeManager(typeof(int), 0, this.fakeManagerAccessor);
+            var manager = new FakeManager(typeof(int), 0);
 
             manager.AddInterceptionListener(listener);
 
@@ -441,54 +377,52 @@
         public void Should_invoke_listener_after_call_has_been_intercepted()
         {
             // Arrange
-            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>(x => x.Implements(typeof(ICompletedFakeObjectCall)));
-            A.CallTo(() => interceptedCall.AsReadOnly()).Returns((ICompletedFakeObjectCall)interceptedCall);
+            var completedCall = A.Dummy<CompletedFakeObjectCall>();
+            var interceptedCall = A.Fake<InterceptedFakeObjectCall>();
+            A.CallTo(() => interceptedCall.AsReadOnly()).Returns(completedCall);
 
             var listener = A.Fake<IInterceptionListener>();
-            var manager = new FakeManager(typeof(int), 0, this.fakeManagerAccessor);
+            var manager = new FakeManager(typeof(int), 0);
 
-            var selectedRule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => selectedRule.IsApplicableTo(interceptedCall)).Returns(true);
-
-            manager.AddRuleFirst(selectedRule);
             manager.AddInterceptionListener(listener);
 
             // Act
             ProcessFakeObjectCall(manager, interceptedCall);
 
             // Assert
-            A.CallTo(() => listener.OnAfterCallIntercepted((ICompletedFakeObjectCall)interceptedCall, selectedRule)).MustHaveHappened();
+            A.CallTo(() => listener.OnAfterCallIntercepted(completedCall)).MustHaveHappened();
         }
 
         [Fact]
         public void Should_invoke_listener_after_call_has_been_intercepted_when_application_of_rule_throws()
         {
             // Arrange
-            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>(x => x.Implements(typeof(ICompletedFakeObjectCall)));
-            A.CallTo(() => interceptedCall.AsReadOnly()).Returns((ICompletedFakeObjectCall)interceptedCall);
+            var completedCall = A.Dummy<CompletedFakeObjectCall>();
+            var interceptedCall = A.Fake<InterceptedFakeObjectCall>();
+            A.CallTo(() => interceptedCall.AsReadOnly()).Returns(completedCall);
 
             var listener = A.Fake<IInterceptionListener>();
-            var manager = new FakeManager(typeof(int), 0, this.fakeManagerAccessor);
+            var manager = new FakeManager(typeof(int), 0);
 
-            var selectedRule = A.Fake<IFakeObjectCallRule>();
-            A.CallTo(() => selectedRule.IsApplicableTo(interceptedCall)).Returns(true);
-            A.CallTo(() => selectedRule.Apply(A<IInterceptedFakeObjectCall>._)).Throws(new InvalidOperationException());
+            var ruleThatThrows = A.Fake<IFakeObjectCallRule>();
+            A.CallTo(() => ruleThatThrows.IsApplicableTo(interceptedCall)).Returns(true);
+            A.CallTo(() => ruleThatThrows.Apply(A<IInterceptedFakeObjectCall>._)).Throws(new InvalidOperationException());
 
-            manager.AddRuleFirst(selectedRule);
+            manager.AddRuleFirst(ruleThatThrows);
             manager.AddInterceptionListener(listener);
 
             // Act
             Record.Exception(() => ProcessFakeObjectCall(manager, interceptedCall));
 
             // Assert
-            A.CallTo(() => listener.OnAfterCallIntercepted((ICompletedFakeObjectCall)interceptedCall, selectedRule)).MustHaveHappened();
+            A.CallTo(() => listener.OnAfterCallIntercepted(completedCall)).MustHaveHappened();
         }
 
         [Fact]
         public void Should_invoke_listeners_in_the_correct_order()
         {
             // Arrange
-            var manager = new FakeManager(typeof(int), 0, this.fakeManagerAccessor);
+            var manager = new FakeManager(typeof(int), 0);
             var listener1 = A.Fake<IInterceptionListener>();
             var listener2 = A.Fake<IInterceptionListener>();
 
@@ -496,13 +430,13 @@
             manager.AddInterceptionListener(listener1);
             manager.AddInterceptionListener(listener2);
 
-            ProcessFakeObjectCall(manager, A.Dummy<IInterceptedFakeObjectCall>());
+            ProcessFakeObjectCall(manager, A.Dummy<InterceptedFakeObjectCall>());
 
             // Assert
             A.CallTo(() => listener2.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened()
                 .Then(A.CallTo(() => listener1.OnBeforeCallIntercepted(A<IFakeObjectCall>._)).MustHaveHappened())
-                .Then(A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened())
-                .Then(A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._, A<IFakeObjectCallRule>._)).MustHaveHappened());
+                .Then(A.CallTo(() => listener1.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._)).MustHaveHappened())
+                .Then(A.CallTo(() => listener2.OnAfterCallIntercepted(A<ICompletedFakeObjectCall>._)).MustHaveHappened());
         }
 
         private static FakeCallRule CreateApplicableInterception()
@@ -510,37 +444,16 @@
             return new FakeCallRule { IsApplicableTo = x => true };
         }
 
-        private static void ProcessFakeObjectCall(IFakeCallProcessor fakeCallProcessor, IInterceptedFakeObjectCall interceptedCall)
+        private static void ProcessFakeObjectCall(IFakeCallProcessor fakeCallProcessor, InterceptedFakeObjectCall interceptedCall)
         {
             fakeCallProcessor.Process(interceptedCall);
         }
 
-        private void SetManager(object fake, FakeManager manager)
-        {
-            A.CallTo(() => this.fakeManagerAccessor.GetFakeManager(fake)).Returns(manager);
-            A.CallTo(() => this.fakeManagerAccessor.TryGetFakeManager(fake)).Returns(manager);
-        }
-
-        private FakeManager CreateFakeManager<T>()
+        private FakeManager CreateFakeManager<T>() where T : class
         {
             var result = A.Fake<T>();
             this.MakeSureThatWeakReferenceDoesNotGetCollected(result);
             return Fake.GetFakeManager(result);
-        }
-
-        private void Should_set_default_return_value_when_object_method_has_not_been_configured(MethodInfo interceptedMethod, Func<FakeManager, object> expectedValue)
-        {
-            // Arrange
-            var manager = new FakeManager(typeof(IFoo), A.Fake<IFoo>(), this.fakeManagerAccessor);
-
-            var interceptedCall = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => interceptedCall.Method).Returns(interceptedMethod);
-
-            // Act
-            ProcessFakeObjectCall(manager, interceptedCall);
-
-            // Assert
-            A.CallTo(() => interceptedCall.SetReturnValue(expectedValue.Invoke(manager))).MustHaveHappened();
         }
 
         private void MakeSureThatWeakReferenceDoesNotGetCollected<T>(T result)

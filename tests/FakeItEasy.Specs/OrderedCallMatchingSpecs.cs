@@ -58,6 +58,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        #pragma warning disable CS0618
         public static void OrderedAssertionsUsingRepeatedInOrder(IFoo fake, Exception exception)
         {
             "Given a Fake"
@@ -84,6 +85,7 @@ namespace FakeItEasy.Specs
             "Then the assertion should pass"
                 .x(() => exception.Should().BeNull());
         }
+        #pragma warning restore CS0618
 
         [Scenario]
         public static void OrderedAssertionsOutOfOrder(IFoo fake, Exception exception)
@@ -124,6 +126,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        #pragma warning disable CS0618
         public static void OrderedAssertionsUsingRepeatedOutOfOrder(IFoo fake, Exception exception)
         {
             "Given a Fake"
@@ -160,6 +163,7 @@ namespace FakeItEasy.Specs
     ...
     4: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)"));
         }
+        #pragma warning restore CS0618
 
         [Scenario]
         public static void OrderedAssertionsOnDifferentObjectsInOrder(IFoo fake1, IFoo fake2, Exception exception)
@@ -261,6 +265,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        #pragma warning disable CS0618
         public static void MultistepOrderedAssertionsUsingRepeatedInOrder(
             IFoo fake,
             Exception exception,
@@ -293,6 +298,7 @@ namespace FakeItEasy.Specs
             "Then the assertions should pass"
                 .x(() => exception.Should().BeNull());
         }
+        #pragma warning restore CS0618
 
         [Scenario]
         public static void MultistepOrderedAssertionsOutOfOrder(
@@ -339,6 +345,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        #pragma warning disable CS0618
         public static void MultistepOrderedAssertionsUsingRepeatedOutOfOrder(
             IFoo fake,
             Exception exception,
@@ -381,6 +388,7 @@ namespace FakeItEasy.Specs
     ...
     4: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2)"));
         }
+        #pragma warning restore CS0618
 
         // This is perhaps not the most intuitive behavior, but has been
         // in place since ordered assertions were introduced: the
@@ -429,6 +437,7 @@ namespace FakeItEasy.Specs
         // in place since ordered assertions were introduced: the
         // MustHaveHappened is executed first and checks all calls.
         [Scenario]
+        #pragma warning disable CS0618
         public static void OrderedAssertionWithCallCountConstraintFailureUsingRepeated(
             IFoo fake,
             IOrderableCallAssertion lastAssertion,
@@ -467,6 +476,7 @@ namespace FakeItEasy.Specs
 
 "));
         }
+        #pragma warning restore CS0618
 
         // Reported as issue 182 (https://github.com/FakeItEasy/FakeItEasy/issues/182).
         [Scenario]

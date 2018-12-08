@@ -10,36 +10,21 @@ namespace FakeItEasy
     /// Provides syntax for specifying the number of times a call must have occurred when asserting on
     /// fake object calls.
     /// </summary>
-    /// <remarks>
-    /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
-    /// version 5.0.0 and removed in version 6.0.0.
-    /// Prefer <see cref="IAssertConfiguration"/> methods and <see cref="AssertConfigurationExtensions"/>
-    /// extension methods that do not use <c>Repeated</c>.
-    /// </remarks>
     /// <example><code>A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Once);</code></example>
+    [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use variants of MustHaveHappened that specify the number of calls instead.")]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
     public abstract class Repeated
     {
         /// <summary>
         /// Asserts that a call has not happened at all.
         /// </summary>
-        /// <remarks>
-        /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
-        /// version 5.0.0 and removed in version 6.0.0.
-        /// Prefer <see cref="AssertConfigurationExtensions.MustNotHaveHappened"/>.
-        /// </remarks>
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use MustNotHaveHappened instead.")]
         public static Repeated Never => new NeverRepeated();
 
         /// <summary>
         /// The call must have happened exactly the number of times that is specified in the next step.
         /// </summary>
-        /// <remarks>
-        /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
-        /// version 5.0.0 and removed in version 6.0.0.
-        /// Prefer <see cref="AssertConfigurationExtensions.MustHaveHappenedOnceExactly"/>,
-        /// <see cref="AssertConfigurationExtensions.MustHaveHappenedTwiceExactly"/>, or
-        /// <see cref="IAssertConfiguration.MustHaveHappened(Int32, Times)"/> (using <see cref="Times.Exactly"/>).
-        /// </remarks>
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHaveHappenedOnceExactly, MustHaveHappenedTwiceExactly, or MustHaveHappened(int, Times) instead.")]
         public static IRepeatSpecification Exactly
         {
             get { return new RepeatSpecification((actual, expected) => actual == expected, "exactly"); }
@@ -49,13 +34,7 @@ namespace FakeItEasy
         /// The call must have happened any number of times greater than or equal to the number of times that is specified
         /// in the next step.
         /// </summary>
-        /// <remarks>
-        /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
-        /// version 5.0.0 and removed in version 6.0.0.
-        /// Prefer <see cref="AssertConfigurationExtensions.MustHaveHappenedOnceOrMore"/>,
-        /// <see cref="AssertConfigurationExtensions.MustHaveHappenedTwiceOrMore"/>, or
-        /// <see cref="IAssertConfiguration.MustHaveHappened(Int32, Times)"/> (using <see cref="Times.OrMore"/>).
-        /// </remarks>
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHaveHappenedOnceOrMore, MustHaveHappenedTwiceOrMore, or MustHaveHappened(int, Times) instead.")]
         public static IRepeatSpecification AtLeast
         {
             get { return new RepeatSpecification((actual, expected) => actual >= expected, "at least"); }
@@ -65,13 +44,7 @@ namespace FakeItEasy
         /// The call must have happened any number of times less than or equal to the number of times that is specified
         /// in the next step.
         /// </summary>
-        /// <remarks>
-        /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
-        /// version 5.0.0 and removed in version 6.0.0.
-        /// Prefer <see cref="AssertConfigurationExtensions.MustHaveHappenedOnceOrLess"/>,
-        /// <see cref="AssertConfigurationExtensions.MustHaveHappenedTwiceOrLess"/>, or
-        /// <see cref="IAssertConfiguration.MustHaveHappened(Int32, Times)"/> (using <see cref="Times.OrLess"/>).
-        /// </remarks>
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHaveHappenedOnceOrLess, MustHaveHappenedTwiceOrLess, or MustHaveHappened(int, Times) instead.")]
         public static IRepeatSpecification NoMoreThan
         {
             get { return new RepeatSpecification((actual, expected) => actual <= expected, "no more than"); }
@@ -84,11 +57,7 @@ namespace FakeItEasy
         /// <param name="repeatValidation">A predicate that specifies the number of times
         /// a call must have been made.</param>
         /// <returns>A Repeated-instance.</returns>
-        /// <remarks>
-        /// Assertions using the <c>Repeated</c> class are being phased out and will be deprecated in
-        /// version 5.0.0 and removed in version 6.0.0.
-        /// <see cref="IAssertConfiguration.MustHaveHappenedANumberOfTimesMatching"/>.
-        /// </remarks>
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHaveHappenedANumberOfTimesMatching instead.")]
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static Repeated Like(Expression<Func<int, bool>> repeatValidation)
         {

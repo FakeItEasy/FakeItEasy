@@ -21,7 +21,6 @@ namespace FakeItEasy.Core
         /// applied.
         /// </summary>
         /// <param name="interceptedCall">The intercepted call.</param>
-        /// <param name="ruleThatWasApplied">The rule that was applied to the call.</param>
-        void OnAfterCallIntercepted(ICompletedFakeObjectCall interceptedCall, IFakeObjectCallRule ruleThatWasApplied);
+        void OnAfterCallIntercepted(ICompletedFakeObjectCall interceptedCall);
     }
 }

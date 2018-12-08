@@ -13,7 +13,7 @@ namespace FakeItEasy
     /// FakedObject-property.
     /// </summary>
     /// <typeparam name="T">The type of the faked object.</typeparam>
-    public class Fake<T> : IHideObjectMembers
+    public class Fake<T> : IHideObjectMembers where T : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Fake{T}"/> class.
@@ -21,7 +21,7 @@ namespace FakeItEasy
         /// </summary>
         public Fake()
         {
-            this.FakedObject = CreateFake(x => { });
+            this.FakedObject = (T)FakeAndDummyManager.CreateFake(typeof(T), null);
         }
 
         /// <summary>
@@ -50,13 +50,13 @@ namespace FakeItEasy
         public IEnumerable<ICompletedFakeObjectCall> RecordedCalls => FakeItEasy.Fake.GetCalls(this.FakedObject);
 
         private static IFakeAndDummyManager FakeAndDummyManager =>
-            ServiceLocator.Current.Resolve<IFakeAndDummyManager>();
+            ServiceLocator.Resolve<IFakeAndDummyManager>();
 
         private IStartConfiguration<T> StartConfiguration
         {
             get
             {
-                var factory = ServiceLocator.Current.Resolve<IStartConfigurationFactory>();
+                var factory = ServiceLocator.Resolve<IStartConfigurationFactory>();
                 return factory.CreateConfiguration<T>(FakeItEasy.Fake.GetFakeManager(this.FakedObject));
             }
         }

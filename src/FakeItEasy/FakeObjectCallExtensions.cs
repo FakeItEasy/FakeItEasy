@@ -58,7 +58,7 @@ namespace FakeItEasy
 
         private static string GetParametersString(IFakeObjectCall fakeObjectCall)
         {
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
             writer.WriteArgumentValues(fakeObjectCall.Arguments);
             return writer.Builder.ToString();
         }

@@ -1,10 +1,11 @@
 namespace FakeItEasy.Expressions
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using FakeItEasy.Compatibility;
 
     internal class CallExpressionParser : ICallExpressionParser
     {
@@ -40,8 +41,7 @@ namespace FakeItEasy.Expressions
             var target = expression.Expression.Evaluate();
             var method = target.GetType().GetMethod("Invoke");
 
-            var argumentsExpressions = from argument in expression.Arguments.Zip(method.GetParameters(), (x, y) => new { Expression = x, ParameterInfo = y })
-                                       select new ParsedArgumentExpression(argument.Expression, argument.ParameterInfo);
+            var argumentsExpressions = CreateParsedArgumentExpressions(expression.Arguments, method.GetParameters());
 
             return new ParsedCallExpression(
                 calledMethod: method,
@@ -51,9 +51,7 @@ namespace FakeItEasy.Expressions
 
         private static ParsedCallExpression ParseMethodCallExpression(MethodCallExpression expression)
         {
-            var argumentsExpressions = from argument in expression.Arguments.Zip(expression.Method.GetParameters(), (x, y) => new { Expression = x, ParameterInfo = y })
-                                       select new ParsedArgumentExpression(argument.Expression, argument.ParameterInfo);
-
+            var argumentsExpressions = CreateParsedArgumentExpressions(expression.Arguments, expression.Method.GetParameters());
             return new ParsedCallExpression(
                 calledMethod: expression.Method,
                 callTargetExpression: expression.Object,
@@ -72,7 +70,18 @@ namespace FakeItEasy.Expressions
             return new ParsedCallExpression(
                 calledMethod: property.GetGetMethod(true),
                 callTargetExpression: expression.Expression,
-                argumentsExpressions: Enumerable.Empty<ParsedArgumentExpression>());
+                argumentsExpressions: ArrayHelper.Empty<ParsedArgumentExpression>());
+        }
+
+        private static ParsedArgumentExpression[] CreateParsedArgumentExpressions(IList<Expression> expressionArguments, ParameterInfo[] parameters)
+        {
+            var argumentsExpressions = new ParsedArgumentExpression[expressionArguments.Count];
+            for (int i = 0; i < argumentsExpressions.Length; i++)
+            {
+                argumentsExpressions[i] = new ParsedArgumentExpression(expressionArguments[i], parameters[i]);
+            }
+
+            return argumentsExpressions;
         }
 
         private static LambdaExpression ReplaceParameterWithFake(LambdaExpression callExpression, object fake)

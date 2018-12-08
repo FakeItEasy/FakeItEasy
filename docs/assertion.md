@@ -33,32 +33,6 @@ A.CallTo(() => foo.Bar()).MustHaveHappened(7, Times.OrLess);
 A.CallTo(() => foo.Bar()).MustHaveHappenedANumberOfTimesMatching(n => n % 2 == 0);
 ```
 
-## Using the legacy `MustHaveHappened(Repeated)` overload:
-
-This documentation has been retained here, for now, as a convenience to
-users of versions of FakeItEasy that predate 4.4.0.
-
-**The `Repeated` class will be removed in the future, so no new code should be written
-that uses these methods, and existing code should be converted to use the API described above.
-This can easily be done using the FakeItEasy0006 code fix included in the
-[FakeItEasy Roslyn analyzer](analyzer.md).** 
-
-```csharp
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Once);
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.AtLeast.Once);
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.NoMoreThan.Once);
-
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Twice);
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.AtLeast.Twice);
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.NoMoreThan.Twice);
-
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Times(4));
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Exactly.Times(6));
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.NoMoreThan.Times(7));
-
-A.CallTo(() => foo.Bar()).MustHaveHappened(Repeated.Like(x => x % 2 == 0));
-```
-
 # Asserting Calls Made with Mutable Arguments
 
 When FakeItEasy records a method (or property) call, it remembers
@@ -107,7 +81,11 @@ aList.Add(4);
 Assert.That(capturedList, Is.EqualTo(new List<int> {1, 2, 3}));
 ```
 
-#VB.Net
+# More advanced assertions
+
+If the built-in assertion API isn't sufficient, you can also examine the list of recorded calls directly, as described in [Getting the list of calls made on a fake](advanced-usage.md#getting-the-list-of-calls-made-on-a-fake).
+
+# VB.NET
 
 ```
 ' Functions and Subs can be asserted using their respective keywords

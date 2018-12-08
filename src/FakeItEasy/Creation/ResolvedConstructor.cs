@@ -8,10 +8,9 @@ namespace FakeItEasy.Creation
     {
         public ResolvedConstructor(
             IEnumerable<Type> parameterTypes,
-            DummyCreationSession session,
             IDummyValueResolver resolver)
         {
-            this.Arguments = ResolveArguments(parameterTypes, session, resolver);
+            this.Arguments = ResolveArguments(parameterTypes, resolver);
         }
 
         public bool WasSuccessfullyResolved => this.Arguments.All(x => x.WasResolved);
@@ -22,7 +21,6 @@ namespace FakeItEasy.Creation
 
         private static IEnumerable<ResolvedArgument> ResolveArguments(
             IEnumerable<Type> parameterTypes,
-            DummyCreationSession session,
             IDummyValueResolver resolver)
         {
             var resolvedArguments = new List<ResolvedArgument>();
@@ -31,7 +29,7 @@ namespace FakeItEasy.Creation
                 var resolvedArgument = new ResolvedArgument { ArgumentType = parameterType };
                 try
                 {
-                    var creationResult = resolver.TryResolveDummyValue(session, parameterType);
+                    var creationResult = resolver.TryResolveDummyValue(parameterType);
                     resolvedArgument.WasResolved = creationResult.WasSuccessful;
                     if (creationResult.WasSuccessful)
                     {

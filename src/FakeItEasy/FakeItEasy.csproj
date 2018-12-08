@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>net40;net45;netstandard1.6;netstandard2.0</TargetFrameworks>
     <AssemblyName>FakeItEasy</AssemblyName>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -63,7 +62,7 @@
   <!-- .NET 4.5 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_REFLECTIONONLYLOAD;FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_REFLECTIONONLYLOAD;FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
@@ -78,7 +77,7 @@
   <!-- .NET 4.0 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
-    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION;FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_REFLECTIONONLYLOAD;FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_REFLECTIONONLYLOAD;FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">

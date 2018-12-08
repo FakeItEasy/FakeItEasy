@@ -17,11 +17,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="ExpectationException">The call has not been called a number of times
         /// that passes the repeat constraint.</exception>
         /// <returns>An object to assert the call order.</returns>
-        /// <remarks>
-        /// Assertions using the <see cref="Repeated"/> class are being phased out and will be deprecated in
-        /// version 5.0.0 and removed in version 6.0.0.
-        /// Prefer methods that do not use <c>Repeated</c>.
-        /// </remarks>
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
         UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint);
 
         /// <summary>

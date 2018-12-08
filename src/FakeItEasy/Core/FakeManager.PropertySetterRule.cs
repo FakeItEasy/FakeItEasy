@@ -1,41 +1,30 @@
 namespace FakeItEasy.Core
 {
-    using System;
     using System.Linq;
 
     /// <content>Property setter rule.</content>
     public partial class FakeManager
     {
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         private class PropertySetterRule
-            : IFakeObjectCallRule
+            : SharedFakeObjectCallRule
         {
-            private readonly FakeManager fakeManager;
-
-            public PropertySetterRule(FakeManager fakeManager)
-            {
-                this.fakeManager = fakeManager;
-            }
-
-            public int? NumberOfTimesToCall => null;
-
-            public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
+            public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
                 return PropertyBehaviorRule.IsPropertySetter(fakeObjectCall.Method);
             }
 
-            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+            public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
+
+                var fakeManager = Fake.GetFakeManager(fakeObjectCall.FakedObject);
 
                 // Setting the property adds a PropertyBehaviorRule to store the assigned value.
                 // The PropertyBehaviorRule is added at the end of user rules to avoid overriding
                 // explicit configurations of the property made with CallTo.
-                var existingRule = this.fakeManager
+                var existingRule = fakeManager
                     .AllUserRules
                     .Select(metadata => metadata.Rule)
                     .OfType<PropertyBehaviorRule>()
@@ -57,7 +46,7 @@ namespace FakeItEasy.Core
                         }
                     };
 
-                    this.fakeManager.AllUserRules.AddLast(newRule);
+                    fakeManager.AllUserRules.AddLast(newRule);
                 }
             }
         }

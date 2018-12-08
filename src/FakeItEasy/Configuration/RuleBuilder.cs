@@ -3,6 +3,9 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
+#if FEATURE_NETCORE_REFLECTION
+    using System.Reflection;
+#endif
     using FakeItEasy.Core;
 
     internal class RuleBuilder
@@ -34,7 +37,7 @@ namespace FakeItEasy.Configuration
 
         IVoidConfiguration IThenConfiguration<IVoidConfiguration>.Then => this.Then;
 
-        public IEnumerable<ICompletedFakeObjectCall> Calls => this.manager.GetRecordedCalls();
+        public IEnumerable<CompletedFakeObjectCall> Calls => this.manager.GetRecordedCalls();
 
         public ICallMatcher Matcher => new RuleMatcher(this);
 
@@ -123,6 +126,11 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsBaseMethod()
         {
+            if (this.manager.FakeObjectType.GetTypeInfo().IsSubclassOf(typeof(Delegate)))
+            {
+                throw new FakeConfigurationException(ExceptionMessages.DelegateCannotCallBaseMethod);
+            }
+
             this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseApplicator(x => { });
             this.RuleBeingBuilt.CallBaseMethod = true;
@@ -151,6 +159,7 @@ namespace FakeItEasy.Configuration
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer) =>
             this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3, T4>(valueProducer);
 
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
         {
             Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
@@ -283,6 +292,7 @@ namespace FakeItEasy.Configuration
                 return this;
             }
 
+            [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
             public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
                 this.ParentConfiguration.MustHaveHappened(repeatConstraint);
 

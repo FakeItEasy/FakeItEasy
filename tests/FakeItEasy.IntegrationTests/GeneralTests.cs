@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests
 {
     using System;
     using System.Collections.Generic;
@@ -72,18 +72,6 @@
 
             // Assert
             secondFake.GetType().GetTypeInfo().GetCustomAttributes(typeof(ForTestAttribute), true).Should().BeEmpty();
-        }
-
-        [Fact]
-        public void Should_not_be_able_to_fake_a_guid()
-        {
-            // Arrange
-
-            // Act
-            var exception = Record.Exception(() => A.Fake<Guid>());
-
-            // Assert
-            exception.Should().BeAnExceptionOfType<FakeCreationException>();
         }
 
         [Fact]

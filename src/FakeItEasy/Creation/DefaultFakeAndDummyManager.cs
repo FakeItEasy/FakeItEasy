@@ -1,9 +1,8 @@
 namespace FakeItEasy.Creation
 {
     using System;
-#if FEATURE_NETCORE_REFLECTION
+    using System.Collections.Concurrent;
     using System.Reflection;
-#endif
     using FakeItEasy.Core;
 
     /// <summary>
@@ -12,32 +11,34 @@ namespace FakeItEasy.Creation
     internal class DefaultFakeAndDummyManager
         : IFakeAndDummyManager
     {
+        private static readonly ConcurrentDictionary<Type, Func<ProxyOptions, IFakeOptions>> FakeOptionsFactoryCache = new ConcurrentDictionary<Type, Func<ProxyOptions, IFakeOptions>>();
+
         private readonly IFakeObjectCreator fakeCreator;
-        private readonly DynamicOptionsBuilder dynamicOptionsBuilder;
+        private readonly ImplicitOptionsBuilderCatalogue implicitOptionsBuilderCatalogue;
         private readonly IDummyValueResolver dummyValueResolver;
 
-        public DefaultFakeAndDummyManager(IDummyValueResolver dummyValueResolver, IFakeObjectCreator fakeCreator, DynamicOptionsBuilder dynamicOptionsBuilder)
+        public DefaultFakeAndDummyManager(IDummyValueResolver dummyValueResolver, IFakeObjectCreator fakeCreator, ImplicitOptionsBuilderCatalogue implicitOptionsBuilderCatalogue)
         {
             this.dummyValueResolver = dummyValueResolver;
             this.fakeCreator = fakeCreator;
-            this.dynamicOptionsBuilder = dynamicOptionsBuilder;
+            this.implicitOptionsBuilderCatalogue = implicitOptionsBuilderCatalogue;
         }
 
         public object CreateDummy(Type typeOfDummy)
         {
-            return this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy).Result;
+            return this.dummyValueResolver.TryResolveDummyValue(typeOfDummy).Result;
         }
 
         public object CreateFake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
             var proxyOptions = this.BuildProxyOptions(typeOfFake, optionsBuilder);
 
-            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, new DummyCreationSession(), this.dummyValueResolver).Result;
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.dummyValueResolver).Result;
         }
 
         public bool TryCreateDummy(Type typeOfDummy, out object result)
         {
-            var creationResult = this.dummyValueResolver.TryResolveDummyValue(new DummyCreationSession(), typeOfDummy);
+            var creationResult = this.dummyValueResolver.TryResolveDummyValue(typeOfDummy);
             if (creationResult.WasSuccessful)
             {
                 result = creationResult.Result;
@@ -48,22 +49,43 @@ namespace FakeItEasy.Creation
             return false;
         }
 
-        private static IFakeOptions CreateFakeOptions(Type typeOfFake, ProxyOptions proxyOptions)
-        {
-            var optionsConstructor = typeof(FakeOptions<>)
-                .MakeGenericType(typeOfFake)
-                .GetConstructor(new[] { typeof(ProxyOptions) });
+        private static IFakeOptions CreateFakeOptions<T>(ProxyOptions proxyOptions) => new FakeOptions<T>(proxyOptions);
 
-            return (IFakeOptions)optionsConstructor.Invoke(new object[] { proxyOptions });
+        private static Func<ProxyOptions, IFakeOptions> GetFakeOptionsFactory(Type typeOfFake)
+        {
+            var method = typeof(DefaultFakeAndDummyManager).GetMethod(nameof(CreateFakeOptions), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(typeOfFake);
+
+            return (Func<ProxyOptions, IFakeOptions>)method.CreateDelegate(typeof(Func<ProxyOptions, IFakeOptions>));
         }
 
         private IProxyOptions BuildProxyOptions(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
-            var proxyOptions = new ProxyOptions();
-            var options = CreateFakeOptions(typeOfFake, proxyOptions);
+            var implicitOptionsBuilder = this.implicitOptionsBuilderCatalogue.GetImplicitOptionsBuilder(typeOfFake);
 
-            this.dynamicOptionsBuilder.BuildOptions(typeOfFake, options);
-            optionsBuilder.Invoke(options);
+            if (implicitOptionsBuilder == null && optionsBuilder == null)
+            {
+                return ProxyOptions.Default;
+            }
+
+            var proxyOptions = new ProxyOptions();
+            var fakeOptions = FakeOptionsFactoryCache.GetOrAdd(typeOfFake, GetFakeOptionsFactory).Invoke(proxyOptions);
+
+            if (implicitOptionsBuilder != null)
+            {
+                try
+                {
+                    implicitOptionsBuilder.BuildOptions(typeOfFake, fakeOptions);
+                }
+                catch (Exception ex)
+                {
+                    throw new UserCallbackException(
+                        ExceptionMessages.UserCallbackThrewAnException($"Fake options builder '{implicitOptionsBuilder.GetType()}'"),
+                        ex);
+                }
+            }
+
+            optionsBuilder?.Invoke(fakeOptions);
+
             return proxyOptions;
         }
     }

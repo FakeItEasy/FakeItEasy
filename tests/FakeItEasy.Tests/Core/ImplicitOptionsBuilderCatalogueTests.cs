@@ -7,48 +7,41 @@ namespace FakeItEasy.Tests.Core
     using FluentAssertions;
     using Xunit;
 
-    public class DynamicOptionsBuilderTests
+    public class ImplicitOptionsBuilderCatalogueTests
     {
         private readonly List<IFakeOptionsBuilder> availableOptionsBuilders;
 
-        public DynamicOptionsBuilderTests()
+        public ImplicitOptionsBuilderCatalogueTests()
         {
             this.availableOptionsBuilders = new List<IFakeOptionsBuilder>();
         }
 
         [Fact]
-        public void BuildOptions_should_apply_configuration_from_registered_options_builders()
+        public void GetImplicitOptionsBuilder_should_return_registered_options_builder()
         {
             // Arrange
             this.availableOptionsBuilders.Add(new OptionsBuilderForTypeWithDummyFactory());
 
             var container = this.CreateOptionsBuilder();
 
-            var fakeOptions = A.Fake<IFakeOptions>();
-            var fakeTypeWithDummyFactory = new TypeWithOptionsBuilders();
-
-            A.CallTo(() => fakeOptions.ConfigureFake(A<Action<object>>._))
-                .Invokes((Action<object> action) => action(fakeTypeWithDummyFactory));
-
             // Act
-            container.BuildOptions(typeof(TypeWithOptionsBuilders), fakeOptions);
+            var implicitOptionsBuilder = container.GetImplicitOptionsBuilder(typeof(TypeWithOptionsBuilders));
 
             // Assert
-            fakeTypeWithDummyFactory.WasConfigured.Should().BeTrue("because configuration should be applied");
+            implicitOptionsBuilder.Should().BeOfType<OptionsBuilderForTypeWithDummyFactory>();
         }
 
         [Fact]
-        public void BuildOptions_should_do_nothing_when_fake_type_has_no_options_builder_specified()
+        public void GetImplicitOptionsBuilder_should_return_null_when_fake_type_has_no_options_builder_specified()
         {
             // Arrange
             var optionsBuilder = this.CreateOptionsBuilder();
-            var fakeOptions = A.Fake<IFakeOptions>();
 
             // Act
-            optionsBuilder.BuildOptions(typeof(TypeWithOptionsBuilders), fakeOptions);
+            var implicitOptionsBuilder = optionsBuilder.GetImplicitOptionsBuilder(typeof(TypeWithOptionsBuilders));
 
             // Assert
-            A.CallTo(fakeOptions).MustNotHaveHappened();
+            implicitOptionsBuilder.Should().BeNull();
         }
 
         [Fact]
@@ -65,9 +58,9 @@ namespace FakeItEasy.Tests.Core
             exception.Should().BeNull();
         }
 
-        private DynamicOptionsBuilder CreateOptionsBuilder()
+        private ImplicitOptionsBuilderCatalogue CreateOptionsBuilder()
         {
-            return new DynamicOptionsBuilder(this.availableOptionsBuilders);
+            return new ImplicitOptionsBuilderCatalogue(this.availableOptionsBuilders);
         }
 
         private class OptionsBuilderForTypeWithDummyFactory : IFakeOptionsBuilder

@@ -12,7 +12,7 @@ namespace FakeItEasy.Expressions
         public ParsedCallExpression(
             MethodInfo calledMethod,
             Expression callTargetExpression,
-            IEnumerable<ParsedArgumentExpression> argumentsExpressions)
+            ParsedArgumentExpression[] argumentsExpressions)
         {
             this.CalledMethod = calledMethod;
             this.ArgumentsExpressions = argumentsExpressions;
@@ -22,7 +22,7 @@ namespace FakeItEasy.Expressions
         public ParsedCallExpression(
             MethodInfo calledMethod,
             object callTarget,
-            IEnumerable<ParsedArgumentExpression> argumentsExpressions)
+            ParsedArgumentExpression[] argumentsExpressions)
         {
             this.CalledMethod = calledMethod;
             this.ArgumentsExpressions = argumentsExpressions;
@@ -31,7 +31,7 @@ namespace FakeItEasy.Expressions
 
         public MethodInfo CalledMethod { get; }
 
-        public IEnumerable<ParsedArgumentExpression> ArgumentsExpressions { get; }
+        public ParsedArgumentExpression[] ArgumentsExpressions { get; }
 
         public object CallTarget => this.callTarget.Value;
     }

@@ -53,12 +53,12 @@ namespace FakeItEasy.Expressions
 
         private static bool IsParamArrayExpression(ParsedArgumentExpression argument)
         {
-            return IsTaggedWithParamArrayAttribute(argument) && argument.Expression is NewArrayExpression;
+            return argument.Expression is NewArrayExpression && IsTaggedWithParamArrayAttribute(argument);
         }
 
         private static bool IsTaggedWithParamArrayAttribute(ParsedArgumentExpression argument)
         {
-            return argument.ArgumentInformation.GetCustomAttributes(typeof(ParamArrayAttribute), true).Any();
+            return argument.ArgumentInformation.IsDefined(typeof(ParamArrayAttribute), true);
         }
 
         private static bool IsOutArgument(ParsedArgumentExpression argument)
@@ -69,11 +69,6 @@ namespace FakeItEasy.Expressions
         private static IArgumentConstraint CreateEqualityConstraint(object expressionValue)
         {
             return new EqualityArgumentConstraint(expressionValue);
-        }
-
-        private static object InvokeExpression(Expression expression)
-        {
-            return Expression.Lambda(expression).Compile().DynamicInvoke();
         }
 
         private static void CheckArgumentExpressionIsValid(Expression expression)
@@ -92,10 +87,10 @@ namespace FakeItEasy.Expressions
                 // A method call. It might be A<T>.That.Matches, or one of the other extension methods, so don't
                 // check the method node itself. Instead, look at all the arguments (except the first, if it's an
                 // extension method).
-                int argumentsToSkip = methodCallExpression.Method.IsDefined(typeof(ExtensionAttribute), false) ? 1 : 0;
-                foreach (var argument in methodCallExpression.Arguments.Skip(argumentsToSkip))
+                int firstArgumentToCheck = IsArgumentConstraintManagerExtensionMethod(methodCallExpression) ? 1 : 0;
+                for (var index = firstArgumentToCheck; index < methodCallExpression.Arguments.Count; index++)
                 {
-                    visitor.Visit(argument);
+                    visitor.Visit(methodCallExpression.Arguments[index]);
                 }
             }
             else
@@ -104,6 +99,25 @@ namespace FakeItEasy.Expressions
                 // check it out.
                 visitor.Visit(expression);
             }
+        }
+
+        private static bool IsArgumentConstraintManagerExtensionMethod(MethodCallExpression methodCallExpression)
+        {
+            if (methodCallExpression.Arguments.Count == 0)
+            {
+                return false;
+            }
+
+            // Checking for an extension method is very expensive, so check the common
+            // case first - that the method is one of the predefined extension methods.
+            if (GetGenericTypeDefinition(methodCallExpression.Method.DeclaringType) ==
+                typeof(ArgumentConstraintManagerExtensions))
+            {
+                return true;
+            }
+
+            return methodCallExpression.Method.IsStatic &&
+                   methodCallExpression.Method.IsDefined(typeof(ExtensionAttribute), false);
         }
 
         /// <summary>
@@ -155,7 +169,7 @@ namespace FakeItEasy.Expressions
 
             var trappedConstraints = this.argumentConstraintTrapper.TrapConstraints(() =>
             {
-                expressionValue = InvokeExpression(expression);
+                expressionValue = expression.Evaluate();
             }).ToList();
 
             foreach (var constraint in trappedConstraints.OfType<ITypedArgumentConstraint>())

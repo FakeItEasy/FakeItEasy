@@ -9,7 +9,7 @@ namespace FakeItEasy.Tests
         {
             Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
             argumentValue.Invoke(writer);
             return writer.Builder.ToString();
         }

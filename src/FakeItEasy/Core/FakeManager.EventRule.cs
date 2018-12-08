@@ -9,24 +9,15 @@ namespace FakeItEasy.Core
     /// <content>Event rule.</content>
     public partial class FakeManager
     {
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
         [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Would provide no benefit since there is no place from where to call the Dispose-method.")]
         private class EventRule
             : IFakeObjectCallRule
         {
+            private static readonly EventHandlerArgumentProviderMap EventHandlerArgumentProviderMap =
+                ServiceLocator.Resolve<EventHandlerArgumentProviderMap>();
+
             private readonly FakeManager fakeManager;
 
-#if FEATURE_BINARY_SERIALIZATION
-            [NonSerialized]
-#endif
-            private readonly EventHandlerArgumentProviderMap eventHandlerArgumentProviderMap =
-                ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
-
-#if FEATURE_BINARY_SERIALIZATION
-            [NonSerialized]
-#endif
             private Dictionary<object, Delegate> registeredEventHandlersField;
 
             public EventRule(FakeManager fakeManager)
@@ -68,7 +59,7 @@ namespace FakeItEasy.Core
                 if (eventCall.IsEventRegistration())
                 {
                     IEventRaiserArgumentProvider argumentProvider;
-                    if (this.eventHandlerArgumentProviderMap.TryTakeArgumentProviderFor(
+                    if (EventHandlerArgumentProviderMap.TryTakeArgumentProviderFor(
                         eventCall.EventHandler,
                         out argumentProvider))
                     {
@@ -154,6 +145,9 @@ namespace FakeItEasy.Core
 
             private class EventCall
             {
+                private static readonly Func<EventInfo, MethodInfo> GetAddMethod = e => e.GetAddMethod();
+                private static readonly Func<EventInfo, MethodInfo> GetRemoveMethod = e => e.GetRemoveMethod();
+
                 private EventCall()
                 {
                 }
@@ -179,11 +173,35 @@ namespace FakeItEasy.Core
 
                 public static EventInfo GetEvent(MethodInfo eventAdderOrRemover)
                 {
+                    if (!eventAdderOrRemover.IsSpecialName)
+                    {
+                        return null;
+                    }
+
+                    Func<EventInfo, MethodInfo> getMethod;
+                    if (eventAdderOrRemover.Name.StartsWith("add_", StringComparison.Ordinal))
+                    {
+                        getMethod = GetAddMethod;
+                    }
+                    else if (eventAdderOrRemover.Name.StartsWith("remove_", StringComparison.Ordinal))
+                    {
+                        getMethod = GetRemoveMethod;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                    var eventInfos = eventAdderOrRemover.DeclaringType.GetEvents();
+                    if (eventInfos.Length == 0)
+                    {
+                        return null;
+                    }
+
+                    var adderOrRemoverDefinition = eventAdderOrRemover.GetBaseDefinition();
                     return
-                        (from e in eventAdderOrRemover.DeclaringType.GetEvents()
-                         where object.Equals(e.GetAddMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
-                             || object.Equals(e.GetRemoveMethod().GetBaseDefinition(), eventAdderOrRemover.GetBaseDefinition())
-                         select e).SingleOrDefault();
+                        eventInfos.SingleOrDefault(e =>
+                            Equals(getMethod(e).GetBaseDefinition(), adderOrRemoverDefinition));
                 }
 
                 public bool IsEventRegistration()

@@ -1,30 +1,40 @@
 namespace FakeItEasy
 {
-    using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.IoC;
 
-    internal abstract class ServiceLocator
+    internal static class ServiceLocator
     {
         static ServiceLocator()
         {
-            var container = new DictionaryContainer();
-            RootModule.RegisterDependencies(container);
-            ConfigurationModule.RegisterDependencies(container);
-            ImportsModule.RegisterDependencies(container);
-            Current = container;
+            RootModule.RegisterDependencies(new ServiceRegistrar());
         }
 
-        internal static ServiceLocator Current { get; set; }
-
+        /// <summary>
+        /// Resolves an instance of the specified service type.
+        /// </summary>
+        /// <typeparam name="T">Type of the service.</typeparam>
+        /// <returns>An instance of the service type.</returns>
         [DebuggerStepThrough]
-        internal T Resolve<T>()
+        internal static T Resolve<T>()
         {
-            return (T)this.Resolve(typeof(T));
+            var service = Service<T>.Instance;
+            return service == null
+                ? throw new KeyNotFoundException($"The specified service {typeof(T)} was not registered.")
+                : service;
         }
 
-        [DebuggerStepThrough]
-        internal abstract object Resolve(Type componentType);
+        private static class Service<T>
+        {
+            public static T Instance { get; set; }
+        }
+
+        private class ServiceRegistrar : RootModule.IServiceRegistrar
+        {
+            public void Register<T>(T service)
+            {
+                Service<T>.Instance = service;
+            }
+        }
     }
 }

@@ -3,12 +3,19 @@
   <Import Project="../Directory.Build.props" />
 
   <PropertyGroup Label="Common package properties">
+    <Company>Patrik Hägne</Company>
     <Copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</Copyright>
     <PackageProjectUrl>https://fakeiteasy.github.io/</PackageProjectUrl>
     <PackageIconUrl>https://fakeiteasy.github.io/img/fakeiteasy_logo_256_square_white.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</PackageLicenseUrl>
     <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
     <NoPackageAnalysis>true</NoPackageAnalysis>
+    <MinVerMajorMinor>5.0</MinVerMajorMinor>
+    <MinVerVerbosity>minimal</MinVerVerbosity>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MinVer" Version="1.0.0-beta.1" PrivateAssets="All" />
+  </ItemGroup>
 
 </Project>

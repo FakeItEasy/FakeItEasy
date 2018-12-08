@@ -125,7 +125,7 @@
     <value>Call assertion is made using legacy Repeated class.</value>
   </data>
     <data name="RepeatedAssertionMessageFormat" xml:space="preserve">
-    <value>The MustHaveHappened(Repeated) assertion is being retired, and will be deprecated in FakeItEasy version 5.0.0 and removed in version 6.0.0.</value>
+    <value>The MustHaveHappened(Repeated) assertion is obsolete, and will be removed in version 6.0.0.</value>
   </data>
   <data name="RepeatedAssertionTitle" xml:space="preserve">
     <value>Assertion uses legacy Repeated class.</value>

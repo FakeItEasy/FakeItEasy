@@ -6,15 +6,10 @@ namespace FakeItEasy.Core
     /// <summary>
     /// Default implementation of <see cref="IFakeManagerAccessor"/>.
     /// </summary>
-#if FEATURE_BINARY_SERIALIZATION
-    [Serializable]
-#endif
     internal class DefaultFakeManagerAccessor
         : IFakeManagerAccessor
     {
-#pragma warning disable CA2235 // Mark all non-serializable fields
         private static readonly ConditionalWeakTable<object, FakeManager> FakeManagers = new ConditionalWeakTable<object, FakeManager>();
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Gets the fake manager associated with the proxy.

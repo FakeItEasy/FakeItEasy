@@ -12,7 +12,7 @@ namespace FakeItEasy
             this.Builder = builder;
         }
 
-        public delegate StringBuilderOutputWriter Factory(StringBuilder builder);
+        public delegate StringBuilderOutputWriter Factory();
 
         public StringBuilder Builder { get; }
     }

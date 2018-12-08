@@ -11,7 +11,7 @@ namespace FakeItEasy
     /// </summary>
     public static class Fake
     {
-        private static FakeFacade Facade => ServiceLocator.Current.Resolve<FakeFacade>();
+        private static readonly IFakeManagerAccessor FakeManagerAccessor = ServiceLocator.Resolve<IFakeManagerAccessor>();
 
         /// <summary>
         /// Gets the fake object that manages the faked object.
@@ -23,7 +23,9 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static FakeManager GetFakeManager(object fakedObject)
         {
-            return Facade.GetFakeManager(fakedObject);
+            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+
+            return FakeManagerAccessor.GetFakeManager(fakedObject);
         }
 
         /// <summary>
@@ -35,7 +37,9 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static IEnumerable<ICompletedFakeObjectCall> GetCalls(object fakedObject)
         {
-            return Facade.GetCalls(fakedObject);
+            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+
+            return FakeManagerAccessor.GetFakeManager(fakedObject).GetRecordedCalls();
         }
 
         /// <summary>
@@ -45,7 +49,10 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static void ClearConfiguration(object fakedObject)
         {
-            Facade.ClearConfiguration(fakedObject);
+            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+
+            var manager = FakeManagerAccessor.GetFakeManager(fakedObject);
+            manager.ClearUserRules();
         }
 
         /// <summary>
@@ -55,18 +62,10 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static void ClearRecordedCalls(object fakedObject)
         {
-            Facade.ClearRecordedCalls(fakedObject);
-        }
+            Guard.AgainstNull(fakedObject, nameof(fakedObject));
 
-        /// <summary>
-        /// Sets a new fake to each property or field that is tagged with the FakeAttribute in the specified
-        /// fixture.
-        /// </summary>
-        /// <param name="fixture">The object to initialize.</param>
-        [Obsolete("Test fixture initialization will be removed in version 5.0.0.")]
-        public static void InitializeFixture(object fixture)
-        {
-            Facade.InitializeFixture(fixture);
+            var manager = FakeManagerAccessor.GetFakeManager(fakedObject);
+            manager.ClearRecordedCalls();
         }
 
         /// <summary>
@@ -78,7 +77,9 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         internal static FakeManager TryGetFakeManager(object fakedObject)
         {
-            return Facade.TryGetFakeManager(fakedObject);
+            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+
+            return FakeManagerAccessor.TryGetFakeManager(fakedObject);
         }
     }
 }

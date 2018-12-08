@@ -1,8 +1,5 @@
 namespace FakeItEasy.Core
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
@@ -12,17 +9,12 @@ namespace FakeItEasy.Core
     /// <content>Event rule.</content>
     public partial class FakeManager
     {
-#if FEATURE_BINARY_SERIALIZATION
-        [Serializable]
-#endif
-        private class CancellationRule : IFakeObjectCallRule
+        private class CancellationRule : SharedFakeObjectCallRule
         {
-            public int? NumberOfTimesToCall => null;
+            public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>
+                GetCanceledToken(fakeObjectCall).HasValue;
 
-            public bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>
-                GetCanceledTokens(fakeObjectCall).Any();
-
-            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+            public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
@@ -44,18 +36,26 @@ namespace FakeItEasy.Core
                 }
                 else
                 {
-                    var token = GetCanceledTokens(fakeObjectCall).First();
-                    token.ThrowIfCancellationRequested();
+                    GetCanceledToken(fakeObjectCall)?.ThrowIfCancellationRequested();
                 }
             }
 
-            private static IEnumerable<CancellationToken> GetCanceledTokens(IFakeObjectCall call)
+            private static CancellationToken? GetCanceledToken(IFakeObjectCall call)
             {
-                return call.Method.GetParameters()
-                    .Select((param, index) => new { param, index })
-                    .Where(x => x.param.ParameterType == typeof(CancellationToken))
-                    .Select(x => (CancellationToken)call.Arguments[x.index])
-                    .Where(token => token.IsCancellationRequested);
+                var parameters = call.Method.GetParameters();
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    if (parameters[i].ParameterType == typeof(CancellationToken))
+                    {
+                        var token = (CancellationToken)call.Arguments[i];
+                        if (token.IsCancellationRequested)
+                        {
+                            return token;
+                        }
+                    }
+                }
+
+                return null;
             }
         }
     }

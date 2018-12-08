@@ -27,7 +27,7 @@ namespace FakeItEasy.Tests
         [Fact]
         public virtual void Constraint_should_provide_correct_description()
         {
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
 
             this.Constraint.WriteDescription(writer);
 

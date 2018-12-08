@@ -1,19 +1,17 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
+#if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
-
-    using FakeItEasy.Configuration;
+#endif
 
     /// <summary>
     /// A class exposing an event handler to attach to a delegate-type event of a faked object
     /// in order to raise that event.
     /// </summary>
-    /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/></typeparam>
-    internal class DelegateRaiser<TEventHandler> : IEventRaiserArgumentProvider
+    /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
+    internal class DelegateRaiser<TEventHandler> : IEventRaiserArgumentProvider where TEventHandler : Delegate
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegateRaiser{TEventHandler}"/> class.
@@ -29,7 +27,7 @@ namespace FakeItEasy.Core
             this.EventHandler = A.Fake<TEventHandler>();
             this.EventArguments = arguments;
 
-            argumentProviderMap.AddArgumentProvider(this.EventHandler as Delegate, this);
+            argumentProviderMap.AddArgumentProvider(this.EventHandler, this);
         }
 
         private TEventHandler EventHandler { get; }

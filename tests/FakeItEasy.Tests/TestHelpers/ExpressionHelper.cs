@@ -6,7 +6,6 @@ namespace FakeItEasy.Tests.TestHelpers
     using System.Reflection;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Expressions;
 
     internal static class ExpressionHelper
     {
@@ -15,51 +14,25 @@ namespace FakeItEasy.Tests.TestHelpers
             return expression;
         }
 
-        public static ExpressionCallRule CreateRule<TFake>(Expression<Action<TFake>> expression)
-        {
-            var parsedExpression = ServiceLocator.Current.Resolve<ICallExpressionParser>().Parse(expression);
-            return GetCallRuleFactory().Invoke(parsedExpression);
-        }
-
         public static IInterceptedFakeObjectCall CreateFakeCall<TFake, TReturn>(Expression<Func<TFake, TReturn>> callSpecification)
+            where TFake : class
         {
             return CreateFakeCall(A.Fake<TFake>(), callSpecification);
         }
 
         public static IInterceptedFakeObjectCall CreateFakeCall<TFake>(Expression<Action<TFake>> callSpecification)
+            where TFake : class
         {
             return CreateFakeCall(A.Fake<TFake>(), callSpecification);
-        }
-
-        public static MethodInfo GetMethod<T>(Expression<Action<T>> methodAccess)
-        {
-            var methodExpression = (MethodCallExpression)methodAccess.Body;
-            return methodExpression.Method;
-        }
-
-        private static ExpressionCallRule.Factory GetCallRuleFactory()
-        {
-            return ServiceLocator.Current.Resolve<ExpressionCallRule.Factory>();
         }
 
         private static IInterceptedFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)
         {
             var result = A.Fake<IInterceptedFakeObjectCall>();
-            var frozen = A.Fake<ICompletedFakeObjectCall>();
 
             A.CallTo(() => result.Method).Returns(GetMethodInfo(callSpecification));
-            A.CallTo(() => frozen.Method).Returns(GetMethodInfo(callSpecification));
-
             A.CallTo(() => result.FakedObject).Returns(fakedObject);
-            A.CallTo(() => frozen.FakedObject).Returns(fakedObject);
-
             A.CallTo(() => result.Arguments).Returns(CreateArgumentCollection(callSpecification));
-            A.CallTo(() => frozen.Arguments).Returns(CreateArgumentCollection(callSpecification));
-
-            A.CallTo(() => frozen.ReturnValue)
-                .ReturnsLazily(x => Fake.GetCalls(result).Matching<IInterceptedFakeObjectCall>(c => c.SetReturnValue(A<object>._)).Last().Arguments[0]);
-
-            A.CallTo(() => result.AsReadOnly()).Returns(frozen);
 
             return result;
         }

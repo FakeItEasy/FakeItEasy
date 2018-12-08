@@ -11,7 +11,7 @@ namespace FakeItEasy
     public static class Raise
     {
         private static readonly EventHandlerArgumentProviderMap ArgumentProviderMap =
-            ServiceLocator.Current.Resolve<EventHandlerArgumentProviderMap>();
+            ServiceLocator.Resolve<EventHandlerArgumentProviderMap>();
 
         /// <summary>
         /// Raises an event on a faked object by attaching the event handler produced by the method
@@ -60,18 +60,6 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Raises an event with non-standard signature.
-        /// </summary>
-        /// <param name="arguments">The arguments to send to the event handlers.</param>
-        /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/></typeparam>
-        /// <returns>A new object that knows how to raise events.</returns>
-        [Obsolete("Raise.With<TEventHandler> will be removed in version 5.0.0. Use Raise.FreeForm.With instead.")]
-        public static TEventHandler With<TEventHandler>(params object[] arguments)
-        {
-            return new DelegateRaiser<TEventHandler>(arguments, ArgumentProviderMap);
-        }
-
-        /// <summary>
         /// Allows the developer to raise an event with a non-standard signature on a faked object.
         /// Uses late binding, so requires a reference to Microsoft.CSharp when called from C#, and is not compatible
         /// with all CLR languages (for example Visual Basic).
@@ -98,9 +86,9 @@ namespace FakeItEasy
         /// objects, or when a reference to Microsoft.CSharp is not desired.
         /// Otherwise, prefer <see cref="Raise.FreeForm" />.
         /// </summary>
-        /// <typeparam name="TEventHandler">The type of the event handler. Should be a <see cref="Delegate"/>.</typeparam>
+        /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
 #pragma warning disable CA1034 // Do not nest type
-        public static class FreeForm<TEventHandler>
+        public static class FreeForm<TEventHandler> where TEventHandler : Delegate
 #pragma warning restore CA1034 // Do not nest type
         {
             /// <summary>

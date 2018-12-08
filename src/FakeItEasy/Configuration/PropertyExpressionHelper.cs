@@ -19,10 +19,13 @@ namespace FakeItEasy.Configuration
                                             "' must refer to a property or indexer getter, but doesn't.");
             }
 
-            var parameterTypes = parsedCallExpression.ArgumentsExpressions
-                .Select(p => p.ArgumentInformation.ParameterType)
-                .Concat(new[] { parsedCallExpression.CalledMethod.ReturnType })
-                .ToArray();
+            var parameterTypes = new Type[parsedCallExpression.ArgumentsExpressions.Length + 1];
+            for (int i = 0; i < parsedCallExpression.ArgumentsExpressions.Length; ++i)
+            {
+                parameterTypes[i] = parsedCallExpression.ArgumentsExpressions[i].ArgumentInformation.ParameterType;
+            }
+
+            parameterTypes[parsedCallExpression.ArgumentsExpressions.Length] = parsedCallExpression.CalledMethod.ReturnType;
 
             // The DeclaringType may be null, so fall back to the faked object type.
             // (It's unlikely to happen, though, and would require the client code to have passed a specially
@@ -51,17 +54,17 @@ namespace FakeItEasy.Configuration
                 BuildArgumentThatMatchesAnything<TValue>(),
                 originalParameterInfos.Last());
 
-            var arguments = parsedCallExpression.ArgumentsExpressions
-                .Take(originalParameterInfos.Length - 1)
-                .Concat(new[] { newParsedSetterValueExpression });
+            var arguments = new ParsedArgumentExpression[originalParameterInfos.Length];
+            Array.Copy(parsedCallExpression.ArgumentsExpressions, arguments, originalParameterInfos.Length - 1);
+            arguments[originalParameterInfos.Length - 1] = newParsedSetterValueExpression;
 
             return new ParsedCallExpression(indexerSetterInfo, parsedCallExpression.CallTarget, arguments);
         }
 
         private static string GetExpressionDescription(ParsedCallExpression parsedCallExpression)
         {
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
-            var constraintFactory = ServiceLocator.Current.Resolve<ExpressionArgumentConstraintFactory>();
+            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
+            var constraintFactory = ServiceLocator.Resolve<ExpressionArgumentConstraintFactory>();
 
             CallConstraintDescriber.DescribeCallOn(writer, parsedCallExpression.CalledMethod, parsedCallExpression.ArgumentsExpressions.Select(constraintFactory.GetArgumentConstraint));
             return writer.Builder.ToString();

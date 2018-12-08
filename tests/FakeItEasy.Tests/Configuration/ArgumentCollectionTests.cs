@@ -104,22 +104,6 @@ namespace FakeItEasy.Tests.Configuration
             arguments.Should().Equal(1, 2, 3);
         }
 
-#if FEATURE_BINARY_SERIALIZATION
-        [Fact]
-        public void Should_be_serializable_when_arguments_are_equatable()
-        {
-            // Arrange
-            object collection = new ArgumentCollection(
-                new object[] { "first argument" },
-                typeof(string).GetMethod("Equals", new[] { typeof(string) }));
-
-            // Act
-
-            // Assert
-            collection.Should().BeBinarySerializable();
-        }
-#endif
-
         private ArgumentCollection CreateFakeArgumentList(string[] argumentNames, params object[] arguments)
         {
             var method = FakeMethodHelper.CreateFakeMethod(argumentNames);

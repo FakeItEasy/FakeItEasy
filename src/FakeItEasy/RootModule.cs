@@ -10,7 +10,6 @@ namespace FakeItEasy
     using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Creation.DelegateProxies;
     using FakeItEasy.Expressions;
-    using FakeItEasy.IoC;
 
     /// <summary>
     /// Handles the registration of root dependencies in an IoC-container.
@@ -18,113 +17,130 @@ namespace FakeItEasy
     [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
     internal static class RootModule
     {
-        /// <summary>
-        /// Registers the dependencies.
-        /// </summary>
-        /// <param name="container">The container to register the dependencies in.</param>
-        [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "Container configuration.")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Container configuration.")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Container configuration.")]
-        public static void RegisterDependencies(DictionaryContainer container)
+        public interface IServiceRegistrar
         {
-            container.RegisterSingleton(c =>
-                new DynamicOptionsBuilder(
-                    c.Resolve<IEnumerable<IFakeOptionsBuilder>>()));
+            void Register<T>(T service);
+        }
 
-            container.RegisterSingleton<IExpressionCallMatcherFactory>(c => new ExpressionCallMatcherFactory(c));
+        public static void RegisterDependencies(IServiceRegistrar registrar)
+        {
+            var bootstrapper = BootstrapperLocator.FindBootstrapper();
 
-            container.RegisterSingleton(c =>
-                new ExpressionArgumentConstraintFactory(c.Resolve<IArgumentConstraintTrapper>()));
+            var typeCatalogue = new TypeCatalogue();
+            typeCatalogue.Load(bootstrapper.GetAssemblyFileNamesToScanForExtensions());
+            var typeCatalogueInstanceProvider = new TypeCatalogueInstanceProvider(typeCatalogue);
 
-            container.RegisterSingleton<ExpressionCallRule.Factory>(c =>
-                callSpecification => new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, c.Resolve<ExpressionArgumentConstraintFactory>(), c.Resolve<MethodInfoManager>())));
+            var argumentValueFormatters = typeCatalogueInstanceProvider.InstantiateAllOfType<IArgumentValueFormatter>();
+            var dummyFactories = typeCatalogueInstanceProvider.InstantiateAllOfType<IDummyFactory>();
+            var fakeOptionsBuilders = typeCatalogueInstanceProvider.InstantiateAllOfType<IFakeOptionsBuilder>();
 
-            container.RegisterSingleton(c =>
-                new MethodInfoManager());
+            var implicitOptionsBuilderCatalogue = new ImplicitOptionsBuilderCatalogue(fakeOptionsBuilders);
 
-            container.Register<FakeAsserter.Factory>(c => (calls, lastSequenceNumber) => new FakeAsserter(calls, lastSequenceNumber, c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+            var methodInfoManager = new MethodInfoManager();
+            var argumentConstraintTrap = new ArgumentConstraintTrap();
+            var expressionArgumentConstraintFactory = new ExpressionArgumentConstraintFactory(argumentConstraintTrap);
 
-            container.RegisterSingleton<FakeManager.Factory>(c =>
-                (fakeObjectType, proxy) => new FakeManager(fakeObjectType, proxy, c.Resolve<IFakeManagerAccessor>()));
+            var fakeManagerAccessor = new DefaultFakeManagerAccessor();
 
-            container.RegisterSingleton<FakeCallProcessorProvider.Factory>(c =>
-                (typeOfFake, proxyOptions) =>
-                    new FakeManagerProvider(c.Resolve<FakeManager.Factory>(), c.Resolve<IFakeManagerAccessor>(), typeOfFake, proxyOptions));
+            var fakeObjectCreator = new FakeObjectCreator(
+                FakeCallProcessorProviderFactory,
+                new CastleDynamicProxyInterceptionValidator(methodInfoManager),
+                new DelegateProxyInterceptionValidator());
 
-            container.RegisterSingleton<IFakeObjectCallFormatter>(c =>
-                new DefaultFakeObjectCallFormatter(c.Resolve<ArgumentValueFormatter>(), c.Resolve<IFakeManagerAccessor>()));
+            var callExpressionParser = new CallExpressionParser();
 
-            container.RegisterSingleton(c =>
-                new ArgumentValueFormatter(c.Resolve<IEnumerable<IArgumentValueFormatter>>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+            var interceptionAsserter = new DefaultInterceptionAsserter(fakeObjectCreator);
 
-            container.RegisterSingleton(c =>
-                new CallWriter(c.Resolve<IFakeObjectCallFormatter>(), c.Resolve<IEqualityComparer<IFakeObjectCall>>()));
+            ArgumentValueFormatter argumentValueFormatter = null;
+            var stringBuilderOutputWriterFactory = new StringBuilderOutputWriterFactory(new Lazy<ArgumentValueFormatter>(() => argumentValueFormatter));
+            argumentValueFormatter = new ArgumentValueFormatter(argumentValueFormatters, stringBuilderOutputWriterFactory.Create);
 
-            container.RegisterSingleton<ICallExpressionParser>(c =>
-                new CallExpressionParser());
+            var fakeObjectCallFormatter = new DefaultFakeObjectCallFormatter(argumentValueFormatter, fakeManagerAccessor);
 
-            container.RegisterSingleton(c => new FakeObjectCreator(
-                container.Resolve<FakeCallProcessorProvider.Factory>(),
-                container.Resolve<CastleDynamicProxyInterceptionValidator>(),
-                container.Resolve<DelegateProxyInterceptionValidator>()));
-            container.RegisterSingleton<IFakeObjectCreator>(c => c.Resolve<FakeObjectCreator>());
-            container.RegisterSingleton<IMethodInterceptionValidator>(c => c.Resolve<FakeObjectCreator>());
+            var callWriter = new CallWriter(fakeObjectCallFormatter, new FakeCallEqualityComparer());
 
-            container.RegisterSingleton<IFakeAndDummyManager>(c =>
+            var configurationFactory = new ConfigurationFactory(RuleBuilderFactory);
+
+            registrar.Register<IExpressionCallMatcherFactory>(new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
+
+            registrar.Register(expressionArgumentConstraintFactory);
+
+            registrar.Register<IFakeAndDummyManager>(
+                new DefaultFakeAndDummyManager(
+                    new DummyValueResolver(new DynamicDummyFactory(dummyFactories), fakeObjectCreator),
+                    fakeObjectCreator,
+                    implicitOptionsBuilderCatalogue));
+
+            registrar.Register<IArgumentConstraintManagerFactory>(new ArgumentConstraintManagerFactory());
+
+            registrar.Register(new EventHandlerArgumentProviderMap());
+
+            registrar.Register<SequentialCallContext.Factory>(SequentialCallContextFactory);
+
+            registrar.Register<IStartConfigurationFactory>(
+                new StartConfigurationFactory(ExpressionCallRuleFactory, configurationFactory, callExpressionParser, interceptionAsserter));
+
+            registrar.Register<IFakeConfigurationManager>(
+                new FakeConfigurationManager(configurationFactory, ExpressionCallRuleFactory, callExpressionParser, interceptionAsserter));
+
+            registrar.Register<IFakeManagerAccessor>(fakeManagerAccessor);
+
+            registrar.Register<ICallExpressionParser>(callExpressionParser);
+
+            registrar.Register<StringBuilderOutputWriter.Factory>(stringBuilderOutputWriterFactory.Create);
+
+            registrar.Register<IFakeObjectCallFormatter>(fakeObjectCallFormatter);
+
+            FakeManager FakeManagerFactory(Type fakeObjectType, object proxy) =>
+                new FakeManager(fakeObjectType, proxy);
+
+            IFakeCallProcessorProvider FakeCallProcessorProviderFactory(Type typeOfFake, IProxyOptions proxyOptions) =>
+                new FakeManagerProvider(FakeManagerFactory, fakeManagerAccessor, typeOfFake, proxyOptions);
+
+            ExpressionCallRule ExpressionCallRuleFactory(ParsedCallExpression callSpecification) =>
+                new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, expressionArgumentConstraintFactory, methodInfoManager));
+
+            IFakeAsserter FakeAsserterFactory(IEnumerable<CompletedFakeObjectCall> calls, int lastSequenceNumber) =>
+                new FakeAsserter(calls, lastSequenceNumber, callWriter, stringBuilderOutputWriterFactory.Create);
+
+            SequentialCallContext SequentialCallContextFactory() =>
+                new SequentialCallContext(callWriter, stringBuilderOutputWriterFactory.Create);
+
+            RuleBuilder RuleBuilderFactory(BuildableCallRule rule, FakeManager fake) =>
+                new RuleBuilder(rule, fake, FakeAsserterFactory);
+        }
+
+        private class StringBuilderOutputWriterFactory
+        {
+            private Lazy<ArgumentValueFormatter> argumentValueFormatter;
+
+            public StringBuilderOutputWriterFactory(Lazy<ArgumentValueFormatter> argumentValueFormatterService)
             {
-                var fakeCreator = c.Resolve<IFakeObjectCreator>();
-                var fakeConfigurator = c.Resolve<DynamicOptionsBuilder>();
+                this.argumentValueFormatter = argumentValueFormatterService;
+            }
 
-                var dynamicDummyFactory = new DynamicDummyFactory(c.Resolve<IEnumerable<IDummyFactory>>());
-                var dummyValueResolver = new DummyValueResolver(dynamicDummyFactory, fakeCreator);
-
-                return new DefaultFakeAndDummyManager(
-                    dummyValueResolver,
-                    fakeCreator,
-                    fakeConfigurator);
-            });
-
-            container.RegisterSingleton(c => new CastleDynamicProxyInterceptionValidator(c.Resolve<MethodInfoManager>()));
-
-            container.RegisterSingleton(c => new DelegateProxyInterceptionValidator());
-
-            container.RegisterSingleton<IFakeManagerAccessor>(c => new DefaultFakeManagerAccessor());
-
-            container.Register(c => new FakeFacade(c.Resolve<IFakeManagerAccessor>()));
-
-            container.RegisterSingleton<IEqualityComparer<IFakeObjectCall>>(c => new FakeCallEqualityComparer());
-
-            container.Register<IInterceptionAsserter>(c => new DefaultInterceptionAsserter(c.Resolve<IMethodInterceptionValidator>()));
-
-            container.Register<IArgumentConstraintTrapper>(c => new ArgumentConstraintTrap());
-
-            container.Register<IArgumentConstraintManagerFactory>(c => new ArgumentConstraintManagerFactory());
-
-            container.RegisterSingleton<IOutputWriter>(c => new DefaultOutputWriter(Console.Write, c.Resolve<ArgumentValueFormatter>()));
-
-            container.RegisterSingleton<StringBuilderOutputWriter.Factory>(c => builder => new StringBuilderOutputWriter(builder, c.Resolve<ArgumentValueFormatter>()));
-
-            container.Register(c => c.Resolve<StringBuilderOutputWriter.Factory>().Invoke(new StringBuilder()));
-
-            container.RegisterSingleton(c => new EventHandlerArgumentProviderMap());
-
-            container.Register(c => new SequentialCallContext(c.Resolve<CallWriter>(), c.Resolve<StringBuilderOutputWriter.Factory>()));
+            public StringBuilderOutputWriter Create()
+            {
+                return new StringBuilderOutputWriter(new StringBuilder(), this.argumentValueFormatter.Value);
+            }
         }
 
         private class ExpressionCallMatcherFactory
             : IExpressionCallMatcherFactory
         {
-            private readonly ServiceLocator serviceLocator;
+            private readonly ExpressionArgumentConstraintFactory expressionArgumentConstraintFactory;
+            private readonly MethodInfoManager methodInfoManager;
 
-            public ExpressionCallMatcherFactory(ServiceLocator serviceLocator)
+            public ExpressionCallMatcherFactory(ExpressionArgumentConstraintFactory expressionArgumentConstraintFactory, MethodInfoManager methodInfoManager)
             {
-                this.serviceLocator = serviceLocator;
+                this.expressionArgumentConstraintFactory = expressionArgumentConstraintFactory;
+                this.methodInfoManager = methodInfoManager;
             }
 
             public ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification) => new ExpressionCallMatcher(
                     callSpecification,
-                    this.serviceLocator.Resolve<ExpressionArgumentConstraintFactory>(),
-                    this.serviceLocator.Resolve<MethodInfoManager>());
+                    this.expressionArgumentConstraintFactory,
+                    this.methodInfoManager);
         }
 
         private class ArgumentConstraintManagerFactory
@@ -133,6 +149,62 @@ namespace FakeItEasy
             public INegatableArgumentConstraintManager<T> Create<T>()
             {
                 return new DefaultArgumentConstraintManager<T>(ArgumentConstraintTrap.ReportTrappedConstraint);
+            }
+        }
+
+        private class ConfigurationFactory : IConfigurationFactory
+        {
+            private readonly RuleBuilder.Factory ruleBuilderFactory;
+
+            public ConfigurationFactory(RuleBuilder.Factory ruleBuilderFactory)
+            {
+                this.ruleBuilderFactory = ruleBuilderFactory;
+            }
+
+            public IAnyCallConfigurationWithVoidReturnType CreateConfiguration(FakeManager fakeObject, BuildableCallRule callRule)
+            {
+                return this.ruleBuilderFactory.Invoke(callRule, fakeObject);
+            }
+
+            public IAnyCallConfigurationWithReturnTypeSpecified<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule)
+            {
+                var parent = this.ruleBuilderFactory.Invoke(callRule, fakeObject);
+                return new RuleBuilder.ReturnValueConfiguration<TMember>(parent);
+            }
+
+            public IAnyCallConfigurationWithNoReturnTypeSpecified CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule)
+            {
+                return new AnyCallConfiguration(fakeObject, callRule, this);
+            }
+        }
+
+        private class StartConfigurationFactory : IStartConfigurationFactory
+        {
+            private readonly ExpressionCallRule.Factory expressionCallRuleFactory;
+            private readonly IConfigurationFactory configurationFactory;
+            private readonly ICallExpressionParser callExpressionParser;
+            private readonly IInterceptionAsserter interceptionAsserter;
+
+            public StartConfigurationFactory(
+                ExpressionCallRule.Factory expressionCallRuleFactory,
+                IConfigurationFactory configurationFactory,
+                ICallExpressionParser callExpressionParser,
+                IInterceptionAsserter interceptionAsserter)
+            {
+                this.expressionCallRuleFactory = expressionCallRuleFactory;
+                this.configurationFactory = configurationFactory;
+                this.callExpressionParser = callExpressionParser;
+                this.interceptionAsserter = interceptionAsserter;
+            }
+
+            public IStartConfiguration<TFake> CreateConfiguration<TFake>(FakeManager fakeObject)
+            {
+                return new StartConfiguration<TFake>(
+                    fakeObject,
+                    this.expressionCallRuleFactory,
+                    this.configurationFactory,
+                    this.callExpressionParser,
+                    this.interceptionAsserter);
             }
         }
     }

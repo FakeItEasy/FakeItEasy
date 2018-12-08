@@ -12,58 +12,37 @@ namespace FakeItEasy.Creation
 
     internal class FakeObjectCreator : IFakeObjectCreator, IMethodInterceptionValidator
     {
-        private readonly ICreationStrategy[] strategies;
+        private readonly DefaultCreationStrategy defaultCreationStrategy;
+        private readonly DelegateCreationStrategy delegateCreationStrategy;
 
         public FakeObjectCreator(
             FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory,
             IMethodInterceptionValidator castleMethodInterceptionValidator,
             IMethodInterceptionValidator delegateMethodInterceptionValidator)
         {
-            this.strategies = new ICreationStrategy[]
-            {
-                new DelegateCreationStrategy(delegateMethodInterceptionValidator, fakeCallProcessorProviderFactory),
-                new DefaultCreationStrategy(castleMethodInterceptionValidator, fakeCallProcessorProviderFactory),
-            };
+            this.defaultCreationStrategy = new DefaultCreationStrategy(castleMethodInterceptionValidator, fakeCallProcessorProviderFactory);
+            this.delegateCreationStrategy = new DelegateCreationStrategy(delegateMethodInterceptionValidator, fakeCallProcessorProviderFactory);
         }
 
-        /// <summary>
-        /// Has the ability to create fakes of one or more types. The contract (which may need to be adjusted if additional strategies are
-        /// added) is that clients will check <see cref="IsResponsibleForCreating"/> before attempting <see cref="CreateFake"/>.
-        /// It is assumed that one strategy is a default or "catch-all" strategy that will attempt to create fakes of any types
-        /// that the other strategies pass on.
-        /// </summary>
-        private interface ICreationStrategy
+        public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver)
         {
-            /// <summary>
-            /// Indicates whether this strategy should be used to attempt to create a fake <paramref name="typeOfFake"/>.
-            /// Success does not indicate that <see cref="CreateFake"/> will pass, but does mean that this is the best (only) strategy
-            /// that's suitable to make the attempt.
-            /// </summary>
-            /// <param name="typeOfFake">The type that might be faked.</param>
-            /// <returns><c>true</c> if this strategy can be used to create fake <paramref name="typeOfFake"/>s.</returns>
-            bool IsResponsibleForCreating(Type typeOfFake);
+            if (typeOfFake.GetTypeInfo().IsInterface)
+            {
+                return this.defaultCreationStrategy.CreateFakeInterface(typeOfFake, proxyOptions);
+            }
 
-            /// <summary>
-            /// Creates a fake <paramref name="typeOfFake"/>.
-            /// </summary>
-            /// <param name="typeOfFake">The type of fake to create.</param>
-            /// <param name="proxyOptions">Customizations to be applied to the fake.</param>
-            /// <param name="session">Records all dummies being created by the current call chain.</param>
-            /// <param name="resolver">A source of dummy values, should any be needed.</param>
-            /// <returns>A creation result indicating success (and including the fake value) or failure.</returns>
-            CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver);
-
-            bool MethodCanBeInterceptedOnInstance(MethodInfo method, object fake, out string failReason);
+            return DelegateCreationStrategy.IsResponsibleForCreating(typeOfFake)
+                ? this.delegateCreationStrategy.CreateFake(typeOfFake, proxyOptions)
+                : this.defaultCreationStrategy.CreateFake(typeOfFake, proxyOptions, resolver);
         }
-
-        public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver) =>
-            this.strategies.First(s => s.IsResponsibleForCreating(typeOfFake)).CreateFake(typeOfFake, proxyOptions, session, resolver);
 
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
-            this.strategies.First(s => s.IsResponsibleForCreating(callTarget?.GetType())).MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
+            DelegateCreationStrategy.IsResponsibleForCreating(callTarget?.GetType())
+                ? this.delegateCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason)
+                : this.defaultCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
 
-        private class DelegateCreationStrategy : ICreationStrategy
+        private class DelegateCreationStrategy
         {
             private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
             private readonly IMethodInterceptionValidator methodInterceptionValidator;
@@ -76,9 +55,9 @@ namespace FakeItEasy.Creation
                 this.fakeCallProcessorProviderFactory = fakeCallProcessorProviderFactory;
             }
 
-            public bool IsResponsibleForCreating(Type typeOfFake) => DelegateProxyGenerator.CanGenerateProxy(typeOfFake, out _);
+            public static bool IsResponsibleForCreating(Type typeOfFake) => typeof(Delegate).IsAssignableFrom(typeOfFake);
 
-            public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
+            public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions)
             {
                 if (proxyOptions.Attributes.Any())
                 {
@@ -107,7 +86,7 @@ namespace FakeItEasy.Creation
                 this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
-        private class DefaultCreationStrategy : ICreationStrategy
+        private class DefaultCreationStrategy
         {
             private readonly FakeCallProcessorProvider.Factory fakeCallProcessorProviderFactory;
             private readonly IMethodInterceptionValidator methodInterceptionValidator;
@@ -122,9 +101,25 @@ namespace FakeItEasy.Creation
                 this.parameterTypesCache = new ConcurrentDictionary<Type, Type[]>();
             }
 
-            public bool IsResponsibleForCreating(Type typeOfFake) => true;
+            public CreationResult CreateFakeInterface(Type typeOfFake, IProxyOptions proxyOptions)
+            {
+                if (proxyOptions.ArgumentsForConstructor != null)
+                {
+                    throw new ArgumentException(DynamicProxyMessages.ArgumentsForConstructorOnInterfaceType);
+                }
 
-            public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
+                var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
+                var proxyGeneratorResult = CastleDynamicProxyGenerator.GenerateInterfaceProxy(
+                    typeOfFake,
+                    proxyOptions.AdditionalInterfacesToImplement,
+                    proxyOptions.Attributes,
+                    fakeCallProcessorProvider);
+                return proxyGeneratorResult.ProxyWasSuccessfullyGenerated
+                    ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
+                    : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
+            }
+
+            public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver)
             {
                 if (!CastleDynamicProxyGenerator.CanGenerateProxy(typeOfFake, out string reasonCannotGenerate))
                 {
@@ -140,7 +135,7 @@ namespace FakeItEasy.Creation
                         : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
                 }
 
-                return this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, session, resolver);
+                return this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, resolver);
             }
 
             public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
@@ -150,7 +145,7 @@ namespace FakeItEasy.Creation
             {
                 var allConstructors = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-                // Always try the parameterless constructor even if there are no constuctors on the type. Some proxy generators
+                // Always try the parameterless constructor even if there are no constructors on the type. Some proxy generators
                 // can proxy types without constructors, such as interfaces.
                 if (!allConstructors.Any())
                 {
@@ -180,7 +175,7 @@ namespace FakeItEasy.Creation
                     : null;
             }
 
-            private CreationResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, DummyCreationSession session, IDummyValueResolver resolver)
+            private CreationResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver)
             {
                 // Save the constructors as we try them. Avoids eager evaluation and double evaluation
                 // of constructors enumerable.
@@ -188,7 +183,7 @@ namespace FakeItEasy.Creation
 
                 if (this.parameterTypesCache.TryGetValue(typeOfFake, out Type[] cachedParameterTypes))
                 {
-                    var constructor = new ResolvedConstructor(cachedParameterTypes, session, resolver);
+                    var constructor = new ResolvedConstructor(cachedParameterTypes, resolver);
                     if (constructor.WasSuccessfullyResolved)
                     {
                         var argumentsForConstructor = GetArgumentsForConstructor(constructor);
@@ -208,7 +203,7 @@ namespace FakeItEasy.Creation
                 {
                     foreach (var parameterTypes in GetUsableParameterTypeListsInOrder(typeOfFake))
                     {
-                        var constructor = new ResolvedConstructor(parameterTypes, session, resolver);
+                        var constructor = new ResolvedConstructor(parameterTypes, resolver);
                         if (constructor.WasSuccessfullyResolved)
                         {
                             var argumentsForConstructor = GetArgumentsForConstructor(constructor);
@@ -234,7 +229,7 @@ namespace FakeItEasy.Creation
             {
                 var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
 
-                return CastleDynamicProxyGenerator.GenerateProxy(
+                return CastleDynamicProxyGenerator.GenerateClassProxy(
                     typeOfFake,
                     proxyOptions.AdditionalInterfacesToImplement,
                     argumentsForConstructor,

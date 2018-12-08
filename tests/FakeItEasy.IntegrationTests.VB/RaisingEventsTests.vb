@@ -1,4 +1,4 @@
-﻿Imports System.Diagnostics.CodeAnalysis
+Imports System.Diagnostics.CodeAnalysis
 Imports FluentAssertions
 Imports Xunit
 
@@ -10,10 +10,6 @@ Public Interface IHaveEvents
 
     Event NonGenericEventHander As EventHandler
     Event GenericEventHander As EventHandler(Of MyEventArgs)
-
-    <SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly",
-        Justification:="Required to test nonstandard events.")>
-    Event DerivedEventHander(ByVal sender As Object, args As MyEventArgs)
 
     <SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly",
         Justification:="Required to test nonstandard events.")>
@@ -40,11 +36,6 @@ Public Class RaisingEventsTests
     End Sub
 
     Private Sub HandlesGenericEventHandler(sender As Object, eventArgs As MyEventArgs)
-        capturedSender = sender
-        capturedEventArgs = eventArgs
-    End Sub
-
-    Private Sub HandlesDerivedEventHandler(sender As Object, eventArgs As MyEventArgs)
         capturedSender = sender
         capturedEventArgs = eventArgs
     End Sub
@@ -122,62 +113,6 @@ Public Class RaisingEventsTests
 
         ' Assert
         capturedEventArgs.Should().BeSameAs(eventArgs)
-    End Sub
-
-    <Fact>
-    <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification:="Required for testing.")>
-    Public Sub Raise_DerivedEventHandler_sends_good_sender()
-        'Arrange
-        Dim target = A.Fake(Of IHaveEvents)()
-        Dim aSender = New Object
-
-        AddHandler target.DerivedEventHander, AddressOf HandlesDerivedEventHandler
-
-        ' Act
-#Disable Warning BC40000 ' Type or member is obsolete
-        AddHandler target.DerivedEventHander, Raise.With(Of IHaveEvents.DerivedEventHanderEventHandler)(aSender, New MyEventArgs())
-#Enable Warning BC40000 ' Type or member is obsolete
-
-        ' Assert
-        CapturedSenderShouldBeSameAs(aSender)
-    End Sub
-
-    <Fact>
-    <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification:="Required for testing.")>
-    Public Sub Raise_DerivedEventHandler_sends_good_arguments()
-        'Arrange
-        Dim target = A.Fake(Of IHaveEvents)()
-        Dim eventArgs = New MyEventArgs()
-        Dim aSender = New Object
-
-        AddHandler target.DerivedEventHander, AddressOf HandlesDerivedEventHandler
-
-        ' Act
-#Disable Warning BC40000 ' Type or member is obsolete
-        AddHandler target.DerivedEventHander, Raise.With(Of IHaveEvents.DerivedEventHanderEventHandler)(aSender, eventArgs)
-#Enable Warning BC40000 ' Type or member is obsolete
-
-        ' Assert
-        capturedEventArgs.Should().BeSameAs(eventArgs)
-    End Sub
-
-    <Fact>
-    <SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate",
-        Justification:="Required for testing.")>
-    Public Sub Raise_TokenEvent_sends_token()
-        'Arrange
-        Dim target = A.Fake(Of IHaveEvents)()
-        Dim token As Token = New Token
-
-        AddHandler target.TokenEvent, AddressOf HandlesTokenEvent
-
-        ' Act
-#Disable Warning BC40000 ' Type or member is obsolete
-        AddHandler target.TokenEvent, Raise.With(Of IHaveEvents.TokenEventEventHandler)(token)
-#Enable Warning BC40000 ' Type or member is obsolete
-
-        ' Assert
-        capturedToken.Should().BeSameAs(token)
     End Sub
 
     <Fact>

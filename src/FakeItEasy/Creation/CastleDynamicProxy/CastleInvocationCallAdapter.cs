@@ -2,7 +2,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
     using System.Diagnostics;
-    using System.Linq;
     using System.Reflection;
     using Castle.DynamicProxy;
     using FakeItEasy.Configuration;
@@ -11,16 +10,11 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     /// <summary>
     /// An adapter that adapts an <see cref="IInvocation" /> to a <see cref="IFakeObjectCall" />.
     /// </summary>
-#if FEATURE_BINARY_SERIALIZATION
-    [Serializable]
-#endif
     internal class CastleInvocationCallAdapter
-        : IInterceptedFakeObjectCall
+        : InterceptedFakeObjectCall
     {
         private readonly IInvocation invocation;
-#pragma warning disable CA2235 // Mark all non-serializable fields
         private readonly object[] originalArguments;
-#pragma warning restore CA2235 // Mark all non-serializable fields
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CastleInvocationCallAdapter"/> class.
@@ -30,33 +24,33 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         public CastleInvocationCallAdapter(IInvocation invocation)
         {
             this.invocation = invocation;
-            this.originalArguments = invocation.Arguments.ToArray();
+            var savedArguments = new object[invocation.Arguments.Length];
+            Array.Copy(invocation.Arguments, savedArguments, savedArguments.Length);
+            this.originalArguments = savedArguments;
             this.Method = invocation.Method;
-            this.Arguments = new ArgumentCollection(invocation.Arguments, this.Method);
+            this.Arguments = new ArgumentCollection(invocation.Arguments, invocation.Method);
         }
 
         /// <summary>
         /// Gets the method that's called.
         /// </summary>
-#pragma warning disable CA2235 // Mark all non-serializable fields
-        public MethodInfo Method { get; }
-#pragma warning restore CA2235 // Mark all non-serializable fields
+        public override MethodInfo Method { get; }
 
         /// <summary>
         /// Gets the arguments used in the call.
         /// </summary>
-        public ArgumentCollection Arguments { get; }
+        public override ArgumentCollection Arguments { get; }
 
         /// <summary>
         /// Gets the faked object the call is performed on.
         /// </summary>
-        public object FakedObject => this.invocation.Proxy;
+        public override object FakedObject => this.invocation.Proxy;
 
         /// <summary>
         /// Freezes the call so that it can no longer be modified.
         /// </summary>
         /// <returns>A completed fake object call.</returns>
-        public ICompletedFakeObjectCall AsReadOnly()
+        public override CompletedFakeObjectCall AsReadOnly()
         {
             return new CompletedFakeObjectCall(
                 this,
@@ -67,7 +61,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// <summary>
         /// Calls the base method, should not be used with interface types.
         /// </summary>
-        public void CallBaseMethod()
+        public override void CallBaseMethod()
         {
             this.invocation.Proceed();
         }
@@ -77,7 +71,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// </summary>
         /// <param name="index">The index of the argument to set the value to.</param>
         /// <param name="value">The value to set to the argument.</param>
-        public void SetArgumentValue(int index, object value)
+        public override void SetArgumentValue(int index, object value)
         {
             this.invocation.SetArgumentValue(index, value);
         }
@@ -87,7 +81,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// </summary>
         /// <param name="returnValue">The return value.</param>
         [DebuggerStepThrough]
-        public void SetReturnValue(object returnValue)
+        public override void SetReturnValue(object returnValue)
         {
             this.invocation.ReturnValue = returnValue;
         }

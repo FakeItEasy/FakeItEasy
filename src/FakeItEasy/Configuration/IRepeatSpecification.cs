@@ -1,35 +1,25 @@
 namespace FakeItEasy.Configuration
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Provides properties and methods to specify repeat.
     /// </summary>
+    [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use variants of MustHaveHappened that specify the number of calls instead.")]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
     public interface IRepeatSpecification : IHideObjectMembers
     {
         /// <summary>
         /// Specifies once as the repeat.
         /// </summary>
-        /// <remarks>
-        /// Assertions using the <see cref="Repeated"/> class are being phased out and will be deprecated in
-        /// version 5.0.0 and removed in version 6.0.0.
-        /// Prefer <see cref="AssertConfigurationExtensions.MustHaveHappenedOnceExactly"/>,
-        /// <see cref="AssertConfigurationExtensions.MustHaveHappenedOnceOrMore"/>, or
-        /// <see cref="AssertConfigurationExtensions.MustHaveHappenedOnceOrLess"/>.
-        /// </remarks>
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHaveHappenedOnceExactly, MustHaveHappenedOnceOrMore, or MustHaveHappenedOnceOrLess instead.")]
         Repeated Once { get; }
 
         /// <summary>
         /// Specifies twice as the repeat.
         /// </summary>
-        /// <remarks>
-        /// Assertions using the <see cref="Repeated"/> class are being phased out and will be deprecated in
-        /// version 5.0.0 and removed in version 6.0.0.
-        /// Prefer <see cref="AssertConfigurationExtensions.MustHaveHappenedTwiceExactly"/>,
-        /// <see cref="AssertConfigurationExtensions.MustHaveHappenedTwiceOrMore"/>, or
-        /// <see cref="AssertConfigurationExtensions.MustHaveHappenedTwiceOrLess"/>.
-        /// </remarks>
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHaveHappenedTwiceExactly, MustHaveHappenedTwiceOrMore, or MustHaveHappenedTwiceOrLess instead.")]
         Repeated Twice { get; }
 
         /// <summary>
@@ -37,11 +27,7 @@ namespace FakeItEasy.Configuration
         /// </summary>
         /// <param name="numberOfTimes">The number of times expected.</param>
         /// <returns>A Repeated instance.</returns>
-        /// <remarks>
-        /// Assertions using the <see cref="Repeated"/> class are being phased out and will be deprecated in
-        /// version 5.0.0 and removed in version 6.0.0.
-        /// Prefer <see cref="IAssertConfiguration.MustHaveHappened(System.Int32, FakeItEasy.Times)"/>.
-        /// </remarks>
+        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use MustHaveHappened(int, Times) instead.")]
         Repeated Times(int numberOfTimes);
     }
 }

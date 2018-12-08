@@ -9,6 +9,8 @@ namespace FakeItEasy.Specs
     using Xbehave;
     using Xunit;
 
+    #pragma warning disable CS0618
+
     public static class AssertingCallCountWithRepeatedSpecs
     {
         public interface IFoo

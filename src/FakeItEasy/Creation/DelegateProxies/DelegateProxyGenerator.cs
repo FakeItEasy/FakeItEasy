@@ -1,43 +1,67 @@
-﻿namespace FakeItEasy.Creation.DelegateProxies
+namespace FakeItEasy.Creation.DelegateProxies
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using Castle.DynamicProxy;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     internal static class DelegateProxyGenerator
     {
+        private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
+        private static readonly ConcurrentDictionary<Type, bool> AccessibleToDynamicProxyCache = new ConcurrentDictionary<Type, bool>();
+
         public static ProxyGeneratorResult GenerateProxy(
             Type typeOfProxy,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
 
-            if (!CanGenerateProxy(typeOfProxy, out string reasonCannotGenerate))
+            var invokeMethod = typeOfProxy.GetMethod("Invoke");
+
+            if (!IsAccessibleToDynamicProxy(typeOfProxy))
             {
-                return new ProxyGeneratorResult(reasonCannotGenerate);
+                try
+                {
+                    // This is the only way to get the proper error message.
+                    // The need for this will go away when we start really using DynamicProxy to generate delegate proxies.
+                    ProxyGenerator.CreateClassProxy(typeOfProxy);
+                }
+                catch (Exception ex)
+                {
+                    return new ProxyGeneratorResult(ex.Message);
+                }
             }
 
-            var invokeMethod = typeOfProxy.GetMethod("Invoke");
             var eventRaiser = new DelegateCallInterceptedEventRaiser(fakeCallProcessorProvider, invokeMethod, typeOfProxy);
 
             fakeCallProcessorProvider.EnsureInitialized(eventRaiser.Instance);
             return new ProxyGeneratorResult(eventRaiser.Instance);
         }
 
-        public static bool CanGenerateProxy(Type typeOfProxy, out string failReason)
+        private static bool IsAccessibleToDynamicProxy(Type type)
         {
-            if (!typeof(Delegate).IsAssignableFrom(typeOfProxy))
-            {
-                failReason = "The delegate proxy generator can only create proxies for delegate types.";
-                return false;
-            }
+            return AccessibleToDynamicProxyCache.GetOrAdd(type, IsAccessibleImpl);
 
-            failReason = null;
-            return true;
+            bool IsAccessibleImpl(Type t)
+            {
+                if (!ProxyUtil.IsAccessible(t))
+                {
+                    return false;
+                }
+
+                var info = t.GetTypeInfo();
+                if (info.IsGenericType && !info.IsGenericTypeDefinition)
+                {
+                    return t.GetGenericArguments().All(IsAccessibleToDynamicProxy);
+                }
+
+                return true;
+            }
         }
 
         private static Delegate CreateDelegateProxy(
@@ -168,7 +192,7 @@
             }
         }
 
-        private class DelegateFakeObjectCall : IInterceptedFakeObjectCall
+        private class DelegateFakeObjectCall : InterceptedFakeObjectCall
         {
             private readonly object[] originalArguments;
 
@@ -182,28 +206,28 @@
 
             public object ReturnValue { get; private set; }
 
-            public MethodInfo Method { get; }
+            public override MethodInfo Method { get; }
 
-            public ArgumentCollection Arguments { get; }
+            public override ArgumentCollection Arguments { get; }
 
-            public object FakedObject { get; }
+            public override object FakedObject { get; }
 
-            public void SetReturnValue(object value)
+            public override void SetReturnValue(object value)
             {
                 this.ReturnValue = value;
             }
 
-            public void CallBaseMethod()
+            public override void CallBaseMethod()
             {
-                throw new NotSupportedException("Can not configure a delegate proxy to call base method.");
+                throw new FakeConfigurationException(ExceptionMessages.DelegateCannotCallBaseMethod);
             }
 
-            public void SetArgumentValue(int index, object value)
+            public override void SetArgumentValue(int index, object value)
             {
                 this.Arguments.GetUnderlyingArgumentsArray()[index] = value;
             }
 
-            public ICompletedFakeObjectCall AsReadOnly()
+            public override CompletedFakeObjectCall AsReadOnly()
             {
                 return new CompletedFakeObjectCall(
                     this,

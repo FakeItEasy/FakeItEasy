@@ -2,17 +2,12 @@
 {
     using System.Collections.Generic;
     using System.IO;
+    using SimpleExec;
     using static Bullseye.Targets;
     using static SimpleExec.Command;
 
     public class Program
     {
-        private const string LogsDirectory = "artifacts/logs";
-        private const string Solution = "FakeItEasy.sln";
-        private const string VersionInfoFile = "src/VersionInfo.cs";
-        private const string RepoUrl = "https://github.com/FakeItEasy/FakeItEasy";
-        private const string AnalyzerMetaPackageNuspecPath = "src/FakeItEasy.Analyzer.nuspec";
-
         private static readonly string[] ProjectsToPack =
         {
             "src/FakeItEasy/FakeItEasy.csproj",
@@ -53,24 +48,13 @@
             }
         };
 
-        private static readonly string OutputDirectory = Path.GetFullPath("artifacts/output");
-
-        private static string version = null;
-
         public static void Main(string[] args)
         {
             Target("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
 
-            Target("outputDirectory", () => Directory.CreateDirectory(OutputDirectory));
-
-            Target("logsDirectory", () => Directory.CreateDirectory(LogsDirectory));
-
             Target(
                 "build",
-                DependsOn("versionInfoFile"),
-                () => Run("dotnet", $"build {Solution} -c Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/build.binlog"));
-
-            Target("versionInfoFile", () => Run(ToolPaths.GitVersion, $"/updateAssemblyInfo {VersionInfoFile} /ensureAssemblyInfo"));
+                () => Run("dotnet", "build FakeItEasy.sln -c Release /maxcpucount /nr:false /verbosity:minimal /nologo /bl:artifacts/logs/build.binlog"));
 
             foreach (var testSuite in TestSuites)
             {
@@ -78,36 +62,22 @@
                     testSuite.Key,
                     DependsOn("build"),
                     forEach: testSuite.Value,
-                    action: testDirectory => RunTests(testDirectory));
+                    action: testDirectory => Run("dotnet", "test --configuration Release --no-build -- RunConfiguration.NoAutoReporters=true", testDirectory));
             }
-
-            Target("get-version", () => version = Read(ToolPaths.GitVersion, "/showvariable NuGetVersionV2"));
-
-            Target(
-                "pack-projects",
-                DependsOn("build", "outputDirectory", "pdbgit", "get-version"),
-                forEach: ProjectsToPack,
-                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {OutputDirectory} /p:Version={version}"));
-
-            Target(
-                "pack-nuspecs",
-                DependsOn("outputDirectory", "get-version"),
-                () => Run(ToolPaths.NuGet, $"pack {AnalyzerMetaPackageNuspecPath} -Version {version} -OutputDirectory {OutputDirectory} -NoPackageAnalysis"));
 
             Target(
                 "pack",
-                DependsOn("pack-projects", "pack-nuspecs"));
+                DependsOn("build", "pdbgit"),
+                forEach: ProjectsToPack,
+                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {Path.GetFullPath("artifacts/output")}"));
 
             Target(
                 "pdbgit",
                 DependsOn("build"),
                 forEach: Pdbs,
-                action: pdb => Run(ToolPaths.PdbGit, $"-u {RepoUrl} -s {pdb}"));
+                action: pdb => Run(ToolPaths.PdbGit, $"-u https://github.com/FakeItEasy/FakeItEasy -s {pdb}"));
 
-            RunTargets(args);
+            RunTargetsAndExit(args, messageOnly: ex => ex is NonZeroExitCodeException);
         }
-
-        private static void RunTests(string testDirectory) =>
-            Run("dotnet", "test --configuration Release --no-build -- RunConfiguration.NoAutoReporters=true", testDirectory);
     }
 }

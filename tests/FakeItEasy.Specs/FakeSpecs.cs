@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -115,6 +115,25 @@
 
             "Then the recorded call list is empty"
                 .x(() => Fake.GetCalls(fake).Should().BeEmpty());
+        }
+
+        [Scenario]
+        public static void ClearConfiguration(IFoo fake, bool configuredBehaviorWasUsed)
+        {
+            "Given a Fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And I configure a method call on the Fake"
+                .x(() => A.CallTo(() => fake.AMethod()).Invokes(() => configuredBehaviorWasUsed = true));
+
+            "When I clear the configuration"
+                .x(() => Fake.ClearConfiguration(fake));
+
+            "And I execute the previously-configured method"
+                .x(() => fake.AMethod());
+
+            "Then previously-configured behavior is not executed"
+                .x(() => configuredBehaviorWasUsed.Should().BeFalse());
         }
     }
 }

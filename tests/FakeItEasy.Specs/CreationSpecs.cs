@@ -7,6 +7,7 @@ namespace FakeItEasy.Specs
     using System.Threading;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
@@ -24,6 +25,35 @@ namespace FakeItEasy.Specs
             void Test1<T>(IEnumerable<T> enumerable);
 
             void Test1<T>(IList<T> enumerable);
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
+        public interface IInterface
+        {
+        }
+
+        public interface IFakeCreator
+        {
+            Type FakeType { get; }
+
+            object CreateFake(CreationSpecsBase specs);
+        }
+
+        [Scenario]
+        [MemberData(nameof(SupportedTypes))]
+        public void FakingSupportedTypes(IFakeCreator fakeCreator, object fake)
+        {
+            "Given a supported fake type"
+                .See(fakeCreator.FakeType.ToString());
+
+            "When I create a fake of the supported type"
+                .x(() => fake = fakeCreator.CreateFake(this));
+
+            "Then the result is a fake"
+                .x(() => Fake.GetFakeManager(fake).Should().NotBeNull());
+
+            "And the fake is of the correct type"
+                .x(() => fake.Should().BeAssignableTo(fakeCreator.FakeType));
         }
 
         [Scenario]
@@ -272,6 +302,93 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void PrivateClassCannotBeFaked(Exception exception)
+        {
+            "Given a private class"
+                .See<PrivateClass>();
+
+            "When I create a fake of the class"
+                .x(() => exception = Record.Exception(this.CreateFake<PrivateClass>));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().Match(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+PrivateClass:
+
+  Below is a list of reasons for failure per attempted constructor:
+    Constructor with signature () failed:
+      No usable default constructor was found on the type FakeItEasy.Specs.CreationSpecsBase+PrivateClass.
+      An exception of type Castle.DynamicProxy.Generators.GeneratorException was caught during this call. Its message was:
+      Can not create proxy for type FakeItEasy.Specs.CreationSpecsBase+PrivateClass because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(*DynamicProxyGenAssembly2*)] attribute*
+"));
+        }
+
+        [Scenario]
+        public void PrivateDelegateCannotBeFaked(Exception exception)
+        {
+            "Given a private delegate"
+                .See<PrivateDelegate>();
+
+            "When I create a fake of the delegate"
+                .x(() => exception = Record.Exception(this.CreateFake<PrivateDelegate>));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().Match(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+PrivateDelegate:
+    Can not create proxy for type FakeItEasy.Specs.CreationSpecsBase+PrivateDelegate because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(*DynamicProxyGenAssembly2*)] attribute*
+"));
+        }
+
+        [Scenario]
+        public void PublicDelegateWithPrivateTypeArgumentCannotBeFaked(Exception exception)
+        {
+            "Given a public delegate with a private type argument"
+                .See<Func<PrivateClass>>();
+
+            "When I create a fake of the delegate"
+                .x(() => exception = Record.Exception(this.CreateFake<Func<PrivateClass>>));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().Match(@"
+  Failed to create fake of type System.Func`1[FakeItEasy.Specs.CreationSpecsBase+PrivateClass]:
+    Can not create proxy for type System.Func`1[[FakeItEasy.Specs.CreationSpecsBase+PrivateClass, FakeItEasy.Specs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c]] because type FakeItEasy.Specs.CreationSpecsBase+PrivateClass is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(*DynamicProxyGenAssembly2*)] attribute*
+"));
+        }
+
+        [Scenario]
+        public void ClassWithPrivateConstructorCannotBeFaked(Exception exception)
+        {
+            "Given a class with a private constructor"
+                .See<ClassWithPrivateConstructor>();
+
+            "When I create a fake of the class"
+                .x(() => exception = Record.Exception(this.CreateFake<ClassWithPrivateConstructor>));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().StartWith(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+ClassWithPrivateConstructor:
+
+  Below is a list of reasons for failure per attempted constructor:
+    Constructor with signature () failed:
+      No usable default constructor was found on the type FakeItEasy.Specs.CreationSpecsBase+ClassWithPrivateConstructor.
+      An exception of type Castle.DynamicProxy.InvalidProxyConstructorArgumentsException was caught during this call. Its message was:
+      Can not instantiate proxy of class: FakeItEasy.Specs.CreationSpecsBase+ClassWithPrivateConstructor.
+      Could not find a parameterless constructor.
+"));
+        }
+
+        [Scenario]
         public void SealedClassCannotBeFaked(Exception exception)
         {
             "Given a sealed class"
@@ -291,22 +408,34 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void StructCannotBeFaked(Exception exception)
+        public void CannotFakeInterfaceWithConstructorArguments(Exception exception)
         {
-            "Given a struct"
-                .See<Struct>();
+            "Given a fakeable interface"
+                .See<IInterface>();
 
-            "When I create a fake of the struct"
-                .x(() => exception = Record.Exception(() => this.CreateFake<Struct>()));
+            "When I create a fake of the interface supplying constructor arguments"
+                .x(() => exception = Record.Exception(() => this.CreateFake<IInterface>(options =>
+                    options.WithArgumentsForConstructor(new object[] { 7 }))));
 
             "Then it throws a fake creation exception"
-                .x(() => exception.Should().BeOfType<FakeCreationException>());
+                .x(() => exception.Should().BeOfType<ArgumentException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().StartWith(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct:
-    The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
-"));
+                .x(() => exception.Message.Should().Be("Arguments for constructor specified for interface type."));
+        }
+
+        [Scenario]
+        public void SuppliedConstructorArgumentsArePassedToClassConstructor(AClassThatCouldBeFakedWithTheRightConstructorArguments fake)
+        {
+            "Given a fakeable class"
+                .See<AClassThatCouldBeFakedWithTheRightConstructorArguments>();
+
+            "When I create a fake of the class supplying valid constructor arguments"
+                .x(() => fake = this.CreateFake<AClassThatCouldBeFakedWithTheRightConstructorArguments>(options =>
+                    options.WithArgumentsForConstructor(() => new AClassThatCouldBeFakedWithTheRightConstructorArguments(17))));
+
+            "Then it passes the supplied arguments to the constructor"
+                .x(() => fake.ID.Should().Be(17));
         }
 
         [Scenario]
@@ -403,13 +532,13 @@ namespace FakeItEasy.Specs
 "));
         }
 
-        protected abstract T CreateFake<T>();
+        protected abstract T CreateFake<T>() where T : class;
 
-        protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder);
+        protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder) where T : class;
 
-        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes);
+        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes) where T : class;
 
-        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder);
+        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder) where T : class;
 
         public class ClassWhoseConstructorThrows
         {
@@ -473,6 +602,12 @@ namespace FakeItEasy.Specs
 
         public class AClassThatCouldBeFakedWithTheRightConstructorArguments
         {
+            public AClassThatCouldBeFakedWithTheRightConstructorArguments(int id)
+            {
+                this.ID = id;
+            }
+
+            public int ID { get; }
         }
 
         public sealed class UnresolvableArgument
@@ -493,6 +628,53 @@ namespace FakeItEasy.Specs
             {
             }
         }
+
+        public abstract class AbstractClass
+        {
+        }
+
+        public class ClassWithProtectedConstructor
+        {
+            protected ClassWithProtectedConstructor()
+            {
+            }
+        }
+
+        public class ClassWithPrivateConstructor
+        {
+            private ClassWithPrivateConstructor()
+            {
+            }
+        }
+
+        private static IEnumerable<object[]> SupportedTypes() => TestCases.FromObject(
+            new FakeCreator<IInterface>(),
+            new FakeCreator<AbstractClass>(),
+            new FakeCreator<ClassWithProtectedConstructor>(),
+            new FakeCreator<ClassWithInternalConstructorVisibleToDynamicProxy>(),
+            new FakeCreator<InternalClassVisibleToDynamicProxy>(),
+            new FakeCreator<Action>(),
+            new FakeCreator<Func<int, string>>(),
+            new FakeCreator<EventHandler<EventArgs>>());
+
+        private class FakeCreator<TFake> : IFakeCreator where TFake : class
+        {
+            public Type FakeType => typeof(TFake);
+
+            public object CreateFake(CreationSpecsBase testRunner)
+            {
+                return testRunner.CreateFake<TFake>();
+            }
+
+            public override string ToString() => typeof(TFake).Name;
+        }
+
+        [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Required for testing.")]
+        private class PrivateClass
+        {
+        }
+
+        private delegate void PrivateDelegate();
     }
 
     public class GenericCreationSpecs : CreationSpecsBase
@@ -520,6 +702,25 @@ namespace FakeItEasy.Specs
 
     public class NonGenericCreationSpecs : CreationSpecsBase
     {
+        [Scenario]
+        public void StructCannotBeFaked(Exception exception)
+        {
+            "Given a struct"
+                .See<Struct>();
+
+            "When I create a fake of the struct"
+                .x(() => exception = Record.Exception(() => (Struct)Sdk.Create.Fake(typeof(Struct))));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().StartWith(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct:
+    The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
+"));
+        }
+
         protected override T CreateFake<T>()
         {
             return (T)Sdk.Create.Fake(typeof(T));

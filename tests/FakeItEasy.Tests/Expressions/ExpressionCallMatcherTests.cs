@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests.Expressions
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Text;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
@@ -28,9 +29,9 @@ namespace FakeItEasy.Tests.Expressions
             this.methodInfoManager = A.Fake<MethodInfoManager>();
             this.parser = new CallExpressionParser();
             this.outputWriterFactory =
-                builder =>
+                () =>
                     new StringBuilderOutputWriter(
-                        builder,
+                        new StringBuilder(),
                         new ArgumentValueFormatter(
                             Enumerable.Empty<IArgumentValueFormatter>(),
                             this.outputWriterFactory));
@@ -154,7 +155,7 @@ namespace FakeItEasy.Tests.Expressions
 
             var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
 
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
             matcher.DescribeCallOn(writer);
 
             writer.Builder.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <FOO>, argument2: <FOO>)");
@@ -203,7 +204,7 @@ namespace FakeItEasy.Tests.Expressions
 
             matcher.UsePredicateToValidateArguments(x => true);
 
-            var writer = ServiceLocator.Current.Resolve<StringBuilderOutputWriter>();
+            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
             matcher.DescribeCallOn(writer);
 
             writer.Builder.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <Predicated>, argument2: <Predicated>)");
