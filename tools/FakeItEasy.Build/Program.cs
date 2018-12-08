@@ -77,7 +77,7 @@
                 forEach: Pdbs,
                 action: pdb => Run(ToolPaths.PdbGit, $"-u https://github.com/FakeItEasy/FakeItEasy -s {pdb}"));
 
-            RunTargetsAndExit<CommandException>(args);
+            RunTargetsAndExit(args, messageOnly: ex => ex is NonZeroExitCodeException);
         }
     }
 }
