@@ -226,8 +226,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E70BBF50-5920-49F2-835D-4A2DBD73F0E1}
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		version = 0.1
-		StartupItem = src\FakeItEasy\FakeItEasy.csproj
-	EndGlobalSection
 EndGlobal
