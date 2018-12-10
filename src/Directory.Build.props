@@ -10,7 +10,6 @@
     <PackageLicenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</PackageLicenseUrl>
     <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
     <NoPackageAnalysis>true</NoPackageAnalysis>
-    <MinVerMajorMinor>5.0</MinVerMajorMinor>
     <MinVerVerbosity>minimal</MinVerVerbosity>
   </PropertyGroup>
 
