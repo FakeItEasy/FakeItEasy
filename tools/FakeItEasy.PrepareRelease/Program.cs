@@ -28,12 +28,18 @@ namespace FakeItEasy.PrepareRelease
             var existingMilestone = await gitHubClient.GetExistingMilestone();
 
             var issuesInExistingMilestone = await gitHubClient.GetIssuesInMilestone(existingMilestone);
-            var existingReleaseIssue = TakeExistingReleaseIssue(issuesInExistingMilestone);
+            var existingReleaseIssue = GetExistingReleaseIssue(issuesInExistingMilestone);
 
-            var existingRelease = await gitHubClient.GetExistingRelease();
-            var issuesReferencedFromRelease = GetIssuesReferencedFromRelease(existingRelease);
+            var allReleases = await gitHubClient.GetAllReleases();
+            var existingRelease = allReleases.Single(release => release.Name == ExistingReleaseName && release.Draft);
 
-            if (!CrossReferenceIssues(issuesInExistingMilestone, issuesReferencedFromRelease))
+            var releasesForExistingMilestone = GetReleasesForExistingMilestone(allReleases, existingRelease, version);
+
+            var nonReleaseIssuesInMilestone = ExcludeReleaseIssues(issuesInExistingMilestone, releasesForExistingMilestone);
+
+            var issuesReferencedFromReleases = GetIssuesReferencedFromReleases(releasesForExistingMilestone);
+
+            if (!CrossReferenceIssues(nonReleaseIssuesInMilestone, issuesReferencedFromReleases))
             {
                 return;
             }
@@ -55,6 +61,18 @@ namespace FakeItEasy.PrepareRelease
             await gitHubClient.CreateNextIssue(existingReleaseIssue, nextMilestone);
         }
 
+        private static List<Release> GetReleasesForExistingMilestone(IReadOnlyCollection<Release> allReleases, Release existingRelease, string version)
+        {
+            var releasesForExistingMilestone = new List<Release> { existingRelease };
+            if (IsPreRelease(version))
+            {
+                var versionRoot = version.Substring(0, version.IndexOf('-'));
+                releasesForExistingMilestone.AddRange(allReleases.Where(release => release.Name.StartsWith(versionRoot)));
+            }
+
+            return releasesForExistingMilestone;
+        }
+
         private static GitHubClient GetAuthenticatedGitHubClient()
         {
             var token = GitHubTokenSource.GetAccessToken();
@@ -72,13 +90,12 @@ namespace FakeItEasy.PrepareRelease
             return existingMilestone;
         }
 
-        private static async Task<Release> GetExistingRelease(this IGitHubClient gitHubClient)
+        private static async Task<IReadOnlyCollection<Release>> GetAllReleases(this IGitHubClient gitHubClient)
         {
-            Console.WriteLine($"Fetching GitHub release '{ExistingReleaseName}'...");
-            var existingRelease = (await gitHubClient.Repository.Release.GetAll(RepoOwner, RepoName))
-                .Single(release => release.Name == ExistingReleaseName && release.Draft);
-            Console.WriteLine($"Fetched GitHub release '{existingRelease.Name}'");
-            return existingRelease;
+            Console.WriteLine("Fetching all GitHub releases...");
+            var allReleases = await gitHubClient.Repository.Release.GetAll(RepoOwner, RepoName);
+            Console.WriteLine("Fetched all GitHub releases");
+            return allReleases;
         }
 
         private static async Task<IList<Issue>> GetIssuesInMilestone(this IGitHubClient gitHubClient, Milestone milestone)
@@ -90,31 +107,38 @@ namespace FakeItEasy.PrepareRelease
             return issues;
         }
 
-        private static ICollection<string> GetIssuesReferencedFromRelease(Release release)
+        private static ICollection<string> GetIssuesReferencedFromReleases(IEnumerable<Release> releases)
         {
             // Release bodies should contain references to fixed issues in the form
             // (#1234), or (#1234, #1235, #1236) if multiple issues apply to a topic.
             // It's hard (impossible?) to harvest values from a repeated capture group,
             // so grab everything between the ()s and split manually.
             var issuesReferencedFromRelease = new HashSet<string>();
-            foreach (Match match in Regex.Matches(release.Body, @"\((?<issueNumbers>#[0-9]+((, )#[0-9]+)*)\)"))
+            foreach (var release in releases)
             {
-                var issueNumbers = match.Groups["issueNumbers"].Value;
-                foreach (var issueNumber in issueNumbers.Split(new[] { '#', ' ', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (Match match in Regex.Matches(release.Body, @"\((?<issueNumbers>#[0-9]+((, )#[0-9]+)*)\)"))
                 {
-                    issuesReferencedFromRelease.Add(issueNumber);
+                    var issueNumbers = match.Groups["issueNumbers"].Value;
+                    foreach (var issueNumber in issueNumbers.Split(new[] { '#', ' ', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        issuesReferencedFromRelease.Add(issueNumber);
+                    }
                 }
             }
 
             return issuesReferencedFromRelease;
         }
 
-        private static Issue TakeExistingReleaseIssue(IList<Issue> issues)
+        private static Issue GetExistingReleaseIssue(IList<Issue> issues)
         {
             var issue = issues.Single(i => i.Title == $"Release {ExistingReleaseName}");
             Console.WriteLine($"Found release issue #{issue.Number}: '{issue.Title}'");
-            issues.Remove(issue);
             return issue;
+        }
+
+        private static IList<Issue> ExcludeReleaseIssues(IList<Issue> issues, IEnumerable<Release> releases)
+        {
+            return issues.Where(issue => releases.All(release => $"Release {release.Name}" != issue.Title)).ToList();
         }
 
         private static bool CrossReferenceIssues(ICollection<Issue> issuesInMilestone, ICollection<string> issueNumbersReferencedFromRelease)
