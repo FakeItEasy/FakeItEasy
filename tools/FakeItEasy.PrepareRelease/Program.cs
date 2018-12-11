@@ -2,14 +2,11 @@ namespace FakeItEasy.PrepareRelease
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using FakeItEasy.Tools;
     using Octokit;
-    using Octokit.Helpers;
 
     public static class Program
     {
@@ -58,14 +55,14 @@ namespace FakeItEasy.PrepareRelease
             await gitHubClient.CreateNextIssue(existingReleaseIssue, nextMilestone);
         }
 
-        public static GitHubClient GetAuthenticatedGitHubClient()
+        private static GitHubClient GetAuthenticatedGitHubClient()
         {
             var token = GitHubTokenSource.GetAccessToken();
             var credentials = new Credentials(token);
             return new GitHubClient(new ProductHeaderValue("FakeItEasy-build-scripts")) { Credentials = credentials };
         }
 
-        public static async Task<Milestone> GetExistingMilestone(this IGitHubClient gitHubClient)
+        private static async Task<Milestone> GetExistingMilestone(this IGitHubClient gitHubClient)
         {
             Console.WriteLine($"Fetching milestone '{ExistingReleaseName}'...");
             var milestoneRequest = new MilestoneRequest { State = ItemStateFilter.Open };
@@ -75,16 +72,16 @@ namespace FakeItEasy.PrepareRelease
             return existingMilestone;
         }
 
-        public static async Task<Release> GetExistingRelease(this IGitHubClient gitHubClient)
+        private static async Task<Release> GetExistingRelease(this IGitHubClient gitHubClient)
         {
             Console.WriteLine($"Fetching GitHub release '{ExistingReleaseName}'...");
             var existingRelease = (await gitHubClient.Repository.Release.GetAll(RepoOwner, RepoName))
-                .Single(release => release.Name == ExistingReleaseName && release.Draft == true);
+                .Single(release => release.Name == ExistingReleaseName && release.Draft);
             Console.WriteLine($"Fetched GitHub release '{existingRelease.Name}'");
             return existingRelease;
         }
 
-        public static async Task<IList<Issue>> GetIssuesInMilestone(this IGitHubClient gitHubClient, Milestone milestone)
+        private static async Task<IList<Issue>> GetIssuesInMilestone(this IGitHubClient gitHubClient, Milestone milestone)
         {
             Console.WriteLine($"Fetching issues in milestone '{milestone.Title}'...'");
             var issueRequest = new RepositoryIssueRequest { Milestone = milestone.Number.ToString(), State = ItemStateFilter.All };
@@ -93,9 +90,9 @@ namespace FakeItEasy.PrepareRelease
             return issues;
         }
 
-        public static IEnumerable<string> GetIssuesReferencedFromRelease(Release release)
+        private static ICollection<string> GetIssuesReferencedFromRelease(Release release)
         {
-            // Release bodies should contain references to fixed issues in the form 
+            // Release bodies should contain references to fixed issues in the form
             // (#1234), or (#1234, #1235, #1236) if multiple issues apply to a topic.
             // It's hard (impossible?) to harvest values from a repeated capture group,
             // so grab everything between the ()s and split manually.
@@ -103,7 +100,7 @@ namespace FakeItEasy.PrepareRelease
             foreach (Match match in Regex.Matches(release.Body, @"\((?<issueNumbers>#[0-9]+((, )#[0-9]+)*)\)"))
             {
                 var issueNumbers = match.Groups["issueNumbers"].Value;
-                foreach (var issueNumber in issueNumbers.Split(new char[] { '#', ' ', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var issueNumber in issueNumbers.Split(new[] { '#', ' ', ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     issuesReferencedFromRelease.Add(issueNumber);
                 }
@@ -112,7 +109,7 @@ namespace FakeItEasy.PrepareRelease
             return issuesReferencedFromRelease;
         }
 
-        public static Issue TakeExistingReleaseIssue(IList<Issue> issues)
+        private static Issue TakeExistingReleaseIssue(IList<Issue> issues)
         {
             var issue = issues.Single(i => i.Title == $"Release {ExistingReleaseName}");
             Console.WriteLine($"Found release issue #{issue.Number}: '{issue.Title}'");
@@ -120,7 +117,7 @@ namespace FakeItEasy.PrepareRelease
             return issue;
         }
 
-        public static bool CrossReferenceIssues(IEnumerable<Issue> issuesInMilestone, IEnumerable<string> issueNumbersReferencedFromRelease)
+        private static bool CrossReferenceIssues(ICollection<Issue> issuesInMilestone, ICollection<string> issueNumbersReferencedFromRelease)
         {
             var issueNumbersInMilestone = issuesInMilestone.Select(i => i.Number.ToString());
             var issueNumbersInReleaseButNotMilestone = issueNumbersReferencedFromRelease.Except(issueNumbersInMilestone).ToList();
@@ -156,29 +153,28 @@ namespace FakeItEasy.PrepareRelease
                 Console.WriteLine();
             }
 
-            Console.WriteLine($"Prepare release anyhow? (y/N)");
+            Console.WriteLine("Prepare release anyhow? (y/N)");
             var response = Console.ReadLine().Trim();
             if (string.Equals(response, "y", StringComparison.InvariantCultureIgnoreCase))
             {
                 return true;
             }
-            else if (string.Equals(response, "n", StringComparison.InvariantCultureIgnoreCase))
+
+            if (string.Equals(response, "n", StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
             }
-            else
-            {
-                Console.WriteLine($"Unknown response '{response}' received. Treating as 'n'.");
-                return false;
-            }
+
+            Console.WriteLine($"Unknown response '{response}' received. Treating as 'n'.");
+            return false;
         }
 
-        public static bool IsPreRelease(string version)
+        private static bool IsPreRelease(string version)
         {
             return version.Contains('-');
         }
 
-        public static async Task RenameMilestone(this IGitHubClient gitHubClient, Milestone existingMilestone, string version)
+        private static async Task RenameMilestone(this IGitHubClient gitHubClient, Milestone existingMilestone, string version)
         {
             var milestoneUpdate = new MilestoneUpdate { Title = version };
             Console.WriteLine($"Renaming milestone '{existingMilestone.Title}' to '{milestoneUpdate.Title}'...");
@@ -186,7 +182,7 @@ namespace FakeItEasy.PrepareRelease
             Console.WriteLine($"Renamed milestone '{existingMilestone.Title}' to '{updatedMilestone.Title}'");
         }
 
-        public static async Task<Milestone> CreateNextMilestone(this IGitHubClient gitHubClient)
+        private static async Task<Milestone> CreateNextMilestone(this IGitHubClient gitHubClient)
         {
             var newMilestone = new NewMilestone(NextReleaseName);
             Console.WriteLine($"Creating new milestone '{newMilestone.Title}'...");
@@ -195,7 +191,7 @@ namespace FakeItEasy.PrepareRelease
             return nextMilestone;
         }
 
-        public static async Task UpdateRelease(this IGitHubClient gitHubClient, Release existingRelease, string version)
+        private static async Task UpdateRelease(this IGitHubClient gitHubClient, Release existingRelease, string version)
         {
             var releaseUpdate = new ReleaseUpdate { Name = version };
             Console.WriteLine($"Renaming GitHub release '{existingRelease.Name}' to {releaseUpdate.Name}...");
@@ -203,7 +199,7 @@ namespace FakeItEasy.PrepareRelease
             Console.WriteLine($"Renamed GitHub release '{existingRelease.Name}' to {updatedRelease.Name}");
         }
 
-        public static async Task CreateNextRelease(this IGitHubClient gitHubClient)
+        private static async Task CreateNextRelease(this IGitHubClient gitHubClient)
         {
             const string newReleaseBody = @"
 ### Changed
@@ -225,7 +221,7 @@ namespace FakeItEasy.PrepareRelease
             Console.WriteLine($"Created new GitHub release '{nextRelease.Name}'");
         }
 
-        public static async Task UpdateIssue(this IGitHubClient gitHubClient, Issue existingIssue, Milestone existingMilestone, string version)
+        private static async Task UpdateIssue(this IGitHubClient gitHubClient, Issue existingIssue, Milestone existingMilestone, string version)
         {
             var issueUpdate = new IssueUpdate { Title = $"Release {version}", Milestone = existingMilestone.Number };
             Console.WriteLine($"Renaming release issue '{existingIssue.Title}' to '{issueUpdate.Title}'...");
@@ -233,7 +229,7 @@ namespace FakeItEasy.PrepareRelease
             Console.WriteLine($"Renamed release issue '{existingIssue.Title}' to '{updatedIssue.Title}'");
         }
 
-        public static async Task CreateNextIssue(this IGitHubClient gitHubClient, Issue existingIssue, Milestone nextMilestone)
+        private static async Task CreateNextIssue(this IGitHubClient gitHubClient, Issue existingIssue, Milestone nextMilestone)
         {
             var newIssue = new NewIssue($"Release {NextReleaseName}")
             {
