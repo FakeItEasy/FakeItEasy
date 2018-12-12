@@ -217,7 +217,7 @@ namespace FakeItEasy.PrepareRelease
 
         private static async Task UpdateRelease(this IGitHubClient gitHubClient, Release existingRelease, string version)
         {
-            var releaseUpdate = new ReleaseUpdate { Name = version };
+            var releaseUpdate = new ReleaseUpdate { Name = version, TagName = version, Prerelease = IsPreRelease(version) };
             Console.WriteLine($"Renaming GitHub release '{existingRelease.Name}' to {releaseUpdate.Name}...");
             var updatedRelease = await gitHubClient.Repository.Release.Edit(RepoOwner, RepoName, existingRelease.Id, releaseUpdate);
             Console.WriteLine($"Renamed GitHub release '{existingRelease.Name}' to {updatedRelease.Name}");
