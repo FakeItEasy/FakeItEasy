@@ -362,7 +362,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void ExceptionInCallback(IFoo fake, Exception exception)
+        public void ExceptionInCallbackIsNotWrapped(IFoo fake, Exception exception)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -373,14 +373,8 @@ namespace FakeItEasy.Specs
             "When the configured method is called"
                 .x(() => exception = Record.Exception(() => fake.Bar(0)));
 
-            "Then a UserCallbackException should be thrown"
-                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
-
-            "And its message should describe where the exception was thrown from"
-                .x(() => exception.Message.Should().Be("Callback threw an exception. See inner exception for details."));
-
-            "And the inner exception should be the original exception"
-                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+            "Then the original exception should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
         }
 
         private static bool ThrowException()
