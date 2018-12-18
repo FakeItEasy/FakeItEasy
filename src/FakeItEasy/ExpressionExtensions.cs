@@ -1,5 +1,6 @@
 namespace FakeItEasy
 {
+    using System;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -123,14 +124,16 @@ namespace FakeItEasy
 
                 case ExpressionType.NewArrayInit:
                     var newArrayExpression = (NewArrayExpression)expression;
-                    object[] arrayItems = new object[newArrayExpression.Expressions.Count];
+                    var arrayItems = Array.CreateInstance(newArrayExpression.Type.GetElementType(), newArrayExpression.Expressions.Count);
 
                     for (int i = 0; i < newArrayExpression.Expressions.Count; i++)
                     {
-                        if (!TryFastEvaluate(newArrayExpression.Expressions[i], out arrayItems[i]))
+                        if (!TryFastEvaluate(newArrayExpression.Expressions[i], out object item))
                         {
                             return false;
                         }
+
+                        arrayItems.SetValue(item, i);
                     }
 
                     result = arrayItems;
