@@ -21,6 +21,8 @@ namespace FakeItEasy.Specs
             IFoo Bafoo();
 
             IFoo Bafoo(out int i);
+
+            IFoo Wrap(IFoo wrappee);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
@@ -709,6 +711,21 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
         }
 
+        [Scenario]
+        public static void NestedCallThatIncludesArrayConstruction(
+            IFoo fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "When I specify a call and create a non-object array in the call configuration"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Wrap(Foo.BuildFromArray(new[] { 1, 2, 3 })))));
+
+            "Then it doesn't throw"
+                .x(() => exception.Should().BeNull());
+        }
+
         public class BaseClass
         {
             public bool WasCalled { get; private set; }
@@ -754,6 +771,12 @@ namespace FakeItEasy.Specs
 
         public class Foo : IFoo
         {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "integers", Justification = "Required for testing.")]
+            public static IFoo BuildFromArray(int[] integers)
+            {
+                return new Foo();
+            }
+
             public void Bar()
             {
                 throw new NotSupportedException();
@@ -777,6 +800,11 @@ namespace FakeItEasy.Specs
             public IFoo Bafoo(out int i)
             {
                 throw new NotSupportedException();
+            }
+
+            public IFoo Wrap(IFoo wrappee)
+            {
+                throw new NotImplementedException();
             }
         }
 
