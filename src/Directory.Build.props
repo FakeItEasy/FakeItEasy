@@ -10,11 +10,10 @@
     <PackageLicenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</PackageLicenseUrl>
     <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
     <NoPackageAnalysis>true</NoPackageAnalysis>
-    <MinVerVerbosity>minimal</MinVerVerbosity>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MinVer" Version="1.0.0-beta.1" PrivateAssets="All" />
+    <PackageReference Include="MinVer" Version="1.0.0-beta.2" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
