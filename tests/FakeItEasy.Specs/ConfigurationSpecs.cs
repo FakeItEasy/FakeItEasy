@@ -52,14 +52,14 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void Callback(
+        public static void CallbackOnVoid(
             IFoo fake,
             bool wasCalled)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
 
-            "And I configure a method to invoke an action"
+            "And I configure a method to invoke an action when a void method is called"
                 .x(() => A.CallTo(() => fake.Bar()).Invokes(x => wasCalled = true));
 
             "When I call the method"
@@ -67,6 +67,28 @@ namespace FakeItEasy.Specs
 
             "Then it invokes the action"
                 .x(() => wasCalled.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void CallbackOnStringReturningMethod(
+            IFoo fake,
+            bool wasCalled,
+            string result)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And I configure a method to invoke an action when a string-returning method is called"
+                .x(() => A.CallTo(() => fake.Bas()).Invokes(x => wasCalled = true));
+
+            "When I call the method"
+                .x(() => result = fake.Bas());
+
+            "Then it invokes the action"
+                .x(() => wasCalled.Should().BeTrue());
+
+            "And a default value is returned"
+                .x(() => result.Should().BeEmpty());
         }
 
         [Scenario]
