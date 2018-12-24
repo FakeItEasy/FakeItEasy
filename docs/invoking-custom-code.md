@@ -19,11 +19,9 @@ A.CallTo(() => fakeShop.SellSmarties())
 Now when the System Under Test calls `SellSmarties`, the Fake will
 call `OrderMoreSmarties`.
 
-If the method being configured has a return value, you should use
-`Return` to specify the return value, or it will return `null` (or a
-default value for a value type). This is true even if the return type
-of the method is such that an unconfigured method would not return
-`null` (for example, if the method returns a string or `Task`).
+If the method being configured has a return value, it will continue to return the
+[default value for an unconfigured fake](default-fake-behavior.md/#overrideable-members-are-faked)
+unless you override it with `Returns` or `ReturnsLazily`.
 
 There are also more advanced variants that can invoke actions based on
 arguments supplied to the faked method. These act similarly to how you
@@ -39,6 +37,5 @@ A.CallTo(()=>fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
  .Invokes(callObject => System.Console.Out.WriteLine(callObject.FakedObject +
                                                      " is closed on " +
-                                                     callObject.Arguments[0]))
- .Returns(0);
+                                                     callObject.Arguments[0]));
 ```
