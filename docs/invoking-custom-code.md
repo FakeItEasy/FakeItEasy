@@ -20,7 +20,7 @@ Now when the System Under Test calls `SellSmarties`, the Fake will
 call `OrderMoreSmarties`.
 
 If the method being configured has a return value, it will continue to return the
-[default value for an unconfigured fake](default-fake-behavior.md/#overrideable-members-are-faked)
+[default value for an unconfigured fake](default-fake-behavior.md#overrideable-members-are-faked)
 unless you override it with `Returns` or `ReturnsLazily`.
 
 There are also more advanced variants that can invoke actions based on
