@@ -28,12 +28,13 @@ arguments supplied to the faked method. These act similarly to how you
 specify return values that are calculated at call time. For example
 
 ```csharp
-// Pass up to 4 original call argument values into the method that creates the exception.
-A.CallTo(()=>fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
+// Pass up to 4 original call argument values into the callback method.
+A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
  .Invokes((DateTime when) => System.Console.Out.WriteLine("showing sweet sales for " + when))
  .Returns(17);
 
-// Pass an IFakeObjectCall into the creation method for more advanced scenarios.
+// Pass an IFakeObjectCall into the callback for more advanced scenarios,
+// including configuring methods that have more than 4 parameters.
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
  .Invokes(callObject => System.Console.Out.WriteLine(callObject.FakedObject +
                                                      " is closed on " +
