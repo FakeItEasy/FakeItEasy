@@ -32,7 +32,8 @@ A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
  .Throws((DateTime when)=>new InvalidDateException(when + " is in the future"));
 
-// Pass an IFakeObjectCall into the creation method for more advanced scenarios.
+// Pass an IFakeObjectCall into the creation method for more advanced scenarios,
+// including throwing an exception from a method that has more than 4 parameters.
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
  .Throws(callObject => new InvalidDateException(callObject.FakedObject +
                                                 " is closed on " +
@@ -57,3 +58,8 @@ A.CallTo(() => fakeShop.OrderSweetsAsync("cheeseburger"))
 
 This will cause the configured method to return a failed `Task` whose `Exception` property
 is set to the exception specified in `ThrowsAsync`.
+
+As with `Throws` above, `ThrowsAsync` has several overloads, including those that take `Func`s of up to
+4 parameters, and one that takes a `Func` that operates on an `IFakeObjectCall`. The latter is suitable
+for examining, in detail, the call that triggers the exception, or for configuring a method that has
+more than 4 parameters.
