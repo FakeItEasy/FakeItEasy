@@ -7,7 +7,7 @@
     <Copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</Copyright>
     <PackageProjectUrl>https://fakeiteasy.github.io/</PackageProjectUrl>
     <PackageIconUrl>https://fakeiteasy.github.io/img/fakeiteasy_logo_256_square_white.png</PackageIconUrl>
-    <PackageLicenseUrl>https://github.com/FakeItEasy/FakeItEasy/blob/master/License.txt</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
     <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
