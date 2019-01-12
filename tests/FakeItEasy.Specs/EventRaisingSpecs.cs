@@ -508,7 +508,7 @@ namespace FakeItEasy.Specs
         [Scenario]
         public void RaisingInternalEvent(ClassWithInternalEventVisibleToDynamicProxy fake, EventHandler handler)
         {
-            "Given a fake of a class with an internal even"
+            "Given a fake of a class with an internal event"
                 .x(() => fake = A.Fake<ClassWithInternalEventVisibleToDynamicProxy>());
 
             "And a fake event handler"

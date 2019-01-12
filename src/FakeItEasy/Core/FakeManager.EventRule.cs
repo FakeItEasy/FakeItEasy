@@ -145,8 +145,8 @@ namespace FakeItEasy.Core
 
             private class EventCall
             {
-                private static readonly Func<EventInfo, MethodInfo> GetAddMethod = e => e.GetAddMethod();
-                private static readonly Func<EventInfo, MethodInfo> GetRemoveMethod = e => e.GetRemoveMethod();
+                private static readonly Func<EventInfo, MethodInfo> GetAddMethod = e => e.GetAddMethod(true);
+                private static readonly Func<EventInfo, MethodInfo> GetRemoveMethod = e => e.GetRemoveMethod(true);
 
                 private EventCall()
                 {
@@ -192,7 +192,10 @@ namespace FakeItEasy.Core
                         return null;
                     }
 
-                    var eventInfos = eventAdderOrRemover.DeclaringType.GetEvents();
+                    var eventInfos = eventAdderOrRemover.DeclaringType.GetEvents(
+                        BindingFlags.Instance |
+                        BindingFlags.Public |
+                        BindingFlags.NonPublic);
                     if (eventInfos.Length == 0)
                     {
                         return null;
@@ -206,7 +209,7 @@ namespace FakeItEasy.Core
 
                 public bool IsEventRegistration()
                 {
-                    return this.Event.GetAddMethod().Equals(this.CallingMethod);
+                    return GetAddMethod(this.Event).Equals(this.CallingMethod);
                 }
             }
         }
