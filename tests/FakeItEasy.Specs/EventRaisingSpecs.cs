@@ -267,7 +267,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void EventArgumentsThatDoNotExtenedEventArg()
+        public void EventArgumentsThatDoNotExtendEventArg()
         {
             "Given an event of type EventHandler with custom event arguments type that does not extend EventArgs"
                 .See(() => nameof(Fake.EventHandlerOfNonEventArgsEvent));
@@ -503,6 +503,25 @@ namespace FakeItEasy.Specs
             "And the exception message describes the expected and actual arguments"
                 .x(() => exception.Message.Should().Be(
                     "The event has the signature (System.Object, FakeItEasy.Specs.CustomEventArgs), but the provided arguments have types (System.String, System.Int32, System.Boolean)."));
+        }
+
+        [Scenario]
+        public void RaisingInternalEvent(ClassWithInternalEventVisibleToDynamicProxy fake, EventHandler handler)
+        {
+            "Given a fake of a class with an internal even"
+                .x(() => fake = A.Fake<ClassWithInternalEventVisibleToDynamicProxy>());
+
+            "And a fake event handler"
+                .x(() => handler = A.Fake<EventHandler>());
+
+            "And the fake handler is subscribed to the fake's event"
+                .x(() => fake.TheEvent += handler);
+
+            "When I raise the event"
+                .x(() => fake.TheEvent += Raise.WithEmpty());
+
+            "Then the handler is called"
+                .x(() => A.CallTo(handler).MustHaveHappened());
         }
     }
 }
