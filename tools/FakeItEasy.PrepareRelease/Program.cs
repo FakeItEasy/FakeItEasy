@@ -64,12 +64,8 @@ namespace FakeItEasy.PrepareRelease
         private static List<Release> GetReleasesForExistingMilestone(IReadOnlyCollection<Release> allReleases, Release existingRelease, string version)
         {
             var releasesForExistingMilestone = new List<Release> { existingRelease };
-            if (IsPreRelease(version))
-            {
-                var versionRoot = version.Substring(0, version.IndexOf('-'));
-                releasesForExistingMilestone.AddRange(allReleases.Where(release => release.Name.StartsWith(versionRoot)));
-            }
-
+            var versionRoot = IsPreRelease(version) ? version.Substring(0, version.IndexOf('-')) : version;
+            releasesForExistingMilestone.AddRange(allReleases.Where(release => release.Name.StartsWith(versionRoot)));
             return releasesForExistingMilestone;
         }
 
