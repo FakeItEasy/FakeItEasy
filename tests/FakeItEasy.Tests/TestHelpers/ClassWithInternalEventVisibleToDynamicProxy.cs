@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests.TestHelpers
 
     public class ClassWithInternalEventVisibleToDynamicProxy
     {
+#pragma warning disable CS0067 // The event is never used
         internal virtual event EventHandler TheEvent;
     }
 }
