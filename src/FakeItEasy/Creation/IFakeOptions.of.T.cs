@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Creation
+namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
@@ -78,5 +78,12 @@
         /// </para>
         /// </remarks>
         IFakeOptions<T> ConfigureFake(Action<T> action);
+
+        /// <summary>
+        /// Specifies the name of the fake, by which it will be referred to in error messages.
+        /// </summary>
+        /// <param name="name">The name of the fake.</param>
+        /// <returns>Options object.</returns>
+        IFakeOptions<T> Named(string name);
     }
 }

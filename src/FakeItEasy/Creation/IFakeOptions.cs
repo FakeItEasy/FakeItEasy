@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Creation
+namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
@@ -80,5 +80,12 @@
         /// <param name="wrappedInstance">The object to delegate calls to.</param>
         /// <returns>Options object.</returns>
         IFakeOptions Wrapping(object wrappedInstance);
+
+        /// <summary>
+        /// Specifies the name of the fake, by which it will be referred to in error messages.
+        /// </summary>
+        /// <param name="name">The name of the fake.</param>
+        /// <returns>Options object.</returns>
+        IFakeOptions Named(string name);
     }
 }
