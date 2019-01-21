@@ -480,6 +480,7 @@ namespace FakeItEasy.Core
     }
     public class FakeManager : FakeItEasy.Core.IFakeCallProcessor
     {
+        public string FakeObjectName { get; }
         public virtual System.Type FakeObjectType { get; }
         public virtual object Object { get; }
         public virtual System.Collections.Generic.IEnumerable<FakeItEasy.Core.IFakeObjectCallRule> Rules { get; }
@@ -526,6 +527,7 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions ConfigureFake(System.Action<object> action);
         FakeItEasy.Creation.IFakeOptions Implements(System.Type interfaceType);
         FakeItEasy.Creation.IFakeOptions Implements<TInterface>();
+        FakeItEasy.Creation.IFakeOptions Named(string name);
         FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor<TConstructor>(System.Linq.Expressions.Expression<System.Func<TConstructor>> constructorCall);
         FakeItEasy.Creation.IFakeOptions WithAttributes(params System.Linq.Expressions.Expression<>[] attributes);
@@ -537,6 +539,7 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions<T> ConfigureFake(System.Action<T> action);
         FakeItEasy.Creation.IFakeOptions<T> Implements(System.Type interfaceType);
         FakeItEasy.Creation.IFakeOptions<T> Implements<TInterface>();
+        FakeItEasy.Creation.IFakeOptions<T> Named(string name);
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Linq.Expressions.Expression<System.Func<T>> constructorCall);
         FakeItEasy.Creation.IFakeOptions<T> WithAttributes(params System.Linq.Expressions.Expression<>[] attributes);
