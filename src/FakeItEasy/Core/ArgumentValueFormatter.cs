@@ -5,7 +5,6 @@ namespace FakeItEasy.Core
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
@@ -97,7 +96,9 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
-                return argumentValue.ToString();
+                var manager = Fake.TryGetFakeManager(argumentValue);
+
+                return manager?.FakeObjectDisplayName ?? argumentValue.ToString();
             }
         }
 

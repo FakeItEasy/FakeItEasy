@@ -36,13 +36,15 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="fakeObjectType">The faked type.</param>
         /// <param name="proxy">The faked proxy object.</param>
-        internal FakeManager(Type fakeObjectType, object proxy)
+        /// <param name="fakeObjectName">The name of the fake object.</param>
+        internal FakeManager(Type fakeObjectType, object proxy, string fakeObjectName)
         {
             Guard.AgainstNull(fakeObjectType, nameof(fakeObjectType));
             Guard.AgainstNull(proxy, nameof(proxy));
 
             this.objectReference = new WeakReference(proxy);
             this.FakeObjectType = fakeObjectType;
+            this.FakeObjectName = fakeObjectName;
 
             this.preUserRules = new IFakeObjectCallRule[]
             {
@@ -59,8 +61,9 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="fakeObjectType">The faked type.</param>
         /// <param name="proxy">The faked proxy object.</param>
+        /// <param name="fakeObjectName">The name of the fake object.</param>
         /// <returns>An instance of <see cref="FakeManager"/>.</returns>
-        internal delegate FakeManager Factory(Type fakeObjectType, object proxy);
+        internal delegate FakeManager Factory(Type fakeObjectType, object proxy, string fakeObjectName);
 
         /// <summary>
         /// Gets the faked proxy object.
@@ -75,6 +78,11 @@ namespace FakeItEasy.Core
         public virtual Type FakeObjectType { get; }
 
         /// <summary>
+        /// Gets the name of the fake.
+        /// </summary>
+        public string FakeObjectName { get; }
+
+        /// <summary>
         /// Gets the interceptions that are currently registered with the fake object.
         /// </summary>
         public virtual IEnumerable<IFakeObjectCallRule> Rules
@@ -84,7 +92,10 @@ namespace FakeItEasy.Core
 
         internal LinkedList<CallRuleMetadata> AllUserRules { get; }
 
-        internal string FakeObjectDisplayName => "Faked " + this.FakeObjectType;
+        internal string FakeObjectDisplayName =>
+            string.IsNullOrEmpty(this.FakeObjectName)
+                ? "Faked " + this.FakeObjectType
+                : this.FakeObjectName;
 
         /// <summary>
         /// Adds a call rule to the fake object.

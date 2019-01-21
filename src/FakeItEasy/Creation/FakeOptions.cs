@@ -100,6 +100,7 @@ namespace FakeItEasy.Creation
 
         public IFakeOptions<T> Named(string name)
         {
+            this.proxyOptions.Name = name;
             return this;
         }
 

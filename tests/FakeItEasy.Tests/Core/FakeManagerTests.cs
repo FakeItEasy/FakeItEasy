@@ -333,7 +333,7 @@ namespace FakeItEasy.Tests.Core
             var proxy = "some string";
 
             // Act
-            var fakeManager = new FakeManager(typeof(string), proxy);
+            var fakeManager = new FakeManager(typeof(string), proxy, null);
 
             // Assert
             fakeManager.FakeObjectType.Should().Be(typeof(string));
@@ -344,7 +344,7 @@ namespace FakeItEasy.Tests.Core
         public void Should_clear_all_added_rules_when_calling_clear_user_rules()
         {
             // Arrange
-            var manager = new FakeManager(typeof(int), 0);
+            var manager = new FakeManager(typeof(int), 0, null);
             manager.AddRuleFirst(A.Dummy<IFakeObjectCallRule>());
             manager.AddRuleLast(A.Dummy<IFakeObjectCallRule>());
 
@@ -362,7 +362,7 @@ namespace FakeItEasy.Tests.Core
             var interceptedCall = A.Fake<InterceptedFakeObjectCall>();
 
             var listener = A.Fake<IInterceptionListener>();
-            var manager = new FakeManager(typeof(int), 0);
+            var manager = new FakeManager(typeof(int), 0, null);
 
             manager.AddInterceptionListener(listener);
 
@@ -382,7 +382,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => interceptedCall.AsReadOnly()).Returns(completedCall);
 
             var listener = A.Fake<IInterceptionListener>();
-            var manager = new FakeManager(typeof(int), 0);
+            var manager = new FakeManager(typeof(int), 0, null);
 
             manager.AddInterceptionListener(listener);
 
@@ -402,7 +402,7 @@ namespace FakeItEasy.Tests.Core
             A.CallTo(() => interceptedCall.AsReadOnly()).Returns(completedCall);
 
             var listener = A.Fake<IInterceptionListener>();
-            var manager = new FakeManager(typeof(int), 0);
+            var manager = new FakeManager(typeof(int), 0, null);
 
             var ruleThatThrows = A.Fake<IFakeObjectCallRule>();
             A.CallTo(() => ruleThatThrows.IsApplicableTo(interceptedCall)).Returns(true);
@@ -422,7 +422,7 @@ namespace FakeItEasy.Tests.Core
         public void Should_invoke_listeners_in_the_correct_order()
         {
             // Arrange
-            var manager = new FakeManager(typeof(int), 0);
+            var manager = new FakeManager(typeof(int), 0, null);
             var listener1 = A.Fake<IInterceptionListener>();
             var listener2 = A.Fake<IInterceptionListener>();
 

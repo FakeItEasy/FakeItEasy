@@ -59,7 +59,7 @@ namespace FakeItEasy.Core
             {
                 if (this.initializedFakeManager == null)
                 {
-                    this.initializedFakeManager = this.fakeManagerFactory(this.typeOfFake, proxy);
+                    this.initializedFakeManager = this.fakeManagerFactory(this.typeOfFake, proxy, this.proxyOptions.Name);
 
                     this.fakeManagerAccessor.SetFakeManager(proxy, this.initializedFakeManager);
 

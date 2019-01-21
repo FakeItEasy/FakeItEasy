@@ -32,8 +32,8 @@ namespace FakeItEasy.Tests.Core
                 this.proxyOptions);
 
             this.proxy = new object();
-            this.fakeManager = new FakeManager(typeof(int), this.proxy);
-            A.CallTo(() => this.fakeManagerFactory(A<Type>._, this.proxy)).Returns(this.fakeManager);
+            this.fakeManager = new FakeManager(typeof(int), this.proxy, null);
+            A.CallTo(() => this.fakeManagerFactory(A<Type>._, this.proxy, A<string>.Ignored)).Returns(this.fakeManager);
         }
 
         [Fact]
@@ -92,7 +92,7 @@ namespace FakeItEasy.Tests.Core
             fakeCallProcessor1.Should().BeSameAs(fakeCallProcessor2);
             fakeCallProcessor2.Should().BeSameAs(fakeCallProcessor3);
 
-            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy, A<string>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace FakeItEasy.Tests.Core
             this.fakeManagerProvider.EnsureInitialized(this.proxy);
 
             // Assert
-            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy, A<string>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         private static FakeManager GetInitializedFakeManager(FakeManagerProvider fakeManagerProvider)

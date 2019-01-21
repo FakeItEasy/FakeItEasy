@@ -25,6 +25,8 @@ namespace FakeItEasy.Creation
 
         public IEnumerable<Expression<Func<Attribute>>> Attributes => this.attributes;
 
+        public string Name { get; set; }
+
         public void AddInterfaceToImplement(Type interfaceType)
         {
             Guard.AgainstNull(interfaceType, nameof(interfaceType));
@@ -56,6 +58,8 @@ namespace FakeItEasy.Creation
             public IEnumerable<Action<object>> ProxyConfigurationActions { get; } = Enumerable.Empty<Action<object>>();
 
             public IEnumerable<Expression<Func<Attribute>>> Attributes { get; } = Enumerable.Empty<Expression<Func<Attribute>>>();
+
+            public string Name => null;
         }
     }
 }
