@@ -34,7 +34,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             {
                 FakeManager manager = Fake.TryGetFakeManager(this.ExpectedValue);
                 return manager != null
-                    ? "Faked " + manager.FakeObjectType
+                    ? manager.FakeObjectDisplayName
                     : this.ExpectedValue.GetType().ToString();
             }
         }

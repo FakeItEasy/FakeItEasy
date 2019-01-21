@@ -84,6 +84,8 @@ namespace FakeItEasy.Core
 
         internal LinkedList<CallRuleMetadata> AllUserRules { get; }
 
+        internal string FakeObjectDisplayName => "Faked " + this.FakeObjectType;
+
         /// <summary>
         /// Adds a call rule to the fake object.
         /// </summary>
