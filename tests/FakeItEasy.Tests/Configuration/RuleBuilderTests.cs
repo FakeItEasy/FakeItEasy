@@ -23,7 +23,7 @@ namespace FakeItEasy.Tests.Configuration
             this.asserter = A.Fake<IFakeAsserter>();
             this.ruleProducedByFactory = A.Fake<BuildableCallRule>();
 
-            this.fakeManager = new FakeManager(typeof(object), new object());
+            this.fakeManager = new FakeManager(typeof(object), new object(), null);
 
             this.builder = this.CreateBuilder();
         }

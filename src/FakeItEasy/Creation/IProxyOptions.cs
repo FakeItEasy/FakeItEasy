@@ -14,5 +14,7 @@ namespace FakeItEasy.Creation
         IEnumerable<Action<object>> ProxyConfigurationActions { get; }
 
         IEnumerable<Expression<Func<Attribute>>> Attributes { get; }
+
+        string Name { get; }
     }
 }

@@ -779,7 +779,7 @@ namespace FakeItEasy.Specs
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
             yield return new object[] { A.Fake<IList<int>>(), "[]" };
-            yield return new object[] { A.Fake<Action<int>>(), typeof(Action<int>).ToString() };
+            yield return new object[] { A.Fake<Action<int>>(), "Faked " + typeof(Action<int>).ToString() };
         }
 
         public static IEnumerable<object[]> FakesWithBadToString()
@@ -790,7 +790,7 @@ namespace FakeItEasy.Specs
         public static IEnumerable<object[]> StrictFakes()
         {
             yield return new object[] { new Func<object>(() => A.Fake<object>(o => o.Strict())), "Faked " + typeof(object) };
-            yield return new object[] { new Func<object>(() => A.Fake<Action<int>>(o => o.Strict())), typeof(Action<int>).ToString() };
+            yield return new object[] { new Func<object>(() => A.Fake<Action<int>>(o => o.Strict())), "Faked " + typeof(Action<int>).ToString() };
         }
 
         public class Generic<T>

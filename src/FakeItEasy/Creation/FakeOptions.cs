@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Creation
+namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
@@ -96,6 +96,17 @@
         {
             this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
             return this;
+        }
+
+        public IFakeOptions<T> Named(string name)
+        {
+            this.proxyOptions.Name = name;
+            return this;
+        }
+
+        IFakeOptions IFakeOptions.Named(string name)
+        {
+            return (IFakeOptions)this.Named(name);
         }
 
         private static void ConfigureFakeToWrap(object fakedObject, object wrappedObject)

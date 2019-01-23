@@ -38,6 +38,7 @@ When creating fakes you can, through a fluent interface, specify options for how
 | Cause a fake to have [strict mocking semantics](strict-fakes.md)                                  | any fake      |
 | Configure all of a fake's methods to [use their original implementation](calling-base-methods.md) | classes       |
 | Create a fake that wraps another object                                                           | any fake      |
+| Create a named fake                                                                               | any fake      |
 
 Examples:
 
@@ -64,6 +65,11 @@ var foo = A.Fake<IFoo>(x => x.WithAttributes(() => new FooAttribute()));
 // Create wrapper - unconfigured calls will be forwarded to wrapped
 var wrapped = new FooClass("foo", "bar");
 var foo = A.Fake<IFoo>(x => x.Wrapping(wrapped));
+
+// Create a named fake, for easier identification in error messages and using ToString()
+// Note that for a faked delegate, ToString() won't return the name, because only the Invoke
+// method of a delegate can be configured.
+var foo = A.Fake<IFoo>(x => x.Named("Foo #1"));
 ```
 
 ##Implicit Creation Options

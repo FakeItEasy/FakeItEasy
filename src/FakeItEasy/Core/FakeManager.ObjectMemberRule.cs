@@ -65,7 +65,7 @@ namespace FakeItEasy.Core
                     return false;
                 }
 
-                fakeObjectCall.SetReturnValue("Faked " + fakeManager.FakeObjectType);
+                fakeObjectCall.SetReturnValue(fakeManager.FakeObjectDisplayName);
 
                 return true;
             }

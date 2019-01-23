@@ -532,6 +532,64 @@ namespace FakeItEasy.Specs
 "));
         }
 
+        [Scenario]
+        public void NamedFakeToString(object fake, string toStringResult)
+        {
+            "Given a named fake"
+                .x(() => fake = A.Fake<object>(o => o.Named("Foo")));
+
+            "When I call ToString() on the fake"
+                .x(() => toStringResult = fake.ToString());
+
+            "Then it returns the configured name of the fake"
+                .x(() => toStringResult.Should().Be("Foo"));
+        }
+
+        [Scenario]
+        public void NamedFakeAsArgument(object fake, Action<object> fakeAction, Exception exception)
+        {
+            "Given a named fake"
+                .x(() => fake = A.Fake<object>(o => o.Named("Foo")));
+
+            "And a fake action that takes an object as the parameter"
+                .x(() => fakeAction = A.Fake<Action<object>>());
+
+            "When I assert that the fake action was called with the named fake"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fakeAction(fake)).MustHaveHappened()));
+
+            "Then the exception message describes the named fake by its name"
+                .x(() => exception.Message.Should().Contain(".Invoke(obj: Foo)"));
+        }
+
+        [Scenario]
+        public void NamedFakeDelegateToString(Action fake, string toStringResult)
+        {
+            "Given a named delegate fake"
+                .x(() => fake = A.Fake<Action>(o => o.Named("Foo")));
+
+            "When I call ToString() on the fake"
+                .x(() => toStringResult = fake.ToString());
+
+            "Then it returns the name of the faked object type, because ToString() can't be faked for a delegate"
+                .x(() => toStringResult.Should().Be("System.Action"));
+        }
+
+        [Scenario]
+        public void NamedFakeDelegateAsArgument(Action fake, Action<Action> fakeAction, Exception exception)
+        {
+            "Given a named delegate fake"
+                .x(() => fake = A.Fake<Action>(o => o.Named("Foo")));
+
+            "And a fake action that takes an action as the parameter"
+                .x(() => fakeAction = A.Fake<Action<Action>>());
+
+            "When I assert that the fake action was called with the named fake"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fakeAction(fake)).MustHaveHappened()));
+
+            "Then the exception message describes the named fake by its name"
+                .x(() => exception.Message.Should().Contain(".Invoke(obj: Foo)"));
+        }
+
         protected abstract T CreateFake<T>() where T : class;
 
         protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder) where T : class;

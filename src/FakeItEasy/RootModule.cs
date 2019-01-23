@@ -91,8 +91,8 @@ namespace FakeItEasy
 
             registrar.Register<IFakeObjectCallFormatter>(fakeObjectCallFormatter);
 
-            FakeManager FakeManagerFactory(Type fakeObjectType, object proxy) =>
-                new FakeManager(fakeObjectType, proxy);
+            FakeManager FakeManagerFactory(Type fakeObjectType, object proxy, string name) =>
+                new FakeManager(fakeObjectType, proxy, name);
 
             IFakeCallProcessorProvider FakeCallProcessorProviderFactory(Type typeOfFake, IProxyOptions proxyOptions) =>
                 new FakeManagerProvider(FakeManagerFactory, fakeManagerAccessor, typeOfFake, proxyOptions);
