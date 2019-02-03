@@ -89,7 +89,13 @@ namespace FakeItEasy.Core
         /// </summary>
         public virtual IEnumerable<IFakeObjectCallRule> Rules
         {
-            get { return this.allUserRules.Select(x => x.Rule); }
+            get
+            {
+                lock (this.allUserRules)
+                {
+                    return this.allUserRules.Select(x => x.Rule).ToList();
+                }
+            }
         }
 
         internal string FakeObjectDisplayName =>
@@ -103,7 +109,10 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleFirst(IFakeObjectCallRule rule)
         {
-            this.allUserRules.AddFirst(new CallRuleMetadata { Rule = rule });
+            lock (this.allUserRules)
+            {
+                this.allUserRules.AddFirst(new CallRuleMetadata { Rule = rule });
+            }
         }
 
         /// <summary>
@@ -112,7 +121,10 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleLast(IFakeObjectCallRule rule)
         {
-            this.allUserRules.AddLast(new CallRuleMetadata { Rule = rule });
+            lock (this.allUserRules)
+            {
+                this.allUserRules.AddLast(new CallRuleMetadata { Rule = rule });
+            }
         }
 
         /// <summary>
@@ -123,8 +135,11 @@ namespace FakeItEasy.Core
         {
             Guard.AgainstNull(rule, nameof(rule));
 
-            var ruleToRemove = this.allUserRules.FirstOrDefault(x => x.Rule.Equals(rule));
-            this.allUserRules.Remove(ruleToRemove);
+            lock (this.allUserRules)
+            {
+                var ruleToRemove = this.allUserRules.FirstOrDefault(x => x.Rule.Equals(rule));
+                this.allUserRules.Remove(ruleToRemove);
+            }
         }
 
         /// <summary>
@@ -177,7 +192,10 @@ namespace FakeItEasy.Core
         /// </summary>
         internal virtual void ClearUserRules()
         {
-            this.allUserRules.Clear();
+            lock (this.allUserRules)
+            {
+                this.allUserRules.Clear();
+            }
         }
 
         /// <summary>
@@ -195,13 +213,16 @@ namespace FakeItEasy.Core
         /// <param name="newRule">The rule to add.</param>
         internal void AddRuleAfter(IFakeObjectCallRule previousRule, IFakeObjectCallRule newRule)
         {
-            var previousNode = this.allUserRules.Nodes().FirstOrDefault(n => n.Value.Rule == previousRule);
-            if (previousNode == null)
+            lock (this.allUserRules)
             {
-                throw new InvalidOperationException("The rule after which to add the new rule was not found in the list.");
-            }
+                var previousNode = this.allUserRules.Nodes().FirstOrDefault(n => n.Value.Rule == previousRule);
+                if (previousNode == null)
+                {
+                    throw new InvalidOperationException("The rule after which to add the new rule was not found in the list.");
+                }
 
-            this.allUserRules.AddAfter(previousNode, new CallRuleMetadata { Rule = newRule });
+                this.allUserRules.AddAfter(previousNode, new CallRuleMetadata { Rule = newRule });
+            }
         }
 
         // Apply the best rule to the call. There will always be at least one applicable rule.
@@ -216,14 +237,24 @@ namespace FakeItEasy.Core
                 }
             }
 
-            foreach (var rule in this.allUserRules)
+            CallRuleMetadata bestUserRule = null;
+            lock (this.allUserRules)
             {
-                if (rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes())
+                foreach (var rule in this.allUserRules)
                 {
-                    rule.CalledNumberOfTimes++;
-                    rule.Rule.Apply(fakeObjectCall);
-                    return;
+                    if (rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes())
+                    {
+                        bestUserRule = rule;
+                        break;
+                    }
                 }
+            }
+
+            if (bestUserRule != null)
+            {
+                bestUserRule.CalledNumberOfTimes++;
+                bestUserRule.Rule.Apply(fakeObjectCall);
+                return;
             }
 
             foreach (var postUserRule in PostUserRules)
@@ -233,6 +264,20 @@ namespace FakeItEasy.Core
                     postUserRule.Apply(fakeObjectCall);
                     return;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Provides exclusive access the list of defined user rules so a client can
+        /// inspect and optionally modify the list without interfering with concurrent
+        /// actions on other threads.
+        /// </summary>
+        /// <param name="action">An action that can inspect and update the user rules without fear of conflict.</param>
+        private void MutateUserRules(Action<LinkedList<CallRuleMetadata>> action)
+        {
+            lock (this.allUserRules)
+            {
+                action.Invoke(this.allUserRules);
             }
         }
 

@@ -19,35 +19,35 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
-                var fakeManager = Fake.GetFakeManager(fakeObjectCall.FakedObject);
-
-                // Setting the property adds a PropertyBehaviorRule to store the assigned value.
-                // The PropertyBehaviorRule is added at the end of user rules to avoid overriding
-                // explicit configurations of the property made with CallTo.
-                var existingRule = fakeManager
-                    .allUserRules
-                    .Select(metadata => metadata.Rule)
-                    .OfType<PropertyBehaviorRule>()
-                    .LastOrDefault(rule => rule.IsMatchForSetter(fakeObjectCall));
-
-                if (existingRule != null)
+                Fake.GetFakeManager(fakeObjectCall.FakedObject).MutateUserRules(allUserRules =>
                 {
-                    existingRule.Value = fakeObjectCall.Arguments.Last();
-                }
-                else
-                {
-                    var newRule = new CallRuleMetadata
+                    // Setting the property adds a PropertyBehaviorRule to store the assigned value.
+                    // The PropertyBehaviorRule is added at the end of user rules to avoid overriding
+                    // explicit configurations of the property made with CallTo.
+                    var existingRule = allUserRules
+                        .Select(metadata => metadata.Rule)
+                        .OfType<PropertyBehaviorRule>()
+                        .LastOrDefault(rule => rule.IsMatchForSetter(fakeObjectCall));
+
+                    if (existingRule != null)
                     {
-                        CalledNumberOfTimes = 1,
-                        Rule = new PropertyBehaviorRule(fakeObjectCall.Method)
+                        existingRule.Value = fakeObjectCall.Arguments.Last();
+                    }
+                    else
+                    {
+                        var newRule = new CallRuleMetadata
                         {
-                            Indices = fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1).ToArray(),
-                            Value = fakeObjectCall.Arguments.Last()
-                        }
-                    };
+                            CalledNumberOfTimes = 1,
+                            Rule = new PropertyBehaviorRule(fakeObjectCall.Method)
+                            {
+                                Indices = fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1).ToArray(),
+                                Value = fakeObjectCall.Arguments.Last()
+                            }
+                        };
 
-                    fakeManager.allUserRules.AddLast(newRule);
-                }
+                        allUserRules.AddLast(newRule);
+                    }
+                });
             }
         }
     }
