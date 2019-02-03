@@ -25,7 +25,7 @@ namespace FakeItEasy.Core
                 // The PropertyBehaviorRule is added at the end of user rules to avoid overriding
                 // explicit configurations of the property made with CallTo.
                 var existingRule = fakeManager
-                    .AllUserRules
+                    .allUserRules
                     .Select(metadata => metadata.Rule)
                     .OfType<PropertyBehaviorRule>()
                     .LastOrDefault(rule => rule.IsMatchForSetter(fakeObjectCall));
@@ -46,7 +46,7 @@ namespace FakeItEasy.Core
                         }
                     };
 
-                    fakeManager.AllUserRules.AddLast(newRule);
+                    fakeManager.allUserRules.AddLast(newRule);
                 }
             }
         }

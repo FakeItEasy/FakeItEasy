@@ -27,6 +27,8 @@ namespace FakeItEasy.Core
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
 
+        private readonly LinkedList<CallRuleMetadata> allUserRules;
+
         private ConcurrentQueue<CompletedFakeObjectCall> recordedCalls;
 
         private int lastSequenceNumber = -1;
@@ -50,7 +52,7 @@ namespace FakeItEasy.Core
             {
                 new EventRule(this),
             };
-            this.AllUserRules = new LinkedList<CallRuleMetadata>();
+            this.allUserRules = new LinkedList<CallRuleMetadata>();
 
             this.recordedCalls = new ConcurrentQueue<CompletedFakeObjectCall>();
             this.interceptionListeners = new LinkedList<IInterceptionListener>();
@@ -87,10 +89,8 @@ namespace FakeItEasy.Core
         /// </summary>
         public virtual IEnumerable<IFakeObjectCallRule> Rules
         {
-            get { return this.AllUserRules.Select(x => x.Rule); }
+            get { return this.allUserRules.Select(x => x.Rule); }
         }
-
-        internal LinkedList<CallRuleMetadata> AllUserRules { get; }
 
         internal string FakeObjectDisplayName =>
             string.IsNullOrEmpty(this.FakeObjectName)
@@ -103,7 +103,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleFirst(IFakeObjectCallRule rule)
         {
-            this.AllUserRules.AddFirst(new CallRuleMetadata { Rule = rule });
+            this.allUserRules.AddFirst(new CallRuleMetadata { Rule = rule });
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleLast(IFakeObjectCallRule rule)
         {
-            this.AllUserRules.AddLast(new CallRuleMetadata { Rule = rule });
+            this.allUserRules.AddLast(new CallRuleMetadata { Rule = rule });
         }
 
         /// <summary>
@@ -123,8 +123,8 @@ namespace FakeItEasy.Core
         {
             Guard.AgainstNull(rule, nameof(rule));
 
-            var ruleToRemove = this.AllUserRules.FirstOrDefault(x => x.Rule.Equals(rule));
-            this.AllUserRules.Remove(ruleToRemove);
+            var ruleToRemove = this.allUserRules.FirstOrDefault(x => x.Rule.Equals(rule));
+            this.allUserRules.Remove(ruleToRemove);
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace FakeItEasy.Core
         /// </summary>
         internal virtual void ClearUserRules()
         {
-            this.AllUserRules.Clear();
+            this.allUserRules.Clear();
         }
 
         /// <summary>
@@ -195,13 +195,13 @@ namespace FakeItEasy.Core
         /// <param name="newRule">The rule to add.</param>
         internal void AddRuleAfter(IFakeObjectCallRule previousRule, IFakeObjectCallRule newRule)
         {
-            var previousNode = this.AllUserRules.Nodes().FirstOrDefault(n => n.Value.Rule == previousRule);
+            var previousNode = this.allUserRules.Nodes().FirstOrDefault(n => n.Value.Rule == previousRule);
             if (previousNode == null)
             {
                 throw new InvalidOperationException("The rule after which to add the new rule was not found in the list.");
             }
 
-            this.AllUserRules.AddAfter(previousNode, new CallRuleMetadata { Rule = newRule });
+            this.allUserRules.AddAfter(previousNode, new CallRuleMetadata { Rule = newRule });
         }
 
         // Apply the best rule to the call. There will always be at least one applicable rule, and the rule used will
@@ -220,7 +220,7 @@ namespace FakeItEasy.Core
                 }
             }
 
-            foreach (var rule in this.AllUserRules)
+            foreach (var rule in this.allUserRules)
             {
                 if (rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes())
                 {

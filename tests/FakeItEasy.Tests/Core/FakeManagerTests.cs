@@ -323,7 +323,7 @@ namespace FakeItEasy.Tests.Core
             fake.AddRuleLast(rule);
 
             // Assert
-            fake.AllUserRules.Last.Value.Rule.Should().BeSameAs(rule);
+            fake.Rules.Last().Should().BeSameAs(rule);
         }
 
         [Fact]
@@ -352,7 +352,7 @@ namespace FakeItEasy.Tests.Core
             manager.ClearUserRules();
 
             // Assert
-            manager.AllUserRules.Should().BeEmpty();
+            manager.Rules.Should().BeEmpty();
         }
 
         [Fact]

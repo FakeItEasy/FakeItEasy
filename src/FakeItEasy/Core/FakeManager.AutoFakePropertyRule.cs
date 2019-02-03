@@ -29,7 +29,7 @@ namespace FakeItEasy.Core
                                       CalledNumberOfTimes = 1
                                   };
 
-                Fake.GetFakeManager(fakeObjectCall.FakedObject).AllUserRules.AddFirst(newRule);
+                Fake.GetFakeManager(fakeObjectCall.FakedObject).allUserRules.AddFirst(newRule);
                 newRule.Rule.Apply(fakeObjectCall);
             }
         }
