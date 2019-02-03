@@ -204,11 +204,7 @@ namespace FakeItEasy.Core
             this.allUserRules.AddAfter(previousNode, new CallRuleMetadata { Rule = newRule });
         }
 
-        // Apply the best rule to the call. There will always be at least one applicable rule, and the rule used will
-        // be returned in the ruleUsed out parameter. An out parameter was used instead of the return value because it
-        // made it easier to return the value even when the rule throws an exception. Another solution might have been
-        // to catch the exception, which would then need to be bundled into a return object with the rule and eventually
-        // rethrown.
+        // Apply the best rule to the call. There will always be at least one applicable rule.
         private void ApplyBestRule(IInterceptedFakeObjectCall fakeObjectCall)
         {
             foreach (var preUserRule in this.preUserRules)
