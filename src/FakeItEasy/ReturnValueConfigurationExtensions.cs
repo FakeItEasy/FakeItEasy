@@ -1,7 +1,7 @@
 namespace FakeItEasy
 {
     using System;
-    using System.Collections.Generic;
+    using System.Collections.Concurrent;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 #if FEATURE_NETCORE_REFLECTION
@@ -308,8 +308,12 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(configuration, nameof(configuration));
 
-            var queue = new Queue<T>(values);
-            configuration.ReturnsLazily(x => queue.Dequeue()).NumberOfTimes(queue.Count);
+            var queue = new ConcurrentQueue<T>(values);
+            configuration.ReturnsLazily(x =>
+            {
+                queue.TryDequeue(out T returnValue);
+                return returnValue;
+            }).NumberOfTimes(queue.Count);
         }
 
         /// <summary>
@@ -324,13 +328,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of Task<T> return values.")]
         public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<Task<T>> configuration, params T[] values)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-
-            var taskValues = values.Select(value => TaskHelper.FromResult(value));
-
-            var queue = new Queue<Task<T>>(taskValues);
-
-            configuration.ReturnsLazily(x => queue.Dequeue()).NumberOfTimes(queue.Count);
+            var taskValues = values.Select(TaskHelper.FromResult).ToArray();
+            configuration.ReturnsNextFromSequence(taskValues);
         }
     }
 }
