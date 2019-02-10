@@ -852,6 +852,30 @@ namespace FakeItEasy.Tests
             A.CallTo(() => returnedConfig.NumberOfTimes(3)).MustHaveHappened();
         }
 
+        [Fact]
+        public void ReturnsNextFromSequence_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Expression<Action> call = () => A.Fake<IReturnValueConfiguration<string>>().ReturnsNextFromSequence();
+            call.Should().BeNullGuarded();
+        }
+
+        [Fact]
+        public void ReturnsNextFromSequence_for_task_should_be_null_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Expression<Action> call = () => A.Fake<IReturnValueConfiguration<Task<string>>>().ReturnsNextFromSequence<string>();
+            call.Should().BeNullGuarded();
+        }
+
         private static void AssertThatSignatureMismatchExceptionIsThrown(Action act, string fakeSignature, string returnsLazilySignature)
         {
             // Arrange

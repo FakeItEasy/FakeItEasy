@@ -307,13 +307,9 @@ namespace FakeItEasy
         public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(values, nameof(values));
 
-            var queue = new ConcurrentQueue<T>(values);
-            configuration.ReturnsLazily(x =>
-            {
-                queue.TryDequeue(out T returnValue);
-                return returnValue;
-            }).NumberOfTimes(queue.Count);
+            configuration.ReturnsNextFromQueue(new ConcurrentQueue<T>(values));
         }
 
         /// <summary>
@@ -328,8 +324,19 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of Task<T> return values.")]
         public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<Task<T>> configuration, params T[] values)
         {
-            var taskValues = values.Select(TaskHelper.FromResult).ToArray();
-            configuration.ReturnsNextFromSequence(taskValues);
+            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(values, nameof(values));
+
+            configuration.ReturnsNextFromQueue(new ConcurrentQueue<Task<T>>(values.Select(TaskHelper.FromResult)));
+        }
+
+        private static void ReturnsNextFromQueue<T>(this IReturnValueConfiguration<T> configuration, ConcurrentQueue<T> queue)
+        {
+            configuration.ReturnsLazily(x =>
+            {
+                queue.TryDequeue(out T returnValue);
+                return returnValue;
+            }).NumberOfTimes(queue.Count);
         }
     }
 }
