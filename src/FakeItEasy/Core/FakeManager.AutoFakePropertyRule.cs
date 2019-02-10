@@ -20,16 +20,18 @@ namespace FakeItEasy.Core
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
                 var newRule = new CallRuleMetadata
-                                  {
-                                      Rule = new PropertyBehaviorRule(fakeObjectCall.Method)
-                                      {
-                                          Value = fakeObjectCall.GetDefaultReturnValue(),
-                                          Indices = fakeObjectCall.Arguments.ToArray(),
-                                      },
-                                      CalledNumberOfTimes = 1
-                                  };
+                {
+                    Rule = new PropertyBehaviorRule(fakeObjectCall.Method)
+                    {
+                        Value = fakeObjectCall.GetDefaultReturnValue(),
+                        Indices = fakeObjectCall.Arguments.ToArray(),
+                    },
+                    CalledNumberOfTimes = 1
+                };
 
-                Fake.GetFakeManager(fakeObjectCall.FakedObject).AllUserRules.AddFirst(newRule);
+                Fake.GetFakeManager(fakeObjectCall.FakedObject).MutateUserRules(
+                    allUserRules => allUserRules.AddFirst(newRule));
+
                 newRule.Rule.Apply(fakeObjectCall);
             }
         }
