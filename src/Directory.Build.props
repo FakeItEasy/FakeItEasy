@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MinVer" Version="1.0.0-beta.4" PrivateAssets="All" />
+    <PackageReference Include="MinVer" Version="1.0.0-rc.1" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
