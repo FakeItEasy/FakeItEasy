@@ -3,7 +3,7 @@
 #Introduction
 
 There was a good question on Stack Overflow that asks what
-distinguishes FakeItEasy from other frameworks. creator of FakeItEasy,
+distinguishes FakeItEasy from other frameworks. Creator of FakeItEasy,
 Patrik H&auml;gne, answered the question there but we reproduce the
 answer here. Note that the text has been preserved, and particular
 constructs referenced (such as `DummyDefinitions`) have changed or
