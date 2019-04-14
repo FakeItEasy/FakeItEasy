@@ -159,16 +159,15 @@ namespace FakeItEasy.Core
                 listenerNode.Value.OnBeforeCallIntercepted(fakeObjectCall);
             }
 
+            var readonlyCall = fakeObjectCall.AsReadOnly();
+            this.RecordCall(readonlyCall);
+
             try
             {
                 this.ApplyBestRule(fakeObjectCall);
             }
             finally
             {
-                var readonlyCall = fakeObjectCall.AsReadOnly();
-
-                this.RecordCall(readonlyCall);
-
                 for (var listenerNode = this.interceptionListeners.Last; listenerNode != null; listenerNode = listenerNode.Previous)
                 {
                     listenerNode.Value.OnAfterCallIntercepted(readonlyCall);
