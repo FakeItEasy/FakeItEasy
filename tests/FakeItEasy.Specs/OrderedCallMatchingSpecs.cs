@@ -503,5 +503,39 @@ namespace FakeItEasy.Specs
             "Then the second assertion should fail"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
         }
+
+        // Reported as issue 1583 (https://github.com/FakeItEasy/FakeItEasy/issues/1583).
+        [Scenario]
+        public static void OrderedAssertionOnCallThatCallsAnotherFakedMethod(
+            ClassWithAMethodThatCallsASibling fake,
+            IOrderableCallAssertion lastAssertion,
+            Exception exception)
+        {
+            "Given a class with a method that calls another class method"
+                .See<ClassWithAMethodThatCallsASibling>();
+
+            "And a Fake of that type, configured to call base methods"
+                .x(() => fake = A.Fake<ClassWithAMethodThatCallsASibling>(options => options.CallsBaseMethods()));
+
+            "And I call the outer method"
+                .x(() => fake.OuterMethod());
+
+            "When I assert that the outer method was called"
+                .x(() => lastAssertion = A.CallTo(() => fake.OuterMethod()).MustHaveHappened());
+
+            "And then I assert that the inner method was called afterward"
+                .x(() => exception = Record.Exception(() =>
+                    lastAssertion.Then(A.CallTo(() => fake.InnerMethod()).MustHaveHappened())));
+
+            "Then the assertions pass"
+                .x(() => exception.Should().BeNull());
+        }
+
+        public abstract class ClassWithAMethodThatCallsASibling
+        {
+            public virtual void OuterMethod() => this.InnerMethod();
+
+            public abstract void InnerMethod();
+        }
     }
 }
