@@ -4,7 +4,7 @@
 
     <PropertyGroup>
         <NoWarn>$(NoWarn),SA0001</NoWarn>
-        <SimpleExecVersion>6.0.0-beta.1</SimpleExecVersion>
+        <SimpleExecVersion>6.0.0</SimpleExecVersion>
         <NuGetVersion>4.1.0</NuGetVersion>
         <OctokitVersion>0.31.0</OctokitVersion>
     </PropertyGroup>
