@@ -58,9 +58,6 @@ namespace FakeItEasy.Specs
             "And the options builder updates the options to wrap an object"
                 .See<WrapsAValidObjectOptionsBuilder>(_ => _.BuildOptions);
 
-            "And calls to the wrapped object are to be recorded"
-                .See<WrapsAValidObjectOptionsBuilder>(_ => _.BuildOptions);
-
             "When I create a fake of the type"
                 .x(() => fake = A.Fake<WrapsAValidObject>());
 
