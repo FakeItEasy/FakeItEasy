@@ -58,9 +58,6 @@ namespace FakeItEasy.Specs
             "And the options builder updates the options to wrap an object"
                 .See<WrapsAValidObjectOptionsBuilder>(_ => _.BuildOptions);
 
-            "And calls to the wrapped object are to be recorded"
-                .See<WrapsAValidObjectOptionsBuilder>(_ => _.BuildOptions);
-
             "When I create a fake of the type"
                 .x(() => fake = A.Fake<WrapsAValidObject>());
 
@@ -68,7 +65,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake.AMethod());
 
             "Then the call is delegated to the wrapped object"
-                .x(() => A.CallTo(() => WrapsAValidObjectOptionsBuilder.WrappedObject.AMethod()).MustHaveHappened());
+                .x(() => WrapsAValidObjectOptionsBuilder.WrappedObject.WasCalled.Should().BeTrue());
         }
 
         [Scenario]
@@ -398,11 +395,14 @@ namespace FakeItEasy.Specs
 
     public class AWrappedType : WrapsAValidObject
     {
+        public bool WasCalled { get; private set; } = false;
+
+        public override void AMethod() => this.WasCalled = true;
     }
 
     public class WrapsAValidObjectOptionsBuilder : ConventionBasedOptionsBuilder
     {
-        public static AWrappedType WrappedObject { get; } = A.Fake<AWrappedType>();
+        public static AWrappedType WrappedObject { get; } = new AWrappedType();
 
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
