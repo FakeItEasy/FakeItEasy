@@ -49,13 +49,13 @@ namespace FakeItEasy.Creation
         {
             private readonly ResolveStrategy[] strategies;
             private readonly ConcurrentDictionary<Type, ResolveStrategy> strategyCache;
-            private readonly HashSet<Type> typesCurrentlyBeingResolved;
+            private readonly LoopDetectingResolutionContext resolutionContext;
 
             public LoopDetectingResolver(ResolveStrategy[] strategies, ConcurrentDictionary<Type, ResolveStrategy> strategyCache)
             {
                 this.strategies = strategies;
                 this.strategyCache = strategyCache;
-                this.typesCurrentlyBeingResolved = new HashSet<Type>();
+                this.resolutionContext = new LoopDetectingResolutionContext();
             }
 
             public CreationResult TryResolveDummyValue(Type typeOfDummy)
@@ -65,7 +65,7 @@ namespace FakeItEasy.Creation
                     return cachedStrategy.TryCreateDummyValue(typeOfDummy, this);
                 }
 
-                if (!this.TryBeginToResolveType(typeOfDummy))
+                if (!this.resolutionContext.TryBeginToResolve(typeOfDummy))
                 {
                     return CreationResult.FailedToCreateDummy(typeOfDummy, "Recursive dependency detected. Already resolving " + typeOfDummy + '.');
                 }
@@ -73,7 +73,7 @@ namespace FakeItEasy.Creation
                 var creationResult = this.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy);
                 if (creationResult.WasSuccessful)
                 {
-                    this.OnSuccessfulResolve(typeOfDummy);
+                    this.resolutionContext.OnSuccessfulResolve(typeOfDummy);
                 }
 
                 return creationResult;
@@ -97,10 +97,6 @@ namespace FakeItEasy.Creation
                 this.strategyCache.TryAdd(typeOfDummy, new UnableToResolveStrategy(creationResult));
                 return creationResult;
             }
-
-            private bool TryBeginToResolveType(Type typeOfDummy) => this.typesCurrentlyBeingResolved.Add(typeOfDummy);
-
-            private void OnSuccessfulResolve(Type typeOfDummy) => this.typesCurrentlyBeingResolved.Remove(typeOfDummy);
         }
 
         private class ResolveByActivatingValueTypeStrategy : ResolveStrategy
