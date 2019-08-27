@@ -394,6 +394,39 @@ namespace FakeItEasy.Specs
       Could not find a parameterless constructor."));
         }
 
+        [Scenario]
+        public void AvoidLongSelfReferentialConstructor(
+            ClassWithLongSelfReferentialConstructor dummy1,
+            ClassWithLongSelfReferentialConstructor dummy2)
+        {
+            "Given a class with multiple constructors"
+                .See<ClassWithLongSelfReferentialConstructor>();
+
+            "And the class has a one-parameter constructor not using its own type"
+                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object)));
+
+            "And the class has a two-parameter constructor using its own type"
+                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object), default));
+
+            "When I create a dummy of the class"
+                .x(() => dummy1 = A.Dummy<ClassWithLongSelfReferentialConstructor>());
+
+            "And I create another dummy of the class"
+                .x(() => dummy2 = A.Dummy<ClassWithLongSelfReferentialConstructor>());
+
+            "Then the first dummy is not null"
+                .x(() => dummy1.Should().NotBeNull());
+
+            "And it was created using the one-parameter constructor"
+                .x(() => dummy1.NumberOfConstructorParameters.Should().Be(1));
+
+            "And the second dummy is not null"
+                .x(() => dummy2.Should().NotBeNull());
+
+            "And it was created using the one-parameter constructor"
+                .x(() => dummy2.NumberOfConstructorParameters.Should().Be(1));
+        }
+
         public class ClassWithNoPublicConstructors
         {
             private ClassWithNoPublicConstructors()
