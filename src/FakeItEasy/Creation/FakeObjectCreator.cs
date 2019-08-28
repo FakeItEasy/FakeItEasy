@@ -30,6 +30,30 @@ namespace FakeItEasy.Creation
             IDummyValueResolver resolver,
             LoopDetectingResolutionContext resolutionContext)
         {
+            if (!resolutionContext.TryBeginToResolve(typeOfFake))
+            {
+                return CreationResult.FailedToCreateFake(typeOfFake, "Recursive dependency detected. Already resolving " + typeOfFake + '.');
+            }
+
+            var result = this.CreateFakeWithoutLoopDetection(
+                typeOfFake,
+                proxyOptions,
+                resolver,
+                resolutionContext);
+            if (result.WasSuccessful)
+            {
+                resolutionContext.OnSuccessfulResolve(typeOfFake);
+            }
+
+            return result;
+        }
+
+        public CreationResult CreateFakeWithoutLoopDetection(
+            Type typeOfFake,
+            IProxyOptions proxyOptions,
+            IDummyValueResolver resolver,
+            LoopDetectingResolutionContext resolutionContext)
+        {
             if (typeOfFake.GetTypeInfo().IsInterface)
             {
                 return this.defaultCreationStrategy.CreateFakeInterface(typeOfFake, proxyOptions);

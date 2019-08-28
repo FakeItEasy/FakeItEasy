@@ -16,7 +16,7 @@ namespace FakeItEasy.Tests.Creation
         public DummyValueResolverTests()
         {
             this.fakeObjectCreator = A.Fake<IFakeObjectCreator>();
-            A.CallTo(() => this.fakeObjectCreator.CreateFake(
+            A.CallTo(() => this.fakeObjectCreator.CreateFakeWithoutLoopDetection(
                     A<Type>._,
                     A<IProxyOptions>._,
                     A<IDummyValueResolver>._,
@@ -254,7 +254,7 @@ namespace FakeItEasy.Tests.Creation
 
         private void StubFakeObjectCreatorWithValue<T>(T value)
         {
-            A.CallTo(() => this.fakeObjectCreator.CreateFake(
+            A.CallTo(() => this.fakeObjectCreator.CreateFakeWithoutLoopDetection(
                     typeof(T),
                     A<IProxyOptions>._,
                     A<IDummyValueResolver>._,

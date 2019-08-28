@@ -102,10 +102,16 @@ namespace FakeItEasy.Creation
             private IFakeObjectCreator FakeCreator { get; }
 
             public override CreationResult TryCreateDummyValue(
-                    Type typeOfDummy,
-                    IDummyValueResolver resolver,
-                    LoopDetectingResolutionContext resolutionContext) =>
-                this.FakeCreator.CreateFake(typeOfDummy, new ProxyOptions(), resolver, resolutionContext);
+                Type typeOfDummy,
+                IDummyValueResolver resolver,
+                LoopDetectingResolutionContext resolutionContext)
+            {
+                return this.FakeCreator.CreateFakeWithoutLoopDetection(
+                    typeOfDummy,
+                    new ProxyOptions(),
+                    resolver,
+                    resolutionContext);
+            }
         }
 
         private class ResolveByCreatingTaskStrategy : ResolveStrategy
