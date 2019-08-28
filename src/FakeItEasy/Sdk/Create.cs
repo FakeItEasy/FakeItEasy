@@ -77,7 +77,7 @@ namespace FakeItEasy.Sdk
         {
             Guard.AgainstNull(typeOfDummy, nameof(typeOfDummy));
 
-            return FakeAndDummyManager.CreateDummy(typeOfDummy);
+            return FakeAndDummyManager.CreateDummy(typeOfDummy, new LoopDetectingResolutionContext());
         }
 
         /// <summary>

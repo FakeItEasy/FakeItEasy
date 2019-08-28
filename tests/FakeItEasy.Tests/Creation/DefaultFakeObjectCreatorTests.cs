@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests.Creation
 
         private static void StubResolverWithDummyValue<T>(IDummyValueResolver resolver, T dummyValue)
         {
-            A.CallTo(() => resolver.TryResolveDummyValue(typeof(T)))
+            A.CallTo(() => resolver.TryResolveDummyValue(typeof(T), A<LoopDetectingResolutionContext>._))
                 .Returns(CreationResult.SuccessfullyCreated(dummyValue));
         }
 

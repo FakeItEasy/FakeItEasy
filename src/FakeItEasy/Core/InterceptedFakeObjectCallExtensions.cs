@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using FakeItEasy.Creation;
 
@@ -6,15 +6,9 @@
     {
         private static IFakeAndDummyManager DummyManager => ServiceLocator.Resolve<IFakeAndDummyManager>();
 
-        public static object GetDefaultReturnValue(this IInterceptedFakeObjectCall call)
-        {
-            object result;
-            if (!DummyManager.TryCreateDummy(call.Method.ReturnType, out result))
-            {
-                return call.Method.ReturnType.GetDefaultValue();
-            }
-
-            return result;
-        }
+        public static object GetDefaultReturnValue(this IInterceptedFakeObjectCall call) =>
+            DummyManager.TryCreateDummy(call.Method.ReturnType, new LoopDetectingResolutionContext(), out object result)
+                ? result
+                : call.Method.ReturnType.GetDefaultValue();
     }
 }

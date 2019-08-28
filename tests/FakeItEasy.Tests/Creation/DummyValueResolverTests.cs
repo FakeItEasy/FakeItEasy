@@ -40,7 +40,7 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(dummyForContainer.GetType());
+            var result = resolver.TryResolveDummyValue(dummyForContainer.GetType(), new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
@@ -56,7 +56,9 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(typeof(TypeThatCanNotBeInstantiated));
+            var result = resolver.TryResolveDummyValue(
+                typeof(TypeThatCanNotBeInstantiated),
+                new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeFalse();
@@ -73,7 +75,7 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(typeof(IFoo));
+            var result = resolver.TryResolveDummyValue(typeof(IFoo), new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
@@ -89,7 +91,7 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(typeof(int));
+            var result = resolver.TryResolveDummyValue(typeof(int), new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
@@ -105,7 +107,9 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(typeof(ClassWithDefaultConstructor));
+            var result = resolver.TryResolveDummyValue(
+                typeof(ClassWithDefaultConstructor),
+                new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
@@ -122,7 +126,9 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(typeof(TypeWithResolvableConstructorArguments<string, IFoo>));
+            var result = resolver.TryResolveDummyValue(
+                typeof(TypeWithResolvableConstructorArguments<string, IFoo>),
+                new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
@@ -138,7 +144,9 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(typeof(TypeWithCircularDependency));
+            var result = resolver.TryResolveDummyValue(
+                typeof(TypeWithCircularDependency),
+                new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeFalse();
@@ -152,10 +160,10 @@ namespace FakeItEasy.Tests.Creation
                 this.CreateDummyFactoryThatMakes("dummy value"),
                 this.fakeObjectCreator);
 
-            resolver.TryResolveDummyValue(typeof(string));
+            resolver.TryResolveDummyValue(typeof(string), new LoopDetectingResolutionContext());
 
             // Act
-            var result = resolver.TryResolveDummyValue(typeof(string));
+            var result = resolver.TryResolveDummyValue(typeof(string), new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeTrue();
@@ -171,7 +179,9 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(typeof(TypeWithDefaultConstructorThatThrows));
+            var result = resolver.TryResolveDummyValue(
+                typeof(TypeWithDefaultConstructorThatThrows),
+                new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeFalse();
@@ -186,7 +196,9 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(typeof(TypeWithMultipleConstructorsOfDifferentWidth));
+            var result = resolver.TryResolveDummyValue(
+                typeof(TypeWithMultipleConstructorsOfDifferentWidth),
+                new LoopDetectingResolutionContext());
             var typedDummy = (TypeWithMultipleConstructorsOfDifferentWidth)result.Result;
 
             // Assert
@@ -205,7 +217,7 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(restrictedType);
+            var result = resolver.TryResolveDummyValue(restrictedType, new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeFalse();
@@ -222,7 +234,7 @@ namespace FakeItEasy.Tests.Creation
                 this.fakeObjectCreator);
 
             // Act
-            var result = resolver.TryResolveDummyValue(typeof(Lazy<IFoo>));
+            var result = resolver.TryResolveDummyValue(typeof(Lazy<IFoo>), new LoopDetectingResolutionContext());
 
             // Assert
             result.WasSuccessful.Should().BeTrue();

@@ -135,7 +135,11 @@ namespace FakeItEasy.Creation
                         : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
                 }
 
-                return this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, resolver);
+                return this.TryCreateFakeWithDummyArgumentsForConstructor(
+                    typeOfFake,
+                    proxyOptions,
+                    resolver,
+                    new LoopDetectingResolutionContext());
             }
 
             public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
@@ -175,7 +179,11 @@ namespace FakeItEasy.Creation
                     : null;
             }
 
-            private CreationResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver)
+            private CreationResult TryCreateFakeWithDummyArgumentsForConstructor(
+                Type typeOfFake,
+                IProxyOptions proxyOptions,
+                IDummyValueResolver resolver,
+                LoopDetectingResolutionContext resolutionContext)
             {
                 // Save the constructors as we try them. Avoids eager evaluation and double evaluation
                 // of constructors enumerable.
@@ -183,7 +191,7 @@ namespace FakeItEasy.Creation
 
                 if (this.parameterTypesCache.TryGetValue(typeOfFake, out Type[] cachedParameterTypes))
                 {
-                    var constructor = new ResolvedConstructor(cachedParameterTypes, resolver);
+                    var constructor = new ResolvedConstructor(cachedParameterTypes, resolver, resolutionContext);
                     if (constructor.WasSuccessfullyResolved)
                     {
                         var argumentsForConstructor = GetArgumentsForConstructor(constructor);
@@ -203,7 +211,7 @@ namespace FakeItEasy.Creation
                 {
                     foreach (var parameterTypes in GetUsableParameterTypeListsInOrder(typeOfFake))
                     {
-                        var constructor = new ResolvedConstructor(parameterTypes, resolver);
+                        var constructor = new ResolvedConstructor(parameterTypes, resolver, resolutionContext);
                         if (constructor.WasSuccessfullyResolved)
                         {
                             var argumentsForConstructor = GetArgumentsForConstructor(constructor);

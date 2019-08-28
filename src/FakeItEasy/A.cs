@@ -83,7 +83,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of dummy.")]
         public static T Dummy<T>()
         {
-            return (T)FakeAndDummyManager.CreateDummy(typeof(T));
+            return (T)FakeAndDummyManager.CreateDummy(typeof(T), new LoopDetectingResolutionContext());
         }
 
         /// <summary>
