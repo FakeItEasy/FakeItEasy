@@ -105,7 +105,7 @@ namespace FakeItEasy.Creation
                     Type typeOfDummy,
                     IDummyValueResolver resolver,
                     LoopDetectingResolutionContext resolutionContext) =>
-                this.FakeCreator.CreateFake(typeOfDummy, new ProxyOptions(), resolver);
+                this.FakeCreator.CreateFake(typeOfDummy, new ProxyOptions(), resolver, resolutionContext);
         }
 
         private class ResolveByCreatingTaskStrategy : ResolveStrategy

@@ -32,7 +32,11 @@ namespace FakeItEasy.Tests.Creation
             var options = new ProxyOptions();
 
             // Act
-            this.fakeObjectCreator.CreateFake(typeof(TypeWithMultipleConstructors), options, dummyValueResolver);
+            this.fakeObjectCreator.CreateFake(
+                typeof(TypeWithMultipleConstructors),
+                options,
+                dummyValueResolver,
+                new LoopDetectingResolutionContext());
 
             // Assert
             A.CallTo(() => this.fakeCallProcessorProviderFactory(typeof(TypeWithMultipleConstructors), options))

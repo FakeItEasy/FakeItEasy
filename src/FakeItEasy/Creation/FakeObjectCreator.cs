@@ -24,7 +24,11 @@ namespace FakeItEasy.Creation
             this.delegateCreationStrategy = new DelegateCreationStrategy(delegateMethodInterceptionValidator, fakeCallProcessorProviderFactory);
         }
 
-        public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver)
+        public CreationResult CreateFake(
+            Type typeOfFake,
+            IProxyOptions proxyOptions,
+            IDummyValueResolver resolver,
+            LoopDetectingResolutionContext resolutionContext)
         {
             if (typeOfFake.GetTypeInfo().IsInterface)
             {
@@ -33,7 +37,7 @@ namespace FakeItEasy.Creation
 
             return DelegateCreationStrategy.IsResponsibleForCreating(typeOfFake)
                 ? this.delegateCreationStrategy.CreateFake(typeOfFake, proxyOptions)
-                : this.defaultCreationStrategy.CreateFake(typeOfFake, proxyOptions, resolver);
+                : this.defaultCreationStrategy.CreateFake(typeOfFake, proxyOptions, resolver, resolutionContext);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
@@ -119,7 +123,11 @@ namespace FakeItEasy.Creation
                     : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
             }
 
-            public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver)
+            public CreationResult CreateFake(
+                Type typeOfFake,
+                IProxyOptions proxyOptions,
+                IDummyValueResolver resolver,
+                LoopDetectingResolutionContext resolutionContext)
             {
                 if (!CastleDynamicProxyGenerator.CanGenerateProxy(typeOfFake, out string reasonCannotGenerate))
                 {
@@ -139,7 +147,7 @@ namespace FakeItEasy.Creation
                     typeOfFake,
                     proxyOptions,
                     resolver,
-                    new LoopDetectingResolutionContext());
+                    resolutionContext);
             }
 
             public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>

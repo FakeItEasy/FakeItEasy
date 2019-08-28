@@ -21,9 +21,10 @@ namespace FakeItEasy.Creation
         /// </summary>
         /// <param name="typeOfFake">The type of fake object to generate.</param>
         /// <param name="optionsBuilder">Builds options for the proxy that will act as the fake.</param>
+        /// <param name="resolutionContext">Used to detect loops in the type-resolution graph.</param>
         /// <returns>A fake object.</returns>
         /// <exception cref="FakeItEasy.Core.FakeCreationException">The current IProxyGenerator is not able to generate a fake of the specified type.</exception>
-        object CreateFake(Type typeOfFake, Action<IFakeOptions> optionsBuilder);
+        object CreateFake(Type typeOfFake, Action<IFakeOptions> optionsBuilder, LoopDetectingResolutionContext resolutionContext);
 
         /// <summary>
         /// Tries to create a dummy of the specified type.
