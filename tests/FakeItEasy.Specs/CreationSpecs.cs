@@ -590,6 +590,39 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().Contain(".Invoke(obj: Foo)"));
         }
 
+        [Scenario]
+        public void AvoidLongSelfReferentialConstructor(
+            ClassWithLongSelfReferentialConstructor fake1,
+            ClassWithLongSelfReferentialConstructor fake2)
+        {
+            "Given a class with multiple constructors"
+                .See<ClassWithLongSelfReferentialConstructor>();
+
+            "And the class has a one-parameter constructor not using its own type"
+                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object)));
+
+            "And the class has a two-parameter constructor using its own type"
+                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object), default));
+
+            "When I create a fake of the class"
+                .x(() => fake1 = A.Fake<ClassWithLongSelfReferentialConstructor>());
+
+            "And I create another fake of the class"
+                .x(() => fake2 = A.Fake<ClassWithLongSelfReferentialConstructor>());
+
+            "Then the first fake is not null"
+                .x(() => fake1.Should().NotBeNull());
+
+            "And it was created using the one-parameter constructor"
+                .x(() => fake1.NumberOfConstructorParameters.Should().Be(1));
+
+            "And the second fake is not null"
+                .x(() => fake2.Should().NotBeNull());
+
+            "And it was created using the one-parameter constructor"
+                .x(() => fake2.NumberOfConstructorParameters.Should().Be(1));
+        }
+
         protected abstract T CreateFake<T>() where T : class;
 
         protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder) where T : class;

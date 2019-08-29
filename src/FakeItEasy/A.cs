@@ -29,7 +29,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
         public static T Fake<T>() where T : class
         {
-            return (T)FakeAndDummyManager.CreateFake(typeof(T), null);
+            return (T)FakeAndDummyManager.CreateFake(typeof(T), null, new LoopDetectingResolutionContext());
         }
 
         /// <summary>
@@ -44,7 +44,10 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
 
-            return (T)FakeAndDummyManager.CreateFake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
+            return (T)FakeAndDummyManager.CreateFake(
+                typeof(T),
+                options => optionsBuilder((IFakeOptions<T>)options),
+                new LoopDetectingResolutionContext());
         }
 
         /// <summary>
@@ -83,7 +86,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of dummy.")]
         public static T Dummy<T>()
         {
-            return (T)FakeAndDummyManager.CreateDummy(typeof(T));
+            return (T)FakeAndDummyManager.CreateDummy(typeof(T), new LoopDetectingResolutionContext());
         }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace FakeItEasy.Sdk
         {
             Guard.AgainstNull(typeOfFake, nameof(typeOfFake));
 
-            return FakeAndDummyManager.CreateFake(typeOfFake, null);
+            return FakeAndDummyManager.CreateFake(typeOfFake, null, new LoopDetectingResolutionContext());
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace FakeItEasy.Sdk
             Guard.AgainstNull(typeOfFake, nameof(typeOfFake));
             Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
 
-            return FakeAndDummyManager.CreateFake(typeOfFake, optionsBuilder);
+            return FakeAndDummyManager.CreateFake(typeOfFake, optionsBuilder, new LoopDetectingResolutionContext());
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace FakeItEasy.Sdk
         {
             Guard.AgainstNull(typeOfDummy, nameof(typeOfDummy));
 
-            return FakeAndDummyManager.CreateDummy(typeOfDummy);
+            return FakeAndDummyManager.CreateDummy(typeOfDummy, new LoopDetectingResolutionContext());
         }
 
         /// <summary>

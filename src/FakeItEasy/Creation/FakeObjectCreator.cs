@@ -24,7 +24,35 @@ namespace FakeItEasy.Creation
             this.delegateCreationStrategy = new DelegateCreationStrategy(delegateMethodInterceptionValidator, fakeCallProcessorProviderFactory);
         }
 
-        public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver)
+        public CreationResult CreateFake(
+            Type typeOfFake,
+            IProxyOptions proxyOptions,
+            IDummyValueResolver resolver,
+            LoopDetectingResolutionContext resolutionContext)
+        {
+            if (!resolutionContext.TryBeginToResolve(typeOfFake))
+            {
+                return CreationResult.FailedToCreateFake(typeOfFake, "Recursive dependency detected. Already resolving " + typeOfFake + '.');
+            }
+
+            var result = this.CreateFakeWithoutLoopDetection(
+                typeOfFake,
+                proxyOptions,
+                resolver,
+                resolutionContext);
+            if (result.WasSuccessful)
+            {
+                resolutionContext.OnSuccessfulResolve(typeOfFake);
+            }
+
+            return result;
+        }
+
+        public CreationResult CreateFakeWithoutLoopDetection(
+            Type typeOfFake,
+            IProxyOptions proxyOptions,
+            IDummyValueResolver resolver,
+            LoopDetectingResolutionContext resolutionContext)
         {
             if (typeOfFake.GetTypeInfo().IsInterface)
             {
@@ -33,7 +61,7 @@ namespace FakeItEasy.Creation
 
             return DelegateCreationStrategy.IsResponsibleForCreating(typeOfFake)
                 ? this.delegateCreationStrategy.CreateFake(typeOfFake, proxyOptions)
-                : this.defaultCreationStrategy.CreateFake(typeOfFake, proxyOptions, resolver);
+                : this.defaultCreationStrategy.CreateFake(typeOfFake, proxyOptions, resolver, resolutionContext);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
@@ -119,7 +147,11 @@ namespace FakeItEasy.Creation
                     : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
             }
 
-            public CreationResult CreateFake(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver)
+            public CreationResult CreateFake(
+                Type typeOfFake,
+                IProxyOptions proxyOptions,
+                IDummyValueResolver resolver,
+                LoopDetectingResolutionContext resolutionContext)
             {
                 if (!CastleDynamicProxyGenerator.CanGenerateProxy(typeOfFake, out string reasonCannotGenerate))
                 {
@@ -135,7 +167,11 @@ namespace FakeItEasy.Creation
                         : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
                 }
 
-                return this.TryCreateFakeWithDummyArgumentsForConstructor(typeOfFake, proxyOptions, resolver);
+                return this.TryCreateFakeWithDummyArgumentsForConstructor(
+                    typeOfFake,
+                    proxyOptions,
+                    resolver,
+                    resolutionContext);
             }
 
             public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
@@ -175,7 +211,11 @@ namespace FakeItEasy.Creation
                     : null;
             }
 
-            private CreationResult TryCreateFakeWithDummyArgumentsForConstructor(Type typeOfFake, IProxyOptions proxyOptions, IDummyValueResolver resolver)
+            private CreationResult TryCreateFakeWithDummyArgumentsForConstructor(
+                Type typeOfFake,
+                IProxyOptions proxyOptions,
+                IDummyValueResolver resolver,
+                LoopDetectingResolutionContext resolutionContext)
             {
                 // Save the constructors as we try them. Avoids eager evaluation and double evaluation
                 // of constructors enumerable.
@@ -183,7 +223,7 @@ namespace FakeItEasy.Creation
 
                 if (this.parameterTypesCache.TryGetValue(typeOfFake, out Type[] cachedParameterTypes))
                 {
-                    var constructor = new ResolvedConstructor(cachedParameterTypes, resolver);
+                    var constructor = new ResolvedConstructor(cachedParameterTypes, resolver, resolutionContext);
                     if (constructor.WasSuccessfullyResolved)
                     {
                         var argumentsForConstructor = GetArgumentsForConstructor(constructor);
@@ -203,7 +243,7 @@ namespace FakeItEasy.Creation
                 {
                     foreach (var parameterTypes in GetUsableParameterTypeListsInOrder(typeOfFake))
                     {
-                        var constructor = new ResolvedConstructor(parameterTypes, resolver);
+                        var constructor = new ResolvedConstructor(parameterTypes, resolver, resolutionContext);
                         if (constructor.WasSuccessfullyResolved)
                         {
                             var argumentsForConstructor = GetArgumentsForConstructor(constructor);

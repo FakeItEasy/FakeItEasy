@@ -21,7 +21,7 @@ namespace FakeItEasy
         /// </summary>
         public Fake()
         {
-            this.FakedObject = (T)FakeAndDummyManager.CreateFake(typeof(T), null);
+            this.FakedObject = (T)FakeAndDummyManager.CreateFake(typeof(T), null, new LoopDetectingResolutionContext());
         }
 
         /// <summary>
@@ -109,7 +109,10 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
 
-            return (T)FakeAndDummyManager.CreateFake(typeof(T), options => optionsBuilder((IFakeOptions<T>)options));
+            return (T)FakeAndDummyManager.CreateFake(
+                typeof(T),
+                options => optionsBuilder((IFakeOptions<T>)options),
+                new LoopDetectingResolutionContext());
         }
     }
 }

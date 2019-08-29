@@ -24,21 +24,24 @@ namespace FakeItEasy.Creation
             this.implicitOptionsBuilderCatalogue = implicitOptionsBuilderCatalogue;
         }
 
-        public object CreateDummy(Type typeOfDummy)
+        public object CreateDummy(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext)
         {
-            return this.dummyValueResolver.TryResolveDummyValue(typeOfDummy).Result;
+            return this.dummyValueResolver.TryResolveDummyValue(typeOfDummy, resolutionContext).Result;
         }
 
-        public object CreateFake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
+        public object CreateFake(
+            Type typeOfFake,
+            Action<IFakeOptions> optionsBuilder,
+            LoopDetectingResolutionContext resolutionContext)
         {
             var proxyOptions = this.BuildProxyOptions(typeOfFake, optionsBuilder);
 
-            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.dummyValueResolver).Result;
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.dummyValueResolver, resolutionContext).Result;
         }
 
-        public bool TryCreateDummy(Type typeOfDummy, out object result)
+        public bool TryCreateDummy(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext, out object result)
         {
-            var creationResult = this.dummyValueResolver.TryResolveDummyValue(typeOfDummy);
+            var creationResult = this.dummyValueResolver.TryResolveDummyValue(typeOfDummy, resolutionContext);
             if (creationResult.WasSuccessful)
             {
                 result = creationResult.Result;
