@@ -4,14 +4,6 @@ image: Visual Studio 2017
 pull_requests:
   do_not_increment_build_number: true
 
-environment:
-    BUILD: $(APPVEYOR_BUILD_NUMBER)
-    GITHUB_TOKEN:
-        secure: 5dFninlYVqNF98Pk9ykQwPU2pBFeQmbMOiFG2iSkg+hhcwF3UfmnDB07lvOwYtez
-    NUGET_API_KEY:
-        secure: COpoeqj1SAECW663nwrEcZr3bIqAryNuYZ+tv1uaFgoxhXQw+GEQyYDQXrRvXWkR
-    NUGET_SERVER_URL: https://www.nuget.org/api/v2/package
-
 build_script:
 - cmd: build.cmd
 
