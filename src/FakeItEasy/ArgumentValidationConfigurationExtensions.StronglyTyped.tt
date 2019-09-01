@@ -16,23 +16,20 @@ namespace FakeItEasy
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
-
     using FakeItEasy.Configuration;
 
-    public static partial class CallbackConfigurationExtensions
+    public static partial class ArgumentValidationConfigurationExtensions
     {
 <#
     for (int typeParametersCount = 1; typeParametersCount <= 8; typeParametersCount++)
     {
         var typeParamList = string.Join(", ", Enumerable.Range(1, typeParametersCount).Select(i => "T" + i));
-        var argumentList = string.Join(", ", Enumerable.Range(1, typeParametersCount).Select(i => $"call.GetArgument<T{i}>({i - 1})"));
+        var argumentList = string.Join(", ", Enumerable.Range(1, typeParametersCount).Select(i => $"args.Get<T{i}>({i - 1})"));
 #>
         /// <summary>
-        /// Executes the specified action when a matching call is being made.
+        /// Configures the call to be accepted when the specified predicate returns true.
         /// </summary>
-        /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{<#= typeParamList #>}"/> to invoke.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+        /// <typeparam name="TInterface">The type of the interface.</typeparam>
 <#
         for (int i = 1; i <= typeParametersCount; i++)
         {
@@ -41,19 +38,25 @@ namespace FakeItEasy
 <#
         }
 #>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="argumentsPredicate">The argument predicate.</param>
         /// <returns>The configuration object.</returns>
-        public static TInterface Invokes<TInterface, <#= typeParamList #>>(this ICallbackConfiguration<TInterface> configuration, Action<<#= typeParamList #>> actionToInvoke)
+        public static TInterface WhenArgumentsMatch<TInterface, <#= typeParamList #>>(
+            this IArgumentValidationConfiguration<TInterface> configuration,
+            Func<<#= typeParamList #>, bool> argumentsPredicate)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
 
-            return configuration.Invokes(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
+            return configuration.WhenArgumentsMatch(args =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                    args.Method,
+                    argumentsPredicate.GetMethodInfo(),
+                    NameOfWhenArgumentsMatchFeature);
 
-                    actionToInvoke(<#= argumentList #>);
-                });
+                return argumentsPredicate(<#= argumentList #>);
+            });
         }
 
 <#

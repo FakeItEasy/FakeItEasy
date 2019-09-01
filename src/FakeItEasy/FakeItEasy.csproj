@@ -102,10 +102,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ArgumentValidationConfigurationExtensions.StronglyTyped.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArgumentValidationConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
+    </None>
     <None Update="CallbackConfigurationExtensions.StronglyTyped.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CallbackConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
     </None>
+    <Compile Update="ArgumentValidationConfigurationExtensions.StronglyTyped.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ArgumentValidationConfigurationExtensions.StronglyTyped.tt</DependentUpon>
+    </Compile>
     <Compile Update="CallbackConfigurationExtensions.StronglyTyped.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
