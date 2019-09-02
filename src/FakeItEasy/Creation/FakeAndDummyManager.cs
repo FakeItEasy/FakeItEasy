@@ -9,6 +9,8 @@ namespace FakeItEasy.Creation
     {
         private static readonly ConcurrentDictionary<Type, Func<ProxyOptions, IFakeOptions>> FakeOptionsFactoryCache = new ConcurrentDictionary<Type, Func<ProxyOptions, IFakeOptions>>();
 
+        private static readonly Action<IFakeOptions> DefaultOptionsBuilder = options => { };
+
         private readonly IFakeObjectCreator fakeCreator;
         private readonly ImplicitOptionsBuilderCatalogue implicitOptionsBuilderCatalogue;
         private readonly IDummyValueResolver dummyValueResolver;
@@ -23,6 +25,15 @@ namespace FakeItEasy.Creation
         public object CreateDummy(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext)
         {
             return this.dummyValueResolver.TryResolveDummyValue(typeOfDummy, resolutionContext).Result;
+        }
+
+        public object CreateFake(
+            Type typeOfFake,
+            LoopDetectingResolutionContext resolutionContext)
+        {
+            var proxyOptions = this.BuildProxyOptions(typeOfFake, DefaultOptionsBuilder);
+
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.dummyValueResolver, resolutionContext).Result;
         }
 
         public object CreateFake(
@@ -61,7 +72,7 @@ namespace FakeItEasy.Creation
         {
             var implicitOptionsBuilder = this.implicitOptionsBuilderCatalogue.GetImplicitOptionsBuilder(typeOfFake);
 
-            if (implicitOptionsBuilder == null && optionsBuilder == null)
+            if (implicitOptionsBuilder == null && optionsBuilder == DefaultOptionsBuilder)
             {
                 return ProxyOptions.Default;
             }

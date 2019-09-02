@@ -29,7 +29,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
         public static T Fake<T>() where T : class
         {
-            return (T)FakeAndDummyManager.CreateFake(typeof(T), null, new LoopDetectingResolutionContext());
+            return (T)FakeAndDummyManager.CreateFake(typeof(T), new LoopDetectingResolutionContext());
         }
 
         /// <summary>

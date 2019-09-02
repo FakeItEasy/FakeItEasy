@@ -21,7 +21,7 @@ namespace FakeItEasy
         /// </summary>
         public Fake()
         {
-            this.FakedObject = (T)FakeAndDummyManager.CreateFake(typeof(T), null, new LoopDetectingResolutionContext());
+            this.FakedObject = (T)FakeAndDummyManager.CreateFake(typeof(T), new LoopDetectingResolutionContext());
         }
 
         /// <summary>
