@@ -1,0 +1,14 @@
+<#+
+private static readonly string[] Ordinals =
+{
+    "zeroth",
+    "first",
+    "second",
+    "third",
+    "fourth",
+    "fifth",
+    "sixth",
+    "seventh",
+    "eighth"
+};
+#>
