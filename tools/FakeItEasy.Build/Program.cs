@@ -2,20 +2,21 @@
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using SimpleExec;
     using static Bullseye.Targets;
     using static SimpleExec.Command;
 
     public class Program
     {
-        private static readonly string[] ProjectsToPack =
+        private static readonly Project[] ProjectsToPack =
         {
             "src/FakeItEasy/FakeItEasy.csproj",
             "src/FakeItEasy.Analyzer.CSharp/FakeItEasy.Analyzer.CSharp.csproj",
             "src/FakeItEasy.Analyzer.VisualBasic/FakeItEasy.Analyzer.VisualBasic.csproj"
         };
 
-        private static readonly string[] Pdbs =
+        private static readonly Pdb[] Pdbs =
         {
             "src/FakeItEasy/bin/Release/net40/FakeItEasy.pdb",
             "src/FakeItEasy/bin/Release/net45/FakeItEasy.pdb",
@@ -69,15 +70,33 @@
                 "pack",
                 DependsOn("build", "pdbgit"),
                 forEach: ProjectsToPack,
-                action: project => Run("dotnet", $"pack {project} --configuration Release --no-build --output {Path.GetFullPath("artifacts/output")}"));
+                action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --output {Path.GetFullPath("artifacts/output")}"));
 
             Target(
                 "pdbgit",
                 DependsOn("build"),
                 forEach: Pdbs,
-                action: pdb => Run(ToolPaths.PdbGit, $"-u https://github.com/FakeItEasy/FakeItEasy -s {pdb}"));
+                action: pdb => Run(ToolPaths.PdbGit, $"-u https://github.com/FakeItEasy/FakeItEasy -s {pdb.Path}"));
 
             RunTargetsAndExit(args, messageOnly: ex => ex is NonZeroExitCodeException);
+        }
+
+        private class Pdb
+        {
+            public string Path { get; set; }
+
+            public static implicit operator Pdb(string path) => new Pdb { Path = path };
+
+            public override string ToString() => this.Path.Split("Release/")[1];
+        }
+
+        private class Project
+        {
+            public string Path { get; set; }
+
+            public static implicit operator Project(string path) => new Project { Path = path };
+
+            public override string ToString() => this.Path.Split('/').Last();
         }
     }
 }
