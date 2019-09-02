@@ -106,6 +106,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArgumentValidationConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
     </None>
+    <None Update="AsyncReturnValueConfigurationExtensions.StronglyTyped.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AsyncReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
+    </None>
     <None Update="CallbackConfigurationExtensions.StronglyTyped.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CallbackConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
@@ -118,6 +122,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ArgumentValidationConfigurationExtensions.StronglyTyped.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AsyncReturnValueConfigurationExtensions.StronglyTyped.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AsyncReturnValueConfigurationExtensions.StronglyTyped.tt</DependentUpon>
     </Compile>
     <Compile Update="CallbackConfigurationExtensions.StronglyTyped.cs">
       <DesignTime>True</DesignTime>
