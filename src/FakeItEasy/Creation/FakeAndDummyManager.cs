@@ -5,11 +5,7 @@ namespace FakeItEasy.Creation
     using System.Reflection;
     using FakeItEasy.Core;
 
-    /// <summary>
-    /// The default implementation of the IFakeAndDummyManager interface.
-    /// </summary>
-    internal class DefaultFakeAndDummyManager
-        : IFakeAndDummyManager
+    internal class FakeAndDummyManager
     {
         private static readonly ConcurrentDictionary<Type, Func<ProxyOptions, IFakeOptions>> FakeOptionsFactoryCache = new ConcurrentDictionary<Type, Func<ProxyOptions, IFakeOptions>>();
 
@@ -17,7 +13,7 @@ namespace FakeItEasy.Creation
         private readonly ImplicitOptionsBuilderCatalogue implicitOptionsBuilderCatalogue;
         private readonly IDummyValueResolver dummyValueResolver;
 
-        public DefaultFakeAndDummyManager(IDummyValueResolver dummyValueResolver, IFakeObjectCreator fakeCreator, ImplicitOptionsBuilderCatalogue implicitOptionsBuilderCatalogue)
+        public FakeAndDummyManager(IDummyValueResolver dummyValueResolver, IFakeObjectCreator fakeCreator, ImplicitOptionsBuilderCatalogue implicitOptionsBuilderCatalogue)
         {
             this.dummyValueResolver = dummyValueResolver;
             this.fakeCreator = fakeCreator;
@@ -56,7 +52,7 @@ namespace FakeItEasy.Creation
 
         private static Func<ProxyOptions, IFakeOptions> GetFakeOptionsFactory(Type typeOfFake)
         {
-            var method = typeof(DefaultFakeAndDummyManager).GetMethod(nameof(CreateFakeOptions), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(typeOfFake);
+            var method = typeof(FakeAndDummyManager).GetMethod(nameof(CreateFakeOptions), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(typeOfFake);
 
             return (Func<ProxyOptions, IFakeOptions>)method.CreateDelegate(typeof(Func<ProxyOptions, IFakeOptions>));
         }

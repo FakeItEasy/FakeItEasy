@@ -15,8 +15,8 @@ namespace FakeItEasy
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = nameof(A), Justification = "Is spelled correctly.")]
     public static class A
     {
-        private static IFakeAndDummyManager FakeAndDummyManager =>
-            ServiceLocator.Resolve<IFakeAndDummyManager>();
+        private static FakeAndDummyManager FakeAndDummyManager =>
+            ServiceLocator.Resolve<FakeAndDummyManager>();
 
         private static IFakeConfigurationManager ConfigurationManager =>
             ServiceLocator.Resolve<IFakeConfigurationManager>();

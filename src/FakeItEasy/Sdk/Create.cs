@@ -13,8 +13,8 @@ namespace FakeItEasy.Sdk
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = nameof(A), Justification = "Is spelled correctly.")]
     public static class Create
     {
-        private static IFakeAndDummyManager FakeAndDummyManager =>
-            ServiceLocator.Resolve<IFakeAndDummyManager>();
+        private static FakeAndDummyManager FakeAndDummyManager =>
+            ServiceLocator.Resolve<FakeAndDummyManager>();
 
         /// <summary>
         /// Creates a fake object of the specified type.
