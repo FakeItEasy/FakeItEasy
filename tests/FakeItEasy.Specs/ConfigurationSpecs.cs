@@ -752,9 +752,9 @@ namespace FakeItEasy.Specs
         {
             public bool WasCalled { get; private set; }
 
-            public string SomeNonVirtualProperty { get; set; }
+            public string SomeNonVirtualProperty { get; set; } = string.Empty;
 
-            public virtual string SomeProperty { get; set; }
+            public virtual string SomeProperty { get; set; } = string.Empty;
 
             public virtual void DoSomething()
             {
@@ -779,7 +779,7 @@ namespace FakeItEasy.Specs
 
         public class DerivedClass : BaseClass
         {
-            public sealed override string SomeProperty { get; set; }
+            public sealed override string SomeProperty { get; set; } = string.Empty;
 
             public sealed override void DoSomething()
             {

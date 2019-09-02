@@ -71,7 +71,7 @@ namespace FakeItEasy.Specs
                 .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Throws(expectedException = new FormatException()));
 
             "When I invoke it"
-                .x(() => exception = Record.Exception(() => fakedDelegate(null)));
+                .x(() => exception = Record.Exception(() => fakedDelegate(string.Empty)));
 
             "Then it throws the configured exception"
                 .x(() => exception.Should().BeSameAs(expectedException));
@@ -87,7 +87,7 @@ namespace FakeItEasy.Specs
                 .x(() => A.CallTo(() => fakedDelegate(A<string>._)).Returns(10));
 
             "When I invoke it without specifying the Invoke method explicitly"
-                .x(() => result = fakedDelegate(null));
+                .x(() => result = fakedDelegate(string.Empty));
 
             "Then it returns the configured value"
                 .x(() => result.Should().Be(10));
@@ -141,9 +141,11 @@ namespace FakeItEasy.Specs
             "And I configure it to set ref and out parameters"
                 .x(() =>
                 {
-                    string refString = null;
+                    string refString = string.Empty;
                     int outInt;
-                    A.CallTo(() => fake.Invoke(ref refString, out outInt)).AssignsOutAndRefParameters("fancy ref string", 5);
+                    A.CallTo(() => fake.Invoke(ref refString, out outInt))
+                        .WithAnyArguments()
+                        .AssignsOutAndRefParameters("fancy ref string", 5);
                 });
 
             "When I invoke it"

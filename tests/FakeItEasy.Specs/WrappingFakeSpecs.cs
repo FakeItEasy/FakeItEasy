@@ -52,7 +52,7 @@
                 .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
 
             "When a non-void method is called on the wrapper"
-                .x(() => exception = Record.Exception(() => wrapper.NonVoidMethod(null)));
+                .x(() => exception = Record.Exception(() => wrapper.NonVoidMethod("throw")));
 
             "Then the real object's method is called"
                 .x(() => realObject.NonVoidMethodCalled.Should().BeTrue());
@@ -95,7 +95,7 @@
                 .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
 
             "When a void method is called on the wrapper"
-                .x(() => exception = Record.Exception(() => wrapper.VoidMethod(null)));
+                .x(() => exception = Record.Exception(() => wrapper.VoidMethod("throw")));
 
             "Then the real object's method is called"
                 .x(() => realObject.VoidMethodCalled.Should().BeTrue());
@@ -147,7 +147,7 @@
             public int NonVoidMethod(string parameter)
             {
                 this.NonVoidMethodCalled = true;
-                if (parameter == null)
+                if (parameter == "throw")
                 {
                     throw new ArgumentNullException(nameof(parameter));
                 }
@@ -158,7 +158,7 @@
             public void VoidMethod(string parameter)
             {
                 this.VoidMethodCalled = true;
-                if (parameter == null)
+                if (parameter == "throw")
                 {
                     throw new ArgumentNullException(nameof(parameter));
                 }

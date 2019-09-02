@@ -192,7 +192,8 @@ namespace FakeItEasy.Specs
                 .See<ClassWithLongConstructorWhoseArgumentsCannotBeResolved>();
 
             "And its longer constructor's argument cannot be resolved"
-                .See(() => new ClassWithLongConstructorWhoseArgumentsCannotBeResolved(default(ClassWhoseDummyFactoryThrows), default(int)));
+                .See((ClassWhoseDummyFactoryThrows thrower, int i) =>
+                    new ClassWithLongConstructorWhoseArgumentsCannotBeResolved(thrower, i));
 
             "When a dummy of that type is requested"
                 .x(() => dummy = this.CreateDummy<ClassWithLongConstructorWhoseArgumentsCannotBeResolved>());
@@ -212,7 +213,8 @@ namespace FakeItEasy.Specs
                 .See<SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved>();
 
             "And its longer constructor's argument cannot be resolved"
-                .See(() => new SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved(default(ClassWhoseDummyFactoryThrows), default(int)));
+                .See((ClassWhoseDummyFactoryThrows thrower, int i) =>
+                    new SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved(thrower, i));
 
             "When a dummy of that type is requested"
                 .x(() => dummy = this.CreateDummy<SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved>());
@@ -406,7 +408,8 @@ namespace FakeItEasy.Specs
                 .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object)));
 
             "And the class has a two-parameter constructor using its own type"
-                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object), default));
+                .See((Type type, ClassWithLongSelfReferentialConstructor selfish) =>
+                    new ClassWithLongSelfReferentialConstructor(type, selfish));
 
             "When I create a dummy of the class"
                 .x(() => dummy1 = A.Dummy<ClassWithLongSelfReferentialConstructor>());

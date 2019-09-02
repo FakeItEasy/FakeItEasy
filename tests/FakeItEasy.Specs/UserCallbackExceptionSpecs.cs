@@ -384,7 +384,12 @@ namespace FakeItEasy.Specs
 
         public class MyException : Exception
         {
-            public MyException(string message, Exception inner = null)
+            public MyException(string message)
+                : base(message)
+            {
+            }
+
+            public MyException(string message, Exception inner)
                 : base(message, inner)
             {
             }
@@ -411,7 +416,7 @@ namespace FakeItEasy.Specs
             protected override MyDummy Create()
             {
                 ThrowException();
-                return default;
+                return new MyDummy();
             }
         }
 

@@ -184,7 +184,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = A.Fake<IFoo>());
 
             "And the fake has a method with a parameter that has a custom argument value formatter"
-                .See<IFoo>(foo => foo.Bar(default(HasCustomValueFormatter)));
+                .See((IFoo foo, HasCustomValueFormatter hcvf) => foo.Bar(hcvf));
 
             "And no call is made to the fake"
                 .x(() => { });

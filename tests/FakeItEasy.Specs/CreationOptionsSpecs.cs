@@ -65,7 +65,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake.VirtualMethodValueDuringConstructorCall.Should().Be("configured value in fake options"));
 
             "And it returns the configured value after the constructor"
-                .x(() => fake.VirtualMethod(null).Should().Be("configured value in fake options"));
+                .x(() => fake.VirtualMethod("call after constructor").Should().Be("configured value in fake options"));
         }
 
         [Scenario]
@@ -83,7 +83,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it uses the configured behavior"
                 .x(() => result.Should().Be("configured value in fake options"));
@@ -137,7 +137,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake.VirtualMethodValueDuringConstructorCall.Should().Be("first value"));
 
             "And the method uses the second behavior thereafter"
-                .x(() => fake.VirtualMethod(null).Should().Be("second value"));
+                .x(() => fake.VirtualMethod(string.Empty).Should().Be("second value"));
         }
 
         [Scenario]
@@ -156,7 +156,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the overridden method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it uses the configured behavior"
                 .x(() => result.Should().Be("a value from ConfigureFake"));
@@ -202,7 +202,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it uses the configured behavior"
                 .x(() => result.Should().Be("configured value of strict fake"));
@@ -248,7 +248,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it uses the configured behavior"
                 .x(() => result.Should().Be("configured value of strict fake"));
@@ -290,7 +290,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it calls the base method"
                 .x(() => result.Should().Be("implementation value"));
@@ -312,7 +312,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it calls the base method"
                 .x(() => result.Should().Be("implementation value"));
@@ -333,7 +333,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it calls the base method"
                 .x(() => result.Should().Be("implementation value"));
@@ -354,7 +354,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it calls the base method"
                 .x(() => result.Should().Be("implementation value"));
@@ -399,7 +399,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => exception = Record.Exception(() => fake.VirtualMethod(null)));
+                .x(() => exception = Record.Exception(() => fake.VirtualMethod(string.Empty)));
 
             "Then it throws an exception"
                 .x(() => exception
@@ -423,7 +423,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => exception = Record.Exception(() => fake.VirtualMethod(null)));
+                .x(() => exception = Record.Exception(() => fake.VirtualMethod(string.Empty)));
 
             "Then it throws an exception"
                 .x(() => exception
@@ -448,7 +448,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => exception = Record.Exception(() => fake.VirtualMethod(null)));
+                .x(() => exception = Record.Exception(() => fake.VirtualMethod(string.Empty)));
 
             "Then it throws an exception"
                 .x(() => exception
@@ -472,7 +472,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => exception = Record.Exception(() => fake.VirtualMethod(null)));
+                .x(() => exception = Record.Exception(() => fake.VirtualMethod(string.Empty)));
 
             "Then it throws an exception"
                 .x(() => exception
@@ -517,7 +517,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it delegates to the wrapped instance"
                 .x(() => result.Should().Be("implementation value"));
@@ -538,7 +538,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it delegates to the wrapped instance"
                 .x(() => result.Should().Be("wrapped value"));
@@ -560,7 +560,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it delegates to the wrapped instance"
                 .x(() => result.Should().Be("wrapped value"));
@@ -581,7 +581,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it delegates to the wrapped instance"
                 .x(() => result.Should().Be("wrapped value"));
@@ -602,7 +602,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "When I call the method"
-                .x(() => result = fake.VirtualMethod(null));
+                .x(() => result = fake.VirtualMethod(string.Empty));
 
             "Then it delegates to the last wrapped instance"
                 .x(() => result.Should().Be("second wrapped value"));

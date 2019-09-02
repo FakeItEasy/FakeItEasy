@@ -40,6 +40,45 @@ namespace FakeItEasy.Specs
         }
 
         /// <summary>
+        /// Creates a step builder that can be used to refer to a method that
+        /// creates a type, such as a constructor.
+        /// Useful when we want to establish a condition without actually performing an action.
+        /// </summary>
+        /// <typeparam name="T">The type that would be constructed.</typeparam>
+        /// <typeparam name="TArg">The type of the argument.</typeparam>
+        /// <param name="text">A description of the method's relevant quality.</param>
+        /// <param name="func">
+        /// The constructor (or other method that creates an instance) to look at.
+        /// Will not be executed.
+        /// </param>
+        /// <returns>A step builder.</returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "func", Justification = "Used to indicate the method to see.")]
+        public static IStepBuilder See<TArg, T>(this string text, Func<TArg, T> func)
+        {
+            return text.x(() => { });
+        }
+
+        /// <summary>
+        /// Creates a step builder that can be used to refer to a method that
+        /// creates a type, such as a constructor.
+        /// Useful when we want to establish a condition without actually performing an action.
+        /// </summary>
+        /// <typeparam name="T">The type that would be constructed.</typeparam>
+        /// <typeparam name="TArg1">The type of the first argument.</typeparam>
+        /// <typeparam name="TArg2">The type of the second argument.</typeparam>
+        /// <param name="text">A description of the method's relevant quality.</param>
+        /// <param name="func">
+        /// The constructor (or other method that creates an instance) to look at.
+        /// Will not be executed.
+        /// </param>
+        /// <returns>A step builder.</returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "func", Justification = "Used to indicate the method to see.")]
+        public static IStepBuilder See<TArg1, TArg2, T>(this string text, Func<TArg1, TArg2, T> func)
+        {
+            return text.x(() => { });
+        }
+
+        /// <summary>
         /// Creates a step builder that can be used to refer to a type's method.
         /// Useful when we want to establish a condition without actually performing an action.
         /// </summary>
@@ -63,6 +102,21 @@ namespace FakeItEasy.Specs
         /// <returns>A step builder.</returns>
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "action", Justification = "Used to indicate the method to see.")]
         public static IStepBuilder See<T>(this string text, Action<T> action)
+        {
+            return text.x(() => { });
+        }
+
+        /// <summary>
+        /// Creates a step builder that can be used to refer to a type's method.
+        /// Useful when we want to establish a condition without actually performing an action.
+        /// </summary>
+        /// <typeparam name="T">The type to look at.</typeparam>
+        /// <typeparam name="TArg">The type of the method argument.</typeparam>
+        /// <param name="text">A description of the method's relevant quality.</param>
+        /// <param name="action">The method to look at. Will not be executed.</param>
+        /// <returns>A step builder.</returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "action", Justification = "Used to indicate the method to see.")]
+        public static IStepBuilder See<T, TArg>(this string text, Action<T, TArg> action)
         {
             return text.x(() => { });
         }

@@ -85,7 +85,7 @@
                 .x(() => fake = A.Fake<IFoo>());
 
             "And a fake method with 2 parameters is configured to return a value when the arguments match a predicate"
-                .x(() => A.CallTo(() => fake.Bar(0, null))
+                .x(() => A.CallTo(() => fake.Bar(0, string.Empty))
                             .WhenArgumentsMatch(args => args.Get<int>(0) % 2 == 0 && args.Get<string>(1).Length < 3)
                             .Returns(42));
 
@@ -103,7 +103,7 @@
                 .x(() => fake = A.Fake<IFoo>());
 
             "And a fake method with 2 parameters is configured to return a value when the arguments match a predicate"
-                .x(() => A.CallTo(() => fake.Bar(0, null))
+                .x(() => A.CallTo(() => fake.Bar(0, string.Empty))
                             .WhenArgumentsMatch(args => args.Get<int>(0) % 2 == 0 && args.Get<string>(1).Length < 3)
                             .Returns(42));
 
@@ -177,7 +177,7 @@
                 .x(() => fake = A.Fake<IFoo>());
 
             "And a fake method with 2 parameters is configured to return a value when the arguments match a predicate"
-                .x(() => A.CallTo(() => fake.Bar(0, null))
+                .x(() => A.CallTo(() => fake.Bar(0, string.Empty))
                             .WhenArgumentsMatch((int a, string b) => a % 2 == 0 && b.Length < 3)
                             .Returns(42));
 
@@ -195,7 +195,7 @@
                 .x(() => fake = A.Fake<IFoo>());
 
             "And a fake method with 2 parameters is configured to return a value when the arguments match a predicate"
-                .x(() => A.CallTo(() => fake.Bar(0, null))
+                .x(() => A.CallTo(() => fake.Bar(0, string.Empty))
                             .WhenArgumentsMatch((int a, string b) => a % 2 == 0 && b.Length < 3)
                             .Returns(42));
 
@@ -214,7 +214,7 @@
 
             "And a fake method with 2 parameters is configured with an arguments predicate with an incompatible signature"
                 .x(() => exception = Record.Exception(
-                        () => A.CallTo(() => fake.Bar(0, null))
+                        () => A.CallTo(() => fake.Bar(0, string.Empty))
                             .WhenArgumentsMatch((long a, DateTime b) => true)
                             .Returns(42)));
 
@@ -233,7 +233,7 @@
                 .x(() => fake = A.Fake<IFoo>());
 
             "And a fake method with 3 parameters is configured to return a value when the arguments match a predicate"
-                .x(() => A.CallTo(() => fake.Bar(0, null, false))
+                .x(() => A.CallTo(() => fake.Bar(0, string.Empty, false))
                             .WhenArgumentsMatch((int a, string b, bool c) => a % 2 == 0 && b.Length < 3 && c)
                             .Returns(42));
 
@@ -251,7 +251,7 @@
                 .x(() => fake = A.Fake<IFoo>());
 
             "And a fake method with 3 parameters is configured to return a value when the arguments match a predicate"
-                .x(() => A.CallTo(() => fake.Bar(0, null, false))
+                .x(() => A.CallTo(() => fake.Bar(0, string.Empty, false))
                             .WhenArgumentsMatch((int a, string b, bool c) => a % 2 == 0 && b.Length < 3 && c)
                             .Returns(42));
 
@@ -270,7 +270,7 @@
 
             "And a fake method with 3 parameters is configured with an arguments predicate with an incompatible signature"
                 .x(() => exception = Record.Exception(
-                        () => A.CallTo(() => fake.Bar(0, null, false))
+                        () => A.CallTo(() => fake.Bar(0, string.Empty, false))
                             .WhenArgumentsMatch((long a, DateTime b, Type c) => true)
                             .Returns(42)));
 
@@ -289,7 +289,7 @@
                 .x(() => fake = A.Fake<IFoo>());
 
             "And a fake method with 4 parameters is configured to return a value when the arguments match a predicate"
-                .x(() => A.CallTo(() => fake.Bar(0, null, false, null))
+                .x(() => A.CallTo(() => fake.Bar(0, string.Empty, false, new object()))
                             .WhenArgumentsMatch((int a, string b, bool c, object d) => a % 2 == 0 && b.Length < 3 && c && d != null)
                             .Returns(42));
 
@@ -307,12 +307,12 @@
                 .x(() => fake = A.Fake<IFoo>());
 
             "And a fake method with 4 parameters is configured to return a value when the arguments match a predicate"
-                .x(() => A.CallTo(() => fake.Bar(0, null, false, null))
+                .x(() => A.CallTo(() => fake.Bar(0, string.Empty, false, new object()))
                             .WhenArgumentsMatch((int a, string b, bool c, object d) => a % 2 == 0 && b.Length < 3 && c && d != null)
                             .Returns(42));
 
             "When the method is called with arguments that don't satisfy the predicate"
-                .x(() => result = fake.Bar(3, "hello", false, null));
+                .x(() => result = fake.Bar(3, "hello", false, new object()));
 
             "Then it returns the default value"
                 .x(() => result.Should().Be(0));
@@ -326,7 +326,7 @@
 
             "And a fake method with 4 parameters is configured with an arguments predicate with an incompatible signature"
                 .x(() => exception = Record.Exception(
-                        () => A.CallTo(() => fake.Bar(0, null, false, null))
+                        () => A.CallTo(() => fake.Bar(0, string.Empty, false, new object()))
                             .WhenArgumentsMatch((long a, DateTime b, Type c, char d) => true)
                             .Returns(42)));
 

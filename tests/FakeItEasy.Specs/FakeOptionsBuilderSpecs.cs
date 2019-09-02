@@ -532,7 +532,6 @@ namespace FakeItEasy.Specs
             {
                 var domainEvent = (DomainEvent)fake;
                 domainEvent.ID = this.nextID++;
-                domainEvent.Name = typeOfFake.Name;
             })
                 .WithAttributes(() => new ForTestAttribute())
                 .Implements(typeof(IDisposable))

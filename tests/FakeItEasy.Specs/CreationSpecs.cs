@@ -98,10 +98,10 @@ namespace FakeItEasy.Specs
                 .See(() => new ClassWithMultipleConstructors());
 
             "And another constructor throws"
-                .See(() => new ClassWithMultipleConstructors(default(string)));
+                .See((string s) => new ClassWithMultipleConstructors(s));
 
             "And a third constructor has an argument that cannot be resolved"
-                .See(() => new ClassWithMultipleConstructors(default(UnresolvableArgument), default(string)));
+                .See((UnresolvableArgument ua, string s) => new ClassWithMultipleConstructors(ua, s));
 
             "When I create a fake of the class"
                 .x(() => exception = Record.Exception(() => this.CreateFake<ClassWithMultipleConstructors>()));
@@ -148,10 +148,10 @@ namespace FakeItEasy.Specs
                 .See(() => new FakedClass());
 
             "And the class has a one-parameter constructor"
-                .See(() => new FakedClass(default));
+                .See((ArgumentThatShouldNeverBeResolved a) => new FakedClass(a));
 
             "And the class has a two-parameter constructor"
-                .See(() => new FakedClass(default, default));
+                .See((IDisposable disposable, string s) => new FakedClass(disposable, s));
 
             "When I create a fake of the class"
                 .x(() =>
@@ -190,10 +190,10 @@ namespace FakeItEasy.Specs
                 .See(() => new ClassWhosePreferredConstructorsThrow());
 
             "And the class has a two-parameter constructor that throws"
-                .See(() => new ClassWhosePreferredConstructorsThrow(default, default));
+                .See((IDisposable disposable, string s) => new ClassWhosePreferredConstructorsThrow(disposable, s));
 
             "And the class has a one-parameter constructor that succeeds"
-                .See(() => new ClassWhosePreferredConstructorsThrow(default));
+                .See((int i) => new ClassWhosePreferredConstructorsThrow(i));
 
             // If multiple theads attempt to create the fake at the same time, the
             // unsuccessful constructors may be called more than once, so serialize fake
@@ -599,10 +599,11 @@ namespace FakeItEasy.Specs
                 .See<ClassWithLongSelfReferentialConstructor>();
 
             "And the class has a one-parameter constructor not using its own type"
-                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object)));
+                .See((Type type) => new ClassWithLongSelfReferentialConstructor(type));
 
             "And the class has a two-parameter constructor using its own type"
-                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object), default));
+                .See((Type type, ClassWithLongSelfReferentialConstructor selfish) =>
+                    new ClassWithLongSelfReferentialConstructor(type, selfish));
 
             "When I create a fake of the class"
                 .x(() => fake1 = A.Fake<ClassWithLongSelfReferentialConstructor>());

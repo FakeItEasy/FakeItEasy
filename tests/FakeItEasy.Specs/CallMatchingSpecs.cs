@@ -813,7 +813,7 @@ namespace FakeItEasy.Specs
 
         public class Dummy
         {
-            public string X { get; set; }
+            public string X { get; set; } = string.Empty;
         }
 
         public class Z
