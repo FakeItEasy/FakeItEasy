@@ -505,6 +505,10 @@ namespace FakeItEasy.Configuration
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2>(System.Func<T1, T2, object[]> valueProducer);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3>(System.Func<T1, T2, T3, object[]> valueProducer);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(System.Func<T1, T2, T3, T4, object[]> valueProducer);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(System.Func<T1, T2, T3, T4, T5, object[]> valueProducer);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(System.Func<T1, T2, T3, T4, T5, T6, object[]> valueProducer);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(System.Func<T1, T2, T3, T4, T5, T6, T7, object[]> valueProducer);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, object[]> valueProducer);
     }
     public interface IPropertySetterAnyValueConfiguration<TValue> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IPropertySetterConfiguration, FakeItEasy.IHideObjectMembers
     {

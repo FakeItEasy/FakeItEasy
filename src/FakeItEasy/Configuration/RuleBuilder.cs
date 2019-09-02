@@ -8,7 +8,9 @@ namespace FakeItEasy.Configuration
 #endif
     using FakeItEasy.Core;
 
-    internal class RuleBuilder
+#pragma warning disable SA1601 // Partial elements should be documented
+    internal partial class RuleBuilder
+#pragma warning restore SA1601 // Partial elements should be documented
         : IAnyCallConfigurationWithVoidReturnType,
           IAfterCallConfiguredWithOutAndRefParametersConfiguration<IVoidConfiguration>,
           IThenConfiguration<IVoidConfiguration>
@@ -147,18 +149,6 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer) =>
-            this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1>(valueProducer);
-
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer) =>
-            this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2>(valueProducer);
-
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer) =>
-            this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3>(valueProducer);
-
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer) =>
-            this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3, T4>(valueProducer);
-
         [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
         {
@@ -213,7 +203,9 @@ namespace FakeItEasy.Configuration
             }
         }
 
-        public class ReturnValueConfiguration<TMember>
+#pragma warning disable SA1601 // Partial elements should be documented
+        public partial class ReturnValueConfiguration<TMember>
+#pragma warning restore SA1601 // Partial elements should be documented
             : IAnyCallConfigurationWithReturnTypeSpecified<TMember>,
               IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>>,
               IThenConfiguration<IReturnValueConfiguration<TMember>>
@@ -321,18 +313,6 @@ namespace FakeItEasy.Configuration
                 this.ParentConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
                 return this;
             }
-
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer) =>
-                this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1>(valueProducer);
-
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer) =>
-                this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2>(valueProducer);
-
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer) =>
-                this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2, T3>(valueProducer);
-
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer) =>
-                this.AssignsOutAndRefParametersLazily<IReturnValueConfiguration<TMember>, T1, T2, T3, T4>(valueProducer);
 
             public IThenConfiguration<IReturnValueConfiguration<TMember>> NumberOfTimes(int numberOfTimes)
             {

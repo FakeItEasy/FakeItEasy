@@ -5,7 +5,9 @@ namespace FakeItEasy.Configuration
     using System.Linq.Expressions;
     using FakeItEasy.Core;
 
-    internal class AnyCallConfiguration
+#pragma warning disable SA1601 // Partial elements should be documented
+    internal partial class AnyCallConfiguration
+#pragma warning restore SA1601 // Partial elements should be documented
         : IAnyCallConfigurationWithNoReturnTypeSpecified
     {
         private readonly IConfigurationFactory configurationFactory;
@@ -67,18 +69,6 @@ namespace FakeItEasy.Configuration
 
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer) =>
             this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
-
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer) =>
-            this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1>(valueProducer);
-
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer) =>
-            this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2>(valueProducer);
-
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer) =>
-            this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3>(valueProducer);
-
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer) =>
-            this.AssignsOutAndRefParametersLazily<IVoidConfiguration, T1, T2, T3, T4>(valueProducer);
 
         [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
         public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
