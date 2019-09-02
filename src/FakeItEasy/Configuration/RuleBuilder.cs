@@ -88,18 +88,6 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory) =>
-            this.Throws<IVoidConfiguration, T1>(exceptionFactory);
-
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory) =>
-            this.Throws<IVoidConfiguration, T1, T2>(exceptionFactory);
-
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory) =>
-            this.Throws<IVoidConfiguration, T1, T2, T3>(exceptionFactory);
-
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory) =>
-            this.Throws<IVoidConfiguration, T1, T2, T3, T4>(exceptionFactory);
-
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T>() where T : Exception, new() =>
             this.Throws<IVoidConfiguration, T>();
 
@@ -229,18 +217,6 @@ namespace FakeItEasy.Configuration
                 this.ParentConfiguration.Throws(exceptionFactory);
                 return this;
             }
-
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1>(Func<T1, Exception> exceptionFactory) =>
-                this.Throws<IReturnValueConfiguration<TMember>, T1>(exceptionFactory);
-
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory) =>
-                this.Throws<IReturnValueConfiguration<TMember>, T1, T2>(exceptionFactory);
-
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory) =>
-                this.Throws<IReturnValueConfiguration<TMember>, T1, T2, T3>(exceptionFactory);
-
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory) =>
-                this.Throws<IReturnValueConfiguration<TMember>, T1, T2, T3, T4>(exceptionFactory);
 
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T>() where T : Exception, new() =>
                 this.Throws<IReturnValueConfiguration<TMember>, T>();

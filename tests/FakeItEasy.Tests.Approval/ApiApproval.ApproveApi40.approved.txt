@@ -488,11 +488,15 @@ namespace FakeItEasy.Configuration
     }
     public interface IExceptionThrowerConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     {
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1>(System.Func<T1, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2>(System.Func<T1, T2, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3>(System.Func<T1, T2, T3, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4>(System.Func<T1, T2, T3, T4, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5>(System.Func<T1, T2, T3, T4, T5, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6>(System.Func<T1, T2, T3, T4, T5, T6, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6, T7>(System.Func<T1, T2, T3, T4, T5, T6, T7, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, System.Exception> exceptionFactory);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T>()
             where T : System.Exception, new ();
     }

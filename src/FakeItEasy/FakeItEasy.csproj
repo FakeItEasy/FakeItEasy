@@ -106,6 +106,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArgumentValidationConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
     </None>
+    <None Update="Configuration\ExceptionThrower.StronglyTyped.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ExceptionThrower.StronglyTyped.cs</LastGenOutput>
+    </None>
     <None Update="Configuration\OutAndRefParameters.StronglyTyped.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>OutAndRefParameters.StronglyTyped.cs</LastGenOutput>
@@ -126,6 +130,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ArgumentValidationConfigurationExtensions.StronglyTyped.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Configuration\ExceptionThrower.StronglyTyped.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExceptionThrower.StronglyTyped.tt</DependentUpon>
     </Compile>
     <Compile Update="Configuration\OutAndRefParameters.StronglyTyped.cs">
       <DesignTime>True</DesignTime>
