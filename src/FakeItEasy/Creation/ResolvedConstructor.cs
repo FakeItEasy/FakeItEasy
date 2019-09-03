@@ -28,7 +28,7 @@ namespace FakeItEasy.Creation
             var resolvedArguments = new List<ResolvedArgument>();
             foreach (var parameterType in parameterTypes)
             {
-                var resolvedArgument = new ResolvedArgument { ArgumentType = parameterType };
+                var resolvedArgument = new ResolvedArgument(parameterType);
                 try
                 {
                     var creationResult = resolver.TryResolveDummyValue(parameterType, resolutionContext);
