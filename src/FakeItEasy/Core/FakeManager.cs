@@ -111,7 +111,7 @@ namespace FakeItEasy.Core
         {
             lock (this.allUserRules)
             {
-                this.allUserRules.AddFirst(new CallRuleMetadata { Rule = rule });
+                this.allUserRules.AddFirst(CallRuleMetadata.NeverCalled(rule));
             }
         }
 
@@ -123,7 +123,7 @@ namespace FakeItEasy.Core
         {
             lock (this.allUserRules)
             {
-                this.allUserRules.AddLast(new CallRuleMetadata { Rule = rule });
+                this.allUserRules.AddLast(CallRuleMetadata.NeverCalled(rule));
             }
         }
 
@@ -220,7 +220,7 @@ namespace FakeItEasy.Core
                     throw new InvalidOperationException("The rule after which to add the new rule was not found in the list.");
                 }
 
-                this.allUserRules.AddAfter(previousNode, new CallRuleMetadata { Rule = newRule });
+                this.allUserRules.AddAfter(previousNode, CallRuleMetadata.NeverCalled(newRule));
             }
         }
 
@@ -251,7 +251,7 @@ namespace FakeItEasy.Core
 
             if (bestUserRule != null)
             {
-                bestUserRule.CalledNumberOfTimes++;
+                bestUserRule.RecordCall();
                 bestUserRule.Rule.Apply(fakeObjectCall);
                 return;
             }

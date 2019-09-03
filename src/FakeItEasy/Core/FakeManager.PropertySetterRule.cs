@@ -35,15 +35,12 @@ namespace FakeItEasy.Core
                     }
                     else
                     {
-                        var newRule = new CallRuleMetadata
-                        {
-                            CalledNumberOfTimes = 1,
-                            Rule = new PropertyBehaviorRule(fakeObjectCall.Method)
+                        var newRule = CallRuleMetadata.CalledOnce(
+                            new PropertyBehaviorRule(fakeObjectCall.Method)
                             {
                                 Indices = fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1).ToArray(),
                                 Value = fakeObjectCall.Arguments.Last()
-                            }
-                        };
+                            });
 
                         allUserRules.AddLast(newRule);
                     }
