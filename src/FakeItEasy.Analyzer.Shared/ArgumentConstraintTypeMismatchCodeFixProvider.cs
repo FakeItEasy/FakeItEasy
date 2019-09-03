@@ -111,38 +111,34 @@ namespace FakeItEasy.Analyzer
             var constraintNode = GetConstraintNode(diagnostic, root);
 
             // The A<T> type
-            var aType = (constraintNode as MemberAccessExpressionSyntax)?.Expression as GenericNameSyntax;
+            var aType = (GenericNameSyntax)((MemberAccessExpressionSyntax)constraintNode).Expression;
 
             // The T type
-            var constraintType = aType?.TypeArgumentList.Arguments.FirstOrDefault();
-            if (constraintType != null)
-            {
-                // The T? type
-                var nullableConstraintType = SyntaxFactory.NullableType(constraintType);
+            var constraintType = aType.TypeArgumentList.Arguments.FirstOrDefault();
 
-                // The A<?> type
-                var nullableAType = aType.ReplaceNode(constraintType, nullableConstraintType);
+            // The T? type
+            var nullableConstraintType = SyntaxFactory.NullableType(constraintType);
 
-                // A<T?>.That
-                var thatNode =
+            // The A<T?> type
+            var nullableAType = aType.ReplaceNode(constraintType, nullableConstraintType);
+
+            // A<T?>.That
+            var thatNode =
+                SimpleMemberAccess(
+                    nullableAType,
+                    SyntaxFactory.IdentifierName("That"));
+
+            // The new A<T?>.That.IsNotNull() constraint
+            var newConstraintNode =
+                SyntaxFactory.InvocationExpression(
                     SimpleMemberAccess(
-                        nullableAType,
-                        SyntaxFactory.IdentifierName("That"));
+                        thatNode,
+                        SyntaxFactory.IdentifierName("IsNotNull")),
+                    SyntaxFactory.ArgumentList());
 
-                // The new A<T?>.That.IsNotNull() constraint
-                var newConstraintNode =
-                    SyntaxFactory.InvocationExpression(
-                        SimpleMemberAccess(
-                            thatNode,
-                            SyntaxFactory.IdentifierName("IsNotNull")),
-                        SyntaxFactory.ArgumentList());
-
-                // Replace node and return updated document
-                var newRoot = root.ReplaceNode(constraintNode, newConstraintNode);
-                return context.Document.WithSyntaxRoot(newRoot);
-            }
-
-            return context.Document;
+            // Replace node and return updated document
+            var newRoot = root.ReplaceNode(constraintNode, newConstraintNode);
+            return context.Document.WithSyntaxRoot(newRoot);
         }
 
         private static async Task<Document> ChangeConstraintTypeAsync(CodeFixContext context, Diagnostic diagnostic, CancellationToken cancellationToken)
