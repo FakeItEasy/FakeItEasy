@@ -55,7 +55,7 @@
             var assemblyFile = $@"..\..\..\..\..\src\FakeItEasy\bin\{configurationName}\{frameworkVersion}\FakeItEasy.dll";
 
             var assembly = Assembly.LoadFile(Path.GetFullPath(assemblyFile));
-            Approvals.Verify(PublicApiGenerator.GetPublicApi(assembly));
+            Approvals.Verify(ApiGenerator.GeneratePublicApi(assembly));
         }
     }
 }

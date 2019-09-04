@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="ApprovalTests" Version="3.0.11" />
     <PackageReference Include="ApprovalUtilities" Version="3.0.11" />
-    <PackageReference Include="PublicApiGenerator" Version="4.0.1" />
+    <PackageReference Include="PublicApiGenerator" Version="9.3.0" />
   </ItemGroup>
 
 </Project>
