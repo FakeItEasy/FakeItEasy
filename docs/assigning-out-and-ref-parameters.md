@@ -36,7 +36,7 @@ A.CallTo(() => aFake.AMethod(anInt, ref aRef, out anOut))
 ```
 
 As shown above, the inputs to the method may be used to calculate the
-values to assign. Convenient overloads exist for methods of up to four
+values to assign. Convenient overloads exist for methods of up to 8
 parameters.
 
 The type of the `Func` sent to `AssignsOutAndRefParametersLazily`
@@ -44,7 +44,7 @@ isn't checked at compile time, but any _type_ mismatch will trigger
 a helpful error message.
 
 If more advanced decision-making is required, or the method has more
-than 4 parameters, the convenience methods won't work. Use the variant
+than 8 parameters, the convenience methods won't work. Use the variant
 that takes an `IFakeObjectCall` instead:
 
 ```csharp

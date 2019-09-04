@@ -6,7 +6,7 @@ namespace FakeItEasy.Configuration
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
 
-    internal class PropertySetterConfiguration<TValue>
+    internal partial class PropertySetterConfiguration<TValue>
         : IPropertySetterAnyValueConfiguration<TValue>
     {
         private readonly ParsedCallExpression parsedSetterExpression;
@@ -34,18 +34,6 @@ namespace FakeItEasy.Configuration
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>
             AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
                 .Throws(exceptionFactory);
-
-        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory) =>
-            this.Throws<IPropertySetterConfiguration, T1>(exceptionFactory);
-
-        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory) =>
-            this.Throws<IPropertySetterConfiguration, T1, T2>(exceptionFactory);
-
-        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory) =>
-            this.Throws<IPropertySetterConfiguration, T1, T2, T3>(exceptionFactory);
-
-        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory) =>
-            this.Throws<IPropertySetterConfiguration, T1, T2, T3, T4>(exceptionFactory);
 
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T>() where T : Exception, new() =>
             this.Throws<IPropertySetterConfiguration, T>();
@@ -117,7 +105,7 @@ namespace FakeItEasy.Configuration
                 ParsedCallExpression parsedSetter) =>
             this.voidArgumentValidationConfigurationFactory(parsedSetter);
 
-        private class PropertySetterAdapter : IPropertySetterConfiguration
+        private partial class PropertySetterAdapter : IPropertySetterConfiguration
         {
             private IVoidConfiguration voidConfiguration;
 
@@ -128,18 +116,6 @@ namespace FakeItEasy.Configuration
 
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>
                 new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.Throws(exceptionFactory));
-
-            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory) =>
-                this.Throws<IPropertySetterConfiguration, T1>(exceptionFactory);
-
-            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory) =>
-                this.Throws<IPropertySetterConfiguration, T1, T2>(exceptionFactory);
-
-            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory) =>
-                this.Throws<IPropertySetterConfiguration, T1, T2, T3>(exceptionFactory);
-
-            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory) =>
-                this.Throws<IPropertySetterConfiguration, T1, T2, T3, T4>(exceptionFactory);
 
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T>() where T : Exception, new() =>
                 this.Throws<IPropertySetterConfiguration, T>();

@@ -180,7 +180,7 @@ A.CallTo(() => fake.Bar(null, 0))
     .Throws<Exception>();
 ```
 
-Strongly typed overloads of `WhenArgumentsMatch` are also available for methods of up to 4
+Strongly typed overloads of `WhenArgumentsMatch` are also available for methods of up to 8
 parameters (if a method has more parameters, use the variant described above):
 
 ```csharp
