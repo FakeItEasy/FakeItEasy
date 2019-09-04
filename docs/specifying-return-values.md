@@ -42,7 +42,7 @@ A.CallTo(() => fakeShop.NumberOfSweetsSoldToday()).ReturnsLazily(() => ++sweetsS
 
 If a return value depends on input to the method, those values can be
 incorporated in the calculation. Convenient overloads exist for
-methods of up to four parameters.
+methods of up to 8 parameters.
 
 ```csharp
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>.Ignored)) 
@@ -59,7 +59,7 @@ at compile time, but any type mismatch will trigger a helpful error
 message.
 
 If more advanced decision-making is required, or the method has more
-than 4 parameters, the convenience methods won't work. Use the variant
+than 8 parameters, the convenience methods won't work. Use the variant
 that takes an `IFakeObjectCall` instead:
 
 ```charp

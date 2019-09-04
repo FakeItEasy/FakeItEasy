@@ -28,12 +28,12 @@ example
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
  .Throws(() => new InvalidDateException(DateTime.UtcNow + " is in the future"));
 
-// Pass up to 4 original call argument values into the method that creates the exception.
+// Pass up to 8 original call argument values into the method that creates the exception.
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
  .Throws((DateTime when)=>new InvalidDateException(when + " is in the future"));
 
 // Pass an IFakeObjectCall into the creation method for more advanced scenarios,
-// including throwing an exception from a method that has more than 4 parameters.
+// including throwing an exception from a method that has more than 8 parameters.
 A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
  .Throws(callObject => new InvalidDateException(callObject.FakedObject +
                                                 " is closed on " +
@@ -60,6 +60,6 @@ This will cause the configured method to return a failed `Task` whose `Exception
 is set to the exception specified in `ThrowsAsync`.
 
 As with `Throws` above, `ThrowsAsync` has several overloads, including those that take `Func`s of up to
-4 parameters, and one that takes a `Func` that operates on an `IFakeObjectCall`. The latter is suitable
+8 parameters, and one that takes a `Func` that operates on an `IFakeObjectCall`. The latter is suitable
 for examining, in detail, the call that triggers the exception, or for configuring a method that has
-more than 4 parameters.
+more than 8 parameters.
