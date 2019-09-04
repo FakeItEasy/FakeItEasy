@@ -5,9 +5,7 @@ namespace FakeItEasy.Configuration
     using System.Linq.Expressions;
     using FakeItEasy.Core;
 
-#pragma warning disable SA1601 // Partial elements should be documented
     internal partial class AnyCallConfiguration
-#pragma warning restore SA1601 // Partial elements should be documented
         : IAnyCallConfigurationWithNoReturnTypeSpecified
     {
         private readonly IConfigurationFactory configurationFactory;

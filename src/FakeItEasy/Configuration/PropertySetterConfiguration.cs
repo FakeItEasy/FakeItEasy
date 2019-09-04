@@ -6,9 +6,7 @@ namespace FakeItEasy.Configuration
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
 
-#pragma warning disable SA1601 // Partial elements should be documented
     internal partial class PropertySetterConfiguration<TValue>
-#pragma warning restore SA1601 // Partial elements should be documented
         : IPropertySetterAnyValueConfiguration<TValue>
     {
         private readonly ParsedCallExpression parsedSetterExpression;

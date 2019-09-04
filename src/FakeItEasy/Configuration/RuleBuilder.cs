@@ -8,9 +8,7 @@ namespace FakeItEasy.Configuration
 #endif
     using FakeItEasy.Core;
 
-#pragma warning disable SA1601 // Partial elements should be documented
     internal partial class RuleBuilder
-#pragma warning restore SA1601 // Partial elements should be documented
         : IAnyCallConfigurationWithVoidReturnType,
           IAfterCallConfiguredWithOutAndRefParametersConfiguration<IVoidConfiguration>,
           IThenConfiguration<IVoidConfiguration>
@@ -191,9 +189,7 @@ namespace FakeItEasy.Configuration
             }
         }
 
-#pragma warning disable SA1601 // Partial elements should be documented
         public partial class ReturnValueConfiguration<TMember>
-#pragma warning restore SA1601 // Partial elements should be documented
             : IAnyCallConfigurationWithReturnTypeSpecified<TMember>,
               IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>>,
               IThenConfiguration<IReturnValueConfiguration<TMember>>
