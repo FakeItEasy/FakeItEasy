@@ -3,6 +3,7 @@ namespace FakeItEasy.Core
     using System;
     using System.Linq;
     using System.Reflection;
+    using FakeItEasy.Compatibility;
 
     /// <content>Property behavior rule.</content>
     public partial class FakeManager
@@ -23,7 +24,7 @@ namespace FakeItEasy.Core
 
             public object Value { get; set; }
 
-            public object[] Indices { get; set; }
+            public object[] Indices { get; set; } = ArrayHelper.Empty<object>();
 
             public int? NumberOfTimesToCall => null;
 
