@@ -15,8 +15,8 @@ namespace FakeItEasy
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = nameof(A), Justification = "Is spelled correctly.")]
     public static class A
     {
-        private static IFakeAndDummyManager FakeAndDummyManager =>
-            ServiceLocator.Resolve<IFakeAndDummyManager>();
+        private static FakeAndDummyManager FakeAndDummyManager =>
+            ServiceLocator.Resolve<FakeAndDummyManager>();
 
         private static IFakeConfigurationManager ConfigurationManager =>
             ServiceLocator.Resolve<IFakeConfigurationManager>();
@@ -29,7 +29,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
         public static T Fake<T>() where T : class
         {
-            return (T)FakeAndDummyManager.CreateFake(typeof(T), null, new LoopDetectingResolutionContext());
+            return (T)FakeAndDummyManager.CreateFake(typeof(T), new LoopDetectingResolutionContext());
         }
 
         /// <summary>

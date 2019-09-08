@@ -6,208 +6,205 @@ namespace FakeItEasy.Creation
     using System.Text;
     using FakeItEasy.Core;
 
-    internal sealed class CreationResult
+    internal abstract class CreationResult
     {
-        private readonly Type type;
-        private readonly IList<string> reasonsForFailure;
-        private readonly IList<ResolvedConstructor> consideredConstructors;
-        private readonly object result;
+        public static CreationResult Untried { get; } = new UntriedCreationResult();
 
-        private CreationMode creationMode;
+        public abstract bool WasSuccessful { get; }
 
-        private CreationResult(object result)
-        {
-            this.WasSuccessful = true;
-            this.result = result;
-        }
+        public abstract object Result { get; }
 
-        private CreationResult(
-            Type type,
-            CreationMode creationMode,
-            IList<string> reasonsForFailure = null,
-            IList<ResolvedConstructor> consideredConstructors = null)
-        {
-            this.WasSuccessful = false;
-            this.type = type;
-            this.creationMode = creationMode;
-            this.reasonsForFailure = reasonsForFailure;
-            this.consideredConstructors = consideredConstructors;
-        }
-
-        public bool WasSuccessful { get; }
-
-        public object Result
-        {
-            get
-            {
-                if (this.WasSuccessful)
-                {
-                    return this.result;
-                }
-
-                var message = this.GetFailedToCreateResultMessage();
-                throw this.creationMode.CreateException(message);
-            }
-        }
-
-        public static CreationResult SuccessfullyCreated(object result)
-        {
-            return new CreationResult(result);
-        }
+        public static CreationResult SuccessfullyCreated(object result) =>
+             new SuccessfulCreationResult(result);
 
         public static CreationResult FailedToCreateDummy(Type type, string reasonForFailure) =>
-            new CreationResult(type, CreationMode.Dummy, reasonsForFailure: new List<string> { reasonForFailure });
+            new FailedCreationResult(type, CreationMode.Dummy, reasonsForFailure: new List<string> { reasonForFailure });
 
         public static CreationResult FailedToCreateDummy(Type type, List<ResolvedConstructor> consideredConstructors) =>
-            new CreationResult(type, CreationMode.Dummy, consideredConstructors: consideredConstructors);
+            new FailedCreationResult(type, CreationMode.Dummy, consideredConstructors: consideredConstructors);
 
         public static CreationResult FailedToCreateFake(Type type, string reasonForFailure) =>
-            new CreationResult(type, CreationMode.Fake, reasonsForFailure: new List<string> { reasonForFailure });
+            new FailedCreationResult(type, CreationMode.Fake, reasonsForFailure: new List<string> { reasonForFailure });
 
         public static CreationResult FailedToCreateFake(Type type, List<ResolvedConstructor> consideredConstructors) =>
-            new CreationResult(type, CreationMode.Fake, consideredConstructors: consideredConstructors);
+            new FailedCreationResult(type, CreationMode.Fake, consideredConstructors: consideredConstructors);
 
         /// <summary>
         /// Returns a creation result for a dummy by combining two results.
         /// Successful results are preferred to failed. Failed results will have their reasons for failure aggregated.
         /// </summary>
-        /// <param name="one">One result to merge. May be <code>null</code>.</param>
         /// <param name="other">The other result to merge. Must not be <code>null</code>.</param>
         /// <returns>A combined creation result. Successful if either input was successful, and failed otherwise.</returns>
-        public static CreationResult MergeIntoDummyResult(CreationResult one, CreationResult other)
+        public abstract CreationResult MergeIntoDummyResult(CreationResult other);
+
+        private class UntriedCreationResult : CreationResult
         {
-            Guard.AgainstNull(other, "other");
+            public override bool WasSuccessful => false;
 
-            if (one == null || other.WasSuccessful)
-            {
-                return other.AsDummyResult();
-            }
+            public override object Result => throw new NotSupportedException();
 
-            if (one.WasSuccessful)
-            {
-                return one.AsDummyResult();
-            }
-
-            return new CreationResult(
-                one.type,
-                CreationMode.Dummy,
-                MergeReasonsForFailure(one.reasonsForFailure, other.reasonsForFailure),
-                MergeConsideredConstructors(one.consideredConstructors, other.consideredConstructors));
+            public override CreationResult MergeIntoDummyResult(CreationResult other) => other;
         }
 
-        private static IList<string> MergeReasonsForFailure(
-            IList<string> reasonsFromResult1,
-            IList<string> reasonsFromResult2)
+        private class SuccessfulCreationResult : CreationResult
         {
-            if (reasonsFromResult1 == null)
-            {
-                return reasonsFromResult2;
-            }
+            public SuccessfulCreationResult(object result) => this.Result = result;
 
-            if (reasonsFromResult2 == null)
-            {
-                return reasonsFromResult1;
-            }
+            public override bool WasSuccessful => true;
 
-            var mergedList = new List<string>(reasonsFromResult1);
-            mergedList.AddRange(reasonsFromResult2);
-            return mergedList;
+            public override object Result { get; }
+
+            public override CreationResult MergeIntoDummyResult(CreationResult other) => this;
         }
 
-        private static IList<ResolvedConstructor> MergeConsideredConstructors(
-            IList<ResolvedConstructor> constructorsFromResult1,
-            IList<ResolvedConstructor> constructorsFromResult2)
+        private class FailedCreationResult : CreationResult
         {
-            if (constructorsFromResult1 == null)
+            private readonly Type type;
+            private readonly IList<string> reasonsForFailure;
+            private readonly IList<ResolvedConstructor> consideredConstructors;
+            private CreationMode creationMode;
+
+            public FailedCreationResult(
+                Type type,
+                CreationMode creationMode,
+                IList<string> reasonsForFailure = null,
+                IList<ResolvedConstructor> consideredConstructors = null)
             {
-                return constructorsFromResult2;
+                this.type = type;
+                this.creationMode = creationMode;
+                this.reasonsForFailure = reasonsForFailure;
+                this.consideredConstructors = consideredConstructors;
             }
 
-            if (constructorsFromResult2 == null)
+            public override bool WasSuccessful => false;
+
+            public override object Result =>
+                    throw this.creationMode.CreateException(this.GetFailedToCreateResultMessage());
+
+            public override CreationResult MergeIntoDummyResult(CreationResult other)
             {
-                return constructorsFromResult1;
-            }
+                Guard.AgainstNull(other, "other");
 
-            return constructorsFromResult1.Union(constructorsFromResult2, ResolvedConstructorComparer.Default).ToList();
-        }
-
-        private CreationResult AsDummyResult()
-        {
-            return this.creationMode == CreationMode.Dummy
-                ? this
-                : new CreationResult(this.type, CreationMode.Dummy, this.reasonsForFailure, this.consideredConstructors);
-        }
-
-        private string GetFailedToCreateResultMessage()
-        {
-            var message = new StringBuilder();
-
-            message
-                .AppendLine()
-                .AppendIndented("  ", $"Failed to create {this.creationMode.Name} of type ")
-                .Append(this.type)
-                .Append(":");
-
-            if (this.reasonsForFailure != null)
-            {
-                foreach (var reasonForFailure in this.reasonsForFailure)
+                if (other.WasSuccessful)
                 {
-                    message
-                        .AppendLine()
-                        .AppendIndented("    ", reasonForFailure);
+                    return other;
                 }
+
+                var failedOther = (FailedCreationResult)other;
+                return new FailedCreationResult(
+                    this.type,
+                    CreationMode.Dummy,
+                    MergeReasonsForFailure(this.reasonsForFailure, failedOther.reasonsForFailure),
+                    MergeConsideredConstructors(this.consideredConstructors, failedOther.consideredConstructors));
             }
 
-            message
-                .AppendLine();
-
-            if (this.consideredConstructors != null && this.consideredConstructors.Any(x => x.WasSuccessfullyResolved))
+            private static IList<string> MergeReasonsForFailure(
+                IList<string> reasonsFromResult1,
+                IList<string> reasonsFromResult2)
             {
+                if (reasonsFromResult1 == null)
+                {
+                    return reasonsFromResult2;
+                }
+
+                if (reasonsFromResult2 == null)
+                {
+                    return reasonsFromResult1;
+                }
+
+                var mergedList = new List<string>(reasonsFromResult1);
+                mergedList.AddRange(reasonsFromResult2);
+                return mergedList;
+            }
+
+            private static IList<ResolvedConstructor> MergeConsideredConstructors(
+                IList<ResolvedConstructor> constructorsFromResult1,
+                IList<ResolvedConstructor> constructorsFromResult2)
+            {
+                if (constructorsFromResult1 == null)
+                {
+                    return constructorsFromResult2;
+                }
+
+                if (constructorsFromResult2 == null)
+                {
+                    return constructorsFromResult1;
+                }
+
+                return constructorsFromResult1.Union(constructorsFromResult2, ResolvedConstructorComparer.Default).ToList();
+            }
+
+            private string GetFailedToCreateResultMessage()
+            {
+                var message = new StringBuilder();
+
                 message
                     .AppendLine()
-                    .AppendIndented("  ", "Below is a list of reasons for failure per attempted constructor:");
+                    .AppendIndented("  ", $"Failed to create {this.creationMode.Name} of type ")
+                    .Append(this.type)
+                    .Append(":");
 
-                foreach (var constructor in this.consideredConstructors.Where(x => x.WasSuccessfullyResolved))
+                if (this.reasonsForFailure != null)
+                {
+                    foreach (var reasonForFailure in this.reasonsForFailure)
+                    {
+                        message
+                            .AppendLine()
+                            .AppendIndented("    ", reasonForFailure);
+                    }
+                }
+
+                message
+                    .AppendLine();
+
+                if (this.consideredConstructors != null && this.consideredConstructors.Any(x => x.WasSuccessfullyResolved))
                 {
                     message
                         .AppendLine()
-                        .AppendIndented("    ", "Constructor with signature (")
-                        .Append(constructor.Arguments.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
-                        .AppendLine(") failed:")
-                        .AppendIndented("      ", constructor.ReasonForFailure)
-                        .AppendLine();
+                        .AppendIndented("  ", "Below is a list of reasons for failure per attempted constructor:");
+
+                    foreach (var constructor in this.consideredConstructors.Where(x => x.WasSuccessfullyResolved))
+                    {
+                        message
+                            .AppendLine()
+                            .AppendIndented("    ", "Constructor with signature (")
+                            .Append(constructor.Arguments.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
+                            .AppendLine(") failed:")
+                            .AppendIndented("      ", constructor.ReasonForFailure)
+                            .AppendLine();
+                    }
                 }
+
+                this.AppendNonTriedConstructors(message);
+                return message.ToString();
             }
 
-            this.AppendNonTriedConstructors(message);
-            return message.ToString();
-        }
-
-        private void AppendNonTriedConstructors(StringBuilder message)
-        {
-            if (this.consideredConstructors == null || this.consideredConstructors.All(x => x.WasSuccessfullyResolved))
+            private void AppendNonTriedConstructors(StringBuilder message)
             {
-                return;
-            }
+                if (this.consideredConstructors == null || this.consideredConstructors.All(x => x.WasSuccessfullyResolved))
+                {
+                    return;
+                }
 
-            message
-                .AppendLine()
-                .AppendIndented("  ", "The constructors with the following signatures were not tried:")
-                .AppendLine();
-
-            foreach (var resolvedConstructor in this.consideredConstructors.Where(x => !x.WasSuccessfullyResolved))
-            {
                 message
-                    .Append("    (")
-                    .Append(resolvedConstructor.Arguments.ToCollectionString(x => x.WasResolved ? x.ArgumentType.ToString() : String.Concat("*", x.ArgumentType.ToString()), ", "))
-                    .AppendLine(")");
-            }
+                    .AppendLine()
+                    .AppendIndented("  ", "The constructors with the following signatures were not tried:")
+                    .AppendLine();
 
-            message
-                .AppendLine()
-                .AppendIndented("    ", "Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.")
-                .AppendLine()
-                .AppendLine();
+                foreach (var resolvedConstructor in this.consideredConstructors.Where(x => !x.WasSuccessfullyResolved))
+                {
+                    message
+                        .Append("    (")
+                        .Append(resolvedConstructor.Arguments.ToCollectionString(x => x.WasResolved ? x.ArgumentType.ToString() : String.Concat("*", x.ArgumentType.ToString()), ", "))
+                        .AppendLine(")");
+                }
+
+                message
+                    .AppendLine()
+                    .AppendIndented("    ", "Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.")
+                    .AppendLine()
+                    .AppendLine();
+            }
         }
 
         private class ResolvedConstructorComparer : IEqualityComparer<ResolvedConstructor>

@@ -21,7 +21,7 @@ namespace FakeItEasy
         /// </summary>
         public Fake()
         {
-            this.FakedObject = (T)FakeAndDummyManager.CreateFake(typeof(T), null, new LoopDetectingResolutionContext());
+            this.FakedObject = (T)FakeAndDummyManager.CreateFake(typeof(T), new LoopDetectingResolutionContext());
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace FakeItEasy
         /// </summary>
         public IEnumerable<ICompletedFakeObjectCall> RecordedCalls => FakeItEasy.Fake.GetCalls(this.FakedObject);
 
-        private static IFakeAndDummyManager FakeAndDummyManager =>
-            ServiceLocator.Resolve<IFakeAndDummyManager>();
+        private static FakeAndDummyManager FakeAndDummyManager =>
+            ServiceLocator.Resolve<FakeAndDummyManager>();
 
         private IStartConfiguration<T> StartConfiguration
         {

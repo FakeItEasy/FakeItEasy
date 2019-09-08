@@ -59,7 +59,7 @@ namespace FakeItEasy.Creation
             Type typeOfDummy,
             LoopDetectingResolutionContext resolutionContext)
         {
-            CreationResult creationResult = null;
+            CreationResult creationResult = CreationResult.Untried;
             foreach (var strategy in this.strategies)
             {
                 var thisCreationResult = strategy.TryCreateDummyValue(typeOfDummy, this, resolutionContext);
@@ -69,7 +69,7 @@ namespace FakeItEasy.Creation
                     return thisCreationResult;
                 }
 
-                creationResult = CreationResult.MergeIntoDummyResult(creationResult, thisCreationResult);
+                creationResult = creationResult.MergeIntoDummyResult(thisCreationResult);
             }
 
             this.strategyCache.TryAdd(typeOfDummy, new UnableToResolveStrategy(creationResult));

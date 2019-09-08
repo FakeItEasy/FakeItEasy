@@ -160,7 +160,7 @@ namespace FakeItEasy.Analyzer
         private static string GetRepeatedType(ArgumentSyntax repeatedNode)
         {
             var memberAccess = GetMemberAccessFromRepeated(repeatedNode);
-            return memberAccess?.Name.ToString();
+            return memberAccess.Name.ToString();
         }
 
         private static ArgumentSyntax GetRepeatedNode(InvocationExpressionSyntax assertionNode)

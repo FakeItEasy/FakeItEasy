@@ -9,8 +9,8 @@ namespace FakeItEasy.Tests
         [Fact]
         public void Should_be_registered_as_singleton()
         {
-            var first = ServiceLocator.Resolve<IFakeAndDummyManager>();
-            var second = ServiceLocator.Resolve<IFakeAndDummyManager>();
+            var first = ServiceLocator.Resolve<FakeAndDummyManager>();
+            var second = ServiceLocator.Resolve<FakeAndDummyManager>();
 
             second.Should().BeSameAs(first);
         }

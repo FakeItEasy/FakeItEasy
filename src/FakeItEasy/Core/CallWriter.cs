@@ -36,12 +36,10 @@ namespace FakeItEasy.Core
                 }
                 else
                 {
-                    callInfos.Add(new CallInfo
-                    {
-                        Call = call,
-                        CallNumber = i + 1,
-                        StringRepresentation = this.callFormatter.GetDescription(call)
-                    });
+                    callInfos.Add(new CallInfo(
+                        call,
+                        i + 1,
+                        this.callFormatter.GetDescription(call)));
                 }
             }
 
@@ -99,18 +97,21 @@ namespace FakeItEasy.Core
 
         private class CallInfo
         {
-            public CallInfo()
+            public CallInfo(IFakeObjectCall call, int callNumber, string stringRepresentation)
             {
+                this.Call = call;
+                this.CallNumber = callNumber;
+                this.StringRepresentation = stringRepresentation;
                 this.NumberOfOccurrences = 1;
             }
 
-            public IFakeObjectCall Call { get; set; }
+            public IFakeObjectCall Call { get; }
 
-            public int CallNumber { get; set; }
+            public int CallNumber { get; }
 
             public int NumberOfOccurrences { get; set; }
 
-            public string StringRepresentation { get; set; }
+            public string StringRepresentation { get; }
 
             public int NumberOfDigitsInCallNumber()
             {

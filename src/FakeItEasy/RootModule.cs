@@ -65,8 +65,8 @@ namespace FakeItEasy
 
             registrar.Register(expressionArgumentConstraintFactory);
 
-            registrar.Register<IFakeAndDummyManager>(
-                new DefaultFakeAndDummyManager(
+            registrar.Register<FakeAndDummyManager>(
+                new FakeAndDummyManager(
                     new DummyValueResolver(new DynamicDummyFactory(dummyFactories), fakeObjectCreator),
                     fakeObjectCreator,
                     implicitOptionsBuilderCatalogue));

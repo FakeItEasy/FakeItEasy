@@ -148,27 +148,25 @@ namespace FakeItEasy.Core
                 private static readonly Func<EventInfo, MethodInfo> GetAddMethod = e => e.GetAddMethod(true);
                 private static readonly Func<EventInfo, MethodInfo> GetRemoveMethod = e => e.GetRemoveMethod(true);
 
-                private EventCall()
+                private EventCall(EventInfo @event, MethodInfo callingMethod, Delegate eventHandler)
                 {
+                    this.Event = @event;
+                    this.CallingMethod = callingMethod;
+                    this.EventHandler = eventHandler;
                 }
 
-                public EventInfo Event { get; private set; }
+                public EventInfo Event { get; }
 
-                public Delegate EventHandler { get; private set; }
+                public Delegate EventHandler { get; }
 
-                private MethodInfo CallingMethod { get; set; }
+                private MethodInfo CallingMethod { get; }
 
                 public static EventCall GetEventCall(
                     IFakeObjectCall fakeObjectCall)
                 {
                     var eventInfo = GetEvent(fakeObjectCall.Method);
 
-                    return new EventCall
-                               {
-                                   Event = eventInfo,
-                                   CallingMethod = fakeObjectCall.Method,
-                                   EventHandler = (Delegate)fakeObjectCall.Arguments[0],
-                               };
+                    return new EventCall(eventInfo, fakeObjectCall.Method, (Delegate)fakeObjectCall.Arguments[0]);
                 }
 
                 public static EventInfo GetEvent(MethodInfo eventAdderOrRemover)

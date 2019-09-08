@@ -317,7 +317,7 @@ namespace FakeItEasy
             Guard.AgainstNull(manager, nameof(manager));
 
             return manager.Matches(
-                x => ((object)x) != null && predicate(x),
+                x => !ReferenceEquals(x, null) && predicate(x),
                 descriptionWriter);
         }
 
