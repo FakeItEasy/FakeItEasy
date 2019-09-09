@@ -1,11 +1,34 @@
 # Quickstart
 
-Getting started with FakeItEasy is very simple:
+## Getting started with FakeItEasy
 
-* Open the Package Manager Console:  
-Tools → Library Package Manager → Package Manager Console
-* Execute `Install-Package FakeItEasy`
-* Start faking dependencies in your tests. Here's a sample test class with fakes:
+### Installation
+
+#### Package Manger
+
+Run following command in Package Manager Console:
+
+```ps1
+Install-Package FakeItEasy
+```
+
+#### .NET CLI
+
+Run following command in terminal:
+
+```bat
+dotnet add package FakeItEasy
+```
+
+#### PackageReference
+
+ For projects that support PackageReference, copy this XML node into the csproj file to reference the package.
+
+```xml
+<PackageReference Include="FakeItEasy" Version="5.2.0" />
+```
+
+### Simple faking dependencies
 
 ```csharp
 namespace FakeItEasyQuickstart
