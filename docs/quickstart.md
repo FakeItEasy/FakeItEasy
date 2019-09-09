@@ -16,7 +16,7 @@ namespace FakeItEasyQuickstart
     public class SweetToothTests
     {
         [Test]
-        public void BuyTastiestCandy_should_buy_top_selling_candy_from_shop
+        public void BuyTastiestCandy_should_buy_top_selling_candy_from_shop()
         {
             // make some fakes for the test
             var lollipop = A.Fake<ICandy>();
