@@ -4,7 +4,7 @@
 
 ### Installation
 
-#### Package Manger
+#### Package Manager
 
 Run following command in Package Manager Console:
 
