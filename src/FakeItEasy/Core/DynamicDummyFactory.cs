@@ -35,7 +35,7 @@ namespace FakeItEasy.Core
                 typeOfDummy,
                 type => this.allDummyFactories.FirstOrDefault(factory => factory.CanCreate(type)));
 
-            if (dummyFactory == null)
+            if (dummyFactory is null)
             {
                 fakeObject = null;
                 return false;

@@ -290,7 +290,7 @@
 
             "And a fake method with 4 parameters is configured to return a value when the arguments match a predicate"
                 .x(() => A.CallTo(() => fake.Bar(0, null, false, null))
-                            .WhenArgumentsMatch((int a, string b, bool c, object d) => a % 2 == 0 && b.Length < 3 && c && d != null)
+                            .WhenArgumentsMatch((int a, string b, bool c, object d) => a % 2 == 0 && b.Length < 3 && c && d is object)
                             .Returns(42));
 
             "When the method is called with arguments that satisfy the predicate"
@@ -308,7 +308,7 @@
 
             "And a fake method with 4 parameters is configured to return a value when the arguments match a predicate"
                 .x(() => A.CallTo(() => fake.Bar(0, null, false, null))
-                            .WhenArgumentsMatch((int a, string b, bool c, object d) => a % 2 == 0 && b.Length < 3 && c && d != null)
+                            .WhenArgumentsMatch((int a, string b, bool c, object d) => a % 2 == 0 && b.Length < 3 && c && d is object)
                             .Returns(42));
 
             "When the method is called with arguments that don't satisfy the predicate"

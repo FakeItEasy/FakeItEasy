@@ -44,7 +44,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
         {
             var enumerable = argument as IEnumerable;
 
-            if (enumerable == null || enumerable.Cast<object>().Count() != this.constraintsField.Length)
+            if (enumerable is null || enumerable.Cast<object>().Count() != this.constraintsField.Length)
             {
                 return false;
             }

@@ -19,7 +19,7 @@
             var invokedMethod = this.GetInvokedMethod(method, callTarget);
 
             failReason = GetReasonForWhyMethodCanNotBeIntercepted(invokedMethod);
-            return failReason == null;
+            return failReason is null;
         }
 
         private static string GetReasonForWhyMethodCanNotBeIntercepted(MethodInfo method)
@@ -67,7 +67,7 @@
         {
             var invokedMethod = method;
 
-            if (callTarget != null)
+            if (callTarget is object)
             {
                 invokedMethod = this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(
                     callTarget.GetType(), method);

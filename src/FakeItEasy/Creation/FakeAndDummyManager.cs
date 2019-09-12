@@ -72,7 +72,7 @@ namespace FakeItEasy.Creation
         {
             var implicitOptionsBuilder = this.implicitOptionsBuilderCatalogue.GetImplicitOptionsBuilder(typeOfFake);
 
-            if (implicitOptionsBuilder == null && optionsBuilder == DefaultOptionsBuilder)
+            if (implicitOptionsBuilder is null && optionsBuilder == DefaultOptionsBuilder)
             {
                 return ProxyOptions.Default;
             }
@@ -80,7 +80,7 @@ namespace FakeItEasy.Creation
             var proxyOptions = new ProxyOptions();
             var fakeOptions = FakeOptionsFactoryCache.GetOrAdd(typeOfFake, GetFakeOptionsFactory).Invoke(proxyOptions);
 
-            if (implicitOptionsBuilder != null)
+            if (implicitOptionsBuilder is object)
             {
                 try
                 {

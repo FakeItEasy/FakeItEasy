@@ -30,7 +30,7 @@ namespace FakeItEasy.Analyzer
 
         public override void Initialize(AnalysisContext context)
         {
-            if (context == null)
+            if (context is null)
             {
                 throw new ArgumentNullException(nameof(context));
             }

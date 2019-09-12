@@ -40,7 +40,7 @@ namespace FakeItEasy.Tests.TestHelpers
         private static MethodInfo GetMethodInfo(LambdaExpression callSpecification)
         {
             var methodExpression = callSpecification.Body as MethodCallExpression;
-            if (methodExpression != null)
+            if (methodExpression is object)
             {
                 return methodExpression.Method;
             }
@@ -57,7 +57,7 @@ namespace FakeItEasy.Tests.TestHelpers
             MethodInfo method;
             object[] arguments;
 
-            if (methodCall != null)
+            if (methodCall is object)
             {
                 method = methodCall.Method;
                 arguments =

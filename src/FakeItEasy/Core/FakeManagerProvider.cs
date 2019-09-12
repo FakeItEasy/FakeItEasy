@@ -57,7 +57,7 @@ namespace FakeItEasy.Core
 
             lock (this.initializedFakeManagerLock)
             {
-                if (this.initializedFakeManager == null)
+                if (this.initializedFakeManager is null)
                 {
                     this.initializedFakeManager = this.fakeManagerFactory(this.typeOfFake, proxy, this.proxyOptions.Name);
 

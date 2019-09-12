@@ -31,14 +31,14 @@ namespace FakeItEasy.Core
             public bool Equals(Delegate leftDelegate, Delegate rightDelegate)
             {
                 return ReferenceEquals(leftDelegate, rightDelegate) ||
-                       (leftDelegate != null &&
-                        rightDelegate != null &&
+                       (leftDelegate is object &&
+                        rightDelegate is object &&
                         ReferenceEquals(leftDelegate.Target, rightDelegate.Target));
             }
 
             public int GetHashCode(Delegate theDelegate)
             {
-                return theDelegate == null || theDelegate.Target == null
+                return theDelegate is null || theDelegate.Target is null
                     ? 17
                     : theDelegate.Target.GetHashCode();
             }

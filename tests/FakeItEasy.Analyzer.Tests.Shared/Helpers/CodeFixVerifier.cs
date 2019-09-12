@@ -86,7 +86,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
                     break;
                 }
 
-                if (codeFixIndex != null)
+                if (codeFixIndex is object)
                 {
                     document = ApplyFix(document, actions.ElementAt((int)codeFixIndex));
                     break;

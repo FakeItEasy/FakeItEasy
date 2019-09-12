@@ -23,7 +23,7 @@ namespace FakeItEasy.Core
 
             FakeManager result = this.TryGetFakeManager(proxy);
 
-            if (result == null)
+            if (result is null)
             {
                 throw new ArgumentException(ExceptionMessages.NotRecognizedAsAFake(proxy, proxy.GetType()));
             }

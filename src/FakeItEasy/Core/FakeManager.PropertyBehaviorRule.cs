@@ -58,21 +58,21 @@ namespace FakeItEasy.Core
                     (from property in propertyGetterOrSetter.DeclaringType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                      let getMethod = property.GetGetMethod(true)
                      let setMethod = property.GetSetMethod(true)
-                     where (getMethod != null && getMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
-                         || (setMethod != null && setMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
+                     where (getMethod is object && getMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
+                         || (setMethod is object && setMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
                      select property).Single();
             }
 
             private bool IsPropertySetter(IFakeObjectCall fakeObjectCall)
             {
-                return this.propertySetter != null &&
+                return this.propertySetter is object &&
                        this.propertySetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition()) &&
                        this.Indices.SequenceEqual(fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1));
             }
 
             private bool IsPropertyGetter(IFakeObjectCall fakeObjectCall)
             {
-                return this.propertyGetter != null &&
+                return this.propertyGetter is object &&
                        this.propertyGetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition()) &&
                        this.Indices.SequenceEqual(fakeObjectCall.Arguments);
             }

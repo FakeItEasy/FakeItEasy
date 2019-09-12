@@ -12,13 +12,13 @@ namespace FakeItEasy.Expressions
         public ParsedCallExpression Parse(LambdaExpression callExpression)
         {
             var methodExpression = callExpression.Body as MethodCallExpression;
-            if (methodExpression != null)
+            if (methodExpression is object)
             {
                 return ParseMethodCallExpression(methodExpression);
             }
 
             var propertyExpression = callExpression.Body as MemberExpression;
-            if (propertyExpression != null)
+            if (propertyExpression is object)
             {
                 return ParsePropertyCallExpression(propertyExpression);
             }
@@ -62,7 +62,7 @@ namespace FakeItEasy.Expressions
         {
             var property = expression.Member as PropertyInfo;
 
-            if (property == null)
+            if (property is null)
             {
                 throw new ArgumentException("The specified expression is not a method call or property getter.");
             }

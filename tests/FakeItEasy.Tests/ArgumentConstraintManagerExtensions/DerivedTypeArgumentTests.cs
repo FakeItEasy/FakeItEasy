@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
         {
             Guard.AgainstNull(scope, nameof(scope));
 
-            scope.Matches(x => x == null || x == "foo", x => x.Write("string that is \"foo\" or is empty"));
+            scope.Matches(x => x is null || x == "foo", x => x.Write("string that is \"foo\" or is empty"));
         }
     }
 }

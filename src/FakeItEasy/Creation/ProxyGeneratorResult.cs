@@ -39,7 +39,7 @@ namespace FakeItEasy.Creation
             Guard.AgainstNull(reasonForFailure, nameof(reasonForFailure));
             Guard.AgainstNull(exception, nameof(exception));
 
-            if (exception is TargetInvocationException && exception.InnerException != null)
+            if (exception is TargetInvocationException && exception.InnerException is object)
             {
                 exception = exception.InnerException;
             }

@@ -48,7 +48,7 @@ namespace FakeItEasy.Tests
             private static ConstraintState CreateCall(Expression<Action> methodCall)
             {
                 var methodExpression = methodCall.Body as MethodCallExpression;
-                if (methodExpression != null)
+                if (methodExpression is object)
                 {
                     return new MethodCallConstraintState(methodExpression);
                 }
@@ -58,7 +58,7 @@ namespace FakeItEasy.Tests
 
             private static object GetValueProducedByExpression(Expression expression)
             {
-                if (expression == null)
+                if (expression is null)
                 {
                     return null;
                 }
@@ -217,7 +217,7 @@ namespace FakeItEasy.Tests
 
                     foreach (var argument in this.ValidArguments)
                     {
-                        if (argument.Value != null && IsNullableType(argument.ArgumentType))
+                        if (argument.Value is object && IsNullableType(argument.ArgumentType))
                         {
                             var permutation = new CallThatShouldThrow
                             {
@@ -282,14 +282,14 @@ namespace FakeItEasy.Tests
 
                     private void WriteFailReason(StringBuilderOutputWriter description)
                     {
-                        if (this.thrown == null)
+                        if (this.thrown is null)
                         {
                             description.Write("did not throw any exception.");
                         }
                         else
                         {
                             var argumentNullException = this.thrown as ArgumentNullException;
-                            if (argumentNullException != null)
+                            if (argumentNullException is object)
                             {
                                 description.Write(
                                     $"threw ArgumentNullException with wrong argument name, it should be {this.ArgumentName}.");

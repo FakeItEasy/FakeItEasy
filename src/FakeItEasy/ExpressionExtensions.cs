@@ -48,7 +48,7 @@ namespace FakeItEasy
         {
             result = null;
 
-            if (expression == null)
+            if (expression is null)
             {
                 return true;
             }
@@ -63,7 +63,7 @@ namespace FakeItEasy
                     var memberExpression = (MemberExpression)expression;
 
                     var fieldInfo = memberExpression.Member as FieldInfo;
-                    if (fieldInfo != null)
+                    if (fieldInfo is object)
                     {
                         if (TryFastEvaluate(memberExpression.Expression, out object memberResult))
                         {
@@ -75,7 +75,7 @@ namespace FakeItEasy
                     }
 
                     var propertyInfo = memberExpression.Member as PropertyInfo;
-                    if (propertyInfo != null)
+                    if (propertyInfo is object)
                     {
                         // index = null: this is always fine since it's a MemberAccess expression, not an IndexExpression
                         if (TryFastEvaluate(memberExpression.Expression, out object memberResult))

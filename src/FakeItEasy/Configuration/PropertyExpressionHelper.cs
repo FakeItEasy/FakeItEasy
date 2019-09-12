@@ -12,7 +12,7 @@ namespace FakeItEasy.Configuration
             ParsedCallExpression parsedCallExpression)
         {
             var propertyName = GetPropertyName(parsedCallExpression);
-            if (propertyName == null)
+            if (propertyName is null)
             {
                 var expressionDescription = GetExpressionDescription(parsedCallExpression);
                 throw new ArgumentException("Expression '" + expressionDescription +
@@ -36,7 +36,7 @@ namespace FakeItEasy.Configuration
             var setPropertyName = "set_" + propertyName;
             var indexerSetterInfo = callTargetType.GetMethod(setPropertyName, parameterTypes);
 
-            if (indexerSetterInfo == null)
+            if (indexerSetterInfo is null)
             {
                 if (parsedCallExpression.ArgumentsExpressions.Any())
                 {

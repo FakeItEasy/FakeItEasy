@@ -7,7 +7,7 @@
         public static IEnumerable<LinkedListNode<T>> Nodes<T>(this LinkedList<T> linkedList)
         {
             var node = linkedList.First;
-            while (node != null)
+            while (node is object)
             {
                 yield return node;
                 node = node.Next;

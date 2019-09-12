@@ -211,7 +211,7 @@ namespace FakeItEasy.IntegrationTests
 
             // Assert
             result.Should().BeAssignableTo<IList<IFoo>>().And
-                .OnlyContain(foo => foo != null && Fake.GetFakeManager(foo) != null);
+                .OnlyContain(foo => foo is object && Fake.GetFakeManager(foo) is object);
         }
 
         [Fact]

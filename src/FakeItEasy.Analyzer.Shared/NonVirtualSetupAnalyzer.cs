@@ -45,7 +45,7 @@
 
         public override void Initialize(AnalysisContext context)
         {
-            if (context == null)
+            if (context is null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
@@ -111,7 +111,7 @@
 
             var invocationParent = FindInvocationInHierarchy(invocationExpression);
 
-            if (invocationParent == null || !IsSetupInvocation(context, invocationParent))
+            if (invocationParent is null || !IsSetupInvocation(context, invocationParent))
             {
                 return;
             }
@@ -139,7 +139,7 @@
         private static bool IsSetupInvocation(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax parent)
         {
             var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(parent, context);
-            return methodSymbol != null && CallSpecMethods.Contains(methodSymbol.GetFullName());
+            return methodSymbol is object && CallSpecMethods.Contains(methodSymbol.GetFullName());
         }
 
         private static bool IsProperty(SymbolInfo symbolInfo)

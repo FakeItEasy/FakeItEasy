@@ -25,7 +25,7 @@ namespace FakeItEasy.Analyzer
         {
             var symbolInfo = context.SemanticModel.GetSymbolInfo(call);
             var symbol = symbolInfo.Symbol;
-            if (symbol == null && useFirstCandidateIfNotResolved)
+            if (symbol is null && useFirstCandidateIfNotResolved)
             {
                 symbol = symbolInfo.CandidateSymbols.FirstOrDefault();
             }

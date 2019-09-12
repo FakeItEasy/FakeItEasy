@@ -31,7 +31,7 @@ namespace FakeItEasy.Core
             var methodInvokedByFirst = this.GetMethodOnTypeThatWillBeInvokedByMethodInfo(target, first);
             var methodInvokedBySecond = this.GetMethodOnTypeThatWillBeInvokedByMethodInfo(target, second);
 
-            return methodInvokedByFirst != null && methodInvokedBySecond != null && methodInvokedByFirst.Equals(methodInvokedBySecond);
+            return methodInvokedByFirst is object && methodInvokedBySecond is object && methodInvokedByFirst.Equals(methodInvokedBySecond);
         }
 
         public virtual MethodInfo GetMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
@@ -74,14 +74,14 @@ namespace FakeItEasy.Core
                  where HasSameBaseMethod(typeMethod, methodWrapper.Method)
                  select MakeGeneric(typeMethod, methodWrapper.Method)).FirstOrDefault();
 
-            if (result != null)
+            if (result is object)
             {
                 return result;
             }
 
             result = GetMethodOnTypeThatImplementsInterfaceMethod(type, methodWrapper.Method);
 
-            if (result != null)
+            if (result is object)
             {
                 return result;
             }
@@ -113,7 +113,7 @@ namespace FakeItEasy.Core
                      where HasSameBaseMethod(EnsureNonGeneric(methodWrapper.Method), EnsureNonGeneric(methodTargetPair.TargetMethod))
                      select MakeGeneric(methodTargetPair.InterfaceMethod, methodWrapper.Method)).FirstOrDefault();
 
-                if (foundMethod != null)
+                if (foundMethod is object)
                 {
                     return GetMethodOnTypeThatImplementsInterfaceMethod(type, foundMethod);
                 }

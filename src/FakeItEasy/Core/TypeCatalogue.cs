@@ -54,7 +54,7 @@ namespace FakeItEasy.Core
                 {
                     // In this case, some types failed to load.
                     // Just keep the types that were successfully loaded, and warn about the rest.
-                    foreach (var type in ex.Types.Where(t => t != null))
+                    foreach (var type in ex.Types.Where(t => t is object))
                     {
                         this.availableTypes.Add(type);
                     }
@@ -178,7 +178,7 @@ namespace FakeItEasy.Core
 
             using (writer.Indent())
             {
-                int notLoadedCount = ex.Types.Count(t => t == null);
+                int notLoadedCount = ex.Types.Count(t => t is null);
                 writer.Write($"{notLoadedCount} type(s) were not loaded for the following reasons:");
                 writer.WriteLine();
                 foreach (var loaderException in ex.LoaderExceptions)

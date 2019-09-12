@@ -102,12 +102,12 @@ namespace FakeItEasy.Creation
                 IList<string> reasonsFromResult1,
                 IList<string> reasonsFromResult2)
             {
-                if (reasonsFromResult1 == null)
+                if (reasonsFromResult1 is null)
                 {
                     return reasonsFromResult2;
                 }
 
-                if (reasonsFromResult2 == null)
+                if (reasonsFromResult2 is null)
                 {
                     return reasonsFromResult1;
                 }
@@ -121,12 +121,12 @@ namespace FakeItEasy.Creation
                 IList<ResolvedConstructor> constructorsFromResult1,
                 IList<ResolvedConstructor> constructorsFromResult2)
             {
-                if (constructorsFromResult1 == null)
+                if (constructorsFromResult1 is null)
                 {
                     return constructorsFromResult2;
                 }
 
-                if (constructorsFromResult2 == null)
+                if (constructorsFromResult2 is null)
                 {
                     return constructorsFromResult1;
                 }
@@ -144,7 +144,7 @@ namespace FakeItEasy.Creation
                     .Append(this.type)
                     .Append(":");
 
-                if (this.reasonsForFailure != null)
+                if (this.reasonsForFailure is object)
                 {
                     foreach (var reasonForFailure in this.reasonsForFailure)
                     {
@@ -157,7 +157,7 @@ namespace FakeItEasy.Creation
                 message
                     .AppendLine();
 
-                if (this.consideredConstructors != null && this.consideredConstructors.Any(x => x.WasSuccessfullyResolved))
+                if (this.consideredConstructors is object && this.consideredConstructors.Any(x => x.WasSuccessfullyResolved))
                 {
                     message
                         .AppendLine()
@@ -181,7 +181,7 @@ namespace FakeItEasy.Creation
 
             private void AppendNonTriedConstructors(StringBuilder message)
             {
-                if (this.consideredConstructors == null || this.consideredConstructors.All(x => x.WasSuccessfullyResolved))
+                if (this.consideredConstructors is null || this.consideredConstructors.All(x => x.WasSuccessfullyResolved))
                 {
                     return;
                 }
@@ -217,7 +217,7 @@ namespace FakeItEasy.Creation
 
             public bool Equals(ResolvedConstructor x, ResolvedConstructor y)
             {
-                return ReferenceEquals(x, y) || (x != null && y != null && ConstructorArgumentTypes(x).SequenceEqual(ConstructorArgumentTypes(y)));
+                return ReferenceEquals(x, y) || (x is object && y is object && ConstructorArgumentTypes(x).SequenceEqual(ConstructorArgumentTypes(y)));
 
                 IEnumerable<Type> ConstructorArgumentTypes(ResolvedConstructor constructor) =>
                     constructor.Arguments.Select(a => a.ArgumentType);

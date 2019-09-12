@@ -47,7 +47,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
         {
             get
             {
-                if (this.locations == null)
+                if (this.locations is null)
                 {
                     this.locations = Array.Empty<DiagnosticResultLocation>();
                 }

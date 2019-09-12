@@ -22,14 +22,14 @@ namespace FakeItEasy.Tests
         bool IFakeObjectCallRule.IsApplicableTo(IFakeObjectCall invocation)
         {
             this.IsApplicableToWasCalled = true;
-            return this.IsApplicableTo != null ? this.IsApplicableTo(invocation) : false;
+            return this.IsApplicableTo is object ? this.IsApplicableTo(invocation) : false;
         }
 
         void IFakeObjectCallRule.Apply(IInterceptedFakeObjectCall invocation)
         {
             this.ApplyWasCalled = true;
 
-            if (this.Apply != null)
+            if (this.Apply is object)
             {
                 this.Apply(invocation);
             }

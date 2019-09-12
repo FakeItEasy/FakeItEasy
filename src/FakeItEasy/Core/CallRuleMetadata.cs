@@ -41,7 +41,7 @@ namespace FakeItEasy.Core
         /// <returns>True if the rule has not been called the number of times specified.</returns>
         public bool HasNotBeenCalledSpecifiedNumberOfTimes()
         {
-            return this.Rule.NumberOfTimesToCall == null || this.CalledNumberOfTimes < this.Rule.NumberOfTimesToCall.Value;
+            return this.Rule.NumberOfTimesToCall is null || this.CalledNumberOfTimes < this.Rule.NumberOfTimesToCall.Value;
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace FakeItEasy.Tests.Builders
         {
             var methodCall = invocation.Body as MethodCallExpression;
 
-            Debug.Assert(methodCall != null, "The invocation must be a method call.");
+            Debug.Assert(methodCall is object, "The invocation must be a method call.");
 
             this.expression = methodCall.Arguments.First();
 
