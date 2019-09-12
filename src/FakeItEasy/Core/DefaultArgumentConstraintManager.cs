@@ -92,7 +92,7 @@ namespace FakeItEasy.Core
 
             private static bool IsValueValidForType(object argument)
             {
-                if (argument == null)
+                if (argument is null)
                 {
                     return IsNullable;
                 }

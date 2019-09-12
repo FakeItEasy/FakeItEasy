@@ -50,7 +50,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
         /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location.</returns>
         protected static Diagnostic[] GetSortedDiagnosticsFromDocuments(DiagnosticAnalyzer analyzer, Document[] documents, bool allowCompilationErrors)
         {
-            if (documents == null)
+            if (documents is null)
             {
                 throw new ArgumentNullException(nameof(documents));
             }

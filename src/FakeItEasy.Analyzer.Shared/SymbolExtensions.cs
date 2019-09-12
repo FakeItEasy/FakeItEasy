@@ -14,7 +14,7 @@
         /// <returns>The full name of the type.</returns>
         public static string GetFullName(this INamedTypeSymbol type)
         {
-            if (type == null)
+            if (type is null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
@@ -22,7 +22,7 @@
             var nameParts = new Stack<string>();
             nameParts.Push(type.GetDecoratedName());
             var containingType = type.ContainingType;
-            while (containingType != null)
+            while (containingType is object)
             {
                 nameParts.Push(containingType.GetDecoratedName());
                 containingType = containingType.ContainingType;

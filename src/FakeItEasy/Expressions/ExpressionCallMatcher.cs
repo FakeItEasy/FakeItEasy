@@ -76,7 +76,7 @@ namespace FakeItEasy.Expressions
             {
                 if (argumentConstraint is IArgumentValueProvider valueProvidingConstraint)
                 {
-                    if (values == null)
+                    if (values is null)
                     {
                         values = new List<object>();
                     }
@@ -85,7 +85,7 @@ namespace FakeItEasy.Expressions
                 }
             }
 
-            return values == null ? (Func<IFakeObjectCall, ICollection<object>>)null : call => values;
+            return values is null ? (Func<IFakeObjectCall, ICollection<object>>)null : call => values;
         }
 
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)

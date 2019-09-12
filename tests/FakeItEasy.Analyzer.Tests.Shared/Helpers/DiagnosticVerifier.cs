@@ -177,7 +177,7 @@ Diagnostic:
 Diagnostic:
     {FormatDiagnostics(analyzer, diagnostic)}
 ";
-            (actualSpan.Path == expected.Path || (actualSpan.Path != null && actualSpan.Path.Contains("Test0.") && expected.Path.Contains("Test.")))
+            (actualSpan.Path == expected.Path || (actualSpan.Path is object && actualSpan.Path.Contains("Test0.") && expected.Path.Contains("Test.")))
                 .Should().BeTrue(message);
 
             var actualLinePosition = actualSpan.StartLinePosition;
@@ -231,7 +231,7 @@ Diagnostic:
 
                 foreach (var rule in rules)
                 {
-                    if (rule != null && rule.Id == diagnostics[i].Id)
+                    if (rule is object && rule.Id == diagnostics[i].Id)
                     {
                         var location = diagnostics[i].Location;
                         if (location == Location.None)

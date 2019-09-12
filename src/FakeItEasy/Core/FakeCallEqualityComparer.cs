@@ -24,13 +24,13 @@ namespace FakeItEasy.Core
             var hash = 17;
             unchecked
             {
-                hash = (hash * 23) + (obj.Method == null ? 0 : obj.Method.GetHashCode());
+                hash = (hash * 23) + (obj.Method is null ? 0 : obj.Method.GetHashCode());
 
-                if (obj.Arguments != null)
+                if (obj.Arguments is object)
                 {
                     foreach (var argument in obj.Arguments)
                     {
-                        hash = (hash * 23) + (argument == null ? 0 : argument.GetHashCode());
+                        hash = (hash * 23) + (argument is null ? 0 : argument.GetHashCode());
                     }
                 }
             }

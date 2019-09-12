@@ -38,7 +38,7 @@ namespace FakeItEasy.Analyzer
         protected override void AnalyzeArgumentConstraintCore(string propertyFullName, SyntaxNodeAnalysisContext context, SyntaxNode completeConstraint)
         {
             var constraintType = context.SemanticModel.GetTypeInfo(completeConstraint).Type as INamedTypeSymbol;
-            if (constraintType == null)
+            if (constraintType is null)
             {
                 return;
             }
@@ -50,7 +50,7 @@ namespace FakeItEasy.Analyzer
             var argumentList = argument?.Parent as ArgumentListSyntax;
 #endif
 
-            if (argumentList == null)
+            if (argumentList is null)
             {
                 return;
             }
@@ -77,7 +77,7 @@ namespace FakeItEasy.Analyzer
 
                 var nonNullableParameterType = parameterType.IsNullable() ? parameterType.TypeArguments[0] : null;
 
-                if (nonNullableParameterType != null &&
+                if (nonNullableParameterType is object &&
                     constraintType.IsValueType &&
                     !constraintType.IsNullable() &&
                     constraintType.Equals(nonNullableParameterType))
@@ -135,11 +135,11 @@ namespace FakeItEasy.Analyzer
                 case InvocationExpressionSyntax invocation:
                     {
                         var method = SymbolHelpers.GetCalledMethodSymbol(invocation, context);
-                        if (method == null)
+                        if (method is null)
                         {
 #if VISUAL_BASIC
                             var indexer = SymbolHelpers.GetAccessedIndexerSymbol(invocation, context);
-                            if (indexer == null)
+                            if (indexer is null)
                             {
                                 return false;
                             }
@@ -160,7 +160,7 @@ namespace FakeItEasy.Analyzer
                 case ElementAccessExpressionSyntax elementAccess:
                     {
                         var indexer = SymbolHelpers.GetAccessedIndexerSymbol(elementAccess, context);
-                        if (indexer == null)
+                        if (indexer is null)
                         {
                             return false;
                         }

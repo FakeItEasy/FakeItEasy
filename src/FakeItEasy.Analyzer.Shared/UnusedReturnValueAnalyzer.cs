@@ -42,7 +42,7 @@ namespace FakeItEasy.Analyzer
 
         public override void Initialize(AnalysisContext context)
         {
-            if (context == null)
+            if (context is null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
@@ -53,13 +53,13 @@ namespace FakeItEasy.Analyzer
         private static void AnalyzeCall(SyntaxNodeAnalysisContext context)
         {
             var call = context.Node as InvocationExpressionSyntax;
-            if (call == null)
+            if (call is null)
             {
                 return;
             }
 
             var methodSymbol = SymbolHelpers.GetCalledMethodSymbol(call, context);
-            if (methodSymbol == null ||
+            if (methodSymbol is null ||
                 !CallSpecMethods.Contains(methodSymbol.GetFullName()))
             {
                 return;

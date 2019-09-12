@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.TestHelpers
 
             assertion
                 .NotBeNull("because fakes aren't null").And
-                .Match(subject => Fake.GetFakeManager(subject) != null, "fakes have a FakeManager");
+                .Match(subject => Fake.GetFakeManager(subject) is object, "fakes have a FakeManager");
         }
 
         /// <summary>

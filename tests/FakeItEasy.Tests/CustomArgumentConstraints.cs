@@ -20,7 +20,7 @@ namespace FakeItEasy.Tests
             where T : IEnumerable
         {
             return scope.Matches(
-                x => x != null && x.Cast<object>().SequenceEqual(collection),
+                x => x is object && x.Cast<object>().SequenceEqual(collection),
                 "This sequence: " + collection.ToCollectionString(x => x.ToString(), ", "));
         }
 
@@ -41,7 +41,7 @@ namespace FakeItEasy.Tests
         {
             return scope.NullCheckedMatches(
                 x => !x.AdditionalInterfacesToImplement.Any()
-                     && x.ArgumentsForConstructor == null
+                     && x.ArgumentsForConstructor is null
                      && !x.ProxyConfigurationActions.Any()
                      && !x.Attributes.Any(),
                 x => x.Write("empty fake options"));

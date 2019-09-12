@@ -92,7 +92,7 @@ namespace FakeItEasy.Creation
                     return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot have custom attributes applied to them.");
                 }
 
-                if (proxyOptions.ArgumentsForConstructor != null && proxyOptions.ArgumentsForConstructor.Any())
+                if (proxyOptions.ArgumentsForConstructor is object && proxyOptions.ArgumentsForConstructor.Any())
                 {
                     return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot be made using explicit constructor arguments.");
                 }
@@ -131,7 +131,7 @@ namespace FakeItEasy.Creation
 
             public CreationResult CreateFakeInterface(Type typeOfFake, IProxyOptions proxyOptions)
             {
-                if (proxyOptions.ArgumentsForConstructor != null)
+                if (proxyOptions.ArgumentsForConstructor is object)
                 {
                     throw new ArgumentException(DynamicProxyMessages.ArgumentsForConstructorOnInterfaceType);
                 }
@@ -158,7 +158,7 @@ namespace FakeItEasy.Creation
                     return CreationResult.FailedToCreateFake(typeOfFake, reasonCannotGenerate);
                 }
 
-                if (proxyOptions.ArgumentsForConstructor != null)
+                if (proxyOptions.ArgumentsForConstructor is object)
                 {
                     var proxyGeneratorResult = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
 

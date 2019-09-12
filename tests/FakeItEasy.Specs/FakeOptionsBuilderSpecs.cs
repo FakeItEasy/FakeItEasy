@@ -349,7 +349,7 @@ namespace FakeItEasy.Specs
         {
             protected override void BuildOptions(IFakeOptions<SomeClass> options)
             {
-                if (options == null)
+                if (options is null)
                 {
                     throw new ArgumentNullException(nameof(options));
                 }
@@ -365,7 +365,7 @@ namespace FakeItEasy.Specs
 
         public bool CanBuildOptionsForFakeOfType(Type type)
         {
-            return type != null && type.FullName + "OptionsBuilder" == this.GetType().FullName;
+            return type is object && type.FullName + "OptionsBuilder" == this.GetType().FullName;
         }
 
         public abstract void BuildOptions(Type typeOfFake, IFakeOptions options);
@@ -379,7 +379,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options != null)
+            if (options is object)
             {
                 options.Wrapping(null);
             }
@@ -406,7 +406,7 @@ namespace FakeItEasy.Specs
 
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options != null)
+            if (options is object)
             {
                 options.Wrapping(WrappedObject);
             }
@@ -424,7 +424,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options != null)
+            if (options is object)
             {
                 options.Strict();
             }
@@ -440,7 +440,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options != null)
+            if (options is object)
             {
                 options.CallsBaseMethods();
             }
@@ -461,7 +461,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options != null)
+            if (options is object)
             {
                 options.WithArgumentsForConstructor(new object[] { this.GetType().Name });
             }
@@ -482,7 +482,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options != null)
+            if (options is object)
             {
                 options.WithArgumentsForConstructor(() => new ConstructorArgumentsSetByConstructor(this.GetType().Name));
             }
@@ -503,7 +503,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options != null)
+            if (options is object)
             {
                 options.WithArgumentsForConstructor(() => new ConstructorArgumentsSetByConstructor(this.GetType().Name));
             }
@@ -523,7 +523,7 @@ namespace FakeItEasy.Specs
 
         public void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options == null)
+            if (options is null)
             {
                 return;
             }
@@ -548,7 +548,7 @@ namespace FakeItEasy.Specs
 
         protected override void BuildOptions(IFakeOptions<RobotRunsAmokEvent> options)
         {
-            if (options == null)
+            if (options is null)
             {
                 return;
             }

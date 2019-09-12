@@ -78,7 +78,7 @@ namespace FakeItEasy.Core
                 }
 
                 var argument = fakeObjectCall.Arguments[0];
-                if (argument != null)
+                if (argument is object)
                 {
                     var argumentFakeManager = Fake.TryGetFakeManager(argument);
                     bool hasSameFakeManager = ReferenceEquals(argumentFakeManager, fakeManager);

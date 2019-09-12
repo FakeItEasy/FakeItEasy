@@ -154,7 +154,7 @@ namespace FakeItEasy.Core
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Explicit implementation to be able to make the IFakeCallProcessor interface internal.")]
         void IFakeCallProcessor.Process(InterceptedFakeObjectCall fakeObjectCall)
         {
-            for (var listenerNode = this.interceptionListeners.First; listenerNode != null; listenerNode = listenerNode.Next)
+            for (var listenerNode = this.interceptionListeners.First; listenerNode is object; listenerNode = listenerNode.Next)
             {
                 listenerNode.Value.OnBeforeCallIntercepted(fakeObjectCall);
             }
@@ -168,7 +168,7 @@ namespace FakeItEasy.Core
             }
             finally
             {
-                for (var listenerNode = this.interceptionListeners.Last; listenerNode != null; listenerNode = listenerNode.Previous)
+                for (var listenerNode = this.interceptionListeners.Last; listenerNode is object; listenerNode = listenerNode.Previous)
                 {
                     listenerNode.Value.OnAfterCallIntercepted(readonlyCall);
                 }
@@ -215,7 +215,7 @@ namespace FakeItEasy.Core
             lock (this.allUserRules)
             {
                 var previousNode = this.allUserRules.Nodes().FirstOrDefault(n => n.Value.Rule == previousRule);
-                if (previousNode == null)
+                if (previousNode is null)
                 {
                     throw new InvalidOperationException("The rule after which to add the new rule was not found in the list.");
                 }
@@ -249,7 +249,7 @@ namespace FakeItEasy.Core
                 }
             }
 
-            if (bestUserRule != null)
+            if (bestUserRule is object)
             {
                 bestUserRule.RecordCall();
                 bestUserRule.Rule.Apply(fakeObjectCall);

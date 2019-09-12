@@ -72,7 +72,7 @@ namespace FakeItEasy
 
             for (int i = 0; i < callMethodParameterTypes.Count; i++)
             {
-                if (values[i] == null)
+                if (values[i] is null)
                 {
                     if (callMethodParameterTypes[i].GetTypeInfo().IsValueType)
                     {

@@ -265,7 +265,7 @@ namespace FakeItEasy.Specs
                 .x(() => fakes.Should().ContainItemsAssignableTo<ICollectionItem>());
 
             "And all items are fakes"
-                .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) != null));
+                .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) is object));
         }
 
         [Scenario]
@@ -285,7 +285,7 @@ namespace FakeItEasy.Specs
                 .x(() => fakes.Should().ContainItemsAssignableTo<ICollectionItem>().And.ContainItemsAssignableTo<IDisposable>());
 
             "And all items are fakes"
-                .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) != null));
+                .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) is object));
         }
 
         [Scenario]

@@ -41,7 +41,7 @@ namespace FakeItEasy.Analyzer
         public override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var diagnostic = context.Diagnostics.FirstOrDefault();
-            if (diagnostic == null)
+            if (diagnostic is null)
             {
                 return CompletedTask;
             }
@@ -91,7 +91,7 @@ namespace FakeItEasy.Analyzer
 
             // The T type
             var constraintType = aType?.TypeArgumentList.Arguments.FirstOrDefault();
-            if (constraintType != null)
+            if (constraintType is object)
             {
                 // The T? type
                 var nullableConstraintType = SyntaxFactory.NullableType(constraintType);
@@ -147,7 +147,7 @@ namespace FakeItEasy.Analyzer
 
             // The T type
             var constraintType = GetConstraintType(diagnostic, root);
-            if (constraintType != null)
+            if (constraintType is object)
             {
                 var parameterTypeName = diagnostic.Properties[ArgumentConstraintTypeMismatchAnalyzer.ParameterTypeKey];
                 var parameterType = SyntaxFactory.ParseName(parameterTypeName);

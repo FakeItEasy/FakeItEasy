@@ -18,7 +18,7 @@ namespace FakeItEasy.PrepareRelease
         public static async Task Main(string[] args)
         {
             var version = args.FirstOrDefault();
-            if (version == null)
+            if (version is null)
             {
                 throw new Exception("No version supplied");
             }

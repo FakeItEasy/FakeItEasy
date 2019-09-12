@@ -30,7 +30,7 @@ namespace FakeItEasy.Core
 
         public virtual string GetArgumentValueAsString(object argumentValue)
         {
-            if (argumentValue == null)
+            if (argumentValue is null)
             {
                 return "NULL";
             }
@@ -63,7 +63,7 @@ namespace FakeItEasy.Core
 
             var distance = 2;
             var currentType = knownType.GetTypeInfo().BaseType;
-            while (currentType != null)
+            while (currentType is object)
             {
                 if (currentType == comparedType)
                 {

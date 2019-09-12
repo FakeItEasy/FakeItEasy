@@ -19,7 +19,7 @@ namespace FakeItEasy.Configuration
 
         public override void DescribeCallOn(IOutputWriter writer)
         {
-            if (this.ApplicableToMembersWithReturnType != null)
+            if (this.ApplicableToMembersWithReturnType is object)
             {
                 if (this.ApplicableToMembersWithReturnType == typeof(void))
                 {
@@ -59,7 +59,7 @@ namespace FakeItEasy.Configuration
                 throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Arguments predicate"), ex);
             }
 
-            if (this.ApplicableToMembersWithReturnType != null)
+            if (this.ApplicableToMembersWithReturnType is object)
             {
                 return this.ApplicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType;
             }

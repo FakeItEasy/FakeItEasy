@@ -74,7 +74,7 @@ namespace FakeItEasy.Tests.Core
 
             public void BuildOptions(Type typeOfFake, IFakeOptions options)
             {
-                if (options == null)
+                if (options is null)
                 {
                     return;
                 }
@@ -94,7 +94,7 @@ namespace FakeItEasy.Tests.Core
 
             public void BuildOptions(Type typeOfFake, IFakeOptions options)
             {
-                if (options == null)
+                if (options is null)
                 {
                     return;
                 }

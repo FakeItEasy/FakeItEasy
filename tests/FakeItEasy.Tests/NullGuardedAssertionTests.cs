@@ -155,7 +155,7 @@ namespace FakeItEasy.Tests
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "a", Justification = "Required for testing.")]
         private void GuardedMethodWithValueTypeArgument(int a, string b)
         {
-            if (b == null)
+            if (b is null)
             {
                 throw new ArgumentNullException(nameof(b));
             }
@@ -169,7 +169,7 @@ namespace FakeItEasy.Tests
 
         private void GuardedMethod(string a)
         {
-            if (a == null)
+            if (a is null)
             {
                 throw new ArgumentNullException(nameof(a));
             }
@@ -177,7 +177,7 @@ namespace FakeItEasy.Tests
 
         private void GuardedMethodWithNullableArgument(int? a)
         {
-            if (a == null)
+            if (a is null)
             {
                 throw new ArgumentNullException(nameof(a));
             }
@@ -186,7 +186,7 @@ namespace FakeItEasy.Tests
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "Required for testing.")]
         private void GuardedWithWrongName(string a)
         {
-            if (a == null)
+            if (a is null)
             {
                 throw new ArgumentNullException("b");
             }
@@ -195,7 +195,7 @@ namespace FakeItEasy.Tests
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "nullIsValid", Justification = "Required for testing.")]
         private void FirstArgumentMayBeNull(string nullIsValid, string nullIsNotValid)
         {
-            if (nullIsNotValid == null)
+            if (nullIsNotValid is null)
             {
                 throw new ArgumentNullException(nameof(nullIsNotValid));
             }
@@ -206,7 +206,7 @@ namespace FakeItEasy.Tests
         {
             public ClassWithProperlyGuardedConstructor(string a)
             {
-                if (a == null)
+                if (a is null)
                 {
                     throw new ArgumentNullException(nameof(a));
                 }

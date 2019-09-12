@@ -17,7 +17,7 @@ namespace FakeItEasy
         [DebuggerStepThrough]
         public static void AgainstNull([ValidatedNotNull]object argument, string argumentName)
         {
-            if (argument == null)
+            if (argument is null)
             {
                 throw new ArgumentNullException(argumentName);
             }

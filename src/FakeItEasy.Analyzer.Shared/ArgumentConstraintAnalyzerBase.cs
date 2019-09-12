@@ -16,7 +16,7 @@
     {
         public override void Initialize(AnalysisContext context)
         {
-            if (context == null)
+            if (context is null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
@@ -41,13 +41,13 @@
         private void AnalyzeNode(SyntaxNodeAnalysisContext context)
         {
             var memberAccess = context.Node as MemberAccessExpressionSyntax;
-            if (memberAccess == null)
+            if (memberAccess is null)
             {
                 return;
             }
 
             var propertySymbol = SymbolHelpers.GetAccessedPropertySymbol(memberAccess, context);
-            if (propertySymbol == null)
+            if (propertySymbol is null)
             {
                 return;
             }

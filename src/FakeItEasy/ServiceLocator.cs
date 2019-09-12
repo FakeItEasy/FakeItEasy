@@ -16,10 +16,10 @@ namespace FakeItEasy
         /// <typeparam name="T">Type of the service.</typeparam>
         /// <returns>An instance of the service type.</returns>
         [DebuggerStepThrough]
-        internal static T Resolve<T>()
+        internal static T Resolve<T>() where T : class
         {
             var service = Service<T>.Instance;
-            return service == null
+            return service is null
                 ? throw new KeyNotFoundException($"The specified service {typeof(T)} was not registered.")
                 : service;
         }

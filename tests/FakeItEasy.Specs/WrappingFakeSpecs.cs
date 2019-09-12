@@ -147,7 +147,7 @@
             public int NonVoidMethod(string parameter)
             {
                 this.NonVoidMethodCalled = true;
-                if (parameter == null)
+                if (parameter is null)
                 {
                     throw new ArgumentNullException(nameof(parameter));
                 }
@@ -158,7 +158,7 @@
             public void VoidMethod(string parameter)
             {
                 this.VoidMethodCalled = true;
-                if (parameter == null)
+                if (parameter is null)
                 {
                     throw new ArgumentNullException(nameof(parameter));
                 }

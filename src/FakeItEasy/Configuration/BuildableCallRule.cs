@@ -208,7 +208,7 @@ namespace FakeItEasy.Configuration
 
         private void ApplyOutAndRefParametersValueProducer(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            if (this.OutAndRefParametersValueProducer == null)
+            if (this.OutAndRefParametersValueProducer is null)
             {
                 return;
             }

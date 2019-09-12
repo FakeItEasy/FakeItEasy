@@ -31,7 +31,7 @@ namespace FakeItEasy.Core
             {
                 get
                 {
-                    if (this.registeredEventHandlersField == null)
+                    if (this.registeredEventHandlersField is null)
                     {
                         this.registeredEventHandlersField = new Dictionary<object, Delegate>();
                     }
@@ -44,7 +44,7 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
-                return EventCall.GetEvent(fakeObjectCall.Method) != null;
+                return EventCall.GetEvent(fakeObjectCall.Method) is object;
             }
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
@@ -110,7 +110,7 @@ namespace FakeItEasy.Core
                 {
                     registration = Delegate.Remove(registration, handler);
 
-                    if (registration != null)
+                    if (registration is object)
                     {
                         this.RegisteredEventHandlers[key] = registration;
                     }
