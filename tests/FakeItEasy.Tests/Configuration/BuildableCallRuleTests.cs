@@ -104,7 +104,7 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_set_ref_and_out_parameters_when_specified()
         {
             // Arrange
-            this.rule.OutAndRefParametersValueProducer = x => new object[] { 1, "foo" };
+            this.rule.SetOutAndRefParametersValueProducer(x => new object[] { 1, "foo" });
             this.rule.UseApplicator(x => { });
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
@@ -122,7 +122,7 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_throw_when_OutAndRefParametersValues_length_differs_from_the_number_of_out_and_ref_parameters_in_the_call()
         {
             // Arrange
-            this.rule.OutAndRefParametersValueProducer = x => new object[] { 1, "foo", "bar" };
+            this.rule.SetOutAndRefParametersValueProducer(x => new object[] { 1, "foo", "bar" });
             this.rule.UseApplicator(x => { });
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
@@ -278,9 +278,9 @@ namespace FakeItEasy.Tests.Configuration
         [Fact]
         public void OutAndRefParameterProducer_should_not_be_settable_more_than_once()
         {
-            this.rule.OutAndRefParametersValueProducer = x => Array.Empty<object>();
+            this.rule.SetOutAndRefParametersValueProducer(x => Array.Empty<object>());
 
-            var exception = Record.Exception(() => this.rule.OutAndRefParametersValueProducer = x => new object[] { "test" });
+            var exception = Record.Exception(() => this.rule.SetOutAndRefParametersValueProducer(x => new object[] { "test" }));
             exception.Should().BeAnExceptionOfType<InvalidOperationException>();
         }
 
