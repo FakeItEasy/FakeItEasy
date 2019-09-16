@@ -14,7 +14,6 @@ namespace FakeItEasy.Configuration
         private readonly List<WherePredicate> wherePredicates;
         private Action<IInterceptedFakeObjectCall> applicator;
         private bool wasApplicatorSet;
-        private Func<IFakeObjectCall, ICollection<object>> outAndRefParametersValueProducer;
         private bool canSetOutAndRefParametersValueProducer;
 
         protected BuildableCallRule()
@@ -33,28 +32,6 @@ namespace FakeItEasy.Configuration
         public virtual ICollection<Action<IFakeObjectCall>> Actions { get; }
 
         /// <summary>
-        /// Gets or sets a function that provides values to apply to output and reference variables.
-        /// </summary>
-        public Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProducer
-        {
-            get
-            {
-                return this.outAndRefParametersValueProducer;
-            }
-
-            set
-            {
-                if (!this.canSetOutAndRefParametersValueProducer)
-                {
-                    throw new InvalidOperationException("How to assign out and ref parameters has already been defined for this call");
-                }
-
-                this.outAndRefParametersValueProducer = value;
-                this.canSetOutAndRefParametersValueProducer = false;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the base method of the fake object call should be
         /// called when the fake object call is made.
         /// </summary>
@@ -64,6 +41,14 @@ namespace FakeItEasy.Configuration
         /// Gets or sets the number of times the configured rule should be used.
         /// </summary>
         public virtual int? NumberOfTimesToCall { get; set; }
+
+        /// <summary>
+        /// Sets a function that provides values to apply to output and reference variables.
+        /// </summary>
+        protected Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProducer
+        {
+            private get; set;
+        }
 
         /// <summary>
         /// Writes a description of calls the rule is applicable to.
@@ -172,6 +157,26 @@ namespace FakeItEasy.Configuration
         }
 
         /// <summary>
+        /// Sets the delegate that will provide out and ref parameters when an applicable call is made.
+        /// May only be called once per BuildableCallRule.
+        /// <seealso cref="OutAndRefParametersValueProducer" />
+        /// </summary>
+        /// <param name="producer">The new value producer.</param>
+        /// <exception cref="System.InvalidOperationException">
+        /// Thrown when the SetOutAndRefParametersValueProducer method has previously been called.
+        /// </exception>
+        public void SetOutAndRefParametersValueProducer(Func<IFakeObjectCall, ICollection<object>> producer)
+        {
+            if (!this.canSetOutAndRefParametersValueProducer)
+            {
+                throw new InvalidOperationException("How to assign out and ref parameters has already been defined for this call");
+            }
+
+            this.OutAndRefParametersValueProducer = producer;
+            this.canSetOutAndRefParametersValueProducer = false;
+        }
+
+        /// <summary>
         /// When overridden in a derived class, returns a new instance of the same type and copies the call
         /// specification members for that type.
         /// </summary>
@@ -179,16 +184,6 @@ namespace FakeItEasy.Configuration
         protected abstract BuildableCallRule CloneCallSpecificationCore();
 
         protected abstract bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall);
-
-        /// <summary>
-        /// Sets the OutAndRefParametersValueProducer directly, bypassing the public setter logic, hence allowing
-        /// it to be set again later.
-        /// </summary>
-        /// <param name="value">The new value for OutAndRefParametersValueProducer.</param>
-        protected void SetOutAndRefParametersValueProducer(Func<IFakeObjectCall, ICollection<object>> value)
-        {
-            this.outAndRefParametersValueProducer = value;
-        }
 
         private static ICollection<int> GetIndexesOfOutAndRefParameters(IInterceptedFakeObjectCall fakeObjectCall)
         {

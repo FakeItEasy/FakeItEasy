@@ -194,28 +194,10 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void AssignsOutAndRefParameters_should_set_values_to_rule()
-        {
-            this.builder.AssignsOutAndRefParameters(1, "foo");
-
-            var valueProducer = this.ruleProducedByFactory.OutAndRefParametersValueProducer;
-            valueProducer(null).Should().BeEquivalentTo(1, "foo");
-        }
-
-        [Fact]
         public void AssignsOutAndRefParametersLazily_should_be_null_guarded()
         {
             Expression<Action> call = () => this.builder.AssignsOutAndRefParametersLazily(null);
             call.Should().BeNullGuarded();
-        }
-
-        [Fact]
-        public void AssignsOutAndRefParametersLazily_should_set_values_to_rule()
-        {
-            this.builder.AssignsOutAndRefParametersLazily(call => new object[] { 1, "foo" });
-
-            var valueProducer = this.ruleProducedByFactory.OutAndRefParametersValueProducer;
-            valueProducer(null).Should().BeEquivalentTo(1, "foo");
         }
 
         [Fact]

@@ -130,7 +130,7 @@ namespace FakeItEasy.Configuration
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             this.AddRuleIfNeeded();
-            this.RuleBeingBuilt.OutAndRefParametersValueProducer = valueProducer;
+            this.RuleBeingBuilt.SetOutAndRefParametersValueProducer(valueProducer);
 
             return this;
         }

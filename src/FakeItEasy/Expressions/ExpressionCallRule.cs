@@ -20,7 +20,7 @@ namespace FakeItEasy.Expressions
             Guard.AgainstNull(expressionMatcher, nameof(expressionMatcher));
 
             this.ExpressionMatcher = expressionMatcher;
-            this.SetOutAndRefParametersValueProducer(expressionMatcher.GetOutAndRefParametersValueProducer());
+            this.OutAndRefParametersValueProducer = expressionMatcher.GetOutAndRefParametersValueProducer();
         }
 
         /// <summary>
