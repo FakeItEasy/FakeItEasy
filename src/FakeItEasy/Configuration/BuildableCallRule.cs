@@ -32,14 +32,6 @@ namespace FakeItEasy.Configuration
         public virtual ICollection<Action<IFakeObjectCall>> Actions { get; }
 
         /// <summary>
-        /// Gets or sets a function that provides values to apply to output and reference variables.
-        /// </summary>
-        public Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProducer
-        {
-            get; protected set;
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the base method of the fake object call should be
         /// called when the fake object call is made.
         /// </summary>
@@ -49,6 +41,14 @@ namespace FakeItEasy.Configuration
         /// Gets or sets the number of times the configured rule should be used.
         /// </summary>
         public virtual int? NumberOfTimesToCall { get; set; }
+
+        /// <summary>
+        /// Sets a function that provides values to apply to output and reference variables.
+        /// </summary>
+        protected Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProducer
+        {
+            private get; set;
+        }
 
         /// <summary>
         /// Writes a description of calls the rule is applicable to.
