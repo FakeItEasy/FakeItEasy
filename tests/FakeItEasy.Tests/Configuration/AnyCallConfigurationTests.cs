@@ -47,30 +47,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void WithReturnType_should_set_the_type_to_the_configured_rule()
-        {
-            // Arrange
-
-            // Act
-            this.configuration.WithReturnType<string>();
-
-            // Assert
-            this.callRule.ApplicableToMembersWithReturnType.Should().Be(typeof(string));
-        }
-
-        [Fact]
-        public void WithVoidReturnType_should_set_the_type_to_the_configured_rule()
-        {
-            // Arrange
-
-            // Act
-            this.configuration.WithVoidReturnType();
-
-            // Assert
-            this.callRule.ApplicableToMembersWithReturnType.Should().Be(typeof(void));
-        }
-
-        [Fact]
         public void DoesNothing_delegates_to_configuration_produced_by_factory()
         {
             // Arrange

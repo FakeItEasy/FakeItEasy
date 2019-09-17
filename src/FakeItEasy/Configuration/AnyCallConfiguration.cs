@@ -24,7 +24,7 @@ namespace FakeItEasy.Configuration
 
         public IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>()
         {
-            this.configuredRule.ApplicableToMembersWithReturnType = typeof(TMember);
+            this.configuredRule.MakeApplicableToMembersWithReturnType(typeof(TMember));
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, this.configuredRule);
         }
 
@@ -36,7 +36,7 @@ namespace FakeItEasy.Configuration
 
         public IAnyCallConfigurationWithVoidReturnType WithVoidReturnType()
         {
-            this.configuredRule.ApplicableToMembersWithReturnType = typeof(void);
+            this.configuredRule.MakeApplicableToMembersWithReturnType(typeof(void));
             return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule);
         }
 

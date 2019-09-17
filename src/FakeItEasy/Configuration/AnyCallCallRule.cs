@@ -8,27 +8,28 @@ namespace FakeItEasy.Configuration
     {
         private Func<ArgumentCollection, bool> argumentsPredicate;
         private bool applicableToAllNonVoidReturnTypes;
+        private Type applicableToMembersWithReturnType;
 
         public AnyCallCallRule()
         {
             this.argumentsPredicate = x => true;
         }
 
-        public Type ApplicableToMembersWithReturnType { get; set; }
+        public void MakeApplicableToMembersWithReturnType(Type type) => this.applicableToMembersWithReturnType = type;
 
         public void MakeApplicableToAllNonVoidReturnTypes() => this.applicableToAllNonVoidReturnTypes = true;
 
         public override void DescribeCallOn(IOutputWriter writer)
         {
-            if (this.ApplicableToMembersWithReturnType is object)
+            if (this.applicableToMembersWithReturnType is object)
             {
-                if (this.ApplicableToMembersWithReturnType == typeof(void))
+                if (this.applicableToMembersWithReturnType == typeof(void))
                 {
                     writer.Write("Any call with void return type to the fake object.");
                 }
                 else
                 {
-                    writer.Write("Any call with return type ").Write(this.ApplicableToMembersWithReturnType).Write(" to the fake object.");
+                    writer.Write("Any call with return type ").Write(this.applicableToMembersWithReturnType).Write(" to the fake object.");
                 }
             }
             else if (this.applicableToAllNonVoidReturnTypes)
@@ -60,9 +61,9 @@ namespace FakeItEasy.Configuration
                 throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Arguments predicate"), ex);
             }
 
-            if (this.ApplicableToMembersWithReturnType is object)
+            if (this.applicableToMembersWithReturnType is object)
             {
-                return this.ApplicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType;
+                return this.applicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType;
             }
 
             if (this.applicableToAllNonVoidReturnTypes)
