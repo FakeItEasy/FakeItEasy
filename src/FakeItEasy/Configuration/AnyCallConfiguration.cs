@@ -30,7 +30,7 @@ namespace FakeItEasy.Configuration
 
         public IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType()
         {
-            this.configuredRule.ApplicableToAllNonVoidReturnTypes = true;
+            this.configuredRule.MakeApplicableToAllNonVoidReturnTypes();
             return this.configurationFactory.CreateConfiguration<object>(this.manager, this.configuredRule);
         }
 

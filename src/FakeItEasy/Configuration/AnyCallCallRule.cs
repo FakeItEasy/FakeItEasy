@@ -7,6 +7,7 @@ namespace FakeItEasy.Configuration
         : BuildableCallRule
     {
         private Func<ArgumentCollection, bool> argumentsPredicate;
+        private bool applicableToAllNonVoidReturnTypes;
 
         public AnyCallCallRule()
         {
@@ -15,7 +16,7 @@ namespace FakeItEasy.Configuration
 
         public Type ApplicableToMembersWithReturnType { get; set; }
 
-        public bool ApplicableToAllNonVoidReturnTypes { get; set; }
+        public void MakeApplicableToAllNonVoidReturnTypes() => this.applicableToAllNonVoidReturnTypes = true;
 
         public override void DescribeCallOn(IOutputWriter writer)
         {
@@ -30,7 +31,7 @@ namespace FakeItEasy.Configuration
                     writer.Write("Any call with return type ").Write(this.ApplicableToMembersWithReturnType).Write(" to the fake object.");
                 }
             }
-            else if (this.ApplicableToAllNonVoidReturnTypes)
+            else if (this.applicableToAllNonVoidReturnTypes)
             {
                 writer.Write("Any call with non-void return type to the fake object.");
             }
@@ -64,7 +65,7 @@ namespace FakeItEasy.Configuration
                 return this.ApplicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType;
             }
 
-            if (this.ApplicableToAllNonVoidReturnTypes)
+            if (this.applicableToAllNonVoidReturnTypes)
             {
                 return fakeObjectCall.Method.ReturnType != typeof(void);
             }

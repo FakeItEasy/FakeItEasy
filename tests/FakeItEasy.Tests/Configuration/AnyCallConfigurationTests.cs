@@ -59,18 +59,6 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void WithNonVoidReturnType_should_cause_the_call_rule_to_apply_to_all_return_types()
-        {
-            // Arrange
-
-            // Act
-            this.configuration.WithNonVoidReturnType();
-
-            // Assert
-            this.callRule.ApplicableToAllNonVoidReturnTypes.Should().BeTrue();
-        }
-
-        [Fact]
         public void WithVoidReturnType_should_set_the_type_to_the_configured_rule()
         {
             // Arrange
