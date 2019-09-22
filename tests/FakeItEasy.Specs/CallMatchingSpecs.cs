@@ -696,6 +696,35 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void PassingHiddenConstraintToAMethod(
+            IHaveAnObjectParameter fake,
+            Func<object> constraintFactory,
+            int result1,
+            int result2)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveAnObjectParameter>());
+
+            "And a delegate that produces a constraint"
+                .x(() => constraintFactory = () => A<object>.That.Matches(i => i is object));
+
+            "And I try to configure a method of the fake with this delegate"
+                .x(() => A.CallTo(() => fake.Bar(constraintFactory())).Returns(1));
+
+            "When I call the method with a matching argument"
+                .x(() => result1 = fake.Bar(fake));
+
+            "And I call the method with a non-matching argument"
+                .x(() => result2 = fake.Bar(null));
+
+            "Then the first result has the configured value"
+                .x(() => result1.Should().Be(1));
+
+            "Then the second result has the default value"
+                .x(() => result2.Should().Be(0));
+        }
+
+        [Scenario]
         public static void PassingHiddenConstraintWithWrongTypeToAMethod(
             IHaveNoGenericParameters fake,
             Func<int> constraintFactory,
