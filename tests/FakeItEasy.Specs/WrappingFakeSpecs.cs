@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using FakeItEasy.Tests.TestHelpers;
@@ -15,6 +15,11 @@
             void VoidMethod(string parameter);
 
             void OutAndRefMethod(ref int @ref, out int @out);
+        }
+
+        public interface IBar
+        {
+            int Id { get; }
         }
 
         [Scenario]
@@ -136,6 +141,70 @@
                 .x(() => @out.Should().Be(42));
         }
 
+        [Scenario]
+        public static void FakeEqualsFake(Foo realObject, IFoo wrapper, bool equals)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
+
+            "When Equals is called on the fake with itself as the argument"
+                .x(() => equals = wrapper.Equals(wrapper));
+
+            "Then it should return true"
+                .x(() => equals.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void FakeEqualsWrappedObject(Foo realObject, IFoo wrapper, bool equals)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
+
+            "When Equals is called on the fake with the real object as the argument"
+                .x(() => equals = wrapper.Equals(realObject));
+
+            "Then it should return false"
+                .x(() => equals.Should().BeFalse());
+        }
+
+        [Scenario]
+        public static void FakeEqualsFakeWithValueSemantics(Bar realObject, IBar wrapper, bool equals)
+        {
+            "Given a real object that overrides Equals with value semantics"
+                .x(() => realObject = new Bar(42));
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IBar>(o => o.Wrapping(realObject)));
+
+            "When Equals is called on the fake with itself as the argument"
+                .x(() => equals = wrapper.Equals(wrapper));
+
+            "Then it should return true"
+                .x(() => equals.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void FakeEqualsWrappedObjectWithValueSemantics(Bar realObject, IBar wrapper, bool equals)
+        {
+            "Given a real object that overrides Equals with value semantics"
+                .x(() => realObject = new Bar(42));
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IBar>(o => o.Wrapping(realObject)));
+
+            "When Equals is called on the fake with the real object as the argument"
+                .x(() => equals = wrapper.Equals(realObject));
+
+            "Then it should return true"
+                .x(() => equals.Should().BeTrue());
+        }
+
         public class Foo : IFoo
         {
             public bool NonVoidMethodCalled { get; private set; }
@@ -169,6 +238,26 @@
                 this.OutAndRefMethodCalled = true;
                 @ref += 1;
                 @out = 42;
+            }
+        }
+
+        public class Bar : IBar
+        {
+            public Bar(int id)
+            {
+                this.Id = id;
+            }
+
+            public int Id { get; }
+
+            public override bool Equals(object obj)
+            {
+                return obj is IBar other && other.Id == this.Id;
+            }
+
+            public override int GetHashCode()
+            {
+                return this.Id.GetHashCode();
             }
         }
     }
