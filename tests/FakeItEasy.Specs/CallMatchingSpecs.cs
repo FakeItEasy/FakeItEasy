@@ -725,6 +725,26 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void TwoArgumentConstraints(
+            IHaveAnObjectParameter fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveAnObjectParameter>());
+
+            "When I try to configure a method of the fake using two constraints on an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() =>
+                    fake.Bar(A<int>.That.Matches(i => i % 2 == 0) + A<int>.That.Matches(i => i % 2 == 1))).Returns(1)));
+
+            "Then the call configuration throws an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+
+            "And the exception indicates that a nested argument constraint was used"
+                .x(() => exception.Message.Should()
+                    .Be("An argument constraint, such as That, Ignored, or _, cannot be nested in an argument."));
+        }
+
+        [Scenario]
         public static void PassingHiddenConstraintWithWrongTypeToAMethod(
             IHaveNoGenericParameters fake,
             Func<int> constraintFactory,
