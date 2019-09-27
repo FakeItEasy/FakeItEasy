@@ -58,6 +58,8 @@ namespace FakeItEasy.Core
 
             public Type Type => typeof(T);
 
+            public override string ToString() => this.GetDescription();
+
             void IArgumentConstraint.WriteDescription(IOutputWriter writer)
             {
                 writer.Write("<");

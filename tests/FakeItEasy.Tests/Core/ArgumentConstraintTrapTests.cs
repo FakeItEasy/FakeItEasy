@@ -14,24 +14,6 @@ namespace FakeItEasy.Tests.Core
         private readonly ArgumentConstraintTrap trap = new ArgumentConstraintTrap();
 
         [Fact]
-        public void Should_return_constraints_that_has_been_trapped()
-        {
-            // Arrange
-            var constraint1 = A.Dummy<IArgumentConstraint>();
-            var constraint2 = A.Dummy<IArgumentConstraint>();
-
-            // Act
-            var result = this.trap.TrapConstraints(() =>
-                                                       {
-                                                           ArgumentConstraintTrap.ReportTrappedConstraint(constraint1);
-                                                           ArgumentConstraintTrap.ReportTrappedConstraint(constraint2);
-                                                       });
-
-            // Assert
-            result.Should().BeEquivalentTo(constraint1, constraint2);
-        }
-
-        [Fact]
         public void Should_not_return_constraints_from_previous_call()
         {
             // Arrange

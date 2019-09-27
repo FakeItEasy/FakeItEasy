@@ -745,6 +745,33 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void ConstraintFactoryThatMakesTwoConstraints(
+            IHaveAnObjectParameter fake,
+            Func<object> constraintFactory,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveAnObjectParameter>());
+
+            "And a delegate that produces two constraints"
+                .x(() => constraintFactory = () =>
+                    {
+                        A<object>.That.Matches(i => i is object);
+                        return A<object>.That.Matches(i => i is object);
+                    });
+
+            "When I try to configure a method of the fake with this delegate"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(constraintFactory())).Returns(1)));
+
+            "Then the call configuration throws a FakeConfigurationException"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>());
+
+            "And the exception indicates that too many constraints were specified"
+                .x(() => exception.Message.Should()
+                    .Be("Too many argument constraints specified. First superfluous constraint is <i => (i Is Object)>."));
+        }
+
+        [Scenario]
         public static void PassingHiddenConstraintWithWrongTypeToAMethod(
             IHaveNoGenericParameters fake,
             Func<int> constraintFactory,

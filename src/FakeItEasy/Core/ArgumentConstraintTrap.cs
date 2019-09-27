@@ -4,6 +4,8 @@ namespace FakeItEasy.Core
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
+    using FakeItEasy.Configuration;
+
     internal class ArgumentConstraintTrap
         : IArgumentConstraintTrapper
     {
@@ -29,6 +31,11 @@ namespace FakeItEasy.Core
             actionThatProducesConstraint.Invoke();
 
             trappedConstraints = null;
+
+            if (result.Count > 1)
+            {
+                throw new FakeConfigurationException(ExceptionMessages.TooManyArgumentConstraints(result[1]));
+            }
 
             return result;
         }
