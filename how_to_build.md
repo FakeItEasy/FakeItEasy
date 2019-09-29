@@ -3,7 +3,7 @@
 These instructions are *only* for building from the command line, which includes compilation, test execution and packaging. This is the simplest way to build.
 It also replicates the build on the Continuous Integration build server and is the best indicator of whether a pull request will build.
 
-You can also build the solution using Visual Studio 2017 or later, but this doesn't provide the same assurances as the command line build.
+You can also build the solution using Visual Studio 2019 or later, but this doesn't provide the same assurances as the command line build.
 
 At the time of writing the build is only confirmed to work on Windows using the Microsoft .NET framework.
 
@@ -14,11 +14,11 @@ The build requires that a few pieces of software be installed on the host comput
 
 Ensure that the following are installed:
 
-1. a recent version of Visual Studio 2017 (currently this means 15.7 or later) or the Build Tools for Visual Studio 2017
+1. a recent version of Visual Studio 2019 (currently this means 16.3 or later) or the Build Tools for Visual Studio 2019
 
 1. a recent version of the .NET Core 1.0 Runtime (currently this means 1.0.12 or later)
 
-1. a recent version of the .NET Core 2.1 SDK (currently this means 2.1.3 or later)
+1. a recent version of the .NET Core 3.0 SDK (currently this means 3.0.100 or later)
 
 ## Building
 

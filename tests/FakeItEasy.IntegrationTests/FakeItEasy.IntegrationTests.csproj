@@ -1,9 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp1.0;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp1.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>FakeItEasy.IntegrationTests</AssemblyName>
     <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION;FEATURE_STRING_CONTAINS_COMPARISONTYPE;REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
