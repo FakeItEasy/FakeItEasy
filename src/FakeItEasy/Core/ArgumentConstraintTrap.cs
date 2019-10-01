@@ -23,7 +23,7 @@ namespace FakeItEasy.Core
             trappedConstraints.Add(constraint);
         }
 
-        public IEnumerable<IArgumentConstraint> TrapConstraints(Action actionThatProducesConstraint)
+        public IArgumentConstraint TrapConstraint(Action actionThatProducesConstraint)
         {
             trappedConstraints = new List<IArgumentConstraint>();
             var result = trappedConstraints;
@@ -32,12 +32,9 @@ namespace FakeItEasy.Core
 
             trappedConstraints = null;
 
-            if (result.Count > 1)
-            {
+            return result.Count == 0 ? null :
+                result.Count == 1 ? result[0] :
                 throw new FakeConfigurationException(ExceptionMessages.TooManyArgumentConstraints(result[1]));
-            }
-
-            return result;
         }
     }
 }

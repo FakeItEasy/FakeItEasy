@@ -15,7 +15,11 @@ namespace FakeItEasy.Tests.Expressions
             // Arrange
             ExpressionArgumentConstraintFactory factory = new ExpressionArgumentConstraintFactory(new ArgumentConstraintTrap());
             int invokedNumberOfTimes = 0;
-            Func<object> invocation = () => { invokedNumberOfTimes++; return null; };
+            Func<object> invocation = () =>
+            {
+                invokedNumberOfTimes++;
+                return null;
+            };
             var expression = BuilderForExpression.GetBody(() => invocation());
 
             // Act

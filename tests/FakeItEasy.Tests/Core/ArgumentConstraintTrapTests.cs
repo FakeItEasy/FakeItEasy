@@ -1,11 +1,8 @@
 namespace FakeItEasy.Tests.Core
 {
-    using System;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using FakeItEasy.Core;
-    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
@@ -41,23 +38,23 @@ namespace FakeItEasy.Tests.Core
             // Act
             var earlyStartingTask = Task.Run(() =>
             {
-                earlyStartingResult = this.trap.TrapConstraints(() =>
+                earlyStartingResult = this.trap.TrapConstraint(() =>
                 {
                     lateStartingLock.Set();
                     lateEndingLock.Wait();
 
                     ArgumentConstraintTrap.ReportTrappedConstraint(earlyStartingConstraint);
-                }).SingleOrDefault();
+                });
             });
 
             var lateStartingTask = Task.Run(() =>
             {
                 lateStartingLock.Wait();
 
-                lateStartingResult = this.trap.TrapConstraints(() =>
+                lateStartingResult = this.trap.TrapConstraint(() =>
                 {
                     ArgumentConstraintTrap.ReportTrappedConstraint(lateStartingConstraint);
-                }).SingleOrDefault();
+                });
 
                 lateEndingLock.Set();
             });
