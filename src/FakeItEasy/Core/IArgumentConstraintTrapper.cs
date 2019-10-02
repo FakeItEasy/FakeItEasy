@@ -4,6 +4,8 @@ namespace FakeItEasy.Core
 
     internal interface IArgumentConstraintTrapper
     {
-        IArgumentConstraint TrapConstraint(Action actionThatProducesConstraint);
+        IArgumentConstraint TrapConstraintOrCreate(
+            Action actionThatProducesConstraint,
+            Func<IArgumentConstraint> constraintFactory);
     }
 }

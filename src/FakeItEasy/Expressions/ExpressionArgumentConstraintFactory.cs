@@ -161,18 +161,13 @@ namespace FakeItEasy.Expressions
 
             object expressionValue = null;
 
-            var constraint = this.argumentConstraintTrapper.TrapConstraint(() =>
-            {
-                expressionValue = expression.Evaluate();
-            });
+            var constraint = this.argumentConstraintTrapper.TrapConstraintOrCreate(
+                () => expressionValue = expression.Evaluate(),
+                () => CreateEqualityConstraint(expressionValue));
 
             if (constraint is ITypedArgumentConstraint typedConstraint)
             {
                 CheckConstraintIsCompatibleWithParameterType(typedConstraint, parameterType);
-            }
-            else if (constraint is null)
-            {
-                constraint = CreateEqualityConstraint(expressionValue);
             }
 
             value = expressionValue;

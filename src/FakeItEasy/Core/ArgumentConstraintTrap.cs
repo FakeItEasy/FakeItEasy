@@ -23,7 +23,9 @@ namespace FakeItEasy.Core
             trappedConstraints.Add(constraint);
         }
 
-        public IArgumentConstraint TrapConstraint(Action actionThatProducesConstraint)
+        public IArgumentConstraint TrapConstraintOrCreate(
+            Action actionThatProducesConstraint,
+            Func<IArgumentConstraint> defaultConstraintFactory)
         {
             trappedConstraints = new List<IArgumentConstraint>();
             var result = trappedConstraints;
@@ -32,7 +34,7 @@ namespace FakeItEasy.Core
 
             trappedConstraints = null;
 
-            return result.Count == 0 ? null :
+            return result.Count == 0 ? defaultConstraintFactory.Invoke() :
                 result.Count == 1 ? result[0] :
                 throw new FakeConfigurationException(ExceptionMessages.TooManyArgumentConstraints(result[1]));
         }

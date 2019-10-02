@@ -1,5 +1,6 @@
 namespace FakeItEasy.Tests.Core
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using FakeItEasy.Core;
@@ -8,6 +9,7 @@ namespace FakeItEasy.Tests.Core
 
     public class ArgumentConstraintTrapTests
     {
+        private static readonly Func<IArgumentConstraint> UnusedConstraintFactory = A.Dummy<Func<IArgumentConstraint>>();
         private readonly ArgumentConstraintTrap trap = new ArgumentConstraintTrap();
 
         [Fact]
@@ -38,23 +40,24 @@ namespace FakeItEasy.Tests.Core
             // Act
             var earlyStartingTask = Task.Run(() =>
             {
-                earlyStartingResult = this.trap.TrapConstraint(() =>
-                {
-                    lateStartingLock.Set();
-                    lateEndingLock.Wait();
+                earlyStartingResult = this.trap.TrapConstraintOrCreate(
+                    () =>
+                        {
+                            lateStartingLock.Set();
+                            lateEndingLock.Wait();
 
-                    ArgumentConstraintTrap.ReportTrappedConstraint(earlyStartingConstraint);
-                });
+                            ArgumentConstraintTrap.ReportTrappedConstraint(earlyStartingConstraint);
+                        },
+                    UnusedConstraintFactory);
             });
 
             var lateStartingTask = Task.Run(() =>
             {
                 lateStartingLock.Wait();
 
-                lateStartingResult = this.trap.TrapConstraint(() =>
-                {
-                    ArgumentConstraintTrap.ReportTrappedConstraint(lateStartingConstraint);
-                });
+                lateStartingResult = this.trap.TrapConstraintOrCreate(
+                    () => ArgumentConstraintTrap.ReportTrappedConstraint(lateStartingConstraint),
+                    UnusedConstraintFactory);
 
                 lateEndingLock.Set();
             });
