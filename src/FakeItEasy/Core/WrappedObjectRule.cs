@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System.Reflection;
+    using static ObjectMembers;
 
     /// <summary>
     /// A call rule that applies to any call and just delegates the
@@ -51,10 +52,35 @@ namespace FakeItEasy.Core
             Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
             var parameters = fakeObjectCall.Arguments.GetUnderlyingArgumentsArray();
-            object valueFromWrappedInstance;
+            object returnValue;
             try
             {
-                valueFromWrappedInstance = fakeObjectCall.Method.Invoke(this.wrappedObject, parameters);
+                if (fakeObjectCall.Method.IsSameMethodAs(EqualsMethod))
+                {
+                    var arg = parameters[0];
+                    if (ReferenceEquals(arg, fakeObjectCall.FakedObject))
+                    {
+                        // fake.Equals(fake) returns true
+                        returnValue = true;
+                    }
+                    else if (ReferenceEquals(arg, this.wrappedObject))
+                    {
+                        // fake.Equals(wrappedObject) returns wrappedObject.Equals(fake)
+                        // This will be false if Equals isn't overriden (reference equality)
+                        // and true if Equals is overriden to implement value semantics.
+                        // This approach has the benefit of keeping Equals symmetrical.
+                        returnValue = this.wrappedObject.Equals(fakeObjectCall.FakedObject);
+                    }
+                    else
+                    {
+                        // fake.Equals(somethingElse) is delegated to the wrapped object (no special case)
+                        returnValue = this.wrappedObject.Equals(arg);
+                    }
+                }
+                else
+                {
+                    returnValue = fakeObjectCall.Method.Invoke(this.wrappedObject, parameters);
+                }
             }
             catch (TargetInvocationException ex)
             {
@@ -62,7 +88,7 @@ namespace FakeItEasy.Core
                 throw;
             }
 
-            fakeObjectCall.SetReturnValue(valueFromWrappedInstance);
+            fakeObjectCall.SetReturnValue(returnValue);
         }
     }
 }
