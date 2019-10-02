@@ -56,6 +56,14 @@ namespace FakeItEasy
             return builder.ToString();
         }
 
+        public static bool IsSameMethodAs(this MethodBase method, MethodBase otherMethod)
+        {
+            return method.DeclaringType == otherMethod.DeclaringType
+                       && method.MetadataToken == otherMethod.MetadataToken
+                       && method.Module == otherMethod.Module
+                       && method.GetGenericArguments().SequenceEqual(otherMethod.GetGenericArguments());
+        }
+
         private static void AppendMethodName(StringBuilder builder, MethodBase method)
         {
             if (IsPropertyGetterOrSetter(method))

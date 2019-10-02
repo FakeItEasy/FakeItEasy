@@ -46,7 +46,7 @@ namespace FakeItEasy.Core
             var baseOfFirst = GetBaseDefinition(first);
             var baseOfSecond = GetBaseDefinition(second);
 
-            return IsSameMethod(baseOfFirst, baseOfSecond);
+            return baseOfFirst.IsSameMethodAs(baseOfSecond);
         }
 
         private static MethodInfo GetBaseDefinition(MethodInfo method)
@@ -57,14 +57,6 @@ namespace FakeItEasy.Core
             }
 
             return method.GetBaseDefinition();
-        }
-
-        private static bool IsSameMethod(MethodInfo first, MethodInfo second)
-        {
-            return first.DeclaringType == second.DeclaringType
-                   && first.MetadataToken == second.MetadataToken
-                   && first.Module == second.Module
-                   && first.GetGenericArguments().SequenceEqual(second.GetGenericArguments());
         }
 
         private static MethodInfo FindMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, FakeItEasy.Compatibility.MethodInfoWrapper methodWrapper)

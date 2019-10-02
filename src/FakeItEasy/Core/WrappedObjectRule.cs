@@ -1,6 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System.Reflection;
+    using static ObjectMembers;
 
     /// <summary>
     /// A call rule that applies to any call and just delegates the
@@ -9,8 +10,6 @@ namespace FakeItEasy.Core
     internal class WrappedObjectRule
         : IFakeObjectCallRule
     {
-        private static readonly MethodInfo EqualsMethod = typeof(object).GetMethod(nameof(object.Equals), new[] { typeof(object) });
-
         private readonly object wrappedObject;
 
         /// <summary>
@@ -56,7 +55,7 @@ namespace FakeItEasy.Core
             object returnValue;
             try
             {
-                if (IsCallsToEquals(fakeObjectCall))
+                if (fakeObjectCall.Method.IsSameMethodAs(EqualsMethod))
                 {
                     var arg = parameters[0];
                     if (ReferenceEquals(arg, fakeObjectCall.FakedObject))
@@ -90,13 +89,6 @@ namespace FakeItEasy.Core
             }
 
             fakeObjectCall.SetReturnValue(returnValue);
-        }
-
-        private static bool IsCallsToEquals(IFakeObjectCall fakeObjectCall)
-        {
-            return fakeObjectCall.Method.DeclaringType == EqualsMethod.DeclaringType &&
-                fakeObjectCall.Method.MetadataToken == EqualsMethod.MetadataToken &&
-                fakeObjectCall.Method.Module == EqualsMethod.Module;
         }
     }
 }
