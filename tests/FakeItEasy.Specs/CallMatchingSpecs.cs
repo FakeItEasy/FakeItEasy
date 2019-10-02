@@ -70,14 +70,43 @@ namespace FakeItEasy.Specs
             "Then an assertion with all the same argument values should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", "bar", "baz")).MustHaveHappened());
 
+            "And an assertion with only one matching params argument value should fail"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", "bar")).MustNotHaveHappened());
+
+            "And an assertion with one matching and one non-matching params argument value should fail"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", "qux", "baz")).MustNotHaveHappened());
+
             "And an assertion with only argument constraints should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, A<string>._, A<string>._)).MustHaveHappened());
 
             "And an assertion with mixed argument values and argument constraints should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, "bar", A<string>._)).MustHaveHappened());
 
-            "And an assertion using the array syntax should succeed"
+            "And an assertion with an array instead of individual arguments should succeed"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", new[] { "bar", "baz" })).MustHaveHappened());
+
+            "And an assertion using IsSameSequenceAs should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", A<string[]>.That.IsSameSequenceAs(new[] { "bar", "baz" }))).MustHaveHappened());
+        }
+
+        [Scenario]
+        public static void UnusedParameterArray(
+            ITypeWithParameterArray fake)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<ITypeWithParameterArray>());
+
+            "When a call with a parameter array is made on this fake but no params are supplied"
+                .x(() => fake.MethodWithParameterArray("foo"));
+
+            "Then an assertion with all the same non-params argument values should succeed"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo")).MustHaveHappened());
+
+            "And an assertion with null in place of the params arguments should fail"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", (string[])null)).MustNotHaveHappened());
+
+            "And an assertion with an empty array in place of the params arguments should succeed"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", Array.Empty<string>())).MustHaveHappened());
         }
 
         [Scenario]

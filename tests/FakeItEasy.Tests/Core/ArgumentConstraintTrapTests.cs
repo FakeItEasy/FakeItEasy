@@ -14,36 +14,6 @@ namespace FakeItEasy.Tests.Core
         private readonly ArgumentConstraintTrap trap = new ArgumentConstraintTrap();
 
         [Fact]
-        public void Should_not_return_constraints_from_previous_call()
-        {
-            // Arrange
-            var constraint1 = A.Dummy<IArgumentConstraint>();
-            var constraint2 = A.Dummy<IArgumentConstraint>();
-
-            this.trap.TrapConstraints(() => ArgumentConstraintTrap.ReportTrappedConstraint(constraint1));
-
-            // Act
-            var result = this.trap.TrapConstraints(() =>
-                                                       {
-                                                           ArgumentConstraintTrap.ReportTrappedConstraint(constraint2);
-                                                       });
-
-            // Assert
-            result.Should().BeEquivalentTo(constraint2);
-        }
-
-        [Fact]
-        public void Should_fail_when_reporting_trapped_constraint_outside_call_to_trap_constraints()
-        {
-            // Act
-            var exception = Record.Exception(
-                () => ArgumentConstraintTrap.ReportTrappedConstraint(A.Dummy<IArgumentConstraint>()));
-
-            // Assert
-            exception.Should().BeAnExceptionOfType<InvalidOperationException>().WithMessage("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()");
-        }
-
-        [Fact]
         public void Should_track_constraints_supplied_in_calls_made_from_overlapping_threads()
         {
             // Ensures that constraints are properly trapped even when two constraint-trapping threads
