@@ -6,7 +6,7 @@
     <Company>Patrik Hägne</Company>
     <Copyright>Copyright (c) FakeItEasy contributors. (fakeiteasyfx@gmail.com)</Copyright>
     <PackageProjectUrl>https://fakeiteasy.github.io/</PackageProjectUrl>
-    <PackageIconUrl>https://fakeiteasy.github.io/img/fakeiteasy_logo_256_square_white.png</PackageIconUrl>
+    <PackageIcon>images/FakeItEasy.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
     <NoPackageAnalysis>true</NoPackageAnalysis>
@@ -14,6 +14,10 @@
 
   <ItemGroup>
     <PackageReference Include="MinVer" Version="2.0.0-rc.1" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)/FakeItEasy.png" Pack="true" PackagePath="images/FakeItEasy.png" />
   </ItemGroup>
 
 </Project>
