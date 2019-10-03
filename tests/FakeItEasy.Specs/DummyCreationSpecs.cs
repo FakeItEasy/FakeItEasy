@@ -427,6 +427,25 @@ namespace FakeItEasy.Specs
                 .x(() => dummy2.NumberOfConstructorParameters.Should().Be(1));
         }
 
+        [Scenario]
+        public void ValueTupleCreation((Foo foo, string s) dummy)
+        {
+            "Given a type"
+                .See<Foo>();
+
+            "And another type"
+                .See<string>();
+
+            "When I create a dummy value tuple of those types"
+                .x(() => dummy = A.Dummy<(Foo, string)>());
+
+            "Then the first item of the tuple is a dummy"
+                .x(() => dummy.foo.Should().BeOfType<Foo>());
+
+            "And the second item of the tuple is a dummy"
+                .x(() => dummy.s.Should().BeOfType<string>());
+        }
+
         public class ClassWithNoPublicConstructors
         {
             private ClassWithNoPublicConstructors()
