@@ -3,6 +3,7 @@ namespace FakeItEasy.Specs
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
     using System.Runtime.InteropServices;
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
@@ -798,6 +799,33 @@ namespace FakeItEasy.Specs
             "And the exception indicates that too many constraints were specified"
                 .x(() => exception.Message.Should()
                     .Be("Too many argument constraints specified. First superfluous constraint is <i => (i Is Object)>."));
+        }
+
+        [Scenario]
+        public static void ConstraintFactoryThatThrows(
+            IHaveAnObjectParameter fake,
+            Func<object> constraintFactory,
+            Exception exception1,
+            Exception exception2)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveAnObjectParameter>());
+
+            "And a delegate throws while producing an argument constraint"
+                .x(() => constraintFactory = () => throw new InvalidOperationException("I don't want to make a constraint"));
+
+            "When I try to configure a method of the fake with this delegate"
+                .x(() => exception1 = Record.Exception(() => A.CallTo(() => fake.Bar(constraintFactory())).Returns(1)));
+
+            "And I try to create an argument constraint outside a call configuration"
+                .x(() => exception2 = Record.Exception(() => A<int>.Ignored));
+
+            "Then the first call configuration throws a TargetInvocationException"
+                .x(() => exception1.Should().BeAnExceptionOfType<TargetInvocationException>()
+                    .WithInnerException<InvalidOperationException>());
+
+            "And creation of the argument constraint throws an InvalidOperationException"
+                .x(() => exception2.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
         [Scenario]
