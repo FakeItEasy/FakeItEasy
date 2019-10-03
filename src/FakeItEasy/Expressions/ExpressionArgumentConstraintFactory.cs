@@ -2,7 +2,6 @@ namespace FakeItEasy.Expressions
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -44,11 +43,6 @@ namespace FakeItEasy.Expressions
             }
 
             return constraint;
-        }
-
-        private static IArgumentConstraint TryCreateConstraintFromTrappedConstraints(ICollection<IArgumentConstraint> trappedConstraints)
-        {
-            return trappedConstraints.FirstOrDefault();
         }
 
         private static bool IsParamArrayExpression(ParsedArgumentExpression argument)
@@ -167,19 +161,18 @@ namespace FakeItEasy.Expressions
 
             object expressionValue = null;
 
-            var trappedConstraints = this.argumentConstraintTrapper.TrapConstraints(() =>
-            {
-                expressionValue = expression.Evaluate();
-            }).ToList();
+            var constraint = this.argumentConstraintTrapper.TrapConstraintOrCreate(
+                () => expressionValue = expression.Evaluate(),
+                () => CreateEqualityConstraint(expressionValue));
 
-            foreach (var constraint in trappedConstraints.OfType<ITypedArgumentConstraint>())
+            if (constraint is ITypedArgumentConstraint typedConstraint)
             {
-                CheckConstraintIsCompatibleWithParameterType(constraint, parameterType);
+                CheckConstraintIsCompatibleWithParameterType(typedConstraint, parameterType);
             }
 
             value = expressionValue;
 
-            return TryCreateConstraintFromTrappedConstraints(trappedConstraints.ToArray()) ?? CreateEqualityConstraint(expressionValue);
+            return constraint;
         }
 
         private IArgumentConstraint CreateParamArrayConstraint(NewArrayExpression expression, Type parameterType)

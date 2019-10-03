@@ -70,14 +70,43 @@ namespace FakeItEasy.Specs
             "Then an assertion with all the same argument values should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", "bar", "baz")).MustHaveHappened());
 
+            "And an assertion with only one matching params argument value should fail"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", "bar")).MustNotHaveHappened());
+
+            "And an assertion with one matching and one non-matching params argument value should fail"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", "qux", "baz")).MustNotHaveHappened());
+
             "And an assertion with only argument constraints should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, A<string>._, A<string>._)).MustHaveHappened());
 
             "And an assertion with mixed argument values and argument constraints should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray(A<string>._, "bar", A<string>._)).MustHaveHappened());
 
-            "And an assertion using the array syntax should succeed"
+            "And an assertion with an array instead of individual arguments should succeed"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", new[] { "bar", "baz" })).MustHaveHappened());
+
+            "And an assertion using IsSameSequenceAs should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", A<string[]>.That.IsSameSequenceAs(new[] { "bar", "baz" }))).MustHaveHappened());
+        }
+
+        [Scenario]
+        public static void UnusedParameterArray(
+            ITypeWithParameterArray fake)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<ITypeWithParameterArray>());
+
+            "When a call with a parameter array is made on this fake but no params are supplied"
+                .x(() => fake.MethodWithParameterArray("foo"));
+
+            "Then an assertion with all the same non-params argument values should succeed"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo")).MustHaveHappened());
+
+            "And an assertion with null in place of the params arguments should fail"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", (string[])null)).MustNotHaveHappened());
+
+            "And an assertion with an empty array in place of the params arguments should succeed"
+                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", Array.Empty<string>())).MustHaveHappened());
         }
 
         [Scenario]
@@ -693,6 +722,82 @@ namespace FakeItEasy.Specs
 
             "And the message indicates the actual and expected types"
                 .x(() => exception.Message.Should().Be("Argument constraint is of type System.Byte, but parameter is of type System.Int32. No call can match this constraint."));
+        }
+
+        [Scenario]
+        public static void PassingHiddenConstraintToAMethod(
+            IHaveAnObjectParameter fake,
+            Func<object> constraintFactory,
+            int result1,
+            int result2)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveAnObjectParameter>());
+
+            "And a delegate that produces a constraint"
+                .x(() => constraintFactory = () => A<object>.That.Matches(i => i is object));
+
+            "And I try to configure a method of the fake with this delegate"
+                .x(() => A.CallTo(() => fake.Bar(constraintFactory())).Returns(1));
+
+            "When I call the method with a matching argument"
+                .x(() => result1 = fake.Bar(fake));
+
+            "And I call the method with a non-matching argument"
+                .x(() => result2 = fake.Bar(null));
+
+            "Then the first result has the configured value"
+                .x(() => result1.Should().Be(1));
+
+            "Then the second result has the default value"
+                .x(() => result2.Should().Be(0));
+        }
+
+        [Scenario]
+        public static void TwoArgumentConstraints(
+            IHaveAnObjectParameter fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveAnObjectParameter>());
+
+            "When I try to configure a method of the fake using two constraints on an argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() =>
+                    fake.Bar(A<int>.That.Matches(i => i % 2 == 0) + A<int>.That.Matches(i => i % 2 == 1))).Returns(1)));
+
+            "Then the call configuration throws an InvalidOperationException"
+                .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
+
+            "And the exception indicates that a nested argument constraint was used"
+                .x(() => exception.Message.Should()
+                    .Be("An argument constraint, such as That, Ignored, or _, cannot be nested in an argument."));
+        }
+
+        [Scenario]
+        public static void ConstraintFactoryThatMakesTwoConstraints(
+            IHaveAnObjectParameter fake,
+            Func<object> constraintFactory,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveAnObjectParameter>());
+
+            "And a delegate that produces two constraints"
+                .x(() => constraintFactory = () =>
+                    {
+                        A<object>.That.Matches(i => i is object);
+                        return A<object>.That.Matches(i => i is object);
+                    });
+
+            "When I try to configure a method of the fake with this delegate"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(constraintFactory())).Returns(1)));
+
+            "Then the call configuration throws a FakeConfigurationException"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>());
+
+            "And the exception indicates that too many constraints were specified"
+                .x(() => exception.Message.Should()
+                    .Be("Too many argument constraints specified. First superfluous constraint is <i => (i Is Object)>."));
         }
 
         [Scenario]
